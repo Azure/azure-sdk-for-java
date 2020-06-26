@@ -47,7 +47,6 @@ import static com.azure.search.documents.TestHelpers.assertHttpResponseException
 import static com.azure.search.documents.TestHelpers.assertMapEquals;
 import static com.azure.search.documents.TestHelpers.assertObjectEquals;
 import static com.azure.search.documents.TestHelpers.createPointGeometry;
-import static com.azure.search.documents.TestHelpers.generateRequestOptions;
 import static com.azure.search.documents.TestHelpers.waitForIndexing;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -210,7 +209,7 @@ public class IndexingSyncTests extends SearchTestBase {
             .addUploadActions(hotel2);
 
         try {
-            client.indexDocumentsWithResponse(batch, new IndexDocumentsOptions().setThrowOnAnyError(true), null,
+            client.indexDocumentsWithResponse(batch, new IndexDocumentsOptions().setThrowOnAnyError(true),
                 Context.NONE);
             fail("indexing did not throw an expected Exception");
         } catch (IndexBatchException ex) {
@@ -254,7 +253,7 @@ public class IndexingSyncTests extends SearchTestBase {
             .addUploadActions(hotel2);
 
         try {
-            client.indexDocumentsWithResponse(batch, new IndexDocumentsOptions().setThrowOnAnyError(true), null,
+            client.indexDocumentsWithResponse(batch, new IndexDocumentsOptions().setThrowOnAnyError(true),
                 Context.NONE);
             fail("indexing did not throw an expected Exception");
         } catch (IndexBatchException ex) {
@@ -528,7 +527,7 @@ public class IndexingSyncTests extends SearchTestBase {
 
         try {
             client.mergeDocumentsWithResponse(hotels, new IndexDocumentsOptions().setThrowOnAnyError(true),
-                null, Context.NONE);
+                Context.NONE);
             fail("merge did not throw an expected Exception");
         } catch (IndexBatchException ex) {
             List<IndexingResult> results = ex.getIndexingResults();
@@ -811,7 +810,7 @@ public class IndexingSyncTests extends SearchTestBase {
             .addMergeOrUploadActions(hotelsToMergeOrUpload);
 
         Response<IndexDocumentsResult> indexResponse = client.uploadDocumentsWithResponse(hotelsToUpload,
-            new IndexDocumentsOptions().setThrowOnAnyError(true), null, Context.NONE);
+            new IndexDocumentsOptions().setThrowOnAnyError(true), Context.NONE);
         waitForIndexing();
 
         assertEquals(200, indexResponse.getStatusCode());
@@ -819,7 +818,7 @@ public class IndexingSyncTests extends SearchTestBase {
         assertEquals(2, result.getResults().size());
 
         Response<IndexDocumentsResult> updateResponse = client.mergeDocumentsWithResponse(hotelsToMerge,
-            new IndexDocumentsOptions().setThrowOnAnyError(true), null, Context.NONE);
+            new IndexDocumentsOptions().setThrowOnAnyError(true), Context.NONE);
         waitForIndexing();
 
         assertEquals(200, updateResponse.getStatusCode());
@@ -827,7 +826,7 @@ public class IndexingSyncTests extends SearchTestBase {
         assertEquals(1, result.getResults().size());
 
         Response<IndexDocumentsResult> mergeOrUploadResponse = client.mergeOrUploadDocumentsWithResponse(
-            hotelsToMergeOrUpload, new IndexDocumentsOptions().setThrowOnAnyError(true), null, Context.NONE);
+            hotelsToMergeOrUpload, new IndexDocumentsOptions().setThrowOnAnyError(true), Context.NONE);
         waitForIndexing();
 
         assertEquals(200, mergeOrUploadResponse.getStatusCode());
@@ -835,7 +834,7 @@ public class IndexingSyncTests extends SearchTestBase {
         assertEquals(2, result.getResults().size());
 
         Response<IndexDocumentsResult> deleteResponse = client.deleteDocumentsWithResponse(hotelsToDelete,
-            new IndexDocumentsOptions().setThrowOnAnyError(true), null, Context.NONE);
+            new IndexDocumentsOptions().setThrowOnAnyError(true), Context.NONE);
         waitForIndexing();
 
         assertEquals(200, deleteResponse.getStatusCode());
@@ -843,7 +842,7 @@ public class IndexingSyncTests extends SearchTestBase {
         assertEquals(1, result.getResults().size());
 
         Response<IndexDocumentsResult> batchResponse = client.indexDocumentsWithResponse(batch,
-            new IndexDocumentsOptions().setThrowOnAnyError(true), null, Context.NONE);
+            new IndexDocumentsOptions().setThrowOnAnyError(true), Context.NONE);
         waitForIndexing();
 
         assertEquals(200, batchResponse.getStatusCode());
@@ -851,12 +850,12 @@ public class IndexingSyncTests extends SearchTestBase {
         assertEquals(4, result.getResults().size());
 
         Response<SearchDocument> documentResponse = client.getDocumentWithResponse("3", SearchDocument.class,
-            null, generateRequestOptions(), Context.NONE);
+            null, Context.NONE);
         assertEquals(200, documentResponse.getStatusCode());
         SearchDocument doc = documentResponse.getValue();
         assertEquals(4, doc.get("Rating"));
 
-        Response<Long> countResponse = client.getDocumentCountWithResponse(null, Context.NONE);
+        Response<Long> countResponse = client.getDocumentCountWithResponse(Context.NONE);
         assertEquals(200, countResponse.getStatusCode());
         Long count = countResponse.getValue();
         assertEquals(4L, count.longValue());

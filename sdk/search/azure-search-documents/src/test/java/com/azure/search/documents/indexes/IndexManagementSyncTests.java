@@ -9,7 +9,6 @@ import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.search.documents.SearchTestBase;
 import com.azure.search.documents.indexes.models.CorsOptions;
-import com.azure.search.documents.indexes.models.SearchIndexStatistics;
 import com.azure.search.documents.indexes.models.LexicalAnalyzerName;
 import com.azure.search.documents.indexes.models.MagnitudeScoringFunction;
 import com.azure.search.documents.indexes.models.MagnitudeScoringParameters;
@@ -19,6 +18,7 @@ import com.azure.search.documents.indexes.models.ScoringProfile;
 import com.azure.search.documents.indexes.models.SearchField;
 import com.azure.search.documents.indexes.models.SearchFieldDataType;
 import com.azure.search.documents.indexes.models.SearchIndex;
+import com.azure.search.documents.indexes.models.SearchIndexStatistics;
 import com.azure.search.documents.indexes.models.SearchSuggester;
 import com.azure.search.documents.indexes.models.SynonymMap;
 import org.junit.jupiter.api.Assertions;
@@ -34,7 +34,6 @@ import java.util.stream.Collectors;
 import static com.azure.search.documents.TestHelpers.HOTEL_INDEX_NAME;
 import static com.azure.search.documents.TestHelpers.assertHttpResponseException;
 import static com.azure.search.documents.TestHelpers.assertObjectEquals;
-import static com.azure.search.documents.TestHelpers.generateRequestOptions;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
@@ -88,7 +87,7 @@ public class IndexManagementSyncTests extends SearchTestBase {
     public void createIndexReturnsCorrectDefinitionWithResponse() {
         SearchIndex index = createTestIndex();
         Response<SearchIndex> createIndexResponse = client.createIndexWithResponse(index.setName("hotel2"),
-            generateRequestOptions(), Context.NONE);
+            Context.NONE);
         indexesToDelete.add(createIndexResponse.getValue().getName());
 
         assertObjectEquals(index, createIndexResponse.getValue(), true, "etag");
@@ -158,8 +157,7 @@ public class IndexManagementSyncTests extends SearchTestBase {
         client.createIndex(index);
         indexesToDelete.add(index.getName());
 
-        Response<SearchIndex> getIndexResponse = client.getIndexWithResponse(index.getName(), generateRequestOptions(),
-            Context.NONE);
+        Response<SearchIndex> getIndexResponse = client.getIndexWithResponse(index.getName(), Context.NONE);
         assertObjectEquals(index, getIndexResponse.getValue(), true, "etag");
     }
 
@@ -177,34 +175,34 @@ public class IndexManagementSyncTests extends SearchTestBase {
         SearchIndex indexToCreate = createTestIndex();
 
         // Create the resource in the search service
-        SearchIndex originalIndex = client.createOrUpdateIndexWithResponse(indexToCreate, false, false, null, Context.NONE)
+        SearchIndex originalIndex = client.createOrUpdateIndexWithResponse(indexToCreate, false, false, Context.NONE)
             .getValue();
 
         // Update the resource, the eTag will be changed
         SearchIndex updatedIndex = client.createOrUpdateIndexWithResponse(originalIndex
-            .setCorsOptions(new CorsOptions().setAllowedOrigins("https://test.com/")), false, false, null, Context.NONE)
+            .setCorsOptions(new CorsOptions().setAllowedOrigins("https://test.com/")), false, false, Context.NONE)
             .getValue();
 
         try {
-            client.deleteIndexWithResponse(originalIndex, true, null, Context.NONE);
+            client.deleteIndexWithResponse(originalIndex, true, Context.NONE);
             fail("deleteFunc should have failed due to selected MatchConditions");
         } catch (HttpResponseException ex) {
             assertEquals(HttpURLConnection.HTTP_PRECON_FAILED, ex.getResponse().getStatusCode());
         }
 
-        client.deleteIndexWithResponse(updatedIndex, true, null, Context.NONE);
+        client.deleteIndexWithResponse(updatedIndex, true, Context.NONE);
     }
 
     @Test
     public void deleteIndexIfExistsWorksOnlyWhenResourceExists() {
-        SearchIndex index = client.createOrUpdateIndexWithResponse(createTestIndex(), false, false, null, Context.NONE)
+        SearchIndex index = client.createOrUpdateIndexWithResponse(createTestIndex(), false, false, Context.NONE)
             .getValue();
 
-        client.deleteIndexWithResponse(index, true, null, Context.NONE);
+        client.deleteIndexWithResponse(index, true, Context.NONE);
 
         // Try to delete again and expect to fail
         try {
-            client.deleteIndexWithResponse(index, true, null, Context.NONE);
+            client.deleteIndexWithResponse(index, true, Context.NONE);
             fail("deleteFunc should have failed due to non existent resource.");
         } catch (HttpResponseException ex) {
             assertEquals(HttpURLConnection.HTTP_PRECON_FAILED, ex.getResponse().getStatusCode());
@@ -221,17 +219,17 @@ public class IndexManagementSyncTests extends SearchTestBase {
                     .setType(SearchFieldDataType.STRING)
                     .setKey(true)
             ));
-        Response<Void> deleteResponse = client.deleteIndexWithResponse(index, false, generateRequestOptions(), Context.NONE);
+        Response<Void> deleteResponse = client.deleteIndexWithResponse(index, false, Context.NONE);
         assertEquals(HttpURLConnection.HTTP_NOT_FOUND, deleteResponse.getStatusCode());
 
-        Response<SearchIndex> createResponse = client.createIndexWithResponse(index, generateRequestOptions(), Context.NONE);
+        Response<SearchIndex> createResponse = client.createIndexWithResponse(index, Context.NONE);
         assertEquals(HttpURLConnection.HTTP_CREATED, createResponse.getStatusCode());
 
         // Delete the same index twice
-        deleteResponse = client.deleteIndexWithResponse(index, false, generateRequestOptions(), Context.NONE);
+        deleteResponse = client.deleteIndexWithResponse(index, false, Context.NONE);
         assertEquals(HttpURLConnection.HTTP_NO_CONTENT, deleteResponse.getStatusCode());
 
-        deleteResponse = client.deleteIndexWithResponse(index, false, generateRequestOptions(), Context.NONE);
+        deleteResponse = client.deleteIndexWithResponse(index, false, Context.NONE);
         assertEquals(HttpURLConnection.HTTP_NOT_FOUND, deleteResponse.getStatusCode());
     }
 
@@ -276,7 +274,7 @@ public class IndexManagementSyncTests extends SearchTestBase {
         client.createIndex(index2);
         indexesToDelete.add(index2.getName());
 
-        PagedIterable<String> selectedFieldListResponse = client.listIndexNames(generateRequestOptions(), Context.NONE);
+        PagedIterable<String> selectedFieldListResponse = client.listIndexNames(Context.NONE);
         List<String> result = selectedFieldListResponse.stream().collect(Collectors.toList());
 
         result.forEach(Assertions::assertNotNull);
@@ -337,7 +335,7 @@ public class IndexManagementSyncTests extends SearchTestBase {
         hotelNameField.setSynonymMapNames(Collections.emptyList());
 
         SearchIndex updatedIndex = client.createOrUpdateIndexWithResponse(existingIndex,
-            true, false, generateRequestOptions(), Context.NONE).getValue();
+            true, false, Context.NONE).getValue();
         assertObjectEquals(existingIndex, updatedIndex, true, "etag", "@odata.etag");
     }
 
@@ -392,7 +390,7 @@ public class IndexManagementSyncTests extends SearchTestBase {
         hotelNameField.setHidden(true);
 
         updatedIndex = client.createOrUpdateIndexWithResponse(existingIndex,
-            true, false, generateRequestOptions(), Context.NONE).getValue();
+            true, false, Context.NONE).getValue();
 
         assertObjectEquals(existingIndex, updatedIndex, true, "etag", "@odata.etag");
     }
@@ -418,7 +416,7 @@ public class IndexManagementSyncTests extends SearchTestBase {
         ));
 
         SearchIndex updatedIndex = client.createOrUpdateIndexWithResponse(existingIndex,
-            true, false, generateRequestOptions(), Context.NONE).getValue();
+            true, false, Context.NONE).getValue();
         assertObjectEquals(existingIndex, updatedIndex, true, "etag", "@odata.etag");
     }
 
@@ -465,25 +463,24 @@ public class IndexManagementSyncTests extends SearchTestBase {
     public void createOrUpdateIndexCreatesWhenIndexDoesNotExistWithResponse() {
         SearchIndex expected = createTestIndex();
 
-        SearchIndex actual = client.createOrUpdateIndexWithResponse(expected, false, false,
-            generateRequestOptions(), Context.NONE).getValue();
+        SearchIndex actual = client.createOrUpdateIndexWithResponse(expected, false, false, Context.NONE).getValue();
         indexesToDelete.add(actual.getName());
         assertObjectEquals(expected, actual, true, "etag");
 
         actual = client.createOrUpdateIndexWithResponse(expected.setName("hotel1"),
-            false, false, generateRequestOptions(), Context.NONE).getValue();
+            false, false, Context.NONE).getValue();
         indexesToDelete.add(actual.getName());
         assertObjectEquals(expected, actual, true, "etag");
 
         Response<SearchIndex> createOrUpdateResponse = client.createOrUpdateIndexWithResponse(expected.setName("hotel2"),
-            false, false, generateRequestOptions(), Context.NONE);
+            false, false, Context.NONE);
         indexesToDelete.add(createOrUpdateResponse.getValue().getName());
         assertEquals(HttpURLConnection.HTTP_CREATED, createOrUpdateResponse.getStatusCode());
     }
 
     @Test
     public void createOrUpdateIndexIfNotExistsSucceedsOnNoResource() {
-        SearchIndex index = client.createOrUpdateIndexWithResponse(createTestIndex(), false, true, null, Context.NONE)
+        SearchIndex index = client.createOrUpdateIndexWithResponse(createTestIndex(), false, true, Context.NONE)
             .getValue();
         indexesToDelete.add(index.getName());
 
@@ -493,12 +490,12 @@ public class IndexManagementSyncTests extends SearchTestBase {
 
     @Test
     public void createOrUpdateIndexIfExistsSucceedsOnExistingResource() {
-        SearchIndex original = client.createOrUpdateIndexWithResponse(createTestIndex(), false, false, null, Context.NONE)
+        SearchIndex original = client.createOrUpdateIndexWithResponse(createTestIndex(), false, false, Context.NONE)
             .getValue();
         String originalETag = original.getETag();
         indexesToDelete.add(original.getName());
 
-        SearchIndex updated = client.createOrUpdateIndexWithResponse(mutateCorsOptionsInIndex(original), false, false, null,
+        SearchIndex updated = client.createOrUpdateIndexWithResponse(mutateCorsOptionsInIndex(original), false, false,
             Context.NONE).getValue();
         String updatedETag = updated.getETag();
 
@@ -508,12 +505,12 @@ public class IndexManagementSyncTests extends SearchTestBase {
 
     @Test
     public void createOrUpdateIndexIfNotChangedSucceedsWhenResourceUnchanged() {
-        SearchIndex original = client.createOrUpdateIndexWithResponse(createTestIndex(), false, false, null, Context.NONE)
+        SearchIndex original = client.createOrUpdateIndexWithResponse(createTestIndex(), false, false, Context.NONE)
             .getValue();
         String originalETag = original.getETag();
         indexesToDelete.add(original.getName());
 
-        SearchIndex updated = client.createOrUpdateIndexWithResponse(mutateCorsOptionsInIndex(original), false, true, null,
+        SearchIndex updated = client.createOrUpdateIndexWithResponse(mutateCorsOptionsInIndex(original), false, true,
             Context.NONE).getValue();
         String updatedETag = updated.getETag();
 
@@ -524,17 +521,17 @@ public class IndexManagementSyncTests extends SearchTestBase {
 
     @Test
     public void createOrUpdateIndexIfNotChangedFailsWhenResourceChanged() {
-        SearchIndex original = client.createOrUpdateIndexWithResponse(createTestIndex(), false, false, null, Context.NONE)
+        SearchIndex original = client.createOrUpdateIndexWithResponse(createTestIndex(), false, false, Context.NONE)
             .getValue();
         String originalETag = original.getETag();
         indexesToDelete.add(original.getName());
 
-        SearchIndex updated = client.createOrUpdateIndexWithResponse(mutateCorsOptionsInIndex(original), false, true, null,
+        SearchIndex updated = client.createOrUpdateIndexWithResponse(mutateCorsOptionsInIndex(original), false, true,
             Context.NONE).getValue();
         String updatedETag = updated.getETag();
 
         try {
-            client.createOrUpdateIndexWithResponse(original, false, true, null, Context.NONE);
+            client.createOrUpdateIndexWithResponse(original, false, true, Context.NONE);
             fail("createOrUpdateDefinition should have failed due to precondition.");
         } catch (HttpResponseException ex) {
             assertEquals(HttpURLConnection.HTTP_PRECON_FAILED, ex.getResponse().getStatusCode());
@@ -563,7 +560,7 @@ public class IndexManagementSyncTests extends SearchTestBase {
         indexesToDelete.add(index.getName());
 
         Response<SearchIndexStatistics> indexStatisticsResponse = client.getIndexStatisticsWithResponse(index.getName(),
-            generateRequestOptions(), Context.NONE);
+            Context.NONE);
         assertEquals(0, indexStatisticsResponse.getValue().getDocumentCount());
         assertEquals(0, indexStatisticsResponse.getValue().getStorageSize());
     }

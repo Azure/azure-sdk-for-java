@@ -65,7 +65,7 @@ public class GeoPointTests extends SearchTestBase {
         uploadDocuments();
         SearchOptions searchOptions = new SearchOptions().setFilter("HotelId eq '1'");
         SearchPagedIterable results = client.search("Location",
-            searchOptions, new RequestOptions(), Context.NONE);
+            searchOptions, Context.NONE);
         assertNotNull(results);
 
         PointGeometry expected = createPointGeometry(47.678581, -122.131577);

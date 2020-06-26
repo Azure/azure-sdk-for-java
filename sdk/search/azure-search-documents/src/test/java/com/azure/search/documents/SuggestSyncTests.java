@@ -27,7 +27,6 @@ import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 import static com.azure.search.documents.TestHelpers.assertHttpResponseException;
-import static com.azure.search.documents.TestHelpers.generateRequestOptions;
 import static com.azure.search.documents.TestHelpers.uploadDocuments;
 import static com.azure.search.documents.TestHelpers.uploadDocumentsJson;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -68,7 +67,7 @@ public class SuggestSyncTests extends SearchTestBase {
             .setOrderBy("HotelId");
 
         Iterator<SuggestPagedResponse> suggestResultIterator = client.suggest("more",
-            "sg", suggestOptions, generateRequestOptions(), Context.NONE)
+            "sg", suggestOptions, Context.NONE)
             .iterableByPage()
             .iterator();
 
@@ -85,7 +84,7 @@ public class SuggestSyncTests extends SearchTestBase {
             .setSearchFields("HotelName");
 
         Iterator<SuggestPagedResponse> suggestResultIterator = client.suggest("luxury",
-            "sg", suggestOptions, generateRequestOptions(), Context.NONE)
+            "sg", suggestOptions, Context.NONE)
             .iterableByPage()
             .iterator();
 
@@ -105,7 +104,7 @@ public class SuggestSyncTests extends SearchTestBase {
             .setTop(1);
 
         Iterator<SuggestPagedResponse> suggestResultIterator = client.suggest("hotel",
-            "sg", suggestOptions, generateRequestOptions(), Context.NONE)
+            "sg", suggestOptions, Context.NONE)
             .iterableByPage()
             .iterator();
 
@@ -122,7 +121,7 @@ public class SuggestSyncTests extends SearchTestBase {
             .setUseFuzzyMatching(true);
 
         Iterator<SuggestPagedResponse> suggestResultIterator = client.suggest("hitel",
-            "sg", suggestOptions, generateRequestOptions(), Context.NONE)
+            "sg", suggestOptions, Context.NONE)
             .iterableByPage()
             .iterator();
 
@@ -141,7 +140,7 @@ public class SuggestSyncTests extends SearchTestBase {
 
         //act
         Iterator<SuggestPagedResponse> suggestResultIterator = client.suggest("more",
-            "sg", suggestOptions, generateRequestOptions(), Context.NONE)
+            "sg", suggestOptions, Context.NONE)
             .iterableByPage()
             .iterator();
         //assert
@@ -169,7 +168,7 @@ public class SuggestSyncTests extends SearchTestBase {
         SuggestOptions suggestOptions = new SuggestOptions();
         suggestOptions.setSelect("ISBN", "Title", "PublishDate");
         Iterator<SuggestPagedResponse> suggestResultIterator = client.suggest("War",
-            "sg", suggestOptions, generateRequestOptions(), Context.NONE)
+            "sg", suggestOptions, Context.NONE)
             .iterableByPage()
             .iterator();
 
@@ -184,7 +183,7 @@ public class SuggestSyncTests extends SearchTestBase {
         uploadDocumentsJson(client, HOTELS_DATA_JSON);
 
         Iterator<SuggestPagedResponse> suggestResultIterator = client.suggest("hitel",
-            "sg", null, generateRequestOptions(), Context.NONE)
+            "sg", null, Context.NONE)
             .iterableByPage()
             .iterator();
 
@@ -202,7 +201,7 @@ public class SuggestSyncTests extends SearchTestBase {
         client = setupClient(this::createHotelIndex);
 
         PagedIterableBase<SuggestResult, SuggestPagedResponse> suggestResultIterator = client.suggest("Hotel",
-            "Suggester does not exist", new SuggestOptions(), generateRequestOptions(), Context.NONE);
+            "Suggester does not exist", new SuggestOptions(), Context.NONE);
 
         assertHttpResponseException(
             () -> suggestResultIterator.iterableByPage().iterator().next(),
@@ -217,7 +216,7 @@ public class SuggestSyncTests extends SearchTestBase {
         SuggestOptions suggestOptions = new SuggestOptions().setOrderBy("This is not a valid orderby.");
 
         PagedIterableBase<SuggestResult, SuggestPagedResponse> suggestResultIterator = client.suggest("hotel",
-            "sg", suggestOptions, generateRequestOptions(), Context.NONE);
+            "sg", suggestOptions, Context.NONE);
 
         assertHttpResponseException(
             () -> suggestResultIterator.iterableByPage().iterator().next(),
@@ -238,7 +237,7 @@ public class SuggestSyncTests extends SearchTestBase {
 
         //act
         SuggestPagedResponse suggestPagedResponse = client.suggest("luxury",
-            "sg", suggestOptions, generateRequestOptions(), Context.NONE)
+            "sg", suggestOptions, Context.NONE)
             .iterableByPage()
             .iterator()
             .next();
@@ -259,7 +258,7 @@ public class SuggestSyncTests extends SearchTestBase {
 
         //act
         Iterator<SuggestPagedResponse> suggestResultIterator = client.suggest("hotel",
-            "sg", suggestOptions, generateRequestOptions(), Context.NONE)
+            "sg", suggestOptions, Context.NONE)
             .iterableByPage()
             .iterator();
 
@@ -278,7 +277,7 @@ public class SuggestSyncTests extends SearchTestBase {
             .setOrderBy("HotelId");
 
         SuggestPagedResponse suggestPagedResponse = client.suggest("hotel",
-            "sg", suggestOptions, generateRequestOptions(), Context.NONE)
+            "sg", suggestOptions, Context.NONE)
             .iterableByPage()
             .iterator()
             .next();
@@ -303,7 +302,7 @@ public class SuggestSyncTests extends SearchTestBase {
                 "geo.distance(Location, geography'POINT(-122.0 49.0)')");
 
         SuggestPagedResponse suggestPagedResponse = client.suggest("hotel",
-            "sg", suggestOptions, generateRequestOptions(), Context.NONE)
+            "sg", suggestOptions, Context.NONE)
             .iterableByPage().iterator().next();
 
         assertNotNull(suggestPagedResponse);
@@ -322,7 +321,7 @@ public class SuggestSyncTests extends SearchTestBase {
         SuggestOptions suggestOptions = new SuggestOptions()
             .setSelect("HotelName", "Rating", "Address/City", "Rooms/Type");
         PagedIterableBase<SuggestResult, SuggestPagedResponse> suggestResult = client.suggest("secret",
-            "sg", suggestOptions, generateRequestOptions(), Context.NONE);
+            "sg", suggestOptions, Context.NONE);
 
         PagedResponse<SuggestResult> result = suggestResult.iterableByPage().iterator().next();
 
