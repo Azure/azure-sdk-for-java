@@ -845,7 +845,7 @@ public final class BlobServiceAsyncClient {
      * @return A {@link Mono} containing a {@link BlobContainerAsyncClient} used
      * to interact with the restored container.
      */
-    public Mono<BlobContainerAsyncClient> undeleteBlobContainer(
+    private Mono<BlobContainerAsyncClient> undeleteBlobContainer(
         String deletedContainerName, String deletedContainerVersion) {
         return this.undeleteBlobContainerWithResponse(
             new UndeleteBlobContainerOptions(deletedContainerName, deletedContainerVersion)
@@ -871,7 +871,7 @@ public final class BlobServiceAsyncClient {
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains a {@link
      * BlobContainerAsyncClient} used to interact with the restored container.
      */
-    public Mono<Response<BlobContainerAsyncClient>> undeleteBlobContainerWithResponse(
+    private Mono<Response<BlobContainerAsyncClient>> undeleteBlobContainerWithResponse(
         UndeleteBlobContainerOptions options) {
         try {
             return withContext(context ->

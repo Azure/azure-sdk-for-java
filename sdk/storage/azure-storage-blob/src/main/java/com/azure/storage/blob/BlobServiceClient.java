@@ -454,7 +454,7 @@ public final class BlobServiceClient {
      * @param deletedContainerVersion The version of the previously deleted container.
      * @return The {@link BlobContainerClient} used to interact with the restored container.
      */
-    public BlobContainerClient undeleteBlobContainer(String deletedContainerName, String deletedContainerVersion) {
+    private BlobContainerClient undeleteBlobContainer(String deletedContainerName, String deletedContainerVersion) {
         return this.undeleteBlobContainerWithResponse(
             new UndeleteBlobContainerOptions(deletedContainerName, deletedContainerVersion), null,
             Context.NONE).getValue();
@@ -481,7 +481,7 @@ public final class BlobServiceClient {
      * @return A {@link Response} whose {@link Response#getValue() value} contains the {@link BlobContainerClient} used
      * to interact with the restored container.
      */
-    public Response<BlobContainerClient> undeleteBlobContainerWithResponse(
+    private Response<BlobContainerClient> undeleteBlobContainerWithResponse(
         UndeleteBlobContainerOptions options, Duration timeout, Context context) {
         Mono<Response<BlobContainerClient>> response =
             this.blobServiceAsyncClient.undeleteBlobContainerWithResponse(options, context)

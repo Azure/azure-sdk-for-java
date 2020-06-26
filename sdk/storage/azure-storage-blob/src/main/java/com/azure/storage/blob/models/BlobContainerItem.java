@@ -70,7 +70,7 @@ public final class BlobContainerItem {
      *
      * @return the deleted value.
      */
-    public Boolean isDeleted() {
+    private Boolean isDeleted() {
         return this.deleted;
     }
 
@@ -80,7 +80,7 @@ public final class BlobContainerItem {
      * @param deleted the deleted value to set.
      * @return the BlobContainerItem object itself.
      */
-    public BlobContainerItem setDeleted(Boolean deleted) {
+    private BlobContainerItem setDeleted(Boolean deleted) {
         this.deleted = deleted;
         return this;
     }
