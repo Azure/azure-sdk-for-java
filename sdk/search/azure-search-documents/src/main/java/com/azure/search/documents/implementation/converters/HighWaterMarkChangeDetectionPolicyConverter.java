@@ -35,10 +35,8 @@ public final class HighWaterMarkChangeDetectionPolicyConverter {
             return null;
         }
         com.azure.search.documents.indexes.implementation.models.HighWaterMarkChangeDetectionPolicy highWaterMarkChangeDetectionPolicy =
-            new com.azure.search.documents.indexes.implementation.models.HighWaterMarkChangeDetectionPolicy();
-
-        String highWaterMarkColumnName = obj.getHighWaterMarkColumnName();
-        highWaterMarkChangeDetectionPolicy.setHighWaterMarkColumnName(highWaterMarkColumnName);
+            new com.azure.search.documents.indexes.implementation.models.HighWaterMarkChangeDetectionPolicy(obj.getHighWaterMarkColumnName());
+        highWaterMarkChangeDetectionPolicy.validate();
         return highWaterMarkChangeDetectionPolicy;
     }
 

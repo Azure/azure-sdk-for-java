@@ -38,13 +38,11 @@ public final class IndexingScheduleConverter {
             return null;
         }
         com.azure.search.documents.indexes.implementation.models.IndexingSchedule indexingSchedule =
-            new com.azure.search.documents.indexes.implementation.models.IndexingSchedule();
-
-        Duration interval = obj.getInterval();
-        indexingSchedule.setInterval(interval);
+            new com.azure.search.documents.indexes.implementation.models.IndexingSchedule(obj.getInterval());
 
         OffsetDateTime startTime = obj.getStartTime();
         indexingSchedule.setStartTime(startTime);
+        indexingSchedule.validate();
         return indexingSchedule;
     }
 

@@ -48,10 +48,7 @@ public final class NGramTokenizerConverter {
             return null;
         }
         com.azure.search.documents.indexes.implementation.models.NGramTokenizer nGramTokenizer =
-            new com.azure.search.documents.indexes.implementation.models.NGramTokenizer();
-
-        String name = obj.getName();
-        nGramTokenizer.setName(name);
+            new com.azure.search.documents.indexes.implementation.models.NGramTokenizer(obj.getName());
 
         Integer maxGram = obj.getMaxGram();
         nGramTokenizer.setMaxGram(maxGram);
@@ -64,6 +61,7 @@ public final class NGramTokenizerConverter {
 
         Integer minGram = obj.getMinGram();
         nGramTokenizer.setMinGram(minGram);
+        nGramTokenizer.validate();
         return nGramTokenizer;
     }
 

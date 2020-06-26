@@ -50,10 +50,8 @@ public final class SearchIndexerErrorConverter {
             return null;
         }
         com.azure.search.documents.indexes.implementation.models.SearchIndexerError searchIndexerError =
-            new com.azure.search.documents.indexes.implementation.models.SearchIndexerError();
-
-        String errorMessage = obj.getErrorMessage();
-        PrivateFieldAccessHelper.set(searchIndexerError, "errorMessage", errorMessage);
+            new com.azure.search.documents.indexes.implementation.models.SearchIndexerError(obj.getErrorMessage(),
+                obj.getStatusCode());
 
         String name = obj.getName();
         PrivateFieldAccessHelper.set(searchIndexerError, "name", name);
@@ -66,9 +64,7 @@ public final class SearchIndexerErrorConverter {
 
         String key = obj.getKey();
         PrivateFieldAccessHelper.set(searchIndexerError, "key", key);
-
-        int statusCode = obj.getStatusCode();
-        PrivateFieldAccessHelper.set(searchIndexerError, "statusCode", statusCode);
+        searchIndexerError.validate();
         return searchIndexerError;
     }
 

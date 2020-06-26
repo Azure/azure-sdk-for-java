@@ -40,15 +40,11 @@ public final class CorsOptionsConverter {
             return null;
         }
         com.azure.search.documents.indexes.implementation.models.CorsOptions corsOptions =
-            new com.azure.search.documents.indexes.implementation.models.CorsOptions();
-
-        if (obj.getAllowedOrigins() != null) {
-            List<String> allowedOrigins = new ArrayList<>(obj.getAllowedOrigins());
-            PrivateFieldAccessHelper.set(corsOptions, "allowedOrigins", allowedOrigins);
-        }
+            new com.azure.search.documents.indexes.implementation.models.CorsOptions(obj.getAllowedOrigins());
 
         Long maxAgeInSeconds = obj.getMaxAgeInSeconds();
         corsOptions.setMaxAgeInSeconds(maxAgeInSeconds);
+        corsOptions.validate();
         return corsOptions;
     }
 

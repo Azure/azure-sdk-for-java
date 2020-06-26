@@ -44,17 +44,16 @@ public final class AutocompleteResultConverter {
         if (obj == null) {
             return null;
         }
+
+        List<com.azure.search.documents.implementation.models.AutocompleteItem> results = obj.getResults() == null ?
+            null : obj.getResults().stream().map(AutocompleteItemConverter::map).collect(Collectors.toList());
         com.azure.search.documents.implementation.models.AutocompleteResult autocompleteResult =
-            new com.azure.search.documents.implementation.models.AutocompleteResult();
+            new com.azure.search.documents.implementation.models.AutocompleteResult(results);
 
         Double coverage = obj.getCoverage();
         PrivateFieldAccessHelper.set(autocompleteResult, "coverage", coverage);
 
-        if (obj.getResults() != null) {
-            List<com.azure.search.documents.implementation.models.AutocompleteItem> results =
-                obj.getResults().stream().map(AutocompleteItemConverter::map).collect(Collectors.toList());
-            PrivateFieldAccessHelper.set(autocompleteResult, "results", results);
-        }
+        autocompleteResult.validate();
         return autocompleteResult;
     }
 

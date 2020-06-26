@@ -54,10 +54,8 @@ public final class StopwordsTokenFilterConverter {
             return null;
         }
         com.azure.search.documents.indexes.implementation.models.StopwordsTokenFilter stopwordsTokenFilter =
-            new com.azure.search.documents.indexes.implementation.models.StopwordsTokenFilter();
+            new com.azure.search.documents.indexes.implementation.models.StopwordsTokenFilter(obj.getName());
 
-        String name = obj.getName();
-        stopwordsTokenFilter.setName(name);
 
         Boolean removeTrailingStopWords = obj.areTrailingStopWordsRemoved();
         stopwordsTokenFilter.setRemoveTrailingStopWords(removeTrailingStopWords);
@@ -75,6 +73,7 @@ public final class StopwordsTokenFilterConverter {
                 StopwordsListConverter.map(obj.getStopwordsList());
             stopwordsTokenFilter.setStopwordsList(stopwordsList);
         }
+        stopwordsTokenFilter.validate();
         return stopwordsTokenFilter;
     }
 

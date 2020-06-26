@@ -37,13 +37,12 @@ public final class OutputFieldMappingEntryConverter {
             return null;
         }
         com.azure.search.documents.indexes.implementation.models.OutputFieldMappingEntry outputFieldMappingEntry =
-            new com.azure.search.documents.indexes.implementation.models.OutputFieldMappingEntry();
+            new com.azure.search.documents.indexes.implementation.models.OutputFieldMappingEntry(obj.getName());
 
         String targetName = obj.getTargetName();
         outputFieldMappingEntry.setTargetName(targetName);
 
-        String name = obj.getName();
-        outputFieldMappingEntry.setName(name);
+        outputFieldMappingEntry.validate();
         return outputFieldMappingEntry;
     }
 

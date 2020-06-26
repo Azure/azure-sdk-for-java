@@ -35,13 +35,11 @@ public final class ResourceCounterConverter {
             return null;
         }
         com.azure.search.documents.indexes.implementation.models.ResourceCounter resourceCounter =
-            new com.azure.search.documents.indexes.implementation.models.ResourceCounter();
-
-        long usage = obj.getUsage();
-        resourceCounter.setUsage(usage);
+            new com.azure.search.documents.indexes.implementation.models.ResourceCounter(obj.getUsage());
 
         Long quota = obj.getQuota();
         resourceCounter.setQuota(quota);
+        resourceCounter.validate();
         return resourceCounter;
     }
 

@@ -1,5 +1,8 @@
 # Release History
 
+## 4.2.0-beta.1 (Unreleased)
+
+
 ## 4.1.0 (2020-06-25)
 ### New Features
 * Added support for `GROUP BY` query.

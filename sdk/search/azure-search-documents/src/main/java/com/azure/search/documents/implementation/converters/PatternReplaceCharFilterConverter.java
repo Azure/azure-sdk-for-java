@@ -40,16 +40,9 @@ public final class PatternReplaceCharFilterConverter {
             return null;
         }
         com.azure.search.documents.indexes.implementation.models.PatternReplaceCharFilter patternReplaceCharFilter =
-            new com.azure.search.documents.indexes.implementation.models.PatternReplaceCharFilter();
-
-        String name = obj.getName();
-        patternReplaceCharFilter.setName(name);
-
-        String pattern = obj.getPattern();
-        patternReplaceCharFilter.setPattern(pattern);
-
-        String replacement = obj.getReplacement();
-        patternReplaceCharFilter.setReplacement(replacement);
+            new com.azure.search.documents.indexes.implementation.models.PatternReplaceCharFilter(obj.getName(),
+                obj.getPattern(), obj.getReplacement());
+        patternReplaceCharFilter.validate();
         return patternReplaceCharFilter;
     }
 

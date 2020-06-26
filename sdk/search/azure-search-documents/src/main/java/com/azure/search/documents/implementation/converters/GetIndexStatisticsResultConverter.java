@@ -38,13 +38,10 @@ public final class GetIndexStatisticsResultConverter {
             return null;
         }
         com.azure.search.documents.indexes.implementation.models.GetIndexStatisticsResult getIndexStatisticsResult =
-            new com.azure.search.documents.indexes.implementation.models.GetIndexStatisticsResult();
+            new com.azure.search.documents.indexes.implementation.models.GetIndexStatisticsResult(
+                obj.getDocumentCount(), obj.getStorageSize());
 
-        long documentCount = obj.getDocumentCount();
-        PrivateFieldAccessHelper.set(getIndexStatisticsResult, "documentCount", documentCount);
-
-        long storageSize = obj.getStorageSize();
-        PrivateFieldAccessHelper.set(getIndexStatisticsResult, "storageSize", storageSize);
+        getIndexStatisticsResult.validate();
         return getIndexStatisticsResult;
     }
 

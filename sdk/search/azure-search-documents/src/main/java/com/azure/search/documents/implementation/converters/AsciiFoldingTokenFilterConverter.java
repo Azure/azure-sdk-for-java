@@ -37,13 +37,11 @@ public final class AsciiFoldingTokenFilterConverter {
             return null;
         }
         com.azure.search.documents.indexes.implementation.models.AsciiFoldingTokenFilter asciiFoldingTokenFilter =
-            new com.azure.search.documents.indexes.implementation.models.AsciiFoldingTokenFilter();
-
-        String name = obj.getName();
-        asciiFoldingTokenFilter.setName(name);
+            new com.azure.search.documents.indexes.implementation.models.AsciiFoldingTokenFilter(obj.getName());
 
         Boolean preserveOriginal = obj.isPreserveOriginal();
         asciiFoldingTokenFilter.setPreserveOriginal(preserveOriginal);
+        asciiFoldingTokenFilter.validate();
         return asciiFoldingTokenFilter;
     }
 

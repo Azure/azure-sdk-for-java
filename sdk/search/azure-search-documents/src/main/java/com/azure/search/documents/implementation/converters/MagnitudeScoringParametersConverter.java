@@ -40,16 +40,12 @@ public final class MagnitudeScoringParametersConverter {
             return null;
         }
         com.azure.search.documents.indexes.implementation.models.MagnitudeScoringParameters magnitudeScoringParameters =
-            new com.azure.search.documents.indexes.implementation.models.MagnitudeScoringParameters();
-
-        double boostingRangeStart = obj.getBoostingRangeStart();
-        magnitudeScoringParameters.setBoostingRangeStart(boostingRangeStart);
-
-        double boostingRangeEnd = obj.getBoostingRangeEnd();
-        magnitudeScoringParameters.setBoostingRangeEnd(boostingRangeEnd);
+            new com.azure.search.documents.indexes.implementation.models.MagnitudeScoringParameters(
+                obj.getBoostingRangeStart(), obj.getBoostingRangeEnd());
 
         Boolean shouldBoostBeyondRangeByConstant = obj.shouldBoostBeyondRangeByConstant();
         magnitudeScoringParameters.setShouldBoostBeyondRangeByConstant(shouldBoostBeyondRangeByConstant);
+        magnitudeScoringParameters.validate();
         return magnitudeScoringParameters;
     }
 

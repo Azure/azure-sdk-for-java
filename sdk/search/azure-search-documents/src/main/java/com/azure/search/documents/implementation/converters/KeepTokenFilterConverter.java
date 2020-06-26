@@ -42,19 +42,14 @@ public final class KeepTokenFilterConverter {
         if (obj == null) {
             return null;
         }
+
+        List<String> keepWords = new ArrayList<>(obj.getKeepWords());
         com.azure.search.documents.indexes.implementation.models.KeepTokenFilter keepTokenFilter =
-            new com.azure.search.documents.indexes.implementation.models.KeepTokenFilter();
-
-        String name = obj.getName();
-        keepTokenFilter.setName(name);
-
-        if (obj.getKeepWords() != null) {
-            List<String> keepWords = new ArrayList<>(obj.getKeepWords());
-            keepTokenFilter.setKeepWords(keepWords);
-        }
+            new com.azure.search.documents.indexes.implementation.models.KeepTokenFilter(obj.getName(), keepWords);
 
         Boolean lowerCaseKeepWords = obj.areLowerCaseKeepWords();
         keepTokenFilter.setLowerCaseKeepWords(lowerCaseKeepWords);
+        keepTokenFilter.validate();
         return keepTokenFilter;
     }
 

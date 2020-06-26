@@ -45,11 +45,10 @@ public final class KeywordTokenizerConverter {
         KeywordTokenizer keywordTokenizer = new KeywordTokenizer();
 
         PrivateFieldAccessHelper.set(keywordTokenizer, ODATA_FIELD_NAME, V1_ODATA_TYPE);
-        String name = obj.getName();
-        keywordTokenizer.setName(name);
 
         Integer bufferSize = obj.getBufferSize();
         keywordTokenizer.setMaxTokenLength(bufferSize);
+        keywordTokenizer.setName(obj.getName());
         return keywordTokenizer;
     }
 
@@ -65,11 +64,11 @@ public final class KeywordTokenizerConverter {
 
         String identifier = PrivateFieldAccessHelper.get(obj, ODATA_FIELD_NAME, String.class);
         if (V1_ODATA_TYPE.equals(identifier)) {
-            return new com.azure.search.documents.indexes.implementation.models.KeywordTokenizer()
-                .setBufferSize(obj.getMaxTokenLength()).setName(obj.getName());
+            return new com.azure.search.documents.indexes.implementation.models.KeywordTokenizer(obj.getName())
+                .setBufferSize(obj.getMaxTokenLength());
         } else {
-            return new com.azure.search.documents.indexes.implementation.models.KeywordTokenizerV2()
-                .setMaxTokenLength(obj.getMaxTokenLength()).setName(obj.getName());
+            return new com.azure.search.documents.indexes.implementation.models.KeywordTokenizerV2(obj.getName())
+                .setMaxTokenLength(obj.getMaxTokenLength());
         }
     }
 

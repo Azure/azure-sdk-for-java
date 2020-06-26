@@ -36,14 +36,14 @@ public final class TextWeightsConverter {
         if (obj == null) {
             return null;
         }
-        com.azure.search.documents.indexes.implementation.models.TextWeights textWeights =
-            new com.azure.search.documents.indexes.implementation.models.TextWeights();
 
-        if (obj.getWeights() != null) {
-            Map<String, Double> weights =
-                obj.getWeights().entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
-            textWeights.setWeights(weights);
-        }
+        Map<String, Double> weights = obj.getWeights() == null ? null
+            : obj.getWeights().entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+
+        com.azure.search.documents.indexes.implementation.models.TextWeights textWeights =
+            new com.azure.search.documents.indexes.implementation.models.TextWeights(weights);
+
+        textWeights.validate();
         return textWeights;
     }
 

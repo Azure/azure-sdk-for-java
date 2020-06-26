@@ -247,7 +247,9 @@ public final class SearchIndexClient {
      * Shows how an analyzer breaks text into tokens.
      *
      * @param indexName the name of the index for which to test an analyzer
-     * @param analyzeTextOptions the text and analyzer or analysis components to test
+     * @param analyzeTextOptions the text and analyzer or analysis components to test. Requires to provide either
+     * {@link com.azure.search.documents.indexes.models.LexicalTokenizerName} or
+     * {@link com.azure.search.documents.indexes.models.LexicalAnalyzerName}.
      * @return analyze result.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -259,7 +261,9 @@ public final class SearchIndexClient {
      * Shows how an analyzer breaks text into tokens.
      *
      * @param indexName the name of the index for which to test an analyzer
-     * @param analyzeTextOptions the text and analyzer or analysis components to test
+     * @param analyzeTextOptions the text and analyzer or analysis components to test. Requires to provide either
+     * {@link com.azure.search.documents.indexes.models.LexicalTokenizerName} or
+     *  {@link com.azure.search.documents.indexes.models.LexicalAnalyzerName}.
      * @param requestOptions additional parameters for the operation. Contains the tracking ID sent with the request to
      * help with debugging
      * @param context additional context that is passed through the HTTP pipeline during the service call
