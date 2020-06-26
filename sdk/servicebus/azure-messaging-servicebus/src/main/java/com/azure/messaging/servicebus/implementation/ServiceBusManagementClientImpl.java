@@ -145,7 +145,7 @@ public final class ServiceBusManagementClientImpl {
         this.subscriptions = new SubscriptionsImpl(this);
         this.rules = new RulesImpl(this);
         this.namespaces = new NamespacesImpl(this);
-        this.service = RestProxy.create(ServiceBusManagementClientService.class, this.httpPipeline);
+        this.service = RestProxy.create(ServiceBusManagementClientService.class, this.httpPipeline, serializerAdapter);
     }
 
     /**

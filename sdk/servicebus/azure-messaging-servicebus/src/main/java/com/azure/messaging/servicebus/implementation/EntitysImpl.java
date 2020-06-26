@@ -38,7 +38,7 @@ public final class EntitysImpl {
      * @param client the instance of the service client containing this operation class.
      */
     EntitysImpl(ServiceBusManagementClientImpl client) {
-        this.service = RestProxy.create(EntitysService.class, client.getHttpPipeline());
+        this.service = RestProxy.create(EntitysService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 

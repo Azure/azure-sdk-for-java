@@ -38,7 +38,7 @@ public final class RulesImpl {
      * @param client the instance of the service client containing this operation class.
      */
     RulesImpl(ServiceBusManagementClientImpl client) {
-        this.service = RestProxy.create(RulesService.class, client.getHttpPipeline());
+        this.service = RestProxy.create(RulesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
