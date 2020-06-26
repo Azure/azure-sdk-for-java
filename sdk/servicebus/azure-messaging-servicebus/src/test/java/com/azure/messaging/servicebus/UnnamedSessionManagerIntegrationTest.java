@@ -99,7 +99,9 @@ class UnnamedSessionManagerIntegrationTest extends IntegrationTestBase {
                 .verify(Duration.ofMinutes(2));
         } finally {
             subscription.dispose();
-            completeMessages(receiver, lockTokens, sessionId);
+            Mono.when(lockTokens.stream().map(e -> receiver.complete(MessageLockToken.fromString(e), sessionId))
+                .collect(Collectors.toList()))
+                .block(TIMEOUT);
         }
     }
 
@@ -210,13 +212,5 @@ class UnnamedSessionManagerIntegrationTest extends IntegrationTestBase {
         assertEquals(contents, new String(message.getBody(), StandardCharsets.UTF_8));
 
         assertNull(actual.getThrowable());
-    }
-
-    private int completeMessages(ServiceBusReceiverAsyncClient client, List<String> lockTokens, String sessionId) {
-        Mono.when(lockTokens.stream().map(e -> client.complete(MessageLockToken.fromString(e), sessionId))
-            .collect(Collectors.toList()))
-            .block(TIMEOUT);
-
-        return lockTokens.size();
     }
 }

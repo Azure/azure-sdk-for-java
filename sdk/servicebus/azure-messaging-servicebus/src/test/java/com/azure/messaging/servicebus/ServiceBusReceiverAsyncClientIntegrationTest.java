@@ -46,8 +46,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
     private final ClientLogger logger = new ClientLogger(ServiceBusReceiverAsyncClientIntegrationTest.class);
     private final AtomicInteger messagesPending = new AtomicInteger();
+    private final List<Long> messagesDeferredPending = new ArrayList<>();
 
-    private List<Long> messagesDeferredPending = new ArrayList<>();
     private ServiceBusReceiverAsyncClient receiver;
     private ServiceBusSenderAsyncClient sender;
     private boolean isSessionEnabled;
@@ -64,7 +64,6 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
     @Override
     protected void beforeTest() {
         sessionId = UUID.randomUUID().toString();
-        messagesDeferredPending = new ArrayList<>();
     }
 
     @Override
