@@ -20,7 +20,7 @@
     "enableMultipleRegions": {
       "type": "bool",
       "metadata": {
-        "description": "Enable multiple regions,d efault is false"
+        "description": "Enable multiple regions, default value is false"
       },
       "defaultValue": false
     }
