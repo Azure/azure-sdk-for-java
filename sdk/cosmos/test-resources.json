@@ -16,12 +16,42 @@
       "metadata": {
         "description": "Default Cosmosdb Account level consistency"
       }
+    },
+    "enableMultipleRegions": {
+      "type": "bool",
+      "metadata": {
+        "description": "Enable multiple regions,d efault is false"
+      },
+      "defaultValue": false
     }
   },
   "variables": {
     "apiVersion": "2020-04-01",
     "accountName": "[toLower(parameters('baseName'))]",
-    "resourceId": "[resourceId('Microsoft.DocumentDB/databaseAccounts', variables('accountName'))]"
+    "resourceId": "[resourceId('Microsoft.DocumentDB/databaseAccounts', variables('accountName'))]",
+    "singleRegionConfiguration": [
+      {
+        "locationName": "East US 2",
+        "provisioningState": "Succeeded",
+        "failoverPriority": 0,
+        "isZoneRedundant": false
+      }],
+      "multiRegionConfiguration": [
+      {
+        "locationName": "East US 2",
+        "provisioningState": "Succeeded",
+        "failoverPriority": 0,
+        "isZoneRedundant": false
+      },
+      {
+        "locationName": "East US",
+        "provisioningState": "Succeeded",
+        "failoverPriority": 1,
+        "isZoneRedundant": false
+      }
+    ],
+    "locationsConfiguration": "[if(parameters('enableMultipleRegions'), variables('multiRegionConfiguration'), variables('singleRegionConfiguration'))]"
+
   },
   "resources": [
     {
@@ -45,14 +75,7 @@
           "maxIntervalInSeconds": 5,
           "maxStalenessPrefix": 100
         },
-        "locations": [
-          {
-            "locationName": "East US 2",
-            "provisioningState": "Succeeded",
-            "failoverPriority": 0,
-            "isZoneRedundant": false
-          }
-        ],
+        "locations": "[variables('locationsConfiguration')]",
         "capabilities": [],
         "ipRules": []
       }
