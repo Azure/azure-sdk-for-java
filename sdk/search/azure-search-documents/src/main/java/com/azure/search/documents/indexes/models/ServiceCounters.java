@@ -47,12 +47,6 @@ public final class ServiceCounters {
     @JsonProperty(value = "synonymMaps", required = true)
     private ResourceCounter synonymMapCounter;
 
-    /*
-     * Total number of skillsets.
-     */
-    @JsonProperty(value = "skillsetCount", required = true)
-    private ResourceCounter skillsetCounter;
-
     /**
      * Get the documentCounter property: Total number of documents across all
      * indexes in the service.
@@ -174,26 +168,6 @@ public final class ServiceCounters {
      */
     public ServiceCounters setSynonymMapCounter(ResourceCounter synonymMapCounter) {
         this.synonymMapCounter = synonymMapCounter;
-        return this;
-    }
-
-    /**
-     * Get the skillsetCounter property: Total number of skillsets.
-     *
-     * @return the skillsetCounter value.
-     */
-    public ResourceCounter getSkillsetCounter() {
-        return this.skillsetCounter;
-    }
-
-    /**
-     * Set the skillsetCounter property: Total number of skillsets.
-     *
-     * @param skillsetCounter the skillsetCounter value to set.
-     * @return the ServiceCounters object itself.
-     */
-    public ServiceCounters setSkillsetCounter(ResourceCounter skillsetCounter) {
-        this.skillsetCounter = skillsetCounter;
         return this;
     }
 }

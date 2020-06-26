@@ -8,6 +8,7 @@ package com.azure.search.documents.indexes.implementation.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -76,6 +77,15 @@ public class SearchIndexerSkill {
      */
     @JsonProperty(value = "outputs", required = true)
     private List<OutputFieldMappingEntry> outputs;
+
+    /** Creates an instance of SearchIndexerSkill class. */
+    @JsonCreator
+    public SearchIndexerSkill(
+            @JsonProperty(value = "inputs") List<InputFieldMappingEntry> inputs,
+            @JsonProperty(value = "outputs") List<OutputFieldMappingEntry> outputs) {
+        this.inputs = inputs;
+        this.outputs = outputs;
+    }
 
     /**
      * Get the name property: The name of the skill which uniquely identifies it within the skillset. A skill with no
@@ -162,11 +172,6 @@ public class SearchIndexerSkill {
      * @param inputs the inputs value to set.
      * @return the SearchIndexerSkill object itself.
      */
-    public SearchIndexerSkill setInputs(List<InputFieldMappingEntry> inputs) {
-        this.inputs = inputs;
-        return this;
-    }
-
     /**
      * Get the outputs property: The output of a skill is either a field in a search index, or a value that can be
      * consumed as an input by another skill.
@@ -184,8 +189,21 @@ public class SearchIndexerSkill {
      * @param outputs the outputs value to set.
      * @return the SearchIndexerSkill object itself.
      */
-    public SearchIndexerSkill setOutputs(List<OutputFieldMappingEntry> outputs) {
-        this.outputs = outputs;
-        return this;
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (getInputs() == null) {
+            throw new IllegalArgumentException("Missing required property inputs in model SearchIndexerSkill");
+        } else {
+            getInputs().forEach(e -> e.validate());
+        }
+        if (getOutputs() == null) {
+            throw new IllegalArgumentException("Missing required property outputs in model SearchIndexerSkill");
+        } else {
+            getOutputs().forEach(e -> e.validate());
+        }
     }
 }

@@ -19,7 +19,7 @@ To see additional help and options, run:
 Fork and clone https://github.com/Azure/autorest.java 
 git checkout v4
 git submodule update --init --recursive
-mvn package -Dlocal
+mvn package -Dlocal -DskipTests
 npm install
 npm install -g autorest
 ```
@@ -55,7 +55,7 @@ These settings apply only when `--tag=package-2020-06-searchservice` is specifie
 ``` yaml $(tag) == 'package-2020-06-searchservice'
 namespace: com.azure.search.documents.indexes
 input-file:
-- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/f487ebc93065fd42540aa422c04edd6a768a03e6/specification/search/data-plane/Azure.Search/preview/2020-06-30/searchservice.json
+- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/0bc7853cb4d824bb6c310344dcc1b5f77cbe6bdd/specification/search/data-plane/Azure.Search/preview/2020-06-30/searchservice.json
 models-subpackage: implementation.models
 custom-types-subpackage: models
 ```
@@ -67,7 +67,7 @@ These settings apply only when `--tag=package-2020-06-searchindex` is specified 
 ``` yaml $(tag) == 'package-2020-06-searchindex'
 namespace: com.azure.search.documents
 input-file:
-- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/f487ebc93065fd42540aa422c04edd6a768a03e6/specification/search/data-plane/Azure.Search/preview/2020-06-30/searchindex.json
+- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/0bc7853cb4d824bb6c310344dcc1b5f77cbe6bdd/specification/search/data-plane/Azure.Search/preview/2020-06-30/searchindex.json
 models-subpackage: implementation.models
 custom-types-subpackage: models
 ```
@@ -130,6 +130,8 @@ sync-methods: none
 generate-client-interfaces: false
 context-client-method-parameter: true
 generate-client-as-impl: true
+required-fields-as-ctor-args: true
+client-side-validations: true
 license-header: |-
   Copyright (c) Microsoft Corporation. All rights reserved.
   Licensed under the MIT License.

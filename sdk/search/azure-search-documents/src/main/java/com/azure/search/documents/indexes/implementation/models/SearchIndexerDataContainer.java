@@ -7,6 +7,7 @@
 package com.azure.search.documents.indexes.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The SearchIndexerDataContainer model. */
@@ -27,6 +28,12 @@ public final class SearchIndexerDataContainer {
     @JsonProperty(value = "query")
     private String query;
 
+    /** Creates an instance of SearchIndexerDataContainer class. */
+    @JsonCreator
+    public SearchIndexerDataContainer(@JsonProperty(value = "name") String name) {
+        this.name = name;
+    }
+
     /**
      * Get the name property: The name of the table or view (for Azure SQL data source) or collection (for CosmosDB data
      * source) that will be indexed.
@@ -44,11 +51,6 @@ public final class SearchIndexerDataContainer {
      * @param name the name value to set.
      * @return the SearchIndexerDataContainer object itself.
      */
-    public SearchIndexerDataContainer setName(String name) {
-        this.name = name;
-        return this;
-    }
-
     /**
      * Get the query property: A query that is applied to this data container. The syntax and meaning of this parameter
      * is datasource-specific. Not supported by Azure SQL datasources.
@@ -69,5 +71,16 @@ public final class SearchIndexerDataContainer {
     public SearchIndexerDataContainer setQuery(String query) {
         this.query = query;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (getName() == null) {
+            throw new IllegalArgumentException("Missing required property name in model SearchIndexerDataContainer");
+        }
     }
 }

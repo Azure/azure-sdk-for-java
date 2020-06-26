@@ -7,6 +7,7 @@
 package com.azure.search.documents.indexes.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -21,6 +22,16 @@ public final class DistanceScoringFunction extends ScoringFunction {
      */
     @JsonProperty(value = "distance", required = true)
     private DistanceScoringParameters parameters;
+
+    /** Creates an instance of DistanceScoringFunction class. */
+    @JsonCreator
+    public DistanceScoringFunction(
+            @JsonProperty(value = "fieldName") String fieldName,
+            @JsonProperty(value = "boost") double boost,
+            @JsonProperty(value = "distance") DistanceScoringParameters parameters) {
+        super(fieldName, boost);
+        this.parameters = parameters;
+    }
 
     /**
      * Get the parameters property: Parameter values for the distance scoring function.
@@ -37,8 +48,18 @@ public final class DistanceScoringFunction extends ScoringFunction {
      * @param parameters the parameters value to set.
      * @return the DistanceScoringFunction object itself.
      */
-    public DistanceScoringFunction setParameters(DistanceScoringParameters parameters) {
-        this.parameters = parameters;
-        return this;
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    @Override
+    public void validate() {
+        super.validate();
+        if (getParameters() == null) {
+            throw new IllegalArgumentException("Missing required property parameters in model DistanceScoringFunction");
+        } else {
+            getParameters().validate();
+        }
     }
 }

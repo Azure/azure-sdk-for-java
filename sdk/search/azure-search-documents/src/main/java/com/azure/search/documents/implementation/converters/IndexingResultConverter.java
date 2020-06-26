@@ -42,19 +42,13 @@ public final class IndexingResultConverter {
             return null;
         }
         com.azure.search.documents.implementation.models.IndexingResult indexingResult =
-            new com.azure.search.documents.implementation.models.IndexingResult();
+            new com.azure.search.documents.implementation.models.IndexingResult(obj.getKey(), obj.isSucceeded(),
+                obj.getStatusCode());
 
         String errorMessage = obj.getErrorMessage();
         PrivateFieldAccessHelper.set(indexingResult, "errorMessage", errorMessage);
 
-        String key = obj.getKey();
-        PrivateFieldAccessHelper.set(indexingResult, "key", key);
-
-        boolean succeeded = obj.isSucceeded();
-        PrivateFieldAccessHelper.set(indexingResult, "succeeded", succeeded);
-
-        int statusCode = obj.getStatusCode();
-        PrivateFieldAccessHelper.set(indexingResult, "statusCode", statusCode);
+        indexingResult.validate();
         return indexingResult;
     }
 

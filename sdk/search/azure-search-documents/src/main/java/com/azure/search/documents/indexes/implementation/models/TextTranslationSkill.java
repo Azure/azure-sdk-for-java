@@ -8,9 +8,11 @@ package com.azure.search.documents.indexes.implementation.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.util.List;
 
 /** The TextTranslationSkill model. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata\\.type")
@@ -41,6 +43,16 @@ public class TextTranslationSkill extends SearchIndexerSkill {
     @JsonProperty(value = "suggestedFrom")
     private TextTranslationSkillLanguage suggestedFrom;
 
+    /** Creates an instance of TextTranslationSkill class. */
+    @JsonCreator
+    public TextTranslationSkill(
+            @JsonProperty(value = "inputs") List<InputFieldMappingEntry> inputs,
+            @JsonProperty(value = "outputs") List<OutputFieldMappingEntry> outputs,
+            @JsonProperty(value = "defaultToLanguageCode") TextTranslationSkillLanguage defaultToLanguageCode) {
+        super(inputs, outputs);
+        this.defaultToLanguageCode = defaultToLanguageCode;
+    }
+
     /**
      * Get the defaultToLanguageCode property: The language code to translate documents into for documents that don't
      * specify the to language explicitly.
@@ -58,11 +70,6 @@ public class TextTranslationSkill extends SearchIndexerSkill {
      * @param defaultToLanguageCode the defaultToLanguageCode value to set.
      * @return the TextTranslationSkill object itself.
      */
-    public TextTranslationSkill setDefaultToLanguageCode(TextTranslationSkillLanguage defaultToLanguageCode) {
-        this.defaultToLanguageCode = defaultToLanguageCode;
-        return this;
-    }
-
     /**
      * Get the defaultFromLanguageCode property: The language code to translate documents from for documents that don't
      * specify the from language explicitly.
@@ -107,5 +114,19 @@ public class TextTranslationSkill extends SearchIndexerSkill {
     public TextTranslationSkill setSuggestedFrom(TextTranslationSkillLanguage suggestedFrom) {
         this.suggestedFrom = suggestedFrom;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    @Override
+    public void validate() {
+        super.validate();
+        if (getDefaultToLanguageCode() == null) {
+            throw new IllegalArgumentException(
+                    "Missing required property defaultToLanguageCode in model TextTranslationSkill");
+        }
     }
 }

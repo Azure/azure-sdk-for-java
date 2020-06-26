@@ -8,6 +8,7 @@ package com.azure.search.documents.indexes.implementation.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -32,6 +33,14 @@ public class KeepTokenFilter extends TokenFilter {
     @JsonProperty(value = "keepWordsCase")
     private Boolean lowerCaseKeepWords;
 
+    /** Creates an instance of KeepTokenFilter class. */
+    @JsonCreator
+    public KeepTokenFilter(
+            @JsonProperty(value = "name") String name, @JsonProperty(value = "keepWords") List<String> keepWords) {
+        super(name);
+        this.keepWords = keepWords;
+    }
+
     /**
      * Get the keepWords property: The list of words to keep.
      *
@@ -47,11 +56,6 @@ public class KeepTokenFilter extends TokenFilter {
      * @param keepWords the keepWords value to set.
      * @return the KeepTokenFilter object itself.
      */
-    public KeepTokenFilter setKeepWords(List<String> keepWords) {
-        this.keepWords = keepWords;
-        return this;
-    }
-
     /**
      * Get the lowerCaseKeepWords property: A value indicating whether to lower case all words first. Default is false.
      *
@@ -70,5 +74,18 @@ public class KeepTokenFilter extends TokenFilter {
     public KeepTokenFilter setLowerCaseKeepWords(Boolean lowerCaseKeepWords) {
         this.lowerCaseKeepWords = lowerCaseKeepWords;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    @Override
+    public void validate() {
+        super.validate();
+        if (getKeepWords() == null) {
+            throw new IllegalArgumentException("Missing required property keepWords in model KeepTokenFilter");
+        }
     }
 }

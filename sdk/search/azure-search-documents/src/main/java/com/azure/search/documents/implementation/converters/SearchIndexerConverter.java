@@ -9,6 +9,7 @@ import com.azure.search.documents.indexes.models.IndexingSchedule;
 import com.azure.search.documents.indexes.models.SearchIndexer;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
@@ -76,8 +77,10 @@ public final class SearchIndexerConverter {
         if (obj == null) {
             return null;
         }
+        Objects.requireNonNull(obj.getName(), "The SearchIndexer name cannot be null");
         com.azure.search.documents.indexes.implementation.models.SearchIndexer searchIndexer =
-            new com.azure.search.documents.indexes.implementation.models.SearchIndexer();
+            new com.azure.search.documents.indexes.implementation.models.SearchIndexer(obj.getName(),
+                obj.getDataSourceName(), obj.getTargetIndexName());
 
         if (obj.getSchedule() != null) {
             com.azure.search.documents.indexes.implementation.models.IndexingSchedule schedule =
@@ -88,17 +91,11 @@ public final class SearchIndexerConverter {
         String skillsetName = obj.getSkillsetName();
         searchIndexer.setSkillsetName(skillsetName);
 
-        String name = obj.getName();
-        searchIndexer.setName(name);
-
         String description = obj.getDescription();
         searchIndexer.setDescription(description);
 
         String eTag = obj.getETag();
         searchIndexer.setETag(eTag);
-
-        String targetIndexName = obj.getTargetIndexName();
-        searchIndexer.setTargetIndexName(targetIndexName);
 
         if (obj.getFieldMappings() != null) {
             List<com.azure.search.documents.indexes.implementation.models.FieldMapping> fieldMappings =
@@ -114,9 +111,6 @@ public final class SearchIndexerConverter {
                 IndexingParametersConverter.map(obj.getParameters());
             searchIndexer.setParameters(parameters);
         }
-
-        String dataSourceName = obj.getDataSourceName();
-        searchIndexer.setDataSourceName(dataSourceName);
 
         if (obj.getOutputFieldMappings() != null) {
             List<com.azure.search.documents.indexes.implementation.models.FieldMapping> outputFieldMappings =

@@ -58,8 +58,22 @@ public final class SearchIndexerStatusConverter {
         if (obj == null) {
             return null;
         }
+
+        com.azure.search.documents.indexes.implementation.models.IndexerStatus status =
+            obj.getStatus() == null ? null
+                : IndexerStatusConverter.map(obj.getStatus());
+
+        List<com.azure.search.documents.indexes.implementation.models.IndexerExecutionResult> executionHistory =
+            obj.getExecutionHistory() == null ? null
+                : obj.getExecutionHistory().stream().map(IndexerExecutionResultConverter::map).collect(Collectors.toList());
+
+        com.azure.search.documents.indexes.implementation.models.SearchIndexerLimits limits =
+            obj.getLimits() == null ? null
+                : SearchIndexerLimitsConverter.map(obj.getLimits());
+
         com.azure.search.documents.indexes.implementation.models.SearchIndexerStatus searchIndexerStatus =
-            new com.azure.search.documents.indexes.implementation.models.SearchIndexerStatus();
+            new com.azure.search.documents.indexes.implementation.models.SearchIndexerStatus(status, executionHistory,
+                limits);
 
         if (obj.getLastResult() != null) {
             com.azure.search.documents.indexes.implementation.models.IndexerExecutionResult lastResult =
@@ -67,23 +81,7 @@ public final class SearchIndexerStatusConverter {
             PrivateFieldAccessHelper.set(searchIndexerStatus, "lastResult", lastResult);
         }
 
-        if (obj.getExecutionHistory() != null) {
-            List<com.azure.search.documents.indexes.implementation.models.IndexerExecutionResult> executionHistory =
-                obj.getExecutionHistory().stream().map(IndexerExecutionResultConverter::map).collect(Collectors.toList());
-            PrivateFieldAccessHelper.set(searchIndexerStatus, "executionHistory", executionHistory);
-        }
-
-        if (obj.getLimits() != null) {
-            com.azure.search.documents.indexes.implementation.models.SearchIndexerLimits limits =
-                SearchIndexerLimitsConverter.map(obj.getLimits());
-            PrivateFieldAccessHelper.set(searchIndexerStatus, "limits", limits);
-        }
-
-        if (obj.getStatus() != null) {
-            com.azure.search.documents.indexes.implementation.models.IndexerStatus status =
-                IndexerStatusConverter.map(obj.getStatus());
-            PrivateFieldAccessHelper.set(searchIndexerStatus, "status", status);
-        }
+        searchIndexerStatus.validate();
         return searchIndexerStatus;
     }
 

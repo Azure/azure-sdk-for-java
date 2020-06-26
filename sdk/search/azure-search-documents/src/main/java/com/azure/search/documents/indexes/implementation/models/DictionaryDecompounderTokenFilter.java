@@ -8,6 +8,7 @@ package com.azure.search.documents.indexes.implementation.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -53,6 +54,14 @@ public class DictionaryDecompounderTokenFilter extends TokenFilter {
     @JsonProperty(value = "onlyLongestMatch")
     private Boolean onlyLongestMatch;
 
+    /** Creates an instance of DictionaryDecompounderTokenFilter class. */
+    @JsonCreator
+    public DictionaryDecompounderTokenFilter(
+            @JsonProperty(value = "name") String name, @JsonProperty(value = "wordList") List<String> wordList) {
+        super(name);
+        this.wordList = wordList;
+    }
+
     /**
      * Get the wordList property: The list of words to match against.
      *
@@ -68,11 +77,6 @@ public class DictionaryDecompounderTokenFilter extends TokenFilter {
      * @param wordList the wordList value to set.
      * @return the DictionaryDecompounderTokenFilter object itself.
      */
-    public DictionaryDecompounderTokenFilter setWordList(List<String> wordList) {
-        this.wordList = wordList;
-        return this;
-    }
-
     /**
      * Get the minWordSize property: The minimum word size. Only words longer than this get processed. Default is 5.
      * Maximum is 300.
@@ -159,5 +163,19 @@ public class DictionaryDecompounderTokenFilter extends TokenFilter {
     public DictionaryDecompounderTokenFilter setOnlyLongestMatch(Boolean onlyLongestMatch) {
         this.onlyLongestMatch = onlyLongestMatch;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    @Override
+    public void validate() {
+        super.validate();
+        if (getWordList() == null) {
+            throw new IllegalArgumentException(
+                    "Missing required property wordList in model DictionaryDecompounderTokenFilter");
+        }
     }
 }

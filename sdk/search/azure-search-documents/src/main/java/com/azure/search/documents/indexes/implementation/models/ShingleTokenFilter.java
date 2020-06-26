@@ -8,6 +8,7 @@ package com.azure.search.documents.indexes.implementation.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -59,6 +60,12 @@ public class ShingleTokenFilter extends TokenFilter {
      */
     @JsonProperty(value = "filterToken")
     private String filterToken;
+
+    /** Creates an instance of ShingleTokenFilter class. */
+    @JsonCreator
+    public ShingleTokenFilter(@JsonProperty(value = "name") String name) {
+        super(name);
+    }
 
     /**
      * Get the maxShingleSize property: The maximum shingle size. Default and minimum value is 2.
@@ -188,5 +195,15 @@ public class ShingleTokenFilter extends TokenFilter {
     public ShingleTokenFilter setFilterToken(String filterToken) {
         this.filterToken = filterToken;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    @Override
+    public void validate() {
+        super.validate();
     }
 }

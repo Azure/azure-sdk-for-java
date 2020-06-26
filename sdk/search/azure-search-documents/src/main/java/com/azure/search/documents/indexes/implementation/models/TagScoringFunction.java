@@ -7,6 +7,7 @@
 package com.azure.search.documents.indexes.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -21,6 +22,16 @@ public final class TagScoringFunction extends ScoringFunction {
      */
     @JsonProperty(value = "tag", required = true)
     private TagScoringParameters parameters;
+
+    /** Creates an instance of TagScoringFunction class. */
+    @JsonCreator
+    public TagScoringFunction(
+            @JsonProperty(value = "fieldName") String fieldName,
+            @JsonProperty(value = "boost") double boost,
+            @JsonProperty(value = "tag") TagScoringParameters parameters) {
+        super(fieldName, boost);
+        this.parameters = parameters;
+    }
 
     /**
      * Get the parameters property: Parameter values for the tag scoring function.
@@ -37,8 +48,18 @@ public final class TagScoringFunction extends ScoringFunction {
      * @param parameters the parameters value to set.
      * @return the TagScoringFunction object itself.
      */
-    public TagScoringFunction setParameters(TagScoringParameters parameters) {
-        this.parameters = parameters;
-        return this;
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    @Override
+    public void validate() {
+        super.validate();
+        if (getParameters() == null) {
+            throw new IllegalArgumentException("Missing required property parameters in model TagScoringFunction");
+        } else {
+            getParameters().validate();
+        }
     }
 }

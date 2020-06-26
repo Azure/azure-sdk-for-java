@@ -8,6 +8,7 @@ package com.azure.search.documents.indexes.implementation.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -23,6 +24,12 @@ public class KeywordTokenizer extends LexicalTokenizer {
      */
     @JsonProperty(value = "bufferSize")
     private Integer bufferSize;
+
+    /** Creates an instance of KeywordTokenizer class. */
+    @JsonCreator
+    public KeywordTokenizer(@JsonProperty(value = "name") String name) {
+        super(name);
+    }
 
     /**
      * Get the bufferSize property: The read buffer size in bytes. Default is 256.
@@ -42,5 +49,15 @@ public class KeywordTokenizer extends LexicalTokenizer {
     public KeywordTokenizer setBufferSize(Integer bufferSize) {
         this.bufferSize = bufferSize;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    @Override
+    public void validate() {
+        super.validate();
     }
 }

@@ -40,16 +40,9 @@ public final class SuggesterConverter {
             return null;
         }
         com.azure.search.documents.indexes.implementation.models.Suggester suggester =
-            new com.azure.search.documents.indexes.implementation.models.Suggester();
-
-        if (obj.getSourceFields() != null) {
-            List<String> sourceFields = new ArrayList<>(obj.getSourceFields());
-            suggester.setSourceFields(sourceFields);
-        }
-
-        String name = obj.getName();
-        suggester.setName(name);
-
+            new com.azure.search.documents.indexes.implementation.models.Suggester(obj.getName(),
+                "analyzingInfixMatching", obj.getSourceFields());
+        suggester.validate();
         return suggester;
     }
 

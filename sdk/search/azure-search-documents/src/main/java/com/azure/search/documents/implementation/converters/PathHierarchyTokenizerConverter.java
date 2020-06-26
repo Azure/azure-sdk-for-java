@@ -49,10 +49,7 @@ public final class PathHierarchyTokenizerConverter {
             return null;
         }
         com.azure.search.documents.indexes.implementation.models.PathHierarchyTokenizerV2 pathHierarchyTokenizerV2 =
-            new com.azure.search.documents.indexes.implementation.models.PathHierarchyTokenizerV2();
-
-        String name = obj.getName();
-        pathHierarchyTokenizerV2.setName(name);
+            new com.azure.search.documents.indexes.implementation.models.PathHierarchyTokenizerV2(obj.getName());
 
         Integer maxTokenLength = obj.getMaxTokenLength();
         pathHierarchyTokenizerV2.setMaxTokenLength(maxTokenLength);
@@ -68,6 +65,7 @@ public final class PathHierarchyTokenizerConverter {
 
         Character replacement = obj.getReplacement();
         pathHierarchyTokenizerV2.setReplacement(replacement);
+        pathHierarchyTokenizerV2.validate();
         return pathHierarchyTokenizerV2;
     }
 

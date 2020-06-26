@@ -8,6 +8,7 @@ package com.azure.search.documents.indexes.implementation.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -30,6 +31,12 @@ public class NGramTokenFilter extends TokenFilter {
      */
     @JsonProperty(value = "maxGram")
     private Integer maxGram;
+
+    /** Creates an instance of NGramTokenFilter class. */
+    @JsonCreator
+    public NGramTokenFilter(@JsonProperty(value = "name") String name) {
+        super(name);
+    }
 
     /**
      * Get the minGram property: The minimum n-gram length. Default is 1. Must be less than the value of maxGram.
@@ -69,5 +76,15 @@ public class NGramTokenFilter extends TokenFilter {
     public NGramTokenFilter setMaxGram(Integer maxGram) {
         this.maxGram = maxGram;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    @Override
+    public void validate() {
+        super.validate();
     }
 }

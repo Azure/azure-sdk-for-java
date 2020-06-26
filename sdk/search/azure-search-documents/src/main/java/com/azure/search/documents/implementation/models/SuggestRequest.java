@@ -7,6 +7,7 @@
 package com.azure.search.documents.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The SuggestRequest model. */
@@ -102,6 +103,15 @@ public final class SuggestRequest {
      */
     @JsonProperty(value = "top")
     private Integer top;
+
+    /** Creates an instance of SuggestRequest class. */
+    @JsonCreator
+    public SuggestRequest(
+            @JsonProperty(value = "search") String searchText,
+            @JsonProperty(value = "suggesterName") String suggesterName) {
+        this.searchText = searchText;
+        this.suggesterName = suggesterName;
+    }
 
     /**
      * Get the filter property: An OData expression that filters the documents considered for suggestions.
@@ -262,11 +272,6 @@ public final class SuggestRequest {
      * @param searchText the searchText value to set.
      * @return the SuggestRequest object itself.
      */
-    public SuggestRequest setSearchText(String searchText) {
-        this.searchText = searchText;
-        return this;
-    }
-
     /**
      * Get the searchFields property: The comma-separated list of field names to search for the specified search text.
      * Target fields must be included in the specified suggester.
@@ -328,11 +333,6 @@ public final class SuggestRequest {
      * @param suggesterName the suggesterName value to set.
      * @return the SuggestRequest object itself.
      */
-    public SuggestRequest setSuggesterName(String suggesterName) {
-        this.suggesterName = suggesterName;
-        return this;
-    }
-
     /**
      * Get the top property: The number of suggestions to retrieve. This must be a value between 1 and 100. The default
      * is 5.
@@ -353,5 +353,19 @@ public final class SuggestRequest {
     public SuggestRequest setTop(Integer top) {
         this.top = top;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (getSearchText() == null) {
+            throw new IllegalArgumentException("Missing required property searchText in model SuggestRequest");
+        }
+        if (getSuggesterName() == null) {
+            throw new IllegalArgumentException("Missing required property suggesterName in model SuggestRequest");
+        }
     }
 }

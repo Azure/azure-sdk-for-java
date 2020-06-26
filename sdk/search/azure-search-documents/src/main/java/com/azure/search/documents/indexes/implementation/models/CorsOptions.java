@@ -7,6 +7,7 @@
 package com.azure.search.documents.indexes.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -29,6 +30,12 @@ public final class CorsOptions {
     @JsonProperty(value = "maxAgeInSeconds")
     private Long maxAgeInSeconds;
 
+    /** Creates an instance of CorsOptions class. */
+    @JsonCreator
+    public CorsOptions(@JsonProperty(value = "allowedOrigins") List<String> allowedOrigins) {
+        this.allowedOrigins = allowedOrigins;
+    }
+
     /**
      * Get the allowedOrigins property: The list of origins from which JavaScript code will be granted access to your
      * index. Can contain a list of hosts of the form {protocol}://{fully-qualified-domain-name}[:{port#}], or a single
@@ -48,11 +55,6 @@ public final class CorsOptions {
      * @param allowedOrigins the allowedOrigins value to set.
      * @return the CorsOptions object itself.
      */
-    public CorsOptions setAllowedOrigins(List<String> allowedOrigins) {
-        this.allowedOrigins = allowedOrigins;
-        return this;
-    }
-
     /**
      * Get the maxAgeInSeconds property: The duration for which browsers should cache CORS preflight responses. Defaults
      * to 5 minutes.
@@ -73,5 +75,16 @@ public final class CorsOptions {
     public CorsOptions setMaxAgeInSeconds(Long maxAgeInSeconds) {
         this.maxAgeInSeconds = maxAgeInSeconds;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (getAllowedOrigins() == null) {
+            throw new IllegalArgumentException("Missing required property allowedOrigins in model CorsOptions");
+        }
     }
 }

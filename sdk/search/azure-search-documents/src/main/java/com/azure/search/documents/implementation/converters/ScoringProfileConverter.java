@@ -55,16 +55,13 @@ public final class ScoringProfileConverter {
             return null;
         }
         com.azure.search.documents.indexes.implementation.models.ScoringProfile scoringProfile =
-            new com.azure.search.documents.indexes.implementation.models.ScoringProfile();
+            new com.azure.search.documents.indexes.implementation.models.ScoringProfile(obj.getName());
 
         if (obj.getFunctions() != null) {
             List<com.azure.search.documents.indexes.implementation.models.ScoringFunction> functions =
                 obj.getFunctions().stream().map(ScoringFunctionConverter::map).collect(Collectors.toList());
             scoringProfile.setFunctions(functions);
         }
-
-        String name = obj.getName();
-        scoringProfile.setName(name);
 
         if (obj.getTextWeights() != null) {
             com.azure.search.documents.indexes.implementation.models.TextWeights textWeights =

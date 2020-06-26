@@ -8,6 +8,7 @@ package com.azure.search.documents.indexes.implementation.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -24,6 +25,12 @@ public class ElisionTokenFilter extends TokenFilter {
      */
     @JsonProperty(value = "articles")
     private List<String> articles;
+
+    /** Creates an instance of ElisionTokenFilter class. */
+    @JsonCreator
+    public ElisionTokenFilter(@JsonProperty(value = "name") String name) {
+        super(name);
+    }
 
     /**
      * Get the articles property: The set of articles to remove.
@@ -43,5 +50,15 @@ public class ElisionTokenFilter extends TokenFilter {
     public ElisionTokenFilter setArticles(List<String> articles) {
         this.articles = articles;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    @Override
+    public void validate() {
+        super.validate();
     }
 }

@@ -8,6 +8,7 @@ package com.azure.search.documents.indexes.implementation.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -39,6 +40,12 @@ public class PatternTokenizer extends LexicalTokenizer {
      */
     @JsonProperty(value = "group")
     private Integer group;
+
+    /** Creates an instance of PatternTokenizer class. */
+    @JsonCreator
+    public PatternTokenizer(@JsonProperty(value = "name") String name) {
+        super(name);
+    }
 
     /**
      * Get the pattern property: A regular expression pattern to match token separators. Default is an expression that
@@ -104,5 +111,15 @@ public class PatternTokenizer extends LexicalTokenizer {
     public PatternTokenizer setGroup(Integer group) {
         this.group = group;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    @Override
+    public void validate() {
+        super.validate();
     }
 }

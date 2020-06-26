@@ -161,6 +161,19 @@ public final class IndexesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SearchIndex>> createWithResponseAsync(
             SearchIndex index, RequestOptions requestOptions, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                    new IllegalArgumentException(
+                            "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (index == null) {
+            return Mono.error(new IllegalArgumentException("Parameter index is required and cannot be null."));
+        } else {
+            index.validate();
+        }
+        if (requestOptions != null) {
+            requestOptions.validate();
+        }
         final String accept = "application/json; odata.metadata=minimal";
         UUID xMsClientRequestIdInternal = null;
         if (requestOptions != null) {
@@ -186,6 +199,14 @@ public final class IndexesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<SearchIndex>> listSinglePageAsync(
             String select, RequestOptions requestOptions, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                    new IllegalArgumentException(
+                            "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (requestOptions != null) {
+            requestOptions.validate();
+        }
         final String accept = "application/json; odata.metadata=minimal";
         UUID xMsClientRequestIdInternal = null;
         if (requestOptions != null) {
@@ -239,6 +260,22 @@ public final class IndexesImpl {
             String ifNoneMatch,
             RequestOptions requestOptions,
             Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                    new IllegalArgumentException(
+                            "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (indexName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter indexName is required and cannot be null."));
+        }
+        if (index == null) {
+            return Mono.error(new IllegalArgumentException("Parameter index is required and cannot be null."));
+        } else {
+            index.validate();
+        }
+        if (requestOptions != null) {
+            requestOptions.validate();
+        }
         final String prefer = "return=representation";
         final String accept = "application/json; odata.metadata=minimal";
         UUID xMsClientRequestIdInternal = null;
@@ -280,6 +317,17 @@ public final class IndexesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteWithResponseAsync(
             String indexName, String ifMatch, String ifNoneMatch, RequestOptions requestOptions, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                    new IllegalArgumentException(
+                            "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (indexName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter indexName is required and cannot be null."));
+        }
+        if (requestOptions != null) {
+            requestOptions.validate();
+        }
         final String accept = "application/json; odata.metadata=minimal";
         UUID xMsClientRequestIdInternal = null;
         if (requestOptions != null) {
@@ -311,6 +359,17 @@ public final class IndexesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SearchIndex>> getWithResponseAsync(
             String indexName, RequestOptions requestOptions, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                    new IllegalArgumentException(
+                            "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (indexName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter indexName is required and cannot be null."));
+        }
+        if (requestOptions != null) {
+            requestOptions.validate();
+        }
         final String accept = "application/json; odata.metadata=minimal";
         UUID xMsClientRequestIdInternal = null;
         if (requestOptions != null) {
@@ -335,6 +394,17 @@ public final class IndexesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<GetIndexStatisticsResult>> getStatisticsWithResponseAsync(
             String indexName, RequestOptions requestOptions, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                    new IllegalArgumentException(
+                            "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (indexName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter indexName is required and cannot be null."));
+        }
+        if (requestOptions != null) {
+            requestOptions.validate();
+        }
         final String accept = "application/json; odata.metadata=minimal";
         UUID xMsClientRequestIdInternal = null;
         if (requestOptions != null) {
@@ -360,6 +430,22 @@ public final class IndexesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<AnalyzeResult>> analyzeWithResponseAsync(
             String indexName, AnalyzeRequest request, RequestOptions requestOptions, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                    new IllegalArgumentException(
+                            "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (indexName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter indexName is required and cannot be null."));
+        }
+        if (request == null) {
+            return Mono.error(new IllegalArgumentException("Parameter request is required and cannot be null."));
+        } else {
+            request.validate();
+        }
+        if (requestOptions != null) {
+            requestOptions.validate();
+        }
         final String accept = "application/json; odata.metadata=minimal";
         UUID xMsClientRequestIdInternal = null;
         if (requestOptions != null) {

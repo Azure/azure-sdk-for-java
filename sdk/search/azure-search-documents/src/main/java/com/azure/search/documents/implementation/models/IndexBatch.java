@@ -7,6 +7,7 @@
 package com.azure.search.documents.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -18,6 +19,12 @@ public final class IndexBatch {
      */
     @JsonProperty(value = "value", required = true)
     private List<IndexAction> actions;
+
+    /** Creates an instance of IndexBatch class. */
+    @JsonCreator
+    public IndexBatch(@JsonProperty(value = "value") List<IndexAction> actions) {
+        this.actions = actions;
+    }
 
     /**
      * Get the actions property: The actions in the batch.
@@ -34,8 +41,16 @@ public final class IndexBatch {
      * @param actions the actions value to set.
      * @return the IndexBatch object itself.
      */
-    public IndexBatch setActions(List<IndexAction> actions) {
-        this.actions = actions;
-        return this;
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (getActions() == null) {
+            throw new IllegalArgumentException("Missing required property actions in model IndexBatch");
+        } else {
+            getActions().forEach(e -> e.validate());
+        }
     }
 }

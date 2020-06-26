@@ -8,6 +8,7 @@ package com.azure.search.documents.indexes.implementation.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -30,6 +31,12 @@ public class PhoneticTokenFilter extends TokenFilter {
      */
     @JsonProperty(value = "replace")
     private Boolean replaceOriginalTokens;
+
+    /** Creates an instance of PhoneticTokenFilter class. */
+    @JsonCreator
+    public PhoneticTokenFilter(@JsonProperty(value = "name") String name) {
+        super(name);
+    }
 
     /**
      * Get the encoder property: The phonetic encoder to use. Default is "metaphone".
@@ -71,5 +78,15 @@ public class PhoneticTokenFilter extends TokenFilter {
     public PhoneticTokenFilter setReplaceOriginalTokens(Boolean replaceOriginalTokens) {
         this.replaceOriginalTokens = replaceOriginalTokens;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    @Override
+    public void validate() {
+        super.validate();
     }
 }

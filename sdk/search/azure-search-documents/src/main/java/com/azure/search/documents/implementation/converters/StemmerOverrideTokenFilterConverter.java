@@ -42,15 +42,10 @@ public final class StemmerOverrideTokenFilterConverter {
             return null;
         }
         com.azure.search.documents.indexes.implementation.models.StemmerOverrideTokenFilter stemmerOverrideTokenFilter =
-            new com.azure.search.documents.indexes.implementation.models.StemmerOverrideTokenFilter();
+            new com.azure.search.documents.indexes.implementation.models.StemmerOverrideTokenFilter(obj.getName(),
+                obj.getRules());
 
-        String name = obj.getName();
-        stemmerOverrideTokenFilter.setName(name);
-
-        if (obj.getRules() != null) {
-            List<String> rules = new ArrayList<>(obj.getRules());
-            stemmerOverrideTokenFilter.setRules(rules);
-        }
+        stemmerOverrideTokenFilter.validate();
         return stemmerOverrideTokenFilter;
     }
 

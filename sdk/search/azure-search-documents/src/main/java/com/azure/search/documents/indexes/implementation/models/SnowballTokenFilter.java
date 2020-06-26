@@ -8,6 +8,7 @@ package com.azure.search.documents.indexes.implementation.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -24,6 +25,15 @@ public class SnowballTokenFilter extends TokenFilter {
     @JsonProperty(value = "language", required = true)
     private SnowballTokenFilterLanguage language;
 
+    /** Creates an instance of SnowballTokenFilter class. */
+    @JsonCreator
+    public SnowballTokenFilter(
+            @JsonProperty(value = "name") String name,
+            @JsonProperty(value = "language") SnowballTokenFilterLanguage language) {
+        super(name);
+        this.language = language;
+    }
+
     /**
      * Get the language property: The language to use.
      *
@@ -39,8 +49,16 @@ public class SnowballTokenFilter extends TokenFilter {
      * @param language the language value to set.
      * @return the SnowballTokenFilter object itself.
      */
-    public SnowballTokenFilter setLanguage(SnowballTokenFilterLanguage language) {
-        this.language = language;
-        return this;
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    @Override
+    public void validate() {
+        super.validate();
+        if (getLanguage() == null) {
+            throw new IllegalArgumentException("Missing required property language in model SnowballTokenFilter");
+        }
     }
 }

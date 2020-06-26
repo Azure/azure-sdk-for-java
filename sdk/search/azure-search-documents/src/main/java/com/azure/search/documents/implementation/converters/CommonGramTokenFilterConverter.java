@@ -48,21 +48,15 @@ public final class CommonGramTokenFilterConverter {
             return null;
         }
         com.azure.search.documents.indexes.implementation.models.CommonGramTokenFilter commonGramTokenFilter =
-            new com.azure.search.documents.indexes.implementation.models.CommonGramTokenFilter();
-
-        String name = obj.getName();
-        commonGramTokenFilter.setName(name);
+            new com.azure.search.documents.indexes.implementation.models.CommonGramTokenFilter(obj.getName(),
+                obj.getCommonWords());
 
         Boolean ignoreCase = obj.isCaseIgnored();
         commonGramTokenFilter.setIgnoreCase(ignoreCase);
 
         Boolean useQueryMode = obj.isQueryModeUsed();
         commonGramTokenFilter.setUseQueryMode(useQueryMode);
-
-        if (obj.getCommonWords() != null) {
-            List<String> commonWords = new ArrayList<>(obj.getCommonWords());
-            commonGramTokenFilter.setCommonWords(commonWords);
-        }
+        commonGramTokenFilter.validate();
         return commonGramTokenFilter;
     }
 

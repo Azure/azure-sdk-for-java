@@ -8,6 +8,7 @@ package com.azure.search.documents.indexes.implementation.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -30,6 +31,17 @@ public class PatternReplaceTokenFilter extends TokenFilter {
     @JsonProperty(value = "replacement", required = true)
     private String replacement;
 
+    /** Creates an instance of PatternReplaceTokenFilter class. */
+    @JsonCreator
+    public PatternReplaceTokenFilter(
+            @JsonProperty(value = "name") String name,
+            @JsonProperty(value = "pattern") String pattern,
+            @JsonProperty(value = "replacement") String replacement) {
+        super(name);
+        this.pattern = pattern;
+        this.replacement = replacement;
+    }
+
     /**
      * Get the pattern property: A regular expression pattern.
      *
@@ -45,11 +57,6 @@ public class PatternReplaceTokenFilter extends TokenFilter {
      * @param pattern the pattern value to set.
      * @return the PatternReplaceTokenFilter object itself.
      */
-    public PatternReplaceTokenFilter setPattern(String pattern) {
-        this.pattern = pattern;
-        return this;
-    }
-
     /**
      * Get the replacement property: The replacement text.
      *
@@ -65,8 +72,20 @@ public class PatternReplaceTokenFilter extends TokenFilter {
      * @param replacement the replacement value to set.
      * @return the PatternReplaceTokenFilter object itself.
      */
-    public PatternReplaceTokenFilter setReplacement(String replacement) {
-        this.replacement = replacement;
-        return this;
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    @Override
+    public void validate() {
+        super.validate();
+        if (getPattern() == null) {
+            throw new IllegalArgumentException("Missing required property pattern in model PatternReplaceTokenFilter");
+        }
+        if (getReplacement() == null) {
+            throw new IllegalArgumentException(
+                    "Missing required property replacement in model PatternReplaceTokenFilter");
+        }
     }
 }

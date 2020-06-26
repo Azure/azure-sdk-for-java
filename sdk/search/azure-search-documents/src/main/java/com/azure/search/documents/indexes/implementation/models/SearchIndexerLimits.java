@@ -62,4 +62,11 @@ public final class SearchIndexerLimits {
     public Long getMaxDocumentContentCharactersToExtract() {
         return this.maxDocumentContentCharactersToExtract;
     }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {}
 }

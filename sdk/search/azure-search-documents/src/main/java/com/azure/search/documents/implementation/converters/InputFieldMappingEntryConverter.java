@@ -49,7 +49,7 @@ public final class InputFieldMappingEntryConverter {
             return null;
         }
         com.azure.search.documents.indexes.implementation.models.InputFieldMappingEntry inputFieldMappingEntry =
-            new com.azure.search.documents.indexes.implementation.models.InputFieldMappingEntry();
+            new com.azure.search.documents.indexes.implementation.models.InputFieldMappingEntry(obj.getName());
 
         if (obj.getInputs() != null) {
             List<com.azure.search.documents.indexes.implementation.models.InputFieldMappingEntry> inputs =
@@ -57,14 +57,12 @@ public final class InputFieldMappingEntryConverter {
             inputFieldMappingEntry.setInputs(inputs);
         }
 
-        String name = obj.getName();
-        inputFieldMappingEntry.setName(name);
-
         String source = obj.getSource();
         inputFieldMappingEntry.setSource(source);
 
         String sourceContext = obj.getSourceContext();
         inputFieldMappingEntry.setSourceContext(sourceContext);
+        inputFieldMappingEntry.validate();
         return inputFieldMappingEntry;
     }
 

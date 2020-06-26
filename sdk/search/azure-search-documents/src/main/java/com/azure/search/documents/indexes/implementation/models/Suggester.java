@@ -7,6 +7,7 @@
 package com.azure.search.documents.indexes.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -33,8 +34,15 @@ public final class Suggester {
     private List<String> sourceFields;
 
     /** Creates an instance of Suggester class. */
-    public Suggester() {
+    @JsonCreator
+    public Suggester(
+            @JsonProperty(value = "name") String name,
+            @JsonProperty(value = "searchMode") String searchMode,
+            @JsonProperty(value = "sourceFields") List<String> sourceFields) {
         searchMode = "analyzingInfixMatching";
+        this.name = name;
+        this.searchMode = searchMode;
+        this.sourceFields = sourceFields;
     }
 
     /**
@@ -52,11 +60,6 @@ public final class Suggester {
      * @param name the name value to set.
      * @return the Suggester object itself.
      */
-    public Suggester setName(String name) {
-        this.name = name;
-        return this;
-    }
-
     /**
      * Get the searchMode property: A value indicating the capabilities of the suggester.
      *
@@ -72,11 +75,6 @@ public final class Suggester {
      * @param searchMode the searchMode value to set.
      * @return the Suggester object itself.
      */
-    public Suggester setSearchMode(String searchMode) {
-        this.searchMode = searchMode;
-        return this;
-    }
-
     /**
      * Get the sourceFields property: The list of field names to which the suggester applies. Each field must be
      * searchable.
@@ -94,8 +92,17 @@ public final class Suggester {
      * @param sourceFields the sourceFields value to set.
      * @return the Suggester object itself.
      */
-    public Suggester setSourceFields(List<String> sourceFields) {
-        this.sourceFields = sourceFields;
-        return this;
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (getName() == null) {
+            throw new IllegalArgumentException("Missing required property name in model Suggester");
+        }
+        if (getSourceFields() == null) {
+            throw new IllegalArgumentException("Missing required property sourceFields in model Suggester");
+        }
     }
 }

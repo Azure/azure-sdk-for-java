@@ -36,10 +36,8 @@ public final class FreshnessScoringParametersConverter {
             return null;
         }
         com.azure.search.documents.indexes.implementation.models.FreshnessScoringParameters freshnessScoringParameters =
-            new com.azure.search.documents.indexes.implementation.models.FreshnessScoringParameters();
-
-        Duration boostingDuration = obj.getBoostingDuration();
-        freshnessScoringParameters.setBoostingDuration(boostingDuration);
+            new com.azure.search.documents.indexes.implementation.models.FreshnessScoringParameters(obj.getBoostingDuration());
+        freshnessScoringParameters.validate();
         return freshnessScoringParameters;
     }
 

@@ -7,6 +7,7 @@
 package com.azure.search.documents.indexes.implementation.models;
 
 import com.azure.core.annotation.Immutable;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -31,6 +32,12 @@ public final class SearchError {
      */
     @JsonProperty(value = "details", access = JsonProperty.Access.WRITE_ONLY)
     private List<SearchError> details;
+
+    /** Creates an instance of SearchError class. */
+    @JsonCreator
+    public SearchError(@JsonProperty(value = "message") String message) {
+        this.message = message;
+    }
 
     /**
      * Get the code property: One of a server-defined set of error codes.
@@ -57,5 +64,16 @@ public final class SearchError {
      */
     public List<SearchError> getDetails() {
         return this.details;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (getDetails() != null) {
+            getDetails().forEach(e -> e.validate());
+        }
     }
 }

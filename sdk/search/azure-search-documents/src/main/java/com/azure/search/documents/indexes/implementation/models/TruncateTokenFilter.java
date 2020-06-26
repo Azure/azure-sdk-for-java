@@ -8,6 +8,7 @@ package com.azure.search.documents.indexes.implementation.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -23,6 +24,12 @@ public class TruncateTokenFilter extends TokenFilter {
      */
     @JsonProperty(value = "length")
     private Integer length;
+
+    /** Creates an instance of TruncateTokenFilter class. */
+    @JsonCreator
+    public TruncateTokenFilter(@JsonProperty(value = "name") String name) {
+        super(name);
+    }
 
     /**
      * Get the length property: The length at which terms will be truncated. Default and maximum is 300.
@@ -42,5 +49,15 @@ public class TruncateTokenFilter extends TokenFilter {
     public TruncateTokenFilter setLength(Integer length) {
         this.length = length;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    @Override
+    public void validate() {
+        super.validate();
     }
 }

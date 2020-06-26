@@ -39,15 +39,13 @@ public final class StopAnalyzerConverter {
             return null;
         }
         com.azure.search.documents.indexes.implementation.models.StopAnalyzer stopAnalyzer =
-            new com.azure.search.documents.indexes.implementation.models.StopAnalyzer();
-
-        String name = obj.getName();
-        stopAnalyzer.setName(name);
+            new com.azure.search.documents.indexes.implementation.models.StopAnalyzer(obj.getName());
 
         if (obj.getStopwords() != null) {
             List<String> stopwords = new ArrayList<>(obj.getStopwords());
             stopAnalyzer.setStopwords(stopwords);
         }
+        stopAnalyzer.validate();
         return stopAnalyzer;
     }
 
