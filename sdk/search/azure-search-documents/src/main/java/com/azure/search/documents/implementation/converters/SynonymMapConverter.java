@@ -6,11 +6,13 @@ package com.azure.search.documents.implementation.converters;
 import com.azure.search.documents.indexes.models.SearchResourceEncryptionKey;
 import com.azure.search.documents.indexes.models.SynonymMap;
 
+import java.util.Objects;
+
 /**
  * A converter between {@link com.azure.search.documents.indexes.implementation.models.SynonymMap} and {@link SynonymMap}.
  */
 public final class SynonymMapConverter {
-    private static final String FORMAT = "solr";
+
     /**
      * Maps from {@link com.azure.search.documents.indexes.implementation.models.SynonymMap} to {@link SynonymMap}.
      */
@@ -44,16 +46,10 @@ public final class SynonymMapConverter {
         if (obj == null) {
             return null;
         }
+        Objects.requireNonNull(obj.getName(), "SynonymMap name cannot be null.");
         com.azure.search.documents.indexes.implementation.models.SynonymMap synonymMap =
-            new com.azure.search.documents.indexes.implementation.models.SynonymMap();
-
-        String synonyms = obj.getSynonyms();
-        synonymMap.setSynonyms(synonyms);
-
-        String name = obj.getName();
-        synonymMap.setName(name);
-
-        synonymMap.setFormat(FORMAT);
+            new com.azure.search.documents.indexes.implementation.models.SynonymMap(obj.getName(), "solr",
+                obj.getSynonyms());
 
         String eTag = obj.getETag();
         synonymMap.setETag(eTag);

@@ -79,9 +79,10 @@ public class CosmosAsyncPermission {
         if (options == null) {
             options = new CosmosPermissionRequestOptions();
         }
-        return cosmosUser.getDatabase()
+        CosmosAsyncDatabase databaseContext = cosmosUser.getDatabase();
+        return databaseContext
                    .getDocClientWrapper()
-                   .replacePermission(ModelBridgeInternal.getV2Permissions(permissionProperties),
+                   .replacePermission(ModelBridgeInternal.getPermission(permissionProperties, databaseContext.getId()),
                        ModelBridgeInternal.toRequestOptions(options))
                    .map(response -> ModelBridgeInternal.createCosmosPermissionResponse(response))
                    .single();

@@ -1,7 +1,10 @@
 # Release History
 
-## 7.0.0-beta.3 (Unreleased)
+## 7.0.0-beta.4 (Unreleased)
 
+
+## 7.0.0-beta.3 (2020-06-08)
+- Add support for transaction feature in all the clients.
  
 ## 7.0.0-beta.2 (2020-05-07)
 

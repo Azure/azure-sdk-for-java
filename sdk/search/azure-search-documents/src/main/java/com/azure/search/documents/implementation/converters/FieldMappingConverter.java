@@ -40,10 +40,7 @@ public final class FieldMappingConverter {
             return null;
         }
         com.azure.search.documents.indexes.implementation.models.FieldMapping fieldMapping =
-            new com.azure.search.documents.indexes.implementation.models.FieldMapping();
-
-        String sourceFieldName = obj.getSourceFieldName();
-        fieldMapping.setSourceFieldName(sourceFieldName);
+            new com.azure.search.documents.indexes.implementation.models.FieldMapping(obj.getSourceFieldName());
 
         String targetFieldName = obj.getTargetFieldName();
         fieldMapping.setTargetFieldName(targetFieldName);
@@ -53,6 +50,7 @@ public final class FieldMappingConverter {
                 FieldMappingFunctionConverter.map(obj.getMappingFunction());
             fieldMapping.setMappingFunction(mappingFunction);
         }
+        fieldMapping.validate();
         return fieldMapping;
     }
 

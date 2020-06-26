@@ -5,6 +5,7 @@ package com.azure.ai.formrecognizer.models;
 
 import com.azure.core.annotation.Immutable;
 
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -24,12 +25,12 @@ public final class FieldText extends FormContent {
      * @param text The text content of ExtractedField.
      * @param boundingBox The BoundingBox of ExtractedField.
      * @param pageNumber the 1 based page number.
-     * @param textContent The list of text element references when includeTextDetails is set to true.
+     * @param textContent The list of text element references when includeTextContent is set to true.
      */
     public FieldText(String text, BoundingBox boundingBox, Integer pageNumber,
                      final List<FormContent> textContent) {
-        super(text, boundingBox, pageNumber, null);
-        this.textContent = textContent;
+        super(text, boundingBox, pageNumber);
+        this.textContent = textContent == null ? null : Collections.unmodifiableList(textContent);
     }
 
     /**
@@ -57,9 +58,9 @@ public final class FieldText extends FormContent {
     }
 
     /**
-     * Gets the list of reference text elements.
+     * Gets the list of reference text elements constituting this {@code FieldText}.
      *
-     * @return The list of reference elements.
+     * @return The unmodifiable list of reference elements constituting this {@code FieldText}.
      */
     public List<FormContent> getTextContent() {
         return this.textContent;

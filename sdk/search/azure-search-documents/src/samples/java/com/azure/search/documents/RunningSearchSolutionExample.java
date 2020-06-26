@@ -11,7 +11,7 @@ import com.azure.search.documents.indexes.SearchIndexClient;
 import com.azure.search.documents.indexes.SearchIndexClientBuilder;
 import com.azure.search.documents.indexes.SearchIndexerClient;
 import com.azure.search.documents.indexes.SearchIndexerClientBuilder;
-import com.azure.search.documents.indexes.models.GetIndexStatisticsResult;
+import com.azure.search.documents.indexes.models.SearchIndexStatistics;
 import com.azure.search.documents.indexes.models.SearchIndexerStatus;
 import com.azure.search.documents.models.AutocompleteItem;
 import com.azure.search.documents.models.AutocompleteMode;
@@ -50,7 +50,7 @@ public class RunningSearchSolutionExample {
         SearchClient indexClient = createSearchClient();
 
         // get index statistics
-        GetIndexStatisticsResult indexStatistics = searchIndexClient.getIndexStatistics(INDEX_NAME);
+        SearchIndexStatistics indexStatistics = searchIndexClient.getIndexStatistics(INDEX_NAME);
         System.out.printf("Index %s: Document Count = %d, Storage Size = %d%n", INDEX_NAME, indexStatistics.getDocumentCount(), indexStatistics.getStorageSize());
 
         // run indexer
@@ -83,7 +83,8 @@ public class RunningSearchSolutionExample {
         System.out.println("Suggest with fuzzy matching:");
         iterator.forEachRemaining(
             r -> r.getValue().forEach(
-                res -> System.out.printf("      Found match to: %s, match = %s%n", (String) res.getDocument().get("HotelName"), res.getText())
+                res -> System.out.printf("      Found match to: %s, match = %s%n", (String) res
+                    .getDocument(SearchDocument.class).get("HotelName"), res.getText())
             )
         );
     }
@@ -110,7 +111,7 @@ public class RunningSearchSolutionExample {
 
         System.out.println("Search query results:");
         searchResults.forEach(result -> {
-            SearchDocument doc = result.getDocument();
+            SearchDocument doc = result.getDocument(SearchDocument.class);
             String hotelName = (String) doc.get("HotelName");
             System.out.printf("     Hotel: %s%n", hotelName);
         });

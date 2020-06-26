@@ -40,16 +40,9 @@ public final class PatternReplaceTokenFilterConverter {
             return null;
         }
         com.azure.search.documents.indexes.implementation.models.PatternReplaceTokenFilter patternReplaceTokenFilter =
-            new com.azure.search.documents.indexes.implementation.models.PatternReplaceTokenFilter();
-
-        String name = obj.getName();
-        patternReplaceTokenFilter.setName(name);
-
-        String pattern = obj.getPattern();
-        patternReplaceTokenFilter.setPattern(pattern);
-
-        String replacement = obj.getReplacement();
-        patternReplaceTokenFilter.setReplacement(replacement);
+            new com.azure.search.documents.indexes.implementation.models.PatternReplaceTokenFilter(obj.getName(),
+                obj.getPattern(), obj.getReplacement());
+        patternReplaceTokenFilter.validate();
         return patternReplaceTokenFilter;
     }
 

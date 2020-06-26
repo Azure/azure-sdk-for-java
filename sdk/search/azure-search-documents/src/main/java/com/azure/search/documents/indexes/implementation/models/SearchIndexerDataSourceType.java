@@ -10,34 +10,22 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/**
- * Defines values for SearchIndexerDataSourceType.
- */
+/** Defines values for SearchIndexerDataSourceType. */
 public final class SearchIndexerDataSourceType extends ExpandableStringEnum<SearchIndexerDataSourceType> {
-    /**
-     * Static value azuresql for SearchIndexerDataSourceType.
-     */
-    public static final SearchIndexerDataSourceType AZURE_SQL = fromString("azuresql");
+    /** Static value azuresql for SearchIndexerDataSourceType. */
+    public static final SearchIndexerDataSourceType AZURESQL = fromString("azuresql");
 
-    /**
-     * Static value cosmosdb for SearchIndexerDataSourceType.
-     */
-    public static final SearchIndexerDataSourceType COSMOS_DB = fromString("cosmosdb");
+    /** Static value cosmosdb for SearchIndexerDataSourceType. */
+    public static final SearchIndexerDataSourceType COSMOSDB = fromString("cosmosdb");
 
-    /**
-     * Static value azureblob for SearchIndexerDataSourceType.
-     */
-    public static final SearchIndexerDataSourceType AZURE_BLOB = fromString("azureblob");
+    /** Static value azureblob for SearchIndexerDataSourceType. */
+    public static final SearchIndexerDataSourceType AZUREBLOB = fromString("azureblob");
 
-    /**
-     * Static value azuretable for SearchIndexerDataSourceType.
-     */
-    public static final SearchIndexerDataSourceType AZURE_TABLE = fromString("azuretable");
+    /** Static value azuretable for SearchIndexerDataSourceType. */
+    public static final SearchIndexerDataSourceType AZURETABLE = fromString("azuretable");
 
-    /**
-     * Static value mysql for SearchIndexerDataSourceType.
-     */
-    public static final SearchIndexerDataSourceType MY_SQL = fromString("mysql");
+    /** Static value mysql for SearchIndexerDataSourceType. */
+    public static final SearchIndexerDataSourceType MYSQL = fromString("mysql");
 
     /**
      * Creates or finds a SearchIndexerDataSourceType from its string representation.
@@ -50,9 +38,7 @@ public final class SearchIndexerDataSourceType extends ExpandableStringEnum<Sear
         return fromString(name, SearchIndexerDataSourceType.class);
     }
 
-    /**
-     * @return known SearchIndexerDataSourceType values.
-     */
+    /** @return known SearchIndexerDataSourceType values. */
     public static Collection<SearchIndexerDataSourceType> values() {
         return values(SearchIndexerDataSourceType.class);
     }

@@ -62,7 +62,7 @@ public class TrainModelWithLabelsAsync {
             // Since the data is labeled, we are able to return the accuracy of the model
             customFormModel.getSubmodels().forEach(customFormSubmodel -> {
                 System.out.printf("Sub-model accuracy: %.2f%n", customFormSubmodel.getAccuracy());
-                customFormSubmodel.getFieldMap().forEach((label, customFormModelField) ->
+                customFormSubmodel.getFields().forEach((label, customFormModelField) ->
                     System.out.printf("Field: %s Field Name: %s Field Accuracy: %.2f%n",
                         label, customFormModelField.getName(), customFormModelField.getAccuracy()));
             });
@@ -70,7 +70,7 @@ public class TrainModelWithLabelsAsync {
             customFormModel.getTrainingDocuments().forEach(trainingDocumentInfo -> {
                 System.out.printf("Document name: %s%n", trainingDocumentInfo.getName());
                 System.out.printf("Document status: %s%n", trainingDocumentInfo.getName());
-                System.out.printf("Document page count: %s%n", trainingDocumentInfo.getPageCount());
+                System.out.printf("Document page count: %d%n", trainingDocumentInfo.getPageCount());
                 if (!trainingDocumentInfo.getDocumentErrors().isEmpty()) {
                     System.out.println("Document Errors:");
                     trainingDocumentInfo.getDocumentErrors().forEach(formRecognizerError ->

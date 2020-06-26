@@ -7,23 +7,20 @@
 package com.azure.search.documents.indexes.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.JsonFlatten;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/**
- * Create tokens for phonetic matches. This token filter is implemented using
- * Apache Lucene.
- */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata.type")
+/** The PhoneticTokenFilter model. */
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata\\.type")
 @JsonTypeName("#Microsoft.Azure.Search.PhoneticTokenFilter")
+@JsonFlatten
 @Fluent
-public final class PhoneticTokenFilter extends TokenFilter {
+public class PhoneticTokenFilter extends TokenFilter {
     /*
-     * The phonetic encoder to use. Default is "metaphone". Possible values
-     * include: 'Metaphone', 'DoubleMetaphone', 'Soundex', 'RefinedSoundex',
-     * 'Caverphone1', 'Caverphone2', 'Cologne', 'Nysiis', 'KoelnerPhonetik',
-     * 'HaasePhonetik', 'BeiderMorse'
+     * The phonetic encoder to use. Default is "metaphone".
      */
     @JsonProperty(value = "encoder")
     private PhoneticEncoder encoder;
@@ -35,11 +32,14 @@ public final class PhoneticTokenFilter extends TokenFilter {
     @JsonProperty(value = "replace")
     private Boolean replaceOriginalTokens;
 
+    /** Creates an instance of PhoneticTokenFilter class. */
+    @JsonCreator
+    public PhoneticTokenFilter(@JsonProperty(value = "name") String name) {
+        super(name);
+    }
+
     /**
-     * Get the encoder property: The phonetic encoder to use. Default is
-     * "metaphone". Possible values include: 'Metaphone', 'DoubleMetaphone',
-     * 'Soundex', 'RefinedSoundex', 'Caverphone1', 'Caverphone2', 'Cologne',
-     * 'Nysiis', 'KoelnerPhonetik', 'HaasePhonetik', 'BeiderMorse'.
+     * Get the encoder property: The phonetic encoder to use. Default is "metaphone".
      *
      * @return the encoder value.
      */
@@ -48,10 +48,7 @@ public final class PhoneticTokenFilter extends TokenFilter {
     }
 
     /**
-     * Set the encoder property: The phonetic encoder to use. Default is
-     * "metaphone". Possible values include: 'Metaphone', 'DoubleMetaphone',
-     * 'Soundex', 'RefinedSoundex', 'Caverphone1', 'Caverphone2', 'Cologne',
-     * 'Nysiis', 'KoelnerPhonetik', 'HaasePhonetik', 'BeiderMorse'.
+     * Set the encoder property: The phonetic encoder to use. Default is "metaphone".
      *
      * @param encoder the encoder value to set.
      * @return the PhoneticTokenFilter object itself.
@@ -62,9 +59,8 @@ public final class PhoneticTokenFilter extends TokenFilter {
     }
 
     /**
-     * Get the replaceOriginalTokens property: A value indicating whether
-     * encoded tokens should replace original tokens. If false, encoded tokens
-     * are added as synonyms. Default is true.
+     * Get the replaceOriginalTokens property: A value indicating whether encoded tokens should replace original tokens.
+     * If false, encoded tokens are added as synonyms. Default is true.
      *
      * @return the replaceOriginalTokens value.
      */
@@ -73,9 +69,8 @@ public final class PhoneticTokenFilter extends TokenFilter {
     }
 
     /**
-     * Set the replaceOriginalTokens property: A value indicating whether
-     * encoded tokens should replace original tokens. If false, encoded tokens
-     * are added as synonyms. Default is true.
+     * Set the replaceOriginalTokens property: A value indicating whether encoded tokens should replace original tokens.
+     * If false, encoded tokens are added as synonyms. Default is true.
      *
      * @param replaceOriginalTokens the replaceOriginalTokens value to set.
      * @return the PhoneticTokenFilter object itself.
@@ -83,5 +78,15 @@ public final class PhoneticTokenFilter extends TokenFilter {
     public PhoneticTokenFilter setReplaceOriginalTokens(Boolean replaceOriginalTokens) {
         this.replaceOriginalTokens = replaceOriginalTokens;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    @Override
+    public void validate() {
+        super.validate();
     }
 }

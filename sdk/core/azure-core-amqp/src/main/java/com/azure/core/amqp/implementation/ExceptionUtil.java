@@ -50,6 +50,7 @@ public final class ExceptionUtil {
             case INTERNAL_ERROR:
             case LINK_DETACH_FORCED:
             case CONNECTION_FORCED:
+            case CONNECTION_FRAMING_ERROR:
             case PROTON_IO:
                 isTransient = true;
                 break;

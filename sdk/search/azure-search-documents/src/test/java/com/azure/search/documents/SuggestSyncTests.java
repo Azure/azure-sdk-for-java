@@ -12,13 +12,9 @@ import com.azure.search.documents.test.environment.models.Author;
 import com.azure.search.documents.test.environment.models.Book;
 import com.azure.search.documents.test.environment.models.Hotel;
 import com.azure.search.documents.util.SuggestPagedResponse;
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.junit.jupiter.api.Test;
 
 import java.net.HttpURLConnection;
-import java.text.SimpleDateFormat;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -27,12 +23,10 @@ import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.TimeZone;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 import static com.azure.search.documents.TestHelpers.assertHttpResponseException;
-import static com.azure.search.documents.TestHelpers.convertToType;
 import static com.azure.search.documents.TestHelpers.generateRequestOptions;
 import static com.azure.search.documents.TestHelpers.uploadDocuments;
 import static com.azure.search.documents.TestHelpers.uploadDocumentsJson;
@@ -291,7 +285,7 @@ public class SuggestSyncTests extends SearchTestBase {
 
         assertNotNull(suggestPagedResponse);
         List<String> actualIds = suggestPagedResponse.getValue().stream()
-            .map(s -> (String) s.getDocument().get("HotelId")).collect(Collectors.toList());
+            .map(s -> (String) s.getDocument(SearchDocument.class).get("HotelId")).collect(Collectors.toList());
         List<String> expectedIds = Arrays.asList("1", "5");
         assertEquals(expectedIds, actualIds);
     }
@@ -314,7 +308,7 @@ public class SuggestSyncTests extends SearchTestBase {
 
         assertNotNull(suggestPagedResponse);
         List<String> actualIds = suggestPagedResponse.getValue().stream()
-            .map(s -> (String) s.getDocument().get("HotelId")).collect(Collectors.toList());
+            .map(s -> (String) s.getDocument(SearchDocument.class).get("HotelId")).collect(Collectors.toList());
         List<String> expectedIds = Arrays.asList("1", "9", "4", "3", "5");
         assertEquals(expectedIds, actualIds);
     }
@@ -359,36 +353,29 @@ public class SuggestSyncTests extends SearchTestBase {
     void verifyDynamicDocumentSuggest(SuggestPagedResponse suggestResultPagedResponse) {
         assertNotNull(suggestResultPagedResponse);
         assertEquals(2, suggestResultPagedResponse.getValue().size());
-        Hotel hotel = convertToType(suggestResultPagedResponse.getValue().get(0).getDocument(), Hotel.class);
+        Hotel hotel = suggestResultPagedResponse.getValue().get(0).getDocument(Hotel.class);
         assertEquals("10", hotel.hotelId());
     }
 
-    void verifyCanSuggestStaticallyTypedDocuments(SuggestPagedResponse suggestResultPagedResponse, List<Map<String, Object>> expectedHotels) {
+    void verifyCanSuggestStaticallyTypedDocuments(SuggestPagedResponse suggestResultPagedResponse,
+        List<Map<String, Object>> expectedHotels) {
         //sanity
         assertNotNull(suggestResultPagedResponse);
         List<SearchDocument> docs = suggestResultPagedResponse.getValue()
             .stream()
-            .map(suggestResult -> new SearchDocument(suggestResult.getDocument()))
+            .map(suggestResult -> suggestResult.getDocument(SearchDocument.class))
             .collect(Collectors.toList());
         List<SuggestResult> hotelsList = suggestResultPagedResponse.getValue();
 
-        ObjectMapper objectMapper = new ObjectMapper();
-        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
-        df.setTimeZone(TimeZone.getDefault());
-        objectMapper.setDateFormat(df);
-        objectMapper.registerModule(new JavaTimeModule());
-        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-
-        List<Hotel> expectedHotelsList = expectedHotels.stream().map(hotel ->
-            objectMapper.convertValue(hotel, Hotel.class))
-            .filter(h -> h.hotelId().equals("10") || h.hotelId().equals("8"))
-            .sorted(Comparator.comparing(Hotel::hotelId)).collect(Collectors.toList());
+        List<SearchDocument> expectedHotelsList = expectedHotels.stream().map(SearchDocument::new)
+            .filter(h -> h.get("HotelId").equals("10") || h.get("HotelId").equals("8"))
+            .sorted(Comparator.comparing(h -> h.get("HotelId").toString())).collect(Collectors.toList());
 
         //assert
         //verify fields
         assertEquals(2, docs.size());
         assertEquals(hotelsList.stream().map(SuggestResult::getText).collect(Collectors.toList()),
-            expectedHotelsList.stream().map(Hotel::description).collect(Collectors.toList()));
+            expectedHotelsList.stream().map(hotel -> hotel.get("Description")).collect(Collectors.toList()));
     }
 
     void verifyFuzzyIsOffByDefault(SuggestPagedResponse suggestResultPagedResponse) {
@@ -408,7 +395,7 @@ public class SuggestSyncTests extends SearchTestBase {
         List<String> resultIds = suggestResultPagedResponse
             .getValue()
             .stream()
-            .map(hotel -> convertToType(hotel.getDocument(), Hotel.class).hotelId())
+            .map(hotel -> hotel.getDocument(Hotel.class).hotelId())
             .collect(Collectors.toList());
 
         assertEquals(Arrays.asList("1", "10", "2"), resultIds);
@@ -418,7 +405,7 @@ public class SuggestSyncTests extends SearchTestBase {
         List<SuggestResult> books = suggestResultPagedResponse.getValue();
         List<SearchDocument> docs = suggestResultPagedResponse.getValue()
             .stream()
-            .map(suggestResult -> new SearchDocument(suggestResult.getDocument()))
+            .map(suggestResult -> new SearchDocument(suggestResult.getDocument(SearchDocument.class)))
             .collect(Collectors.toList());
 
         assertEquals(1, docs.size());
@@ -428,7 +415,7 @@ public class SuggestSyncTests extends SearchTestBase {
     @SuppressWarnings("unchecked")
     void verifySuggestWithSelectedFields(PagedResponse<SuggestResult> suggestResultPagedResponse) {
         assertEquals(1, suggestResultPagedResponse.getValue().size());
-        SearchDocument result = suggestResultPagedResponse.getValue().get(0).getDocument();
+        SearchDocument result = suggestResultPagedResponse.getValue().get(0).getDocument(SearchDocument.class);
 
         assertEquals("Secret Point Motel", result.get("HotelName"));
         assertEquals(4, result.get("Rating"));

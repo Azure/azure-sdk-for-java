@@ -7,7 +7,7 @@ import com.azure.core.util.Context;
 import com.azure.search.documents.SearchClient;
 import com.azure.search.documents.SearchDocument;
 import com.azure.search.documents.SearchTestBase;
-import com.azure.search.documents.indexes.models.AnalyzeRequest;
+import com.azure.search.documents.indexes.models.AnalyzeTextOptions;
 import com.azure.search.documents.indexes.models.AnalyzedTokenInfo;
 import com.azure.search.documents.indexes.models.AsciiFoldingTokenFilter;
 import com.azure.search.documents.indexes.models.CharFilter;
@@ -92,6 +92,7 @@ import static com.azure.search.documents.TestHelpers.generateRequestOptions;
 import static com.azure.search.documents.TestHelpers.waitForIndexing;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class CustomAnalyzerSyncTests extends SearchTestBase {
     private static final String NAME_PREFIX = "azsmnet";
@@ -165,7 +166,7 @@ public class CustomAnalyzerSyncTests extends SearchTestBase {
             .iterator();
         SearchResult searchResult = iterator.next();
 
-        Assertions.assertEquals("1", searchResult.getDocument().get("id"));
+        Assertions.assertEquals("1", searchResult.getDocument(SearchDocument.class).get("id"));
         assertFalse(iterator.hasNext());
     }
 
@@ -204,18 +205,14 @@ public class CustomAnalyzerSyncTests extends SearchTestBase {
         searchIndexClient.createIndex(index);
         indexesToCleanup.add(index.getName());
 
-        AnalyzeRequest request = new AnalyzeRequest()
-            .setText("One two")
-            .setAnalyzer(LexicalAnalyzerName.WHITESPACE);
+        AnalyzeTextOptions request = new AnalyzeTextOptions("One two", LexicalAnalyzerName.WHITESPACE);
         PagedIterable<AnalyzedTokenInfo> results = searchIndexClient.analyzeText(index.getName(), request);
         Iterator<AnalyzedTokenInfo> iterator = results.iterator();
         assertTokenInfoEqual("One", 0, 3, 0, iterator.next());
         assertTokenInfoEqual("two", 4, 7, 1, iterator.next());
         assertFalse(iterator.hasNext());
 
-        request = new AnalyzeRequest()
-            .setText("One's <two/>")
-            .setTokenizer(LexicalTokenizerName.WHITESPACE)
+        request = new AnalyzeTextOptions("One's <two/>", LexicalTokenizerName.WHITESPACE)
             .setTokenFilters(Collections.singletonList(TokenFilterName.APOSTROPHE))
             .setCharFilters(Collections.singletonList(CharFilterName.HTML_STRIP));
         results = searchIndexClient.analyzeText(index.getName(), request);
@@ -239,21 +236,15 @@ public class CustomAnalyzerSyncTests extends SearchTestBase {
 
         LexicalAnalyzerName.values()
             .stream()
-            .map(an -> new AnalyzeRequest()
-                .setText("One two")
-                .setAnalyzer(an))
+            .map(an -> new AnalyzeTextOptions("One two", an))
             .forEach(r -> searchIndexClient.analyzeText(index.getName(), r));
 
         LexicalTokenizerName.values()
             .stream()
-            .map(tn -> new AnalyzeRequest()
-                .setText("One two")
-                .setTokenizer(tn))
+            .map(tn -> new AnalyzeTextOptions("One two", tn))
             .forEach(r -> searchIndexClient.analyzeText(index.getName(), r));
 
-        AnalyzeRequest request = new AnalyzeRequest()
-            .setText("One two")
-            .setTokenizer(LexicalTokenizerName.WHITESPACE)
+        AnalyzeTextOptions request = new AnalyzeTextOptions("One two", LexicalTokenizerName.WHITESPACE)
             .setTokenFilters(new ArrayList<>(TokenFilterName.values()))
             .setCharFilters(new ArrayList<>(CharFilterName.values()));
         searchIndexClient.analyzeText(index.getName(), request);
@@ -369,11 +360,10 @@ public class CustomAnalyzerSyncTests extends SearchTestBase {
                 new PatternAnalyzer().setName(null)
             ));
 
-        assertHttpResponseException(
-            () -> searchIndexClient.createIndex(index),
-            HttpURLConnection.HTTP_BAD_REQUEST,
-            "The name field is required."
-        );
+        assertThrows(IllegalArgumentException.class, () -> {
+            searchIndexClient.createIndex(index);
+        }, "Missing required property name in model LexicalAnalyzer");
+
     }
 
     @Test
@@ -526,11 +516,10 @@ public class CustomAnalyzerSyncTests extends SearchTestBase {
                 .setName(null)
             ));
 
-        assertHttpResponseException(
-            () -> searchIndexClient.createIndex(index),
-            HttpURLConnection.HTTP_BAD_REQUEST,
-            "The name field is required."
-        );
+        assertThrows(IllegalArgumentException.class, () -> {
+            searchIndexClient.createIndex(index);
+        }, "Missing required property name in model SearchIndexer");
+
     }
 
     @Test
@@ -966,8 +955,8 @@ public class CustomAnalyzerSyncTests extends SearchTestBase {
                     .setLanguage(MicrosoftTokenizerLanguage.THAI)
                     .setName(generateName()),
                 new PathHierarchyTokenizer()
-                    .setDelimiter(":")
-                    .setReplacement("_")
+                    .setDelimiter(':')
+                    .setReplacement('_')
                     .setMaxTokenLength(300)
                     .setTokenOrderReversed(true)
                     .setNumberOfTokensToSkip(2)
@@ -1229,8 +1218,8 @@ public class CustomAnalyzerSyncTests extends SearchTestBase {
                     .setLanguage(MicrosoftTokenizerLanguage.ENGLISH)
                     .setName(generateSimpleName(i++)),
                 new PathHierarchyTokenizer()
-                    .setDelimiter("/")
-                    .setReplacement("/")
+                    .setDelimiter('/')
+                    .setReplacement('/')
                     .setMaxTokenLength(300)
                     .setName(generateSimpleName(i++)),
                 new PatternTokenizer()

@@ -3,8 +3,10 @@
 
 package com.azure.search.documents.models;
 
+import com.azure.core.models.spatial.PointGeometry;
 import com.azure.core.util.Context;
 import com.azure.search.documents.SearchClient;
+import com.azure.search.documents.SearchDocument;
 import com.azure.search.documents.SearchTestBase;
 import com.azure.search.documents.implementation.SerializationUtil;
 import com.azure.search.documents.indexes.models.SearchField;
@@ -26,8 +28,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
+import static com.azure.search.documents.TestHelpers.assertObjectEquals;
+import static com.azure.search.documents.TestHelpers.createPointGeometry;
 import static com.azure.search.documents.TestHelpers.waitForIndexing;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -65,11 +68,9 @@ public class GeoPointTests extends SearchTestBase {
             searchOptions, new RequestOptions(), Context.NONE);
         assertNotNull(results);
 
-        GeoPoint geoPointObj = (GeoPoint) getSearchResults(results).get(0).get("Location");
-        assertNotNull(geoPointObj);
-
-        GeoPoint expected = GeoPoint.create(47.678581, -122.131577);
-        assertEquals(expected, geoPointObj);
+        PointGeometry expected = createPointGeometry(47.678581, -122.131577);
+        assertObjectEquals(expected, getSearchResults(results).get(0).get("Location"),
+            true, "properties");
     }
 
     @Test
@@ -103,7 +104,7 @@ public class GeoPointTests extends SearchTestBase {
         Map<String, Object> doc = new LinkedHashMap<>();
         doc.put("Id", "1");
         doc.put("Name", "test");
-        doc.put("Location", GeoPoint.create(1.0, 100.0));
+        doc.put("Location", createPointGeometry(1.0, 100.0));
         docs.add(doc);
         IndexDocumentsResult indexResult = client.uploadDocuments(docs);
 
@@ -117,7 +118,7 @@ public class GeoPointTests extends SearchTestBase {
         while (iterator.hasNext()) {
             SearchPagedResponse result = iterator.next();
             assertNotNull(result.getElements());
-            result.getElements().forEach(item -> searchResults.add(item.getDocument()));
+            result.getElements().forEach(item -> searchResults.add(item.getDocument(SearchDocument.class)));
         }
 
         return searchResults;

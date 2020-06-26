@@ -7,7 +7,7 @@ import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.uuid.EthernetAddress;
 import com.azure.cosmos.implementation.uuid.Generators;
 import com.azure.cosmos.implementation.uuid.impl.TimeBasedGenerator;
-import com.azure.cosmos.models.QueryRequestOptions;
+import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -17,7 +17,9 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.fasterxml.jackson.module.afterburner.AfterburnerModule;
 import io.netty.buffer.ByteBuf;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -29,6 +31,7 @@ import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Base64;
 import java.util.Collection;
 import java.util.Collections;
@@ -558,7 +561,8 @@ public class Utils {
         try {
             return getSimpleObjectMapper().readValue(itemResponseBodyAsString, itemClassType);
         } catch (IOException e) {
-            throw new IllegalStateException("Failed to get POJO.", e);
+            throw new IllegalStateException(
+                String.format("Failed to parse string [%s] to POJO.", itemResponseBodyAsString, e));
         }
     }
 
@@ -566,10 +570,12 @@ public class Utils {
         if (Utils.isEmpty(item)) {
             return null;
         }
+
         try {
             return getSimpleObjectMapper().readValue(item, itemClassType);
         } catch (IOException e) {
-            throw new IllegalStateException("Failed to get POJO.", e);
+            throw new IllegalStateException(
+                String.format("Failed to parse byte-array %s to POJO.", Arrays.toString(item)), e);
         }
     }
 
@@ -595,15 +601,15 @@ public class Utils {
         return new String(bytes, StandardCharsets.UTF_8);
     }
 
-    public static void setContinuationTokenAndMaxItemCount(CosmosPagedFluxOptions pagedFluxOptions, QueryRequestOptions queryRequestOptions) {
+    public static void setContinuationTokenAndMaxItemCount(CosmosPagedFluxOptions pagedFluxOptions, CosmosQueryRequestOptions cosmosQueryRequestOptions) {
         if (pagedFluxOptions == null) {
             return;
         }
         if (pagedFluxOptions.getRequestContinuation() != null) {
-            ModelBridgeInternal.setQueryRequestOptionsContinuationToken(queryRequestOptions, pagedFluxOptions.getRequestContinuation());
+            ModelBridgeInternal.setQueryRequestOptionsContinuationToken(cosmosQueryRequestOptions, pagedFluxOptions.getRequestContinuation());
         }
         if (pagedFluxOptions.getMaxItemCount() != null) {
-            ModelBridgeInternal.setQueryRequestOptionsMaxItemCount(queryRequestOptions, pagedFluxOptions.getMaxItemCount());
+            ModelBridgeInternal.setQueryRequestOptionsMaxItemCount(cosmosQueryRequestOptions, pagedFluxOptions.getMaxItemCount());
         }
     }
 
@@ -645,5 +651,12 @@ public class Utils {
         } catch (JsonProcessingException e) {
             throw new IllegalStateException("Unable to convert JSON to STRING", e);
         }
+    }
+
+    public static byte[] serializeObjectToByteArray(Object obj) throws IOException {
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        ObjectOutputStream os = new ObjectOutputStream(out);
+        os.writeObject(obj);
+        return out.toByteArray();
     }
 }

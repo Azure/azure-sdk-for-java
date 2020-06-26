@@ -8,6 +8,7 @@ import com.azure.search.documents.indexes.models.SearchIndexerSkill;
 import com.azure.search.documents.indexes.models.SearchIndexerSkillset;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
@@ -56,17 +57,12 @@ public final class SearchIndexerSkillsetConverter {
         if (obj == null) {
             return null;
         }
+        Objects.requireNonNull(obj.getName(), "The SearchIndexerSkillset name cannot be null");
+        List<com.azure.search.documents.indexes.implementation.models.SearchIndexerSkill> skills =
+            obj.getSkills() == null ? null
+                : obj.getSkills().stream().map(SearchIndexerSkillConverter::map).collect(Collectors.toList());
         com.azure.search.documents.indexes.implementation.models.SearchIndexerSkillset searchIndexerSkillset =
-            new com.azure.search.documents.indexes.implementation.models.SearchIndexerSkillset();
-
-        if (obj.getSkills() != null) {
-            List<com.azure.search.documents.indexes.implementation.models.SearchIndexerSkill> skills =
-                obj.getSkills().stream().map(SearchIndexerSkillConverter::map).collect(Collectors.toList());
-            searchIndexerSkillset.setSkills(skills);
-        }
-
-        String name = obj.getName();
-        searchIndexerSkillset.setName(name);
+            new com.azure.search.documents.indexes.implementation.models.SearchIndexerSkillset(obj.getName(), skills);
 
         if (obj.getCognitiveServicesAccount() != null) {
             com.azure.search.documents.indexes.implementation.models.CognitiveServicesAccount cognitiveServicesAccount =

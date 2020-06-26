@@ -46,20 +46,22 @@ public class SearchIndexerClient {
     /**
      * Creates a new Azure Cognitive Search data source or updates a data source if it already exists
      *
-     * @param dataSource The definition of the data source to create or update.
+     * @param dataSourceConnection The definition of the data source to create or update.
      * @return the data source that was created or updated.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SearchIndexerDataSourceConnection createOrUpdateDataSourceConnection(
-        SearchIndexerDataSourceConnection dataSource) {
-        return createOrUpdateDataSourceConnectionWithResponse(dataSource, false, null, Context.NONE).getValue();
+        SearchIndexerDataSourceConnection dataSourceConnection) {
+        return createOrUpdateDataSourceConnectionWithResponse(dataSourceConnection, false,
+            null, Context.NONE).getValue();
     }
 
     /**
      * Creates a new Azure Cognitive Search data source or updates a data source if it already exists.
      *
-     * @param dataSource the {@link SearchIndexerDataSourceConnection} to create or update
-     * @param onlyIfUnchanged {@code true} to update if the {@code dataSource} is the same as the current service value.
+     * @param dataSourceConnection the {@link SearchIndexerDataSourceConnection} to create or update
+     * @param onlyIfUnchanged {@code true} to update if the {@code dataSourceConnection} is the same as the current
+     * service value.
      * {@code false} to always update existing value.
      * @param requestOptions additional parameters for the operation. Contains the tracking ID sent with the request to
      * help with debugging
@@ -68,28 +70,28 @@ public class SearchIndexerClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SearchIndexerDataSourceConnection> createOrUpdateDataSourceConnectionWithResponse(
-        SearchIndexerDataSourceConnection dataSource, boolean onlyIfUnchanged, RequestOptions requestOptions,
+        SearchIndexerDataSourceConnection dataSourceConnection, boolean onlyIfUnchanged, RequestOptions requestOptions,
         Context context) {
-        return asyncClient.createOrUpdateDataSourceConnectionWithResponse(dataSource, onlyIfUnchanged, requestOptions,
-            context).block();
+        return asyncClient.createOrUpdateDataSourceConnectionWithResponse(dataSourceConnection, onlyIfUnchanged,
+            requestOptions, context).block();
     }
 
     /**
      * Creates a new Azure Cognitive Search data source
      *
-     * @param dataSource The definition of the data source to create
+     * @param dataSourceConnection The definition of the data source to create
      * @return the data source that was created.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SearchIndexerDataSourceConnection createDataSourceConnection(
-        SearchIndexerDataSourceConnection dataSource) {
-        return createDataSourceConnectionWithResponse(dataSource, null, Context.NONE).getValue();
+        SearchIndexerDataSourceConnection dataSourceConnection) {
+        return createDataSourceConnectionWithResponse(dataSourceConnection, null, Context.NONE).getValue();
     }
 
     /**
      * Creates a new Azure Cognitive Search data source
      *
-     * @param dataSource the definition of the data source to create doesn't match specified values
+     * @param dataSourceConnection the definition of the data source to create doesn't match specified values
      * @param requestOptions additional parameters for the operation. Contains the tracking ID sent with the request to
      * help with debugging
      * @param context additional context that is passed through the HTTP pipeline during the service call
@@ -97,34 +99,36 @@ public class SearchIndexerClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SearchIndexerDataSourceConnection> createDataSourceConnectionWithResponse(
-        SearchIndexerDataSourceConnection dataSource, RequestOptions requestOptions, Context context) {
-        return asyncClient.createDataSourceConnectionWithResponse(dataSource, requestOptions, context).block();
+        SearchIndexerDataSourceConnection dataSourceConnection, RequestOptions requestOptions, Context context) {
+        return asyncClient.createDataSourceConnectionWithResponse(dataSourceConnection, requestOptions, context)
+            .block();
     }
 
     /**
      * Retrieves a DataSource from an Azure Cognitive Search service.
      *
-     * @param dataSourceName the name of the data source to retrieve
+     * @param dataSourceConnectionName the name of the data source to retrieve
      * @return the DataSource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SearchIndexerDataSourceConnection getDataSourceConnection(String dataSourceName) {
-        return getDataSourceConnectionWithResponse(dataSourceName, null, Context.NONE).getValue();
+    public SearchIndexerDataSourceConnection getDataSourceConnection(String dataSourceConnectionName) {
+        return getDataSourceConnectionWithResponse(dataSourceConnectionName, null, Context.NONE).getValue();
     }
 
     /**
      * Retrieves a DataSource from an Azure Cognitive Search service.
      *
-     * @param dataSourceName the name of the data source to retrieve
+     * @param dataSourceConnectionName the name of the data source to retrieve
      * @param requestOptions additional parameters for the operation. Contains the tracking ID sent with the request to
      * help with debugging.
      * @param context additional context that is passed through the HTTP pipeline during the service call
      * @return a response containing the DataSource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<SearchIndexerDataSourceConnection> getDataSourceConnectionWithResponse(String dataSourceName,
-        RequestOptions requestOptions, Context context) {
-        return asyncClient.getDataSourceConnectionWithResponse(dataSourceName, requestOptions, context).block();
+    public Response<SearchIndexerDataSourceConnection> getDataSourceConnectionWithResponse(
+        String dataSourceConnectionName, RequestOptions requestOptions, Context context) {
+        return asyncClient.getDataSourceConnectionWithResponse(dataSourceConnectionName, requestOptions, context)
+            .block();
     }
 
     /**
@@ -177,19 +181,20 @@ public class SearchIndexerClient {
     /**
      * Delete a DataSource
      *
-     * @param dataSourceName the name of the data source to be deleted
+     * @param dataSourceConnectionName the name of the data source to be deleted
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public void deleteDataSourceConnection(String dataSourceName) {
-        deleteDataSourceConnectionWithResponse(new SearchIndexerDataSourceConnection().setName(dataSourceName),
-            false, null, Context.NONE);
+    public void deleteDataSourceConnection(String dataSourceConnectionName) {
+        deleteDataSourceConnectionWithResponse(new SearchIndexerDataSourceConnection()
+                .setName(dataSourceConnectionName), false, null, Context.NONE);
     }
 
     /**
      * Delete a DataSource with Response
      *
-     * @param dataSource the {@link SearchIndexerDataSourceConnection} to be deleted.
-     * @param onlyIfUnchanged {@code true} to delete if the {@code dataSource} is the same as the current service value.
+     * @param dataSourceConnection the {@link SearchIndexerDataSourceConnection} to be deleted.
+     * @param onlyIfUnchanged {@code true} to delete if the {@code dataSourceConnection} is the same as the current
+     * service value.
      * {@code false} to always delete existing value.
      * @param requestOptions additional parameters for the operation. Contains the tracking ID sent with the request to
      * help with debugging
@@ -197,11 +202,11 @@ public class SearchIndexerClient {
      * @return an empty response
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteDataSourceConnectionWithResponse(SearchIndexerDataSourceConnection dataSource,
+    public Response<Void> deleteDataSourceConnectionWithResponse(SearchIndexerDataSourceConnection dataSourceConnection,
         boolean onlyIfUnchanged, RequestOptions requestOptions, Context context) {
-        String etag = onlyIfUnchanged ? dataSource.getETag() : null;
-        return asyncClient.deleteDataSourceConnectionWithResponse(dataSource.getName(), etag, requestOptions, context)
-            .block();
+        String etag = onlyIfUnchanged ? dataSourceConnection.getETag() : null;
+        return asyncClient.deleteDataSourceConnectionWithResponse(dataSourceConnection.getName(), etag, requestOptions,
+            context).block();
     }
 
     /**

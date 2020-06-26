@@ -7,8 +7,6 @@ import com.azure.search.documents.SearchDocument;
 import com.azure.search.documents.implementation.util.PrivateFieldAccessHelper;
 import com.azure.search.documents.models.SuggestResult;
 
-import java.util.Map;
-
 /**
  * A converter between {@link com.azure.search.documents.implementation.models.SuggestResult} and {@link SuggestResult}.
  */
@@ -38,13 +36,11 @@ public final class SuggestResultConverter {
             return null;
         }
         com.azure.search.documents.implementation.models.SuggestResult suggestResult =
-            new com.azure.search.documents.implementation.models.SuggestResult();
+            new com.azure.search.documents.implementation.models.SuggestResult(obj.getText());
 
-        Map<String, Object> additionalProperties = obj.getDocument();
+        SearchDocument additionalProperties = obj.getDocument(SearchDocument.class);
         PrivateFieldAccessHelper.set(suggestResult, "additionalProperties", additionalProperties);
-
-        String text = obj.getText();
-        PrivateFieldAccessHelper.set(suggestResult, "text", text);
+        suggestResult.validate();
         return suggestResult;
     }
 

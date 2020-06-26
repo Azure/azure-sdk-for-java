@@ -5,7 +5,7 @@ package com.azure.cosmos.models;
 
 import com.azure.cosmos.implementation.Conflict;
 import com.azure.cosmos.implementation.ConsistencyPolicy;
-import com.azure.cosmos.implementation.CosmosItemProperties;
+import com.azure.cosmos.implementation.InternalObjectNode;
 import com.azure.cosmos.implementation.CosmosResourceType;
 import com.azure.cosmos.implementation.Database;
 import com.azure.cosmos.implementation.DatabaseAccount;
@@ -40,6 +40,7 @@ import com.azure.cosmos.implementation.query.orderbyquery.OrderByRowResult;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
 import com.azure.cosmos.implementation.routing.Range;
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import java.lang.reflect.InvocationTargetException;
@@ -148,18 +149,18 @@ public final class ModelBridgeInternal {
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static <T> CosmosItemProperties getCosmosItemProperties(CosmosItemResponse<T> cosmosItemResponse) {
+    public static <T> InternalObjectNode getInternalObjectNode(CosmosItemResponse<T> cosmosItemResponse) {
         return cosmosItemResponse.getProperties();
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static Permission getV2Permissions(CosmosPermissionProperties permissionProperties) {
-        return permissionProperties.getV2Permissions();
+    public static Permission getPermission(CosmosPermissionProperties permissionProperties, String databaseName) {
+        return permissionProperties.getPermission(databaseName);
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static List<CosmosPermissionProperties> getCosmosPermissionPropertiesFromV2Results(List<Permission> results) {
-        return CosmosPermissionProperties.getFromV2Results(results);
+    public static List<CosmosPermissionProperties> getCosmosPermissionPropertiesFromResults(List<Permission> results) {
+        return CosmosPermissionProperties.getPermissions(results);
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
@@ -287,7 +288,7 @@ public final class ModelBridgeInternal {
      * @return the partitionKeyRangeId.
      */
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static String partitionKeyRangeIdInternal(QueryRequestOptions options) {
+    public static String partitionKeyRangeIdInternal(CosmosQueryRequestOptions options) {
         return options.getPartitionKeyRangeIdInternal();
     }
 
@@ -299,7 +300,7 @@ public final class ModelBridgeInternal {
      * @return the partitionKeyRangeId.
      */
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static QueryRequestOptions partitionKeyRangeIdInternal(QueryRequestOptions options, String partitionKeyRangeId) {
+    public static CosmosQueryRequestOptions partitionKeyRangeIdInternal(CosmosQueryRequestOptions options, String partitionKeyRangeId) {
         return options.setPartitionKeyRangeIdInternal(partitionKeyRangeId);
     }
 
@@ -432,7 +433,7 @@ public final class ModelBridgeInternal {
     public static JsonSerializable instantiateJsonSerializable(ObjectNode objectNode, Class<?> klassType) {
         try {
             // the hot path should come through here to avoid serialization/deserialization
-            if (klassType.equals(Document.class) || klassType.equals(OrderByRowResult.class) || klassType.equals(CosmosItemProperties.class)
+            if (klassType.equals(Document.class) || klassType.equals(OrderByRowResult.class) || klassType.equals(InternalObjectNode.class)
                 || klassType.equals(PartitionKeyRange.class) || klassType.equals(Range.class)
                 || klassType.equals(QueryInfo.class) || klassType.equals(PartitionedQueryExecutionInfoInternal.class)
                 || klassType.equals(QueryItem.class)
@@ -484,6 +485,10 @@ public final class ModelBridgeInternal {
         return jsonSerializable.toObject(c);
     }
 
+    public static ByteBuffer serializeJsonToByteBuffer(JsonSerializable jsonSerializable, ObjectMapper objectMapper) {
+        return jsonSerializable.serializeJsonToByteBuffer(objectMapper);
+    }
+
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static Object getObjectFromJsonSerializable(JsonSerializable jsonSerializable, String propertyName) {
         return jsonSerializable.get(propertyName);
@@ -513,19 +518,19 @@ public final class ModelBridgeInternal {
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static void setQueryRequestOptionsContinuationTokenAndMaxItemCount(QueryRequestOptions options, String continuationToken, Integer maxItemCount) {
+    public static void setQueryRequestOptionsContinuationTokenAndMaxItemCount(CosmosQueryRequestOptions options, String continuationToken, Integer maxItemCount) {
         options.setRequestContinuation(continuationToken);
         options.setMaxItemCount(maxItemCount);
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static void setQueryRequestOptionsContinuationToken(QueryRequestOptions queryRequestOptions, String continuationToken) {
-        queryRequestOptions.setRequestContinuation(continuationToken);
+    public static void setQueryRequestOptionsContinuationToken(CosmosQueryRequestOptions cosmosQueryRequestOptions, String continuationToken) {
+        cosmosQueryRequestOptions.setRequestContinuation(continuationToken);
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static void setQueryRequestOptionsMaxItemCount(QueryRequestOptions queryRequestOptions, Integer maxItemCount) {
-        queryRequestOptions.setMaxItemCount(maxItemCount);
+    public static void setQueryRequestOptionsMaxItemCount(CosmosQueryRequestOptions cosmosQueryRequestOptions, Integer maxItemCount) {
+        cosmosQueryRequestOptions.setMaxItemCount(maxItemCount);
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
@@ -653,37 +658,37 @@ public final class ModelBridgeInternal {
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static QueryRequestOptions createQueryRequestOptions(QueryRequestOptions options) {
-        return new QueryRequestOptions(options);
+    public static CosmosQueryRequestOptions createQueryRequestOptions(CosmosQueryRequestOptions options) {
+        return new CosmosQueryRequestOptions(options);
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static Integer getMaxItemCountFromQueryRequestOptions(QueryRequestOptions options) {
+    public static Integer getMaxItemCountFromQueryRequestOptions(CosmosQueryRequestOptions options) {
         return options.getMaxItemCount();
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static String getRequestContinuationFromQueryRequestOptions(QueryRequestOptions options) {
+    public static String getRequestContinuationFromQueryRequestOptions(CosmosQueryRequestOptions options) {
         return options.getRequestContinuation();
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static Map<String, Object> getPropertiesFromQueryRequestOptions(QueryRequestOptions options) {
+    public static Map<String, Object> getPropertiesFromQueryRequestOptions(CosmosQueryRequestOptions options) {
         return options.getProperties();
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static QueryRequestOptions setQueryRequestOptionsProperties(QueryRequestOptions options, Map<String, Object> properties) {
+    public static CosmosQueryRequestOptions setQueryRequestOptionsProperties(CosmosQueryRequestOptions options, Map<String, Object> properties) {
         return options.setProperties(properties);
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static boolean getEmptyPagesAllowedFromQueryRequestOptions(QueryRequestOptions options) {
+    public static boolean getEmptyPagesAllowedFromQueryRequestOptions(CosmosQueryRequestOptions options) {
         return options.isEmptyPagesAllowed();
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static QueryRequestOptions setQueryRequestOptionsEmptyPagesAllowed(QueryRequestOptions options, boolean emptyPageAllowed) {
+    public static CosmosQueryRequestOptions setQueryRequestOptionsEmptyPagesAllowed(CosmosQueryRequestOptions options, boolean emptyPageAllowed) {
         return options.setEmptyPagesAllowed(emptyPageAllowed);
     }
 

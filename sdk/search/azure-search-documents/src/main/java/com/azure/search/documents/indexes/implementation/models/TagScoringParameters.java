@@ -7,11 +7,10 @@
 package com.azure.search.documents.indexes.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * Provides parameter values to a tag scoring function.
- */
+/** The TagScoringParameters model. */
 @Fluent
 public final class TagScoringParameters {
     /*
@@ -21,10 +20,15 @@ public final class TagScoringParameters {
     @JsonProperty(value = "tagsParameter", required = true)
     private String tagsParameter;
 
+    /** Creates an instance of TagScoringParameters class. */
+    @JsonCreator
+    public TagScoringParameters(@JsonProperty(value = "tagsParameter") String tagsParameter) {
+        this.tagsParameter = tagsParameter;
+    }
+
     /**
-     * Get the tagsParameter property: The name of the parameter passed in
-     * search queries to specify the list of tags to compare against the target
-     * field.
+     * Get the tagsParameter property: The name of the parameter passed in search queries to specify the list of tags to
+     * compare against the target field.
      *
      * @return the tagsParameter value.
      */
@@ -33,15 +37,20 @@ public final class TagScoringParameters {
     }
 
     /**
-     * Set the tagsParameter property: The name of the parameter passed in
-     * search queries to specify the list of tags to compare against the target
-     * field.
+     * Set the tagsParameter property: The name of the parameter passed in search queries to specify the list of tags to
+     * compare against the target field.
      *
      * @param tagsParameter the tagsParameter value to set.
      * @return the TagScoringParameters object itself.
      */
-    public TagScoringParameters setTagsParameter(String tagsParameter) {
-        this.tagsParameter = tagsParameter;
-        return this;
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (getTagsParameter() == null) {
+            throw new IllegalArgumentException("Missing required property tagsParameter in model TagScoringParameters");
+        }
     }
 }

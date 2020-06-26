@@ -40,16 +40,15 @@ public final class LengthTokenFilterConverter {
             return null;
         }
         com.azure.search.documents.indexes.implementation.models.LengthTokenFilter lengthTokenFilter =
-            new com.azure.search.documents.indexes.implementation.models.LengthTokenFilter();
+            new com.azure.search.documents.indexes.implementation.models.LengthTokenFilter(obj.getName());
 
-        String name = obj.getName();
-        lengthTokenFilter.setName(name);
 
         Integer minLength = obj.getMinLength();
         lengthTokenFilter.setMinLength(minLength);
 
         Integer maxLength = obj.getMaxLength();
         lengthTokenFilter.setMaxLength(maxLength);
+        lengthTokenFilter.validate();
         return lengthTokenFilter;
     }
 

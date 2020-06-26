@@ -29,8 +29,8 @@ import com.azure.search.documents.indexes.models.SearchField;
 import com.azure.search.documents.indexes.models.SearchFieldDataType;
 import com.azure.search.documents.indexes.models.SearchIndex;
 import com.azure.search.documents.indexes.models.SearchIndexerDataSourceConnection;
-import com.azure.search.documents.indexes.models.SoftDeleteColumnDeletionDetectionPolicy;
 import com.azure.search.documents.indexes.models.SearchSuggester;
+import com.azure.search.documents.indexes.models.SoftDeleteColumnDeletionDetectionPolicy;
 import com.azure.search.documents.indexes.models.TagScoringFunction;
 import com.azure.search.documents.indexes.models.TagScoringParameters;
 import com.azure.search.documents.indexes.models.TextWeights;
@@ -107,6 +107,7 @@ public abstract class SearchTestBase extends TestBase {
             return builder;
         }
 
+        //builder.httpClient(new NettyAsyncHttpClientBuilder().proxy(new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("localhost", 8888))).build());
         addPolicies(builder, policies);
 
         builder.retryPolicy(new RetryPolicy(new ExponentialBackoff(3, Duration.ofSeconds(10), Duration.ofSeconds(30))));
@@ -128,7 +129,8 @@ public abstract class SearchTestBase extends TestBase {
             addPolicies(builder, policies);
             return builder;
         }
-
+//        builder.httpClient(new NettyAsyncHttpClientBuilder().proxy(
+//            new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("localhost", 8888))).build());
         addPolicies(builder, policies);
 
         builder.retryPolicy(new RetryPolicy(new ExponentialBackoff(3, Duration.ofSeconds(10), Duration.ofSeconds(30))));
@@ -451,7 +453,7 @@ public abstract class SearchTestBase extends TestBase {
             .setCorsOptions(new CorsOptions()
                 .setAllowedOrigins("http://tempuri.org", "http://localhost:80")
                 .setMaxAgeInSeconds(60L))
-            .setSearchSuggesters(Collections.singletonList(new SearchSuggester()
+            .setSuggesters(Collections.singletonList(new SearchSuggester()
                 .setName("FancySuggester")
                 .setSourceFields(Collections.singletonList("HotelName"))));
     }

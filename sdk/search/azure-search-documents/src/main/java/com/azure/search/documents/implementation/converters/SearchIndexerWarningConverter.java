@@ -47,7 +47,7 @@ public final class SearchIndexerWarningConverter {
             return null;
         }
         com.azure.search.documents.indexes.implementation.models.SearchIndexerWarning searchIndexerWarning =
-            new com.azure.search.documents.indexes.implementation.models.SearchIndexerWarning();
+            new com.azure.search.documents.indexes.implementation.models.SearchIndexerWarning(obj.getMessage());
 
         String name = obj.getName();
         PrivateFieldAccessHelper.set(searchIndexerWarning, "name", name);
@@ -58,11 +58,9 @@ public final class SearchIndexerWarningConverter {
         String documentationLink = obj.getDocumentationLink();
         PrivateFieldAccessHelper.set(searchIndexerWarning, "documentationLink", documentationLink);
 
-        String message = obj.getMessage();
-        PrivateFieldAccessHelper.set(searchIndexerWarning, "message", message);
-
         String key = obj.getKey();
         PrivateFieldAccessHelper.set(searchIndexerWarning, "key", key);
+        searchIndexerWarning.validate();
         return searchIndexerWarning;
     }
 

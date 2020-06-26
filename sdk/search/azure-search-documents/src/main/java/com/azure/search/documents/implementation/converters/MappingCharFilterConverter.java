@@ -42,15 +42,10 @@ public final class MappingCharFilterConverter {
             return null;
         }
         com.azure.search.documents.indexes.implementation.models.MappingCharFilter mappingCharFilter =
-            new com.azure.search.documents.indexes.implementation.models.MappingCharFilter();
+            new com.azure.search.documents.indexes.implementation.models.MappingCharFilter(obj.getName(),
+                obj.getMappings());
 
-        String name = obj.getName();
-        mappingCharFilter.setName(name);
-
-        if (obj.getMappings() != null) {
-            List<String> mappings = new ArrayList<>(obj.getMappings());
-            mappingCharFilter.setMappings(mappings);
-        }
+        mappingCharFilter.validate();
         return mappingCharFilter;
     }
 
