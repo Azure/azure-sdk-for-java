@@ -36,6 +36,7 @@ import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
 import com.azure.core.test.models.NetworkCallRecord;
 import com.azure.core.util.Configuration;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import org.junit.jupiter.api.Test;
@@ -208,11 +209,13 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
     }
 
     private static void validateBoundingBoxData(List<Float> expectedBoundingBox, BoundingBox actualBoundingBox) {
-        List<Point> expectedPointList = new ArrayList<>();
-        for (int i = 0; i < expectedBoundingBox.size(); i++) {
-            expectedPointList.add(new Point(expectedBoundingBox.get(i), expectedBoundingBox.get(++i)));
+        if ((actualBoundingBox != null && actualBoundingBox.getPoints() != null) && (!CoreUtils.isNullOrEmpty(expectedBoundingBox))) {
+            List<Point> expectedPointList = new ArrayList<>();
+            for (int i = 0; i < expectedBoundingBox.size(); i++) {
+                expectedPointList.add(new Point(expectedBoundingBox.get(i), expectedBoundingBox.get(++i)));
+            }
+            assertEquals(new BoundingBox(expectedPointList), actualBoundingBox);
         }
-        assertEquals(new BoundingBox(expectedPointList), actualBoundingBox);
     }
 
     private static void validateFieldValueTransforms(FieldValue expectedFieldValue, FormField actualFormField,

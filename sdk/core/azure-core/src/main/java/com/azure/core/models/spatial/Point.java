@@ -61,8 +61,10 @@ public final class Point {
 
         final Point point = (Point) o;
 
-        return xCoordinate == point.xCoordinate
-            && yCoordinate == point.yCoordinate;
+        if (Double.compare(point.xCoordinate, xCoordinate) != 0) {
+            return false;
+        }
+        return Double.compare(point.yCoordinate, yCoordinate) == 0;
     }
 
     @Override

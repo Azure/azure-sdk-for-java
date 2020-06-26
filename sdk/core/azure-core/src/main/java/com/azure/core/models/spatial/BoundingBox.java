@@ -8,6 +8,7 @@ import com.azure.core.annotation.Immutable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * A list of points representing the quadrilateral bounding box. The points are listed in clockwise
@@ -25,13 +26,12 @@ public final class BoundingBox {
      * Constructs a Bounding box object with the specified list of coordinates.
      *
      * @param points The list of coordinates of the Bounding box.
+     *
+     * @throws NullPointerException If {@code points} is {@code null}.
      */
     public BoundingBox(final List<Point> points) {
-        if (points == null) {
-            this.points = null;
-        } else {
-            this.points = Collections.unmodifiableList(new ArrayList<>(points));
-        }
+        Objects.requireNonNull(points, "'points' cannot be null.");
+        this.points = Collections.unmodifiableList(new ArrayList<>(points));
     }
 
     /**

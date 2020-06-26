@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
  * Tests {@link BoundingBox}.
@@ -23,6 +24,11 @@ public class BoundingBoxTests {
     static Point topRight = new Point(1117.7, 468.3);
     static Point bottomRight = new Point(1035.7, 812.7);
     static Point bottomLeft = new Point(296.3, 636.8);
+
+    @Test
+    public void nullPointsThrows() {
+        assertThrows(NullPointerException.class, () -> new BoundingBox(null));
+    }
 
     @Test
     public void constructorTest() {
@@ -35,7 +41,7 @@ public class BoundingBoxTests {
         )));
 
         final List<Point> actualPoints = boundingBox.getPoints();
-        for (int i=0; i < actualPoints.size(); ++i) {
+        for (int i = 0; i < actualPoints.size(); i++) {
             Point expectedPoint = expectedPoints.get(i);
             Point actualPoint = actualPoints.get(i);
             assertEquals(expectedPoint.getX(), actualPoint.getX());
