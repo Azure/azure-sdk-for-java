@@ -91,8 +91,7 @@ public class AdvancedDiffLabeledUnlabeledDataAsync {
 
         System.out.println("--------Recognizing forms with labeled custom model--------");
         // With a form recognized by a model trained with labels, the `formField.getName()` key will be its label
-        // given during
-        // training
+        // given during training
         // `value` will contain the typed field value and `valueText` will contain information about the field value
         // `labelText` is not populated for a model trained with labels as this was the given label used to extract
         // the key
@@ -156,8 +155,7 @@ public class AdvancedDiffLabeledUnlabeledDataAsync {
                     formField.getConfidence());
 
                 // Find the value of a specific unlabeled field. The specific key "Vendor Name:" provided in the
-                // example
-                // will only be found if sample training forms used
+                // example will only be found if sample training forms used
                 unLabeledForm.getFields().entrySet()
                     .stream()
                     //filter by label text
