@@ -75,7 +75,7 @@ class ServiceBusManagementSerializerTest {
         assertNotNull(entry.getContent());
 
         // The entry title is the name of the queue.
-        assertEquals(expected.getName(), entry.getTitle().getTitle());
+        assertEquals(expected.getQueueName(), entry.getTitle().getTitle());
 
         final QueueDescription actual = entry.getContent().getQueueDescription();
         assertQueueDescriptionEquals(expected, actual);

@@ -11,16 +11,10 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
 import java.time.OffsetDateTime;
 
-/** The QueueDescriptionEntry model. */
+/** The SubscriptionDescriptionEntry model. */
 @JacksonXmlRootElement(localName = "entry", namespace = "http://www.w3.org/2005/Atom")
 @Fluent
-public final class QueueDescriptionEntry {
-    /*
-     * Base URL for the query.
-     */
-    @JacksonXmlProperty(localName = "base", isAttribute = true)
-    private String base;
-
+public final class SubscriptionDescriptionEntry {
     /*
      * The URL of the GET request
      */
@@ -28,7 +22,7 @@ public final class QueueDescriptionEntry {
     private String id;
 
     /*
-     * The name of the queue
+     * The name of the subscription
      */
     @JsonProperty(value = "title")
     private Object title;
@@ -46,42 +40,16 @@ public final class QueueDescriptionEntry {
     private OffsetDateTime updated;
 
     /*
-     * The author that created this resource
-     */
-    @JacksonXmlProperty(localName = "author", namespace = "http://www.w3.org/2005/Atom")
-    private ResponseAuthor author;
-
-    /*
      * The URL for the HTTP request
      */
     @JacksonXmlProperty(localName = "link", namespace = "http://www.w3.org/2005/Atom")
     private ResponseLink link;
 
     /*
-     * The QueueDescription
+     * The SubscriptionDescription.
      */
     @JacksonXmlProperty(localName = "content", namespace = "http://www.w3.org/2005/Atom")
-    private QueueDescriptionEntryContent content;
-
-    /**
-     * Get the base property: Base URL for the query.
-     *
-     * @return the base value.
-     */
-    public String getBase() {
-        return this.base;
-    }
-
-    /**
-     * Set the base property: Base URL for the query.
-     *
-     * @param base the base value to set.
-     * @return the QueueDescriptionEntry object itself.
-     */
-    public QueueDescriptionEntry setBase(String base) {
-        this.base = base;
-        return this;
-    }
+    private SubscriptionDescriptionEntryContent content;
 
     /**
      * Get the id property: The URL of the GET request.
@@ -96,15 +64,15 @@ public final class QueueDescriptionEntry {
      * Set the id property: The URL of the GET request.
      *
      * @param id the id value to set.
-     * @return the QueueDescriptionEntry object itself.
+     * @return the SubscriptionDescriptionEntry object itself.
      */
-    public QueueDescriptionEntry setId(String id) {
+    public SubscriptionDescriptionEntry setId(String id) {
         this.id = id;
         return this;
     }
 
     /**
-     * Get the title property: The name of the queue.
+     * Get the title property: The name of the subscription.
      *
      * @return the title value.
      */
@@ -113,12 +81,12 @@ public final class QueueDescriptionEntry {
     }
 
     /**
-     * Set the title property: The name of the queue.
+     * Set the title property: The name of the subscription.
      *
      * @param title the title value to set.
-     * @return the QueueDescriptionEntry object itself.
+     * @return the SubscriptionDescriptionEntry object itself.
      */
-    public QueueDescriptionEntry setTitle(Object title) {
+    public SubscriptionDescriptionEntry setTitle(Object title) {
         this.title = title;
         return this;
     }
@@ -136,9 +104,9 @@ public final class QueueDescriptionEntry {
      * Set the published property: The timestamp for when this queue was published.
      *
      * @param published the published value to set.
-     * @return the QueueDescriptionEntry object itself.
+     * @return the SubscriptionDescriptionEntry object itself.
      */
-    public QueueDescriptionEntry setPublished(OffsetDateTime published) {
+    public SubscriptionDescriptionEntry setPublished(OffsetDateTime published) {
         this.published = published;
         return this;
     }
@@ -156,30 +124,10 @@ public final class QueueDescriptionEntry {
      * Set the updated property: The timestamp for when this queue was last updated.
      *
      * @param updated the updated value to set.
-     * @return the QueueDescriptionEntry object itself.
+     * @return the SubscriptionDescriptionEntry object itself.
      */
-    public QueueDescriptionEntry setUpdated(OffsetDateTime updated) {
+    public SubscriptionDescriptionEntry setUpdated(OffsetDateTime updated) {
         this.updated = updated;
-        return this;
-    }
-
-    /**
-     * Get the author property: The author that created this resource.
-     *
-     * @return the author value.
-     */
-    public ResponseAuthor getAuthor() {
-        return this.author;
-    }
-
-    /**
-     * Set the author property: The author that created this resource.
-     *
-     * @param author the author value to set.
-     * @return the QueueDescriptionEntry object itself.
-     */
-    public QueueDescriptionEntry setAuthor(ResponseAuthor author) {
-        this.author = author;
         return this;
     }
 
@@ -196,29 +144,29 @@ public final class QueueDescriptionEntry {
      * Set the link property: The URL for the HTTP request.
      *
      * @param link the link value to set.
-     * @return the QueueDescriptionEntry object itself.
+     * @return the SubscriptionDescriptionEntry object itself.
      */
-    public QueueDescriptionEntry setLink(ResponseLink link) {
+    public SubscriptionDescriptionEntry setLink(ResponseLink link) {
         this.link = link;
         return this;
     }
 
     /**
-     * Get the content property: The QueueDescription.
+     * Get the content property: The SubscriptionDescription.
      *
      * @return the content value.
      */
-    public QueueDescriptionEntryContent getContent() {
+    public SubscriptionDescriptionEntryContent getContent() {
         return this.content;
     }
 
     /**
-     * Set the content property: The QueueDescription.
+     * Set the content property: The SubscriptionDescription.
      *
      * @param content the content value to set.
-     * @return the QueueDescriptionEntry object itself.
+     * @return the SubscriptionDescriptionEntry object itself.
      */
-    public QueueDescriptionEntry setContent(QueueDescriptionEntryContent content) {
+    public SubscriptionDescriptionEntry setContent(SubscriptionDescriptionEntryContent content) {
         this.content = content;
         return this;
     }

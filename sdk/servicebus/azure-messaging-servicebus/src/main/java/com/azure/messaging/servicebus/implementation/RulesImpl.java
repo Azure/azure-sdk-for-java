@@ -24,82 +24,100 @@ import com.azure.core.util.Context;
 import com.azure.messaging.servicebus.implementation.models.ServiceBusManagementErrorException;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in Queues. */
-public final class QueuesImpl {
+/** An instance of this class provides access to all the operations defined in Rules. */
+public final class RulesImpl {
     /** The proxy service used to perform REST calls. */
-    private final QueuesService service;
+    private final RulesService service;
 
     /** The service client containing this operation class. */
     private final ServiceBusManagementClientImpl client;
 
     /**
-     * Initializes an instance of QueuesImpl.
+     * Initializes an instance of RulesImpl.
      *
      * @param client the instance of the service client containing this operation class.
      */
-    QueuesImpl(ServiceBusManagementClientImpl client) {
-        this.service = RestProxy.create(QueuesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+    RulesImpl(ServiceBusManagementClientImpl client) {
+        this.service = RestProxy.create(RulesService.class, client.getHttpPipeline());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for ServiceBusManagementClientQueues to be used by the proxy service to
+     * The interface defining all the services for ServiceBusManagementClientRules to be used by the proxy service to
      * perform REST calls.
      */
     @Host("https://{endpoint}")
     @ServiceInterface(name = "ServiceBusManagement")
-    private interface QueuesService {
-        @Get("/{queueName}")
+    private interface RulesService {
+        @Get("/{topicName}/subscriptions/{subscriptionName}/rules/{ruleName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ServiceBusManagementErrorException.class)
         Mono<Response<Object>> get(
                 @HostParam("endpoint") String endpoint,
-                @PathParam("queueName") String queueName,
+                @PathParam("topicName") String topicName,
+                @PathParam("subscriptionName") String subscriptionName,
+                @PathParam("ruleName") String ruleName,
                 @QueryParam("enrich") Boolean enrich,
                 @QueryParam("api-version") String apiVersion,
                 Context context);
 
-        @Put("/{queueName}")
+        @Put("/{topicName}/subscriptions/{subscriptionName}/rules/{ruleName}")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(ServiceBusManagementErrorException.class)
         Mono<Response<Object>> put(
                 @HostParam("endpoint") String endpoint,
-                @PathParam("queueName") String queueName,
+                @PathParam("topicName") String topicName,
+                @PathParam("subscriptionName") String subscriptionName,
+                @PathParam("ruleName") String ruleName,
                 @QueryParam("api-version") String apiVersion,
                 @HeaderParam("If-Match") String ifMatch,
                 @BodyParam("application/xml") Object requestBody,
                 Context context);
 
-        @Delete("/{queueName}")
+        @Delete("/{topicName}/subscriptions/{subscriptionName}/rules/{ruleName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ServiceBusManagementErrorException.class)
         Mono<Response<Object>> delete(
                 @HostParam("endpoint") String endpoint,
-                @PathParam("queueName") String queueName,
+                @PathParam("topicName") String topicName,
+                @PathParam("subscriptionName") String subscriptionName,
+                @PathParam("ruleName") String ruleName,
                 @QueryParam("api-version") String apiVersion,
                 Context context);
     }
 
     /**
-     * Get the details about the Queue with the given queueName.
+     * Get the details about the rule of a subscription of a topic.
      *
-     * @param queueName The name of the queue relative to the Service Bus namespace.
+     * @param topicName name of the topic.
+     * @param subscriptionName name of the subscription.
+     * @param ruleName name of the filter.
      * @param enrich A query parameter that sets enrich to true or false.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ServiceBusManagementErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details about the Queue with the given queueName.
+     * @return the details about the rule of a subscription of a topic.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Object>> getWithResponseAsync(String queueName, Boolean enrich, Context context) {
-        return service.get(this.client.getEndpoint(), queueName, enrich, this.client.getApiVersion(), context);
+    public Mono<Response<Object>> getWithResponseAsync(
+            String topicName, String subscriptionName, String ruleName, Boolean enrich, Context context) {
+        return service.get(
+                this.client.getEndpoint(),
+                topicName,
+                subscriptionName,
+                ruleName,
+                enrich,
+                this.client.getApiVersion(),
+                context);
     }
 
     /**
-     * Create or update a queue at the provided queuePath.
+     * Create or update a rule.
      *
-     * @param queueName The name of the queue relative to the Service Bus namespace.
+     * @param topicName name of the topic.
+     * @param subscriptionName name of the subscription.
+     * @param ruleName name of the filter.
      * @param requestBody Any object.
      * @param ifMatch Match condition for an entity to be updated. If specified and a matching entity is not found, an
      *     error will be raised. To force an unconditional update, set to the wildcard character (*). If not specified,
@@ -113,15 +131,29 @@ public final class QueuesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Object>> putWithResponseAsync(
-            String queueName, Object requestBody, String ifMatch, Context context) {
+            String topicName,
+            String subscriptionName,
+            String ruleName,
+            Object requestBody,
+            String ifMatch,
+            Context context) {
         return service.put(
-                this.client.getEndpoint(), queueName, this.client.getApiVersion(), ifMatch, requestBody, context);
+                this.client.getEndpoint(),
+                topicName,
+                subscriptionName,
+                ruleName,
+                this.client.getApiVersion(),
+                ifMatch,
+                requestBody,
+                context);
     }
 
     /**
-     * Delete the Queue with the given queueName.
+     * Delete the rule with the given topicName, subscriptionName and ruleName.
      *
-     * @param queueName The name of the queue relative to the Service Bus namespace.
+     * @param topicName name of the topic.
+     * @param subscriptionName name of the subscription.
+     * @param ruleName name of the filter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ServiceBusManagementErrorException thrown if the request is rejected by server.
@@ -129,7 +161,9 @@ public final class QueuesImpl {
      * @return any object.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Object>> deleteWithResponseAsync(String queueName, Context context) {
-        return service.delete(this.client.getEndpoint(), queueName, this.client.getApiVersion(), context);
+    public Mono<Response<Object>> deleteWithResponseAsync(
+            String topicName, String subscriptionName, String ruleName, Context context) {
+        return service.delete(
+                this.client.getEndpoint(), topicName, subscriptionName, ruleName, this.client.getApiVersion(), context);
     }
 }

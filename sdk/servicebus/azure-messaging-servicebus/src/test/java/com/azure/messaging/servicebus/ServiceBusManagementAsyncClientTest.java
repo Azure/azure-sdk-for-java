@@ -8,7 +8,6 @@ import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
-import com.azure.messaging.servicebus.implementation.QueuesImpl;
 import com.azure.messaging.servicebus.implementation.ServiceBusManagementClientImpl;
 import com.azure.messaging.servicebus.implementation.ServiceBusManagementSerializer;
 import com.azure.messaging.servicebus.implementation.models.CreateQueueBody;
@@ -17,7 +16,6 @@ import com.azure.messaging.servicebus.implementation.models.QueueDescriptionEntr
 import com.azure.messaging.servicebus.implementation.models.QueueDescriptionEntryContent;
 import com.azure.messaging.servicebus.implementation.models.QueueDescriptionFeed;
 import com.azure.messaging.servicebus.implementation.models.ResponseLink;
-import com.azure.messaging.servicebus.implementation.models.ResponseTitle;
 import com.azure.messaging.servicebus.models.QueueDescription;
 import com.azure.messaging.servicebus.models.QueueRuntimeInfo;
 import org.junit.jupiter.api.AfterAll;
@@ -121,8 +119,8 @@ class ServiceBusManagementAsyncClientTest {
     void createQueue() throws IOException {
         // Arrange
         final String updatedName = "some-new-name";
-        final QueueDescription description = new QueueDescription().setName(queueName);
-        final QueueDescription expectedDescription = new QueueDescription();
+        final QueueDescription description = new QueueDescription(queueName);
+        final QueueDescription expectedDescription = new QueueDescription(updatedName);
         final QueueDescriptionEntry expected = new QueueDescriptionEntry()
             .setTitle(new ResponseTitle().setTitle(updatedName))
             .setContent(new QueueDescriptionEntryContent().setQueueDescription(expectedDescription));
@@ -143,8 +141,8 @@ class ServiceBusManagementAsyncClientTest {
     void createQueueWithResponse() throws IOException {
         // Arrange
         final String updatedName = "some-new-name";
-        final QueueDescription description = new QueueDescription().setName(queueName);
-        final QueueDescription expectedDescription = new QueueDescription();
+        final QueueDescription description = new QueueDescription(queueName);
+        final QueueDescription expectedDescription = new QueueDescription(updatedName);
         final QueueDescriptionEntry expected = new QueueDescriptionEntry()
             .setTitle(new ResponseTitle().setTitle(updatedName))
             .setContent(new QueueDescriptionEntryContent().setQueueDescription(expectedDescription));
@@ -191,7 +189,7 @@ class ServiceBusManagementAsyncClientTest {
     @Test
     void getQueue() throws IOException {
         // Arrange
-        final QueueDescription expected = new QueueDescription();
+        final QueueDescription expected = new QueueDescription(queueName);
         final QueueDescriptionEntry entry = new QueueDescriptionEntry()
             .setTitle(new ResponseTitle().setTitle(queueName))
             .setContent(new QueueDescriptionEntryContent().setQueueDescription(expected));
@@ -235,8 +233,7 @@ class ServiceBusManagementAsyncClientTest {
     @Test
     void getQueueRuntimeInfo() throws IOException {
         // Arrange
-        final QueueDescription expectedDescription = new QueueDescription()
-            .setName(queueName)
+        final QueueDescription expectedDescription = new QueueDescription(queueName)
             .setMessageCount(100)
             .setSizeInBytes(1053)
             .setAccessedAt(OffsetDateTime.of(2020, 10, 6, 12, 1, 20, 300, ZoneOffset.UTC))
@@ -267,8 +264,7 @@ class ServiceBusManagementAsyncClientTest {
     @Test
     void getQueueRuntimeInfoWithResponse() throws IOException {
         // Arrange
-        final QueueDescription expectedDescription = new QueueDescription()
-            .setName(queueName)
+        final QueueDescription expectedDescription = new QueueDescription(queueName)
             .setMessageCount(100)
             .setSizeInBytes(1053)
             .setAccessedAt(OffsetDateTime.of(2020, 10, 6, 12, 1, 20, 300, ZoneOffset.UTC))
@@ -306,7 +302,7 @@ class ServiceBusManagementAsyncClientTest {
         final String entityType = "queues";
         final List<QueueDescriptionEntry> firstEntries = IntStream.range(0, 4).mapToObj(number -> {
             final String name = String.valueOf(number);
-            final QueueDescription description = new QueueDescription();
+            final QueueDescription description = new QueueDescription(name);
             final QueueDescriptionEntryContent content = new QueueDescriptionEntryContent()
                 .setQueueDescription(description);
             return new QueueDescriptionEntry()
@@ -324,13 +320,14 @@ class ServiceBusManagementAsyncClientTest {
             .setId("first-id");
 
         final List<QueueDescriptionEntry> secondEntries = IntStream.range(5, 7).mapToObj(number -> {
-            final QueueDescription description = new QueueDescription();
+            final String name = String.valueOf(number);
+            final QueueDescription description = new QueueDescription(name);
             final QueueDescriptionEntryContent content = new QueueDescriptionEntryContent()
                 .setQueueDescription(description);
 
             return new QueueDescriptionEntry()
                 .setContent(content)
-                .setTitle(new ResponseTitle().setTitle(String.valueOf(number)));
+                .setTitle(new ResponseTitle().setTitle(name));
         }).collect(Collectors.toList());
         final List<ResponseLink> secondLinks = Arrays.asList(
             new ResponseLink().setRel("self").setHref("foo"),
@@ -360,9 +357,9 @@ class ServiceBusManagementAsyncClientTest {
     @Test
     void updateQueue() throws IOException {
         // Arrange
-        final QueueDescription description = new QueueDescription().setName(queueName);
+        final QueueDescription description = new QueueDescription(queueName);
         final String updatedName = "some-new-name";
-        final QueueDescription expectedDescription = new QueueDescription();
+        final QueueDescription expectedDescription = new QueueDescription(updatedName);
         final QueueDescriptionEntry expected = new QueueDescriptionEntry()
             .setTitle(new ResponseTitle().setTitle(updatedName))
             .setContent(new QueueDescriptionEntryContent().setQueueDescription(expectedDescription));
@@ -382,9 +379,9 @@ class ServiceBusManagementAsyncClientTest {
     @Test
     void updateQueueWithResponse() throws IOException {
         // Arrange
-        final QueueDescription description = new QueueDescription().setName(queueName);
+        final QueueDescription description = new QueueDescription(queueName);
         final String updatedName = "some-new-name";
-        final QueueDescription expectedDescription = new QueueDescription();
+        final QueueDescription expectedDescription = new QueueDescription(updatedName);
         final QueueDescriptionEntry expected = new QueueDescriptionEntry()
             .setTitle(new ResponseTitle().setTitle(updatedName))
             .setContent(new QueueDescriptionEntryContent().setQueueDescription(expectedDescription));

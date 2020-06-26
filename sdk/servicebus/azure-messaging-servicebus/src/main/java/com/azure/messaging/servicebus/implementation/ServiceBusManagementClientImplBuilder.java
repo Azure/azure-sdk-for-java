@@ -82,9 +82,6 @@ public final class ServiceBusManagementClientImplBuilder {
                             .policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy())
                             .build();
         }
-        ServiceBusManagementClientImpl client = new ServiceBusManagementClientImpl(pipeline, serializerAdapter);
-        client.setEndpoint(this.endpoint);
-        client.setApiVersion(this.apiVersion);
-        return client;
+        return new ServiceBusManagementClientImpl(pipeline, endpoint, serializerAdapter);
     }
 }
