@@ -40,7 +40,6 @@ import com.azure.search.documents.implementation.models.SearchRequest;
 import com.azure.search.documents.implementation.models.SuggestDocumentsResult;
 import com.azure.search.documents.implementation.models.SuggestOptions;
 import com.azure.search.documents.implementation.models.SuggestRequest;
-
 import java.util.List;
 import java.util.UUID;
 import reactor.core.publisher.Mono;
