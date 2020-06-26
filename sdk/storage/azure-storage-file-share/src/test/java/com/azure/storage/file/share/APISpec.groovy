@@ -291,6 +291,25 @@ class APISpec extends Specification {
         }
     }
 
+    def shareBuilderHelper(final InterceptorManager interceptorManager, final String shareName, final String snapshot) {
+        ShareClientBuilder builder = new ShareClientBuilder()
+        if (testMode != TestMode.PLAYBACK) {
+            if (testMode == TestMode.RECORD) {
+                builder.addPolicy(interceptorManager.getRecordPolicy())
+            }
+            return builder.connectionString(connectionString)
+                .shareName(shareName)
+                .snapshot(snapshot)
+                .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
+                .httpClient(getHttpClient())
+        } else {
+            return builder
+                .connectionString(connectionString)
+                .shareName(shareName)
+                .httpClient(interceptorManager.getPlaybackClient())
+        }
+    }
+
     def directoryBuilderHelper(final InterceptorManager interceptorManager, final String shareName, final String directoryPath) {
         ShareFileClientBuilder builder = new ShareFileClientBuilder()
         if (testMode != TestMode.PLAYBACK) {

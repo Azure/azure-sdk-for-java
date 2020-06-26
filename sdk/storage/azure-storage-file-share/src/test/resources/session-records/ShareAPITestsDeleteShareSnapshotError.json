@@ -1,0 +1,47 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.file.core.windows.net/shareapitestsdeletesharesnapshoterror971470b3984aca?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2019-12-12",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.6.0-beta.1 (11.0.7; Windows 10 10.0)",
+      "x-ms-client-request-id" : "aa41c01c-3e5f-40c5-9cdf-77df1ab15ecb"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-12-12",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "0x8D81A06C400B5E1",
+      "Last-Modified" : "Fri, 26 Jun 2020 19:26:03 GMT",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "efb8eddb-901a-0059-13ef-4bca23000000",
+      "Date" : "Fri, 26 Jun 2020 19:26:03 GMT",
+      "x-ms-client-request-id" : "aa41c01c-3e5f-40c5-9cdf-77df1ab15ecb"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://REDACTED.file.core.windows.net/shareapitestsdeletesharesnapshoterror971470b3984aca?sharesnapshot=2020-06-26T19%3A10%3A19.0000000Z&restype=share",
+    "Headers" : {
+      "x-ms-version" : "2019-12-12",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.6.0-beta.1 (11.0.7; Windows 10 10.0)",
+      "x-ms-client-request-id" : "372cb59f-c1d5-43e1-a5c6-0cf35c23cd45"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-12-12",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "ShareSnapshotNotFound",
+      "retry-after" : "0",
+      "Content-Length" : "233",
+      "StatusCode" : "404",
+      "x-ms-request-id" : "aa888bbb-601a-004d-62ef-4b824c000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ShareSnapshotNotFound</Code><Message>The specified share snapshot was not found.\nRequestId:aa888bbb-601a-004d-62ef-4b824c000000\nTime:2020-06-26T19:26:05.0859656Z</Message></Error>",
+      "Date" : "Fri, 26 Jun 2020 19:26:04 GMT",
+      "x-ms-client-request-id" : "372cb59f-c1d5-43e1-a5c6-0cf35c23cd45",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "shareapitestsdeletesharesnapshoterror971470b3984aca" ]
+}

@@ -192,6 +192,30 @@ class ShareAPITests extends APISpec {
         FileTestHelper.assertResponseStatusCode(primaryShareClient.deleteWithResponse(null, null), 202)
     }
 
+    def "Delete share snapshot"() {
+        given:
+        primaryShareClient.create()
+        def info = primaryShareClient.createSnapshotWithResponse(null, null, null)
+        def snapShare = shareBuilderHelper(interceptorManager, primaryShareClient.getShareName(), info.getValue().getSnapshot()).buildClient()
+
+        snapShare.delete()
+
+        expect:
+        primaryShareClient.exists() && !snapShare.exists()
+    }
+
+    def "Delete share snapshot error"() {
+        given:
+        primaryShareClient.create()
+        def snapShare = shareBuilderHelper(interceptorManager, primaryShareClient.getShareName(), "2020-06-26T19:10:19.0000000Z").buildClient()
+
+        when:
+        snapShare.delete()
+
+        then:
+        thrown(ShareStorageException)
+    }
+
     def "Delete share error"() {
         when:
         primaryShareClient.delete()
