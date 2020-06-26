@@ -12,6 +12,8 @@ import com.azure.core.util.Context;
 import com.azure.search.documents.SearchClient;
 import com.azure.search.documents.indexes.models.AnalyzeTextOptions;
 import com.azure.search.documents.indexes.models.AnalyzedTokenInfo;
+import com.azure.search.documents.indexes.models.LexicalAnalyzerName;
+import com.azure.search.documents.indexes.models.LexicalTokenizerName;
 import com.azure.search.documents.indexes.models.SearchIndex;
 import com.azure.search.documents.indexes.models.SearchIndexStatistics;
 import com.azure.search.documents.indexes.models.SearchServiceStatistics;
@@ -228,7 +230,7 @@ public final class SearchIndexClient {
      *
      * @param indexName the name of the index for which to test an analyzer
      * @param analyzeTextOptions the text and analyzer or analysis components to test. Requires to provide either {@link
-     * com.azure.search.documents.indexes.models.LexicalTokenizerName} or {@link com.azure.search.documents.indexes.models.LexicalAnalyzerName}.
+     * LexicalTokenizerName} or {@link LexicalAnalyzerName}.
      * @return analyze result.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -241,7 +243,7 @@ public final class SearchIndexClient {
      *
      * @param indexName the name of the index for which to test an analyzer
      * @param analyzeTextOptions the text and analyzer or analysis components to test. Requires to provide either {@link
-     * com.azure.search.documents.indexes.models.LexicalTokenizerName} or {@link com.azure.search.documents.indexes.models.LexicalAnalyzerName}.
+     * LexicalTokenizerName} or {@link LexicalAnalyzerName}.
      * @param context additional context that is passed through the HTTP pipeline during the service call
      * @return analyze result.
      */

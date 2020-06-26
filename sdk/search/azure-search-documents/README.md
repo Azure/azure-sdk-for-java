@@ -49,20 +49,20 @@ URL endpoint and admin key.
 
 <!-- embedme ./src/samples/java/com/azure/search/documents/ReadmeSamples.java#L62-L65 -->
 ```Java
-SearchIndexClient searchIndexClient = new SearchIndexClientBuilder()
-    .endpoint(endpoint)
-    .credential(new AzureKeyCredential(apiKey))
-    .buildClient();
+        .endpoint(endpoint)
+        .credential(new AzureKeyCredential(apiKey))
+        .buildClient();
+}
 ```
 
 or
 
 <!-- embedme ./src/samples/java/com/azure/search/documents/ReadmeSamples.java#L69-L72 -->
 ```Java
-SearchIndexAsyncClient searchIndexAsyncClient = new SearchIndexClientBuilder()
-    .endpoint(endpoint)
-    .credential(new AzureKeyCredential(apiKey))
-    .buildAsyncClient();
+        .endpoint(endpoint)
+        .credential(new AzureKeyCredential(apiKey))
+        .buildAsyncClient();
+}
 ```
 
 #### Create a SearchIndexerClient
@@ -72,20 +72,20 @@ URL endpoint and admin key.
 
 <!-- embedme ./src/samples/java/com/azure/search/documents/ReadmeSamples.java#L76-L79 -->
 ```Java
-SearchIndexerClient searchIndexerClient = new SearchIndexerClientBuilder()
-    .endpoint(endpoint)
-    .credential(new AzureKeyCredential(apiKey))
-    .buildClient();
+        .endpoint(endpoint)
+        .credential(new AzureKeyCredential(apiKey))
+        .buildClient();
+}
 ```
 
 or
 
 <!-- embedme ./src/samples/java/com/azure/search/documents/ReadmeSamples.java#L83-L86 -->
 ```Java
-SearchIndexerAsyncClient searchIndexerAsyncClient = new SearchIndexerClientBuilder()
-    .endpoint(endpoint)
-    .credential(new AzureKeyCredential(apiKey))
-    .buildAsyncClient();
+        .endpoint(endpoint)
+        .credential(new AzureKeyCredential(apiKey))
+        .buildAsyncClient();
+}
 ```
 
 #### Create a SearchClient
@@ -95,22 +95,22 @@ admin key, you can create the `SearchClient/SearchAsyncClient` with an existing 
 
 <!-- embedme ./src/samples/java/com/azure/search/documents/ReadmeSamples.java#L46-L50 -->
 ```Java
-SearchClient searchClient = new SearchClientBuilder()
-    .endpoint(endpoint)
-    .credential(new AzureKeyCredential(adminKey))
-    .indexName(indexName)
-    .buildClient();
+        .endpoint(endpoint)
+        .credential(new AzureKeyCredential(adminKey))
+        .indexName(indexName)
+        .buildClient();
+}
 ```
 
 or
 
 <!-- embedme ./src/samples/java/com/azure/search/documents/ReadmeSamples.java#L54-L58 -->
 ```Java
-SearchAsyncClient searchAsyncClient = new SearchClientBuilder()
-    .endpoint(endpoint)
-    .credential(new AzureKeyCredential(adminKey))
-    .indexName(indexName)
-    .buildAsyncClient();
+        .endpoint(endpoint)
+        .credential(new AzureKeyCredential(adminKey))
+        .indexName(indexName)
+        .buildAsyncClient();
+}
 ```
 
 ## Key concepts
@@ -136,18 +136,18 @@ Create Index using `searchIndexClient` instantiated in [Create a SearchIndexClie
 
 <!-- embedme ./src/samples/java/com/azure/search/documents/ReadmeSamples.java#L116-L127 -->
 ```java
-SearchIndex newIndex = new SearchIndex()
-    .setName("index_name")
-    .setFields(
-        Arrays.asList(new SearchField()
-                .setName("Name")
-                .setType(SearchFieldDataType.STRING)
-                .setKey(Boolean.TRUE),
-            new SearchField()
-                .setName("Cuisine")
-                .setType(SearchFieldDataType.STRING)));
-// Create index.
-searchIndexClient.createIndex(newIndex);
+
+
+
+
+
+
+
+
+
+
+
+
 ```
 ### Upload a Document
 
@@ -155,12 +155,12 @@ Upload hotel document to Search Index using `searchClient` instantiated [Create 
 
 <!-- embedme ./src/samples/java/com/azure/search/documents/ReadmeSamples.java#L131-L136 -->
 ```java
-List<Hotel> hotels = new ArrayList<>();
-hotels.add(new Hotel().setHotelId("100"));
-hotels.add(new Hotel().setHotelId("200"));
-hotels.add(new Hotel().setHotelId("300"));
-// Upload hotel.
-searchClient.uploadDocuments(hotels);
+
+
+
+
+
+
 ```
 
 ### Search on hotel name
@@ -169,16 +169,16 @@ Search hotel using keyword using `searchClient` instantiated in [Create a Search
 
 <!-- embedme ./src/samples/java/com/azure/search/documents/ReadmeSamples.java#L140-L150 -->
 ```java
-// Perform a text-based search
-for (SearchResult result : searchClient.search("luxury hotel",
-    new SearchOptions(), new RequestOptions(), Context.NONE)) {
+            new SearchOptions(), Context.NONE)) {
 
-    // Each result is a dynamic Map
-    SearchDocument doc = result.getDocument(SearchDocument.class);
-    String hotelName = (String) doc.get("HotelName");
-    Double rating = (Double) doc.get("Rating");
+            // Each result is a dynamic Map
+            SearchDocument doc = result.getDocument(SearchDocument.class);
+            String hotelName = (String) doc.get("HotelName");
+            Double rating = (Double) doc.get("Rating");
 
-    System.out.printf("%s: %s%n", hotelName, rating);
+            System.out.printf("%s: %s%n", hotelName, rating);
+        }
+    }
 }
 ```
 

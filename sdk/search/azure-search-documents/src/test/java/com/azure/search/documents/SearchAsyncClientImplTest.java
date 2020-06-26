@@ -34,7 +34,7 @@ public class SearchAsyncClientImplTest extends SearchTestBase {
     @Override
     protected void beforeTest() {
         super.beforeTest();
-        asyncClient = getSearchIndexClientBuilder(createHotelIndex()).buildAsyncClient();
+        asyncClient = getSearchClientBuilder(createHotelIndex()).buildAsyncClient();
     }
 
     @Override

@@ -192,7 +192,8 @@ public class SearchIndexerAsyncClient {
      * @return a response containing the DataSource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<SearchIndexerDataSourceConnection>> getDataSourceConnectionWithResponse(String dataSourceName) {
+    public Mono<Response<SearchIndexerDataSourceConnection>> getDataSourceConnectionWithResponse(
+        String dataSourceName) {
         return withContext(context -> getDataSourceConnectionWithResponse(dataSourceName, context));
     }
 

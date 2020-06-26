@@ -258,7 +258,7 @@ public class IndexersManagementSyncTests extends SearchTestBase {
         // pipeline policy that injects a "mock_status" query string is added to the client, which results in service
         // returning a well-known mock response
         searchIndexerClient = getSearchIndexerClientBuilder(MOCK_STATUS_PIPELINE_POLICY).buildClient();
-        searchIndexClient = getSearchIndexClientBuilder(MOCK_STATUS_PIPELINE_POLICY).buildClient();
+        searchIndexClient = getSearchIndexClientBuilder().addPolicy(MOCK_STATUS_PIPELINE_POLICY).buildClient();
 
         SearchIndexer indexer = createBaseTestIndexerObject(createIndex(), createDataSource());
 

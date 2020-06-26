@@ -60,7 +60,7 @@ public class GeoPointTests extends SearchTestBase {
 
     @Test
     public void canDeserializeGeoPoint() throws Exception {
-        client = getSearchIndexClientBuilder(createHotelIndex()).buildClient();
+        client = getSearchClientBuilder(createHotelIndex()).buildClient();
 
         uploadDocuments();
         SearchOptions searchOptions = new SearchOptions().setFilter("HotelId eq '1'");
@@ -97,7 +97,7 @@ public class GeoPointTests extends SearchTestBase {
                     .setSortable(true)
             ));
 
-        client = getSearchIndexClientBuilder(setupIndex(index)).buildClient();
+        client = getSearchClientBuilder(setupIndex(index)).buildClient();
 
         List<Map<String, Object>> docs = new ArrayList<>();
 
