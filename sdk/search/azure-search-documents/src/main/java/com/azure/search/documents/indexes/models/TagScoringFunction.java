@@ -23,6 +23,18 @@ public final class TagScoringFunction extends ScoringFunction {
     private TagScoringParameters parameters;
 
     /**
+     * Constructor of {@link TagScoringFunction}.
+     *
+     * @param fieldName The name of the field used as input to the scoring function.
+     * @param boost A multiplier for the raw score. Must be a positive number not equal to 1.0.
+     * @param parameters Parameter values for the tag scoring function.
+     */
+    public TagScoringFunction(String fieldName, double boost, TagScoringParameters parameters) {
+        super(fieldName, boost);
+        this.parameters = parameters;
+    }
+
+    /**
      * Get the parameters property: Parameter values for the tag scoring
      * function.
      *
@@ -32,15 +44,4 @@ public final class TagScoringFunction extends ScoringFunction {
         return this.parameters;
     }
 
-    /**
-     * Set the parameters property: Parameter values for the tag scoring
-     * function.
-     *
-     * @param parameters the parameters value to set.
-     * @return the TagScoringFunction object itself.
-     */
-    public TagScoringFunction setParameters(TagScoringParameters parameters) {
-        this.parameters = parameters;
-        return this;
-    }
 }

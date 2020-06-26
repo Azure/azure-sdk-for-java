@@ -4,6 +4,7 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -24,6 +25,11 @@ public final class AsciiFoldingTokenFilter extends TokenFilter {
      */
     @JsonProperty(value = "preserveOriginal")
     private Boolean preserveOriginal;
+
+    @JsonCreator
+    public AsciiFoldingTokenFilter(@JsonProperty(value = "name", required = true) String name) {
+        super(name);
+    }
 
     /**
      * Get the preserveOriginal property: A value indicating whether the

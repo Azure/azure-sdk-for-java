@@ -31,8 +31,7 @@ public final class ServiceStatisticsConverter {
             limits = ServiceLimitsConverter.map(obj.getLimits());
         }
 
-        SearchServiceStatistics searchServiceStatistics = new SearchServiceStatistics(counters, limits);
-        return searchServiceStatistics;
+        return new SearchServiceStatistics(counters, limits);
     }
 
     /**

@@ -4,6 +4,7 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -29,6 +30,14 @@ public final class CjkBigramTokenFilter extends TokenFilter {
      */
     @JsonProperty(value = "outputUnigrams")
     private Boolean outputUnigrams;
+
+    /**
+     *  {@inheritDoc}
+     */
+    @JsonCreator
+    public CjkBigramTokenFilter(@JsonProperty(value = "name", required = true) String name) {
+        super(name);
+    }
 
     /**
      * Get the ignoreScripts property: The scripts to ignore.

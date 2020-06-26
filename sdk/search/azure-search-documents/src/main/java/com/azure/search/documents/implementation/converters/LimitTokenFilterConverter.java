@@ -17,10 +17,7 @@ public final class LimitTokenFilterConverter {
         if (obj == null) {
             return null;
         }
-        LimitTokenFilter limitTokenFilter = new LimitTokenFilter();
-
-        String name = obj.getName();
-        limitTokenFilter.setName(name);
+        LimitTokenFilter limitTokenFilter = new LimitTokenFilter(obj.getName());
 
         Integer maxTokenCount = obj.getMaxTokenCount();
         limitTokenFilter.setMaxTokenCount(maxTokenCount);

@@ -4,6 +4,7 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -32,6 +33,16 @@ public final class FieldMapping {
     private FieldMappingFunction mappingFunction;
 
     /**
+     * Constructor of {@link FieldMapping}.
+     *
+     * @param sourceFieldName
+     */
+    @JsonCreator
+    public FieldMapping(@JsonProperty(value = "sourceFieldName", required = true) String sourceFieldName) {
+        this.sourceFieldName = sourceFieldName;
+    }
+
+    /**
      * Get the sourceFieldName property: The name of the field in the data
      * source.
      *
@@ -39,18 +50,6 @@ public final class FieldMapping {
      */
     public String getSourceFieldName() {
         return this.sourceFieldName;
-    }
-
-    /**
-     * Set the sourceFieldName property: The name of the field in the data
-     * source.
-     *
-     * @param sourceFieldName the sourceFieldName value to set.
-     * @return the FieldMapping object itself.
-     */
-    public FieldMapping setSourceFieldName(String sourceFieldName) {
-        this.sourceFieldName = sourceFieldName;
-        return this;
     }
 
     /**

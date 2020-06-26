@@ -4,6 +4,7 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -81,23 +82,42 @@ public final class SearchIndexer {
     private String eTag;
 
     /**
+     * Constructor of {@link SearchIndexer}.
+     *
+     * @param name The name of the indexer.
+     */
+    @JsonCreator
+    public SearchIndexer(
+        @JsonProperty(value = "name", required = true) String name) {
+        this.name = name;
+        this.dataSourceName = dataSourceName;
+        this.targetIndexName = targetIndexName;
+    }
+
+    /**
+     * Constructor of {@link SearchIndexer}.
+     *
+     * @param name The name of the indexer.
+     * @param dataSourceName The name of the datasource from which this indexer reads data.
+     * @param targetIndexName The name of the index to which this indexer writes data.
+     */
+    @JsonCreator
+    public SearchIndexer(
+        @JsonProperty(value = "name", required = true) String name,
+        @JsonProperty(value = "dataSourceName", required = true) String dataSourceName,
+        @JsonProperty(value = "targetIndexName", required = true) String targetIndexName) {
+        this.name = name;
+        this.dataSourceName = dataSourceName;
+        this.targetIndexName = targetIndexName;
+    }
+
+    /**
      * Get the name property: The name of the indexer.
      *
      * @return the name value.
      */
     public String getName() {
         return this.name;
-    }
-
-    /**
-     * Set the name property: The name of the indexer.
-     *
-     * @param name the name value to set.
-     * @return the SearchIndexer object itself.
-     */
-    public SearchIndexer setName(String name) {
-        this.name = name;
-        return this;
     }
 
     /**
@@ -131,18 +151,6 @@ public final class SearchIndexer {
     }
 
     /**
-     * Set the dataSourceName property: The name of the datasource from which
-     * this indexer reads data.
-     *
-     * @param dataSourceName the dataSourceName value to set.
-     * @return the SearchIndexer object itself.
-     */
-    public SearchIndexer setDataSourceName(String dataSourceName) {
-        this.dataSourceName = dataSourceName;
-        return this;
-    }
-
-    /**
      * Get the skillsetName property: The name of the skillset executing with
      * this indexer.
      *
@@ -172,18 +180,6 @@ public final class SearchIndexer {
      */
     public String getTargetIndexName() {
         return this.targetIndexName;
-    }
-
-    /**
-     * Set the targetIndexName property: The name of the index to which this
-     * indexer writes data.
-     *
-     * @param targetIndexName the targetIndexName value to set.
-     * @return the SearchIndexer object itself.
-     */
-    public SearchIndexer setTargetIndexName(String targetIndexName) {
-        this.targetIndexName = targetIndexName;
-        return this;
     }
 
     /**

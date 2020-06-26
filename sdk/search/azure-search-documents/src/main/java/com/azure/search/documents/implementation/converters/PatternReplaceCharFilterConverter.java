@@ -18,17 +18,8 @@ public final class PatternReplaceCharFilterConverter {
         if (obj == null) {
             return null;
         }
-        PatternReplaceCharFilter patternReplaceCharFilter = new PatternReplaceCharFilter();
-
-        String name = obj.getName();
-        patternReplaceCharFilter.setName(name);
-
-        String pattern = obj.getPattern();
-        patternReplaceCharFilter.setPattern(pattern);
-
-        String replacement = obj.getReplacement();
-        patternReplaceCharFilter.setReplacement(replacement);
-        return patternReplaceCharFilter;
+        return new PatternReplaceCharFilter(obj.getName(),
+            obj.getPattern(), obj.getReplacement());
     }
 
     /**

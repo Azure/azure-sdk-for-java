@@ -4,6 +4,7 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -43,23 +44,37 @@ public final class SearchIndexerSkillset {
     private String eTag;
 
     /**
+     * Constructor of {@link SearchIndexerSkillset}.
+     *
+     * @param name The name of the skillset.
+     */
+    @JsonCreator
+    public SearchIndexerSkillset(
+        @JsonProperty(value = "name", required = true) String name) {
+        this.name = name;
+    }
+
+    /**
+     * Constructor of {@link SearchIndexerSkillset}.
+     *
+     * @param name The name of the skillset.
+     * @param skills A list of skills in the skillset.
+     */
+    @JsonCreator
+    public SearchIndexerSkillset(
+        @JsonProperty(value = "name", required = true) String name,
+        @JsonProperty(value = "skills", required = true) List<SearchIndexerSkill> skills) {
+        this.name = name;
+        this.skills = skills;
+    }
+
+    /**
      * Get the name property: The name of the skillset.
      *
      * @return the name value.
      */
     public String getName() {
         return this.name;
-    }
-
-    /**
-     * Set the name property: The name of the skillset.
-     *
-     * @param name the name value to set.
-     * @return the SearchIndexerSkillset object itself.
-     */
-    public SearchIndexerSkillset setName(String name) {
-        this.name = name;
-        return this;
     }
 
     /**

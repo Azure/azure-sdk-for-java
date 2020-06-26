@@ -4,6 +4,7 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -22,6 +23,15 @@ public final class MagnitudeScoringFunction extends ScoringFunction {
     @JsonProperty(value = "magnitude", required = true)
     private MagnitudeScoringParameters parameters;
 
+    @JsonCreator
+    public MagnitudeScoringFunction(
+        @JsonProperty(value = "fieldName", required = true) String fieldName,
+        @JsonProperty(value = "boost", required = true) double boost,
+        @JsonProperty(value = "magnitude", required = true) MagnitudeScoringParameters parameters) {
+        super(fieldName, boost);
+        this.parameters = parameters;
+    }
+
     /**
      * Get the parameters property: Parameter values for the magnitude scoring
      * function.
@@ -30,17 +40,5 @@ public final class MagnitudeScoringFunction extends ScoringFunction {
      */
     public MagnitudeScoringParameters getParameters() {
         return this.parameters;
-    }
-
-    /**
-     * Set the parameters property: Parameter values for the magnitude scoring
-     * function.
-     *
-     * @param parameters the parameters value to set.
-     * @return the MagnitudeScoringFunction object itself.
-     */
-    public MagnitudeScoringFunction setParameters(MagnitudeScoringParameters parameters) {
-        this.parameters = parameters;
-        return this;
     }
 }

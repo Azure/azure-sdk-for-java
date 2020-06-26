@@ -22,10 +22,7 @@ public final class PatternTokenizerConverter {
         if (obj == null) {
             return null;
         }
-        PatternTokenizer patternTokenizer = new PatternTokenizer();
-
-        String name = obj.getName();
-        patternTokenizer.setName(name);
+        PatternTokenizer patternTokenizer = new PatternTokenizer(obj.getName());
 
         String pattern = obj.getPattern();
         patternTokenizer.setPattern(pattern);

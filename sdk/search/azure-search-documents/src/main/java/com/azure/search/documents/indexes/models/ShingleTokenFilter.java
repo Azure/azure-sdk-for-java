@@ -59,6 +59,17 @@ public final class ShingleTokenFilter extends TokenFilter {
     private String filterToken;
 
     /**
+     * Constructor of {@link ShingleTokenFilter}.
+     *
+     * @param name The name of the token filter. It must only contain letters, digits,
+     * spaces, dashes or underscores, can only start and end with alphanumeric
+     * characters, and is limited to 128 characters.
+     */
+    public ShingleTokenFilter(String name) {
+        super(name);
+    }
+
+    /**
      * Get the maxShingleSize property: The maximum shingle size. Default and
      * minimum value is 2.
      *

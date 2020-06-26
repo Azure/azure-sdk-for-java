@@ -22,10 +22,7 @@ public final class StopwordsTokenFilterConverter {
         if (obj == null) {
             return null;
         }
-        StopwordsTokenFilter stopwordsTokenFilter = new StopwordsTokenFilter();
-
-        String name = obj.getName();
-        stopwordsTokenFilter.setName(name);
+        StopwordsTokenFilter stopwordsTokenFilter = new StopwordsTokenFilter(obj.getName());
 
         Boolean removeTrailingStopWords = obj.isRemoveTrailingStopWords();
         stopwordsTokenFilter.setTrailingStopWordsRemoved(removeTrailingStopWords);

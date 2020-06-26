@@ -4,6 +4,7 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -46,6 +47,32 @@ public final class ServiceCounters {
      */
     @JsonProperty(value = "synonymMaps", required = true)
     private ResourceCounter synonymMapCounter;
+
+    /**
+     * Constructor of {@link ServiceCounters}.
+     *
+     * @param documentCounter Total number of documents across all indexes in the service.
+     * @param indexCounter Total number of indexes.
+     * @param indexerCounter Total number of indexers.
+     * @param dataSourceCounter Total number of data sources.
+     * @param storageSizeCounter Total size of used storage in bytes.
+     * @param synonymMapCounter Total number of synonym maps.
+     */
+    @JsonCreator
+    public ServiceCounters(
+        @JsonProperty(value = "documentCount") ResourceCounter documentCounter,
+        @JsonProperty(value = "indexesCount") ResourceCounter indexCounter,
+        @JsonProperty(value = "indexersCount") ResourceCounter indexerCounter,
+        @JsonProperty(value = "dataSourcesCount") ResourceCounter dataSourceCounter,
+        @JsonProperty(value = "storageSize") ResourceCounter storageSizeCounter,
+        @JsonProperty(value = "synonymMaps") ResourceCounter synonymMapCounter) {
+        this.documentCounter = documentCounter;
+        this.indexCounter = indexCounter;
+        this.indexerCounter = indexerCounter;
+        this.dataSourceCounter = dataSourceCounter;
+        this.storageSizeCounter = storageSizeCounter;
+        this.synonymMapCounter = synonymMapCounter;
+    }
 
     /**
      * Get the documentCounter property: Total number of documents across all

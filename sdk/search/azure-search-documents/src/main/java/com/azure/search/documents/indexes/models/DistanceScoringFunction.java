@@ -23,6 +23,18 @@ public final class DistanceScoringFunction extends ScoringFunction {
     private DistanceScoringParameters parameters;
 
     /**
+     * Constructor of {@link ScoringFunction}.
+     *
+     * @param fieldName The name of the field used as input to the scoring function.
+     * @param boost A multiplier for the raw score. Must be a positive number not equal to 1.0.
+     * @param parameters Parameter values for the distance scoring function.
+     */
+    public DistanceScoringFunction(String fieldName, double boost, DistanceScoringParameters parameters) {
+        super(fieldName, boost);
+        this.parameters = parameters;
+    }
+
+    /**
      * Get the parameters property: Parameter values for the distance scoring
      * function.
      *
@@ -30,17 +42,5 @@ public final class DistanceScoringFunction extends ScoringFunction {
      */
     public DistanceScoringParameters getParameters() {
         return this.parameters;
-    }
-
-    /**
-     * Set the parameters property: Parameter values for the distance scoring
-     * function.
-     *
-     * @param parameters the parameters value to set.
-     * @return the DistanceScoringFunction object itself.
-     */
-    public DistanceScoringFunction setParameters(DistanceScoringParameters parameters) {
-        this.parameters = parameters;
-        return this;
     }
 }

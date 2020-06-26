@@ -18,39 +18,28 @@ public final class ServiceCountersConverter {
         if (obj == null) {
             return null;
         }
-        ServiceCounters serviceCounters = new ServiceCounters();
 
-        if (obj.getDocumentCounter() != null) {
-            ResourceCounter documentCounter = ResourceCounterConverter.map(obj.getDocumentCounter());
-            serviceCounters.setDocumentCounter(documentCounter);
-        }
+        ResourceCounter documentCounter = obj.getDocumentCounter() == null ? null
+            : ResourceCounterConverter.map(obj.getDocumentCounter());
 
-        if (obj.getIndexCounter() != null) {
-            ResourceCounter indexCounter = ResourceCounterConverter.map(obj.getIndexCounter());
-            serviceCounters.setIndexCounter(indexCounter);
-        }
+        ResourceCounter indexCounter = obj.getIndexCounter() == null ? null
+            : ResourceCounterConverter.map(obj.getIndexCounter());
 
-        if (obj.getSynonymMapCounter() != null) {
-            ResourceCounter synonymMapCounter = ResourceCounterConverter.map(obj.getSynonymMapCounter());
-            serviceCounters.setSynonymMapCounter(synonymMapCounter);
-        }
+        ResourceCounter synonymMapCounter = obj.getSynonymMapCounter() == null ? null
+            : ResourceCounterConverter.map(obj.getSynonymMapCounter());
 
-        if (obj.getStorageSizeCounter() != null) {
-            ResourceCounter storageSizeCounter = ResourceCounterConverter.map(obj.getStorageSizeCounter());
-            serviceCounters.setStorageSizeCounter(storageSizeCounter);
-        }
+        ResourceCounter storageSizeCounter = obj.getStorageSizeCounter() == null ? null
+            : ResourceCounterConverter.map(obj.getStorageSizeCounter());
 
-        if (obj.getDataSourceCounter() != null) {
-            ResourceCounter dataSourceCounter = ResourceCounterConverter.map(obj.getDataSourceCounter());
-            serviceCounters.setDataSourceCounter(dataSourceCounter);
-        }
+        ResourceCounter dataSourceCounter = obj.getDataSourceCounter() == null ? null
+            : ResourceCounterConverter.map(obj.getDataSourceCounter());
 
-        if (obj.getIndexerCounter() != null) {
-            ResourceCounter indexerCounter = ResourceCounterConverter.map(obj.getIndexerCounter());
-            serviceCounters.setIndexerCounter(indexerCounter);
-        }
+        ResourceCounter indexerCounter = obj.getIndexerCounter() == null ? null
+            : ResourceCounterConverter.map(obj.getIndexerCounter());
 
-        return serviceCounters;
+
+        return new ServiceCounters(documentCounter, indexCounter, indexerCounter,
+            dataSourceCounter, storageSizeCounter, synonymMapCounter);
     }
 
     /**

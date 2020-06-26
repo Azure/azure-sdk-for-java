@@ -4,6 +4,7 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.Duration;
 
@@ -20,6 +21,17 @@ public final class FreshnessScoringParameters {
     private Duration boostingDuration;
 
     /**
+     * Constructor of {@link FreshnessScoringParameters}.
+     *
+     * @param boostingDuration The expiration period after which boosting will stop for a particular document.
+     */
+    @JsonCreator
+    public FreshnessScoringParameters(
+        @JsonProperty(value = "boostingDuration", required = true) Duration boostingDuration) {
+        this.boostingDuration = boostingDuration;
+    }
+
+    /**
      * Get the boostingDuration property: The expiration period after which
      * boosting will stop for a particular document.
      *
@@ -27,17 +39,5 @@ public final class FreshnessScoringParameters {
      */
     public Duration getBoostingDuration() {
         return this.boostingDuration;
-    }
-
-    /**
-     * Set the boostingDuration property: The expiration period after which
-     * boosting will stop for a particular document.
-     *
-     * @param boostingDuration the boostingDuration value to set.
-     * @return the FreshnessScoringParameters object itself.
-     */
-    public FreshnessScoringParameters setBoostingDuration(Duration boostingDuration) {
-        this.boostingDuration = boostingDuration;
-        return this;
     }
 }

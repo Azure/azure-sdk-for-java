@@ -4,6 +4,7 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -31,23 +32,23 @@ public final class KeywordMarkerTokenFilter extends TokenFilter {
     private Boolean caseIgnored;
 
     /**
+     * {@inheritDoc}
+     */
+    @JsonCreator
+    public KeywordMarkerTokenFilter(
+        @JsonProperty(value = "name", required = true) String name,
+        @JsonProperty(value = "keywords", required = true) List<String> keywords) {
+        super(name);
+        this.keywords = keywords;
+    }
+
+    /**
      * Get the keywords property: A list of words to mark as keywords.
      *
      * @return the keywords value.
      */
     public List<String> getKeywords() {
         return this.keywords;
-    }
-
-    /**
-     * Set the keywords property: A list of words to mark as keywords.
-     *
-     * @param keywords the keywords value to set.
-     * @return the KeywordMarkerTokenFilter object itself.
-     */
-    public KeywordMarkerTokenFilter setKeywords(List<String> keywords) {
-        this.keywords = keywords;
-        return this;
     }
 
     /**
