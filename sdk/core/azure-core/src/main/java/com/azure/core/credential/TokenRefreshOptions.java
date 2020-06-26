@@ -30,7 +30,7 @@ public class TokenRefreshOptions {
      * prevent sending too many requests to the authentication service.
      *
      * @param tokenRefreshRetryTimeout the amount of time to wait before retrying a token refresh
-     * @return TokenRefreshOptions
+     * @return the updated TokenRefreshOptions object
      */
     public TokenRefreshOptions setTokenRefreshRetryTimeout(Duration tokenRefreshRetryTimeout) {
         this.tokenRefreshRetryTimeout = tokenRefreshRetryTimeout;
@@ -54,7 +54,7 @@ public class TokenRefreshOptions {
      * token.
      *
      * @param tokenRefreshOffset the duration representing the amount of time to subtract from the token expiry time
-     * @return TokenRefreshOptions
+     * @return the updated TokenRefreshOptions object
      */
     public TokenRefreshOptions setTokenRefreshOffset(Duration tokenRefreshOffset) {
         this.tokenRefreshOffset = tokenRefreshOffset;
