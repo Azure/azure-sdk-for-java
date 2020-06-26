@@ -17,7 +17,7 @@ import java.util.Map;
 
 public final class DistinctHash {
 
-    private static final UInt128 RootHashSeed = new UInt128(0xbfc2359eafc0e2b7L, 0x8846e00284c4cf1fL);
+    private static final UInt128 ROOT_HASH_SEED = new UInt128(0xbfc2359eafc0e2b7L, 0x8846e00284c4cf1fL);
 
     private static class HashSeeds {
         public static final UInt128 NULL = new UInt128(0x1380f68bb3b0cfe4L, 0x156c918bf564ee48L);
@@ -35,7 +35,7 @@ public final class DistinctHash {
 
     @SuppressWarnings("unchecked")
     public static UInt128 getHash(Object resource) throws IOException {
-        return getHash(resource, RootHashSeed);
+        return getHash(resource, ROOT_HASH_SEED);
     }
 
     @SuppressWarnings("unchecked")
