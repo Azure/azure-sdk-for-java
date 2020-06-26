@@ -71,8 +71,7 @@ public final class OcrSkillConverter {
             obj.getInputs().stream().map(InputFieldMappingEntryConverter::map).collect(Collectors.toList());
 
         com.azure.search.documents.indexes.implementation.models.OcrSkill ocrSkill =
-            obj.getOutputs() == null ? null
-                : new com.azure.search.documents.indexes.implementation.models.OcrSkill(inputs, outputs);
+            new com.azure.search.documents.indexes.implementation.models.OcrSkill(inputs, outputs);
 
         String name = obj.getName();
         ocrSkill.setName(name);
