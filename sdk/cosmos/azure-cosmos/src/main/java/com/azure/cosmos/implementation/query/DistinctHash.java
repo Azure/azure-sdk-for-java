@@ -106,7 +106,7 @@ public final class DistinctHash {
         // This is consistent with equality comparison.
         Iterator<Map.Entry<String, JsonNode>> children = objectNode.fields();
         while ((children.hasNext())) {
-            Map.Entry child = children.next();
+            Map.Entry<String, JsonNode> child = children.next();
             UInt128 nameHash = MurmurHash3_128.hash128(child.getKey(), HashSeeds.PROPERTY_NAME);
             UInt128 propertyHash = getHash(child.getValue(), nameHash);
             intermediateHash = intermediateHash.xor(propertyHash);
