@@ -51,6 +51,7 @@ import java.util.function.Consumer;
 import java.util.regex.Pattern;
 
 import static com.azure.ai.formrecognizer.FormTrainingClientTestBase.AZURE_FORM_RECOGNIZER_ENDPOINT;
+import static com.azure.ai.formrecognizer.FormTrainingClientTestBase.FORM_RECOGNIZER_MULTIPAGE_TRAINING_BLOB_CONTAINER_SAS_URL;
 import static com.azure.ai.formrecognizer.FormTrainingClientTestBase.FORM_RECOGNIZER_TESTING_BLOB_CONTAINER_SAS_URL;
 import static com.azure.ai.formrecognizer.FormTrainingClientTestBase.FORM_RECOGNIZER_TRAINING_BLOB_CONTAINER_SAS_URL;
 import static com.azure.ai.formrecognizer.FormTrainingClientTestBase.deserializeRawResponse;
@@ -349,9 +350,6 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
     @Test
     abstract void recognizeContentResultWithBlankPdf(HttpClient httpClient,
         FormRecognizerServiceVersion serviceVersion);
-
-    @Test
-    abstract void recognizeBadContentTypeArgument(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion);
 
     @Test
     abstract void recognizeContentFromDataMultiPage(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion);
@@ -808,7 +806,7 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
             return "https://isPlaybackmode";
         } else {
             return Configuration.getGlobalConfiguration()
-                .get("FORM_RECOGNIZER_MULTIPAGE_TRAINING_BLOB_CONTAINER_SAS_URL");
+                .get(FORM_RECOGNIZER_MULTIPAGE_TRAINING_BLOB_CONTAINER_SAS_URL);
         }
     }
 

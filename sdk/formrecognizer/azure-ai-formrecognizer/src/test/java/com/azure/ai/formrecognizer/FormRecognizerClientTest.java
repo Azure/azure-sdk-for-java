@@ -300,15 +300,6 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
         validateContentResultData(syncPoller.getFinalResult(), false);
     }
 
-    /**
-     * Verifies throwing exception when using bad content type argument
-     */
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
-    public void recognizeBadContentTypeArgument(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
-        //TODO: make sure async version is passed then adding this test
-    }
-
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
     public void recognizeContentFromDataMultiPage(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {

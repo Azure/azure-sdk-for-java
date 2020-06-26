@@ -319,26 +319,6 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
         validateContentResultData(syncPoller.getFinalResult(), false);
     }
 
-    /**
-     * Verifies throwing exception when using bad content type argument
-     */
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
-    public void recognizeBadContentTypeArgument(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
-//        Exception ex = assertThrows(RuntimeException.class, () -> client.beginRecognizeContent(
-//            getReplayableBufferData(BLANK_FORM_LOCAL_URL), BLANK_FORM_FILE_LENGTH,
-//            FormContentType.APPLICATION_PDF, null).getSyncPoller());
-        // TODO: this should throw exception, probably we don't have the pre-check for the FormContentType
-        client = getFormRecognizerAsyncClient(httpClient, serviceVersion);
-        contentFromDataRunner((data) -> {
-            SyncPoller<OperationResult, List<FormPage>> syncPoller = client.beginRecognizeContent(
-                new RecognizeOptions(toFluxByteBuffer(data), LAYOUT_FILE_LENGTH)
-                    .setFormContentType(FormContentType.fromString("application/jpeg"))).getSyncPoller();
-            syncPoller.waitForCompletion();
-            validateContentResultData(syncPoller.getFinalResult(), false);
-        });
-    }
-
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
     public void recognizeContentFromDataMultiPage(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
