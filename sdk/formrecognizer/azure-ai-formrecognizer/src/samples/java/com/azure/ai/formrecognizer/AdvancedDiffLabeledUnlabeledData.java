@@ -4,7 +4,6 @@
 package com.azure.ai.formrecognizer;
 
 import com.azure.ai.formrecognizer.models.FormContentType;
-import com.azure.ai.formrecognizer.models.Point;
 import com.azure.ai.formrecognizer.models.RecognizeCustomFormsOptions;
 import com.azure.ai.formrecognizer.models.RecognizedForm;
 import com.azure.core.credential.AzureKeyCredential;
@@ -84,8 +83,7 @@ public class AdvancedDiffLabeledUnlabeledData {
                 .ifPresentOrElse(
                     formFieldEntry -> System.out.printf("The Merchant name is: %s%n", formFieldEntry.getValue()),
                     () -> System.out.println("'Merchant' training-time label does not exist. Substitute it with "
-                        + "your own training-time label.")
-                );
+                        + "your own training-time label."));
         }));
 
         System.out.println("-----------------------------------------------------------");
@@ -124,8 +122,7 @@ public class AdvancedDiffLabeledUnlabeledData {
                 .findAny()
                 .ifPresentOrElse(
                     formFieldEntry -> System.out.printf("The Vendor name is: %s%n", formFieldEntry.getValue()),
-                    () -> System.out.println("'Vendor Name:' label text does not exist")
-                );
+                    () -> System.out.println("'Vendor Name:' label text does not exist"));
         }));
     }
 }

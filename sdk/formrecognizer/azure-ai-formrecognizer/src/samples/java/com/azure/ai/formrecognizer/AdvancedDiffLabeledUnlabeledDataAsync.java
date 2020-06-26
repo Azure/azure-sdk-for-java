@@ -116,8 +116,7 @@ public class AdvancedDiffLabeledUnlabeledDataAsync {
                     .ifPresentOrElse(
                         formFieldEntry -> System.out.printf("The Merchant name is: %s%n", formFieldEntry.getValue()),
                         () -> System.out.println("'Merchant' training-time label does not exist. Substitute it with "
-                            + "your own training-time label.")
-                    );
+                            + "your own training-time label."));
             })));
 
         // The .subscribe() creation and assignment is not a blocking call. For the purpose of this example, we sleep
@@ -163,8 +162,7 @@ public class AdvancedDiffLabeledUnlabeledDataAsync {
                     .findAny()
                     .ifPresentOrElse(
                         formFieldEntry -> System.out.printf("The Vendor name is: %s%n", formFieldEntry.getValue()),
-                        () -> System.out.println("'Vendor Name:' label text does not exist")
-                    );
+                        () -> System.out.println("'Vendor Name:' label text does not exist"));
             })));
 
         // The .subscribe() creation and assignment is not a blocking call. For the purpose of this example, we sleep
