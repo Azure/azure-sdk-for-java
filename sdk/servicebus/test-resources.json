@@ -183,7 +183,7 @@
     {
       "type": "Microsoft.ServiceBus/namespaces/topics/subscriptions",
       "apiVersion": "2017-04-01",
-      "name": "[concat(variables('namespaceName'), '/', variables('topicName'), '-', copyIndex(), '/', variables('subscriptionName'), '-0')]",
+      "name": "[concat(variables('namespaceName'), '/', variables('topicName'), '-', copyIndex(), '/', variables('subscriptionName'))]",
       "dependsOn": [
         "[concat('Microsoft.ServiceBus/namespaces/', variables('namespaceName'), '/topics/', variables('topicName'), '-', copyIndex())]"
       ],
@@ -200,7 +200,7 @@
     {
       "type": "Microsoft.ServiceBus/namespaces/topics/subscriptions",
       "apiVersion": "2017-04-01",
-      "name": "[concat(variables('namespaceName'), '/', variables('topicName'), '-', copyIndex(), '/', variables('subscriptionSessionName'), '-0' )]",
+      "name": "[concat(variables('namespaceName'), '/', variables('topicName'), '-', copyIndex(), '/', variables('subscriptionSessionName'))]",
       "dependsOn": [
         "[concat('Microsoft.ServiceBus/namespaces/', variables('namespaceName'), '/topics/', variables('topicName'), '-', copyIndex())]"
       ],

@@ -46,8 +46,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
     private final ClientLogger logger = new ClientLogger(ServiceBusReceiverAsyncClientIntegrationTest.class);
     private final AtomicInteger messagesPending = new AtomicInteger();
-    private final AtomicReference<List<Long>> messagesDeferredPending = new AtomicReference<>();
 
+    private List<Long> messagesDeferredPending = new ArrayList<>();
     private ServiceBusReceiverAsyncClient receiver;
     private ServiceBusSenderAsyncClient sender;
     private boolean isSessionEnabled;
@@ -64,14 +64,14 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
     @Override
     protected void beforeTest() {
         sessionId = UUID.randomUUID().toString();
-        messagesDeferredPending.set(new ArrayList<>());
+        messagesDeferredPending = new ArrayList<>();
     }
 
     @Override
     protected void afterTest() {
         sharedBuilder =  null;
         final int pending = messagesPending.get();
-        final int pendingDeferred = messagesDeferredPending.get().size();
+        final int pendingDeferred = messagesDeferredPending.size();
         if (pending < 1 && pendingDeferred < 1) {
             dispose(receiver, sender, receiveAndDeleteReceiver);
             return;
@@ -88,8 +88,13 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
                     .timeout(Duration.ofSeconds(15), Mono.empty())
                     .blockLast();
             }
+        } catch (Exception e) {
+            logger.warning("Error occurred when draining queue.", e);
+        }
+
+        try{
             if (pendingDeferred > 0) {
-                for(Long sequenceNumber: messagesDeferredPending.get()) {
+                for(Long sequenceNumber: messagesDeferredPending) {
                     receiveAndDeleteReceiver.receiveDeferredMessage(sequenceNumber)
                         .map(message -> {
                             logger.info("Message received: {}", message.getSequenceNumber());
@@ -100,7 +105,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
                 }
             }
         } catch (Exception e) {
-            logger.warning("Error occurred when draining queue.", e);
+            logger.warning("Error occurred when draining for deferred messages.", e);
         } finally {
             dispose(receiver, sender, receiveAndDeleteReceiver);
         }
@@ -282,7 +287,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
             .verifyComplete();
 
         if (dispositionStatus == DispositionStatus.DEFERRED) {
-            completeDeferredMessages(receiver, receivedMessage);
+            messagesDeferredPending.add(receivedMessage.getSequenceNumber());
         }
     }
 
@@ -815,7 +820,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         switch (dispositionStatus) {
             case ABANDONED:
                 operation = receiver.abandon(receivedDeferredMessage);
-                messagesDeferredPending.get().add(receivedDeferredMessage.getSequenceNumber());
+                messagesDeferredPending.add(receivedDeferredMessage.getSequenceNumber());
                 break;
             case SUSPENDED:
                 operation = receiver.deadLetter(receivedDeferredMessage);

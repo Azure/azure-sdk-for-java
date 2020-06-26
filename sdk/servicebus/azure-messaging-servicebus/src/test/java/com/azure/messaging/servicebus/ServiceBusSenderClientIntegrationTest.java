@@ -188,7 +188,7 @@ class ServiceBusSenderClientIntegrationTest extends IntegrationTestBase {
                 break;
             case SUBSCRIPTION:
                 final String topicName = getTopicName(entityIndex);
-                final String subscriptionName = getSubscriptionName(entityIndex);
+                final String subscriptionName = getSubscriptionName();
 
                 Assertions.assertNotNull(topicName, "'topicName' cannot be null.");
                 Assertions.assertNotNull(subscriptionName, "'subscriptionName' cannot be null.");

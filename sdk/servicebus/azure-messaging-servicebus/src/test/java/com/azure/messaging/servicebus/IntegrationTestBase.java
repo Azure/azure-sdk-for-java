@@ -144,6 +144,11 @@ public abstract class IntegrationTestBase extends TestBase {
         return getEntityName(getSessionQueueBaseName(), index);
     }
 
+    /**
+     * Gets the name of the topic.
+     *
+     * @return Name of the topic.
+     */
     public String getTopicName(int index) {
         return getEntityName(TestUtils.getTopicBaseName(), index);
     }
@@ -153,8 +158,8 @@ public abstract class IntegrationTestBase extends TestBase {
      *
      * @return Name of the first subscription.
      */
-    public String getSubscriptionName(int index) {
-        return getEntityName(getSubscriptionBaseName(), 0);
+    public String getSubscriptionName() {
+        return getSubscriptionBaseName();
     }
 
     /**
@@ -162,8 +167,8 @@ public abstract class IntegrationTestBase extends TestBase {
      *
      * @return Name of the first session-enabled subscription.
      */
-    public String getSessionSubscriptionName(int index) {
-        return getEntityName(getSessionSubscriptionBaseName(), 0);
+    public String getSessionSubscriptionName() {
+        return getSessionSubscriptionBaseName();
     }
 
     /**
@@ -234,34 +239,7 @@ public abstract class IntegrationTestBase extends TestBase {
 
             assumeTrue(fullyQualifiedDomainName != null && !fullyQualifiedDomainName.isEmpty(),
                 "AZURE_SERVICEBUS_FULLY_QUALIFIED_DOMAIN_NAME variable needs to be set when using credentials.");
-            String clientId = System.getenv("AZURE_CLIENT_ID");
-            String domainName = System.getenv("AZURE_SERVICEBUS_FULLY_QUALIFIED_DOMAIN_NAME");
-            String clientSecret = System.getenv("AZURE_CLIENT_SECRET");
-            String tenantId = System.getenv("AZURE_TENANT_ID");
 
-            if (domainName != null ) {
-                logger.info("Getting Builder using credentials with domainName.length : [{}] ", domainName.length());
-            } else {
-                logger.error("Getting Builder using credentials domainName is null.");
-            }
-
-            if (clientId != null ) {
-                logger.info("Getting Builder using credentials with clientId.length : [{}] ", clientId.length());
-            } else {
-                logger.error("Getting Builder using credentials clientId is null.");
-            }
-
-            if (clientSecret != null ) {
-                logger.info("Getting Builder using credentials with clientSecret.length :[{}]", clientSecret.length());
-            } else {
-                logger.error("Getting Builder using credentials clientSecret is null.");
-            }
-
-            if (tenantId != null ) {
-                logger.info("Getting Builder using credentials with tenantId.length : [{}]", tenantId.length());
-            } else {
-                logger.error("Getting Builder using credentials tenantId is null.");
-            }
             final ClientSecretCredential clientSecretCredential = new ClientSecretCredentialBuilder()
                 .clientId(System.getenv("AZURE_CLIENT_ID"))
                 .clientSecret(System.getenv("AZURE_CLIENT_SECRET"))
@@ -310,7 +288,7 @@ public abstract class IntegrationTestBase extends TestBase {
                 return builder.receiver().queueName(queueName);
             case SUBSCRIPTION:
                 final String topicName = getTopicName(entityIndex);
-                final String subscriptionName = getSubscriptionName(entityIndex);
+                final String subscriptionName = getSubscriptionName();
                 assertNotNull(topicName, "'topicName' cannot be null.");
                 assertNotNull(subscriptionName, "'subscriptionName' cannot be null.");
 
@@ -336,7 +314,7 @@ public abstract class IntegrationTestBase extends TestBase {
 
             case SUBSCRIPTION:
                 final String topicName = getTopicName(entityIndex);
-                final String subscriptionName = getSessionSubscriptionName(entityIndex);
+                final String subscriptionName = getSessionSubscriptionName();
                 assertNotNull(topicName, "'topicName' cannot be null.");
                 assertNotNull(subscriptionName, "'subscriptionName' cannot be null.");
                 return onBuilderCreate.apply(builder)
