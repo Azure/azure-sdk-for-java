@@ -55,11 +55,16 @@ import static com.azure.ai.formrecognizer.FormTrainingClientTestBase.FORM_RECOGN
 import static com.azure.ai.formrecognizer.FormTrainingClientTestBase.FORM_RECOGNIZER_TESTING_BLOB_CONTAINER_SAS_URL;
 import static com.azure.ai.formrecognizer.FormTrainingClientTestBase.FORM_RECOGNIZER_TRAINING_BLOB_CONTAINER_SAS_URL;
 import static com.azure.ai.formrecognizer.FormTrainingClientTestBase.deserializeRawResponse;
+import static com.azure.ai.formrecognizer.TestUtils.BLANK_FORM_FILE_LENGTH;
 import static com.azure.ai.formrecognizer.TestUtils.BLANK_PDF;
-import static com.azure.ai.formrecognizer.TestUtils.ENCODED_BLANK_SPACE_URL;
+import static com.azure.ai.formrecognizer.TestUtils.CUSTOM_FORM_FILE_LENGTH;
+import static com.azure.ai.formrecognizer.TestUtils.FORM_1_JPG_FILE_LENGTH;
 import static com.azure.ai.formrecognizer.TestUtils.FORM_JPG;
 import static com.azure.ai.formrecognizer.TestUtils.INVALID_KEY;
 import static com.azure.ai.formrecognizer.TestUtils.INVOICE_1_PDF;
+import static com.azure.ai.formrecognizer.TestUtils.LAYOUT_FILE_LENGTH;
+import static com.azure.ai.formrecognizer.TestUtils.MULTIPAGE_INVOICE_FILE_LENGTH;
+import static com.azure.ai.formrecognizer.TestUtils.RECEIPT_FILE_LENGTH;
 import static com.azure.ai.formrecognizer.TestUtils.getFileData;
 import static com.azure.ai.formrecognizer.TestUtils.getSerializerAdapter;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -290,7 +295,7 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
     abstract void recognizeReceiptData(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion);
 
     @Test
-    abstract void recognizeReceiptDataTextDetailsWithNullData(HttpClient httpClient,
+    abstract void recognizeReceiptDataNullData(HttpClient httpClient,
         FormRecognizerServiceVersion serviceVersion);
 
     @Test
@@ -322,7 +327,7 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
     abstract void recognizeReceiptInvalidSourceUrl(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion);
 
     @Test
-    abstract void recognizeReceiptSourceUrlTextDetails(HttpClient httpClient,
+    abstract void recognizeReceiptFromUrlTextContent(HttpClient httpClient,
         FormRecognizerServiceVersion serviceVersion);
 
     @Test
@@ -565,11 +570,11 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
         testRunner.accept(getStorageTestingFileUrl(RECEIPT_CONTOSO_PNG), true);
     }
 
-    void receiptDataRunner(Consumer<InputStream> testRunner) {
+    void receiptDataRunner(BiConsumer<InputStream, Long> testRunner) {
         if (interceptorManager.isPlaybackMode()) {
-            testRunner.accept(new ByteArrayInputStream("isPlaybackMode".getBytes()));
+            testRunner.accept(new ByteArrayInputStream("isPlaybackMode".getBytes()), RECEIPT_FILE_LENGTH);
         } else {
-            testRunner.accept(getFileData(getStorageTestingFileUrl(RECEIPT_CONTOSO_JPG)));
+            testRunner.accept(getFileData(getStorageTestingFileUrl(RECEIPT_CONTOSO_JPG)), RECEIPT_FILE_LENGTH);
         }
     }
 
@@ -593,19 +598,20 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
         testRunner.accept(TestUtils.INVALID_RECEIPT_URL);
     }
 
-    void contentFromDataRunner(Consumer<InputStream> testRunner) {
+    void contentFromDataRunner(BiConsumer<InputStream, Long> testRunner) {
         if (interceptorManager.isPlaybackMode()) {
-            testRunner.accept(new ByteArrayInputStream("isPlaybackMode".getBytes()));
+            testRunner.accept(new ByteArrayInputStream("isPlaybackMode".getBytes()), LAYOUT_FILE_LENGTH);
         } else {
-            testRunner.accept(getFileData(getStorageTestingFileUrl(FORM_JPG)));
+            testRunner.accept(getFileData(getStorageTestingFileUrl(FORM_JPG)), LAYOUT_FILE_LENGTH);
         }
     }
 
-    void multipageFromDataRunner(Consumer<InputStream> testRunner) {
+    void multipageFromDataRunner(BiConsumer<InputStream, Long> testRunner) {
         if (interceptorManager.isPlaybackMode()) {
-            testRunner.accept(new ByteArrayInputStream("isPlaybackMode".getBytes()));
+            testRunner.accept(new ByteArrayInputStream("isPlaybackMode".getBytes()), MULTIPAGE_INVOICE_FILE_LENGTH);
         } else {
-            testRunner.accept(getFileData(getStorageTestingFileUrl(MULTIPAGE_INVOICE_PDF)));
+            testRunner.accept(
+                getFileData(getStorageTestingFileUrl(MULTIPAGE_INVOICE_PDF)), MULTIPAGE_INVOICE_FILE_LENGTH);
         }
     }
 
@@ -621,23 +627,19 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
         testRunner.accept(getStorageTestingFileUrl(INVOICE_1_PDF));
     }
 
-    void contentFromUrlWithBlankPdfRunner(Consumer<String> testRunner) {
-        testRunner.accept(ENCODED_BLANK_SPACE_URL);
-    }
-
-    void customFormDataRunner(Consumer<InputStream> testRunner) {
+    void customFormDataRunner(BiConsumer<InputStream, Long> testRunner) {
         if (interceptorManager.isPlaybackMode()) {
-            testRunner.accept(new ByteArrayInputStream("testData.png".getBytes()));
+            testRunner.accept(new ByteArrayInputStream("testData.png".getBytes()), CUSTOM_FORM_FILE_LENGTH);
         } else {
-            testRunner.accept(getFileData(getStorageTestingFileUrl(INVOICE_PDF)));
+            testRunner.accept(getFileData(getStorageTestingFileUrl(INVOICE_PDF)), CUSTOM_FORM_FILE_LENGTH);
         }
     }
 
-    void customFormJpgDataRunner(Consumer<InputStream> testRunner) {
+    void customFormJpgDataRunner(BiConsumer<InputStream, Long> testRunner) {
         if (interceptorManager.isPlaybackMode()) {
-            testRunner.accept(new ByteArrayInputStream("testData.png".getBytes()));
+            testRunner.accept(new ByteArrayInputStream("testData.png".getBytes()), FORM_1_JPG_FILE_LENGTH);
         } else {
-            testRunner.accept(getFileData(getStorageTestingFileUrl(FORM_JPG)));
+            testRunner.accept(getFileData(getStorageTestingFileUrl(FORM_JPG)), FORM_1_JPG_FILE_LENGTH);
         }
     }
 
@@ -645,11 +647,11 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
         testRunner.accept(getStorageTestingFileUrl(formData));
     }
 
-    void blankPdfDataRunner(Consumer<InputStream> testRunner) {
+    void blankPdfDataRunner(BiConsumer<InputStream, Long> testRunner) {
         if (interceptorManager.isPlaybackMode()) {
-            testRunner.accept(new ByteArrayInputStream("testData.png".getBytes()));
+            testRunner.accept(new ByteArrayInputStream("testData.png".getBytes()), BLANK_FORM_FILE_LENGTH);
         } else {
-            testRunner.accept(getFileData(getStorageTestingFileUrl(BLANK_PDF)));
+            testRunner.accept(getFileData(getStorageTestingFileUrl(BLANK_PDF)), BLANK_FORM_FILE_LENGTH);
         }
     }
 
