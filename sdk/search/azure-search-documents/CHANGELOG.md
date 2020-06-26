@@ -4,6 +4,7 @@
 - Changed version to 11.0.0.
 - Removed preview version `SearchClientOptions.ServiceVersion.V2019_05_06_Preview`
   and added version `SearchClientOptions.ServiceVersion.V2020_06_30`.
+- Added value constructors for required parameters.
 
 ## 1.0.0-beta.4 (2020-06-09)
 - Split `SearchServiceClient` into two clients `SearchIndexClient`, `SearchIndexerClient`.
