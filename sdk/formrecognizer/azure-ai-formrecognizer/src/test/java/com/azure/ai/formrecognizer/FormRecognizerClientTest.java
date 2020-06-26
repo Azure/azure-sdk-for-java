@@ -407,7 +407,7 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
                         .setFormContentType(FormContentType.IMAGE_JPEG).setIncludeTextContent(false));
                 syncPoller.waitForCompletion();
                 validateRecognizedResult(syncPoller.getFinalResult(), false, true);
-        }));
+            }));
     }
 
     /**
@@ -648,18 +648,18 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
         client = getFormRecognizerClient(httpClient, serviceVersion);
         customFormJpgDataRunner((data, dataLength) ->
             beginTrainingUnlabeledRunner((trainingFilesUrl, useTrainingLabels) -> {
-            SyncPoller<OperationResult, CustomFormModel> trainingPoller =
-                getFormTrainingClient(httpClient, serviceVersion).beginTraining(trainingFilesUrl,
-                    useTrainingLabels);
-            trainingPoller.waitForCompletion();
+                SyncPoller<OperationResult, CustomFormModel> trainingPoller =
+                    getFormTrainingClient(httpClient, serviceVersion).beginTraining(trainingFilesUrl,
+                        useTrainingLabels);
+                trainingPoller.waitForCompletion();
 
-            SyncPoller<OperationResult, List<RecognizedForm>> syncPoller =
-                client.beginRecognizeCustomForms(new RecognizeCustomFormsOptions(data, dataLength,
-                    trainingPoller.getFinalResult().getModelId())
-                    .setFormContentType(FormContentType.IMAGE_JPEG).setIncludeTextContent(false));
-            syncPoller.waitForCompletion();
-            validateRecognizedResult(syncPoller.getFinalResult(), false, false);
-        }));
+                SyncPoller<OperationResult, List<RecognizedForm>> syncPoller =
+                    client.beginRecognizeCustomForms(new RecognizeCustomFormsOptions(data, dataLength,
+                        trainingPoller.getFinalResult().getModelId())
+                        .setFormContentType(FormContentType.IMAGE_JPEG).setIncludeTextContent(false));
+                syncPoller.waitForCompletion();
+                validateRecognizedResult(syncPoller.getFinalResult(), false, false);
+            }));
     }
 
     /**

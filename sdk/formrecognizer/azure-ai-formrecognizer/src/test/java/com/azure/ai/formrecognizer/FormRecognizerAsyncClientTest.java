@@ -427,7 +427,7 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
                         .setIncludeTextContent(false)).getSyncPoller();
                 syncPoller.waitForCompletion();
                 validateRecognizedResult(syncPoller.getFinalResult(), false, true);
-        }));
+            }));
     }
 
     /**
@@ -621,7 +621,7 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
                         .setIncludeTextContent(false)).getSyncPoller();
                 syncPoller.waitForCompletion();
                 validateRecognizedResult(syncPoller.getFinalResult(), false, false);
-        }));
+            }));
     }
 
     /**
@@ -646,7 +646,7 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
                         .setIncludeTextContent(true)).getSyncPoller();
                 syncPoller.waitForCompletion();
                 validateRecognizedResult(syncPoller.getFinalResult(), true, false);
-        }));
+            }));
     }
 
     /**
@@ -681,18 +681,18 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
         client = getFormRecognizerAsyncClient(httpClient, serviceVersion);
         customFormJpgDataRunner((data, dataLength) ->
             beginTrainingUnlabeledRunner((trainingFilesUrl, useTrainingLabels) -> {
-            SyncPoller<OperationResult, CustomFormModel> trainingPoller =
-                getFormTrainingAsyncClient(httpClient, serviceVersion).beginTraining(trainingFilesUrl,
-                    useTrainingLabels).getSyncPoller();
-            trainingPoller.waitForCompletion();
+                SyncPoller<OperationResult, CustomFormModel> trainingPoller =
+                    getFormTrainingAsyncClient(httpClient, serviceVersion).beginTraining(trainingFilesUrl,
+                        useTrainingLabels).getSyncPoller();
+                trainingPoller.waitForCompletion();
 
-            SyncPoller<OperationResult, List<RecognizedForm>> syncPoller = client.beginRecognizeCustomForms(
-                new RecognizeCustomFormsOptions(toFluxByteBuffer(data), dataLength,
-                    trainingPoller.getFinalResult().getModelId()).setFormContentType(FormContentType.IMAGE_JPEG)
-                    .setIncludeTextContent(false)).getSyncPoller();
-            syncPoller.waitForCompletion();
-            validateRecognizedResult(syncPoller.getFinalResult(), false, false);
-        }));
+                SyncPoller<OperationResult, List<RecognizedForm>> syncPoller = client.beginRecognizeCustomForms(
+                    new RecognizeCustomFormsOptions(toFluxByteBuffer(data), dataLength,
+                        trainingPoller.getFinalResult().getModelId()).setFormContentType(FormContentType.IMAGE_JPEG)
+                        .setIncludeTextContent(false)).getSyncPoller();
+                syncPoller.waitForCompletion();
+                validateRecognizedResult(syncPoller.getFinalResult(), false, false);
+            }));
     }
 
     /**
