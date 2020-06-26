@@ -18,6 +18,7 @@ import com.azure.search.documents.indexes.models.SoftDeleteColumnDeletionDetecti
 import com.azure.search.documents.indexes.models.SqlIntegratedChangeTrackingPolicy;
 import org.junit.jupiter.api.Test;
 
+import java.lang.reflect.Field;
 import java.net.HttpURLConnection;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -131,19 +132,20 @@ public class DataSourceSyncTests extends SearchTestBase {
     }
 
     @Test
-    public void canUpdateDataSource() {
+    public void canUpdateDataSource() throws Exception {
         SearchIndexerDataSourceConnection initial = createTestSqlDataSourceObject();
 
         // Create the data source
         client.createOrUpdateDataSourceConnection(initial);
         dataSourcesToDelete.add(initial.getName());
-
-        SearchIndexerDataSourceConnection updatedExpected = createTestSqlDataSourceObject()
-            .setName(initial.getName())
-            .setContainer(new SearchIndexerDataContainer().setName("somethingdifferent"))
+        SearchIndexerDataSourceConnection updatedExpected = createTestSqlDataSourceObject();
+        Field updatedDataSource = updatedExpected.getClass().getDeclaredField("name");
+        updatedDataSource.setAccessible(true);
+        updatedDataSource.set(updatedExpected, initial.getName());
+        updatedExpected = createTestSqlDataSourceObject()
+            .setContainer(new SearchIndexerDataContainer("somethingdifferent"))
             .setDescription("somethingdifferent")
-            .setDataChangeDetectionPolicy(new HighWaterMarkChangeDetectionPolicy()
-                .setHighWaterMarkColumnName("rowversion"))
+            .setDataChangeDetectionPolicy(new HighWaterMarkChangeDetectionPolicy("rowversion"))
             .setDataDeletionDetectionPolicy(new SoftDeleteColumnDeletionDetectionPolicy()
                 .setSoftDeleteColumnName("isDeleted"));
 
@@ -274,8 +276,7 @@ public class DataSourceSyncTests extends SearchTestBase {
                 .setSoftDeleteMarkerValue("1");
 
         HighWaterMarkChangeDetectionPolicy changeDetectionPolicy =
-            new HighWaterMarkChangeDetectionPolicy()
-                .setHighWaterMarkColumnName("fakecolumn");
+            new HighWaterMarkChangeDetectionPolicy("fakecolumn");
 
         // AzureSql
         createAndValidateDataSource(createTestSqlDataSourceObject(null, null));

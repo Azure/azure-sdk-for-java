@@ -18,10 +18,7 @@ public final class UniqueTokenFilterConverter {
         if (obj == null) {
             return null;
         }
-        UniqueTokenFilter uniqueTokenFilter = new UniqueTokenFilter();
-
-        String name = obj.getName();
-        uniqueTokenFilter.setName(name);
+        UniqueTokenFilter uniqueTokenFilter = new UniqueTokenFilter(obj.getName());
 
         Boolean onlyOnSamePosition = obj.isOnlyOnSamePosition();
         uniqueTokenFilter.setOnlyOnSamePosition(onlyOnSamePosition);

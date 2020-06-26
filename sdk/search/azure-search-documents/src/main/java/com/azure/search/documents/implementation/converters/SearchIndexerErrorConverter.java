@@ -19,10 +19,7 @@ public final class SearchIndexerErrorConverter {
         if (obj == null) {
             return null;
         }
-        SearchIndexerError searchIndexerError = new SearchIndexerError();
-
-        String errorMessage = obj.getErrorMessage();
-        PrivateFieldAccessHelper.set(searchIndexerError, "errorMessage", errorMessage);
+        SearchIndexerError searchIndexerError = new SearchIndexerError(obj.getErrorMessage(), obj.getStatusCode());
 
         String name = obj.getName();
         PrivateFieldAccessHelper.set(searchIndexerError, "name", name);
@@ -36,8 +33,6 @@ public final class SearchIndexerErrorConverter {
         String key = obj.getKey();
         PrivateFieldAccessHelper.set(searchIndexerError, "key", key);
 
-        int statusCode = obj.getStatusCode();
-        PrivateFieldAccessHelper.set(searchIndexerError, "statusCode", statusCode);
         return searchIndexerError;
     }
 

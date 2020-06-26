@@ -33,6 +33,17 @@ public final class PhoneticTokenFilter extends TokenFilter {
     private Boolean originalTokensReplaced;
 
     /**
+     * Constructor of {@link PhoneticTokenFilter}.
+     *
+     * @param name The name of the token filter. It must only contain letters, digits,
+     * spaces, dashes or underscores, can only start and end with alphanumeric
+     * characters, and is limited to 128 characters.
+     */
+    public PhoneticTokenFilter(String name) {
+        super(name);
+    }
+
+    /**
      * Get the encoder property: The phonetic encoder to use. Default is
      * "metaphone". Possible values include: 'Metaphone', 'DoubleMetaphone',
      * 'Soundex', 'RefinedSoundex', 'Caverphone1', 'Caverphone2', 'Cologne',

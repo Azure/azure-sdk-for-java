@@ -26,19 +26,13 @@ public final class ImageAnalysisSkillConverter {
         if (obj == null) {
             return null;
         }
-        ImageAnalysisSkill imageAnalysisSkill = new ImageAnalysisSkill();
 
-        if (obj.getOutputs() != null) {
-            List<OutputFieldMappingEntry> outputs =
-                obj.getOutputs().stream().map(OutputFieldMappingEntryConverter::map).collect(Collectors.toList());
-            imageAnalysisSkill.setOutputs(outputs);
-        }
+        List<InputFieldMappingEntry> inputs = obj.getInputs() == null ? null
+            : obj.getInputs().stream().map(InputFieldMappingEntryConverter::map).collect(Collectors.toList());
+        List<OutputFieldMappingEntry> outputs = obj.getOutputs() == null ? null
+            : obj.getOutputs().stream().map(OutputFieldMappingEntryConverter::map).collect(Collectors.toList());
 
-        if (obj.getInputs() != null) {
-            List<InputFieldMappingEntry> inputs =
-                obj.getInputs().stream().map(InputFieldMappingEntryConverter::map).collect(Collectors.toList());
-            imageAnalysisSkill.setInputs(inputs);
-        }
+        ImageAnalysisSkill imageAnalysisSkill = new ImageAnalysisSkill(inputs, outputs);
 
         String name = obj.getName();
         imageAnalysisSkill.setName(name);

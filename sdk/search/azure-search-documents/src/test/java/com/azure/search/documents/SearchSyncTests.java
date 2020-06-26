@@ -746,8 +746,8 @@ public class SearchSyncTests extends SearchTestBase {
         SearchIndexClient searchIndexClient = getSearchIndexClientBuilder().buildClient();
 
         // Create a new SynonymMap
-        synonymMapToDelete = searchIndexClient.createSynonymMap(new SynonymMap()
-            .setName(testResourceNamer.randomName("names", 32))
+        synonymMapToDelete = searchIndexClient.createSynonymMap(new SynonymMap(
+            testResourceNamer.randomName("names", 32))
             .setSynonyms("luxury,fancy")).getName();
 
         // Attach index field to SynonymMap
@@ -979,61 +979,34 @@ public class SearchSyncTests extends SearchTestBase {
     }
 
     String createIndexWithNonNullableTypes() {
-        SearchIndex index = new SearchIndex()
-            .setName("non-nullable-index")
+        SearchIndex index = new SearchIndex("non-nullable-index")
             .setFields(Arrays.asList(
-                new SearchField()
-                    .setName("Key")
-                    .setType(SearchFieldDataType.STRING)
+                new SearchField("Key", SearchFieldDataType.STRING)
                     .setHidden(false)
                     .setKey(true),
-                new SearchField()
-                    .setName("Rating")
-                    .setHidden(false)
-                    .setType(SearchFieldDataType.INT32),
-                new SearchField()
-                    .setName("Count")
-                    .setHidden(false)
-                    .setType(SearchFieldDataType.INT64),
-                new SearchField()
-                    .setName("IsEnabled")
-                    .setHidden(false)
-                    .setType(SearchFieldDataType.BOOLEAN),
-                new SearchField()
-                    .setName("Ratio")
-                    .setHidden(false)
-                    .setType(SearchFieldDataType.DOUBLE),
-                new SearchField()
-                    .setName("StartDate")
-                    .setHidden(false)
-                    .setType(SearchFieldDataType.DATE_TIME_OFFSET),
-                new SearchField()
-                    .setName("EndDate")
-                    .setHidden(false)
-                    .setType(SearchFieldDataType.DATE_TIME_OFFSET),
-                new SearchField()
-                    .setName("TopLevelBucket")
-                    .setType(SearchFieldDataType.COMPLEX)
+                new SearchField("Rating", SearchFieldDataType.INT32)
+                    .setHidden(false),
+                new SearchField("Count", SearchFieldDataType.INT64)
+                    .setHidden(false),
+                new SearchField("IsEnabled", SearchFieldDataType.BOOLEAN)
+                    .setHidden(false),
+                new SearchField("Ratio", SearchFieldDataType.DOUBLE)
+                    .setHidden(false),
+                new SearchField("StartDate", SearchFieldDataType.DATE_TIME_OFFSET)
+                    .setHidden(false),
+                new SearchField("EndDate", SearchFieldDataType.DATE_TIME_OFFSET)
+                    .setHidden(false),
+                new SearchField("TopLevelBucket", SearchFieldDataType.COMPLEX)
                     .setFields(Arrays.asList(
-                        new SearchField()
-                            .setName("BucketName")
-                            .setType(SearchFieldDataType.STRING)
+                        new SearchField("BucketName", SearchFieldDataType.STRING)
                             .setFilterable(true),
-                        new SearchField()
-                            .setName("Count")
-                            .setType(SearchFieldDataType.INT32)
+                        new SearchField("Count", SearchFieldDataType.INT32)
                             .setFilterable(true))),
-                new SearchField()
-                    .setName("Buckets")
-                    .setType(SearchFieldDataType.collection(SearchFieldDataType.COMPLEX))
+                new SearchField("Buckets", SearchFieldDataType.collection(SearchFieldDataType.COMPLEX))
                     .setFields(Arrays.asList(
-                        new SearchField()
-                            .setName("BucketName")
-                            .setType(SearchFieldDataType.STRING)
+                        new SearchField("BucketName", SearchFieldDataType.STRING)
                             .setFilterable(true),
-                        new SearchField()
-                            .setName("Count")
-                            .setType(SearchFieldDataType.INT32)
+                        new SearchField("Count", SearchFieldDataType.INT32)
                             .setFilterable(true)))));
 
         setupIndex(index);
@@ -1042,29 +1015,18 @@ public class SearchSyncTests extends SearchTestBase {
     }
 
     String createIndexWithValueTypes() {
-        SearchIndex index = new SearchIndex()
-            .setName("testindex")
+        SearchIndex index = new SearchIndex("testindex")
             .setFields(Arrays.asList(
-                new SearchField()
-                    .setName("Key")
-                    .setType(SearchFieldDataType.STRING)
+                new SearchField("Key", SearchFieldDataType.STRING)
                     .setKey(true)
                     .setSearchable(true),
-                new SearchField()
-                    .setName("IntValue")
-                    .setType(SearchFieldDataType.INT32)
+                new SearchField("IntValue", SearchFieldDataType.INT32)
                     .setFilterable(true),
-                new SearchField()
-                    .setName("Bucket")
-                    .setType(SearchFieldDataType.COMPLEX)
+                new SearchField("Bucket", SearchFieldDataType.COMPLEX)
                     .setFields(Arrays.asList(
-                        new SearchField()
-                            .setName("BucketName")
-                            .setType(SearchFieldDataType.STRING)
+                        new SearchField("BucketName", SearchFieldDataType.STRING)
                             .setFilterable(true),
-                        new SearchField()
-                            .setName("Count")
-                            .setType(SearchFieldDataType.INT32)
+                        new SearchField("Count", SearchFieldDataType.INT32)
                             .setFilterable(true)
                     ))
                 )

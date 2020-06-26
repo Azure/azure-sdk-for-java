@@ -97,8 +97,7 @@ public final class SearchClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<IndexDocumentsResult> uploadDocumentsWithResponse(Iterable<?> documents,
         IndexDocumentsOptions options, Context context) {
-        return asyncClient.uploadDocumentsWithResponse(documents, options,
-            context).block();
+        return asyncClient.uploadDocumentsWithResponse(documents, options, context).block();
     }
 
     /**
@@ -136,7 +135,7 @@ public final class SearchClient {
      * always declare primitive-typed properties with their class equivalents (for example, an integer property should
      * be of type {@code Integer} instead of {@code int}).
      *
-     * @param documents collection of documents to be merged
+     * @param documents collection of documents to be merged.
      * @param options Options that allow specifying document indexing behavior.
      * @param context additional context that is passed through the Http pipeline during the service call
      * @return response containing the document index result.
@@ -150,9 +149,8 @@ public final class SearchClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<IndexDocumentsResult> mergeDocumentsWithResponse(Iterable<?> documents,
-        IndexDocumentsOptions options, Context context) {
-        return asyncClient.mergeDocumentsWithResponse(documents, options,
-            context).block();
+            IndexDocumentsOptions options, Context context) {
+        return asyncClient.mergeDocumentsWithResponse(documents, options, context).block();
     }
 
     /**
@@ -206,9 +204,8 @@ public final class SearchClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<IndexDocumentsResult> mergeOrUploadDocumentsWithResponse(Iterable<?> documents,
-        IndexDocumentsOptions options, Context context) {
-        return asyncClient.mergeOrUploadDocumentsWithResponse(documents, options,
-            context).block();
+                IndexDocumentsOptions options, Context context) {
+        return asyncClient.mergeOrUploadDocumentsWithResponse(documents, options, context).block();
     }
 
     /**

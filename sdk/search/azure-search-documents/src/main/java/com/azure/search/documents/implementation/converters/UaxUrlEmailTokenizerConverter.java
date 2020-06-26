@@ -18,10 +18,7 @@ public final class UaxUrlEmailTokenizerConverter {
         if (obj == null) {
             return null;
         }
-        UaxUrlEmailTokenizer uaxUrlEmailTokenizer = new UaxUrlEmailTokenizer();
-
-        String name = obj.getName();
-        uaxUrlEmailTokenizer.setName(name);
+        UaxUrlEmailTokenizer uaxUrlEmailTokenizer = new UaxUrlEmailTokenizer(obj.getName());
 
         Integer maxTokenLength = obj.getMaxTokenLength();
         uaxUrlEmailTokenizer.setMaxTokenLength(maxTokenLength);

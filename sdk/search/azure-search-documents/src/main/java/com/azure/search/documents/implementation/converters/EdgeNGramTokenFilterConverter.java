@@ -24,11 +24,8 @@ public final class EdgeNGramTokenFilterConverter {
         if (obj == null) {
             return null;
         }
-        EdgeNGramTokenFilter edgeNGramTokenFilter = new EdgeNGramTokenFilter();
+        EdgeNGramTokenFilter edgeNGramTokenFilter = new EdgeNGramTokenFilter(obj.getName());
         PrivateFieldAccessHelper.set(edgeNGramTokenFilter, ODATA_FIELD_NAME, V1_ODATA_TYPE);
-
-        String name = obj.getName();
-        edgeNGramTokenFilter.setName(name);
 
         Integer maxGram = obj.getMaxGram();
         edgeNGramTokenFilter.setMaxGram(maxGram);
@@ -51,11 +48,8 @@ public final class EdgeNGramTokenFilterConverter {
         if (obj == null) {
             return null;
         }
-        EdgeNGramTokenFilter edgeNGramTokenFilter = new EdgeNGramTokenFilter();
+        EdgeNGramTokenFilter edgeNGramTokenFilter = new EdgeNGramTokenFilter(obj.getName());
         PrivateFieldAccessHelper.set(edgeNGramTokenFilter, ODATA_FIELD_NAME, V2_ODATA_TYPE);
-
-        String name = obj.getName();
-        edgeNGramTokenFilter.setName(name);
 
         Integer maxGram = obj.getMaxGram();
         edgeNGramTokenFilter.setMaxGram(maxGram);

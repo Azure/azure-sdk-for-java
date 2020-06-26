@@ -19,10 +19,7 @@ public final class StopAnalyzerConverter {
         if (obj == null) {
             return null;
         }
-        StopAnalyzer stopAnalyzer = new StopAnalyzer();
-
-        String name = obj.getName();
-        stopAnalyzer.setName(name);
+        StopAnalyzer stopAnalyzer = new StopAnalyzer(obj.getName());
 
         if (obj.getStopwords() != null) {
             List<String> stopwords = new ArrayList<>(obj.getStopwords());

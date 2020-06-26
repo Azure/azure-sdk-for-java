@@ -4,6 +4,7 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -24,23 +25,22 @@ public final class ResourceCounter {
     private Long quota;
 
     /**
+     * Constructor of {@link ResourceCounter}.
+     *
+     * @param usage The resource usage amount.
+     */
+    @JsonCreator
+    public ResourceCounter(@JsonProperty(value = "usage", required = true) long usage) {
+        this.usage = usage;
+    }
+
+    /**
      * Get the usage property: The resource usage amount.
      *
      * @return the usage value.
      */
     public long getUsage() {
         return this.usage;
-    }
-
-    /**
-     * Set the usage property: The resource usage amount.
-     *
-     * @param usage the usage value to set.
-     * @return the ResourceCounter object itself.
-     */
-    public ResourceCounter setUsage(long usage) {
-        this.usage = usage;
-        return this;
     }
 
     /**

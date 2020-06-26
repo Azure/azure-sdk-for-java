@@ -20,7 +20,10 @@ public final class FreshnessScoringFunctionConverter {
         if (obj == null) {
             return null;
         }
-        FreshnessScoringFunction freshnessScoringFunction = new FreshnessScoringFunction();
+
+        FreshnessScoringParameters parameters = FreshnessScoringParametersConverter.map(obj.getParameters());
+        FreshnessScoringFunction freshnessScoringFunction = new FreshnessScoringFunction(obj.getFieldName(),
+            obj.getBoost(), parameters);
 
         if (obj.getInterpolation() != null) {
             ScoringFunctionInterpolation interpolation =
@@ -28,16 +31,6 @@ public final class FreshnessScoringFunctionConverter {
             freshnessScoringFunction.setInterpolation(interpolation);
         }
 
-        String fieldName = obj.getFieldName();
-        freshnessScoringFunction.setFieldName(fieldName);
-
-        double boost = obj.getBoost();
-        freshnessScoringFunction.setBoost(boost);
-
-        if (obj.getParameters() != null) {
-            FreshnessScoringParameters parameters = FreshnessScoringParametersConverter.map(obj.getParameters());
-            freshnessScoringFunction.setParameters(parameters);
-        }
         return freshnessScoringFunction;
     }
 

@@ -20,10 +20,7 @@ public final class MicrosoftLanguageStemmingTokenizerConverter {
             return null;
         }
         MicrosoftLanguageStemmingTokenizer microsoftLanguageStemmingTokenizer =
-            new MicrosoftLanguageStemmingTokenizer();
-
-        String name = obj.getName();
-        microsoftLanguageStemmingTokenizer.setName(name);
+            new MicrosoftLanguageStemmingTokenizer(obj.getName());
 
         Integer maxTokenLength = obj.getMaxTokenLength();
         microsoftLanguageStemmingTokenizer.setMaxTokenLength(maxTokenLength);

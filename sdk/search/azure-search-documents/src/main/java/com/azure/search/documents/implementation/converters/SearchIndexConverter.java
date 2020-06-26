@@ -30,7 +30,10 @@ public final class SearchIndexConverter {
         if (obj == null) {
             return null;
         }
-        SearchIndex searchIndex = new SearchIndex();
+
+        List<SearchField> fields = obj.getFields() == null ? null
+            : obj.getFields().stream().map(SearchFieldConverter::map).collect(Collectors.toList());
+        SearchIndex searchIndex = new SearchIndex(obj.getName(), fields);
 
         if (obj.getTokenizers() != null) {
             List<LexicalTokenizer> tokenizers =
@@ -76,9 +79,6 @@ public final class SearchIndexConverter {
             searchIndex.setSimilarity(similarityAlgorithm);
         }
 
-        String name = obj.getName();
-        searchIndex.setName(name);
-
         if (obj.getCorsOptions() != null) {
             CorsOptions corsOptions = CorsOptionsConverter.map(obj.getCorsOptions());
             searchIndex.setCorsOptions(corsOptions);
@@ -93,11 +93,6 @@ public final class SearchIndexConverter {
             searchIndex.setScoringProfiles(scoringProfiles);
         }
 
-        if (obj.getFields() != null) {
-            List<SearchField> fields =
-                obj.getFields().stream().map(SearchFieldConverter::map).collect(Collectors.toList());
-            searchIndex.setFields(fields);
-        }
         return searchIndex;
     }
 

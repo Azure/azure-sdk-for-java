@@ -18,13 +18,9 @@ public final class DistanceScoringParametersConverter {
         if (obj == null) {
             return null;
         }
-        DistanceScoringParameters distanceScoringParameters = new DistanceScoringParameters();
+        DistanceScoringParameters distanceScoringParameters = new DistanceScoringParameters(
+            obj.getReferencePointParameter(), obj.getBoostingDistance());
 
-        String referencePointParameter = obj.getReferencePointParameter();
-        distanceScoringParameters.setReferencePointParameter(referencePointParameter);
-
-        double boostingDistance = obj.getBoostingDistance();
-        distanceScoringParameters.setBoostingDistance(boostingDistance);
         return distanceScoringParameters;
     }
 

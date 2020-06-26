@@ -5,9 +5,6 @@ package com.azure.search.documents.implementation.converters;
 
 import com.azure.search.documents.indexes.models.SearchSuggester;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * A converter between {@link com.azure.search.documents.indexes.implementation.models.Suggester} and {@link SearchSuggester}.
  */
@@ -19,17 +16,7 @@ public final class SuggesterConverter {
         if (obj == null) {
             return null;
         }
-        SearchSuggester searchSuggester = new SearchSuggester();
-
-        if (obj.getSourceFields() != null) {
-            List<String> sourceFields = new ArrayList<>(obj.getSourceFields());
-            searchSuggester.setSourceFields(sourceFields);
-        }
-
-        String name = obj.getName();
-        searchSuggester.setName(name);
-
-        return searchSuggester;
+        return new SearchSuggester(obj.getName(), obj.getSourceFields());
     }
 
     /**

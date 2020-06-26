@@ -5,7 +5,6 @@ package com.azure.search.documents.implementation.converters;
 
 import com.azure.search.documents.indexes.models.IndexingSchedule;
 
-import java.time.Duration;
 import java.time.OffsetDateTime;
 
 /**
@@ -20,10 +19,7 @@ public final class IndexingScheduleConverter {
         if (obj == null) {
             return null;
         }
-        IndexingSchedule indexingSchedule = new IndexingSchedule();
-
-        Duration interval = obj.getInterval();
-        indexingSchedule.setInterval(interval);
+        IndexingSchedule indexingSchedule = new IndexingSchedule(obj.getInterval());
 
         OffsetDateTime startTime = obj.getStartTime();
         indexingSchedule.setStartTime(startTime);

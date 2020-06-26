@@ -25,19 +25,13 @@ public final class EntityRecognitionSkillConverter {
         if (obj == null) {
             return null;
         }
-        EntityRecognitionSkill entityRecognitionSkill = new EntityRecognitionSkill();
 
-        if (obj.getOutputs() != null) {
-            List<OutputFieldMappingEntry> outputs =
-                obj.getOutputs().stream().map(OutputFieldMappingEntryConverter::map).collect(Collectors.toList());
-            entityRecognitionSkill.setOutputs(outputs);
-        }
+        List<InputFieldMappingEntry> inputs = obj.getInputs() == null ? null
+            : obj.getInputs().stream().map(InputFieldMappingEntryConverter::map).collect(Collectors.toList());
+        List<OutputFieldMappingEntry> outputs = obj.getOutputs() == null ? null
+            : obj.getOutputs().stream().map(OutputFieldMappingEntryConverter::map).collect(Collectors.toList());
+        EntityRecognitionSkill entityRecognitionSkill = new EntityRecognitionSkill(inputs, outputs);
 
-        if (obj.getInputs() != null) {
-            List<InputFieldMappingEntry> inputs =
-                obj.getInputs().stream().map(InputFieldMappingEntryConverter::map).collect(Collectors.toList());
-            entityRecognitionSkill.setInputs(inputs);
-        }
 
         String name = obj.getName();
         entityRecognitionSkill.setName(name);

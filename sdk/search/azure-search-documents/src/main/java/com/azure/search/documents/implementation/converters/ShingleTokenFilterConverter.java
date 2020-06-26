@@ -18,10 +18,7 @@ public final class ShingleTokenFilterConverter {
         if (obj == null) {
             return null;
         }
-        ShingleTokenFilter shingleTokenFilter = new ShingleTokenFilter();
-
-        String name = obj.getName();
-        shingleTokenFilter.setName(name);
+        ShingleTokenFilter shingleTokenFilter = new ShingleTokenFilter(obj.getName());
 
         Integer minShingleSize = obj.getMinShingleSize();
         shingleTokenFilter.setMinShingleSize(minShingleSize);

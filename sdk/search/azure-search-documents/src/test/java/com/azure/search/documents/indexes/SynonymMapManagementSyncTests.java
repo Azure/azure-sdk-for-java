@@ -134,9 +134,7 @@ public class SynonymMapManagementSyncTests extends SearchTestBase {
         client.createSynonymMap(initial);
         synonymMapsToDelete.add(initial.getName());
 
-        SynonymMap updatedExpected = createTestSynonymMap()
-            .setName(initial.getName())
-            .setSynonyms("newword1,newword2");
+        SynonymMap updatedExpected = new SynonymMap(initial.getName(), "newword1,newword2");
 
         SynonymMap updatedActual = client.createOrUpdateSynonymMap(updatedExpected);
         assertSynonymMapsEqual(updatedExpected, updatedActual);
@@ -151,9 +149,7 @@ public class SynonymMapManagementSyncTests extends SearchTestBase {
         client.createSynonymMap(initial);
         synonymMapsToDelete.add(initial.getName());
 
-        SynonymMap updatedExpected = createTestSynonymMap()
-            .setName(initial.getName())
-            .setSynonyms("newword1,newword2");
+        SynonymMap updatedExpected = new SynonymMap(initial.getName(), "newword1,newword2");
 
         SynonymMap updatedActual = client.createOrUpdateSynonymMapWithResponse(updatedExpected, false, Context.NONE)
             .getValue();
@@ -369,7 +365,6 @@ public class SynonymMapManagementSyncTests extends SearchTestBase {
     }
 
     SynonymMap createTestSynonymMap() {
-        return new SynonymMap().setName(testResourceNamer.randomName("test-synonym", 32))
-            .setSynonyms("word1,word2");
+        return new SynonymMap(testResourceNamer.randomName("test-synonym", 32), "word1,word2");
     }
 }

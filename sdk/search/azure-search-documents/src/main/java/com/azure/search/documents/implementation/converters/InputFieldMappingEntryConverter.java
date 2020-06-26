@@ -21,16 +21,13 @@ public final class InputFieldMappingEntryConverter {
         if (obj == null) {
             return null;
         }
-        InputFieldMappingEntry inputFieldMappingEntry = new InputFieldMappingEntry();
+        InputFieldMappingEntry inputFieldMappingEntry = new InputFieldMappingEntry(obj.getName());
 
         if (obj.getInputs() != null) {
             List<InputFieldMappingEntry> inputs =
                 obj.getInputs().stream().map(InputFieldMappingEntryConverter::map).collect(Collectors.toList());
             inputFieldMappingEntry.setInputs(inputs);
         }
-
-        String name = obj.getName();
-        inputFieldMappingEntry.setName(name);
 
         String source = obj.getSource();
         inputFieldMappingEntry.setSource(source);

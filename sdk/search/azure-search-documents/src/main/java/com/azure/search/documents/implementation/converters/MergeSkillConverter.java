@@ -21,19 +21,12 @@ public final class MergeSkillConverter {
         if (obj == null) {
             return null;
         }
-        MergeSkill mergeSkill = new MergeSkill();
 
-        if (obj.getOutputs() != null) {
-            List<OutputFieldMappingEntry> outputs =
-                obj.getOutputs().stream().map(OutputFieldMappingEntryConverter::map).collect(Collectors.toList());
-            mergeSkill.setOutputs(outputs);
-        }
-
-        if (obj.getInputs() != null) {
-            List<InputFieldMappingEntry> inputs =
-                obj.getInputs().stream().map(InputFieldMappingEntryConverter::map).collect(Collectors.toList());
-            mergeSkill.setInputs(inputs);
-        }
+        List<OutputFieldMappingEntry> outputs = obj.getOutputs() == null ? null
+            : obj.getOutputs().stream().map(OutputFieldMappingEntryConverter::map).collect(Collectors.toList());
+        List<InputFieldMappingEntry> inputs = obj.getInputs() == null ? null
+            : obj.getInputs().stream().map(InputFieldMappingEntryConverter::map).collect(Collectors.toList());
+        MergeSkill mergeSkill = new MergeSkill(inputs, outputs);
 
         String name = obj.getName();
         mergeSkill.setName(name);

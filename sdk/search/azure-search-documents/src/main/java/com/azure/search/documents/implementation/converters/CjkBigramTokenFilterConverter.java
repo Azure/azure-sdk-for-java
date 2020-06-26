@@ -22,10 +22,7 @@ public final class CjkBigramTokenFilterConverter {
         if (obj == null) {
             return null;
         }
-        CjkBigramTokenFilter cjkBigramTokenFilter = new CjkBigramTokenFilter();
-
-        String name = obj.getName();
-        cjkBigramTokenFilter.setName(name);
+        CjkBigramTokenFilter cjkBigramTokenFilter = new CjkBigramTokenFilter(obj.getName());
 
         Boolean outputUnigrams = obj.isOutputUnigrams();
         cjkBigramTokenFilter.setOutputUnigrams(outputUnigrams);

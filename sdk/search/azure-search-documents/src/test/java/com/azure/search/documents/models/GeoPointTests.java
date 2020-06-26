@@ -75,24 +75,17 @@ public class GeoPointTests extends SearchTestBase {
 
     @Test
     public void canSerializeGeoPoint() {
-        SearchIndex index = new SearchIndex()
-            .setName("geopoints")
+        SearchIndex index = new SearchIndex("geopoints")
             .setFields(Arrays.asList(
-                new SearchField()
-                    .setName("Id")
-                    .setType(SearchFieldDataType.STRING)
+                new SearchField("Id", SearchFieldDataType.STRING)
                     .setKey(true)
                     .setFilterable(true)
                     .setSortable(true),
-                new SearchField()
-                    .setName("Name")
-                    .setType(SearchFieldDataType.STRING)
+                new SearchField("Name", SearchFieldDataType.STRING)
                     .setSearchable(true)
                     .setFilterable(true)
                     .setSortable(true),
-                new SearchField()
-                    .setName("Location")
-                    .setType(SearchFieldDataType.GEOGRAPHY_POINT)
+                new SearchField("Location", SearchFieldDataType.GEOGRAPHY_POINT)
                     .setFilterable(true)
                     .setSortable(true)
             ));

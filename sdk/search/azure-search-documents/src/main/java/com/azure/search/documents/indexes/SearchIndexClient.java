@@ -207,7 +207,7 @@ public final class SearchIndexClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteIndex(String indexName) {
-        deleteIndexWithResponse(new SearchIndex().setName(indexName), false, Context.NONE);
+        deleteIndexWithResponse(new SearchIndex(indexName), false, Context.NONE);
     }
 
     /**
@@ -375,7 +375,7 @@ public final class SearchIndexClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteSynonymMap(String synonymMapName) {
-        deleteSynonymMapWithResponse(new SynonymMap().setName(synonymMapName), false, Context.NONE);
+        deleteSynonymMapWithResponse(new SynonymMap(synonymMapName), false, Context.NONE);
     }
 
     /**

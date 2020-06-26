@@ -58,6 +58,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import reactor.core.publisher.Mono;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -450,7 +451,6 @@ public final class SearchAsyncClient {
 
     private Mono<SearchPagedResponse> search(SearchRequest request,
         String continuationToken, SearchFirstPageResponseWrapper firstPageResponseWrapper, Context context) {
-
         if (continuationToken == null && firstPageResponseWrapper.getFirstPageResponse() != null) {
             return Mono.just(firstPageResponseWrapper.getFirstPageResponse());
         }
@@ -546,8 +546,7 @@ public final class SearchAsyncClient {
                 .onErrorMap(DocumentResponseConversions::exceptionMapper)
                 .map(res -> {
                     if (SearchDocument.class == modelClass) {
-                        TypeReference<Map<String, Object>> typeReference = new TypeReference<Map<String, Object>>() {
-                        };
+                        TypeReference<Map<String, Object>> typeReference = new TypeReference<Map<String, Object>>() { };
                         SearchDocument doc = new SearchDocument(MAPPER.convertValue(res.getValue(), typeReference));
                         return new SimpleResponse<T>(res, (T) doc);
                     }
@@ -659,17 +658,15 @@ public final class SearchAsyncClient {
         IndexDocumentsOptions options, Context context) {
         try {
             IndexDocumentsOptions documentsOptions = (options == null)
-                ? new IndexDocumentsOptions()
-                : options;
-
+                ? new IndexDocumentsOptions() : options;
             return restClient.getDocuments()
                 .indexWithResponseAsync(IndexBatchBaseConverter.map(batch), null,
                     context)
                 .onErrorMap(MappingUtils::exceptionMapper)
-                .flatMap(response ->
-                    (response.getStatusCode() == MULTI_STATUS_CODE && documentsOptions.throwOnAnyError())
-                        ? Mono.error(new IndexBatchException(IndexDocumentsResultConverter.map(response.getValue())))
-                        : Mono.just(response).map(MappingUtils::mappingIndexDocumentResultResponse));
+                .flatMap(response -> (response.getStatusCode() == MULTI_STATUS_CODE
+                    && documentsOptions.throwOnAnyError())
+                    ? Mono.error(new IndexBatchException(IndexDocumentsResultConverter.map(response.getValue())))
+                    : Mono.just(response).map(MappingUtils::mappingIndexDocumentResultResponse));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -773,6 +770,7 @@ public final class SearchAsyncClient {
     private static SuggestRequest createSuggestRequest(String searchText, String suggesterName,
         SuggestOptions suggestOptions) {
         SuggestRequest suggestRequest = new SuggestRequest(searchText, suggesterName);
+        suggestRequest.validate();
 
         if (suggestOptions != null) {
             suggestRequest.setFilter(suggestOptions.getFilter())
@@ -812,6 +810,7 @@ public final class SearchAsyncClient {
     private static AutocompleteRequest createAutoCompleteRequest(String searchText, String suggesterName,
         AutocompleteOptions autocompleteOptions) {
         AutocompleteRequest autoCompleteRequest = new AutocompleteRequest(searchText, suggesterName);
+        autoCompleteRequest.validate();
 
         if (autocompleteOptions != null) {
             autoCompleteRequest.setFilter(autocompleteOptions.getFilter())
@@ -832,11 +831,10 @@ public final class SearchAsyncClient {
     }
 
     private static <T> IndexDocumentsBatch<T> buildIndexBatch(Iterable<T> documents, IndexActionType actionType) {
-        IndexDocumentsBatch<T> batch = new IndexDocumentsBatch<>();
-        List<IndexAction<T>> actions = batch.getActions();
+        List<IndexAction<T>> actions = new ArrayList<IndexAction<T>>();
         documents.forEach(d -> actions.add(new IndexAction<T>()
             .setActionType(actionType)
             .setDocument(d)));
-        return batch;
+        return new IndexDocumentsBatch<T>(actions);
     }
 }

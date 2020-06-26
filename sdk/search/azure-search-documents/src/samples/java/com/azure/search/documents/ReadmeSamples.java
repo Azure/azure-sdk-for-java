@@ -91,7 +91,7 @@ public class ReadmeSamples {
         headers.put("my-header2", "my-header2-value");
         headers.put("my-header3", "my-header3-value");
         // Call API by passing headers in Context.
-        SearchIndex index = new SearchIndex().setName(indexName);
+        SearchIndex index = new SearchIndex(indexName);
         searchIndexClient.createIndexWithResponse(
             index,
             new Context(AddHeadersFromContextPolicy.AZURE_REQUEST_HTTP_HEADERS_KEY, headers));
@@ -111,16 +111,10 @@ public class ReadmeSamples {
     }
 
     public void createIndexWithSyncClient() {
-        SearchIndex newIndex = new SearchIndex()
-            .setName("index_name")
-            .setFields(
-                Arrays.asList(new SearchField()
-                        .setName("Name")
-                        .setType(SearchFieldDataType.STRING)
-                        .setKey(Boolean.TRUE),
-                    new SearchField()
-                        .setName("Cuisine")
-                        .setType(SearchFieldDataType.STRING)));
+        SearchIndex newIndex = new SearchIndex("index_name", Arrays.asList(
+            new SearchField("Name", SearchFieldDataType.STRING)
+                .setKey(Boolean.TRUE),
+            new SearchField("Cuisine", SearchFieldDataType.STRING)));
         // Create index.
         searchIndexClient.createIndex(newIndex);
     }
