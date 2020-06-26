@@ -18,10 +18,7 @@ public final class LengthTokenFilterConverter {
         if (obj == null) {
             return null;
         }
-        LengthTokenFilter lengthTokenFilter = new LengthTokenFilter();
-
-        String name = obj.getName();
-        lengthTokenFilter.setName(name);
+        LengthTokenFilter lengthTokenFilter = new LengthTokenFilter(obj.getName());
 
         Integer minLength = obj.getMinLength();
         lengthTokenFilter.setMinLength(minLength);

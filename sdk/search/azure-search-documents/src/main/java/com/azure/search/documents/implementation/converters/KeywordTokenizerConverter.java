@@ -23,11 +23,8 @@ public final class KeywordTokenizerConverter {
         if (obj == null) {
             return null;
         }
-        KeywordTokenizer keywordTokenizer = new KeywordTokenizer();
+        KeywordTokenizer keywordTokenizer = new KeywordTokenizer(obj.getName());
         PrivateFieldAccessHelper.set(keywordTokenizer, ODATA_FIELD_NAME, V2_ODATA_TYPE);
-
-        String name = obj.getName();
-        keywordTokenizer.setName(name);
 
         Integer maxTokenLength = obj.getMaxTokenLength();
         keywordTokenizer.setMaxTokenLength(maxTokenLength);
@@ -42,13 +39,12 @@ public final class KeywordTokenizerConverter {
         if (obj == null) {
             return null;
         }
-        KeywordTokenizer keywordTokenizer = new KeywordTokenizer();
+        KeywordTokenizer keywordTokenizer = new KeywordTokenizer(obj.getName());
 
         PrivateFieldAccessHelper.set(keywordTokenizer, ODATA_FIELD_NAME, V1_ODATA_TYPE);
 
         Integer bufferSize = obj.getBufferSize();
         keywordTokenizer.setMaxTokenLength(bufferSize);
-        keywordTokenizer.setName(obj.getName());
         return keywordTokenizer;
     }
 

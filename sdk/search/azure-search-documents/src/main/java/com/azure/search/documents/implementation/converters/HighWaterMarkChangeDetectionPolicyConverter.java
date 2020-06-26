@@ -18,12 +18,7 @@ public final class HighWaterMarkChangeDetectionPolicyConverter {
         if (obj == null) {
             return null;
         }
-        HighWaterMarkChangeDetectionPolicy highWaterMarkChangeDetectionPolicy =
-            new HighWaterMarkChangeDetectionPolicy();
-
-        String highWaterMarkColumnName = obj.getHighWaterMarkColumnName();
-        highWaterMarkChangeDetectionPolicy.setHighWaterMarkColumnName(highWaterMarkColumnName);
-        return highWaterMarkChangeDetectionPolicy;
+        return new HighWaterMarkChangeDetectionPolicy(obj.getHighWaterMarkColumnName());
     }
 
     /**

@@ -26,19 +26,23 @@ public final class IndexerExecutionResultConverter {
         if (obj == null) {
             return null;
         }
-        IndexerExecutionResult indexerExecutionResult = new IndexerExecutionResult();
+
+        IndexerExecutionStatus status = IndexerExecutionStatusConverter.map(obj.getStatus());
+
+        List<SearchIndexerError> errors = obj.getErrors() == null ? null :
+            obj.getErrors().stream().map(SearchIndexerErrorConverter::map).collect(Collectors.toList());
+
+        List<SearchIndexerWarning> warnings = obj.getWarnings() == null ? null :
+            obj.getWarnings().stream().map(SearchIndexerWarningConverter::map).collect(Collectors.toList());
+
+        IndexerExecutionResult indexerExecutionResult = new IndexerExecutionResult(status, errors, warnings,
+            obj.getItemCount(), obj.getFailedItemCount());
 
         String finalTrackingState = obj.getFinalTrackingState();
         PrivateFieldAccessHelper.set(indexerExecutionResult, "finalTrackingState", finalTrackingState);
 
         String initialTrackingState = obj.getInitialTrackingState();
         PrivateFieldAccessHelper.set(indexerExecutionResult, "initialTrackingState", initialTrackingState);
-
-        if (obj.getWarnings() != null) {
-            List<SearchIndexerWarning> warnings =
-                obj.getWarnings().stream().map(SearchIndexerWarningConverter::map).collect(Collectors.toList());
-            PrivateFieldAccessHelper.set(indexerExecutionResult, "warnings", warnings);
-        }
 
         String errorMessage = obj.getErrorMessage();
         PrivateFieldAccessHelper.set(indexerExecutionResult, "errorMessage", errorMessage);
@@ -52,19 +56,6 @@ public final class IndexerExecutionResultConverter {
         OffsetDateTime endTime = obj.getEndTime();
         PrivateFieldAccessHelper.set(indexerExecutionResult, "endTime", endTime);
 
-        if (obj.getErrors() != null) {
-            List<SearchIndexerError> errors =
-                obj.getErrors().stream().map(SearchIndexerErrorConverter::map).collect(Collectors.toList());
-            PrivateFieldAccessHelper.set(indexerExecutionResult, "errors", errors);
-        }
-
-        if (obj.getStatus() != null) {
-            IndexerExecutionStatus status = IndexerExecutionStatusConverter.map(obj.getStatus());
-            PrivateFieldAccessHelper.set(indexerExecutionResult, "status", status);
-        }
-
-        int itemCount = obj.getItemCount();
-        PrivateFieldAccessHelper.set(indexerExecutionResult, "itemCount", itemCount);
         return indexerExecutionResult;
     }
 

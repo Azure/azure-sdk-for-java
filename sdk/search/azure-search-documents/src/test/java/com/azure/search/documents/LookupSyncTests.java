@@ -478,41 +478,24 @@ public class LookupSyncTests extends SearchTestBase {
     }
 
     String setupIndexWithDataTypes() {
-        SearchIndex index = new SearchIndex()
-            .setName("data-types-tests-index")
+        SearchIndex index = new SearchIndex("data-types-tests-index")
             .setFields(Arrays.asList(
-                 new SearchField()
-                    .setName("Key")
-                    .setType(SearchFieldDataType.STRING)
+                 new SearchField("Key", SearchFieldDataType.STRING)
                     .setKey(true)
                     .setHidden(false),
-                 new SearchField()
-                    .setName("Bools")
-                    .setType(SearchFieldDataType.collection(SearchFieldDataType.BOOLEAN))
+                 new SearchField("Bools", SearchFieldDataType.collection(SearchFieldDataType.BOOLEAN))
                     .setHidden(false),
-                 new SearchField()
-                    .setName("Dates")
-                    .setType(SearchFieldDataType.collection(SearchFieldDataType.DATE_TIME_OFFSET))
+                 new SearchField("Dates", SearchFieldDataType.collection(SearchFieldDataType.DATE_TIME_OFFSET))
                     .setHidden(false),
-                 new SearchField()
-                    .setName("Doubles")
-                    .setType(SearchFieldDataType.collection(SearchFieldDataType.DOUBLE))
+                 new SearchField("Doubles", SearchFieldDataType.collection(SearchFieldDataType.DOUBLE))
                     .setHidden(false),
-                 new SearchField()
-                    .setName("Points")
-                    .setType(SearchFieldDataType.collection(SearchFieldDataType.GEOGRAPHY_POINT))
+                 new SearchField("Points", SearchFieldDataType.collection(SearchFieldDataType.GEOGRAPHY_POINT))
                     .setHidden(false),
-                 new SearchField()
-                    .setName("Ints")
-                    .setType(SearchFieldDataType.collection(SearchFieldDataType.INT32))
+                 new SearchField("Ints", SearchFieldDataType.collection(SearchFieldDataType.INT32))
                     .setHidden(false),
-                 new SearchField()
-                    .setName("Longs")
-                    .setType(SearchFieldDataType.collection(SearchFieldDataType.INT64))
+                 new SearchField("Longs", SearchFieldDataType.collection(SearchFieldDataType.INT64))
                     .setHidden(false),
-                 new SearchField()
-                    .setName("Strings")
-                    .setType(SearchFieldDataType.collection(SearchFieldDataType.STRING))
+                 new SearchField("Strings", SearchFieldDataType.collection(SearchFieldDataType.STRING))
                     .setHidden(false)
             ));
 

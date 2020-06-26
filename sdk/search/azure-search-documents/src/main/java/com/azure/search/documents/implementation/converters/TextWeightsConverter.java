@@ -19,13 +19,11 @@ public final class TextWeightsConverter {
         if (obj == null) {
             return null;
         }
-        TextWeights textWeights = new TextWeights();
 
-        if (obj.getWeights() != null) {
-            Map<String, Double> weights =
-                obj.getWeights().entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
-            textWeights.setWeights(weights);
-        }
+        Map<String, Double> weights = obj.getWeights() == null ? null
+            : obj.getWeights().entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+        TextWeights textWeights = new TextWeights(weights);
+
         return textWeights;
     }
 

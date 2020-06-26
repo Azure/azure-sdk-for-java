@@ -12,9 +12,9 @@ import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.ServiceVersion;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.search.documents.implementation.SearchIndexClientImpl;
 import com.azure.search.documents.implementation.SearchIndexClientImplBuilder;
-import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.search.documents.implementation.SerializationUtil;
 import com.azure.search.documents.implementation.converters.AutocompleteModeConverter;
 import com.azure.search.documents.implementation.converters.FacetResultConverter;
@@ -60,6 +60,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import reactor.core.publisher.Mono;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -465,7 +466,6 @@ public final class SearchAsyncClient {
 
     private Mono<SearchPagedResponse> search(SearchRequest request, RequestOptions requestOptions,
         String continuationToken, SearchFirstPageResponseWrapper firstPageResponseWrapper, Context context) {
-
         if (continuationToken == null && firstPageResponseWrapper.getFirstPageResponse() != null) {
             return Mono.just(firstPageResponseWrapper.getFirstPageResponse());
         }
@@ -563,8 +563,7 @@ public final class SearchAsyncClient {
                 .onErrorMap(DocumentResponseConversions::exceptionMapper)
                 .map(res -> {
                     if (SearchDocument.class == modelClass) {
-                        TypeReference<Map<String, Object>> typeReference = new TypeReference<Map<String, Object>>() {
-                        };
+                        TypeReference<Map<String, Object>> typeReference = new TypeReference<Map<String, Object>>() { };
                         SearchDocument doc = new SearchDocument(MAPPER.convertValue(res.getValue(), typeReference));
                         return new SimpleResponse<T>(res, (T) doc);
                     }
@@ -663,7 +662,7 @@ public final class SearchAsyncClient {
      * @param batch The batch of index actions
      * @param options Options that allow specifying document indexing behavior.
      * @param requestOptions additional parameters for the operation. Contains the tracking ID sent with the request to
-     * help with debugging
+     * help with debugging.
      * @return Response containing the status of operations for all actions in the batch
      * @throws IndexBatchException If some of the indexing actions fail but other actions succeed and modify the state
      * of the index. This can happen when the Search Service is under heavy indexing load. It is important to explicitly
@@ -683,17 +682,15 @@ public final class SearchAsyncClient {
         IndexDocumentsOptions options, RequestOptions requestOptions, Context context) {
         try {
             IndexDocumentsOptions documentsOptions = (options == null)
-                ? new IndexDocumentsOptions()
-                : options;
-
+                ? new IndexDocumentsOptions() : options;
             return restClient.getDocuments()
                 .indexWithResponseAsync(IndexBatchBaseConverter.map(batch), RequestOptionsConverter.map(requestOptions),
                     context)
                 .onErrorMap(MappingUtils::exceptionMapper)
-                .flatMap(response ->
-                    (response.getStatusCode() == MULTI_STATUS_CODE && documentsOptions.throwOnAnyError())
-                        ? Mono.error(new IndexBatchException(IndexDocumentsResultConverter.map(response.getValue())))
-                        : Mono.just(response).map(MappingUtils::mappingIndexDocumentResultResponse));
+                .flatMap(response -> (response.getStatusCode() == MULTI_STATUS_CODE
+                    && documentsOptions.throwOnAnyError())
+                    ? Mono.error(new IndexBatchException(IndexDocumentsResultConverter.map(response.getValue())))
+                    : Mono.just(response).map(MappingUtils::mappingIndexDocumentResultResponse));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -800,6 +797,7 @@ public final class SearchAsyncClient {
     private static SuggestRequest createSuggestRequest(String searchText, String suggesterName,
         SuggestOptions suggestOptions) {
         SuggestRequest suggestRequest = new SuggestRequest(searchText, suggesterName);
+        suggestRequest.validate();
 
         if (suggestOptions != null) {
             suggestRequest.setFilter(suggestOptions.getFilter())
@@ -839,6 +837,7 @@ public final class SearchAsyncClient {
     private static AutocompleteRequest createAutoCompleteRequest(String searchText, String suggesterName,
         AutocompleteOptions autocompleteOptions) {
         AutocompleteRequest autoCompleteRequest = new AutocompleteRequest(searchText, suggesterName);
+        autoCompleteRequest.validate();
 
         if (autocompleteOptions != null) {
             autoCompleteRequest.setFilter(autocompleteOptions.getFilter())
@@ -859,11 +858,10 @@ public final class SearchAsyncClient {
     }
 
     private static <T> IndexDocumentsBatch<T> buildIndexBatch(Iterable<T> documents, IndexActionType actionType) {
-        IndexDocumentsBatch<T> batch = new IndexDocumentsBatch<>();
-        List<IndexAction<T>> actions = batch.getActions();
+        List<IndexAction<T>> actions = new ArrayList<IndexAction<T>>();
         documents.forEach(d -> actions.add(new IndexAction<T>()
             .setActionType(actionType)
             .setDocument(d)));
-        return batch;
+        return new IndexDocumentsBatch<T>(actions);
     }
 }

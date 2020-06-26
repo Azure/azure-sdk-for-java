@@ -12,9 +12,9 @@ import com.azure.core.util.Context;
 import com.azure.search.documents.models.AutocompleteOptions;
 import com.azure.search.documents.models.IndexBatchException;
 import com.azure.search.documents.indexes.models.IndexDocumentsBatch;
+import com.azure.search.documents.models.IndexDocumentsOptions;
 import com.azure.search.documents.models.IndexDocumentsResult;
 import com.azure.search.documents.models.RequestOptions;
-import com.azure.search.documents.models.IndexDocumentsOptions;
 import com.azure.search.documents.models.SearchOptions;
 import com.azure.search.documents.models.SearchResult;
 import com.azure.search.documents.models.SuggestOptions;
@@ -100,8 +100,7 @@ public final class SearchClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<IndexDocumentsResult> uploadDocumentsWithResponse(Iterable<?> documents,
         IndexDocumentsOptions options, RequestOptions requestOptions, Context context) {
-        return asyncClient.uploadDocumentsWithResponse(documents, options, requestOptions,
-            context).block();
+        return asyncClient.uploadDocumentsWithResponse(documents, options, requestOptions, context).block();
     }
 
     /**
@@ -139,7 +138,7 @@ public final class SearchClient {
      * always declare primitive-typed properties with their class equivalents (for example, an integer property should
      * be of type {@code Integer} instead of {@code int}).
      *
-     * @param documents collection of documents to be merged
+     * @param documents collection of documents to be merged.
      * @param options Options that allow specifying document indexing behavior.
      * @param requestOptions additional parameters for the operation. Contains the tracking ID sent with the request to
      * help with debugging
@@ -156,8 +155,7 @@ public final class SearchClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<IndexDocumentsResult> mergeDocumentsWithResponse(Iterable<?> documents,
         IndexDocumentsOptions options, RequestOptions requestOptions, Context context) {
-        return asyncClient.mergeDocumentsWithResponse(documents, options, requestOptions,
-            context).block();
+        return asyncClient.mergeDocumentsWithResponse(documents, options, requestOptions, context).block();
     }
 
     /**
@@ -214,8 +212,7 @@ public final class SearchClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<IndexDocumentsResult> mergeOrUploadDocumentsWithResponse(Iterable<?> documents,
         IndexDocumentsOptions options, RequestOptions requestOptions, Context context) {
-        return asyncClient.mergeOrUploadDocumentsWithResponse(documents, options, requestOptions,
-            context).block();
+        return asyncClient.mergeOrUploadDocumentsWithResponse(documents, options, requestOptions, context).block();
     }
 
     /**

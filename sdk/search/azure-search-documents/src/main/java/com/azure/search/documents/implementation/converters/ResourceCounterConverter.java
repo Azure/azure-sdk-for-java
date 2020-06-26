@@ -17,10 +17,7 @@ public final class ResourceCounterConverter {
         if (obj == null) {
             return null;
         }
-        ResourceCounter resourceCounter = new ResourceCounter();
-
-        long usage = obj.getUsage();
-        resourceCounter.setUsage(usage);
+        ResourceCounter resourceCounter = new ResourceCounter(obj.getUsage());
 
         Long quota = obj.getQuota();
         resourceCounter.setQuota(quota);

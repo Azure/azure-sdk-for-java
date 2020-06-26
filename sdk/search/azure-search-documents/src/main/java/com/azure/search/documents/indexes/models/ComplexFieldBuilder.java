@@ -49,8 +49,7 @@ public class ComplexFieldBuilder extends SearchFieldBase {
      * @return The {@link SearchField} object.
      */
     public SearchField build() {
-        return new SearchField().setName(super.getName())
-            .setType(super.getDataType())
+        return new SearchField(super.getName(), super.getDataType())
             .setFields(fields);
     }
 }

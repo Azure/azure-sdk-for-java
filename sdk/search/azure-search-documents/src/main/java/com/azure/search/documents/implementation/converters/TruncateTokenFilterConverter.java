@@ -18,10 +18,7 @@ public final class TruncateTokenFilterConverter {
         if (obj == null) {
             return null;
         }
-        TruncateTokenFilter truncateTokenFilter = new TruncateTokenFilter();
-
-        String name = obj.getName();
-        truncateTokenFilter.setName(name);
+        TruncateTokenFilter truncateTokenFilter = new TruncateTokenFilter(obj.getName());
 
         Integer length = obj.getLength();
         truncateTokenFilter.setLength(length);

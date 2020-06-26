@@ -153,10 +153,9 @@ public final class FieldBuilder {
 
     private static SearchField convertToBasicSearchField(java.lang.reflect.Field classField,
         ClientLogger logger) {
-        SearchField searchField = new SearchField();
-        searchField.setName(classField.getName());
+
         SearchFieldDataType dataType = covertToSearchFieldDataType(classField.getGenericType(), false, logger);
-        searchField.setType(dataType);
+        SearchField searchField = new SearchField(classField.getName(), dataType);
         return searchField;
     }
 

@@ -18,13 +18,8 @@ public final class MagnitudeScoringParametersConverter {
         if (obj == null) {
             return null;
         }
-        MagnitudeScoringParameters magnitudeScoringParameters = new MagnitudeScoringParameters();
-
-        double boostingRangeStart = obj.getBoostingRangeStart();
-        magnitudeScoringParameters.setBoostingRangeStart(boostingRangeStart);
-
-        double boostingRangeEnd = obj.getBoostingRangeEnd();
-        magnitudeScoringParameters.setBoostingRangeEnd(boostingRangeEnd);
+        MagnitudeScoringParameters magnitudeScoringParameters = new MagnitudeScoringParameters(
+            obj.getBoostingRangeStart(), obj.getBoostingRangeEnd());
 
         Boolean shouldBoostBeyondRangeByConstant = obj.isShouldBoostBeyondRangeByConstant();
         magnitudeScoringParameters.setShouldBoostBeyondRangeByConstant(shouldBoostBeyondRangeByConstant);

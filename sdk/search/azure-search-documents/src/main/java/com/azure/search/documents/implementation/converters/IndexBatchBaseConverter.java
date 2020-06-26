@@ -3,7 +3,6 @@
 
 package com.azure.search.documents.implementation.converters;
 
-import com.azure.search.documents.implementation.util.PrivateFieldAccessHelper;
 import com.azure.search.documents.models.IndexAction;
 import com.azure.search.documents.models.IndexBatchBase;
 
@@ -22,14 +21,10 @@ public final class IndexBatchBaseConverter {
         if (obj == null) {
             return null;
         }
-        IndexBatchBase<T> indexBatchBase = new IndexBatchBase<T>();
 
-        if (obj.getActions() != null) {
-            List<IndexAction<T>> actions =
-                obj.getActions().stream().map(IndexActionConverter::<T>map).collect(Collectors.toList());
-            PrivateFieldAccessHelper.set(indexBatchBase, "actions", actions);
-        }
-        return indexBatchBase;
+        List<IndexAction<T>> actions = obj.getActions() == null ? null
+            : obj.getActions().stream().map(IndexActionConverter::<T>map).collect(Collectors.toList());
+        return new IndexBatchBase<T>(actions);
     }
 
     /**

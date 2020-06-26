@@ -28,16 +28,10 @@ public class CreateIndexExample {
             .credential(searchApiKeyCredential)
             .buildClient();
 
-        SearchIndex newIndex = new SearchIndex()
-            .setName(INDEX_NAME)
-            .setFields(
-                Arrays.asList(new SearchField()
-                        .setName("Name")
-                        .setType(SearchFieldDataType.STRING)
-                        .setKey(Boolean.TRUE),
-                    new SearchField()
-                        .setName("Cuisine")
-                        .setType(SearchFieldDataType.STRING)));
+        SearchIndex newIndex = new SearchIndex(INDEX_NAME,
+            Arrays.asList(new SearchField("Name", SearchFieldDataType.STRING)
+                .setKey(Boolean.TRUE),
+            new SearchField("Cuisine", SearchFieldDataType.STRING)));
         // Create index.
         client.createIndex(newIndex);
 
