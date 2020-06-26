@@ -52,7 +52,7 @@ public final class ItemComparator implements Comparator<Object>, Serializable {
                 return hash1.compareTo(hash2);
             }
             catch (IOException e) {
-                throw new IllegalStateException(String.format("Exception for getting hash for type %s: %s ", type1.toString(), e.getMessage()));
+                throw new IllegalStateException(String.format("Getting hash exception for type %s ", type1.toString()), e);
             }
 
         default:
