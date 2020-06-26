@@ -9,7 +9,7 @@ import java.util.Objects;
 public class UInt128 implements Comparable<UInt128>{
     private static final int SIZE  = Long.SIZE + Long.SIZE;
     private static final int BYTES = SIZE / Byte.SIZE;
-    public static UInt128 ZERO = new UInt128(0l, 0l);
+    public static final UInt128 ZERO = new UInt128(0l, 0l);
 
     final long low;
     final long high;
