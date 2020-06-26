@@ -17,7 +17,7 @@ public final class QueueHelper {
         try {
             Class.forName(QueueAccessor.class.getName(), true, QueueAccessor.class.getClassLoader());
         } catch (ClassNotFoundException e) {
-            throw new ClientLogger(QueueAccessor.class).logThrowableAsError(new AssertionError(e));
+            throw new ClientLogger(QueueHelper.class).logThrowableAsError(new AssertionError(e));
         }
     }
 
@@ -29,7 +29,7 @@ public final class QueueHelper {
      */
     public static void setName(QueueDescription queueDescription, String name) {
         if (accessor == null) {
-            throw new ClientLogger(QueueAccessor.class).logExceptionAsError(
+            throw new ClientLogger(QueueHelper.class).logExceptionAsError(
                 new IllegalStateException("'QueueAccessor.accessor' should not be null."));
         }
 
@@ -45,7 +45,7 @@ public final class QueueHelper {
         Objects.requireNonNull(accessor, "'accessor' cannot be null.");
 
         if (QueueHelper.accessor != null) {
-            throw new ClientLogger(QueueAccessor.class).logExceptionAsError(new IllegalStateException(
+            throw new ClientLogger(QueueHelper.class).logExceptionAsError(new IllegalStateException(
                 "'accessor' is already set."));
         }
 

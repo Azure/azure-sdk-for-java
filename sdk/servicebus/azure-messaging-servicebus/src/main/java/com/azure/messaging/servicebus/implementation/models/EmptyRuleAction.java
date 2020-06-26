@@ -14,4 +14,5 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 @JsonTypeName("EmptyRuleAction")
 @JacksonXmlRootElement(localName = "EmptyRuleAction")
 @Immutable
-public final class EmptyRuleAction extends RuleAction {}
+public final class EmptyRuleAction extends RuleAction {
+}

@@ -27,4 +27,5 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
         localName = "Filter",
         namespace = "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect")
 @Immutable
-public class RuleFilter {}
+public class RuleFilter {
+}

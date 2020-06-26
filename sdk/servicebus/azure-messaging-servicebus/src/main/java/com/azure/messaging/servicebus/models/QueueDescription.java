@@ -261,7 +261,7 @@ public final class QueueDescription {
     private String queueName;
 
     // Store the singleton instance of the QueueHelper for a QueueDescription.
-    private QueueHelper queueHelper = null;
+    private QueueHelper queueHelper;
 
     static {
         // This is used by classes in different packages to get access to private and package-private methods.
