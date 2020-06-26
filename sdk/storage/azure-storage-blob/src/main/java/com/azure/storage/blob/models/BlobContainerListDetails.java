@@ -47,7 +47,7 @@ public final class BlobContainerListDetails {
      *
      * @return a flag indicating whether deleted containers should be returned
      */
-    public boolean getRetrieveDeleted() {
+    private boolean getRetrieveDeleted() {
         return this.retrieveDeleted;
     }
 
@@ -57,7 +57,7 @@ public final class BlobContainerListDetails {
      * @param retrieveDeleted Flag indicating whether deleted containers should be returned.
      * @return the updated ContainerListDetails object
      */
-    public BlobContainerListDetails setRetrieveDeleted(boolean retrieveDeleted) {
+    private BlobContainerListDetails setRetrieveDeleted(boolean retrieveDeleted) {
         this.retrieveDeleted = retrieveDeleted;
         return this;
     }

@@ -427,12 +427,15 @@ public final class BlobServiceAsyncClient {
      */
     private List<ListBlobContainersIncludeType> toIncludeTypes(BlobContainerListDetails blobContainerListDetails) {
         boolean hasDetails = blobContainerListDetails != null
-            && (blobContainerListDetails.getRetrieveMetadata() || blobContainerListDetails.getRetrieveDeleted());
+            && blobContainerListDetails.getRetrieveMetadata();
+        // Add back for container soft delete.
+//        boolean hasDetails = blobContainerListDetails != null
+//            && (blobContainerListDetails.getRetrieveMetadata() || blobContainerListDetails.getRetrieveDeleted());
         if (hasDetails) {
             List<ListBlobContainersIncludeType> flags = new ArrayList<>(2);
-            if (blobContainerListDetails.getRetrieveDeleted()) {
-                flags.add(ListBlobContainersIncludeType.DELETED);
-            }
+//            if (blobContainerListDetails.getRetrieveDeleted()) {
+//                flags.add(ListBlobContainersIncludeType.DELETED);
+//            }
             if (blobContainerListDetails.getRetrieveMetadata()) {
                 flags.add(ListBlobContainersIncludeType.METADATA);
             }
