@@ -28,7 +28,7 @@ import com.azure.storage.common.sas.AccountSasPermission
 import com.azure.storage.common.sas.AccountSasResourceType
 import com.azure.storage.common.sas.AccountSasService
 import com.azure.storage.common.sas.AccountSasSignatureValues
-import org.junit.Ignore
+import spock.lang.Ignore
 import reactor.core.publisher.Mono
 import reactor.test.StepVerifier
 import spock.lang.Unroll
