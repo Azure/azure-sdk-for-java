@@ -28,7 +28,7 @@ public final class TextWeights {
      * are field names and the values are the weights for each field.
      */
     @JsonCreator
-    public TextWeights(@JsonProperty(value = "weights", required = true) Map<String, Double> weights) {
+    public TextWeights(@JsonProperty(value = "weights") Map<String, Double> weights) {
         this.weights = weights;
     }
 

@@ -17,7 +17,7 @@ import com.azure.search.documents.indexes.models.SearchIndexer;
 import com.azure.search.documents.indexes.models.SearchIndexerSkill;
 import com.azure.search.documents.indexes.models.SearchIndexerSkillset;
 import com.azure.search.documents.indexes.models.SearchServiceCounters;
-import com.azure.search.documents.indexes.models.ServiceLimits;
+import com.azure.search.documents.indexes.models.SearchServiceLimits;
 import com.azure.search.documents.indexes.models.SearchServiceStatistics;
 import com.azure.search.documents.indexes.models.SynonymMap;
 import com.azure.search.documents.indexes.models.WebApiSkill;
@@ -100,7 +100,7 @@ public class RefineSearchCapabilitiesExample {
     private static void getServiceStatistics(SearchIndexClient client) {
         SearchServiceStatistics statistics = client.getServiceStatistics();
         SearchServiceCounters counters = statistics.getCounters();
-        ServiceLimits limits = statistics.getLimits();
+        SearchServiceLimits limits = statistics.getLimits();
 
         System.out.println("Service Statistics:");
         System.out.printf("     Documents quota: %d, documents usage: %d%n", counters.getDocumentCounter().getQuota(), counters.getDocumentCounter().getUsage());

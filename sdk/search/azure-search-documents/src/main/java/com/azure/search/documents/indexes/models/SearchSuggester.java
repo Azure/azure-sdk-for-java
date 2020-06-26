@@ -34,8 +34,8 @@ public final class SearchSuggester {
      */
     @JsonCreator
     public SearchSuggester(
-        @JsonProperty(value = "name", required = true) String name,
-        @JsonProperty(value = "sourceFields", required = true) List<String> sourceFields) {
+        @JsonProperty(value = "name") String name,
+        @JsonProperty(value = "sourceFields") List<String> sourceFields) {
         this.name = name;
         this.sourceFields = sourceFields;
     }

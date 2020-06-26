@@ -40,7 +40,7 @@ public final class CorsOptions {
      * allow all origins (not recommended).
      */
     @JsonCreator
-    public CorsOptions(@JsonProperty(value = "allowedOrigins", required = true) List<String> allowedOrigins) {
+    public CorsOptions(@JsonProperty(value = "allowedOrigins") List<String> allowedOrigins) {
         this.allowedOrigins = allowedOrigins;
     }
 

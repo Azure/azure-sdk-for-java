@@ -122,8 +122,8 @@ public final class SearchIndex {
      */
     @JsonCreator
     public SearchIndex(
-        @JsonProperty(value = "name", required = true) String name,
-        @JsonProperty(value = "fields", required = true) List<SearchField> fields) {
+        @JsonProperty(value = "name") String name,
+        @JsonProperty(value = "fields") List<SearchField> fields) {
         this.name = name;
         this.fields = fields;
     }
