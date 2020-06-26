@@ -26,8 +26,15 @@ public final class AsciiFoldingTokenFilter extends TokenFilter {
     @JsonProperty(value = "preserveOriginal")
     private Boolean preserveOriginal;
 
+    /**
+     * Constructor of {@link AsciiFoldingTokenFilter}.
+     *
+     * @param name The name of the token filter. It must only contain letters, digits,
+     * spaces, dashes or underscores, can only start and end with alphanumeric
+     * characters, and is limited to 128 characters.
+     */
     @JsonCreator
-    public AsciiFoldingTokenFilter(@JsonProperty(value = "name", required = true) String name) {
+    public AsciiFoldingTokenFilter(@JsonProperty(value = "name") String name) {
         super(name);
     }
 

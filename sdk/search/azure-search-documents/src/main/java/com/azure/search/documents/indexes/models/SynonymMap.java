@@ -50,9 +50,7 @@ public final class SynonymMap {
      * Constructor of {@link SynonymMap}.
      * @param name The name of the synonym map.
      */
-    @JsonCreator
-    public SynonymMap(
-        @JsonProperty(value = "name", required = true) String name) {
+    public SynonymMap(String name) {
         this.name = name;
     }
 
@@ -64,8 +62,8 @@ public final class SynonymMap {
      */
     @JsonCreator
     public SynonymMap(
-        @JsonProperty(value = "name", required = true) String name,
-        @JsonProperty(value = "synonyms", required = true) String synonyms) {
+        @JsonProperty(value = "name") String name,
+        @JsonProperty(value = "synonyms") String synonyms) {
         this.name = name;
         this.synonyms = synonyms;
     }

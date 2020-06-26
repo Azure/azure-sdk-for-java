@@ -32,8 +32,8 @@ public final class MappingCharFilter extends CharFilter {
      * @param name The name of the char filter. It must only contain letters, digits,
      * spaces, dashes or underscores, can only start and end with alphanumeric
      * characters, and is limited to 128 characters.
-     * @param mappings A list of mappings of the following format: "a=>b" (all occurrences of
-     *      * the character "a" will be replaced with character "b").
+     * @param mappings A list of mappings of the following format: "a=%3Eb" (all occurrences of
+     * the character "a" will be replaced with character "b").
      */
     public MappingCharFilter(String name, List<String> mappings) {
         super(name);

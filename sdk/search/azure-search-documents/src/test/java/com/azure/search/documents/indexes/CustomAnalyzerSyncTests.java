@@ -92,6 +92,7 @@ import static com.azure.search.documents.TestHelpers.generateRequestOptions;
 import static com.azure.search.documents.TestHelpers.waitForIndexing;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class CustomAnalyzerSyncTests extends SearchTestBase {
     private static final String NAME_PREFIX = "azsmnet";
@@ -344,11 +345,9 @@ public class CustomAnalyzerSyncTests extends SearchTestBase {
                 new PatternAnalyzer(null)
             ));
 
-        assertHttpResponseException(
-            () -> searchIndexClient.createIndex(index),
-            HttpURLConnection.HTTP_BAD_REQUEST,
-            "The name field is required."
-        );
+        assertThrows(IllegalArgumentException.class, () -> {
+            searchIndexClient.createIndex(index);
+        }, "Missing required property name in model LexicalAnalyzer");
     }
 
     @Test
@@ -496,11 +495,9 @@ public class CustomAnalyzerSyncTests extends SearchTestBase {
         SearchIndex index = createTestIndex(null)
             .setTokenizers(Collections.singletonList(new PatternTokenizer(null)));
 
-        assertHttpResponseException(
-            () -> searchIndexClient.createIndex(index),
-            HttpURLConnection.HTTP_BAD_REQUEST,
-            "The name field is required."
-        );
+        assertThrows(IllegalArgumentException.class, () -> {
+            searchIndexClient.createIndex(index);
+        }, "Missing required property name in model SearchIndexer");
     }
 
     @Test

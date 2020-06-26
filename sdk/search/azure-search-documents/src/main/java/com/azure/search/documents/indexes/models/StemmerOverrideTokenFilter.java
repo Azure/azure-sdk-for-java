@@ -33,8 +33,8 @@ public final class StemmerOverrideTokenFilter extends TokenFilter {
      * @param name The name of the token filter. It must only contain letters, digits,
      * spaces, dashes or underscores, can only start and end with alphanumeric
      * characters, and is limited to 128 characters.
-     * @param rules A list of stemming rules in the following format: "word => stem", for
-     * example: "ran => run".
+     * @param rules A list of stemming rules in the following format: "word =%3E stem", for
+     * example: "ran =%3E run".
      */
     public StemmerOverrideTokenFilter(String name, List<String> rules) {
         super(name);

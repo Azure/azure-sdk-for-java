@@ -93,7 +93,8 @@ public abstract class SearchTestBase extends TestBase {
         }
     }
 
-    protected String setupIndex(SearchIndex index) {        try {
+    protected String setupIndex(SearchIndex index) {
+        try {
             Field searchIndexName = index.getClass().getDeclaredField("name");
             searchIndexName.setAccessible(true);
 

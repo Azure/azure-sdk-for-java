@@ -83,6 +83,8 @@ public final class SearchClient {
      * Uploads a collection of documents to the target index.
      *
      * @param documents collection of documents to upload to the target Index.
+     * @param requestOptions additional parameters for the operation. Contains the tracking ID sent with the request to
+     * help with debugging
      * @param context additional context that is passed through the Http pipeline during the service call
      * @return response containing the document index result.
      * @throws IndexBatchException If some of the indexing actions fail but other actions succeed and modify the state
@@ -135,6 +137,8 @@ public final class SearchClient {
      * be of type {@code Integer} instead of {@code int}).
      *
      * @param documents collection of documents to be merged
+     * @param requestOptions additional parameters for the operation. Contains the tracking ID sent with the request to
+     * help with debugging
      * @param context additional context that is passed through the Http pipeline during the service call
      * @return response containing the document index result.
      * @throws IndexBatchException If some of the indexing actions fail but other actions succeed and modify the state
@@ -189,6 +193,8 @@ public final class SearchClient {
      * be of type {@code Integer} instead of {@code int}).
      *
      * @param documents collection of documents to be merged, if exists, otherwise uploaded
+     * @param requestOptions additional parameters for the operation. Contains the tracking ID sent with the request to
+     * help with debugging
      * @param context additional context that is passed through the Http pipeline during the service call
      * @return response containing a document index result
      * @throws IndexBatchException If some of the indexing actions fail but other actions succeed and modify the state
@@ -227,6 +233,8 @@ public final class SearchClient {
      * Deletes a collection of documents from the target index.
      *
      * @param documents collection of documents to delete from the target Index. Fields other than the key are ignored.
+     * @param requestOptions additional parameters for the operation. Contains the tracking ID sent with the request to
+     * help with debugging
      * @param context additional context that is passed through the Http pipeline during the service call
      * @return response containing a document index result.
      * @throws IndexBatchException If some of the indexing actions fail but other actions succeed and modify the state
@@ -265,6 +273,8 @@ public final class SearchClient {
     /**
      * Queries the number of documents in the search index.
      *
+     * @param requestOptions additional parameters for the operation. Contains the tracking ID sent with the request to
+     * help with debugging
      * @param context additional context that is passed through the Http pipeline during the service call
      * @return response containing the number of documents.
      */
@@ -408,6 +418,8 @@ public final class SearchClient {
      * Sends a batch of upload, merge, and/or delete actions to the search index.
      *
      * @param batch The batch of index actions
+     * @param requestOptions additional parameters for the operation. Contains the tracking ID sent with the request to
+     * help with debugging
      * @param context additional context that is passed through the Http pipeline during the service call
      * @return Response containing the status of operations for all actions in the batch
      * @throws IndexBatchException If some of the indexing actions fail but other actions succeed and modify the state

@@ -48,9 +48,7 @@ public final class SearchIndexerSkillset {
      *
      * @param name The name of the skillset.
      */
-    @JsonCreator
-    public SearchIndexerSkillset(
-        @JsonProperty(value = "name", required = true) String name) {
+    public SearchIndexerSkillset(String name) {
         this.name = name;
     }
 
@@ -62,8 +60,8 @@ public final class SearchIndexerSkillset {
      */
     @JsonCreator
     public SearchIndexerSkillset(
-        @JsonProperty(value = "name", required = true) String name,
-        @JsonProperty(value = "skills", required = true) List<SearchIndexerSkill> skills) {
+        @JsonProperty(value = "name") String name,
+        @JsonProperty(value = "skills") List<SearchIndexerSkill> skills) {
         this.name = name;
         this.skills = skills;
     }

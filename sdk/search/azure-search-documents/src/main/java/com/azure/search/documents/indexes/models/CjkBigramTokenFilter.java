@@ -32,10 +32,14 @@ public final class CjkBigramTokenFilter extends TokenFilter {
     private Boolean outputUnigrams;
 
     /**
-     *  {@inheritDoc}
+     * Constructor of {@link CjkBigramTokenFilter}.
+     *
+     * @param name The name of the token filter. It must only contain letters, digits,
+     * spaces, dashes or underscores, can only start and end with alphanumeric
+     * characters, and is limited to 128 characters.
      */
     @JsonCreator
-    public CjkBigramTokenFilter(@JsonProperty(value = "name", required = true) String name) {
+    public CjkBigramTokenFilter(@JsonProperty(value = "name") String name) {
         super(name);
     }
 

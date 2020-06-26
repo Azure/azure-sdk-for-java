@@ -27,10 +27,14 @@ public final class ClassicTokenizer extends LexicalTokenizer {
     private Integer maxTokenLength;
 
     /**
-     * {@inheritDoc}
+     * Constructor of {@link ClassicTokenizer}.
+     *
+     * @param name The name of the token filter. It must only contain letters, digits,
+     * spaces, dashes or underscores, can only start and end with alphanumeric
+     * characters, and is limited to 128 characters.
      */
     @JsonCreator
-    public ClassicTokenizer(@JsonProperty(value = "name", required = true) String name) {
+    public ClassicTokenizer(@JsonProperty(value = "name") String name) {
         super(name);
     }
 

@@ -67,9 +67,7 @@ public final class SearchIndexerDataSourceConnection {
      *
      * @param name The name of the datasource.
      */
-    @JsonCreator
-    public SearchIndexerDataSourceConnection(
-        @JsonProperty(value = "name", required = true) String name) {
+    public SearchIndexerDataSourceConnection(String name) {
         this.name = name;
     }
 
@@ -84,10 +82,10 @@ public final class SearchIndexerDataSourceConnection {
      */
     @JsonCreator
     public SearchIndexerDataSourceConnection(
-        @JsonProperty(value = "name", required = true) String name,
-        @JsonProperty(value = "type", required = true) SearchIndexerDataSourceType type,
-        @JsonProperty(value = "credentials", required = true) String connectionString,
-        @JsonProperty(value = "container", required = true) SearchIndexerDataContainer container) {
+        @JsonProperty(value = "name") String name,
+        @JsonProperty(value = "type") SearchIndexerDataSourceType type,
+        @JsonProperty(value = "credentials") String connectionString,
+        @JsonProperty(value = "container") SearchIndexerDataContainer container) {
         this.name = name;
         this.type = type;
         this.connectionString = connectionString;

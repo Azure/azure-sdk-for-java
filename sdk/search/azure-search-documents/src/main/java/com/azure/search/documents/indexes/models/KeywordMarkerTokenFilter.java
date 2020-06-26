@@ -32,12 +32,17 @@ public final class KeywordMarkerTokenFilter extends TokenFilter {
     private Boolean caseIgnored;
 
     /**
-     * {@inheritDoc}
+     * Constructor of {@link KeywordMarkerTokenFilter}.
+     *
+     * @param name The name of the token filter. It must only contain letters, digits,
+     * spaces, dashes or underscores, can only start and end with alphanumeric
+     * characters, and is limited to 128 characters.
+     * @param keywords A list of words to mark as keywords.
      */
     @JsonCreator
     public KeywordMarkerTokenFilter(
-        @JsonProperty(value = "name", required = true) String name,
-        @JsonProperty(value = "keywords", required = true) List<String> keywords) {
+        @JsonProperty(value = "name") String name,
+        @JsonProperty(value = "keywords") List<String> keywords) {
         super(name);
         this.keywords = keywords;
     }

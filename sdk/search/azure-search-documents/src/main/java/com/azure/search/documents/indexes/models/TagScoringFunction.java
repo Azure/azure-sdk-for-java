@@ -4,6 +4,7 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -29,7 +30,11 @@ public final class TagScoringFunction extends ScoringFunction {
      * @param boost A multiplier for the raw score. Must be a positive number not equal to 1.0.
      * @param parameters Parameter values for the tag scoring function.
      */
-    public TagScoringFunction(String fieldName, double boost, TagScoringParameters parameters) {
+    @JsonCreator
+    public TagScoringFunction(
+        @JsonProperty(value = "fieldName") String fieldName,
+        @JsonProperty(value = "boost") double boost,
+        @JsonProperty(value = "tag") TagScoringParameters parameters) {
         super(fieldName, boost);
         this.parameters = parameters;
     }

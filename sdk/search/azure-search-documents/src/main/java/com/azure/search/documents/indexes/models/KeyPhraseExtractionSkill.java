@@ -32,6 +32,14 @@ public final class KeyPhraseExtractionSkill extends SearchIndexerSkill {
     @JsonProperty(value = "maxKeyPhraseCount")
     private Integer maxKeyPhraseCount;
 
+    /**
+     * Constructor of {@link KeyPhraseExtractionSkill}.
+     *
+     * @param inputs Inputs of the skills could be a column in the source data set, or the
+     * output of an upstream skill.
+     * @param outputs The output of a skill is either a field in a search index, or a value
+     * that can be consumed as an input by another skill.
+     */
     public KeyPhraseExtractionSkill(List<InputFieldMappingEntry> inputs, List<OutputFieldMappingEntry> outputs) {
         super(inputs, outputs);
     }

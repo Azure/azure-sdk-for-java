@@ -33,10 +33,14 @@ public final class LuceneStandardAnalyzer extends LexicalAnalyzer {
     private List<String> stopwords;
 
     /**
-     * {@inheritDoc}
+     * Constructor of {@link LuceneStandardAnalyzer}.
+     *
+     * @param name The name of the analyzer. It must only contain letters, digits, spaces,
+     * dashes or underscores, can only start and end with alphanumeric
+     * characters, and is limited to 128 characters.
      */
     @JsonCreator
-    public LuceneStandardAnalyzer(@JsonProperty(value = "name", required = true) String name) {
+    public LuceneStandardAnalyzer(@JsonProperty(value = "name") String name) {
         super(name);
     }
 

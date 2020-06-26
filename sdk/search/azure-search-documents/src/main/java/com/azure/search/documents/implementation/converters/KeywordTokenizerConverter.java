@@ -45,7 +45,6 @@ public final class KeywordTokenizerConverter {
 
         Integer bufferSize = obj.getBufferSize();
         keywordTokenizer.setMaxTokenLength(bufferSize);
-        keywordTokenizer.setName(obj.getName());
         return keywordTokenizer;
     }
 

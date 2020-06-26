@@ -111,9 +111,7 @@ public final class SearchIndex {
      * Constructor of {@link SearchIndex}.
      * @param name The name of the index.
      */
-    @JsonCreator
-    public SearchIndex(
-        @JsonProperty(value = "name", required = true) String name) {
+    public SearchIndex(String name) {
         this.name = name;
     }
 

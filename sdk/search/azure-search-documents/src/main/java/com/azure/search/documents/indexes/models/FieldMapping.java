@@ -35,10 +35,10 @@ public final class FieldMapping {
     /**
      * Constructor of {@link FieldMapping}.
      *
-     * @param sourceFieldName
+     * @param sourceFieldName The name of the field in the data source.
      */
     @JsonCreator
-    public FieldMapping(@JsonProperty(value = "sourceFieldName", required = true) String sourceFieldName) {
+    public FieldMapping(@JsonProperty(value = "sourceFieldName") String sourceFieldName) {
         this.sourceFieldName = sourceFieldName;
     }
 

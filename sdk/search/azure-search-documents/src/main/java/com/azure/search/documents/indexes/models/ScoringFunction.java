@@ -52,8 +52,8 @@ public abstract class ScoringFunction {
      */
     @JsonCreator
     public ScoringFunction(
-        @JsonProperty(value = "fieldName", required = true) String fieldName,
-        @JsonProperty(value = "boost", required = true) double boost) {
+        @JsonProperty(value = "fieldName") String fieldName,
+        @JsonProperty(value = "boost") double boost) {
         this.fieldName = fieldName;
         this.boost = boost;
     }

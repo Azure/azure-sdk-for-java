@@ -45,12 +45,12 @@ public abstract class LexicalTokenizer {
     /**
      * Constructor of {@link LexicalTokenizer}.
      *
-     * @param name The name of the tokenizer. It must only contain letters, digits, spaces,
-     * dashes or underscores, can only start and end with alphanumeric
+     * @param name The name of the token filter. It must only contain letters, digits,
+     * spaces, dashes or underscores, can only start and end with alphanumeric
      * characters, and is limited to 128 characters.
      */
     @JsonCreator
-    public LexicalTokenizer(@JsonProperty(value = "name", required = true) String name) {
+    public LexicalTokenizer(@JsonProperty(value = "name") String name) {
         this.name = name;
     }
 

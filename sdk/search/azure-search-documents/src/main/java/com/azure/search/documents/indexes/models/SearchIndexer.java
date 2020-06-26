@@ -86,12 +86,8 @@ public final class SearchIndexer {
      *
      * @param name The name of the indexer.
      */
-    @JsonCreator
-    public SearchIndexer(
-        @JsonProperty(value = "name", required = true) String name) {
+    public SearchIndexer(String name) {
         this.name = name;
-        this.dataSourceName = dataSourceName;
-        this.targetIndexName = targetIndexName;
     }
 
     /**
@@ -103,9 +99,9 @@ public final class SearchIndexer {
      */
     @JsonCreator
     public SearchIndexer(
-        @JsonProperty(value = "name", required = true) String name,
-        @JsonProperty(value = "dataSourceName", required = true) String dataSourceName,
-        @JsonProperty(value = "targetIndexName", required = true) String targetIndexName) {
+        @JsonProperty(value = "name") String name,
+        @JsonProperty(value = "dataSourceName") String dataSourceName,
+        @JsonProperty(value = "targetIndexName") String targetIndexName) {
         this.name = name;
         this.dataSourceName = dataSourceName;
         this.targetIndexName = targetIndexName;
@@ -151,6 +147,18 @@ public final class SearchIndexer {
     }
 
     /**
+     * Set the dataSourceName property: The name of the datasource from which
+     * this indexer reads data.
+     *
+     * @param dataSourceName the dataSourceName value.
+     * @return the SearchIndexer object itself.
+     */
+    public SearchIndexer setDataSourceName(String dataSourceName) {
+        this.dataSourceName = dataSourceName;
+        return this;
+    }
+
+    /**
      * Get the skillsetName property: The name of the skillset executing with
      * this indexer.
      *
@@ -180,6 +188,18 @@ public final class SearchIndexer {
      */
     public String getTargetIndexName() {
         return this.targetIndexName;
+    }
+
+    /**
+     * Set the targetIndexName property: The name of the index to which this
+     * indexer writes data.
+     *
+     * @param targetIndexName the targetIndexName value.
+     * @return the SearchIndexer object itself.
+     */
+    public SearchIndexer setTargetIndexName(String targetIndexName) {
+        this.targetIndexName = targetIndexName;
+        return this;
     }
 
     /**

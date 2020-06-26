@@ -60,7 +60,10 @@ public final class SearchResourceEncryptionKey {
      * might be https://my-keyvault-name.vault.azure.net.
      */
     @JsonCreator
-    public SearchResourceEncryptionKey(String keyName, String keyVersion, String vaultUrl) {
+    public SearchResourceEncryptionKey(
+        @JsonProperty(value = "keyVaultKeyName") String keyName,
+        @JsonProperty(value = "keyVaultKeyVersion") String keyVersion,
+        @JsonProperty(value = "keyVaultUri") String vaultUrl) {
         this.keyName = keyName;
         this.keyVersion = keyVersion;
         this.vaultUrl = vaultUrl;

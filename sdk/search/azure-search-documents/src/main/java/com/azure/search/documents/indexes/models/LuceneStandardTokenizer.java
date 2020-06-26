@@ -23,10 +23,14 @@ public final class LuceneStandardTokenizer extends LexicalTokenizer {
     private Integer maxTokenLength;
 
     /**
-     * {@inheritDoc}
+     * Constructor of {@link LuceneStandardTokenizer}.
+     *
+     * @param name The name of the tokenizer. It must only contain letters, digits, spaces,
+     * dashes or underscores, can only start and end with alphanumeric
+     * characters, and is limited to 128 characters.
      */
     @JsonCreator
-    public LuceneStandardTokenizer(@JsonProperty(value = "name", required = true) String name) {
+    public LuceneStandardTokenizer(@JsonProperty(value = "name") String name) {
         super(name);
         odataType = "#Microsoft.Azure.Search.LuceneStandardTokenizerV2";
     }
