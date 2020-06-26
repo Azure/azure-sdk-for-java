@@ -8,7 +8,6 @@ import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.Response;
-import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
@@ -18,8 +17,8 @@ import com.azure.search.documents.implementation.converters.SearchIndexerConvert
 import com.azure.search.documents.implementation.converters.SearchIndexerDataSourceConverter;
 import com.azure.search.documents.implementation.converters.SearchIndexerSkillsetConverter;
 import com.azure.search.documents.implementation.util.MappingUtils;
-import com.azure.search.documents.indexes.implementation.SearchServiceRestClientBuilder;
-import com.azure.search.documents.indexes.implementation.SearchServiceRestClientImpl;
+import com.azure.search.documents.indexes.implementation.SearchServiceClientImpl;
+import com.azure.search.documents.indexes.implementation.SearchServiceClientImplBuilder;
 import com.azure.search.documents.indexes.implementation.models.ListDataSourcesResult;
 import com.azure.search.documents.indexes.implementation.models.ListIndexersResult;
 import com.azure.search.documents.indexes.implementation.models.ListSkillsetsResult;
@@ -59,7 +58,7 @@ public class SearchIndexerAsyncClient {
     /**
      * The underlying AutoRest client used to interact with the Search service
      */
-    private final SearchServiceRestClientImpl restClient;
+    private final SearchServiceClientImpl restClient;
 
     /**
      * The pipeline that powers this client.
@@ -71,11 +70,10 @@ public class SearchIndexerAsyncClient {
         this.serviceVersion = serviceVersion;
         this.httpPipeline = httpPipeline;
 
-        this.restClient = new SearchServiceRestClientBuilder()
+        this.restClient = new SearchServiceClientImplBuilder()
             .endpoint(endpoint)
-            .apiVersion(serviceVersion.getVersion())
             .pipeline(httpPipeline)
-            .build();
+            .buildClient();
     }
 
     /**
@@ -132,8 +130,8 @@ public class SearchIndexerAsyncClient {
         String ifMatch = onlyIfUnchanged ? dataSource.getETag() : null;
         try {
             return restClient
-                .dataSources()
-                .createOrUpdateWithRestResponseAsync(dataSource.getName(),
+                .getDataSources()
+                .createOrUpdateWithResponseAsync(dataSource.getName(),
                     SearchIndexerDataSourceConverter.map(dataSource), ifMatch, null,
                     RequestOptionsIndexesConverter.map(requestOptions), context)
                 .onErrorMap(MappingUtils::exceptionMapper)
@@ -172,8 +170,8 @@ public class SearchIndexerAsyncClient {
     Mono<Response<SearchIndexerDataSourceConnection>> createDataSourceConnectionWithResponse(
         SearchIndexerDataSourceConnection dataSource, RequestOptions requestOptions, Context context) {
         try {
-            return restClient.dataSources()
-                .createWithRestResponseAsync(SearchIndexerDataSourceConverter.map(dataSource),
+            return restClient.getDataSources()
+                .createWithResponseAsync(SearchIndexerDataSourceConverter.map(dataSource),
                     RequestOptionsIndexesConverter.map(requestOptions), context)
                 .onErrorMap(MappingUtils::exceptionMapper)
                 .map(MappingUtils::mappingExternalDataSource);
@@ -211,8 +209,8 @@ public class SearchIndexerAsyncClient {
     Mono<Response<SearchIndexerDataSourceConnection>> getDataSourceConnectionWithResponse(String dataSourceName,
         RequestOptions requestOptions, Context context) {
         try {
-            return restClient.dataSources()
-                .getWithRestResponseAsync(dataSourceName, RequestOptionsIndexesConverter.map(requestOptions), context)
+            return restClient.getDataSources()
+                .getWithResponseAsync(dataSourceName, RequestOptionsIndexesConverter.map(requestOptions), context)
                 .onErrorMap(MappingUtils::exceptionMapper)
                 .map(MappingUtils::mappingExternalDataSource);
         } catch (RuntimeException ex) {
@@ -294,10 +292,10 @@ public class SearchIndexerAsyncClient {
         }
     }
 
-    private Mono<SimpleResponse<ListDataSourcesResult>> listDataSourceConnectionsWithResponse(String select,
+    private Mono<Response<ListDataSourcesResult>> listDataSourceConnectionsWithResponse(String select,
         RequestOptions requestOptions, Context context) {
-        return restClient.dataSources()
-            .listWithRestResponseAsync(select, RequestOptionsIndexesConverter.map(requestOptions), context)
+        return restClient.getDataSources()
+            .listWithResponseAsync(select, RequestOptionsIndexesConverter.map(requestOptions), context)
             .onErrorMap(MappingUtils::exceptionMapper);
     }
 
@@ -335,8 +333,8 @@ public class SearchIndexerAsyncClient {
     Mono<Response<Void>> deleteDataSourceConnectionWithResponse(String dataSourceName, String etag,
         RequestOptions requestOptions, Context context) {
         try {
-            return restClient.dataSources()
-                .deleteWithRestResponseAsync(
+            return restClient.getDataSources()
+                .deleteWithResponseAsync(
                     dataSourceName,
                     etag, null,
                     RequestOptionsIndexesConverter.map(requestOptions),
@@ -376,8 +374,8 @@ public class SearchIndexerAsyncClient {
     Mono<Response<SearchIndexer>> createIndexerWithResponse(SearchIndexer indexer, RequestOptions requestOptions,
         Context context) {
         try {
-            return restClient.indexers()
-                .createWithRestResponseAsync(SearchIndexerConverter.map(indexer),
+            return restClient.getIndexers()
+                .createWithResponseAsync(SearchIndexerConverter.map(indexer),
                     RequestOptionsIndexesConverter.map(requestOptions), context)
                 .onErrorMap(MappingUtils::exceptionMapper)
                 .map(MappingUtils::mappingExternalSearchIndexer);
@@ -419,8 +417,8 @@ public class SearchIndexerAsyncClient {
         Objects.requireNonNull(indexer, "'Indexer' cannot be 'null'");
         String ifMatch = onlyIfUnchanged ? indexer.getETag() : null;
         try {
-            return restClient.indexers()
-                .createOrUpdateWithRestResponseAsync(indexer.getName(), SearchIndexerConverter.map(indexer), ifMatch,
+            return restClient.getIndexers()
+                .createOrUpdateWithResponseAsync(indexer.getName(), SearchIndexerConverter.map(indexer), ifMatch,
                     null,
                     RequestOptionsIndexesConverter.map(requestOptions),
                     context)
@@ -458,8 +456,8 @@ public class SearchIndexerAsyncClient {
     Mono<Response<SearchIndexer>> getIndexerWithResponse(String indexerName, RequestOptions requestOptions,
         Context context) {
         try {
-            return restClient.indexers()
-                .getWithRestResponseAsync(indexerName, RequestOptionsIndexesConverter.map(requestOptions), context)
+            return restClient.getIndexers()
+                .getWithResponseAsync(indexerName, RequestOptionsIndexesConverter.map(requestOptions), context)
                 .onErrorMap(MappingUtils::exceptionMapper)
                 .map(MappingUtils::mappingExternalSearchIndexer);
         } catch (RuntimeException ex) {
@@ -539,10 +537,10 @@ public class SearchIndexerAsyncClient {
         }
     }
 
-    private Mono<SimpleResponse<ListIndexersResult>> listIndexersWithResponse(String select,
+    private Mono<Response<ListIndexersResult>> listIndexersWithResponse(String select,
         RequestOptions requestOptions, Context context) {
-        return restClient.indexers()
-            .listWithRestResponseAsync(select, RequestOptionsIndexesConverter.map(requestOptions), context)
+        return restClient.getIndexers()
+            .listWithResponseAsync(select, RequestOptionsIndexesConverter.map(requestOptions), context)
             .onErrorMap(MappingUtils::exceptionMapper);
     }
 
@@ -589,8 +587,8 @@ public class SearchIndexerAsyncClient {
     Mono<Response<Void>> deleteIndexerWithResponse(String indexerName, String etag, RequestOptions requestOptions,
         Context context) {
         try {
-            return restClient.indexers()
-                .deleteWithRestResponseAsync(indexerName, etag, null,
+            return restClient.getIndexers()
+                .deleteWithResponseAsync(indexerName, etag, null,
                     RequestOptionsIndexesConverter.map(requestOptions), context)
                 .onErrorMap(MappingUtils::exceptionMapper)
                 .map(Function.identity());
@@ -625,8 +623,8 @@ public class SearchIndexerAsyncClient {
 
     Mono<Response<Void>> resetIndexerWithResponse(String indexerName, RequestOptions requestOptions, Context context) {
         try {
-            return restClient.indexers()
-                .resetWithRestResponseAsync(indexerName, RequestOptionsIndexesConverter.map(requestOptions), context)
+            return restClient.getIndexers()
+                .resetWithResponseAsync(indexerName, RequestOptionsIndexesConverter.map(requestOptions), context)
                 .onErrorMap(MappingUtils::exceptionMapper)
                 .map(Function.identity());
         } catch (RuntimeException ex) {
@@ -660,7 +658,7 @@ public class SearchIndexerAsyncClient {
 
     Mono<Response<Void>> runIndexerWithResponse(String indexerName, RequestOptions requestOptions, Context context) {
         try {
-            return restClient.indexers().runWithRestResponseAsync(indexerName,
+            return restClient.getIndexers().runWithResponseAsync(indexerName,
                 RequestOptionsIndexesConverter.map(requestOptions), context)
                 .onErrorMap(MappingUtils::exceptionMapper)
                 .map(Function.identity());
@@ -697,8 +695,8 @@ public class SearchIndexerAsyncClient {
     Mono<Response<SearchIndexerStatus>> getIndexerStatusWithResponse(String indexerName, RequestOptions requestOptions,
         Context context) {
         try {
-            return restClient.indexers()
-                .getStatusWithRestResponseAsync(indexerName, RequestOptionsIndexesConverter.map(requestOptions),
+            return restClient.getIndexers()
+                .getStatusWithResponseAsync(indexerName, RequestOptionsIndexesConverter.map(requestOptions),
                     context)
                 .onErrorMap(MappingUtils::exceptionMapper)
                 .map(MappingUtils::mappingIndexerStatus);
@@ -737,8 +735,8 @@ public class SearchIndexerAsyncClient {
         Context context) {
         Objects.requireNonNull(skillset, "'Skillset' cannot be null.");
         try {
-            return restClient.skillsets()
-                .createWithRestResponseAsync(SearchIndexerSkillsetConverter.map(skillset),
+            return restClient.getSkillsets()
+                .createWithResponseAsync(SearchIndexerSkillsetConverter.map(skillset),
                     RequestOptionsIndexesConverter.map(requestOptions), context)
                 .onErrorMap(MappingUtils::exceptionMapper)
                 .map(MappingUtils::mappingExternalSkillset);
@@ -775,8 +773,8 @@ public class SearchIndexerAsyncClient {
     Mono<Response<SearchIndexerSkillset>> getSkillsetWithResponse(String skillsetName, RequestOptions requestOptions,
         Context context) {
         try {
-            return this.restClient.skillsets()
-                .getWithRestResponseAsync(skillsetName, RequestOptionsIndexesConverter.map(requestOptions), context)
+            return this.restClient.getSkillsets()
+                .getWithResponseAsync(skillsetName, RequestOptionsIndexesConverter.map(requestOptions), context)
                 .onErrorMap(MappingUtils::exceptionMapper)
                 .map(MappingUtils::mappingExternalSkillset);
         } catch (RuntimeException ex) {
@@ -858,11 +856,11 @@ public class SearchIndexerAsyncClient {
         }
     }
 
-    private Mono<SimpleResponse<ListSkillsetsResult>> listSkillsetsWithResponse(String select,
+    private Mono<Response<ListSkillsetsResult>> listSkillsetsWithResponse(String select,
         RequestOptions requestOptions,
         Context context) {
-        return this.restClient.skillsets()
-            .listWithRestResponseAsync(select, RequestOptionsIndexesConverter.map(requestOptions), context)
+        return this.restClient.getSkillsets()
+            .listWithResponseAsync(select, RequestOptionsIndexesConverter.map(requestOptions), context)
             .onErrorMap(MappingUtils::exceptionMapper);
     }
 
@@ -899,8 +897,8 @@ public class SearchIndexerAsyncClient {
         Objects.requireNonNull(skillset, "'Skillset' cannot be null.");
         String ifMatch = onlyIfUnchanged ? skillset.getETag() : null;
         try {
-            return restClient.skillsets()
-                .createOrUpdateWithRestResponseAsync(skillset.getName(), SearchIndexerSkillsetConverter.map(skillset),
+            return restClient.getSkillsets()
+                .createOrUpdateWithResponseAsync(skillset.getName(), SearchIndexerSkillsetConverter.map(skillset),
                     ifMatch, null,
                     RequestOptionsIndexesConverter.map(requestOptions),
                     context)
@@ -945,8 +943,8 @@ public class SearchIndexerAsyncClient {
     Mono<Response<Void>> deleteSkillsetWithResponse(String skillsetName, String etag, RequestOptions requestOptions,
         Context context) {
         try {
-            return restClient.skillsets()
-                .deleteWithRestResponseAsync(skillsetName, etag, null,
+            return restClient.getSkillsets()
+                .deleteWithResponseAsync(skillsetName, etag, null,
                     RequestOptionsIndexesConverter.map(requestOptions), context)
                 .onErrorMap(MappingUtils::exceptionMapper)
                 .map(Function.identity());

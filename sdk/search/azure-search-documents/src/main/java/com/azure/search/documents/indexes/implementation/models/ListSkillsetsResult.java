@@ -6,15 +6,12 @@
 
 package com.azure.search.documents.indexes.implementation.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * Response from a list skillset request. If successful, it includes the full
- * definitions of all skillsets.
- */
-@Fluent
+/** The ListSkillsetsResult model. */
+@Immutable
 public final class ListSkillsetsResult {
     /*
      * The skillsets defined in the Search service.

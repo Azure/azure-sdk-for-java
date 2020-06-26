@@ -6,14 +6,11 @@
 
 package com.azure.search.documents.indexes.implementation.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * Statistics for a given index. Statistics are collected periodically and are
- * not guaranteed to always be up-to-date.
- */
-@Fluent
+/** The GetIndexStatisticsResult model. */
+@Immutable
 public final class GetIndexStatisticsResult {
     /*
      * The number of documents in the index.
@@ -37,8 +34,7 @@ public final class GetIndexStatisticsResult {
     }
 
     /**
-     * Get the storageSize property: The amount of storage in bytes consumed by
-     * the index.
+     * Get the storageSize property: The amount of storage in bytes consumed by the index.
      *
      * @return the storageSize value.
      */

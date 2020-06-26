@@ -10,9 +10,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * A list of skills.
- */
+/** The SearchIndexerSkillset model. */
 @Fluent
 public final class SearchIndexerSkillset {
     /*
@@ -106,8 +104,7 @@ public final class SearchIndexerSkillset {
     }
 
     /**
-     * Get the cognitiveServicesAccount property: Details about cognitive
-     * services to be used when running skills.
+     * Get the cognitiveServicesAccount property: Details about cognitive services to be used when running skills.
      *
      * @return the cognitiveServicesAccount value.
      */
@@ -116,11 +113,9 @@ public final class SearchIndexerSkillset {
     }
 
     /**
-     * Set the cognitiveServicesAccount property: Details about cognitive
-     * services to be used when running skills.
+     * Set the cognitiveServicesAccount property: Details about cognitive services to be used when running skills.
      *
-     * @param cognitiveServicesAccount the cognitiveServicesAccount value to
-     * set.
+     * @param cognitiveServicesAccount the cognitiveServicesAccount value to set.
      * @return the SearchIndexerSkillset object itself.
      */
     public SearchIndexerSkillset setCognitiveServicesAccount(CognitiveServicesAccount cognitiveServicesAccount) {

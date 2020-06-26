@@ -10,10 +10,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/**
- * Represents a function that transforms a value from a data source before
- * indexing.
- */
+/** The FieldMappingFunction model. */
 @Fluent
 public final class FieldMappingFunction {
     /*
@@ -50,8 +47,8 @@ public final class FieldMappingFunction {
     }
 
     /**
-     * Get the parameters property: A dictionary of parameter name/value pairs
-     * to pass to the function. Each value must be of a primitive type.
+     * Get the parameters property: A dictionary of parameter name/value pairs to pass to the function. Each value must
+     * be of a primitive type.
      *
      * @return the parameters value.
      */
@@ -60,8 +57,8 @@ public final class FieldMappingFunction {
     }
 
     /**
-     * Set the parameters property: A dictionary of parameter name/value pairs
-     * to pass to the function. Each value must be of a primitive type.
+     * Set the parameters property: A dictionary of parameter name/value pairs to pass to the function. Each value must
+     * be of a primitive type.
      *
      * @param parameters the parameters value to set.
      * @return the FieldMappingFunction object itself.

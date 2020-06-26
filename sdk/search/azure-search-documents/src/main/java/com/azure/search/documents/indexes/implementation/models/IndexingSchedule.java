@@ -11,9 +11,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 
-/**
- * Represents a schedule for indexer execution.
- */
+/** The IndexingSchedule model. */
 @Fluent
 public final class IndexingSchedule {
     /*
@@ -29,8 +27,7 @@ public final class IndexingSchedule {
     private OffsetDateTime startTime;
 
     /**
-     * Get the interval property: The interval of time between indexer
-     * executions.
+     * Get the interval property: The interval of time between indexer executions.
      *
      * @return the interval value.
      */
@@ -39,8 +36,7 @@ public final class IndexingSchedule {
     }
 
     /**
-     * Set the interval property: The interval of time between indexer
-     * executions.
+     * Set the interval property: The interval of time between indexer executions.
      *
      * @param interval the interval value to set.
      * @return the IndexingSchedule object itself.
@@ -51,8 +47,7 @@ public final class IndexingSchedule {
     }
 
     /**
-     * Get the startTime property: The time when an indexer should start
-     * running.
+     * Get the startTime property: The time when an indexer should start running.
      *
      * @return the startTime value.
      */
@@ -61,8 +56,7 @@ public final class IndexingSchedule {
     }
 
     /**
-     * Set the startTime property: The time when an indexer should start
-     * running.
+     * Set the startTime property: The time when an indexer should start running.
      *
      * @param startTime the startTime value to set.
      * @return the IndexingSchedule object itself.

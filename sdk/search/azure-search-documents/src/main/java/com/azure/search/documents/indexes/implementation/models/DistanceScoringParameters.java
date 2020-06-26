@@ -9,9 +9,7 @@ package com.azure.search.documents.indexes.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * Provides parameter values to a distance scoring function.
- */
+/** The DistanceScoringParameters model. */
 @Fluent
 public final class DistanceScoringParameters {
     /*
@@ -29,8 +27,8 @@ public final class DistanceScoringParameters {
     private double boostingDistance;
 
     /**
-     * Get the referencePointParameter property: The name of the parameter
-     * passed in search queries to specify the reference location.
+     * Get the referencePointParameter property: The name of the parameter passed in search queries to specify the
+     * reference location.
      *
      * @return the referencePointParameter value.
      */
@@ -39,8 +37,8 @@ public final class DistanceScoringParameters {
     }
 
     /**
-     * Set the referencePointParameter property: The name of the parameter
-     * passed in search queries to specify the reference location.
+     * Set the referencePointParameter property: The name of the parameter passed in search queries to specify the
+     * reference location.
      *
      * @param referencePointParameter the referencePointParameter value to set.
      * @return the DistanceScoringParameters object itself.
@@ -51,8 +49,8 @@ public final class DistanceScoringParameters {
     }
 
     /**
-     * Get the boostingDistance property: The distance in kilometers from the
-     * reference location where the boosting range ends.
+     * Get the boostingDistance property: The distance in kilometers from the reference location where the boosting
+     * range ends.
      *
      * @return the boostingDistance value.
      */
@@ -61,8 +59,8 @@ public final class DistanceScoringParameters {
     }
 
     /**
-     * Set the boostingDistance property: The distance in kilometers from the
-     * reference location where the boosting range ends.
+     * Set the boostingDistance property: The distance in kilometers from the reference location where the boosting
+     * range ends.
      *
      * @param boostingDistance the boostingDistance value to set.
      * @return the DistanceScoringParameters object itself.

@@ -10,9 +10,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.Duration;
 
-/**
- * Provides parameter values to a freshness scoring function.
- */
+/** The FreshnessScoringParameters model. */
 @Fluent
 public final class FreshnessScoringParameters {
     /*
@@ -23,8 +21,8 @@ public final class FreshnessScoringParameters {
     private Duration boostingDuration;
 
     /**
-     * Get the boostingDuration property: The expiration period after which
-     * boosting will stop for a particular document.
+     * Get the boostingDuration property: The expiration period after which boosting will stop for a particular
+     * document.
      *
      * @return the boostingDuration value.
      */
@@ -33,8 +31,8 @@ public final class FreshnessScoringParameters {
     }
 
     /**
-     * Set the boostingDuration property: The expiration period after which
-     * boosting will stop for a particular document.
+     * Set the boostingDuration property: The expiration period after which boosting will stop for a particular
+     * document.
      *
      * @param boostingDuration the boostingDuration value to set.
      * @return the FreshnessScoringParameters object itself.

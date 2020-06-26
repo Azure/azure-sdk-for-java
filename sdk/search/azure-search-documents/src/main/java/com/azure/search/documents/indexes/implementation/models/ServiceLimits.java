@@ -9,9 +9,7 @@ package com.azure.search.documents.indexes.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * Represents various service level limits.
- */
+/** The ServiceLimits model. */
 @Fluent
 public final class ServiceLimits {
     /*
@@ -43,8 +41,7 @@ public final class ServiceLimits {
     private Integer maxComplexObjectsInCollectionsPerDocument;
 
     /**
-     * Get the maxFieldsPerIndex property: The maximum allowed fields per
-     * index.
+     * Get the maxFieldsPerIndex property: The maximum allowed fields per index.
      *
      * @return the maxFieldsPerIndex value.
      */
@@ -53,8 +50,7 @@ public final class ServiceLimits {
     }
 
     /**
-     * Set the maxFieldsPerIndex property: The maximum allowed fields per
-     * index.
+     * Set the maxFieldsPerIndex property: The maximum allowed fields per index.
      *
      * @param maxFieldsPerIndex the maxFieldsPerIndex value to set.
      * @return the ServiceLimits object itself.
@@ -65,9 +61,8 @@ public final class ServiceLimits {
     }
 
     /**
-     * Get the maxFieldNestingDepthPerIndex property: The maximum depth which
-     * you can nest sub-fields in an index, including the top-level complex
-     * field. For example, a/b/c has a nesting depth of 3.
+     * Get the maxFieldNestingDepthPerIndex property: The maximum depth which you can nest sub-fields in an index,
+     * including the top-level complex field. For example, a/b/c has a nesting depth of 3.
      *
      * @return the maxFieldNestingDepthPerIndex value.
      */
@@ -76,12 +71,10 @@ public final class ServiceLimits {
     }
 
     /**
-     * Set the maxFieldNestingDepthPerIndex property: The maximum depth which
-     * you can nest sub-fields in an index, including the top-level complex
-     * field. For example, a/b/c has a nesting depth of 3.
+     * Set the maxFieldNestingDepthPerIndex property: The maximum depth which you can nest sub-fields in an index,
+     * including the top-level complex field. For example, a/b/c has a nesting depth of 3.
      *
-     * @param maxFieldNestingDepthPerIndex the maxFieldNestingDepthPerIndex
-     * value to set.
+     * @param maxFieldNestingDepthPerIndex the maxFieldNestingDepthPerIndex value to set.
      * @return the ServiceLimits object itself.
      */
     public ServiceLimits setMaxFieldNestingDepthPerIndex(Integer maxFieldNestingDepthPerIndex) {
@@ -90,8 +83,8 @@ public final class ServiceLimits {
     }
 
     /**
-     * Get the maxComplexCollectionFieldsPerIndex property: The maximum number
-     * of fields of type Collection(Edm.ComplexType) allowed in an index.
+     * Get the maxComplexCollectionFieldsPerIndex property: The maximum number of fields of type
+     * Collection(Edm.ComplexType) allowed in an index.
      *
      * @return the maxComplexCollectionFieldsPerIndex value.
      */
@@ -100,11 +93,10 @@ public final class ServiceLimits {
     }
 
     /**
-     * Set the maxComplexCollectionFieldsPerIndex property: The maximum number
-     * of fields of type Collection(Edm.ComplexType) allowed in an index.
+     * Set the maxComplexCollectionFieldsPerIndex property: The maximum number of fields of type
+     * Collection(Edm.ComplexType) allowed in an index.
      *
-     * @param maxComplexCollectionFieldsPerIndex the
-     * maxComplexCollectionFieldsPerIndex value to set.
+     * @param maxComplexCollectionFieldsPerIndex the maxComplexCollectionFieldsPerIndex value to set.
      * @return the ServiceLimits object itself.
      */
     public ServiceLimits setMaxComplexCollectionFieldsPerIndex(Integer maxComplexCollectionFieldsPerIndex) {
@@ -113,8 +105,8 @@ public final class ServiceLimits {
     }
 
     /**
-     * Get the maxComplexObjectsInCollectionsPerDocument property: The maximum
-     * number of objects in complex collections allowed per document.
+     * Get the maxComplexObjectsInCollectionsPerDocument property: The maximum number of objects in complex collections
+     * allowed per document.
      *
      * @return the maxComplexObjectsInCollectionsPerDocument value.
      */
@@ -123,14 +115,14 @@ public final class ServiceLimits {
     }
 
     /**
-     * Set the maxComplexObjectsInCollectionsPerDocument property: The maximum
-     * number of objects in complex collections allowed per document.
+     * Set the maxComplexObjectsInCollectionsPerDocument property: The maximum number of objects in complex collections
+     * allowed per document.
      *
-     * @param maxComplexObjectsInCollectionsPerDocument the
-     * maxComplexObjectsInCollectionsPerDocument value to set.
+     * @param maxComplexObjectsInCollectionsPerDocument the maxComplexObjectsInCollectionsPerDocument value to set.
      * @return the ServiceLimits object itself.
      */
-    public ServiceLimits setMaxComplexObjectsInCollectionsPerDocument(Integer maxComplexObjectsInCollectionsPerDocument) {
+    public ServiceLimits setMaxComplexObjectsInCollectionsPerDocument(
+            Integer maxComplexObjectsInCollectionsPerDocument) {
         this.maxComplexObjectsInCollectionsPerDocument = maxComplexObjectsInCollectionsPerDocument;
         return this;
     }

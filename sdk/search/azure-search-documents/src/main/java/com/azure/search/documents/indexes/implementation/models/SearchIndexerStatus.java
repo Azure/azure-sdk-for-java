@@ -6,18 +6,15 @@
 
 package com.azure.search.documents.indexes.implementation.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * Represents the current status and execution history of an indexer.
- */
-@Fluent
+/** The SearchIndexerStatus model. */
+@Immutable
 public final class SearchIndexerStatus {
     /*
-     * Overall indexer status. Possible values include: 'Unknown', 'Error',
-     * 'Running'
+     * Overall indexer status.
      */
     @JsonProperty(value = "status", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private IndexerStatus status;
@@ -42,8 +39,7 @@ public final class SearchIndexerStatus {
     private SearchIndexerLimits limits;
 
     /**
-     * Get the status property: Overall indexer status. Possible values
-     * include: 'Unknown', 'Error', 'Running'.
+     * Get the status property: Overall indexer status.
      *
      * @return the status value.
      */
@@ -52,8 +48,7 @@ public final class SearchIndexerStatus {
     }
 
     /**
-     * Get the lastResult property: The result of the most recent or an
-     * in-progress indexer execution.
+     * Get the lastResult property: The result of the most recent or an in-progress indexer execution.
      *
      * @return the lastResult value.
      */
@@ -62,8 +57,8 @@ public final class SearchIndexerStatus {
     }
 
     /**
-     * Get the executionHistory property: History of the recent indexer
-     * executions, sorted in reverse chronological order.
+     * Get the executionHistory property: History of the recent indexer executions, sorted in reverse chronological
+     * order.
      *
      * @return the executionHistory value.
      */

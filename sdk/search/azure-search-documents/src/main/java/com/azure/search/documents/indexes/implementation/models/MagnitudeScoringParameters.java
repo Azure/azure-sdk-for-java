@@ -9,9 +9,7 @@ package com.azure.search.documents.indexes.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * Provides parameter values to a magnitude scoring function.
- */
+/** The MagnitudeScoringParameters model. */
 @Fluent
 public final class MagnitudeScoringParameters {
     /*
@@ -34,8 +32,7 @@ public final class MagnitudeScoringParameters {
     private Boolean shouldBoostBeyondRangeByConstant;
 
     /**
-     * Get the boostingRangeStart property: The field value at which boosting
-     * starts.
+     * Get the boostingRangeStart property: The field value at which boosting starts.
      *
      * @return the boostingRangeStart value.
      */
@@ -44,8 +41,7 @@ public final class MagnitudeScoringParameters {
     }
 
     /**
-     * Set the boostingRangeStart property: The field value at which boosting
-     * starts.
+     * Set the boostingRangeStart property: The field value at which boosting starts.
      *
      * @param boostingRangeStart the boostingRangeStart value to set.
      * @return the MagnitudeScoringParameters object itself.
@@ -56,8 +52,7 @@ public final class MagnitudeScoringParameters {
     }
 
     /**
-     * Get the boostingRangeEnd property: The field value at which boosting
-     * ends.
+     * Get the boostingRangeEnd property: The field value at which boosting ends.
      *
      * @return the boostingRangeEnd value.
      */
@@ -66,8 +61,7 @@ public final class MagnitudeScoringParameters {
     }
 
     /**
-     * Set the boostingRangeEnd property: The field value at which boosting
-     * ends.
+     * Set the boostingRangeEnd property: The field value at which boosting ends.
      *
      * @param boostingRangeEnd the boostingRangeEnd value to set.
      * @return the MagnitudeScoringParameters object itself.
@@ -78,9 +72,8 @@ public final class MagnitudeScoringParameters {
     }
 
     /**
-     * Get the shouldBoostBeyondRangeByConstant property: A value indicating
-     * whether to apply a constant boost for field values beyond the range end
-     * value; default is false.
+     * Get the shouldBoostBeyondRangeByConstant property: A value indicating whether to apply a constant boost for field
+     * values beyond the range end value; default is false.
      *
      * @return the shouldBoostBeyondRangeByConstant value.
      */
@@ -89,12 +82,10 @@ public final class MagnitudeScoringParameters {
     }
 
     /**
-     * Set the shouldBoostBeyondRangeByConstant property: A value indicating
-     * whether to apply a constant boost for field values beyond the range end
-     * value; default is false.
+     * Set the shouldBoostBeyondRangeByConstant property: A value indicating whether to apply a constant boost for field
+     * values beyond the range end value; default is false.
      *
-     * @param shouldBoostBeyondRangeByConstant the
-     * shouldBoostBeyondRangeByConstant value to set.
+     * @param shouldBoostBeyondRangeByConstant the shouldBoostBeyondRangeByConstant value to set.
      * @return the MagnitudeScoringParameters object itself.
      */
     public MagnitudeScoringParameters setShouldBoostBeyondRangeByConstant(Boolean shouldBoostBeyondRangeByConstant) {

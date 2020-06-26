@@ -9,33 +9,21 @@ package com.azure.search.documents.indexes.implementation.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/**
- * Defines values for CjkBigramTokenFilterScripts.
- */
+/** Defines values for CjkBigramTokenFilterScripts. */
 public enum CjkBigramTokenFilterScripts {
-    /**
-     * Enum value han.
-     */
+    /** Enum value han. */
     HAN("han"),
 
-    /**
-     * Enum value hiragana.
-     */
+    /** Enum value hiragana. */
     HIRAGANA("hiragana"),
 
-    /**
-     * Enum value katakana.
-     */
+    /** Enum value katakana. */
     KATAKANA("katakana"),
 
-    /**
-     * Enum value hangul.
-     */
+    /** Enum value hangul. */
     HANGUL("hangul");
 
-    /**
-     * The actual serialized value for a CjkBigramTokenFilterScripts instance.
-     */
+    /** The actual serialized value for a CjkBigramTokenFilterScripts instance. */
     private final String value;
 
     CjkBigramTokenFilterScripts(String value) {

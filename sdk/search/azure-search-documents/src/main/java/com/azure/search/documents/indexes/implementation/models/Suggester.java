@@ -10,9 +10,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * Defines how the Suggest API should apply to a group of fields in the index.
- */
+/** The Suggester model. */
 @Fluent
 public final class Suggester {
     /*
@@ -34,9 +32,7 @@ public final class Suggester {
     @JsonProperty(value = "sourceFields", required = true)
     private List<String> sourceFields;
 
-    /**
-     * Creates an instance of Suggester class.
-     */
+    /** Creates an instance of Suggester class. */
     public Suggester() {
         searchMode = "analyzingInfixMatching";
     }
@@ -62,8 +58,7 @@ public final class Suggester {
     }
 
     /**
-     * Get the searchMode property: A value indicating the capabilities of the
-     * suggester.
+     * Get the searchMode property: A value indicating the capabilities of the suggester.
      *
      * @return the searchMode value.
      */
@@ -72,8 +67,7 @@ public final class Suggester {
     }
 
     /**
-     * Set the searchMode property: A value indicating the capabilities of the
-     * suggester.
+     * Set the searchMode property: A value indicating the capabilities of the suggester.
      *
      * @param searchMode the searchMode value to set.
      * @return the Suggester object itself.
@@ -84,8 +78,8 @@ public final class Suggester {
     }
 
     /**
-     * Get the sourceFields property: The list of field names to which the
-     * suggester applies. Each field must be searchable.
+     * Get the sourceFields property: The list of field names to which the suggester applies. Each field must be
+     * searchable.
      *
      * @return the sourceFields value.
      */
@@ -94,8 +88,8 @@ public final class Suggester {
     }
 
     /**
-     * Set the sourceFields property: The list of field names to which the
-     * suggester applies. Each field must be searchable.
+     * Set the sourceFields property: The list of field names to which the suggester applies. Each field must be
+     * searchable.
      *
      * @param sourceFields the sourceFields value to set.
      * @return the Suggester object itself.

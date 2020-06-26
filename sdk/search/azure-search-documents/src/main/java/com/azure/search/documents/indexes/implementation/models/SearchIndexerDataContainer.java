@@ -9,10 +9,7 @@ package com.azure.search.documents.indexes.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * Represents information about the entity (such as Azure SQL table or CosmosDB
- * collection) that will be indexed.
- */
+/** The SearchIndexerDataContainer model. */
 @Fluent
 public final class SearchIndexerDataContainer {
     /*
@@ -31,8 +28,8 @@ public final class SearchIndexerDataContainer {
     private String query;
 
     /**
-     * Get the name property: The name of the table or view (for Azure SQL data
-     * source) or collection (for CosmosDB data source) that will be indexed.
+     * Get the name property: The name of the table or view (for Azure SQL data source) or collection (for CosmosDB data
+     * source) that will be indexed.
      *
      * @return the name value.
      */
@@ -41,8 +38,8 @@ public final class SearchIndexerDataContainer {
     }
 
     /**
-     * Set the name property: The name of the table or view (for Azure SQL data
-     * source) or collection (for CosmosDB data source) that will be indexed.
+     * Set the name property: The name of the table or view (for Azure SQL data source) or collection (for CosmosDB data
+     * source) that will be indexed.
      *
      * @param name the name value to set.
      * @return the SearchIndexerDataContainer object itself.
@@ -53,9 +50,8 @@ public final class SearchIndexerDataContainer {
     }
 
     /**
-     * Get the query property: A query that is applied to this data container.
-     * The syntax and meaning of this parameter is datasource-specific. Not
-     * supported by Azure SQL datasources.
+     * Get the query property: A query that is applied to this data container. The syntax and meaning of this parameter
+     * is datasource-specific. Not supported by Azure SQL datasources.
      *
      * @return the query value.
      */
@@ -64,9 +60,8 @@ public final class SearchIndexerDataContainer {
     }
 
     /**
-     * Set the query property: A query that is applied to this data container.
-     * The syntax and meaning of this parameter is datasource-specific. Not
-     * supported by Azure SQL datasources.
+     * Set the query property: A query that is applied to this data container. The syntax and meaning of this parameter
+     * is datasource-specific. Not supported by Azure SQL datasources.
      *
      * @param query the query value to set.
      * @return the SearchIndexerDataContainer object itself.

@@ -77,7 +77,7 @@ public final class SearchClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public IndexDocumentsResult uploadDocuments(Iterable<?> documents) {
-        return uploadDocumentsWithResponse(documents, null, Context.NONE).getValue();
+        return uploadDocumentsWithResponse(documents, null, null, Context.NONE).getValue();
     }
 
     /**
@@ -85,6 +85,8 @@ public final class SearchClient {
      *
      * @param documents collection of documents to upload to the target Index.
      * @param options Options that allow specifying document indexing behavior.
+     * @param requestOptions additional parameters for the operation. Contains the tracking ID sent with the request to
+     * help with debugging
      * @param context additional context that is passed through the Http pipeline during the service call
      * @return response containing the document index result.
      * @throws IndexBatchException If some of the indexing actions fail but other actions succeed and modify the state
@@ -97,8 +99,9 @@ public final class SearchClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<IndexDocumentsResult> uploadDocumentsWithResponse(Iterable<?> documents,
-        IndexDocumentsOptions options, Context context) {
-        return asyncClient.uploadDocumentsWithResponse(documents, options, context).block();
+        IndexDocumentsOptions options, RequestOptions requestOptions, Context context) {
+        return asyncClient.uploadDocumentsWithResponse(documents, options, requestOptions,
+            context).block();
     }
 
     /**
@@ -123,7 +126,7 @@ public final class SearchClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public IndexDocumentsResult mergeDocuments(Iterable<?> documents) {
-        return mergeDocumentsWithResponse(documents, null, Context.NONE).getValue();
+        return mergeDocumentsWithResponse(documents, null, null, Context.NONE).getValue();
     }
 
     /**
@@ -138,6 +141,8 @@ public final class SearchClient {
      *
      * @param documents collection of documents to be merged
      * @param options Options that allow specifying document indexing behavior.
+     * @param requestOptions additional parameters for the operation. Contains the tracking ID sent with the request to
+     * help with debugging
      * @param context additional context that is passed through the Http pipeline during the service call
      * @return response containing the document index result.
      * @throws IndexBatchException If some of the indexing actions fail but other actions succeed and modify the state
@@ -150,8 +155,9 @@ public final class SearchClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<IndexDocumentsResult> mergeDocumentsWithResponse(Iterable<?> documents,
-        IndexDocumentsOptions options, Context context) {
-        return asyncClient.mergeDocumentsWithResponse(documents, options, context).block();
+        IndexDocumentsOptions options, RequestOptions requestOptions, Context context) {
+        return asyncClient.mergeDocumentsWithResponse(documents, options, requestOptions,
+            context).block();
     }
 
     /**
@@ -177,7 +183,7 @@ public final class SearchClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public IndexDocumentsResult mergeOrUploadDocuments(Iterable<?> documents) {
-        return mergeOrUploadDocumentsWithResponse(documents, null, Context.NONE).getValue();
+        return mergeOrUploadDocumentsWithResponse(documents, null, null, Context.NONE).getValue();
     }
 
     /**
@@ -193,6 +199,8 @@ public final class SearchClient {
      *
      * @param documents collection of documents to be merged, if exists, otherwise uploaded
      * @param options Options that allow specifying document indexing behavior.
+     * @param requestOptions additional parameters for the operation. Contains the tracking ID sent with the request to
+     * help with debugging
      * @param context additional context that is passed through the Http pipeline during the service call
      * @return response containing a document index result
      * @throws IndexBatchException If some of the indexing actions fail but other actions succeed and modify the state
@@ -205,8 +213,9 @@ public final class SearchClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<IndexDocumentsResult> mergeOrUploadDocumentsWithResponse(Iterable<?> documents,
-        IndexDocumentsOptions options, Context context) {
-        return asyncClient.mergeOrUploadDocumentsWithResponse(documents, options, context).block();
+        IndexDocumentsOptions options, RequestOptions requestOptions, Context context) {
+        return asyncClient.mergeOrUploadDocumentsWithResponse(documents, options, requestOptions,
+            context).block();
     }
 
     /**
@@ -224,7 +233,7 @@ public final class SearchClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public IndexDocumentsResult deleteDocuments(Iterable<?> documents) {
-        return deleteDocumentsWithResponse(documents, null, Context.NONE).getValue();
+        return deleteDocumentsWithResponse(documents, null, null, Context.NONE).getValue();
     }
 
     /**
@@ -232,6 +241,8 @@ public final class SearchClient {
      *
      * @param documents collection of documents to delete from the target Index. Fields other than the key are ignored.
      * @param options Options that allow specifying document indexing behavior.
+     * @param requestOptions additional parameters for the operation. Contains the tracking ID sent with the request to
+     * help with debugging
      * @param context additional context that is passed through the Http pipeline during the service call
      * @return response containing a document index result.
      * @throws IndexBatchException If some of the indexing actions fail but other actions succeed and modify the state
@@ -244,8 +255,8 @@ public final class SearchClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<IndexDocumentsResult> deleteDocumentsWithResponse(Iterable<?> documents,
-        IndexDocumentsOptions options, Context context) {
-        return asyncClient.deleteDocumentsWithResponse(documents, options, context).block();
+        IndexDocumentsOptions options, RequestOptions requestOptions, Context context) {
+        return asyncClient.deleteDocumentsWithResponse(documents, options, requestOptions, context).block();
     }
 
     /**
@@ -264,18 +275,20 @@ public final class SearchClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public long getDocumentCount() {
-        return getDocumentCountWithResponse(Context.NONE).getValue();
+        return getDocumentCountWithResponse(null, Context.NONE).getValue();
     }
 
     /**
      * Queries the number of documents in the search index.
      *
+     * @param requestOptions additional parameters for the operation. Contains the tracking ID sent with the request to
+     * help with debugging
      * @param context additional context that is passed through the Http pipeline during the service call
      * @return response containing the number of documents.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Long> getDocumentCountWithResponse(Context context) {
-        return asyncClient.getDocumentCountWithResponse(context).block();
+    public Response<Long> getDocumentCountWithResponse(RequestOptions requestOptions, Context context) {
+        return asyncClient.getDocumentCountWithResponse(requestOptions, context).block();
     }
 
     /**
@@ -406,7 +419,7 @@ public final class SearchClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public IndexDocumentsResult indexDocuments(IndexDocumentsBatch<?> batch) {
-        return indexDocumentsWithResponse(batch, null, Context.NONE).getValue();
+        return indexDocumentsWithResponse(batch, null, null, Context.NONE).getValue();
     }
 
     /**
@@ -414,6 +427,8 @@ public final class SearchClient {
      *
      * @param batch The batch of index actions
      * @param options Options that allow specifying document indexing behavior.
+     * @param requestOptions additional parameters for the operation. Contains the tracking ID sent with the request to
+     * help with debugging
      * @param context additional context that is passed through the Http pipeline during the service call
      * @return Response containing the status of operations for all actions in the batch
      * @throws IndexBatchException If some of the indexing actions fail but other actions succeed and modify the state
@@ -426,8 +441,8 @@ public final class SearchClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<IndexDocumentsResult> indexDocumentsWithResponse(IndexDocumentsBatch<?> batch,
-        IndexDocumentsOptions options, Context context) {
-        return asyncClient.indexDocumentsWithResponse(batch, options, context).block();
+        IndexDocumentsOptions options, RequestOptions requestOptions, Context context) {
+        return asyncClient.indexDocumentsWithResponse(batch, options, requestOptions, context).block();
     }
 
     /**

@@ -6,16 +6,14 @@
 
 package com.azure.search.documents.indexes.implementation.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
+import com.azure.core.annotation.JsonFlatten;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/**
- * A skill for reshaping the outputs. It creates a complex type to support
- * composite fields (also known as multipart fields).
- */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata.type")
+/** The ShaperSkill model. */
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata\\.type")
 @JsonTypeName("#Microsoft.Skills.Util.ShaperSkill")
-@Fluent
-public final class ShaperSkill extends SearchIndexerSkill {
-}
+@JsonFlatten
+@Immutable
+public class ShaperSkill extends SearchIndexerSkill {}

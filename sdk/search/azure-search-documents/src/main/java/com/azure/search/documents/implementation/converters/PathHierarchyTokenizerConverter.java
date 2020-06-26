@@ -26,7 +26,7 @@ public final class PathHierarchyTokenizerConverter {
         Integer maxTokenLength = obj.getMaxTokenLength();
         pathHierarchyTokenizer.setMaxTokenLength(maxTokenLength);
 
-        String delimiter = obj.getDelimiter();
+        Character delimiter = obj.getDelimiter();
         pathHierarchyTokenizer.setDelimiter(delimiter);
 
         Boolean reverseTokenOrder = obj.isReverseTokenOrder();
@@ -35,7 +35,7 @@ public final class PathHierarchyTokenizerConverter {
         Integer numberOfTokensToSkip = obj.getNumberOfTokensToSkip();
         pathHierarchyTokenizer.setNumberOfTokensToSkip(numberOfTokensToSkip);
 
-        String replacement = obj.getReplacement();
+        Character replacement = obj.getReplacement();
         pathHierarchyTokenizer.setReplacement(replacement);
         return pathHierarchyTokenizer;
     }
@@ -57,7 +57,7 @@ public final class PathHierarchyTokenizerConverter {
         Integer maxTokenLength = obj.getMaxTokenLength();
         pathHierarchyTokenizerV2.setMaxTokenLength(maxTokenLength);
 
-        String delimiter = obj.getDelimiter();
+        Character delimiter = obj.getDelimiter();
         pathHierarchyTokenizerV2.setDelimiter(delimiter);
 
         Boolean reverseTokenOrder = obj.isTokenOrderReversed();
@@ -66,7 +66,7 @@ public final class PathHierarchyTokenizerConverter {
         Integer numberOfTokensToSkip = obj.getNumberOfTokensToSkip();
         pathHierarchyTokenizerV2.setNumberOfTokensToSkip(numberOfTokensToSkip);
 
-        String replacement = obj.getReplacement();
+        Character replacement = obj.getReplacement();
         pathHierarchyTokenizerV2.setReplacement(replacement);
         return pathHierarchyTokenizerV2;
     }

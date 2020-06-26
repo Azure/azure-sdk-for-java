@@ -7,18 +7,17 @@
 package com.azure.search.documents.indexes.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.JsonFlatten;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/**
- * Generates n-grams of the given size(s) starting from the front or the back
- * of an input token. This token filter is implemented using Apache Lucene.
- */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata.type")
+/** The EdgeNGramTokenFilter model. */
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata\\.type")
 @JsonTypeName("#Microsoft.Azure.Search.EdgeNGramTokenFilter")
+@JsonFlatten
 @Fluent
-public final class EdgeNGramTokenFilter extends TokenFilter {
+public class EdgeNGramTokenFilter extends TokenFilter {
     /*
      * The minimum n-gram length. Default is 1. Must be less than the value of
      * maxGram.
@@ -34,14 +33,13 @@ public final class EdgeNGramTokenFilter extends TokenFilter {
 
     /*
      * Specifies which side of the input the n-gram should be generated from.
-     * Default is "front". Possible values include: 'Front', 'Back'
+     * Default is "front".
      */
     @JsonProperty(value = "side")
     private EdgeNGramTokenFilterSide side;
 
     /**
-     * Get the minGram property: The minimum n-gram length. Default is 1. Must
-     * be less than the value of maxGram.
+     * Get the minGram property: The minimum n-gram length. Default is 1. Must be less than the value of maxGram.
      *
      * @return the minGram value.
      */
@@ -50,8 +48,7 @@ public final class EdgeNGramTokenFilter extends TokenFilter {
     }
 
     /**
-     * Set the minGram property: The minimum n-gram length. Default is 1. Must
-     * be less than the value of maxGram.
+     * Set the minGram property: The minimum n-gram length. Default is 1. Must be less than the value of maxGram.
      *
      * @param minGram the minGram value to set.
      * @return the EdgeNGramTokenFilter object itself.
@@ -82,9 +79,7 @@ public final class EdgeNGramTokenFilter extends TokenFilter {
     }
 
     /**
-     * Get the side property: Specifies which side of the input the n-gram
-     * should be generated from. Default is "front". Possible values include:
-     * 'Front', 'Back'.
+     * Get the side property: Specifies which side of the input the n-gram should be generated from. Default is "front".
      *
      * @return the side value.
      */
@@ -93,9 +88,7 @@ public final class EdgeNGramTokenFilter extends TokenFilter {
     }
 
     /**
-     * Set the side property: Specifies which side of the input the n-gram
-     * should be generated from. Default is "front". Possible values include:
-     * 'Front', 'Back'.
+     * Set the side property: Specifies which side of the input the n-gram should be generated from. Default is "front".
      *
      * @param side the side value to set.
      * @return the EdgeNGramTokenFilter object itself.

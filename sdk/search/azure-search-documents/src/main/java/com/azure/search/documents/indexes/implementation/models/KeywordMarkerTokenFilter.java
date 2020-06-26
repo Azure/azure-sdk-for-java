@@ -7,19 +7,18 @@
 package com.azure.search.documents.indexes.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.JsonFlatten;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 
-/**
- * Marks terms as keywords. This token filter is implemented using Apache
- * Lucene.
- */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata.type")
+/** The KeywordMarkerTokenFilter model. */
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata\\.type")
 @JsonTypeName("#Microsoft.Azure.Search.KeywordMarkerTokenFilter")
+@JsonFlatten
 @Fluent
-public final class KeywordMarkerTokenFilter extends TokenFilter {
+public class KeywordMarkerTokenFilter extends TokenFilter {
     /*
      * A list of words to mark as keywords.
      */
@@ -54,8 +53,8 @@ public final class KeywordMarkerTokenFilter extends TokenFilter {
     }
 
     /**
-     * Get the ignoreCase property: A value indicating whether to ignore case.
-     * If true, all words are converted to lower case first. Default is false.
+     * Get the ignoreCase property: A value indicating whether to ignore case. If true, all words are converted to lower
+     * case first. Default is false.
      *
      * @return the ignoreCase value.
      */
@@ -64,8 +63,8 @@ public final class KeywordMarkerTokenFilter extends TokenFilter {
     }
 
     /**
-     * Set the ignoreCase property: A value indicating whether to ignore case.
-     * If true, all words are converted to lower case first. Default is false.
+     * Set the ignoreCase property: A value indicating whether to ignore case. If true, all words are converted to lower
+     * case first. Default is false.
      *
      * @param ignoreCase the ignoreCase value to set.
      * @return the KeywordMarkerTokenFilter object itself.

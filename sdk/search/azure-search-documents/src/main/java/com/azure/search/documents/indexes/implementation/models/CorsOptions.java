@@ -8,13 +8,9 @@ package com.azure.search.documents.indexes.implementation.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.Arrays;
 import java.util.List;
 
-/**
- * Defines options to control Cross-Origin Resource Sharing (CORS) for an
- * index.
- */
+/** The CorsOptions model. */
 @Fluent
 public final class CorsOptions {
     /*
@@ -34,11 +30,9 @@ public final class CorsOptions {
     private Long maxAgeInSeconds;
 
     /**
-     * Get the allowedOrigins property: The list of origins from which
-     * JavaScript code will be granted access to your index. Can contain a list
-     * of hosts of the form
-     * {protocol}://{fully-qualified-domain-name}[:{port#}], or a single '*' to
-     * allow all origins (not recommended).
+     * Get the allowedOrigins property: The list of origins from which JavaScript code will be granted access to your
+     * index. Can contain a list of hosts of the form {protocol}://{fully-qualified-domain-name}[:{port#}], or a single
+     * '*' to allow all origins (not recommended).
      *
      * @return the allowedOrigins value.
      */
@@ -47,23 +41,21 @@ public final class CorsOptions {
     }
 
     /**
-     * Set the allowedOrigins property: The list of origins from which
-     * JavaScript code will be granted access to your index. Can contain a list
-     * of hosts of the form
-     * {protocol}://{fully-qualified-domain-name}[:{port#}], or a single '*' to
-     * allow all origins (not recommended).
+     * Set the allowedOrigins property: The list of origins from which JavaScript code will be granted access to your
+     * index. Can contain a list of hosts of the form {protocol}://{fully-qualified-domain-name}[:{port#}], or a single
+     * '*' to allow all origins (not recommended).
      *
      * @param allowedOrigins the allowedOrigins value to set.
      * @return the CorsOptions object itself.
      */
-    public CorsOptions setAllowedOrigins(String... allowedOrigins) {
-        this.allowedOrigins = Arrays.asList(allowedOrigins);
+    public CorsOptions setAllowedOrigins(List<String> allowedOrigins) {
+        this.allowedOrigins = allowedOrigins;
         return this;
     }
 
     /**
-     * Get the maxAgeInSeconds property: The duration for which browsers should
-     * cache CORS preflight responses. Defaults to 5 minutes.
+     * Get the maxAgeInSeconds property: The duration for which browsers should cache CORS preflight responses. Defaults
+     * to 5 minutes.
      *
      * @return the maxAgeInSeconds value.
      */
@@ -72,8 +64,8 @@ public final class CorsOptions {
     }
 
     /**
-     * Set the maxAgeInSeconds property: The duration for which browsers should
-     * cache CORS preflight responses. Defaults to 5 minutes.
+     * Set the maxAgeInSeconds property: The duration for which browsers should cache CORS preflight responses. Defaults
+     * to 5 minutes.
      *
      * @param maxAgeInSeconds the maxAgeInSeconds value to set.
      * @return the CorsOptions object itself.

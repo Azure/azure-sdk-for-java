@@ -20,17 +20,18 @@ public final class ServiceStatisticsConverter {
         if (obj == null) {
             return null;
         }
-        SearchServiceStatistics searchServiceStatistics = new SearchServiceStatistics();
 
+        ServiceCounters counters = null;
         if (obj.getCounters() != null) {
-            ServiceCounters counters = ServiceCountersConverter.map(obj.getCounters());
-            searchServiceStatistics.setCounters(counters);
+            counters = ServiceCountersConverter.map(obj.getCounters());
         }
 
+        ServiceLimits limits = null;
         if (obj.getLimits() != null) {
-            ServiceLimits limits = ServiceLimitsConverter.map(obj.getLimits());
-            searchServiceStatistics.setLimits(limits);
+            limits = ServiceLimitsConverter.map(obj.getLimits());
         }
+
+        SearchServiceStatistics searchServiceStatistics = new SearchServiceStatistics(counters, limits);
         return searchServiceStatistics;
     }
 

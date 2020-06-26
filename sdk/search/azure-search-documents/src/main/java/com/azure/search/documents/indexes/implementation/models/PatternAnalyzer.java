@@ -7,19 +7,18 @@
 package com.azure.search.documents.indexes.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.JsonFlatten;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 
-/**
- * Flexibly separates text into terms via a regular expression pattern. This
- * analyzer is implemented using Apache Lucene.
- */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata.type")
+/** The PatternAnalyzer model. */
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata\\.type")
 @JsonTypeName("#Microsoft.Azure.Search.PatternAnalyzer")
+@JsonFlatten
 @Fluent
-public final class PatternAnalyzer extends LexicalAnalyzer {
+public class PatternAnalyzer extends LexicalAnalyzer {
     /*
      * A value indicating whether terms should be lower-cased. Default is true.
      */
@@ -34,9 +33,7 @@ public final class PatternAnalyzer extends LexicalAnalyzer {
     private String pattern;
 
     /*
-     * Regular expression flags. Possible values include: 'CanonEq',
-     * 'CaseInsensitive', 'Comments', 'DotAll', 'Literal', 'Multiline',
-     * 'UnicodeCase', 'UnixLines'
+     * Regular expression flags.
      */
     @JsonProperty(value = "flags")
     private RegexFlags flags;
@@ -48,8 +45,7 @@ public final class PatternAnalyzer extends LexicalAnalyzer {
     private List<String> stopwords;
 
     /**
-     * Get the lowerCaseTerms property: A value indicating whether terms should
-     * be lower-cased. Default is true.
+     * Get the lowerCaseTerms property: A value indicating whether terms should be lower-cased. Default is true.
      *
      * @return the lowerCaseTerms value.
      */
@@ -58,8 +54,7 @@ public final class PatternAnalyzer extends LexicalAnalyzer {
     }
 
     /**
-     * Set the lowerCaseTerms property: A value indicating whether terms should
-     * be lower-cased. Default is true.
+     * Set the lowerCaseTerms property: A value indicating whether terms should be lower-cased. Default is true.
      *
      * @param lowerCaseTerms the lowerCaseTerms value to set.
      * @return the PatternAnalyzer object itself.
@@ -70,9 +65,8 @@ public final class PatternAnalyzer extends LexicalAnalyzer {
     }
 
     /**
-     * Get the pattern property: A regular expression pattern to match token
-     * separators. Default is an expression that matches one or more non-word
-     * characters.
+     * Get the pattern property: A regular expression pattern to match token separators. Default is an expression that
+     * matches one or more non-word characters.
      *
      * @return the pattern value.
      */
@@ -81,9 +75,8 @@ public final class PatternAnalyzer extends LexicalAnalyzer {
     }
 
     /**
-     * Set the pattern property: A regular expression pattern to match token
-     * separators. Default is an expression that matches one or more non-word
-     * characters.
+     * Set the pattern property: A regular expression pattern to match token separators. Default is an expression that
+     * matches one or more non-word characters.
      *
      * @param pattern the pattern value to set.
      * @return the PatternAnalyzer object itself.
@@ -94,9 +87,7 @@ public final class PatternAnalyzer extends LexicalAnalyzer {
     }
 
     /**
-     * Get the flags property: Regular expression flags. Possible values
-     * include: 'CanonEq', 'CaseInsensitive', 'Comments', 'DotAll', 'Literal',
-     * 'Multiline', 'UnicodeCase', 'UnixLines'.
+     * Get the flags property: Regular expression flags.
      *
      * @return the flags value.
      */
@@ -105,9 +96,7 @@ public final class PatternAnalyzer extends LexicalAnalyzer {
     }
 
     /**
-     * Set the flags property: Regular expression flags. Possible values
-     * include: 'CanonEq', 'CaseInsensitive', 'Comments', 'DotAll', 'Literal',
-     * 'Multiline', 'UnicodeCase', 'UnixLines'.
+     * Set the flags property: Regular expression flags.
      *
      * @param flags the flags value to set.
      * @return the PatternAnalyzer object itself.

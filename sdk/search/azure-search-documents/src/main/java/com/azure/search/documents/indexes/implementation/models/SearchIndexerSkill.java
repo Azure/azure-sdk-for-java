@@ -7,20 +7,25 @@
 package com.azure.search.documents.indexes.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.JsonFlatten;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 
-/**
- * Base type for skills.
- */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata.type", defaultImpl = SearchIndexerSkill.class)
+/** The SearchIndexerSkill model. */
+@JsonTypeInfo(
+        use = JsonTypeInfo.Id.NAME,
+        include = JsonTypeInfo.As.PROPERTY,
+        property = "@odata\\.type",
+        defaultImpl = SearchIndexerSkill.class)
 @JsonTypeName("SearchIndexerSkill")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "#Microsoft.Skills.Util.ConditionalSkill", value = ConditionalSkill.class),
-    @JsonSubTypes.Type(name = "#Microsoft.Skills.Text.KeyPhraseExtractionSkill", value = KeyPhraseExtractionSkill.class),
+    @JsonSubTypes.Type(
+            name = "#Microsoft.Skills.Text.KeyPhraseExtractionSkill",
+            value = KeyPhraseExtractionSkill.class),
     @JsonSubTypes.Type(name = "#Microsoft.Skills.Vision.OcrSkill", value = OcrSkill.class),
     @JsonSubTypes.Type(name = "#Microsoft.Skills.Vision.ImageAnalysisSkill", value = ImageAnalysisSkill.class),
     @JsonSubTypes.Type(name = "#Microsoft.Skills.Text.LanguageDetectionSkill", value = LanguageDetectionSkill.class),
@@ -32,8 +37,9 @@ import java.util.List;
     @JsonSubTypes.Type(name = "#Microsoft.Skills.Text.TranslationSkill", value = TextTranslationSkill.class),
     @JsonSubTypes.Type(name = "#Microsoft.Skills.Custom.WebApiSkill", value = WebApiSkill.class)
 })
+@JsonFlatten
 @Fluent
-public abstract class SearchIndexerSkill {
+public class SearchIndexerSkill {
     /*
      * The name of the skill which uniquely identifies it within the skillset.
      * A skill with no name defined will be given a default name of its 1-based
@@ -72,10 +78,9 @@ public abstract class SearchIndexerSkill {
     private List<OutputFieldMappingEntry> outputs;
 
     /**
-     * Get the name property: The name of the skill which uniquely identifies
-     * it within the skillset. A skill with no name defined will be given a
-     * default name of its 1-based index in the skills array, prefixed with the
-     * character '#'.
+     * Get the name property: The name of the skill which uniquely identifies it within the skillset. A skill with no
+     * name defined will be given a default name of its 1-based index in the skills array, prefixed with the character
+     * '#'.
      *
      * @return the name value.
      */
@@ -84,10 +89,9 @@ public abstract class SearchIndexerSkill {
     }
 
     /**
-     * Set the name property: The name of the skill which uniquely identifies
-     * it within the skillset. A skill with no name defined will be given a
-     * default name of its 1-based index in the skills array, prefixed with the
-     * character '#'.
+     * Set the name property: The name of the skill which uniquely identifies it within the skillset. A skill with no
+     * name defined will be given a default name of its 1-based index in the skills array, prefixed with the character
+     * '#'.
      *
      * @param name the name value to set.
      * @return the SearchIndexerSkill object itself.
@@ -98,8 +102,8 @@ public abstract class SearchIndexerSkill {
     }
 
     /**
-     * Get the description property: The description of the skill which
-     * describes the inputs, outputs, and usage of the skill.
+     * Get the description property: The description of the skill which describes the inputs, outputs, and usage of the
+     * skill.
      *
      * @return the description value.
      */
@@ -108,8 +112,8 @@ public abstract class SearchIndexerSkill {
     }
 
     /**
-     * Set the description property: The description of the skill which
-     * describes the inputs, outputs, and usage of the skill.
+     * Set the description property: The description of the skill which describes the inputs, outputs, and usage of the
+     * skill.
      *
      * @param description the description value to set.
      * @return the SearchIndexerSkill object itself.
@@ -120,9 +124,8 @@ public abstract class SearchIndexerSkill {
     }
 
     /**
-     * Get the context property: Represents the level at which operations take
-     * place, such as the document root or document content (for example,
-     * /document or /document/content). The default is /document.
+     * Get the context property: Represents the level at which operations take place, such as the document root or
+     * document content (for example, /document or /document/content). The default is /document.
      *
      * @return the context value.
      */
@@ -131,9 +134,8 @@ public abstract class SearchIndexerSkill {
     }
 
     /**
-     * Set the context property: Represents the level at which operations take
-     * place, such as the document root or document content (for example,
-     * /document or /document/content). The default is /document.
+     * Set the context property: Represents the level at which operations take place, such as the document root or
+     * document content (for example, /document or /document/content). The default is /document.
      *
      * @param context the context value to set.
      * @return the SearchIndexerSkill object itself.
@@ -144,8 +146,8 @@ public abstract class SearchIndexerSkill {
     }
 
     /**
-     * Get the inputs property: Inputs of the skills could be a column in the
-     * source data set, or the output of an upstream skill.
+     * Get the inputs property: Inputs of the skills could be a column in the source data set, or the output of an
+     * upstream skill.
      *
      * @return the inputs value.
      */
@@ -154,8 +156,8 @@ public abstract class SearchIndexerSkill {
     }
 
     /**
-     * Set the inputs property: Inputs of the skills could be a column in the
-     * source data set, or the output of an upstream skill.
+     * Set the inputs property: Inputs of the skills could be a column in the source data set, or the output of an
+     * upstream skill.
      *
      * @param inputs the inputs value to set.
      * @return the SearchIndexerSkill object itself.
@@ -166,9 +168,8 @@ public abstract class SearchIndexerSkill {
     }
 
     /**
-     * Get the outputs property: The output of a skill is either a field in a
-     * search index, or a value that can be consumed as an input by another
-     * skill.
+     * Get the outputs property: The output of a skill is either a field in a search index, or a value that can be
+     * consumed as an input by another skill.
      *
      * @return the outputs value.
      */
@@ -177,9 +178,8 @@ public abstract class SearchIndexerSkill {
     }
 
     /**
-     * Set the outputs property: The output of a skill is either a field in a
-     * search index, or a value that can be consumed as an input by another
-     * skill.
+     * Set the outputs property: The output of a skill is either a field in a search index, or a value that can be
+     * consumed as an input by another skill.
      *
      * @param outputs the outputs value to set.
      * @return the SearchIndexerSkill object itself.

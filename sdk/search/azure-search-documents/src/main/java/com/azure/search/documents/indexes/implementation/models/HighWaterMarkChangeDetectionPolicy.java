@@ -7,18 +7,17 @@
 package com.azure.search.documents.indexes.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.JsonFlatten;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/**
- * Defines a data change detection policy that captures changes based on the
- * value of a high water mark column.
- */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata.type")
+/** The HighWaterMarkChangeDetectionPolicy model. */
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata\\.type")
 @JsonTypeName("#Microsoft.Azure.Search.HighWaterMarkChangeDetectionPolicy")
+@JsonFlatten
 @Fluent
-public final class HighWaterMarkChangeDetectionPolicy extends DataChangeDetectionPolicy {
+public class HighWaterMarkChangeDetectionPolicy extends DataChangeDetectionPolicy {
     /*
      * The name of the high water mark column.
      */
@@ -26,8 +25,7 @@ public final class HighWaterMarkChangeDetectionPolicy extends DataChangeDetectio
     private String highWaterMarkColumnName;
 
     /**
-     * Get the highWaterMarkColumnName property: The name of the high water
-     * mark column.
+     * Get the highWaterMarkColumnName property: The name of the high water mark column.
      *
      * @return the highWaterMarkColumnName value.
      */
@@ -36,8 +34,7 @@ public final class HighWaterMarkChangeDetectionPolicy extends DataChangeDetectio
     }
 
     /**
-     * Set the highWaterMarkColumnName property: The name of the high water
-     * mark column.
+     * Set the highWaterMarkColumnName property: The name of the high water mark column.
      *
      * @param highWaterMarkColumnName the highWaterMarkColumnName value to set.
      * @return the HighWaterMarkChangeDetectionPolicy object itself.

@@ -6,13 +6,11 @@
 
 package com.azure.search.documents.implementation.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The result of Autocomplete requests.
- */
-@Fluent
+/** The AutocompleteItem model. */
+@Immutable
 public final class AutocompleteItem {
     /*
      * The completed term.

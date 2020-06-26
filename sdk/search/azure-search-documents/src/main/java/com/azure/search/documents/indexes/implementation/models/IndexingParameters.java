@@ -10,9 +10,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/**
- * Represents parameters for indexer execution.
- */
+/** The IndexingParameters model. */
 @Fluent
 public final class IndexingParameters {
     /*
@@ -46,9 +44,8 @@ public final class IndexingParameters {
     private Map<String, Object> configuration;
 
     /**
-     * Get the batchSize property: The number of items that are read from the
-     * data source and indexed as a single batch in order to improve
-     * performance. The default depends on the data source type.
+     * Get the batchSize property: The number of items that are read from the data source and indexed as a single batch
+     * in order to improve performance. The default depends on the data source type.
      *
      * @return the batchSize value.
      */
@@ -57,9 +54,8 @@ public final class IndexingParameters {
     }
 
     /**
-     * Set the batchSize property: The number of items that are read from the
-     * data source and indexed as a single batch in order to improve
-     * performance. The default depends on the data source type.
+     * Set the batchSize property: The number of items that are read from the data source and indexed as a single batch
+     * in order to improve performance. The default depends on the data source type.
      *
      * @param batchSize the batchSize value to set.
      * @return the IndexingParameters object itself.
@@ -70,9 +66,8 @@ public final class IndexingParameters {
     }
 
     /**
-     * Get the maxFailedItems property: The maximum number of items that can
-     * fail indexing for indexer execution to still be considered successful.
-     * -1 means no limit. Default is 0.
+     * Get the maxFailedItems property: The maximum number of items that can fail indexing for indexer execution to
+     * still be considered successful. -1 means no limit. Default is 0.
      *
      * @return the maxFailedItems value.
      */
@@ -81,9 +76,8 @@ public final class IndexingParameters {
     }
 
     /**
-     * Set the maxFailedItems property: The maximum number of items that can
-     * fail indexing for indexer execution to still be considered successful.
-     * -1 means no limit. Default is 0.
+     * Set the maxFailedItems property: The maximum number of items that can fail indexing for indexer execution to
+     * still be considered successful. -1 means no limit. Default is 0.
      *
      * @param maxFailedItems the maxFailedItems value to set.
      * @return the IndexingParameters object itself.
@@ -94,9 +88,8 @@ public final class IndexingParameters {
     }
 
     /**
-     * Get the maxFailedItemsPerBatch property: The maximum number of items in
-     * a single batch that can fail indexing for the batch to still be
-     * considered successful. -1 means no limit. Default is 0.
+     * Get the maxFailedItemsPerBatch property: The maximum number of items in a single batch that can fail indexing for
+     * the batch to still be considered successful. -1 means no limit. Default is 0.
      *
      * @return the maxFailedItemsPerBatch value.
      */
@@ -105,9 +98,8 @@ public final class IndexingParameters {
     }
 
     /**
-     * Set the maxFailedItemsPerBatch property: The maximum number of items in
-     * a single batch that can fail indexing for the batch to still be
-     * considered successful. -1 means no limit. Default is 0.
+     * Set the maxFailedItemsPerBatch property: The maximum number of items in a single batch that can fail indexing for
+     * the batch to still be considered successful. -1 means no limit. Default is 0.
      *
      * @param maxFailedItemsPerBatch the maxFailedItemsPerBatch value to set.
      * @return the IndexingParameters object itself.
@@ -118,9 +110,8 @@ public final class IndexingParameters {
     }
 
     /**
-     * Get the configuration property: A dictionary of indexer-specific
-     * configuration properties. Each name is the name of a specific property.
-     * Each value must be of a primitive type.
+     * Get the configuration property: A dictionary of indexer-specific configuration properties. Each name is the name
+     * of a specific property. Each value must be of a primitive type.
      *
      * @return the configuration value.
      */
@@ -129,9 +120,8 @@ public final class IndexingParameters {
     }
 
     /**
-     * Set the configuration property: A dictionary of indexer-specific
-     * configuration properties. Each name is the name of a specific property.
-     * Each value must be of a primitive type.
+     * Set the configuration property: A dictionary of indexer-specific configuration properties. Each name is the name
+     * of a specific property. Each value must be of a primitive type.
      *
      * @param configuration the configuration value to set.
      * @return the IndexingParameters object itself.

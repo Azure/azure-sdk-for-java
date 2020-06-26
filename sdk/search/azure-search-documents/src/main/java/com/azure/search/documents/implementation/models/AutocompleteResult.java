@@ -6,14 +6,12 @@
 
 package com.azure.search.documents.implementation.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * The result of Autocomplete query.
- */
-@Fluent
+/** The AutocompleteResult model. */
+@Immutable
 public final class AutocompleteResult {
     /*
      * A value indicating the percentage of the index that was considered by
@@ -30,9 +28,8 @@ public final class AutocompleteResult {
     private List<AutocompleteItem> results;
 
     /**
-     * Get the coverage property: A value indicating the percentage of the
-     * index that was considered by the autocomplete request, or null if
-     * minimumCoverage was not specified in the request.
+     * Get the coverage property: A value indicating the percentage of the index that was considered by the autocomplete
+     * request, or null if minimumCoverage was not specified in the request.
      *
      * @return the coverage value.
      */

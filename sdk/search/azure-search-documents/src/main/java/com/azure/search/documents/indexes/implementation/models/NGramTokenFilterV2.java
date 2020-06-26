@@ -7,18 +7,17 @@
 package com.azure.search.documents.indexes.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.JsonFlatten;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/**
- * Generates n-grams of the given size(s). This token filter is implemented
- * using Apache Lucene.
- */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata.type")
+/** The NGramTokenFilterV2 model. */
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata\\.type")
 @JsonTypeName("#Microsoft.Azure.Search.NGramTokenFilterV2")
+@JsonFlatten
 @Fluent
-public final class NGramTokenFilterV2 extends TokenFilter {
+public class NGramTokenFilterV2 extends TokenFilter {
     /*
      * The minimum n-gram length. Default is 1. Maximum is 300. Must be less
      * than the value of maxGram.
@@ -33,8 +32,8 @@ public final class NGramTokenFilterV2 extends TokenFilter {
     private Integer maxGram;
 
     /**
-     * Get the minGram property: The minimum n-gram length. Default is 1.
-     * Maximum is 300. Must be less than the value of maxGram.
+     * Get the minGram property: The minimum n-gram length. Default is 1. Maximum is 300. Must be less than the value of
+     * maxGram.
      *
      * @return the minGram value.
      */
@@ -43,8 +42,8 @@ public final class NGramTokenFilterV2 extends TokenFilter {
     }
 
     /**
-     * Set the minGram property: The minimum n-gram length. Default is 1.
-     * Maximum is 300. Must be less than the value of maxGram.
+     * Set the minGram property: The minimum n-gram length. Default is 1. Maximum is 300. Must be less than the value of
+     * maxGram.
      *
      * @param minGram the minGram value to set.
      * @return the NGramTokenFilterV2 object itself.
@@ -55,8 +54,7 @@ public final class NGramTokenFilterV2 extends TokenFilter {
     }
 
     /**
-     * Get the maxGram property: The maximum n-gram length. Default is 2.
-     * Maximum is 300.
+     * Get the maxGram property: The maximum n-gram length. Default is 2. Maximum is 300.
      *
      * @return the maxGram value.
      */
@@ -65,8 +63,7 @@ public final class NGramTokenFilterV2 extends TokenFilter {
     }
 
     /**
-     * Set the maxGram property: The maximum n-gram length. Default is 2.
-     * Maximum is 300.
+     * Set the maxGram property: The maximum n-gram length. Default is 2. Maximum is 300.
      *
      * @param maxGram the maxGram value to set.
      * @return the NGramTokenFilterV2 object itself.

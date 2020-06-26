@@ -9,68 +9,42 @@ package com.azure.search.documents.indexes.implementation.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/**
- * Defines values for PhoneticEncoder.
- */
+/** Defines values for PhoneticEncoder. */
 public enum PhoneticEncoder {
-    /**
-     * Enum value metaphone.
-     */
+    /** Enum value metaphone. */
     METAPHONE("metaphone"),
 
-    /**
-     * Enum value doubleMetaphone.
-     */
+    /** Enum value doubleMetaphone. */
     DOUBLE_METAPHONE("doubleMetaphone"),
 
-    /**
-     * Enum value soundex.
-     */
+    /** Enum value soundex. */
     SOUNDEX("soundex"),
 
-    /**
-     * Enum value refinedSoundex.
-     */
+    /** Enum value refinedSoundex. */
     REFINED_SOUNDEX("refinedSoundex"),
 
-    /**
-     * Enum value caverphone1.
-     */
+    /** Enum value caverphone1. */
     CAVERPHONE1("caverphone1"),
 
-    /**
-     * Enum value caverphone2.
-     */
+    /** Enum value caverphone2. */
     CAVERPHONE2("caverphone2"),
 
-    /**
-     * Enum value cologne.
-     */
+    /** Enum value cologne. */
     COLOGNE("cologne"),
 
-    /**
-     * Enum value nysiis.
-     */
+    /** Enum value nysiis. */
     NYSIIS("nysiis"),
 
-    /**
-     * Enum value koelnerPhonetik.
-     */
+    /** Enum value koelnerPhonetik. */
     KOELNER_PHONETIK("koelnerPhonetik"),
 
-    /**
-     * Enum value haasePhonetik.
-     */
+    /** Enum value haasePhonetik. */
     HAASE_PHONETIK("haasePhonetik"),
 
-    /**
-     * Enum value beiderMorse.
-     */
+    /** Enum value beiderMorse. */
     BEIDER_MORSE("beiderMorse");
 
-    /**
-     * The actual serialized value for a PhoneticEncoder instance.
-     */
+    /** The actual serialized value for a PhoneticEncoder instance. */
     private final String value;
 
     PhoneticEncoder(String value) {

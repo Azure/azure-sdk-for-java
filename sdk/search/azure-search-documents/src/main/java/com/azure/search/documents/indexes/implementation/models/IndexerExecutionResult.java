@@ -6,19 +6,16 @@
 
 package com.azure.search.documents.indexes.implementation.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/**
- * Represents the result of an individual indexer execution.
- */
-@Fluent
+/** The IndexerExecutionResult model. */
+@Immutable
 public final class IndexerExecutionResult {
     /*
-     * The outcome of this indexer execution. Possible values include:
-     * 'TransientFailure', 'Success', 'InProgress', 'Reset'
+     * The outcome of this indexer execution.
      */
     @JsonProperty(value = "status", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private IndexerExecutionStatus status;
@@ -82,8 +79,7 @@ public final class IndexerExecutionResult {
     private String finalTrackingState;
 
     /**
-     * Get the status property: The outcome of this indexer execution. Possible
-     * values include: 'TransientFailure', 'Success', 'InProgress', 'Reset'.
+     * Get the status property: The outcome of this indexer execution.
      *
      * @return the status value.
      */
@@ -92,8 +88,7 @@ public final class IndexerExecutionResult {
     }
 
     /**
-     * Get the errorMessage property: The error message indicating the
-     * top-level error, if any.
+     * Get the errorMessage property: The error message indicating the top-level error, if any.
      *
      * @return the errorMessage value.
      */
@@ -111,8 +106,7 @@ public final class IndexerExecutionResult {
     }
 
     /**
-     * Get the endTime property: The end time of this indexer execution, if the
-     * execution has already completed.
+     * Get the endTime property: The end time of this indexer execution, if the execution has already completed.
      *
      * @return the endTime value.
      */
@@ -139,9 +133,8 @@ public final class IndexerExecutionResult {
     }
 
     /**
-     * Get the itemCount property: The number of items that were processed
-     * during this indexer execution. This includes both successfully processed
-     * items and items where indexing was attempted but failed.
+     * Get the itemCount property: The number of items that were processed during this indexer execution. This includes
+     * both successfully processed items and items where indexing was attempted but failed.
      *
      * @return the itemCount value.
      */
@@ -150,8 +143,7 @@ public final class IndexerExecutionResult {
     }
 
     /**
-     * Get the failedItemCount property: The number of items that failed to be
-     * indexed during this indexer execution.
+     * Get the failedItemCount property: The number of items that failed to be indexed during this indexer execution.
      *
      * @return the failedItemCount value.
      */
@@ -160,8 +152,7 @@ public final class IndexerExecutionResult {
     }
 
     /**
-     * Get the initialTrackingState property: Change tracking state with which
-     * an indexer execution started.
+     * Get the initialTrackingState property: Change tracking state with which an indexer execution started.
      *
      * @return the initialTrackingState value.
      */
@@ -170,8 +161,7 @@ public final class IndexerExecutionResult {
     }
 
     /**
-     * Get the finalTrackingState property: Change tracking state with which an
-     * indexer execution finished.
+     * Get the finalTrackingState property: Change tracking state with which an indexer execution finished.
      *
      * @return the finalTrackingState value.
      */
