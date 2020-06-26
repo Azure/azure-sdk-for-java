@@ -7,20 +7,19 @@
 package com.azure.search.documents.indexes.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.JsonFlatten;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.time.Duration;
 import java.util.Map;
 
-/**
- * A skill that can call a Web API endpoint, allowing you to extend a skillset
- * by having it call your custom code.
- */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata.type")
+/** The WebApiSkill model. */
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata\\.type")
 @JsonTypeName("#Microsoft.Skills.Custom.WebApiSkill")
+@JsonFlatten
 @Fluent
-public final class WebApiSkill extends SearchIndexerSkill {
+public class WebApiSkill extends SearchIndexerSkill {
     /*
      * The url for the Web API.
      */
@@ -78,8 +77,7 @@ public final class WebApiSkill extends SearchIndexerSkill {
     }
 
     /**
-     * Get the httpHeaders property: The headers required to make the http
-     * request.
+     * Get the httpHeaders property: The headers required to make the http request.
      *
      * @return the httpHeaders value.
      */
@@ -88,8 +86,7 @@ public final class WebApiSkill extends SearchIndexerSkill {
     }
 
     /**
-     * Set the httpHeaders property: The headers required to make the http
-     * request.
+     * Set the httpHeaders property: The headers required to make the http request.
      *
      * @param httpHeaders the httpHeaders value to set.
      * @return the WebApiSkill object itself.
@@ -120,8 +117,7 @@ public final class WebApiSkill extends SearchIndexerSkill {
     }
 
     /**
-     * Get the timeout property: The desired timeout for the request. Default
-     * is 30 seconds.
+     * Get the timeout property: The desired timeout for the request. Default is 30 seconds.
      *
      * @return the timeout value.
      */
@@ -130,8 +126,7 @@ public final class WebApiSkill extends SearchIndexerSkill {
     }
 
     /**
-     * Set the timeout property: The desired timeout for the request. Default
-     * is 30 seconds.
+     * Set the timeout property: The desired timeout for the request. Default is 30 seconds.
      *
      * @param timeout the timeout value to set.
      * @return the WebApiSkill object itself.
@@ -142,8 +137,7 @@ public final class WebApiSkill extends SearchIndexerSkill {
     }
 
     /**
-     * Get the batchSize property: The desired batch size which indicates
-     * number of documents.
+     * Get the batchSize property: The desired batch size which indicates number of documents.
      *
      * @return the batchSize value.
      */
@@ -152,8 +146,7 @@ public final class WebApiSkill extends SearchIndexerSkill {
     }
 
     /**
-     * Set the batchSize property: The desired batch size which indicates
-     * number of documents.
+     * Set the batchSize property: The desired batch size which indicates number of documents.
      *
      * @param batchSize the batchSize value to set.
      * @return the WebApiSkill object itself.
@@ -164,8 +157,7 @@ public final class WebApiSkill extends SearchIndexerSkill {
     }
 
     /**
-     * Get the degreeOfParallelism property: If set, the number of parallel
-     * calls that can be made to the Web API.
+     * Get the degreeOfParallelism property: If set, the number of parallel calls that can be made to the Web API.
      *
      * @return the degreeOfParallelism value.
      */
@@ -174,8 +166,7 @@ public final class WebApiSkill extends SearchIndexerSkill {
     }
 
     /**
-     * Set the degreeOfParallelism property: If set, the number of parallel
-     * calls that can be made to the Web API.
+     * Set the degreeOfParallelism property: If set, the number of parallel calls that can be made to the Web API.
      *
      * @param degreeOfParallelism the degreeOfParallelism value to set.
      * @return the WebApiSkill object itself.

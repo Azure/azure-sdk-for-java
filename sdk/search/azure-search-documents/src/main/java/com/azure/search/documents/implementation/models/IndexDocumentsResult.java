@@ -6,15 +6,12 @@
 
 package com.azure.search.documents.implementation.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * Response containing the status of operations for all documents in the
- * indexing request.
- */
-@Fluent
+/** The IndexDocumentsResult model. */
+@Immutable
 public final class IndexDocumentsResult {
     /*
      * The list of status information for each document in the indexing
@@ -24,8 +21,7 @@ public final class IndexDocumentsResult {
     private List<IndexingResult> results;
 
     /**
-     * Get the results property: The list of status information for each
-     * document in the indexing request.
+     * Get the results property: The list of status information for each document in the indexing request.
      *
      * @return the results value.
      */

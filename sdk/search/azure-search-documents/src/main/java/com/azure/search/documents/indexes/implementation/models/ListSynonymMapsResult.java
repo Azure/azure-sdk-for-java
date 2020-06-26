@@ -6,15 +6,12 @@
 
 package com.azure.search.documents.indexes.implementation.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * Response from a List SynonymMaps request. If successful, it includes the
- * full definitions of all synonym maps.
- */
-@Fluent
+/** The ListSynonymMapsResult model. */
+@Immutable
 public final class ListSynonymMapsResult {
     /*
      * The synonym maps in the Search service.

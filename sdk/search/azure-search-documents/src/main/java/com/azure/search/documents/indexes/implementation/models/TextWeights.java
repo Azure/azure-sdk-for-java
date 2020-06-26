@@ -10,10 +10,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/**
- * Defines weights on index fields for which matches should boost scoring in
- * search queries.
- */
+/** The TextWeights model. */
 @Fluent
 public final class TextWeights {
     /*
@@ -24,9 +21,8 @@ public final class TextWeights {
     private Map<String, Double> weights;
 
     /**
-     * Get the weights property: The dictionary of per-field weights to boost
-     * document scoring. The keys are field names and the values are the
-     * weights for each field.
+     * Get the weights property: The dictionary of per-field weights to boost document scoring. The keys are field names
+     * and the values are the weights for each field.
      *
      * @return the weights value.
      */
@@ -35,9 +31,8 @@ public final class TextWeights {
     }
 
     /**
-     * Set the weights property: The dictionary of per-field weights to boost
-     * document scoring. The keys are field names and the values are the
-     * weights for each field.
+     * Set the weights property: The dictionary of per-field weights to boost document scoring. The keys are field names
+     * and the values are the weights for each field.
      *
      * @param weights the weights value to set.
      * @return the TextWeights object itself.

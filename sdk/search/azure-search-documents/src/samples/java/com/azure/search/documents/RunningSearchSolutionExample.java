@@ -83,7 +83,8 @@ public class RunningSearchSolutionExample {
         System.out.println("Suggest with fuzzy matching:");
         iterator.forEachRemaining(
             r -> r.getValue().forEach(
-                res -> System.out.printf("      Found match to: %s, match = %s%n", (String) res.getDocument().get("HotelName"), res.getText())
+                res -> System.out.printf("      Found match to: %s, match = %s%n", (String) res
+                    .getDocument(SearchDocument.class).get("HotelName"), res.getText())
             )
         );
     }
@@ -110,7 +111,7 @@ public class RunningSearchSolutionExample {
 
         System.out.println("Search query results:");
         searchResults.forEach(result -> {
-            SearchDocument doc = result.getDocument();
+            SearchDocument doc = result.getDocument(SearchDocument.class);
             String hotelName = (String) doc.get("HotelName");
             System.out.printf("     Hotel: %s%n", hotelName);
         });

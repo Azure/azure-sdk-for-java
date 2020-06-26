@@ -3,10 +3,10 @@
 
 package com.azure.search.documents;
 
+import com.azure.core.models.spatial.PointGeometry;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.search.documents.implementation.SerializationUtil;
-import com.azure.search.documents.models.GeoPoint;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
@@ -21,6 +21,8 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import static com.azure.search.documents.TestHelpers.assertMapEquals;
+import static com.azure.search.documents.TestHelpers.assertObjectEquals;
+import static com.azure.search.documents.TestHelpers.createPointGeometry;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
@@ -129,11 +131,12 @@ public class SearchDocumentConverterTests {
     public void canReadGeoPoint() {
         String json = "{ \"field\": { \"type\": \"Point\", \"coordinates\": [-122.131577, 47.678581], "
             + "\"crs\":{\"type\":\"name\", \"properties\":{\"name\":\"EPSG:4326\"}}}}";
-        SearchDocument expectedDoc = new SearchDocument(Collections.singletonMap("field", GeoPoint.create(47.678581, -122.131577)));
+        SearchDocument expectedDoc = new SearchDocument(Collections.singletonMap("field",
+            createPointGeometry(47.678581, -122.131577)));
 
         SearchDocument actualDoc = deserialize(json);
         expectedDoc.forEach((key, value) -> {
-            assertEquals(value.toString(), actualDoc.get(key).toString());
+            assertObjectEquals(value, actualDoc.get(key), false, "properties");
         });
     }
 
@@ -144,10 +147,11 @@ public class SearchDocumentConverterTests {
             + "{\"type\":\"Point\", \"coordinates\":[-121.0, 49.0], "
             + "\"crs\":{\"type\":\"name\", \"properties\":{\"name\":\"EPSG:4326\"}}}]}";
         SearchDocument expectedDoc = new SearchDocument(Collections.singletonMap("field",
-            Arrays.asList(GeoPoint.create(47.678581, -122.131577), GeoPoint.create(49, -121))));
+            Arrays.asList(createPointGeometry(47.678581, -122.131577), createPointGeometry(49.0,
+                -121.0))));
 
         SearchDocument actualDoc = deserialize(json);
-        assertMapEquals(expectedDoc, actualDoc);
+        assertMapEquals(expectedDoc, actualDoc, true, "properties");
     }
 
     @Test
@@ -209,7 +213,7 @@ public class SearchDocumentConverterTests {
             + "\"crs\":{\"type\":\"name\", \"properties\":{\"name\": \"EPSG:4326\"}}}, "
             + "{ \"name\": \"Arthur\", \"quest\": null }] }";
 
-        GeoPoint point = GeoPoint.create(47.678581, -122.131577);
+        PointGeometry point = createPointGeometry(47.678581, -122.131577);
         SearchDocument innerDoc = new SearchDocument();
         innerDoc.put("name", "Arthur");
         innerDoc.put("quest", null);
@@ -219,7 +223,7 @@ public class SearchDocumentConverterTests {
         expectedDoc.put("field", value);
 
         SearchDocument actualDoc = deserialize(json);
-        assertMapEquals(expectedDoc, actualDoc);
+        assertMapEquals(expectedDoc, actualDoc, true, "properties");
     }
 
     @Test
@@ -230,7 +234,7 @@ public class SearchDocumentConverterTests {
         expectedDoc.put("field2", Arrays.asList(testDate, testDate));
 
         SearchDocument actualDoc = deserialize(json);
-        assertMapEquals(expectedDoc, actualDoc);
+        assertMapEquals(expectedDoc, actualDoc, false);
     }
 
     @Test
@@ -280,6 +284,6 @@ public class SearchDocumentConverterTests {
             Collections.singletonMap("field", Arrays.asList("hello", testDate, "123")));
 
         SearchDocument actualDoc = deserialize(json);
-        assertMapEquals(expectedDoc, actualDoc);
+        assertMapEquals(expectedDoc, actualDoc, false);
     }
 }

@@ -9,11 +9,7 @@ package com.azure.search.documents.indexes.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * A customer-managed encryption key in Azure Key Vault. Keys that you create
- * and manage can be used to encrypt or decrypt data-at-rest in Azure Cognitive
- * Search, such as indexes and synonym maps.
- */
+/** The SearchResourceEncryptionKey model. */
 @Fluent
 public final class SearchResourceEncryptionKey {
     /*
@@ -46,8 +42,7 @@ public final class SearchResourceEncryptionKey {
     private AzureActiveDirectoryApplicationCredentials accessCredentials;
 
     /**
-     * Get the keyName property: The name of your Azure Key Vault key to be
-     * used to encrypt your data at rest.
+     * Get the keyName property: The name of your Azure Key Vault key to be used to encrypt your data at rest.
      *
      * @return the keyName value.
      */
@@ -56,8 +51,7 @@ public final class SearchResourceEncryptionKey {
     }
 
     /**
-     * Set the keyName property: The name of your Azure Key Vault key to be
-     * used to encrypt your data at rest.
+     * Set the keyName property: The name of your Azure Key Vault key to be used to encrypt your data at rest.
      *
      * @param keyName the keyName value to set.
      * @return the SearchResourceEncryptionKey object itself.
@@ -68,8 +62,7 @@ public final class SearchResourceEncryptionKey {
     }
 
     /**
-     * Get the keyVersion property: The version of your Azure Key Vault key to
-     * be used to encrypt your data at rest.
+     * Get the keyVersion property: The version of your Azure Key Vault key to be used to encrypt your data at rest.
      *
      * @return the keyVersion value.
      */
@@ -78,8 +71,7 @@ public final class SearchResourceEncryptionKey {
     }
 
     /**
-     * Set the keyVersion property: The version of your Azure Key Vault key to
-     * be used to encrypt your data at rest.
+     * Set the keyVersion property: The version of your Azure Key Vault key to be used to encrypt your data at rest.
      *
      * @param keyVersion the keyVersion value to set.
      * @return the SearchResourceEncryptionKey object itself.
@@ -90,10 +82,8 @@ public final class SearchResourceEncryptionKey {
     }
 
     /**
-     * Get the vaultUri property: The URI of your Azure Key Vault, also
-     * referred to as DNS name, that contains the key to be used to encrypt
-     * your data at rest. An example URI might be
-     * https://my-keyvault-name.vault.azure.net.
+     * Get the vaultUri property: The URI of your Azure Key Vault, also referred to as DNS name, that contains the key
+     * to be used to encrypt your data at rest. An example URI might be https://my-keyvault-name.vault.azure.net.
      *
      * @return the vaultUri value.
      */
@@ -102,10 +92,8 @@ public final class SearchResourceEncryptionKey {
     }
 
     /**
-     * Set the vaultUri property: The URI of your Azure Key Vault, also
-     * referred to as DNS name, that contains the key to be used to encrypt
-     * your data at rest. An example URI might be
-     * https://my-keyvault-name.vault.azure.net.
+     * Set the vaultUri property: The URI of your Azure Key Vault, also referred to as DNS name, that contains the key
+     * to be used to encrypt your data at rest. An example URI might be https://my-keyvault-name.vault.azure.net.
      *
      * @param vaultUri the vaultUri value to set.
      * @return the SearchResourceEncryptionKey object itself.
@@ -116,9 +104,8 @@ public final class SearchResourceEncryptionKey {
     }
 
     /**
-     * Get the accessCredentials property: Optional Azure Active Directory
-     * credentials used for accessing your Azure Key Vault. Not required if
-     * using managed identity instead.
+     * Get the accessCredentials property: Optional Azure Active Directory credentials used for accessing your Azure Key
+     * Vault. Not required if using managed identity instead.
      *
      * @return the accessCredentials value.
      */
@@ -127,14 +114,14 @@ public final class SearchResourceEncryptionKey {
     }
 
     /**
-     * Set the accessCredentials property: Optional Azure Active Directory
-     * credentials used for accessing your Azure Key Vault. Not required if
-     * using managed identity instead.
+     * Set the accessCredentials property: Optional Azure Active Directory credentials used for accessing your Azure Key
+     * Vault. Not required if using managed identity instead.
      *
      * @param accessCredentials the accessCredentials value to set.
      * @return the SearchResourceEncryptionKey object itself.
      */
-    public SearchResourceEncryptionKey setAccessCredentials(AzureActiveDirectoryApplicationCredentials accessCredentials) {
+    public SearchResourceEncryptionKey setAccessCredentials(
+            AzureActiveDirectoryApplicationCredentials accessCredentials) {
         this.accessCredentials = accessCredentials;
         return this;
     }

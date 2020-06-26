@@ -6,14 +6,12 @@
 
 package com.azure.search.documents.implementation.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * Response containing suggestion query results from an index.
- */
-@Fluent
+/** The SuggestDocumentsResult model. */
+@Immutable
 public final class SuggestDocumentsResult {
     /*
      * The sequence of results returned by the query.
@@ -38,9 +36,8 @@ public final class SuggestDocumentsResult {
     }
 
     /**
-     * Get the coverage property: A value indicating the percentage of the
-     * index that was included in the query, or null if minimumCoverage was not
-     * set in the request.
+     * Get the coverage property: A value indicating the percentage of the index that was included in the query, or null
+     * if minimumCoverage was not set in the request.
      *
      * @return the coverage value.
      */

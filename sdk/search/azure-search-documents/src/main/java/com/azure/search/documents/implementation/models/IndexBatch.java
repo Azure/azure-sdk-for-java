@@ -10,9 +10,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * Contains a batch of document write actions to send to the index.
- */
+/** The IndexBatch model. */
 @Fluent
 public final class IndexBatch {
     /*

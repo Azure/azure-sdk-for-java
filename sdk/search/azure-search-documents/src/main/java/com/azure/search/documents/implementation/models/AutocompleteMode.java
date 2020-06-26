@@ -9,28 +9,18 @@ package com.azure.search.documents.implementation.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/**
- * Defines values for AutocompleteMode.
- */
+/** Defines values for AutocompleteMode. */
 public enum AutocompleteMode {
-    /**
-     * Enum value oneTerm.
-     */
+    /** Enum value oneTerm. */
     ONE_TERM("oneTerm"),
 
-    /**
-     * Enum value twoTerms.
-     */
+    /** Enum value twoTerms. */
     TWO_TERMS("twoTerms"),
 
-    /**
-     * Enum value oneTermWithContext.
-     */
+    /** Enum value oneTermWithContext. */
     ONE_TERM_WITH_CONTEXT("oneTermWithContext");
 
-    /**
-     * The actual serialized value for a AutocompleteMode instance.
-     */
+    /** The actual serialized value for a AutocompleteMode instance. */
     private final String value;
 
     AutocompleteMode(String value) {

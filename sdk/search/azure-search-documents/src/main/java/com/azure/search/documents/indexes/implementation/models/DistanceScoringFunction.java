@@ -11,10 +11,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/**
- * Defines a function that boosts scores based on distance from a geographic
- * location.
- */
+/** The DistanceScoringFunction model. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("distance")
 @Fluent
@@ -26,8 +23,7 @@ public final class DistanceScoringFunction extends ScoringFunction {
     private DistanceScoringParameters parameters;
 
     /**
-     * Get the parameters property: Parameter values for the distance scoring
-     * function.
+     * Get the parameters property: Parameter values for the distance scoring function.
      *
      * @return the parameters value.
      */
@@ -36,8 +32,7 @@ public final class DistanceScoringFunction extends ScoringFunction {
     }
 
     /**
-     * Set the parameters property: Parameter values for the distance scoring
-     * function.
+     * Set the parameters property: Parameter values for the distance scoring function.
      *
      * @param parameters the parameters value to set.
      * @return the DistanceScoringFunction object itself.

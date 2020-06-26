@@ -6,15 +6,12 @@
 
 package com.azure.search.documents.indexes.implementation.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * Response from a List Indexes request. If successful, it includes the full
- * definitions of all indexes.
- */
-@Fluent
+/** The ListIndexesResult model. */
+@Immutable
 public final class ListIndexesResult {
     /*
      * The indexes in the Search service.

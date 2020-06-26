@@ -7,19 +7,18 @@
 package com.azure.search.documents.indexes.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.JsonFlatten;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 
-/**
- * Tokenizes the input from an edge into n-grams of the given size(s). This
- * tokenizer is implemented using Apache Lucene.
- */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata.type")
+/** The EdgeNGramTokenizer model. */
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata\\.type")
 @JsonTypeName("#Microsoft.Azure.Search.EdgeNGramTokenizer")
+@JsonFlatten
 @Fluent
-public final class EdgeNGramTokenizer extends LexicalTokenizer {
+public class EdgeNGramTokenizer extends LexicalTokenizer {
     /*
      * The minimum n-gram length. Default is 1. Maximum is 300. Must be less
      * than the value of maxGram.
@@ -40,8 +39,8 @@ public final class EdgeNGramTokenizer extends LexicalTokenizer {
     private List<TokenCharacterKind> tokenChars;
 
     /**
-     * Get the minGram property: The minimum n-gram length. Default is 1.
-     * Maximum is 300. Must be less than the value of maxGram.
+     * Get the minGram property: The minimum n-gram length. Default is 1. Maximum is 300. Must be less than the value of
+     * maxGram.
      *
      * @return the minGram value.
      */
@@ -50,8 +49,8 @@ public final class EdgeNGramTokenizer extends LexicalTokenizer {
     }
 
     /**
-     * Set the minGram property: The minimum n-gram length. Default is 1.
-     * Maximum is 300. Must be less than the value of maxGram.
+     * Set the minGram property: The minimum n-gram length. Default is 1. Maximum is 300. Must be less than the value of
+     * maxGram.
      *
      * @param minGram the minGram value to set.
      * @return the EdgeNGramTokenizer object itself.
@@ -62,8 +61,7 @@ public final class EdgeNGramTokenizer extends LexicalTokenizer {
     }
 
     /**
-     * Get the maxGram property: The maximum n-gram length. Default is 2.
-     * Maximum is 300.
+     * Get the maxGram property: The maximum n-gram length. Default is 2. Maximum is 300.
      *
      * @return the maxGram value.
      */
@@ -72,8 +70,7 @@ public final class EdgeNGramTokenizer extends LexicalTokenizer {
     }
 
     /**
-     * Set the maxGram property: The maximum n-gram length. Default is 2.
-     * Maximum is 300.
+     * Set the maxGram property: The maximum n-gram length. Default is 2. Maximum is 300.
      *
      * @param maxGram the maxGram value to set.
      * @return the EdgeNGramTokenizer object itself.

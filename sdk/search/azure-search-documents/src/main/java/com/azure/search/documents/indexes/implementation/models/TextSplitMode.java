@@ -10,18 +10,12 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/**
- * Defines values for TextSplitMode.
- */
+/** Defines values for TextSplitMode. */
 public final class TextSplitMode extends ExpandableStringEnum<TextSplitMode> {
-    /**
-     * Static value pages for TextSplitMode.
-     */
+    /** Static value pages for TextSplitMode. */
     public static final TextSplitMode PAGES = fromString("pages");
 
-    /**
-     * Static value sentences for TextSplitMode.
-     */
+    /** Static value sentences for TextSplitMode. */
     public static final TextSplitMode SENTENCES = fromString("sentences");
 
     /**
@@ -35,9 +29,7 @@ public final class TextSplitMode extends ExpandableStringEnum<TextSplitMode> {
         return fromString(name, TextSplitMode.class);
     }
 
-    /**
-     * @return known TextSplitMode values.
-     */
+    /** @return known TextSplitMode values. */
     public static Collection<TextSplitMode> values() {
         return values(TextSplitMode.class);
     }

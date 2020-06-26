@@ -9,23 +9,15 @@ package com.azure.search.documents.implementation.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/**
- * Defines values for SearchMode.
- */
+/** Defines values for SearchMode. */
 public enum SearchMode {
-    /**
-     * Enum value any.
-     */
+    /** Enum value any. */
     ANY("any"),
 
-    /**
-     * Enum value all.
-     */
+    /** Enum value all. */
     ALL("all");
 
-    /**
-     * The actual serialized value for a SearchMode instance.
-     */
+    /** The actual serialized value for a SearchMode instance. */
     private final String value;
 
     SearchMode(String value) {

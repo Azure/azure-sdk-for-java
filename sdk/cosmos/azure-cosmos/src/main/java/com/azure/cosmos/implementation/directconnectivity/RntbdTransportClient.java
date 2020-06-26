@@ -15,6 +15,7 @@ import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdRequestArgs
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdRequestRecord;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdServiceEndpoint;
 import com.azure.cosmos.implementation.guava25.base.Strings;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.JsonGenerator;
@@ -220,6 +221,11 @@ public final class RntbdTransportClient extends TransportClient {
         // endregion
 
         // region Constructors
+
+        @JsonCreator
+        private Options() {
+            this(ConnectionPolicy.getDefaultPolicy());
+        }
 
         private Options(final Builder builder) {
 

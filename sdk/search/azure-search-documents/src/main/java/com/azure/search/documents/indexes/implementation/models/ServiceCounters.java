@@ -9,9 +9,7 @@ package com.azure.search.documents.indexes.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * Represents service-level resource counters and quotas.
- */
+/** The ServiceCounters model. */
 @Fluent
 public final class ServiceCounters {
     /*
@@ -57,8 +55,7 @@ public final class ServiceCounters {
     private ResourceCounter skillsetCounter;
 
     /**
-     * Get the documentCounter property: Total number of documents across all
-     * indexes in the service.
+     * Get the documentCounter property: Total number of documents across all indexes in the service.
      *
      * @return the documentCounter value.
      */
@@ -67,8 +64,7 @@ public final class ServiceCounters {
     }
 
     /**
-     * Set the documentCounter property: Total number of documents across all
-     * indexes in the service.
+     * Set the documentCounter property: Total number of documents across all indexes in the service.
      *
      * @param documentCounter the documentCounter value to set.
      * @return the ServiceCounters object itself.
@@ -139,8 +135,7 @@ public final class ServiceCounters {
     }
 
     /**
-     * Get the storageSizeCounter property: Total size of used storage in
-     * bytes.
+     * Get the storageSizeCounter property: Total size of used storage in bytes.
      *
      * @return the storageSizeCounter value.
      */
@@ -149,8 +144,7 @@ public final class ServiceCounters {
     }
 
     /**
-     * Set the storageSizeCounter property: Total size of used storage in
-     * bytes.
+     * Set the storageSizeCounter property: Total size of used storage in bytes.
      *
      * @param storageSizeCounter the storageSizeCounter value to set.
      * @return the ServiceCounters object itself.

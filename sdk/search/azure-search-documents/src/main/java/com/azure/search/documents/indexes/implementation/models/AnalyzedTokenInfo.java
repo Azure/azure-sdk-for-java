@@ -6,13 +6,11 @@
 
 package com.azure.search.documents.indexes.implementation.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * Information about a token returned by an analyzer.
- */
-@Fluent
+/** The AnalyzedTokenInfo model. */
+@Immutable
 public final class AnalyzedTokenInfo {
     /*
      * The token returned by the analyzer.
@@ -51,8 +49,7 @@ public final class AnalyzedTokenInfo {
     }
 
     /**
-     * Get the startOffset property: The index of the first character of the
-     * token in the input text.
+     * Get the startOffset property: The index of the first character of the token in the input text.
      *
      * @return the startOffset value.
      */
@@ -61,8 +58,7 @@ public final class AnalyzedTokenInfo {
     }
 
     /**
-     * Get the endOffset property: The index of the last character of the token
-     * in the input text.
+     * Get the endOffset property: The index of the last character of the token in the input text.
      *
      * @return the endOffset value.
      */
@@ -71,11 +67,9 @@ public final class AnalyzedTokenInfo {
     }
 
     /**
-     * Get the position property: The position of the token in the input text
-     * relative to other tokens. The first token in the input text has position
-     * 0, the next has position 1, and so on. Depending on the analyzer used,
-     * some tokens might have the same position, for example if they are
-     * synonyms of each other.
+     * Get the position property: The position of the token in the input text relative to other tokens. The first token
+     * in the input text has position 0, the next has position 1, and so on. Depending on the analyzer used, some tokens
+     * might have the same position, for example if they are synonyms of each other.
      *
      * @return the position value.
      */

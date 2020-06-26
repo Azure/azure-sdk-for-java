@@ -16,7 +16,7 @@ create and manage indexes, load data, implement search features, execute queries
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-search-documents</artifactId>
-    <version>1.0.0-beta.4</version>
+    <version>11.0.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -174,7 +174,7 @@ for (SearchResult result : searchClient.search("luxury hotel",
     new SearchOptions(), new RequestOptions(), Context.NONE)) {
 
     // Each result is a dynamic Map
-    SearchDocument doc = result.getDocument();
+    SearchDocument doc = result.getDocument(SearchDocument.class);
     String hotelName = (String) doc.get("HotelName");
     Double rating = (Double) doc.get("Rating");
 

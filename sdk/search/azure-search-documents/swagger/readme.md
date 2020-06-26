@@ -13,23 +13,31 @@ To build the SDK for SearchServiceClient and SearchIndexClient, simply [Install 
 To see additional help and options, run:
 
 > `autorest --help`
----
 
----
+### Setup
+```ps
+Fork and clone https://github.com/Azure/autorest.java 
+git checkout v4
+git submodule update --init --recursive
+mvn package -Dlocal
+npm install
+npm install -g autorest
+```
+
 ### Generation
 
 There are two swaggers for search: index and service. They always under same package version, e.g. `--tag=package-2019-05-searchindex-preview` and `--tag=package-2019-05-searchservice-preview`.
 
 ```ps
 cd <swagger-folder>
-autorest --use=@microsoft.azure/autorest.java@3.0.3 --tag=${package} --version=2.0.4413 
+autorest --use=C:/work/autorest.java
 ```
 
 e.g.
 ```ps
 cd <swagger-folder>
-autorest --use=@microsoft.azure/autorest.java@3.0.3 --tag=package-2019-05-searchindex-preview --version=2.0.4413 
-autorest --use=@microsoft.azure/autorest.java@3.0.3 --tag=package-2019-05-searchservice-preview --version=2.0.4413 
+autorest --use=C:/work/autorest.java --tag=package-2020-06-searchindex
+autorest --use=C:/work/autorest.java --tag=package-2020-06-searchservice
 ```
 ## Configuration
 
@@ -40,6 +48,29 @@ These are the global settings for SearchServiceClient and SearchIndexClient.
 opt-in-extensible-enums: true
 openapi-type: data-plane
 ```
+### Tag: package-2020-06-searchservice
+
+These settings apply only when `--tag=package-2020-06-searchservice` is specified on the command line.
+
+``` yaml $(tag) == 'package-2020-06-searchservice'
+namespace: com.azure.search.documents.indexes
+input-file:
+- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/f487ebc93065fd42540aa422c04edd6a768a03e6/specification/search/data-plane/Azure.Search/preview/2020-06-30/searchservice.json
+models-subpackage: implementation.models
+custom-types-subpackage: models
+```
+
+### Tag: package-2020-06-searchindex
+
+These settings apply only when `--tag=package-2020-06-searchindex` is specified on the command line.
+
+``` yaml $(tag) == 'package-2020-06-searchindex'
+namespace: com.azure.search.documents
+input-file:
+- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/f487ebc93065fd42540aa422c04edd6a768a03e6/specification/search/data-plane/Azure.Search/preview/2020-06-30/searchindex.json
+models-subpackage: implementation.models
+custom-types-subpackage: models
+```
 
 ### Tag: package-2019-05-searchservice-preview
 
@@ -49,7 +80,6 @@ These settings apply only when `--tag=package-2019-05-searchservice-preview` is 
 namespace: com.azure.search.documents.indexes
 input-file:
 - https://github.com/Azure/azure-rest-api-specs/blob/master/specification/search/data-plane/Azure.Search/preview/2019-05-06-preview/searchservice.json
-title: SearchServiceRestClient
 models-subpackage: implementation.models
 custom-types-subpackage: models
 ```
@@ -62,7 +92,6 @@ These settings apply only when `--tag=package-2019-05-searchindex-preview` is sp
 namespace: com.azure.search.documents
 input-file:
 - https://github.com/Azure/azure-rest-api-specs/blob/master/specification/search/data-plane/Azure.Search/preview/2019-05-06-preview/searchindex.json
-title: SearchIndexRestClient
 models-subpackage: implementation.models
 custom-types-subpackage: models
 ```
@@ -98,8 +127,9 @@ This swagger is ready for C# and Java.
 output-folder: ../
 java: true
 sync-methods: none
-add-context-parameter: true
 generate-client-interfaces: false
+context-client-method-parameter: true
+generate-client-as-impl: true
 license-header: |-
   Copyright (c) Microsoft Corporation. All rights reserved.
   Licensed under the MIT License.
@@ -112,57 +142,31 @@ vararg-properties: >-
   SuggestOptions.orderBy, SuggestOptions.searchFields, SuggestOptions.select, CorsOptions.allowedOrigins
 ```
 
+### Set odata.metadata Accept header in operations
+
+searchindex.json needs odata.metadata=none and searchservice.json needs odata.metadata=minimal in the Accept header.
+
 ``` yaml $(java)
 directive:
-    # Change DocumentsImpl to take Accept header parameter
-    - from: DocumentsImpl.java
-      where: $
-      transform: >-
-          return $
-          .replace(/(\@HostParam\(\"indexName\"\) String indexName)/g, "$1\, @HeaderParam\(\"accept\"\) String accept")
-          .replace(/(this.client.getIndexName\(\),)/g, "$1 accept,")
-          .replace(/(public Mono\<(.*)\) \{)/g, "$1\n\t\tfinal String accept \= \"application\/json\;odata\.metadata\=none\"\;\n")
+  - from: swagger-document
+    where: $.paths
+    transform: >
+      for (var path in $) {
+        for (var opName in $[path]) {
+          var accept = "application/json; odata.metadata=";
+          accept += path.startsWith("/docs") ? "none" : "minimal";
 
-    - from: 
-        - DataSourcesImpl.java
-        - IndexersImpl.java
-        - IndexesImpl.java
-        - SkillsetsImpl.java
-        - SynonymMapsImpl.java
-      where: $
-      transform: >-
-          return $
-          .replace(/(\@QueryParam\(\"api\-version\"\) String apiVersion)/g, "$1\, @HeaderParam\(\"accept\"\) String accept")
-          .replace(/(this\.client\.getApiVersion\(\)\,)/g, "$1 accept,")
-          .replace(/(public Mono\<(.*)\) \{)/g, "$1\n\t\tfinal String accept \= \"application\/json\;odata\.metadata\=minimal\"\;\n")
+          var op = $[path][opName];
+          op.parameters.push({
+            name: "accept",
+            "in": "header",
+            required: true,
+            type: "string",
+            enum: [ accept ],
+            "x-ms-parameter-location": "method"
+          });
+        }
+      }
 
-    # Workaround to fix bad host path parameters
-    - from:
-        - SkillsetsImpl.java
-        - DatasetsImpl.java
-        - DataSourcesImpl.java
-        - IndexersImpl.java
-        - IndexesImpl.java
-        - SynonymMapsImpl.java
-      where: $
-      transform: >-
-        return $
-        .replace(/(this.getSearchServiceName)/g, "this.client.getSearchServiceName")
-        .replace(/(this.getEndpoint)/g, "this.client.getEndpoint")
-        .replace(/(this.getSearchDnsSuffix)/g, "this.client.getSearchDnsSuffix")
-
-    # Add RestProxy import
-    - from:
-        - SearchServiceRestClientImpl.java
-      where: $
-      transform: >-
-        return $.replace(/(package com.azure.search.documents.implementation;)/g, "$1\nimport com.azure.core.http.rest.RestProxy;")
-
-    # Add @JsonAnyGetter for IndexAction.java
-    - from: IndexAction.java
-      where: $
-      transform: >-
-        return $
-        .replace(/(import com\.azure\.core\.annotation\.Fluent\;)/g, "$1\nimport com.fasterxml.jackson.annotation.JsonAnyGetter;")
-        .replace(/(    public Map\<String\, Object\> getAdditionalProperties\(\) \{)/g, "    @JsonAnyGetter\n$1")
+      return $;
 ```

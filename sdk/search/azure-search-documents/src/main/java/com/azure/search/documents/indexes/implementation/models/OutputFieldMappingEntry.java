@@ -9,9 +9,7 @@ package com.azure.search.documents.indexes.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * Output field mapping for a skill.
- */
+/** The OutputFieldMappingEntry model. */
 @Fluent
 public final class OutputFieldMappingEntry {
     /*
@@ -47,8 +45,7 @@ public final class OutputFieldMappingEntry {
     }
 
     /**
-     * Get the targetName property: The target name of the output. It is
-     * optional and default to name.
+     * Get the targetName property: The target name of the output. It is optional and default to name.
      *
      * @return the targetName value.
      */
@@ -57,8 +54,7 @@ public final class OutputFieldMappingEntry {
     }
 
     /**
-     * Set the targetName property: The target name of the output. It is
-     * optional and default to name.
+     * Set the targetName property: The target name of the output. It is optional and default to name.
      *
      * @param targetName the targetName value to set.
      * @return the OutputFieldMappingEntry object itself.

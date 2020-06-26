@@ -11,10 +11,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/**
- * Defines a function that boosts scores based on the magnitude of a numeric
- * field.
- */
+/** The MagnitudeScoringFunction model. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("magnitude")
 @Fluent
@@ -26,8 +23,7 @@ public final class MagnitudeScoringFunction extends ScoringFunction {
     private MagnitudeScoringParameters parameters;
 
     /**
-     * Get the parameters property: Parameter values for the magnitude scoring
-     * function.
+     * Get the parameters property: Parameter values for the magnitude scoring function.
      *
      * @return the parameters value.
      */
@@ -36,8 +32,7 @@ public final class MagnitudeScoringFunction extends ScoringFunction {
     }
 
     /**
-     * Set the parameters property: Parameter values for the magnitude scoring
-     * function.
+     * Set the parameters property: Parameter values for the magnitude scoring function.
      *
      * @param parameters the parameters value to set.
      * @return the MagnitudeScoringFunction object itself.

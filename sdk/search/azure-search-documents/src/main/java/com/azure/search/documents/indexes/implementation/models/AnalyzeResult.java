@@ -10,9 +10,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * The result of testing an analyzer on text.
- */
+/** The AnalyzeResult model. */
 @Fluent
 public final class AnalyzeResult {
     /*
@@ -22,8 +20,7 @@ public final class AnalyzeResult {
     private List<AnalyzedTokenInfo> tokens;
 
     /**
-     * Get the tokens property: The list of tokens returned by the analyzer
-     * specified in the request.
+     * Get the tokens property: The list of tokens returned by the analyzer specified in the request.
      *
      * @return the tokens value.
      */
@@ -32,8 +29,7 @@ public final class AnalyzeResult {
     }
 
     /**
-     * Set the tokens property: The list of tokens returned by the analyzer
-     * specified in the request.
+     * Set the tokens property: The list of tokens returned by the analyzer specified in the request.
      *
      * @param tokens the tokens value to set.
      * @return the AnalyzeResult object itself.

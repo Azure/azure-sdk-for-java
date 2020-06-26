@@ -7,19 +7,18 @@
 package com.azure.search.documents.indexes.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.JsonFlatten;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 
-/**
- * Forms bigrams of CJK terms that are generated from the standard tokenizer.
- * This token filter is implemented using Apache Lucene.
- */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata.type")
+/** The CjkBigramTokenFilter model. */
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata\\.type")
 @JsonTypeName("#Microsoft.Azure.Search.CjkBigramTokenFilter")
+@JsonFlatten
 @Fluent
-public final class CjkBigramTokenFilter extends TokenFilter {
+public class CjkBigramTokenFilter extends TokenFilter {
     /*
      * The scripts to ignore.
      */
@@ -54,9 +53,8 @@ public final class CjkBigramTokenFilter extends TokenFilter {
     }
 
     /**
-     * Get the outputUnigrams property: A value indicating whether to output
-     * both unigrams and bigrams (if true), or just bigrams (if false). Default
-     * is false.
+     * Get the outputUnigrams property: A value indicating whether to output both unigrams and bigrams (if true), or
+     * just bigrams (if false). Default is false.
      *
      * @return the outputUnigrams value.
      */
@@ -65,9 +63,8 @@ public final class CjkBigramTokenFilter extends TokenFilter {
     }
 
     /**
-     * Set the outputUnigrams property: A value indicating whether to output
-     * both unigrams and bigrams (if true), or just bigrams (if false). Default
-     * is false.
+     * Set the outputUnigrams property: A value indicating whether to output both unigrams and bigrams (if true), or
+     * just bigrams (if false). Default is false.
      *
      * @param outputUnigrams the outputUnigrams value to set.
      * @return the CjkBigramTokenFilter object itself.

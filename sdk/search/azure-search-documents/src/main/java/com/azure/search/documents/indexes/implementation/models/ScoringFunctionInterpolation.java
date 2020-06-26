@@ -9,33 +9,21 @@ package com.azure.search.documents.indexes.implementation.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/**
- * Defines values for ScoringFunctionInterpolation.
- */
+/** Defines values for ScoringFunctionInterpolation. */
 public enum ScoringFunctionInterpolation {
-    /**
-     * Enum value linear.
-     */
+    /** Enum value linear. */
     LINEAR("linear"),
 
-    /**
-     * Enum value constant.
-     */
+    /** Enum value constant. */
     CONSTANT("constant"),
 
-    /**
-     * Enum value quadratic.
-     */
+    /** Enum value quadratic. */
     QUADRATIC("quadratic"),
 
-    /**
-     * Enum value logarithmic.
-     */
+    /** Enum value logarithmic. */
     LOGARITHMIC("logarithmic");
 
-    /**
-     * The actual serialized value for a ScoringFunctionInterpolation instance.
-     */
+    /** The actual serialized value for a ScoringFunctionInterpolation instance. */
     private final String value;
 
     ScoringFunctionInterpolation(String value) {

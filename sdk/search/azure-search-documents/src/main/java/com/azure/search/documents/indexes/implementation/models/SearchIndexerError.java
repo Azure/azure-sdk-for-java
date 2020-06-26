@@ -6,13 +6,11 @@
 
 package com.azure.search.documents.indexes.implementation.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * Represents an item- or document-level indexing error.
- */
-@Fluent
+/** The SearchIndexerError model. */
+@Immutable
 public final class SearchIndexerError {
     /*
      * The key of the item for which indexing failed.
@@ -68,8 +66,7 @@ public final class SearchIndexerError {
     }
 
     /**
-     * Get the errorMessage property: The message describing the error that
-     * occurred while processing the item.
+     * Get the errorMessage property: The message describing the error that occurred while processing the item.
      *
      * @return the errorMessage value.
      */
@@ -78,11 +75,9 @@ public final class SearchIndexerError {
     }
 
     /**
-     * Get the statusCode property: The status code indicating why the indexing
-     * operation failed. Possible values include: 400 for a malformed input
-     * document, 404 for document not found, 409 for a version conflict, 422
-     * when the index is temporarily unavailable, or 503 for when the service
-     * is too busy.
+     * Get the statusCode property: The status code indicating why the indexing operation failed. Possible values
+     * include: 400 for a malformed input document, 404 for document not found, 409 for a version conflict, 422 when the
+     * index is temporarily unavailable, or 503 for when the service is too busy.
      *
      * @return the statusCode value.
      */
@@ -91,9 +86,8 @@ public final class SearchIndexerError {
     }
 
     /**
-     * Get the name property: The name of the source at which the error
-     * originated. For example, this could refer to a particular skill in the
-     * attached skillset. This may not be always available.
+     * Get the name property: The name of the source at which the error originated. For example, this could refer to a
+     * particular skill in the attached skillset. This may not be always available.
      *
      * @return the name value.
      */
@@ -102,8 +96,8 @@ public final class SearchIndexerError {
     }
 
     /**
-     * Get the details property: Additional, verbose details about the error to
-     * assist in debugging the indexer. This may not be always available.
+     * Get the details property: Additional, verbose details about the error to assist in debugging the indexer. This
+     * may not be always available.
      *
      * @return the details value.
      */
@@ -112,8 +106,8 @@ public final class SearchIndexerError {
     }
 
     /**
-     * Get the documentationLink property: A link to a troubleshooting guide
-     * for these classes of errors. This may not be always available.
+     * Get the documentationLink property: A link to a troubleshooting guide for these classes of errors. This may not
+     * be always available.
      *
      * @return the documentationLink value.
      */
