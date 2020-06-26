@@ -3,20 +3,20 @@
 
 package com.azure.search.documents.implementation.converters;
 
-import com.azure.search.documents.indexes.models.ServiceLimits;
+import com.azure.search.documents.indexes.models.SearchServiceLimits;
 
 /**
- * A converter between {@link com.azure.search.documents.indexes.implementation.models.ServiceLimits} and {@link ServiceLimits}.
+ * A converter between {@link com.azure.search.documents.indexes.implementation.models.ServiceLimits} and {@link SearchServiceLimits}.
  */
 public final class ServiceLimitsConverter {
     /**
-     * Maps from {@link com.azure.search.documents.indexes.implementation.models.ServiceLimits} to {@link ServiceLimits}.
+     * Maps from {@link com.azure.search.documents.indexes.implementation.models.ServiceLimits} to {@link SearchServiceLimits}.
      */
-    public static ServiceLimits map(com.azure.search.documents.indexes.implementation.models.ServiceLimits obj) {
+    public static SearchServiceLimits map(com.azure.search.documents.indexes.implementation.models.ServiceLimits obj) {
         if (obj == null) {
             return null;
         }
-        ServiceLimits serviceLimits = new ServiceLimits();
+        SearchServiceLimits serviceLimits = new SearchServiceLimits();
 
         Integer maxFieldNestingDepthPerIndex = obj.getMaxFieldNestingDepthPerIndex();
         serviceLimits.setMaxFieldNestingDepthPerIndex(maxFieldNestingDepthPerIndex);
@@ -33,9 +33,9 @@ public final class ServiceLimitsConverter {
     }
 
     /**
-     * Maps from {@link ServiceLimits} to {@link com.azure.search.documents.indexes.implementation.models.ServiceLimits}.
+     * Maps from {@link SearchServiceLimits} to {@link com.azure.search.documents.indexes.implementation.models.ServiceLimits}.
      */
-    public static com.azure.search.documents.indexes.implementation.models.ServiceLimits map(ServiceLimits obj) {
+    public static com.azure.search.documents.indexes.implementation.models.ServiceLimits map(SearchServiceLimits obj) {
         if (obj == null) {
             return null;
         }

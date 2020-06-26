@@ -9,33 +9,21 @@ package com.azure.search.documents.implementation.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/**
- * Defines values for IndexActionType.
- */
+/** Defines values for IndexActionType. */
 public enum IndexActionType {
-    /**
-     * Enum value upload.
-     */
+    /** Enum value upload. */
     UPLOAD("upload"),
 
-    /**
-     * Enum value merge.
-     */
+    /** Enum value merge. */
     MERGE("merge"),
 
-    /**
-     * Enum value mergeOrUpload.
-     */
+    /** Enum value mergeOrUpload. */
     MERGE_OR_UPLOAD("mergeOrUpload"),
 
-    /**
-     * Enum value delete.
-     */
+    /** Enum value delete. */
     DELETE("delete");
 
-    /**
-     * The actual serialized value for a IndexActionType instance.
-     */
+    /** The actual serialized value for a IndexActionType instance. */
     private final String value;
 
     IndexActionType(String value) {

@@ -92,7 +92,7 @@ public class ReadmeSamples {
         headers.put("my-header2", "my-header2-value");
         headers.put("my-header3", "my-header3-value");
         // Call API by passing headers in Context.
-        SearchIndex index = new SearchIndex().setName(indexName);
+        SearchIndex index = new SearchIndex(indexName);
         searchIndexClient.createIndexWithResponse(
             index,
             new RequestOptions(),
@@ -113,16 +113,10 @@ public class ReadmeSamples {
     }
 
     public void createIndexWithSyncClient() {
-        SearchIndex newIndex = new SearchIndex()
-            .setName("index_name")
-            .setFields(
-                Arrays.asList(new SearchField()
-                        .setName("Name")
-                        .setType(SearchFieldDataType.STRING)
-                        .setKey(Boolean.TRUE),
-                    new SearchField()
-                        .setName("Cuisine")
-                        .setType(SearchFieldDataType.STRING)));
+        SearchIndex newIndex = new SearchIndex("index_name", Arrays.asList(
+            new SearchField("Name", SearchFieldDataType.STRING)
+                .setKey(Boolean.TRUE),
+            new SearchField("Cuisine", SearchFieldDataType.STRING)));
         // Create index.
         searchIndexClient.createIndex(newIndex);
     }
@@ -142,7 +136,7 @@ public class ReadmeSamples {
             new SearchOptions(), new RequestOptions(), Context.NONE)) {
 
             // Each result is a dynamic Map
-            SearchDocument doc = result.getDocument();
+            SearchDocument doc = result.getDocument(SearchDocument.class);
             String hotelName = (String) doc.get("HotelName");
             Double rating = (Double) doc.get("Rating");
 

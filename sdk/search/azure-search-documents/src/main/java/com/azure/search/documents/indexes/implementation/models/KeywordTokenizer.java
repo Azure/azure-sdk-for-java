@@ -7,27 +7,32 @@
 package com.azure.search.documents.indexes.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.JsonFlatten;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/**
- * Emits the entire input as a single token. This tokenizer is implemented
- * using Apache Lucene.
- */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata.type")
+/** The KeywordTokenizer model. */
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata\\.type")
 @JsonTypeName("#Microsoft.Azure.Search.KeywordTokenizer")
+@JsonFlatten
 @Fluent
-public final class KeywordTokenizer extends LexicalTokenizer {
+public class KeywordTokenizer extends LexicalTokenizer {
     /*
      * The read buffer size in bytes. Default is 256.
      */
     @JsonProperty(value = "bufferSize")
     private Integer bufferSize;
 
+    /** Creates an instance of KeywordTokenizer class. */
+    @JsonCreator
+    public KeywordTokenizer(@JsonProperty(value = "name") String name) {
+        super(name);
+    }
+
     /**
-     * Get the bufferSize property: The read buffer size in bytes. Default is
-     * 256.
+     * Get the bufferSize property: The read buffer size in bytes. Default is 256.
      *
      * @return the bufferSize value.
      */
@@ -36,8 +41,7 @@ public final class KeywordTokenizer extends LexicalTokenizer {
     }
 
     /**
-     * Set the bufferSize property: The read buffer size in bytes. Default is
-     * 256.
+     * Set the bufferSize property: The read buffer size in bytes. Default is 256.
      *
      * @param bufferSize the bufferSize value to set.
      * @return the KeywordTokenizer object itself.
@@ -45,5 +49,15 @@ public final class KeywordTokenizer extends LexicalTokenizer {
     public KeywordTokenizer setBufferSize(Integer bufferSize) {
         this.bufferSize = bufferSize;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    @Override
+    public void validate() {
+        super.validate();
     }
 }

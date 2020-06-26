@@ -7,18 +7,19 @@
 package com.azure.search.documents.indexes.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.JsonFlatten;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.util.List;
 
-/**
- * A skill for merging two or more strings into a single unified string, with
- * an optional user-defined delimiter separating each component part.
- */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata.type")
+/** The MergeSkill model. */
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata\\.type")
 @JsonTypeName("#Microsoft.Skills.Text.MergeSkill")
+@JsonFlatten
 @Fluent
-public final class MergeSkill extends SearchIndexerSkill {
+public class MergeSkill extends SearchIndexerSkill {
     /*
      * The tag indicates the start of the merged text. By default, the tag is
      * an empty space.
@@ -33,9 +34,17 @@ public final class MergeSkill extends SearchIndexerSkill {
     @JsonProperty(value = "insertPostTag")
     private String insertPostTag;
 
+    /** Creates an instance of MergeSkill class. */
+    @JsonCreator
+    public MergeSkill(
+            @JsonProperty(value = "inputs") List<InputFieldMappingEntry> inputs,
+            @JsonProperty(value = "outputs") List<OutputFieldMappingEntry> outputs) {
+        super(inputs, outputs);
+    }
+
     /**
-     * Get the insertPreTag property: The tag indicates the start of the merged
-     * text. By default, the tag is an empty space.
+     * Get the insertPreTag property: The tag indicates the start of the merged text. By default, the tag is an empty
+     * space.
      *
      * @return the insertPreTag value.
      */
@@ -44,8 +53,8 @@ public final class MergeSkill extends SearchIndexerSkill {
     }
 
     /**
-     * Set the insertPreTag property: The tag indicates the start of the merged
-     * text. By default, the tag is an empty space.
+     * Set the insertPreTag property: The tag indicates the start of the merged text. By default, the tag is an empty
+     * space.
      *
      * @param insertPreTag the insertPreTag value to set.
      * @return the MergeSkill object itself.
@@ -56,8 +65,8 @@ public final class MergeSkill extends SearchIndexerSkill {
     }
 
     /**
-     * Get the insertPostTag property: The tag indicates the end of the merged
-     * text. By default, the tag is an empty space.
+     * Get the insertPostTag property: The tag indicates the end of the merged text. By default, the tag is an empty
+     * space.
      *
      * @return the insertPostTag value.
      */
@@ -66,8 +75,8 @@ public final class MergeSkill extends SearchIndexerSkill {
     }
 
     /**
-     * Set the insertPostTag property: The tag indicates the end of the merged
-     * text. By default, the tag is an empty space.
+     * Set the insertPostTag property: The tag indicates the end of the merged text. By default, the tag is an empty
+     * space.
      *
      * @param insertPostTag the insertPostTag value to set.
      * @return the MergeSkill object itself.
@@ -75,5 +84,15 @@ public final class MergeSkill extends SearchIndexerSkill {
     public MergeSkill setInsertPostTag(String insertPostTag) {
         this.insertPostTag = insertPostTag;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    @Override
+    public void validate() {
+        super.validate();
     }
 }

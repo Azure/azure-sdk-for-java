@@ -8,15 +8,16 @@ import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.implementation.InternalObjectNode;
 import com.azure.cosmos.implementation.FeedResponseListValidator;
 import com.azure.cosmos.implementation.FeedResponseValidator;
-import com.azure.cosmos.implementation.JsonSerializable;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.query.UnorderedDistinctMap;
+import com.azure.cosmos.implementation.routing.UInt128;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.ModelBridgeInternal;
+import com.azure.cosmos.rx.pojos.City;
+import com.azure.cosmos.rx.pojos.Person;
+import com.azure.cosmos.rx.pojos.Pet;
 import com.azure.cosmos.util.CosmosPagedFlux;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.testng.annotations.AfterClass;
@@ -35,10 +36,12 @@ import java.util.stream.Collectors;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class DistinctQueryTests extends TestSuiteBase {
-    private final int TIMEOUT_120 = 120000;
+    private final int TIMEOUT_LONG = 240000;
     private final String FIELD = "name";
     private CosmosAsyncContainer createdCollection;
-    private ArrayList<InternalObjectNode> docs = new ArrayList<>();
+
+    private ArrayList<Person> docs = new ArrayList<>();
+    private ArrayList<InternalObjectNode> propertiesDocs = new ArrayList<>();
 
     private CosmosAsyncClient client;
 
@@ -87,8 +90,11 @@ public class DistinctQueryTests extends TestSuiteBase {
                                          options,
                                          InternalObjectNode.class);
         List<Object> nameList = docs.stream()
-                                    .map(d -> ModelBridgeInternal.getObjectFromJsonSerializable(d, FIELD))
+                                    .map(d -> d.getName())
                                     .collect(Collectors.toList());
+        List<Object> collect = propertiesDocs.stream().map(d -> d.get(FIELD)).collect(Collectors.toList());
+        nameList.add(collect);
+
         List<Object> distinctNameList = nameList.stream().distinct().collect(Collectors.toList());
 
         FeedResponseListValidator<InternalObjectNode> validator =
@@ -103,7 +109,7 @@ public class DistinctQueryTests extends TestSuiteBase {
         validateQuerySuccess(queryObservable.byPage(5), validator, TIMEOUT);
     }
 
-    @Test(groups = {"simple"}, timeOut = TIMEOUT_120)
+    @Test(groups = {"simple"}, timeOut = TIMEOUT_LONG)
     public void queryDistinctDocuments() {
 
         List<String> queries = Arrays.asList(
@@ -204,17 +210,13 @@ public class DistinctQueryTests extends TestSuiteBase {
             final String queryWithoutDistinct = String.format(query, "");
 
             CosmosPagedFlux<JsonNode> queryObservable = createdCollection.queryItems(queryWithoutDistinct,
-                                                                                                 options,
+                                                                                     options,
                                                                                      JsonNode.class);
 
-
             Iterator<FeedResponse<JsonNode>> iterator = queryObservable.byPage().toIterable().iterator();
-            Utils.ValueHolder<String> outHash = new Utils.ValueHolder<>();
+            Utils.ValueHolder<UInt128> outHash = new Utils.ValueHolder<>();
             UnorderedDistinctMap distinctMap = new UnorderedDistinctMap();
 
-            // Weakening validation in this PR as distinctMap has to be changed to accept types not extending from
-            // Resource. This will be enabled in a different PR which is already actively in wip
-            /*
             while (iterator.hasNext()) {
                 FeedResponse<JsonNode> next = iterator.next();
                 for (JsonNode document : next.getResults()) {
@@ -223,12 +225,9 @@ public class DistinctQueryTests extends TestSuiteBase {
                     }
                 }
             }
-            */
-
             CosmosPagedFlux<JsonNode> queryObservableWithDistinct = createdCollection
-                                                                                    .queryItems(queryWithDistinct, options,
-                                                                                                JsonNode.class);
-
+                                                                        .queryItems(queryWithDistinct, options,
+                                                                                    JsonNode.class);
 
             iterator = queryObservableWithDistinct.byPage(5).toIterable().iterator();
 
@@ -237,12 +236,8 @@ public class DistinctQueryTests extends TestSuiteBase {
                 documentsFromWithDistinct.addAll(next.getResults());
             }
             assertThat(documentsFromWithDistinct.size()).isGreaterThanOrEqualTo(1);
-            // Weakening validation in this PR as distinctMap has to be changed to accept types not extending from
-            // Resource which important to build expected results. This will be enabled in a different PR which is
-            // already actively in wip
-//            assertThat(documentsFromWithDistinct.size()).isEqualTo(documentsFromWithoutDistinct.size());
+            assertThat(documentsFromWithDistinct.size()).isEqualTo(documentsFromWithoutDistinct.size());
         }
-
     }
 
     @Test(groups = {"simple"}, timeOut = TIMEOUT, dataProvider = "queryMetricsArgProvider")
@@ -277,6 +272,7 @@ public class DistinctQueryTests extends TestSuiteBase {
     public void bulkInsert() {
         generateTestData();
         voidBulkInsertBlocking(createdCollection, docs);
+        voidBulkInsertBlocking(createdCollection, propertiesDocs);
     }
 
     public void generateTestData() {
@@ -285,20 +281,15 @@ public class DistinctQueryTests extends TestSuiteBase {
         ObjectMapper mapper = new ObjectMapper();
         for (int i = 0; i < 40; i++) {
             Person person = getRandomPerson(rand);
-            try {
-                docs.add(new InternalObjectNode(mapper.writeValueAsString(person)));
-            } catch (JsonProcessingException e) {
-                logger.error(e.getMessage());
-            }
+            docs.add(person);
         }
         String resourceJson = String.format("{ " + "\"id\": \"%s\", \"intprop\": %d }", UUID.randomUUID().toString(),
                                             5);
         String resourceJson2 = String.format("{ " + "\"id\": \"%s\", \"intprop\": %f }", UUID.randomUUID().toString(),
                                              5.0f);
 
-        docs.add(new InternalObjectNode(resourceJson));
-        docs.add(new InternalObjectNode(resourceJson2));
-
+        propertiesDocs.add(new InternalObjectNode(resourceJson));
+        propertiesDocs.add(new InternalObjectNode(resourceJson2));
     }
 
     private Pet getRandomPet(Random rand) {
@@ -341,59 +332,4 @@ public class DistinctQueryTests extends TestSuiteBase {
         waitIfNeededForReplicasToCatchUp(this.getClientBuilder());
     }
 
-    public enum City {
-        NEW_YORK,
-        LOS_ANGELES,
-        SEATTLE
-    }
-
-    public final class Pet extends JsonSerializable {
-        @JsonProperty("name")
-        public String name;
-
-        @JsonProperty("age")
-        public int age;
-
-        public Pet(String name, int age) {
-            this.name = name;
-            this.age = age;
-        }
-    }
-
-    public final class Person extends JsonSerializable {
-        @JsonProperty("name")
-        public String name;
-
-        @JsonProperty("id")
-        public String id;
-
-        @JsonProperty("city")
-        public City city;
-
-        @JsonProperty("income")
-        public double income;
-
-        @JsonProperty("children")
-        public List<Person> children;
-
-        @JsonProperty("age")
-        public int age;
-
-        @JsonProperty("pet")
-        public Pet pet;
-
-        @JsonProperty("guid")
-        public UUID guid;
-
-        public Person(String name, City city, double income, List<Person> children, int age, Pet pet, UUID guid) {
-            this.name = name;
-            this.city = city;
-            this.income = income;
-            this.children = children;
-            this.age = age;
-            this.pet = pet;
-            this.guid = guid;
-            this.id = UUID.randomUUID().toString();
-        }
-    }
 }

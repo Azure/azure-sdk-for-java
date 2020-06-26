@@ -7,18 +7,18 @@
 package com.azure.search.documents.indexes.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.JsonFlatten;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/**
- * Generates n-grams of the given size(s). This token filter is implemented
- * using Apache Lucene.
- */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata.type")
+/** The NGramTokenFilter model. */
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata\\.type")
 @JsonTypeName("#Microsoft.Azure.Search.NGramTokenFilter")
+@JsonFlatten
 @Fluent
-public final class NGramTokenFilter extends TokenFilter {
+public class NGramTokenFilter extends TokenFilter {
     /*
      * The minimum n-gram length. Default is 1. Must be less than the value of
      * maxGram.
@@ -32,9 +32,14 @@ public final class NGramTokenFilter extends TokenFilter {
     @JsonProperty(value = "maxGram")
     private Integer maxGram;
 
+    /** Creates an instance of NGramTokenFilter class. */
+    @JsonCreator
+    public NGramTokenFilter(@JsonProperty(value = "name") String name) {
+        super(name);
+    }
+
     /**
-     * Get the minGram property: The minimum n-gram length. Default is 1. Must
-     * be less than the value of maxGram.
+     * Get the minGram property: The minimum n-gram length. Default is 1. Must be less than the value of maxGram.
      *
      * @return the minGram value.
      */
@@ -43,8 +48,7 @@ public final class NGramTokenFilter extends TokenFilter {
     }
 
     /**
-     * Set the minGram property: The minimum n-gram length. Default is 1. Must
-     * be less than the value of maxGram.
+     * Set the minGram property: The minimum n-gram length. Default is 1. Must be less than the value of maxGram.
      *
      * @param minGram the minGram value to set.
      * @return the NGramTokenFilter object itself.
@@ -72,5 +76,15 @@ public final class NGramTokenFilter extends TokenFilter {
     public NGramTokenFilter setMaxGram(Integer maxGram) {
         this.maxGram = maxGram;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    @Override
+    public void validate() {
+        super.validate();
     }
 }

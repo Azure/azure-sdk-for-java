@@ -51,9 +51,9 @@ jobs:
 
     - pwsh: |
         Copy-Item eng/jacoco-test-coverage/target/staging $(Build.ArtifactStagingDirectory) -Recurse
-        Copy-Item eng/jacoco-test-coverage/target/dependency-whitelist.json $(Build.ArtifactStagingDirectory)\staging
+        Copy-Item eng/jacoco-test-coverage/target/dependency-allowlist.json $(Build.ArtifactStagingDirectory)/staging
         Copy-Item eng/code-quality-reports/src/main/resources/index.html $(Build.ArtifactStagingDirectory)
-        Copy-Item eng/code-quality-reports/src/main/resources/dependency-whitelist.html $(Build.ArtifactStagingDirectory)/staging
+        Copy-Item eng/code-quality-reports/src/main/resources/dependency-allowlist.html $(Build.ArtifactStagingDirectory)/staging
 
         # What is this?
         # copy output/pom.client.html (Join-Path $(Build.ArtifactStagingDirectory) "staging")

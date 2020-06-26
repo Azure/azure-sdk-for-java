@@ -16,7 +16,7 @@ create and manage indexes, load data, implement search features, execute queries
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-search-documents</artifactId>
-    <version>1.0.0-beta.4</version>
+    <version>11.0.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -134,18 +134,12 @@ There are several types of operations that can be executed against the service:
 
 Create Index using `searchIndexClient` instantiated in [Create a SearchIndexClient](#create-a-searchindexclient)
 
-<!-- embedme ./src/samples/java/com/azure/search/documents/ReadmeSamples.java#L116-L127 -->
+<!-- embedme ./src/samples/java/com/azure/search/documents/ReadmeSamples.java#L116-L121 -->
 ```java
-SearchIndex newIndex = new SearchIndex()
-    .setName("index_name")
-    .setFields(
-        Arrays.asList(new SearchField()
-                .setName("Name")
-                .setType(SearchFieldDataType.STRING)
-                .setKey(Boolean.TRUE),
-            new SearchField()
-                .setName("Cuisine")
-                .setType(SearchFieldDataType.STRING)));
+SearchIndex newIndex = new SearchIndex("index_name", Arrays.asList(
+    new SearchField("Name", SearchFieldDataType.STRING)
+        .setKey(Boolean.TRUE),
+    new SearchField("Cuisine", SearchFieldDataType.STRING)));
 // Create index.
 searchIndexClient.createIndex(newIndex);
 ```
@@ -153,7 +147,7 @@ searchIndexClient.createIndex(newIndex);
 
 Upload hotel document to Search Index using `searchClient` instantiated [Create a SearchClient](#create-a-searchclient)
 
-<!-- embedme ./src/samples/java/com/azure/search/documents/ReadmeSamples.java#L131-L136 -->
+<!-- embedme ./src/samples/java/com/azure/search/documents/ReadmeSamples.java#L125-L130 -->
 ```java
 List<Hotel> hotels = new ArrayList<>();
 hotels.add(new Hotel().setHotelId("100"));
@@ -167,14 +161,14 @@ searchClient.uploadDocuments(hotels);
 
 Search hotel using keyword using `searchClient` instantiated in [Create a SearchClient](#create-a-searchclient)
 
-<!-- embedme ./src/samples/java/com/azure/search/documents/ReadmeSamples.java#L140-L150 -->
+<!-- embedme ./src/samples/java/com/azure/search/documents/ReadmeSamples.java#L134-L144 -->
 ```java
 // Perform a text-based search
 for (SearchResult result : searchClient.search("luxury hotel",
     new SearchOptions(), new RequestOptions(), Context.NONE)) {
 
     // Each result is a dynamic Map
-    SearchDocument doc = result.getDocument();
+    SearchDocument doc = result.getDocument(SearchDocument.class);
     String hotelName = (String) doc.get("HotelName");
     Double rating = (Double) doc.get("Rating");
 

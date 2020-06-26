@@ -96,7 +96,8 @@ public class SearchOptionsAsyncExample {
 
         streamResponse.collect(Collectors.toList()).forEach(searchPagedResponse -> {
             searchPagedResponse.getElements().forEach(result ->
-                result.getDocument().forEach((field, value) -> System.out.println((field + ":" + value)))
+                result.getDocument(SearchDocument.class).forEach((field, value) ->
+                    System.out.println((field + ":" + value)))
             );
         });
     }
@@ -107,7 +108,8 @@ public class SearchOptionsAsyncExample {
             .log()
             .doOnSubscribe(ignoredVal -> System.out.println("Subscribed to paged flux processing items"))
             .doOnNext(result ->
-                result.getDocument().forEach((field, value) -> System.out.println((field + ":" + value)))
+                result.getDocument(SearchDocument.class).forEach((field, value) ->
+                    System.out.println((field + ":" + value)))
             )
             .doOnComplete(() -> System.out.println("Completed processing"))
             .collectList().block();
