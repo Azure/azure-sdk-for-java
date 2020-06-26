@@ -16,7 +16,7 @@ public final class SearchServiceStatistics {
      * Service level resource counters.
      */
     @JsonProperty(value = "counters", required = true)
-    private ServiceCounters counters;
+    private SearchServiceCounters counters;
 
     /*
      * Service level general limits.
@@ -30,7 +30,7 @@ public final class SearchServiceStatistics {
      * @param counters Service level resource counters.
      * @param limits Service level general limits.
      */
-    public SearchServiceStatistics(ServiceCounters counters, ServiceLimits limits) {
+    public SearchServiceStatistics(SearchServiceCounters counters, ServiceLimits limits) {
         this.counters = counters;
         this.limits = limits;
     }
@@ -40,7 +40,7 @@ public final class SearchServiceStatistics {
      *
      * @return the counters value.
      */
-    public ServiceCounters getCounters() {
+    public SearchServiceCounters getCounters() {
         return this.counters;
     }
 

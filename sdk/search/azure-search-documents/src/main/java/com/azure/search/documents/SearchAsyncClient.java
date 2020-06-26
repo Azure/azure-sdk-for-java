@@ -41,6 +41,7 @@ import com.azure.search.documents.models.FacetResult;
 import com.azure.search.documents.models.IndexAction;
 import com.azure.search.documents.models.IndexActionType;
 import com.azure.search.documents.models.IndexBatchException;
+import com.azure.search.documents.models.IndexDocumentsOptions;
 import com.azure.search.documents.models.IndexDocumentsResult;
 import com.azure.search.documents.models.RequestOptions;
 import com.azure.search.documents.models.ScoringParameter;
@@ -168,13 +169,14 @@ public final class SearchAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<IndexDocumentsResult> uploadDocuments(Iterable<?> documents) {
-        return uploadDocumentsWithResponse(documents, null).map(Response::getValue);
+        return uploadDocumentsWithResponse(documents, null, null).map(Response::getValue);
     }
 
     /**
      * Uploads a collection of documents to the target index.
      *
      * @param documents collection of documents to upload to the target Index.
+     * @param options Options that allow specifying document indexing behavior.
      * @param requestOptions additional parameters for the operation. Contains the tracking ID sent with the request to
      * help with debugging
      * @return A response containing the result of the document indexing actions.
@@ -188,13 +190,14 @@ public final class SearchAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<IndexDocumentsResult>> uploadDocumentsWithResponse(Iterable<?> documents,
-        RequestOptions requestOptions) {
-        return withContext(context -> uploadDocumentsWithResponse(documents, requestOptions, context));
+        IndexDocumentsOptions options, RequestOptions requestOptions) {
+        return withContext(context -> uploadDocumentsWithResponse(documents, options, requestOptions, context));
     }
 
     Mono<Response<IndexDocumentsResult>> uploadDocumentsWithResponse(Iterable<?> documents,
-        RequestOptions requestOptions, Context context) {
-        return indexDocumentsWithResponse(buildIndexBatch(documents, IndexActionType.UPLOAD), requestOptions, context);
+        IndexDocumentsOptions options, RequestOptions requestOptions, Context context) {
+        return indexDocumentsWithResponse(buildIndexBatch(documents, IndexActionType.UPLOAD), options, requestOptions,
+            context);
     }
 
     /**
@@ -219,7 +222,7 @@ public final class SearchAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<IndexDocumentsResult> mergeDocuments(Iterable<?> documents) {
-        return mergeDocumentsWithResponse(documents, null).map(Response::getValue);
+        return mergeDocumentsWithResponse(documents, null, null).map(Response::getValue);
     }
 
     /**
@@ -233,6 +236,7 @@ public final class SearchAsyncClient {
      * be of type {@code Integer} instead of {@code int}).
      *
      * @param documents collection of documents to be merged
+     * @param options Options that allow specifying document indexing behavior.
      * @param requestOptions additional parameters for the operation. Contains the tracking ID sent with the request to
      * help with debugging
      * @return response containing the document index result.
@@ -246,13 +250,14 @@ public final class SearchAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<IndexDocumentsResult>> mergeDocumentsWithResponse(Iterable<?> documents,
-        RequestOptions requestOptions) {
-        return withContext(context -> mergeDocumentsWithResponse(documents, requestOptions, context));
+        IndexDocumentsOptions options, RequestOptions requestOptions) {
+        return withContext(context -> mergeDocumentsWithResponse(documents, options, requestOptions, context));
     }
 
     Mono<Response<IndexDocumentsResult>> mergeDocumentsWithResponse(Iterable<?> documents,
-        RequestOptions requestOptions, Context context) {
-        return indexDocumentsWithResponse(buildIndexBatch(documents, IndexActionType.MERGE), requestOptions, context);
+        IndexDocumentsOptions options, RequestOptions requestOptions, Context context) {
+        return indexDocumentsWithResponse(buildIndexBatch(documents, IndexActionType.MERGE), options, requestOptions,
+            context);
     }
 
     /**
@@ -278,7 +283,7 @@ public final class SearchAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<IndexDocumentsResult> mergeOrUploadDocuments(Iterable<?> documents) {
-        return mergeOrUploadDocumentsWithResponse(documents, null).map(Response::getValue);
+        return mergeOrUploadDocumentsWithResponse(documents, null, null).map(Response::getValue);
     }
 
     /**
@@ -293,6 +298,7 @@ public final class SearchAsyncClient {
      * be of type {@code Integer} instead of {@code int}).
      *
      * @param documents collection of documents to be merged, if exists, otherwise uploaded
+     * @param options Options that allow specifying document indexing behavior.
      * @param requestOptions additional parameters for the operation. Contains the tracking ID sent with the request to
      * help with debugging
      * @return document index result
@@ -306,14 +312,14 @@ public final class SearchAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<IndexDocumentsResult>> mergeOrUploadDocumentsWithResponse(Iterable<?> documents,
-        RequestOptions requestOptions) {
-        return withContext(context -> mergeOrUploadDocumentsWithResponse(documents, requestOptions, context));
+        IndexDocumentsOptions options, RequestOptions requestOptions) {
+        return withContext(context -> mergeOrUploadDocumentsWithResponse(documents, options, requestOptions, context));
     }
 
     Mono<Response<IndexDocumentsResult>> mergeOrUploadDocumentsWithResponse(Iterable<?> documents,
-        RequestOptions requestOptions, Context context) {
-        return indexDocumentsWithResponse(buildIndexBatch(documents, IndexActionType.MERGE_OR_UPLOAD), requestOptions,
-            context);
+        IndexDocumentsOptions options, RequestOptions requestOptions, Context context) {
+        return indexDocumentsWithResponse(buildIndexBatch(documents, IndexActionType.MERGE_OR_UPLOAD), options,
+            requestOptions, context);
     }
 
     /**
@@ -331,13 +337,14 @@ public final class SearchAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<IndexDocumentsResult> deleteDocuments(Iterable<?> documents) {
-        return deleteDocumentsWithResponse(documents, null).map(Response::getValue);
+        return deleteDocumentsWithResponse(documents, null, null).map(Response::getValue);
     }
 
     /**
      * Deletes a collection of documents from the target index.
      *
      * @param documents collection of documents to delete from the target Index. Fields other than the key are ignored.
+     * @param options Options that allow specifying document indexing behavior.
      * @param requestOptions additional parameters for the operation. Contains the tracking ID sent with the request to
      * help with debugging
      * @return response containing the document index result.
@@ -351,13 +358,14 @@ public final class SearchAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<IndexDocumentsResult>> deleteDocumentsWithResponse(Iterable<?> documents,
-        RequestOptions requestOptions) {
-        return withContext(context -> deleteDocumentsWithResponse(documents, requestOptions, context));
+        IndexDocumentsOptions options, RequestOptions requestOptions) {
+        return withContext(context -> deleteDocumentsWithResponse(documents, options, requestOptions, context));
     }
 
     Mono<Response<IndexDocumentsResult>> deleteDocumentsWithResponse(Iterable<?> documents,
-        RequestOptions requestOptions, Context context) {
-        return indexDocumentsWithResponse(buildIndexBatch(documents, IndexActionType.DELETE), requestOptions, context);
+        IndexDocumentsOptions options, RequestOptions requestOptions, Context context) {
+        return indexDocumentsWithResponse(buildIndexBatch(documents, IndexActionType.DELETE), options, requestOptions,
+            context);
     }
 
     /**
@@ -645,15 +653,16 @@ public final class SearchAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<IndexDocumentsResult> indexDocuments(IndexDocumentsBatch<?> batch) {
-        return indexDocumentsWithResponse(batch, null).map(Response::getValue);
+        return indexDocumentsWithResponse(batch, null, null).map(Response::getValue);
     }
 
     /**
      * Sends a batch of upload, merge, and/or delete actions to the search index.
      *
      * @param batch The batch of index actions
+     * @param options Options that allow specifying document indexing behavior.
      * @param requestOptions additional parameters for the operation. Contains the tracking ID sent with the request to
-     * help with debugging
+     * help with debugging.
      * @return Response containing the status of operations for all actions in the batch
      * @throws IndexBatchException If some of the indexing actions fail but other actions succeed and modify the state
      * of the index. This can happen when the Search Service is under heavy indexing load. It is important to explicitly
@@ -665,18 +674,20 @@ public final class SearchAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<IndexDocumentsResult>> indexDocumentsWithResponse(IndexDocumentsBatch<?> batch,
-        RequestOptions requestOptions) {
-        return withContext(context -> indexDocumentsWithResponse(batch, requestOptions, context));
+        IndexDocumentsOptions options, RequestOptions requestOptions) {
+        return withContext(context -> indexDocumentsWithResponse(batch, options, requestOptions, context));
     }
 
     Mono<Response<IndexDocumentsResult>> indexDocumentsWithResponse(IndexDocumentsBatch<?> batch,
-        RequestOptions requestOptions, Context context) {
+        IndexDocumentsOptions options, RequestOptions requestOptions, Context context) {
         try {
+            IndexDocumentsOptions documentsOptions = (options == null)
+                ? new IndexDocumentsOptions() : options;
             return restClient.getDocuments()
                 .indexWithResponseAsync(IndexBatchBaseConverter.map(batch), RequestOptionsConverter.map(requestOptions),
                     context)
                 .onErrorMap(MappingUtils::exceptionMapper)
-                .flatMap(response -> (response.getStatusCode() == MULTI_STATUS_CODE)
+                .flatMap(response -> (response.getStatusCode() == MULTI_STATUS_CODE && documentsOptions.throwOnAnyError())
                     ? Mono.error(new IndexBatchException(IndexDocumentsResultConverter.map(response.getValue())))
                     : Mono.just(response).map(MappingUtils::mappingIndexDocumentResultResponse));
         } catch (RuntimeException ex) {

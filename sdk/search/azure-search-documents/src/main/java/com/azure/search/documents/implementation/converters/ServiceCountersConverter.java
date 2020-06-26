@@ -3,49 +3,31 @@
 
 package com.azure.search.documents.implementation.converters;
 
-import com.azure.search.documents.indexes.models.ResourceCounter;
-import com.azure.search.documents.indexes.models.ServiceCounters;
+import com.azure.search.documents.indexes.models.SearchServiceCounters;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
  * A converter between {@link com.azure.search.documents.indexes.implementation.models.ServiceCounters} and
- * {@link ServiceCounters}.
+ * {@link SearchServiceCounters}.
  */
 public final class ServiceCountersConverter {
-    /**
-     * Maps from {@link com.azure.search.documents.indexes.implementation.models.ServiceCounters} to {@link ServiceCounters}.
-     */
-    public static ServiceCounters map(com.azure.search.documents.indexes.implementation.models.ServiceCounters obj) {
-        if (obj == null) {
-            return null;
-        }
+    private static final ObjectMapper OBJECT_MAPPER;
 
-        ResourceCounter documentCounter = obj.getDocumentCounter() == null ? null
-            : ResourceCounterConverter.map(obj.getDocumentCounter());
-
-        ResourceCounter indexCounter = obj.getIndexCounter() == null ? null
-            : ResourceCounterConverter.map(obj.getIndexCounter());
-
-        ResourceCounter synonymMapCounter = obj.getSynonymMapCounter() == null ? null
-            : ResourceCounterConverter.map(obj.getSynonymMapCounter());
-
-        ResourceCounter storageSizeCounter = obj.getStorageSizeCounter() == null ? null
-            : ResourceCounterConverter.map(obj.getStorageSizeCounter());
-
-        ResourceCounter dataSourceCounter = obj.getDataSourceCounter() == null ? null
-            : ResourceCounterConverter.map(obj.getDataSourceCounter());
-
-        ResourceCounter indexerCounter = obj.getIndexerCounter() == null ? null
-            : ResourceCounterConverter.map(obj.getIndexerCounter());
-
-
-        return new ServiceCounters(documentCounter, indexCounter, indexerCounter,
-            dataSourceCounter, storageSizeCounter, synonymMapCounter);
+    static {
+        OBJECT_MAPPER = new ObjectMapper();
     }
 
     /**
-     * Maps from {@link ServiceCounters} to {@link com.azure.search.documents.indexes.implementation.models.ServiceCounters}.
+     * Maps from {@link com.azure.search.documents.indexes.implementation.models.ServiceCounters} to {@link SearchServiceCounters}.
      */
-    public static com.azure.search.documents.indexes.implementation.models.ServiceCounters map(ServiceCounters obj) {
+    public static SearchServiceCounters map(com.azure.search.documents.indexes.implementation.models.ServiceCounters obj) {
+        return OBJECT_MAPPER.convertValue(obj, SearchServiceCounters.class);
+    }
+
+    /**
+     * Maps from {@link SearchServiceCounters} to {@link com.azure.search.documents.indexes.implementation.models.ServiceCounters}.
+     */
+    public static com.azure.search.documents.indexes.implementation.models.ServiceCounters map(SearchServiceCounters obj) {
         if (obj == null) {
             return null;
         }

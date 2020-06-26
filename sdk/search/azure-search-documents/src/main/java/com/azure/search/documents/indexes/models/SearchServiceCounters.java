@@ -11,7 +11,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * Represents service-level resource counters and quotas.
  */
 @Fluent
-public final class ServiceCounters {
+public final class SearchServiceCounters {
     /*
      * Total number of documents across all indexes in the service.
      */
@@ -49,7 +49,7 @@ public final class ServiceCounters {
     private ResourceCounter synonymMapCounter;
 
     /**
-     * Constructor of {@link ServiceCounters}.
+     * Constructor of {@link SearchServiceCounters}.
      *
      * @param documentCounter Total number of documents across all indexes in the service.
      * @param indexCounter Total number of indexes.
@@ -59,7 +59,7 @@ public final class ServiceCounters {
      * @param synonymMapCounter Total number of synonym maps.
      */
     @JsonCreator
-    public ServiceCounters(
+    SearchServiceCounters(
         @JsonProperty(value = "documentCount") ResourceCounter documentCounter,
         @JsonProperty(value = "indexesCount") ResourceCounter indexCounter,
         @JsonProperty(value = "indexersCount") ResourceCounter indexerCounter,
@@ -91,7 +91,7 @@ public final class ServiceCounters {
      * @param documentCounter the documentCounter value to set.
      * @return the ServiceCounters object itself.
      */
-    public ServiceCounters setDocumentCounter(ResourceCounter documentCounter) {
+    public SearchServiceCounters setDocumentCounter(ResourceCounter documentCounter) {
         this.documentCounter = documentCounter;
         return this;
     }
@@ -111,7 +111,7 @@ public final class ServiceCounters {
      * @param indexCounter the indexCounter value to set.
      * @return the ServiceCounters object itself.
      */
-    public ServiceCounters setIndexCounter(ResourceCounter indexCounter) {
+    public SearchServiceCounters setIndexCounter(ResourceCounter indexCounter) {
         this.indexCounter = indexCounter;
         return this;
     }
@@ -131,7 +131,7 @@ public final class ServiceCounters {
      * @param indexerCounter the indexerCounter value to set.
      * @return the ServiceCounters object itself.
      */
-    public ServiceCounters setIndexerCounter(ResourceCounter indexerCounter) {
+    public SearchServiceCounters setIndexerCounter(ResourceCounter indexerCounter) {
         this.indexerCounter = indexerCounter;
         return this;
     }
@@ -151,7 +151,7 @@ public final class ServiceCounters {
      * @param dataSourceCounter the dataSourceCounter value to set.
      * @return the ServiceCounters object itself.
      */
-    public ServiceCounters setDataSourceCounter(ResourceCounter dataSourceCounter) {
+    public SearchServiceCounters setDataSourceCounter(ResourceCounter dataSourceCounter) {
         this.dataSourceCounter = dataSourceCounter;
         return this;
     }
@@ -173,7 +173,7 @@ public final class ServiceCounters {
      * @param storageSizeCounter the storageSizeCounter value to set.
      * @return the ServiceCounters object itself.
      */
-    public ServiceCounters setStorageSizeCounter(ResourceCounter storageSizeCounter) {
+    public SearchServiceCounters setStorageSizeCounter(ResourceCounter storageSizeCounter) {
         this.storageSizeCounter = storageSizeCounter;
         return this;
     }
@@ -193,7 +193,7 @@ public final class ServiceCounters {
      * @param synonymMapCounter the synonymMapCounter value to set.
      * @return the ServiceCounters object itself.
      */
-    public ServiceCounters setSynonymMapCounter(ResourceCounter synonymMapCounter) {
+    public SearchServiceCounters setSynonymMapCounter(ResourceCounter synonymMapCounter) {
         this.synonymMapCounter = synonymMapCounter;
         return this;
     }

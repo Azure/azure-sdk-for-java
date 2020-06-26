@@ -87,9 +87,10 @@ public final class IndexBatchException extends AzureException {
         Function<T, String> keySelector) {
         if (action.getDocument() != null) {
             return uniqueRetriableKeys.contains(keySelector.apply(action.getDocument()));
-        } else if (action.getParamMap() != null) {
-            return uniqueRetriableKeys.contains(keySelector.apply((T) action.getParamMap()));
         }
+//        else if (action.getParamMap() != null) {
+//            return uniqueRetriableKeys.contains(keySelector.apply((T) action.getParamMap()));
+//        }
         return false;
     }
 

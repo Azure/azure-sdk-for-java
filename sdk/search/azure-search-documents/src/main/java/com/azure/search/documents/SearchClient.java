@@ -12,6 +12,7 @@ import com.azure.core.util.Context;
 import com.azure.search.documents.models.AutocompleteOptions;
 import com.azure.search.documents.models.IndexBatchException;
 import com.azure.search.documents.indexes.models.IndexDocumentsBatch;
+import com.azure.search.documents.models.IndexDocumentsOptions;
 import com.azure.search.documents.models.IndexDocumentsResult;
 import com.azure.search.documents.models.RequestOptions;
 import com.azure.search.documents.models.SearchOptions;
@@ -76,13 +77,14 @@ public final class SearchClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public IndexDocumentsResult uploadDocuments(Iterable<?> documents) {
-        return uploadDocumentsWithResponse(documents, null, Context.NONE).getValue();
+        return uploadDocumentsWithResponse(documents, null, null, Context.NONE).getValue();
     }
 
     /**
      * Uploads a collection of documents to the target index.
      *
      * @param documents collection of documents to upload to the target Index.
+     * @param options Options that allow specifying document indexing behavior.
      * @param requestOptions additional parameters for the operation. Contains the tracking ID sent with the request to
      * help with debugging
      * @param context additional context that is passed through the Http pipeline during the service call
@@ -97,8 +99,8 @@ public final class SearchClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<IndexDocumentsResult> uploadDocumentsWithResponse(Iterable<?> documents,
-        RequestOptions requestOptions, Context context) {
-        return asyncClient.uploadDocumentsWithResponse(documents, requestOptions, context).block();
+        IndexDocumentsOptions options, RequestOptions requestOptions, Context context) {
+        return asyncClient.uploadDocumentsWithResponse(documents, options, requestOptions, context).block();
     }
 
     /**
@@ -123,7 +125,7 @@ public final class SearchClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public IndexDocumentsResult mergeDocuments(Iterable<?> documents) {
-        return mergeDocumentsWithResponse(documents, null, Context.NONE).getValue();
+        return mergeDocumentsWithResponse(documents, null, null, Context.NONE).getValue();
     }
 
     /**
@@ -136,7 +138,8 @@ public final class SearchClient {
      * always declare primitive-typed properties with their class equivalents (for example, an integer property should
      * be of type {@code Integer} instead of {@code int}).
      *
-     * @param documents collection of documents to be merged
+     * @param documents collection of documents to be merged.
+     * @param options Options that allow specifying document indexing behavior.
      * @param requestOptions additional parameters for the operation. Contains the tracking ID sent with the request to
      * help with debugging
      * @param context additional context that is passed through the Http pipeline during the service call
@@ -151,8 +154,8 @@ public final class SearchClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<IndexDocumentsResult> mergeDocumentsWithResponse(Iterable<?> documents,
-        RequestOptions requestOptions, Context context) {
-        return asyncClient.mergeDocumentsWithResponse(documents, requestOptions, context).block();
+        IndexDocumentsOptions options, RequestOptions requestOptions, Context context) {
+        return asyncClient.mergeDocumentsWithResponse(documents, options, requestOptions, context).block();
     }
 
     /**
@@ -178,7 +181,7 @@ public final class SearchClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public IndexDocumentsResult mergeOrUploadDocuments(Iterable<?> documents) {
-        return mergeOrUploadDocumentsWithResponse(documents, null, Context.NONE).getValue();
+        return mergeOrUploadDocumentsWithResponse(documents, null, null, Context.NONE).getValue();
     }
 
     /**
@@ -193,6 +196,7 @@ public final class SearchClient {
      * be of type {@code Integer} instead of {@code int}).
      *
      * @param documents collection of documents to be merged, if exists, otherwise uploaded
+     * @param options Options that allow specifying document indexing behavior.
      * @param requestOptions additional parameters for the operation. Contains the tracking ID sent with the request to
      * help with debugging
      * @param context additional context that is passed through the Http pipeline during the service call
@@ -207,8 +211,8 @@ public final class SearchClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<IndexDocumentsResult> mergeOrUploadDocumentsWithResponse(Iterable<?> documents,
-        RequestOptions requestOptions, Context context) {
-        return asyncClient.mergeOrUploadDocumentsWithResponse(documents, requestOptions, context).block();
+        IndexDocumentsOptions options, RequestOptions requestOptions, Context context) {
+        return asyncClient.mergeOrUploadDocumentsWithResponse(documents, options, requestOptions, context).block();
     }
 
     /**
@@ -226,13 +230,14 @@ public final class SearchClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public IndexDocumentsResult deleteDocuments(Iterable<?> documents) {
-        return deleteDocumentsWithResponse(documents, null, Context.NONE).getValue();
+        return deleteDocumentsWithResponse(documents, null, null, Context.NONE).getValue();
     }
 
     /**
      * Deletes a collection of documents from the target index.
      *
      * @param documents collection of documents to delete from the target Index. Fields other than the key are ignored.
+     * @param options Options that allow specifying document indexing behavior.
      * @param requestOptions additional parameters for the operation. Contains the tracking ID sent with the request to
      * help with debugging
      * @param context additional context that is passed through the Http pipeline during the service call
@@ -247,8 +252,8 @@ public final class SearchClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<IndexDocumentsResult> deleteDocumentsWithResponse(Iterable<?> documents,
-        RequestOptions requestOptions, Context context) {
-        return asyncClient.deleteDocumentsWithResponse(documents, requestOptions, context).block();
+        IndexDocumentsOptions options, RequestOptions requestOptions, Context context) {
+        return asyncClient.deleteDocumentsWithResponse(documents, options, requestOptions, context).block();
     }
 
     /**
@@ -411,13 +416,14 @@ public final class SearchClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public IndexDocumentsResult indexDocuments(IndexDocumentsBatch<?> batch) {
-        return indexDocumentsWithResponse(batch, null, Context.NONE).getValue();
+        return indexDocumentsWithResponse(batch, null, null, Context.NONE).getValue();
     }
 
     /**
      * Sends a batch of upload, merge, and/or delete actions to the search index.
      *
      * @param batch The batch of index actions
+     * @param options Options that allow specifying document indexing behavior.
      * @param requestOptions additional parameters for the operation. Contains the tracking ID sent with the request to
      * help with debugging
      * @param context additional context that is passed through the Http pipeline during the service call
@@ -432,8 +438,8 @@ public final class SearchClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<IndexDocumentsResult> indexDocumentsWithResponse(IndexDocumentsBatch<?> batch,
-        RequestOptions requestOptions, Context context) {
-        return asyncClient.indexDocumentsWithResponse(batch, requestOptions, context).block();
+        IndexDocumentsOptions options, RequestOptions requestOptions, Context context) {
+        return asyncClient.indexDocumentsWithResponse(batch, options, requestOptions, context).block();
     }
 
     /**

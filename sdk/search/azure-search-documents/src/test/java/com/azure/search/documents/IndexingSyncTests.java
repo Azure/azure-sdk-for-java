@@ -10,6 +10,7 @@ import com.azure.search.documents.indexes.models.SearchField;
 import com.azure.search.documents.indexes.models.SearchFieldDataType;
 import com.azure.search.documents.indexes.models.SearchIndex;
 import com.azure.search.documents.models.IndexBatchException;
+import com.azure.search.documents.models.IndexDocumentsOptions;
 import com.azure.search.documents.models.IndexDocumentsResult;
 import com.azure.search.documents.models.IndexingResult;
 import com.azure.search.documents.test.environment.models.Author;
@@ -233,8 +234,46 @@ public class IndexingSyncTests extends SearchTestBase {
         assertObjectEquals(hotel3, actualHotel3, true);
     }
 
+
     @Test
-    public void canIndexDynamicDocuments() {
+    public void canIndexDynamicDocumentsNotThrow() {
+        client = setupClient(this::createHotelIndex);
+
+        SearchDocument hotel1 = prepareDynamicallyTypedHotel("1");
+        SearchDocument hotel2 = prepareDynamicallyTypedHotel("2");
+        SearchDocument hotel3 = prepareDynamicallyTypedHotel("3");
+        SearchDocument nonExistingHotel = prepareDynamicallyTypedHotel("nonExistingHotel"); // deleting a non existing document
+        SearchDocument randomHotel = prepareDynamicallyTypedHotel("randomId"); // deleting a non existing document
+
+        IndexDocumentsBatch<SearchDocument> batch = new IndexDocumentsBatch<SearchDocument>()
+            .addUploadActions(hotel1)
+            .addDeleteActions(randomHotel)
+            .addMergeActions(nonExistingHotel)
+            .addMergeOrUploadActions(hotel3)
+            .addUploadActions(hotel2);
+
+        Response<IndexDocumentsResult> resultResponse = client.indexDocumentsWithResponse(batch,
+            new IndexDocumentsOptions().setThrowOnAnyError(false), null, Context.NONE);
+        List<IndexingResult> results = resultResponse.getValue().getResults();
+        assertEquals(resultResponse.getStatusCode(), 207);
+        assertSuccessfulIndexResult(results.get(0), "1", 201);
+        assertSuccessfulIndexResult(results.get(1), "randomId", 200);
+        assertFailedIndexResult(results.get(2), "nonExistingHotel", 404);
+        assertSuccessfulIndexResult(results.get(3), "3", 201);
+        assertSuccessfulIndexResult(results.get(4), "2", 201);
+
+        SearchDocument actualHotel1 = client.getDocument(hotel1.get("HotelId").toString(), SearchDocument.class);
+        assertMapEquals(hotel1, actualHotel1, false);
+
+        SearchDocument actualHotel2 = client.getDocument(hotel2.get("HotelId").toString(), SearchDocument.class);
+        assertMapEquals(hotel2, actualHotel2, false);
+
+        SearchDocument actualHotel3 = client.getDocument(hotel3.get("HotelId").toString(), SearchDocument.class);
+        assertMapEquals(hotel3, actualHotel3, false);
+    }
+
+    @Test
+    public void canIndexDynamicDocumentsThrowOnError() {
         client = setupClient(this::createHotelIndex);
 
         SearchDocument hotel1 = prepareDynamicallyTypedHotel("1");
@@ -803,7 +842,7 @@ public class IndexingSyncTests extends SearchTestBase {
             .addMergeOrUploadActions(hotelsToMergeOrUpload);
 
         Response<IndexDocumentsResult> indexResponse = client.uploadDocumentsWithResponse(hotelsToUpload,
-            null, Context.NONE);
+            null, null, Context.NONE);
         waitForIndexing();
 
         assertEquals(200, indexResponse.getStatusCode());
@@ -811,7 +850,7 @@ public class IndexingSyncTests extends SearchTestBase {
         assertEquals(2, result.getResults().size());
 
         Response<IndexDocumentsResult> updateResponse = client.mergeDocumentsWithResponse(hotelsToMerge,
-            null, Context.NONE);
+            null, null, Context.NONE);
         waitForIndexing();
 
         assertEquals(200, updateResponse.getStatusCode());
@@ -819,7 +858,7 @@ public class IndexingSyncTests extends SearchTestBase {
         assertEquals(1, result.getResults().size());
 
         Response<IndexDocumentsResult> mergeOrUploadResponse = client.mergeOrUploadDocumentsWithResponse(
-            hotelsToMergeOrUpload, null, Context.NONE);
+            hotelsToMergeOrUpload, null, null, Context.NONE);
         waitForIndexing();
 
         assertEquals(200, mergeOrUploadResponse.getStatusCode());
@@ -827,7 +866,7 @@ public class IndexingSyncTests extends SearchTestBase {
         assertEquals(2, result.getResults().size());
 
         Response<IndexDocumentsResult> deleteResponse = client.deleteDocumentsWithResponse(hotelsToDelete,
-            null, Context.NONE);
+            null, null, Context.NONE);
         waitForIndexing();
 
         assertEquals(200, deleteResponse.getStatusCode());
@@ -835,7 +874,7 @@ public class IndexingSyncTests extends SearchTestBase {
         assertEquals(1, result.getResults().size());
 
         Response<IndexDocumentsResult> batchResponse = client.indexDocumentsWithResponse(batch,
-            null, Context.NONE);
+            null, null, Context.NONE);
         waitForIndexing();
 
         assertEquals(200, batchResponse.getStatusCode());
