@@ -348,6 +348,7 @@ public class CustomAnalyzerSyncTests extends SearchTestBase {
         assertThrows(IllegalArgumentException.class, () -> {
             searchIndexClient.createIndex(index);
         }, "Missing required property name in model LexicalAnalyzer");
+
     }
 
     @Test
@@ -498,6 +499,7 @@ public class CustomAnalyzerSyncTests extends SearchTestBase {
         assertThrows(IllegalArgumentException.class, () -> {
             searchIndexClient.createIndex(index);
         }, "Missing required property name in model SearchIndexer");
+
     }
 
     @Test

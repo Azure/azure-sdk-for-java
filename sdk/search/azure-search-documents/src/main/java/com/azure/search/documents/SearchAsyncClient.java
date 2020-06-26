@@ -751,7 +751,7 @@ public final class SearchAsyncClient {
         if (searchOptions != null) {
             List<String> scoringParameters = searchOptions.getScoringParameters() == null ? null
                 : searchOptions.getScoringParameters().stream().map(ScoringParameter::toString)
-                    .collect(Collectors.toList());
+                .collect(Collectors.toList());
             searchRequest.setSearchMode(SearchModeConverter.map(searchOptions.getSearchMode()))
                 .setFacets(searchOptions.getFacets())
                 .setFilter(searchOptions.getFilter())
