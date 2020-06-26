@@ -4,16 +4,21 @@
 package com.azure.ai.formrecognizer;
 
 import com.azure.ai.formrecognizer.models.CustomFormModel;
+import com.azure.ai.formrecognizer.models.CustomFormSubmodel;
 import com.azure.ai.formrecognizer.models.OperationResult;
+import com.azure.ai.formrecognizer.models.TrainingDocumentInfo;
 import com.azure.ai.formrecognizer.training.FormTrainingClient;
 import com.azure.ai.formrecognizer.training.FormTrainingClientBuilder;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.polling.SyncPoller;
 
 /**
- * Sample to train a model with labeled data. See RecognizeCustomFormsAsync to recognize forms with your custom model.
+ * Sample to train a model with labeled data.
  * For instructions on setting up forms for training in an Azure Storage Blob Container, see
  * https://docs.microsoft.com/azure/cognitive-services/form-recognizer/build-training-data-set#upload-your-training-data
+ * For this sample, you can use the training forms found in https://aka.ms/azsdk/formrecognizer/docs/trainingdocs to
+ * create your own custom models.
+ * Further, see RecognizeCustomForms.java to recognize forms with your custom built model.
  */
 public class TrainModelWithLabels {
 
@@ -31,8 +36,8 @@ public class TrainModelWithLabels {
             .buildClient();
 
         // Train custom model
-        String trainingSetSource = "{labeled_training_set_SAS_URL}";
-        SyncPoller<OperationResult, CustomFormModel> trainingPoller = client.beginTraining(trainingSetSource, true);
+        String trainingFilesUrl = "{CONTAINER_SAS_URL}"; // The shared access signature (SAS) Url of your Azure Blob Storage container with your forms.
+        SyncPoller<OperationResult, CustomFormModel> trainingPoller = client.beginTraining(trainingFilesUrl, true);
 
         CustomFormModel customFormModel = trainingPoller.getFinalResult();
 

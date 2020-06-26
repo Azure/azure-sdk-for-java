@@ -5,6 +5,7 @@ package com.azure.ai.formrecognizer;
 
 import com.azure.ai.formrecognizer.models.FormContentType;
 import com.azure.ai.formrecognizer.models.OperationResult;
+import com.azure.ai.formrecognizer.models.Point;
 import com.azure.ai.formrecognizer.models.RecognizeCustomFormsOptions;
 import com.azure.ai.formrecognizer.models.RecognizedForm;
 import com.azure.core.credential.AzureKeyCredential;
@@ -24,6 +25,14 @@ import static com.azure.ai.formrecognizer.implementation.Utility.toFluxByteBuffe
 /**
  * Async sample to show the differences in output that arise when RecognizeCustomForms
  * is called with custom models trained with labeled and unlabeled data.
+ * For this sample, you can use the training forms found in https://aka.ms/azsdk/formrecognizer/docs/trainingdocs for
+ * creating your custom models.
+ * The models used in this sample can be created using TrainModelsWithLabels.java and TrainModelsWithoutLabels.java.
+ * <p>
+ * See
+ * <a href = "https://docs.microsoft.com/azure/cognitive-services/form-recognizer/overview#train-without-labels">here </a>
+ * for service documentation on training with and without labels.
+ * </p>
  */
 public class AdvancedDiffLabeledUnlabeledDataAsync {
 
@@ -43,7 +52,7 @@ public class AdvancedDiffLabeledUnlabeledDataAsync {
             .buildAsyncClient();
 
         File analyzeFile = new File("../formrecognizer/azure-ai-formrecognizer/src/samples/java/sample-forms/"
-            + "forms/Invoice_6.pdf");
+            + "forms/Form_1.jpg");
         byte[] fileContent = Files.readAllBytes(analyzeFile.toPath());
 
         PollerFlux<OperationResult, List<RecognizedForm>> labeledCustomFormPoller =
@@ -53,7 +62,8 @@ public class AdvancedDiffLabeledUnlabeledDataAsync {
                 .setPollInterval(Duration.ofSeconds(5)));
 
         PollerFlux<OperationResult, List<RecognizedForm>> unlabeledCustomFormPoller =
-            client.beginRecognizeCustomForms(toFluxByteBuffer(new ByteArrayInputStream(fileContent)), analyzeFile.length(), "{unlabeled_model_Id}", FormContentType.APPLICATION_PDF);
+            client.beginRecognizeCustomForms(toFluxByteBuffer(new ByteArrayInputStream(fileContent)),
+                analyzeFile.length(), "{unlabeled_model_Id}", FormContentType.APPLICATION_PDF);
 
         Mono<List<RecognizedForm>> labeledDataResult = labeledCustomFormPoller
             .last()
@@ -79,21 +89,36 @@ public class AdvancedDiffLabeledUnlabeledDataAsync {
                 }
             });
 
-        //  The main difference is found in the labels of its fields
-        // The form recognized with a labeled model will have the labels it was trained with,
-        // the unlabeled one will be denoted with indices
         System.out.println("--------Recognizing forms with labeled custom model--------");
+        // With a form recognized by a model trained with labels, the `formField.getName()` key will be its label
+        // given during
+        // training
+        // `value` will contain the typed field value and `valueText` will contain information about the field value
+        // `labelText` is not populated for a model trained with labels as this was the given label used to extract
+        // the key
         labeledDataResult.subscribe(formsWithLabeledModel -> formsWithLabeledModel.forEach(labeledForm ->
             labeledForm.getFields().forEach((label, formField) -> {
                 final StringBuilder boundingBoxStr = new StringBuilder();
                 if (formField.getValueText().getBoundingBox() != null) {
-                    formField.getValueText().getBoundingBox().getPoints().forEach(point ->
-                        boundingBoxStr.append(String.format("[%.2f, %.2f]", point.getX(), point.getY())));
+                    formField.getValueText().getBoundingBox().getPoints().stream().map(point -> String.format("[%.2f,"
+                        + " %.2f]", point.getX(), point.getY())).forEach(boundingBoxStr::append);
                 }
                 System.out.printf("Field %s has value %s based on %s within bounding box %s with a confidence score "
                         + "of %.2f.%n",
                     label, formField.getFieldValue(), formField.getValueText().getText(), boundingBoxStr,
                     formField.getConfidence());
+
+                // Find the value of a specific labeled field.
+                System.out.println("Value for a specific labeled field using the training-time label:");
+                labeledForm.getFields().entrySet()
+                    .stream()
+                    .filter(formFieldEntry -> "Merchant".equals(formFieldEntry.getKey())) // filter by form field key
+                    .findAny()
+                    .ifPresentOrElse(
+                        formFieldEntry -> System.out.printf("The Merchant name is: %s%n", formFieldEntry.getValue()),
+                        () -> System.out.println("'Merchant' training-time label does not exist. Substitute it with "
+                            + "your own training-time label.")
+                    );
             })));
 
         // The .subscribe() creation and assignment is not a blocking call. For the purpose of this example, we sleep
@@ -112,23 +137,36 @@ public class AdvancedDiffLabeledUnlabeledDataAsync {
             unLabeledForm.getFields().forEach((label, formField) -> {
                 final StringBuilder boundingBoxStr = new StringBuilder();
                 if (formField.getValueText().getBoundingBox() != null) {
-                    formField.getValueText().getBoundingBox().getPoints().forEach(point ->
-                        boundingBoxStr.append(String.format("[%.2f, %.2f]", point.getX(), point.getY())));
+                    formField.getValueText().getBoundingBox().getPoints().stream().map(point ->
+                        String.format("[%.2f, %.2f]", point.getX(), point.getY())).forEach(boundingBoxStr::append);
                 }
 
                 final StringBuilder boundingBoxLabelStr = new StringBuilder();
                 if (formField.getLabelText() != null && formField.getLabelText().getBoundingBox() != null) {
-                    formField.getLabelText().getBoundingBox().getPoints().forEach(point ->
-                        boundingBoxLabelStr.append(String.format("[%.2f, %.2f]", point.getX(), point.getY())));
+                    formField.getLabelText().getBoundingBox().getPoints().stream().map(point ->
+                        String.format("[%.2f, %.2f]", point.getX(), point.getY())).forEach(boundingBoxStr::append);
                 }
                 System.out.printf("Field %s has label %s  within bounding box %s with a confidence score "
                         + "of %.2f.%n",
                     label, formField.getLabelText().getText(), boundingBoxLabelStr, formField.getConfidence());
 
-                System.out.printf("Field %s has value %s based on %s within bounding box %s with a confidence score "
-                        + "of %.2f.%n",
+                System.out.printf("Field %s has value %s based on %s within bounding box %s with a confidence "
+                        + "score of %.2f.%n",
                     label, formField.getFieldValue(), formField.getValueText().getText(), boundingBoxStr,
                     formField.getConfidence());
+
+                // Find the value of a specific unlabeled field. The specific key "Vendor Name:" provided in the
+                // example
+                // will only be found if sample training forms used
+                unLabeledForm.getFields().entrySet()
+                    .stream()
+                    //filter by label text
+                    .filter(formFieldEntry -> "Vendor Name:".equals(formFieldEntry.getValue().getLabelText().getText()))
+                    .findAny()
+                    .ifPresentOrElse(
+                        formFieldEntry -> System.out.printf("The Vendor name is: %s%n", formFieldEntry.getValue()),
+                        () -> System.out.println("'Vendor Name:' label text does not exist")
+                    );
             })));
 
         // The .subscribe() creation and assignment is not a blocking call. For the purpose of this example, we sleep
