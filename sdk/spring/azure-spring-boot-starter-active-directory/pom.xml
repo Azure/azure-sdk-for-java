@@ -58,7 +58,7 @@
     <dependency>
       <groupId>com.microsoft.azure</groupId>
       <artifactId>msal4j</artifactId>
-      <version>1.3.0</version> <!-- {x-version-update;com.microsoft.azure:msal4j;external_dependency} -->
+      <version>1.6.1</version> <!-- {x-version-update;com.microsoft.azure:msal4j;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>com.nimbusds</groupId>
@@ -84,7 +84,7 @@
               <includes>
                 <include>com.microsoft.azure:azure-spring-boot:[2.3.3-beta.1]</include> <!-- {x-include-update;com.microsoft.azure:azure-spring-boot;current} --> -->
                 <include>com.fasterxml.jackson.core:jackson-databind:[2.10.1]</include> <!-- {x-include-update;com.fasterxml.jackson.core:jackson-databind;external_dependency} -->
-                <include>com.microsoft.azure:msal4j:[1.3.0]</include> <!-- {x-include-update;com.microsoft.azure:msal4j;external_dependency} -->
+                <include>com.microsoft.azure:msal4j:[1.6.1]</include> <!-- {x-include-update;com.microsoft.azure:msal4j;external_dependency} -->
                 <include>com.nimbusds:nimbus-jose-jwt:[7.9]</include> <!-- {x-include-update;com.nimbusds:nimbus-jose-jwt;external_dependency} -->
                 <include>org.springframework:spring-web:[5.2.6.RELEASE]</include> <!-- {x-include-update;org.springframework:spring-web;external_dependency} -->
                 <include>org.springframework.boot:spring-boot-starter:[2.3.0.RELEASE]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-starter;external_dependency} -->
