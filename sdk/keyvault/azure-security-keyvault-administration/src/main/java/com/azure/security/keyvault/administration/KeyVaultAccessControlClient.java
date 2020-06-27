@@ -10,171 +10,156 @@ import com.azure.security.keyvault.administration.implementation.models.KeyVault
 import com.azure.security.keyvault.administration.implementation.models.RoleAssignment;
 import com.azure.security.keyvault.administration.implementation.models.RoleAssignmentProperties;
 import com.azure.security.keyvault.administration.implementation.models.RoleDefinition;
+import com.azure.security.keyvault.administration.models.RoleScope;
+import reactor.core.publisher.Mono;
+
+import java.util.UUID;
 
 /**
  * The {@link KeyVaultAccessControlClient} provides synchronous methods to view and manage Role Based Access for the
- * Azure Key Vault. The client supports creating, listing, updating, and deleting {@link RoleAssignment}.
- * Additionally, the client supports listing {@link RoleDefinition}.
+ * Azure Key Vault. The client supports creating, listing, updating, and deleting {@link RoleAssignment role
+ * assignments}. Additionally, the client supports listing {@link RoleDefinition role definitions}.
  */
 @ServiceClient(builder = KeyVaultAccessControlClientBuilder.class)
 public class KeyVaultAccessControlClient {
     private final KeyVaultAccessControlAsyncClient asyncClient;
 
     /**
-     * Creates an {@link KeyVaultAccessControlClient} that uses a {@code pipeline} to service requests
+     * Creates an {@link KeyVaultAccessControlClient} that uses a {@link com.azure.core.http.HttpPipeline pipeline}
+     * to service requests.
      *
-     * @param asyncClient The {@link KeyVaultAccessControlAsyncClient} that the client routes its request through.
+     * @param asyncClient The {@link KeyVaultAccessControlAsyncClient} that this client routes its request through.
      */
     KeyVaultAccessControlClient(KeyVaultAccessControlAsyncClient asyncClient) {
         this.asyncClient = asyncClient;
     }
 
     /**
-     * Get the vault endpoint URL.
+     * Gets the URL for the Key Vault this client is associated with.
      *
-     * @return The vault endpoint URL.
+     * @return The Key Vault URL.
      */
     public String getVaultUrl() {
         return asyncClient.getVaultUrl();
     }
 
     /**
-     * Get all role definitions that are applicable at scope and above.
+     * Get all {@link RoleDefinition role definitions} that are applicable at the given {@link RoleScope
+     * scope} and above.
      *
-     * @param scope   The scope of the role definition.
-     * @param context Additional context that is passed through the HTTP pipeline during the service call.
-     * @return A {@link PagedIterable} of {@link RoleDefinition role definitions}.
+     * @param scope   The {@link RoleScope scope} of the {@link RoleDefinition role definitions}.
+     * @param context Additional {@link Context} that is passed through the HTTP pipeline during the service call.
+     * @return A {@link PagedIterable} containing the {@link RoleDefinition role definitions} for the given
+     * {@link RoleScope scope}.
      * @throws KeyVaultErrorException if the operation is unsuccessful.
-     * @throws NullPointerException   if the {@code scope} is null.
+     * @throws NullPointerException   if the {@link RoleScope scope} is {@code null}.
      */
-    public PagedIterable<RoleDefinition> listRoleDefinitions(String scope, Context context) {
-        return listRoleDefinitions(scope, null, context);
+    public PagedIterable<RoleDefinition> listRoleDefinitions(RoleScope scope, Context context) {
+        return new PagedIterable<>(asyncClient.listRoleDefinitions(scope, context));
     }
 
     /**
-     * Get all role definitions that are applicable at scope and above.
+     * Get all {@link RoleAssignment role assignments} that are applicable at the given {@link RoleScope
+     * scope} and above.
      *
-     * @param scope   The scope of the role definition.
-     * @param filter  The filter to apply on the operation. Use a "atScopeAndBelow" filter to search below the given
-     *                scope as well.
+     * @param scope   The {@link RoleScope scope} of the {@link RoleAssignment}.
      * @param context Additional context that is passed through the HTTP pipeline during the service call.
-     * @return A {@link PagedIterable} of {@link RoleDefinition role definitions}.
+     * @return A {@link PagedIterable} containing the {@link RoleAssignment role assignments} for the given
+     * {@link RoleScope scope}.
      * @throws KeyVaultErrorException if the operation is unsuccessful.
-     * @throws NullPointerException   if the {@code scope} is null.
+     * @throws NullPointerException   if the {@link RoleScope scope} is {@code null}.
      */
-    public PagedIterable<RoleDefinition> listRoleDefinitions(String scope, String filter, Context context) {
-        return new PagedIterable<>(asyncClient.listRoleDefinitions(scope, filter, context));
-    }
-
-    /**
-     * Get all role definitions that are applicable at scope and above.
-     *
-     * @param scope   The scope of the role definition.
-     * @param context Additional context that is passed through the HTTP pipeline during the service call.
-     * @return A {@link PagedIterable} of {@link RoleDefinition role definitions}.
-     * @throws KeyVaultErrorException if the operation is unsuccessful.
-     * @throws NullPointerException   if the {@code scope} is null.
-     */
-    public PagedIterable<RoleAssignment> listRoleAssignments(String scope, Context context) {
-        return listRoleAssignments(scope, null, context);
-    }
-
-    /**
-     * Get all role assignments that are applicable at scope and above.
-     *
-     * @param scope   The scope of the role assignment.
-     * @param filter  The filter to apply on the operation. Use a "atScopeAndBelow" filter to search below the given
-     *                scope as well.
-     * @param context Additional context that is passed through the HTTP pipeline during the service call.
-     * @return A {@link PagedIterable} of {@link RoleAssignment role definitions}.
-     * @throws KeyVaultErrorException if the operation is unsuccessful.
-     * @throws NullPointerException   if the {@code scope} is null.
-     */
-    public PagedIterable<RoleAssignment> listRoleAssignments(String scope, String filter, Context context) {
-        return new PagedIterable<>(asyncClient.listRoleAssignments(scope, filter, context));
+    public PagedIterable<RoleAssignment> listRoleAssignments(RoleScope scope, Context context) {
+        return new PagedIterable<>(asyncClient.listRoleAssignments(scope, context));
     }
 
     /**
      * Creates a {@link RoleAssignment}.
      *
-     * @param scope      The scope of the role assignment to create.
-     * @param name       The name used to create the role assignment.
-     * @param properties Properties for the role assignment.
+     * @param scope      The {@link RoleScope scope} of the {@link RoleAssignment} to create.
+     * @param name       The name used to create the {@link RoleAssignment}. It can be any valid UUID.
+     * @param properties Properties for the {@link RoleAssignment}.
      * @return The created {@link RoleAssignment}.
-     * @throws KeyVaultErrorException if the operation is unsuccessful.
-     * @throws NullPointerException   if the {@code scope}, {@code name} or {@code properties} are null.
+     * @throws KeyVaultErrorException if the request is rejected by the server.
+     * @throws NullPointerException   if the {@link RoleScope scope}, {@link UUID name} or
+     * {@link RoleAssignmentProperties properties} are {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public RoleAssignment createRoleAssignment(String scope, String name, RoleAssignmentProperties properties) {
-        return createKeyWithResponse(scope, name, properties, Context.NONE).getValue();
+    public RoleAssignment createRoleAssignment(RoleScope scope, UUID name,
+                                               RoleAssignmentProperties properties) {
+        return createRoleAssignmentWithResponse(scope, name, properties, Context.NONE).getValue();
     }
 
     /**
      * Creates a {@link RoleAssignment}.
      *
-     * @param scope      The scope of the role assignment to create.
-     * @param name       The name used to create the role assignment.
-     * @param properties Properties for the role assignment.
-     * @return The created {@link RoleAssignment}.
-     * @throws KeyVaultErrorException if the operation is unsuccessful.
-     * @throws NullPointerException   if the {@code scope}, {@code name} or {@code properties} are null.
+     * @param scope      The {@link RoleScope scope} of the {@link RoleAssignment} to create.
+     * @param name       The name used to create the {@link RoleAssignment}. It can be any valid UUID.
+     * @param properties Properties for the {@link RoleAssignment}.
+     * @param context    Additional context that is passed through the HTTP pipeline during the service call.
+     * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains the created
+     * {@link RoleAssignment}.
+     * @throws KeyVaultErrorException if the request is rejected by the server.
+     * @throws NullPointerException   if the {@link RoleScope scope}, {@link UUID name} or
+     * {@link RoleAssignmentProperties properties} are {@code null}.
      */
-    public Response<RoleAssignment> createKeyWithResponse(String scope, String name,
-                                                          RoleAssignmentProperties properties, Context context) {
+    public Response<RoleAssignment> createRoleAssignmentWithResponse(RoleScope scope, UUID name,
+                                                                     RoleAssignmentProperties properties,
+                                                                     Context context) {
         return asyncClient.createRoleAssignmentWithResponse(scope, name, properties, context).block();
     }
 
     /**
-     * Creates a {@link RoleAssignment}.
+     * Gets a {@link RoleAssignment}.
      *
-     * @param scope The scope of the role assignment to create.
-     * @param name  The name used to create the role assignment.
-     * @return The created {@link RoleAssignment}.
+     * @param scope The {@link RoleScope scope} of the {@link RoleAssignment}.
+     * @param name  The name of the {@link RoleAssignment}.
+     * @return The {@link RoleAssignment}.
      * @throws KeyVaultErrorException if the operation is unsuccessful.
-     * @throws NullPointerException   if the {@code scope} or {@code name} are null.
+     * @throws NullPointerException   if the {@link RoleScope scope} or {@link UUID name} are {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public RoleAssignment getRoleAssignment(String scope, String name) {
-        return getKeyWithResponse(scope, name, Context.NONE).getValue();
+    public RoleAssignment getRoleAssignment(RoleScope scope, String name) {
+        return getRoleAssignmentWithResponse(scope, name, Context.NONE).getValue();
     }
 
     /**
-     * Creates a {@link RoleAssignment}.
+     * Gets a {@link RoleAssignment}.
      *
-     * @param scope The scope of the role assignment to create.
-     * @param name  The name used to create the role assignment.
-     * @return The created {@link RoleAssignment}.
+     * @param scope The {@link RoleScope scope} of the {@link RoleAssignment}.
+     * @param name  The name of the {@link RoleAssignment}.
+     * @return The {@link RoleAssignment}.
      * @throws KeyVaultErrorException if the operation is unsuccessful.
-     * @throws NullPointerException   if the {@code scope} or {@code name} are null.
+     * @throws NullPointerException   if the {@link RoleScope scope} or {@link UUID name} are {@code null}.
      */
-    public Response<RoleAssignment> getKeyWithResponse(String scope, String name, Context context) {
+    public Response<RoleAssignment> getRoleAssignmentWithResponse(RoleScope scope, String name, Context context) {
         return asyncClient.getRoleAssignmentWithResponse(scope, name, context).block();
     }
 
     /**
-     * Creates a {@link RoleAssignment}.
+     * Deletes a {@link RoleAssignment}.
      *
-     * @param scope The scope of the role assignment to create.
-     * @param name  The name used to create the role assignment.
-     * @return The created {@link RoleAssignment}.
+     * @param scope The {@link RoleScope scope} of the {@link RoleAssignment}.
+     * @param name  The name of the {@link RoleAssignment}.
+     * @return The {@link RoleAssignment}.
      * @throws KeyVaultErrorException if the operation is unsuccessful.
-     * @throws NullPointerException   if the {@code scope} or {@code name} are null.
+     * @throws NullPointerException   if the {@link RoleScope scope} or {@link UUID name} are {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public RoleAssignment deleteRoleAssignment(String scope, String name) {
-        return deleteKeyWithResponse(scope, name, Context.NONE).getValue();
+    public RoleAssignment deleteRoleAssignment(RoleScope scope, String name) {
+        return deleteRoleAssignmentWithResponse(scope, name, Context.NONE).getValue();
     }
 
     /**
-     * Creates a {@link RoleAssignment}.
+     * Deletes a {@link RoleAssignment}.
      *
-     * @param scope The scope of the role assignment to create.
-     * @param name  The name used to create the role assignment.
-     * @return The created {@link RoleAssignment}.
+     * @param scope The {@link RoleScope scope} of the {@link RoleAssignment}.
+     * @param name  The name of the {@link RoleAssignment}.
+     * @return The {@link RoleAssignment}.
      * @throws KeyVaultErrorException if the operation is unsuccessful.
-     * @throws NullPointerException   if the {@code scope} or {@code name} are null.
+     * @throws NullPointerException   if the {@link RoleScope scope} or {@link UUID name} are {@code null}.
      */
-    public Response<RoleAssignment> deleteKeyWithResponse(String scope, String name, Context context) {
+    public Response<RoleAssignment> deleteRoleAssignmentWithResponse(RoleScope scope, String name, Context context) {
         return asyncClient.deleteRoleAssignmentWithResponse(scope, name, context).block();
     }
 }
