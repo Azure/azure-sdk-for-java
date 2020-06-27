@@ -167,7 +167,7 @@ public final class SearchAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<IndexDocumentsResult> uploadDocuments(Iterable<?> documents) {
-        return uploadDocumentsWithResponse(documents, null, null).map(Response::getValue);
+        return uploadDocumentsWithResponse(documents, null).map(Response::getValue);
     }
 
     /**
@@ -218,7 +218,7 @@ public final class SearchAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<IndexDocumentsResult> mergeDocuments(Iterable<?> documents) {
-        return mergeDocumentsWithResponse(documents, null, null).map(Response::getValue);
+        return mergeDocumentsWithResponse(documents, null).map(Response::getValue);
     }
 
     /**
@@ -277,7 +277,7 @@ public final class SearchAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<IndexDocumentsResult> mergeOrUploadDocuments(Iterable<?> documents) {
-        return mergeOrUploadDocumentsWithResponse(documents, null, null).map(Response::getValue);
+        return mergeOrUploadDocumentsWithResponse(documents, null).map(Response::getValue);
     }
 
     /**
@@ -329,7 +329,7 @@ public final class SearchAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<IndexDocumentsResult> deleteDocuments(Iterable<?> documents) {
-        return deleteDocumentsWithResponse(documents, null, null).map(Response::getValue);
+        return deleteDocumentsWithResponse(documents, null).map(Response::getValue);
     }
 
     /**
@@ -374,7 +374,7 @@ public final class SearchAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Long> getDocumentCount() {
-        return this.getDocumentCountWithResponse(null).map(Response::getValue);
+        return this.getDocumentCountWithResponse().map(Response::getValue);
     }
 
     /**
@@ -384,7 +384,7 @@ public final class SearchAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Long>> getDocumentCountWithResponse() {
-        return withContext(context -> getDocumentCountWithResponse(context));
+        return withContext(this::getDocumentCountWithResponse);
     }
 
     Mono<Response<Long>> getDocumentCountWithResponse(Context context) {
@@ -513,7 +513,7 @@ public final class SearchAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public <T> Mono<T> getDocument(String key, Class<T> modelClass) {
-        return getDocumentWithResponse(key, modelClass, null, null).map(Response::getValue);
+        return getDocumentWithResponse(key, modelClass, null).map(Response::getValue);
     }
 
     /**
@@ -570,7 +570,7 @@ public final class SearchAsyncClient {
      * @see <a href="https://docs.microsoft.com/rest/api/searchservice/Suggestions">Suggestions</a>
      */
     public SuggestPagedFlux suggest(String searchText, String suggesterName) {
-        return suggest(searchText, suggesterName, null, null);
+        return suggest(searchText, suggesterName, null);
     }
 
     /**
@@ -631,7 +631,7 @@ public final class SearchAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<IndexDocumentsResult> indexDocuments(IndexDocumentsBatch<?> batch) {
-        return indexDocumentsWithResponse(batch, null, null).map(Response::getValue);
+        return indexDocumentsWithResponse(batch, null).map(Response::getValue);
     }
 
     /**

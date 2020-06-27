@@ -192,7 +192,7 @@ public final class SearchIndexAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SearchIndexStatistics> getIndexStatistics(String indexName) {
-        return getIndexStatisticsWithResponse(indexName, null).map(Response::getValue);
+        return getIndexStatisticsWithResponse(indexName).map(Response::getValue);
     }
 
     /**
@@ -328,7 +328,7 @@ public final class SearchIndexAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteIndex(String indexName) {
-        return withContext(context -> deleteIndexWithResponse(indexName, null, null).flatMap(FluxUtil::toMono));
+        return deleteIndexWithResponse(indexName, null, null).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -401,7 +401,7 @@ public final class SearchIndexAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SynonymMap> createSynonymMap(SynonymMap synonymMap) {
-        return createSynonymMapWithResponse(synonymMap, null).map(Response::getValue);
+        return createSynonymMapWithResponse(synonymMap).map(Response::getValue);
     }
 
     /**
@@ -437,7 +437,7 @@ public final class SearchIndexAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SynonymMap> getSynonymMap(String synonymMapName) {
-        return getSynonymMapWithResponse(synonymMapName, null).map(Response::getValue);
+        return getSynonymMapWithResponse(synonymMapName).map(Response::getValue);
     }
 
     /**
@@ -528,7 +528,7 @@ public final class SearchIndexAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SynonymMap> createOrUpdateSynonymMap(SynonymMap synonymMap) {
-        return createOrUpdateSynonymMapWithResponse(synonymMap, false, null).map(Response::getValue);
+        return createOrUpdateSynonymMapWithResponse(synonymMap, false).map(Response::getValue);
     }
 
     /**
@@ -613,7 +613,7 @@ public final class SearchIndexAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SearchServiceStatistics> getServiceStatistics() {
-        return getServiceStatisticsWithResponse(null).map(Response::getValue);
+        return getServiceStatisticsWithResponse().map(Response::getValue);
     }
 
 

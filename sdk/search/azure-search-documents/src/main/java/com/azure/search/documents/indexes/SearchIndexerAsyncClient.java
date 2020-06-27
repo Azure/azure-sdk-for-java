@@ -102,7 +102,7 @@ public class SearchIndexerAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SearchIndexerDataSourceConnection> createOrUpdateDataSourceConnection(
         SearchIndexerDataSourceConnection dataSource) {
-        return createOrUpdateDataSourceConnectionWithResponse(dataSource, false, null).map(Response::getValue);
+        return createOrUpdateDataSourceConnectionWithResponse(dataSource, false).map(Response::getValue);
     }
 
     /**
@@ -150,7 +150,7 @@ public class SearchIndexerAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SearchIndexerDataSourceConnection> createDataSourceConnection(
         SearchIndexerDataSourceConnection dataSource) {
-        return createDataSourceConnectionWithResponse(dataSource, null).map(Response::getValue);
+        return createDataSourceConnectionWithResponse(dataSource).map(Response::getValue);
     }
 
     /**
@@ -186,7 +186,7 @@ public class SearchIndexerAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SearchIndexerDataSourceConnection> getDataSourceConnection(String dataSourceName) {
-        return getDataSourceConnectionWithResponse(dataSourceName, null).map(Response::getValue);
+        return getDataSourceConnectionWithResponse(dataSourceName).map(Response::getValue);
     }
 
     /**
@@ -323,7 +323,7 @@ public class SearchIndexerAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SearchIndexer> createIndexer(SearchIndexer indexer) {
-        return createIndexerWithResponse(indexer, null).map(Response::getValue);
+        return createIndexerWithResponse(indexer).map(Response::getValue);
     }
 
     /**
@@ -358,7 +358,7 @@ public class SearchIndexerAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SearchIndexer> createOrUpdateIndexer(SearchIndexer indexer) {
-        return createOrUpdateIndexerWithResponse(indexer, false, null).map(Response::getValue);
+        return createOrUpdateIndexerWithResponse(indexer, false).map(Response::getValue);
     }
 
     /**
@@ -401,7 +401,7 @@ public class SearchIndexerAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SearchIndexer> getIndexer(String indexerName) {
-        return getIndexerWithResponse(indexerName, null).map(Response::getValue);
+        return getIndexerWithResponse(indexerName).map(Response::getValue);
     }
 
     /**
@@ -540,7 +540,7 @@ public class SearchIndexerAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> resetIndexer(String indexerName) {
-        return resetIndexerWithResponse(indexerName, null).flatMap(FluxUtil::toMono);
+        return resetIndexerWithResponse(indexerName).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -573,7 +573,7 @@ public class SearchIndexerAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> runIndexer(String indexerName) {
-        return runIndexerWithResponse(indexerName, null).flatMap(FluxUtil::toMono);
+        return runIndexerWithResponse(indexerName).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -606,7 +606,7 @@ public class SearchIndexerAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SearchIndexerStatus> getIndexerStatus(String indexerName) {
-        return getIndexerStatusWithResponse(indexerName, null).map(Response::getValue);
+        return getIndexerStatusWithResponse(indexerName).map(Response::getValue);
     }
 
     /**
@@ -641,7 +641,7 @@ public class SearchIndexerAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SearchIndexerSkillset> createSkillset(SearchIndexerSkillset skillset) {
-        return createSkillsetWithResponse(skillset, null).map(Response::getValue);
+        return createSkillsetWithResponse(skillset).map(Response::getValue);
     }
 
     /**
@@ -677,7 +677,7 @@ public class SearchIndexerAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SearchIndexerSkillset> getSkillset(String skillsetName) {
-        return getSkillsetWithResponse(skillsetName, null).map(Response::getValue);
+        return getSkillsetWithResponse(skillsetName).map(Response::getValue);
     }
 
     /**
@@ -767,7 +767,7 @@ public class SearchIndexerAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SearchIndexerSkillset> createOrUpdateSkillset(SearchIndexerSkillset skillset) {
-        return createOrUpdateSkillsetWithResponse(skillset, false, null).map(Response::getValue);
+        return createOrUpdateSkillsetWithResponse(skillset, false).map(Response::getValue);
     }
 
     /**
