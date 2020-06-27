@@ -17,10 +17,10 @@ import com.azure.search.documents.indexes.SearchIndexerClientBuilder;
 import com.azure.search.documents.indexes.models.SearchField;
 import com.azure.search.documents.indexes.models.SearchFieldDataType;
 import com.azure.search.documents.indexes.models.SearchIndex;
-import com.azure.search.documents.models.Hotel;
 import com.azure.search.documents.models.RequestOptions;
 import com.azure.search.documents.models.SearchOptions;
 import com.azure.search.documents.models.SearchResult;
+import com.azure.search.documents.util.SearchPagedIterable;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -41,6 +41,7 @@ public class ReadmeSamples {
     private String indexName = "index name";
     private SearchIndexClient searchIndexClient = new SearchIndexClientBuilder().buildClient();
     private SearchClient searchClient = new SearchClientBuilder().buildClient();
+    private SearchAsyncClient searchAsyncClient = new SearchClientBuilder().buildAsyncClient();
 
     public void createSearchClient() {
         SearchClient searchClient = new SearchClientBuilder()
@@ -123,24 +124,103 @@ public class ReadmeSamples {
 
     public void uploadDocumentWithSyncClient() {
         List<Hotel> hotels = new ArrayList<>();
-        hotels.add(new Hotel().setHotelId("100"));
-        hotels.add(new Hotel().setHotelId("200"));
-        hotels.add(new Hotel().setHotelId("300"));
+        hotels.add(new Hotel().setId("100"));
+        hotels.add(new Hotel().setId("200"));
+        hotels.add(new Hotel().setId("300"));
         // Upload hotel.
         searchClient.uploadDocuments(hotels);
     }
 
-    public void searchTextWithSyncClient() {
-        // Perform a text-based search
-        for (SearchResult result : searchClient.search("luxury hotel",
-            new SearchOptions(), new RequestOptions(), Context.NONE)) {
+    public void sandBoxConnection() {
+        // We'll connect to the Azure Cognitive Search public sandbox and send a
+        // query to its "nycjobs" index built from a public dataset of available jobs
+        // in New York.
+        String serviceName = "azs-playground";
+        String indexName = "nycjobs";
+        String apiKey = "252044BE3886FE4A8E3BAA4F595114BB";
 
-            // Each result is a dynamic Map
-            SearchDocument doc = result.getDocument(SearchDocument.class);
-            String hotelName = (String) doc.get("HotelName");
-            Double rating = (Double) doc.get("Rating");
+        // Create a SearchClient to send queries
+        String serviceEndpoint = String.format("https://%s.search.windows.net/", serviceName);
+        AzureKeyCredential credential = new AzureKeyCredential(apiKey);
+        SearchClient client = new SearchClientBuilder()
+            .endpoint(serviceEndpoint)
+            .credential(credential)
+            .indexName(indexName)
+            .buildClient();
 
-            System.out.printf("%s: %s%n", hotelName, rating);
+        // Let's get the top 5 jobs related to Microsoft
+        SearchPagedIterable searchResultsIterable = client.search("Microsoft",
+            new SearchOptions().setTop(5), null, Context.NONE);
+        for (SearchResult searchResult: searchResultsIterable) {
+            SearchDocument document = searchResult.getDocument(SearchDocument.class);
+            String title = (String) document.get("business_title");
+            String description = (String) document.get("job_description");
+            System.out.println(String.format("The business title is %s, and here is the description: %s",
+                title, description));
         }
     }
+
+    public void searchWithDynamicType() {
+        SearchPagedIterable searchResultsIterable = searchClient.search("luxury");
+        for (SearchResult searchResult: searchResultsIterable) {
+            SearchDocument doc = searchResult.getDocument(SearchDocument.class);
+            String id = (String) doc.get("hotelId");
+            String name = (String) doc.get("hotelName");
+            System.out.println(String.format("This is hotelId %s, and this is hotel name %s.", id, name));
+        }
+    }
+
+    public class Hotel {
+        private String id;
+        private String name;
+
+        public String getId() {
+            return id;
+        }
+
+        public Hotel setId(String id) {
+            this.id = id;
+            return this;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public Hotel setName(String name) {
+            this.name = name;
+            return this;
+        }
+    }
+
+    public void searchWithStronglyType() {
+        SearchPagedIterable searchResultsIterable = searchClient.search("luxury");
+        for (SearchResult searchResult: searchResultsIterable) {
+            Hotel doc = searchResult.getDocument(Hotel.class);
+            String id = doc.getId();
+            String name = doc.getName();
+            System.out.println(String.format("This is hotelId %s, and this is hotel name %s.", id, name));
+        }
+    }
+
+    public void searchWithSearchOptions() {
+        int stars = 4;
+        SearchOptions options = new SearchOptions()
+            .setFilter(String.format("rating ge %s", stars))
+            .setOrderBy("rating desc")
+            .setTop(5);
+        SearchPagedIterable searchResultsIterable = searchClient.search("luxury", options, null,
+            Context.NONE);
+        // ...
+    }
+
+    public void searchWithAsyncClient() {
+        searchAsyncClient.search("luxury")
+            .subscribe(result -> {
+                Hotel hotel = result.getDocument(Hotel.class);
+                System.out.println(String.format("This is hotelId %s, and this is hotel name %s.",
+                    hotel.getId(), hotel.getName()));
+            });
+    }
+
 }
