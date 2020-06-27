@@ -104,6 +104,7 @@
       <groupId>io.netty</groupId>
       <artifactId>netty-transport-native-kqueue</artifactId>
       <version>4.1.49.Final</version> <!-- {x-version-update;io.netty:netty-transport-native-kqueue;external_dependency} -->
+      <classifier>osx-x86_64</classifier>
     </dependency>
 
     <dependency>
@@ -192,6 +193,7 @@
                 <include>io.netty:netty-transport-native-unix-common:[4.1.49.Final]</include> <!-- {x-include-update;io.netty:netty-transport-native-unix-common;external_dependency} -->
                 <include>io.netty:netty-transport-native-epoll:[4.1.49.Final]</include> <!-- {x-include-update;io.netty:netty-transport-native-epoll;external_dependency} -->
                 <include>io.projectreactor.netty:reactor-netty:[0.9.7.RELEASE]</include> <!-- {x-include-update;io.projectreactor.netty:reactor-netty;external_dependency} -->
+                <include>io.netty:netty-transport-native-kqueue:[4.1.49.Final]</include> <!-- {x-include-update;io.netty:netty-transport-native-kqueue;external_dependency} -->                
               </includes>
             </bannedDependencies>
           </rules>
