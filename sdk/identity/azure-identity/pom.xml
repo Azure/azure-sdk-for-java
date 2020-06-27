@@ -32,12 +32,12 @@
     <dependency>
       <groupId>com.microsoft.azure</groupId>
       <artifactId>msal4j</artifactId>
-      <version>1.3.0</version> <!-- {x-version-update;com.microsoft.azure:msal4j;external_dependency} -->
+      <version>1.6.1</version> <!-- {x-version-update;com.microsoft.azure:msal4j;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>com.microsoft.azure</groupId>
       <artifactId>msal4j-persistence-extension</artifactId>
-      <version>0.1</version> <!-- {x-version-update;com.microsoft.azure:msal4j-persistence-extension;external_dependency} -->
+      <version>0.2.0</version> <!-- {x-version-update;com.microsoft.azure:msal4j-persistence-extension;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>com.nimbusds</groupId>
@@ -117,8 +117,8 @@
             <bannedDependencies>
               <includes>
                 <include>com.azure:*</include>
-                <include>com.microsoft.azure:msal4j:[1.3.0]</include> <!-- {x-include-update;com.microsoft.azure:msal4j;external_dependency} -->
-                <include>com.microsoft.azure:msal4j-persistence-extension:[0.1]</include> <!-- {x-include-update;com.microsoft.azure:msal4j-persistence-extension;external_dependency} -->
+                <include>com.microsoft.azure:msal4j:[1.6.1]</include> <!-- {x-include-update;com.microsoft.azure:msal4j;external_dependency} -->
+                <include>com.microsoft.azure:msal4j-persistence-extension:[0.2.0]</include> <!-- {x-include-update;com.microsoft.azure:msal4j-persistence-extension;external_dependency} -->
                 <include>com.nimbusds:oauth2-oidc-sdk:[6.14]</include> <!-- {x-include-update;com.nimbusds:oauth2-oidc-sdk;external_dependency} -->
                 <include>net.java.dev.jna:jna-platform:[5.4.0]</include> <!-- {x-include-update;net.java.dev.jna:jna-platform;external_dependency} -->
                 <include>org.linguafranca.pwdb:KeePassJava2:[2.1.4]</include> <!-- {x-include-update;org.linguafranca.pwdb:KeePassJava2;external_dependency} -->
