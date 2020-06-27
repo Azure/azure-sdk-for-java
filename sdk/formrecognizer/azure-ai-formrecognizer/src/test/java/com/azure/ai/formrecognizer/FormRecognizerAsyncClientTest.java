@@ -461,9 +461,8 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
                 getFormTrainingAsyncClient(httpClient, serviceVersion).beginTraining(training, useTrainingLabels).getSyncPoller();
             syncPoller.waitForCompletion();
             CustomFormModel createdModel = syncPoller.getFinalResult();
-            // uncomment this, giving an NPE instead of a FormRecognizerException
             FormRecognizerException formRecognizerException = assertThrows(FormRecognizerException.class,
-                () -> client.beginRecognizeCustomFormsFromUrl(INVALID_URL, createdModel.getModelId()).getSyncPoller().getFinalResult());
+                () -> client.beginRecognizeCustomFormsFromUrl(invalidSourceUrl, createdModel.getModelId()).getSyncPoller().getFinalResult());
             // ErrorInformation errorInformation = formRecognizerException.getErrorInformation().get(0);
             // TODO: Service bug https://github.com/Azure/azure-sdk-for-java/issues/12046
             // assertEquals(EXPECTED_INVALID_URL_ERROR_CODE, errorInformation.getCode());
