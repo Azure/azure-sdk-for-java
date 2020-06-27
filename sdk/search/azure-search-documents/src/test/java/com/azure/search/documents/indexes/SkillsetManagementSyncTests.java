@@ -49,7 +49,6 @@ import java.util.stream.Collectors;
 
 import static com.azure.search.documents.TestHelpers.assertHttpResponseException;
 import static com.azure.search.documents.TestHelpers.assertObjectEquals;
-import static com.azure.search.documents.TestHelpers.generateRequestOptions;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
@@ -92,7 +91,7 @@ public class SkillsetManagementSyncTests extends SearchTestBase {
     public void createSkillsetReturnsCorrectDefinitionImageAnalysisKeyPhraseWithResponse() {
         SearchIndexerSkillset expectedSkillset = createTestSkillsetImageAnalysisKeyPhrase();
         Response<SearchIndexerSkillset> skillsetResponse = client.createSkillsetWithResponse(expectedSkillset,
-            generateRequestOptions(), Context.NONE);
+            Context.NONE);
         skillsetsToDelete.add(skillsetResponse.getValue().getName());
 
         assertObjectEquals(expectedSkillset, skillsetResponse.getValue(), true, "etag");
@@ -279,7 +278,7 @@ public class SkillsetManagementSyncTests extends SearchTestBase {
         client.createSkillset(expected);
         skillsetsToDelete.add(expected.getName());
 
-        SearchIndexerSkillset actual = client.getSkillsetWithResponse(expected.getName(), generateRequestOptions(), Context.NONE)
+        SearchIndexerSkillset actual = client.getSkillsetWithResponse(expected.getName(), Context.NONE)
             .getValue();
         assertObjectEquals(expected, actual, true, "etag");
     }
@@ -358,7 +357,7 @@ public class SkillsetManagementSyncTests extends SearchTestBase {
         skillsetsToDelete.add(skillset2.getName());
 
         PagedIterable<String> selectedFieldListResponse =
-            client.listSkillsetNames(generateRequestOptions(), Context.NONE);
+            client.listSkillsetNames(Context.NONE);
         List<String> result = selectedFieldListResponse.stream().collect(Collectors.toList());
 
         result.forEach(Assertions::assertNotNull);
@@ -373,16 +372,16 @@ public class SkillsetManagementSyncTests extends SearchTestBase {
         SearchIndexerSkillset skillset = createSkillsetWithOcrDefaultSettings(false);
 
         Response<Void> deleteResponse = client.deleteSkillsetWithResponse(skillset, false,
-            generateRequestOptions(), Context.NONE);
+            Context.NONE);
         assertEquals(HttpURLConnection.HTTP_NOT_FOUND, deleteResponse.getStatusCode());
 
         client.createSkillset(skillset);
 
         // Delete the same skillset twice
-        deleteResponse = client.deleteSkillsetWithResponse(skillset, false, generateRequestOptions(), Context.NONE);
+        deleteResponse = client.deleteSkillsetWithResponse(skillset, false, Context.NONE);
         assertEquals(HttpURLConnection.HTTP_NO_CONTENT, deleteResponse.getStatusCode());
 
-        deleteResponse = client.deleteSkillsetWithResponse(skillset, false, generateRequestOptions(), Context.NONE);
+        deleteResponse = client.deleteSkillsetWithResponse(skillset, false, Context.NONE);
         assertEquals(HttpURLConnection.HTTP_NOT_FOUND, deleteResponse.getStatusCode());
     }
 
@@ -408,7 +407,7 @@ public class SkillsetManagementSyncTests extends SearchTestBase {
     public void createOrUpdateCreatesWhenSkillsetDoesNotExistWithResponse() {
         SearchIndexerSkillset expected = createTestOcrSkillSet(1);
         Response<SearchIndexerSkillset> createOrUpdateResponse = client.createOrUpdateSkillsetWithResponse(expected,
-            false, generateRequestOptions(), Context.NONE);
+            false, Context.NONE);
         skillsetsToDelete.add(createOrUpdateResponse.getValue().getName());
 
         assertEquals(HttpURLConnection.HTTP_CREATED, createOrUpdateResponse.getStatusCode());
@@ -418,15 +417,14 @@ public class SkillsetManagementSyncTests extends SearchTestBase {
     public void createOrUpdateUpdatesWhenSkillsetExists() throws Exception {
         SearchIndexerSkillset skillset = createTestOcrSkillSet(1);
         Response<SearchIndexerSkillset> createOrUpdateResponse = client.createOrUpdateSkillsetWithResponse(skillset, false,
-            generateRequestOptions(), Context.NONE);
+            Context.NONE);
         skillsetsToDelete.add(createOrUpdateResponse.getValue().getName());
         assertEquals(HttpURLConnection.HTTP_CREATED, createOrUpdateResponse.getStatusCode());
         SearchIndexerSkillset updatedSkillset = createTestOcrSkillSet(2);
         Field skillsetName = updatedSkillset.getClass().getDeclaredField("name");
         skillsetName.setAccessible(true);
         skillsetName.set(updatedSkillset, skillset.getName());
-        createOrUpdateResponse = client.createOrUpdateSkillsetWithResponse(skillset, false, generateRequestOptions(),
-            Context.NONE);
+        createOrUpdateResponse = client.createOrUpdateSkillsetWithResponse(skillset, false, Context.NONE);
         assertEquals(HttpURLConnection.HTTP_OK, createOrUpdateResponse.getStatusCode());
     }
 
@@ -499,7 +497,7 @@ public class SkillsetManagementSyncTests extends SearchTestBase {
     @Test
     public void createOrUpdateSkillsetIfNotExistsSucceedsOnNoResource() {
         SearchIndexerSkillset created = client.createOrUpdateSkillsetWithResponse(createSkillsetWithOcrDefaultSettings(false), true,
-            null, Context.NONE).getValue();
+            Context.NONE).getValue();
         skillsetsToDelete.add(created.getName());
 
         assertFalse(CoreUtils.isNullOrEmpty(created.getETag()));
@@ -508,11 +506,11 @@ public class SkillsetManagementSyncTests extends SearchTestBase {
     @Test
     public void createOrUpdateSkillsetIfExistsSucceedsOnExistingResource() {
         SearchIndexerSkillset original = client.createOrUpdateSkillsetWithResponse(createSkillsetWithOcrDefaultSettings(false),
-            false, null, Context.NONE).getValue();
+            false, Context.NONE).getValue();
         String originalETag = original.getETag();
         skillsetsToDelete.add(original.getName());
 
-        SearchIndexerSkillset updated = client.createOrUpdateSkillsetWithResponse(mutateSkillsInSkillset(original), false, null,
+        SearchIndexerSkillset updated = client.createOrUpdateSkillsetWithResponse(mutateSkillsInSkillset(original), false,
             Context.NONE).getValue();
         String updatedETag = updated.getETag();
 
@@ -523,11 +521,11 @@ public class SkillsetManagementSyncTests extends SearchTestBase {
     @Test
     public void createOrUpdateSkillsetIfNotChangedSucceedsWhenResourceUnchanged() {
         SearchIndexerSkillset original = client.createOrUpdateSkillsetWithResponse(createSkillsetWithOcrDefaultSettings(false),
-            false, null, Context.NONE).getValue();
+            false, Context.NONE).getValue();
         String originalETag = original.getETag();
         skillsetsToDelete.add(original.getName());
 
-        SearchIndexerSkillset updated = client.createOrUpdateSkillsetWithResponse(mutateSkillsInSkillset(original), true, null,
+        SearchIndexerSkillset updated = client.createOrUpdateSkillsetWithResponse(mutateSkillsInSkillset(original), true,
             Context.NONE).getValue();
         String updatedETag = updated.getETag();
 
@@ -539,17 +537,17 @@ public class SkillsetManagementSyncTests extends SearchTestBase {
     @Test
     public void createOrUpdateSkillsetIfNotChangedFailsWhenResourceChanged() {
         SearchIndexerSkillset original = client.createOrUpdateSkillsetWithResponse(createSkillsetWithOcrDefaultSettings(false),
-            false, null, Context.NONE).getValue();
+            false, Context.NONE).getValue();
         String originalETag = original.getETag();
         skillsetsToDelete.add(original.getName());
 
-        SearchIndexerSkillset updated = client.createOrUpdateSkillsetWithResponse(mutateSkillsInSkillset(original), true, null,
+        SearchIndexerSkillset updated = client.createOrUpdateSkillsetWithResponse(mutateSkillsInSkillset(original), true,
             Context.NONE).getValue();
         String updatedETag = updated.getETag();
 
         // Update and check the eTags were changed
         try {
-            client.createOrUpdateSkillsetWithResponse(original, true, null, Context.NONE);
+            client.createOrUpdateSkillsetWithResponse(original, true, Context.NONE);
             fail("createOrUpdateDefinition should have failed due to precondition.");
         } catch (HttpResponseException ex) {
             assertEquals(HttpURLConnection.HTTP_PRECON_FAILED, ex.getResponse().getStatusCode());
@@ -563,30 +561,30 @@ public class SkillsetManagementSyncTests extends SearchTestBase {
     @Test
     public void deleteSkillsetIfNotChangedWorksOnlyOnCurrentResource() {
         SearchIndexerSkillset stale = client.createOrUpdateSkillsetWithResponse(createSkillsetWithOcrDefaultSettings(false),
-            true, null, Context.NONE).getValue();
+            true, Context.NONE).getValue();
 
-        SearchIndexerSkillset current = client.createOrUpdateSkillsetWithResponse(stale, true, null, Context.NONE)
+        SearchIndexerSkillset current = client.createOrUpdateSkillsetWithResponse(stale, true, Context.NONE)
             .getValue();
 
         try {
-            client.deleteSkillsetWithResponse(stale, true, null, Context.NONE);
+            client.deleteSkillsetWithResponse(stale, true, Context.NONE);
             fail("deleteFunc should have failed due to precondition.");
         } catch (HttpResponseException ex) {
             assertEquals(HttpURLConnection.HTTP_PRECON_FAILED, ex.getResponse().getStatusCode());
         }
 
-        client.deleteSkillsetWithResponse(current, true, null, Context.NONE);
+        client.deleteSkillsetWithResponse(current, true, Context.NONE);
     }
 
     @Test
     public void deleteSkillsetIfExistsWorksOnlyWhenResourceExists() {
         SearchIndexerSkillset skillset = client.createOrUpdateSkillsetWithResponse(createSkillsetWithOcrDefaultSettings(false),
-            false, null, Context.NONE).getValue();
+            false, Context.NONE).getValue();
 
-        client.deleteSkillsetWithResponse(skillset, true, null, Context.NONE);
+        client.deleteSkillsetWithResponse(skillset, true, Context.NONE);
 
         try {
-            client.deleteSkillsetWithResponse(skillset, true, null, Context.NONE);
+            client.deleteSkillsetWithResponse(skillset, true, Context.NONE);
             fail("deleteFunc should have failed due to non existent resource.");
         } catch (HttpResponseException ex) {
             assertEquals(HttpURLConnection.HTTP_PRECON_FAILED, ex.getResponse().getStatusCode());

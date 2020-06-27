@@ -18,7 +18,6 @@ import com.azure.search.documents.indexes.models.SearchField;
 import com.azure.search.documents.indexes.models.SearchFieldDataType;
 import com.azure.search.documents.indexes.models.SearchIndex;
 import com.azure.search.documents.models.Hotel;
-import com.azure.search.documents.models.RequestOptions;
 import com.azure.search.documents.models.SearchOptions;
 import com.azure.search.documents.models.SearchResult;
 
@@ -95,7 +94,6 @@ public class ReadmeSamples {
         SearchIndex index = new SearchIndex(indexName);
         searchIndexClient.createIndexWithResponse(
             index,
-            new RequestOptions(),
             new Context(AddHeadersFromContextPolicy.AZURE_REQUEST_HTTP_HEADERS_KEY, headers));
         // Above three HttpHeader will be added in outgoing HttpRequest.
     }
@@ -133,7 +131,7 @@ public class ReadmeSamples {
     public void searchTextWithSyncClient() {
         // Perform a text-based search
         for (SearchResult result : searchClient.search("luxury hotel",
-            new SearchOptions(), new RequestOptions(), Context.NONE)) {
+            new SearchOptions(), Context.NONE)) {
 
             // Each result is a dynamic Map
             SearchDocument doc = result.getDocument(SearchDocument.class);
