@@ -29,12 +29,12 @@ public class SharedTransportClient extends TransportClient {
     private static final AtomicInteger counter = new AtomicInteger(0);
     private static SharedTransportClient sharedTransportClient;
 
-    public static TransportClient getOrCreateInstance(Protocol protocol, Configs configs, ConnectionPolicy connectionPolicy, UserAgentContainer userAgent) {
+    public static TransportClient getOrCreateInstance(Protocol protocol, Configs configs, ConnectionPolicy connectionPolicy, UserAgentContainer userAgent, IAddressResolver addressResolver) {
         synchronized (SharedTransportClient.class) {
             if (sharedTransportClient == null) {
                 assert counter.get() == 0;
                 logger.info("creating a new shared RntbdTransportClient");
-                sharedTransportClient = new SharedTransportClient(protocol, configs, connectionPolicy, userAgent);
+                sharedTransportClient = new SharedTransportClient(protocol, configs, connectionPolicy, userAgent, addressResolver);
             } else {
                 logger.info("Reusing an instance of RntbdTransportClient");
             }
@@ -46,9 +46,15 @@ public class SharedTransportClient extends TransportClient {
 
     private final TransportClient transportClient;
 
-    private SharedTransportClient(Protocol protocol, Configs configs, ConnectionPolicy connectionPolicy, UserAgentContainer userAgent) {
+    private SharedTransportClient(
+        Protocol protocol,
+        Configs configs,
+        ConnectionPolicy connectionPolicy,
+        UserAgentContainer userAgent,
+        IAddressResolver addressResolver) {
+
         if (protocol == Protocol.TCP) {
-            this.transportClient = new RntbdTransportClient(configs, connectionPolicy, userAgent);
+            this.transportClient = new RntbdTransportClient(configs, connectionPolicy, userAgent, addressResolver);
         } else if (protocol == Protocol.HTTPS){
             this.transportClient = new HttpTransportClient(configs, connectionPolicy, userAgent);
         } else {

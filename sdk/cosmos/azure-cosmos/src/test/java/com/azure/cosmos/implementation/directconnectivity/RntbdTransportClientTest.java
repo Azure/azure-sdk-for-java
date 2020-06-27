@@ -614,7 +614,7 @@ public final class RntbdTransportClientTest {
         final RntbdTransportClient.Options options = new RntbdTransportClient.Options.Builder(connectionPolicy).build();
         final SslContext sslContext = SslContextBuilder.forClient().build();
 
-        try (final RntbdTransportClient transportClient = new RntbdTransportClient(options, sslContext)) {
+        try (final RntbdTransportClient transportClient = new RntbdTransportClient(options, sslContext, null)) {
 
             final BaseAuthorizationTokenProvider authorizationTokenProvider = new BaseAuthorizationTokenProvider(
                 new AzureKeyCredential(RntbdTestConfiguration.AccountKey)
@@ -732,7 +732,7 @@ public final class RntbdTransportClientTest {
             throw new AssertionError(String.format("%s: %s", error.getClass(), error.getMessage()));
         }
 
-        return new RntbdTransportClient(new FakeEndpoint.Provider(options, sslContext, expected));
+        return new RntbdTransportClient(new FakeEndpoint.Provider(options, sslContext, expected), null);
     }
 
     private void validateFailure(final Mono<? extends StoreResponse> responseMono, final FailureValidator validator) {

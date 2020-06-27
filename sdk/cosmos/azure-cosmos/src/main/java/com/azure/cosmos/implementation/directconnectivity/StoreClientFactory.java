@@ -27,6 +27,7 @@ public class StoreClientFactory implements AutoCloseable {
     private volatile boolean isClosed;
 
     public StoreClientFactory(
+        IAddressResolver addressResolver,
         Configs configs,
         ConnectionPolicy connectionPolicy,
         UserAgentContainer userAgent,
@@ -34,13 +35,14 @@ public class StoreClientFactory implements AutoCloseable {
 
         this.configs = configs;
         this.protocol = configs.getProtocol();
+
         if (enableTransportClientSharing) {
-            this.transportClient = SharedTransportClient.getOrCreateInstance(protocol, configs, connectionPolicy, userAgent);
+            this.transportClient = SharedTransportClient.getOrCreateInstance(protocol, configs, connectionPolicy, userAgent, addressResolver);
         } else {
             if (protocol == Protocol.HTTPS) {
                 this.transportClient = new HttpTransportClient(configs, connectionPolicy, userAgent);
             } else if (protocol == Protocol.TCP) {
-                this.transportClient = new RntbdTransportClient(configs, connectionPolicy, userAgent);
+                this.transportClient = new RntbdTransportClient(configs, connectionPolicy, userAgent, addressResolver);
             } else {
                 throw new IllegalArgumentException(String.format("protocol: %s", this.protocol));
             }

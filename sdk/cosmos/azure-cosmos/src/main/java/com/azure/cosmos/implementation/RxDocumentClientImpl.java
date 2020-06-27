@@ -76,7 +76,6 @@ import static com.azure.cosmos.models.ModelBridgeInternal.toDatabaseAccount;
  */
 public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorizationTokenProvider {
 
-    private static final char PREFER_HEADER_SEPERATOR = ';';
     private final static ObjectMapper mapper = Utils.getSimpleObjectMapper();
     private final Logger logger = LoggerFactory.getLogger(RxDocumentClientImpl.class);
     private final String masterKeyOrResourceToken;
@@ -296,9 +295,9 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     private void initializeDirectConnectivity() {
 
         this.storeClientFactory = new StoreClientFactory(
+            this.addressResolver,
             this.configs,
             this.connectionPolicy,
-           // this.maxConcurrentConnectionOpenRequests,
             this.userAgentContainer,
             this.connectionSharingAcrossClientsEnabled
         );

@@ -6,9 +6,13 @@ package com.azure.cosmos.implementation.directconnectivity;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.ConnectionPolicy;
+import com.azure.cosmos.implementation.GoneException;
 import com.azure.cosmos.implementation.RequestTimeline;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.UserAgentContainer;
+import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdAddressCacheToken;
+import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdConnectionEvent;
+import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdConnectionStateListener;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdEndpoint;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdObjectMapper;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdRequestArgs;
@@ -33,6 +37,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
 import java.time.Duration;
+import java.time.Instant;
 import java.util.Iterator;
 import java.util.Locale;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -53,6 +58,7 @@ public final class RntbdTransportClient extends TransportClient {
     private static final Logger logger = LoggerFactory.getLogger(RntbdTransportClient.class);
 
     private final AtomicBoolean closed = new AtomicBoolean();
+    private final RntbdConnectionStateListener connectionStateListener;
     private final RntbdEndpoint.Provider endpointProvider;
     private final long id;
     private final Tag tag;
@@ -61,20 +67,37 @@ public final class RntbdTransportClient extends TransportClient {
 
     // region Constructors
 
-    RntbdTransportClient(final RntbdEndpoint.Provider endpointProvider) {
+    RntbdTransportClient(
+        final RntbdEndpoint.Provider endpointProvider,
+        final RntbdConnectionStateListener connectionStateListener) {
+
+        this.connectionStateListener = connectionStateListener;
         this.endpointProvider = endpointProvider;
         this.id = instanceCount.incrementAndGet();
         this.tag = RntbdTransportClient.tag(this.id);
     }
 
-    RntbdTransportClient(final Options options, final SslContext sslContext) {
+    RntbdTransportClient(
+        final Options options,
+        final SslContext sslContext,
+        final RntbdConnectionStateListener connectionStateListener) {
+
         this.endpointProvider = new RntbdServiceEndpoint.Provider(this, options, sslContext);
+        this.connectionStateListener = connectionStateListener;
         this.id = instanceCount.incrementAndGet();
         this.tag = RntbdTransportClient.tag(this.id);
     }
 
-    RntbdTransportClient(final Configs configs, final ConnectionPolicy connectionPolicy, final UserAgentContainer userAgent) {
-        this(new Options.Builder(connectionPolicy).userAgent(userAgent).build(), configs.getSslContext());
+    RntbdTransportClient(
+        final Configs configs,
+        final ConnectionPolicy connectionPolicy,
+        final UserAgentContainer userAgent,
+        final IAddressResolver addressResolver) {
+
+        this(
+            new Options.Builder(connectionPolicy).userAgent(userAgent).build(),
+            configs.getSslContext(),
+            new RntbdConnectionStateListener(addressResolver));
     }
 
     // endregion
@@ -122,7 +145,9 @@ public final class RntbdTransportClient extends TransportClient {
         final RntbdEndpoint endpoint = this.endpointProvider.get(address);
         final RntbdRequestRecord record = endpoint.request(requestArgs);
 
-        logger.debug("RntbdTransportClient.invokeStoreAsync({}, {}): {}", address, request, record);
+        this.connectionStateListener.updateConnectionState(endpoint, new RntbdAddressCacheToken(
+            request.getPartitionKeyRangeIdentity(),
+            endpoint));
 
         return Mono.fromFuture(record.whenComplete((response, throwable) -> {
 
@@ -133,8 +158,18 @@ public final class RntbdTransportClient extends TransportClient {
             }
 
             if (response != null) {
+
                 RequestTimeline timeline = record.takeTimelineSnapshot();
                 response.setRequestTimeline(timeline);
+
+            } else if (this.connectionStateListener != null) {
+
+                if (throwable instanceof GoneException && throwable.getCause() instanceof IOException) {
+                    this.connectionStateListener.onConnectionEvent(
+                        RntbdConnectionEvent.READ_FAILURE,
+                        Instant.now(),
+                        endpoint);
+                }
             }
         })).doOnCancel(() -> {
             logger.debug("REQUEST CANCELLED: {}", record);

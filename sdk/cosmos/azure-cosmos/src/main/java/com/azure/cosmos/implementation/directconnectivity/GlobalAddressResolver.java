@@ -11,8 +11,10 @@ import com.azure.cosmos.implementation.IAuthorizationTokenProvider;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.UserAgentContainer;
 import com.azure.cosmos.implementation.Utils;
+import com.azure.cosmos.implementation.apachecommons.lang.NotImplementedException;
 import com.azure.cosmos.implementation.caches.RxCollectionCache;
 import com.azure.cosmos.implementation.caches.RxPartitionKeyRangeCache;
+import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdAddressCacheToken;
 import com.azure.cosmos.implementation.http.HttpClient;
 import com.azure.cosmos.implementation.routing.CollectionRoutingMap;
 import com.azure.cosmos.implementation.routing.PartitionKeyRangeIdentity;
@@ -31,30 +33,27 @@ import java.util.stream.Collectors;
 
 public class GlobalAddressResolver implements IAddressResolver {
     private final static int MaxBackupReadRegions = 3;
+    final Map<URI, EndpointCache> addressCacheByEndpoint;
+    private final RxCollectionCache collectionCache;
     private final GlobalEndpointManager endpointManager;
+    private final int maxEndpoints;
     private final Protocol protocol;
+    private final RxPartitionKeyRangeCache routingMapProvider;
+    private final GatewayServiceConfigurationReader serviceConfigReader;
     private final IAuthorizationTokenProvider tokenProvider;
     private final UserAgentContainer userAgentContainer;
-    private final RxCollectionCache collectionCache;
-    private final RxPartitionKeyRangeCache routingMapProvider;
-    private final int maxEndpoints;
-    private final GatewayServiceConfigurationReader serviceConfigReader;
-    final Map<URI, EndpointCache> addressCacheByEndpoint;
-
-    private GatewayAddressCache gatewayAddressCache;
-    private AddressResolver addressResolver;
-    private HttpClient httpClient;
+    private final HttpClient httpClient;
 
     public GlobalAddressResolver(
-            HttpClient httpClient,
-            GlobalEndpointManager endpointManager,
-            Protocol protocol,
-            IAuthorizationTokenProvider tokenProvider,
-            RxCollectionCache collectionCache,
-            RxPartitionKeyRangeCache routingMapProvider,
-            UserAgentContainer userAgentContainer,
-            GatewayServiceConfigurationReader serviceConfigReader,
-            ConnectionPolicy connectionPolicy) {
+        HttpClient httpClient,
+        GlobalEndpointManager endpointManager,
+        Protocol protocol,
+        IAuthorizationTokenProvider tokenProvider,
+        RxCollectionCache collectionCache,
+        RxPartitionKeyRangeCache routingMapProvider,
+        UserAgentContainer userAgentContainer,
+        GatewayServiceConfigurationReader serviceConfigReader,
+        ConnectionPolicy connectionPolicy) {
 
         this.httpClient = httpClient;
         this.endpointManager = endpointManager;
@@ -65,7 +64,8 @@ public class GlobalAddressResolver implements IAddressResolver {
         this.routingMapProvider = routingMapProvider;
         this.serviceConfigReader = serviceConfigReader;
 
-        int maxBackupReadEndpoints = (connectionPolicy.isReadRequestsFallbackEnabled()) ? GlobalAddressResolver.MaxBackupReadRegions : 0;
+        int maxBackupReadEndpoints = (connectionPolicy.isReadRequestsFallbackEnabled()) ?
+            GlobalAddressResolver.MaxBackupReadRegions : 0;
         this.maxEndpoints = maxBackupReadEndpoints + 2; // for write and alternate write getEndpoint (during failover)
         this.addressCacheByEndpoint = new ConcurrentHashMap<>();
 
@@ -77,24 +77,10 @@ public class GlobalAddressResolver implements IAddressResolver {
         }
     }
 
-    Mono<Void> openAsync(DocumentCollection collection) {
-        Mono<Utils.ValueHolder<CollectionRoutingMap>> routingMap = this.routingMapProvider.tryLookupAsync(null, collection.getId(), null, null);
-        return routingMap.flatMap(collectionRoutingMap -> {
-
-            if ( collectionRoutingMap.v == null) {
-                return Mono.empty();
-            }
-
-            List<PartitionKeyRangeIdentity> ranges = collectionRoutingMap.v.getOrderedPartitionKeyRanges().stream().map(range ->
-                    new PartitionKeyRangeIdentity(collection.getResourceId(), range.getId())).collect(Collectors.toList());
-            List<Mono<Void>> tasks = new ArrayList<>();
-            for (EndpointCache endpointCache : this.addressCacheByEndpoint.values()) {
-                tasks.add(endpointCache.addressCache.openAsync(collection, ranges));
-            }
-            @SuppressWarnings({"rawtypes", "unchecked"})
-            Mono<Void>[] array = new Mono[this.addressCacheByEndpoint.values().size()];
-            return Flux.mergeDelayError(Queues.SMALL_BUFFER_SIZE, tasks.toArray(array)).then();
-        });
+    public void dispose() {
+        for (EndpointCache endpointCache : this.addressCacheByEndpoint.values()) {
+            endpointCache.addressCache.dispose();
+        }
     }
 
     @Override
@@ -103,10 +89,31 @@ public class GlobalAddressResolver implements IAddressResolver {
         return resolver.resolveAsync(request, forceRefresh);
     }
 
-    public void dispose() {
-        for (EndpointCache endpointCache : this.addressCacheByEndpoint.values()) {
-            endpointCache.addressCache.dispose();
-        }
+    @Override
+    public Mono<Void> updateAsync(List<RntbdAddressCacheToken> tokens) {
+        return Mono.error(new NotImplementedException("GlobalAddressResolver.updateAsync"));
+    }
+
+    Mono<Void> openAsync(DocumentCollection collection) {
+        Mono<Utils.ValueHolder<CollectionRoutingMap>> routingMap = this.routingMapProvider.tryLookupAsync(null,
+            collection.getId(), null, null);
+        return routingMap.flatMap(collectionRoutingMap -> {
+
+            if (collectionRoutingMap.v == null) {
+                return Mono.empty();
+            }
+
+            List<PartitionKeyRangeIdentity> ranges =
+                collectionRoutingMap.v.getOrderedPartitionKeyRanges().stream().map(range ->
+                new PartitionKeyRangeIdentity(collection.getResourceId(), range.getId())).collect(Collectors.toList());
+            List<Mono<Void>> tasks = new ArrayList<>();
+            for (EndpointCache endpointCache : this.addressCacheByEndpoint.values()) {
+                tasks.add(endpointCache.addressCache.openAsync(collection, ranges));
+            }
+            @SuppressWarnings({ "rawtypes", "unchecked" })
+            Mono<Void>[] array = new Mono[this.addressCacheByEndpoint.values().size()];
+            return Flux.mergeDelayError(Queues.SMALL_BUFFER_SIZE, tasks.toArray(array)).then();
+        });
     }
 
     private IAddressResolver getAddressResolver(RxDocumentServiceRequest rxDocumentServiceRequest) {
@@ -115,8 +122,9 @@ public class GlobalAddressResolver implements IAddressResolver {
     }
 
     private EndpointCache getOrAddEndpoint(URI endpoint) {
-        EndpointCache endpointCache = this.addressCacheByEndpoint.computeIfAbsent(endpoint , key -> {
-            GatewayAddressCache gatewayAddressCache = new GatewayAddressCache(endpoint, protocol, this.tokenProvider, this.userAgentContainer, this.httpClient);
+        EndpointCache endpointCache = this.addressCacheByEndpoint.computeIfAbsent(endpoint, key -> {
+            GatewayAddressCache gatewayAddressCache = new GatewayAddressCache(endpoint, protocol, this.tokenProvider,
+                this.userAgentContainer, this.httpClient);
             AddressResolver addressResolver = new AddressResolver();
             addressResolver.initializeCaches(this.collectionCache, this.routingMapProvider, gatewayAddressCache);
             EndpointCache cache = new EndpointCache();
