@@ -5,7 +5,6 @@ package com.azure.ai.formrecognizer;
 
 import com.azure.ai.formrecognizer.models.FormContentType;
 import com.azure.ai.formrecognizer.models.OperationResult;
-import com.azure.ai.formrecognizer.models.Point;
 import com.azure.ai.formrecognizer.models.RecognizeCustomFormsOptions;
 import com.azure.ai.formrecognizer.models.RecognizedForm;
 import com.azure.core.credential.AzureKeyCredential;
@@ -113,10 +112,13 @@ public class AdvancedDiffLabeledUnlabeledDataAsync {
                     .stream()
                     .filter(formFieldEntry -> "Merchant".equals(formFieldEntry.getKey())) // filter by form field key
                     .findAny()
-                    .ifPresentOrElse(
-                        formFieldEntry -> System.out.printf("The Merchant name is: %s%n", formFieldEntry.getValue()),
-                        () -> System.out.println("'Merchant' training-time label does not exist. Substitute it with "
-                            + "your own training-time label."));
+                    .ifPresent(formFieldEntry ->
+                        System.out.printf("The Merchant name is: %s%n", formFieldEntry.getValue()));
+                    // @since 9
+                    // .ifPresentOrElse(
+                    //     formFieldEntry -> System.out.printf("The Merchant name is: %s%n", formFieldEntry.getValue()),
+                    //     () -> System.out.println("'Merchant' training-time label does not exist. Substitute it with "
+                    //         + "your own training-time label."));
             })));
 
         // The .subscribe() creation and assignment is not a blocking call. For the purpose of this example, we sleep
@@ -160,9 +162,12 @@ public class AdvancedDiffLabeledUnlabeledDataAsync {
                     //filter by label text
                     .filter(formFieldEntry -> "Vendor Name:".equals(formFieldEntry.getValue().getLabelText().getText()))
                     .findAny()
-                    .ifPresentOrElse(
-                        formFieldEntry -> System.out.printf("The Vendor name is: %s%n", formFieldEntry.getValue()),
-                        () -> System.out.println("'Vendor Name:' label text does not exist"));
+                    .ifPresent(formFieldEntry ->
+                        System.out.printf("The Vendor name is: %s%n", formFieldEntry.getValue()));
+                    // @since 9
+                    // .ifPresentOrElse(
+                    //     formFieldEntry -> System.out.printf("The Vendor name is: %s%n", formFieldEntry.getValue()),
+                    //     () -> System.out.println("'Vendor Name:' label text does not exist"));
             })));
 
         // The .subscribe() creation and assignment is not a blocking call. For the purpose of this example, we sleep

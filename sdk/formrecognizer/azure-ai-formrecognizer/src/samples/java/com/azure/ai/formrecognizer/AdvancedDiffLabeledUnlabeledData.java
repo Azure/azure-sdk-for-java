@@ -80,10 +80,13 @@ public class AdvancedDiffLabeledUnlabeledData {
                 .stream()
                 .filter(formFieldEntry -> "MerchantName".equals(formFieldEntry.getKey())) // filter by form field key
                 .findAny()
-                .ifPresentOrElse(
-                    formFieldEntry -> System.out.printf("The Merchant name is: %s%n", formFieldEntry.getValue()),
-                    () -> System.out.println("'Merchant' training-time label does not exist. Substitute it with "
-                        + "your own training-time label."));
+                .ifPresent(formFieldEntry ->
+                    System.out.printf("The Merchant name is: %s%n", formFieldEntry.getValue()));
+                // @since 9
+                // .ifPresentOrElse(
+                //     formFieldEntry -> System.out.printf("The Merchant name is: %s%n", formFieldEntry.getValue()),
+                //     () -> System.out.println("'Merchant' training-time label does not exist. Substitute it with "
+                //         + "your own training-time label."));
         }));
 
         System.out.println("-----------------------------------------------------------");
@@ -120,9 +123,11 @@ public class AdvancedDiffLabeledUnlabeledData {
                 .filter(formFieldEntry -> "Vendor Name:".equals(formFieldEntry.getValue().getLabelText().getText()))
                 //filter by label text
                 .findAny()
-                .ifPresentOrElse(
-                    formFieldEntry -> System.out.printf("The Vendor name is: %s%n", formFieldEntry.getValue()),
-                    () -> System.out.println("'Vendor Name:' label text does not exist"));
+                .ifPresent(formFieldEntry -> System.out.printf("The Vendor name is: %s%n", formFieldEntry.getValue()));
+                // @since 9
+                // .ifPresentOrElse(
+                //     formFieldEntry -> System.out.printf("The Vendor name is: %s%n", formFieldEntry.getValue()),
+                //     () -> System.out.println("'Vendor Name:' label text does not exist"));
         }));
     }
 }
