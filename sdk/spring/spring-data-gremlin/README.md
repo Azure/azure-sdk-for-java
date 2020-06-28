@@ -1,15 +1,42 @@
-[![MIT License](http://img.shields.io/badge/license-MIT-green.svg) ](https://github.com/Microsoft/spring-data-gremlin/blob/master/LICENSE)
-[![Build Status](https://travis-ci.org/Microsoft/spring-data-gremlin.svg?branch=master)](https://travis-ci.org/Microsoft/spring-data-gremlin)
-[![codecov](https://codecov.io/gh/Microsoft/spring-data-gremlin/branch/master/graph/badge.svg)](https://codecov.io/gh/Microsoft/spring-data-gremlin) 
+# Azure Spring Data Gremlin client library for Java
 
-# Spring Data Gremlin 
+## Key concepts
 
 **Spring Data Gremlin** provides initial Spring Data support for those databases using Gremlin query language. With annotation oriented programming model, it simplified the mapping to the database entity. It also provides supports for basic and custom query. 
 
-This project works with *any Gremlin-compatible* data store, and also with [Azure Cosmos DB](https://docs.microsoft.com/en-us/azure/cosmos-db/introduction). Cosmos is a globally-distributed database service that allows developers to work with data using a variety of standard APIs, such as Graph, MongoDB, and SQL. Spring Data Gremlin provides a delightful experience to interact with Azure Cosmos DB Graph API. 
+This project works with *any Gremlin-compatible* data store, and also with [Azure Cosmos DB](https://docs.microsoft.com/azure/cosmos-db/introduction). Cosmos is a globally-distributed database service that allows developers to work with data using a variety of standard APIs, such as Graph, MongoDB, and SQL. Spring Data Gremlin provides a delightful experience to interact with Azure Cosmos DB Graph API. 
 
-## Spring Data Version Support
-Version mapping between spring boot and spring-data-gremlin: 
+### Feature List
+- Spring Data CRUDRepository basic CRUD functionality
+    - save
+    - findAll
+    - findById
+    - deleteAll
+    - deleteById
+- Spring Data [@Id](https://github.com/spring-projects/spring-data-commons/blob/master/src/main/java/org/springframework/data/annotation/Id.java) annotation.
+  There're 2 ways to map a field in domain class to `id` field of a database entity.
+  - annotate a field in domain class with `@Id` 
+  - set name of this field to `id`
+- Default annotaion
+  - `@Vertex` maps an `Object` to a `Vertex`
+  - `@VertexSet` maps a set of `Vertex`
+  - `@Edge` maps an `Object` to an `Edge`
+  - `@EdgeSet` maps to a set of `Edge`
+  - `@EdgeFrom` maps to the head `Vertex` of an `Edge`
+  - `@EdgeTo` maps to the tail `Vertex` of an `Edge`
+  - `@Graph` maps to an `Object` to a `Graph`
+- Supports advanced operations 
+  - `<T> T findVertexById(Object id, Class<T> domainClass);`
+  - `<T> T findEdgeById(Object id, Class<T> domainClass);`
+  - `<T> boolean isEmptyGraph(T object)`
+  - `long vertexCount()`
+  - `long edgeCount()`
+- Supports [Spring Data custom query](https://docs.spring.io/spring-data/commons/docs/current/reference/html/#repositories.query-methods.details) find operation, e.g.,  `findByAFieldAndBField`
+- Supports any class type in domain class including collection and nested type.
+
+
+### Spring Data Version Support
+This repository only supports Spring Data 2.x. Version mapping between spring boot and spring-data-gremlin: 
 
 | Spring boot version                                         | spring-data-gremlin version                                                                                                                                                                                                                   |
 |:-----------------------------------------------------------:|:---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------:|
@@ -18,74 +45,26 @@ Version mapping between spring boot and spring-data-gremlin:
 | ![version](https://img.shields.io/badge/version-2.1.x-blue) | [![Maven Central](https://img.shields.io/maven-central/v/com.microsoft.spring.data.gremlin/spring-data-gremlin/2.1.svg)](https://search.maven.org/search?q=g:com.microsoft.spring.data.gremlin%20AND%20a:spring-data-gremlin%20AND%20v:2.1.*) |
 | ![version](https://img.shields.io/badge/version-2.0.x-blue) | [![Maven Central](https://img.shields.io/maven-central/v/com.microsoft.spring.data.gremlin/spring-data-gremlin/2.0.svg)](https://search.maven.org/search?q=g:com.microsoft.spring.data.gremlin%20AND%20a:spring-data-gremlin%20AND%20v:2.0.*) |
 
-## TOC
-
-* [Welcome to Contribute](#welcome-to-contribute)
-* [Sample Code](#sample-code)
-* [Spring data version support](#spring-data-version-support)
-* [Feature List](#feature-list)
-* [Quick Start](#quick-start)
-* [Filing Issues](#filing-issues)
-* [Code of Conduct](#code-of-conduct)
-
-## Welcome To Contribute
-
-Contribution is welcome. Please follow [this instruction](./CONTRIBUTING.md) to contribute code.
-
-## Sample Code
-Please refer to [sample project here](./examples/example/).
-
-## Spring data version support
-This repository only supports Spring Data 2.x. 
-
-## Feature List
-- Spring Data CRUDRepository basic CRUD functionality
-    - save
-    - findAll
-    - findById
-    - deleteAll
-    - deleteById
-- Spring Data [@Id](https://github.com/spring-projects/spring-data-commons/blob/db62390de90c93a78743c97cc2cc9ccd964994a5/src/main/java/org/springframework/data/annotation/Id.java) annotation.
-  There're 2 ways to map a field in domain class to `id` field of a database entity.
-  - annotate a field in domain class with `@Id` 
-  - set name of this field to `id`
-- Default annotaion
-  - ```@Vertex``` maps an ```Object``` to a ```Vertex```
-  - ```@VertexSet``` maps a set of ```Vertex```
-  - ```@Edge``` maps an ```Object``` to an ```Edge```
-  - ```@EdgeSet``` maps to a set of ```Edge```
-  - ```@EdgeFrom``` maps to the head ```Vertex``` of an ```Edge```
-  - ```@EdgeTo``` maps to the tail ```Vertex``` of an ```Edge```
-  - ```@Graph``` maps to an ```Object``` to a ```Graph```
-- Supports advanced operations 
-  - ```<T> T findVertexById(Object id, Class<T> domainClass);```
-  - ```<T> T findEdgeById(Object id, Class<T> domainClass);```
-  - ```<T> boolean isEmptyGraph(T object)```
-  - ```long vertexCount()```
-  - ```long edgeCount()```
-- Supports [Spring Data custom query](https://docs.spring.io/spring-data/commons/docs/current/reference/html/#repositories.query-methods.details) find operation, e.g.,  `findByAFieldAndBField`
-- Supports any class type in domain class including collection and nested type.
-
-  
-
 ## Quick Start
 
 ### Add the dependency
 `spring-data-gremlin` is published on Maven Central Repository.  
 If you are using Maven, add the following dependency.  
 
+[//]: # ({x-version-update-start;com.microsoft.spring.data.gremlin:spring-data-gremlin;dependency})
 ```xml
 <dependency>
     <groupId>com.microsoft.spring.data.gremlin</groupId>
     <artifactId>spring-data-gremlin</artifactId>
-    <version>2.1.7</version>
+    <version>2.3.0</version>
 </dependency>
 ```
+[//]: # ({x-version-update-end})
 
 ### Setup Configuration
-Setup ```application.yml``` file.(Use Azure Cosmos DB Graph as an example.)
+Setup `application.yml` file.(Use Azure Cosmos DB Graph as an example.)
 
-```
+```yml
 gremlin:
   endpoint: url-of-endpoint 
   port: 443
@@ -96,9 +75,10 @@ gremlin:
 ```
 
 ### Define an entity
-Define a simple Vertex entity with ```@Vertex```.
+Define a simple Vertex entity with `@Vertex`.
 
-```
+<!-- embedme /src/samples/java/com/azure/spring/data/gremlin/Person.java#L16-L35 -->
+```java
 @Vertex
 public class Person {
 
@@ -109,14 +89,21 @@ public class Person {
 
     private String age;
 
-    ...
-}
+    public Person() {
 
+    }
+
+    public Person(String id, String name, String age) {
+        this.id = id;
+        this.name = name;
+        this.age = age;
+    }
+}
 ```
 
 Define a simple Edge entity with ```@Edge```.
-
-```
+<!-- embedme /src/samples/java/com/azure/spring/data/gremlin/Relation.java#L18-L32 -->
+```java
 @Edge
 public class Relation {
 
@@ -131,12 +118,11 @@ public class Relation {
     @EdgeTo
     private Person personTo;
 
-    ...
 }
 ```
 Define a simple Graph entity with ```@Graph```.
-
-```
+<!-- embedme /src/samples/java/com/azure/spring/data/gremlin/Network.java#L21-L38 -->
+```java
 @Graph
 public class Network {
 
@@ -144,8 +130,8 @@ public class Network {
     private String id;
 
     public Network() {
-        this.edges = new ArrayList<Object>();
-        this.vertexes = new ArrayList<Object>();
+        this.edges = new ArrayList<>();
+        this.vertexes = new ArrayList<>();
     }
 
     @EdgeSet
@@ -153,30 +139,27 @@ public class Network {
 
     @VertexSet
     private List<Object> vertexes;
-    
-    ...
+
 }
 ```
 
 ### Create repositories
-Extends DocumentDbRepository interface, which provides Spring Data repository support.
-
-```
-import GremlinRepository;
-import org.springframework.stereotype.Repository;
-
+Extends GremlinRepository interface, which provides Spring Data repository support.
+<!-- embedme /src/samples/java/com/azure/spring/data/gremlin/PersonRepository.java#L18-L23 -->
+```java
 @Repository
 public interface PersonRepository extends GremlinRepository<Person, String> {
-        List<Person> findByName(String name); 
+
+    List<Person> findByName(String name);
+
 }
 ```
+`findByName` method is custom query method, it will find the person with the `name` property.
 
-`findByName` method is custom query method, it will find the person with the ```name``` property.
-
-### Create an Application class
+### Create an application
 Here create an application class with all the components
-
-```
+<!-- embedme /src/samples/java/com/azure/spring/data/gremlin/SampleApplication.java#L18-L35 -->
+```java
 @SpringBootApplication
 public class SampleApplication implements CommandLineRunner {
 
@@ -187,30 +170,24 @@ public class SampleApplication implements CommandLineRunner {
         SpringApplication.run(SampleApplication.class, args);
     }
 
-    public void run(String... var1) throws Exception {
+    public void run(String... var1) {
 
-        private final Person testUser = new Person("PERSON_ID", "PERSON_NAME", "PERSON_AGE");
-
+        final Person testUser = new Person("PERSON_ID", "PERSON_NAME", "PERSON_AGE");
         repository.deleteAll();
         repository.save(testUser);
-
-        ... 
     }
+
 }
 ```
-Autowired UserRepository interface, then can do save, delete and find operations. Spring Data Azure Cosmos DB uses the DocumentTemplate to execute the queries behind *find*, *save* methods. You can use the template yourself for more complex queries.
-## Filing Issues
+Autowired UserRepository interface, then can do save, delete and find operations. 
 
-If you encounter any bug, please file an issue [here](https://github.com/Microsoft/spring-data-gremlin/issues/new?template=custom.md).
+## Examples
+Please refer to [sample project](./azure-spring-boot-samples/azure-spring-data-sample-gremlin/) and [web sample project]((./azure-spring-boot-samples/azure-spring-data-sample-gremlin-web-service)).
 
-To suggest a new feature or changes that could be made, file an issue the same way you would for a bug.
+## Data / Telemetry
 
+This project collects usage data and sends it to Microsoft to help improve our products and services. Read our [privacy](https://privacy.microsoft.com/privacystatement) statement to learn more.
 
-## Code of Conduct
-
-This project has adopted the [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct/). For more information see the [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/) or contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additional questions or comments.
-
-## Data/Telemetry
-
-This project collects usage data and sends it to Microsoft to help improve our products and services. Read our [privacy](https://privacy.microsoft.com/en-us/privacystatement) statement to learn more.
-
+## Contributing
+## Troubleshooting
+## Next steps

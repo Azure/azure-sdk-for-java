@@ -75,6 +75,8 @@
     <module>azure-spring-boot-sample-servicebus-jms-queue</module>
     <module>azure-spring-boot-sample-servicebus-jms-topic</module>
     <module>azure-spring-boot-sample-storage-blob</module>
+    <module>azure-spring-data-sample-gremlin</module>
+    <module>azure-spring-data-sample-gremlin-web-service</module>
     <module>azure-cloud-foundry-service-sample</module>
   </modules>
 

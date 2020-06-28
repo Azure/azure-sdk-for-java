@@ -149,7 +149,7 @@
         <version>3.1.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-javadoc-plugin;external_dependency} -->
         <configuration>
           <sourceFileExcludes>
-            <sourceFileExclude>com/microsoft/spring/data/gremlin/mapping/BasicGremlinPersistentProperty.java</sourceFileExclude>
+            <sourceFileExclude>com/microsoft/azure/spring/data/gremlin/mapping/BasicGremlinPersistentProperty.java</sourceFileExclude>
           </sourceFileExcludes>
           <additionalDependencies>
             <additionalDependency>
