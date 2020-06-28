@@ -107,23 +107,9 @@ public class KeyVaultIT {
     @Test
     public void keyVaultWithAppServiceMSI() {
         final Map<String, String> appSettings = new HashMap<>();
-        appSettings.put("AZURE_KEYVAULT_URI", AZURE_KEYVAULT_URI);
-        appSettings.put("AZURE_KEYVAULT_CLIENT_ID", CLIENT_SECRET_ACCESS.clientId());
-        appSettings.put("AZURE_KEYVAULT_CLIENT_KEY", CLIENT_SECRET_ACCESS.clientSecret());
         final WebApp webApp = AZURE
             .webApps()
-            .define(APP_SERVICE_NAME)
-            .withRegion(Region.US_WEST2)
-            .withNewResourceGroup(SPRING_RESOURCE_GROUP)
-            .withNewLinuxPlan(PricingTier.STANDARD_S1)
-            .withBuiltInImage(RuntimeStack.JAVA_8_JRE8)
-            .withSystemAssignedManagedServiceIdentity()
-            .withSystemAssignedIdentityBasedAccessToCurrentResourceGroup(BuiltInRole.OWNER)
-            .withJavaVersion(JavaVersion.JAVA_8_NEWEST)
-            .withWebContainer(WebContainer.JAVA_8)
-            .withAppSettings(appSettings)
-            .withContainerLoggingEnabled()
-            .create();
+            .getByResourceGroup(SPRING_RESOURCE_GROUP, APP_SERVICE_NAME);
 
         final MavenBasedProject app = new MavenBasedProject("../azure-spring-boot-test-application");
         app.packageUp();
