@@ -58,8 +58,12 @@ public class CosmosDBIT {
                 "test address line one"
             );
 
-            Mono<Void> voidMono = repository.delete(testUser);
-            voidMono.block(); // Delete testUser if it already exists.
+            try {
+                Mono<Void> voidMono = repository.delete(testUser);
+                voidMono.block(); // Delete testUser if it already exists.
+            } catch (Exception ignored) {
+
+            }
 
             // Save the User class to Azure CosmosDB database.
             final Mono<User> saveUserMono = repository.save(testUser);
