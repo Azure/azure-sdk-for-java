@@ -28,7 +28,7 @@ public interface ReactiveCosmosOperations {
      * Use createContainerIfNotExists() instead
      * @param information cosmos entity information
      * @return Mono of cosmos container response
-     * @deprecated use createContainerIfNotExists(CosmosEntityInformation<?, ?>) instead.
+     * @deprecated use {@link #createContainerIfNotExists(CosmosEntityInformation)} instead.
      */
     @Deprecated
     Mono<CosmosContainerResponse> createCollectionIfNotExists(CosmosEntityInformation<?, ?> information);

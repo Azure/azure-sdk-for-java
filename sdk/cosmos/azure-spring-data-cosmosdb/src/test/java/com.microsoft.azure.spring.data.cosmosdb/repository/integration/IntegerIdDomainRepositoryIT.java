@@ -210,7 +210,7 @@ public class IntegerIdDomainRepositoryIT {
 
         private String location;
 
-        public InvalidDomain() {
+        InvalidDomain() {
         }
 
         InvalidDomain(int count, String location) {

@@ -540,6 +540,7 @@
               <sourceFileExclude>com/azure/cosmos/*BridgeInternal.java</sourceFileExclude>
               <sourceFileExclude>com/azure/cosmos/models/*BridgeInternal.java</sourceFileExclude>
               <sourceFileExclude>com/azure/cosmos/util/*BridgeInternal.java</sourceFileExclude>
+              <sourceFileExclude>com/microsoft/azure/spring/data/cosmosdb/core/mapping/BasicCosmosPersistentProperty.java</sourceFileExclude>
               <sourceFileExclude>module-info.java</sourceFileExclude>
             </sourceFileExcludes>
             <groups>

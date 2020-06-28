@@ -4,7 +4,6 @@ package com.microsoft.azure.spring.data.cosmosdb.domain;
 
 import org.springframework.data.annotation.Id;
 
-import java.beans.ConstructorProperties;
 import java.util.Objects;
 
 public class Customer {
