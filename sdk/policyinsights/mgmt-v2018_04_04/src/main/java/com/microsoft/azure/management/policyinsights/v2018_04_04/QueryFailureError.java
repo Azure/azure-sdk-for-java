@@ -18,17 +18,17 @@ public class QueryFailureError {
      * Service specific error code which serves as the substatus for the HTTP
      * error code.
      */
-    @JsonProperty(value = "code")
+    @JsonProperty(value = "code", access = JsonProperty.Access.WRITE_ONLY)
     private String code;
 
     /**
      * Description of the error.
      */
-    @JsonProperty(value = "message")
+    @JsonProperty(value = "message", access = JsonProperty.Access.WRITE_ONLY)
     private String message;
 
     /**
-     * Get the code value.
+     * Get service specific error code which serves as the substatus for the HTTP error code.
      *
      * @return the code value
      */
@@ -37,34 +37,12 @@ public class QueryFailureError {
     }
 
     /**
-     * Set the code value.
-     *
-     * @param code the code value to set
-     * @return the QueryFailureError object itself.
-     */
-    public QueryFailureError withCode(String code) {
-        this.code = code;
-        return this;
-    }
-
-    /**
-     * Get the message value.
+     * Get description of the error.
      *
      * @return the message value
      */
     public String message() {
         return this.message;
-    }
-
-    /**
-     * Set the message value.
-     *
-     * @param message the message value to set
-     * @return the QueryFailureError object itself.
-     */
-    public QueryFailureError withMessage(String message) {
-        this.message = message;
-        return this;
     }
 
 }

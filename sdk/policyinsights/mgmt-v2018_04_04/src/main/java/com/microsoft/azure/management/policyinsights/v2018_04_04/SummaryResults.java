@@ -34,7 +34,7 @@ public class SummaryResults {
     private Integer nonCompliantPolicies;
 
     /**
-     * Get the queryResultsUri value.
+     * Get hTTP POST URI for queryResults action on Microsoft.PolicyInsights to retrieve raw results for the non-compliance summary.
      *
      * @return the queryResultsUri value
      */
@@ -43,7 +43,7 @@ public class SummaryResults {
     }
 
     /**
-     * Set the queryResultsUri value.
+     * Set hTTP POST URI for queryResults action on Microsoft.PolicyInsights to retrieve raw results for the non-compliance summary.
      *
      * @param queryResultsUri the queryResultsUri value to set
      * @return the SummaryResults object itself.
@@ -54,7 +54,7 @@ public class SummaryResults {
     }
 
     /**
-     * Get the nonCompliantResources value.
+     * Get number of non-compliant resources.
      *
      * @return the nonCompliantResources value
      */
@@ -63,7 +63,7 @@ public class SummaryResults {
     }
 
     /**
-     * Set the nonCompliantResources value.
+     * Set number of non-compliant resources.
      *
      * @param nonCompliantResources the nonCompliantResources value to set
      * @return the SummaryResults object itself.
@@ -74,7 +74,7 @@ public class SummaryResults {
     }
 
     /**
-     * Get the nonCompliantPolicies value.
+     * Get number of non-compliant policies.
      *
      * @return the nonCompliantPolicies value
      */
@@ -83,7 +83,7 @@ public class SummaryResults {
     }
 
     /**
-     * Set the nonCompliantPolicies value.
+     * Set number of non-compliant policies.
      *
      * @param nonCompliantPolicies the nonCompliantPolicies value to set
      * @return the SummaryResults object itself.
