@@ -3,7 +3,7 @@
 
 package com.microsoft.azure.spring.data.gremlin.common;
 
-public class Constants {
+public final class Constants {
 
     public static final String PROPERTY_ID = "id";
     public static final String PROPERTY_LABEL = "label";
