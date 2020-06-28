@@ -96,6 +96,11 @@ class ServerBlobAuditingPolicyImpl extends CreatableUpdatableImpl<ServerBlobAudi
     }
 
     @Override
+    public Integer queueDelayMs() {
+        return this.inner().queueDelayMs();
+    }
+
+    @Override
     public Integer retentionDays() {
         return this.inner().retentionDays();
     }
@@ -153,6 +158,12 @@ class ServerBlobAuditingPolicyImpl extends CreatableUpdatableImpl<ServerBlobAudi
     @Override
     public ServerBlobAuditingPolicyImpl withIsStorageSecondaryKeyInUse(Boolean isStorageSecondaryKeyInUse) {
         this.inner().withIsStorageSecondaryKeyInUse(isStorageSecondaryKeyInUse);
+        return this;
+    }
+
+    @Override
+    public ServerBlobAuditingPolicyImpl withQueueDelayMs(Integer queueDelayMs) {
+        this.inner().withQueueDelayMs(queueDelayMs);
         return this;
     }
 

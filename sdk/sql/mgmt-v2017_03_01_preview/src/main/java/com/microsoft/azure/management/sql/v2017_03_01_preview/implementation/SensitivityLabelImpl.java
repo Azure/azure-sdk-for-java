@@ -10,8 +10,8 @@ package com.microsoft.azure.management.sql.v2017_03_01_preview.implementation;
 
 import com.microsoft.azure.management.sql.v2017_03_01_preview.SensitivityLabel;
 import com.microsoft.azure.arm.model.implementation.CreatableUpdatableImpl;
-import com.microsoft.azure.management.sql.v2017_03_01_preview.SensitivityLabelSource;
 import rx.Observable;
+import com.microsoft.azure.management.sql.v2017_03_01_preview.SensitivityLabelRank;
 
 class SensitivityLabelImpl extends CreatableUpdatableImpl<SensitivityLabel, SensitivityLabelInner, SensitivityLabelImpl> implements SensitivityLabel, SensitivityLabel.Definition, SensitivityLabel.Update {
     private final SqlManager manager;
@@ -21,7 +21,6 @@ class SensitivityLabelImpl extends CreatableUpdatableImpl<SensitivityLabel, Sens
     private String schemaName;
     private String tableName;
     private String columnName;
-    private SensitivityLabelSource sensitivityLabelSource;
 
     SensitivityLabelImpl(String name, SqlManager manager) {
         super(name, new SensitivityLabelInner());
@@ -43,7 +42,6 @@ class SensitivityLabelImpl extends CreatableUpdatableImpl<SensitivityLabel, Sens
         this.schemaName = IdParsingUtils.getValueFromIdByName(inner.id(), "schemas");
         this.tableName = IdParsingUtils.getValueFromIdByName(inner.id(), "tables");
         this.columnName = IdParsingUtils.getValueFromIdByName(inner.id(), "columns");
-        this.sensitivityLabelSource = SensitivityLabelSource.fromString(IdParsingUtils.getValueFromIdByName(inner.id(), "sensitivityLabels"));
         //
     }
 
@@ -69,7 +67,7 @@ class SensitivityLabelImpl extends CreatableUpdatableImpl<SensitivityLabel, Sens
     @Override
     protected Observable<SensitivityLabelInner> getInnerAsync() {
         SensitivityLabelsInner client = this.manager().inner().sensitivityLabels();
-        return client.getAsync(this.resourceGroupName, this.serverName, this.databaseName, this.schemaName, this.tableName, this.columnName, this.sensitivityLabelSource);
+        return client.getAsync(this.resourceGroupName, this.serverName, this.databaseName, this.schemaName, this.tableName, this.columnName);
     }
 
     @Override
@@ -114,6 +112,11 @@ class SensitivityLabelImpl extends CreatableUpdatableImpl<SensitivityLabel, Sens
     }
 
     @Override
+    public SensitivityLabelRank rank() {
+        return this.inner().rank();
+    }
+
+    @Override
     public String type() {
         return this.inner().type();
     }
@@ -150,6 +153,12 @@ class SensitivityLabelImpl extends CreatableUpdatableImpl<SensitivityLabel, Sens
     @Override
     public SensitivityLabelImpl withLabelName(String labelName) {
         this.inner().withLabelName(labelName);
+        return this;
+    }
+
+    @Override
+    public SensitivityLabelImpl withRank(SensitivityLabelRank rank) {
+        this.inner().withRank(rank);
         return this;
     }
 
