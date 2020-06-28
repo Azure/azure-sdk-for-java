@@ -6,14 +6,13 @@
 
 package com.azure.search.documents.indexes.implementation.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * Describes an error condition for the Azure Cognitive Search API.
- */
-@Fluent
+/** The SearchError model. */
+@Immutable
 public final class SearchError {
     /*
      * One of a server-defined set of error codes.
@@ -34,6 +33,12 @@ public final class SearchError {
     @JsonProperty(value = "details", access = JsonProperty.Access.WRITE_ONLY)
     private List<SearchError> details;
 
+    /** Creates an instance of SearchError class. */
+    @JsonCreator
+    public SearchError(@JsonProperty(value = "message") String message) {
+        this.message = message;
+    }
+
     /**
      * Get the code property: One of a server-defined set of error codes.
      *
@@ -53,12 +58,22 @@ public final class SearchError {
     }
 
     /**
-     * Get the details property: An array of details about specific errors that
-     * led to this reported error.
+     * Get the details property: An array of details about specific errors that led to this reported error.
      *
      * @return the details value.
      */
     public List<SearchError> getDetails() {
         return this.details;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (getDetails() != null) {
+            getDetails().forEach(e -> e.validate());
+        }
     }
 }

@@ -16,6 +16,7 @@ import com.azure.resourcemanager.network.models.HasNetworkInterfaces;
 import com.azure.resourcemanager.resources.fluentcore.arm.AvailabilityZoneId;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.GroupableResource;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.Resource;
+import com.azure.resourcemanager.resources.fluentcore.model.Accepted;
 import com.azure.resourcemanager.resources.fluentcore.model.Appliable;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import com.azure.resourcemanager.resources.fluentcore.model.Refreshable;
@@ -1636,6 +1637,13 @@ public interface VirtualMachine
                 DefinitionStages.WithSystemAssignedManagedServiceIdentity,
                 DefinitionStages.WithUserAssignedManagedServiceIdentity,
                 DefinitionStages.WithLicenseType {
+
+            /**
+             * Begins creating the virtual machine resource.
+             *
+             * @return the accepted create operation
+             */
+            Accepted<VirtualMachine> beginCreate();
         }
     }
 

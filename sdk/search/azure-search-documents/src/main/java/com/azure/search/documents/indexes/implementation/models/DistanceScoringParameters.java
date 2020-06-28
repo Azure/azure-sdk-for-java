@@ -7,11 +7,10 @@
 package com.azure.search.documents.indexes.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * Provides parameter values to a distance scoring function.
- */
+/** The DistanceScoringParameters model. */
 @Fluent
 public final class DistanceScoringParameters {
     /*
@@ -28,9 +27,18 @@ public final class DistanceScoringParameters {
     @JsonProperty(value = "boostingDistance", required = true)
     private double boostingDistance;
 
+    /** Creates an instance of DistanceScoringParameters class. */
+    @JsonCreator
+    public DistanceScoringParameters(
+            @JsonProperty(value = "referencePointParameter") String referencePointParameter,
+            @JsonProperty(value = "boostingDistance") double boostingDistance) {
+        this.referencePointParameter = referencePointParameter;
+        this.boostingDistance = boostingDistance;
+    }
+
     /**
-     * Get the referencePointParameter property: The name of the parameter
-     * passed in search queries to specify the reference location.
+     * Get the referencePointParameter property: The name of the parameter passed in search queries to specify the
+     * reference location.
      *
      * @return the referencePointParameter value.
      */
@@ -39,20 +47,15 @@ public final class DistanceScoringParameters {
     }
 
     /**
-     * Set the referencePointParameter property: The name of the parameter
-     * passed in search queries to specify the reference location.
+     * Set the referencePointParameter property: The name of the parameter passed in search queries to specify the
+     * reference location.
      *
      * @param referencePointParameter the referencePointParameter value to set.
      * @return the DistanceScoringParameters object itself.
      */
-    public DistanceScoringParameters setReferencePointParameter(String referencePointParameter) {
-        this.referencePointParameter = referencePointParameter;
-        return this;
-    }
-
     /**
-     * Get the boostingDistance property: The distance in kilometers from the
-     * reference location where the boosting range ends.
+     * Get the boostingDistance property: The distance in kilometers from the reference location where the boosting
+     * range ends.
      *
      * @return the boostingDistance value.
      */
@@ -61,14 +64,21 @@ public final class DistanceScoringParameters {
     }
 
     /**
-     * Set the boostingDistance property: The distance in kilometers from the
-     * reference location where the boosting range ends.
+     * Set the boostingDistance property: The distance in kilometers from the reference location where the boosting
+     * range ends.
      *
      * @param boostingDistance the boostingDistance value to set.
      * @return the DistanceScoringParameters object itself.
      */
-    public DistanceScoringParameters setBoostingDistance(double boostingDistance) {
-        this.boostingDistance = boostingDistance;
-        return this;
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (getReferencePointParameter() == null) {
+            throw new IllegalArgumentException(
+                    "Missing required property referencePointParameter in model DistanceScoringParameters");
+        }
     }
 }

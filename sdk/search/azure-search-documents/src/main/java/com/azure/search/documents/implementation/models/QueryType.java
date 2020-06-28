@@ -9,23 +9,15 @@ package com.azure.search.documents.implementation.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/**
- * Defines values for QueryType.
- */
+/** Defines values for QueryType. */
 public enum QueryType {
-    /**
-     * Enum value simple.
-     */
+    /** Enum value simple. */
     SIMPLE("simple"),
 
-    /**
-     * Enum value full.
-     */
+    /** Enum value full. */
     FULL("full");
 
-    /**
-     * The actual serialized value for a QueryType instance.
-     */
+    /** The actual serialized value for a QueryType instance. */
     private final String value;
 
     QueryType(String value) {
