@@ -149,7 +149,7 @@ public class KeyVaultIT {
         LOGGER.info("restarting app service...");
         webApp.restart();
         LOGGER.info("restarting app service finished...");
-        final String resourceUrl = "https://" + webApp.name() + ".azurewebsites.net/env/" + KEY_VAULT_SECRET_NAME;
+        final String resourceUrl = "https://" + webApp.name() + ".azurewebsites.net/get";
         final ResponseEntity<String> response = curlWithRetry(resourceUrl, 3, 120_000, String.class);
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(KEY_VAULT_SECRET_VALUE, response.getBody());
