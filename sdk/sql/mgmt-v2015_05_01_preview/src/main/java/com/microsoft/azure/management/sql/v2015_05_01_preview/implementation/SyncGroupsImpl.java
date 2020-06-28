@@ -85,10 +85,14 @@ class SyncGroupsImpl extends WrapperImpl<SyncGroupsInner> implements SyncGroups 
     public Observable<SyncGroup> getAsync(String resourceGroupName, String serverName, String databaseName, String syncGroupName) {
         SyncGroupsInner client = this.inner();
         return client.getAsync(resourceGroupName, serverName, databaseName, syncGroupName)
-        .map(new Func1<SyncGroupInner, SyncGroup>() {
+        .flatMap(new Func1<SyncGroupInner, Observable<SyncGroup>>() {
             @Override
-            public SyncGroup call(SyncGroupInner inner) {
-                return wrapModel(inner);
+            public Observable<SyncGroup> call(SyncGroupInner inner) {
+                if (inner == null) {
+                    return Observable.empty();
+                } else {
+                    return Observable.just((SyncGroup)wrapModel(inner));
+                }
             }
        });
     }
