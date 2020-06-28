@@ -10,7 +10,6 @@ import com.azure.search.documents.indexes.models.FieldMapping;
 import com.azure.search.documents.indexes.models.IndexingParameters;
 import com.azure.search.documents.indexes.models.IndexingSchedule;
 import com.azure.search.documents.indexes.models.SearchIndexer;
-import com.azure.search.documents.models.RequestOptions;
 
 import java.time.Duration;
 import java.util.Collections;
@@ -63,7 +62,7 @@ public class CreateIndexerExample {
 
         System.out.println(String.format("Creating Indexer: %s", indexer.getName()));
         Response<SearchIndexer> response = searchIndexerAsyncClient.createOrUpdateIndexerWithResponse(
-            indexer, false, new RequestOptions()
+            indexer, false
         ).block();
 
         if (response != null) {

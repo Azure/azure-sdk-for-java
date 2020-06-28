@@ -252,7 +252,7 @@ public final class ServiceBusClientBuilder {
                 logger.warning("There should not be less than 0 clients. actual: {}", numberOfOpenClients);
             }
 
-            logger.info("No more open clients, closing shared connection.");
+            logger.info("No more open clients, closing shared connection [{}].", sharedConnection);
             if (sharedConnection != null) {
                 sharedConnection.dispose();
                 sharedConnection = null;

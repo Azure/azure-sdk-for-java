@@ -107,18 +107,17 @@ public abstract class SearchTestBase extends TestBase {
         return index.getName();
     }
 
-    protected SearchIndexClientBuilder getSearchIndexClientBuilder(HttpPipelinePolicy... policies) {
+    protected SearchIndexClientBuilder getSearchIndexClientBuilder() {
         SearchIndexClientBuilder builder = new SearchIndexClientBuilder()
             .endpoint(ENDPOINT);
         builder.credential(new AzureKeyCredential(API_KEY));
         if (interceptorManager.isPlaybackMode()) {
             builder.httpClient(interceptorManager.getPlaybackClient());
-            addPolicies(builder, policies);
+            addPolicies(builder);
             return builder;
         }
 
         //builder.httpClient(new NettyAsyncHttpClientBuilder().proxy(new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("localhost", 8888))).build());
-        addPolicies(builder, policies);
 
         builder.retryPolicy(new RetryPolicy(new ExponentialBackoff(3, Duration.ofSeconds(10), Duration.ofSeconds(30))));
 
@@ -173,7 +172,7 @@ public abstract class SearchTestBase extends TestBase {
         }
     }
 
-    protected SearchClientBuilder getSearchIndexClientBuilder(String indexName) {
+    protected SearchClientBuilder getSearchClientBuilder(String indexName) {
         SearchClientBuilder builder = new SearchClientBuilder()
             .endpoint(ENDPOINT)
             .indexName(indexName);

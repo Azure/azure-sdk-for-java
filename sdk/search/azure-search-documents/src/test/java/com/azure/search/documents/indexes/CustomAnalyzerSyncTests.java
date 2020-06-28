@@ -88,7 +88,6 @@ import java.util.stream.Collectors;
 
 import static com.azure.search.documents.TestHelpers.assertHttpResponseException;
 import static com.azure.search.documents.TestHelpers.assertObjectEquals;
-import static com.azure.search.documents.TestHelpers.generateRequestOptions;
 import static com.azure.search.documents.TestHelpers.waitForIndexing;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -152,7 +151,7 @@ public class CustomAnalyzerSyncTests extends SearchTestBase {
         waitForIndexing();
 
         Iterator<SearchResult> iterator = searchClient
-            .search("someone@somewhere.something", new SearchOptions(), generateRequestOptions(), Context.NONE)
+            .search("someone@somewhere.something", new SearchOptions(), Context.NONE)
             .iterator();
         SearchResult searchResult = iterator.next();
 
@@ -207,7 +206,7 @@ public class CustomAnalyzerSyncTests extends SearchTestBase {
         assertTokenInfoEqual("One", 0, 5, 0, iterator.next());
         assertFalse(iterator.hasNext());
 
-        results = searchIndexClient.analyzeText(index.getName(), request, generateRequestOptions(), Context.NONE);
+        results = searchIndexClient.analyzeText(index.getName(), request, Context.NONE);
         // End offset is based on the original token, not the one emitted by the filters.
         iterator = results.iterator();
         assertTokenInfoEqual("One", 0, 5, 0, iterator.next());
@@ -261,7 +260,7 @@ public class CustomAnalyzerSyncTests extends SearchTestBase {
 
         addAnalyzerToIndex(index, new StopAnalyzer("a2"));
         SearchIndex updatedIndex = searchIndexClient.createOrUpdateIndexWithResponse(index,
-            true, false, generateRequestOptions(), Context.NONE).getValue();
+            true, false, Context.NONE).getValue();
 
         assertAnalysisComponentsEqual(index, updatedIndex);
     }
