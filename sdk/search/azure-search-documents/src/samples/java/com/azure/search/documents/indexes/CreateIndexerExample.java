@@ -49,19 +49,14 @@ public class CreateIndexerExample {
             .setMaxFailedItemsPerBatch(10);
 
         // Create field mappings
-        List<FieldMapping> fieldMappings = Collections.singletonList(new FieldMapping()
-            .setSourceFieldName("id")
+        List<FieldMapping> fieldMappings = Collections.singletonList(new FieldMapping("id")
             .setTargetFieldName("HotelId"));
 
         // Create schedule
-        IndexingSchedule indexingSchedule = new IndexingSchedule()
-            .setInterval(Duration.ofHours(12));
+        IndexingSchedule indexingSchedule = new IndexingSchedule(Duration.ofHours(12));
 
         // Create the indexer
-        SearchIndexer indexer = new SearchIndexer()
-            .setName(INDEXER_NAME)
-            .setTargetIndexName(INDEX_NAME)
-            .setDataSourceName(DATA_SOURCE_NAME)
+        SearchIndexer indexer = new SearchIndexer(INDEXER_NAME, DATA_SOURCE_NAME, INDEX_NAME)
             .setParameters(indexingParameters)
             .setFieldMappings(fieldMappings)
             .setSchedule(indexingSchedule);

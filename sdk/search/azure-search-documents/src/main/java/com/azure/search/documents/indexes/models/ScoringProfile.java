@@ -4,6 +4,7 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -42,23 +43,22 @@ public final class ScoringProfile {
     private ScoringFunctionAggregation functionAggregation;
 
     /**
+     * Constructor of {@link ScoringProfile}.
+     *
+     * @param name The name of the scoring profile.
+     */
+    @JsonCreator
+    public ScoringProfile(@JsonProperty(value = "name", required = true) String name) {
+        this.name = name;
+    }
+
+    /**
      * Get the name property: The name of the scoring profile.
      *
      * @return the name value.
      */
     public String getName() {
         return this.name;
-    }
-
-    /**
-     * Set the name property: The name of the scoring profile.
-     *
-     * @param name the name value to set.
-     * @return the ScoringProfile object itself.
-     */
-    public ScoringProfile setName(String name) {
-        this.name = name;
-        return this;
     }
 
     /**

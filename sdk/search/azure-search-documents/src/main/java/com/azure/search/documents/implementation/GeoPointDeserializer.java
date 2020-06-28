@@ -2,7 +2,8 @@
 // Licensed under the MIT License.
 package com.azure.search.documents.implementation;
 
-import com.azure.search.documents.models.GeoPoint;
+import com.azure.core.models.spatial.GeometryPosition;
+import com.azure.core.models.spatial.PointGeometry;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonTokenId;
 import com.fasterxml.jackson.databind.DeserializationContext;
@@ -49,7 +50,7 @@ final class GeoPointDeserializer extends UntypedObjectDeserializer {
      * Converts an object to a GeoPoint if it is valid GeoJSON, otherwise returns the original object.
      *
      * @param obj the object to parse
-     * @return an instance of {@link GeoPoint} if valid GeoJSON, otherwise obj.
+     * @return an instance of {@link com.azure.core.models.spatial.PointGeometry} if valid GeoJSON, otherwise obj.
      */
     @SuppressWarnings("unchecked")
     private Object parseGeoPoint(Object obj) {
@@ -65,7 +66,7 @@ final class GeoPointDeserializer extends UntypedObjectDeserializer {
                 ? (Double) coordinates.get(0)
                 : Double.valueOf((Integer) coordinates.get(0));
 
-            return GeoPoint.create(latitude, longitude);
+            return new PointGeometry(new GeometryPosition(longitude, latitude));
         } else {
             return obj;
         }

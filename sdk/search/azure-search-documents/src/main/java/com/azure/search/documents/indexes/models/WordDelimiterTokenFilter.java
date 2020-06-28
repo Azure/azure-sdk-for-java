@@ -92,6 +92,17 @@ public final class WordDelimiterTokenFilter extends TokenFilter {
     private List<String> protectedWords;
 
     /**
+     * Constructor of {@link WordDelimiterTokenFilter}.
+     *
+     * @param name The name of the token filter. It must only contain letters, digits,
+     * spaces, dashes or underscores, can only start and end with alphanumeric
+     * characters, and is limited to 128 characters.
+     */
+    public WordDelimiterTokenFilter(String name) {
+        super(name);
+    }
+
+    /**
      * Get the generateWordParts property: A value indicating whether to
      * generate part words. If set, causes parts of words to be generated; for
      * example "AzureSearch" becomes "Azure" "Search". Default is true.

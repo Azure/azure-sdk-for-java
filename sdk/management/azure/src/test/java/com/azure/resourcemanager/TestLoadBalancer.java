@@ -1064,7 +1064,7 @@ public class TestLoadBalancer {
                     .withSubnet(network.subnets().values().iterator().next().name())
                     .withPrimaryPrivateIPAddressDynamic()
                     .withoutPrimaryPublicIPAddress()
-                    .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_14_04_LTS)
+                    .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_18_04_LTS)
                     .withRootUsername(userName)
                     .withRootPassword("Abcdef.123456")
                     .withNewAvailabilitySet(availabilitySetDefinition)

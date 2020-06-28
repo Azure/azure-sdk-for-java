@@ -20,13 +20,13 @@ public final class PathHierarchyTokenizer extends LexicalTokenizer {
      * The delimiter character to use. Default is "/".
      */
     @JsonProperty(value = "delimiter")
-    private String delimiter;
+    private Character delimiter;
 
     /*
      * A value that, if set, replaces the delimiter character. Default is "/".
      */
     @JsonProperty(value = "replacement")
-    private String replacement;
+    private Character replacement;
 
     /*
      * The maximum token length. Default and maximum is 300.
@@ -48,12 +48,23 @@ public final class PathHierarchyTokenizer extends LexicalTokenizer {
     private Integer numberOfTokensToSkip;
 
     /**
+     * Constructor of {@link PathHierarchyTokenizer}.
+     *
+     * @param name The name of the tokenizer. It must only contain letters, digits, spaces,
+     * dashes or underscores, can only start and end with alphanumeric
+     * characters, and is limited to 128 characters.
+     */
+    public PathHierarchyTokenizer(String name) {
+        super(name);
+    }
+
+    /**
      * Get the delimiter property: The delimiter character to use. Default is
      * "/".
      *
      * @return the delimiter value.
      */
-    public String getDelimiter() {
+    public Character getDelimiter() {
         return this.delimiter;
     }
 
@@ -64,7 +75,7 @@ public final class PathHierarchyTokenizer extends LexicalTokenizer {
      * @param delimiter the delimiter value to set.
      * @return the PathHierarchyTokenizerV2 object itself.
      */
-    public PathHierarchyTokenizer setDelimiter(String delimiter) {
+    public PathHierarchyTokenizer setDelimiter(Character delimiter) {
         this.delimiter = delimiter;
         return this;
     }
@@ -75,7 +86,7 @@ public final class PathHierarchyTokenizer extends LexicalTokenizer {
      *
      * @return the replacement value.
      */
-    public String getReplacement() {
+    public Character getReplacement() {
         return this.replacement;
     }
 
@@ -86,7 +97,7 @@ public final class PathHierarchyTokenizer extends LexicalTokenizer {
      * @param replacement the replacement value to set.
      * @return the PathHierarchyTokenizerV2 object itself.
      */
-    public PathHierarchyTokenizer setReplacement(String replacement) {
+    public PathHierarchyTokenizer setReplacement(Character replacement) {
         this.replacement = replacement;
         return this;
     }

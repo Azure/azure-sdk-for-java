@@ -185,8 +185,8 @@ public class SearchIndexerClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public void deleteDataSourceConnection(String dataSourceConnectionName) {
-        deleteDataSourceConnectionWithResponse(new SearchIndexerDataSourceConnection()
-                .setName(dataSourceConnectionName), false, null, Context.NONE);
+        deleteDataSourceConnectionWithResponse(new SearchIndexerDataSourceConnection(dataSourceConnectionName),
+            false, null, Context.NONE);
     }
 
     /**
@@ -340,7 +340,7 @@ public class SearchIndexerClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteIndexer(String indexerName) {
-        deleteIndexerWithResponse(new SearchIndexer().setName(indexerName), false, null, Context.NONE);
+        deleteIndexerWithResponse(new SearchIndexer(indexerName), false, null, Context.NONE);
     }
 
     /**
@@ -572,7 +572,7 @@ public class SearchIndexerClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteSkillset(String skillsetName) {
-        deleteSkillsetWithResponse(new SearchIndexerSkillset().setName(skillsetName), false, null, Context.NONE);
+        deleteSkillsetWithResponse(new SearchIndexerSkillset(skillsetName), false, null, Context.NONE);
     }
 
     /**

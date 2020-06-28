@@ -240,6 +240,8 @@
             files="com.azure.storage.common.implementation.StorageImplUtils.java"/>
   <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck" files="com.azure.core.http.ProxyOptions.java"/>
   <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck" files="com.azure.core.util.serializer.SerializerEncoding.java"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck" files="com.azure.core.util.serializer.GeometryDeserializer.java"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck" files="com.azure.core.util.serializer.GeometrySerializer.java"/>
 
   <!-- Azure Core Test -->
   <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck" files=".*[/\\]core[/\\]test[/\\].*\.java"/>
@@ -267,11 +269,14 @@
   <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck" files="com.azure.ai.formrecognizer.training.CustomModelTransforms.java" />
   <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck" files="com.azure.ai.formrecognizer.implementation.Utility.java" />
 
-    <!-- Common vocabulary error for LRO methods starting with begin* https://github.com/Azure/azure-sdk-for-java/issues/10147 -->
+  <!-- Common vocabulary error for LRO methods starting with begin* https://github.com/Azure/azure-sdk-for-java/issues/10147 -->
   <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files="com.azure.ai.formrecognizer.FormRecognizerAsyncClient.java" />
   <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files="com.azure.ai.formrecognizer.FormRecognizerClient.java" />
   <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files="com.azure.ai.formrecognizer.training.FormTrainingClient.java" />
   <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files="com.azure.ai.formrecognizer.training.FormTrainingAsyncClient.java" />
+
+  <!-- The variables are assigned by json creator annotation injection framework, cannot be made final. -->
+  <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files="com.azure.ai.formrecognizer.models.CopyAuthorization.java" />
 
   <!-- Throws a non-runtime exception -->
   <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLogger"
@@ -455,8 +460,20 @@
   <!-- The variables are assigned by jcommander annotation injection framework, cannot be made final. -->
   <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck"
             files="com.azure.perf.test.core.PerfStressOptions.java"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck"
+            files="com.microsoft.azure.spring.data.cosmosdb.config.AbstractCosmosConfiguration.java"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck"
+            files="com.microsoft.azure.spring.data.cosmosdb.core.query.CosmosPageRequest.java"/>
 
   <!-- Checkstyle suppressions for azure-test-watch package -->
   <suppress checks="com.azure.tools.checkstyle.checks.ExternalDependencyExposedCheck" files="com.azure.testing.AzureTestWatcher.java"/>
   <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck" files="com.azure.testing.AzureTestWatcher.java"/>
+
+  <!-- Checkstyle suppressions for resource manager package -->
+  <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files="com.azure.resourcemanager.*"/>
+  <!-- Checkstyle suppressions for spring-data-cosmosdb package -->
+  <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck|ExternalDependencyExposedCheck|ThrowFromClientLoggerCheck" files="com.microsoft.azure.spring.data.cosmosdb.*\.java"/>
+  <suppress checks="MethodName|MemberName|ParameterName|VisibilityModifier" files="com.microsoft.azure.spring.data.cosmosdb.domain|repository|config.*\.java"/>
+  <suppress checks="ConstantName" files="com.microsoft.azure.spring.data.cosmosdb.repository|common.*\.java" />
+
 </suppressions>

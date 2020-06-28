@@ -35,9 +35,14 @@ public final class EdgeNGramTokenFilter extends TokenFilter {
     private EdgeNGramTokenFilterSide side;
 
     /**
-     * Constructor for {@link EdgeNGramTokenFilter}.
+     * Constructor of {@link TokenFilter}.
+     *
+     * @param name The name of the token filter. It must only contain letters, digits,
+     * spaces, dashes or underscores, can only start and end with alphanumeric
+     * characters, and is limited to 128 characters.
      */
-    public EdgeNGramTokenFilter() {
+    public EdgeNGramTokenFilter(String name) {
+        super(name);
         odataType = V2_ODATA_TYPE;
     }
 
