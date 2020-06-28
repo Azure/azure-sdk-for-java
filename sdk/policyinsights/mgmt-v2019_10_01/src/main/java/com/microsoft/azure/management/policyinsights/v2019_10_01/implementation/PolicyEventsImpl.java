@@ -13,7 +13,8 @@ import com.microsoft.azure.arm.model.implementation.WrapperImpl;
 import com.microsoft.azure.management.policyinsights.v2019_10_01.PolicyEvents;
 import rx.functions.Func1;
 import rx.Observable;
-import com.microsoft.azure.management.policyinsights.v2019_10_01.PolicyEventsQueryResults;
+import com.microsoft.azure.Page;
+import com.microsoft.azure.management.policyinsights.v2019_10_01.PolicyEvent;
 
 class PolicyEventsImpl extends WrapperImpl<PolicyEventsInner> implements PolicyEvents {
     private final PolicyInsightsManager manager;
@@ -28,105 +29,147 @@ class PolicyEventsImpl extends WrapperImpl<PolicyEventsInner> implements PolicyE
     }
 
     @Override
-    public Observable<PolicyEventsQueryResults> listQueryResultsForManagementGroupAsync(String managementGroupName) {
+    public Observable<PolicyEvent> listQueryResultsForManagementGroupAsync(final String managementGroupName) {
         PolicyEventsInner client = this.inner();
         return client.listQueryResultsForManagementGroupAsync(managementGroupName)
-        .map(new Func1<PolicyEventsQueryResultsInner, PolicyEventsQueryResults>() {
+        .flatMapIterable(new Func1<Page<PolicyEventInner>, Iterable<PolicyEventInner>>() {
             @Override
-            public PolicyEventsQueryResults call(PolicyEventsQueryResultsInner inner) {
-                return new PolicyEventsQueryResultsImpl(inner, manager());
+            public Iterable<PolicyEventInner> call(Page<PolicyEventInner> page) {
+                return page.items();
+            }
+        })
+        .map(new Func1<PolicyEventInner, PolicyEvent>() {
+            @Override
+            public PolicyEvent call(PolicyEventInner inner) {
+                return new PolicyEventImpl(inner, manager());
             }
         });
     }
 
     @Override
-    public Observable<PolicyEventsQueryResults> listQueryResultsForSubscriptionAsync(String subscriptionId) {
+    public Observable<PolicyEvent> listQueryResultsForSubscriptionAsync(final String subscriptionId) {
         PolicyEventsInner client = this.inner();
         return client.listQueryResultsForSubscriptionAsync(subscriptionId)
-        .map(new Func1<PolicyEventsQueryResultsInner, PolicyEventsQueryResults>() {
+        .flatMapIterable(new Func1<Page<PolicyEventInner>, Iterable<PolicyEventInner>>() {
             @Override
-            public PolicyEventsQueryResults call(PolicyEventsQueryResultsInner inner) {
-                return new PolicyEventsQueryResultsImpl(inner, manager());
+            public Iterable<PolicyEventInner> call(Page<PolicyEventInner> page) {
+                return page.items();
+            }
+        })
+        .map(new Func1<PolicyEventInner, PolicyEvent>() {
+            @Override
+            public PolicyEvent call(PolicyEventInner inner) {
+                return new PolicyEventImpl(inner, manager());
             }
         });
     }
 
     @Override
-    public Observable<PolicyEventsQueryResults> listQueryResultsForResourceGroupAsync(String subscriptionId, String resourceGroupName) {
+    public Observable<PolicyEvent> listQueryResultsForResourceGroupAsync(final String subscriptionId, final String resourceGroupName) {
         PolicyEventsInner client = this.inner();
         return client.listQueryResultsForResourceGroupAsync(subscriptionId, resourceGroupName)
-        .map(new Func1<PolicyEventsQueryResultsInner, PolicyEventsQueryResults>() {
+        .flatMapIterable(new Func1<Page<PolicyEventInner>, Iterable<PolicyEventInner>>() {
             @Override
-            public PolicyEventsQueryResults call(PolicyEventsQueryResultsInner inner) {
-                return new PolicyEventsQueryResultsImpl(inner, manager());
+            public Iterable<PolicyEventInner> call(Page<PolicyEventInner> page) {
+                return page.items();
+            }
+        })
+        .map(new Func1<PolicyEventInner, PolicyEvent>() {
+            @Override
+            public PolicyEvent call(PolicyEventInner inner) {
+                return new PolicyEventImpl(inner, manager());
             }
         });
     }
 
     @Override
-    public Observable<PolicyEventsQueryResults> listQueryResultsForResourceAsync(String resourceId) {
+    public Observable<PolicyEvent> listQueryResultsForResourceAsync(final String resourceId) {
         PolicyEventsInner client = this.inner();
         return client.listQueryResultsForResourceAsync(resourceId)
-        .map(new Func1<PolicyEventsQueryResultsInner, PolicyEventsQueryResults>() {
+        .flatMapIterable(new Func1<Page<PolicyEventInner>, Iterable<PolicyEventInner>>() {
             @Override
-            public PolicyEventsQueryResults call(PolicyEventsQueryResultsInner inner) {
-                return new PolicyEventsQueryResultsImpl(inner, manager());
+            public Iterable<PolicyEventInner> call(Page<PolicyEventInner> page) {
+                return page.items();
+            }
+        })
+        .map(new Func1<PolicyEventInner, PolicyEvent>() {
+            @Override
+            public PolicyEvent call(PolicyEventInner inner) {
+                return new PolicyEventImpl(inner, manager());
             }
         });
     }
 
     @Override
-    public Observable<PolicyEventsQueryResults> listQueryResultsForPolicySetDefinitionAsync(String subscriptionId, String policySetDefinitionName) {
+    public Observable<PolicyEvent> listQueryResultsForPolicySetDefinitionAsync(final String subscriptionId, final String policySetDefinitionName) {
         PolicyEventsInner client = this.inner();
         return client.listQueryResultsForPolicySetDefinitionAsync(subscriptionId, policySetDefinitionName)
-        .map(new Func1<PolicyEventsQueryResultsInner, PolicyEventsQueryResults>() {
+        .flatMapIterable(new Func1<Page<PolicyEventInner>, Iterable<PolicyEventInner>>() {
             @Override
-            public PolicyEventsQueryResults call(PolicyEventsQueryResultsInner inner) {
-                return new PolicyEventsQueryResultsImpl(inner, manager());
+            public Iterable<PolicyEventInner> call(Page<PolicyEventInner> page) {
+                return page.items();
+            }
+        })
+        .map(new Func1<PolicyEventInner, PolicyEvent>() {
+            @Override
+            public PolicyEvent call(PolicyEventInner inner) {
+                return new PolicyEventImpl(inner, manager());
             }
         });
     }
 
     @Override
-    public Observable<PolicyEventsQueryResults> listQueryResultsForPolicyDefinitionAsync(String subscriptionId, String policyDefinitionName) {
+    public Observable<PolicyEvent> listQueryResultsForPolicyDefinitionAsync(final String subscriptionId, final String policyDefinitionName) {
         PolicyEventsInner client = this.inner();
         return client.listQueryResultsForPolicyDefinitionAsync(subscriptionId, policyDefinitionName)
-        .map(new Func1<PolicyEventsQueryResultsInner, PolicyEventsQueryResults>() {
+        .flatMapIterable(new Func1<Page<PolicyEventInner>, Iterable<PolicyEventInner>>() {
             @Override
-            public PolicyEventsQueryResults call(PolicyEventsQueryResultsInner inner) {
-                return new PolicyEventsQueryResultsImpl(inner, manager());
+            public Iterable<PolicyEventInner> call(Page<PolicyEventInner> page) {
+                return page.items();
+            }
+        })
+        .map(new Func1<PolicyEventInner, PolicyEvent>() {
+            @Override
+            public PolicyEvent call(PolicyEventInner inner) {
+                return new PolicyEventImpl(inner, manager());
             }
         });
     }
 
     @Override
-    public Observable<PolicyEventsQueryResults> listQueryResultsForSubscriptionLevelPolicyAssignmentAsync(String subscriptionId, String policyAssignmentName) {
+    public Observable<PolicyEvent> listQueryResultsForSubscriptionLevelPolicyAssignmentAsync(final String subscriptionId, final String policyAssignmentName) {
         PolicyEventsInner client = this.inner();
         return client.listQueryResultsForSubscriptionLevelPolicyAssignmentAsync(subscriptionId, policyAssignmentName)
-        .map(new Func1<PolicyEventsQueryResultsInner, PolicyEventsQueryResults>() {
+        .flatMapIterable(new Func1<Page<PolicyEventInner>, Iterable<PolicyEventInner>>() {
             @Override
-            public PolicyEventsQueryResults call(PolicyEventsQueryResultsInner inner) {
-                return new PolicyEventsQueryResultsImpl(inner, manager());
+            public Iterable<PolicyEventInner> call(Page<PolicyEventInner> page) {
+                return page.items();
+            }
+        })
+        .map(new Func1<PolicyEventInner, PolicyEvent>() {
+            @Override
+            public PolicyEvent call(PolicyEventInner inner) {
+                return new PolicyEventImpl(inner, manager());
             }
         });
     }
 
     @Override
-    public Observable<PolicyEventsQueryResults> listQueryResultsForResourceGroupLevelPolicyAssignmentAsync(String subscriptionId, String resourceGroupName, String policyAssignmentName) {
+    public Observable<PolicyEvent> listQueryResultsForResourceGroupLevelPolicyAssignmentAsync(final String subscriptionId, final String resourceGroupName, final String policyAssignmentName) {
         PolicyEventsInner client = this.inner();
         return client.listQueryResultsForResourceGroupLevelPolicyAssignmentAsync(subscriptionId, resourceGroupName, policyAssignmentName)
-        .map(new Func1<PolicyEventsQueryResultsInner, PolicyEventsQueryResults>() {
+        .flatMapIterable(new Func1<Page<PolicyEventInner>, Iterable<PolicyEventInner>>() {
             @Override
-            public PolicyEventsQueryResults call(PolicyEventsQueryResultsInner inner) {
-                return new PolicyEventsQueryResultsImpl(inner, manager());
+            public Iterable<PolicyEventInner> call(Page<PolicyEventInner> page) {
+                return page.items();
+            }
+        })
+        .map(new Func1<PolicyEventInner, PolicyEvent>() {
+            @Override
+            public PolicyEvent call(PolicyEventInner inner) {
+                return new PolicyEventImpl(inner, manager());
             }
         });
     }
-
-    @Override
-    public Observable<String> getMetadataAsync(String scope) {
-        PolicyEventsInner client = this.inner();
-        return client.getMetadataAsync(scope)
-    ;}
 
 }
