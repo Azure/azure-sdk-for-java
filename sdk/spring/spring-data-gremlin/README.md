@@ -45,7 +45,7 @@ This repository only supports Spring Data 2.x. Version mapping between spring bo
 | ![version](https://img.shields.io/badge/version-2.1.x-blue) | [![Maven Central](https://img.shields.io/maven-central/v/com.microsoft.spring.data.gremlin/spring-data-gremlin/2.1.svg)](https://search.maven.org/search?q=g:com.microsoft.spring.data.gremlin%20AND%20a:spring-data-gremlin%20AND%20v:2.1.*) |
 | ![version](https://img.shields.io/badge/version-2.0.x-blue) | [![Maven Central](https://img.shields.io/maven-central/v/com.microsoft.spring.data.gremlin/spring-data-gremlin/2.0.svg)](https://search.maven.org/search?q=g:com.microsoft.spring.data.gremlin%20AND%20a:spring-data-gremlin%20AND%20v:2.0.*) |
 
-## Quick Start
+## Getting started
 
 ### Add the dependency
 `spring-data-gremlin` is published on Maven Central Repository.  
