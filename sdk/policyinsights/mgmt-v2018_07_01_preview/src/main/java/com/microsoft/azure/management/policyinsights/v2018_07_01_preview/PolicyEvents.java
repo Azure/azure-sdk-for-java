@@ -21,7 +21,7 @@ public interface PolicyEvents {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Observable<PolicyEventsQueryResults> listQueryResultsForManagementGroupAsync(String managementGroupName);
+    Observable<PolicyEvent> listQueryResultsForManagementGroupAsync(final String managementGroupName);
 
     /**
      * Queries policy events for the resources under the subscription.
@@ -30,7 +30,7 @@ public interface PolicyEvents {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Observable<PolicyEventsQueryResults> listQueryResultsForSubscriptionAsync(String subscriptionId);
+    Observable<PolicyEvent> listQueryResultsForSubscriptionAsync(final String subscriptionId);
 
     /**
      * Queries policy events for the resources under the resource group.
@@ -40,7 +40,7 @@ public interface PolicyEvents {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Observable<PolicyEventsQueryResults> listQueryResultsForResourceGroupAsync(String subscriptionId, String resourceGroupName);
+    Observable<PolicyEvent> listQueryResultsForResourceGroupAsync(final String subscriptionId, final String resourceGroupName);
 
     /**
      * Queries policy events for the resource.
@@ -49,7 +49,7 @@ public interface PolicyEvents {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Observable<PolicyEventsQueryResults> listQueryResultsForResourceAsync(String resourceId);
+    Observable<PolicyEvent> listQueryResultsForResourceAsync(final String resourceId);
 
     /**
      * Queries policy events for the subscription level policy set definition.
@@ -59,7 +59,7 @@ public interface PolicyEvents {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Observable<PolicyEventsQueryResults> listQueryResultsForPolicySetDefinitionAsync(String subscriptionId, String policySetDefinitionName);
+    Observable<PolicyEvent> listQueryResultsForPolicySetDefinitionAsync(final String subscriptionId, final String policySetDefinitionName);
 
     /**
      * Queries policy events for the subscription level policy definition.
@@ -69,7 +69,7 @@ public interface PolicyEvents {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Observable<PolicyEventsQueryResults> listQueryResultsForPolicyDefinitionAsync(String subscriptionId, String policyDefinitionName);
+    Observable<PolicyEvent> listQueryResultsForPolicyDefinitionAsync(final String subscriptionId, final String policyDefinitionName);
 
     /**
      * Queries policy events for the subscription level policy assignment.
@@ -79,7 +79,7 @@ public interface PolicyEvents {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Observable<PolicyEventsQueryResults> listQueryResultsForSubscriptionLevelPolicyAssignmentAsync(String subscriptionId, String policyAssignmentName);
+    Observable<PolicyEvent> listQueryResultsForSubscriptionLevelPolicyAssignmentAsync(final String subscriptionId, final String policyAssignmentName);
 
     /**
      * Queries policy events for the resource group level policy assignment.
@@ -90,15 +90,6 @@ public interface PolicyEvents {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Observable<PolicyEventsQueryResults> listQueryResultsForResourceGroupLevelPolicyAssignmentAsync(String subscriptionId, String resourceGroupName, String policyAssignmentName);
-
-    /**
-     * Gets OData metadata XML document.
-     *
-     * @param scope A valid scope, i.e. management group, subscription, resource group, or resource ID. Scope used has no effect on metadata returned.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable for the request
-     */
-    Observable<String> getMetadataAsync(String scope);
+    Observable<PolicyEvent> listQueryResultsForResourceGroupLevelPolicyAssignmentAsync(final String subscriptionId, final String resourceGroupName, final String policyAssignmentName);
 
 }

@@ -289,11 +289,13 @@ public class RemediationsInner {
         if (remediationName == null) {
             throw new IllegalArgumentException("Parameter remediationName is required and cannot be null.");
         }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
         final String managementGroupsNamespace = "Microsoft.Management";
-        final String apiVersion = "2018-07-01-preview";
         final QueryOptions queryOptions = null;
         Integer top = null;
-        return service.listDeploymentsAtManagementGroup(managementGroupsNamespace, managementGroupId, remediationName, apiVersion, this.client.acceptLanguage(), top, this.client.userAgent())
+        return service.listDeploymentsAtManagementGroup(managementGroupsNamespace, managementGroupId, remediationName, this.client.apiVersion(), this.client.acceptLanguage(), top, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<RemediationDeploymentInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<RemediationDeploymentInner>>> call(Response<ResponseBody> response) {
@@ -408,14 +410,16 @@ public class RemediationsInner {
         if (remediationName == null) {
             throw new IllegalArgumentException("Parameter remediationName is required and cannot be null.");
         }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
         Validator.validate(queryOptions);
         final String managementGroupsNamespace = "Microsoft.Management";
-        final String apiVersion = "2018-07-01-preview";
         Integer top = null;
         if (queryOptions != null) {
             top = queryOptions.top();
         }
-        return service.listDeploymentsAtManagementGroup(managementGroupsNamespace, managementGroupId, remediationName, apiVersion, this.client.acceptLanguage(), top, this.client.userAgent())
+        return service.listDeploymentsAtManagementGroup(managementGroupsNamespace, managementGroupId, remediationName, this.client.apiVersion(), this.client.acceptLanguage(), top, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<RemediationDeploymentInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<RemediationDeploymentInner>>> call(Response<ResponseBody> response) {
@@ -495,9 +499,11 @@ public class RemediationsInner {
         if (remediationName == null) {
             throw new IllegalArgumentException("Parameter remediationName is required and cannot be null.");
         }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
         final String managementGroupsNamespace = "Microsoft.Management";
-        final String apiVersion = "2018-07-01-preview";
-        return service.cancelAtManagementGroup(managementGroupsNamespace, managementGroupId, remediationName, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
+        return service.cancelAtManagementGroup(managementGroupsNamespace, managementGroupId, remediationName, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<RemediationInner>>>() {
                 @Override
                 public Observable<ServiceResponse<RemediationInner>> call(Response<ResponseBody> response) {
@@ -606,12 +612,14 @@ public class RemediationsInner {
         if (managementGroupId == null) {
             throw new IllegalArgumentException("Parameter managementGroupId is required and cannot be null.");
         }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
         final String managementGroupsNamespace = "Microsoft.Management";
-        final String apiVersion = "2018-07-01-preview";
         final QueryOptions queryOptions = null;
         Integer top = null;
         String filter = null;
-        return service.listForManagementGroup(managementGroupsNamespace, managementGroupId, apiVersion, this.client.acceptLanguage(), top, filter, this.client.userAgent())
+        return service.listForManagementGroup(managementGroupsNamespace, managementGroupId, this.client.apiVersion(), this.client.acceptLanguage(), top, filter, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<RemediationInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<RemediationInner>>> call(Response<ResponseBody> response) {
@@ -718,9 +726,11 @@ public class RemediationsInner {
         if (managementGroupId == null) {
             throw new IllegalArgumentException("Parameter managementGroupId is required and cannot be null.");
         }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
         Validator.validate(queryOptions);
         final String managementGroupsNamespace = "Microsoft.Management";
-        final String apiVersion = "2018-07-01-preview";
         Integer top = null;
         if (queryOptions != null) {
             top = queryOptions.top();
@@ -729,7 +739,7 @@ public class RemediationsInner {
         if (queryOptions != null) {
             filter = queryOptions.filter();
         }
-        return service.listForManagementGroup(managementGroupsNamespace, managementGroupId, apiVersion, this.client.acceptLanguage(), top, filter, this.client.userAgent())
+        return service.listForManagementGroup(managementGroupsNamespace, managementGroupId, this.client.apiVersion(), this.client.acceptLanguage(), top, filter, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<RemediationInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<RemediationInner>>> call(Response<ResponseBody> response) {
@@ -813,13 +823,15 @@ public class RemediationsInner {
         if (remediationName == null) {
             throw new IllegalArgumentException("Parameter remediationName is required and cannot be null.");
         }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
         if (parameters == null) {
             throw new IllegalArgumentException("Parameter parameters is required and cannot be null.");
         }
         Validator.validate(parameters);
         final String managementGroupsNamespace = "Microsoft.Management";
-        final String apiVersion = "2018-07-01-preview";
-        return service.createOrUpdateAtManagementGroup(managementGroupsNamespace, managementGroupId, remediationName, apiVersion, parameters, this.client.acceptLanguage(), this.client.userAgent())
+        return service.createOrUpdateAtManagementGroup(managementGroupsNamespace, managementGroupId, remediationName, this.client.apiVersion(), parameters, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<RemediationInner>>>() {
                 @Override
                 public Observable<ServiceResponse<RemediationInner>> call(Response<ResponseBody> response) {
@@ -900,9 +912,11 @@ public class RemediationsInner {
         if (remediationName == null) {
             throw new IllegalArgumentException("Parameter remediationName is required and cannot be null.");
         }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
         final String managementGroupsNamespace = "Microsoft.Management";
-        final String apiVersion = "2018-07-01-preview";
-        return service.getAtManagementGroup(managementGroupsNamespace, managementGroupId, remediationName, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
+        return service.getAtManagementGroup(managementGroupsNamespace, managementGroupId, remediationName, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<RemediationInner>>>() {
                 @Override
                 public Observable<ServiceResponse<RemediationInner>> call(Response<ResponseBody> response) {
@@ -982,9 +996,11 @@ public class RemediationsInner {
         if (remediationName == null) {
             throw new IllegalArgumentException("Parameter remediationName is required and cannot be null.");
         }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
         final String managementGroupsNamespace = "Microsoft.Management";
-        final String apiVersion = "2018-07-01-preview";
-        return service.deleteAtManagementGroup(managementGroupsNamespace, managementGroupId, remediationName, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
+        return service.deleteAtManagementGroup(managementGroupsNamespace, managementGroupId, remediationName, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<RemediationInner>>>() {
                 @Override
                 public Observable<ServiceResponse<RemediationInner>> call(Response<ResponseBody> response) {
@@ -1102,10 +1118,12 @@ public class RemediationsInner {
         if (remediationName == null) {
             throw new IllegalArgumentException("Parameter remediationName is required and cannot be null.");
         }
-        final String apiVersion = "2018-07-01-preview";
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
         final QueryOptions queryOptions = null;
         Integer top = null;
-        return service.listDeploymentsAtSubscription(subscriptionId, remediationName, apiVersion, this.client.acceptLanguage(), top, this.client.userAgent())
+        return service.listDeploymentsAtSubscription(subscriptionId, remediationName, this.client.apiVersion(), this.client.acceptLanguage(), top, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<RemediationDeploymentInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<RemediationDeploymentInner>>> call(Response<ResponseBody> response) {
@@ -1220,13 +1238,15 @@ public class RemediationsInner {
         if (remediationName == null) {
             throw new IllegalArgumentException("Parameter remediationName is required and cannot be null.");
         }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
         Validator.validate(queryOptions);
-        final String apiVersion = "2018-07-01-preview";
         Integer top = null;
         if (queryOptions != null) {
             top = queryOptions.top();
         }
-        return service.listDeploymentsAtSubscription(subscriptionId, remediationName, apiVersion, this.client.acceptLanguage(), top, this.client.userAgent())
+        return service.listDeploymentsAtSubscription(subscriptionId, remediationName, this.client.apiVersion(), this.client.acceptLanguage(), top, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<RemediationDeploymentInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<RemediationDeploymentInner>>> call(Response<ResponseBody> response) {
@@ -1306,8 +1326,10 @@ public class RemediationsInner {
         if (remediationName == null) {
             throw new IllegalArgumentException("Parameter remediationName is required and cannot be null.");
         }
-        final String apiVersion = "2018-07-01-preview";
-        return service.cancelAtSubscription(subscriptionId, remediationName, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        return service.cancelAtSubscription(subscriptionId, remediationName, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<RemediationInner>>>() {
                 @Override
                 public Observable<ServiceResponse<RemediationInner>> call(Response<ResponseBody> response) {
@@ -1416,11 +1438,13 @@ public class RemediationsInner {
         if (subscriptionId == null) {
             throw new IllegalArgumentException("Parameter subscriptionId is required and cannot be null.");
         }
-        final String apiVersion = "2018-07-01-preview";
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
         final QueryOptions queryOptions = null;
         Integer top = null;
         String filter = null;
-        return service.list(subscriptionId, apiVersion, this.client.acceptLanguage(), top, filter, this.client.userAgent())
+        return service.list(subscriptionId, this.client.apiVersion(), this.client.acceptLanguage(), top, filter, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<RemediationInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<RemediationInner>>> call(Response<ResponseBody> response) {
@@ -1527,8 +1551,10 @@ public class RemediationsInner {
         if (subscriptionId == null) {
             throw new IllegalArgumentException("Parameter subscriptionId is required and cannot be null.");
         }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
         Validator.validate(queryOptions);
-        final String apiVersion = "2018-07-01-preview";
         Integer top = null;
         if (queryOptions != null) {
             top = queryOptions.top();
@@ -1537,7 +1563,7 @@ public class RemediationsInner {
         if (queryOptions != null) {
             filter = queryOptions.filter();
         }
-        return service.list(subscriptionId, apiVersion, this.client.acceptLanguage(), top, filter, this.client.userAgent())
+        return service.list(subscriptionId, this.client.apiVersion(), this.client.acceptLanguage(), top, filter, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<RemediationInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<RemediationInner>>> call(Response<ResponseBody> response) {
@@ -1621,12 +1647,14 @@ public class RemediationsInner {
         if (remediationName == null) {
             throw new IllegalArgumentException("Parameter remediationName is required and cannot be null.");
         }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
         if (parameters == null) {
             throw new IllegalArgumentException("Parameter parameters is required and cannot be null.");
         }
         Validator.validate(parameters);
-        final String apiVersion = "2018-07-01-preview";
-        return service.createOrUpdateAtSubscription(subscriptionId, remediationName, apiVersion, parameters, this.client.acceptLanguage(), this.client.userAgent())
+        return service.createOrUpdateAtSubscription(subscriptionId, remediationName, this.client.apiVersion(), parameters, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<RemediationInner>>>() {
                 @Override
                 public Observable<ServiceResponse<RemediationInner>> call(Response<ResponseBody> response) {
@@ -1707,8 +1735,10 @@ public class RemediationsInner {
         if (remediationName == null) {
             throw new IllegalArgumentException("Parameter remediationName is required and cannot be null.");
         }
-        final String apiVersion = "2018-07-01-preview";
-        return service.getAtSubscription(subscriptionId, remediationName, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        return service.getAtSubscription(subscriptionId, remediationName, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<RemediationInner>>>() {
                 @Override
                 public Observable<ServiceResponse<RemediationInner>> call(Response<ResponseBody> response) {
@@ -1788,8 +1818,10 @@ public class RemediationsInner {
         if (remediationName == null) {
             throw new IllegalArgumentException("Parameter remediationName is required and cannot be null.");
         }
-        final String apiVersion = "2018-07-01-preview";
-        return service.deleteAtSubscription(subscriptionId, remediationName, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        return service.deleteAtSubscription(subscriptionId, remediationName, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<RemediationInner>>>() {
                 @Override
                 public Observable<ServiceResponse<RemediationInner>> call(Response<ResponseBody> response) {
@@ -1915,10 +1947,12 @@ public class RemediationsInner {
         if (remediationName == null) {
             throw new IllegalArgumentException("Parameter remediationName is required and cannot be null.");
         }
-        final String apiVersion = "2018-07-01-preview";
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
         final QueryOptions queryOptions = null;
         Integer top = null;
-        return service.listDeploymentsAtResourceGroup(subscriptionId, resourceGroupName, remediationName, apiVersion, this.client.acceptLanguage(), top, this.client.userAgent())
+        return service.listDeploymentsAtResourceGroup(subscriptionId, resourceGroupName, remediationName, this.client.apiVersion(), this.client.acceptLanguage(), top, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<RemediationDeploymentInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<RemediationDeploymentInner>>> call(Response<ResponseBody> response) {
@@ -2041,13 +2075,15 @@ public class RemediationsInner {
         if (remediationName == null) {
             throw new IllegalArgumentException("Parameter remediationName is required and cannot be null.");
         }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
         Validator.validate(queryOptions);
-        final String apiVersion = "2018-07-01-preview";
         Integer top = null;
         if (queryOptions != null) {
             top = queryOptions.top();
         }
-        return service.listDeploymentsAtResourceGroup(subscriptionId, resourceGroupName, remediationName, apiVersion, this.client.acceptLanguage(), top, this.client.userAgent())
+        return service.listDeploymentsAtResourceGroup(subscriptionId, resourceGroupName, remediationName, this.client.apiVersion(), this.client.acceptLanguage(), top, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<RemediationDeploymentInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<RemediationDeploymentInner>>> call(Response<ResponseBody> response) {
@@ -2134,8 +2170,10 @@ public class RemediationsInner {
         if (remediationName == null) {
             throw new IllegalArgumentException("Parameter remediationName is required and cannot be null.");
         }
-        final String apiVersion = "2018-07-01-preview";
-        return service.cancelAtResourceGroup(subscriptionId, resourceGroupName, remediationName, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        return service.cancelAtResourceGroup(subscriptionId, resourceGroupName, remediationName, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<RemediationInner>>>() {
                 @Override
                 public Observable<ServiceResponse<RemediationInner>> call(Response<ResponseBody> response) {
@@ -2252,11 +2290,13 @@ public class RemediationsInner {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
-        final String apiVersion = "2018-07-01-preview";
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
         final QueryOptions queryOptions = null;
         Integer top = null;
         String filter = null;
-        return service.listByResourceGroup(subscriptionId, resourceGroupName, apiVersion, this.client.acceptLanguage(), top, filter, this.client.userAgent())
+        return service.listByResourceGroup(subscriptionId, resourceGroupName, this.client.apiVersion(), this.client.acceptLanguage(), top, filter, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<RemediationInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<RemediationInner>>> call(Response<ResponseBody> response) {
@@ -2371,8 +2411,10 @@ public class RemediationsInner {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
         Validator.validate(queryOptions);
-        final String apiVersion = "2018-07-01-preview";
         Integer top = null;
         if (queryOptions != null) {
             top = queryOptions.top();
@@ -2381,7 +2423,7 @@ public class RemediationsInner {
         if (queryOptions != null) {
             filter = queryOptions.filter();
         }
-        return service.listByResourceGroup(subscriptionId, resourceGroupName, apiVersion, this.client.acceptLanguage(), top, filter, this.client.userAgent())
+        return service.listByResourceGroup(subscriptionId, resourceGroupName, this.client.apiVersion(), this.client.acceptLanguage(), top, filter, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<RemediationInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<RemediationInner>>> call(Response<ResponseBody> response) {
@@ -2472,12 +2514,14 @@ public class RemediationsInner {
         if (remediationName == null) {
             throw new IllegalArgumentException("Parameter remediationName is required and cannot be null.");
         }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
         if (parameters == null) {
             throw new IllegalArgumentException("Parameter parameters is required and cannot be null.");
         }
         Validator.validate(parameters);
-        final String apiVersion = "2018-07-01-preview";
-        return service.createOrUpdateAtResourceGroup(subscriptionId, resourceGroupName, remediationName, apiVersion, parameters, this.client.acceptLanguage(), this.client.userAgent())
+        return service.createOrUpdateAtResourceGroup(subscriptionId, resourceGroupName, remediationName, this.client.apiVersion(), parameters, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<RemediationInner>>>() {
                 @Override
                 public Observable<ServiceResponse<RemediationInner>> call(Response<ResponseBody> response) {
@@ -2565,8 +2609,10 @@ public class RemediationsInner {
         if (remediationName == null) {
             throw new IllegalArgumentException("Parameter remediationName is required and cannot be null.");
         }
-        final String apiVersion = "2018-07-01-preview";
-        return service.getByResourceGroup(subscriptionId, resourceGroupName, remediationName, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        return service.getByResourceGroup(subscriptionId, resourceGroupName, remediationName, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<RemediationInner>>>() {
                 @Override
                 public Observable<ServiceResponse<RemediationInner>> call(Response<ResponseBody> response) {
@@ -2653,8 +2699,10 @@ public class RemediationsInner {
         if (remediationName == null) {
             throw new IllegalArgumentException("Parameter remediationName is required and cannot be null.");
         }
-        final String apiVersion = "2018-07-01-preview";
-        return service.deleteAtResourceGroup(subscriptionId, resourceGroupName, remediationName, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        return service.deleteAtResourceGroup(subscriptionId, resourceGroupName, remediationName, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<RemediationInner>>>() {
                 @Override
                 public Observable<ServiceResponse<RemediationInner>> call(Response<ResponseBody> response) {
@@ -2772,10 +2820,12 @@ public class RemediationsInner {
         if (remediationName == null) {
             throw new IllegalArgumentException("Parameter remediationName is required and cannot be null.");
         }
-        final String apiVersion = "2018-07-01-preview";
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
         final QueryOptions queryOptions = null;
         Integer top = null;
-        return service.listDeploymentsAtResource(resourceId, remediationName, apiVersion, this.client.acceptLanguage(), top, this.client.userAgent())
+        return service.listDeploymentsAtResource(resourceId, remediationName, this.client.apiVersion(), this.client.acceptLanguage(), top, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<RemediationDeploymentInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<RemediationDeploymentInner>>> call(Response<ResponseBody> response) {
@@ -2890,13 +2940,15 @@ public class RemediationsInner {
         if (remediationName == null) {
             throw new IllegalArgumentException("Parameter remediationName is required and cannot be null.");
         }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
         Validator.validate(queryOptions);
-        final String apiVersion = "2018-07-01-preview";
         Integer top = null;
         if (queryOptions != null) {
             top = queryOptions.top();
         }
-        return service.listDeploymentsAtResource(resourceId, remediationName, apiVersion, this.client.acceptLanguage(), top, this.client.userAgent())
+        return service.listDeploymentsAtResource(resourceId, remediationName, this.client.apiVersion(), this.client.acceptLanguage(), top, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<RemediationDeploymentInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<RemediationDeploymentInner>>> call(Response<ResponseBody> response) {
@@ -2976,8 +3028,10 @@ public class RemediationsInner {
         if (remediationName == null) {
             throw new IllegalArgumentException("Parameter remediationName is required and cannot be null.");
         }
-        final String apiVersion = "2018-07-01-preview";
-        return service.cancelAtResource(resourceId, remediationName, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        return service.cancelAtResource(resourceId, remediationName, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<RemediationInner>>>() {
                 @Override
                 public Observable<ServiceResponse<RemediationInner>> call(Response<ResponseBody> response) {
@@ -3086,11 +3140,13 @@ public class RemediationsInner {
         if (resourceId == null) {
             throw new IllegalArgumentException("Parameter resourceId is required and cannot be null.");
         }
-        final String apiVersion = "2018-07-01-preview";
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
         final QueryOptions queryOptions = null;
         Integer top = null;
         String filter = null;
-        return service.listForResource(resourceId, apiVersion, this.client.acceptLanguage(), top, filter, this.client.userAgent())
+        return service.listForResource(resourceId, this.client.apiVersion(), this.client.acceptLanguage(), top, filter, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<RemediationInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<RemediationInner>>> call(Response<ResponseBody> response) {
@@ -3197,8 +3253,10 @@ public class RemediationsInner {
         if (resourceId == null) {
             throw new IllegalArgumentException("Parameter resourceId is required and cannot be null.");
         }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
         Validator.validate(queryOptions);
-        final String apiVersion = "2018-07-01-preview";
         Integer top = null;
         if (queryOptions != null) {
             top = queryOptions.top();
@@ -3207,7 +3265,7 @@ public class RemediationsInner {
         if (queryOptions != null) {
             filter = queryOptions.filter();
         }
-        return service.listForResource(resourceId, apiVersion, this.client.acceptLanguage(), top, filter, this.client.userAgent())
+        return service.listForResource(resourceId, this.client.apiVersion(), this.client.acceptLanguage(), top, filter, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<RemediationInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<RemediationInner>>> call(Response<ResponseBody> response) {
@@ -3291,12 +3349,14 @@ public class RemediationsInner {
         if (remediationName == null) {
             throw new IllegalArgumentException("Parameter remediationName is required and cannot be null.");
         }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
         if (parameters == null) {
             throw new IllegalArgumentException("Parameter parameters is required and cannot be null.");
         }
         Validator.validate(parameters);
-        final String apiVersion = "2018-07-01-preview";
-        return service.createOrUpdateAtResource(resourceId, remediationName, apiVersion, parameters, this.client.acceptLanguage(), this.client.userAgent())
+        return service.createOrUpdateAtResource(resourceId, remediationName, this.client.apiVersion(), parameters, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<RemediationInner>>>() {
                 @Override
                 public Observable<ServiceResponse<RemediationInner>> call(Response<ResponseBody> response) {
@@ -3377,8 +3437,10 @@ public class RemediationsInner {
         if (remediationName == null) {
             throw new IllegalArgumentException("Parameter remediationName is required and cannot be null.");
         }
-        final String apiVersion = "2018-07-01-preview";
-        return service.getAtResource(resourceId, remediationName, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        return service.getAtResource(resourceId, remediationName, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<RemediationInner>>>() {
                 @Override
                 public Observable<ServiceResponse<RemediationInner>> call(Response<ResponseBody> response) {
@@ -3458,8 +3520,10 @@ public class RemediationsInner {
         if (remediationName == null) {
             throw new IllegalArgumentException("Parameter remediationName is required and cannot be null.");
         }
-        final String apiVersion = "2018-07-01-preview";
-        return service.deleteAtResource(resourceId, remediationName, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        return service.deleteAtResource(resourceId, remediationName, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<RemediationInner>>>() {
                 @Override
                 public Observable<ServiceResponse<RemediationInner>> call(Response<ResponseBody> response) {

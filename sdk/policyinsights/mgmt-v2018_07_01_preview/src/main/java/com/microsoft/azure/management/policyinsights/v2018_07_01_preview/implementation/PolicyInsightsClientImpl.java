@@ -28,6 +28,18 @@ public class PolicyInsightsClientImpl extends AzureServiceClient {
         return this.azureClient;
     }
 
+    /** Client Api Version. */
+    private String apiVersion;
+
+    /**
+     * Gets Client Api Version.
+     *
+     * @return the apiVersion value.
+     */
+    public String apiVersion() {
+        return this.apiVersion;
+    }
+
     /** The preferred language for the response. */
     private String acceptLanguage;
 
@@ -193,6 +205,7 @@ public class PolicyInsightsClientImpl extends AzureServiceClient {
     }
 
     protected void initialize() {
+        this.apiVersion = "2018-07-01-preview";
         this.acceptLanguage = "en-US";
         this.longRunningOperationRetryTimeout = 30;
         this.generateClientRequestId = true;
@@ -211,6 +224,6 @@ public class PolicyInsightsClientImpl extends AzureServiceClient {
      */
     @Override
     public String userAgent() {
-        return String.format("%s (%s, %s, auto-generated)", super.userAgent(), "PolicyInsightsClient", "2018-07-01-preiew");
+        return String.format("%s (%s, %s, auto-generated)", super.userAgent(), "PolicyInsightsClient", "2018-07-01-preview");
     }
 }
