@@ -55,6 +55,9 @@ extends:
       - name: azure-servicebus-jms-spring-boot-starter
         groupId: com.microsoft.azure
         safeName: azurespringbootstarterservicebusjms
+      - name: spring-data-gremlin
+        groupId: com.microsoft.spring.data.gremlin
+        safeName: azurespringdatagremlin
     AdditionalModules:
       - name: azure-spring-boot-samples
         groupId: com.microsoft.azure
@@ -83,4 +86,8 @@ extends:
       - name: azure-spring-boot-sample-servicebus-jms-topic
         groupId: com.microsoft.azure
       - name: azure-spring-boot-sample-storage-blob
+        groupId: com.microsoft.azure
+      - name: azure-spring-data-sample-gremlin
+        groupId: com.microsoft.azure
+      - name: azure-spring-data-sample-gremlin-web-service
         groupId: com.microsoft.azure

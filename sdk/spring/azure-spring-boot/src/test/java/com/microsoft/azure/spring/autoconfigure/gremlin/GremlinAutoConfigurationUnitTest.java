@@ -2,10 +2,10 @@
 // Licensed under the MIT License.
 package com.microsoft.azure.spring.autoconfigure.gremlin;
 
-import com.microsoft.spring.data.gremlin.common.GremlinFactory;
-import com.microsoft.spring.data.gremlin.conversion.MappingGremlinConverter;
-import com.microsoft.spring.data.gremlin.mapping.GremlinMappingContext;
-import com.microsoft.spring.data.gremlin.query.GremlinTemplate;
+import com.microsoft.azure.spring.data.gremlin.common.GremlinFactory;
+import com.microsoft.azure.spring.data.gremlin.conversion.MappingGremlinConverter;
+import com.microsoft.azure.spring.data.gremlin.mapping.GremlinMappingContext;
+import com.microsoft.azure.spring.data.gremlin.query.GremlinTemplate;
 import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;

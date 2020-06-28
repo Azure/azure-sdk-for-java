@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.microsoft.azure.spring.autoconfigure.gremlin.domain;
 
-import com.microsoft.spring.data.gremlin.repository.GremlinRepository;
+import com.microsoft.azure.spring.data.gremlin.repository.GremlinRepository;
 
 import java.util.List;
 

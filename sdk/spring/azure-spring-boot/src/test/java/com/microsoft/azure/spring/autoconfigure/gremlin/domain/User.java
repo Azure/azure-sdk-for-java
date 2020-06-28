@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.microsoft.azure.spring.autoconfigure.gremlin.domain;
 
-import com.microsoft.spring.data.gremlin.annotation.Vertex;
+import com.microsoft.azure.spring.data.gremlin.annotation.Vertex;
 import org.springframework.data.annotation.Id;
 
 @Vertex

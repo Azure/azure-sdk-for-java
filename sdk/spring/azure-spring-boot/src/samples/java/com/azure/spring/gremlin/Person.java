@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.spring.gremlin;
 
-import com.microsoft.spring.data.gremlin.annotation.Vertex;
+import com.microsoft.azure.spring.data.gremlin.annotation.Vertex;
 import org.springframework.data.annotation.Id;
 
 import java.util.Objects;
