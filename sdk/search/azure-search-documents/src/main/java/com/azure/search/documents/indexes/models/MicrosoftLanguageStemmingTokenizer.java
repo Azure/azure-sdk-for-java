@@ -49,6 +49,17 @@ public final class MicrosoftLanguageStemmingTokenizer extends LexicalTokenizer {
     private MicrosoftStemmingTokenizerLanguage language;
 
     /**
+     * Constructor of {@link MicrosoftLanguageStemmingTokenizer}.
+     *
+     * @param name The name of the tokenizer. It must only contain letters, digits, spaces,
+     * dashes or underscores, can only start and end with alphanumeric
+     * characters, and is limited to 128 characters.
+     */
+    public MicrosoftLanguageStemmingTokenizer(String name) {
+        super(name);
+    }
+
+    /**
      * Get the maxTokenLength property: The maximum token length. Tokens longer
      * than the maximum length are split. Maximum token length that can be used
      * is 300 characters. Tokens longer than 300 characters are first split

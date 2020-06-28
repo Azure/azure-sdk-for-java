@@ -258,15 +258,15 @@ public interface FeedResponseListValidator<T> {
             return this;
         }
 
-        public Builder<T> withOrderedResults(List<CosmosItemProperties> expectedOrderedList,
+        public Builder<T> withOrderedResults(List<InternalObjectNode> expectedOrderedList,
                 List<CompositePath> compositeIndex) {
-            validators.add(new FeedResponseListValidator<CosmosItemProperties>() {
+            validators.add(new FeedResponseListValidator<InternalObjectNode>() {
                 @Override
-                public void validate(List<FeedResponse<CosmosItemProperties>> feedList) {
+                public void validate(List<FeedResponse<InternalObjectNode>> feedList) {
 
-                    List<CosmosItemProperties> resultOrderedList = feedList.stream()
-                            .flatMap(f -> f.getResults().stream())
-                            .collect(Collectors.toList());
+                    List<InternalObjectNode> resultOrderedList = feedList.stream()
+                                                                         .flatMap(f -> f.getResults().stream())
+                                                                         .collect(Collectors.toList());
                     assertThat(expectedOrderedList.size()).isEqualTo(resultOrderedList.size());
 
                     ArrayList<String> paths = new ArrayList<String>();

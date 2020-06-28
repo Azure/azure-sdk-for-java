@@ -12,19 +12,20 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
 public class SampleApplication implements CommandLineRunner {
+
     private static final Logger LOGGER = LoggerFactory.getLogger(SampleApplication.class);
 
-    @Value("${yourSecretPropertyName}")
-    private String mySecretProperty;
+    @Value("${keyVaultSecretName}")
+    private String keyVaultSecretName;
 
     public static void main(String[] args) {
         SpringApplication.run(SampleApplication.class, args);
     }
 
-    public void run(String... varl) throws Exception {
-        LOGGER.info("property yourSecretPropertyName in Azure Key Vault: {}", mySecretProperty);
+    public void run(String[] args) {
+        LOGGER.info("property keyVaultSecretName in Azure Key Vault: {}", keyVaultSecretName);
 
-        System.out.println("property yourSecretPropertyName in Azure Key Vault: " + mySecretProperty);
+        System.out.println("property keyVaultSecretName in Azure Key Vault: " + keyVaultSecretName);
     }
 
 }

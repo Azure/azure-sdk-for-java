@@ -290,7 +290,9 @@ class UnnamedSessionManager implements AutoCloseable {
             .flatMapMany(session -> session.receive().doFinally(signalType -> {
                 logger.verbose("Adding scheduler back to pool.");
                 availableSchedulers.push(scheduler);
-                onSessionRequest(1L);
+                if (receiverOptions.isRollingSessionReceiver()) {
+                    onSessionRequest(1L);
+                }
             }))
             .publishOn(scheduler);
     }

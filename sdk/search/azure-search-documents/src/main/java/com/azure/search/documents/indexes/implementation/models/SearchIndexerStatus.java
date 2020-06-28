@@ -6,18 +6,16 @@
 
 package com.azure.search.documents.indexes.implementation.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * Represents the current status and execution history of an indexer.
- */
-@Fluent
+/** The SearchIndexerStatus model. */
+@Immutable
 public final class SearchIndexerStatus {
     /*
-     * Overall indexer status. Possible values include: 'Unknown', 'Error',
-     * 'Running'
+     * Overall indexer status.
      */
     @JsonProperty(value = "status", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private IndexerStatus status;
@@ -41,9 +39,19 @@ public final class SearchIndexerStatus {
     @JsonProperty(value = "limits", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private SearchIndexerLimits limits;
 
+    /** Creates an instance of SearchIndexerStatus class. */
+    @JsonCreator
+    public SearchIndexerStatus(
+            @JsonProperty(value = "status") IndexerStatus status,
+            @JsonProperty(value = "executionHistory") List<IndexerExecutionResult> executionHistory,
+            @JsonProperty(value = "limits") SearchIndexerLimits limits) {
+        this.status = status;
+        this.executionHistory = executionHistory;
+        this.limits = limits;
+    }
+
     /**
-     * Get the status property: Overall indexer status. Possible values
-     * include: 'Unknown', 'Error', 'Running'.
+     * Get the status property: Overall indexer status.
      *
      * @return the status value.
      */
@@ -52,8 +60,7 @@ public final class SearchIndexerStatus {
     }
 
     /**
-     * Get the lastResult property: The result of the most recent or an
-     * in-progress indexer execution.
+     * Get the lastResult property: The result of the most recent or an in-progress indexer execution.
      *
      * @return the lastResult value.
      */
@@ -62,8 +69,8 @@ public final class SearchIndexerStatus {
     }
 
     /**
-     * Get the executionHistory property: History of the recent indexer
-     * executions, sorted in reverse chronological order.
+     * Get the executionHistory property: History of the recent indexer executions, sorted in reverse chronological
+     * order.
      *
      * @return the executionHistory value.
      */
@@ -78,5 +85,22 @@ public final class SearchIndexerStatus {
      */
     public SearchIndexerLimits getLimits() {
         return this.limits;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (getLastResult() != null) {
+            getLastResult().validate();
+        }
+        if (getExecutionHistory() != null) {
+            getExecutionHistory().forEach(e -> e.validate());
+        }
+        if (getLimits() != null) {
+            getLimits().validate();
+        }
     }
 }

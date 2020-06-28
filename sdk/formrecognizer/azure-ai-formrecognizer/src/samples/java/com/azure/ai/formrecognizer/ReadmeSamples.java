@@ -184,7 +184,7 @@ public class ReadmeSamples {
         // Since the given training documents are unlabeled, we still group them but they do not have a label.
         customFormModel.getSubmodels().forEach(customFormSubmodel -> {
             // Since the training data is unlabeled, we are unable to return the accuracy of this model
-            customFormSubmodel.getFieldMap().forEach((field, customFormModelField) ->
+            customFormSubmodel.getFields().forEach((field, customFormModelField) ->
                 System.out.printf("Field: %s Field Label: %s%n",
                     field, customFormModelField.getLabel()));
         });
@@ -211,8 +211,8 @@ public class ReadmeSamples {
             customModel.getSubmodels().forEach(customFormSubmodel -> {
                 System.out.printf("Custom Model Form type: %s%n", customFormSubmodel.getFormType());
                 System.out.printf("Custom Model Accuracy: %f%n", customFormSubmodel.getAccuracy());
-                if (customFormSubmodel.getFieldMap() != null) {
-                    customFormSubmodel.getFieldMap().forEach((fieldText, customFormModelField) -> {
+                if (customFormSubmodel.getFields() != null) {
+                    customFormSubmodel.getFields().forEach((fieldText, customFormModelField) -> {
                         System.out.printf("Field Text: %s%n", fieldText);
                         System.out.printf("Field Accuracy: %f%n", customFormModelField.getAccuracy());
                     });

@@ -4,6 +4,7 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -54,6 +55,25 @@ public final class SearchIndexerError {
      */
     @JsonProperty(value = "documentationLink", access = JsonProperty.Access.WRITE_ONLY)
     private String documentationLink;
+
+    /**
+     * Constructor of {@link SearchIndexerError}.
+     *
+     * @param errorMessage The message describing the error that occurred while processing the item.
+     * @param statusCode The status code indicating why the indexing operation failed. Possible
+     * values include: 400 for a malformed input document, 404 for document not
+     * found, 409 for a version conflict, 422 when the index is temporarily
+     * unavailable, or 503 for when the service is too busy.
+     */
+    @JsonCreator
+    public SearchIndexerError(
+        @JsonProperty(value = "errorMessage", required = true, access = JsonProperty.Access.WRITE_ONLY)
+            String errorMessage,
+        @JsonProperty(value = "statusCode", required = true, access = JsonProperty.Access.WRITE_ONLY)
+            int statusCode) {
+        this.errorMessage = errorMessage;
+        this.statusCode = statusCode;
+    }
 
     /**
      * Get the key property: The key of the item for which indexing failed.

@@ -3,6 +3,7 @@
 
 package com.microsoft.azure.spring.cloudfoundry.environment;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.env.ConfigurableEnvironment;
@@ -15,6 +16,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
+@JsonIgnoreProperties
 public class VcapResult implements Serializable {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(VcapResult.class);

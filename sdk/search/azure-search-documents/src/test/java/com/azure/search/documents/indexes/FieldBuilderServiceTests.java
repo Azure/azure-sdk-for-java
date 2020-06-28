@@ -25,7 +25,7 @@ public class FieldBuilderServiceTests extends SearchTestBase {
     protected void beforeTest() {
         super.beforeTest();
         client = getSearchIndexClientBuilder().buildClient();
-        index = new SearchIndex().setName(testResourceNamer.randomName("fieldbuilder", 32));
+        index = new SearchIndex(testResourceNamer.randomName("fieldbuilder", 32));
     }
 
     @Override
@@ -41,7 +41,7 @@ public class FieldBuilderServiceTests extends SearchTestBase {
 
     @Test
     public void createIndexWithFieldBuilder() {
-        SynonymMap synonymMap = new SynonymMap().setName(synonymMapName).setSynonyms("hotel,motel");
+        SynonymMap synonymMap = new SynonymMap(synonymMapName).setSynonyms("hotel,motel");
         client.createSynonymMap(synonymMap);
         index.setFields(FieldBuilder.build(Hotel.class));
         client.createIndex(index);
