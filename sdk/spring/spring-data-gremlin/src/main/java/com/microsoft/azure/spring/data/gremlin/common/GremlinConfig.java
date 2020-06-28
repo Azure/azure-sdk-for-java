@@ -64,9 +64,6 @@ public final class GremlinConfig {
         private String serializer;
         private int maxContentLength;
 
-        GremlinConfigBuilder() {
-        }
-
         public GremlinConfig.GremlinConfigBuilder endpoint(String endpoint) {
             this.endpoint = endpoint;
             return this;
