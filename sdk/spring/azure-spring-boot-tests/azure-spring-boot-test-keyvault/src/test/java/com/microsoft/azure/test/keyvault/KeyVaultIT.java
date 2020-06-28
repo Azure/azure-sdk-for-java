@@ -3,23 +3,23 @@
 
 package com.microsoft.azure.test.keyvault;
 
+import static org.junit.Assert.assertEquals;
+
 import com.microsoft.azure.management.Azure;
-import com.microsoft.azure.management.appservice.JavaVersion;
-import com.microsoft.azure.management.appservice.PricingTier;
-import com.microsoft.azure.management.appservice.RuntimeStack;
 import com.microsoft.azure.management.appservice.WebApp;
-import com.microsoft.azure.management.appservice.WebContainer;
 import com.microsoft.azure.management.compute.RunCommandInput;
 import com.microsoft.azure.management.compute.VirtualMachine;
-import com.microsoft.azure.management.graphrbac.BuiltInRole;
-import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.utils.SdkContext;
 import com.microsoft.azure.test.management.ClientSecretAccess;
 import com.microsoft.azure.test.utils.AppRunner;
 import com.microsoft.azure.test.utils.MavenBasedProject;
 import com.microsoft.azure.test.utils.SSHShell;
-import java.util.HashMap;
-import java.util.Map;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.slf4j.Logger;
@@ -32,15 +32,6 @@ import org.springframework.core.env.PropertySource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
-
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-
-import static org.junit.Assert.assertEquals;
 
 public class KeyVaultIT {
 
@@ -106,7 +97,6 @@ public class KeyVaultIT {
 
     @Test
     public void keyVaultWithAppServiceMSI() {
-        final Map<String, String> appSettings = new HashMap<>();
         final WebApp webApp = AZURE
             .webApps()
             .getByResourceGroup(SPRING_RESOURCE_GROUP, APP_SERVICE_NAME);
