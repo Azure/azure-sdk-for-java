@@ -40,7 +40,7 @@ public class ElasticPoolUpdate extends ProxyResource {
 
     /**
      * The edition of the elastic pool. Possible values include: 'Basic',
-     * 'Standard', 'Premium'.
+     * 'Standard', 'Premium', 'GeneralPurpose', 'BusinessCritical'.
      */
     @JsonProperty(value = "properties.edition")
     private ElasticPoolEdition edition;
@@ -116,7 +116,7 @@ public class ElasticPoolUpdate extends ProxyResource {
     }
 
     /**
-     * Get the edition of the elastic pool. Possible values include: 'Basic', 'Standard', 'Premium'.
+     * Get the edition of the elastic pool. Possible values include: 'Basic', 'Standard', 'Premium', 'GeneralPurpose', 'BusinessCritical'.
      *
      * @return the edition value
      */
@@ -125,7 +125,7 @@ public class ElasticPoolUpdate extends ProxyResource {
     }
 
     /**
-     * Set the edition of the elastic pool. Possible values include: 'Basic', 'Standard', 'Premium'.
+     * Set the edition of the elastic pool. Possible values include: 'Basic', 'Standard', 'Premium', 'GeneralPurpose', 'BusinessCritical'.
      *
      * @param edition the edition value to set
      * @return the ElasticPoolUpdate object itself.
