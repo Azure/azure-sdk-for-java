@@ -7,13 +7,9 @@ import com.azure.core.util.Context;
 import com.azure.search.documents.SearchTestBase;
 import com.azure.search.documents.indexes.models.SearchServiceCounters;
 import com.azure.search.documents.indexes.models.SearchServiceStatistics;
-import com.azure.search.documents.models.RequestOptions;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import java.util.UUID;
-
-import static com.azure.search.documents.TestHelpers.generateRequestOptions;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class SearchServiceSyncTests extends SearchTestBase {
@@ -29,8 +25,8 @@ public class SearchServiceSyncTests extends SearchTestBase {
     public void getServiceStatsReturnsCorrectDefinitionWithResponse() {
         SearchIndexClient serviceClient = getSearchIndexClientBuilder().buildClient();
 
-        SearchServiceStatistics searchServiceStatistics = serviceClient.getServiceStatisticsWithResponse(generateRequestOptions(),
-            Context.NONE).getValue();
+        SearchServiceStatistics searchServiceStatistics = serviceClient.getServiceStatisticsWithResponse(Context.NONE)
+            .getValue();
         validateServiceStatistics(searchServiceStatistics);
     }
 
@@ -38,9 +34,7 @@ public class SearchServiceSyncTests extends SearchTestBase {
     public void getServiceStatsReturnsRequestId() {
         SearchIndexClient serviceClient = getSearchIndexClientBuilder().buildClient();
 
-        RequestOptions requestOptions = new RequestOptions().setClientRequestId(UUID.randomUUID());
-        Response<SearchServiceStatistics> response = serviceClient.getServiceStatisticsWithResponse(requestOptions,
-            Context.NONE);
+        Response<SearchServiceStatistics> response = serviceClient.getServiceStatisticsWithResponse(Context.NONE);
 
         /*
          * The service will always return a request-id and will conditionally return client-request-id if

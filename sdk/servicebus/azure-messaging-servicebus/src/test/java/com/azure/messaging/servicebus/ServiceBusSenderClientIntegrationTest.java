@@ -38,6 +38,11 @@ class ServiceBusSenderClientIntegrationTest extends IntegrationTestBase {
     protected void afterTest() {
         dispose(sender);
 
+        final int numberOfMessages = messagesPending.get();
+        if (numberOfMessages < 1) {
+            dispose(receiver);
+            return;
+        }
         try {
             receiver.receive()
                 .take(messagesPending.get())
@@ -182,8 +187,8 @@ class ServiceBusSenderClientIntegrationTest extends IntegrationTestBase {
                     .buildAsyncClient();
                 break;
             case SUBSCRIPTION:
-                final String topicName = getTopicName();
-                final String subscriptionName = getSubscriptionName(entityIndex);
+                final String topicName = getTopicName(entityIndex);
+                final String subscriptionName = TestUtils.getSubscriptionBaseName();
 
                 Assertions.assertNotNull(topicName, "'topicName' cannot be null.");
                 Assertions.assertNotNull(subscriptionName, "'subscriptionName' cannot be null.");

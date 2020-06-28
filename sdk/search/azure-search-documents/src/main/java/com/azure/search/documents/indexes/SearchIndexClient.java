@@ -12,11 +12,12 @@ import com.azure.core.util.Context;
 import com.azure.search.documents.SearchClient;
 import com.azure.search.documents.indexes.models.AnalyzeTextOptions;
 import com.azure.search.documents.indexes.models.AnalyzedTokenInfo;
-import com.azure.search.documents.indexes.models.SearchIndexStatistics;
+import com.azure.search.documents.indexes.models.LexicalAnalyzerName;
+import com.azure.search.documents.indexes.models.LexicalTokenizerName;
 import com.azure.search.documents.indexes.models.SearchIndex;
+import com.azure.search.documents.indexes.models.SearchIndexStatistics;
 import com.azure.search.documents.indexes.models.SearchServiceStatistics;
 import com.azure.search.documents.indexes.models.SynonymMap;
-import com.azure.search.documents.models.RequestOptions;
 
 /**
  * Synchronous Client to manage and query indexes, as well as manage Synonym Map, on a Cognitive Search service
@@ -66,22 +67,19 @@ public final class SearchIndexClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SearchIndex createIndex(SearchIndex index) {
-        return createIndexWithResponse(index, null, Context.NONE).getValue();
+        return createIndexWithResponse(index, Context.NONE).getValue();
     }
 
     /**
      * Creates a new Azure Cognitive Search index
      *
      * @param index definition of the index to create
-     * @param requestOptions additional parameters for the operation. Contains the tracking ID sent with the request to
-     * help with debugging
      * @param context additional context that is passed through the HTTP pipeline during the service call
      * @return a response containing the created Index.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<SearchIndex> createIndexWithResponse(SearchIndex index, RequestOptions requestOptions,
-        Context context) {
-        return asyncClient.createIndexWithResponse(index, requestOptions, context).block();
+    public Response<SearchIndex> createIndexWithResponse(SearchIndex index, Context context) {
+        return asyncClient.createIndexWithResponse(index, context).block();
     }
 
     /**
@@ -92,22 +90,19 @@ public final class SearchIndexClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SearchIndex getIndex(String indexName) {
-        return getIndexWithResponse(indexName, null, Context.NONE).getValue();
+        return getIndexWithResponse(indexName, Context.NONE).getValue();
     }
 
     /**
      * Retrieves an index definition from the Azure Cognitive Search.
      *
      * @param indexName the name of the index to retrieve
-     * @param requestOptions additional parameters for the operation. Contains the tracking ID sent with the request to
-     * help with debugging
      * @param context additional context that is passed through the HTTP pipeline during the service call
      * @return a response containing the Index.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<SearchIndex> getIndexWithResponse(String indexName, RequestOptions requestOptions,
-        Context context) {
-        return asyncClient.getIndexWithResponse(indexName, requestOptions, context).block();
+    public Response<SearchIndex> getIndexWithResponse(String indexName, Context context) {
+        return asyncClient.getIndexWithResponse(indexName, context).block();
     }
 
     /**
@@ -118,22 +113,19 @@ public final class SearchIndexClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SearchIndexStatistics getIndexStatistics(String indexName) {
-        return getIndexStatisticsWithResponse(indexName, null, Context.NONE).getValue();
+        return getIndexStatisticsWithResponse(indexName, Context.NONE).getValue();
     }
 
     /**
      * Returns statistics for the given index, including a document count and storage usage.
      *
      * @param indexName the name of the index for which to retrieve statistics
-     * @param requestOptions additional parameters for the operation. Contains the tracking ID sent with the request to
-     * help with debugging
      * @param context additional context that is passed through the HTTP pipeline during the service call
      * @return a response containing the index statistics result.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<SearchIndexStatistics> getIndexStatisticsWithResponse(String indexName,
-        RequestOptions requestOptions, Context context) {
-        return asyncClient.getIndexStatisticsWithResponse(indexName, requestOptions, context).block();
+    public Response<SearchIndexStatistics> getIndexStatisticsWithResponse(String indexName, Context context) {
+        return asyncClient.getIndexStatisticsWithResponse(indexName, context).block();
     }
 
     /**
@@ -143,20 +135,18 @@ public final class SearchIndexClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SearchIndex> listIndexes() {
-        return listIndexes(null, Context.NONE);
+        return listIndexes(Context.NONE);
     }
 
     /**
      * Lists all indexes available for an Azure Cognitive Search service.
      *
-     * @param requestOptions additional parameters for the operation. Contains the tracking ID sent with the request to
-     * help with debugging
      * @param context additional context that is passed through the HTTP pipeline during the service call
      * @return the list of indexes.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<SearchIndex> listIndexes(RequestOptions requestOptions, Context context) {
-        return new PagedIterable<>(asyncClient.listIndexes(requestOptions, context));
+    public PagedIterable<SearchIndex> listIndexes(Context context) {
+        return new PagedIterable<>(asyncClient.listIndexes(context));
     }
 
     /**
@@ -166,20 +156,18 @@ public final class SearchIndexClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<String> listIndexNames() {
-        return listIndexNames(null, Context.NONE);
+        return listIndexNames(Context.NONE);
     }
 
     /**
      * Lists all indexes names for an Azure Cognitive Search service.
      *
-     * @param requestOptions additional parameters for the operation. Contains the tracking ID sent with the request to
-     * help with debugging
      * @param context additional context that is passed through the HTTP pipeline during the service call
      * @return the list of index names.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<String> listIndexNames(RequestOptions requestOptions, Context context) {
-        return new PagedIterable<>(asyncClient.listIndexNames(requestOptions, context));
+    public PagedIterable<String> listIndexNames(Context context) {
+        return new PagedIterable<>(asyncClient.listIndexNames(context));
     }
 
     /**
@@ -190,7 +178,7 @@ public final class SearchIndexClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SearchIndex createOrUpdateIndex(SearchIndex index) {
-        return createOrUpdateIndexWithResponse(index, false, false, null, Context.NONE).getValue();
+        return createOrUpdateIndexWithResponse(index, false, false, Context.NONE).getValue();
     }
 
     /**
@@ -203,16 +191,13 @@ public final class SearchIndexClient {
      * updated, or longer for very large indexes.
      * @param onlyIfUnchanged {@code true} to update if the {@code index} is the same as the current service value.
      * {@code false} to always update existing value.
-     * @param requestOptions additional parameters for the operation. Contains the tracking ID sent with the request to
-     * help with debugging
      * @param context additional context that is passed through the HTTP pipeline during the service call
      * @return a response containing the Index that was created or updated.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SearchIndex> createOrUpdateIndexWithResponse(SearchIndex index, boolean allowIndexDowntime,
-        boolean onlyIfUnchanged, RequestOptions requestOptions, Context context) {
-        return asyncClient.createOrUpdateIndexWithResponse(index, allowIndexDowntime, onlyIfUnchanged, requestOptions,
-            context).block();
+        boolean onlyIfUnchanged, Context context) {
+        return asyncClient.createOrUpdateIndexWithResponse(index, allowIndexDowntime, onlyIfUnchanged, context).block();
     }
 
     /**
@@ -222,7 +207,7 @@ public final class SearchIndexClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteIndex(String indexName) {
-        deleteIndexWithResponse(new SearchIndex(indexName), false, null, Context.NONE);
+        deleteIndexWithResponse(new SearchIndex(indexName), false, Context.NONE);
     }
 
     /**
@@ -231,48 +216,41 @@ public final class SearchIndexClient {
      * @param index the Search {@link SearchIndex} to delete.
      * @param onlyIfUnchanged {@code true} to delete if the {@code index} is the same as the current service value.
      * {@code false} to always delete existing value.
-     * @param requestOptions additional parameters for the operation. Contains the tracking ID sent with the request to
-     * help with debugging
      * @param context additional context that is passed through the Http pipeline during the service call
      * @return a response signalling completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteIndexWithResponse(SearchIndex index, boolean onlyIfUnchanged,
-        RequestOptions requestOptions, Context context) {
+    public Response<Void> deleteIndexWithResponse(SearchIndex index, boolean onlyIfUnchanged, Context context) {
         String etag = onlyIfUnchanged ? index.getETag() : null;
-        return asyncClient.deleteIndexWithResponse(index.getName(), etag, requestOptions, context).block();
+        return asyncClient.deleteIndexWithResponse(index.getName(), etag, context).block();
     }
 
     /**
      * Shows how an analyzer breaks text into tokens.
      *
      * @param indexName the name of the index for which to test an analyzer
-     * @param analyzeTextOptions the text and analyzer or analysis components to test. Requires to provide either
-     * {@link com.azure.search.documents.indexes.models.LexicalTokenizerName} or
-     * {@link com.azure.search.documents.indexes.models.LexicalAnalyzerName}.
+     * @param analyzeTextOptions the text and analyzer or analysis components to test. Requires to provide either {@link
+     * LexicalTokenizerName} or {@link LexicalAnalyzerName}.
      * @return analyze result.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AnalyzedTokenInfo> analyzeText(String indexName, AnalyzeTextOptions analyzeTextOptions) {
-        return analyzeText(indexName, analyzeTextOptions, null, Context.NONE);
+        return analyzeText(indexName, analyzeTextOptions, Context.NONE);
     }
 
     /**
      * Shows how an analyzer breaks text into tokens.
      *
      * @param indexName the name of the index for which to test an analyzer
-     * @param analyzeTextOptions the text and analyzer or analysis components to test. Requires to provide either
-     * {@link com.azure.search.documents.indexes.models.LexicalTokenizerName} or
-     *  {@link com.azure.search.documents.indexes.models.LexicalAnalyzerName}.
-     * @param requestOptions additional parameters for the operation. Contains the tracking ID sent with the request to
-     * help with debugging
+     * @param analyzeTextOptions the text and analyzer or analysis components to test. Requires to provide either {@link
+     * LexicalTokenizerName} or {@link LexicalAnalyzerName}.
      * @param context additional context that is passed through the HTTP pipeline during the service call
      * @return analyze result.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AnalyzedTokenInfo> analyzeText(String indexName, AnalyzeTextOptions analyzeTextOptions,
-        RequestOptions requestOptions, Context context) {
-        return new PagedIterable<>(asyncClient.analyzeText(indexName, analyzeTextOptions, requestOptions, context));
+        Context context) {
+        return new PagedIterable<>(asyncClient.analyzeText(indexName, analyzeTextOptions, context));
     }
 
     /**
@@ -283,22 +261,19 @@ public final class SearchIndexClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SynonymMap createSynonymMap(SynonymMap synonymMap) {
-        return createSynonymMapWithResponse(synonymMap, null, Context.NONE).getValue();
+        return createSynonymMapWithResponse(synonymMap, Context.NONE).getValue();
     }
 
     /**
      * Creates a new Azure Cognitive Search synonym map.
      *
      * @param synonymMap the definition of the synonym map to create
-     * @param requestOptions additional parameters for the operation. Contains the tracking ID sent with the request to
-     * help with debugging
      * @param context additional context that is passed through the HTTP pipeline during the service call
      * @return a response containing the created SynonymMap.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<SynonymMap> createSynonymMapWithResponse(SynonymMap synonymMap, RequestOptions requestOptions,
-        Context context) {
-        return asyncClient.createSynonymMapWithResponse(synonymMap, requestOptions, context).block();
+    public Response<SynonymMap> createSynonymMapWithResponse(SynonymMap synonymMap, Context context) {
+        return asyncClient.createSynonymMapWithResponse(synonymMap, context).block();
     }
 
     /**
@@ -309,22 +284,19 @@ public final class SearchIndexClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SynonymMap getSynonymMap(String synonymMapName) {
-        return getSynonymMapWithResponse(synonymMapName, null, Context.NONE).getValue();
+        return getSynonymMapWithResponse(synonymMapName, Context.NONE).getValue();
     }
 
     /**
      * Retrieves a synonym map definition.
      *
      * @param synonymMapName name of the synonym map to retrieve
-     * @param requestOptions additional parameters for the operation. Contains the tracking ID sent with the request to
-     * help with debugging
      * @param context a context that is passed through the HTTP pipeline during the service call
      * @return a response containing the SynonymMap.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<SynonymMap> getSynonymMapWithResponse(String synonymMapName, RequestOptions requestOptions,
-        Context context) {
-        return asyncClient.getSynonymMapWithResponse(synonymMapName, requestOptions, context).block();
+    public Response<SynonymMap> getSynonymMapWithResponse(String synonymMapName, Context context) {
+        return asyncClient.getSynonymMapWithResponse(synonymMapName, context).block();
     }
 
     /**
@@ -334,20 +306,18 @@ public final class SearchIndexClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SynonymMap> listSynonymMaps() {
-        return listSynonymMaps(null, Context.NONE);
+        return listSynonymMaps(Context.NONE);
     }
 
     /**
      * Lists all synonym maps available for an Azure Cognitive Search service.
      *
-     * @param requestOptions additional parameters for the operation. Contains the tracking ID sent with the request to
-     * help with debugging
      * @param context additional context that is passed through the HTTP pipeline during the service call
      * @return the list of synonym map names.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<SynonymMap> listSynonymMaps(RequestOptions requestOptions, Context context) {
-        return new PagedIterable<>(asyncClient.listSynonymMaps(requestOptions, context));
+    public PagedIterable<SynonymMap> listSynonymMaps(Context context) {
+        return new PagedIterable<>(asyncClient.listSynonymMaps(context));
     }
 
     /**
@@ -357,20 +327,18 @@ public final class SearchIndexClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<String> listSynonymMapNames() {
-        return listSynonymMapNames(null, Context.NONE);
+        return listSynonymMapNames(Context.NONE);
     }
 
     /**
      * Lists all synonym maps names for an Azure Cognitive Search service.
      *
-     * @param requestOptions additional parameters for the operation. Contains the tracking ID sent with the request to
-     * help with debugging
      * @param context additional context that is passed through the HTTP pipeline during the service call
      * @return the list of synonym map names.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<String> listSynonymMapNames(RequestOptions requestOptions, Context context) {
-        return new PagedIterable<>(asyncClient.listSynonymMapNames(requestOptions, context));
+    public PagedIterable<String> listSynonymMapNames(Context context) {
+        return new PagedIterable<>(asyncClient.listSynonymMapNames(context));
     }
 
     /**
@@ -381,7 +349,7 @@ public final class SearchIndexClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SynonymMap createOrUpdateSynonymMap(SynonymMap synonymMap) {
-        return createOrUpdateSynonymMapWithResponse(synonymMap, false, null, Context.NONE).getValue();
+        return createOrUpdateSynonymMapWithResponse(synonymMap, false, Context.NONE).getValue();
     }
 
     /**
@@ -390,15 +358,13 @@ public final class SearchIndexClient {
      * @param synonymMap the definition of the synonym map to create or update
      * @param onlyIfUnchanged {@code true} to update if the {@code synonymMap} is the same as the current service value.
      * {@code false} to always update existing value.
-     * @param requestOptions additional parameters for the operation. Contains the tracking ID sent with the request to
-     * help with debugging
      * @param context additional context that is passed through the HTTP pipeline during the service call
      * @return a response containing the synonym map that was created or updated.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SynonymMap> createOrUpdateSynonymMapWithResponse(SynonymMap synonymMap,
-        boolean onlyIfUnchanged, RequestOptions requestOptions, Context context) {
-        return asyncClient.createOrUpdateSynonymMapWithResponse(synonymMap, onlyIfUnchanged, requestOptions, context)
+        boolean onlyIfUnchanged, Context context) {
+        return asyncClient.createOrUpdateSynonymMapWithResponse(synonymMap, onlyIfUnchanged, context)
             .block();
     }
 
@@ -409,7 +375,7 @@ public final class SearchIndexClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteSynonymMap(String synonymMapName) {
-        deleteSynonymMapWithResponse(new SynonymMap(synonymMapName), false, null, Context.NONE);
+        deleteSynonymMapWithResponse(new SynonymMap(synonymMapName), false, Context.NONE);
     }
 
     /**
@@ -418,17 +384,14 @@ public final class SearchIndexClient {
      * @param synonymMap the {@link SynonymMap} to delete.
      * @param onlyIfUnchanged {@code true} to delete if the {@code synonymMap} is the same as the current service value.
      * {@code false} to always delete existing value.
-     * @param requestOptions additional parameters for the operation. Contains the tracking ID sent with the request to
-     * help with debugging
      * @param context additional context that is passed through the Http pipeline during the service call
      * @return a response signalling completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteSynonymMapWithResponse(SynonymMap synonymMap, boolean onlyIfUnchanged,
-        RequestOptions requestOptions, Context context) {
+        Context context) {
         String etag = onlyIfUnchanged ? synonymMap.getETag() : null;
-        return asyncClient.deleteSynonymMapWithResponse(synonymMap.getName(), etag, requestOptions, context)
-            .block();
+        return asyncClient.deleteSynonymMapWithResponse(synonymMap.getName(), etag, context).block();
     }
 
     /**
@@ -438,20 +401,17 @@ public final class SearchIndexClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SearchServiceStatistics getServiceStatistics() {
-        return getServiceStatisticsWithResponse(null, Context.NONE).getValue();
+        return getServiceStatisticsWithResponse(Context.NONE).getValue();
     }
 
     /**
      * Returns service level statistics for a search service, including service counters and limits.
      *
-     * @param requestOptions additional parameters for the operation. Contains the tracking ID sent with the request to
-     * help with debugging
      * @param context additional context that is passed through the HTTP pipeline during the service call
      * @return the search service statistics result.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<SearchServiceStatistics> getServiceStatisticsWithResponse(RequestOptions requestOptions,
-        Context context) {
-        return asyncClient.getServiceStatisticsWithResponse(requestOptions, context).block();
+    public Response<SearchServiceStatistics> getServiceStatisticsWithResponse(Context context) {
+        return asyncClient.getServiceStatisticsWithResponse(context).block();
     }
 }

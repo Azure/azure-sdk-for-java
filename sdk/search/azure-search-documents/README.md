@@ -47,7 +47,7 @@ The SDK provides three clients.
 To create a `SearchIndexClient/SearchIndexAsyncClient`, you will need the values of the Azure Cognitive Search service 
 URL endpoint and admin key.
 
-<!-- embedme ./src/samples/java/com/azure/search/documents/ReadmeSamples.java#L62-L65 -->
+<!-- embedme ./src/samples/java/com/azure/search/documents/ReadmeSamples.java#L61-L64 -->
 ```Java
 SearchIndexClient searchIndexClient = new SearchIndexClientBuilder()
     .endpoint(endpoint)
@@ -57,7 +57,7 @@ SearchIndexClient searchIndexClient = new SearchIndexClientBuilder()
 
 or
 
-<!-- embedme ./src/samples/java/com/azure/search/documents/ReadmeSamples.java#L69-L72 -->
+<!-- embedme ./src/samples/java/com/azure/search/documents/ReadmeSamples.java#L68-L71 -->
 ```Java
 SearchIndexAsyncClient searchIndexAsyncClient = new SearchIndexClientBuilder()
     .endpoint(endpoint)
@@ -70,7 +70,7 @@ SearchIndexAsyncClient searchIndexAsyncClient = new SearchIndexClientBuilder()
 To create a `SearchIndexerClient/SearchIndexerAsyncClient`, you will need the values of the Azure Cognitive Search service 
 URL endpoint and admin key.
 
-<!-- embedme ./src/samples/java/com/azure/search/documents/ReadmeSamples.java#L76-L79 -->
+<!-- embedme ./src/samples/java/com/azure/search/documents/ReadmeSamples.java#L75-L78 -->
 ```Java
 SearchIndexerClient searchIndexerClient = new SearchIndexerClientBuilder()
     .endpoint(endpoint)
@@ -80,7 +80,7 @@ SearchIndexerClient searchIndexerClient = new SearchIndexerClientBuilder()
 
 or
 
-<!-- embedme ./src/samples/java/com/azure/search/documents/ReadmeSamples.java#L83-L86 -->
+<!-- embedme ./src/samples/java/com/azure/search/documents/ReadmeSamples.java#L82-L85 -->
 ```Java
 SearchIndexerAsyncClient searchIndexerAsyncClient = new SearchIndexerClientBuilder()
     .endpoint(endpoint)
@@ -93,7 +93,7 @@ SearchIndexerAsyncClient searchIndexerAsyncClient = new SearchIndexerClientBuild
 Once you have the values of the Azure Cognitive Search service URL endpoint and 
 admin key, you can create the `SearchClient/SearchAsyncClient` with an existing index name:
 
-<!-- embedme ./src/samples/java/com/azure/search/documents/ReadmeSamples.java#L46-L50 -->
+<!-- embedme ./src/samples/java/com/azure/search/documents/ReadmeSamples.java#L45-L49 -->
 ```Java
 SearchClient searchClient = new SearchClientBuilder()
     .endpoint(endpoint)
@@ -104,7 +104,7 @@ SearchClient searchClient = new SearchClientBuilder()
 
 or
 
-<!-- embedme ./src/samples/java/com/azure/search/documents/ReadmeSamples.java#L54-L58 -->
+<!-- embedme ./src/samples/java/com/azure/search/documents/ReadmeSamples.java#L53-L57 -->
 ```Java
 SearchAsyncClient searchAsyncClient = new SearchClientBuilder()
     .endpoint(endpoint)
@@ -136,18 +136,12 @@ Create Index using `searchIndexClient` instantiated in [Create a SearchIndexClie
 
 <!-- embedme ./src/samples/java/com/azure/search/documents/ReadmeSamples.java#L116-L121 -->
 ```java
-SearchIndex newIndex = new SearchIndex("index_name", Arrays.asList(
-    new SearchField("Name", SearchFieldDataType.STRING)
-        .setKey(Boolean.TRUE),
-    new SearchField("Cuisine", SearchFieldDataType.STRING)));
-// Create index.
-searchIndexClient.createIndex(newIndex);
 ```
 ### Upload a Document
 
 Upload hotel document to Search Index using `searchClient` instantiated [Create a SearchClient](#create-a-searchclient)
 
-<!-- embedme ./src/samples/java/com/azure/search/documents/ReadmeSamples.java#L125-L130 -->
+<!-- embedme ./src/samples/java/com/azure/search/documents/ReadmeSamples.java#L123-L128 -->
 ```java
 List<Hotel> hotels = new ArrayList<>();
 hotels.add(new Hotel().setHotelId("100"));
@@ -161,11 +155,11 @@ searchClient.uploadDocuments(hotels);
 
 Search hotel using keyword using `searchClient` instantiated in [Create a SearchClient](#create-a-searchclient)
 
-<!-- embedme ./src/samples/java/com/azure/search/documents/ReadmeSamples.java#L134-L144 -->
+<!-- embedme ./src/samples/java/com/azure/search/documents/ReadmeSamples.java#L132-L142 -->
 ```java
 // Perform a text-based search
 for (SearchResult result : searchClient.search("luxury hotel",
-    new SearchOptions(), new RequestOptions(), Context.NONE)) {
+    new SearchOptions(), Context.NONE)) {
 
     // Each result is a dynamic Map
     SearchDocument doc = result.getDocument(SearchDocument.class);
