@@ -15,12 +15,12 @@ that is optimized for ease of use, succinctness and consistency.
 
 ### Include the package
 
-[//]: # ({x-version-update-start;com.azure:azure-management;current})
+[//]: # ({x-version-update-start;com.azure:azure-resourcemanager;current})
 ```xml
 <dependency>
-  <groupId>com.azure</groupId>
-  <artifactId>azure-management</artifactId>
-  <version>2.0.0</version>
+  <groupId>com.azure.resourcemanager</groupId>
+  <artifactId>azure-resourcemanager</artifactId>
+  <version>2.0.0-beta.2</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -38,7 +38,7 @@ Azure Management Libraries require a `TokenCredential` implementation for authen
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-identity</artifactId>
-  <version>1.1.0-beta.3</version>
+  <version>1.1.0-beta.5</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -50,7 +50,7 @@ Azure Management Libraries require a `TokenCredential` implementation for authen
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-core-http-netty</artifactId>
-  <version>1.5.0</version>
+  <version>1.5.2</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -70,7 +70,7 @@ In addition, Azure subscription ID can be configured via environment variable `A
 With above configuration, `azure` client can be authenticated by following code:
 
 ```java
-AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE, true);
+AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
 TokenCredential credential = new DefaultAzureCredentialBuilder()
     .authorityHost(profile.environment().getActiveDirectoryEndpoint())
     .build();
@@ -90,7 +90,10 @@ See [Samples][sample] for code snippets and samples.
 The key concepts of Azure Management Libraries includes:
 
 - Fluent interface to manage Azure resources.
-- Asynchronous operations with [Reactor][reactor].
+- Dependency across Azure resources.
+- Batch Azure resource provisioning.
+- Integration with Azure role-based access control.
+- Asynchronous operations with [Reactor][reactor]. (Preview)
 - Configurable client, e.g. configuring HTTP client, retries, logging, etc.
 
 ### Service features
@@ -108,7 +111,7 @@ The key concepts of Azure Management Libraries includes:
 
 ### Fluent interface
 
-You can create a virtual machine instance, together with required virtual network and ip address.
+You can create a virtual machine instance, together with required virtual network and ip address created automatically.
 
 ```java
 VirtualMachine linuxVM = azure.virtualMachines().define("myLinuxVM")
@@ -132,12 +135,78 @@ linuxVM.update()
     .apply();
 ```
 
-### Asynchronous operations
+### Dependency across Azure resources
 
-You can create storage account, then blob container, in reactive programming. 
+You can create a function app, together with required storage account and app service plan created on specification.
 
 ```java
-azure.storageAccounts().define("mystorageaccount")
+Creatable<StorageAccount> creatableStorageAccount = azure.storageAccounts()
+    .define(storageAccountName)
+    .withRegion(Region.US_EAST)
+    .withExistingResourceGroup(rgName)
+    .withGeneralPurposeAccountKindV2()
+    .withSku(StorageAccountSkuType.STANDARD_LRS);
+
+Creatable<AppServicePlan> creatableAppServicePlan = azure.appServicePlans()
+    .define(appServicePlanName)
+    .withRegion(Region.US_EAST)
+    .withExistingResourceGroup(rgName)
+    .withPricingTier(PricingTier.STANDARD_S1)
+    .withOperatingSystem(OperatingSystem.LINUX);
+
+FunctionApp linuxFunctionApp = azure.functionApps().define(functionAppName)
+    .withRegion(Region.US_EAST)
+    .withExistingResourceGroup(rgName)
+    .withNewLinuxAppServicePlan(creatableAppServicePlan)
+    .withBuiltInImage(FunctionRuntimeStack.JAVA_8)
+    .withNewStorageAccount(creatableStorageAccount)
+    .withHttpsOnly(true)
+    .withAppSetting("WEBSITE_RUN_FROM_PACKAGE", functionAppPackageUrl)
+    .create();
+```
+
+### Batch Azure resource provisioning
+
+You can batch create and delete managed disk instances.
+
+```java
+List<String> diskNames = Arrays.asList("datadisk1", "datadisk2");
+
+List<Creatable<Disk>> creatableDisks = diskNames.stream()
+    .map(diskName -> azure.disks()
+        .define(diskName)
+        .withRegion(Region.US_EAST)
+        .withExistingResourceGroup(rgName)
+        .withData()
+        .withSizeInGB(1)
+        .withSku(DiskSkuTypes.STANDARD_LRS))
+    .collect(Collectors.toList());
+
+Collection<Disk> disks = azure.disks().create(creatableDisks).values();
+
+azure.disks().deleteByIds(disks.stream().map(Disk::id).collect(Collectors.toList()));
+```
+
+### Integration with Azure role-based access control
+
+You can assign Contributor for an Azure resource to a service principal.
+
+```java
+String raName = UUID.randomUUID().toString();
+RoleAssignment roleAssignment = azure.accessManagement().roleAssignments()
+    .define(raName)
+    .forServicePrincipal(servicePrincipal)
+    .withBuiltInRole(BuiltInRole.CONTRIBUTOR)
+    .withScope(resource.id())
+    .create();
+```
+
+### Asynchronous operations (Preview)
+
+You can create storage account, then blob container, in reactive programming.
+
+```java
+azure.storageAccounts().define(storageAccountName)
     .withRegion(Region.US_EAST)
     .withNewResourceGroup(rgName)
     .withSku(StorageAccountSkuType.STANDARD_LRS)
@@ -151,7 +220,16 @@ azure.storageAccounts().define("mystorageaccount")
         .withExistingBlobService(rgName, ((StorageAccount) indexable).name())
         .withPublicAccess(PublicAccess.BLOB)
         .createAsync()
-    ).blockLast();
+    )
+    ...
+```
+
+You can operate on virtual machines in parallel.
+
+```java
+azure.virtualMachines().listByResourceGroupAsync(rgName)
+    .flatMap(VirtualMachine::restartAsync)
+    ...
 ```
 
 ### Configurable client
@@ -173,12 +251,12 @@ Instead of include the complete Azure Management Libraries, you can choose to in
 
 For example, here is sample maven dependency for Compute package.
 
-[//]: # ({x-version-update-start;com.azure:azure-mgmt-compute;current})
+[//]: # ({x-version-update-start;com.azure:azure-resourcemanager-compute;current})
 ```xml
 <dependency>
-  <groupId>com.azure</groupId>
-  <artifactId>azure-mgmt-compute</artifactId>
-  <version>2.0.0</version>
+  <groupId>com.azure.resourcemanager</groupId>
+  <artifactId>azure-resourcemanager-compute</artifactId>
+  <version>2.0.0-beta.2</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -238,4 +316,5 @@ If you would like to become an active contributor to this project please follow 
 [logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-with-Azure-SDK
 [authenticate]: docs/AUTH.md
 [sample]: docs/SAMPLE.md
+[design]: docs/DESIGN.md
 [reactor]: https://projectreactor.io/

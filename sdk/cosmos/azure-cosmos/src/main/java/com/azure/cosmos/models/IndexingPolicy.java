@@ -4,6 +4,7 @@
 package com.azure.cosmos.models;
 
 import com.azure.cosmos.implementation.Constants;
+import com.azure.cosmos.implementation.Index;
 import com.azure.cosmos.implementation.JsonSerializable;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
@@ -14,7 +15,7 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * Represents the indexing policy configuration for a collection in the Azure Cosmos DB database service.
+ * Represents the indexing policy configuration for a container in the Azure Cosmos DB database service.
  */
 public final class IndexingPolicy {
     private static final String DEFAULT_PATH = "/*";
@@ -55,15 +56,14 @@ public final class IndexingPolicy {
      * root path.
      * @throws IllegalArgumentException throws when defaultIndexOverrides is null
      */
-    public IndexingPolicy(Index[] defaultIndexOverrides) {
+    IndexingPolicy(Index[] defaultIndexOverrides) {
         this();
 
         if (defaultIndexOverrides == null) {
             throw new IllegalArgumentException("defaultIndexOverrides is null.");
         }
 
-        IncludedPath includedPath = new IncludedPath();
-        includedPath.setPath(IndexingPolicy.DEFAULT_PATH);
+        IncludedPath includedPath = new IncludedPath(IndexingPolicy.DEFAULT_PATH);
         includedPath.setIndexes(new ArrayList<Index>(Arrays.asList(defaultIndexOverrides)));
         this.getIncludedPaths().add(includedPath);
     }
@@ -87,10 +87,10 @@ public final class IndexingPolicy {
     }
 
     /**
-     * Gets whether automatic indexing is enabled for a collection.
+     * Gets whether automatic indexing is enabled for a container.
      * <p>
-     * In automatic indexing, documents can be explicitly excluded from indexing using RequestOptions. In manual
-     * indexing, documents can be explicitly included.
+     * In automatic indexing, items can be explicitly excluded from indexing using RequestOptions. In manual
+     * indexing, items can be explicitly included.
      *
      * @return the automatic
      */
@@ -99,10 +99,10 @@ public final class IndexingPolicy {
     }
 
     /**
-     * Sets whether automatic indexing is enabled for a collection.
+     * Sets whether automatic indexing is enabled for a container.
      * <p>
-     * In automatic indexing, documents can be explicitly excluded from indexing using RequestOptions. In manual
-     * indexing, documents can be explicitly included.
+     * In automatic indexing, items can be explicitly excluded from indexing using RequestOptions. In manual
+     * indexing, items can be explicitly included.
      *
      * @param automatic the automatic
      * @return the Indexing Policy.
@@ -264,8 +264,7 @@ public final class IndexingPolicy {
         // If indexing mode is not 'none' and not paths are set, set them to the defaults
         if (this.getIndexingMode() != IndexingMode.NONE && this.getIncludedPaths().size() == 0
                 && this.getExcludedPaths().size() == 0) {
-            IncludedPath includedPath = new IncludedPath();
-            includedPath.setPath(IndexingPolicy.DEFAULT_PATH);
+            IncludedPath includedPath = new IncludedPath(IndexingPolicy.DEFAULT_PATH);
             this.getIncludedPaths().add(includedPath);
         }
 

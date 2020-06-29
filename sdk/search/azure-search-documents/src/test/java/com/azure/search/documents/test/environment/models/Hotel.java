@@ -2,10 +2,10 @@
 // Licensed under the MIT License.
 package com.azure.search.documents.test.environment.models;
 
+import com.azure.core.models.spatial.PointGeometry;
 import com.azure.search.documents.indexes.FieldIgnore;
 import com.azure.search.documents.indexes.SearchableFieldProperty;
 import com.azure.search.documents.indexes.SimpleFieldProperty;
-import com.azure.search.documents.models.GeoPoint;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.ArrayList;
@@ -17,10 +17,11 @@ public class Hotel {
     @JsonProperty(value = "HotelId")
     private String hotelId;
 
-    @SearchableFieldProperty(isSortable = true, analyzer = "en.lucene")
+    @SearchableFieldProperty(isSortable = true, analyzerName = "en.lucene")
     @JsonProperty(value = "HotelName")
     private String hotelName;
 
+    @SimpleFieldProperty
     @JsonProperty(value = "Description")
     private String description;
 
@@ -28,6 +29,7 @@ public class Hotel {
     @JsonProperty(value = "Description_fr")
     private String descriptionFr;
 
+    @SimpleFieldProperty
     @JsonProperty(value = "Category")
     private String category;
 
@@ -49,7 +51,7 @@ public class Hotel {
 
     @SimpleFieldProperty
     @JsonProperty(value = "Location")
-    private GeoPoint location;
+    private PointGeometry location;
 
     @JsonProperty(value = "Address")
     private HotelAddress address;
@@ -153,11 +155,11 @@ public class Hotel {
         return this;
     }
 
-    public GeoPoint location() {
+    public PointGeometry location() {
         return this.location;
     }
 
-    public Hotel location(GeoPoint location) {
+    public Hotel location(PointGeometry location) {
         this.location = location;
         return this;
     }

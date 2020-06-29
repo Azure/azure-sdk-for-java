@@ -3,12 +3,14 @@
 
 package com.azure.search.documents.models;
 
+import com.azure.core.models.spatial.PointGeometry;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import static com.azure.search.documents.TestHelpers.createPointGeometry;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -22,7 +24,7 @@ public class ScoringParameterTests {
         List<String> parameters = new ArrayList<>(Arrays.asList("hello", "tests"));
         ScoringParameter scoringParameter = new ScoringParameter("test", parameters);
         List<String> scoringParameterValues = scoringParameter.getValues();
-        for (int i = 0; i< parameters.size(); i++) {
+        for (int i = 0; i < parameters.size(); i++) {
             assertEquals(parameters.get(i), scoringParameterValues.get(i));
         }
         parameters.add("test clone");
@@ -57,9 +59,10 @@ public class ScoringParameterTests {
 
     @Test
     public void testConstructorWithGeopoint() {
-        GeoPoint geoPoint = GeoPoint.create(92, -114);
+        PointGeometry geoPoint = createPointGeometry(92.0, -114.0);
         String name = "mytest";
-        String expectValue = name + DASH + geoPoint.getLongitude() + COMMA + geoPoint.getLatitude();
+        String expectValue = name + DASH + geoPoint.getPosition().getLongitude() + COMMA
+            + geoPoint.getPosition().getLatitude();
         String toFlattenString = new ScoringParameter(name, geoPoint).toString();
 
         assertEquals(expectValue, toFlattenString);
@@ -67,6 +70,6 @@ public class ScoringParameterTests {
 
     @Test
     public void testConstructorWithNullGeopoint() {
-        assertThrows(NullPointerException.class, () -> new ScoringParameter("null geopoint", (GeoPoint) null));
+        assertThrows(NullPointerException.class, () -> new ScoringParameter("null geopoint", (PointGeometry) null));
     }
 }

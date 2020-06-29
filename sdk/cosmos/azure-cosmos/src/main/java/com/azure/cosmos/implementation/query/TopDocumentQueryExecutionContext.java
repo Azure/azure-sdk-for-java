@@ -4,7 +4,7 @@
 package com.azure.cosmos.implementation.query;
 
 import com.azure.cosmos.BridgeInternal;
-import com.azure.cosmos.CosmosClientException;
+import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.implementation.Resource;
 import com.azure.cosmos.implementation.HttpConstants;
@@ -41,7 +41,7 @@ public class TopDocumentQueryExecutionContext<T extends Resource> implements IDo
             if (!TakeContinuationToken.tryParse(topContinuationToken, outTakeContinuationToken)) {
                 String message = String.format("INVALID JSON in continuation token %s for Top~Context",
                         topContinuationToken);
-                CosmosClientException dce = BridgeInternal.createCosmosClientException(HttpConstants.StatusCodes.BADREQUEST,
+                CosmosException dce = BridgeInternal.createCosmosException(HttpConstants.StatusCodes.BADREQUEST,
                         message);
                 return Flux.error(dce);
             }
@@ -53,7 +53,7 @@ public class TopDocumentQueryExecutionContext<T extends Resource> implements IDo
             String message = String.format(
                     "top count in continuation token: %d can not be greater than the top count in the query: %d.",
                     takeContinuationToken.getTakeCount(), topCount);
-            CosmosClientException dce = BridgeInternal.createCosmosClientException(HttpConstants.StatusCodes.BADREQUEST, message);
+            CosmosException dce = BridgeInternal.createCosmosException(HttpConstants.StatusCodes.BADREQUEST, message);
             return Flux.error(dce);
         }
 
@@ -66,22 +66,8 @@ public class TopDocumentQueryExecutionContext<T extends Resource> implements IDo
     @Override
     public Flux<FeedResponse<T>> drainAsync(int maxPageSize) {
         ParallelDocumentQueryExecutionContextBase<T> context;
-        if (this.component instanceof DistinctDocumentQueryExecutionContext<?>) {
-            context =
-                (ParallelDocumentQueryExecutionContextBase<T>) ((DistinctDocumentQueryExecutionContext<T>) this.component)
-                                                                   .getComponent();
-        }
-        else if (this.component instanceof AggregateDocumentQueryExecutionContext<?>) {
-            context =
-                (ParallelDocumentQueryExecutionContextBase<T>) ((AggregateDocumentQueryExecutionContext<T>) this.component)
-                                                                   .getComponent();
-        } else if (this.component instanceof SkipDocumentQueryExecutionContext<?>) {
-            context =
-                (ParallelDocumentQueryExecutionContextBase<T>) ((SkipDocumentQueryExecutionContext<T>) this.component)
-                                                                   .getComponent();
-        } else {
-            context = (ParallelDocumentQueryExecutionContextBase<T>) this.component;
-        }
+        // These checks below are getting messier. Needs redesign
+        context = getContextFromComponent();
 
         context.setTop(this.limit);
 
@@ -137,5 +123,46 @@ public class TopDocumentQueryExecutionContext<T extends Resource> implements IDo
                 }
             }
         });
+    }
+
+    // TODO: This could be restructured eventually with better design to avoid these many checks
+    private ParallelDocumentQueryExecutionContextBase<T> getContextFromComponent() {
+        ParallelDocumentQueryExecutionContextBase<T> context;
+        if (this.component instanceof GroupByDocumentQueryExecutionContext<?>) {
+            context =
+                (ParallelDocumentQueryExecutionContextBase<T>) ((GroupByDocumentQueryExecutionContext<T>) this.component)
+                                                                   .getComponent();
+        } else if (this.component instanceof DistinctDocumentQueryExecutionContext<?>) {
+            context =
+                (ParallelDocumentQueryExecutionContextBase<T>) ((DistinctDocumentQueryExecutionContext<T>) this.component)
+                                                                   .getComponent();
+        } else if (this.component instanceof AggregateDocumentQueryExecutionContext<?>) {
+            context =
+                (ParallelDocumentQueryExecutionContextBase<T>) ((AggregateDocumentQueryExecutionContext<T>) this.component)
+                                                                   .getComponent();
+        } else if (this.component instanceof SkipDocumentQueryExecutionContext<?>) {
+
+            IDocumentQueryExecutionComponent<T> component = ((SkipDocumentQueryExecutionContext<T>) this.component)
+                                                                .getComponent();
+            if (component instanceof DistinctDocumentQueryExecutionContext<?>) {
+                context =
+                    (ParallelDocumentQueryExecutionContextBase<T>) ((DistinctDocumentQueryExecutionContext<T>) component)
+                                                                       .getComponent();
+            } else if (component instanceof AggregateDocumentQueryExecutionContext<?>) {
+                context =
+                    (ParallelDocumentQueryExecutionContextBase<T>) ((AggregateDocumentQueryExecutionContext<T>) component)
+                                                                       .getComponent();
+            } else if (component instanceof GroupByDocumentQueryExecutionContext<?>) {
+                context =
+                    (ParallelDocumentQueryExecutionContextBase<T>) ((GroupByDocumentQueryExecutionContext<T>) component)
+                                                                       .getComponent();
+            } else {
+                context =
+                    (ParallelDocumentQueryExecutionContextBase<T>) component;
+            }
+        } else {
+            context = (ParallelDocumentQueryExecutionContextBase<T>) this.component;
+        }
+        return context;
     }
 }

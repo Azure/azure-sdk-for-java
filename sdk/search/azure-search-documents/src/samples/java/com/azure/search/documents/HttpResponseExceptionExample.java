@@ -8,7 +8,6 @@ import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.Context;
-import com.azure.search.documents.models.SearchErrorException;
 import com.azure.search.documents.models.SearchOptions;
 import com.azure.search.documents.models.SearchResult;
 import com.azure.search.documents.util.SearchPagedFlux;
@@ -41,7 +40,7 @@ public class HttpResponseExceptionExample {
      * With the sync client, HttpResponseExceptions are raised on failure
      */
     private static void handleErrorsWithSyncClient() {
-        SearchIndexClient client = new SearchIndexClientBuilder()
+        SearchClient client = new SearchClientBuilder()
             .endpoint(ENDPOINT)
             .credential(new AzureKeyCredential(API_KEY))
             .indexName(INDEX_NAME)
@@ -53,13 +52,13 @@ public class HttpResponseExceptionExample {
                 .setFilter("Non_Existent_Field eq 'Luxury'");
 
             Iterable<SearchResult> results = client.search("hotel",
-                searchOptions, null, Context.NONE);
+                searchOptions, Context.NONE);
 
             for (SearchResult result : results) {
                 // normal results processing
-                System.out.printf("Found hotel: %s%n", result.getDocument().get("HotelName"));
+                System.out.printf("Found hotel: %s%n", result.getDocument(SearchDocument.class).get("HotelName"));
             }
-        } catch (SearchErrorException ex) {
+        } catch (HttpResponseException ex) {
             // The exception contains the HTTP status code and the detailed message
             // returned from the search service
             HttpResponse response = ex.getResponse();
@@ -72,7 +71,7 @@ public class HttpResponseExceptionExample {
      * With the async client, errors need to be handled when subscribing to the stream
      */
     private static void handleErrorsWithAsyncClient() {
-        SearchIndexAsyncClient client = new SearchIndexClientBuilder()
+        SearchAsyncClient client = new SearchClientBuilder()
             .endpoint(ENDPOINT)
             .credential(new AzureKeyCredential(API_KEY))
             .indexName(INDEX_NAME)
@@ -86,7 +85,7 @@ public class HttpResponseExceptionExample {
             .subscribe(
                 foo -> {
                     // normal results processing
-                    System.out.printf("Found hotel: %s%n", foo.getDocument().get("HotelName"));
+                    System.out.printf("Found hotel: %s%n", foo.getDocument(SearchDocument.class).get("HotelName"));
                 },
                 err -> {
                     if (err instanceof HttpResponseException) {

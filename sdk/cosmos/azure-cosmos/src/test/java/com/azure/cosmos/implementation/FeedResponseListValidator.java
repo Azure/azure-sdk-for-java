@@ -14,6 +14,7 @@ import com.azure.cosmos.models.CosmosUserDefinedFunctionProperties;
 import com.azure.cosmos.models.CosmosUserProperties;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.ModelBridgeInternal;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 
 import java.time.Duration;
@@ -74,6 +75,21 @@ public interface FeedResponseListValidator<T> {
             return this;
         }
 
+        public Builder<T> containsExactlyValues(List<T> expectedValues) {
+            validators.add(new FeedResponseListValidator<T>() {
+                @Override
+                public void validate(List<FeedResponse<T>> feedList) {
+                    List<T> actualValues = feedList.stream()
+                                            .flatMap(f -> f.getResults().stream())
+                                            .collect(Collectors.toList());
+                    assertThat(actualValues)
+                        .describedAs("Result values")
+                        .containsExactlyElementsOf(expectedValues);
+                }
+            });
+            return this;
+        }
+
         public Builder<T> containsExactlyIds(List<String> expectedIds) {
             validators.add(new FeedResponseListValidator<T>() {
                 @Override
@@ -122,6 +138,23 @@ public interface FeedResponseListValidator<T> {
                     assertThat(actualIds)
                     .describedAs("Resource IDs of results")
                     .containsOnlyElementsOf(expectedIds);
+                }
+            });
+            return this;
+        }
+
+        public Builder<T> exactlyContainsIdsInAnyOrder(List<String> expectedIds) {
+            validators.add(new FeedResponseListValidator<T>() {
+                @Override
+                public void validate(List<FeedResponse<T>> feedList) {
+                    List<String> actualIds = feedList
+                        .stream()
+                        .flatMap(f -> f.getResults().stream())
+                        .map(r -> getResource(r).getId())
+                        .collect(Collectors.toList());
+                    assertThat(actualIds)
+                        .describedAs("IDs of results")
+                        .containsOnlyElementsOf(expectedIds);
                 }
             });
             return this;
@@ -188,31 +221,31 @@ public interface FeedResponseListValidator<T> {
         }
 
         public Builder<T> withAggregateValue(Object value) {
-            validators.add(new FeedResponseListValidator<CosmosItemProperties>() {
+            validators.add(new FeedResponseListValidator<JsonNode>() {
                 @Override
-                public void validate(List<FeedResponse<CosmosItemProperties>> feedList) {
-                    List<CosmosItemProperties> list = feedList.get(0).getResults();
-                    CosmosItemProperties result = list.size() > 0 ? list.get(0) : null;
+                public void validate(List<FeedResponse<JsonNode>> feedList) {
+                    List<JsonNode> list = feedList.get(0).getResults();
+                    JsonNode result = list.size() > 0 ? list.get(0) : null;
 
                     if (result != null) {
                         if (value instanceof Double) {
 
-                            Double d = ModelBridgeInternal.getDoubleFromJsonSerializable(result, Constants.Properties.VALUE);
+                            Double d = result.asDouble();
                             assertThat(d).isEqualTo(value);
                         } else if (value instanceof Integer) {
 
-                            Integer d = ModelBridgeInternal.getIntFromJsonSerializable(result, Constants.Properties.VALUE);
+                            Integer d = result.asInt();
                             assertThat(d).isEqualTo(value);
                         } else if (value instanceof String) {
 
-                            String d = ModelBridgeInternal.getStringFromJsonSerializable(result, Constants.Properties.VALUE);
+                            String d = result.asText();
                             assertThat(d).isEqualTo(value);
-                        } else if (value instanceof Document){
+                        } else if (value instanceof Document) {
 
                             assertThat(result.toString()).isEqualTo(value.toString());
                         } else {
 
-                            assertThat(ModelBridgeInternal.getObjectFromJsonSerializable(result, Constants.Properties.VALUE)).isNull();
+                            assertThat(result.isNull()).isTrue();
                             assertThat(value).isNull();
                         }
                     } else {
@@ -225,15 +258,15 @@ public interface FeedResponseListValidator<T> {
             return this;
         }
 
-        public Builder<T> withOrderedResults(List<CosmosItemProperties> expectedOrderedList,
+        public Builder<T> withOrderedResults(List<InternalObjectNode> expectedOrderedList,
                 List<CompositePath> compositeIndex) {
-            validators.add(new FeedResponseListValidator<CosmosItemProperties>() {
+            validators.add(new FeedResponseListValidator<InternalObjectNode>() {
                 @Override
-                public void validate(List<FeedResponse<CosmosItemProperties>> feedList) {
+                public void validate(List<FeedResponse<InternalObjectNode>> feedList) {
 
-                    List<CosmosItemProperties> resultOrderedList = feedList.stream()
-                            .flatMap(f -> f.getResults().stream())
-                            .collect(Collectors.toList());
+                    List<InternalObjectNode> resultOrderedList = feedList.stream()
+                                                                         .flatMap(f -> f.getResults().stream())
+                                                                         .collect(Collectors.toList());
                     assertThat(expectedOrderedList.size()).isEqualTo(resultOrderedList.size());
 
                     ArrayList<String> paths = new ArrayList<String>();

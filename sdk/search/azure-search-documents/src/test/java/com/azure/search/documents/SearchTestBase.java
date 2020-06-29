@@ -9,34 +9,37 @@ import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.test.TestBase;
 import com.azure.core.util.Configuration;
-import com.azure.search.documents.models.AnalyzerName;
-import com.azure.search.documents.models.CorsOptions;
-import com.azure.search.documents.models.DataChangeDetectionPolicy;
-import com.azure.search.documents.models.DataDeletionDetectionPolicy;
-import com.azure.search.documents.models.DataSource;
-import com.azure.search.documents.models.DataType;
-import com.azure.search.documents.models.DistanceScoringFunction;
-import com.azure.search.documents.models.DistanceScoringParameters;
-import com.azure.search.documents.models.Field;
-import com.azure.search.documents.models.FreshnessScoringFunction;
-import com.azure.search.documents.models.FreshnessScoringParameters;
-import com.azure.search.documents.models.Index;
-import com.azure.search.documents.models.MagnitudeScoringFunction;
-import com.azure.search.documents.models.MagnitudeScoringParameters;
-import com.azure.search.documents.models.ScoringFunctionAggregation;
-import com.azure.search.documents.models.ScoringFunctionInterpolation;
-import com.azure.search.documents.models.ScoringProfile;
-import com.azure.search.documents.models.SoftDeleteColumnDeletionDetectionPolicy;
-import com.azure.search.documents.models.Suggester;
-import com.azure.search.documents.models.TagScoringFunction;
-import com.azure.search.documents.models.TagScoringParameters;
-import com.azure.search.documents.models.TextWeights;
+import com.azure.search.documents.indexes.SearchIndexClientBuilder;
+import com.azure.search.documents.indexes.SearchIndexerClientBuilder;
+import com.azure.search.documents.indexes.SearchIndexerDataSources;
+import com.azure.search.documents.indexes.models.CorsOptions;
+import com.azure.search.documents.indexes.models.DataChangeDetectionPolicy;
+import com.azure.search.documents.indexes.models.DataDeletionDetectionPolicy;
+import com.azure.search.documents.indexes.models.DistanceScoringFunction;
+import com.azure.search.documents.indexes.models.DistanceScoringParameters;
+import com.azure.search.documents.indexes.models.FreshnessScoringFunction;
+import com.azure.search.documents.indexes.models.FreshnessScoringParameters;
+import com.azure.search.documents.indexes.models.LexicalAnalyzerName;
+import com.azure.search.documents.indexes.models.MagnitudeScoringFunction;
+import com.azure.search.documents.indexes.models.MagnitudeScoringParameters;
+import com.azure.search.documents.indexes.models.ScoringFunctionAggregation;
+import com.azure.search.documents.indexes.models.ScoringFunctionInterpolation;
+import com.azure.search.documents.indexes.models.ScoringProfile;
+import com.azure.search.documents.indexes.models.SearchField;
+import com.azure.search.documents.indexes.models.SearchFieldDataType;
+import com.azure.search.documents.indexes.models.SearchIndex;
+import com.azure.search.documents.indexes.models.SearchIndexerDataSourceConnection;
+import com.azure.search.documents.indexes.models.SearchSuggester;
+import com.azure.search.documents.indexes.models.SoftDeleteColumnDeletionDetectionPolicy;
+import com.azure.search.documents.indexes.models.TagScoringFunction;
+import com.azure.search.documents.indexes.models.TagScoringParameters;
+import com.azure.search.documents.indexes.models.TextWeights;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import reactor.core.Exceptions;
 
-import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
-import java.io.UncheckedIOException;
+import java.lang.reflect.Field;
 import java.time.Duration;
 import java.util.Arrays;
 import java.util.Collections;
@@ -53,7 +56,6 @@ import static com.azure.search.documents.TestHelpers.SQL_DATASOURCE_NAME;
  */
 public abstract class SearchTestBase extends TestBase {
     private static final String HOTELS_TESTS_INDEX_DATA_JSON = "HotelsTestsIndexData.json";
-
     protected static final String ENDPOINT = Configuration.getGlobalConfiguration()
         .get("SEARCH_SERVICE_ENDPOINT", "https://playback.search.windows.net");
 
@@ -74,40 +76,50 @@ public abstract class SearchTestBase extends TestBase {
     static final String HOTELS_DATA_JSON_WITHOUT_FR_DESCRIPTION = "HotelsDataArrayWithoutFr.json";
 
     protected String createHotelIndex() {
-        return setupIndexFromJsonFile(HOTELS_TESTS_INDEX_DATA_JSON);
-    }
-
-    protected String setupIndexFromJsonFile(String jsonFile) {
         try {
-            Reader indexData = new InputStreamReader(Objects.requireNonNull(getClass().getClassLoader()
-                .getResourceAsStream(jsonFile)));
-
-            return setupIndex(new ObjectMapper().readValue(indexData, Index.class));
-        } catch (IOException ex) {
-            throw new UncheckedIOException(ex);
+            return setupIndexFromJsonFile(HOTELS_TESTS_INDEX_DATA_JSON);
+        } catch (Exception e) {
+            throw Exceptions.propagate(e);
         }
     }
 
-    protected String setupIndex(Index index) {
-        index.setName(testResourceNamer.randomName(index.getName(), 64));
-        getSearchServiceClientBuilder().buildClient().createOrUpdateIndex(index);
+    protected String setupIndexFromJsonFile(String jsonFile) {
+        Reader indexData = new InputStreamReader(Objects.requireNonNull(getClass().getClassLoader()
+            .getResourceAsStream(jsonFile)));
+        try {
+            return setupIndex(new ObjectMapper().readValue(indexData, SearchIndex.class));
+        } catch (Exception e) {
+            throw Exceptions.propagate(e);
+        }
+    }
+
+    protected String setupIndex(SearchIndex index) {
+        try {
+            Field searchIndexName = index.getClass().getDeclaredField("name");
+            searchIndexName.setAccessible(true);
+
+            searchIndexName.set(index, testResourceNamer.randomName(index.getName(), 64));
+        } catch (Exception e) {
+            throw Exceptions.propagate(e);
+        }
+        getSearchIndexClientBuilder().buildClient().createOrUpdateIndex(index);
 
         return index.getName();
     }
 
-    protected SearchServiceClientBuilder getSearchServiceClientBuilder(HttpPipelinePolicy... policies) {
-        SearchServiceClientBuilder builder = new SearchServiceClientBuilder()
+    protected SearchIndexClientBuilder getSearchIndexClientBuilder() {
+        SearchIndexClientBuilder builder = new SearchIndexClientBuilder()
             .endpoint(ENDPOINT);
-
+        builder.credential(new AzureKeyCredential(API_KEY));
         if (interceptorManager.isPlaybackMode()) {
             builder.httpClient(interceptorManager.getPlaybackClient());
-            addPolicies(builder, policies);
+            addPolicies(builder);
             return builder;
         }
 
-        addPolicies(builder, policies);
-        builder.credential(new AzureKeyCredential(API_KEY))
-            .retryPolicy(new RetryPolicy(new ExponentialBackoff(3, Duration.ofSeconds(10), Duration.ofSeconds(30))));
+        //builder.httpClient(new NettyAsyncHttpClientBuilder().proxy(new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("localhost", 8888))).build());
+
+        builder.retryPolicy(new RetryPolicy(new ExponentialBackoff(3, Duration.ofSeconds(10), Duration.ofSeconds(30))));
 
         if (!interceptorManager.isLiveMode()) {
             builder.addPolicy(interceptorManager.getRecordPolicy());
@@ -117,7 +129,30 @@ public abstract class SearchTestBase extends TestBase {
 
     }
 
-    private static void addPolicies(SearchServiceClientBuilder builder, HttpPipelinePolicy... policies) {
+    protected SearchIndexerClientBuilder getSearchIndexerClientBuilder(HttpPipelinePolicy... policies) {
+        SearchIndexerClientBuilder builder = new SearchIndexerClientBuilder()
+            .endpoint(ENDPOINT);
+        builder.credential(new AzureKeyCredential(API_KEY));
+        if (interceptorManager.isPlaybackMode()) {
+            builder.httpClient(interceptorManager.getPlaybackClient());
+            addPolicies(builder, policies);
+            return builder;
+        }
+//        builder.httpClient(new NettyAsyncHttpClientBuilder().proxy(
+//            new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("localhost", 8888))).build());
+        addPolicies(builder, policies);
+
+        builder.retryPolicy(new RetryPolicy(new ExponentialBackoff(3, Duration.ofSeconds(10), Duration.ofSeconds(30))));
+
+        if (!interceptorManager.isLiveMode()) {
+            builder.addPolicy(interceptorManager.getRecordPolicy());
+        }
+
+        return builder;
+
+    }
+
+    private static void addPolicies(SearchIndexClientBuilder builder, HttpPipelinePolicy... policies) {
         if (policies == null) {
             return;
         }
@@ -127,17 +162,27 @@ public abstract class SearchTestBase extends TestBase {
         }
     }
 
-    protected SearchIndexClientBuilder getSearchIndexClientBuilder(String indexName) {
-        SearchIndexClientBuilder builder = new SearchIndexClientBuilder()
+    private static void addPolicies(SearchIndexerClientBuilder builder, HttpPipelinePolicy... policies) {
+        if (policies == null) {
+            return;
+        }
+
+        for (HttpPipelinePolicy policy : policies) {
+            builder.addPolicy(policy);
+        }
+    }
+
+    protected SearchClientBuilder getSearchClientBuilder(String indexName) {
+        SearchClientBuilder builder = new SearchClientBuilder()
             .endpoint(ENDPOINT)
             .indexName(indexName);
 
+        builder.credential(new AzureKeyCredential(API_KEY));
         if (interceptorManager.isPlaybackMode()) {
             return builder.httpClient(interceptorManager.getPlaybackClient());
         }
 
-        builder.credential(new AzureKeyCredential(API_KEY))
-            .retryPolicy(new RetryPolicy(new ExponentialBackoff(3, Duration.ofSeconds(10), Duration.ofSeconds(30))));
+        builder.retryPolicy(new RetryPolicy(new ExponentialBackoff(3, Duration.ofSeconds(10), Duration.ofSeconds(30))));
 
         if (!interceptorManager.isLiveMode()) {
             builder.addPolicy(interceptorManager.getRecordPolicy());
@@ -146,126 +191,91 @@ public abstract class SearchTestBase extends TestBase {
         return builder;
     }
 
-    protected Index createTestIndex() {
+    protected SearchIndex createTestIndex(String indexName) {
         Map<String, Double> weights = new HashMap<>();
         weights.put("Description", 1.5);
         weights.put("Category", 2.0);
-        return new Index()
-            .setName(randomIndexName(HOTEL_INDEX_NAME))
-            .setFields(Arrays.asList(
-                new Field()
-                    .setName("HotelId")
-                    .setType(DataType.EDM_STRING)
+        String searchIndexName = indexName == null ? randomIndexName(HOTEL_INDEX_NAME) : indexName;
+        return new SearchIndex(searchIndexName, Arrays.asList(
+                new SearchField("HotelId", SearchFieldDataType.STRING)
                     .setKey(Boolean.TRUE)
                     .setFilterable(Boolean.TRUE)
                     .setSortable(Boolean.TRUE)
                     .setFacetable(Boolean.TRUE)
                     .setHidden(Boolean.FALSE),
-                new Field()
-                    .setName("HotelName")
-                    .setType(DataType.EDM_STRING)
+                new SearchField("HotelName", SearchFieldDataType.STRING)
                     .setSearchable(Boolean.TRUE)
                     .setFilterable(Boolean.TRUE)
                     .setSortable(Boolean.TRUE)
                     .setHidden(Boolean.FALSE),
-                new Field()
-                    .setName("Description")
-                    .setType(DataType.EDM_STRING)
+                new SearchField("Description", SearchFieldDataType.STRING)
                     .setSearchable(Boolean.TRUE)
-                    .setAnalyzer(AnalyzerName.EN_LUCENE)
+                    .setAnalyzerName(LexicalAnalyzerName.EN_LUCENE)
                     .setHidden(Boolean.FALSE),
-                new Field()
-                    .setName("DescriptionFr")
-                    .setType(DataType.EDM_STRING)
+                new SearchField("DescriptionFr", SearchFieldDataType.STRING)
                     .setSearchable(Boolean.TRUE)
-                    .setAnalyzer(AnalyzerName.FR_LUCENE)
+                    .setAnalyzerName(LexicalAnalyzerName.FR_LUCENE)
                     .setHidden(Boolean.FALSE),
-                new Field()
-                    .setName("Description_Custom")
-                    .setType(DataType.EDM_STRING)
+                new SearchField("Description_Custom", SearchFieldDataType.STRING)
                     .setSearchable(Boolean.TRUE)
-                    .setSearchAnalyzer(AnalyzerName.STOP)
-                    .setIndexAnalyzer(AnalyzerName.STOP)
+                    .setSearchAnalyzerName(LexicalAnalyzerName.STOP)
+                    .setIndexAnalyzerName(LexicalAnalyzerName.STOP)
                     .setHidden(Boolean.FALSE),
-                new Field()
-                    .setName("Category")
-                    .setType(DataType.EDM_STRING)
+                new SearchField("Category", SearchFieldDataType.STRING)
                     .setSearchable(Boolean.TRUE)
                     .setFilterable(Boolean.TRUE)
                     .setSortable(Boolean.TRUE)
                     .setFacetable(Boolean.TRUE)
                     .setHidden(Boolean.FALSE),
-                new Field()
-                    .setName("Tags")
-                    .setType(DataType.collection(DataType.EDM_STRING))
+                new SearchField("Tags", SearchFieldDataType.collection(SearchFieldDataType.STRING))
                     .setSearchable(Boolean.TRUE)
                     .setFilterable(Boolean.TRUE)
                     .setFacetable(Boolean.TRUE)
                     .setHidden(Boolean.FALSE),
-                new Field()
-                    .setName("ParkingIncluded")
-                    .setType(DataType.EDM_BOOLEAN)
+                new SearchField("ParkingIncluded", SearchFieldDataType.BOOLEAN)
                     .setFilterable(Boolean.TRUE)
                     .setSortable(Boolean.TRUE)
                     .setFacetable(Boolean.TRUE)
                     .setHidden(Boolean.FALSE),
-                new Field()
-                    .setName("SmokingAllowed")
-                    .setType(DataType.EDM_BOOLEAN)
+                new SearchField("SmokingAllowed", SearchFieldDataType.BOOLEAN)
                     .setFilterable(Boolean.TRUE)
                     .setSortable(Boolean.TRUE)
                     .setFacetable(Boolean.TRUE)
                     .setHidden(Boolean.FALSE),
-                new Field()
-                    .setName("LastRenovationDate")
-                    .setType(DataType.EDM_DATE_TIME_OFFSET)
+                new SearchField("LastRenovationDate", SearchFieldDataType.DATE_TIME_OFFSET)
                     .setFilterable(Boolean.TRUE)
                     .setSortable(Boolean.TRUE)
                     .setFacetable(Boolean.TRUE)
                     .setHidden(Boolean.FALSE),
-                new Field()
-                    .setName("Rating")
-                    .setType(DataType.EDM_INT32)
+                new SearchField("Rating", SearchFieldDataType.INT32)
                     .setFilterable(Boolean.TRUE)
                     .setSortable(Boolean.TRUE)
                     .setFacetable(Boolean.TRUE)
                     .setHidden(Boolean.FALSE),
-                new Field()
-                    .setName("Address")
-                    .setType(DataType.EDM_COMPLEX_TYPE)
+                new SearchField("Address", SearchFieldDataType.COMPLEX)
                     .setFields(Arrays.asList(
-                        new Field()
-                            .setName("StreetAddress")
-                            .setType(DataType.EDM_STRING)
+                        new SearchField("StreetAddress", SearchFieldDataType.STRING)
                             .setSearchable(Boolean.TRUE)
                             .setHidden(Boolean.FALSE),
-                        new Field()
-                            .setName("City")
-                            .setType(DataType.EDM_STRING)
+                        new SearchField("City", SearchFieldDataType.STRING)
                             .setSearchable(Boolean.TRUE)
                             .setFilterable(Boolean.TRUE)
                             .setSortable(Boolean.TRUE)
                             .setFacetable(Boolean.TRUE)
                             .setHidden(Boolean.FALSE),
-                        new Field()
-                            .setName("StateProvince")
-                            .setType(DataType.EDM_STRING)
+                        new SearchField("StateProvince", SearchFieldDataType.STRING)
                             .setSearchable(Boolean.TRUE)
                             .setFilterable(Boolean.TRUE)
                             .setSortable(Boolean.TRUE)
                             .setFacetable(Boolean.TRUE)
                             .setHidden(Boolean.FALSE),
-                        new Field()
-                            .setName("Country")
-                            .setType(DataType.EDM_STRING)
+                        new SearchField("Country", SearchFieldDataType.STRING)
                             .setSearchable(Boolean.TRUE)
                             .setFilterable(Boolean.TRUE)
                             .setSortable(Boolean.TRUE)
                             .setFacetable(Boolean.TRUE)
                             .setHidden(Boolean.FALSE),
-                        new Field()
-                            .setName("PostalCode")
-                            .setType(DataType.EDM_STRING)
+                        new SearchField("PostalCode", SearchFieldDataType.STRING)
                             .setSearchable(Boolean.TRUE)
                             .setFilterable(Boolean.TRUE)
                             .setSortable(Boolean.TRUE)
@@ -273,174 +283,122 @@ public abstract class SearchTestBase extends TestBase {
                             .setHidden(Boolean.FALSE)
                         )
                     ),
-                new Field()
-                    .setName("Location")
-                    .setType(DataType.EDM_GEOGRAPHY_POINT)
+                new SearchField("Location", SearchFieldDataType.GEOGRAPHY_POINT)
                     .setFilterable(Boolean.TRUE)
                     .setSortable(Boolean.TRUE)
                     .setHidden(Boolean.FALSE),
-                new Field()
-                    .setName("Rooms")
-                    .setType(DataType.collection(DataType.EDM_COMPLEX_TYPE))
+                new SearchField("Rooms", SearchFieldDataType.collection(SearchFieldDataType.COMPLEX))
                     .setFields(Arrays.asList(
-                        new Field()
-                            .setName("Description")
-                            .setType(DataType.EDM_STRING)
+                        new SearchField("Description", SearchFieldDataType.STRING)
                             .setSearchable(Boolean.TRUE)
-                            .setAnalyzer(AnalyzerName.EN_LUCENE),
-                        new Field()
-                            .setName("DescriptionFr")
-                            .setType(DataType.EDM_STRING)
+                            .setAnalyzerName(LexicalAnalyzerName.EN_LUCENE),
+                        new SearchField("DescriptionFr", SearchFieldDataType.STRING)
                             .setSearchable(Boolean.TRUE)
-                            .setAnalyzer(AnalyzerName.FR_LUCENE)
+                            .setAnalyzerName(LexicalAnalyzerName.FR_LUCENE)
                             .setHidden(Boolean.FALSE),
-                        new Field()
-                            .setName("Type")
-                            .setType(DataType.EDM_STRING)
+                        new SearchField("Type", SearchFieldDataType.STRING)
                             .setSearchable(Boolean.TRUE)
                             .setFilterable(Boolean.TRUE)
                             .setFacetable(Boolean.TRUE)
                             .setHidden(Boolean.FALSE),
-                        new Field()
-                            .setName("BaseRate")
-                            .setType(DataType.EDM_DOUBLE)
+                        new SearchField("BaseRate", SearchFieldDataType.DOUBLE)
                             .setKey(Boolean.FALSE)
                             .setFilterable(Boolean.TRUE)
                             .setFacetable(Boolean.TRUE)
                             .setHidden(Boolean.FALSE),
-                        new Field()
-                            .setName("BedOptions")
-                            .setType(DataType.EDM_STRING)
+                        new SearchField("BedOptions", SearchFieldDataType.STRING)
                             .setSearchable(Boolean.TRUE)
                             .setFilterable(Boolean.TRUE)
                             .setFacetable(Boolean.TRUE)
                             .setHidden(Boolean.FALSE),
-                        new Field()
-                            .setName("SleepsCount")
-                            .setType(DataType.EDM_INT32)
+                        new SearchField("SleepsCount", SearchFieldDataType.INT32)
                             .setFilterable(Boolean.TRUE)
                             .setFacetable(Boolean.TRUE)
                             .setHidden(Boolean.FALSE),
-                        new Field()
-                            .setName("SmokingAllowed")
-                            .setType(DataType.EDM_BOOLEAN)
+                        new SearchField("SmokingAllowed", SearchFieldDataType.BOOLEAN)
                             .setFilterable(Boolean.TRUE)
                             .setFacetable(Boolean.TRUE)
                             .setHidden(Boolean.FALSE),
-                        new Field()
-                            .setName("Tags")
-                            .setType(DataType.collection(DataType.EDM_STRING))
+                        new SearchField("Tags", SearchFieldDataType.collection(SearchFieldDataType.STRING))
                             .setSearchable(Boolean.TRUE)
                             .setFilterable(Boolean.TRUE)
                             .setFacetable(Boolean.TRUE)
                             .setHidden(Boolean.FALSE)
                         )
                     ),
-                new Field()
-                    .setName("TotalGuests")
-                    .setType(DataType.EDM_INT64)
+                new SearchField("TotalGuests", SearchFieldDataType.INT64)
                     .setFilterable(Boolean.TRUE)
                     .setSortable(Boolean.TRUE)
                     .setFacetable(Boolean.TRUE),
-                new Field()
-                    .setName("ProfitMargin")
-                    .setType(DataType.EDM_DOUBLE)
+                new SearchField("ProfitMargin", SearchFieldDataType.DOUBLE)
                 )
             )
             .setScoringProfiles(Arrays.asList(
-                new ScoringProfile()
-                    .setName("MyProfile")
+                new ScoringProfile("MyProfile")
                     .setFunctionAggregation(ScoringFunctionAggregation.AVERAGE)
                     .setFunctions(Arrays.asList(
-                        new MagnitudeScoringFunction()
-                            .setParameters(new MagnitudeScoringParameters()
-                                .setBoostingRangeStart(1)
-                                .setBoostingRangeEnd(4)
+                        new MagnitudeScoringFunction("Rating", 2.0,
+                            new MagnitudeScoringParameters(1, 4)
                                 .setShouldBoostBeyondRangeByConstant(true))
-                            .setFieldName("Rating")
-                            .setBoost(2.0)
                             .setInterpolation(ScoringFunctionInterpolation.CONSTANT),
-                        new DistanceScoringFunction()
-                            .setParameters(new DistanceScoringParameters()
-                                .setBoostingDistance(5)
-                                .setReferencePointParameter("Loc"))
-                            .setFieldName("Location")
-                            .setBoost(1.5)
+                        new DistanceScoringFunction("Location", 1.5,
+                            new DistanceScoringParameters("Loc", 5))
                             .setInterpolation(ScoringFunctionInterpolation.LINEAR),
-                        new FreshnessScoringFunction()
-                            .setParameters(new FreshnessScoringParameters()
-                                .setBoostingDuration(Duration.ofDays(365)))
-                            .setFieldName("LastRenovationDate")
-                            .setBoost(1.1)
+                        new FreshnessScoringFunction("LastRenovationDate", 1.1,
+                            new FreshnessScoringParameters(Duration.ofDays(365)))
                             .setInterpolation(ScoringFunctionInterpolation.LOGARITHMIC)
                     ))
-                    .setTextWeights(new TextWeights()
-                        .setWeights(weights)),
-                new ScoringProfile()
-                    .setName("ProfileTwo")
+                    .setTextWeights(new TextWeights(weights)),
+                new ScoringProfile("ProfileTwo")
                     .setFunctionAggregation(ScoringFunctionAggregation.MAXIMUM)
                     .setFunctions(Collections.singletonList(
-                        new TagScoringFunction()
-                            .setParameters(new TagScoringParameters().setTagsParameter("MyTags"))
-                            .setFieldName("Tags")
-                            .setBoost(1.5)
+                        new TagScoringFunction("Tags", 1.5,
+                            new TagScoringParameters("MyTags"))
                             .setInterpolation(ScoringFunctionInterpolation.LINEAR)
                     )),
-                new ScoringProfile()
-                    .setName("ProfileThree")
+                new ScoringProfile("ProfileThree")
                     .setFunctionAggregation(ScoringFunctionAggregation.MINIMUM)
                     .setFunctions(Collections.singletonList(
-                        new MagnitudeScoringFunction()
-                            .setParameters(new MagnitudeScoringParameters()
-                                .setBoostingRangeStart(0)
-                                .setBoostingRangeEnd(10)
+                        new MagnitudeScoringFunction("Rating", 3.0,
+                            new MagnitudeScoringParameters(0, 10)
                                 .setShouldBoostBeyondRangeByConstant(false))
-                            .setFieldName("Rating")
-                            .setBoost(3.0)
                             .setInterpolation(ScoringFunctionInterpolation.QUADRATIC)
                     )),
-                new ScoringProfile()
-                    .setName("ProfileFour")
+                new ScoringProfile("ProfileFour")
                     .setFunctionAggregation(ScoringFunctionAggregation.FIRST_MATCHING)
                     .setFunctions(Collections.singletonList(
-                        new MagnitudeScoringFunction()
-                            .setParameters(new MagnitudeScoringParameters()
-                                .setBoostingRangeStart(1)
-                                .setBoostingRangeEnd(5)
+                        new MagnitudeScoringFunction("Rating", 3.14,
+                            new MagnitudeScoringParameters(1, 5)
                                 .setShouldBoostBeyondRangeByConstant(false))
-                            .setFieldName("Rating")
-                            .setBoost(3.14)
                             .setInterpolation(ScoringFunctionInterpolation.CONSTANT)
                     ))
             ))
             .setDefaultScoringProfile("MyProfile")
-            .setCorsOptions(new CorsOptions()
-                .setAllowedOrigins("http://tempuri.org", "http://localhost:80")
+            .setCorsOptions(new CorsOptions(Arrays.asList("http://tempuri.org", "http://localhost:80"))
                 .setMaxAgeInSeconds(60L))
-            .setSuggesters(Collections.singletonList(new Suggester()
-                .setName("FancySuggester")
-                .setSourceFields(Collections.singletonList("HotelName"))));
+            .setSuggesters(Collections.singletonList(new SearchSuggester("FancySuggester",
+                Collections.singletonList("HotelName"))));
     }
 
-    protected DataSource createTestSqlDataSourceObject() {
+    protected SearchIndexerDataSourceConnection createTestSqlDataSourceObject() {
         return createTestSqlDataSourceObject(null, null);
     }
 
-    protected DataSource createTestSqlDataSourceObject(DataDeletionDetectionPolicy dataDeletionDetectionPolicy,
-        DataChangeDetectionPolicy dataChangeDetectionPolicy) {
-        return DataSources.createFromAzureSql(testResourceNamer.randomName(SQL_DATASOURCE_NAME, 32),
+    protected SearchIndexerDataSourceConnection createTestSqlDataSourceObject(
+        DataDeletionDetectionPolicy dataDeletionDetectionPolicy, DataChangeDetectionPolicy dataChangeDetectionPolicy) {
+        return SearchIndexerDataSources.createFromAzureSql(testResourceNamer.randomName(SQL_DATASOURCE_NAME, 32),
             AZURE_SQL_CONN_STRING_READONLY_PLAYGROUND, "GeoNamesRI", FAKE_DESCRIPTION, dataChangeDetectionPolicy,
             dataDeletionDetectionPolicy);
     }
 
-    protected DataSource createBlobDataSource() {
+    protected SearchIndexerDataSourceConnection createBlobDataSource() {
         String storageConnectionString = Configuration.getGlobalConfiguration()
             .get("SEARCH_STORAGE_CONNECTION_STRING", "connectionString");
         String blobContainerName = Configuration.getGlobalConfiguration()
             .get("SEARCH_STORAGE_CONTAINER_NAME", "container");
 
         // create the new data source object for this storage account and container
-        return DataSources.createFromAzureBlobStorage(testResourceNamer.randomName(BLOB_DATASOURCE_NAME, 32),
+        return SearchIndexerDataSources.createFromAzureBlobStorage(testResourceNamer.randomName(BLOB_DATASOURCE_NAME, 32),
             storageConnectionString, blobContainerName, "/", "real live blob",
             new SoftDeleteColumnDeletionDetectionPolicy()
                 .setSoftDeleteColumnName("fieldName")

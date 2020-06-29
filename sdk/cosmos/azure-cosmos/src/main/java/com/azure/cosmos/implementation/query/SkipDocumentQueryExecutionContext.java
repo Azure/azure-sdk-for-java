@@ -4,7 +4,7 @@
 package com.azure.cosmos.implementation.query;
 
 import com.azure.cosmos.BridgeInternal;
-import com.azure.cosmos.CosmosClientException;
+import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.implementation.Resource;
 import com.azure.cosmos.implementation.HttpConstants;
@@ -40,8 +40,8 @@ public final class SkipDocumentQueryExecutionContext<T extends Resource> impleme
             if (!OffsetContinuationToken.tryParse(continuationToken, outOffsetContinuationToken)) {
                 String message = String.format("Invalid JSON in continuation token %s for Skip~Context",
                     continuationToken);
-                CosmosClientException dce =
-                    BridgeInternal.createCosmosClientException(HttpConstants.StatusCodes.BADREQUEST,
+                CosmosException dce =
+                    BridgeInternal.createCosmosException(HttpConstants.StatusCodes.BADREQUEST,
                     message);
                 return Flux.error(dce);
             }

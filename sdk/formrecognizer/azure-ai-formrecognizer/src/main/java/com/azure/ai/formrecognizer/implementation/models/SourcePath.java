@@ -7,9 +7,7 @@ package com.azure.ai.formrecognizer.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The SourcePath model.
- */
+/** The SourcePath model. */
 @Fluent
 public final class SourcePath {
     /*
@@ -20,7 +18,7 @@ public final class SourcePath {
 
     /**
      * Get the source property: File source path.
-     * 
+     *
      * @return the source value.
      */
     public String getSource() {
@@ -29,7 +27,7 @@ public final class SourcePath {
 
     /**
      * Set the source property: File source path.
-     * 
+     *
      * @param source the source value to set.
      * @return the SourcePath object itself.
      */

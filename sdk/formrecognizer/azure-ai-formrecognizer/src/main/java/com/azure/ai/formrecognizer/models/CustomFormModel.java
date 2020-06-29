@@ -4,9 +4,9 @@
 package com.azure.ai.formrecognizer.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.IterableStream;
 
 import java.time.OffsetDateTime;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -31,19 +31,20 @@ public final class CustomFormModel {
     private final CustomFormModelStatus modelStatus;
 
     /*
-     * Date and time (UTC) when the model was created.
+     * Date and time (UTC) when the training of the model was started.
      */
-    private final OffsetDateTime createdOn;
+    private final OffsetDateTime trainingStartedOn;
 
     /*
-     * Date and time (UTC) when the status was last updated.
+     * Date and time (UTC) when the model training was completed.
      */
-    private final OffsetDateTime lastUpdatedOn;
+    private final OffsetDateTime trainingCompletedOn;
 
     /*
-     * List of sub models.
+     * List of sub model that are part of this model, each of which can recognize and extract fields
+     * from a different type of form.
      */
-    private final IterableStream<CustomFormSubModel> subModels;
+    private final List<CustomFormSubmodel> submodels;
 
     /*
      * List of the documents used to train the model.
@@ -55,29 +56,31 @@ public final class CustomFormModel {
      *
      * @param modelId Model identifier.
      * @param modelStatus Status of the model.
-     * @param createdOn Date and time (UTC) when the model was created.
-     * @param lastUpdatedOn Date and time (UTC) when the status was last updated.
-     * @param subModels List of sub models.
+     * @param trainingStartedOn Date and time (UTC) when the training of model was started.
+     * @param trainingCompletedOn Date and time (UTC) when the model training was completed.
+     * @param submodels List of sub model that are part of this model, each of which can recognize and extract fields
+     * from a different type of form.
      * @param modelError List of errors returned during the training operation.
      * @param trainingDocuments List of the documents used to train the model.
      */
     public CustomFormModel(final String modelId, final CustomFormModelStatus modelStatus,
-        final OffsetDateTime createdOn, final OffsetDateTime lastUpdatedOn,
-        final IterableStream<CustomFormSubModel> subModels, final List<FormRecognizerError> modelError,
+        final OffsetDateTime trainingStartedOn, final OffsetDateTime trainingCompletedOn,
+        final List<CustomFormSubmodel> submodels, final List<FormRecognizerError> modelError,
         final List<TrainingDocumentInfo> trainingDocuments) {
         this.modelId = modelId;
         this.modelStatus = modelStatus;
-        this.createdOn = createdOn;
-        this.lastUpdatedOn = lastUpdatedOn;
-        this.subModels = subModels;
-        this.modelError = modelError;
-        this.trainingDocuments = trainingDocuments;
+        this.trainingStartedOn = trainingStartedOn;
+        this.trainingCompletedOn = trainingCompletedOn;
+        this.submodels = submodels == null ? null : Collections.unmodifiableList(submodels);
+        this.modelError = modelError == null ? null : Collections.unmodifiableList(modelError);
+        this.trainingDocuments = trainingDocuments == null ? null
+            : Collections.unmodifiableList(trainingDocuments);
     }
 
     /**
      * Get the Model identifier.
      *
-     * @return the modelId value.
+     * @return the {@code modelId} value.
      */
     public String getModelId() {
         return this.modelId;
@@ -86,54 +89,53 @@ public final class CustomFormModel {
     /**
      * Get the status of the model.
      *
-     * @return the status value.
+     * @return the {@code modelStatus} value.
      */
     public CustomFormModelStatus getModelStatus() {
         return this.modelStatus;
     }
 
     /**
-     * Get the Date and time (UTC) when the model was
-     * created.
+     * Get the Date and time (UTC) when the training of the model was started.
      *
-     * @return the createdDateTime value.
+     * @return the {@code trainingStartedOn} value.
      */
-    public OffsetDateTime getCreatedOn() {
-        return this.createdOn;
+    public OffsetDateTime getTrainingStartedOn() {
+        return this.trainingStartedOn;
     }
 
     /**
-     * Get the Date and time (UTC) when the
-     * status was last updated.
+     * Get the Date and time (UTC) when the model training was completed.
      *
-     * @return the lastUpdatedDateTime value.
+     * @return the {@code trainingCompletedOn} value.
      */
-    public OffsetDateTime getLastUpdatedOn() {
-        return this.lastUpdatedOn;
+    public OffsetDateTime getTrainingCompletedOn() {
+        return this.trainingCompletedOn;
     }
 
     /**
      * Get the errors returned during the training operation.
      *
-     * @return the errors value.
+     * @return the unmodifiable list of model errors returned during the training operation.
      */
     public List<FormRecognizerError> getModelError() {
         return this.modelError;
     }
 
     /**
-     * Get the recognized sub models returned during the training operation.
+     * Get the list of sub model that are part of this model, each of which can recognize
+     * and extract fields from a different type of form.
      *
-     * @return the sub models value.
+     * @return the unmodifiable list of submodels that are a part of this model.
      */
-    public IterableStream<CustomFormSubModel> getSubModels() {
-        return this.subModels;
+    public List<CustomFormSubmodel> getSubmodels() {
+        return this.submodels;
     }
 
     /**
      * Get the list of the documents used to train the model and any errors reported in each document.
      *
-     * @return the trainingDocuments value.
+     * @return the unmodifiable list of documents used to train the model.
      */
     public List<TrainingDocumentInfo> getTrainingDocuments() {
         return this.trainingDocuments;

@@ -4,7 +4,7 @@ package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.implementation.caches.RxClientCollectionCache;
-import com.azure.cosmos.CosmosClientException;
+import com.azure.cosmos.CosmosException;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
@@ -54,7 +54,7 @@ public class PartitionKeyMismatchRetryPolicy extends DocumentClientRetryPolicy {
     /// <param name="cancellationToken"></param>
     /// <returns>True indicates caller should retry, False otherwise</returns>
     public Mono<ShouldRetryResult> shouldRetry(Exception exception) {
-        CosmosClientException clientException = Utils.as(exception, CosmosClientException.class) ;
+        CosmosException clientException = Utils.as(exception, CosmosException.class) ;
 
         if (clientException != null &&
                 Exceptions.isStatusCode(clientException, HttpConstants.StatusCodes.BADREQUEST) &&
@@ -66,12 +66,12 @@ public class PartitionKeyMismatchRetryPolicy extends DocumentClientRetryPolicy {
             //this.clientCollectionCache.refresh(clientException.ResourceAddress);
             if (this.options != null) {
                 this.clientCollectionCache.refresh(
-                    BridgeInternal.getMetaDataDiagnosticContext(this.request.requestContext.cosmosResponseDiagnostics),
+                    BridgeInternal.getMetaDataDiagnosticContext(this.request.requestContext.cosmosDiagnostics),
                     collectionLink,
                     this.options.getProperties());
             } else {
                 this.clientCollectionCache.refresh(
-                    BridgeInternal.getMetaDataDiagnosticContext(this.request.requestContext.cosmosResponseDiagnostics),
+                    BridgeInternal.getMetaDataDiagnosticContext(this.request.requestContext.cosmosDiagnostics),
                     collectionLink,
                     null);
             }

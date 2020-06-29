@@ -22,14 +22,14 @@ public class GetSingleDocumentExample {
     private static final String INDEX_NAME = "hotels-sample-index";
 
     public static void main(String[] args) {
-        SearchIndexClient client = new SearchIndexClientBuilder()
+        SearchClient client = new SearchClientBuilder()
             .endpoint(ENDPOINT)
             .credential(new AzureKeyCredential(API_KEY))
             .indexName(INDEX_NAME)
             .buildClient();
 
         // Retrieve a single document by key
-        SearchDocument document = client.getDocument("3");
+        SearchDocument document = client.getDocument("3", SearchDocument.class);
 
         for (String key : document.keySet()) {
             System.out.println(key + ":" + document.get(key));

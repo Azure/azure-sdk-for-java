@@ -5,20 +5,24 @@ package com.azure.search.documents;
 
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.Configuration;
-import com.azure.search.documents.models.Field;
+import com.azure.search.documents.indexes.SearchIndexClient;
+import com.azure.search.documents.indexes.SearchIndexClientBuilder;
+import com.azure.search.documents.indexes.SearchIndexerClient;
+import com.azure.search.documents.indexes.SearchIndexerClientBuilder;
+import com.azure.search.documents.indexes.models.InputFieldMappingEntry;
+import com.azure.search.documents.indexes.models.OutputFieldMappingEntry;
+import com.azure.search.documents.indexes.models.SearchField;
+import com.azure.search.documents.indexes.models.SearchIndex;
+import com.azure.search.documents.indexes.models.SearchIndexer;
+import com.azure.search.documents.indexes.models.SearchIndexerSkill;
+import com.azure.search.documents.indexes.models.SearchIndexerSkillset;
+import com.azure.search.documents.indexes.models.SearchServiceCounters;
+import com.azure.search.documents.indexes.models.SearchServiceLimits;
+import com.azure.search.documents.indexes.models.SearchServiceStatistics;
+import com.azure.search.documents.indexes.models.SynonymMap;
+import com.azure.search.documents.indexes.models.WebApiSkill;
 import com.azure.search.documents.models.Hotel;
-import com.azure.search.documents.models.Index;
 import com.azure.search.documents.models.IndexDocumentsResult;
-import com.azure.search.documents.models.Indexer;
-import com.azure.search.documents.models.InputFieldMappingEntry;
-import com.azure.search.documents.models.OutputFieldMappingEntry;
-import com.azure.search.documents.models.ServiceCounters;
-import com.azure.search.documents.models.ServiceLimits;
-import com.azure.search.documents.models.ServiceStatistics;
-import com.azure.search.documents.models.Skill;
-import com.azure.search.documents.models.Skillset;
-import com.azure.search.documents.models.SynonymMap;
-import com.azure.search.documents.models.WebApiSkill;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -43,65 +47,60 @@ public class RefineSearchCapabilitiesExample {
     private static final String INDEXER_NAME = "hotels-sample-indexer";
 
     public static void main(String[] args) {
-        SearchServiceClient serviceClient = createServiceClient();
-        SearchIndexClient indexClient = createIndexClient();
+        SearchIndexClient searchIndexClient = createIndexClient();
+        SearchIndexerClient searchIndexerClient = createIndexerClient();
+        SearchClient indexClient = createSearchClient();
 
         // Add a synonym map to an index field
-        addSynonymMapToIndex(serviceClient);
+        addSynonymMapToIndex(searchIndexClient);
 
         // Add a custom web based skillset to the indexer
-        addCustomWebSkillset(serviceClient);
+        addCustomWebSkillset(searchIndexerClient);
 
         // Manually add a set of documents to the index
         uploadDocumentsToIndex(indexClient);
 
         // Retrieve service statistics
-        getServiceStatistics(serviceClient);
+        getServiceStatistics(searchIndexClient);
     }
 
-    private static void addCustomWebSkillset(SearchServiceClient client) {
+    private static void addCustomWebSkillset(SearchIndexerClient client) {
         String skillsetName = "custom-web-skillset";
         List<InputFieldMappingEntry> inputs = Collections.singletonList(
-            new InputFieldMappingEntry()
-                .setName("text")
+            new InputFieldMappingEntry("text")
                 .setSource("/document/Description")
         );
 
         List<OutputFieldMappingEntry> outputs = Collections.singletonList(
-            new OutputFieldMappingEntry()
-                .setName("textItems")
+            new OutputFieldMappingEntry("textItems")
                 .setTargetName("TextItems")
         );
 
         HashMap<String, String> headers = new HashMap<>();
         headers.put("Ocp-Apim-Subscription-Key", "Bing entity search API key");
 
-        Skill webApiSkill = new WebApiSkill()
-            .setUri("https://api.cognitive.microsoft.com/bing/v7.0/entities/")
+        SearchIndexerSkill webApiSkill = new WebApiSkill(inputs, outputs,
+            "https://api.cognitive.microsoft.com/bing/v7.0/entities/")
             .setHttpMethod("POST") // Supports only "POST" and "PUT" HTTP methods
             .setHttpHeaders(headers)
-            .setInputs(inputs)
-            .setOutputs(outputs)
             .setName("webapi-skill")
             .setDescription("A WebApi skill that can be used as a custom skillset");
 
-        Skillset skillset = new Skillset()
-            .setName(skillsetName)
-            .setDescription("Skillset for testing custom skillsets")
-            .setSkills(Collections.singletonList(webApiSkill));
+        SearchIndexerSkillset skillset = new SearchIndexerSkillset(skillsetName, Collections.singletonList(webApiSkill))
+            .setDescription("Skillset for testing custom skillsets");
 
         client.createOrUpdateSkillset(skillset);
         System.out.printf("Created Skillset %s%n", skillsetName);
 
-        Indexer indexer = client.getIndexer(INDEXER_NAME).setSkillsetName(skillsetName);
+        SearchIndexer indexer = client.getIndexer(INDEXER_NAME).setSkillsetName(skillsetName);
         client.createOrUpdateIndexer(indexer);
         System.out.printf("Updated Indexer %s with  Skillset %s%n", INDEXER_NAME, skillsetName);
     }
 
-    private static void getServiceStatistics(SearchServiceClient client) {
-        ServiceStatistics statistics = client.getServiceStatistics();
-        ServiceCounters counters = statistics.getCounters();
-        ServiceLimits limits = statistics.getLimits();
+    private static void getServiceStatistics(SearchIndexClient client) {
+        SearchServiceStatistics statistics = client.getServiceStatistics();
+        SearchServiceCounters counters = statistics.getCounters();
+        SearchServiceLimits limits = statistics.getLimits();
 
         System.out.println("Service Statistics:");
         System.out.printf("     Documents quota: %d, documents usage: %d%n", counters.getDocumentCounter().getQuota(), counters.getDocumentCounter().getUsage());
@@ -109,7 +108,7 @@ public class RefineSearchCapabilitiesExample {
 
     }
 
-    private static void uploadDocumentsToIndex(SearchIndexClient client) {
+    private static void uploadDocumentsToIndex(SearchClient client) {
 
         List<Hotel> hotels = new ArrayList<>();
         hotels.add(new Hotel().setHotelId("100"));
@@ -121,32 +120,38 @@ public class RefineSearchCapabilitiesExample {
         System.out.printf("Indexed %s documents%n", result.getResults().size());
     }
 
-    private static void addSynonymMapToIndex(SearchServiceClient client) {
+    private static void addSynonymMapToIndex(SearchIndexClient client) {
         String synonymMapName = "hotel-synonym-sample";
-        SynonymMap synonymMap = new SynonymMap()
-            .setName(synonymMapName)
-            .setSynonyms("hotel, motel\ninternet,wifi\nfive star=>luxury\neconomy,inexpensive=>budget");
+        SynonymMap synonymMap = new SynonymMap(synonymMapName,
+            "hotel, motel\ninternet,wifi\nfive star=>luxury\neconomy,inexpensive=>budget");
 
         client.createOrUpdateSynonymMap(synonymMap);
 
-        Index index = client.getIndex(INDEX_NAME);
-        List<Field> fields = index.getFields();
-        fields.get(1).setSynonymMaps(Collections.singletonList(synonymMapName));
+        SearchIndex index = client.getIndex(INDEX_NAME);
+        List<SearchField> fields = index.getFields();
+        fields.get(1).setSynonymMapNames(Collections.singletonList(synonymMapName));
         index.setFields(fields);
 
         client.createOrUpdateIndex(index);
         System.out.printf("Updated index %s with synonym map %s on field %s%n", INDEX_NAME, synonymMapName, "HotelName");
     }
 
-    private static SearchServiceClient createServiceClient() {
-        return new SearchServiceClientBuilder()
+    private static SearchIndexClient createIndexClient() {
+        return new SearchIndexClientBuilder()
             .endpoint(ENDPOINT)
             .credential(new AzureKeyCredential(ADMIN_KEY))
             .buildClient();
     }
 
-    private static SearchIndexClient createIndexClient() {
-        return new SearchIndexClientBuilder()
+    private static SearchIndexerClient createIndexerClient() {
+        return new SearchIndexerClientBuilder()
+            .endpoint(ENDPOINT)
+            .credential(new AzureKeyCredential(ADMIN_KEY))
+            .buildClient();
+    }
+
+    private static SearchClient createSearchClient() {
+        return new SearchClientBuilder()
             .endpoint(ENDPOINT)
             .credential(new AzureKeyCredential(ADMIN_KEY))
             .indexName(INDEX_NAME)

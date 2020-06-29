@@ -11,7 +11,6 @@ import com.azure.cosmos.models.CosmosContainerRequestOptions;
 import com.azure.cosmos.models.CosmosContainerResponse;
 import com.azure.cosmos.models.IndexingMode;
 import com.azure.cosmos.models.IndexingPolicy;
-import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKeyDefinition;
 import com.azure.cosmos.rx.TestSuiteBase;
 import org.testng.annotations.AfterClass;
@@ -88,13 +87,13 @@ public class CosmosContainerContentResponseOnWriteTest extends TestSuiteBase {
 
         assertThat(containerResponse.getProperties().getIndexingPolicy().getIndexingMode()).isEqualTo(IndexingMode.CONSISTENT);
 
-        CosmosContainerResponse replaceResponse = containerResponse.getContainer()
+        CosmosContainerResponse replaceResponse = createdDatabase.getContainer(containerProperties.getId())
                                                                    .replace(containerResponse.getProperties().setIndexingPolicy(
-                                                                       new IndexingPolicy().setIndexingMode(IndexingMode.LAZY)));
+                                                                       new IndexingPolicy().setIndexingMode(IndexingMode.CONSISTENT)));
         assertThat(replaceResponse.getProperties().getIndexingPolicy().getIndexingMode())
-            .isEqualTo(IndexingMode.LAZY);
+            .isEqualTo(IndexingMode.CONSISTENT);
 
-        CosmosContainerResponse replaceResponse1 = containerResponse.getContainer()
+        CosmosContainerResponse replaceResponse1 = createdDatabase.getContainer(containerProperties.getId())
                                                                     .replace(containerResponse.getProperties().setIndexingPolicy(
                                                                         new IndexingPolicy().setIndexingMode(IndexingMode.CONSISTENT)),
                                                                         options);

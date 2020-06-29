@@ -3,7 +3,7 @@
 
 package com.azure.cosmos.benchmark;
 
-import com.azure.cosmos.models.CosmosAsyncItemResponse;
+import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.PartitionKey;
 import com.codahale.metrics.Timer;
 import org.reactivestreams.Subscription;
@@ -56,7 +56,7 @@ class AsyncReadBenchmark extends AsyncBenchmark<PojoizedJson> {
         String partitionKeyValue = doc.getId();
         Mono<PojoizedJson> result = cosmosAsyncContainer.readItem(doc.getId(),
             new PartitionKey(partitionKeyValue),
-            PojoizedJson.class).map(CosmosAsyncItemResponse::getItem);
+            PojoizedJson.class).map(CosmosItemResponse::getItem);
 
         concurrencyControlSemaphore.acquire();
 

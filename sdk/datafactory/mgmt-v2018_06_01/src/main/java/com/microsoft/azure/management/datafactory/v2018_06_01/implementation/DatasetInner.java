@@ -42,6 +42,7 @@ import com.microsoft.azure.management.datafactory.v2018_06_01.DynamicsAXResource
 import com.microsoft.azure.management.datafactory.v2018_06_01.DynamicsCrmEntityDataset;
 import com.microsoft.azure.management.datafactory.v2018_06_01.DynamicsEntityDataset;
 import com.microsoft.azure.management.datafactory.v2018_06_01.EloquaObjectDataset;
+import com.microsoft.azure.management.datafactory.v2018_06_01.ExcelDataset;
 import com.microsoft.azure.management.datafactory.v2018_06_01.FileShareDataset;
 import com.microsoft.azure.management.datafactory.v2018_06_01.GoogleAdWordsObjectDataset;
 import com.microsoft.azure.management.datafactory.v2018_06_01.GoogleBigQueryObjectDataset;
@@ -95,7 +96,9 @@ import com.microsoft.azure.management.datafactory.v2018_06_01.SapHanaTableDatase
 import com.microsoft.azure.management.datafactory.v2018_06_01.SapOpenHubTableDataset;
 import com.microsoft.azure.management.datafactory.v2018_06_01.SapTableResourceDataset;
 import com.microsoft.azure.management.datafactory.v2018_06_01.ServiceNowObjectDataset;
+import com.microsoft.azure.management.datafactory.v2018_06_01.SharePointOnlineListResourceDataset;
 import com.microsoft.azure.management.datafactory.v2018_06_01.ShopifyObjectDataset;
+import com.microsoft.azure.management.datafactory.v2018_06_01.SnowflakeDataset;
 import com.microsoft.azure.management.datafactory.v2018_06_01.SparkObjectDataset;
 import com.microsoft.azure.management.datafactory.v2018_06_01.SqlServerTableDataset;
 import com.microsoft.azure.management.datafactory.v2018_06_01.SquareObjectDataset;
@@ -104,6 +107,7 @@ import com.microsoft.azure.management.datafactory.v2018_06_01.TeradataTableDatas
 import com.microsoft.azure.management.datafactory.v2018_06_01.VerticaTableDataset;
 import com.microsoft.azure.management.datafactory.v2018_06_01.WebTableDataset;
 import com.microsoft.azure.management.datafactory.v2018_06_01.XeroObjectDataset;
+import com.microsoft.azure.management.datafactory.v2018_06_01.XmlDataset;
 import com.microsoft.azure.management.datafactory.v2018_06_01.ZohoObjectDataset;
 
 /**
@@ -113,6 +117,8 @@ import com.microsoft.azure.management.datafactory.v2018_06_01.ZohoObjectDataset;
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type", defaultImpl = DatasetInner.class)
 @JsonTypeName("Dataset")
 @JsonSubTypes({
+    @JsonSubTypes.Type(name = "SharePointOnlineListResource", value = SharePointOnlineListResourceDataset.class),
+    @JsonSubTypes.Type(name = "SnowflakeTable", value = SnowflakeDataset.class),
     @JsonSubTypes.Type(name = "GoogleAdWordsObject", value = GoogleAdWordsObjectDataset.class),
     @JsonSubTypes.Type(name = "AzureDataExplorerTable", value = AzureDataExplorerTableDataset.class),
     @JsonSubTypes.Type(name = "OracleServiceCloudObject", value = OracleServiceCloudObjectDataset.class),
@@ -195,9 +201,11 @@ import com.microsoft.azure.management.datafactory.v2018_06_01.ZohoObjectDataset;
     @JsonSubTypes.Type(name = "AzureBlob", value = AzureBlobDataset.class),
     @JsonSubTypes.Type(name = "Binary", value = BinaryDataset.class),
     @JsonSubTypes.Type(name = "Orc", value = OrcDataset.class),
+    @JsonSubTypes.Type(name = "Xml", value = XmlDataset.class),
     @JsonSubTypes.Type(name = "Json", value = JsonDataset.class),
     @JsonSubTypes.Type(name = "DelimitedText", value = DelimitedTextDataset.class),
     @JsonSubTypes.Type(name = "Parquet", value = ParquetDataset.class),
+    @JsonSubTypes.Type(name = "Excel", value = ExcelDataset.class),
     @JsonSubTypes.Type(name = "Avro", value = AvroDataset.class),
     @JsonSubTypes.Type(name = "AmazonS3Object", value = AmazonS3Dataset.class)
 })

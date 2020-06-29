@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>com.microsoft.azure</groupId>
+  <artifactId>azure-spring-boot-bom</artifactId>
+  <version>2.2.5-beta.1</version>
+  <packaging>pom</packaging>
+
+  <name>Azure Spring Boot BOM</name>
+  <description>BOM for Microsoft Azure Spring Boot Support</description>
+  <url>https://github.com/Azure/azure-sdk-for-java</url>
+
+  <licenses>
+    <license>
+      <name>The MIT License (MIT)</name>
+      <url>http://opensource.org/licenses/MIT</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+
+  <developers>
+    <developer>
+      <id>microsoft</id>
+      <name>Microsoft Corporation</name>
+    </developer>
+  </developers>
+
+  <scm>
+    <connection>scm:git:git://github.com/azure/azure-sdk-for-java</connection>
+    <developerConnection>scm:git:git://github.com/azure/azure-sdk-for-java</developerConnection>
+    <url>https://github.com/azure/azure-sdk-for-java</url>
+  </scm>
+
+  <issueManagement>
+    <system>GitHub</system>
+    <url>https://github.com/azure/azure-sdk-for-java/issues</url>
+  </issueManagement>
+
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>com.microsoft.azure</groupId>
+        <artifactId>spring-data-cosmosdb</artifactId>
+        <version>2.2.3.FIX1</version> <!-- {x-version-update;com.microsoft.azure:spring-data-cosmosdb;external_dependency} -->
+      </dependency>
+      <dependency>
+        <groupId>com.microsoft.spring.data.gremlin</groupId>
+        <artifactId>spring-data-gremlin</artifactId>
+        <version>2.2.3</version> <!-- {x-version-update;com.microsoft.spring.data.gremlin:spring-data-gremlin;external_dependency} -->
+      </dependency>
+
+      <!-- Azure Dependencies Bom -->
+      <dependency>
+        <groupId>com.microsoft.azure</groupId>
+        <artifactId>azure-spring-boot</artifactId>
+        <version>2.2.5-beta.1</version>
+      </dependency>
+      <dependency>
+        <groupId>com.microsoft.azure</groupId>
+        <artifactId>azure-spring-boot-starter</artifactId>
+        <version>2.2.5-beta.1</version>
+      </dependency>
+      <dependency>
+        <groupId>com.microsoft.azure</groupId>
+        <artifactId>azure-active-directory-spring-boot-starter</artifactId>
+        <version>2.2.5-beta.1</version>
+      </dependency>
+      <dependency>
+        <groupId>com.microsoft.azure</groupId>
+        <artifactId>azure-active-directory-b2c-spring-boot-starter</artifactId>
+        <version>2.2.5-beta.1</version>
+      </dependency>
+      <dependency>
+        <groupId>com.microsoft.azure</groupId>
+        <artifactId>azure-cosmosdb-spring-boot-starter</artifactId>
+        <version>2.2.5-beta.1</version>
+      </dependency>
+      <dependency>
+        <groupId>com.microsoft.azure</groupId>
+        <artifactId>azure-data-gremlin-spring-boot-starter</artifactId>
+        <version>2.2.5-beta.1</version>
+      </dependency>
+      <dependency>
+        <groupId>com.microsoft.azure</groupId>
+        <artifactId>azure-keyvault-secrets-spring-boot-starter</artifactId>
+        <version>2.2.5-beta.1</version>
+      </dependency>
+      <dependency>
+        <groupId>com.microsoft.azure</groupId>
+        <artifactId>azure-spring-boot-metrics-starter</artifactId>
+        <version>2.2.5-beta.1</version>
+      </dependency>
+      <dependency>
+        <groupId>com.microsoft.azure</groupId>
+        <artifactId>azure-servicebus-jms-spring-boot-starter</artifactId>
+        <version>2.2.5-beta.1</version>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
+</project>

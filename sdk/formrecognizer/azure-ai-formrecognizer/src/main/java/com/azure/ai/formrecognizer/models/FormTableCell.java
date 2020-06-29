@@ -4,7 +4,9 @@
 package com.azure.ai.formrecognizer.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.IterableStream;
+
+import java.util.Collections;
+import java.util.List;
 
 /**
  * The FormTableCell model.
@@ -38,10 +40,10 @@ public final class FormTableCell extends FormContent {
     private final float confidence;
 
     /*
-     * When includeTextDetails is set to true, a list of references to the text
+     * When includeTextContent is set to true, a list of references to the text
      * elements constituting this table cell.
      */
-    private final IterableStream<FormContent> elements;
+    private final List<FormContent> textContent;
 
     /*
      * Is the current cell a header cell?
@@ -71,8 +73,8 @@ public final class FormTableCell extends FormContent {
     public FormTableCell(final int rowIndex, final int columnIndex, final Integer rowSpan,
         final Integer columnSpan, final String text, final BoundingBox boundingBox,
         final float confidence, final boolean isHeader, final boolean isFooter, final int pageNumber,
-        final IterableStream<FormContent> textContent) {
-        super(text, boundingBox, pageNumber, null);
+        final List<FormContent> textContent) {
+        super(text, boundingBox, pageNumber);
         this.rowIndex = rowIndex;
         this.columnIndex = columnIndex;
         this.rowSpan = rowSpan;
@@ -80,7 +82,7 @@ public final class FormTableCell extends FormContent {
         this.confidence = confidence;
         this.isHeader = isHeader;
         this.isFooter = isFooter;
-        this.elements = textContent;
+        this.textContent = textContent == null ? null : Collections.unmodifiableList(textContent);
     }
 
     /**
@@ -155,12 +157,12 @@ public final class FormTableCell extends FormContent {
 
     /**
      * Get the list of references to the text elements constituting this table cell
-     * When includeTextDetails is set to true.
+     * When includeTextContent is set to true.
      *
-     * @return the elements value.
+     * @return the unmodifiable list of list of references to the text elements constituting this table cell.
      */
-    public IterableStream<FormContent> getElements() {
-        return this.elements;
+    public List<FormContent> getTextContent() {
+        return this.textContent;
     }
 
     /**

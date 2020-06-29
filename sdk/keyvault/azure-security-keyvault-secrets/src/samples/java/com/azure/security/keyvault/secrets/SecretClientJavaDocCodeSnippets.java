@@ -140,9 +140,10 @@ public final class SecretClientJavaDocCodeSnippets {
         // BEGIN: com.azure.security.keyvault.secretclient.deleteSecret#string
         SyncPoller<DeletedSecret, Void> deletedSecretPoller = secretClient.beginDeleteSecret("secretName");
 
-        // Deleted Secret is accessible as soon as polling begins
+        // Deleted Secret is accessible as soon as polling begins.
         PollResponse<DeletedSecret> deletedSecretPollResponse = deletedSecretPoller.poll();
 
+        // Deletion date only works for a SoftDelete-enabled Key Vault.
         System.out.println("Deleted Date  %s" + deletedSecretPollResponse.getValue()
                 .getDeletedOn().toString());
         System.out.printf("Deleted Secret's Recovery Id %s", deletedSecretPollResponse.getValue()

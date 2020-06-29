@@ -10,30 +10,34 @@ import java.time.Duration;
 /**
  * Represents the connection config with {@link ConnectionMode#DIRECT} associated with Cosmos Client in the Azure Cosmos DB database service.
  * For performance tips on how to optimize Direct connection configuration,
- * refer to performance tips guide: https://docs.microsoft.com/en-us/azure/cosmos-db/performance-tips-java-sdk-v4-sql?tabs=api-async
+ * refer to performance tips guide:
+ * <a href="https://docs.microsoft.com/en-us/azure/cosmos-db/performance-tips-java-sdk-v4-sql?tabs=api-async">Performance tips guide</a>
  */
 public final class DirectConnectionConfig {
     //  Constants
     private static final Duration DEFAULT_IDLE_ENDPOINT_TIMEOUT = Duration.ofSeconds(70L);
-    private static final Duration DEFAULT_CONNECTION_TIMEOUT = Duration.ofSeconds(60L);
-    private static final int DEFAULT_MAX_CONNECTIONS_PER_ENDPOINT = 30;
-    private static final int DEFAULT_MAX_REQUESTS_PER_CONNECTION = 10;
+    private static final Duration DEFAULT_CONNECT_TIMEOUT = Duration.ofSeconds(60L);
+    private static final Duration DEFAULT_REQUEST_TIMEOUT = Duration.ofSeconds(5L);
+    private static final int DEFAULT_MAX_CONNECTIONS_PER_ENDPOINT = 130;
+    private static final int DEFAULT_MAX_REQUESTS_PER_CONNECTION = 30;
 
-    private Duration connectionTimeout;
+    private Duration connectTimeout;
     private Duration idleConnectionTimeout;
     private Duration idleEndpointTimeout;
+    private Duration requestTimeout;
     private int maxConnectionsPerEndpoint;
     private int maxRequestsPerConnection;
 
     /**
-     * Constructor.
+     * Constructor
      */
     public DirectConnectionConfig() {
+        this.connectTimeout = DEFAULT_CONNECT_TIMEOUT;
         this.idleConnectionTimeout = Duration.ZERO;
-        this.connectionTimeout = DEFAULT_CONNECTION_TIMEOUT;
         this.idleEndpointTimeout = DEFAULT_IDLE_ENDPOINT_TIMEOUT;
         this.maxConnectionsPerEndpoint = DEFAULT_MAX_CONNECTIONS_PER_ENDPOINT;
         this.maxRequestsPerConnection = DEFAULT_MAX_REQUESTS_PER_CONNECTION;
+        this.requestTimeout = DEFAULT_REQUEST_TIMEOUT;
     }
 
     /**
@@ -46,32 +50,32 @@ public final class DirectConnectionConfig {
     }
 
     /**
-     * Gets the connection timeout for direct client,
+     * Gets the connect timeout for direct client,
      * represents timeout for establishing connections with an endpoint.
      *
      * Configures timeout for underlying Netty Channel {@link ChannelOption#CONNECT_TIMEOUT_MILLIS}
      *
-     * By default, the connection timeout is 60 seconds.
+     * By default, the connect timeout is 60 seconds.
      *
-     * @return direct connection timeout
+     * @return direct connect timeout
      */
-    public Duration getConnectionTimeout() {
-        return connectionTimeout;
+    public Duration getConnectTimeout() {
+        return connectTimeout;
     }
 
     /**
-     * Sets the connection timeout for direct client,
+     * Sets the connect timeout for direct client,
      * represents timeout for establishing connections with an endpoint.
      *
      * Configures timeout for underlying Netty Channel {@link ChannelOption#CONNECT_TIMEOUT_MILLIS}
      *
-     * By default, the connection timeout is 60 seconds.
+     * By default, the connect timeout is 60 seconds.
      *
-     * @param connectionTimeout the connection timeout
+     * @param connectTimeout the connection timeout
      * @return the {@link DirectConnectionConfig}
      */
-    public DirectConnectionConfig setConnectionTimeout(Duration connectionTimeout) {
-        this.connectionTimeout = connectionTimeout;
+    public DirectConnectionConfig setConnectTimeout(Duration connectTimeout) {
+        this.connectTimeout = connectTimeout;
         return this;
     }
 
@@ -189,10 +193,36 @@ public final class DirectConnectionConfig {
         return this;
     }
 
+    /**
+     * Gets the request timeout interval
+     * This represents the timeout interval for requests
+     *
+     * Default value is 60 seconds
+     *
+     * @return the request timeout interval
+     */
+    Duration getRequestTimeout() {
+        return requestTimeout;
+    }
+
+    /**
+     * Sets the request timeout interval
+     * This represents the timeout interval for requests
+     *
+     * Default value is 5 seconds
+     *
+     * @param requestTimeout the request timeout interval
+     * @return the {@link DirectConnectionConfig}
+     */
+    DirectConnectionConfig setRequestTimeout(Duration requestTimeout) {
+        this.requestTimeout = requestTimeout;
+        return this;
+    }
+
     @Override
     public String toString() {
         return "DirectConnectionConfig{" +
-            "connectionTimeout=" + connectionTimeout +
+            "connectTimeout=" + connectTimeout +
             ", idleConnectionTimeout=" + idleConnectionTimeout +
             ", idleEndpointTimeout=" + idleEndpointTimeout +
             ", maxConnectionsPerEndpoint=" + maxConnectionsPerEndpoint +
