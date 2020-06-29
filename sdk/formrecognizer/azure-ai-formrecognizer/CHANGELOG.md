@@ -13,6 +13,9 @@
 - Rename `includeTextDetails` references in parameter and model properties to `includeTextContent`
 - Remove `TextContentType` model and use `instanceOf` to detect the FormContent type
 
+### Key Bug Fixes
+- Fixes `textAngle` to be returned between `(-180, 180]`.
+
 ## 1.0.0-beta.3 (2020-06-10)
 ### New Features
 - Support to copy a custom model from one Form Recognizer resource to another
