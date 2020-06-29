@@ -57,7 +57,7 @@ public class FormTrainingClientTest extends FormTrainingClientTestBase {
         blankPdfDataRunner(data -> {
             SyncPoller<OperationResult, List<RecognizedReceipt>> syncPoller =
                 formRecognizerClient.beginRecognizeReceipts(new RecognizeOptions(data, BLANK_FORM_FILE_LENGTH)
-                        .setFormContentType(FormContentType.APPLICATION_PDF).setIncludeTextContent(false));
+                        .setFormContentType(FormContentType.APPLICATION_PDF));
             syncPoller.waitForCompletion();
             validateBlankPdfResultData(syncPoller.getFinalResult());
         });
@@ -392,17 +392,36 @@ public class FormTrainingClientTest extends FormTrainingClientTestBase {
     }
 
     /**
-     * Verifies the result of the training operation for a valid labeled model Id and include subfolder training set
-     * Url.
+     * Verifies the result of the training operation for a valid unlabeled model Id and include subfolder training set
+     * Url with existing prefix name.
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
-    public void beginTrainingWithoutTrainingLabelsIncludeSubfolder(HttpClient httpClient,
+    public void beginTrainingWithoutTrainingLabelsIncludeSubfolderWithPrefixName(HttpClient httpClient,
         FormRecognizerServiceVersion serviceVersion) {
         client = getFormTrainingClient(httpClient, serviceVersion);
         beginTrainingUnlabeledRunner((trainingFilesUrl, useTrainingLabels) -> {
             SyncPoller<OperationResult, CustomFormModel> trainingPoller = client.beginTraining(trainingFilesUrl,
-                useTrainingLabels, new TrainingFileFilter().setIncludeSubFolders(true).setPrefix(SUBFOLDER), null);
+                useTrainingLabels, new TrainingFileFilter().setIncludeSubFolders(true).setPrefix(PREFIX_SUBFOLDER),
+                null);
+            trainingPoller.waitForCompletion();
+            validateCustomModelData(trainingPoller.getFinalResult(), false);
+        });
+    }
+
+    /**
+     * Verifies the result of the training operation for a valid unlabeled model ID and exclude subfolder training set
+     * URL with existing prefix name.
+     */
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
+    public void beginTrainingWithoutTrainingLabelsExcludeSubfolderWithPrefixName(HttpClient httpClient,
+        FormRecognizerServiceVersion serviceVersion) {
+        client = getFormTrainingClient(httpClient, serviceVersion);
+        beginTrainingUnlabeledRunner((trainingFilesUrl, useTrainingLabels) -> {
+            SyncPoller<OperationResult, CustomFormModel> trainingPoller = client.beginTraining(trainingFilesUrl,
+                useTrainingLabels, new TrainingFileFilter().setPrefix(PREFIX_SUBFOLDER),
+                null);
             trainingPoller.waitForCompletion();
             validateCustomModelData(trainingPoller.getFinalResult(), false);
         });
@@ -414,13 +433,31 @@ public class FormTrainingClientTest extends FormTrainingClientTestBase {
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
-    public void beginTrainingWithoutTrainingLabelsIncludeSubfolderWithNonExistPrefix(HttpClient httpClient,
+    public void beginTrainingWithoutTrainingLabelsIncludeSubfolderWithNonExistPrefixName(HttpClient httpClient,
         FormRecognizerServiceVersion serviceVersion) {
         client = getFormTrainingClient(httpClient, serviceVersion);
         beginTrainingMultipageRunner(trainingFilesUrl -> {
             FormRecognizerException thrown = assertThrows(FormRecognizerException.class, () ->
                 client.beginTraining(trainingFilesUrl, false,
                     new TrainingFileFilter().setIncludeSubFolders(true).setPrefix(INVALID_PREFIX_FILE_NAME), null)
+                    .getFinalResult());
+            assertEquals(NO_VALID_BLOB_FOUND, thrown.getErrorInformation().get(0).getMessage());
+        });
+    }
+
+    /**
+     * Verifies the result of the training operation for a valid unlabeled model Id and exclude subfolder training set
+     * Url with non-existing prefix name.
+     */
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
+    public void beginTrainingWithoutTrainingLabelsExcludeSubfolderWithNonExistPrefixName(HttpClient httpClient,
+        FormRecognizerServiceVersion serviceVersion) {
+        client = getFormTrainingClient(httpClient, serviceVersion);
+        beginTrainingMultipageRunner(trainingFilesUrl -> {
+            FormRecognizerException thrown = assertThrows(FormRecognizerException.class, () ->
+                client.beginTraining(trainingFilesUrl, false,
+                    new TrainingFileFilter().setPrefix(INVALID_PREFIX_FILE_NAME), null)
                     .getFinalResult());
             assertEquals(NO_VALID_BLOB_FOUND, thrown.getErrorInformation().get(0).getMessage());
         });

@@ -19,16 +19,13 @@ import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
-import static com.azure.ai.formrecognizer.FormRecognizerClientTestBase.EXPECTED_HTTPS_EXCEPTION_MESSAGE;
 import static com.azure.ai.formrecognizer.FormRecognizerClientTestBase.INVALID_ENDPOINT;
 import static com.azure.ai.formrecognizer.FormTrainingClientTestBase.AZURE_FORM_RECOGNIZER_API_KEY;
 import static com.azure.ai.formrecognizer.FormTrainingClientTestBase.AZURE_FORM_RECOGNIZER_ENDPOINT;
 import static com.azure.ai.formrecognizer.FormTrainingClientTestBase.FORM_RECOGNIZER_TESTING_BLOB_CONTAINER_SAS_URL;
 import static com.azure.ai.formrecognizer.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
 import static com.azure.ai.formrecognizer.TestUtils.INVALID_KEY;
-import static com.azure.ai.formrecognizer.TestUtils.VALID_HTTP_LOCALHOST;
 import static com.azure.ai.formrecognizer.TestUtils.VALID_URL;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -99,24 +96,10 @@ public class FormTrainingClientBuilderTest extends TestBase {
             Exception exception =  assertThrows(RuntimeException.class, () ->
                 clientBuilder.endpoint(INVALID_ENDPOINT).buildClient().getFormRecognizerClient()
                     .beginRecognizeContentFromUrl(input).getFinalResult());
-            // "Max retries 3 times exceeded. Error Details: Connection refused: no further information:
+            // RECORD mode has "Max retries 3 times exceeded. Error Details: Connection refused: no further information:
             // notreal.azure.com/23.217.138.110:443"
-            // Recording mode has Error Details: null
+            // PLAYBACK mode has Error Details: null
             assertTrue(exception.getMessage().contains("Max retries 3 times exceeded. Error Details:"));
-        });
-    }
-
-    /**
-     * Test for http endpoint, which throws HTTPS requirement exception message.
-     */
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
-    public void trainingClientBuilderHttpEndpoint(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
-        clientBuilderWithDefaultPipelineRunner(httpClient, serviceVersion, clientBuilder -> (input) -> {
-            Exception exception = assertThrows(RuntimeException.class, () ->
-                clientBuilder.endpoint(VALID_HTTP_LOCALHOST).buildClient().getFormRecognizerClient()
-                    .beginRecognizeContentFromUrl(input).getFinalResult());
-            assertEquals(exception.getMessage(), EXPECTED_HTTPS_EXCEPTION_MESSAGE);
         });
     }
 

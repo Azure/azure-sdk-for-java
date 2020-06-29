@@ -66,7 +66,7 @@ public abstract class FormTrainingClientTestBase extends TestBase {
         "FORM_RECOGNIZER_MULTIPAGE_TRAINING_BLOB_CONTAINER_SAS_URL";
     static final String NO_VALID_BLOB_FOUND = "No valid blobs found in the specified Azure blob container."
         + " Please conform to the document format/size/page/dimensions requirements.";
-    static final String SUBFOLDER = "subfolder";
+    static final String PREFIX_SUBFOLDER = "subfolder";
     static final String INVALID_PREFIX_FILE_NAME = "XXXXX";
 
     void validateCopyAuthorizationResult(String expectedResourceId, String expectedResourceRegion,
@@ -259,13 +259,20 @@ public abstract class FormTrainingClientTestBase extends TestBase {
         FormRecognizerServiceVersion serviceVersion);
 
     @Test
-    abstract void beginTrainingWithoutTrainingLabelsIncludeSubfolder(HttpClient httpClient,
+    abstract void beginTrainingWithoutTrainingLabelsExcludeSubfolderWithPrefixName(HttpClient httpClient,
         FormRecognizerServiceVersion serviceVersion);
 
     @Test
-    abstract void beginTrainingWithoutTrainingLabelsIncludeSubfolderWithNonExistPrefix(HttpClient httpClient,
+    abstract void beginTrainingWithoutTrainingLabelsIncludeSubfolderWithPrefixName(HttpClient httpClient,
         FormRecognizerServiceVersion serviceVersion);
 
+    @Test
+    abstract void beginTrainingWithoutTrainingLabelsIncludeSubfolderWithNonExistPrefixName(HttpClient httpClient,
+        FormRecognizerServiceVersion serviceVersion);
+
+    @Test
+    abstract void beginTrainingWithoutTrainingLabelsExcludeSubfolderWithNonExistPrefixName(HttpClient httpClient,
+        FormRecognizerServiceVersion serviceVersion);
 
     void getCustomModelInvalidModelIdRunner(Consumer<String> testRunner) {
         testRunner.accept(TestUtils.INVALID_MODEL_ID);
