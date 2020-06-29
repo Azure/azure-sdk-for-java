@@ -20,7 +20,7 @@ import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.IterableStream;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.messaging.servicebus.implementation.QueuesImpl;
+import com.azure.messaging.servicebus.implementation.EntitysImpl;
 import com.azure.messaging.servicebus.implementation.ServiceBusManagementClientImpl;
 import com.azure.messaging.servicebus.implementation.ServiceBusManagementSerializer;
 import com.azure.messaging.servicebus.implementation.models.CreateQueueBody;
@@ -31,6 +31,7 @@ import com.azure.messaging.servicebus.implementation.models.ResponseLink;
 import com.azure.messaging.servicebus.implementation.models.ServiceBusManagementError;
 import com.azure.messaging.servicebus.implementation.models.ServiceBusManagementErrorException;
 import com.azure.messaging.servicebus.models.QueueDescription;
+import com.azure.messaging.servicebus.models.QueueHelper;
 import com.azure.messaging.servicebus.models.QueueRuntimeInfo;
 import reactor.core.publisher.Mono;
 
@@ -43,6 +44,7 @@ import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -68,7 +70,7 @@ public final class ServiceBusManagementAsyncClient {
     private static final int NUMBER_OF_ELEMENTS = 10;
 
     private final ServiceBusManagementClientImpl managementClient;
-    private final QueuesImpl queuesClient;
+    private final EntitysImpl queuesClient;
     private final ClientLogger logger = new ClientLogger(ServiceBusManagementAsyncClient.class);
     private final ServiceBusManagementSerializer serializer;
 
@@ -81,7 +83,7 @@ public final class ServiceBusManagementAsyncClient {
     ServiceBusManagementAsyncClient(ServiceBusManagementClientImpl managementClient,
         ServiceBusManagementSerializer serializer) {
         this.managementClient = Objects.requireNonNull(managementClient, "'managementClient' cannot be null.");
-        this.queuesClient = managementClient.getQueues();
+        this.queuesClient = managementClient.getEntitys();
         this.serializer = serializer;
     }
 
@@ -591,10 +593,14 @@ public final class ServiceBusManagementAsyncClient {
         // This was an empty response (ie. 204).
         if (entry == null) {
             return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), null);
+        } else if (entry.getContent() == null) {
+            logger.warning("entry.getContent() is null. There should have been content returned. Entry: {}", entry);
+            return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), null);
         }
 
-        final QueueDescription result = entry.getContent().getQueueDescription()
-            .setName(entry.getTitle().getTitle());
+        final QueueDescription result = entry.getContent().getQueueDescription();
+        final String queueName = getTitleValue(entry.getTitle());
+        QueueHelper.setName(result, queueName);
 
         return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), result);
     }
@@ -660,8 +666,11 @@ public final class ServiceBusManagementAsyncClient {
                 final List<QueueDescription> entities = feed.getEntry().stream()
                     .filter(e -> e.getContent() != null && e.getContent().getQueueDescription() != null)
                     .map(e -> {
-                        final String queueName = e.getTitle().getTitle();
-                        return e.getContent().getQueueDescription().setName(queueName);
+                        final String queueName = getTitleValue(e.getTitle());
+                        final QueueDescription queueDescription = e.getContent().getQueueDescription();
+                        QueueHelper.setName(queueDescription, queueName);
+
+                        return queueDescription;
                     })
                     .collect(Collectors.toList());
                 try {
@@ -671,6 +680,32 @@ public final class ServiceBusManagementAsyncClient {
                         error));
                 }
             });
+    }
+
+    /**
+     * Given an XML title element, returns the XML text inside. Jackson deserializes Objects as LinkedHashMaps. XML text
+     * is represented as an entry with an empty string as the key.
+     *
+     * For example, the text returned from this {@code <title text="text/xml">QueueName</title>} is "QueueName".
+     *
+     * @param responseTitle XML title element.
+     *
+     * @return The XML text inside the title. {@code null} is returned if there is no value.
+     */
+    @SuppressWarnings("unchecked")
+    private String getTitleValue(Object responseTitle) {
+        if (!(responseTitle instanceof Map)) {
+            return null;
+        }
+
+        final Map<String, String> map;
+        try {
+            map = (Map<String, String>) responseTitle;
+            return map.get("");
+        } catch (ClassCastException error) {
+            logger.warning("Unable to cast to Map<String,String>. Title: {}", responseTitle, error);
+            return null;
+        }
     }
 
     /**

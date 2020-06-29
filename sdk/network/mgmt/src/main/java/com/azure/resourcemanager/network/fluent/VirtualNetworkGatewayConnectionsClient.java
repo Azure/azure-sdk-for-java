@@ -31,7 +31,6 @@ import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.util.polling.AsyncPollResponse;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.resourcemanager.network.NetworkManagementClient;
 import com.azure.resourcemanager.network.fluent.inner.ConnectionResetSharedKeyInner;
@@ -477,7 +476,7 @@ public final class VirtualNetworkGatewayConnectionsClient
                 VirtualNetworkGatewayConnectionInner.class,
                 VirtualNetworkGatewayConnectionInner.class)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -509,7 +508,7 @@ public final class VirtualNetworkGatewayConnectionsClient
                 VirtualNetworkGatewayConnectionInner.class,
                 VirtualNetworkGatewayConnectionInner.class)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -883,7 +882,7 @@ public final class VirtualNetworkGatewayConnectionsClient
             .client
             .<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -906,7 +905,7 @@ public final class VirtualNetworkGatewayConnectionsClient
             .client
             .<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -1126,7 +1125,7 @@ public final class VirtualNetworkGatewayConnectionsClient
                 VirtualNetworkGatewayConnectionInner.class,
                 VirtualNetworkGatewayConnectionInner.class)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -1157,7 +1156,7 @@ public final class VirtualNetworkGatewayConnectionsClient
                 VirtualNetworkGatewayConnectionInner.class,
                 VirtualNetworkGatewayConnectionInner.class)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -1386,7 +1385,7 @@ public final class VirtualNetworkGatewayConnectionsClient
             .<ConnectionSharedKeyInner, ConnectionSharedKeyInner>getLroResultAsync(
                 mono, this.client.getHttpPipeline(), ConnectionSharedKeyInner.class, ConnectionSharedKeyInner.class)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -1415,7 +1414,7 @@ public final class VirtualNetworkGatewayConnectionsClient
             .<ConnectionSharedKeyInner, ConnectionSharedKeyInner>getLroResultAsync(
                 mono, this.client.getHttpPipeline(), ConnectionSharedKeyInner.class, ConnectionSharedKeyInner.class)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -1996,7 +1995,7 @@ public final class VirtualNetworkGatewayConnectionsClient
                 ConnectionResetSharedKeyInner.class,
                 ConnectionResetSharedKeyInner.class)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -2026,7 +2025,7 @@ public final class VirtualNetworkGatewayConnectionsClient
                 ConnectionResetSharedKeyInner.class,
                 ConnectionResetSharedKeyInner.class)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**

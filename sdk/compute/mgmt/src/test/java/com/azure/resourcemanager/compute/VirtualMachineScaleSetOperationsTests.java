@@ -44,6 +44,7 @@ import com.azure.resourcemanager.network.models.PublicIpAddress;
 import com.azure.resourcemanager.network.models.SecurityRuleProtocol;
 import com.azure.resourcemanager.network.models.VirtualMachineScaleSetNetworkInterface;
 import com.azure.resourcemanager.network.models.VirtualMachineScaleSetNicIpConfiguration;
+import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 import com.azure.resourcemanager.resources.models.ResourceGroup;
 import com.azure.resourcemanager.resources.core.TestUtilities;
 import com.azure.resourcemanager.resources.fluentcore.arm.AvailabilityZoneId;
@@ -226,7 +227,7 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
         final String uname = "jvuser";
         final String password = password();
         final String apacheInstallScript =
-            "https://raw.githubusercontent.com/Azure/azure-sdk-for-java/blob/master/sdk/compute/mgmt/src/test/resources/install_apache.sh";
+            "https://raw.githubusercontent.com/Azure/azure-sdk-for-java/master/sdk/compute/mgmt/src/test/resources/install_apache.sh";
         final String installCommand = "bash install_apache.sh Abc.123x(";
         List<String> fileUris = new ArrayList<>();
         fileUris.add(apacheInstallScript);
@@ -1206,6 +1207,53 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
 
         vmss.update().withMaxPrice(2000.0).apply();
         Assertions.assertEquals(vmss.billingProfile().maxPrice(), (Double) 2000.0);
+    }
+
+    @Test
+    public void canPerformSimulateEvictionOnSpotVMSSInstance() {
+        final String vmssName = generateRandomResourceName("vmss", 10);
+
+        ResourceGroup resourceGroup = this.resourceManager.resourceGroups()
+            .define(rgName)
+            .withRegion(region)
+            .create();
+
+        Network network = this.networkManager
+            .networks()
+            .define("vmssvnet")
+            .withRegion(region)
+            .withExistingResourceGroup(resourceGroup)
+            .withAddressSpace("10.0.0.0/28")
+            .withSubnet("subnet1", "10.0.0.0/28")
+            .create();
+
+        VirtualMachineScaleSet vmss = computeManager.virtualMachineScaleSets()
+            .define(vmssName)
+            .withRegion(region)
+            .withExistingResourceGroup(rgName)
+            .withSku(VirtualMachineScaleSetSkuTypes.STANDARD_D3_V2)
+            .withExistingPrimaryNetworkSubnet(network, "subnet1")
+            .withoutPrimaryInternetFacingLoadBalancer()
+            .withoutPrimaryInternalLoadBalancer()
+            .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
+            .withRootUsername("jvuser")
+            .withRootPassword("123OData!@#123")
+            .withSpotPriorityVirtualMachine(VirtualMachineEvictionPolicyTypes.DEALLOCATE)
+            .create();
+
+        PagedIterable<VirtualMachineScaleSetVM> vmInstances = vmss.virtualMachines().list();
+        for (VirtualMachineScaleSetVM instance: vmInstances) {
+            Assertions.assertTrue(instance.osDiskSizeInGB() > 0);
+            // call simulate eviction
+            vmss.virtualMachines().simulateEviction(instance.instanceId());
+        }
+
+        SdkContext.sleep(30 * 60 * 1000);
+
+        for (VirtualMachineScaleSetVM instance: vmInstances) {
+            instance.refresh();
+            Assertions.assertTrue(instance.osDiskSizeInGB() == 0);
+        }
     }
 
     private void checkVmsEqual(VirtualMachineScaleSetVM original, VirtualMachineScaleSetVM fetched) {

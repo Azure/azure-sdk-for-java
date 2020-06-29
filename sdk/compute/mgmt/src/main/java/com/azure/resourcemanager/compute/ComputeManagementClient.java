@@ -26,6 +26,7 @@ import com.azure.resourcemanager.compute.fluent.OperationsClient;
 import com.azure.resourcemanager.compute.fluent.ProximityPlacementGroupsClient;
 import com.azure.resourcemanager.compute.fluent.ResourceSkusClient;
 import com.azure.resourcemanager.compute.fluent.SnapshotsClient;
+import com.azure.resourcemanager.compute.fluent.SshPublicKeysClient;
 import com.azure.resourcemanager.compute.fluent.UsagesClient;
 import com.azure.resourcemanager.compute.fluent.VirtualMachineExtensionImagesClient;
 import com.azure.resourcemanager.compute.fluent.VirtualMachineExtensionsClient;
@@ -33,6 +34,7 @@ import com.azure.resourcemanager.compute.fluent.VirtualMachineImagesClient;
 import com.azure.resourcemanager.compute.fluent.VirtualMachineRunCommandsClient;
 import com.azure.resourcemanager.compute.fluent.VirtualMachineScaleSetExtensionsClient;
 import com.azure.resourcemanager.compute.fluent.VirtualMachineScaleSetRollingUpgradesClient;
+import com.azure.resourcemanager.compute.fluent.VirtualMachineScaleSetVMExtensionsClient;
 import com.azure.resourcemanager.compute.fluent.VirtualMachineScaleSetVMsClient;
 import com.azure.resourcemanager.compute.fluent.VirtualMachineScaleSetsClient;
 import com.azure.resourcemanager.compute.fluent.VirtualMachineSizesClient;
@@ -141,6 +143,18 @@ public final class ComputeManagementClient extends AzureServiceClient {
      */
     public DedicatedHostsClient getDedicatedHosts() {
         return this.dedicatedHosts;
+    }
+
+    /** The SshPublicKeysClient object to access its operations. */
+    private final SshPublicKeysClient sshPublicKeys;
+
+    /**
+     * Gets the SshPublicKeysClient object to access its operations.
+     *
+     * @return the SshPublicKeysClient object.
+     */
+    public SshPublicKeysClient getSshPublicKeys() {
+        return this.sshPublicKeys;
     }
 
     /** The VirtualMachineExtensionImagesClient object to access its operations. */
@@ -261,6 +275,18 @@ public final class ComputeManagementClient extends AzureServiceClient {
      */
     public VirtualMachineScaleSetRollingUpgradesClient getVirtualMachineScaleSetRollingUpgrades() {
         return this.virtualMachineScaleSetRollingUpgrades;
+    }
+
+    /** The VirtualMachineScaleSetVMExtensionsClient object to access its operations. */
+    private final VirtualMachineScaleSetVMExtensionsClient virtualMachineScaleSetVMExtensions;
+
+    /**
+     * Gets the VirtualMachineScaleSetVMExtensionsClient object to access its operations.
+     *
+     * @return the VirtualMachineScaleSetVMExtensionsClient object.
+     */
+    public VirtualMachineScaleSetVMExtensionsClient getVirtualMachineScaleSetVMExtensions() {
+        return this.virtualMachineScaleSetVMExtensions;
     }
 
     /** The VirtualMachineScaleSetVMsClient object to access its operations. */
@@ -436,6 +462,7 @@ public final class ComputeManagementClient extends AzureServiceClient {
         this.proximityPlacementGroups = new ProximityPlacementGroupsClient(this);
         this.dedicatedHostGroups = new DedicatedHostGroupsClient(this);
         this.dedicatedHosts = new DedicatedHostsClient(this);
+        this.sshPublicKeys = new SshPublicKeysClient(this);
         this.virtualMachineExtensionImages = new VirtualMachineExtensionImagesClient(this);
         this.virtualMachineExtensions = new VirtualMachineExtensionsClient(this);
         this.virtualMachineImages = new VirtualMachineImagesClient(this);
@@ -446,6 +473,7 @@ public final class ComputeManagementClient extends AzureServiceClient {
         this.virtualMachineScaleSets = new VirtualMachineScaleSetsClient(this);
         this.virtualMachineScaleSetExtensions = new VirtualMachineScaleSetExtensionsClient(this);
         this.virtualMachineScaleSetRollingUpgrades = new VirtualMachineScaleSetRollingUpgradesClient(this);
+        this.virtualMachineScaleSetVMExtensions = new VirtualMachineScaleSetVMExtensionsClient(this);
         this.virtualMachineScaleSetVMs = new VirtualMachineScaleSetVMsClient(this);
         this.logAnalytics = new LogAnalyticsClient(this);
         this.virtualMachineRunCommands = new VirtualMachineRunCommandsClient(this);

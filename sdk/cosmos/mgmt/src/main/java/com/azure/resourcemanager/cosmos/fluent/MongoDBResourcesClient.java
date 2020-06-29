@@ -29,7 +29,6 @@ import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.util.polling.AsyncPollResponse;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.resourcemanager.cosmos.CosmosDBManagementClient;
 import com.azure.resourcemanager.cosmos.fluent.inner.MongoDBCollectionGetResultsInner;
@@ -936,7 +935,7 @@ public final class MongoDBResourcesClient {
                 MongoDBDatabaseGetResultsInner.class,
                 MongoDBDatabaseGetResultsInner.class)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -970,7 +969,7 @@ public final class MongoDBResourcesClient {
                 MongoDBDatabaseGetResultsInner.class,
                 MongoDBDatabaseGetResultsInner.class)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -1180,7 +1179,7 @@ public final class MongoDBResourcesClient {
             .client
             .<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -1204,7 +1203,7 @@ public final class MongoDBResourcesClient {
             .client
             .<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -1659,7 +1658,7 @@ public final class MongoDBResourcesClient {
                 ThroughputSettingsGetResultsInner.class,
                 ThroughputSettingsGetResultsInner.class)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -1693,7 +1692,7 @@ public final class MongoDBResourcesClient {
                 ThroughputSettingsGetResultsInner.class,
                 ThroughputSettingsGetResultsInner.class)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -2371,7 +2370,7 @@ public final class MongoDBResourcesClient {
                 MongoDBCollectionGetResultsInner.class,
                 MongoDBCollectionGetResultsInner.class)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -2412,7 +2411,7 @@ public final class MongoDBResourcesClient {
                 MongoDBCollectionGetResultsInner.class,
                 MongoDBCollectionGetResultsInner.class)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -2646,7 +2645,7 @@ public final class MongoDBResourcesClient {
             .client
             .<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -2672,7 +2671,7 @@ public final class MongoDBResourcesClient {
             .client
             .<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -3167,7 +3166,7 @@ public final class MongoDBResourcesClient {
                 ThroughputSettingsGetResultsInner.class,
                 ThroughputSettingsGetResultsInner.class)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -3203,7 +3202,7 @@ public final class MongoDBResourcesClient {
                 ThroughputSettingsGetResultsInner.class,
                 ThroughputSettingsGetResultsInner.class)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**

@@ -7,6 +7,8 @@ import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
+import com.azure.core.management.exception.ManagementError;
+import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.management.polling.PollerFactory;
 import com.azure.core.util.FluxUtil;
@@ -130,6 +132,7 @@ public class AcceptedImpl<InnerT, T> implements Accepted<T> {
         private final SyncPoller<PollResult<InnerT>, InnerT> syncPoller;
         private final Function<InnerT, T> wrapOperation;
         private T finalResult;
+        private ManagementException exception;
 
         SyncPollerImpl(SyncPoller<PollResult<InnerT>, InnerT> syncPoller, Function<InnerT, T> wrapOperation) {
             this.syncPoller = syncPoller;
@@ -163,8 +166,23 @@ public class AcceptedImpl<InnerT, T> implements Accepted<T> {
 
         @Override
         public T getFinalResult() {
+            if (exception != null) {
+                throw exception;
+            }
             if (finalResult == null) {
                 finalResult = wrapOperation.apply(syncPoller.getFinalResult());
+                if (finalResult == null) {
+                    PollResponse<PollResult<InnerT>> pollResponse = syncPoller.poll();
+                    if (pollResponse.getStatus() == LongRunningOperationStatus.FAILED
+                        || pollResponse.getStatus() == LongRunningOperationStatus.USER_CANCELLED) {
+                        String errorMessage = pollResponse.getValue().getError() != null
+                            ? pollResponse.getValue().getError().getMessage()
+                            : "Unknown error";
+                        exception = new ManagementException(errorMessage, null,
+                            new ManagementError(pollResponse.getStatus().toString(), errorMessage));
+                        throw exception;
+                    }
+                }
             }
             return finalResult;
         }
