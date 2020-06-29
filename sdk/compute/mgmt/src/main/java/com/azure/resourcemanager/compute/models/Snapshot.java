@@ -133,12 +133,23 @@ public interface Snapshot
             WithCreate withWindowsFromSnapshot(Snapshot sourceSnapshot);
 
             /**
-             * Specifies the source specialized or generalized Windows OS VHD.
+             * Specifies the source specialized or generalized Windows OS VHD
+             * when it belongs to the same subscription.
              *
              * @param vhdUrl the source VHD URL
              * @return the next stage of the definition
              */
             WithCreate withWindowsFromVhd(String vhdUrl);
+
+            /**
+             * Specifies the source specialized or generalized Windows OS VHD
+             * and the storage account ID.
+             *
+             * @param vhdUrl the source VHD URL
+             * @param storageAccountId the storage account ID
+             * @return the next stage of the definition
+             */
+            WithCreate withWindowsFromVhd(String vhdUrl, String storageAccountId);
         }
 
         /** The stage of the managed snapshot definition allowing to choose a Linux OS source. */
@@ -176,12 +187,23 @@ public interface Snapshot
             WithCreate withLinuxFromSnapshot(Snapshot sourceSnapshot);
 
             /**
-             * Specifies the source specialized or generalized Linux OS VHD.
+             * Specifies the source specialized or generalized Linux OS VHD
+             * when it belongs to the same subscription.
              *
              * @param vhdUrl the source VHD URL
              * @return the next stage of the definition
              */
             WithCreate withLinuxFromVhd(String vhdUrl);
+
+            /**
+             * Specifies the source specialized or generalized Linux OS VHD
+             * and the storage account ID.
+             *
+             * @param vhdUrl the source VHD URL
+             * @param storageAccountId the storage account ID
+             * @return the next stage of the definition
+             */
+            WithCreate withLinuxFromVhd(String vhdUrl, String storageAccountId);
         }
 
         /** The stage of the managed snapshot definition allowing to choose data source. */
@@ -192,12 +214,21 @@ public interface Snapshot
         /** The stage of the managed disk definition allowing to choose source data disk VHD. */
         interface WithDataSnapshotFromVhd {
             /**
-             * Specifies the source data VHD.
+             * Specifies the source data VHD when it belongs to the same subscription.
              *
              * @param vhdUrl a source VHD URL
              * @return the next stage of the definition
              */
             WithCreate withDataFromVhd(String vhdUrl);
+
+            /**
+             * Specifies the source data VHD and the storage account ID.
+             *
+             * @param vhdUrl a source VHD URL
+             * @param storageAccountId the storage account ID
+             * @return the next stage of the definition
+             */
+            WithCreate withDataFromVhd(String vhdUrl, String storageAccountId);
         }
 
         /** The stage of the managed disk definition allowing to choose managed disk containing data. */

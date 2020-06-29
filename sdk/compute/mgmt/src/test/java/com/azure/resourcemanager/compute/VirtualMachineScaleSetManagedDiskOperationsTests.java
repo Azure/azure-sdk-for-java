@@ -24,6 +24,8 @@ import com.azure.resourcemanager.resources.core.TestUtilities;
 import com.azure.resourcemanager.resources.fluentcore.arm.Region;
 import com.azure.resourcemanager.resources.fluentcore.profile.AzureProfile;
 import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
+
+import java.time.Duration;
 import java.util.Iterator;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -99,6 +101,9 @@ public class VirtualMachineScaleSetManagedDiskOperationsTests extends ComputeMan
 
         virtualMachineScaleSetVMs = vmScaleSet.virtualMachines();
         virtualMachines = virtualMachineScaleSetVMs.list();
+
+        SdkContext.getDelayDuration(Duration.ofMinutes(1));
+
         Assertions.assertEquals(TestUtilities.getSize(virtualMachines), vmScaleSet.capacity());
         for (VirtualMachineScaleSetVM vm : virtualMachines) {
             Assertions.assertNotNull(vm.dataDisks());
@@ -259,7 +264,7 @@ public class VirtualMachineScaleSetManagedDiskOperationsTests extends ComputeMan
                 .withExistingPrimaryNetworkSubnet(network, "subnet1")
                 .withExistingPrimaryInternetFacingLoadBalancer(publicLoadBalancer)
                 .withoutPrimaryInternalLoadBalancer()
-                .withLinuxCustomImage(virtualMachineCustomImage.id())
+                .withGeneralizedLinuxCustomImage(virtualMachineCustomImage.id())
                 .withRootUsername(userName)
                 .withRootPassword(password)
                 .create();

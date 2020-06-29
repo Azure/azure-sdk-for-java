@@ -425,7 +425,8 @@ public final class FormRecognizerAsyncClient {
                 return service.analyzeReceiptAsyncWithResponseAsync(includeTextContent,
                     new SourcePath().setSource(receiptUrl))
                     .map(response ->
-                        new OperationResult(parseModelId(response.getDeserializedHeaders().getOperationLocation())));
+                        new OperationResult(parseModelId(response.getDeserializedHeaders().getOperationLocation())))
+                    .onErrorMap(Utility::mapToHttpResponseExceptionIfExist);
             } catch (RuntimeException ex) {
                 return monoError(logger, ex);
             }
@@ -441,13 +442,15 @@ public final class FormRecognizerAsyncClient {
                     return service.analyzeReceiptAsyncWithResponseAsync(
                         ContentType.fromString(formContentType.toString()), form, length, includeTextContent)
                         .map(response -> new OperationResult(
-                            parseModelId(response.getDeserializedHeaders().getOperationLocation())));
+                            parseModelId(response.getDeserializedHeaders().getOperationLocation())))
+                        .onErrorMap(throwable -> throwable);
                 } else {
                     return detectContentType(form)
                         .flatMap(contentType ->
                             service.analyzeReceiptAsyncWithResponseAsync(contentType, form, length, includeTextContent)
                                 .map(response -> new OperationResult(
-                                    parseModelId(response.getDeserializedHeaders().getOperationLocation()))));
+                                    parseModelId(response.getDeserializedHeaders().getOperationLocation()))))
+                        .onErrorMap(Utility::mapToHttpResponseExceptionIfExist);
                 }
             } catch (RuntimeException ex) {
                 return monoError(logger, ex);
@@ -480,7 +483,8 @@ public final class FormRecognizerAsyncClient {
                     .map(modelSimpleResponse -> {
                         throwIfAnalyzeStatusInvalid(modelSimpleResponse.getValue());
                         return toReceipt(modelSimpleResponse.getValue().getAnalyzeResult(), includeTextContent);
-                    });
+                    })
+                    .onErrorMap(Utility::mapToHttpResponseExceptionIfExist);
             } catch (RuntimeException ex) {
                 return monoError(logger, ex);
             }
@@ -494,7 +498,8 @@ public final class FormRecognizerAsyncClient {
                 Objects.requireNonNull(formUrl, "'formUrl' is required and cannot be null.");
                 return service.analyzeLayoutAsyncWithResponseAsync(new SourcePath().setSource(formUrl))
                     .map(response ->
-                        new OperationResult(parseModelId(response.getDeserializedHeaders().getOperationLocation())));
+                        new OperationResult(parseModelId(response.getDeserializedHeaders().getOperationLocation())))
+                    .onErrorMap(Utility::mapToHttpResponseExceptionIfExist);
             } catch (RuntimeException ex) {
                 return monoError(logger, ex);
             }
@@ -510,13 +515,15 @@ public final class FormRecognizerAsyncClient {
                     return service.analyzeLayoutAsyncWithResponseAsync(
                         ContentType.fromString(formContentType.toString()), form, length)
                         .map(response -> new OperationResult(parseModelId(
-                            response.getDeserializedHeaders().getOperationLocation())));
+                            response.getDeserializedHeaders().getOperationLocation())))
+                        .onErrorMap(Utility::mapToHttpResponseExceptionIfExist);
                 } else {
                     return detectContentType(form)
                         .flatMap(contentType ->
                             service.analyzeLayoutAsyncWithResponseAsync(contentType, form, length)
                                 .map(response -> new OperationResult(
-                                    parseModelId(response.getDeserializedHeaders().getOperationLocation()))));
+                                    parseModelId(response.getDeserializedHeaders().getOperationLocation()))))
+                        .onErrorMap(Utility::mapToHttpResponseExceptionIfExist);
                 }
             } catch (RuntimeException ex) {
                 return monoError(logger, ex);
@@ -549,7 +556,8 @@ public final class FormRecognizerAsyncClient {
                     .map(modelSimpleResponse -> {
                         throwIfAnalyzeStatusInvalid(modelSimpleResponse.getValue());
                         return toRecognizedLayout(modelSimpleResponse.getValue().getAnalyzeResult(), true);
-                    });
+                    })
+                    .onErrorMap(Utility::mapToHttpResponseExceptionIfExist);
             } catch (RuntimeException ex) {
                 return monoError(logger, ex);
             }
@@ -567,7 +575,8 @@ public final class FormRecognizerAsyncClient {
                     .map(modelSimpleResponse -> {
                         throwIfAnalyzeStatusInvalid(modelSimpleResponse.getValue());
                         return toRecognizedForm(modelSimpleResponse.getValue().getAnalyzeResult(), includeTextContent);
-                    });
+                    })
+                    .onErrorMap(Utility::mapToHttpResponseExceptionIfExist);
             } catch (RuntimeException ex) {
                 return monoError(logger, ex);
             }
@@ -600,7 +609,8 @@ public final class FormRecognizerAsyncClient {
                 UUID modelUid = UUID.fromString(modelId);
                 return service.getAnalyzeFormResultWithResponseAsync(modelUid, resultUid)
                     .flatMap(modelSimpleResponse -> processAnalyzeModelResponse(modelSimpleResponse,
-                        operationResultPollResponse));
+                        operationResultPollResponse))
+                    .onErrorMap(Utility::mapToHttpResponseExceptionIfExist);
             } catch (HttpResponseException e) {
                 logger.logExceptionAsError(e);
                 return Mono.just(new PollResponse<>(LongRunningOperationStatus.FAILED, null));
@@ -617,7 +627,8 @@ public final class FormRecognizerAsyncClient {
                 return service.analyzeWithCustomModelWithResponseAsync(UUID.fromString(modelId), includeTextContent,
                     new SourcePath().setSource(formUrl))
                     .map(response ->
-                        new OperationResult(parseModelId(response.getDeserializedHeaders().getOperationLocation())));
+                        new OperationResult(parseModelId(response.getDeserializedHeaders().getOperationLocation())))
+                    .onErrorMap(Utility::mapToHttpResponseExceptionIfExist);
             } catch (RuntimeException ex) {
                 return monoError(logger, ex);
             }
@@ -625,8 +636,8 @@ public final class FormRecognizerAsyncClient {
     }
 
     private Function<PollingContext<OperationResult>, Mono<OperationResult>> analyzeFormStreamActivationOperation(
-        Flux<ByteBuffer> form, String modelId, long length,
-        FormContentType formContentType, boolean includeTextContent) {
+        Flux<ByteBuffer> form, String modelId, long length, FormContentType formContentType,
+        boolean includeTextContent) {
 
         return pollingContext -> {
             try {
@@ -636,14 +647,16 @@ public final class FormRecognizerAsyncClient {
                     return service.analyzeWithCustomModelWithResponseAsync(UUID.fromString(modelId),
                         ContentType.fromString(formContentType.toString()), form, length, includeTextContent)
                         .map(response -> new OperationResult(parseModelId(
-                            response.getDeserializedHeaders().getOperationLocation())));
+                            response.getDeserializedHeaders().getOperationLocation())))
+                        .onErrorMap(Utility::mapToHttpResponseExceptionIfExist);
                 } else {
                     return detectContentType(form)
                         .flatMap(contentType ->
                             service.analyzeWithCustomModelWithResponseAsync(UUID.fromString(modelId), contentType, form,
                                 length, includeTextContent)
                                 .map(response -> new OperationResult(
-                                    parseModelId(response.getDeserializedHeaders().getOperationLocation()))));
+                                    parseModelId(response.getDeserializedHeaders().getOperationLocation()))))
+                        .onErrorMap(Utility::mapToHttpResponseExceptionIfExist);
                 }
             } catch (RuntimeException ex) {
                 return monoError(logger, ex);
