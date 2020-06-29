@@ -5,14 +5,13 @@
 package com.azure.messaging.servicebus.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.messaging.servicebus.models.QueueDescription;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
-/** The QueueDescriptionEntryContent model. */
+/** The RuleDescriptionEntryContent model. */
 @JacksonXmlRootElement(localName = "null", namespace = "http://www.w3.org/2005/Atom")
 @Fluent
-public final class QueueDescriptionEntryContent {
+public final class RuleDescriptionEntryContent {
     /*
      * Type of content in queue response
      */
@@ -20,12 +19,12 @@ public final class QueueDescriptionEntryContent {
     private String type;
 
     /*
-     * Description of a Service Bus queue resource.
+     * The RuleDescription property.
      */
     @JacksonXmlProperty(
-            localName = "QueueDescription",
+            localName = "RuleDescription",
             namespace = "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect")
-    private QueueDescription queueDescription;
+    private RuleDescription ruleDescription;
 
     /**
      * Get the type property: Type of content in queue response.
@@ -40,30 +39,30 @@ public final class QueueDescriptionEntryContent {
      * Set the type property: Type of content in queue response.
      *
      * @param type the type value to set.
-     * @return the QueueDescriptionEntryContent object itself.
+     * @return the RuleDescriptionEntryContent object itself.
      */
-    public QueueDescriptionEntryContent setType(String type) {
+    public RuleDescriptionEntryContent setType(String type) {
         this.type = type;
         return this;
     }
 
     /**
-     * Get the queueDescription property: Description of a Service Bus queue resource.
+     * Get the ruleDescription property: The RuleDescription property.
      *
-     * @return the queueDescription value.
+     * @return the ruleDescription value.
      */
-    public QueueDescription getQueueDescription() {
-        return this.queueDescription;
+    public RuleDescription getRuleDescription() {
+        return this.ruleDescription;
     }
 
     /**
-     * Set the queueDescription property: Description of a Service Bus queue resource.
+     * Set the ruleDescription property: The RuleDescription property.
      *
-     * @param queueDescription the queueDescription value to set.
-     * @return the QueueDescriptionEntryContent object itself.
+     * @param ruleDescription the ruleDescription value to set.
+     * @return the RuleDescriptionEntryContent object itself.
      */
-    public QueueDescriptionEntryContent setQueueDescription(QueueDescription queueDescription) {
-        this.queueDescription = queueDescription;
+    public RuleDescriptionEntryContent setRuleDescription(RuleDescription ruleDescription) {
+        this.ruleDescription = ruleDescription;
         return this;
     }
 }

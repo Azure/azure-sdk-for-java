@@ -81,7 +81,7 @@ class ServiceBusManagementAsyncClientIntegrationTest extends TestBase {
         final String queueName = interceptorManager.isPlaybackMode()
             ? "queue-5"
             : TestUtils.getEntityName(TestUtils.getQueueBaseName(), 5);
-        final QueueDescription queueDescription = new QueueDescription().setName(queueName);
+        final QueueDescription queueDescription = new QueueDescription(queueName);
         final ServiceBusManagementAsyncClient client = createClient(httpClient);
 
         // Act & Assert

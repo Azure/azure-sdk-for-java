@@ -13,12 +13,12 @@ import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-/** The QueueDescriptionFeed model. */
+/** The TopicDescriptionFeed model. */
 @JacksonXmlRootElement(localName = "feed", namespace = "http://www.w3.org/2005/Atom")
 @Fluent
-public final class QueueDescriptionFeed {
+public final class TopicDescriptionFeed {
     /*
-     * URL of the list queues query.
+     * URL of the list topics query.
      */
     @JacksonXmlProperty(localName = "id", namespace = "http://www.w3.org/2005/Atom")
     private String id;
@@ -42,13 +42,13 @@ public final class QueueDescriptionFeed {
     private List<ResponseLink> link = new ArrayList<>();
 
     /*
-     * Queue entries.
+     * Topic entries.
      */
     @JsonProperty("entry")
-    private List<QueueDescriptionEntry> entry = new ArrayList<>();
+    private List<TopicDescriptionEntry> entry = new ArrayList<>();
 
     /**
-     * Get the id property: URL of the list queues query.
+     * Get the id property: URL of the list topics query.
      *
      * @return the id value.
      */
@@ -57,12 +57,12 @@ public final class QueueDescriptionFeed {
     }
 
     /**
-     * Set the id property: URL of the list queues query.
+     * Set the id property: URL of the list topics query.
      *
      * @param id the id value to set.
-     * @return the QueueDescriptionFeed object itself.
+     * @return the TopicDescriptionFeed object itself.
      */
-    public QueueDescriptionFeed setId(String id) {
+    public TopicDescriptionFeed setId(String id) {
         this.id = id;
         return this;
     }
@@ -80,9 +80,9 @@ public final class QueueDescriptionFeed {
      * Set the title property: The entity type for the feed.
      *
      * @param title the title value to set.
-     * @return the QueueDescriptionFeed object itself.
+     * @return the TopicDescriptionFeed object itself.
      */
-    public QueueDescriptionFeed setTitle(Object title) {
+    public TopicDescriptionFeed setTitle(Object title) {
         this.title = title;
         return this;
     }
@@ -100,9 +100,9 @@ public final class QueueDescriptionFeed {
      * Set the updated property: Datetime of the query.
      *
      * @param updated the updated value to set.
-     * @return the QueueDescriptionFeed object itself.
+     * @return the TopicDescriptionFeed object itself.
      */
-    public QueueDescriptionFeed setUpdated(OffsetDateTime updated) {
+    public TopicDescriptionFeed setUpdated(OffsetDateTime updated) {
         this.updated = updated;
         return this;
     }
@@ -120,29 +120,29 @@ public final class QueueDescriptionFeed {
      * Set the link property: Links to paginated response.
      *
      * @param link the link value to set.
-     * @return the QueueDescriptionFeed object itself.
+     * @return the TopicDescriptionFeed object itself.
      */
-    public QueueDescriptionFeed setLink(List<ResponseLink> link) {
+    public TopicDescriptionFeed setLink(List<ResponseLink> link) {
         this.link = link;
         return this;
     }
 
     /**
-     * Get the entry property: Queue entries.
+     * Get the entry property: Topic entries.
      *
      * @return the entry value.
      */
-    public List<QueueDescriptionEntry> getEntry() {
+    public List<TopicDescriptionEntry> getEntry() {
         return this.entry;
     }
 
     /**
-     * Set the entry property: Queue entries.
+     * Set the entry property: Topic entries.
      *
      * @param entry the entry value to set.
-     * @return the QueueDescriptionFeed object itself.
+     * @return the TopicDescriptionFeed object itself.
      */
-    public QueueDescriptionFeed setEntry(List<QueueDescriptionEntry> entry) {
+    public TopicDescriptionFeed setEntry(List<TopicDescriptionEntry> entry) {
         this.entry = entry;
         return this;
     }

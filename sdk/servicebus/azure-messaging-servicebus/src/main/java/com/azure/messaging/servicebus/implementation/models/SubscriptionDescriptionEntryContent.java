@@ -5,14 +5,14 @@
 package com.azure.messaging.servicebus.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.messaging.servicebus.models.QueueDescription;
+import com.azure.messaging.servicebus.models.SubscriptionDescription;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
-/** The QueueDescriptionEntryContent model. */
+/** The SubscriptionDescriptionEntryContent model. */
 @JacksonXmlRootElement(localName = "null", namespace = "http://www.w3.org/2005/Atom")
 @Fluent
-public final class QueueDescriptionEntryContent {
+public final class SubscriptionDescriptionEntryContent {
     /*
      * Type of content in queue response
      */
@@ -20,12 +20,12 @@ public final class QueueDescriptionEntryContent {
     private String type;
 
     /*
-     * Description of a Service Bus queue resource.
+     * Description of a Service Bus subscription resource.
      */
     @JacksonXmlProperty(
-            localName = "QueueDescription",
+            localName = "SubscriptionDescription",
             namespace = "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect")
-    private QueueDescription queueDescription;
+    private SubscriptionDescription subscriptionDescription;
 
     /**
      * Get the type property: Type of content in queue response.
@@ -40,30 +40,31 @@ public final class QueueDescriptionEntryContent {
      * Set the type property: Type of content in queue response.
      *
      * @param type the type value to set.
-     * @return the QueueDescriptionEntryContent object itself.
+     * @return the SubscriptionDescriptionEntryContent object itself.
      */
-    public QueueDescriptionEntryContent setType(String type) {
+    public SubscriptionDescriptionEntryContent setType(String type) {
         this.type = type;
         return this;
     }
 
     /**
-     * Get the queueDescription property: Description of a Service Bus queue resource.
+     * Get the subscriptionDescription property: Description of a Service Bus subscription resource.
      *
-     * @return the queueDescription value.
+     * @return the subscriptionDescription value.
      */
-    public QueueDescription getQueueDescription() {
-        return this.queueDescription;
+    public SubscriptionDescription getSubscriptionDescription() {
+        return this.subscriptionDescription;
     }
 
     /**
-     * Set the queueDescription property: Description of a Service Bus queue resource.
+     * Set the subscriptionDescription property: Description of a Service Bus subscription resource.
      *
-     * @param queueDescription the queueDescription value to set.
-     * @return the QueueDescriptionEntryContent object itself.
+     * @param subscriptionDescription the subscriptionDescription value to set.
+     * @return the SubscriptionDescriptionEntryContent object itself.
      */
-    public QueueDescriptionEntryContent setQueueDescription(QueueDescription queueDescription) {
-        this.queueDescription = queueDescription;
+    public SubscriptionDescriptionEntryContent setSubscriptionDescription(
+            SubscriptionDescription subscriptionDescription) {
+        this.subscriptionDescription = subscriptionDescription;
         return this;
     }
 }

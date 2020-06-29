@@ -11,10 +11,10 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
 import java.time.OffsetDateTime;
 
-/** The QueueDescriptionEntry model. */
+/** The TopicDescriptionEntry model. */
 @JacksonXmlRootElement(localName = "entry", namespace = "http://www.w3.org/2005/Atom")
 @Fluent
-public final class QueueDescriptionEntry {
+public final class TopicDescriptionEntry {
     /*
      * Base URL for the query.
      */
@@ -28,19 +28,19 @@ public final class QueueDescriptionEntry {
     private String id;
 
     /*
-     * The name of the queue
+     * The name of the topic
      */
     @JsonProperty(value = "title")
     private Object title;
 
     /*
-     * The timestamp for when this queue was published
+     * The timestamp for when this topic was published
      */
     @JacksonXmlProperty(localName = "published", namespace = "http://www.w3.org/2005/Atom")
     private OffsetDateTime published;
 
     /*
-     * The timestamp for when this queue was last updated
+     * The timestamp for when this topic was last updated
      */
     @JacksonXmlProperty(localName = "updated", namespace = "http://www.w3.org/2005/Atom")
     private OffsetDateTime updated;
@@ -58,10 +58,10 @@ public final class QueueDescriptionEntry {
     private ResponseLink link;
 
     /*
-     * The QueueDescription
+     * The TopicDescription
      */
     @JacksonXmlProperty(localName = "content", namespace = "http://www.w3.org/2005/Atom")
-    private QueueDescriptionEntryContent content;
+    private TopicDescriptionEntryContent content;
 
     /**
      * Get the base property: Base URL for the query.
@@ -76,9 +76,9 @@ public final class QueueDescriptionEntry {
      * Set the base property: Base URL for the query.
      *
      * @param base the base value to set.
-     * @return the QueueDescriptionEntry object itself.
+     * @return the TopicDescriptionEntry object itself.
      */
-    public QueueDescriptionEntry setBase(String base) {
+    public TopicDescriptionEntry setBase(String base) {
         this.base = base;
         return this;
     }
@@ -96,15 +96,15 @@ public final class QueueDescriptionEntry {
      * Set the id property: The URL of the GET request.
      *
      * @param id the id value to set.
-     * @return the QueueDescriptionEntry object itself.
+     * @return the TopicDescriptionEntry object itself.
      */
-    public QueueDescriptionEntry setId(String id) {
+    public TopicDescriptionEntry setId(String id) {
         this.id = id;
         return this;
     }
 
     /**
-     * Get the title property: The name of the queue.
+     * Get the title property: The name of the topic.
      *
      * @return the title value.
      */
@@ -113,18 +113,18 @@ public final class QueueDescriptionEntry {
     }
 
     /**
-     * Set the title property: The name of the queue.
+     * Set the title property: The name of the topic.
      *
      * @param title the title value to set.
-     * @return the QueueDescriptionEntry object itself.
+     * @return the TopicDescriptionEntry object itself.
      */
-    public QueueDescriptionEntry setTitle(Object title) {
+    public TopicDescriptionEntry setTitle(Object title) {
         this.title = title;
         return this;
     }
 
     /**
-     * Get the published property: The timestamp for when this queue was published.
+     * Get the published property: The timestamp for when this topic was published.
      *
      * @return the published value.
      */
@@ -133,18 +133,18 @@ public final class QueueDescriptionEntry {
     }
 
     /**
-     * Set the published property: The timestamp for when this queue was published.
+     * Set the published property: The timestamp for when this topic was published.
      *
      * @param published the published value to set.
-     * @return the QueueDescriptionEntry object itself.
+     * @return the TopicDescriptionEntry object itself.
      */
-    public QueueDescriptionEntry setPublished(OffsetDateTime published) {
+    public TopicDescriptionEntry setPublished(OffsetDateTime published) {
         this.published = published;
         return this;
     }
 
     /**
-     * Get the updated property: The timestamp for when this queue was last updated.
+     * Get the updated property: The timestamp for when this topic was last updated.
      *
      * @return the updated value.
      */
@@ -153,12 +153,12 @@ public final class QueueDescriptionEntry {
     }
 
     /**
-     * Set the updated property: The timestamp for when this queue was last updated.
+     * Set the updated property: The timestamp for when this topic was last updated.
      *
      * @param updated the updated value to set.
-     * @return the QueueDescriptionEntry object itself.
+     * @return the TopicDescriptionEntry object itself.
      */
-    public QueueDescriptionEntry setUpdated(OffsetDateTime updated) {
+    public TopicDescriptionEntry setUpdated(OffsetDateTime updated) {
         this.updated = updated;
         return this;
     }
@@ -176,9 +176,9 @@ public final class QueueDescriptionEntry {
      * Set the author property: The author that created this resource.
      *
      * @param author the author value to set.
-     * @return the QueueDescriptionEntry object itself.
+     * @return the TopicDescriptionEntry object itself.
      */
-    public QueueDescriptionEntry setAuthor(ResponseAuthor author) {
+    public TopicDescriptionEntry setAuthor(ResponseAuthor author) {
         this.author = author;
         return this;
     }
@@ -196,29 +196,29 @@ public final class QueueDescriptionEntry {
      * Set the link property: The URL for the HTTP request.
      *
      * @param link the link value to set.
-     * @return the QueueDescriptionEntry object itself.
+     * @return the TopicDescriptionEntry object itself.
      */
-    public QueueDescriptionEntry setLink(ResponseLink link) {
+    public TopicDescriptionEntry setLink(ResponseLink link) {
         this.link = link;
         return this;
     }
 
     /**
-     * Get the content property: The QueueDescription.
+     * Get the content property: The TopicDescription.
      *
      * @return the content value.
      */
-    public QueueDescriptionEntryContent getContent() {
+    public TopicDescriptionEntryContent getContent() {
         return this.content;
     }
 
     /**
-     * Set the content property: The QueueDescription.
+     * Set the content property: The TopicDescription.
      *
      * @param content the content value to set.
-     * @return the QueueDescriptionEntry object itself.
+     * @return the TopicDescriptionEntry object itself.
      */
-    public QueueDescriptionEntry setContent(QueueDescriptionEntryContent content) {
+    public TopicDescriptionEntry setContent(TopicDescriptionEntryContent content) {
         this.content = content;
         return this;
     }

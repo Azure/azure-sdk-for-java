@@ -11,16 +11,10 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
 import java.time.OffsetDateTime;
 
-/** The QueueDescriptionEntry model. */
+/** The NamespacePropertiesEntry model. */
 @JacksonXmlRootElement(localName = "entry", namespace = "http://www.w3.org/2005/Atom")
 @Fluent
-public final class QueueDescriptionEntry {
-    /*
-     * Base URL for the query.
-     */
-    @JacksonXmlProperty(localName = "base", isAttribute = true)
-    private String base;
-
+public final class NamespacePropertiesEntry {
     /*
      * The URL of the GET request
      */
@@ -28,19 +22,13 @@ public final class QueueDescriptionEntry {
     private String id;
 
     /*
-     * The name of the queue
+     * The name of the namespace.
      */
     @JsonProperty(value = "title")
     private Object title;
 
     /*
-     * The timestamp for when this queue was published
-     */
-    @JacksonXmlProperty(localName = "published", namespace = "http://www.w3.org/2005/Atom")
-    private OffsetDateTime published;
-
-    /*
-     * The timestamp for when this queue was last updated
+     * The timestamp for when this namespace was last updated
      */
     @JacksonXmlProperty(localName = "updated", namespace = "http://www.w3.org/2005/Atom")
     private OffsetDateTime updated;
@@ -58,30 +46,10 @@ public final class QueueDescriptionEntry {
     private ResponseLink link;
 
     /*
-     * The QueueDescription
+     * Information about the namespace.
      */
     @JacksonXmlProperty(localName = "content", namespace = "http://www.w3.org/2005/Atom")
-    private QueueDescriptionEntryContent content;
-
-    /**
-     * Get the base property: Base URL for the query.
-     *
-     * @return the base value.
-     */
-    public String getBase() {
-        return this.base;
-    }
-
-    /**
-     * Set the base property: Base URL for the query.
-     *
-     * @param base the base value to set.
-     * @return the QueueDescriptionEntry object itself.
-     */
-    public QueueDescriptionEntry setBase(String base) {
-        this.base = base;
-        return this;
-    }
+    private NamespacePropertiesEntryContent content;
 
     /**
      * Get the id property: The URL of the GET request.
@@ -96,15 +64,15 @@ public final class QueueDescriptionEntry {
      * Set the id property: The URL of the GET request.
      *
      * @param id the id value to set.
-     * @return the QueueDescriptionEntry object itself.
+     * @return the NamespacePropertiesEntry object itself.
      */
-    public QueueDescriptionEntry setId(String id) {
+    public NamespacePropertiesEntry setId(String id) {
         this.id = id;
         return this;
     }
 
     /**
-     * Get the title property: The name of the queue.
+     * Get the title property: The name of the namespace.
      *
      * @return the title value.
      */
@@ -113,38 +81,18 @@ public final class QueueDescriptionEntry {
     }
 
     /**
-     * Set the title property: The name of the queue.
+     * Set the title property: The name of the namespace.
      *
      * @param title the title value to set.
-     * @return the QueueDescriptionEntry object itself.
+     * @return the NamespacePropertiesEntry object itself.
      */
-    public QueueDescriptionEntry setTitle(Object title) {
+    public NamespacePropertiesEntry setTitle(Object title) {
         this.title = title;
         return this;
     }
 
     /**
-     * Get the published property: The timestamp for when this queue was published.
-     *
-     * @return the published value.
-     */
-    public OffsetDateTime getPublished() {
-        return this.published;
-    }
-
-    /**
-     * Set the published property: The timestamp for when this queue was published.
-     *
-     * @param published the published value to set.
-     * @return the QueueDescriptionEntry object itself.
-     */
-    public QueueDescriptionEntry setPublished(OffsetDateTime published) {
-        this.published = published;
-        return this;
-    }
-
-    /**
-     * Get the updated property: The timestamp for when this queue was last updated.
+     * Get the updated property: The timestamp for when this namespace was last updated.
      *
      * @return the updated value.
      */
@@ -153,12 +101,12 @@ public final class QueueDescriptionEntry {
     }
 
     /**
-     * Set the updated property: The timestamp for when this queue was last updated.
+     * Set the updated property: The timestamp for when this namespace was last updated.
      *
      * @param updated the updated value to set.
-     * @return the QueueDescriptionEntry object itself.
+     * @return the NamespacePropertiesEntry object itself.
      */
-    public QueueDescriptionEntry setUpdated(OffsetDateTime updated) {
+    public NamespacePropertiesEntry setUpdated(OffsetDateTime updated) {
         this.updated = updated;
         return this;
     }
@@ -176,9 +124,9 @@ public final class QueueDescriptionEntry {
      * Set the author property: The author that created this resource.
      *
      * @param author the author value to set.
-     * @return the QueueDescriptionEntry object itself.
+     * @return the NamespacePropertiesEntry object itself.
      */
-    public QueueDescriptionEntry setAuthor(ResponseAuthor author) {
+    public NamespacePropertiesEntry setAuthor(ResponseAuthor author) {
         this.author = author;
         return this;
     }
@@ -196,29 +144,29 @@ public final class QueueDescriptionEntry {
      * Set the link property: The URL for the HTTP request.
      *
      * @param link the link value to set.
-     * @return the QueueDescriptionEntry object itself.
+     * @return the NamespacePropertiesEntry object itself.
      */
-    public QueueDescriptionEntry setLink(ResponseLink link) {
+    public NamespacePropertiesEntry setLink(ResponseLink link) {
         this.link = link;
         return this;
     }
 
     /**
-     * Get the content property: The QueueDescription.
+     * Get the content property: Information about the namespace.
      *
      * @return the content value.
      */
-    public QueueDescriptionEntryContent getContent() {
+    public NamespacePropertiesEntryContent getContent() {
         return this.content;
     }
 
     /**
-     * Set the content property: The QueueDescription.
+     * Set the content property: Information about the namespace.
      *
      * @param content the content value to set.
-     * @return the QueueDescriptionEntry object itself.
+     * @return the NamespacePropertiesEntry object itself.
      */
-    public QueueDescriptionEntry setContent(QueueDescriptionEntryContent content) {
+    public NamespacePropertiesEntry setContent(NamespacePropertiesEntryContent content) {
         this.content = content;
         return this;
     }
