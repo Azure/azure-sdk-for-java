@@ -70,6 +70,8 @@ public final class AzureBlobFileAttributeView implements BasicFileAttributeView 
     }
 
     /**
+     * Reads the file attributes as a bulk operation.
+     *
      * Gets a fresh copy every time it is called.
      * @return {@link AzureBlobFileAttributes}
      * @throws IOException if an IOException occurs.
