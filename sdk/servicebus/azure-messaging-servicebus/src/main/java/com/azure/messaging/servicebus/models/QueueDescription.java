@@ -312,7 +312,7 @@ public final class QueueDescription {
      *
      * @return the accessedAt value.
      */
-    public OffsetDateTime getAccessedAt() {
+    OffsetDateTime getAccessedAt() {
         return this.accessedAt;
     }
 
@@ -323,7 +323,7 @@ public final class QueueDescription {
      * @param accessedAt the accessedAt value to set.
      * @return the QueueDescription object itself.
      */
-    public QueueDescription setAccessedAt(OffsetDateTime accessedAt) {
+    QueueDescription setAccessedAt(OffsetDateTime accessedAt) {
         this.accessedAt = accessedAt;
         return this;
     }
@@ -368,7 +368,7 @@ public final class QueueDescription {
      * @param authorizationRules the authorizationRules value to set.
      * @return the QueueDescription object itself.
      */
-    public QueueDescription setAuthorizationRules(List<AuthorizationRule> authorizationRules) {
+    QueueDescription setAuthorizationRules(List<AuthorizationRule> authorizationRules) {
         this.authorizationRules = new AuthorizationRulesWrapper(authorizationRules);
         return this;
     }
@@ -378,7 +378,7 @@ public final class QueueDescription {
      *
      * @return the createdAt value.
      */
-    public OffsetDateTime getCreatedAt() {
+    OffsetDateTime getCreatedAt() {
         return this.createdAt;
     }
 
@@ -388,7 +388,7 @@ public final class QueueDescription {
      * @param createdAt the createdAt value to set.
      * @return the QueueDescription object itself.
      */
-    public QueueDescription setCreatedAt(OffsetDateTime createdAt) {
+    QueueDescription setCreatedAt(OffsetDateTime createdAt) {
         this.createdAt = createdAt;
         return this;
     }
@@ -423,7 +423,7 @@ public final class QueueDescription {
      *
      * @return the deadLetteringOnMessageExpiration value.
      */
-    public Boolean isDeadLetteringOnMessageExpiration() {
+    public Boolean deadLetteringOnMessageExpiration() {
         return this.deadLetteringOnMessageExpiration;
     }
 
@@ -467,7 +467,7 @@ public final class QueueDescription {
      *
      * @return the enableBatchedOperations value.
      */
-    public Boolean isEnableBatchedOperations() {
+    public Boolean enableBatchedOperations() {
         return this.enableBatchedOperations;
     }
 
@@ -489,7 +489,7 @@ public final class QueueDescription {
      *
      * @return the enableExpress value.
      */
-    public Boolean isEnableExpress() {
+    Boolean enableExpress() {
         return this.enableExpress;
     }
 
@@ -500,7 +500,7 @@ public final class QueueDescription {
      * @param enableExpress the enableExpress value to set.
      * @return the QueueDescription object itself.
      */
-    public QueueDescription setEnableExpress(Boolean enableExpress) {
+    QueueDescription setEnableExpress(Boolean enableExpress) {
         this.enableExpress = enableExpress;
         return this;
     }
@@ -511,7 +511,7 @@ public final class QueueDescription {
      *
      * @return the enablePartitioning value.
      */
-    public Boolean isEnablePartitioning() {
+    public Boolean enablePartitioning() {
         return this.enablePartitioning;
     }
 
@@ -532,7 +532,7 @@ public final class QueueDescription {
      *
      * @return the entityAvailabilityStatus value.
      */
-    public EntityAvailabilityStatus getEntityAvailabilityStatus() {
+    EntityAvailabilityStatus getEntityAvailabilityStatus() {
         return this.entityAvailabilityStatus;
     }
 
@@ -542,7 +542,7 @@ public final class QueueDescription {
      * @param entityAvailabilityStatus the entityAvailabilityStatus value to set.
      * @return the QueueDescription object itself.
      */
-    public QueueDescription setEntityAvailabilityStatus(EntityAvailabilityStatus entityAvailabilityStatus) {
+    QueueDescription setEntityAvailabilityStatus(EntityAvailabilityStatus entityAvailabilityStatus) {
         this.entityAvailabilityStatus = entityAvailabilityStatus;
         return this;
     }
@@ -596,7 +596,7 @@ public final class QueueDescription {
      *
      * @return the isAnonymousAccessible value.
      */
-    public Boolean isAnonymousAccessible() {
+    Boolean isAnonymousAccessible() {
         return this.isAnonymousAccessible;
     }
 
@@ -606,7 +606,7 @@ public final class QueueDescription {
      * @param isAnonymousAccessible the isAnonymousAccessible value to set.
      * @return the QueueDescription object itself.
      */
-    public QueueDescription setIsAnonymousAccessible(Boolean isAnonymousAccessible) {
+    QueueDescription setIsAnonymousAccessible(Boolean isAnonymousAccessible) {
         this.isAnonymousAccessible = isAnonymousAccessible;
         return this;
     }
@@ -684,7 +684,7 @@ public final class QueueDescription {
      *
      * @return the messageCount value.
      */
-    public Integer getMessageCount() {
+    Integer getMessageCount() {
         return this.messageCount;
     }
 
@@ -694,7 +694,7 @@ public final class QueueDescription {
      * @param messageCount the messageCount value to set.
      * @return the QueueDescription object itself.
      */
-    public QueueDescription setMessageCount(Integer messageCount) {
+    QueueDescription setMessageCount(Integer messageCount) {
         this.messageCount = messageCount;
         return this;
     }
@@ -704,7 +704,7 @@ public final class QueueDescription {
      *
      * @return the messageCountDetails value.
      */
-    public MessageCountDetails getMessageCountDetails() {
+    MessageCountDetails getMessageCountDetails() {
         return this.messageCountDetails;
     }
 
@@ -714,7 +714,7 @@ public final class QueueDescription {
      * @param messageCountDetails the messageCountDetails value to set.
      * @return the QueueDescription object itself.
      */
-    public QueueDescription setMessageCountDetails(MessageCountDetails messageCountDetails) {
+    QueueDescription setMessageCountDetails(MessageCountDetails messageCountDetails) {
         this.messageCountDetails = messageCountDetails;
         return this;
     }
@@ -724,7 +724,7 @@ public final class QueueDescription {
      *
      * @return the requiresDuplicateDetection value.
      */
-    public Boolean isRequiresDuplicateDetection() {
+    public Boolean requiresDuplicateDetection() {
         return this.requiresDuplicateDetection;
     }
 
@@ -744,7 +744,7 @@ public final class QueueDescription {
      *
      * @return the requiresSession value.
      */
-    public Boolean isRequiresSession() {
+    public Boolean requiresSession() {
         return this.requiresSession;
     }
 
@@ -764,7 +764,7 @@ public final class QueueDescription {
      *
      * @return the sizeInBytes value.
      */
-    public Integer getSizeInBytes() {
+    Integer getSizeInBytes() {
         return this.sizeInBytes;
     }
 
@@ -774,7 +774,7 @@ public final class QueueDescription {
      * @param sizeInBytes the sizeInBytes value to set.
      * @return the QueueDescription object itself.
      */
-    public QueueDescription setSizeInBytes(Integer sizeInBytes) {
+    QueueDescription setSizeInBytes(Integer sizeInBytes) {
         this.sizeInBytes = sizeInBytes;
         return this;
     }
@@ -794,7 +794,7 @@ public final class QueueDescription {
      * @param status the status value to set.
      * @return the QueueDescription object itself.
      */
-    public QueueDescription setStatus(EntityStatus status) {
+    QueueDescription setStatus(EntityStatus status) {
         this.status = status;
         return this;
     }
@@ -804,7 +804,7 @@ public final class QueueDescription {
      *
      * @return the supportOrdering value.
      */
-    public Boolean isSupportOrdering() {
+    public Boolean supportOrdering() {
         return this.supportOrdering;
     }
 
@@ -834,7 +834,7 @@ public final class QueueDescription {
      * @param updatedAt the updatedAt value to set.
      * @return the QueueDescription object itself.
      */
-    public QueueDescription setUpdatedAt(OffsetDateTime updatedAt) {
+    QueueDescription setUpdatedAt(OffsetDateTime updatedAt) {
         this.updatedAt = updatedAt;
         return this;
     }

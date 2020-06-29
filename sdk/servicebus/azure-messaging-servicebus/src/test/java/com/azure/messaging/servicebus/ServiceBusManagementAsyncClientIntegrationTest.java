@@ -66,9 +66,9 @@ class ServiceBusManagementAsyncClientIntegrationTest extends TestBase {
 
                 assertNotNull(queueDescription.getAccessedAt());
 
-                assertFalse(queueDescription.isEnablePartitioning());
-                assertFalse(queueDescription.isRequiresSession());
-                assertTrue(queueDescription.isSupportOrdering());
+                assertFalse(queueDescription.enablePartitioning());
+                assertFalse(queueDescription.requiresSession());
+                assertTrue(queueDescription.supportOrdering());
                 assertNotNull(queueDescription.getLockDuration());
             })
             .verifyComplete();

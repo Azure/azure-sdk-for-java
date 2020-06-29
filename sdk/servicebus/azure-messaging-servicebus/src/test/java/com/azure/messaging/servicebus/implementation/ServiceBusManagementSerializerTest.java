@@ -214,13 +214,13 @@ class ServiceBusManagementSerializerTest {
     private static void assertQueueDescriptionEquals(QueueDescription expected, QueueDescription actual) {
         assertEquals(expected.getLockDuration(), actual.getLockDuration());
         assertEquals(expected.getMaxSizeInMegabytes(), actual.getMaxSizeInMegabytes());
-        assertEquals(expected.isRequiresDuplicateDetection(), actual.isRequiresDuplicateDetection());
-        assertEquals(expected.isRequiresSession(), actual.isRequiresSession());
+        assertEquals(expected.requiresDuplicateDetection(), actual.requiresDuplicateDetection());
+        assertEquals(expected.requiresSession(), actual.requiresSession());
         assertEquals(expected.getDefaultMessageTimeToLive(), actual.getDefaultMessageTimeToLive());
-        assertEquals(expected.isDeadLetteringOnMessageExpiration(), actual.isDeadLetteringOnMessageExpiration());
+        assertEquals(expected.deadLetteringOnMessageExpiration(), actual.deadLetteringOnMessageExpiration());
         assertEquals(expected.getDuplicateDetectionHistoryTimeWindow(), actual.getDuplicateDetectionHistoryTimeWindow());
         assertEquals(expected.getMaxDeliveryCount(), actual.getMaxDeliveryCount());
-        assertEquals(expected.isEnableBatchedOperations(), actual.isEnableBatchedOperations());
+        assertEquals(expected.enableBatchedOperations(), actual.enableBatchedOperations());
         assertEquals(expected.getSizeInBytes(), actual.getSizeInBytes());
         assertEquals(expected.getMessageCount(), actual.getMessageCount());
         assertEquals(expected.isAnonymousAccessible(), actual.isAnonymousAccessible());
@@ -228,11 +228,11 @@ class ServiceBusManagementSerializerTest {
         assertEquals(expected.getCreatedAt(), actual.getCreatedAt());
         assertEquals(expected.getUpdatedAt(), actual.getUpdatedAt());
         assertEquals(expected.getAccessedAt(), actual.getAccessedAt());
-        assertEquals(expected.isSupportOrdering(), actual.isSupportOrdering());
+        assertEquals(expected.supportOrdering(), actual.supportOrdering());
         assertEquals(expected.getAutoDeleteOnIdle(), actual.getAutoDeleteOnIdle());
-        assertEquals(expected.isEnablePartitioning(), actual.isEnablePartitioning());
+        assertEquals(expected.enablePartitioning(), actual.enablePartitioning());
         assertEquals(expected.getEntityAvailabilityStatus(), actual.getEntityAvailabilityStatus());
-        assertEquals(expected.isEnableExpress(), actual.isEnableExpress());
+        assertEquals(expected.enableExpress(), actual.enableExpress());
     }
 
     private static void assertQueueEntryEquals(QueueDescriptionEntry expected, QueueDescriptionEntry actual) {
