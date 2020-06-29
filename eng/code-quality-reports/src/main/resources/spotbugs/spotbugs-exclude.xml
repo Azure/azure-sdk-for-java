@@ -1970,6 +1970,13 @@
                   RCN_REDUNDANT_NULLCHECK_OF_NULL_VALUE"/>
   </Match>
 
+  <Match>
+    <Or>
+      <Class name="com.microsoft.azure.telemetry.TelemetryEventData$EventData$CustomData"/> <!-- false positive -->
+    </Or>
+    <Bug pattern="UPM_UNCALLED_PRIVATE_METHOD"/>
+  </Match>
+
 
   <!-- These fields are designed to be not written. They are for deserializing. -->
   <Match>

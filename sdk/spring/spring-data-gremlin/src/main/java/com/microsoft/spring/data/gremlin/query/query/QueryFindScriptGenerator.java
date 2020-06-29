@@ -5,19 +5,17 @@ package com.microsoft.spring.data.gremlin.query.query;
 
 import com.microsoft.spring.data.gremlin.common.Constants;
 import com.microsoft.spring.data.gremlin.common.GremlinUtils;
+import com.microsoft.spring.data.gremlin.conversion.script.GremlinScriptLiteralHelper;
 import com.microsoft.spring.data.gremlin.conversion.source.GremlinSource;
 import com.microsoft.spring.data.gremlin.conversion.source.GremlinSourceEdge;
 import com.microsoft.spring.data.gremlin.conversion.source.GremlinSourceVertex;
 import com.microsoft.spring.data.gremlin.query.criteria.Criteria;
 import com.microsoft.spring.data.gremlin.query.criteria.CriteriaType;
-import com.microsoft.spring.data.gremlin.conversion.script.GremlinScriptLiteralHelper;
 import org.springframework.lang.NonNull;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
-import static com.microsoft.spring.data.gremlin.conversion.script.GremlinScriptLiteralHelper.generateHasId;
 
 public class QueryFindScriptGenerator<T> implements QueryScriptGenerator {
 

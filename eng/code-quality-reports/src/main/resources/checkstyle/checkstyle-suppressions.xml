@@ -476,4 +476,8 @@
   <suppress checks="MethodName|MemberName|ParameterName|VisibilityModifier" files="com.microsoft.azure.spring.data.cosmosdb.domain|repository|config.*\.java"/>
   <suppress checks="ConstantName" files="com.microsoft.azure.spring.data.cosmosdb.repository|common.*\.java" />
 
+  <!-- Checkstyle suppressions for spring-data-gremlin package  -->
+  <suppress checks="PackageName" files="com.microsoft.spring.data.gremlin.*" />
+  <suppress checks="MethodName" files="com.microsoft.spring.data.gremlin.common.GremlinConfig.java" />
+
 </suppressions>
