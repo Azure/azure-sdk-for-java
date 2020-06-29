@@ -8,6 +8,7 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.HttpGetterInfo;
 import com.azure.storage.blob.implementation.models.BlobsDownloadResponse;
+import com.azure.storage.blob.implementation.util.ChunkedDownloadUtils;
 import com.azure.storage.blob.implementation.util.ModelHelper;
 import com.azure.storage.blob.models.BlobDownloadHeaders;
 import com.azure.storage.blob.models.DownloadRetryOptions;
@@ -49,6 +50,15 @@ final class ReliableDownload {
         this.options = (options == null) ? new DownloadRetryOptions() : options;
         this.info = info;
         this.getter = getter;
+        /*
+        If the customer did not specify a count, they are reading to the end of the blob. Extract this value
+        from the response for better book keeping towards the end.
+         */
+        if (this.info.getCount() == null) {
+            long blobLength = ChunkedDownloadUtils.extractTotalBlobLength(rawResponse.getDeserializedHeaders()
+                .getContentRange());
+            info.setCount(blobLength - info.getOffset());
+        }
     }
 
     HttpRequest getRequest() {
