@@ -59,7 +59,7 @@ Use the Azure Search client library to:
 [Azure PowerShell][create_search_service_ps], or the [Azure CLI][create_search_service_cli].
 Here's an example using the Azure CLI to create a free instance for getting started:
 
-```Powershell
+```
 az search service create --name <mysearch> --resource-group <mysearch-rg> --sku free --location westus
 ```
 
@@ -77,7 +77,7 @@ your search service endpoint.](https://docs.microsoft.com/azure/search/search-se
 You can obtain your api-key from the
 [Azure portal](https://portal.azure.com/) or via the Azure CLI:
 
-```Powershell
+```
 az search admin-key show --service-name <mysearch> --resource-group <mysearch-rg>
 ```
 **Note:**
@@ -199,8 +199,8 @@ for (SearchResult searchResult: searchResultsIterable) {
     SearchDocument document = searchResult.getDocument(SearchDocument.class);
     String title = (String) document.get("business_title");
     String description = (String) document.get("job_description");
-    System.out.println(String.format("The business title is %s, and here is the description: %s",
-        title, description));
+    System.out.printf("The business title is %s, and here is the description: %s.%n",
+        title, description);
 }
 ```
 
@@ -248,7 +248,7 @@ for (SearchResult searchResult: searchResultsIterable) {
     SearchDocument doc = searchResult.getDocument(SearchDocument.class);
     String id = (String) doc.get("hotelId");
     String name = (String) doc.get("hotelName");
-    System.out.println(String.format("This is hotel Id %s, and this is hotel name %s%n.", id, name));
+    System.out.printf("This is hotelId %s, and this is hotel name %s.%n", id, name);
 }
 ```
 
@@ -288,7 +288,7 @@ for (SearchResult searchResult: searchResultsIterable) {
     Hotel doc = searchResult.getDocument(Hotel.class);
     String id = doc.getId();
     String name = doc.getName();
-    System.out.println(String.format("This is hotelId %s, and this is hotel name %s.", id, name));
+    System.out.printf("This is hotelId %s, and this is hotel name %s.%n", id, name);
 }
 ```
 
@@ -319,57 +319,57 @@ classes. Indexes can also define suggesters, lexical analyzers, and more.
 
 <!-- embedme ./src/samples/java/com/azure/search/documents/ReadmeSamples.java#L226-L276 -->
 ```Java
-// Prepare SearchFields with SimpleFieldBuilder, SearchableFieldBuilder and ComplexFieldBuilder.
-List<SearchField> searchFieldList = new ArrayList<>();
-searchFieldList.add(new SimpleFieldBuilder("hotelId", SearchFieldDataType.STRING, false)
-    .setKey(true)
-    .setFilterable(true)
-    .setSortable(true)
-    .build());
-searchFieldList.add(new SearchableFieldBuilder("hotelName", false)
-    .setFilterable(true)
-    .setSortable(true)
-    .build());
-searchFieldList.add(new SearchableFieldBuilder("description", false)
-    .setAnalyzerName(LexicalAnalyzerName.EU_LUCENE)
-    .build());
-searchFieldList.add(new SearchableFieldBuilder("tags", true)
-    .setKey(true)
-    .setFilterable(true)
-    .setFacetable(true)
-    .build());
-searchFieldList.add(new ComplexFieldBuilder("address", false)
-    .setFields(Arrays.asList(
-        new SearchableFieldBuilder("streetAddress", false).build(),
-        new SearchableFieldBuilder("city", false)
+        searchFieldList.add(new SimpleFieldBuilder("hotelId", SearchFieldDataType.STRING, false)
+            .setKey(true)
+            .setFilterable(true)
+            .setSortable(true)
+            .build());
+        searchFieldList.add(new SearchableFieldBuilder("hotelName", false)
+            .setFilterable(true)
+            .setSortable(true)
+            .build());
+        searchFieldList.add(new SearchableFieldBuilder("description", false)
+            .setAnalyzerName(LexicalAnalyzerName.EU_LUCENE)
+            .build());
+        searchFieldList.add(new SearchableFieldBuilder("tags", true)
+            .setKey(true)
             .setFilterable(true)
             .setFacetable(true)
-            .setSortable(true)
-            .build(),
-        new SearchableFieldBuilder("stateProvince", false)
-            .setFilterable(true)
-            .setFacetable(true)
-            .setSortable(true)
-            .build(),
-        new SearchableFieldBuilder("country", false)
-            .setFilterable(true)
-            .setFacetable(true)
-            .setSortable(true)
-            .build(),
-        new SearchableFieldBuilder("postalCode", false)
-            .setFilterable(true)
-            .setFacetable(true)
-            .setSortable(true)
-            .build()
-    ))
-    .build());
-// Prepare suggester.
-SearchSuggester suggester = new SearchSuggester("sg", Collections.singletonList("hotelName"));
-// Prepare SearchIndex with index name and search fields.
-SearchIndex index = new SearchIndex("hotels").setFields(searchFieldList).setSuggesters(
-    Collections.singletonList(suggester));
-// Create an index
-searchIndexClient.createIndex(index);
+            .build());
+        searchFieldList.add(new ComplexFieldBuilder("address", false)
+            .setFields(Arrays.asList(
+                new SearchableFieldBuilder("streetAddress", false).build(),
+                new SearchableFieldBuilder("city", false)
+                    .setFilterable(true)
+                    .setFacetable(true)
+                    .setSortable(true)
+                    .build(),
+                new SearchableFieldBuilder("stateProvince", false)
+                    .setFilterable(true)
+                    .setFacetable(true)
+                    .setSortable(true)
+                    .build(),
+                new SearchableFieldBuilder("country", false)
+                    .setFilterable(true)
+                    .setFacetable(true)
+                    .setSortable(true)
+                    .build(),
+                new SearchableFieldBuilder("postalCode", false)
+                    .setFilterable(true)
+                    .setFacetable(true)
+                    .setSortable(true)
+                    .build()
+            ))
+            .build());
+        // Prepare suggester.
+        SearchSuggester suggester = new SearchSuggester("sg", Collections.singletonList("hotelName"));
+        // Prepare SearchIndex with index name and search fields.
+        SearchIndex index = new SearchIndex("hotels").setFields(searchFieldList).setSuggesters(
+            Collections.singletonList(suggester));
+        // Create an index
+        searchIndexClient.createIndex(index);
+    }
+}
 ```
 
 ### Retrieving a specific document from your index
@@ -379,11 +379,10 @@ you can retrieve a specific document from your index if you already know the
 key. You could get the key from a query, for example, and want to show more
 information about it or navigate your customer to that document.
 
-<!-- embedme ./src/samples/java/com/azure/search/documents/ReadmeSamples.java#L213-L215 -->
+<!-- embedme ./src/samples/java/com/azure/search/documents/ReadmeSamples.java#L212-L213 -->
 ```Java 
 Hotel hotel = searchClient.getDocument("1", Hotel.class);
-System.out.println(String.format("This is hotelId %s, and this is hotel name %s.",
-    hotel.getId(), hotel.getName()));
+System.out.printf("This is hotelId %s, and this is hotel name %s.%n", hotel.getId(), hotel.getName());
 ```
 
 ### Adding documents to your index
@@ -393,7 +392,7 @@ an index in a single batched request.  There are
 [a few special rules for merging](https://docs.microsoft.com/rest/api/searchservice/addupdate-or-delete-documents#document-actions)
 to be aware of.
 
-<!-- embedme ./src/samples/java/com/azure/search/documents/ReadmeSamples.java#L219-L222 -->
+<!-- embedme ./src/samples/java/com/azure/search/documents/ReadmeSamples.java#L217-L220 -->
 ```Java
 IndexDocumentsBatch<Hotel> batch = new IndexDocumentsBatch<Hotel>();
 batch.addUploadActions(new Hotel().setId("783").setName("Upload Inn"));
@@ -414,15 +413,15 @@ support for async APIs as well. You'll need to use [SearchAsyncClient](#Create-a
 
 <!-- embedme ./src/samples/java/com/azure/search/documents/ReadmeSamples.java#L204-L209 -->
 ```Java
-searchAsyncClient.search("luxury")
-    .subscribe(result -> {
-        Hotel hotel = result.getDocument(Hotel.class);
-        System.out.println(String.format("This is hotelId %s, and this is hotel name %s.",
-            hotel.getId(), hotel.getName()));
-    });
+    searchAsyncClient.search("luxury")
+        .subscribe(result -> {
+            Hotel hotel = result.getDocument(Hotel.class);
+            System.out.printf("This is hotelId %s, and this is hotel name %s.%n", hotel.getId(), hotel.getName());
+        });
+}
 ```
 
-- Samples are explained in detail [here][samples_readme].
+**Samples are explained in detail [here][samples_readme].**
 
 ## Troubleshooting
 

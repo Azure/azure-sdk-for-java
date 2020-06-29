@@ -142,8 +142,8 @@ public class ReadmeSamples {
             SearchDocument document = searchResult.getDocument(SearchDocument.class);
             String title = (String) document.get("business_title");
             String description = (String) document.get("job_description");
-            System.out.println(String.format("The business title is %s, and here is the description: %s",
-                title, description));
+            System.out.printf("The business title is %s, and here is the description: %s.%n",
+                title, description);
         }
     }
 
@@ -153,7 +153,7 @@ public class ReadmeSamples {
             SearchDocument doc = searchResult.getDocument(SearchDocument.class);
             String id = (String) doc.get("hotelId");
             String name = (String) doc.get("hotelName");
-            System.out.println(String.format("This is hotelId %s, and this is hotel name %s.", id, name));
+            System.out.printf("This is hotelId %s, and this is hotel name %s.%n", id, name);
         }
     }
 
@@ -186,7 +186,7 @@ public class ReadmeSamples {
             Hotel doc = searchResult.getDocument(Hotel.class);
             String id = doc.getId();
             String name = doc.getName();
-            System.out.println(String.format("This is hotelId %s, and this is hotel name %s.", id, name));
+            System.out.printf("This is hotelId %s, and this is hotel name %s.%n", id, name);
         }
     }
 
@@ -204,15 +204,13 @@ public class ReadmeSamples {
         searchAsyncClient.search("luxury")
             .subscribe(result -> {
                 Hotel hotel = result.getDocument(Hotel.class);
-                System.out.println(String.format("This is hotelId %s, and this is hotel name %s.",
-                    hotel.getId(), hotel.getName()));
+                System.out.printf("This is hotelId %s, and this is hotel name %s.%n", hotel.getId(), hotel.getName());
             });
     }
 
     public void retrieveDocuments() {
         Hotel hotel = searchClient.getDocument("1", Hotel.class);
-        System.out.println(String.format("This is hotelId %s, and this is hotel name %s.",
-            hotel.getId(), hotel.getName()));
+        System.out.printf("This is hotelId %s, and this is hotel name %s.%n", hotel.getId(), hotel.getName());
     }
 
     public void batchDocumentsOperations() {
