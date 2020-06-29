@@ -9,7 +9,6 @@ public class TableClientBuilder {
     String connectionString;
     String tableName;
 
-
     /**
      * Sets the connection string to help build the client
      *
@@ -51,7 +50,6 @@ public class TableClientBuilder {
     }
 
     TableClientBuilder() {
-
     }
 
 }

@@ -14,11 +14,9 @@ import java.util.Map;
 public class TableAsyncClient {
     String tableName;
 
-
     TableAsyncClient(String tableName) {
         this.tableName = tableName;
     }
-
 
     /**
      * returns the table associated with this table client
@@ -33,7 +31,7 @@ public class TableAsyncClient {
     /**
      * Queries and returns entities in the given table using the select and filter strings
      *
-     * @param top          odata top parameter
+     * @param top odata top parameter
      * @param selectString odata select string
      * @param filterString odata filter string
      * @return a paged flux of all the entity which fit this criteria
@@ -42,16 +40,25 @@ public class TableAsyncClient {
         return null;
     }
 
-
     /**
      * insert a TableEntity with the given properties and return that TableEntity
      *
-     * @param row                   the RowKey
-     * @param partition             the PartitionKey
+     * @param row the RowKey
+     * @param partition the PartitionKey
      * @param tableEntityProperties a map of properties for the TableEntity
      * @return the created TableEntity
      */
     public Mono<TableEntity> insertEntity(String row, String partition, Map<String, Object> tableEntityProperties) {
+        return null;
+    }
+
+    /**
+     * insert a TableEntity with the given row and partition key
+     * @param row row key
+     * @param partition partition key
+     * @return the table entity which is inserted
+     */
+    public Mono<TableEntity> insertEntity(String row, String partition ) {
         return null;
     }
 
@@ -85,7 +92,6 @@ public class TableAsyncClient {
         return Mono.empty();
     }
 
-
     /**
      * merges the given entity with the entity which exists on the storage account
      *
@@ -115,6 +121,4 @@ public class TableAsyncClient {
     public Mono<Void> insertOrMergeEntity(TableEntity tableEntity) {
         return Mono.empty();
     }
-
-
 }

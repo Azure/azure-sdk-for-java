@@ -29,7 +29,7 @@ public class TableClient {
     /**
      * Queries and returns entities in the given table using the select and filter strings
      *
-     * @param top          odata top integer
+     * @param top odata top integer
      * @param selectString odata select string
      * @param filterString odata filter string
      * @return a list of the tables that fit the query
@@ -41,12 +41,22 @@ public class TableClient {
     /**
      * insert a TableEntity with the given properties and return that TableEntity
      *
-     * @param row                   the RowKey
-     * @param partition             the PartitionKey
+     * @param row the RowKey
+     * @param partition the PartitionKey
      * @param tableEntityProperties a map of properties for the TableEntity
      * @return the created TableEntity
      */
     public TableEntity insertEntity(String row, String partition, Map<String, Object> tableEntityProperties) {
+        return new TableEntity();
+    }
+
+    /**
+     * insert a TableEntity with the given row and partition key and return that TableEntity
+     * @param row row key
+     * @param partition partition key
+     * @return the created TableEntity
+     */
+    public TableEntity insertEntity(String row, String partition) {
         return new TableEntity();
     }
 

@@ -43,7 +43,7 @@ public class TableServiceClient {
     /**
      * query all the tables under the storage account and return them
      *
-     * @param top          odata top integer
+     * @param top odata top integer
      * @param selectString odata select string
      * @param filterString odata filter string
      * @return a list of tables that meet the query

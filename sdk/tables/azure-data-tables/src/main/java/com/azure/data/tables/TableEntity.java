@@ -8,15 +8,14 @@ public class TableEntity {
     Map<String, Object> properties;
 
     TableEntity() {
-
     }
 
     /**
      * creates a new TableEntity
      *
-     * @param rowKey       rowKey
+     * @param rowKey rowKey
      * @param partitionKey partitionKey
-     * @param properties   map of properties of the entity
+     * @param properties map of properties of the entity
      */
     TableEntity(String rowKey, String partitionKey, Map<String, Object> properties) {
         this.properties = properties;
@@ -34,7 +33,7 @@ public class TableEntity {
     /**
      * adds a new property to this entity's property map
      *
-     * @param key   the key of the property
+     * @param key the key of the property
      * @param value the value of the property
      */
     public void addProperty(String key, Object value) {

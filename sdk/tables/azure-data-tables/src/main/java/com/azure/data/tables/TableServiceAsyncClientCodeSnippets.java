@@ -7,7 +7,7 @@ import reactor.core.publisher.Mono;
 import java.util.HashMap;
 
 
-public class TableClientAsyncCodeSnippets {
+public class TableServiceAsyncClientCodeSnippets {
 
 
     public void AsyncSnippets() {
@@ -52,15 +52,12 @@ public class TableClientAsyncCodeSnippets {
         TableAsyncClient tableAsyncClient = tableServiceAsyncClient.getClient("OfficeSupplies");
         String row = "crayolaMarkers";
         String partitionKey = "markers";
-        HashMap<String, Object> tableEntityProperties = new HashMap<>();
 
-        tableAsyncClient.insertEntity(row, partitionKey, tableEntityProperties).subscribe(tableEntity -> {
+        tableAsyncClient.insertEntity(row, partitionKey).subscribe(tableEntity -> {
             System.out.println("Insert Entity Successful. Entity: " + tableEntity);
         }, error -> {
             System.out.println("There was an error inserting the Entity. Error: " + error);
         });
-
-
     }
 
     public void deleteEntity() {
@@ -104,8 +101,6 @@ public class TableClientAsyncCodeSnippets {
         }, error -> {
             System.out.println("There was an error updating the Entity. Error: " + error);
         });
-
-
     }
 
     public void QueryEntities() {
@@ -124,7 +119,5 @@ public class TableClientAsyncCodeSnippets {
         }, error -> {
             System.out.println("There was an error querying the table. Error: " + error);
         });
-
     }
-
 }

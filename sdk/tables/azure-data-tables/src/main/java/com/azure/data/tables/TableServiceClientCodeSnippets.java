@@ -7,7 +7,7 @@ import com.azure.data.tables.implementation.models.TableServiceErrorException;
 
 import java.util.List;
 
-public class TableClientCodeSnippets {
+public class TableServiceClientCodeSnippets {
 
     public static void methods() {
 
@@ -21,7 +21,6 @@ public class TableClientCodeSnippets {
             .connectionString("connectionString")
             .tableName("OfficeSupplies")
             .buildClient();
-
 
         //create a table
         try {
@@ -47,7 +46,6 @@ public class TableClientCodeSnippets {
             System.out.println("Table Query Unsuccessful. Error: " + e);
         }
 
-
         //insert entity
         String row = "crayola markers";
         String partitionKey = "markers";
@@ -58,7 +56,6 @@ public class TableClientCodeSnippets {
             System.out.println("Insert Entity Unsuccessful. Error: " + e);
         }
 
-
         //update entity
         tableEntity.addProperty("Seller", "Crayola");
         try {
@@ -66,7 +63,6 @@ public class TableClientCodeSnippets {
         } catch (HttpResponseException e) {
             System.out.println("Update Entity Unsuccessful. Error: " + e);
         }
-
 
         //upsert entity (where it is an insert or replace)
         tableEntity.addProperty("Price", "5");
@@ -84,14 +80,12 @@ public class TableClientCodeSnippets {
             System.out.println("Upsert Entity Unsuccessful. Error: " + e);
         }
 
-
         //delete entity
         try {
             tableClient.deleteEntity(tableEntity);
         } catch (HttpResponseException e) {
             System.out.println("Delete Entity Unsuccessful. Error: " + e);
         }
-
 
         //query a table
         String filterString2 = "$filter=Product eq 'markers'";
@@ -102,5 +96,4 @@ public class TableClientCodeSnippets {
             System.out.println("Query Table Entities Unsuccessful. Error: " + e);
         }
     }
-
 }

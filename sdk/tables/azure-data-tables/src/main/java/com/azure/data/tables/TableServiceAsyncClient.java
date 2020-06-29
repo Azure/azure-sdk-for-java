@@ -47,7 +47,7 @@ public class TableServiceAsyncClient {
     /**
      * query all the tables under the storage account and return them
      *
-     * @param top          odata top integer
+     * @param top odata top integer
      * @param selectString odata select string
      * @param filterString odata filter string
      * @return a flux of the tables that met this criteria
@@ -66,5 +66,4 @@ public class TableServiceAsyncClient {
     public TableAsyncClient getClient(String tableName) {
         return null;
     }
-
 }
