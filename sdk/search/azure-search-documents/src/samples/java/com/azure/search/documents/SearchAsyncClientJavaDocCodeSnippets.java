@@ -6,7 +6,7 @@ package com.azure.search.documents;
 import com.azure.core.credential.AzureKeyCredential;
 
 public class SearchAsyncClientJavaDocCodeSnippets {
-    private SearchAsyncClient searchAsyncClient= new SearchClientBuilder().buildAsyncClient();
+    private SearchAsyncClient searchAsyncClient = new SearchClientBuilder().buildAsyncClient();
 
     /**
      * Code snippet for creating a {@link SearchAsyncClient}.
