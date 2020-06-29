@@ -660,6 +660,7 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
      * {@inheritDoc}
      */
     @Override
+    @SuppressWarnings("unchecked")
     public <V extends FileAttributeView> V getFileAttributeView(Path path, Class<V> aClass, LinkOption... linkOptions) {
         /*
         No resource validation is necessary here. That can happen at the time of making a network requests internal to
@@ -684,6 +685,7 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
      * {@inheritDoc}
      */
     @Override
+    @SuppressWarnings("unchecked")
     public <A extends BasicFileAttributes> A readAttributes(Path path, Class<A> aClass, LinkOption... linkOptions)
         throws IOException {
         Class<? extends BasicFileAttributeView> view;
@@ -809,7 +811,7 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
     }
 
     /**
-     * Sets the value of a file attribue.
+     * Sets the value of a file attribute.
      *
      * See {@link AzureBlobFileAttributeView} for more information.
      *

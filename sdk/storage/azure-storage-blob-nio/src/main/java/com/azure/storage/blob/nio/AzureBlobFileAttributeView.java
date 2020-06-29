@@ -33,6 +33,7 @@ public final class AzureBlobFileAttributeView implements BasicFileAttributeView 
         this.path = path;
     }
 
+    @SuppressWarnings("unchecked")
     static Map<String, Consumer<Object>> setAttributeConsumers(AzureBlobFileAttributeView view) {
         Map<String, Consumer<Object>> map = new HashMap<>();
         map.put("blobHttpHeaders", obj -> {
@@ -44,6 +45,10 @@ public final class AzureBlobFileAttributeView implements BasicFileAttributeView 
         });
         map.put("metadata", obj -> {
             try {
+                Map<String, String> m = (Map<String, String>) obj;
+                if (m == null) {
+                    throw LoggingUtility.logError(view.logger, new ClassCastException());
+                }
                 view.setMetadata((Map<String, String>) obj);
             } catch (IOException e) {
                 throw LoggingUtility.logError(view.logger, new UncheckedIOException(ATTR_CONSUMER_ERROR, e));
