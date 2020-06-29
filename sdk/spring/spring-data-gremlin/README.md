@@ -77,7 +77,7 @@ gremlin:
 ### Define an entity
 Define a simple Vertex entity with `@Vertex`.
 
-
+<!-- embedme /src/samples/java/com/azure/spring/data/gremlin/Person.java#L16-L35 -->
 ```java
 @Vertex
 public class Person {
@@ -102,7 +102,7 @@ public class Person {
 ```
 
 Define a simple Edge entity with `@Edge`.
-
+<!-- embedme /src/samples/java/com/azure/spring/data/gremlin/Relation.java#L18-L32 -->
 ```java
 @Edge
 public class Relation {
@@ -121,7 +121,7 @@ public class Relation {
 }
 ```
 Define a simple Graph entity with `@Graph`.
-
+<!-- embedme /src/samples/java/com/azure/spring/data/gremlin/Network.java#L21-L38 -->
 ```java
 @Graph
 public class Network {
@@ -145,7 +145,7 @@ public class Network {
 
 ### Create repositories
 Extends GremlinRepository interface, which provides Spring Data repository support.
-
+<!-- embedme /src/samples/java/com/azure/spring/data/gremlin/PersonRepository.java#L18-L23 -->
 ```java
 @Repository
 public interface PersonRepository extends GremlinRepository<Person, String> {
@@ -158,7 +158,7 @@ public interface PersonRepository extends GremlinRepository<Person, String> {
 
 ### Create an application
 Here create an application class with all the components
-
+<!-- embedme /src/samples/java/com/azure/spring/data/gremlin/SampleApplication.java#L18-L35 -->
 ```java
 @SpringBootApplication
 public class SampleApplication implements CommandLineRunner {
