@@ -6,7 +6,6 @@ package com.azure.search.documents;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.Context;
-import com.azure.search.documents.models.RequestOptions;
 import com.azure.search.documents.models.SearchOptions;
 import com.azure.search.documents.models.SearchResult;
 import com.azure.search.documents.util.SearchPagedIterable;
@@ -49,7 +48,7 @@ public class SearchOptionsExample {
         // Each page in the response of the search query holds the facets value
         // Get Facets property from the first page in the response
         SearchPagedIterable results = searchClient.search("*",
-            new SearchOptions().setFacets("Rooms/BaseRate,values:5|8|10"), new RequestOptions(), Context.NONE);
+            new SearchOptions().setFacets("Rooms/BaseRate,values:5|8|10"), Context.NONE);
         results.getFacets().forEach((k, v) -> {
             v.forEach(result -> {
                 System.out.println(k + " :");
@@ -65,7 +64,7 @@ public class SearchOptionsExample {
         // Each page in the response of the search query holds the coverage value
         // Accessing Coverage property when iterating by page
         SearchPagedIterable results = searchClient.search("*",
-            new SearchOptions().setMinimumCoverage(80.0), new RequestOptions(), Context.NONE);
+            new SearchOptions().setMinimumCoverage(80.0), Context.NONE);
 
         System.out.println("Coverage = " + results.getCoverage());
     }
@@ -75,7 +74,7 @@ public class SearchOptionsExample {
         // Get total search results count
         // Get count property from the first page in the response
         SearchPagedIterable results = searchClient.search("*",
-            new SearchOptions().setIncludeTotalCount(true), new RequestOptions(), Context.NONE);
+            new SearchOptions().setIncludeTotalCount(true), Context.NONE);
 
         System.out.println("Count = " + results.getTotalCount());
     }
@@ -85,13 +84,15 @@ public class SearchOptionsExample {
         SearchPagedIterable results = searchClient.search("*");
         Stream<SearchResult> resultStream = results.stream();
         resultStream.forEach(result ->
-            result.getDocument().forEach((field, value) -> System.out.println((field + ":" + value)))
+            result.getDocument(SearchDocument.class).forEach((field, value) ->
+                System.out.println((field + ":" + value)))
         );
     }
 
     private static void searchResultsAsPagedIterable(SearchClient searchClient) {
         searchClient.search("*").forEach(result ->
-            result.getDocument().forEach((field, value) -> System.out.println((field + ":" + value)))
+            result.getDocument(SearchDocument.class).forEach((field, value) ->
+                System.out.println((field + ":" + value)))
         );
     }
 }

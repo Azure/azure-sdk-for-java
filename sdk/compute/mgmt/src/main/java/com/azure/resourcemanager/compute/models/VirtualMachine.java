@@ -95,6 +95,20 @@ public interface VirtualMachine
      */
     Mono<Void> redeployAsync();
 
+    /**
+     * Simulates the eviction of spot virtual machine.
+     * The eviction will occur with 30 minutes after calling this API.
+     */
+    void simulateEviction();
+
+    /**
+     * Simulates the eviction of spot virtual machine asynchronously.
+     * The eviction will occur with 30 minutes after calling this API.
+     *
+     * @return a representation of the deferred computation of this call
+     */
+    Mono<Void> simulateEvictionAsync();
+
     /** @return entry point to enabling, disabling and querying disk encryption */
     VirtualMachineEncryption diskEncryption();
 
@@ -616,20 +630,38 @@ public interface VirtualMachine
             WithWindowsAdminUsernameManagedOrUnmanaged withSpecificWindowsImageVersion(ImageReference imageReference);
 
             /**
-             * Specifies the resource ID of a Windows custom image to be used as the virtual machine's OS.
+             * Specifies the resource ID of a generalized Windows custom image to be used as the virtual machine's OS.
              *
              * @param customImageId the resource ID of the custom image
              * @return the next stage of the definition
              */
-            WithWindowsAdminUsernameManaged withWindowsCustomImage(String customImageId);
+            WithWindowsAdminUsernameManaged withGeneralizedWindowsCustomImage(String customImageId);
 
             /**
-             * Specifies the resource ID of a Windows gallery image version to be used as the virtual machine's OS.
+             * Specifies the resource ID of a specialized Windows custom image to be used as the virtual machine's OS.
+             *
+             * @param customImageId the resource ID of the custom image
+             * @return the next stage of the definition
+             */
+            WithWindowsCreateManaged withSpecializedWindowsCustomImage(String customImageId);
+
+            /**
+             * Specifies the resource ID of a generalized Windows gallery image version
+             * to be used as the virtual machine's OS.
              *
              * @param galleryImageVersionId the resource ID of the gallery image version
              * @return the next stage of the definition
              */
-            WithWindowsAdminUsernameManaged withWindowsGalleryImageVersion(String galleryImageVersionId);
+            WithWindowsAdminUsernameManaged withGeneralizedWindowsGalleryImageVersion(String galleryImageVersionId);
+
+            /**
+             * Specifies the resource ID of a specialized Windows gallery image version
+             * to be used as the virtual machine's OS.
+             *
+             * @param galleryImageVersionId the resource ID of the gallery image version
+             * @return the next stage of the definition
+             */
+            WithWindowsCreateManaged withSpecializedWindowsGalleryImageVersion(String galleryImageVersionId);
 
             /**
              * Specifies the user (generalized) Windows image to be used for the virtual machine's OS.
@@ -648,7 +680,8 @@ public interface VirtualMachine
             WithLinuxRootUsernameManagedOrUnmanaged withPopularLinuxImage(KnownLinuxVirtualMachineImage knownImage);
 
             /**
-             * Specifies that the latest version of a marketplace Linux image is to be used as the virtual machine's OS.
+             * Specifies that the latest version of a marketplace Linux image is
+             * to be used as the virtual machine's OS.
              *
              * @param publisher specifies the publisher of an image
              * @param offer specifies an offer of the image
@@ -666,20 +699,39 @@ public interface VirtualMachine
             WithLinuxRootUsernameManagedOrUnmanaged withSpecificLinuxImageVersion(ImageReference imageReference);
 
             /**
-             * Specifies the resource ID of a Linux custom image to be used as the virtual machines' OS.
+             * Specifies the resource ID of a generalized Linux custom image to be used as the virtual machines' OS.
              *
              * @param customImageId the resource ID of a custom image
              * @return the next stage of the definition
              */
-            WithLinuxRootUsernameManaged withLinuxCustomImage(String customImageId);
+            WithLinuxRootUsernameManaged withGeneralizedLinuxCustomImage(String customImageId);
 
             /**
-             * Specifies the resource ID of a Linux gallery image version to be used as the virtual machines' OS.
+             * Specifies the resource ID of a specialized Linux custom image
+             * to be used as the virtual machines' OS.
+             *
+             * @param customImageId the resource ID of a custom image
+             * @return the next stage of the definition
+             */
+            WithLinuxCreateManaged withSpecializedLinuxCustomImage(String customImageId);
+
+            /**
+             * Specifies the resource ID of a generalized Linux gallery image version
+             * to be used as the virtual machines' OS.
              *
              * @param galleryImageVersionId the resource ID of a gallery image version
              * @return the next stage of the definition
              */
-            WithLinuxRootUsernameManaged withLinuxGalleryImageVersion(String galleryImageVersionId);
+            WithLinuxRootUsernameManaged withGeneralizedLinuxGalleryImageVersion(String galleryImageVersionId);
+
+            /**
+             * Specifies the resource ID of a specialized Linux gallery image version
+             * to be used as the virtual machines' OS.
+             *
+             * @param galleryImageVersionId the resource ID of a gallery image version
+             * @return the next stage of the definition
+             */
+            WithLinuxCreateManaged withSpecializedLinuxGalleryImageVersion(String galleryImageVersionId);
 
             /**
              * Specifies a user (generalized) Linux image to be used for the virtual machine's OS.
@@ -1440,6 +1492,21 @@ public interface VirtualMachine
              * @return the next stage of the definition
              */
             WithCreate withLowPriority(VirtualMachineEvictionPolicyTypes policy);
+
+            /**
+             * Specify that virtual machine should be spot priority.
+             *
+             * @return the next stage of the definition
+             */
+            WithCreate withSpotPriority();
+
+            /**
+             * Specify that virtual machines should be spot priority VMs with the provided eviction policy.
+             *
+             * @param policy eviction policy for the virtual machine
+             * @return the next stage of the definition
+             */
+            WithCreate withSpotPriority(VirtualMachineEvictionPolicyTypes policy);
         }
 
         /**
@@ -1670,7 +1737,7 @@ public interface VirtualMachine
             Update withoutProximityPlacementGroup();
         }
 
-        /** /** The stage of the virtual machine update allowing to specify billing profile. */
+        /** The stage of the virtual machine update allowing to specify billing profile. */
         interface WithBillingProfile {
             /**
              * Set the billing related details of a low priority virtual machine.

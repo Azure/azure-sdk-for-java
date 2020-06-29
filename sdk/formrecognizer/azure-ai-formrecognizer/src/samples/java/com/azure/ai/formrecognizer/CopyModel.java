@@ -56,8 +56,8 @@ public class CopyModel {
                 + " transfer completed on: %s.%n",
             copiedModel.getModelId(),
             copiedModel.getModelStatus(),
-            copiedModel.getRequestedOn(),
-            copiedModel.getCompletedOn());
+            copiedModel.getTrainingStartedOn(),
+            copiedModel.getTrainingCompletedOn());
     }
 }
 

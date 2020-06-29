@@ -483,7 +483,6 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
 
                 final String blockId = Base64.getEncoder().encodeToString(
                     UUID.randomUUID().toString().getBytes(UTF_8));
-
                 return blockBlobAsyncClient.stageBlockWithResponse(blockId, progressData, bufferAggregator.length(),
                     null, requestConditions.getLeaseId())
                     // We only care about the stageBlock insofar as it was successful,

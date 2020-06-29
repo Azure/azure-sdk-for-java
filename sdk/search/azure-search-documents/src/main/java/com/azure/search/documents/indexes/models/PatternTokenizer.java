@@ -41,6 +41,17 @@ public final class PatternTokenizer extends LexicalTokenizer {
     private Integer group;
 
     /**
+     * Constructor of {@link PatternTokenizer}.
+     *
+     * @param name The name of the tokenizer. It must only contain letters, digits, spaces,
+     * dashes or underscores, can only start and end with alphanumeric
+     * characters, and is limited to 128 characters.
+     */
+    public PatternTokenizer(String name) {
+        super(name);
+    }
+
+    /**
      * Get the pattern property: A regular expression pattern to match token
      * separators. Default is an expression that matches one or more non-word
      * characters.

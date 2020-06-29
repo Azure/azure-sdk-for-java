@@ -31,6 +31,7 @@ class DownloadResponseMockFlux extends Flux<ByteBuffer> {
     static final int DR_TEST_SCENARIO_INFO_TEST = 8; // Initial info values are honored
     static final int DR_TEST_SCENARIO_NO_MULTIPLE_SUBSCRIPTION = 9; // We do not subscribe to the same stream twice
     static final int DR_TEST_SCENARIO_TIMEOUT = 10; // ReliableDownload with timeout after not receiving items for 60s
+    static final int DR_TEST_SCENARIO_ERROR_AFTER_ALL_DATA = 11; // Don't actually issue another retry if we've read all the data and the source failed at the end
 
     private int scenario;
     private int tryNumber;
@@ -49,13 +50,14 @@ class DownloadResponseMockFlux extends Flux<ByteBuffer> {
             case DR_TEST_SCENARIO_SUCCESSFUL_MULTI_CHUNK:
             case DR_TEST_SCENARIO_SUCCESSFUL_STREAM_FAILURES:
             case DR_TEST_SCENARIO_NO_MULTIPLE_SUBSCRIPTION:
-                this.scenarioData = apiSpec.getRandomData(1024);
-                break;
+            case DR_TEST_SCENARIO_ERROR_AFTER_ALL_DATA:
+                // Even when testing error cases, the service attempts to return some data.
             case DR_TEST_SCENARIO_MAX_RETRIES_EXCEEDED:
             case DR_TEST_SCENARIO_NON_RETRYABLE_ERROR:
             case DR_TEST_SCENARIO_ERROR_GETTER_MIDDLE:
             case DR_TEST_SCENARIO_INFO_TEST:
             case DR_TEST_SCENARIO_TIMEOUT:
+                this.scenarioData = apiSpec.getRandomData(1024);
                 break;
             default:
                 throw new IllegalArgumentException("Invalid download resource test scenario.");
@@ -141,6 +143,11 @@ class DownloadResponseMockFlux extends Flux<ByteBuffer> {
                 Operators.complete(subscriber);
                 break;
 
+            case DR_TEST_SCENARIO_ERROR_AFTER_ALL_DATA:
+                subscriber.onNext(this.scenarioData.duplicate());
+                Operators.error(subscriber, new IOException("Exception at end"));
+                break;
+
             case DR_TEST_SCENARIO_MAX_RETRIES_EXCEEDED:
                 Operators.error(subscriber, new IOException());
                 break;
@@ -193,8 +200,11 @@ class DownloadResponseMockFlux extends Flux<ByteBuffer> {
     Mono<ReliableDownload> getter(HttpGetterInfo info) {
         this.tryNumber++;
         this.info = info;
+        long contentUpperBound = info.getCount() == null
+            ? this.scenarioData.remaining() - 1 : info.getOffset() + info.getCount() - 1;
         BlobsDownloadResponse rawResponse = new BlobsDownloadResponse(null, 200, new HttpHeaders(), this,
-            new com.azure.storage.blob.implementation.models.BlobDownloadHeaders());
+            new BlobDownloadHeaders().setContentRange(String.format("%d-%d/%d",
+                info.getOffset(), contentUpperBound, this.scenarioData.remaining())));
         ReliableDownload response = new ReliableDownload(rawResponse, options, info, this::getter);
 
         switch (this.scenario) {

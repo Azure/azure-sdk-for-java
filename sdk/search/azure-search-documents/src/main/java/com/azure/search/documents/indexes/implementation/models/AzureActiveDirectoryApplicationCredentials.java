@@ -7,13 +7,10 @@
 package com.azure.search.documents.indexes.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * Credentials of a registered application created for your search service,
- * used for authenticated access to the encryption keys stored in Azure Key
- * Vault.
- */
+/** The AzureActiveDirectoryApplicationCredentials model. */
 @Fluent
 public final class AzureActiveDirectoryApplicationCredentials {
     /*
@@ -31,11 +28,16 @@ public final class AzureActiveDirectoryApplicationCredentials {
     @JsonProperty(value = "applicationSecret")
     private String applicationSecret;
 
+    /** Creates an instance of AzureActiveDirectoryApplicationCredentials class. */
+    @JsonCreator
+    public AzureActiveDirectoryApplicationCredentials(@JsonProperty(value = "applicationId") String applicationId) {
+        this.applicationId = applicationId;
+    }
+
     /**
-     * Get the applicationId property: An AAD Application ID that was granted
-     * the required access permissions to the Azure Key Vault that is to be
-     * used when encrypting your data at rest. The Application ID should not be
-     * confused with the Object ID for your AAD Application.
+     * Get the applicationId property: An AAD Application ID that was granted the required access permissions to the
+     * Azure Key Vault that is to be used when encrypting your data at rest. The Application ID should not be confused
+     * with the Object ID for your AAD Application.
      *
      * @return the applicationId value.
      */
@@ -44,22 +46,15 @@ public final class AzureActiveDirectoryApplicationCredentials {
     }
 
     /**
-     * Set the applicationId property: An AAD Application ID that was granted
-     * the required access permissions to the Azure Key Vault that is to be
-     * used when encrypting your data at rest. The Application ID should not be
-     * confused with the Object ID for your AAD Application.
+     * Set the applicationId property: An AAD Application ID that was granted the required access permissions to the
+     * Azure Key Vault that is to be used when encrypting your data at rest. The Application ID should not be confused
+     * with the Object ID for your AAD Application.
      *
      * @param applicationId the applicationId value to set.
      * @return the AzureActiveDirectoryApplicationCredentials object itself.
      */
-    public AzureActiveDirectoryApplicationCredentials setApplicationId(String applicationId) {
-        this.applicationId = applicationId;
-        return this;
-    }
-
     /**
-     * Get the applicationSecret property: The authentication key of the
-     * specified AAD application.
+     * Get the applicationSecret property: The authentication key of the specified AAD application.
      *
      * @return the applicationSecret value.
      */
@@ -68,8 +63,7 @@ public final class AzureActiveDirectoryApplicationCredentials {
     }
 
     /**
-     * Set the applicationSecret property: The authentication key of the
-     * specified AAD application.
+     * Set the applicationSecret property: The authentication key of the specified AAD application.
      *
      * @param applicationSecret the applicationSecret value to set.
      * @return the AzureActiveDirectoryApplicationCredentials object itself.
@@ -77,5 +71,17 @@ public final class AzureActiveDirectoryApplicationCredentials {
     public AzureActiveDirectoryApplicationCredentials setApplicationSecret(String applicationSecret) {
         this.applicationSecret = applicationSecret;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (getApplicationId() == null) {
+            throw new IllegalArgumentException(
+                    "Missing required property applicationId in model AzureActiveDirectoryApplicationCredentials");
+        }
     }
 }

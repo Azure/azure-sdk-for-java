@@ -7,48 +7,35 @@
 package com.azure.search.documents.indexes.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.JsonFlatten;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/**
- * Language specific stemming filter. This token filter is implemented using
- * Apache Lucene.
- */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata.type")
+/** The StemmerTokenFilter model. */
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata\\.type")
 @JsonTypeName("#Microsoft.Azure.Search.StemmerTokenFilter")
+@JsonFlatten
 @Fluent
-public final class StemmerTokenFilter extends TokenFilter {
+public class StemmerTokenFilter extends TokenFilter {
     /*
-     * The language to use. Possible values include: 'Arabic', 'Armenian',
-     * 'Basque', 'Brazilian', 'Bulgarian', 'Catalan', 'Czech', 'Danish',
-     * 'Dutch', 'DutchKp', 'English', 'LightEnglish', 'MinimalEnglish',
-     * 'PossessiveEnglish', 'Porter2', 'Lovins', 'Finnish', 'LightFinnish',
-     * 'French', 'LightFrench', 'MinimalFrench', 'Galician', 'MinimalGalician',
-     * 'German', 'German2', 'LightGerman', 'MinimalGerman', 'Greek', 'Hindi',
-     * 'Hungarian', 'LightHungarian', 'Indonesian', 'Irish', 'Italian',
-     * 'LightItalian', 'Sorani', 'Latvian', 'Norwegian', 'LightNorwegian',
-     * 'MinimalNorwegian', 'LightNynorsk', 'MinimalNynorsk', 'Portuguese',
-     * 'LightPortuguese', 'MinimalPortuguese', 'PortugueseRslp', 'Romanian',
-     * 'Russian', 'LightRussian', 'Spanish', 'LightSpanish', 'Swedish',
-     * 'LightSwedish', 'Turkish'
+     * The language to use.
      */
     @JsonProperty(value = "language", required = true)
     private StemmerTokenFilterLanguage language;
 
+    /** Creates an instance of StemmerTokenFilter class. */
+    @JsonCreator
+    public StemmerTokenFilter(
+            @JsonProperty(value = "name") String name,
+            @JsonProperty(value = "language") StemmerTokenFilterLanguage language) {
+        super(name);
+        this.language = language;
+    }
+
     /**
-     * Get the language property: The language to use. Possible values include:
-     * 'Arabic', 'Armenian', 'Basque', 'Brazilian', 'Bulgarian', 'Catalan',
-     * 'Czech', 'Danish', 'Dutch', 'DutchKp', 'English', 'LightEnglish',
-     * 'MinimalEnglish', 'PossessiveEnglish', 'Porter2', 'Lovins', 'Finnish',
-     * 'LightFinnish', 'French', 'LightFrench', 'MinimalFrench', 'Galician',
-     * 'MinimalGalician', 'German', 'German2', 'LightGerman', 'MinimalGerman',
-     * 'Greek', 'Hindi', 'Hungarian', 'LightHungarian', 'Indonesian', 'Irish',
-     * 'Italian', 'LightItalian', 'Sorani', 'Latvian', 'Norwegian',
-     * 'LightNorwegian', 'MinimalNorwegian', 'LightNynorsk', 'MinimalNynorsk',
-     * 'Portuguese', 'LightPortuguese', 'MinimalPortuguese', 'PortugueseRslp',
-     * 'Romanian', 'Russian', 'LightRussian', 'Spanish', 'LightSpanish',
-     * 'Swedish', 'LightSwedish', 'Turkish'.
+     * Get the language property: The language to use.
      *
      * @return the language value.
      */
@@ -57,24 +44,21 @@ public final class StemmerTokenFilter extends TokenFilter {
     }
 
     /**
-     * Set the language property: The language to use. Possible values include:
-     * 'Arabic', 'Armenian', 'Basque', 'Brazilian', 'Bulgarian', 'Catalan',
-     * 'Czech', 'Danish', 'Dutch', 'DutchKp', 'English', 'LightEnglish',
-     * 'MinimalEnglish', 'PossessiveEnglish', 'Porter2', 'Lovins', 'Finnish',
-     * 'LightFinnish', 'French', 'LightFrench', 'MinimalFrench', 'Galician',
-     * 'MinimalGalician', 'German', 'German2', 'LightGerman', 'MinimalGerman',
-     * 'Greek', 'Hindi', 'Hungarian', 'LightHungarian', 'Indonesian', 'Irish',
-     * 'Italian', 'LightItalian', 'Sorani', 'Latvian', 'Norwegian',
-     * 'LightNorwegian', 'MinimalNorwegian', 'LightNynorsk', 'MinimalNynorsk',
-     * 'Portuguese', 'LightPortuguese', 'MinimalPortuguese', 'PortugueseRslp',
-     * 'Romanian', 'Russian', 'LightRussian', 'Spanish', 'LightSpanish',
-     * 'Swedish', 'LightSwedish', 'Turkish'.
+     * Set the language property: The language to use.
      *
      * @param language the language value to set.
      * @return the StemmerTokenFilter object itself.
      */
-    public StemmerTokenFilter setLanguage(StemmerTokenFilterLanguage language) {
-        this.language = language;
-        return this;
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    @Override
+    public void validate() {
+        super.validate();
+        if (getLanguage() == null) {
+            throw new IllegalArgumentException("Missing required property language in model StemmerTokenFilter");
+        }
     }
 }

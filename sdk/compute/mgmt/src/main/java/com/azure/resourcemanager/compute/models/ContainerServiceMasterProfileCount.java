@@ -11,13 +11,13 @@ import java.util.Collection;
 /** Defines values for ContainerServiceMasterProfileCount. */
 public final class ContainerServiceMasterProfileCount extends ExpandableStringEnum<ContainerServiceMasterProfileCount> {
     /** Static value 1 for ContainerServiceMasterProfileCount. */
-    public static final ContainerServiceMasterProfileCount ONE = fromString("1");
+    public static final ContainerServiceMasterProfileCount ONE = fromInt(1);
 
     /** Static value 3 for ContainerServiceMasterProfileCount. */
-    public static final ContainerServiceMasterProfileCount THREE = fromString("3");
+    public static final ContainerServiceMasterProfileCount THREE = fromInt(3);
 
     /** Static value 5 for ContainerServiceMasterProfileCount. */
-    public static final ContainerServiceMasterProfileCount FIVE = fromString("5");
+    public static final ContainerServiceMasterProfileCount FIVE = fromInt(5);
 
     /**
      * Creates or finds a ContainerServiceMasterProfileCount from its string representation.
@@ -26,8 +26,8 @@ public final class ContainerServiceMasterProfileCount extends ExpandableStringEn
      * @return the corresponding ContainerServiceMasterProfileCount.
      */
     @JsonCreator
-    public static ContainerServiceMasterProfileCount fromString(String name) {
-        return fromString(name, ContainerServiceMasterProfileCount.class);
+    public static ContainerServiceMasterProfileCount fromInt(int name) {
+        return fromString(String.valueOf(name), ContainerServiceMasterProfileCount.class);
     }
 
     /** @return known ContainerServiceMasterProfileCount values. */

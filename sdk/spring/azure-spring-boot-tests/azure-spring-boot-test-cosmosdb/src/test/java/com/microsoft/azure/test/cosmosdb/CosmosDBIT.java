@@ -51,10 +51,19 @@ public class CosmosDBIT {
             //start app
             app.start();
             final UserRepository repository = app.getBean(UserRepository.class);
-            final User testUser = new User("testId",
+            final User testUser = new User(
+                "testId",
                 "testFirstName",
                 "testLastName",
-                "test address line one");
+                "test address line one"
+            );
+
+            try {
+                Mono<Void> voidMono = repository.delete(testUser);
+                voidMono.block(); // Delete testUser if it already exists.
+            } catch (Exception ignored) {
+
+            }
 
             // Save the User class to Azure CosmosDB database.
             final Mono<User> saveUserMono = repository.save(testUser);

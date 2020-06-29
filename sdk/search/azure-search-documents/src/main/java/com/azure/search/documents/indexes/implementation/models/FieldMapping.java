@@ -7,12 +7,10 @@
 package com.azure.search.documents.indexes.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * Defines a mapping between a field in a data source and a target field in an
- * index.
- */
+/** The FieldMapping model. */
 @Fluent
 public final class FieldMapping {
     /*
@@ -34,9 +32,14 @@ public final class FieldMapping {
     @JsonProperty(value = "mappingFunction")
     private FieldMappingFunction mappingFunction;
 
+    /** Creates an instance of FieldMapping class. */
+    @JsonCreator
+    public FieldMapping(@JsonProperty(value = "sourceFieldName") String sourceFieldName) {
+        this.sourceFieldName = sourceFieldName;
+    }
+
     /**
-     * Get the sourceFieldName property: The name of the field in the data
-     * source.
+     * Get the sourceFieldName property: The name of the field in the data source.
      *
      * @return the sourceFieldName value.
      */
@@ -45,20 +48,14 @@ public final class FieldMapping {
     }
 
     /**
-     * Set the sourceFieldName property: The name of the field in the data
-     * source.
+     * Set the sourceFieldName property: The name of the field in the data source.
      *
      * @param sourceFieldName the sourceFieldName value to set.
      * @return the FieldMapping object itself.
      */
-    public FieldMapping setSourceFieldName(String sourceFieldName) {
-        this.sourceFieldName = sourceFieldName;
-        return this;
-    }
-
     /**
-     * Get the targetFieldName property: The name of the target field in the
-     * index. Same as the source field name by default.
+     * Get the targetFieldName property: The name of the target field in the index. Same as the source field name by
+     * default.
      *
      * @return the targetFieldName value.
      */
@@ -67,8 +64,8 @@ public final class FieldMapping {
     }
 
     /**
-     * Set the targetFieldName property: The name of the target field in the
-     * index. Same as the source field name by default.
+     * Set the targetFieldName property: The name of the target field in the index. Same as the source field name by
+     * default.
      *
      * @param targetFieldName the targetFieldName value to set.
      * @return the FieldMapping object itself.
@@ -79,8 +76,7 @@ public final class FieldMapping {
     }
 
     /**
-     * Get the mappingFunction property: A function to apply to each source
-     * field value before indexing.
+     * Get the mappingFunction property: A function to apply to each source field value before indexing.
      *
      * @return the mappingFunction value.
      */
@@ -89,8 +85,7 @@ public final class FieldMapping {
     }
 
     /**
-     * Set the mappingFunction property: A function to apply to each source
-     * field value before indexing.
+     * Set the mappingFunction property: A function to apply to each source field value before indexing.
      *
      * @param mappingFunction the mappingFunction value to set.
      * @return the FieldMapping object itself.
@@ -98,5 +93,19 @@ public final class FieldMapping {
     public FieldMapping setMappingFunction(FieldMappingFunction mappingFunction) {
         this.mappingFunction = mappingFunction;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (getSourceFieldName() == null) {
+            throw new IllegalArgumentException("Missing required property sourceFieldName in model FieldMapping");
+        }
+        if (getMappingFunction() != null) {
+            getMappingFunction().validate();
+        }
     }
 }

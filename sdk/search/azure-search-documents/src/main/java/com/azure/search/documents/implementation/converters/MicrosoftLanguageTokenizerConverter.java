@@ -19,10 +19,7 @@ public final class MicrosoftLanguageTokenizerConverter {
         if (obj == null) {
             return null;
         }
-        MicrosoftLanguageTokenizer microsoftLanguageTokenizer = new MicrosoftLanguageTokenizer();
-
-        String name = obj.getName();
-        microsoftLanguageTokenizer.setName(name);
+        MicrosoftLanguageTokenizer microsoftLanguageTokenizer = new MicrosoftLanguageTokenizer(obj.getName());
 
         Integer maxTokenLength = obj.getMaxTokenLength();
         microsoftLanguageTokenizer.setMaxTokenLength(maxTokenLength);
@@ -46,10 +43,7 @@ public final class MicrosoftLanguageTokenizerConverter {
             return null;
         }
         com.azure.search.documents.indexes.implementation.models.MicrosoftLanguageTokenizer microsoftLanguageTokenizer =
-            new com.azure.search.documents.indexes.implementation.models.MicrosoftLanguageTokenizer();
-
-        String name = obj.getName();
-        microsoftLanguageTokenizer.setName(name);
+            new com.azure.search.documents.indexes.implementation.models.MicrosoftLanguageTokenizer(obj.getName());
 
         Integer maxTokenLength = obj.getMaxTokenLength();
         microsoftLanguageTokenizer.setMaxTokenLength(maxTokenLength);

@@ -80,7 +80,8 @@ public class VirtualMachineInner extends Resource {
     private AdditionalCapabilities additionalCapabilities;
 
     /*
-     * Specifies the operating system settings for the virtual machine.
+     * Specifies the operating system settings used while creating the virtual
+     * machine. Some of the settings cannot be changed once VM is provisioned.
      */
     @JsonProperty(value = "properties.osProfile")
     private OSProfile osProfile;
@@ -109,7 +110,9 @@ public class VirtualMachineInner extends Resource {
      * maintenance for virtual machines in
      * Azure](https://docs.microsoft.com/azure/virtual-machines/virtual-machines-windows-planned-maintenance?toc=%2fazure%2fvirtual-machines%2fwindows%2ftoc.json)
      * <br><br> Currently, a VM can only be added to availability set at
-     * creation time. An existing VM cannot be added to an availability set.
+     * creation time. The availability set to which the VM is being added
+     * should be under the same resource group as the availability set
+     * resource. An existing VM cannot be added to an availability set.
      * <br><br>This property cannot exist along with a non-null
      * properties.virtualMachineScaleSet reference.
      */
@@ -145,8 +148,12 @@ public class VirtualMachineInner extends Resource {
     private VirtualMachinePriorityTypes priority;
 
     /*
-     * Specifies the eviction policy for the Azure Spot virtual machine. Only
-     * supported value is 'Deallocate'. <br><br>Minimum api-version: 2019-03-01
+     * Specifies the eviction policy for the Azure Spot virtual machine and
+     * Azure Spot scale set. <br><br>For Azure Spot virtual machines, both
+     * 'Deallocate' and 'Delete' are supported and the minimum api-version is
+     * 2019-03-01. <br><br>For Azure Spot scale sets, both 'Deallocate' and
+     * 'Delete' are supported and the minimum api-version is
+     * 2017-10-30-preview.
      */
     @JsonProperty(value = "properties.evictionPolicy")
     private VirtualMachineEvictionPolicyTypes evictionPolicy;
@@ -339,7 +346,8 @@ public class VirtualMachineInner extends Resource {
     }
 
     /**
-     * Get the osProfile property: Specifies the operating system settings for the virtual machine.
+     * Get the osProfile property: Specifies the operating system settings used while creating the virtual machine. Some
+     * of the settings cannot be changed once VM is provisioned.
      *
      * @return the osProfile value.
      */
@@ -348,7 +356,8 @@ public class VirtualMachineInner extends Resource {
     }
 
     /**
-     * Set the osProfile property: Specifies the operating system settings for the virtual machine.
+     * Set the osProfile property: Specifies the operating system settings used while creating the virtual machine. Some
+     * of the settings cannot be changed once VM is provisioned.
      *
      * @param osProfile the osProfile value to set.
      * @return the VirtualMachineInner object itself.
@@ -408,9 +417,10 @@ public class VirtualMachineInner extends Resource {
      * &lt;br&gt;&lt;br&gt; For more information on Azure planned maintenance, see [Planned maintenance for virtual
      * machines in
      * Azure](https://docs.microsoft.com/azure/virtual-machines/virtual-machines-windows-planned-maintenance?toc=%2fazure%2fvirtual-machines%2fwindows%2ftoc.json)
-     * &lt;br&gt;&lt;br&gt; Currently, a VM can only be added to availability set at creation time. An existing VM
-     * cannot be added to an availability set. &lt;br&gt;&lt;br&gt;This property cannot exist along with a non-null
-     * properties.virtualMachineScaleSet reference.
+     * &lt;br&gt;&lt;br&gt; Currently, a VM can only be added to availability set at creation time. The availability set
+     * to which the VM is being added should be under the same resource group as the availability set resource. An
+     * existing VM cannot be added to an availability set. &lt;br&gt;&lt;br&gt;This property cannot exist along with a
+     * non-null properties.virtualMachineScaleSet reference.
      *
      * @return the availabilitySet value.
      */
@@ -426,9 +436,10 @@ public class VirtualMachineInner extends Resource {
      * &lt;br&gt;&lt;br&gt; For more information on Azure planned maintenance, see [Planned maintenance for virtual
      * machines in
      * Azure](https://docs.microsoft.com/azure/virtual-machines/virtual-machines-windows-planned-maintenance?toc=%2fazure%2fvirtual-machines%2fwindows%2ftoc.json)
-     * &lt;br&gt;&lt;br&gt; Currently, a VM can only be added to availability set at creation time. An existing VM
-     * cannot be added to an availability set. &lt;br&gt;&lt;br&gt;This property cannot exist along with a non-null
-     * properties.virtualMachineScaleSet reference.
+     * &lt;br&gt;&lt;br&gt; Currently, a VM can only be added to availability set at creation time. The availability set
+     * to which the VM is being added should be under the same resource group as the availability set resource. An
+     * existing VM cannot be added to an availability set. &lt;br&gt;&lt;br&gt;This property cannot exist along with a
+     * non-null properties.virtualMachineScaleSet reference.
      *
      * @param availabilitySet the availabilitySet value to set.
      * @return the VirtualMachineInner object itself.
@@ -513,8 +524,10 @@ public class VirtualMachineInner extends Resource {
     }
 
     /**
-     * Get the evictionPolicy property: Specifies the eviction policy for the Azure Spot virtual machine. Only supported
-     * value is 'Deallocate'. &lt;br&gt;&lt;br&gt;Minimum api-version: 2019-03-01.
+     * Get the evictionPolicy property: Specifies the eviction policy for the Azure Spot virtual machine and Azure Spot
+     * scale set. &lt;br&gt;&lt;br&gt;For Azure Spot virtual machines, both 'Deallocate' and 'Delete' are supported and
+     * the minimum api-version is 2019-03-01. &lt;br&gt;&lt;br&gt;For Azure Spot scale sets, both 'Deallocate' and
+     * 'Delete' are supported and the minimum api-version is 2017-10-30-preview.
      *
      * @return the evictionPolicy value.
      */
@@ -523,8 +536,10 @@ public class VirtualMachineInner extends Resource {
     }
 
     /**
-     * Set the evictionPolicy property: Specifies the eviction policy for the Azure Spot virtual machine. Only supported
-     * value is 'Deallocate'. &lt;br&gt;&lt;br&gt;Minimum api-version: 2019-03-01.
+     * Set the evictionPolicy property: Specifies the eviction policy for the Azure Spot virtual machine and Azure Spot
+     * scale set. &lt;br&gt;&lt;br&gt;For Azure Spot virtual machines, both 'Deallocate' and 'Delete' are supported and
+     * the minimum api-version is 2019-03-01. &lt;br&gt;&lt;br&gt;For Azure Spot scale sets, both 'Deallocate' and
+     * 'Delete' are supported and the minimum api-version is 2017-10-30-preview.
      *
      * @param evictionPolicy the evictionPolicy value to set.
      * @return the VirtualMachineInner object itself.

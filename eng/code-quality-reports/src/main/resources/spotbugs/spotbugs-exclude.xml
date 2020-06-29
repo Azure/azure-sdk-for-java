@@ -2018,4 +2018,15 @@
       <Class name="~com\.azure\.search\.documents\.indexes\.models\.(EdgeNGramTokenFilter|KeywordTokenizer|LuceneStandardTokenizer|NGramTokenFilter)"/>
       <Bug pattern="URF_UNREAD_FIELD"/>
   </Match>
+
+  <!-- Use static final ObjectMapper property to save the cost of ObjectMapper initialization. -->
+  <Match>
+    <Class name="com.azure.search.documents.SearchAsyncClient" />
+    <Bug pattern="SIC_INNER_SHOULD_BE_STATIC_ANON" />
+  </Match>
+  <Match>
+    <Class name="~com\.azure\.search\.documents\.indexes\.implementation\.models\.(Suggester|SynonymMap)" />
+    <Bug pattern="IP_PARAMETER_IS_DEAD_BUT_OVERWRITTEN"/>
+  </Match>
+
 </FindBugsFilter>

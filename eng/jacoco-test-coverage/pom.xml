@@ -89,7 +89,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-cosmos</artifactId>
-      <version>4.1.0-beta.1</version> <!-- {x-version-update;com.azure:azure-cosmos;current} -->
+      <version>4.2.0-beta.1</version> <!-- {x-version-update;com.azure:azure-cosmos;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
@@ -134,7 +134,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-search-documents</artifactId>
-      <version>1.0.0-beta.5</version> <!-- {x-version-update;com.azure:azure-search-documents;current} -->
+      <version>11.0.0</version> <!-- {x-version-update;com.azure:azure-search-documents;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
@@ -242,6 +242,11 @@
       <groupId>com.microsoft.azure</groupId>
       <artifactId>azure-data-gremlin-spring-boot-starter</artifactId>
       <version>2.3.3-beta.1</version> <!-- {x-version-update;com.microsoft.azure:azure-data-gremlin-spring-boot-starter;current} -->
+    </dependency>
+    <dependency>
+      <groupId>com.microsoft.azure</groupId>
+      <artifactId>spring-data-cosmosdb</artifactId>
+      <version>2.3.1-beta.1</version> <!-- {x-version-update;com.microsoft.azure:spring-data-cosmosdb;current} -->
     </dependency>
   </dependencies>
   <build>
