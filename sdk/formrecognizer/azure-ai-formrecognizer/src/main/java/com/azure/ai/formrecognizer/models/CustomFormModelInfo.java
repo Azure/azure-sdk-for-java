@@ -24,7 +24,7 @@ public final class CustomFormModelInfo {
     private final CustomFormModelStatus status;
 
     /*
-     * Date and time (UTC) when the model training was started.
+     * Date and time (UTC) when the training of the model was started.
      */
     private final OffsetDateTime trainingStartedOn;
 
@@ -38,7 +38,7 @@ public final class CustomFormModelInfo {
      *
      * @param modelId The model identifier.
      * @param status The status of the model.
-     * @param trainingStartedOn Date and time (UTC) when the training model was requested.
+     * @param trainingStartedOn Date and time (UTC) when the training of the model was started.
      * @param trainingCompletedOn Date and time (UTC) when the model training was completed.
      */
     public CustomFormModelInfo(final String modelId, final CustomFormModelStatus status,
@@ -68,9 +68,9 @@ public final class CustomFormModelInfo {
     }
 
     /**
-     * Get the date and time (UTC) when the model training was started.
+     * Get the date and time (UTC) when the training of the model was started.
      *
-     * @return the {@code requestedOn} value.
+     * @return the {@code trainingStartedOn} value.
      */
     public OffsetDateTime getTrainingStartedOn() {
         return this.trainingStartedOn;
@@ -79,7 +79,7 @@ public final class CustomFormModelInfo {
     /**
      * Get the date and time (UTC) when the model training was completed.
      *
-     * @return the {@code completedOn} value.
+     * @return the {@code trainingCompletedOn} value.
      */
     public OffsetDateTime getTrainingCompletedOn() {
         return this.trainingCompletedOn;

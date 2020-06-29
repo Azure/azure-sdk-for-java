@@ -31,7 +31,7 @@ public final class CustomFormModel {
     private final CustomFormModelStatus modelStatus;
 
     /*
-     * Date and time (UTC) when the model training was started.
+     * Date and time (UTC) when the training of the model was started.
      */
     private final OffsetDateTime trainingStartedOn;
 
@@ -56,7 +56,7 @@ public final class CustomFormModel {
      *
      * @param modelId Model identifier.
      * @param modelStatus Status of the model.
-     * @param trainingStartedOn Date and time (UTC) when the training model was requested.
+     * @param trainingStartedOn Date and time (UTC) when the training of model was started.
      * @param trainingCompletedOn Date and time (UTC) when the model training was completed.
      * @param submodels List of sub model that are part of this model, each of which can recognize and extract fields
      * from a different type of form.
@@ -96,9 +96,9 @@ public final class CustomFormModel {
     }
 
     /**
-     * Get the Date and time (UTC) when the model training was started.
+     * Get the Date and time (UTC) when the training of the model was started.
      *
-     * @return the {@code requestedOn} value.
+     * @return the {@code trainingStartedOn} value.
      */
     public OffsetDateTime getTrainingStartedOn() {
         return this.trainingStartedOn;
@@ -107,7 +107,7 @@ public final class CustomFormModel {
     /**
      * Get the Date and time (UTC) when the model training was completed.
      *
-     * @return the {@code completedOn} value.
+     * @return the {@code trainingCompletedOn} value.
      */
     public OffsetDateTime getTrainingCompletedOn() {
         return this.trainingCompletedOn;
