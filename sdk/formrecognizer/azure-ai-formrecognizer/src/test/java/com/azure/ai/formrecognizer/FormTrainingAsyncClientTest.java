@@ -199,8 +199,8 @@ public class FormTrainingAsyncClientTest extends FormTrainingClientTestBase {
         client = getFormTrainingAsyncClient(httpClient, serviceVersion);
         StepVerifier.create(client.listCustomModels())
             .thenConsumeWhile(customFormModelInfo ->
-                customFormModelInfo.getModelId() != null && customFormModelInfo.getRequestedOn() != null
-                    && customFormModelInfo.getCompletedOn() != null && customFormModelInfo.getStatus() != null)
+                customFormModelInfo.getModelId() != null && customFormModelInfo.getTrainingStartedOn() != null
+                    && customFormModelInfo.getTrainingCompletedOn() != null && customFormModelInfo.getStatus() != null)
             .verifyComplete();
     }
 
@@ -267,8 +267,8 @@ public class FormTrainingAsyncClientTest extends FormTrainingClientTestBase {
                     client.beginCopyModel(actualModel.getModelId(), target);
                 CustomFormModelInfo copyModel = copyPoller.getSyncPoller().getFinalResult();
                 assertNotNull(target.getModelId(), copyModel.getModelId());
-                assertNotNull(actualModel.getRequestedOn());
-                assertNotNull(actualModel.getCompletedOn());
+                assertNotNull(actualModel.getTrainingStartedOn());
+                assertNotNull(actualModel.getTrainingCompletedOn());
                 assertEquals(CustomFormModelStatus.READY, copyModel.getStatus());
             });
         });

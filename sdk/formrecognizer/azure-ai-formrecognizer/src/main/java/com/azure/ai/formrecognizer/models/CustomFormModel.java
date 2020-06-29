@@ -31,14 +31,14 @@ public final class CustomFormModel {
     private final CustomFormModelStatus modelStatus;
 
     /*
-     * Date and time (UTC) when the training model was requested.
+     * Date and time (UTC) when the model training was started.
      */
-    private final OffsetDateTime requestedOn;
+    private final OffsetDateTime trainingStartedOn;
 
     /*
      * Date and time (UTC) when the model training was completed.
      */
-    private final OffsetDateTime completedOn;
+    private final OffsetDateTime trainingCompletedOn;
 
     /*
      * List of sub model that are part of this model, each of which can recognize and extract fields
@@ -56,21 +56,21 @@ public final class CustomFormModel {
      *
      * @param modelId Model identifier.
      * @param modelStatus Status of the model.
-     * @param requestedOn Date and time (UTC) when the training model was requested.
-     * @param completedOn Date and time (UTC) when the model training was completed.
+     * @param trainingStartedOn Date and time (UTC) when the training model was requested.
+     * @param trainingCompletedOn Date and time (UTC) when the model training was completed.
      * @param submodels List of sub model that are part of this model, each of which can recognize and extract fields
      * from a different type of form.
      * @param modelError List of errors returned during the training operation.
      * @param trainingDocuments List of the documents used to train the model.
      */
     public CustomFormModel(final String modelId, final CustomFormModelStatus modelStatus,
-        final OffsetDateTime requestedOn, final OffsetDateTime completedOn,
+        final OffsetDateTime trainingStartedOn, final OffsetDateTime trainingCompletedOn,
         final List<CustomFormSubmodel> submodels, final List<FormRecognizerError> modelError,
         final List<TrainingDocumentInfo> trainingDocuments) {
         this.modelId = modelId;
         this.modelStatus = modelStatus;
-        this.requestedOn = requestedOn;
-        this.completedOn = completedOn;
+        this.trainingStartedOn = trainingStartedOn;
+        this.trainingCompletedOn = trainingCompletedOn;
         this.submodels = submodels == null ? null : Collections.unmodifiableList(submodels);
         this.modelError = modelError == null ? null : Collections.unmodifiableList(modelError);
         this.trainingDocuments = trainingDocuments == null ? null
@@ -96,12 +96,12 @@ public final class CustomFormModel {
     }
 
     /**
-     * Get the Date and time (UTC) when the training model was requested.
+     * Get the Date and time (UTC) when the model training was started.
      *
      * @return the {@code requestedOn} value.
      */
-    public OffsetDateTime getRequestedOn() {
-        return this.requestedOn;
+    public OffsetDateTime getTrainingStartedOn() {
+        return this.trainingStartedOn;
     }
 
     /**
@@ -109,8 +109,8 @@ public final class CustomFormModel {
      *
      * @return the {@code completedOn} value.
      */
-    public OffsetDateTime getCompletedOn() {
-        return this.completedOn;
+    public OffsetDateTime getTrainingCompletedOn() {
+        return this.trainingCompletedOn;
     }
 
     /**

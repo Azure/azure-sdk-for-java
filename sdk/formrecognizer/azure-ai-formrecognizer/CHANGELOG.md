@@ -2,7 +2,9 @@
 
 ## 1.0.0-beta.4 (Unreleased)
 ### Breaking Changes
-- Throw `HttpResponseException` instead of `ErrorResponseException` to model service side exceptions 
+- Rename properties `requestedOn` to `trainingStartedOn` and `completedOn` to `trainingCompletedOn` on model
+- Throw `HttpResponseException` instead of `ErrorResponseException` to model service side exceptions
+`CustomFormModel` and `CustomFormModelInfo`.
 - Change `CopyAuthorization.getExpiresOn()` to return a `OffsetDateTime` instead of a `long` value
 - Add `RecognizeOptions` and `RecognizeCustomFormOptions` to pass configurable options when using recognize APIs on FormRecognizerClient.
 - Change `submodels` property on `CustomFormModel` to return a `List` instead of `IterableStream`
