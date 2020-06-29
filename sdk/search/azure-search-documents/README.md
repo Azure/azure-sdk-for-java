@@ -300,9 +300,15 @@ is recommended.
 The `SearchOptions` provide powerful control over the behavior of our queries.
 Let's search for the top 5 luxury hotels with a good rating.
 
-<!-- embedme ./src/samples/java/com/azure/search/documents/ReadmeSamples.java#L194-L100 -->
+<!-- embedme ./src/samples/java/com/azure/search/documents/ReadmeSamples.java#L194-L200 -->
 ```Java 
-
+int stars = 4;
+SearchOptions options = new SearchOptions()
+    .setFilter(String.format("rating ge %s", stars))
+    .setOrderBy("rating desc")
+    .setTop(5);
+SearchPagedIterable searchResultsIterable = searchClient.search("luxury", options, Context.NONE);
+// ...
 ```
 
 ### Creating an index
