@@ -6,7 +6,6 @@ package com.azure.ai.formrecognizer;
 import com.azure.ai.formrecognizer.models.AccountProperties;
 import com.azure.ai.formrecognizer.models.CustomFormModel;
 import com.azure.ai.formrecognizer.models.CustomFormModelInfo;
-import com.azure.ai.formrecognizer.models.ErrorResponseException;
 import com.azure.ai.formrecognizer.models.FieldValueType;
 import com.azure.ai.formrecognizer.models.FormField;
 import com.azure.ai.formrecognizer.models.FormPage;
@@ -17,6 +16,7 @@ import com.azure.ai.formrecognizer.training.FormTrainingClient;
 import com.azure.ai.formrecognizer.training.FormTrainingClientBuilder;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.TokenCredential;
+import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.identity.DefaultAzureCredentialBuilder;
@@ -184,7 +184,7 @@ public class ReadmeSamples {
         // Since the given training documents are unlabeled, we still group them but they do not have a label.
         customFormModel.getSubmodels().forEach(customFormSubmodel -> {
             // Since the training data is unlabeled, we are unable to return the accuracy of this model
-            customFormSubmodel.getFieldMap().forEach((field, customFormModelField) ->
+            customFormSubmodel.getFields().forEach((field, customFormModelField) ->
                 System.out.printf("Field: %s Field Label: %s%n",
                     field, customFormModelField.getLabel()));
         });
@@ -211,8 +211,8 @@ public class ReadmeSamples {
             customModel.getSubmodels().forEach(customFormSubmodel -> {
                 System.out.printf("Custom Model Form type: %s%n", customFormSubmodel.getFormType());
                 System.out.printf("Custom Model Accuracy: %f%n", customFormSubmodel.getAccuracy());
-                if (customFormSubmodel.getFieldMap() != null) {
-                    customFormSubmodel.getFieldMap().forEach((fieldText, customFormModelField) -> {
+                if (customFormSubmodel.getFields() != null) {
+                    customFormSubmodel.getFields().forEach((fieldText, customFormModelField) -> {
                         System.out.printf("Field Text: %s%n", fieldText);
                         System.out.printf("Field Accuracy: %f%n", customFormModelField.getAccuracy());
                     });
@@ -229,7 +229,7 @@ public class ReadmeSamples {
     public void handlingException() {
         try {
             formRecognizerClient.beginRecognizeContentFromUrl("invalidSourceUrl");
-        } catch (ErrorResponseException e) {
+        } catch (HttpResponseException e) {
             System.out.println(e.getMessage());
         }
     }

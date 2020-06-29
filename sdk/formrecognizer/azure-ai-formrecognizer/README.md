@@ -314,7 +314,7 @@ System.out.println("Recognized Fields:");
 // Since the given training documents are unlabeled, we still group them but they do not have a label.
 customFormModel.getSubmodels().forEach(customFormSubmodel -> {
     // Since the training data is unlabeled, we are unable to return the accuracy of this model
-    customFormSubmodel.getFieldMap().forEach((field, customFormModelField) ->
+    customFormSubmodel.getFields().forEach((field, customFormModelField) ->
         System.out.printf("Field: %s Field Label: %s%n",
             field, customFormModelField.getLabel()));
 });
@@ -344,8 +344,8 @@ customModels.forEach(customFormModelInfo -> {
     customModel.getSubmodels().forEach(customFormSubmodel -> {
         System.out.printf("Custom Model Form type: %s%n", customFormSubmodel.getFormType());
         System.out.printf("Custom Model Accuracy: %f%n", customFormSubmodel.getAccuracy());
-        if (customFormSubmodel.getFieldMap() != null) {
-            customFormSubmodel.getFieldMap().forEach((fieldText, customFormModelField) -> {
+        if (customFormSubmodel.getFields() != null) {
+            customFormSubmodel.getFields().forEach((fieldText, customFormModelField) -> {
                 System.out.printf("Field Text: %s%n", fieldText);
                 System.out.printf("Field Accuracy: %f%n", customFormModelField.getAccuracy());
             });
@@ -359,8 +359,8 @@ For more detailed examples, refer to [samples][sample_readme].
 
 ## Troubleshooting
 ### General
-Form Recognizer clients raises `ErrorResponseException` [exceptions][error_response_exception]. For example, if you try
-to provide an invalid file source URL an `ErrorResponseException` would be raised with an error indicating the failure cause.
+Form Recognizer clients raises `HttpResponseException` [exceptions][http_response_exception]. For example, if you try
+to provide an invalid file source URL an `HttpResponseException` would be raised with an error indicating the failure cause.
 In the following code snippet, the error is handled
 gracefully by catching the exception and display the additional information about the error.
 
@@ -368,7 +368,7 @@ gracefully by catching the exception and display the additional information abou
 ```java
 try {
     formRecognizerClient.beginRecognizeContentFromUrl("invalidSourceUrl");
-} catch (ErrorResponseException e) {
+} catch (HttpResponseException e) {
     System.out.println(e.getMessage());
 }
 ```
@@ -441,7 +441,7 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [fr_labeling_tool]: https://docs.microsoft.com/azure/cognitive-services/form-recognizer/quickstarts/label-tool
 [fr_train_without_labels]: https://docs.microsoft.com/azure/cognitive-services/form-recognizer/overview#train-without-labels
 [fr_train_with_labels]: https://docs.microsoft.com/azure/cognitive-services/form-recognizer/overview#train-with-labels
-[error_response_exception]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/formrecognizer/azure-ai-formrecognizer/src/main/java/com/azure/ai/formrecognizer/models/ErrorResponseException.java
+[http_response_exception]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/core/azure-core/src/main/java/com/azure/core/exception/HttpResponseException.java
 [logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-with-Azure-SDK
 [package]: https://mvnrepository.com/artifact/com.azure/azure-ai-formrecognizer
 [performance_tuning]: https://github.com/Azure/azure-sdk-for-java/wiki/Performance-Tuning

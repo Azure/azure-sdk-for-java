@@ -27,6 +27,20 @@ public final class MappingCharFilter extends CharFilter {
     private List<String> mappings;
 
     /**
+     * Constructor of {@link MappingCharFilter}.
+     *
+     * @param name The name of the char filter. It must only contain letters, digits,
+     * spaces, dashes or underscores, can only start and end with alphanumeric
+     * characters, and is limited to 128 characters.
+     * @param mappings A list of mappings of the following format: "a=%3Eb" (all occurrences of
+     * the character "a" will be replaced with character "b").
+     */
+    public MappingCharFilter(String name, List<String> mappings) {
+        super(name);
+        this.mappings = mappings;
+    }
+
+    /**
      * Get the mappings property: A list of mappings of the following format:
      * "a=&gt;b" (all occurrences of the character "a" will be replaced with
      * character "b").
@@ -35,18 +49,5 @@ public final class MappingCharFilter extends CharFilter {
      */
     public List<String> getMappings() {
         return this.mappings;
-    }
-
-    /**
-     * Set the mappings property: A list of mappings of the following format:
-     * "a=&gt;b" (all occurrences of the character "a" will be replaced with
-     * character "b").
-     *
-     * @param mappings the mappings value to set.
-     * @return the MappingCharFilter object itself.
-     */
-    public MappingCharFilter setMappings(List<String> mappings) {
-        this.mappings = mappings;
-        return this;
     }
 }

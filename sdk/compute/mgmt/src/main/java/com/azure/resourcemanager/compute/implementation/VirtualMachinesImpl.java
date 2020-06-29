@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.resourcemanager.compute.implementation;
 
+import com.azure.core.http.rest.Response;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.compute.ComputeManager;
 import com.azure.resourcemanager.compute.models.HardwareProfile;
@@ -21,12 +22,19 @@ import com.azure.resourcemanager.compute.fluent.VirtualMachinesClient;
 import com.azure.resourcemanager.authorization.AuthorizationManager;
 import com.azure.resourcemanager.network.NetworkManager;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.TopLevelModifiableResourcesImpl;
+import com.azure.resourcemanager.resources.fluentcore.model.Accepted;
+import com.azure.resourcemanager.resources.fluentcore.model.implementation.AcceptedImpl;
 import com.azure.resourcemanager.storage.StorageManager;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+
+import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Function;
+
 import reactor.core.Exceptions;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 /** The implementation for VirtualMachines. */
@@ -195,6 +203,22 @@ public class VirtualMachinesImpl
     @Override
     public Mono<RunCommandResult> runCommandAsync(String groupName, String name, RunCommandInput inputCommand) {
         return this.inner().runCommandAsync(groupName, name, inputCommand).map(RunCommandResultImpl::new);
+    }
+
+    @Override
+    public Accepted<Void> beginDeleteByResourceGroup(String resourceGroupName, String name) {
+        Response<Flux<ByteBuffer>> activationResponse =
+            this.inner().deleteWithResponseAsync(resourceGroupName, name).block();
+        if (activationResponse == null) {
+            throw logger.logExceptionAsError(new NullPointerException());
+        } else {
+            return new AcceptedImpl<Void, Void>(activationResponse,
+                manager().inner().getSerializerAdapter(),
+                manager().inner().getHttpPipeline(),
+                Void.class,
+                Void.class,
+                Function.identity());
+        }
     }
 
     // Getters

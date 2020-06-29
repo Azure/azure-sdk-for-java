@@ -6,15 +6,13 @@
 
 package com.azure.search.documents.implementation.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * Response containing the status of operations for all documents in the
- * indexing request.
- */
-@Fluent
+/** The IndexDocumentsResult model. */
+@Immutable
 public final class IndexDocumentsResult {
     /*
      * The list of status information for each document in the indexing
@@ -23,13 +21,29 @@ public final class IndexDocumentsResult {
     @JsonProperty(value = "value", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private List<IndexingResult> results;
 
+    /** Creates an instance of IndexDocumentsResult class. */
+    @JsonCreator
+    public IndexDocumentsResult(@JsonProperty(value = "value") List<IndexingResult> results) {
+        this.results = results;
+    }
+
     /**
-     * Get the results property: The list of status information for each
-     * document in the indexing request.
+     * Get the results property: The list of status information for each document in the indexing request.
      *
      * @return the results value.
      */
     public List<IndexingResult> getResults() {
         return this.results;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (getResults() != null) {
+            getResults().forEach(e -> e.validate());
+        }
     }
 }
