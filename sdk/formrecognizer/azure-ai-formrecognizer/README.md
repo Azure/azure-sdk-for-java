@@ -416,7 +416,10 @@ All the examples shown so far have been using synchronous APIs, but we provide f
 You'll need to use `FormRecognizerAsyncClient`
 <!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L266-L269 -->
 ```java
-
+FormRecognizerAsyncClient formRecognizerAsyncClient = new FormRecognizerClientBuilder()
+    .credential(new AzureKeyCredential("{key}"))
+    .endpoint("{endpoint}")
+    .buildAsyncClient();
 ```
 
 * Recognize receipts : [RecognizeReceiptsAsync][recognize_receipts_async]
