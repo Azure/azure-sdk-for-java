@@ -44,8 +44,8 @@ public class SimpleTokenCache {
         this.wip = new AtomicReference<>();
         this.tokenSupplier = tokenSupplier;
         this.shouldRefresh = accessToken -> OffsetDateTime.now().isAfter(accessToken.getExpiresAt()
-            .minus(tokenRefreshOptions.getTokenRefreshOffset()));
-        this.refreshRetryTimeout = tokenRefreshOptions.getTokenRefreshRetryTimeout();
+            .minus(tokenRefreshOptions.getOffset()));
+        this.refreshRetryTimeout = tokenRefreshOptions.getRetryTimeout();
     }
 
     /**
