@@ -137,7 +137,7 @@ public abstract class ExternalChildResourceImpl<FluentModelT extends Indexable,
      */
     @SuppressWarnings("unchecked")
     protected final FluentModelT prepareUpdate() {
-        this.setPendingOperation(ExternalChildResourceImpl.PendingOperation.ToBeCreated);
+        this.setPendingOperation(ExternalChildResourceImpl.PendingOperation.ToBeUpdated);
         return (FluentModelT) this;
     }
 
