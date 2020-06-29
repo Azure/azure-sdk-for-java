@@ -3,7 +3,7 @@
 
 package com.azure.spring.data.gremlin;
 
-import com.microsoft.azure.spring.data.gremlin.annotation.Vertex;
+import com.microsoft.spring.data.gremlin.annotation.Vertex;
 import org.springframework.data.annotation.Id;
 
 /**

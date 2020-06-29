@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.spring.gremlin;
 
-import com.microsoft.azure.spring.data.gremlin.repository.GremlinRepository;
+import com.microsoft.spring.data.gremlin.repository.GremlinRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;

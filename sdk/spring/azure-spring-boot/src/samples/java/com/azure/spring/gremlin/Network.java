@@ -2,9 +2,9 @@
 // Licensed under the MIT License.
 package com.azure.spring.gremlin;
 
-import com.microsoft.azure.spring.data.gremlin.annotation.EdgeSet;
-import com.microsoft.azure.spring.data.gremlin.annotation.Graph;
-import com.microsoft.azure.spring.data.gremlin.annotation.VertexSet;
+import com.microsoft.spring.data.gremlin.annotation.EdgeSet;
+import com.microsoft.spring.data.gremlin.annotation.Graph;
+import com.microsoft.spring.data.gremlin.annotation.VertexSet;
 import org.springframework.data.annotation.Id;
 
 import java.util.ArrayList;

@@ -2,12 +2,12 @@
 // Licensed under the MIT License.
 package com.microsoft.azure.spring.autoconfigure.gremlin;
 
-import com.microsoft.azure.spring.data.gremlin.common.GremlinConfig;
-import com.microsoft.azure.spring.data.gremlin.mapping.GremlinMappingContext;
 import com.microsoft.azure.telemetry.TelemetrySender;
-import com.microsoft.azure.spring.data.gremlin.common.GremlinFactory;
-import com.microsoft.azure.spring.data.gremlin.conversion.MappingGremlinConverter;
-import com.microsoft.azure.spring.data.gremlin.query.GremlinTemplate;
+import com.microsoft.spring.data.gremlin.common.GremlinConfig;
+import com.microsoft.spring.data.gremlin.common.GremlinFactory;
+import com.microsoft.spring.data.gremlin.conversion.MappingGremlinConverter;
+import com.microsoft.spring.data.gremlin.mapping.GremlinMappingContext;
+import com.microsoft.spring.data.gremlin.query.GremlinTemplate;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -27,6 +27,7 @@ import java.util.Map;
 
 import static com.microsoft.azure.telemetry.TelemetryData.SERVICE_NAME;
 import static com.microsoft.azure.telemetry.TelemetryData.getClassPackageSimpleName;
+
 
 /**
  * To create Gremlin factory and template for auto-configure Gremlin properties.
@@ -62,7 +63,7 @@ public class GremlinAutoConfiguration {
     @Bean
     @ConditionalOnMissingBean
     public GremlinConfig getGremlinConfig() {
-        return GremlinConfig.gremlinConfigBuilder(properties.getEndpoint(), properties.getUsername(),
+        return GremlinConfig.builder(properties.getEndpoint(), properties.getUsername(),
             properties.getPassword())
                 .port(properties.getPort())
                 .sslEnabled(properties.isSslEnabled())

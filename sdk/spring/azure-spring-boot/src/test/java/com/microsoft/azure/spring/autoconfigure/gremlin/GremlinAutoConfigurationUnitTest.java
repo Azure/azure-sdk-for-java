@@ -2,16 +2,20 @@
 // Licensed under the MIT License.
 package com.microsoft.azure.spring.autoconfigure.gremlin;
 
-import com.microsoft.azure.spring.data.gremlin.common.GremlinFactory;
-import com.microsoft.azure.spring.data.gremlin.conversion.MappingGremlinConverter;
-import com.microsoft.azure.spring.data.gremlin.mapping.GremlinMappingContext;
-import com.microsoft.azure.spring.data.gremlin.query.GremlinTemplate;
+import com.microsoft.spring.data.gremlin.common.GremlinFactory;
+import com.microsoft.spring.data.gremlin.conversion.MappingGremlinConverter;
+import com.microsoft.spring.data.gremlin.mapping.GremlinMappingContext;
+import com.microsoft.spring.data.gremlin.query.GremlinTemplate;
 import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 
-import static com.microsoft.azure.spring.autoconfigure.gremlin.PropertiesUtil.*;
+import static com.microsoft.azure.spring.autoconfigure.gremlin.PropertiesUtil.GREMLIN_ENDPOINT_CONFIG;
+import static com.microsoft.azure.spring.autoconfigure.gremlin.PropertiesUtil.GREMLIN_PASSWORD_CONFIG;
+import static com.microsoft.azure.spring.autoconfigure.gremlin.PropertiesUtil.GREMLIN_PORT_CONFIG;
+import static com.microsoft.azure.spring.autoconfigure.gremlin.PropertiesUtil.GREMLIN_TELEMETRY_CONFIG_ALLOWED;
+import static com.microsoft.azure.spring.autoconfigure.gremlin.PropertiesUtil.GREMLIN_USERNAME_CONFIG;
 
 public class GremlinAutoConfigurationUnitTest {
 
