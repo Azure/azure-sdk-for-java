@@ -1765,7 +1765,7 @@ public final class NetworkManagementClient extends AzureServiceClient {
         String resourceGroupName, String bastionHostname, List<BastionShareableLinkInner> vms) {
         return beginPutBastionShareableLinkAsync(resourceGroupName, bastionHostname, vms)
             .last()
-            .flatMap(client::getLroFinalResultOrError);
+            .flatMap(this::getLroFinalResultOrError);
     }
 
     /**
@@ -1785,7 +1785,7 @@ public final class NetworkManagementClient extends AzureServiceClient {
         String resourceGroupName, String bastionHostname, List<BastionShareableLinkInner> vms, Context context) {
         return beginPutBastionShareableLinkAsync(resourceGroupName, bastionHostname, vms, context)
             .last()
-            .flatMap(client::getLroFinalResultOrError);
+            .flatMap(this::getLroFinalResultOrError);
     }
 
     /**
@@ -2014,7 +2014,7 @@ public final class NetworkManagementClient extends AzureServiceClient {
         String resourceGroupName, String bastionHostname, List<BastionShareableLinkInner> vms) {
         return beginDeleteBastionShareableLinkAsync(resourceGroupName, bastionHostname, vms)
             .last()
-            .flatMap(client::getLroFinalResultOrError);
+            .flatMap(this::getLroFinalResultOrError);
     }
 
     /**
@@ -2034,7 +2034,7 @@ public final class NetworkManagementClient extends AzureServiceClient {
         String resourceGroupName, String bastionHostname, List<BastionShareableLinkInner> vms, Context context) {
         return beginDeleteBastionShareableLinkAsync(resourceGroupName, bastionHostname, vms, context)
             .last()
-            .flatMap(client::getLroFinalResultOrError);
+            .flatMap(this::getLroFinalResultOrError);
     }
 
     /**
@@ -2439,7 +2439,7 @@ public final class NetworkManagementClient extends AzureServiceClient {
         String resourceGroupName, String bastionHostname) {
         return beginGetActiveSessionsAsync(resourceGroupName, bastionHostname)
             .last()
-            .flatMap(client::getLroFinalResultOrError);
+            .flatMap(this::getLroFinalResultOrError);
     }
 
     /**
@@ -2458,7 +2458,7 @@ public final class NetworkManagementClient extends AzureServiceClient {
         String resourceGroupName, String bastionHostname, Context context) {
         return beginGetActiveSessionsAsync(resourceGroupName, bastionHostname, context)
             .last()
-            .flatMap(client::getLroFinalResultOrError);
+            .flatMap(this::getLroFinalResultOrError);
     }
 
     /**
@@ -3234,7 +3234,7 @@ public final class NetworkManagementClient extends AzureServiceClient {
         return beginGeneratevirtualwanvpnserverconfigurationvpnprofileAsync(
                 resourceGroupName, virtualWanName, vpnClientParams)
             .last()
-            .flatMap(client::getLroFinalResultOrError);
+            .flatMap(this::getLroFinalResultOrError);
     }
 
     /**
@@ -3259,7 +3259,7 @@ public final class NetworkManagementClient extends AzureServiceClient {
         return beginGeneratevirtualwanvpnserverconfigurationvpnprofileAsync(
                 resourceGroupName, virtualWanName, vpnClientParams, context)
             .last()
-            .flatMap(client::getLroFinalResultOrError);
+            .flatMap(this::getLroFinalResultOrError);
     }
 
     /**
