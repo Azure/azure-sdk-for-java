@@ -16,6 +16,7 @@ public class SearchAsyncClientJavaDocCodeSnippets {
         SearchAsyncClient searchAsyncClient = new SearchClientBuilder()
             .credential(new AzureKeyCredential("{key}"))
             .endpoint("{endpoint}")
+            .indexName("{indexName}")
             .buildAsyncClient();
         // END: com.azure.search.documents.SearchAsyncClient.instantiation
     }

@@ -49,16 +49,6 @@ import java.util.Objects;
  *
  * {@codesnippet com.azure.search.documents.SearchIndexClient.instantiation}
  *
- * <p>
- * Another way to construct the client is using a {@link HttpPipeline}. The pipeline gives the client an
- * authenticated way to communicate with the service. Set the pipeline with {@link #pipeline(HttpPipeline) this} and
- * set the service endpoint with {@link #endpoint(String) this}. Using a
- * pipeline requires additional setup but allows for finer control on how the {@link SearchIndexClient} and
- * {@link SearchIndexAsyncClient} is built.
- * </p>
- *
- * {@codesnippet com.azure.search.documents.SearchIndexClient.pipeline.instantiation}
- *
  * @see SearchIndexClient
  * @see SearchIndexAsyncClient
  */

@@ -4,8 +4,6 @@
 package com.azure.search.documents.indexes;
 
 import com.azure.core.credential.AzureKeyCredential;
-import com.azure.core.http.HttpPipeline;
-import com.azure.core.http.HttpPipelineBuilder;
 
 public class SearchIndexClientJavaDocCodeSnippets {
     private SearchIndexClient searchIndexClient = new SearchIndexClientBuilder().buildClient();
@@ -19,22 +17,5 @@ public class SearchIndexClientJavaDocCodeSnippets {
             .endpoint("{endpoint}")
             .buildClient();
         // END: com.azure.search.documents.SearchIndexClient.instantiation
-    }
-
-    /**
-     * Code snippet for creating a {@link SearchIndexClient} with pipeline.
-     */
-    public void createSearchIndexClientWithPipeline() {
-        // BEGIN: com.azure.search.documents.SearchIndexClient.pipeline.instantiation
-        HttpPipeline pipeline = new HttpPipelineBuilder()
-            .policies(/* add policies */)
-            .build();
-
-        SearchIndexClient searchIndexClient = new SearchIndexClientBuilder()
-            .credential(new AzureKeyCredential("{key}"))
-            .endpoint("{endpoint}")
-            .pipeline(pipeline)
-            .buildClient();
-        // END: com.azure.search.documents.SearchIndexClient.pipeline.instantiation
     }
 }
