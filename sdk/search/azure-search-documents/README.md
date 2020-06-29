@@ -21,7 +21,7 @@ The Azure Cognitive Search service is well suited for the following
 * In a search client application, implement query logic and user experiences
   similar to commercial web search engines.
 
-Use the Azure.Search.Documents client library to:
+Use the Azure Search client library to:
 
 * Submit queries for simple and advanced query forms that include fuzzy
   search, wildcard search, regular expressions.
