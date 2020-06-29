@@ -30,7 +30,6 @@ import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.util.polling.AsyncPollResponse;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.resourcemanager.appservice.WebSiteManagementClient;
 import com.azure.resourcemanager.appservice.fluent.inner.DomainAvailabilityCheckResultInner;
@@ -1389,7 +1388,7 @@ public final class DomainsClient
             .<DomainInner, DomainInner>getLroResultAsync(
                 mono, this.client.getHttpPipeline(), DomainInner.class, DomainInner.class)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -1414,7 +1413,7 @@ public final class DomainsClient
             .<DomainInner, DomainInner>getLroResultAsync(
                 mono, this.client.getHttpPipeline(), DomainInner.class, DomainInner.class)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**
