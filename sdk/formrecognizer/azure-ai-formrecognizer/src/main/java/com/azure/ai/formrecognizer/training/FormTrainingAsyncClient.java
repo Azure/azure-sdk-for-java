@@ -125,7 +125,7 @@ public final class FormTrainingAsyncClient {
      * Other type of content is ignored.
      * <p>The service does not support cancellation of the long running operation and returns with an
      * error message indicating absence of cancellation support.</p>
-     * See <a href="https://docs.microsoft.com/en-us/azure/cognitive-services/form-recognizer/build-training-data-set#upload-your-training-data">here</a>
+     * See <a href="https://docs.microsoft.com/azure/cognitive-services/form-recognizer/build-training-data-set#upload-your-training-data">here</a>
      * for information on building your own training data set.
      *
      * <p><strong>Code sample</strong></p>
@@ -151,7 +151,7 @@ public final class FormTrainingAsyncClient {
      * <p>Models are trained using documents that are of the following content type -
      * 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff'.Other type of content is ignored.
      * </p>
-     * See <a href="https://docs.microsoft.com/en-us/azure/cognitive-services/form-recognizer/build-training-data-set#upload-your-training-data">here</a>
+     * See <a href="https://docs.microsoft.com/azure/cognitive-services/form-recognizer/build-training-data-set#upload-your-training-data">here</a>
      * for information on building your own training data set.
      * <p>The service does not support cancellation of the long running operation and returns with an
      * error message indicating absence of cancellation support.</p>
@@ -223,7 +223,7 @@ public final class FormTrainingAsyncClient {
     }
 
     Mono<Response<CustomFormModel>> getCustomModelWithResponse(String modelId, Context context) {
-        if (!CoreUtils.isNullOrEmpty(modelId)) {
+        if (CoreUtils.isNullOrEmpty(modelId)) {
             throw logger.logExceptionAsError(new IllegalArgumentException("'modelId' is required and cannot"
                 + " be null or empty"));
         }
@@ -233,7 +233,7 @@ public final class FormTrainingAsyncClient {
     }
 
     /**
-     * Get account information for all custom models on the form recognizer account.
+     * Get account information of the form recognizer account.
      *
      * <p><strong>Code sample</strong></p>
      * {@codesnippet com.azure.ai.formrecognizer.training.FormTrainingAsyncClient.getAccountProperties}
@@ -246,7 +246,7 @@ public final class FormTrainingAsyncClient {
     }
 
     /**
-     * Get account information for all custom models on the form recognizer account with an Http response.
+     * Get account information of the form recognizer account with an Http response.
      *
      * <p><strong>Code sample</strong></p>
      * {@codesnippet com.azure.ai.formrecognizer.training.FormTrainingAsyncClient.getAccountPropertiesWithResponse}
@@ -294,7 +294,7 @@ public final class FormTrainingAsyncClient {
      *
      * @param modelId The UUID string format model identifier.
      *
-     * @return A {@link Response} containing containing status code and HTTP headers
+     * @return A {@link Response} containing the status code and HTTP headers.
      * @throws IllegalArgumentException If {@code modelId} is {@code null} or empty.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -307,7 +307,7 @@ public final class FormTrainingAsyncClient {
     }
 
     Mono<Response<Void>> deleteModelWithResponse(String modelId, Context context) {
-        if (!CoreUtils.isNullOrEmpty(modelId)) {
+        if (CoreUtils.isNullOrEmpty(modelId)) {
             throw logger.logExceptionAsError(new IllegalArgumentException("'modelId' is required and cannot"
                 + " be null or empty"));
         }

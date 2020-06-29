@@ -52,7 +52,7 @@ public class FormTrainingAsyncClientJavaDocCodeSnippets {
      */
     public void beginTraining() {
         // BEGIN: com.azure.ai.formrecognizer.training.FormTrainingAsyncClient.beginTraining#string-boolean
-        String trainingFilesUrl = "{<SAS-URL-of-your-form-folder-in-blob-storage>}";
+        String trainingFilesUrl = "{SAS-URL-of-your-container-in-blob-storage}";
         boolean useTrainingLabels = true;
         formTrainingAsyncClient.beginTraining(trainingFilesUrl, useTrainingLabels).subscribe(
             trainingPollingOperation -> {
@@ -75,7 +75,7 @@ public class FormTrainingAsyncClientJavaDocCodeSnippets {
      */
     public void beginTrainingWithOptions() {
         // BEGIN: com.azure.ai.formrecognizer.training.FormTrainingAsyncClient.beginTraining#string-boolean-trainingFileFilter-Duration
-        String trainingFilesUrl = "{<SAS-URL-of-your-form-folder-in-blob-storage>}";
+        String trainingFilesUrl = "{SAS-URL-of-your-container-in-blob-storage}";
         TrainingFileFilter trainingFileFilter = new TrainingFileFilter().setIncludeSubFolders(false).setPrefix("Invoice");
 
         formTrainingAsyncClient.beginTraining(trainingFilesUrl, true, trainingFileFilter,

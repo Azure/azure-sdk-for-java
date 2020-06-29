@@ -80,7 +80,7 @@ public final class FormRecognizerClient {
      * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeCustomForms#InputStream-long-string-FormContentType}
      *
      * @param form The data of the form to recognize form information from.
-     * @param length The exact length of the data. Size of the file must be less than 50 MB.
+     * @param length The exact length of the data.
      * @param modelId The UUID string format custom trained model Id to be used.
      * @param formContentType The media type of the provided form. Supported Media types including .pdf, .jpg, .png or
      * .tiff type file stream. Content-type is auto-detected and could be {@code null}.
@@ -131,7 +131,7 @@ public final class FormRecognizerClient {
      *
      * @param formUrl The URL of the form to analyze.
      *
-     * @return A {@link SyncPoller} that polls the recognize layout form operation until it has completed, has failed,
+     * @return A {@link SyncPoller} that polls the recognize content form operation until it has completed, has failed,
      * or has been cancelled. The completed operation returns a List of {@link FormPage}.
      * @throws FormRecognizerException If recognize operation fails and the {@link AnalyzeOperationResult} returned with
      * an {@link OperationStatus#FAILED}.
@@ -151,12 +151,12 @@ public final class FormRecognizerClient {
      * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeContent#InputStream-long-FormContentType}
      *
      * @param form The data of the form to recognize content information from.
-     * @param length The exact length of the data. Size of the file must be less than 50 MB.
+     * @param length The exact length of the data.
      * @param formContentType The media type of the provided form. Supported Media types including .pdf, .jpg,
      * .png or .tiff type file stream. Content-type is auto-detected and could be {@code null}.
      *
-     * @return A {@link SyncPoller} that polls the recognize layout operation until it has completed, has failed, or has
-     * been cancelled. The completed operation returns a List of {@link FormPage}.
+     * @return A {@link SyncPoller} that polls the recognize content operation until it has completed, has failed,
+     * or has been cancelled. The completed operation returns a List of {@link FormPage}.
      * @throws FormRecognizerException If recognize operation fails and the {@link AnalyzeOperationResult} returned with
      * an {@link OperationStatus#FAILED}.
      * @throws NullPointerException If {@code form} is {@code null}.
@@ -178,7 +178,7 @@ public final class FormRecognizerClient {
      * @param recognizeOptions The configurable {@code RecognizeOptions options} that may be passed when recognizing
      * content on a form.
      *
-     * @return A {@link SyncPoller} that polls the recognize layout operation until it has completed,
+     * @return A {@link SyncPoller} that polls the recognize content operation until it has completed,
      * has failed, or has been cancelled. The completed operation returns a List of {@link FormPage}.
      * @throws FormRecognizerException If recognize operation fails and the {@link AnalyzeOperationResult} returned with
      * an {@link OperationStatus#FAILED}.
@@ -223,7 +223,7 @@ public final class FormRecognizerClient {
      * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeReceipts#InputStream-long-FormContentType}
      *
      * @param receipt The data/stream of the receipt to recognize receipt information from.
-     * @param length The exact length of the data. Size of the file must be less than 50 MB.
+     * @param length The exact length of the data.
      * @param formContentType The media type of the provided form. Supported Media types including .pdf, .jpg, .png
      * or .tiff type file stream. Content-type is auto-detected and could be {@code null}.
      *

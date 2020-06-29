@@ -192,7 +192,7 @@ public class ReadmeSamples {
     }
 
     public void trainModel() {
-        String trainingFilesUrl = "{<SAS-URL-of-your-form-folder-in-blob-storage>}";
+        String trainingFilesUrl = "{SAS-URL-of-your-container-in-blob-storage}";
         SyncPoller<OperationResult, CustomFormModel> trainingPoller =
             formTrainingClient.beginTraining(trainingFilesUrl, false);
 
@@ -257,5 +257,15 @@ public class ReadmeSamples {
         } catch (HttpResponseException e) {
             System.out.println(e.getMessage());
         }
+    }
+
+    /**
+     * Code snippet for getting async client using the AzureKeyCredential authentication.
+     */
+    public void useAzureKeyCredentialAsyncClient() {
+        FormRecognizerAsyncClient formRecognizerAsyncClient = new FormRecognizerClientBuilder()
+            .credential(new AzureKeyCredential("{key}"))
+            .endpoint("{endpoint}")
+            .buildAsyncClient();
     }
 }

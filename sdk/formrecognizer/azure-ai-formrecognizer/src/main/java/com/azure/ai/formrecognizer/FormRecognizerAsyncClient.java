@@ -130,7 +130,7 @@ public final class FormRecognizerAsyncClient {
      * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeCustomForms#Flux-long-string-FormContentType}
      *
      * @param form The data of the form to recognize form information from.
-     * @param length The exact length of the data. Size of the file must be less than 50 MB.
+     * @param length The exact length of the data.
      * @param modelId The UUID string format custom trained model Id to be used.
      * @param formContentType The type of the provided form. Supported Media types including .pdf, .jpg, .png or
      * .tiff type file stream. Content-type is auto-detected and could be {@code null}.
@@ -204,8 +204,8 @@ public final class FormRecognizerAsyncClient {
      *
      * @param formUrl The URL of the form to analyze.
      *
-     * @return A {@link PollerFlux} that polls the recognize layout operation until it has completed, has failed, or has
-     * been cancelled. The completed operation returns a List of {@link FormPage}.
+     * @return A {@link PollerFlux} that polls the recognize content operation until it has completed, has failed, or
+     * has been cancelled. The completed operation returns a List of {@link FormPage}.
      * @throws FormRecognizerException If recognize operation fails and the {@link AnalyzeOperationResult} returned with
      * an {@link OperationStatus#FAILED}.
      * @throws NullPointerException If {@code formUrl} is {@code null}.
@@ -243,11 +243,11 @@ public final class FormRecognizerAsyncClient {
      * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeContent#Flux-long-FormContentType}
      *
      * @param form The data of the form to recognize content information from.
-     * @param length The exact length of the data. Size of the file must be less than 50 MB.
+     * @param length The exact length of the data.
      * @param formContentType The type of the provided form. Supported Media types including .pdf, .jpg, .png or
      * .tiff type file stream. Content-type is auto-detected and could be {@code null}.
      *
-     * @return A {@link PollerFlux} polls the recognize layout operation until it has completed, has failed, or has
+     * @return A {@link PollerFlux} polls the recognize content operation until it has completed, has failed, or has
      * been cancelled. The completed operation returns a List of {@link FormPage}.
      * @throws FormRecognizerException If recognize operation fails and the {@link AnalyzeOperationResult} returned with
      * an {@link OperationStatus#FAILED}.
@@ -273,7 +273,7 @@ public final class FormRecognizerAsyncClient {
      * @param recognizeOptions The configurable {@code RecognizeOptions options} that may be passed when recognizing
      * content on a form.
      *
-     * @return A {@link PollerFlux} polls the recognize layout operation until it has completed, has failed, or has
+     * @return A {@link PollerFlux} polls the recognize contentFr operation until it has completed, has failed, or has
      * been cancelled. The completed operation returns a List of {@link FormPage}.
      * @throws FormRecognizerException If recognize operation fails and the {@link AnalyzeOperationResult} returned with
      * an {@link OperationStatus#FAILED}.
@@ -356,7 +356,7 @@ public final class FormRecognizerAsyncClient {
      * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeReceipts#Flux-long-FormContentType}
      *
      * @param receipt The data/stream of the document to recognize receipt information from.
-     * @param length The exact length of the data. Size of the file must be less than 50 MB.
+     * @param length The exact length of the data.
      * @param formContentType The type of the provided form. Supported Media types including .pdf, .jpg, .png or
      * .tiff type file stream. Content-type is auto-detected and could be {@code null}.
      *

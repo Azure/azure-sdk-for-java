@@ -75,6 +75,8 @@ public final class FormTrainingClient {
      *
      * @param trainingFilesUrl an externally accessible Azure storage blob container Uri (preferably a Shared Access
      * Signature Uri).
+     * For instructions on setting up forms for training in an Azure Storage Blob Container, see
+     * https://docs.microsoft.com/azure/cognitive-services/form-recognizer/build-training-data-set#upload-your-training-data
      * @param useTrainingLabels boolean to specify the use of labeled files for training the model.
      *
      * @return A {@link SyncPoller} that polls the training model operation until it has completed, has failed, or has
@@ -101,6 +103,8 @@ public final class FormTrainingClient {
      *
      * @param trainingFilesUrl an externally accessible Azure storage blob container Uri (preferably a
      * Shared Access Signature Uri).
+     * For instructions on setting up forms for training in an Azure Storage Blob Container, see
+     * https://docs.microsoft.com/azure/cognitive-services/form-recognizer/build-training-data-set#upload-your-training-data
      * @param useTrainingLabels boolean to specify the use of labeled files for training the model.
      * @param trainingFileFilter Filter to apply to the documents in the source path for training.
      * @param pollInterval Duration between each poll for the operation status. If none is specified, a default of
@@ -152,12 +156,12 @@ public final class FormTrainingClient {
     }
 
     /**
-     * Get account information for all custom models on the form recognizer account.
+     * Get account information of the form recognizer account.
      *
      * <p><strong>Code sample</strong></p>
      * {@codesnippet com.azure.ai.formrecognizer.training.FormTrainingClient.getAccountProperties}
      *
-     * @return The account information.
+     * @return The requested account information of the form recognizer account.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AccountProperties getAccountProperties() {
@@ -165,7 +169,7 @@ public final class FormTrainingClient {
     }
 
     /**
-     * Get account information for all custom models on the form recognizer account with an Http response and a
+     * Get account information of the form recognizer account with an Http response and a
      * specified {@link Context}.
      *
      * <p><strong>Code sample</strong></p>
@@ -173,7 +177,7 @@ public final class FormTrainingClient {
      *
      * @param context Additional context that is passed through the Http pipeline during the service call.
      *
-     * @return The requested account information details.
+     * @return The requested account information of the form recognizer account.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AccountProperties> getAccountPropertiesWithResponse(Context context) {
@@ -300,8 +304,10 @@ public final class FormTrainingClient {
      * Generate authorization for copying a custom model into the target Form Recognizer resource.
      *
      * @param resourceId Azure Resource Id of the target Form Recognizer resource where the model will be copied to.
+     * This information can be found in the 'Properties' section of the Form Recognizer resource in the Azure Portal.
      * @param resourceRegion Location of the target Form Recognizer resource. A valid Azure region name supported
-     * by Cognitive Services.
+     * by Cognitive Services. This information can be found in the 'Keys and Endpoint' section of the Form Recognizer
+     * resource in the Azure Portal.
      *
      * <p><strong>Code sample</strong></p>
      * {@codesnippet com.azure.ai.formrecognizer.training.FormTrainingClient.getCopyAuthorization#string-string}
@@ -319,8 +325,10 @@ public final class FormTrainingClient {
      * the target parameter into {@link FormTrainingAsyncClient#beginCopyModel(String, CopyAuthorization)}.
      *
      * @param resourceId Azure Resource Id of the target Form Recognizer resource where the model will be copied to.
+     * This information can be found in the 'Properties' section of the Form Recognizer resource in the Azure Portal.
      * @param resourceRegion Location of the target Form Recognizer resource. A valid Azure region name supported by
-     * Cognitive Services.
+     * Cognitive Services.This information can be found in the 'Keys and Endpoint' section of the Form Recognizer
+     * resource in the Azure Portal.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      *
      * <p><strong>Code sample</strong></p>

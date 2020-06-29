@@ -150,23 +150,23 @@ FormRecognizerClient formRecognizerClient = new FormRecognizerClientBuilder()
 ### FormRecognizerClient
 The [FormRecognizerClient][form_recognizer_sync_client] and [FormRecognizerAsyncClient][form_recognizer_async_client]
 provide both synchronous and asynchronous operations
- - [Recognizing form fields](#recognize-forms-using-a-custom-model) and content using custom models trained to recognize your custom forms.
- These values are returned in a collection of `RecognizedForm` objects.
- - [Recognizing form content](#recognize-content), including tables, lines and words, without the need to train a model.
- Form content is returned in a collection of `FormPage` objects.
- - [Recognizing common fields from US receipts](#recognize-receipts), using a pre-trained receipt model on the Form Recognizer service.
- These fields and meta-data are returned in a collection of `USReceipt` objects.
+ - Recognizing form fields and content using custom models trained to recognize your custom forms.
+ These values are returned in a collection of `RecognizedForm` objects. See example [Recognize Custom Forms](#recognize-forms-using-a-custom-model).
+ - Recognizing form content, including tables, lines and words, without the need to train a model.
+ Form content is returned in a collection of `FormPage` objects. See example [Recognize Content](#recognize-content).
+ - Recognizing common fields from US receipts, using a pre-trained receipt model on the Form Recognizer service.
+ These fields and meta-data are returned in a collection of `RecognizedForm` objects. See example [Recognize Receipts](#recognize-receipts).
 
 ### FormTrainingClient
 The [FormTrainingClient][form_training_sync_client] and
 [FormTrainingAsyncClient][form_training_async_client] provide both synchronous and asynchronous operations
-- [Training custom models](#train-a-model) to recognize all fields and values found in your custom forms.
+- Training custom models to recognize all fields and values found in your custom forms. See example [Train a model](#train-a-model).
  A `CustomFormModel` is returned indicating the form types the model will recognize, and the fields it will extract for
   each form type. See the [service's documents][fr_train_without_labels] for a more detailed explanation.
 - Training custom models to recognize specific fields and values you specify by labeling your custom forms.
 A `CustomFormModel` is returned indicating the fields the model will extract, as well as the estimated accuracy for
 each field. See the [service's documents][fr_train_with_labels] for a more detailed explanation.
-- [Managing models](#manage-your-models) created in your account.
+- Managing models created in your account. See example [Manage models](#manage-your-models).
 - Copying a custom model from one Form Recognizer resource to another.
 
 Please note that models can also be trained using a graphical user interface such as the [Form Recognizer Labeling Tool][fr_labeling_tool].
@@ -309,7 +309,7 @@ Provide a container SAS url to your Azure Storage Blob container where you're st
 in the [service quickstart documentation][quickstart_training].
 <!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L195-L215 -->
 ```java
-String trainingFilesUrl = "{<SAS-URL-of-your-form-folder-in-blob-storage>}";
+String trainingFilesUrl = "{SAS-URL-of-your-container-in-blob-storage}";
 SyncPoller<OperationResult, CustomFormModel> trainingPoller =
     formTrainingClient.beginTraining(trainingFilesUrl, false);
 
@@ -401,16 +401,32 @@ The following section provides several code snippets illustrating common pattern
 ### More sample code
 
 These code samples show common scenario operations with the Azure Form Recognizer client library.
-The async versions of the samples show asynchronous operations with Form Recognizer.
 
-* Recognize receipts: [RecognizeReceipts][recognize_receipts] ([RecognizeReceiptsAsync][recognize_receipts_async])
-* Recognize receipts from a URL: [RecognizeReceiptsFromUrl][recognize_receipts_from_url] ([RecognizeReceiptsFromUrlAsync][recognize_receipts_from_url_async])
-* Recognize content: [RecognizeContent][recognize_content] ([RecognizeContentAsync][recognize_content_async])
-* Recognize custom forms: [RecognizeCustomForms][recognize_custom_forms] ([RecognizeCustomFormsAsync][recognize_custom_forms_async])
-* Train a model without labels: [TrainModelWithoutLabels][train_unlabeled_model] ([TrainModelWithoutLabelsAsync][train_unlabeled_model_async])
-* Train a model with labels: [TrainModelWithLabels][train_labeled_model] ([TrainModelWithLabelsAsync][train_labeled_model_async])
-* Manage custom models: [ManageCustomModels][manage_custom_models] ([ManageCustomModelsAsync][manage_custom_models_async])
-* Copy a model between Form Recognizer resources: [CopyModel][copy_model] ([CopyModelAsync][copy_model_async])
+* Recognize receipts: [RecognizeReceipts][recognize_receipts]
+* Recognize receipts from a URL: [RecognizeReceiptsFromUrl][recognize_receipts_from_url]
+* Recognize content: [RecognizeContent][recognize_content]
+* Recognize custom forms: [RecognizeCustomForms][recognize_custom_forms]
+* Train a model without labels: [TrainModelWithoutLabels][train_unlabeled_model]
+* Train a model with labels: [TrainModelWithLabels][train_labeled_model]
+* Manage custom models: [ManageCustomModels][manage_custom_models]
+* Copy a model between Form Recognizer resources: [CopyModel][copy_model]
+
+#### Async APIs
+All the examples shown so far have been using synchronous APIs, but we provide full support for async APIs as well.
+You'll need to use `FormRecognizerAsyncClient`
+<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L266-L269 -->
+```java
+
+```
+
+* Recognize receipts : [RecognizeReceiptsAsync][recognize_receipts_async]
+* Recognize receipts from a URL: [RecognizeReceiptsFromUrlAsync][recognize_receipts_from_url_async]
+* Recognize content: [RecognizeContentAsync][recognize_content_async]
+* Recognize custom forms: [RecognizeCustomFormsAsync][recognize_custom_forms_async]
+* Train a model without labels: [TrainModelWithoutLabelsAsync][train_unlabeled_model_async]
+* Train a model with labels: [TrainModelWithLabelsAsync][train_labeled_model_async]
+* Manage custom models: [ManageCustomModelsAsync][manage_custom_models_async]
+* Copy a model between Form Recognizer resources: [CopyModelAsync][copy_model_async]
 
 ### Additional documentation
 
