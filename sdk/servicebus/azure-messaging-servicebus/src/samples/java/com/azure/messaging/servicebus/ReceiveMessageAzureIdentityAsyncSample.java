@@ -54,7 +54,7 @@ public class ReceiveMessageAzureIdentityAsyncSample {
                 System.out.println("Received Message Id:" + message.getMessageId());
                 System.out.println("Received Message:" + new String(message.getBody()));
 
-                return receiverAsyncClient.complete(message);
+                return receiverAsyncClient.complete(message.getLockToken());
             })
             .subscribe(aVoid -> System.out.println("Processed message."),
                 error -> System.err.println("Error occurred while receiving message: " + error),

@@ -57,7 +57,7 @@ class ServiceBusReceiverClientTest {
     @Mock
     private ServiceBusReceiverAsyncClient asyncClient;
     @Mock
-    private MessageLockToken messageLockToken;
+    private String messageLockToken;
     @Mock
     private Map<String, Object> propertiesToModify;
     @Mock
@@ -72,7 +72,7 @@ class ServiceBusReceiverClientTest {
         when(asyncClient.getReceiverOptions()).thenReturn(new ReceiverOptions(ReceiveMode.PEEK_LOCK, 1,
             maxAutoLockRenewalDuration));
 
-        when(messageLockToken.getLockToken()).thenReturn(LOCK_TOKEN);
+        when(messageLockToken).thenReturn(LOCK_TOKEN);
 
         client = new ServiceBusReceiverClient(asyncClient, OPERATION_TIMEOUT);
     }
@@ -97,7 +97,7 @@ class ServiceBusReceiverClientTest {
     @Test
     void abandonMessageWithTransaction() {
         // Arrange
-        when(asyncClient.abandon(any(MessageLockToken.class), isNull(), any(ServiceBusTransactionContext.class))).thenReturn(Mono.empty());
+        when(asyncClient.abandon(eq(messageLockToken), isNull(), any(ServiceBusTransactionContext.class))).thenReturn(Mono.empty());
 
         // Act
         client.abandon(messageLockToken, null, transactionContext);
@@ -109,7 +109,7 @@ class ServiceBusReceiverClientTest {
     @Test
     void abandonMessage() {
         // Arrange
-        when(asyncClient.abandon(any(MessageLockToken.class))).thenReturn(Mono.empty());
+        when(asyncClient.abandon(eq(messageLockToken))).thenReturn(Mono.empty());
 
         // Act
         client.abandon(messageLockToken);
@@ -121,8 +121,8 @@ class ServiceBusReceiverClientTest {
     @Test
     void abandonMessageWithProperties() {
         // Arrange
-        when(asyncClient.abandon(any(MessageLockToken.class), anyMap())).thenReturn(Mono.empty());
-        when(asyncClient.abandon(any(MessageLockToken.class), any(), anyString())).thenReturn(Mono.empty());
+        when(asyncClient.abandon(eq(messageLockToken), anyMap())).thenReturn(Mono.empty());
+        when(asyncClient.abandon(eq(messageLockToken), any(), anyString())).thenReturn(Mono.empty());
 
         // Act
         client.abandon(messageLockToken, propertiesToModify);
@@ -134,7 +134,7 @@ class ServiceBusReceiverClientTest {
     @Test
     void completeMessageWithTransaction() {
         // Arrange
-        when(asyncClient.complete(any(MessageLockToken.class), any(ServiceBusTransactionContext.class))).thenReturn(Mono.empty());
+        when(asyncClient.complete(eq(messageLockToken), any(ServiceBusTransactionContext.class))).thenReturn(Mono.empty());
 
         // Act
         client.complete(messageLockToken, transactionContext);
@@ -146,7 +146,7 @@ class ServiceBusReceiverClientTest {
     @Test
     void completeMessage() {
         // Arrange
-        when(asyncClient.complete(any(MessageLockToken.class))).thenReturn(Mono.empty());
+        when(asyncClient.complete(eq(messageLockToken))).thenReturn(Mono.empty());
 
         // Act
         client.complete(messageLockToken);
@@ -158,7 +158,7 @@ class ServiceBusReceiverClientTest {
     @Test
     void deferMessage() {
         // Arrange
-        when(asyncClient.defer(any(MessageLockToken.class))).thenReturn(Mono.empty());
+        when(asyncClient.defer(eq(messageLockToken))).thenReturn(Mono.empty());
 
         // Act
         client.defer(messageLockToken);
@@ -170,8 +170,8 @@ class ServiceBusReceiverClientTest {
     @Test
     void deferMessageWithPropertiesWithTransaction() {
         // Arrange
-        when(asyncClient.defer(any(MessageLockToken.class), anyMap(), any(ServiceBusTransactionContext.class))).thenReturn(Mono.empty());
-        when(asyncClient.defer(any(MessageLockToken.class), any(), anyString(), any(ServiceBusTransactionContext.class))).thenReturn(Mono.empty());
+        when(asyncClient.defer(eq(messageLockToken), anyMap(), any(ServiceBusTransactionContext.class))).thenReturn(Mono.empty());
+        when(asyncClient.defer(eq(messageLockToken), any(), anyString(), any(ServiceBusTransactionContext.class))).thenReturn(Mono.empty());
 
         // Act
         client.defer(messageLockToken, propertiesToModify, transactionContext);
@@ -183,8 +183,8 @@ class ServiceBusReceiverClientTest {
     @Test
     void deferMessageWithProperties() {
         // Arrange
-        when(asyncClient.defer(any(MessageLockToken.class), anyMap())).thenReturn(Mono.empty());
-        when(asyncClient.defer(any(MessageLockToken.class), any(), anyString())).thenReturn(Mono.empty());
+        when(asyncClient.defer(eq(messageLockToken), anyMap())).thenReturn(Mono.empty());
+        when(asyncClient.defer(eq(messageLockToken), any(), anyString())).thenReturn(Mono.empty());
 
         // Act
         client.defer(messageLockToken, propertiesToModify);
@@ -196,7 +196,7 @@ class ServiceBusReceiverClientTest {
     @Test
     void deadLetterMessage() {
         // Arrange
-        when(asyncClient.deadLetter(any(MessageLockToken.class))).thenReturn(Mono.empty());
+        when(asyncClient.deadLetter(eq(messageLockToken))).thenReturn(Mono.empty());
 
         // Act
         client.deadLetter(messageLockToken);
@@ -213,7 +213,7 @@ class ServiceBusReceiverClientTest {
             .setDeadLetterReason("bar")
             .setPropertiesToModify(propertiesToModify);
 
-        when(asyncClient.deadLetter(any(MessageLockToken.class), any(DeadLetterOptions.class), any(ServiceBusTransactionContext.class)))
+        when(asyncClient.deadLetter(eq(messageLockToken), any(DeadLetterOptions.class), any(ServiceBusTransactionContext.class)))
             .thenReturn(Mono.empty());
 
         // Act
@@ -231,7 +231,7 @@ class ServiceBusReceiverClientTest {
             .setDeadLetterReason("bar")
             .setPropertiesToModify(propertiesToModify);
 
-        when(asyncClient.deadLetter(any(MessageLockToken.class), any(DeadLetterOptions.class)))
+        when(asyncClient.deadLetter(eq(messageLockToken), any(DeadLetterOptions.class)))
             .thenReturn(Mono.empty());
 
         // Act
@@ -654,7 +654,7 @@ class ServiceBusReceiverClientTest {
         verify(asyncClient).setSessionState(sessionId, contents);
     }
 
-    private static boolean lockTokenEquals(MessageLockToken compared) {
-        return compared != null && LOCK_TOKEN.equals(compared.getLockToken());
+    private static boolean lockTokenEquals(String compared) {
+        return compared != null && LOCK_TOKEN.equals(compared);
     }
 }
