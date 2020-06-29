@@ -35,7 +35,7 @@ public class FormTrainingClientJavaDocCodeSnippets {
      */
     public void beginTraining() {
         // BEGIN: com.azure.ai.formrecognizer.training.FormTrainingClient.beginTraining#string-boolean
-        String trainingFilesUrl = "{training-set-SAS-URL}";
+        String trainingFilesUrl = "{<SAS-URL-of-your-form-folder-in-blob-storage>}";
         boolean useTrainingLabels = true;
         CustomFormModel customFormModel =
             formTrainingClient.beginTraining(trainingFilesUrl, useTrainingLabels).getFinalResult();
@@ -54,7 +54,7 @@ public class FormTrainingClientJavaDocCodeSnippets {
      */
     public void beginTrainingWithOptions() {
         // BEGIN: com.azure.ai.formrecognizer.training.FormTrainingClient.beginTraining#string-boolean-trainingFileFilter-Duration
-        String trainingFilesUrl = "{training-set-SAS-URL}";
+        String trainingFilesUrl = "{<SAS-URL-of-your-form-folder-in-blob-storage>}";
         TrainingFileFilter trainingFileFilter = new TrainingFileFilter().setIncludeSubFolders(false).setPrefix("Invoice");
         boolean useTrainingLabels = true;
 

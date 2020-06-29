@@ -52,12 +52,12 @@ public class FormTrainingAsyncClientJavaDocCodeSnippets {
      */
     public void beginTraining() {
         // BEGIN: com.azure.ai.formrecognizer.training.FormTrainingAsyncClient.beginTraining#string-boolean
-        String trainingFilesUrl = "{training-set-SAS-URL}";
+        String trainingFilesUrl = "{<SAS-URL-of-your-form-folder-in-blob-storage>}";
         boolean useTrainingLabels = true;
         formTrainingAsyncClient.beginTraining(trainingFilesUrl, useTrainingLabels).subscribe(
-            recognizePollingOperation -> {
+            trainingPollingOperation -> {
                 // if training polling operation completed, retrieve the final result.
-                recognizePollingOperation.getFinalResult().subscribe(customFormModel -> {
+                trainingPollingOperation.getFinalResult().subscribe(customFormModel -> {
                     System.out.printf("Model Id: %s%n", customFormModel.getModelId());
                     System.out.printf("Model Status: %s%n", customFormModel.getModelStatus());
                     customFormModel.getSubmodels().forEach(customFormSubmodel ->
@@ -75,13 +75,13 @@ public class FormTrainingAsyncClientJavaDocCodeSnippets {
      */
     public void beginTrainingWithOptions() {
         // BEGIN: com.azure.ai.formrecognizer.training.FormTrainingAsyncClient.beginTraining#string-boolean-trainingFileFilter-Duration
-        String trainingFilesUrl = "{training-set-SAS-URL}";
+        String trainingFilesUrl = "{<SAS-URL-of-your-form-folder-in-blob-storage>}";
         TrainingFileFilter trainingFileFilter = new TrainingFileFilter().setIncludeSubFolders(false).setPrefix("Invoice");
 
         formTrainingAsyncClient.beginTraining(trainingFilesUrl, true, trainingFileFilter,
-            Duration.ofSeconds(5)).subscribe(recognizePollingOperation -> {
+            Duration.ofSeconds(5)).subscribe(trainingPollingOperation -> {
                 // if training polling operation completed, retrieve the final result.
-                recognizePollingOperation.getFinalResult().subscribe(customFormModel -> {
+                trainingPollingOperation.getFinalResult().subscribe(customFormModel -> {
                     System.out.printf("Model Id: %s%n", customFormModel.getModelId());
                     System.out.printf("Model Status: %s%n", customFormModel.getModelStatus());
                     customFormModel.getSubmodels().forEach(customFormSubmodel ->

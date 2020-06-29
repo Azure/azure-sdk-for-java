@@ -12,7 +12,7 @@ import com.azure.core.annotation.Immutable;
 public abstract class FormContent {
 
     /*
-     * Text content of the extracted field.
+     * Text content of the extracted line.
      */
     private final String text;
 
@@ -49,9 +49,9 @@ public abstract class FormContent {
     }
 
     /**
-     * The text of the extracted item.
+     * The text content of the extracted line.
      *
-     * @return The text of the extracted item.
+     * @return The text content of the extracted line.
      */
     public String getText() {
         return text;

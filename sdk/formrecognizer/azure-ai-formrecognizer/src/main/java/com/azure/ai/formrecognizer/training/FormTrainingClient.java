@@ -78,7 +78,7 @@ public final class FormTrainingClient {
      * @param useTrainingLabels boolean to specify the use of labeled files for training the model.
      *
      * @return A {@link SyncPoller} that polls the training model operation until it has completed, has failed, or has
-     * been cancelled. The completed operation returns a {@link CustomFormModel}.
+     * been cancelled. The completed operation returns the trained {@link CustomFormModel custom form model}.
      * @throws FormRecognizerException If training fails and model with {@link ModelStatus#INVALID} is created.
      * @throws NullPointerException If {@code trainingFilesUrl} is {@code null}.
      */
@@ -106,8 +106,8 @@ public final class FormTrainingClient {
      * @param pollInterval Duration between each poll for the operation status. If none is specified, a default of
      * 5 seconds is used.
      *
-     * @return A {@link SyncPoller} that polls the extract receipt operation until it has completed, has failed,
-     * or has been cancelled. The completed operation returns a {@link CustomFormModel}.
+     * @return A {@link PollerFlux} that polls the training model operation until it has completed, has failed, or has
+     * been cancelled. The completed operation returns the trained {@link CustomFormModel custom form model}.
      * @throws FormRecognizerException If training fails and model with {@link ModelStatus#INVALID} is created.
      * @throws NullPointerException If {@code trainingFilesUrl} is {@code null}.
      */
@@ -127,7 +127,7 @@ public final class FormTrainingClient {
      * @param modelId The UUID string format model identifier.
      *
      * @return The detailed information for the specified model.
-     * @throws NullPointerException If {@code modelId} is {@code null}.
+     * @throws IllegalArgumentException If {@code modelId} is {@code null} or empty.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CustomFormModel getCustomModel(String modelId) {
@@ -144,7 +144,7 @@ public final class FormTrainingClient {
      * @param context Additional context that is passed through the Http pipeline during the service call.
      *
      * @return The detailed information for the specified model.
-     * @throws NullPointerException If {@code modelId} is {@code null}.
+     * @throws IllegalArgumentException If {@code modelId} is {@code null} or empty.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CustomFormModel> getCustomModelWithResponse(String modelId, Context context) {
@@ -152,7 +152,7 @@ public final class FormTrainingClient {
     }
 
     /**
-     * Get account information for all custom models.
+     * Get account information for all custom models on the form recognizer account.
      *
      * <p><strong>Code sample</strong></p>
      * {@codesnippet com.azure.ai.formrecognizer.training.FormTrainingClient.getAccountProperties}
@@ -165,14 +165,15 @@ public final class FormTrainingClient {
     }
 
     /**
-     * Get account information for all custom models.
+     * Get account information for all custom models on the form recognizer account with an Http response and a
+     * specified {@link Context}.
      *
      * <p><strong>Code sample</strong></p>
      * {@codesnippet com.azure.ai.formrecognizer.training.FormTrainingClient.getAccountPropertiesWithResponse#Context}
      *
      * @param context Additional context that is passed through the Http pipeline during the service call.
      *
-     * @return The account information.
+     * @return The requested account information details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AccountProperties> getAccountPropertiesWithResponse(Context context) {
@@ -186,7 +187,7 @@ public final class FormTrainingClient {
      * {@codesnippet com.azure.ai.formrecognizer.training.FormTrainingClient.deleteModel#string}
      *
      * @param modelId The UUID string format model identifier.
-     * @throws NullPointerException If {@code modelId} is {@code null}.
+     * @throws IllegalArgumentException If {@code modelId} is {@code null} or empty.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteModel(String modelId) {
@@ -202,8 +203,8 @@ public final class FormTrainingClient {
      * @param modelId The UUID string format model identifier.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      *
-     * @return A {@link Response} containing containing status code and HTTP headers
-     * @throws NullPointerException If {@code modelId} is {@code null}.
+     * @return A {@link Response} containing containing status code and HTTP headers.
+     * @throws IllegalArgumentException If {@code modelId} is {@code null} or empty.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteModelWithResponse(String modelId, Context context) {
@@ -211,7 +212,7 @@ public final class FormTrainingClient {
     }
 
     /**
-     * List information for all models.
+     * List information for each model on the form recognizer account.
      *
      * <p><strong>Code sample</strong></p>
      * {@codesnippet com.azure.ai.formrecognizer.training.FormTrainingClient.listCustomModels}
@@ -224,7 +225,8 @@ public final class FormTrainingClient {
     }
 
     /**
-     * List information for all models with taking {@link Context}.
+     * List information for each model on the form recognizer account with an Http response and a specified
+     * {@link Context}.
      *
      * <p><strong>Code sample</strong></p>
      * {@codesnippet com.azure.ai.formrecognizer.training.FormTrainingClient.listCustomModels#Context}
