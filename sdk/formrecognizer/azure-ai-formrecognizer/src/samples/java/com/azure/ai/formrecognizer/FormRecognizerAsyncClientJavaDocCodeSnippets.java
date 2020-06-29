@@ -134,11 +134,11 @@ public class FormRecognizerAsyncClientJavaDocCodeSnippets {
                 recognizePollingOperation.getFinalResult().subscribe(recognizedForms -> {
                     recognizedForms.forEach(recognizedForm -> recognizedForm.getFields().forEach((fieldText,
                         fieldValue) -> {
-                            System.out.printf("Field text: %s%n", fieldText);
-                            System.out.printf("Field value: %s%n", fieldValue.getFieldValue());
-                            System.out.printf("Confidence score: %.2f%n", fieldValue.getConfidence());
-                        }));
+                        System.out.printf("Field text: %s%n", fieldText);
+                        System.out.printf("Field value: %s%n", fieldValue.getFieldValue());
+                        System.out.printf("Confidence score: %.2f%n", fieldValue.getConfidence());
                     }));
+                }));
         // END: com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeCustomForms#recognizeCustomFormsOptions
     }
 
