@@ -209,7 +209,7 @@ public class ReadmeSamples {
             });
     }
 
-    public void retieveDocuments() {
+    public void retrieveDocuments() {
         Hotel hotel = searchClient.getDocument("1", Hotel.class);
         System.out.println(String.format("This is hotelId %s, and this is hotel name %s.",
             hotel.getId(), hotel.getName()));

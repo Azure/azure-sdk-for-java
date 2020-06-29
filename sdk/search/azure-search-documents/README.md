@@ -248,7 +248,7 @@ for (SearchResult searchResult: searchResultsIterable) {
     SearchDocument doc = searchResult.getDocument(SearchDocument.class);
     String id = (String) doc.get("hotelId");
     String name = (String) doc.get("hotelName");
-    System.out.println(String.format("This is hotelId %s, and this is hotel name %s.", id, name));
+    System.out.println(String.format("This is hotel Id %s, and this is hotel name %s%n.", id, name));
 }
 ```
 
@@ -295,7 +295,7 @@ for (SearchResult searchResult: searchResultsIterable) {
 If you're working with a search index and know the schema, creating Java model class
 is recommended.
 
-#### SearchOptions
+#### Search Options
 
 The `SearchOptions` provide powerful control over the behavior of our queries.
 Let's search for the top 5 luxury hotels with a good rating.
