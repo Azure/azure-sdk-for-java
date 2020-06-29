@@ -4,6 +4,8 @@
 package com.azure.storage.blob.nio
 
 import com.azure.storage.blob.BlobClient
+import com.azure.storage.blob.models.AccessTier
+import com.azure.storage.blob.models.BlobHttpHeaders
 import com.azure.storage.blob.specialized.AppendBlobClient
 import com.azure.storage.blob.specialized.BlockBlobClient
 import spock.lang.Requires
@@ -1000,6 +1002,19 @@ class AzureFileSystemProviderTest extends APISpec {
         AzureBlobFileAttributes.class  || AzureBlobFileAttributes.class
     }
 
+    def "ReadAttributes directory"() {
+        setup:
+        def fs = createFS(config)
+        def path = fs.getPath(generateBlobName())
+        putDirectoryBlob(new AzureResource(path).getBlobClient().getBlockBlobClient())
+
+        when:
+        fs.provider().readAttributes(path, BasicFileAttributes.class)
+
+        then:
+        notThrown(IOException)
+    }
+
     def "ReadAttributes unsupported"() {
         setup:
         def fs = createFS(config)
@@ -1015,7 +1030,8 @@ class AzureFileSystemProviderTest extends APISpec {
         setup:
         def fs = createFS(config)
 
-        when:
+        when: "Path does not exist"
+        // Covers virtual directory, too
         fs.provider().readAttributes(fs.getPath("path"), BasicFileAttributes.class)
 
         then:
@@ -1059,15 +1075,205 @@ class AzureFileSystemProviderTest extends APISpec {
         // This test checks that for each requested attribute, we call the correct supplier and that the supplier maps to the correct property
     }
 
-    // basic, azureBasic, azureBlob
+    def "ReadAttributes str directory"() {
+        setup:
+        def fs = createFS(config)
+        def path = fs.getPath(generateBlobName())
+        putDirectoryBlob(new AzureResource(path).getBlobClient().getBlockBlobClient())
 
-    // "*"
+        when:
+        fs.provider().readAttributes(path, "creationTime")
 
-    // invalid str format
+        then:
+        notThrown(IOException)
+    }
 
-    // Invalid view
+    @Unroll
+    def "ReadAttributes str IA"() {
+        setup:
+        def fs = createFS(config)
+        def path = fs.getPath(generateBlobName())
 
-    // Invalid attribute
+        when:
+        fs.provider().readAttributes(path, attrStr)
+
+        then:
+        thrown(IllegalArgumentException)
+
+        where:
+        attrStr              | _
+        "azureBlob:size:foo" | _ // Invalid format
+        ""                   | _ // empty
+        "azureBasic:foo"     | _ // Invalid property
+    }
+
+    def "ReadAttributes str invalid view"() {
+        setup:
+        def fs = createFS(config)
+        def path = fs.getPath(generateBlobName())
+
+        when:
+        fs.provider().readAttributes(path, "foo:size")
+
+        then:
+        thrown(UnsupportedOperationException)
+    }
+
+    def "ReadAttributes str IOException"() {
+        setup:
+        def fs = createFS(config)
+
+        when: "Path does not exist"
+        // Covers virtual directory, too
+        fs.provider().readAttributes(fs.getPath("path"), "basic:creationTime")
+
+        then:
+        thrown(IOException)
+    }
+
+    @Unroll
+    def "SetAttributes headers"() {
+        setup:
+        def fs = createFS(config)
+        def path = fs.getPath(generateBlobName())
+        def os = fs.provider().newOutputStream(path)
+        os.close()
+
+        def headers = new BlobHttpHeaders().setCacheControl(cacheControl)
+            .setContentDisposition(contentDisposition)
+            .setContentEncoding(contentEncoding)
+            .setContentLanguage(contentLanguage)
+            .setContentMd5(contentMD5)
+            .setContentType(contentType)
+
+        when:
+        fs.provider().setAttribute(path, "azureBlob:blobHttpHeaders", headers)
+        headers = fs.provider().readAttributes(path, AzureBlobFileAttributes.class).blobHttpHeaders()
+
+        then:
+        headers.getCacheControl() == cacheControl
+        headers.getContentDisposition() == contentDisposition
+        headers.getContentEncoding() == contentEncoding
+        headers.getContentLanguage() == contentLanguage
+        headers.getContentMd5() == contentMD5
+        headers.getContentType() == contentType
+
+        where:
+        cacheControl | contentDisposition | contentEncoding | contentLanguage | contentMD5                                                                               | contentType
+        null         | null               | null            | null            | null                                                                                     | null
+        "control"    | "disposition"      | "encoding"      | "language"      | Base64.getEncoder().encode(MessageDigest.getInstance("MD5").digest(defaultData.array())) | "type"
+    }
+
+    @Unroll
+    def "SetAttributes metadata"() {
+        setup:
+        def fs = createFS(config)
+        def path = fs.getPath(generateBlobName())
+        def os = fs.provider().newOutputStream(path)
+        os.close()
+
+        def metadata = new HashMap<String, String>()
+        if (key1 != null && value1 != null) {
+            metadata.put(key1, value1)
+        }
+        if (key2 != null && value2 != null) {
+            metadata.put(key2, value2)
+        }
+
+        when:
+        fs.provider().setAttribute(path, "azureBlob:metadata", metadata)
+        def returnedMetadata = fs.provider().readAttributes(path, AzureBlobFileAttributes.class).metadata()
+
+        then:
+        metadata == returnedMetadata
+
+        where:
+        key1  | value1 | key2   | value2 || statusCode
+        null  | null   | null   | null   || 200
+        "foo" | "bar"  | "fizz" | "buzz" || 200
+        "i0"  | "a"    | "i_"   | "a"    || 200 /* Test culture sensitive word sort */
+    }
+
+    @Unroll
+    def "SetAttributes tier"() {
+        setup:
+        def fs = createFS(config)
+        def path = fs.getPath(generateBlobName())
+        def os = fs.provider().newOutputStream(path)
+        os.close()
+
+        when:
+        fs.provider().setAttribute(path, "azureBlob:tier", tier)
+
+        then:
+        fs.provider().readAttributes(path, AzureBlobFileAttributes.class).accessTier() == tier
+
+        where:
+        tier            | _
+        AccessTier.HOT  | _
+        AccessTier.COOL | _
+        /*
+        We don't test archive because it takes a while to take effect, and testing these two demonstrates that the tier
+        is successfully being passed to the underlying client.
+         */
+    }
+
+    @Unroll
+    def "SetAttributes directory"() {
+        setup:
+        def fs = createFS(config)
+        def path = fs.getPath(generateBlobName())
+        putDirectoryBlob(new AzureResource(path).getBlobClient().getBlockBlobClient())
+
+        when:
+        fs.provider().setAttribute(path, "azureBlob:tier", AccessTier.COOL)
+
+        then:
+        notThrown(IOException)
+    }
+
+    @Unroll
+    def "SetAttributes IA"() {
+        setup:
+        def fs = createFS(config)
+        def path = fs.getPath(generateBlobName())
+
+        when:
+        fs.provider().setAttribute(path, attrStr, "Foo")
+
+        then:
+        thrown(IllegalArgumentException)
+
+        where:
+        attrStr                  | _
+        "azureBlob:metadata:foo" | _ // Invalid format
+        ""                       | _ // empty
+        "azureBasic:foo"         | _ // Invalid property
+    }
+
+    def "SetAttributes invalid view"() {
+        setup:
+        def fs = createFS(config)
+        def path = fs.getPath(generateBlobName())
+
+        when:
+        fs.provider().setAttribute(path, "foo:size", "foo")
+
+        then:
+        thrown(UnsupportedOperationException)
+    }
+
+    def "SetAttributes IOException"() {
+        setup:
+        def fs = createFS(config)
+
+        when: "Path does not exist"
+        // Covers virtual directory, too
+        fs.provider().setAttribute(fs.getPath("path"), "azureBlob:metadata", Collections.emptyMap())
+
+        then:
+        thrown(IOException)
+    }
 
     def basicSetupForCopyTest(FileSystem fs) {
         // Generate resource names.
