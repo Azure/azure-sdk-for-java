@@ -31,7 +31,6 @@ import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.util.polling.AsyncPollResponse;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.compute.ComputeManagementClient;
@@ -477,7 +476,7 @@ public final class DisksClient
     public Mono<DiskInner> createOrUpdateAsync(String resourceGroupName, String diskName, DiskInner disk) {
         return beginCreateOrUpdateAsync(resourceGroupName, diskName, disk)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -498,7 +497,7 @@ public final class DisksClient
         String resourceGroupName, String diskName, DiskInner disk, Context context) {
         return beginCreateOrUpdateAsync(resourceGroupName, diskName, disk, context)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -739,7 +738,7 @@ public final class DisksClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DiskInner> updateAsync(String resourceGroupName, String diskName, DiskUpdate disk) {
-        return beginUpdateAsync(resourceGroupName, diskName, disk).last().flatMap(AsyncPollResponse::getFinalResult);
+        return beginUpdateAsync(resourceGroupName, diskName, disk).last().flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -759,7 +758,7 @@ public final class DisksClient
     public Mono<DiskInner> updateAsync(String resourceGroupName, String diskName, DiskUpdate disk, Context context) {
         return beginUpdateAsync(resourceGroupName, diskName, disk, context)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -1145,7 +1144,7 @@ public final class DisksClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String diskName) {
-        return beginDeleteAsync(resourceGroupName, diskName).last().flatMap(AsyncPollResponse::getFinalResult);
+        return beginDeleteAsync(resourceGroupName, diskName).last().flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -1162,7 +1161,7 @@ public final class DisksClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String diskName, Context context) {
-        return beginDeleteAsync(resourceGroupName, diskName, context).last().flatMap(AsyncPollResponse::getFinalResult);
+        return beginDeleteAsync(resourceGroupName, diskName, context).last().flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -1689,7 +1688,7 @@ public final class DisksClient
         String resourceGroupName, String diskName, GrantAccessData grantAccessData) {
         return beginGrantAccessAsync(resourceGroupName, diskName, grantAccessData)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -1710,7 +1709,7 @@ public final class DisksClient
         String resourceGroupName, String diskName, GrantAccessData grantAccessData, Context context) {
         return beginGrantAccessAsync(resourceGroupName, diskName, grantAccessData, context)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -1924,7 +1923,7 @@ public final class DisksClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> revokeAccessAsync(String resourceGroupName, String diskName) {
-        return beginRevokeAccessAsync(resourceGroupName, diskName).last().flatMap(AsyncPollResponse::getFinalResult);
+        return beginRevokeAccessAsync(resourceGroupName, diskName).last().flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -1943,7 +1942,7 @@ public final class DisksClient
     public Mono<Void> revokeAccessAsync(String resourceGroupName, String diskName, Context context) {
         return beginRevokeAccessAsync(resourceGroupName, diskName, context)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**

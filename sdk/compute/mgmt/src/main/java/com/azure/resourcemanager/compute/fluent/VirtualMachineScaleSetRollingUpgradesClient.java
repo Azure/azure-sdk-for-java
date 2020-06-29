@@ -23,7 +23,6 @@ import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.util.polling.AsyncPollResponse;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.compute.ComputeManagementClient;
@@ -331,7 +330,7 @@ public final class VirtualMachineScaleSetRollingUpgradesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> cancelAsync(String resourceGroupName, String vmScaleSetName) {
-        return beginCancelAsync(resourceGroupName, vmScaleSetName).last().flatMap(AsyncPollResponse::getFinalResult);
+        return beginCancelAsync(resourceGroupName, vmScaleSetName).last().flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -349,7 +348,7 @@ public final class VirtualMachineScaleSetRollingUpgradesClient {
     public Mono<Void> cancelAsync(String resourceGroupName, String vmScaleSetName, Context context) {
         return beginCancelAsync(resourceGroupName, vmScaleSetName, context)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -561,7 +560,7 @@ public final class VirtualMachineScaleSetRollingUpgradesClient {
     public Mono<Void> startOSUpgradeAsync(String resourceGroupName, String vmScaleSetName) {
         return beginStartOSUpgradeAsync(resourceGroupName, vmScaleSetName)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -580,7 +579,7 @@ public final class VirtualMachineScaleSetRollingUpgradesClient {
     public Mono<Void> startOSUpgradeAsync(String resourceGroupName, String vmScaleSetName, Context context) {
         return beginStartOSUpgradeAsync(resourceGroupName, vmScaleSetName, context)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -796,7 +795,7 @@ public final class VirtualMachineScaleSetRollingUpgradesClient {
     public Mono<Void> startExtensionUpgradeAsync(String resourceGroupName, String vmScaleSetName) {
         return beginStartExtensionUpgradeAsync(resourceGroupName, vmScaleSetName)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -815,7 +814,7 @@ public final class VirtualMachineScaleSetRollingUpgradesClient {
     public Mono<Void> startExtensionUpgradeAsync(String resourceGroupName, String vmScaleSetName, Context context) {
         return beginStartExtensionUpgradeAsync(resourceGroupName, vmScaleSetName, context)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**

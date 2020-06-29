@@ -488,7 +488,7 @@ public final class VirtualMachineScaleSetExtensionsClient {
         return beginCreateOrUpdateAsync(
                 resourceGroupName, vmScaleSetName, vmssExtensionName, extensionParameters, context)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -792,7 +792,7 @@ public final class VirtualMachineScaleSetExtensionsClient {
         VirtualMachineScaleSetExtensionUpdate extensionParameters) {
         return beginUpdateAsync(resourceGroupName, vmScaleSetName, vmssExtensionName, extensionParameters)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**

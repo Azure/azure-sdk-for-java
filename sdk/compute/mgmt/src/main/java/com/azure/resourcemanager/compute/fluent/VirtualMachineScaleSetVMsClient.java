@@ -30,7 +30,6 @@ import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.util.polling.AsyncPollResponse;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.compute.ComputeManagementClient;
@@ -703,7 +702,7 @@ public final class VirtualMachineScaleSetVMsClient {
         String resourceGroupName, String vmScaleSetName, String instanceId, Boolean tempDisk) {
         return beginReimageAsync(resourceGroupName, vmScaleSetName, instanceId, tempDisk)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -725,7 +724,7 @@ public final class VirtualMachineScaleSetVMsClient {
         String resourceGroupName, String vmScaleSetName, String instanceId, Boolean tempDisk, Context context) {
         return beginReimageAsync(resourceGroupName, vmScaleSetName, instanceId, tempDisk, context)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -961,7 +960,7 @@ public final class VirtualMachineScaleSetVMsClient {
     public Mono<Void> reimageAllAsync(String resourceGroupName, String vmScaleSetName, String instanceId) {
         return beginReimageAllAsync(resourceGroupName, vmScaleSetName, instanceId)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -982,7 +981,7 @@ public final class VirtualMachineScaleSetVMsClient {
         String resourceGroupName, String vmScaleSetName, String instanceId, Context context) {
         return beginReimageAllAsync(resourceGroupName, vmScaleSetName, instanceId, context)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -1215,7 +1214,7 @@ public final class VirtualMachineScaleSetVMsClient {
     public Mono<Void> deallocateAsync(String resourceGroupName, String vmScaleSetName, String instanceId) {
         return beginDeallocateAsync(resourceGroupName, vmScaleSetName, instanceId)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -1236,7 +1235,7 @@ public final class VirtualMachineScaleSetVMsClient {
         String resourceGroupName, String vmScaleSetName, String instanceId, Context context) {
         return beginDeallocateAsync(resourceGroupName, vmScaleSetName, instanceId, context)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -1506,7 +1505,7 @@ public final class VirtualMachineScaleSetVMsClient {
         String resourceGroupName, String vmScaleSetName, String instanceId, VirtualMachineScaleSetVMInner parameters) {
         return beginUpdateAsync(resourceGroupName, vmScaleSetName, instanceId, parameters)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -1531,7 +1530,7 @@ public final class VirtualMachineScaleSetVMsClient {
         Context context) {
         return beginUpdateAsync(resourceGroupName, vmScaleSetName, instanceId, parameters, context)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -1764,7 +1763,7 @@ public final class VirtualMachineScaleSetVMsClient {
     public Mono<Void> deleteAsync(String resourceGroupName, String vmScaleSetName, String instanceId) {
         return beginDeleteAsync(resourceGroupName, vmScaleSetName, instanceId)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -1783,7 +1782,7 @@ public final class VirtualMachineScaleSetVMsClient {
     public Mono<Void> deleteAsync(String resourceGroupName, String vmScaleSetName, String instanceId, Context context) {
         return beginDeleteAsync(resourceGroupName, vmScaleSetName, instanceId, context)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -2738,7 +2737,7 @@ public final class VirtualMachineScaleSetVMsClient {
         String resourceGroupName, String vmScaleSetName, String instanceId, Boolean skipShutdown) {
         return beginPowerOffAsync(resourceGroupName, vmScaleSetName, instanceId, skipShutdown)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -2762,7 +2761,7 @@ public final class VirtualMachineScaleSetVMsClient {
         String resourceGroupName, String vmScaleSetName, String instanceId, Boolean skipShutdown, Context context) {
         return beginPowerOffAsync(resourceGroupName, vmScaleSetName, instanceId, skipShutdown, context)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -2783,7 +2782,7 @@ public final class VirtualMachineScaleSetVMsClient {
         final Context context = null;
         return beginPowerOffAsync(resourceGroupName, vmScaleSetName, instanceId, skipShutdown)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -3033,7 +3032,7 @@ public final class VirtualMachineScaleSetVMsClient {
     public Mono<Void> restartAsync(String resourceGroupName, String vmScaleSetName, String instanceId) {
         return beginRestartAsync(resourceGroupName, vmScaleSetName, instanceId)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -3053,7 +3052,7 @@ public final class VirtualMachineScaleSetVMsClient {
         String resourceGroupName, String vmScaleSetName, String instanceId, Context context) {
         return beginRestartAsync(resourceGroupName, vmScaleSetName, instanceId, context)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -3276,7 +3275,7 @@ public final class VirtualMachineScaleSetVMsClient {
     public Mono<Void> startAsync(String resourceGroupName, String vmScaleSetName, String instanceId) {
         return beginStartAsync(resourceGroupName, vmScaleSetName, instanceId)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -3295,7 +3294,7 @@ public final class VirtualMachineScaleSetVMsClient {
     public Mono<Void> startAsync(String resourceGroupName, String vmScaleSetName, String instanceId, Context context) {
         return beginStartAsync(resourceGroupName, vmScaleSetName, instanceId, context)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -3519,7 +3518,7 @@ public final class VirtualMachineScaleSetVMsClient {
     public Mono<Void> redeployAsync(String resourceGroupName, String vmScaleSetName, String instanceId) {
         return beginRedeployAsync(resourceGroupName, vmScaleSetName, instanceId)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -3539,7 +3538,7 @@ public final class VirtualMachineScaleSetVMsClient {
         String resourceGroupName, String vmScaleSetName, String instanceId, Context context) {
         return beginRedeployAsync(resourceGroupName, vmScaleSetName, instanceId, context)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -3763,7 +3762,7 @@ public final class VirtualMachineScaleSetVMsClient {
     public Mono<Void> performMaintenanceAsync(String resourceGroupName, String vmScaleSetName, String instanceId) {
         return beginPerformMaintenanceAsync(resourceGroupName, vmScaleSetName, instanceId)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -3783,7 +3782,7 @@ public final class VirtualMachineScaleSetVMsClient {
         String resourceGroupName, String vmScaleSetName, String instanceId, Context context) {
         return beginPerformMaintenanceAsync(resourceGroupName, vmScaleSetName, instanceId, context)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -4220,7 +4219,7 @@ public final class VirtualMachineScaleSetVMsClient {
         String resourceGroupName, String vmScaleSetName, String instanceId, RunCommandInput parameters) {
         return beginRunCommandAsync(resourceGroupName, vmScaleSetName, instanceId, parameters)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -4245,7 +4244,7 @@ public final class VirtualMachineScaleSetVMsClient {
         Context context) {
         return beginRunCommandAsync(resourceGroupName, vmScaleSetName, instanceId, parameters, context)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**

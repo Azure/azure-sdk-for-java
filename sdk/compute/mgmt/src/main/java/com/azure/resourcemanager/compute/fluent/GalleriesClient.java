@@ -29,7 +29,6 @@ import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.util.polling.AsyncPollResponse;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.compute.ComputeManagementClient;
@@ -418,7 +417,7 @@ public final class GalleriesClient
     public Mono<GalleryInner> createOrUpdateAsync(String resourceGroupName, String galleryName, GalleryInner gallery) {
         return beginCreateOrUpdateAsync(resourceGroupName, galleryName, gallery)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -439,7 +438,7 @@ public final class GalleriesClient
         String resourceGroupName, String galleryName, GalleryInner gallery, Context context) {
         return beginCreateOrUpdateAsync(resourceGroupName, galleryName, gallery, context)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -684,7 +683,7 @@ public final class GalleriesClient
     public Mono<GalleryInner> updateAsync(String resourceGroupName, String galleryName, GalleryUpdate gallery) {
         return beginUpdateAsync(resourceGroupName, galleryName, gallery)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -705,7 +704,7 @@ public final class GalleriesClient
         String resourceGroupName, String galleryName, GalleryUpdate gallery, Context context) {
         return beginUpdateAsync(resourceGroupName, galleryName, gallery, context)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -1080,7 +1079,7 @@ public final class GalleriesClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String galleryName) {
-        return beginDeleteAsync(resourceGroupName, galleryName).last().flatMap(AsyncPollResponse::getFinalResult);
+        return beginDeleteAsync(resourceGroupName, galleryName).last().flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -1098,7 +1097,7 @@ public final class GalleriesClient
     public Mono<Void> deleteAsync(String resourceGroupName, String galleryName, Context context) {
         return beginDeleteAsync(resourceGroupName, galleryName, context)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**
