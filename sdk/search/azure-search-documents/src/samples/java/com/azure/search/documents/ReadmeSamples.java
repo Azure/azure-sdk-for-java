@@ -114,7 +114,7 @@ public class ReadmeSamples {
             // returned from the search service
             HttpResponse response = ex.getResponse();
             System.out.println("Status Code: " + response.getStatusCode());
-            System.out.println("Message: " + response.getBodyAsString().block());
+            System.out.println("Message: " + ex.getMessage());
         }
     }
 
@@ -216,7 +216,7 @@ public class ReadmeSamples {
     }
 
     public void batchDocumentsOperations() {
-        IndexDocumentsBatch<Hotel> batch = new IndexDocumentsBatch<Hotel>(new ArrayList<>());
+        IndexDocumentsBatch<Hotel> batch = new IndexDocumentsBatch<Hotel>();
         batch.addUploadActions(new Hotel().setId("783").setName("Upload Inn"));
         batch.addMergeActions(new Hotel().setId("12").setName("Renovated Ranch"));
         searchClient.indexDocuments(batch);

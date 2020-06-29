@@ -395,7 +395,7 @@ to be aware of.
 
 <!-- embedme ./src/samples/java/com/azure/search/documents/ReadmeSamples.java#L219-L222 -->
 ```Java
-IndexDocumentsBatch<Hotel> batch = new IndexDocumentsBatch<Hotel>(new ArrayList<>());
+IndexDocumentsBatch<Hotel> batch = new IndexDocumentsBatch<Hotel>();
 batch.addUploadActions(new Hotel().setId("783").setName("Upload Inn"));
 batch.addMergeActions(new Hotel().setId("12").setName("Renovated Ranch"));
 searchClient.indexDocuments(batch);
@@ -447,7 +447,7 @@ try {
     // returned from the search service
     HttpResponse response = ex.getResponse();
     System.out.println("Status Code: " + response.getStatusCode());
-    System.out.println("Message: " + response.getBodyAsString().block());
+    System.out.println("Message: " + ex.getMessage());
 }
 ```
 
