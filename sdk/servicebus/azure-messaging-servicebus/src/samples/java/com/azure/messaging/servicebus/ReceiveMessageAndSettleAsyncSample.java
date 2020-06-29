@@ -42,7 +42,7 @@ public class ReceiveMessageAndSettleAsyncSample {
             .queueName("<<queue-name>>")
             .buildAsyncClient();
 
-        Disposable subscription = receiver.receive()
+        Disposable subscription = receiver.receiveMessages()
             .flatMap(context -> {
                 boolean messageProcessed = false;
                 // Process the context and its message here.

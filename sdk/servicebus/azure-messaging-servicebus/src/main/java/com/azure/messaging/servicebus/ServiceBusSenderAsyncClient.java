@@ -135,7 +135,7 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
      *
      * @throws NullPointerException if {@code message} is {@code null}.
      */
-    public Mono<Void> send(ServiceBusMessage message) {
+    public Mono<Void> sendMessage(ServiceBusMessage message) {
         if (Objects.isNull(message)) {
             return monoError(logger, new NullPointerException("'message' cannot be null."));
         }
@@ -152,7 +152,7 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
      *
      * @throws NullPointerException if {@code message} is {@code null}.
      */
-    public Mono<Void> send(ServiceBusMessage message, ServiceBusTransactionContext transactionContext) {
+    public Mono<Void> sendMessage(ServiceBusMessage message, ServiceBusTransactionContext transactionContext) {
         if (Objects.isNull(transactionContext)) {
             return monoError(logger, new NullPointerException("'transactionContext' cannot be null."));
         }
@@ -177,7 +177,8 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
      * {@code transactionContext.transactionID} is {@code null}.
      * @throws AmqpException if {@code messages} is larger than the maximum allowed size of a single batch.
      */
-    public Mono<Void> send(Iterable<ServiceBusMessage> messages, ServiceBusTransactionContext transactionContext) {
+    public Mono<Void> sendMessages(Iterable<ServiceBusMessage> messages,
+        ServiceBusTransactionContext transactionContext) {
         if (Objects.isNull(transactionContext)) {
             return monoError(logger, new NullPointerException("'transactionContext' cannot be null."));
         }
@@ -200,7 +201,7 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
      * @throws NullPointerException if {@code messages} is {@code null}.
      * @throws AmqpException if {@code messages} is larger than the maximum allowed size of a single batch.
      */
-    public Mono<Void> send(Iterable<ServiceBusMessage> messages) {
+    public Mono<Void> sendMessages(Iterable<ServiceBusMessage> messages) {
         return sendIterable(messages, null);
     }
 
@@ -213,7 +214,7 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
      *
      * @throws NullPointerException if {@code batch} is {@code null}.
      */
-    public Mono<Void> send(ServiceBusMessageBatch batch) {
+    public Mono<Void> sendMessages(ServiceBusMessageBatch batch) {
         return sendInternal(batch, null);
     }
 
@@ -228,7 +229,7 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
      * @throws NullPointerException if {@code batch}, {@code transactionContext} or
      * {@code transactionContext.transactionID} is {@code null}.
      */
-    public Mono<Void> send(ServiceBusMessageBatch batch, ServiceBusTransactionContext transactionContext) {
+    public Mono<Void> sendMessages(ServiceBusMessageBatch batch, ServiceBusTransactionContext transactionContext) {
         if (Objects.isNull(transactionContext)) {
             return monoError(logger, new NullPointerException("'transactionContext' cannot be null."));
         }

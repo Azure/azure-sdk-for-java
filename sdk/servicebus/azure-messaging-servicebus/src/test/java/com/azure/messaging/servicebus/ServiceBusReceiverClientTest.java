@@ -272,10 +272,10 @@ class ServiceBusReceiverClientTest {
     void peekMessage() {
         // Arrange
         final ServiceBusReceivedMessage message = mock(ServiceBusReceivedMessage.class);
-        when(asyncClient.peek()).thenReturn(Mono.just(message));
+        when(asyncClient.peekMessage()).thenReturn(Mono.just(message));
 
         // Act
-        final ServiceBusReceivedMessage actual = client.peek();
+        final ServiceBusReceivedMessage actual = client.peekMessage();
 
         // Assert
         assertEquals(message, actual);
@@ -286,10 +286,10 @@ class ServiceBusReceiverClientTest {
         // Arrange
         final long sequenceNumber = 154;
         final ServiceBusReceivedMessage message = mock(ServiceBusReceivedMessage.class);
-        when(asyncClient.peekAt(sequenceNumber)).thenReturn(Mono.just(message));
+        when(asyncClient.peekMessageAt(sequenceNumber)).thenReturn(Mono.just(message));
 
         // Act
-        final ServiceBusReceivedMessage actual = client.peekAt(sequenceNumber);
+        final ServiceBusReceivedMessage actual = client.peekMessageAt(sequenceNumber);
 
         // Assert
         assertEquals(message, actual);
@@ -325,10 +325,10 @@ class ServiceBusReceiverClientTest {
                 }
             });
         });
-        when(asyncClient.peekBatch(maxMessages)).thenReturn(messages);
+        when(asyncClient.peekMessages(maxMessages)).thenReturn(messages);
 
         // Act
-        final IterableStream<ServiceBusReceivedMessage> actual = client.peekBatch(maxMessages);
+        final IterableStream<ServiceBusReceivedMessage> actual = client.peekMessages(maxMessages);
 
         // Assert
         assertNotNull(actual);
@@ -369,10 +369,10 @@ class ServiceBusReceiverClientTest {
             });
         });
 
-        when(asyncClient.peekBatch(maxMessages)).thenReturn(messages);
+        when(asyncClient.peekMessages(maxMessages)).thenReturn(messages);
 
         // Act
-        final IterableStream<ServiceBusReceivedMessage> actual = client.peekBatch(maxMessages);
+        final IterableStream<ServiceBusReceivedMessage> actual = client.peekMessages(maxMessages);
 
         // Assert
         assertNotNull(actual);
@@ -398,10 +398,10 @@ class ServiceBusReceiverClientTest {
                 sink.complete();
             });
         });
-        when(asyncClient.peekBatchAt(maxMessages, sequenceNumber)).thenReturn(messages);
+        when(asyncClient.peekMessagesAt(maxMessages, sequenceNumber)).thenReturn(messages);
 
         // Act
-        final IterableStream<ServiceBusReceivedMessage> actual = client.peekBatchAt(maxMessages, sequenceNumber);
+        final IterableStream<ServiceBusReceivedMessage> actual = client.peekMessagesAt(maxMessages, sequenceNumber);
 
         // Assert
         assertNotNull(actual);
@@ -419,7 +419,7 @@ class ServiceBusReceiverClientTest {
         final int maxMessages = 10;
 
         // Act & Assert
-        assertThrows(NullPointerException.class, () -> client.receive(maxMessages, (Duration) null));
+        assertThrows(NullPointerException.class, () -> client.receiveMessages(maxMessages, (Duration) null));
     }
 
     /**
@@ -432,7 +432,7 @@ class ServiceBusReceiverClientTest {
         Duration negativeReceiveWaitTime = Duration.ofSeconds(-10);
 
         // Act & Assert
-        assertThrows(IllegalArgumentException.class, () -> client.receive(maxMessages, negativeReceiveWaitTime));
+        assertThrows(IllegalArgumentException.class, () -> client.receiveMessages(maxMessages, negativeReceiveWaitTime));
     }
 
     /**
@@ -471,10 +471,10 @@ class ServiceBusReceiverClientTest {
                 sink.complete();
             });
         });
-        when(asyncClient.receive()).thenReturn(messageSink);
+        when(asyncClient.receiveMessages()).thenReturn(messageSink);
 
         // Act
-        final IterableStream<ServiceBusReceivedMessageContext> actual = client.receive(maxMessages, receiveTimeout);
+        final IterableStream<ServiceBusReceivedMessageContext> actual = client.receiveMessages(maxMessages, receiveTimeout);
 
         // Assert
         assertNotNull(actual);
@@ -517,10 +517,10 @@ class ServiceBusReceiverClientTest {
             });
         });
 
-        when(asyncClient.receive()).thenReturn(messageSink);
+        when(asyncClient.receiveMessages()).thenReturn(messageSink);
 
         // Act
-        final IterableStream<ServiceBusReceivedMessageContext> actual = client.receive(maxMessages);
+        final IterableStream<ServiceBusReceivedMessageContext> actual = client.receiveMessages(maxMessages);
 
         // Assert
         assertNotNull(actual);
@@ -563,10 +563,10 @@ class ServiceBusReceiverClientTest {
                 sink.complete();
             });
         });
-        when(asyncClient.receive()).thenReturn(messageSink);
+        when(asyncClient.receiveMessages()).thenReturn(messageSink);
 
         // Act
-        final IterableStream<ServiceBusReceivedMessageContext> actual = client.receive(maxMessages);
+        final IterableStream<ServiceBusReceivedMessageContext> actual = client.receiveMessages(maxMessages);
 
         // Assert
         assertNotNull(actual);
@@ -598,7 +598,7 @@ class ServiceBusReceiverClientTest {
         final long sequenceNumber2 = 13124;
         final ServiceBusReceivedMessage message = mock(ServiceBusReceivedMessage.class);
         final ServiceBusReceivedMessage message2 = mock(ServiceBusReceivedMessage.class);
-        when(asyncClient.receiveDeferredMessageBatch(any())).thenReturn(Flux.just(message, message2));
+        when(asyncClient.receiveDeferredMessages(any())).thenReturn(Flux.just(message, message2));
         List<Long> collection = Arrays.asList(sequenceNumber, sequenceNumber2);
 
         // Act

@@ -81,7 +81,7 @@ class UnnamedSessionManagerIntegrationTest extends IntegrationTestBase {
                 final ServiceBusMessage message = getServiceBusMessage(contents, messageId)
                     .setSessionId(sessionId);
                 messagesPending.incrementAndGet();
-                return sender.send(message).thenReturn(index);
+                return sender.sendMessage(message).thenReturn(index);
             }).subscribe(
                 number -> logger.info("sessionId[{}] sent[{}] Message sent.", sessionId, number),
                 error -> logger.error("sessionId[{}] Error encountered.", sessionId, error),
@@ -89,7 +89,7 @@ class UnnamedSessionManagerIntegrationTest extends IntegrationTestBase {
 
         // Act & Assert
         try {
-            StepVerifier.create(receiver.receive())
+            StepVerifier.create(receiver.receiveMessages())
                 .assertNext(context -> assertMessageEquals(sessionId, messageId, contents, context))
                 .assertNext(context -> assertMessageEquals(sessionId, messageId, contents, context))
                 .assertNext(context -> assertMessageEquals(sessionId, messageId, contents, context))
@@ -140,7 +140,7 @@ class UnnamedSessionManagerIntegrationTest extends IntegrationTestBase {
                 final ServiceBusMessage message = getServiceBusMessage(contents, messageId)
                     .setSessionId(id);
                 messagesPending.incrementAndGet();
-                return sender.send(message).thenReturn(
+                return sender.sendMessage(message).thenReturn(
                     String.format("sessionId[%s] sent[%s] Message sent.", id, index));
             }).subscribe(
                 message -> logger.info(message),
@@ -149,7 +149,7 @@ class UnnamedSessionManagerIntegrationTest extends IntegrationTestBase {
 
         // Act & Assert
         try {
-            StepVerifier.create(receiver.receive())
+            StepVerifier.create(receiver.receiveMessages())
                 .assertNext(context -> assertFromSession(sessionIds, set, maxConcurrency, messageId, contents, context))
                 .assertNext(context -> assertFromSession(sessionIds, set, maxConcurrency, messageId, contents, context))
                 .assertNext(context -> assertFromSession(sessionIds, set, maxConcurrency, messageId, contents, context))

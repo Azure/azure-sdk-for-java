@@ -43,7 +43,7 @@ public class ReceiveMultipleSessionsAsyncSample {
             .queueName("<<queue-name>>")
             .buildAsyncClient();
 
-        Disposable subscription = receiver.receive()
+        Disposable subscription = receiver.receiveMessages()
             .flatMap(context -> {
                 if (context.hasError()) {
                     System.out.printf("An error occurred in session %s. Error: %s%n",

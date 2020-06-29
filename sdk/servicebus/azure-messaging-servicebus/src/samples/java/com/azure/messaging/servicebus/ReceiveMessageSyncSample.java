@@ -39,7 +39,7 @@ public class ReceiveMessageSyncSample {
         // are received, or the operation timeout has elapsed, whichever occurs first.
         for (int i = 0; i < 10; i++) {
             final IterableStream<ServiceBusReceivedMessageContext> receivedMessages =
-                receiver.receive(5);
+                receiver.receiveMessages(5);
 
             receivedMessages.stream().forEach(context -> {
                 ServiceBusReceivedMessage message = context.getMessage();
