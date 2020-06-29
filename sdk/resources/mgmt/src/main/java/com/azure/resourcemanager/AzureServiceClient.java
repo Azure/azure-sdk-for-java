@@ -48,7 +48,7 @@ import java.util.Enumeration;
  */
 public abstract class AzureServiceClient {
 
-    private final ClientLogger clientLogger = new ClientLogger(AzureServiceClient.class);
+    private final ClientLogger logger = new ClientLogger(AzureServiceClient.class);
 
     protected AzureServiceClient(HttpPipeline httpPipeline, AzureEnvironment environment) {
         ((AzureJacksonAdapter) serializerAdapter).serializer().registerModule(DateTimeDeserializer.getModule());
@@ -202,7 +202,7 @@ public abstract class AzureServiceClient {
                             managementError = null;
                         }
                     } catch (IOException ioe) {
-                        clientLogger.logThrowableAsWarning(ioe);
+                        logger.logThrowableAsWarning(ioe);
                     }
                 }
             } else {
