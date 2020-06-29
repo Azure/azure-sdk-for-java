@@ -40,6 +40,9 @@ extends:
       - name: azure-core-amqp
         groupId: com.azure
         safeName: azurecoreamqp
+      - name: azure-core-experimental
+        groupId: com.azure
+        safeName: azurecoreexperimental
       - name: azure-core-http-jdk-httpclient
         groupId: com.azure
         safeName: azurecorehttpjdkhttpclient
