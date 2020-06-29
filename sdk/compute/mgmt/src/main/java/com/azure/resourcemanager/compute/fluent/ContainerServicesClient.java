@@ -31,6 +31,7 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.AsyncPollResponse;
 import com.azure.core.util.polling.PollerFlux;
+import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.compute.ComputeManagementClient;
 import com.azure.resourcemanager.compute.fluent.inner.ContainerServiceInner;
 import com.azure.resourcemanager.compute.fluent.inner.ContainerServiceListResultInner;
@@ -434,7 +435,7 @@ public final class ContainerServicesClient
      * @return container service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<ContainerServiceInner>, ContainerServiceInner> beginCreateOrUpdate(
+    public PollerFlux<PollResult<ContainerServiceInner>, ContainerServiceInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String containerServiceName, ContainerServiceInner parameters) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             createOrUpdateWithResponseAsync(resourceGroupName, containerServiceName, parameters);
@@ -457,7 +458,7 @@ public final class ContainerServicesClient
      * @return container service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<ContainerServiceInner>, ContainerServiceInner> beginCreateOrUpdate(
+    public PollerFlux<PollResult<ContainerServiceInner>, ContainerServiceInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String containerServiceName, ContainerServiceInner parameters, Context context) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             createOrUpdateWithResponseAsync(resourceGroupName, containerServiceName, parameters, context);
@@ -479,14 +480,44 @@ public final class ContainerServicesClient
      * @return container service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<ContainerServiceInner>, ContainerServiceInner> beginCreateOrUpdate(
+        String resourceGroupName, String containerServiceName, ContainerServiceInner parameters) {
+        return beginCreateOrUpdateAsync(resourceGroupName, containerServiceName, parameters).getSyncPoller();
+    }
+
+    /**
+     * Creates or updates a container service with the specified configuration of orchestrator, masters, and agents.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param containerServiceName The name of the container service in the specified subscription and resource group.
+     * @param parameters Container service.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return container service.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<ContainerServiceInner>, ContainerServiceInner> beginCreateOrUpdate(
+        String resourceGroupName, String containerServiceName, ContainerServiceInner parameters, Context context) {
+        return beginCreateOrUpdateAsync(resourceGroupName, containerServiceName, parameters, context).getSyncPoller();
+    }
+
+    /**
+     * Creates or updates a container service with the specified configuration of orchestrator, masters, and agents.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param containerServiceName The name of the container service in the specified subscription and resource group.
+     * @param parameters Container service.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return container service.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ContainerServiceInner> createOrUpdateAsync(
         String resourceGroupName, String containerServiceName, ContainerServiceInner parameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, containerServiceName, parameters);
-        return this
-            .client
-            .<ContainerServiceInner, ContainerServiceInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), ContainerServiceInner.class, ContainerServiceInner.class)
+        return beginCreateOrUpdateAsync(resourceGroupName, containerServiceName, parameters)
             .last()
             .flatMap(AsyncPollResponse::getFinalResult);
     }
@@ -506,12 +537,7 @@ public final class ContainerServicesClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ContainerServiceInner> createOrUpdateAsync(
         String resourceGroupName, String containerServiceName, ContainerServiceInner parameters, Context context) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, containerServiceName, parameters, context);
-        return this
-            .client
-            .<ContainerServiceInner, ContainerServiceInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), ContainerServiceInner.class, ContainerServiceInner.class)
+        return beginCreateOrUpdateAsync(resourceGroupName, containerServiceName, parameters, context)
             .last()
             .flatMap(AsyncPollResponse::getFinalResult);
     }
@@ -849,7 +875,7 @@ public final class ContainerServicesClient
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<Void>, Void> beginDelete(String resourceGroupName, String containerServiceName) {
+    public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String containerServiceName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, containerServiceName);
         return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
     }
@@ -869,7 +895,7 @@ public final class ContainerServicesClient
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<Void>, Void> beginDelete(
+    public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String containerServiceName, Context context) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             deleteWithResponseAsync(resourceGroupName, containerServiceName, context);
@@ -890,11 +916,46 @@ public final class ContainerServicesClient
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String containerServiceName) {
+        return beginDeleteAsync(resourceGroupName, containerServiceName).getSyncPoller();
+    }
+
+    /**
+     * Deletes the specified container service in the specified subscription and resource group. The operation does not
+     * delete other resources created as part of creating a container service, including storage accounts, VMs, and
+     * availability sets. All the other resources created with the container service are part of the same resource group
+     * and can be deleted individually.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param containerServiceName The name of the container service in the specified subscription and resource group.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<Void>, Void> beginDelete(
+        String resourceGroupName, String containerServiceName, Context context) {
+        return beginDeleteAsync(resourceGroupName, containerServiceName, context).getSyncPoller();
+    }
+
+    /**
+     * Deletes the specified container service in the specified subscription and resource group. The operation does not
+     * delete other resources created as part of creating a container service, including storage accounts, VMs, and
+     * availability sets. All the other resources created with the container service are part of the same resource group
+     * and can be deleted individually.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param containerServiceName The name of the container service in the specified subscription and resource group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String containerServiceName) {
-        Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, containerServiceName);
-        return this
-            .client
-            .<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class)
+        return beginDeleteAsync(resourceGroupName, containerServiceName)
             .last()
             .flatMap(AsyncPollResponse::getFinalResult);
     }
@@ -915,11 +976,7 @@ public final class ContainerServicesClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String containerServiceName, Context context) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, containerServiceName, context);
-        return this
-            .client
-            .<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class)
+        return beginDeleteAsync(resourceGroupName, containerServiceName, context)
             .last()
             .flatMap(AsyncPollResponse::getFinalResult);
     }

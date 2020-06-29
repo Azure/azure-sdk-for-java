@@ -143,7 +143,7 @@ public final class CreateVirtualMachineUsingCustomImageFromVM {
                     .withNewPrimaryNetwork("10.0.0.0/28")
                     .withPrimaryPrivateIPAddressDynamic()
                     .withoutPrimaryPublicIPAddress()
-                    .withLinuxCustomImage(virtualMachineCustomImage.id())
+                    .withGeneralizedLinuxCustomImage(virtualMachineCustomImage.id())
                     .withRootUsername(userName)
                     .withRootPassword(password)
                     .withSize(VirtualMachineSizeTypes.STANDARD_D3_V2)
@@ -163,7 +163,7 @@ public final class CreateVirtualMachineUsingCustomImageFromVM {
                     .withNewPrimaryNetwork("10.0.0.0/28")
                     .withPrimaryPrivateIPAddressDynamic()
                     .withoutPrimaryPublicIPAddress()
-                    .withLinuxCustomImage(virtualMachineCustomImage.id())
+                    .withGeneralizedLinuxCustomImage(virtualMachineCustomImage.id())
                     .withRootUsername(userName)
                     .withRootPassword(password)
                     .withNewDataDiskFromImage(1, 200, CachingTypes.READ_WRITE)  // TODO: Naming needs to be finalized
