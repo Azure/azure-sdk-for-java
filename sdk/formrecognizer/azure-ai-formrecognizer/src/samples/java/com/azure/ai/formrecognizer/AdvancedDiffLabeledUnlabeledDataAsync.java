@@ -5,7 +5,7 @@ package com.azure.ai.formrecognizer;
 
 import com.azure.ai.formrecognizer.models.FormContentType;
 import com.azure.ai.formrecognizer.models.OperationResult;
-import com.azure.ai.formrecognizer.models.RecognizeCustomFormsOptions;
+import com.azure.ai.formrecognizer.models.RecognizeOptions;
 import com.azure.ai.formrecognizer.models.RecognizedForm;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.polling.PollerFlux;
@@ -55,14 +55,19 @@ public class AdvancedDiffLabeledUnlabeledDataAsync {
         byte[] fileContent = Files.readAllBytes(analyzeFile.toPath());
 
         PollerFlux<OperationResult, List<RecognizedForm>> labeledCustomFormPoller =
-            client.beginRecognizeCustomForms(new RecognizeCustomFormsOptions(
-                toFluxByteBuffer(new ByteArrayInputStream(fileContent)), analyzeFile.length(), "{labeled_model_Id}")
-                .setFormContentType(FormContentType.APPLICATION_PDF).setIncludeFieldElements(true)
-                .setPollInterval(Duration.ofSeconds(5)));
+            client.beginRecognizeCustomForms(toFluxByteBuffer(new ByteArrayInputStream(fileContent)),
+                analyzeFile.length(), "{labeled_model_Id}", new RecognizeOptions()
+                    .setFormContentType(FormContentType.APPLICATION_PDF)
+                    .setIncludeFieldElements(true)
+                    .setPollInterval(Duration.ofSeconds(5)));
 
         PollerFlux<OperationResult, List<RecognizedForm>> unlabeledCustomFormPoller =
             client.beginRecognizeCustomForms(toFluxByteBuffer(new ByteArrayInputStream(fileContent)),
-                analyzeFile.length(), "{unlabeled_model_Id}", FormContentType.APPLICATION_PDF);
+                analyzeFile.length(), "{unlabeled_model_Id}",
+                new RecognizeOptions()
+                    .setFormContentType(FormContentType.APPLICATION_PDF)
+                    .setIncludeTextContent(true)
+                    .setPollInterval(Duration.ofSeconds(5)));
 
         Mono<List<RecognizedForm>> labeledDataResult = labeledCustomFormPoller
             .last()

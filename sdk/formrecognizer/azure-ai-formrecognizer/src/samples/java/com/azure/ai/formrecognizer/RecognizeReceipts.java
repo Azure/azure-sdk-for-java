@@ -4,7 +4,6 @@
 package com.azure.ai.formrecognizer;
 
 import com.azure.ai.formrecognizer.models.FieldValueType;
-import com.azure.ai.formrecognizer.models.FormContentType;
 import com.azure.ai.formrecognizer.models.FormField;
 import com.azure.ai.formrecognizer.models.OperationResult;
 import com.azure.ai.formrecognizer.models.RecognizedReceipt;
@@ -44,7 +43,7 @@ public class RecognizeReceipts {
         InputStream targetStream = new ByteArrayInputStream(fileContent);
 
         SyncPoller<OperationResult, List<RecognizedReceipt>> analyzeReceiptPoller =
-            client.beginRecognizeReceipts(targetStream, sourceFile.length(), FormContentType.IMAGE_JPEG);
+            client.beginRecognizeReceipts(targetStream, sourceFile.length());
 
         List<RecognizedReceipt> receiptPageResults = analyzeReceiptPoller.getFinalResult();
 

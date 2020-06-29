@@ -4,7 +4,7 @@
 package com.azure.ai.formrecognizer;
 
 import com.azure.ai.formrecognizer.models.FormContentType;
-import com.azure.ai.formrecognizer.models.RecognizeCustomFormsOptions;
+import com.azure.ai.formrecognizer.models.RecognizeOptions;
 import com.azure.ai.formrecognizer.models.RecognizedForm;
 import com.azure.core.credential.AzureKeyCredential;
 
@@ -48,13 +48,20 @@ public class AdvancedDiffLabeledUnlabeledData {
 
         List<RecognizedForm> formsWithLabeledModel =
             client.beginRecognizeCustomForms(
-                new RecognizeCustomFormsOptions(new FileInputStream(analyzeFile), analyzeFile.length(),
-                    "{labeled_model_Id}").setFormContentType(FormContentType.APPLICATION_PDF)
-                    .setIncludeFieldElements(true).setPollInterval(Duration.ofSeconds(5))).getFinalResult();
+                new FileInputStream(analyzeFile), analyzeFile.length(),
+                "{labeled_model_Id}", new RecognizeOptions()
+                    .setFormContentType(FormContentType.APPLICATION_PDF)
+                    .setIncludeFieldElements(true)
+                    .setPollInterval(Duration.ofSeconds(5)))
+                .getFinalResult();
+
         List<RecognizedForm> formsWithUnlabeledModel =
             client.beginRecognizeCustomForms(new FileInputStream(analyzeFile), analyzeFile.length(),
-                "{unlabeled_model_Id}",
-                FormContentType.APPLICATION_PDF).getFinalResult();
+                "{unlabeled_model_Id}", new RecognizeOptions()
+                    .setFormContentType(FormContentType.APPLICATION_PDF)
+                    .setIncludeTextContent(true)
+                    .setPollInterval(Duration.ofSeconds(5)))
+                .getFinalResult();
 
         System.out.println("--------Recognizing forms with labeled custom model--------");
 
