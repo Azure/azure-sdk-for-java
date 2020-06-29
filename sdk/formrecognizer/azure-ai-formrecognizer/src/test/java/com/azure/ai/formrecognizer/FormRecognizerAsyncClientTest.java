@@ -79,7 +79,8 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
         client = getFormRecognizerAsyncClient(httpClient, serviceVersion);
         receiptDataRunner((data, dataLength) -> {
             SyncPoller<OperationResult, List<RecognizedReceipt>> syncPoller =
-                client.beginRecognizeReceipts(toFluxByteBuffer(data), dataLength)
+                client.beginRecognizeReceipts(toFluxByteBuffer(data), dataLength, new RecognizeOptions()
+                .setFormContentType(FormContentType.IMAGE_JPEG).setPollInterval(durationTestMode))
                     .getSyncPoller();
             syncPoller.waitForCompletion();
             validateReceiptResultData(syncPoller.getFinalResult(), false);
@@ -278,7 +279,9 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
         client = getFormRecognizerAsyncClient(httpClient, serviceVersion);
         contentFromDataRunner((data, dataLength) -> {
             SyncPoller<OperationResult, List<FormPage>> syncPoller = client.beginRecognizeContent(
-                toFluxByteBuffer(data), dataLength).getSyncPoller();
+                toFluxByteBuffer(data), dataLength, new RecognizeOptions()
+                    .setFormContentType(FormContentType.IMAGE_JPEG).setPollInterval(durationTestMode))
+                .getSyncPoller();
             syncPoller.waitForCompletion();
             validateContentResultData(syncPoller.getFinalResult(), false);
         });

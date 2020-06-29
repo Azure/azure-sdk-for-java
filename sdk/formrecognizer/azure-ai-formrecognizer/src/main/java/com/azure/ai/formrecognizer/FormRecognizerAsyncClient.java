@@ -174,7 +174,7 @@ public final class FormRecognizerAsyncClient {
      * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeCustomForms#Flux-long-string-recognizeOptions}
      *
      * @param form The data of the form to recognize form information from.
-     * @param length The exact length of the data..
+     * @param length The exact length of the data.
      * @param modelId The UUID string format custom trained model Id to be used.
      * @param recognizeOptions The additional configurable {@link RecognizeOptions options} that may be passed when
      * recognizing custom form.
@@ -273,7 +273,7 @@ public final class FormRecognizerAsyncClient {
      * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeContent#Flux-long}
      *
      * @param form The data of the form to recognize content information from.
-     * @param length The exact length of the data..
+     * @param length The exact length of the data.
      *
      * @return A {@link PollerFlux} polls the recognize content operation until it has completed, has failed, or has
      * been cancelled. The completed operation returns a List of {@link FormPage}.
@@ -299,7 +299,7 @@ public final class FormRecognizerAsyncClient {
      * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeContent#Flux-long-recognizeOptions}
      *
      * @param form The data of the form to recognize content information from.
-     * @param length The exact length of the data..
+     * @param length The exact length of the data.
      * @param recognizeOptions The additional configurable {@link RecognizeOptions options} that may be passed when
      * recognizing content/layout on a form.
      *
@@ -730,10 +730,7 @@ public final class FormRecognizerAsyncClient {
 
     private RecognizeOptions getRecognizeOptionsProperties(RecognizeOptions userProvidedOptions) {
         if (userProvidedOptions != null) {
-            return new RecognizeOptions()
-                .setPollInterval(userProvidedOptions.getPollInterval())
-                .setFormContentType(userProvidedOptions.getFormContentType())
-                .setIncludeTextContent(userProvidedOptions.isIncludeTextContent());
+            return userProvidedOptions;
         } else {
             return new RecognizeOptions();
         }

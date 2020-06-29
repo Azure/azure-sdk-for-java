@@ -131,7 +131,7 @@ public final class FormRecognizerClient {
      * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeCustomForms#InputStream-long-string-recognizeOptions}
      *
      * @param form The data of the form to recognize form information from.
-     * @param length The exact length of the data..
+     * @param length The exact length of the data.
      * @param modelId The UUID string format custom trained model Id to be used.
      * @param recognizeOptions The additional configurable {@link RecognizeOptions options} that may be passed when
      * recognizing custom form.
@@ -203,7 +203,7 @@ public final class FormRecognizerClient {
      * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeContent#InputStream-long}
      *
      * @param form The data of the form to recognize content information from.
-     * @param length The exact length of the data..
+     * @param length The exact length of the data.
      *
      * @return A {@link SyncPoller} that polls the recognize content operation until it has completed, has failed,
      * or has been cancelled. The completed operation returns a List of {@link FormPage}.
@@ -226,7 +226,7 @@ public final class FormRecognizerClient {
      * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeContent#InputStream-long-recognizeOptions}
      *
      *  @param form The data of the form to recognize content information from.
-     * @param length The exact length of the data..
+     * @param length The exact length of the data.
      * @param recognizeOptions The additional configurable {@link RecognizeOptions options} that may be passed when
      * analyzing a receipt. The configurable {@code RecognizeOptions options} that may be passed when recognizing
      * content on a form.
@@ -303,7 +303,7 @@ public final class FormRecognizerClient {
      * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeReceipts#InputStream-long}
      *
      * @param receipt The data of the receipt to recognize receipt information from.
-     * @param length The exact length of the data..
+     * @param length The exact length of the data.
      *
      * @return A {@link SyncPoller} that polls the recognize receipt operation until it has completed,
      * has failed, or has been cancelled. The completed operation returns a List of {@link RecognizedReceipt}.
@@ -328,7 +328,7 @@ public final class FormRecognizerClient {
      * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeReceipts#InputStream-long-recognizeOptions}
      *
      * @param receipt The data of the receipt to recognize receipt information from.
-     * @param length The exact length of the data..
+     * @param length The exact length of the data.
      * @param recognizeOptions The additional configurable {@link RecognizeOptions options} that may be passed when
      * analyzing a receipt.
      *
