@@ -33,9 +33,10 @@ public class AzureTableImplTest extends TestBase {
     private AzureTableImpl azureTable;
 
 
-    static AzureTableImpl auth() {
-
-        final String connectionString = System.getenv("azure_tables_connection_string");
+        AzureTableImpl auth() {
+        String connectionString = interceptorManager.isPlaybackMode()
+            ? "DefaultEndpointsProtocol=https;=AccountName=dummyAccount;AccountKey=xyzDummy;EndpointSuffix=core.windows.net"
+            : System.getenv("azure_tables_connection_string");
         StorageConnectionString storageConnectionString
             = StorageConnectionString.create(connectionString, new ClientLogger(AzureTableImplTest.class));
 
@@ -69,6 +70,7 @@ public class AzureTableImplTest extends TestBase {
     @BeforeEach
     void before() {
         azureTable = auth();
+
     }
 
     @AfterEach
