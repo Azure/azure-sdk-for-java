@@ -8,16 +8,19 @@
 
 package com.microsoft.azure.management.resources.v2018_02_01.implementation;
 
-import com.microsoft.azure.management.resources.v2018_02_01.GenericResource;
+import com.microsoft.azure.management.resources.v2018_02_01.GenericResourceExpanded;
 import com.microsoft.azure.arm.model.implementation.WrapperImpl;
+import rx.Observable;
+import org.joda.time.DateTime;
 import com.microsoft.azure.management.resources.v2018_02_01.Identity;
 import com.microsoft.azure.management.resources.v2018_02_01.Plan;
 import com.microsoft.azure.management.resources.v2018_02_01.Sku;
 import java.util.Map;
 
-class GenericResourceImpl extends WrapperImpl<GenericResourceInner> implements GenericResource {
+class GenericResourceExpandedImpl extends WrapperImpl<GenericResourceExpandedInner> implements GenericResourceExpanded {
     private final ResourcesManager manager;
-    GenericResourceImpl(GenericResourceInner inner, ResourcesManager manager) {
+
+    GenericResourceExpandedImpl(GenericResourceExpandedInner inner,  ResourcesManager manager) {
         super(inner);
         this.manager = manager;
     }
@@ -25,6 +28,18 @@ class GenericResourceImpl extends WrapperImpl<GenericResourceInner> implements G
     @Override
     public ResourcesManager manager() {
         return this.manager;
+    }
+
+
+
+    @Override
+    public DateTime changedTime() {
+        return this.inner().changedTime();
+    }
+
+    @Override
+    public DateTime createdTime() {
+        return this.inner().createdTime();
     }
 
     @Override
@@ -65,6 +80,11 @@ class GenericResourceImpl extends WrapperImpl<GenericResourceInner> implements G
     @Override
     public Object properties() {
         return this.inner().properties();
+    }
+
+    @Override
+    public String provisioningState() {
+        return this.inner().provisioningState();
     }
 
     @Override
