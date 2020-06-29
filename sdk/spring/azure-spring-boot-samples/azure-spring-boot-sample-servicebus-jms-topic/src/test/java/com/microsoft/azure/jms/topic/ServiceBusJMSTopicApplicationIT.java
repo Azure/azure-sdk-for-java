@@ -9,7 +9,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.rule.OutputCapture;
+import org.springframework.boot.test.system.OutputCaptureRule;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
@@ -31,7 +31,7 @@ public class ServiceBusJMSTopicApplicationIT {
     private MockMvc mvc;
 
     @Rule
-    public OutputCapture capture = new OutputCapture();
+    public OutputCaptureRule outputCaptureRule = new OutputCaptureRule();
 
     @Test
     public void testTopicSendAndReceiveMessage() throws Exception {
@@ -45,7 +45,7 @@ public class ServiceBusJMSTopicApplicationIT {
         boolean messageReceived = false;
 
         for (int i = 0; i < 100; i++) {
-            final String output = capture.toString();
+            final String output = outputCaptureRule.toString();
             if (!messageReceived && output.contains(messageReceivedLog)) {
                 messageReceived = true;
             }

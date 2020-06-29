@@ -5,9 +5,6 @@ package com.azure.search.documents.implementation.converters;
 
 import com.azure.search.documents.indexes.models.StemmerOverrideTokenFilter;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * A converter between {@link com.azure.search.documents.indexes.implementation.models.StemmerOverrideTokenFilter} and
  * {@link StemmerOverrideTokenFilter}.
@@ -21,16 +18,7 @@ public final class StemmerOverrideTokenFilterConverter {
         if (obj == null) {
             return null;
         }
-        StemmerOverrideTokenFilter stemmerOverrideTokenFilter = new StemmerOverrideTokenFilter();
-
-        String name = obj.getName();
-        stemmerOverrideTokenFilter.setName(name);
-
-        if (obj.getRules() != null) {
-            List<String> rules = new ArrayList<>(obj.getRules());
-            stemmerOverrideTokenFilter.setRules(rules);
-        }
-        return stemmerOverrideTokenFilter;
+        return new StemmerOverrideTokenFilter(obj.getName(), obj.getRules());
     }
 
     /**
@@ -42,15 +30,10 @@ public final class StemmerOverrideTokenFilterConverter {
             return null;
         }
         com.azure.search.documents.indexes.implementation.models.StemmerOverrideTokenFilter stemmerOverrideTokenFilter =
-            new com.azure.search.documents.indexes.implementation.models.StemmerOverrideTokenFilter();
+            new com.azure.search.documents.indexes.implementation.models.StemmerOverrideTokenFilter(obj.getName(),
+                obj.getRules());
 
-        String name = obj.getName();
-        stemmerOverrideTokenFilter.setName(name);
-
-        if (obj.getRules() != null) {
-            List<String> rules = new ArrayList<>(obj.getRules());
-            stemmerOverrideTokenFilter.setRules(rules);
-        }
+        stemmerOverrideTokenFilter.validate();
         return stemmerOverrideTokenFilter;
     }
 

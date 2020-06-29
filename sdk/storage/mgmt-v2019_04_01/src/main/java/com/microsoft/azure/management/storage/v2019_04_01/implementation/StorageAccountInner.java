@@ -21,6 +21,7 @@ import com.microsoft.azure.management.storage.v2019_04_01.AzureFilesIdentityBase
 import com.microsoft.azure.management.storage.v2019_04_01.NetworkRuleSet;
 import com.microsoft.azure.management.storage.v2019_04_01.GeoReplicationStats;
 import com.microsoft.azure.management.storage.v2019_04_01.LargeFileSharesState;
+import com.microsoft.azure.management.storage.v2019_04_01.MinimumTlsVersion;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
 import com.microsoft.azure.Resource;
@@ -182,6 +183,21 @@ public class StorageAccountInner extends Resource {
      */
     @JsonProperty(value = "properties.largeFileSharesState")
     private LargeFileSharesState largeFileSharesState;
+
+    /**
+     * Allow or disallow public access to all blobs or containers in the
+     * storage account. The default interpretation is true for this property.
+     */
+    @JsonProperty(value = "properties.allowBlobPublicAccess")
+    private Boolean allowBlobPublicAccess;
+
+    /**
+     * Set the minimum TLS version to be permitted on requests to storage. The
+     * default interpretation is TLS 1.0 for this property. Possible values
+     * include: 'TLS1_0', 'TLS1_1', 'TLS1_2'.
+     */
+    @JsonProperty(value = "properties.minimumTlsVersion")
+    private MinimumTlsVersion minimumTlsVersion;
 
     /**
      * Get gets the SKU.
@@ -433,6 +449,46 @@ public class StorageAccountInner extends Resource {
      */
     public StorageAccountInner withLargeFileSharesState(LargeFileSharesState largeFileSharesState) {
         this.largeFileSharesState = largeFileSharesState;
+        return this;
+    }
+
+    /**
+     * Get allow or disallow public access to all blobs or containers in the storage account. The default interpretation is true for this property.
+     *
+     * @return the allowBlobPublicAccess value
+     */
+    public Boolean allowBlobPublicAccess() {
+        return this.allowBlobPublicAccess;
+    }
+
+    /**
+     * Set allow or disallow public access to all blobs or containers in the storage account. The default interpretation is true for this property.
+     *
+     * @param allowBlobPublicAccess the allowBlobPublicAccess value to set
+     * @return the StorageAccountInner object itself.
+     */
+    public StorageAccountInner withAllowBlobPublicAccess(Boolean allowBlobPublicAccess) {
+        this.allowBlobPublicAccess = allowBlobPublicAccess;
+        return this;
+    }
+
+    /**
+     * Get set the minimum TLS version to be permitted on requests to storage. The default interpretation is TLS 1.0 for this property. Possible values include: 'TLS1_0', 'TLS1_1', 'TLS1_2'.
+     *
+     * @return the minimumTlsVersion value
+     */
+    public MinimumTlsVersion minimumTlsVersion() {
+        return this.minimumTlsVersion;
+    }
+
+    /**
+     * Set set the minimum TLS version to be permitted on requests to storage. The default interpretation is TLS 1.0 for this property. Possible values include: 'TLS1_0', 'TLS1_1', 'TLS1_2'.
+     *
+     * @param minimumTlsVersion the minimumTlsVersion value to set
+     * @return the StorageAccountInner object itself.
+     */
+    public StorageAccountInner withMinimumTlsVersion(MinimumTlsVersion minimumTlsVersion) {
+        this.minimumTlsVersion = minimumTlsVersion;
         return this;
     }
 

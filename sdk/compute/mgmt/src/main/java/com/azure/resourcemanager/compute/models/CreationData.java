@@ -35,6 +35,14 @@ public final class CreationData {
     private ImageDiskReference imageReference;
 
     /*
+     * Required if creating from a Gallery Image. The id of the
+     * ImageDiskReference will be the ARM id of the shared galley image version
+     * from which to create a disk.
+     */
+    @JsonProperty(value = "galleryImageReference")
+    private ImageDiskReference galleryImageReference;
+
+    /*
      * If createOption is Import, this is the URI of a blob to be imported into
      * a managed disk.
      */
@@ -127,6 +135,28 @@ public final class CreationData {
     }
 
     /**
+     * Get the galleryImageReference property: Required if creating from a Gallery Image. The id of the
+     * ImageDiskReference will be the ARM id of the shared galley image version from which to create a disk.
+     *
+     * @return the galleryImageReference value.
+     */
+    public ImageDiskReference galleryImageReference() {
+        return this.galleryImageReference;
+    }
+
+    /**
+     * Set the galleryImageReference property: Required if creating from a Gallery Image. The id of the
+     * ImageDiskReference will be the ARM id of the shared galley image version from which to create a disk.
+     *
+     * @param galleryImageReference the galleryImageReference value to set.
+     * @return the CreationData object itself.
+     */
+    public CreationData withGalleryImageReference(ImageDiskReference galleryImageReference) {
+        this.galleryImageReference = galleryImageReference;
+        return this;
+    }
+
+    /**
      * Get the sourceUri property: If createOption is Import, this is the URI of a blob to be imported into a managed
      * disk.
      *
@@ -215,6 +245,9 @@ public final class CreationData {
         }
         if (imageReference() != null) {
             imageReference().validate();
+        }
+        if (galleryImageReference() != null) {
+            galleryImageReference().validate();
         }
     }
 }

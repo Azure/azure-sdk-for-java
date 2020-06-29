@@ -52,7 +52,8 @@ public final class OSDisk {
     /*
      * Specifies the caching requirements. <br><br> Possible values are:
      * <br><br> **None** <br><br> **ReadOnly** <br><br> **ReadWrite** <br><br>
-     * Default: **None for Standard storage. ReadOnly for Premium storage**
+     * Default: **None** for Standard storage. **ReadOnly** for Premium
+     * storage.
      */
     @JsonProperty(value = "caching")
     private CachingTypes caching;
@@ -210,7 +211,7 @@ public final class OSDisk {
     /**
      * Get the caching property: Specifies the caching requirements. &lt;br&gt;&lt;br&gt; Possible values are:
      * &lt;br&gt;&lt;br&gt; **None** &lt;br&gt;&lt;br&gt; **ReadOnly** &lt;br&gt;&lt;br&gt; **ReadWrite**
-     * &lt;br&gt;&lt;br&gt; Default: **None for Standard storage. ReadOnly for Premium storage**.
+     * &lt;br&gt;&lt;br&gt; Default: **None** for Standard storage. **ReadOnly** for Premium storage.
      *
      * @return the caching value.
      */
@@ -221,7 +222,7 @@ public final class OSDisk {
     /**
      * Set the caching property: Specifies the caching requirements. &lt;br&gt;&lt;br&gt; Possible values are:
      * &lt;br&gt;&lt;br&gt; **None** &lt;br&gt;&lt;br&gt; **ReadOnly** &lt;br&gt;&lt;br&gt; **ReadWrite**
-     * &lt;br&gt;&lt;br&gt; Default: **None for Standard storage. ReadOnly for Premium storage**.
+     * &lt;br&gt;&lt;br&gt; Default: **None** for Standard storage. **ReadOnly** for Premium storage.
      *
      * @param caching the caching value to set.
      * @return the OSDisk object itself.

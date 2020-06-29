@@ -75,4 +75,21 @@ public interface VirtualMachineScaleSetVMs
      * @param instanceIds instance IDs of the virtual machine scale set instances to be updated
      */
     void updateInstances(String... instanceIds);
+
+    /**
+     * Simulates the eviction of the specified spot virtual machine in the scale set asynchronously.
+     * The eviction will occur with 30 minutes after calling this API.
+     *
+     * @param instanceId The instance ID of the virtual machine.
+     * @return a representation of the deferred computation of this call
+     */
+    Mono<Void> simulateEvictionAsync(String instanceId);
+
+    /**
+     * Simulates the eviction of the specified spot virtual machine in the scale set.
+     * The eviction will occur with 30 minutes after calling this API.
+     *
+     * @param instanceId The instance ID of the virtual machine.
+     */
+    void simulateEviction(String instanceId);
 }

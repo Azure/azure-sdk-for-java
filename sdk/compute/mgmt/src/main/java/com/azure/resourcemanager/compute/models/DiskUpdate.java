@@ -66,7 +66,31 @@ public class DiskUpdate {
      * of powers of 10.
      */
     @JsonProperty(value = "properties.diskMBpsReadWrite")
-    private Integer diskMBpsReadWrite;
+    private Long diskMBpsReadWrite;
+
+    /*
+     * The total number of IOPS that will be allowed across all VMs mounting
+     * the shared disk as ReadOnly. One operation can transfer between 4k and
+     * 256k bytes.
+     */
+    @JsonProperty(value = "properties.diskIOPSReadOnly")
+    private Long diskIopsReadOnly;
+
+    /*
+     * The total throughput (MBps) that will be allowed across all VMs mounting
+     * the shared disk as ReadOnly. MBps means millions of bytes per second -
+     * MB here uses the ISO notation, of powers of 10.
+     */
+    @JsonProperty(value = "properties.diskMBpsReadOnly")
+    private Long diskMBpsReadOnly;
+
+    /*
+     * The maximum number of VMs that can attach to the disk at the same time.
+     * Value greater than one indicates a disk that can be mounted on multiple
+     * VMs at the same time.
+     */
+    @JsonProperty(value = "properties.maxShares")
+    private Integer maxShares;
 
     /*
      * Encryption property can be used to encrypt data at rest with customer
@@ -211,7 +235,7 @@ public class DiskUpdate {
      *
      * @return the diskMBpsReadWrite value.
      */
-    public Integer diskMBpsReadWrite() {
+    public Long diskMBpsReadWrite() {
         return this.diskMBpsReadWrite;
     }
 
@@ -222,8 +246,76 @@ public class DiskUpdate {
      * @param diskMBpsReadWrite the diskMBpsReadWrite value to set.
      * @return the DiskUpdate object itself.
      */
-    public DiskUpdate withDiskMBpsReadWrite(Integer diskMBpsReadWrite) {
+    public DiskUpdate withDiskMBpsReadWrite(Long diskMBpsReadWrite) {
         this.diskMBpsReadWrite = diskMBpsReadWrite;
+        return this;
+    }
+
+    /**
+     * Get the diskIopsReadOnly property: The total number of IOPS that will be allowed across all VMs mounting the
+     * shared disk as ReadOnly. One operation can transfer between 4k and 256k bytes.
+     *
+     * @return the diskIopsReadOnly value.
+     */
+    public Long diskIopsReadOnly() {
+        return this.diskIopsReadOnly;
+    }
+
+    /**
+     * Set the diskIopsReadOnly property: The total number of IOPS that will be allowed across all VMs mounting the
+     * shared disk as ReadOnly. One operation can transfer between 4k and 256k bytes.
+     *
+     * @param diskIopsReadOnly the diskIopsReadOnly value to set.
+     * @return the DiskUpdate object itself.
+     */
+    public DiskUpdate withDiskIopsReadOnly(Long diskIopsReadOnly) {
+        this.diskIopsReadOnly = diskIopsReadOnly;
+        return this;
+    }
+
+    /**
+     * Get the diskMBpsReadOnly property: The total throughput (MBps) that will be allowed across all VMs mounting the
+     * shared disk as ReadOnly. MBps means millions of bytes per second - MB here uses the ISO notation, of powers of
+     * 10.
+     *
+     * @return the diskMBpsReadOnly value.
+     */
+    public Long diskMBpsReadOnly() {
+        return this.diskMBpsReadOnly;
+    }
+
+    /**
+     * Set the diskMBpsReadOnly property: The total throughput (MBps) that will be allowed across all VMs mounting the
+     * shared disk as ReadOnly. MBps means millions of bytes per second - MB here uses the ISO notation, of powers of
+     * 10.
+     *
+     * @param diskMBpsReadOnly the diskMBpsReadOnly value to set.
+     * @return the DiskUpdate object itself.
+     */
+    public DiskUpdate withDiskMBpsReadOnly(Long diskMBpsReadOnly) {
+        this.diskMBpsReadOnly = diskMBpsReadOnly;
+        return this;
+    }
+
+    /**
+     * Get the maxShares property: The maximum number of VMs that can attach to the disk at the same time. Value greater
+     * than one indicates a disk that can be mounted on multiple VMs at the same time.
+     *
+     * @return the maxShares value.
+     */
+    public Integer maxShares() {
+        return this.maxShares;
+    }
+
+    /**
+     * Set the maxShares property: The maximum number of VMs that can attach to the disk at the same time. Value greater
+     * than one indicates a disk that can be mounted on multiple VMs at the same time.
+     *
+     * @param maxShares the maxShares value to set.
+     * @return the DiskUpdate object itself.
+     */
+    public DiskUpdate withMaxShares(Integer maxShares) {
+        this.maxShares = maxShares;
         return this;
     }
 

@@ -16,6 +16,9 @@ public final class StorageAccountType extends ExpandableStringEnum<StorageAccoun
     /** Static value Standard_ZRS for StorageAccountType. */
     public static final StorageAccountType STANDARD_ZRS = fromString("Standard_ZRS");
 
+    /** Static value Premium_LRS for StorageAccountType. */
+    public static final StorageAccountType PREMIUM_LRS = fromString("Premium_LRS");
+
     /**
      * Creates or finds a StorageAccountType from its string representation.
      *

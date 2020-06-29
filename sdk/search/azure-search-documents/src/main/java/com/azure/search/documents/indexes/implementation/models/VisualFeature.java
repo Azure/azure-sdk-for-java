@@ -10,43 +10,27 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/**
- * Defines values for VisualFeature.
- */
+/** Defines values for VisualFeature. */
 public final class VisualFeature extends ExpandableStringEnum<VisualFeature> {
-    /**
-     * Static value adult for VisualFeature.
-     */
+    /** Static value adult for VisualFeature. */
     public static final VisualFeature ADULT = fromString("adult");
 
-    /**
-     * Static value brands for VisualFeature.
-     */
+    /** Static value brands for VisualFeature. */
     public static final VisualFeature BRANDS = fromString("brands");
 
-    /**
-     * Static value categories for VisualFeature.
-     */
+    /** Static value categories for VisualFeature. */
     public static final VisualFeature CATEGORIES = fromString("categories");
 
-    /**
-     * Static value description for VisualFeature.
-     */
+    /** Static value description for VisualFeature. */
     public static final VisualFeature DESCRIPTION = fromString("description");
 
-    /**
-     * Static value faces for VisualFeature.
-     */
+    /** Static value faces for VisualFeature. */
     public static final VisualFeature FACES = fromString("faces");
 
-    /**
-     * Static value objects for VisualFeature.
-     */
+    /** Static value objects for VisualFeature. */
     public static final VisualFeature OBJECTS = fromString("objects");
 
-    /**
-     * Static value tags for VisualFeature.
-     */
+    /** Static value tags for VisualFeature. */
     public static final VisualFeature TAGS = fromString("tags");
 
     /**
@@ -60,9 +44,7 @@ public final class VisualFeature extends ExpandableStringEnum<VisualFeature> {
         return fromString(name, VisualFeature.class);
     }
 
-    /**
-     * @return known VisualFeature values.
-     */
+    /** @return known VisualFeature values. */
     public static Collection<VisualFeature> values() {
         return values(VisualFeature.class);
     }

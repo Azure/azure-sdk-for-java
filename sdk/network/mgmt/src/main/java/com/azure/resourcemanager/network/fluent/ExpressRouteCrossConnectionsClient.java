@@ -30,7 +30,6 @@ import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.util.polling.AsyncPollResponse;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.resourcemanager.network.NetworkManagementClient;
 import com.azure.resourcemanager.network.fluent.inner.ExpressRouteCircuitsArpTableListResultInner;
@@ -939,7 +938,7 @@ public final class ExpressRouteCrossConnectionsClient
                 ExpressRouteCrossConnectionInner.class,
                 ExpressRouteCrossConnectionInner.class)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -970,7 +969,7 @@ public final class ExpressRouteCrossConnectionsClient
                 ExpressRouteCrossConnectionInner.class,
                 ExpressRouteCrossConnectionInner.class)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -1187,7 +1186,7 @@ public final class ExpressRouteCrossConnectionsClient
                 ExpressRouteCrossConnectionInner.class,
                 ExpressRouteCrossConnectionInner.class)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -1215,7 +1214,7 @@ public final class ExpressRouteCrossConnectionsClient
                 ExpressRouteCrossConnectionInner.class,
                 ExpressRouteCrossConnectionInner.class)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -1459,7 +1458,7 @@ public final class ExpressRouteCrossConnectionsClient
                     ExpressRouteCircuitsArpTableListResultInner.class,
                     ExpressRouteCircuitsArpTableListResultInner.class)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -1490,7 +1489,7 @@ public final class ExpressRouteCrossConnectionsClient
                     ExpressRouteCircuitsArpTableListResultInner.class,
                     ExpressRouteCircuitsArpTableListResultInner.class)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -1740,7 +1739,7 @@ public final class ExpressRouteCrossConnectionsClient
                     ExpressRouteCrossConnectionsRoutesTableSummaryListResultInner.class,
                     ExpressRouteCrossConnectionsRoutesTableSummaryListResultInner.class)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -1772,7 +1771,7 @@ public final class ExpressRouteCrossConnectionsClient
                     ExpressRouteCrossConnectionsRoutesTableSummaryListResultInner.class,
                     ExpressRouteCrossConnectionsRoutesTableSummaryListResultInner.class)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -2025,7 +2024,7 @@ public final class ExpressRouteCrossConnectionsClient
                     ExpressRouteCircuitsRoutesTableListResultInner.class,
                     ExpressRouteCircuitsRoutesTableListResultInner.class)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -2057,7 +2056,7 @@ public final class ExpressRouteCrossConnectionsClient
                     ExpressRouteCircuitsRoutesTableListResultInner.class,
                     ExpressRouteCircuitsRoutesTableListResultInner.class)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**

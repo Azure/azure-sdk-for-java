@@ -17,10 +17,12 @@
 /sdk/core/                                          @alzimmermsft @jianghaolu @srnagar @hemanttanwar @anuchandy
 /sdk/core/azure-core-tracing-opentelemetry/         @samvaity @alzimmermsft
 /sdk/cosmos/                                        @moderakh @kushagraThapar @David-Noble-at-work @kirankumarkolli @mbhaskar
+/sdk/cosmos/azure-spring-data-cosmosdb/             @kushagraThapar
 /sdk/eventhubs/                                     @conniey @srnagar @mssfang
 /sdk/formrecognizer/                                @samvaity @mssfang @sima-zhu
 /sdk/identity/                                      @schaabs @g2vinay @jianghaolu
 /sdk/keyvault/                                      @g2vinay @vcolin7 @samvaity
+/sdk/schemaregistry/                                @arerlend @sjkwak
 /sdk/search/                                        @alzimmermsft @sima-zhu @mssfang @samvaity @conniey
 /sdk/servicebus/                                    @yvgopal @nemakam @hemanttanwar @conniey
 /sdk/storage/                                       @amishra-dev @rickle-msft @jaschrep-msft @gapra-msft @alzimmermsft @sima-zhu

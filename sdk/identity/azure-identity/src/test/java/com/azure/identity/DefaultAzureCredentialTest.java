@@ -171,14 +171,9 @@ public class DefaultAzureCredentialTest {
         DefaultAzureCredential credential = new DefaultAzureCredentialBuilder().build();
         StepVerifier.create(credential.getToken(request))
             .expectErrorMatches(t -> t instanceof CredentialUnavailableException && t.getMessage()
-                                      .matches("Tried EnvironmentCredential, ManagedIdentityCredential, "
-                                                   + "SharedTokenCacheCredential[\\$\\w]+\\$\\d*, "
-                                                   + "IntelliJCredential[\\$\\w]+\\$\\d*, "
-                                                   + "VisualStudioCodeCredential[\\$\\w]+\\$\\d*, "
-                                                   + "AzureCliCredential[\\$\\w]+\\$\\d* but [\\$\\w\\s\\.]+"))
+                                      .startsWith("EnvironmentCredential authentication unavailable. "))
             .verify();
     }
-
 
     @Test
     public void testCredentialUnavailable() throws Exception {
@@ -210,12 +205,7 @@ public class DefaultAzureCredentialTest {
                                                 .build();
         StepVerifier.create(credential.getToken(request))
             .expectErrorMatches(t -> t instanceof CredentialUnavailableException && t.getMessage()
-                                        .matches("Tried EnvironmentCredential, "
-                                                    + "ManagedIdentityCredential[\\$\\w]+\\$\\d*, "
-                                                    + "SharedTokenCacheCredential, "
-                                                    + "IntelliJCredential[\\$\\w]+\\$\\d*, "
-                                                    + "VisualStudioCodeCredential[\\$\\w]+\\$\\d*, "
-                                                    + "AzureCliCredential but [\\$\\w\\s\\.]+"))
+                                        .startsWith("EnvironmentCredential authentication unavailable. "))
             .verify();
     }
 }

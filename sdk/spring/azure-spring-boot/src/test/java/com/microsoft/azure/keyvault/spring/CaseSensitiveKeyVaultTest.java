@@ -3,41 +3,38 @@
 
 package com.microsoft.azure.keyvault.spring;
 
-import com.azure.security.keyvault.secrets.SecretClient;
-import com.azure.security.keyvault.secrets.models.KeyVaultSecret;
-import static com.microsoft.azure.utils.Constants.TOKEN_ACQUIRE_TIMEOUT_SECS;
-import java.util.Arrays;
-import java.util.List;
+import static com.microsoft.azure.utils.Constants.DEFAULT_REFRESH_INTERVAL_MS;
 import static org.junit.Assert.assertEquals;
+
+import com.azure.security.keyvault.secrets.SecretClient;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import static org.mockito.Mockito.when;
 import org.mockito.junit.MockitoJUnitRunner;
 
 
 @RunWith(MockitoJUnitRunner.class)
 public class CaseSensitiveKeyVaultTest {
+
     @Mock
     private SecretClient keyVaultClient;
 
     @Test
     public void testGet() {
-        final List<String> keys = Arrays.asList("key1", "Key2");
-
         final KeyVaultOperation keyVaultOperation = new KeyVaultOperation(
-            keyVaultClient,
-            "https:fake.vault.com",
-            TOKEN_ACQUIRE_TIMEOUT_SECS,
-            keys,
-            true);
+                keyVaultClient,
+                DEFAULT_REFRESH_INTERVAL_MS,
+                new ArrayList<>(),
+                true);
 
-        final KeyVaultSecret key1 = new KeyVaultSecret("key1", "value1");
-        when(keyVaultClient.getSecret("key1")).thenReturn(key1);
-        final KeyVaultSecret key2 = new KeyVaultSecret("Key2", "Value2");
-        when(keyVaultClient.getSecret("Key2")).thenReturn(key2);
+        final LinkedHashMap<String, String> properties = new LinkedHashMap<>();
+        properties.put("key1", "value1");
+        properties.put("Key2", "Value2");
+        keyVaultOperation.setProperties(properties);
 
-        assertEquals("value1", keyVaultOperation.get("key1"));
-        assertEquals("Value2", keyVaultOperation.get("Key2"));
+        assertEquals("value1", keyVaultOperation.getProperty("key1"));
+        assertEquals("Value2", keyVaultOperation.getProperty("Key2"));
     }
 }
