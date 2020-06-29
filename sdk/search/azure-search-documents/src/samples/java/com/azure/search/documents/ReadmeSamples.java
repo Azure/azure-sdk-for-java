@@ -18,7 +18,6 @@ import com.azure.search.documents.indexes.models.SearchField;
 import com.azure.search.documents.indexes.models.SearchFieldDataType;
 import com.azure.search.documents.indexes.models.SearchIndex;
 import com.azure.search.documents.models.Hotel;
-import com.azure.search.documents.models.RequestOptions;
 import com.azure.search.documents.models.SearchOptions;
 import com.azure.search.documents.models.SearchResult;
 
@@ -92,10 +91,9 @@ public class ReadmeSamples {
         headers.put("my-header2", "my-header2-value");
         headers.put("my-header3", "my-header3-value");
         // Call API by passing headers in Context.
-        SearchIndex index = new SearchIndex().setName(indexName);
+        SearchIndex index = new SearchIndex(indexName);
         searchIndexClient.createIndexWithResponse(
             index,
-            new RequestOptions(),
             new Context(AddHeadersFromContextPolicy.AZURE_REQUEST_HTTP_HEADERS_KEY, headers));
         // Above three HttpHeader will be added in outgoing HttpRequest.
     }
@@ -113,16 +111,10 @@ public class ReadmeSamples {
     }
 
     public void createIndexWithSyncClient() {
-        SearchIndex newIndex = new SearchIndex()
-            .setName("index_name")
-            .setFields(
-                Arrays.asList(new SearchField()
-                        .setName("Name")
-                        .setType(SearchFieldDataType.STRING)
-                        .setKey(Boolean.TRUE),
-                    new SearchField()
-                        .setName("Cuisine")
-                        .setType(SearchFieldDataType.STRING)));
+        SearchIndex newIndex = new SearchIndex("index_name", Arrays.asList(
+            new SearchField("Name", SearchFieldDataType.STRING)
+                .setKey(Boolean.TRUE),
+            new SearchField("Cuisine", SearchFieldDataType.STRING)));
         // Create index.
         searchIndexClient.createIndex(newIndex);
     }
@@ -139,7 +131,7 @@ public class ReadmeSamples {
     public void searchTextWithSyncClient() {
         // Perform a text-based search
         for (SearchResult result : searchClient.search("luxury hotel",
-            new SearchOptions(), new RequestOptions(), Context.NONE)) {
+            new SearchOptions(), Context.NONE)) {
 
             // Each result is a dynamic Map
             SearchDocument doc = result.getDocument(SearchDocument.class);

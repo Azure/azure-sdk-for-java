@@ -8,6 +8,7 @@ package com.azure.search.documents.indexes.implementation.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -47,6 +48,14 @@ public class EntityRecognitionSkill extends SearchIndexerSkill {
      */
     @JsonProperty(value = "minimumPrecision")
     private Double minimumPrecision;
+
+    /** Creates an instance of EntityRecognitionSkill class. */
+    @JsonCreator
+    public EntityRecognitionSkill(
+            @JsonProperty(value = "inputs") List<InputFieldMappingEntry> inputs,
+            @JsonProperty(value = "outputs") List<OutputFieldMappingEntry> outputs) {
+        super(inputs, outputs);
+    }
 
     /**
      * Get the categories property: A list of entity categories that should be extracted.
@@ -134,5 +143,15 @@ public class EntityRecognitionSkill extends SearchIndexerSkill {
     public EntityRecognitionSkill setMinimumPrecision(Double minimumPrecision) {
         this.minimumPrecision = minimumPrecision;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    @Override
+    public void validate() {
+        super.validate();
     }
 }

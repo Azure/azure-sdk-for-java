@@ -8,6 +8,7 @@ package com.azure.search.documents.indexes.implementation.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -24,6 +25,12 @@ public class StopAnalyzer extends LexicalAnalyzer {
      */
     @JsonProperty(value = "stopwords")
     private List<String> stopwords;
+
+    /** Creates an instance of StopAnalyzer class. */
+    @JsonCreator
+    public StopAnalyzer(@JsonProperty(value = "name") String name) {
+        super(name);
+    }
 
     /**
      * Get the stopwords property: A list of stopwords.
@@ -43,5 +50,15 @@ public class StopAnalyzer extends LexicalAnalyzer {
     public StopAnalyzer setStopwords(List<String> stopwords) {
         this.stopwords = stopwords;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    @Override
+    public void validate() {
+        super.validate();
     }
 }

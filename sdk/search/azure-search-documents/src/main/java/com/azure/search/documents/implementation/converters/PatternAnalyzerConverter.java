@@ -23,10 +23,7 @@ public final class PatternAnalyzerConverter {
         if (obj == null) {
             return null;
         }
-        PatternAnalyzer patternAnalyzer = new PatternAnalyzer();
-
-        String name = obj.getName();
-        patternAnalyzer.setName(name);
+        PatternAnalyzer patternAnalyzer = new PatternAnalyzer(obj.getName());
 
         Boolean lowerCaseTerms = obj.isLowerCaseTerms();
         patternAnalyzer.setLowerCaseTerms(lowerCaseTerms);
@@ -55,10 +52,7 @@ public final class PatternAnalyzerConverter {
             return null;
         }
         com.azure.search.documents.indexes.implementation.models.PatternAnalyzer patternAnalyzer =
-            new com.azure.search.documents.indexes.implementation.models.PatternAnalyzer();
-
-        String name = obj.getName();
-        patternAnalyzer.setName(name);
+            new com.azure.search.documents.indexes.implementation.models.PatternAnalyzer(obj.getName());
 
         Boolean lowerCaseTerms = obj.areLowerCaseTerms();
         patternAnalyzer.setLowerCaseTerms(lowerCaseTerms);
@@ -75,6 +69,7 @@ public final class PatternAnalyzerConverter {
             List<String> stopwords = new ArrayList<>(obj.getStopwords());
             patternAnalyzer.setStopwords(stopwords);
         }
+        patternAnalyzer.validate();
         return patternAnalyzer;
     }
 

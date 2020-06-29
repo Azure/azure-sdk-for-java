@@ -8,6 +8,7 @@ package com.azure.search.documents.indexes.implementation.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -92,6 +93,12 @@ public class WordDelimiterTokenFilter extends TokenFilter {
      */
     @JsonProperty(value = "protectedWords")
     private List<String> protectedWords;
+
+    /** Creates an instance of WordDelimiterTokenFilter class. */
+    @JsonCreator
+    public WordDelimiterTokenFilter(@JsonProperty(value = "name") String name) {
+        super(name);
+    }
 
     /**
      * Get the generateWordParts property: A value indicating whether to generate part words. If set, causes parts of
@@ -307,5 +314,15 @@ public class WordDelimiterTokenFilter extends TokenFilter {
     public WordDelimiterTokenFilter setProtectedWords(List<String> protectedWords) {
         this.protectedWords = protectedWords;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    @Override
+    public void validate() {
+        super.validate();
     }
 }

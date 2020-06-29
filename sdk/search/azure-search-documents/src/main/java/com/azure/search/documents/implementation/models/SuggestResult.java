@@ -9,6 +9,7 @@ package com.azure.search.documents.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.HashMap;
@@ -28,6 +29,12 @@ public final class SuggestResult {
      * associated metadata.
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of SuggestResult class. */
+    @JsonCreator
+    public SuggestResult(@JsonProperty(value = "@search.text") String text) {
+        this.text = text;
+    }
 
     /**
      * Get the text property: The text of the suggestion result.
@@ -68,4 +75,11 @@ public final class SuggestResult {
         }
         additionalProperties.put(key, value);
     }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {}
 }

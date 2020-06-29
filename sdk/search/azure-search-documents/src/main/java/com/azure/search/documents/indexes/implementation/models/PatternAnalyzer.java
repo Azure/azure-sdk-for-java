@@ -8,6 +8,7 @@ package com.azure.search.documents.indexes.implementation.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -43,6 +44,12 @@ public class PatternAnalyzer extends LexicalAnalyzer {
      */
     @JsonProperty(value = "stopwords")
     private List<String> stopwords;
+
+    /** Creates an instance of PatternAnalyzer class. */
+    @JsonCreator
+    public PatternAnalyzer(@JsonProperty(value = "name") String name) {
+        super(name);
+    }
 
     /**
      * Get the lowerCaseTerms property: A value indicating whether terms should be lower-cased. Default is true.
@@ -124,5 +131,15 @@ public class PatternAnalyzer extends LexicalAnalyzer {
     public PatternAnalyzer setStopwords(List<String> stopwords) {
         this.stopwords = stopwords;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    @Override
+    public void validate() {
+        super.validate();
     }
 }

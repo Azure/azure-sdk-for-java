@@ -4,6 +4,7 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -38,6 +39,22 @@ public final class SearchIndexerStatus {
     @JsonProperty(value = "limits", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private SearchIndexerLimits limits;
 
+    /**
+     * Constructor of {@link SearchIndexerStatus}.
+     *
+     * @param status Overall indexer status. Possible values include: 'Unknown', 'Error', 'Running'
+     * @param executionHistory History of the recent indexer executions, sorted in reverse chronological order.
+     * @param limits The execution limits for the indexer.
+     */
+    @JsonCreator
+    public SearchIndexerStatus(
+        @JsonProperty(value = "status") IndexerStatus status,
+        @JsonProperty(value = "executionHistory") List<IndexerExecutionResult> executionHistory,
+        @JsonProperty(value = "limits") SearchIndexerLimits limits) {
+        this.status = status;
+        this.executionHistory = executionHistory;
+        this.limits = limits;
+    }
     /**
      * Get the status property: Overall indexer status. Possible values
      * include: 'Unknown', 'Error', 'Running'.

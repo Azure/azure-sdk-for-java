@@ -7,6 +7,7 @@
 package com.azure.search.documents.indexes.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The AzureActiveDirectoryApplicationCredentials model. */
@@ -27,6 +28,12 @@ public final class AzureActiveDirectoryApplicationCredentials {
     @JsonProperty(value = "applicationSecret")
     private String applicationSecret;
 
+    /** Creates an instance of AzureActiveDirectoryApplicationCredentials class. */
+    @JsonCreator
+    public AzureActiveDirectoryApplicationCredentials(@JsonProperty(value = "applicationId") String applicationId) {
+        this.applicationId = applicationId;
+    }
+
     /**
      * Get the applicationId property: An AAD Application ID that was granted the required access permissions to the
      * Azure Key Vault that is to be used when encrypting your data at rest. The Application ID should not be confused
@@ -46,11 +53,6 @@ public final class AzureActiveDirectoryApplicationCredentials {
      * @param applicationId the applicationId value to set.
      * @return the AzureActiveDirectoryApplicationCredentials object itself.
      */
-    public AzureActiveDirectoryApplicationCredentials setApplicationId(String applicationId) {
-        this.applicationId = applicationId;
-        return this;
-    }
-
     /**
      * Get the applicationSecret property: The authentication key of the specified AAD application.
      *
@@ -69,5 +71,17 @@ public final class AzureActiveDirectoryApplicationCredentials {
     public AzureActiveDirectoryApplicationCredentials setApplicationSecret(String applicationSecret) {
         this.applicationSecret = applicationSecret;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (getApplicationId() == null) {
+            throw new IllegalArgumentException(
+                    "Missing required property applicationId in model AzureActiveDirectoryApplicationCredentials");
+        }
     }
 }

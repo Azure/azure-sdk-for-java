@@ -7,6 +7,7 @@
 package com.azure.search.documents.indexes.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The OutputFieldMappingEntry model. */
@@ -24,6 +25,12 @@ public final class OutputFieldMappingEntry {
     @JsonProperty(value = "targetName")
     private String targetName;
 
+    /** Creates an instance of OutputFieldMappingEntry class. */
+    @JsonCreator
+    public OutputFieldMappingEntry(@JsonProperty(value = "name") String name) {
+        this.name = name;
+    }
+
     /**
      * Get the name property: The name of the output defined by the skill.
      *
@@ -39,11 +46,6 @@ public final class OutputFieldMappingEntry {
      * @param name the name value to set.
      * @return the OutputFieldMappingEntry object itself.
      */
-    public OutputFieldMappingEntry setName(String name) {
-        this.name = name;
-        return this;
-    }
-
     /**
      * Get the targetName property: The target name of the output. It is optional and default to name.
      *
@@ -62,5 +64,16 @@ public final class OutputFieldMappingEntry {
     public OutputFieldMappingEntry setTargetName(String targetName) {
         this.targetName = targetName;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (getName() == null) {
+            throw new IllegalArgumentException("Missing required property name in model OutputFieldMappingEntry");
+        }
     }
 }

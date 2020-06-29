@@ -8,10 +8,12 @@ package com.azure.search.documents.indexes.implementation.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.time.Duration;
+import java.util.List;
 import java.util.Map;
 
 /** The WebApiSkill model. */
@@ -56,6 +58,16 @@ public class WebApiSkill extends SearchIndexerSkill {
     @JsonProperty(value = "degreeOfParallelism")
     private Integer degreeOfParallelism;
 
+    /** Creates an instance of WebApiSkill class. */
+    @JsonCreator
+    public WebApiSkill(
+            @JsonProperty(value = "inputs") List<InputFieldMappingEntry> inputs,
+            @JsonProperty(value = "outputs") List<OutputFieldMappingEntry> outputs,
+            @JsonProperty(value = "uri") String uri) {
+        super(inputs, outputs);
+        this.uri = uri;
+    }
+
     /**
      * Get the uri property: The url for the Web API.
      *
@@ -71,11 +83,6 @@ public class WebApiSkill extends SearchIndexerSkill {
      * @param uri the uri value to set.
      * @return the WebApiSkill object itself.
      */
-    public WebApiSkill setUri(String uri) {
-        this.uri = uri;
-        return this;
-    }
-
     /**
      * Get the httpHeaders property: The headers required to make the http request.
      *
@@ -174,5 +181,18 @@ public class WebApiSkill extends SearchIndexerSkill {
     public WebApiSkill setDegreeOfParallelism(Integer degreeOfParallelism) {
         this.degreeOfParallelism = degreeOfParallelism;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    @Override
+    public void validate() {
+        super.validate();
+        if (getUri() == null) {
+            throw new IllegalArgumentException("Missing required property uri in model WebApiSkill");
+        }
     }
 }

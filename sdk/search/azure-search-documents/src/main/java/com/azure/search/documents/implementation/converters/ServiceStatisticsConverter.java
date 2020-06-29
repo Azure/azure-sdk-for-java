@@ -3,9 +3,9 @@
 
 package com.azure.search.documents.implementation.converters;
 
-import com.azure.search.documents.indexes.models.ServiceCounters;
-import com.azure.search.documents.indexes.models.ServiceLimits;
+import com.azure.search.documents.indexes.models.SearchServiceCounters;
 import com.azure.search.documents.indexes.models.SearchServiceStatistics;
+import com.azure.search.documents.indexes.models.SearchServiceLimits;
 
 /**
  * A converter between {@link com.azure.search.documents.indexes.implementation.models.ServiceStatistics} and
@@ -21,18 +21,17 @@ public final class ServiceStatisticsConverter {
             return null;
         }
 
-        ServiceCounters counters = null;
+        SearchServiceCounters counters = null;
         if (obj.getCounters() != null) {
             counters = ServiceCountersConverter.map(obj.getCounters());
         }
 
-        ServiceLimits limits = null;
+        SearchServiceLimits limits = null;
         if (obj.getLimits() != null) {
             limits = ServiceLimitsConverter.map(obj.getLimits());
         }
 
-        SearchServiceStatistics searchServiceStatistics = new SearchServiceStatistics(counters, limits);
-        return searchServiceStatistics;
+        return new SearchServiceStatistics(counters, limits);
     }
 
     /**
@@ -43,20 +42,17 @@ public final class ServiceStatisticsConverter {
         if (obj == null) {
             return null;
         }
+
+        com.azure.search.documents.indexes.implementation.models.ServiceCounters counters =
+            obj.getCounters() == null ? null
+                : ServiceCountersConverter.map(obj.getCounters());
+
+        com.azure.search.documents.indexes.implementation.models.ServiceLimits limits =
+            obj.getLimits() == null ? null
+                : ServiceLimitsConverter.map(obj.getLimits());
         com.azure.search.documents.indexes.implementation.models.ServiceStatistics serviceStatistics =
-            new com.azure.search.documents.indexes.implementation.models.ServiceStatistics();
-
-        if (obj.getCounters() != null) {
-            com.azure.search.documents.indexes.implementation.models.ServiceCounters counters =
-                ServiceCountersConverter.map(obj.getCounters());
-            serviceStatistics.setCounters(counters);
-        }
-
-        if (obj.getLimits() != null) {
-            com.azure.search.documents.indexes.implementation.models.ServiceLimits limits =
-                ServiceLimitsConverter.map(obj.getLimits());
-            serviceStatistics.setLimits(limits);
-        }
+            new com.azure.search.documents.indexes.implementation.models.ServiceStatistics(counters, limits);
+        serviceStatistics.validate();
         return serviceStatistics;
     }
 

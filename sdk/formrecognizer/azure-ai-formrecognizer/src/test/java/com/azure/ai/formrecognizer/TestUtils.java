@@ -36,6 +36,8 @@ import static com.azure.core.test.TestBase.getHttpClients;
  * Contains helper methods for generating inputs for test methods
  */
 final class TestUtils {
+    static final String INVALID_IMAGE_URL_ERROR_CODE = "InvalidImageURL";
+    static final String IMAGE_URL_IS_BADLY_FORMATTED_ERROR_MESSAGE = "Image URL is badly formatted.";
     static final String INVALID_MODEL_ID = "a0a3998a-4c4affe66b7";
     static final String INVALID_RECEIPT_URL = "https://invalid.blob.core.windows.net/fr/contoso-allinone.jpg";
     static final String INVALID_KEY = "invalid key";

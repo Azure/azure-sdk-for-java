@@ -3,7 +3,6 @@
 
 package com.azure.search.documents.implementation.converters;
 
-import com.azure.search.documents.implementation.util.PrivateFieldAccessHelper;
 import com.azure.search.documents.models.IndexDocumentsResult;
 import com.azure.search.documents.models.IndexingResult;
 
@@ -23,14 +22,10 @@ public final class IndexDocumentsResultConverter {
         if (obj == null) {
             return null;
         }
-        IndexDocumentsResult indexDocumentsResult = new IndexDocumentsResult();
 
-        if (obj.getResults() != null) {
-            List<IndexingResult> results =
-                obj.getResults().stream().map(IndexingResultConverter::map).collect(Collectors.toList());
-            PrivateFieldAccessHelper.set(indexDocumentsResult, "results", results);
-        }
-        return indexDocumentsResult;
+        List<IndexingResult> results = obj.getResults() == null ? null
+            : obj.getResults().stream().map(IndexingResultConverter::map).collect(Collectors.toList());
+        return new IndexDocumentsResult(results);
     }
 
     /**
@@ -41,14 +36,13 @@ public final class IndexDocumentsResultConverter {
         if (obj == null) {
             return null;
         }
-        com.azure.search.documents.implementation.models.IndexDocumentsResult indexDocumentsResult =
-            new com.azure.search.documents.implementation.models.IndexDocumentsResult();
 
-        if (obj.getResults() != null) {
-            List<com.azure.search.documents.implementation.models.IndexingResult> results =
-                obj.getResults().stream().map(IndexingResultConverter::map).collect(Collectors.toList());
-            PrivateFieldAccessHelper.set(indexDocumentsResult, "results", results);
-        }
+        List<com.azure.search.documents.implementation.models.IndexingResult> results = obj.getResults() == null
+            ? null : obj.getResults().stream().map(IndexingResultConverter::map).collect(Collectors.toList());
+        com.azure.search.documents.implementation.models.IndexDocumentsResult indexDocumentsResult =
+            new com.azure.search.documents.implementation.models.IndexDocumentsResult(results);
+
+        indexDocumentsResult.validate();
         return indexDocumentsResult;
     }
 

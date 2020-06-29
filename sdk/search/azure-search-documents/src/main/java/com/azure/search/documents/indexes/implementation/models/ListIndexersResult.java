@@ -7,6 +7,7 @@
 package com.azure.search.documents.indexes.implementation.models;
 
 import com.azure.core.annotation.Immutable;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -19,6 +20,12 @@ public final class ListIndexersResult {
     @JsonProperty(value = "value", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private List<SearchIndexer> indexers;
 
+    /** Creates an instance of ListIndexersResult class. */
+    @JsonCreator
+    public ListIndexersResult(@JsonProperty(value = "value") List<SearchIndexer> indexers) {
+        this.indexers = indexers;
+    }
+
     /**
      * Get the indexers property: The indexers in the Search service.
      *
@@ -26,5 +33,16 @@ public final class ListIndexersResult {
      */
     public List<SearchIndexer> getIndexers() {
         return this.indexers;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (getIndexers() != null) {
+            getIndexers().forEach(e -> e.validate());
+        }
     }
 }

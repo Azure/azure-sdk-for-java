@@ -4,6 +4,7 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -32,6 +33,18 @@ public abstract class LexicalAnalyzer {
     private String name;
 
     /**
+     * Constructor of {@link LexicalAnalyzer}.
+     *
+     * @param name The name of the analyzer. It must only contain letters, digits, spaces,
+     * dashes or underscores, can only start and end with alphanumeric
+     * characters, and is limited to 128 characters.
+     */
+    @JsonCreator
+    public LexicalAnalyzer(@JsonProperty(value = "name", required = true) String name) {
+        this.name = name;
+    }
+
+    /**
      * Get the name property: The name of the analyzer. It must only contain
      * letters, digits, spaces, dashes or underscores, can only start and end
      * with alphanumeric characters, and is limited to 128 characters.
@@ -42,16 +55,4 @@ public abstract class LexicalAnalyzer {
         return this.name;
     }
 
-    /**
-     * Set the name property: The name of the analyzer. It must only contain
-     * letters, digits, spaces, dashes or underscores, can only start and end
-     * with alphanumeric characters, and is limited to 128 characters.
-     *
-     * @param name the name value to set.
-     * @return the LexicalAnalyzer object itself.
-     */
-    public LexicalAnalyzer setName(String name) {
-        this.name = name;
-        return this;
-    }
 }

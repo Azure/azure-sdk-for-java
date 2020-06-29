@@ -7,6 +7,7 @@
 package com.azure.search.documents.indexes.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -40,6 +41,12 @@ public final class ScoringProfile {
     @JsonProperty(value = "functionAggregation")
     private ScoringFunctionAggregation functionAggregation;
 
+    /** Creates an instance of ScoringProfile class. */
+    @JsonCreator
+    public ScoringProfile(@JsonProperty(value = "name") String name) {
+        this.name = name;
+    }
+
     /**
      * Get the name property: The name of the scoring profile.
      *
@@ -55,11 +62,6 @@ public final class ScoringProfile {
      * @param name the name value to set.
      * @return the ScoringProfile object itself.
      */
-    public ScoringProfile setName(String name) {
-        this.name = name;
-        return this;
-    }
-
     /**
      * Get the textWeights property: Parameters that boost scoring based on text matches in certain index fields.
      *
@@ -120,5 +122,22 @@ public final class ScoringProfile {
     public ScoringProfile setFunctionAggregation(ScoringFunctionAggregation functionAggregation) {
         this.functionAggregation = functionAggregation;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (getName() == null) {
+            throw new IllegalArgumentException("Missing required property name in model ScoringProfile");
+        }
+        if (getTextWeights() != null) {
+            getTextWeights().validate();
+        }
+        if (getFunctions() != null) {
+            getFunctions().forEach(e -> e.validate());
+        }
     }
 }

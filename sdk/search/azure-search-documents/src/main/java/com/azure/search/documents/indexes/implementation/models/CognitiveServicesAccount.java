@@ -56,4 +56,11 @@ public class CognitiveServicesAccount {
         this.description = description;
         return this;
     }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {}
 }

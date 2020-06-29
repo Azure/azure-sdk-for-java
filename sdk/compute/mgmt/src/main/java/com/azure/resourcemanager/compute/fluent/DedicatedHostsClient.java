@@ -30,8 +30,8 @@ import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.util.polling.AsyncPollResponse;
 import com.azure.core.util.polling.PollerFlux;
+import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.compute.ComputeManagementClient;
 import com.azure.resourcemanager.compute.fluent.inner.DedicatedHostInner;
 import com.azure.resourcemanager.compute.fluent.inner.DedicatedHostListResultInner;
@@ -243,7 +243,7 @@ public final class DedicatedHostsClient {
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2019-03-01";
+        final String apiVersion = "2019-12-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -307,7 +307,7 @@ public final class DedicatedHostsClient {
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2019-03-01";
+        final String apiVersion = "2019-12-01";
         return service
             .createOrUpdate(
                 this.client.getEndpoint(),
@@ -333,7 +333,7 @@ public final class DedicatedHostsClient {
      * @return specifies information about the Dedicated host.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<DedicatedHostInner>, DedicatedHostInner> beginCreateOrUpdate(
+    public PollerFlux<PollResult<DedicatedHostInner>, DedicatedHostInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String hostGroupName, String hostname, DedicatedHostInner parameters) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             createOrUpdateWithResponseAsync(resourceGroupName, hostGroupName, hostname, parameters);
@@ -357,7 +357,7 @@ public final class DedicatedHostsClient {
      * @return specifies information about the Dedicated host.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<DedicatedHostInner>, DedicatedHostInner> beginCreateOrUpdate(
+    public PollerFlux<PollResult<DedicatedHostInner>, DedicatedHostInner> beginCreateOrUpdateAsync(
         String resourceGroupName,
         String hostGroupName,
         String hostname,
@@ -384,16 +384,53 @@ public final class DedicatedHostsClient {
      * @return specifies information about the Dedicated host.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<DedicatedHostInner>, DedicatedHostInner> beginCreateOrUpdate(
+        String resourceGroupName, String hostGroupName, String hostname, DedicatedHostInner parameters) {
+        return beginCreateOrUpdateAsync(resourceGroupName, hostGroupName, hostname, parameters).getSyncPoller();
+    }
+
+    /**
+     * Create or update a dedicated host .
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param hostGroupName The name of the dedicated host group.
+     * @param hostname The name of the dedicated host .
+     * @param parameters Specifies information about the Dedicated host.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return specifies information about the Dedicated host.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<DedicatedHostInner>, DedicatedHostInner> beginCreateOrUpdate(
+        String resourceGroupName,
+        String hostGroupName,
+        String hostname,
+        DedicatedHostInner parameters,
+        Context context) {
+        return beginCreateOrUpdateAsync(resourceGroupName, hostGroupName, hostname, parameters, context)
+            .getSyncPoller();
+    }
+
+    /**
+     * Create or update a dedicated host .
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param hostGroupName The name of the dedicated host group.
+     * @param hostname The name of the dedicated host .
+     * @param parameters Specifies information about the Dedicated host.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return specifies information about the Dedicated host.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DedicatedHostInner> createOrUpdateAsync(
         String resourceGroupName, String hostGroupName, String hostname, DedicatedHostInner parameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, hostGroupName, hostname, parameters);
-        return this
-            .client
-            .<DedicatedHostInner, DedicatedHostInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), DedicatedHostInner.class, DedicatedHostInner.class)
+        return beginCreateOrUpdateAsync(resourceGroupName, hostGroupName, hostname, parameters)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -416,14 +453,9 @@ public final class DedicatedHostsClient {
         String hostname,
         DedicatedHostInner parameters,
         Context context) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, hostGroupName, hostname, parameters, context);
-        return this
-            .client
-            .<DedicatedHostInner, DedicatedHostInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), DedicatedHostInner.class, DedicatedHostInner.class)
+        return beginCreateOrUpdateAsync(resourceGroupName, hostGroupName, hostname, parameters, context)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -510,7 +542,7 @@ public final class DedicatedHostsClient {
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2019-03-01";
+        final String apiVersion = "2019-12-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -575,7 +607,7 @@ public final class DedicatedHostsClient {
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2019-03-01";
+        final String apiVersion = "2019-12-01";
         return service
             .update(
                 this.client.getEndpoint(),
@@ -602,7 +634,7 @@ public final class DedicatedHostsClient {
      * @return specifies information about the Dedicated host.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<DedicatedHostInner>, DedicatedHostInner> beginUpdate(
+    public PollerFlux<PollResult<DedicatedHostInner>, DedicatedHostInner> beginUpdateAsync(
         String resourceGroupName, String hostGroupName, String hostname, DedicatedHostUpdate parameters) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             updateWithResponseAsync(resourceGroupName, hostGroupName, hostname, parameters);
@@ -627,7 +659,7 @@ public final class DedicatedHostsClient {
      * @return specifies information about the Dedicated host.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<DedicatedHostInner>, DedicatedHostInner> beginUpdate(
+    public PollerFlux<PollResult<DedicatedHostInner>, DedicatedHostInner> beginUpdateAsync(
         String resourceGroupName,
         String hostGroupName,
         String hostname,
@@ -655,16 +687,54 @@ public final class DedicatedHostsClient {
      * @return specifies information about the Dedicated host.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<DedicatedHostInner>, DedicatedHostInner> beginUpdate(
+        String resourceGroupName, String hostGroupName, String hostname, DedicatedHostUpdate parameters) {
+        return beginUpdateAsync(resourceGroupName, hostGroupName, hostname, parameters).getSyncPoller();
+    }
+
+    /**
+     * Update an dedicated host .
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param hostGroupName The name of the dedicated host group.
+     * @param hostname The name of the dedicated host .
+     * @param parameters Specifies information about the dedicated host. Only tags, autoReplaceOnFailure and licenseType
+     *     may be updated.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return specifies information about the Dedicated host.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<DedicatedHostInner>, DedicatedHostInner> beginUpdate(
+        String resourceGroupName,
+        String hostGroupName,
+        String hostname,
+        DedicatedHostUpdate parameters,
+        Context context) {
+        return beginUpdateAsync(resourceGroupName, hostGroupName, hostname, parameters, context).getSyncPoller();
+    }
+
+    /**
+     * Update an dedicated host .
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param hostGroupName The name of the dedicated host group.
+     * @param hostname The name of the dedicated host .
+     * @param parameters Specifies information about the dedicated host. Only tags, autoReplaceOnFailure and licenseType
+     *     may be updated.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return specifies information about the Dedicated host.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DedicatedHostInner> updateAsync(
         String resourceGroupName, String hostGroupName, String hostname, DedicatedHostUpdate parameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateWithResponseAsync(resourceGroupName, hostGroupName, hostname, parameters);
-        return this
-            .client
-            .<DedicatedHostInner, DedicatedHostInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), DedicatedHostInner.class, DedicatedHostInner.class)
+        return beginUpdateAsync(resourceGroupName, hostGroupName, hostname, parameters)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -688,14 +758,9 @@ public final class DedicatedHostsClient {
         String hostname,
         DedicatedHostUpdate parameters,
         Context context) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateWithResponseAsync(resourceGroupName, hostGroupName, hostname, parameters, context);
-        return this
-            .client
-            .<DedicatedHostInner, DedicatedHostInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), DedicatedHostInner.class, DedicatedHostInner.class)
+        return beginUpdateAsync(resourceGroupName, hostGroupName, hostname, parameters, context)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -777,7 +842,7 @@ public final class DedicatedHostsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-03-01";
+        final String apiVersion = "2019-12-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -830,7 +895,7 @@ public final class DedicatedHostsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-03-01";
+        final String apiVersion = "2019-12-01";
         return service
             .delete(
                 this.client.getEndpoint(),
@@ -854,7 +919,7 @@ public final class DedicatedHostsClient {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<Void>, Void> beginDelete(
+    public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String hostGroupName, String hostname) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, hostGroupName, hostname);
         return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
@@ -873,7 +938,7 @@ public final class DedicatedHostsClient {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<Void>, Void> beginDelete(
+    public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String hostGroupName, String hostname, Context context) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             deleteWithResponseAsync(resourceGroupName, hostGroupName, hostname, context);
@@ -892,13 +957,45 @@ public final class DedicatedHostsClient {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<Void>, Void> beginDelete(
+        String resourceGroupName, String hostGroupName, String hostname) {
+        return beginDeleteAsync(resourceGroupName, hostGroupName, hostname).getSyncPoller();
+    }
+
+    /**
+     * Delete a dedicated host.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param hostGroupName The name of the dedicated host group.
+     * @param hostname The name of the dedicated host.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<Void>, Void> beginDelete(
+        String resourceGroupName, String hostGroupName, String hostname, Context context) {
+        return beginDeleteAsync(resourceGroupName, hostGroupName, hostname, context).getSyncPoller();
+    }
+
+    /**
+     * Delete a dedicated host.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param hostGroupName The name of the dedicated host group.
+     * @param hostname The name of the dedicated host.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String hostGroupName, String hostname) {
-        Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, hostGroupName, hostname);
-        return this
-            .client
-            .<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class)
+        return beginDeleteAsync(resourceGroupName, hostGroupName, hostname)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -915,13 +1012,9 @@ public final class DedicatedHostsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String hostGroupName, String hostname, Context context) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, hostGroupName, hostname, context);
-        return this
-            .client
-            .<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class)
+        return beginDeleteAsync(resourceGroupName, hostGroupName, hostname, context)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -992,7 +1085,7 @@ public final class DedicatedHostsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-03-01";
+        final String apiVersion = "2019-12-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -1047,7 +1140,7 @@ public final class DedicatedHostsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-03-01";
+        final String apiVersion = "2019-12-01";
         return service
             .get(
                 this.client.getEndpoint(),
@@ -1227,7 +1320,7 @@ public final class DedicatedHostsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-03-01";
+        final String apiVersion = "2019-12-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -1285,7 +1378,7 @@ public final class DedicatedHostsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-03-01";
+        final String apiVersion = "2019-12-01";
         return service
             .listByHostGroup(
                 this.client.getEndpoint(),
@@ -1419,7 +1512,7 @@ public final class DedicatedHostsClient {
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2019-03-01";
+        final String apiVersion = "2019-12-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -1483,7 +1576,7 @@ public final class DedicatedHostsClient {
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2019-03-01";
+        final String apiVersion = "2019-12-01";
         return service
             .beginCreateOrUpdateWithoutPolling(
                 this.client.getEndpoint(),
@@ -1640,7 +1733,7 @@ public final class DedicatedHostsClient {
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2019-03-01";
+        final String apiVersion = "2019-12-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -1705,7 +1798,7 @@ public final class DedicatedHostsClient {
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2019-03-01";
+        final String apiVersion = "2019-12-01";
         return service
             .beginUpdateWithoutPolling(
                 this.client.getEndpoint(),
@@ -1857,7 +1950,7 @@ public final class DedicatedHostsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-03-01";
+        final String apiVersion = "2019-12-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -1910,7 +2003,7 @@ public final class DedicatedHostsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-03-01";
+        final String apiVersion = "2019-12-01";
         return service
             .beginDeleteWithoutPolling(
                 this.client.getEndpoint(),

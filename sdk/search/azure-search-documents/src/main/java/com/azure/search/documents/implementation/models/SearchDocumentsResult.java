@@ -7,6 +7,7 @@
 package com.azure.search.documents.implementation.models;
 
 import com.azure.core.annotation.Immutable;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
@@ -63,6 +64,12 @@ public final class SearchDocumentsResult {
      */
     @JsonProperty(value = "@odata.nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
+
+    /** Creates an instance of SearchDocumentsResult class. */
+    @JsonCreator
+    public SearchDocumentsResult(@JsonProperty(value = "value") List<SearchResult> results) {
+        this.results = results;
+    }
 
     /**
      * Get the count property: The total count of results found by the search operation, or null if the count was not
@@ -126,5 +133,29 @@ public final class SearchDocumentsResult {
      */
     public String getNextLink() {
         return this.nextLink;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (getFacets() != null) {
+            getFacets()
+                    .values()
+                    .forEach(
+                            e -> {
+                                if (e != null) {
+                                    e.forEach(e1 -> e1.validate());
+                                }
+                            });
+        }
+        if (getNextPageParameters() != null) {
+            getNextPageParameters().validate();
+        }
+        if (getResults() != null) {
+            getResults().forEach(e -> e.validate());
+        }
     }
 }

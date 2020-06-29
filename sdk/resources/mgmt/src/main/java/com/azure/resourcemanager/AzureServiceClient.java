@@ -6,11 +6,15 @@ package com.azure.resourcemanager;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.Response;
 import com.azure.core.management.AzureEnvironment;
+import com.azure.core.management.exception.ManagementError;
+import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollerFactory;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.management.serializer.AzureJacksonAdapter;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
+import com.azure.core.util.polling.AsyncPollResponse;
+import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
@@ -166,6 +170,26 @@ public abstract class AzureServiceClient {
             e.printStackTrace();
         }
         return "Unknown";
+    }
+
+    /**
+     * Gets the final result, or an error, based on last async poll response.
+     *
+     * @param response the last async poll response.
+     * @param <T> type of poll result.
+     * @param <U> type of final result.
+     * @return the final result, or an error.
+     */
+    public <T, U> Mono<U> getLroFinalResultOrError(AsyncPollResponse<PollResult<T>, U> response) {
+        if (response.getStatus() != LongRunningOperationStatus.SUCCESSFULLY_COMPLETED) {
+            String errorMessage = response.getValue().getError() != null
+                ? response.getValue().getError().getMessage()
+                : "Unknown error";
+            return Mono.error(new ManagementException(errorMessage, null,
+                new ManagementError(response.getStatus().toString(), errorMessage)));
+        } else {
+            return response.getFinalResult();
+        }
     }
 
     // this should be moved to core-mgmt when stable.

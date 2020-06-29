@@ -52,7 +52,7 @@ public class HttpResponseExceptionExample {
                 .setFilter("Non_Existent_Field eq 'Luxury'");
 
             Iterable<SearchResult> results = client.search("hotel",
-                searchOptions, null, Context.NONE);
+                searchOptions, Context.NONE);
 
             for (SearchResult result : results) {
                 // normal results processing

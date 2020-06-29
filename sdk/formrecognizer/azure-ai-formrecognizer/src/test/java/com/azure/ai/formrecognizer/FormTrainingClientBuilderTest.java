@@ -3,9 +3,9 @@
 
 package com.azure.ai.formrecognizer;
 
-import com.azure.ai.formrecognizer.models.ErrorResponseException;
 import com.azure.ai.formrecognizer.training.FormTrainingClientBuilder;
 import com.azure.core.credential.AzureKeyCredential;
+import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
@@ -106,20 +106,20 @@ public class FormTrainingClientBuilderTest extends TestBase {
     // Client builder runner
     void clientBuilderWithInvalidApiKeyCredentialRunner(HttpClient httpClient,
         FormRecognizerServiceVersion serviceVersion,
-        Function<FormTrainingClientBuilder, BiConsumer<String, ErrorResponseException>> testRunner) {
+        Function<FormTrainingClientBuilder, BiConsumer<String, HttpResponseException>> testRunner) {
         final FormTrainingClientBuilder clientBuilder = createClientBuilder(httpClient, serviceVersion, getEndpoint(),
             new AzureKeyCredential(INVALID_KEY));
-        testRunner.apply(clientBuilder).accept(VALID_URL, new ErrorResponseException("", null));
+        testRunner.apply(clientBuilder).accept(VALID_URL, new HttpResponseException("", null));
     }
 
     void clientBuilderWithRotateToInvalidKeyRunner(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion,
-        Function<FormTrainingClientBuilder, Consumer<ErrorResponseException>> testRunner) {
+        Function<FormTrainingClientBuilder, Consumer<HttpResponseException>> testRunner) {
         final AzureKeyCredential credential = new AzureKeyCredential(getApiKey());
         final FormTrainingClientBuilder clientBuilder = createClientBuilder(httpClient, serviceVersion,
             getEndpoint(), credential);
         // Update to invalid key
         credential.update(INVALID_KEY);
-        testRunner.apply(clientBuilder).accept(new ErrorResponseException("", null));
+        testRunner.apply(clientBuilder).accept(new HttpResponseException("", null));
     }
 
     void clientBuilderWithRotateToValidKeyRunner(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion,

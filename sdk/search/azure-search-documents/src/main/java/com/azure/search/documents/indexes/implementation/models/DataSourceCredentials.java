@@ -37,4 +37,11 @@ public final class DataSourceCredentials {
         this.connectionString = connectionString;
         return this;
     }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {}
 }
