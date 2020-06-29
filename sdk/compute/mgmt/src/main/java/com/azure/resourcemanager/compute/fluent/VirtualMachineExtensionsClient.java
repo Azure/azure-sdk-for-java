@@ -27,6 +27,7 @@ import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
+import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.compute.ComputeManagementClient;
 import com.azure.resourcemanager.compute.fluent.inner.VirtualMachineExtensionInner;
 import com.azure.resourcemanager.compute.fluent.inner.VirtualMachineExtensionsListResultInner;
@@ -237,7 +238,7 @@ public final class VirtualMachineExtensionsClient {
         } else {
             extensionParameters.validate();
         }
-        final String apiVersion = "2019-03-01";
+        final String apiVersion = "2019-12-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -303,7 +304,7 @@ public final class VirtualMachineExtensionsClient {
         } else {
             extensionParameters.validate();
         }
-        final String apiVersion = "2019-03-01";
+        final String apiVersion = "2019-12-01";
         return service
             .createOrUpdate(
                 this.client.getEndpoint(),
@@ -329,7 +330,7 @@ public final class VirtualMachineExtensionsClient {
      * @return describes a Virtual Machine Extension.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<VirtualMachineExtensionInner>, VirtualMachineExtensionInner> beginCreateOrUpdate(
+    public PollerFlux<PollResult<VirtualMachineExtensionInner>, VirtualMachineExtensionInner> beginCreateOrUpdateAsync(
         String resourceGroupName,
         String vmName,
         String vmExtensionName,
@@ -359,7 +360,7 @@ public final class VirtualMachineExtensionsClient {
      * @return describes a Virtual Machine Extension.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<VirtualMachineExtensionInner>, VirtualMachineExtensionInner> beginCreateOrUpdate(
+    public PollerFlux<PollResult<VirtualMachineExtensionInner>, VirtualMachineExtensionInner> beginCreateOrUpdateAsync(
         String resourceGroupName,
         String vmName,
         String vmExtensionName,
@@ -389,20 +390,58 @@ public final class VirtualMachineExtensionsClient {
      * @return describes a Virtual Machine Extension.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<VirtualMachineExtensionInner>, VirtualMachineExtensionInner> beginCreateOrUpdate(
+        String resourceGroupName,
+        String vmName,
+        String vmExtensionName,
+        VirtualMachineExtensionInner extensionParameters) {
+        return beginCreateOrUpdateAsync(resourceGroupName, vmName, vmExtensionName, extensionParameters)
+            .getSyncPoller();
+    }
+
+    /**
+     * The operation to create or update the extension.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param vmName The name of the virtual machine where the extension should be created or updated.
+     * @param vmExtensionName The name of the virtual machine extension.
+     * @param extensionParameters Describes a Virtual Machine Extension.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return describes a Virtual Machine Extension.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<VirtualMachineExtensionInner>, VirtualMachineExtensionInner> beginCreateOrUpdate(
+        String resourceGroupName,
+        String vmName,
+        String vmExtensionName,
+        VirtualMachineExtensionInner extensionParameters,
+        Context context) {
+        return beginCreateOrUpdateAsync(resourceGroupName, vmName, vmExtensionName, extensionParameters, context)
+            .getSyncPoller();
+    }
+
+    /**
+     * The operation to create or update the extension.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param vmName The name of the virtual machine where the extension should be created or updated.
+     * @param vmExtensionName The name of the virtual machine extension.
+     * @param extensionParameters Describes a Virtual Machine Extension.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return describes a Virtual Machine Extension.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<VirtualMachineExtensionInner> createOrUpdateAsync(
         String resourceGroupName,
         String vmName,
         String vmExtensionName,
         VirtualMachineExtensionInner extensionParameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, vmName, vmExtensionName, extensionParameters);
-        return this
-            .client
-            .<VirtualMachineExtensionInner, VirtualMachineExtensionInner>getLroResultAsync(
-                mono,
-                this.client.getHttpPipeline(),
-                VirtualMachineExtensionInner.class,
-                VirtualMachineExtensionInner.class)
+        return beginCreateOrUpdateAsync(resourceGroupName, vmName, vmExtensionName, extensionParameters)
             .last()
             .flatMap(client::getLroFinalResultOrError);
     }
@@ -427,15 +466,7 @@ public final class VirtualMachineExtensionsClient {
         String vmExtensionName,
         VirtualMachineExtensionInner extensionParameters,
         Context context) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, vmName, vmExtensionName, extensionParameters, context);
-        return this
-            .client
-            .<VirtualMachineExtensionInner, VirtualMachineExtensionInner>getLroResultAsync(
-                mono,
-                this.client.getHttpPipeline(),
-                VirtualMachineExtensionInner.class,
-                VirtualMachineExtensionInner.class)
+        return beginCreateOrUpdateAsync(resourceGroupName, vmName, vmExtensionName, extensionParameters, context)
             .last()
             .flatMap(client::getLroFinalResultOrError);
     }
@@ -531,7 +562,7 @@ public final class VirtualMachineExtensionsClient {
         } else {
             extensionParameters.validate();
         }
-        final String apiVersion = "2019-03-01";
+        final String apiVersion = "2019-12-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -597,7 +628,7 @@ public final class VirtualMachineExtensionsClient {
         } else {
             extensionParameters.validate();
         }
-        final String apiVersion = "2019-03-01";
+        final String apiVersion = "2019-12-01";
         return service
             .update(
                 this.client.getEndpoint(),
@@ -623,7 +654,7 @@ public final class VirtualMachineExtensionsClient {
      * @return describes a Virtual Machine Extension.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<VirtualMachineExtensionInner>, VirtualMachineExtensionInner> beginUpdate(
+    public PollerFlux<PollResult<VirtualMachineExtensionInner>, VirtualMachineExtensionInner> beginUpdateAsync(
         String resourceGroupName,
         String vmName,
         String vmExtensionName,
@@ -653,7 +684,7 @@ public final class VirtualMachineExtensionsClient {
      * @return describes a Virtual Machine Extension.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<VirtualMachineExtensionInner>, VirtualMachineExtensionInner> beginUpdate(
+    public PollerFlux<PollResult<VirtualMachineExtensionInner>, VirtualMachineExtensionInner> beginUpdateAsync(
         String resourceGroupName,
         String vmName,
         String vmExtensionName,
@@ -683,20 +714,57 @@ public final class VirtualMachineExtensionsClient {
      * @return describes a Virtual Machine Extension.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<VirtualMachineExtensionInner>, VirtualMachineExtensionInner> beginUpdate(
+        String resourceGroupName,
+        String vmName,
+        String vmExtensionName,
+        VirtualMachineExtensionUpdate extensionParameters) {
+        return beginUpdateAsync(resourceGroupName, vmName, vmExtensionName, extensionParameters).getSyncPoller();
+    }
+
+    /**
+     * The operation to update the extension.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param vmName The name of the virtual machine where the extension should be updated.
+     * @param vmExtensionName The name of the virtual machine extension.
+     * @param extensionParameters Describes a Virtual Machine Extension.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return describes a Virtual Machine Extension.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<VirtualMachineExtensionInner>, VirtualMachineExtensionInner> beginUpdate(
+        String resourceGroupName,
+        String vmName,
+        String vmExtensionName,
+        VirtualMachineExtensionUpdate extensionParameters,
+        Context context) {
+        return beginUpdateAsync(resourceGroupName, vmName, vmExtensionName, extensionParameters, context)
+            .getSyncPoller();
+    }
+
+    /**
+     * The operation to update the extension.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param vmName The name of the virtual machine where the extension should be updated.
+     * @param vmExtensionName The name of the virtual machine extension.
+     * @param extensionParameters Describes a Virtual Machine Extension.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return describes a Virtual Machine Extension.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<VirtualMachineExtensionInner> updateAsync(
         String resourceGroupName,
         String vmName,
         String vmExtensionName,
         VirtualMachineExtensionUpdate extensionParameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateWithResponseAsync(resourceGroupName, vmName, vmExtensionName, extensionParameters);
-        return this
-            .client
-            .<VirtualMachineExtensionInner, VirtualMachineExtensionInner>getLroResultAsync(
-                mono,
-                this.client.getHttpPipeline(),
-                VirtualMachineExtensionInner.class,
-                VirtualMachineExtensionInner.class)
+        return beginUpdateAsync(resourceGroupName, vmName, vmExtensionName, extensionParameters)
             .last()
             .flatMap(client::getLroFinalResultOrError);
     }
@@ -721,15 +789,7 @@ public final class VirtualMachineExtensionsClient {
         String vmExtensionName,
         VirtualMachineExtensionUpdate extensionParameters,
         Context context) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateWithResponseAsync(resourceGroupName, vmName, vmExtensionName, extensionParameters, context);
-        return this
-            .client
-            .<VirtualMachineExtensionInner, VirtualMachineExtensionInner>getLroResultAsync(
-                mono,
-                this.client.getHttpPipeline(),
-                VirtualMachineExtensionInner.class,
-                VirtualMachineExtensionInner.class)
+        return beginUpdateAsync(resourceGroupName, vmName, vmExtensionName, extensionParameters, context)
             .last()
             .flatMap(client::getLroFinalResultOrError);
     }
@@ -815,7 +875,7 @@ public final class VirtualMachineExtensionsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-03-01";
+        final String apiVersion = "2019-12-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -869,7 +929,7 @@ public final class VirtualMachineExtensionsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-03-01";
+        final String apiVersion = "2019-12-01";
         return service
             .delete(
                 this.client.getEndpoint(),
@@ -893,7 +953,7 @@ public final class VirtualMachineExtensionsClient {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<Void>, Void> beginDelete(
+    public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String vmName, String vmExtensionName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, vmName, vmExtensionName);
         return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
@@ -912,7 +972,7 @@ public final class VirtualMachineExtensionsClient {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<Void>, Void> beginDelete(
+    public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String vmName, String vmExtensionName, Context context) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             deleteWithResponseAsync(resourceGroupName, vmName, vmExtensionName, context);
@@ -931,11 +991,43 @@ public final class VirtualMachineExtensionsClient {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<Void>, Void> beginDelete(
+        String resourceGroupName, String vmName, String vmExtensionName) {
+        return beginDeleteAsync(resourceGroupName, vmName, vmExtensionName).getSyncPoller();
+    }
+
+    /**
+     * The operation to delete the extension.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param vmName The name of the virtual machine where the extension should be deleted.
+     * @param vmExtensionName The name of the virtual machine extension.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<Void>, Void> beginDelete(
+        String resourceGroupName, String vmName, String vmExtensionName, Context context) {
+        return beginDeleteAsync(resourceGroupName, vmName, vmExtensionName, context).getSyncPoller();
+    }
+
+    /**
+     * The operation to delete the extension.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param vmName The name of the virtual machine where the extension should be deleted.
+     * @param vmExtensionName The name of the virtual machine extension.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String vmName, String vmExtensionName) {
-        Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, vmName, vmExtensionName);
-        return this
-            .client
-            .<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class)
+        return beginDeleteAsync(resourceGroupName, vmName, vmExtensionName)
             .last()
             .flatMap(client::getLroFinalResultOrError);
     }
@@ -954,11 +1046,7 @@ public final class VirtualMachineExtensionsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String vmName, String vmExtensionName, Context context) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, vmName, vmExtensionName, context);
-        return this
-            .client
-            .<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class)
+        return beginDeleteAsync(resourceGroupName, vmName, vmExtensionName, context)
             .last()
             .flatMap(client::getLroFinalResultOrError);
     }
@@ -1032,7 +1120,7 @@ public final class VirtualMachineExtensionsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-03-01";
+        final String apiVersion = "2019-12-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -1088,7 +1176,7 @@ public final class VirtualMachineExtensionsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-03-01";
+        final String apiVersion = "2019-12-01";
         return service
             .get(
                 this.client.getEndpoint(),
@@ -1269,7 +1357,7 @@ public final class VirtualMachineExtensionsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-03-01";
+        final String apiVersion = "2019-12-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -1319,7 +1407,7 @@ public final class VirtualMachineExtensionsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-03-01";
+        final String apiVersion = "2019-12-01";
         return service
             .list(
                 this.client.getEndpoint(),
@@ -1505,7 +1593,7 @@ public final class VirtualMachineExtensionsClient {
         } else {
             extensionParameters.validate();
         }
-        final String apiVersion = "2019-03-01";
+        final String apiVersion = "2019-12-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -1571,7 +1659,7 @@ public final class VirtualMachineExtensionsClient {
         } else {
             extensionParameters.validate();
         }
-        final String apiVersion = "2019-03-01";
+        final String apiVersion = "2019-12-01";
         return service
             .beginCreateOrUpdateWithoutPolling(
                 this.client.getEndpoint(),
@@ -1740,7 +1828,7 @@ public final class VirtualMachineExtensionsClient {
         } else {
             extensionParameters.validate();
         }
-        final String apiVersion = "2019-03-01";
+        final String apiVersion = "2019-12-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -1806,7 +1894,7 @@ public final class VirtualMachineExtensionsClient {
         } else {
             extensionParameters.validate();
         }
-        final String apiVersion = "2019-03-01";
+        final String apiVersion = "2019-12-01";
         return service
             .beginUpdateWithoutPolling(
                 this.client.getEndpoint(),
@@ -1963,7 +2051,7 @@ public final class VirtualMachineExtensionsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-03-01";
+        final String apiVersion = "2019-12-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -2017,7 +2105,7 @@ public final class VirtualMachineExtensionsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-03-01";
+        final String apiVersion = "2019-12-01";
         return service
             .beginDeleteWithoutPolling(
                 this.client.getEndpoint(),

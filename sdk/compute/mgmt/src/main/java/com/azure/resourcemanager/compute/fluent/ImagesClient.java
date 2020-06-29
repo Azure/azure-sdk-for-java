@@ -30,7 +30,9 @@ import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.polling.AsyncPollResponse;
 import com.azure.core.util.polling.PollerFlux;
+import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.compute.ComputeManagementClient;
 import com.azure.resourcemanager.compute.fluent.inner.ImageInner;
 import com.azure.resourcemanager.compute.fluent.inner.ImageListResultInner;
@@ -249,7 +251,7 @@ public final class ImagesClient
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2019-03-01";
+        final String apiVersion = "2019-12-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -306,7 +308,7 @@ public final class ImagesClient
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2019-03-01";
+        final String apiVersion = "2019-12-01";
         return service
             .createOrUpdate(
                 this.client.getEndpoint(),
@@ -332,7 +334,7 @@ public final class ImagesClient
      * @return the source user image virtual hard disk.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<ImageInner>, ImageInner> beginCreateOrUpdate(
+    public PollerFlux<PollResult<ImageInner>, ImageInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String imageName, ImageInner parameters) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             createOrUpdateWithResponseAsync(resourceGroupName, imageName, parameters);
@@ -357,7 +359,7 @@ public final class ImagesClient
      * @return the source user image virtual hard disk.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<ImageInner>, ImageInner> beginCreateOrUpdate(
+    public PollerFlux<PollResult<ImageInner>, ImageInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String imageName, ImageInner parameters, Context context) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             createOrUpdateWithResponseAsync(resourceGroupName, imageName, parameters, context);
@@ -381,15 +383,49 @@ public final class ImagesClient
      * @return the source user image virtual hard disk.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<ImageInner>, ImageInner> beginCreateOrUpdate(
+        String resourceGroupName, String imageName, ImageInner parameters) {
+        return beginCreateOrUpdateAsync(resourceGroupName, imageName, parameters).getSyncPoller();
+    }
+
+    /**
+     * Create or update an image.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param imageName The name of the image.
+     * @param parameters The source user image virtual hard disk. The virtual hard disk will be copied before being
+     *     attached to the virtual machine. If SourceImage is provided, the destination virtual hard drive must not
+     *     exist.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the source user image virtual hard disk.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<ImageInner>, ImageInner> beginCreateOrUpdate(
+        String resourceGroupName, String imageName, ImageInner parameters, Context context) {
+        return beginCreateOrUpdateAsync(resourceGroupName, imageName, parameters, context).getSyncPoller();
+    }
+
+    /**
+     * Create or update an image.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param imageName The name of the image.
+     * @param parameters The source user image virtual hard disk. The virtual hard disk will be copied before being
+     *     attached to the virtual machine. If SourceImage is provided, the destination virtual hard drive must not
+     *     exist.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the source user image virtual hard disk.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ImageInner> createOrUpdateAsync(String resourceGroupName, String imageName, ImageInner parameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, imageName, parameters);
-        return this
-            .client
-            .<ImageInner, ImageInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), ImageInner.class, ImageInner.class)
+        return beginCreateOrUpdateAsync(resourceGroupName, imageName, parameters)
             .last()
-            .flatMap(client::getLroFinalResultOrError);
+            .flatMap(AsyncPollResponse::getFinalResult);
     }
 
     /**
@@ -409,14 +445,9 @@ public final class ImagesClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ImageInner> createOrUpdateAsync(
         String resourceGroupName, String imageName, ImageInner parameters, Context context) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, imageName, parameters, context);
-        return this
-            .client
-            .<ImageInner, ImageInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), ImageInner.class, ImageInner.class)
+        return beginCreateOrUpdateAsync(resourceGroupName, imageName, parameters, context)
             .last()
-            .flatMap(client::getLroFinalResultOrError);
+            .flatMap(AsyncPollResponse::getFinalResult);
     }
 
     /**
@@ -495,7 +526,7 @@ public final class ImagesClient
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2019-03-01";
+        final String apiVersion = "2019-12-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -550,7 +581,7 @@ public final class ImagesClient
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2019-03-01";
+        final String apiVersion = "2019-12-01";
         return service
             .update(
                 this.client.getEndpoint(),
@@ -574,7 +605,7 @@ public final class ImagesClient
      * @return the source user image virtual hard disk.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<ImageInner>, ImageInner> beginUpdate(
+    public PollerFlux<PollResult<ImageInner>, ImageInner> beginUpdateAsync(
         String resourceGroupName, String imageName, ImageUpdate parameters) {
         Mono<Response<Flux<ByteBuffer>>> mono = updateWithResponseAsync(resourceGroupName, imageName, parameters);
         return this
@@ -596,7 +627,7 @@ public final class ImagesClient
      * @return the source user image virtual hard disk.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<ImageInner>, ImageInner> beginUpdate(
+    public PollerFlux<PollResult<ImageInner>, ImageInner> beginUpdateAsync(
         String resourceGroupName, String imageName, ImageUpdate parameters, Context context) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             updateWithResponseAsync(resourceGroupName, imageName, parameters, context);
@@ -618,14 +649,45 @@ public final class ImagesClient
      * @return the source user image virtual hard disk.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<ImageInner>, ImageInner> beginUpdate(
+        String resourceGroupName, String imageName, ImageUpdate parameters) {
+        return beginUpdateAsync(resourceGroupName, imageName, parameters).getSyncPoller();
+    }
+
+    /**
+     * Update an image.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param imageName The name of the image.
+     * @param parameters The source user image virtual hard disk. Only tags may be updated.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the source user image virtual hard disk.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<ImageInner>, ImageInner> beginUpdate(
+        String resourceGroupName, String imageName, ImageUpdate parameters, Context context) {
+        return beginUpdateAsync(resourceGroupName, imageName, parameters, context).getSyncPoller();
+    }
+
+    /**
+     * Update an image.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param imageName The name of the image.
+     * @param parameters The source user image virtual hard disk. Only tags may be updated.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the source user image virtual hard disk.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ImageInner> updateAsync(String resourceGroupName, String imageName, ImageUpdate parameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono = updateWithResponseAsync(resourceGroupName, imageName, parameters);
-        return this
-            .client
-            .<ImageInner, ImageInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), ImageInner.class, ImageInner.class)
+        return beginUpdateAsync(resourceGroupName, imageName, parameters)
             .last()
-            .flatMap(client::getLroFinalResultOrError);
+            .flatMap(AsyncPollResponse::getFinalResult);
     }
 
     /**
@@ -643,14 +705,9 @@ public final class ImagesClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ImageInner> updateAsync(
         String resourceGroupName, String imageName, ImageUpdate parameters, Context context) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateWithResponseAsync(resourceGroupName, imageName, parameters, context);
-        return this
-            .client
-            .<ImageInner, ImageInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), ImageInner.class, ImageInner.class)
+        return beginUpdateAsync(resourceGroupName, imageName, parameters, context)
             .last()
-            .flatMap(client::getLroFinalResultOrError);
+            .flatMap(AsyncPollResponse::getFinalResult);
     }
 
     /**
@@ -717,7 +774,7 @@ public final class ImagesClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-03-01";
+        final String apiVersion = "2019-12-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -765,7 +822,7 @@ public final class ImagesClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-03-01";
+        final String apiVersion = "2019-12-01";
         return service
             .delete(
                 this.client.getEndpoint(),
@@ -787,7 +844,7 @@ public final class ImagesClient
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<Void>, Void> beginDelete(String resourceGroupName, String imageName) {
+    public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String imageName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, imageName);
         return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
     }
@@ -804,7 +861,8 @@ public final class ImagesClient
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<Void>, Void> beginDelete(String resourceGroupName, String imageName, Context context) {
+    public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
+        String resourceGroupName, String imageName, Context context) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, imageName, context);
         return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
     }
@@ -820,13 +878,39 @@ public final class ImagesClient
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String imageName) {
+        return beginDeleteAsync(resourceGroupName, imageName).getSyncPoller();
+    }
+
+    /**
+     * Deletes an Image.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param imageName The name of the image.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String imageName, Context context) {
+        return beginDeleteAsync(resourceGroupName, imageName, context).getSyncPoller();
+    }
+
+    /**
+     * Deletes an Image.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param imageName The name of the image.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String imageName) {
-        Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, imageName);
-        return this
-            .client
-            .<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class)
-            .last()
-            .flatMap(client::getLroFinalResultOrError);
+        return beginDeleteAsync(resourceGroupName, imageName).last().flatMap(AsyncPollResponse::getFinalResult);
     }
 
     /**
@@ -842,12 +926,9 @@ public final class ImagesClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String imageName, Context context) {
-        Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, imageName, context);
-        return this
-            .client
-            .<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class)
+        return beginDeleteAsync(resourceGroupName, imageName, context)
             .last()
-            .flatMap(client::getLroFinalResultOrError);
+            .flatMap(AsyncPollResponse::getFinalResult);
     }
 
     /**
@@ -912,7 +993,7 @@ public final class ImagesClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-03-01";
+        final String apiVersion = "2019-12-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -962,7 +1043,7 @@ public final class ImagesClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-03-01";
+        final String apiVersion = "2019-12-01";
         return service
             .getByResourceGroup(
                 this.client.getEndpoint(),
@@ -1126,7 +1207,7 @@ public final class ImagesClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-03-01";
+        final String apiVersion = "2019-12-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -1178,7 +1259,7 @@ public final class ImagesClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-03-01";
+        final String apiVersion = "2019-12-01";
         return service
             .listByResourceGroup(
                 this.client.getEndpoint(), resourceGroupName, apiVersion, this.client.getSubscriptionId(), context)
@@ -1277,7 +1358,7 @@ public final class ImagesClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-03-01";
+        final String apiVersion = "2019-12-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -1318,7 +1399,7 @@ public final class ImagesClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-03-01";
+        final String apiVersion = "2019-12-01";
         return service
             .list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), context)
             .map(
@@ -1428,7 +1509,7 @@ public final class ImagesClient
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2019-03-01";
+        final String apiVersion = "2019-12-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -1485,7 +1566,7 @@ public final class ImagesClient
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2019-03-01";
+        final String apiVersion = "2019-12-01";
         return service
             .beginCreateOrUpdateWithoutPolling(
                 this.client.getEndpoint(),
@@ -1629,7 +1710,7 @@ public final class ImagesClient
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2019-03-01";
+        final String apiVersion = "2019-12-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -1684,7 +1765,7 @@ public final class ImagesClient
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2019-03-01";
+        final String apiVersion = "2019-12-01";
         return service
             .beginUpdateWithoutPolling(
                 this.client.getEndpoint(),
@@ -1812,7 +1893,7 @@ public final class ImagesClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-03-01";
+        final String apiVersion = "2019-12-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -1860,7 +1941,7 @@ public final class ImagesClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-03-01";
+        final String apiVersion = "2019-12-01";
         return service
             .beginDeleteWithoutPolling(
                 this.client.getEndpoint(),

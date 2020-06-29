@@ -23,6 +23,13 @@ public final class ManagedDiskParameters extends SubResource {
     @JsonProperty(value = "storageAccountType")
     private StorageAccountTypes storageAccountType;
 
+    /*
+     * Specifies the customer managed disk encryption set resource id for the
+     * managed disk.
+     */
+    @JsonProperty(value = "diskEncryptionSet")
+    private SubResource diskEncryptionSet;
+
     /**
      * Get the storageAccountType property: Specifies the storage account type for the managed disk. NOTE: UltraSSD_LRS
      * can only be used with data disks, it cannot be used with OS Disk.
@@ -42,6 +49,28 @@ public final class ManagedDiskParameters extends SubResource {
      */
     public ManagedDiskParameters withStorageAccountType(StorageAccountTypes storageAccountType) {
         this.storageAccountType = storageAccountType;
+        return this;
+    }
+
+    /**
+     * Get the diskEncryptionSet property: Specifies the customer managed disk encryption set resource id for the
+     * managed disk.
+     *
+     * @return the diskEncryptionSet value.
+     */
+    public SubResource diskEncryptionSet() {
+        return this.diskEncryptionSet;
+    }
+
+    /**
+     * Set the diskEncryptionSet property: Specifies the customer managed disk encryption set resource id for the
+     * managed disk.
+     *
+     * @param diskEncryptionSet the diskEncryptionSet value to set.
+     * @return the ManagedDiskParameters object itself.
+     */
+    public ManagedDiskParameters withDiskEncryptionSet(SubResource diskEncryptionSet) {
+        this.diskEncryptionSet = diskEncryptionSet;
         return this;
     }
 

@@ -24,6 +24,7 @@ import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
+import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.compute.ComputeManagementClient;
 import com.azure.resourcemanager.compute.fluent.inner.LogAnalyticsOperationResultInner;
 import com.azure.resourcemanager.compute.models.LogAnalyticsInputBase;
@@ -151,7 +152,7 @@ public final class LogAnalyticsClient {
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2019-03-01";
+        final String apiVersion = "2019-12-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -201,7 +202,7 @@ public final class LogAnalyticsClient {
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2019-03-01";
+        final String apiVersion = "2019-12-01";
         return service
             .exportRequestRateByInterval(
                 this.client.getEndpoint(), location, apiVersion, this.client.getSubscriptionId(), parameters, context);
@@ -220,7 +221,7 @@ public final class LogAnalyticsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<LogAnalyticsOperationResultInner>, LogAnalyticsOperationResultInner>
-        beginExportRequestRateByInterval(String location, RequestRateByIntervalInput parameters) {
+        beginExportRequestRateByIntervalAsync(String location, RequestRateByIntervalInput parameters) {
         Mono<Response<Flux<ByteBuffer>>> mono = exportRequestRateByIntervalWithResponseAsync(location, parameters);
         return this
             .client
@@ -245,7 +246,7 @@ public final class LogAnalyticsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<LogAnalyticsOperationResultInner>, LogAnalyticsOperationResultInner>
-        beginExportRequestRateByInterval(String location, RequestRateByIntervalInput parameters, Context context) {
+        beginExportRequestRateByIntervalAsync(String location, RequestRateByIntervalInput parameters, Context context) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             exportRequestRateByIntervalWithResponseAsync(location, parameters, context);
         return this
@@ -269,16 +270,44 @@ public final class LogAnalyticsClient {
      * @return logAnalytics operation status response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<LogAnalyticsOperationResultInner>, LogAnalyticsOperationResultInner>
+        beginExportRequestRateByInterval(String location, RequestRateByIntervalInput parameters) {
+        return beginExportRequestRateByIntervalAsync(location, parameters).getSyncPoller();
+    }
+
+    /**
+     * Export logs that show Api requests made by this subscription in the given time window to show throttling
+     * activities.
+     *
+     * @param location The location upon which virtual-machine-sizes is queried.
+     * @param parameters Api request input for LogAnalytics getRequestRateByInterval Api.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return logAnalytics operation status response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<LogAnalyticsOperationResultInner>, LogAnalyticsOperationResultInner>
+        beginExportRequestRateByInterval(String location, RequestRateByIntervalInput parameters, Context context) {
+        return beginExportRequestRateByIntervalAsync(location, parameters, context).getSyncPoller();
+    }
+
+    /**
+     * Export logs that show Api requests made by this subscription in the given time window to show throttling
+     * activities.
+     *
+     * @param location The location upon which virtual-machine-sizes is queried.
+     * @param parameters Api request input for LogAnalytics getRequestRateByInterval Api.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return logAnalytics operation status response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<LogAnalyticsOperationResultInner> exportRequestRateByIntervalAsync(
         String location, RequestRateByIntervalInput parameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono = exportRequestRateByIntervalWithResponseAsync(location, parameters);
-        return this
-            .client
-            .<LogAnalyticsOperationResultInner, LogAnalyticsOperationResultInner>getLroResultAsync(
-                mono,
-                this.client.getHttpPipeline(),
-                LogAnalyticsOperationResultInner.class,
-                LogAnalyticsOperationResultInner.class)
+        return beginExportRequestRateByIntervalAsync(location, parameters)
             .last()
             .flatMap(client::getLroFinalResultOrError);
     }
@@ -298,15 +327,7 @@ public final class LogAnalyticsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<LogAnalyticsOperationResultInner> exportRequestRateByIntervalAsync(
         String location, RequestRateByIntervalInput parameters, Context context) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            exportRequestRateByIntervalWithResponseAsync(location, parameters, context);
-        return this
-            .client
-            .<LogAnalyticsOperationResultInner, LogAnalyticsOperationResultInner>getLroResultAsync(
-                mono,
-                this.client.getHttpPipeline(),
-                LogAnalyticsOperationResultInner.class,
-                LogAnalyticsOperationResultInner.class)
+        return beginExportRequestRateByIntervalAsync(location, parameters, context)
             .last()
             .flatMap(client::getLroFinalResultOrError);
     }
@@ -379,7 +400,7 @@ public final class LogAnalyticsClient {
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2019-03-01";
+        final String apiVersion = "2019-12-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -428,7 +449,7 @@ public final class LogAnalyticsClient {
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2019-03-01";
+        final String apiVersion = "2019-12-01";
         return service
             .exportThrottledRequests(
                 this.client.getEndpoint(), location, apiVersion, this.client.getSubscriptionId(), parameters, context);
@@ -446,7 +467,7 @@ public final class LogAnalyticsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<LogAnalyticsOperationResultInner>, LogAnalyticsOperationResultInner>
-        beginExportThrottledRequests(String location, LogAnalyticsInputBase parameters) {
+        beginExportThrottledRequestsAsync(String location, LogAnalyticsInputBase parameters) {
         Mono<Response<Flux<ByteBuffer>>> mono = exportThrottledRequestsWithResponseAsync(location, parameters);
         return this
             .client
@@ -470,7 +491,7 @@ public final class LogAnalyticsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<LogAnalyticsOperationResultInner>, LogAnalyticsOperationResultInner>
-        beginExportThrottledRequests(String location, LogAnalyticsInputBase parameters, Context context) {
+        beginExportThrottledRequestsAsync(String location, LogAnalyticsInputBase parameters, Context context) {
         Mono<Response<Flux<ByteBuffer>>> mono = exportThrottledRequestsWithResponseAsync(location, parameters, context);
         return this
             .client
@@ -492,16 +513,42 @@ public final class LogAnalyticsClient {
      * @return logAnalytics operation status response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<LogAnalyticsOperationResultInner>, LogAnalyticsOperationResultInner>
+        beginExportThrottledRequests(String location, LogAnalyticsInputBase parameters) {
+        return beginExportThrottledRequestsAsync(location, parameters).getSyncPoller();
+    }
+
+    /**
+     * Export logs that show total throttled Api requests for this subscription in the given time window.
+     *
+     * @param location The location upon which virtual-machine-sizes is queried.
+     * @param parameters Api input base class for LogAnalytics Api.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return logAnalytics operation status response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<LogAnalyticsOperationResultInner>, LogAnalyticsOperationResultInner>
+        beginExportThrottledRequests(String location, LogAnalyticsInputBase parameters, Context context) {
+        return beginExportThrottledRequestsAsync(location, parameters, context).getSyncPoller();
+    }
+
+    /**
+     * Export logs that show total throttled Api requests for this subscription in the given time window.
+     *
+     * @param location The location upon which virtual-machine-sizes is queried.
+     * @param parameters Api input base class for LogAnalytics Api.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return logAnalytics operation status response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<LogAnalyticsOperationResultInner> exportThrottledRequestsAsync(
         String location, LogAnalyticsInputBase parameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono = exportThrottledRequestsWithResponseAsync(location, parameters);
-        return this
-            .client
-            .<LogAnalyticsOperationResultInner, LogAnalyticsOperationResultInner>getLroResultAsync(
-                mono,
-                this.client.getHttpPipeline(),
-                LogAnalyticsOperationResultInner.class,
-                LogAnalyticsOperationResultInner.class)
+        return beginExportThrottledRequestsAsync(location, parameters)
             .last()
             .flatMap(client::getLroFinalResultOrError);
     }
@@ -520,14 +567,7 @@ public final class LogAnalyticsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<LogAnalyticsOperationResultInner> exportThrottledRequestsAsync(
         String location, LogAnalyticsInputBase parameters, Context context) {
-        Mono<Response<Flux<ByteBuffer>>> mono = exportThrottledRequestsWithResponseAsync(location, parameters, context);
-        return this
-            .client
-            .<LogAnalyticsOperationResultInner, LogAnalyticsOperationResultInner>getLroResultAsync(
-                mono,
-                this.client.getHttpPipeline(),
-                LogAnalyticsOperationResultInner.class,
-                LogAnalyticsOperationResultInner.class)
+        return beginExportThrottledRequestsAsync(location, parameters, context)
             .last()
             .flatMap(client::getLroFinalResultOrError);
     }
@@ -599,7 +639,7 @@ public final class LogAnalyticsClient {
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2019-03-01";
+        final String apiVersion = "2019-12-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -650,7 +690,7 @@ public final class LogAnalyticsClient {
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2019-03-01";
+        final String apiVersion = "2019-12-01";
         return service
             .beginExportRequestRateByIntervalWithoutPolling(
                 this.client.getEndpoint(), location, apiVersion, this.client.getSubscriptionId(), parameters, context);
@@ -775,7 +815,7 @@ public final class LogAnalyticsClient {
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2019-03-01";
+        final String apiVersion = "2019-12-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -824,7 +864,7 @@ public final class LogAnalyticsClient {
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2019-03-01";
+        final String apiVersion = "2019-12-01";
         return service
             .beginExportThrottledRequestsWithoutPolling(
                 this.client.getEndpoint(), location, apiVersion, this.client.getSubscriptionId(), parameters, context);

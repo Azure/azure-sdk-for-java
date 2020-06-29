@@ -30,6 +30,7 @@ import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
+import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.compute.ComputeManagementClient;
 import com.azure.resourcemanager.compute.fluent.inner.GalleryImageInner;
 import com.azure.resourcemanager.compute.fluent.inner.GalleryImageListInner;
@@ -243,7 +244,7 @@ public final class GalleryImagesClient {
         } else {
             galleryImage.validate();
         }
-        final String apiVersion = "2019-07-01";
+        final String apiVersion = "2019-12-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -310,7 +311,7 @@ public final class GalleryImagesClient {
         } else {
             galleryImage.validate();
         }
-        final String apiVersion = "2019-07-01";
+        final String apiVersion = "2019-12-01";
         return service
             .createOrUpdate(
                 this.client.getEndpoint(),
@@ -338,7 +339,7 @@ public final class GalleryImagesClient {
      * @return specifies information about the gallery Image Definition that you want to create or update.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<GalleryImageInner>, GalleryImageInner> beginCreateOrUpdate(
+    public PollerFlux<PollResult<GalleryImageInner>, GalleryImageInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String galleryName, String galleryImageName, GalleryImageInner galleryImage) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             createOrUpdateWithResponseAsync(resourceGroupName, galleryName, galleryImageName, galleryImage);
@@ -364,7 +365,7 @@ public final class GalleryImagesClient {
      * @return specifies information about the gallery Image Definition that you want to create or update.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<GalleryImageInner>, GalleryImageInner> beginCreateOrUpdate(
+    public PollerFlux<PollResult<GalleryImageInner>, GalleryImageInner> beginCreateOrUpdateAsync(
         String resourceGroupName,
         String galleryName,
         String galleryImageName,
@@ -393,14 +394,55 @@ public final class GalleryImagesClient {
      * @return specifies information about the gallery Image Definition that you want to create or update.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<GalleryImageInner>, GalleryImageInner> beginCreateOrUpdate(
+        String resourceGroupName, String galleryName, String galleryImageName, GalleryImageInner galleryImage) {
+        return beginCreateOrUpdateAsync(resourceGroupName, galleryName, galleryImageName, galleryImage).getSyncPoller();
+    }
+
+    /**
+     * Create or update a gallery Image Definition.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param galleryName The name of the Shared Image Gallery in which the Image Definition is to be created.
+     * @param galleryImageName The name of the gallery Image Definition to be created or updated. The allowed characters
+     *     are alphabets and numbers with dots, dashes, and periods allowed in the middle. The maximum length is 80
+     *     characters.
+     * @param galleryImage Specifies information about the gallery Image Definition that you want to create or update.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return specifies information about the gallery Image Definition that you want to create or update.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<GalleryImageInner>, GalleryImageInner> beginCreateOrUpdate(
+        String resourceGroupName,
+        String galleryName,
+        String galleryImageName,
+        GalleryImageInner galleryImage,
+        Context context) {
+        return beginCreateOrUpdateAsync(resourceGroupName, galleryName, galleryImageName, galleryImage, context)
+            .getSyncPoller();
+    }
+
+    /**
+     * Create or update a gallery Image Definition.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param galleryName The name of the Shared Image Gallery in which the Image Definition is to be created.
+     * @param galleryImageName The name of the gallery Image Definition to be created or updated. The allowed characters
+     *     are alphabets and numbers with dots, dashes, and periods allowed in the middle. The maximum length is 80
+     *     characters.
+     * @param galleryImage Specifies information about the gallery Image Definition that you want to create or update.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return specifies information about the gallery Image Definition that you want to create or update.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<GalleryImageInner> createOrUpdateAsync(
         String resourceGroupName, String galleryName, String galleryImageName, GalleryImageInner galleryImage) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, galleryName, galleryImageName, galleryImage);
-        return this
-            .client
-            .<GalleryImageInner, GalleryImageInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), GalleryImageInner.class, GalleryImageInner.class)
+        return beginCreateOrUpdateAsync(resourceGroupName, galleryName, galleryImageName, galleryImage)
             .last()
             .flatMap(client::getLroFinalResultOrError);
     }
@@ -427,12 +469,7 @@ public final class GalleryImagesClient {
         String galleryImageName,
         GalleryImageInner galleryImage,
         Context context) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, galleryName, galleryImageName, galleryImage, context);
-        return this
-            .client
-            .<GalleryImageInner, GalleryImageInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), GalleryImageInner.class, GalleryImageInner.class)
+        return beginCreateOrUpdateAsync(resourceGroupName, galleryName, galleryImageName, galleryImage, context)
             .last()
             .flatMap(client::getLroFinalResultOrError);
     }
@@ -527,7 +564,7 @@ public final class GalleryImagesClient {
         } else {
             galleryImage.validate();
         }
-        final String apiVersion = "2019-07-01";
+        final String apiVersion = "2019-12-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -594,7 +631,7 @@ public final class GalleryImagesClient {
         } else {
             galleryImage.validate();
         }
-        final String apiVersion = "2019-07-01";
+        final String apiVersion = "2019-12-01";
         return service
             .update(
                 this.client.getEndpoint(),
@@ -622,7 +659,7 @@ public final class GalleryImagesClient {
      * @return specifies information about the gallery Image Definition that you want to create or update.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<GalleryImageInner>, GalleryImageInner> beginUpdate(
+    public PollerFlux<PollResult<GalleryImageInner>, GalleryImageInner> beginUpdateAsync(
         String resourceGroupName, String galleryName, String galleryImageName, GalleryImageUpdate galleryImage) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             updateWithResponseAsync(resourceGroupName, galleryName, galleryImageName, galleryImage);
@@ -648,7 +685,7 @@ public final class GalleryImagesClient {
      * @return specifies information about the gallery Image Definition that you want to create or update.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<GalleryImageInner>, GalleryImageInner> beginUpdate(
+    public PollerFlux<PollResult<GalleryImageInner>, GalleryImageInner> beginUpdateAsync(
         String resourceGroupName,
         String galleryName,
         String galleryImageName,
@@ -677,14 +714,55 @@ public final class GalleryImagesClient {
      * @return specifies information about the gallery Image Definition that you want to create or update.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<GalleryImageInner>, GalleryImageInner> beginUpdate(
+        String resourceGroupName, String galleryName, String galleryImageName, GalleryImageUpdate galleryImage) {
+        return beginUpdateAsync(resourceGroupName, galleryName, galleryImageName, galleryImage).getSyncPoller();
+    }
+
+    /**
+     * Update a gallery Image Definition.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param galleryName The name of the Shared Image Gallery in which the Image Definition is to be updated.
+     * @param galleryImageName The name of the gallery Image Definition to be updated. The allowed characters are
+     *     alphabets and numbers with dots, dashes, and periods allowed in the middle. The maximum length is 80
+     *     characters.
+     * @param galleryImage Specifies information about the gallery Image Definition that you want to update.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return specifies information about the gallery Image Definition that you want to create or update.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<GalleryImageInner>, GalleryImageInner> beginUpdate(
+        String resourceGroupName,
+        String galleryName,
+        String galleryImageName,
+        GalleryImageUpdate galleryImage,
+        Context context) {
+        return beginUpdateAsync(resourceGroupName, galleryName, galleryImageName, galleryImage, context)
+            .getSyncPoller();
+    }
+
+    /**
+     * Update a gallery Image Definition.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param galleryName The name of the Shared Image Gallery in which the Image Definition is to be updated.
+     * @param galleryImageName The name of the gallery Image Definition to be updated. The allowed characters are
+     *     alphabets and numbers with dots, dashes, and periods allowed in the middle. The maximum length is 80
+     *     characters.
+     * @param galleryImage Specifies information about the gallery Image Definition that you want to update.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return specifies information about the gallery Image Definition that you want to create or update.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<GalleryImageInner> updateAsync(
         String resourceGroupName, String galleryName, String galleryImageName, GalleryImageUpdate galleryImage) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateWithResponseAsync(resourceGroupName, galleryName, galleryImageName, galleryImage);
-        return this
-            .client
-            .<GalleryImageInner, GalleryImageInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), GalleryImageInner.class, GalleryImageInner.class)
+        return beginUpdateAsync(resourceGroupName, galleryName, galleryImageName, galleryImage)
             .last()
             .flatMap(client::getLroFinalResultOrError);
     }
@@ -711,12 +789,7 @@ public final class GalleryImagesClient {
         String galleryImageName,
         GalleryImageUpdate galleryImage,
         Context context) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateWithResponseAsync(resourceGroupName, galleryName, galleryImageName, galleryImage, context);
-        return this
-            .client
-            .<GalleryImageInner, GalleryImageInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), GalleryImageInner.class, GalleryImageInner.class)
+        return beginUpdateAsync(resourceGroupName, galleryName, galleryImageName, galleryImage, context)
             .last()
             .flatMap(client::getLroFinalResultOrError);
     }
@@ -803,7 +876,7 @@ public final class GalleryImagesClient {
             return Mono
                 .error(new IllegalArgumentException("Parameter galleryImageName is required and cannot be null."));
         }
-        final String apiVersion = "2019-07-01";
+        final String apiVersion = "2019-12-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -857,7 +930,7 @@ public final class GalleryImagesClient {
             return Mono
                 .error(new IllegalArgumentException("Parameter galleryImageName is required and cannot be null."));
         }
-        final String apiVersion = "2019-07-01";
+        final String apiVersion = "2019-12-01";
         return service
             .get(
                 this.client.getEndpoint(),
@@ -990,7 +1063,7 @@ public final class GalleryImagesClient {
             return Mono
                 .error(new IllegalArgumentException("Parameter galleryImageName is required and cannot be null."));
         }
-        final String apiVersion = "2019-07-01";
+        final String apiVersion = "2019-12-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -1044,7 +1117,7 @@ public final class GalleryImagesClient {
             return Mono
                 .error(new IllegalArgumentException("Parameter galleryImageName is required and cannot be null."));
         }
-        final String apiVersion = "2019-07-01";
+        final String apiVersion = "2019-12-01";
         return service
             .delete(
                 this.client.getEndpoint(),
@@ -1068,7 +1141,7 @@ public final class GalleryImagesClient {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<Void>, Void> beginDelete(
+    public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String galleryName, String galleryImageName) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             deleteWithResponseAsync(resourceGroupName, galleryName, galleryImageName);
@@ -1088,7 +1161,7 @@ public final class GalleryImagesClient {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<Void>, Void> beginDelete(
+    public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String galleryName, String galleryImageName, Context context) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             deleteWithResponseAsync(resourceGroupName, galleryName, galleryImageName, context);
@@ -1107,12 +1180,43 @@ public final class GalleryImagesClient {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<Void>, Void> beginDelete(
+        String resourceGroupName, String galleryName, String galleryImageName) {
+        return beginDeleteAsync(resourceGroupName, galleryName, galleryImageName).getSyncPoller();
+    }
+
+    /**
+     * Delete a gallery image.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param galleryName The name of the Shared Image Gallery in which the Image Definition is to be deleted.
+     * @param galleryImageName The name of the gallery Image Definition to be deleted.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<Void>, Void> beginDelete(
+        String resourceGroupName, String galleryName, String galleryImageName, Context context) {
+        return beginDeleteAsync(resourceGroupName, galleryName, galleryImageName, context).getSyncPoller();
+    }
+
+    /**
+     * Delete a gallery image.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param galleryName The name of the Shared Image Gallery in which the Image Definition is to be deleted.
+     * @param galleryImageName The name of the gallery Image Definition to be deleted.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String galleryName, String galleryImageName) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, galleryName, galleryImageName);
-        return this
-            .client
-            .<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class)
+        return beginDeleteAsync(resourceGroupName, galleryName, galleryImageName)
             .last()
             .flatMap(client::getLroFinalResultOrError);
     }
@@ -1132,11 +1236,7 @@ public final class GalleryImagesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(
         String resourceGroupName, String galleryName, String galleryImageName, Context context) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, galleryName, galleryImageName, context);
-        return this
-            .client
-            .<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class)
+        return beginDeleteAsync(resourceGroupName, galleryName, galleryImageName, context)
             .last()
             .flatMap(client::getLroFinalResultOrError);
     }
@@ -1204,7 +1304,7 @@ public final class GalleryImagesClient {
         if (galleryName == null) {
             return Mono.error(new IllegalArgumentException("Parameter galleryName is required and cannot be null."));
         }
-        final String apiVersion = "2019-07-01";
+        final String apiVersion = "2019-12-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -1261,7 +1361,7 @@ public final class GalleryImagesClient {
         if (galleryName == null) {
             return Mono.error(new IllegalArgumentException("Parameter galleryName is required and cannot be null."));
         }
-        final String apiVersion = "2019-07-01";
+        final String apiVersion = "2019-12-01";
         return service
             .listByGallery(
                 this.client.getEndpoint(),
@@ -1394,7 +1494,7 @@ public final class GalleryImagesClient {
         } else {
             galleryImage.validate();
         }
-        final String apiVersion = "2019-07-01";
+        final String apiVersion = "2019-12-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -1461,7 +1561,7 @@ public final class GalleryImagesClient {
         } else {
             galleryImage.validate();
         }
-        final String apiVersion = "2019-07-01";
+        final String apiVersion = "2019-12-01";
         return service
             .beginCreateOrUpdateWithoutPolling(
                 this.client.getEndpoint(),
@@ -1630,7 +1730,7 @@ public final class GalleryImagesClient {
         } else {
             galleryImage.validate();
         }
-        final String apiVersion = "2019-07-01";
+        final String apiVersion = "2019-12-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -1697,7 +1797,7 @@ public final class GalleryImagesClient {
         } else {
             galleryImage.validate();
         }
-        final String apiVersion = "2019-07-01";
+        final String apiVersion = "2019-12-01";
         return service
             .beginUpdateWithoutPolling(
                 this.client.getEndpoint(),
@@ -1856,7 +1956,7 @@ public final class GalleryImagesClient {
             return Mono
                 .error(new IllegalArgumentException("Parameter galleryImageName is required and cannot be null."));
         }
-        final String apiVersion = "2019-07-01";
+        final String apiVersion = "2019-12-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -1910,7 +2010,7 @@ public final class GalleryImagesClient {
             return Mono
                 .error(new IllegalArgumentException("Parameter galleryImageName is required and cannot be null."));
         }
-        final String apiVersion = "2019-07-01";
+        final String apiVersion = "2019-12-01";
         return service
             .beginDeleteWithoutPolling(
                 this.client.getEndpoint(),
