@@ -57,14 +57,6 @@ public final class QueueHelper {
      */
     public interface QueueAccessor {
         /**
-         * Sets the queue helper.
-         *
-         * @param queueDescription The queue description.
-         * @param entityHelper The entity helper that accesses methods.
-         */
-        void setHelper(QueueDescription queueDescription, QueueHelper entityHelper);
-
-        /**
          * Sets the name on a queueDescription.
          *
          * @param queueDescription Queue to set name on.

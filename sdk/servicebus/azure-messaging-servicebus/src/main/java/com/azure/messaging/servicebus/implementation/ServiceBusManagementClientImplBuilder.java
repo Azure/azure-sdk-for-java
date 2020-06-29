@@ -82,6 +82,6 @@ public final class ServiceBusManagementClientImplBuilder {
                             .policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy())
                             .build();
         }
-        return new ServiceBusManagementClientImpl(pipeline, endpoint, serializerAdapter);
+        return new ServiceBusManagementClientImpl(pipeline, endpoint, apiVersion, serializerAdapter);
     }
 }

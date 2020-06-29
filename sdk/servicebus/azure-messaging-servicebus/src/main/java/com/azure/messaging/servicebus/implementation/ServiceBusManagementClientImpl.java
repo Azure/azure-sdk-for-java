@@ -123,12 +123,12 @@ public final class ServiceBusManagementClientImpl {
     }
 
     /** Initializes an instance of ServiceBusManagementClient client. */
-    ServiceBusManagementClientImpl(String endpoint) {
+    ServiceBusManagementClientImpl(String endpoint, String apiVersion) {
         this(
                 new HttpPipelineBuilder()
                         .policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy())
                         .build(),
-                endpoint, JacksonAdapter.createDefaultSerializerAdapter());
+                endpoint, apiVersion, JacksonAdapter.createDefaultSerializerAdapter());
     }
 
     /**
@@ -136,10 +136,11 @@ public final class ServiceBusManagementClientImpl {
      *
      * @param httpPipeline The HTTP pipeline to send requests through.
      */
-    ServiceBusManagementClientImpl(HttpPipeline httpPipeline, String endpoint, SerializerAdapter serializerAdapter) {
+    ServiceBusManagementClientImpl(HttpPipeline httpPipeline, String endpoint, String apiVersion,
+        SerializerAdapter serializerAdapter) {
         this.httpPipeline = httpPipeline;
         this.endpoint = endpoint;
-        this.apiVersion = "2017-04";
+        this.apiVersion = apiVersion;
         this.serializerAdapter = serializerAdapter;
         this.entitys = new EntitysImpl(this);
         this.subscriptions = new SubscriptionsImpl(this);
