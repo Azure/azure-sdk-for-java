@@ -38,11 +38,30 @@ import java.util.Objects;
  * #buildClient() buildClient} and {@link #buildAsyncClient() buildAsyncClient} respectively to construct an instance of
  * the desired client.
  * <p>
- * The following information must be provided to successfully create a client.
- * <ul>
- *     <li>{@link #endpoint(String)}</li>
- *     <li>{@link #credential(AzureKeyCredential)} or {@link #pipeline(HttpPipeline)}</li>
- * </ul>
+ * The client needs the service endpoint of the Azure Cognitive Search to access the resource service.
+ * {@link #credential(AzureKeyCredential)} gives the builder access credential.
+ * </p>
+ *
+ * <p><strong>Instantiating an asynchronous Search Indexer Client</strong></p>
+ *
+ * {@codesnippet com.azure.search.documents.SearchIndexerAsyncClient.instantiation}
+ *
+ * <p><strong>Instantiating a synchronous Form Search Indexer Client</strong></p>
+ *
+ * {@codesnippet com.azure.search.documents.SearchIndexerClient.instantiation}
+ *
+ * <p>
+ * Another way to construct the client is using a {@link HttpPipeline}. The pipeline gives the client an
+ * authenticated way to communicate with the service. Set the pipeline with {@link #pipeline(HttpPipeline) this} and
+ * set the service endpoint with {@link #endpoint(String) this}. Using a
+ * pipeline requires additional setup but allows for finer control on how the {@link SearchIndexerClient} and
+ * {@link SearchIndexerAsyncClient} is built.
+ * </p>
+ *
+ * {@codesnippet com.azure.search.documents.SearchIndexerClient.pipeline.instantiation}
+ *
+ * @see SearchIndexerClient
+ * @see SearchIndexerAsyncClient
  */
 @ServiceClientBuilder(serviceClients = {SearchIndexerClient.class, SearchIndexerAsyncClient.class})
 public class SearchIndexerClientBuilder {
