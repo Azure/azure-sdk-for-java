@@ -77,14 +77,8 @@ gremlin:
 ### Define an entity
 Define a simple Vertex entity with `@Vertex`.
 
-<!-- embedme /src/samples/java/com/azure/spring/data/gremlin/Person.java#L4-L29 -->
+
 ```java
-package com.azure.spring.data.gremlin;
-
-import com.microsoft.spring.data.gremlin.annotation.Vertex;
-import org.springframework.data.annotation.Id;
-
-
 @Vertex
 public class Person {
 
@@ -108,15 +102,8 @@ public class Person {
 ```
 
 Define a simple Edge entity with `@Edge`.
-<!-- embedme /src/samples/java/com/azure/spring/data/gremlin/Relation.java#L4-L25 -->
+
 ```java
-package com.azure.spring.data.gremlin;
-
-import com.microsoft.spring.data.gremlin.annotation.Edge;
-import com.microsoft.spring.data.gremlin.annotation.EdgeFrom;
-import com.microsoft.spring.data.gremlin.annotation.EdgeTo;
-import org.springframework.data.annotation.Id;
-
 @Edge
 public class Relation {
 
@@ -134,19 +121,8 @@ public class Relation {
 }
 ```
 Define a simple Graph entity with `@Graph`.
-<!-- embedme /src/samples/java/com/azure/spring/data/gremlin/Network.java#L4-L32 -->
+
 ```java
-package com.azure.spring.data.gremlin;
-
-import com.microsoft.spring.data.gremlin.annotation.EdgeSet;
-import com.microsoft.spring.data.gremlin.annotation.Graph;
-import com.microsoft.spring.data.gremlin.annotation.VertexSet;
-import org.springframework.data.annotation.Id;
-
-import java.util.ArrayList;
-import java.util.List;
-
-
 @Graph
 public class Network {
 
@@ -169,15 +145,8 @@ public class Network {
 
 ### Create repositories
 Extends GremlinRepository interface, which provides Spring Data repository support.
-<!-- embedme /src/samples/java/com/azure/spring/data/gremlin/PersonRepository.java#L4-L16 -->
+
 ```java
-package com.azure.spring.data.gremlin;
-
-import com.microsoft.spring.data.gremlin.repository.GremlinRepository;
-import org.springframework.stereotype.Repository;
-
-import java.util.List;
-
 @Repository
 public interface PersonRepository extends GremlinRepository<Person, String> {
 
@@ -189,15 +158,8 @@ public interface PersonRepository extends GremlinRepository<Person, String> {
 
 ### Create an application
 Here create an application class with all the components
-<!-- embedme /src/samples/java/com/azure/spring/data/gremlin/SampleApplication.java#L4-L28 -->
+
 ```java
-package com.azure.spring.data.gremlin;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.CommandLineRunner;
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-
 @SpringBootApplication
 public class SampleApplication implements CommandLineRunner {
 
