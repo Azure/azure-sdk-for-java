@@ -1,10 +1,10 @@
 # Copyright (c) Microsoft Corporation. All rights reserved.
 # Licensed under the MIT License.
 
-# Use case: Given a README.md file, generate a readme_overview.html file and place it next 
+# Use case: Given a README.md file, generate a readme_overview.html file and place it next
 # to the README.md. This will allow the javadocs jar step to append the contents of the
 # readme onto the landing page.
-# 
+#
 # This script is necessary, instead of just invoking python markdown2 directly from the
 # command line because the generated overview.html file needs to be enclosed inside of <body>
 # tags. When the attach-javadocs runs with the overview option it will append it the contents
@@ -16,10 +16,24 @@
 
 import argparse
 from bs4 import BeautifulSoup
+from xml.sax.saxutils import escape
 import markdown2
 import os.path
 from io import open
 import sys
+
+HTML_ESCAPE_TABLE = {
+    '"': "&quot;",
+    ">": "&#62;",
+    "<": "&#60;",
+    "@": "{@literal @}",
+    "{": "&#123;",
+    "}": "&#125;",
+    "(": "&#40;",
+    ")": "&#41;",
+    "/": "&#47;",
+    "\\": "&#92;",
+}
 
 def generate_overview(readme_file, version):
 
@@ -56,7 +70,7 @@ def generate_overview(readme_file, version):
         f.write('Current version is {}, click <a href="https://azure.github.io/azure-sdk-for-java" target="new">here</a> for the index'.format(version))
         f.write('<br/>')
         if (readme_exists):
-            f.write(str(soup))
+            f.write(escape(str(soup), HTML_ESCAPE_TABLE))
         f.write('</body>')
 
 
