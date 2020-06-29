@@ -6,7 +6,6 @@ package com.azure.search.documents;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.Configuration;
 import com.azure.search.documents.models.FacetResult;
-import com.azure.search.documents.models.RequestOptions;
 import com.azure.search.documents.models.SearchOptions;
 import com.azure.search.documents.models.SearchResult;
 import com.azure.search.documents.util.SearchPagedFlux;
@@ -53,8 +52,8 @@ public class SearchOptionsAsyncExample {
         // Each page in the response of the search query holds the facets value
         // Get Facets property from the first page in the response
         SearchPagedFlux results = searchClient.search("*",
-            new SearchOptions().setFacets("Rooms/BaseRate,values:5|8|10"),
-            new RequestOptions());
+            new SearchOptions().setFacets("Rooms/BaseRate,values:5|8|10")
+        );
 
         Map<String, List<FacetResult>> facetResults = results.getFacets().block();
 
@@ -71,8 +70,8 @@ public class SearchOptionsAsyncExample {
         // Each page in the response of the search query holds the coverage value
         // Get Coverage property from the first page in the response
         SearchPagedFlux results = searchClient.search("*",
-            new SearchOptions().setMinimumCoverage(80.0),
-            new RequestOptions());
+            new SearchOptions().setMinimumCoverage(80.0)
+        );
 
         System.out.println("Coverage = " + results.getCoverage().block());
     }
@@ -82,8 +81,8 @@ public class SearchOptionsAsyncExample {
         // Get total search results count
         // Get count property from the first page in the response
         SearchPagedFlux results = searchClient.search("*",
-            new SearchOptions().setIncludeTotalCount(true),
-            new RequestOptions());
+            new SearchOptions().setIncludeTotalCount(true)
+        );
 
         System.out.println("Count = " + results.getTotalCount().block());
     }

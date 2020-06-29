@@ -12,7 +12,6 @@ import com.azure.core.util.Configuration;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.search.documents.implementation.SerializationUtil;
-import com.azure.search.documents.models.RequestOptions;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -37,7 +36,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
-import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -230,10 +228,6 @@ public final class TestHelpers {
         if (expectedMessage != null) {
             assertTrue(ex.getMessage().contains(expectedMessage));
         }
-    }
-
-    public static RequestOptions generateRequestOptions() {
-        return new RequestOptions().setClientRequestId(UUID.randomUUID());
     }
 
     public static void waitForIndexing() {

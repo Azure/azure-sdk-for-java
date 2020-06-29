@@ -51,6 +51,7 @@ class ServiceBusSenderAsyncClientIntegrationTest extends IntegrationTestBase {
 
         final int numberOfMessages = messagesPending.get();
         if (numberOfMessages < 1) {
+            dispose(receiver);
             return;
         }
 
