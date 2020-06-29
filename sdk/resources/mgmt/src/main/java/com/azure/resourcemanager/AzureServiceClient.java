@@ -182,9 +182,11 @@ public abstract class AzureServiceClient {
      */
     public <T, U> Mono<U> getLroFinalResultOrError(AsyncPollResponse<PollResult<T>, U> response) {
         if (response.getStatus() != LongRunningOperationStatus.SUCCESSFULLY_COMPLETED) {
-            return Mono.error(new ManagementException(response.getValue().getError().getMessage(), null,
-                new ManagementError(response.getStatus().toString(),
-                    response.getValue().getError().getMessage())));
+            String errorMessage = response.getValue().getError() != null
+                ? response.getValue().getError().getMessage()
+                : "Unknown error";
+            return Mono.error(new ManagementException(errorMessage, null,
+                new ManagementError(response.getStatus().toString(), errorMessage)));
         } else {
             return response.getFinalResult();
         }
