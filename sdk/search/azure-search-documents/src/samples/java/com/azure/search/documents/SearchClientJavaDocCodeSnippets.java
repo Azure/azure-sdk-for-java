@@ -8,7 +8,7 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
 
 public class SearchClientJavaDocCodeSnippets {
-    private SearchClient searchClient= new SearchClientBuilder().buildClient();
+    private SearchClient searchClient = new SearchClientBuilder().buildClient();
 
     /**
      * Code snippet for creating a {@link SearchClient}.

@@ -45,7 +45,7 @@ import java.util.Objects;
  *
  * {@codesnippet com.azure.search.documents.SearchAsyncClient.instantiation}
  *
- * <p><strong>Instantiating a synchronous Form Search Client</strong></p>
+ * <p><strong>Instantiating a synchronous Search Client</strong></p>
  *
  * {@codesnippet com.azure.search.documents.SearchClient.instantiation}
  *

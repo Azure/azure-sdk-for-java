@@ -6,7 +6,7 @@ package com.azure.search.documents.indexes;
 import com.azure.core.credential.AzureKeyCredential;
 
 public class SearchIndexerAsyncClientJavaDocCodeSnippets {
-    private SearchIndexerAsyncClient searchIndexerAsyncClient= new SearchIndexerClientBuilder().buildAsyncClient();
+    private SearchIndexerAsyncClient searchIndexerAsyncClient = new SearchIndexerClientBuilder().buildAsyncClient();
 
     /**
      * Code snippet for creating a {@link SearchIndexerAsyncClient}.
