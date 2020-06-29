@@ -226,7 +226,7 @@ public abstract class ExternalChildResourceImpl<FluentModelT extends Indexable,
      * @return the key to be used as parameter to taskResult(string) method to retrieve updated dependency
      */
     @SuppressWarnings("unchecked")
-    protected String addeDependency(Appliable<? extends Indexable> appliable) {
+    protected String addDependency(Appliable<? extends Indexable> appliable) {
         TaskGroup.HasTaskGroup dependency = (TaskGroup.HasTaskGroup) appliable;
         return this.addDependency(dependency);
     }
