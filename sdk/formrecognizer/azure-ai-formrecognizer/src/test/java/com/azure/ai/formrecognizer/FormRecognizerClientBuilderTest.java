@@ -3,8 +3,8 @@
 
 package com.azure.ai.formrecognizer;
 
-import com.azure.ai.formrecognizer.models.ErrorResponseException;
 import com.azure.core.credential.AzureKeyCredential;
+import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
@@ -84,20 +84,20 @@ public class FormRecognizerClientBuilderTest extends TestBase {
     // Client builder runner
     void clientBuilderWithInvalidApiKeyCredentialRunner(HttpClient httpClient,
         FormRecognizerServiceVersion serviceVersion,
-        Function<FormRecognizerClientBuilder, BiConsumer<String, ErrorResponseException>> testRunner) {
+        Function<FormRecognizerClientBuilder, BiConsumer<String, HttpResponseException>> testRunner) {
         final FormRecognizerClientBuilder clientBuilder = createClientBuilder(httpClient, serviceVersion, getEndpoint(),
             new AzureKeyCredential(INVALID_KEY));
-        testRunner.apply(clientBuilder).accept(FORM_JPG, new ErrorResponseException("", null));
+        testRunner.apply(clientBuilder).accept(FORM_JPG, new HttpResponseException("", null));
     }
 
     void clientBuilderWithRotateToInvalidKeyRunner(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion,
-        Function<FormRecognizerClientBuilder, BiConsumer<String, ErrorResponseException>> testRunner) {
+        Function<FormRecognizerClientBuilder, BiConsumer<String, HttpResponseException>> testRunner) {
         final AzureKeyCredential credential = new AzureKeyCredential(getApiKey());
         final FormRecognizerClientBuilder clientBuilder = createClientBuilder(httpClient, serviceVersion,
             getEndpoint(), credential);
         // Update to invalid key
         credential.update(INVALID_KEY);
-        testRunner.apply(clientBuilder).accept(FORM_JPG, new ErrorResponseException("", null));
+        testRunner.apply(clientBuilder).accept(FORM_JPG, new HttpResponseException("", null));
     }
 
     String getEndpoint() {
