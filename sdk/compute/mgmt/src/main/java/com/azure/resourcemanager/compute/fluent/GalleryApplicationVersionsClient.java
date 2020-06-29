@@ -29,7 +29,6 @@ import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.util.polling.AsyncPollResponse;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.compute.ComputeManagementClient;
@@ -555,7 +554,7 @@ public final class GalleryApplicationVersionsClient {
                 galleryApplicationVersionName,
                 galleryApplicationVersion)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -592,7 +591,7 @@ public final class GalleryApplicationVersionsClient {
                 galleryApplicationVersion,
                 context)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -1005,7 +1004,7 @@ public final class GalleryApplicationVersionsClient {
                 galleryApplicationVersionName,
                 galleryApplicationVersion)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -1042,7 +1041,7 @@ public final class GalleryApplicationVersionsClient {
                 galleryApplicationVersion,
                 context)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -1681,7 +1680,7 @@ public final class GalleryApplicationVersionsClient {
         String galleryApplicationVersionName) {
         return beginDeleteAsync(resourceGroupName, galleryName, galleryApplicationName, galleryApplicationVersionName)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -1708,7 +1707,7 @@ public final class GalleryApplicationVersionsClient {
         return beginDeleteAsync(
                 resourceGroupName, galleryName, galleryApplicationName, galleryApplicationVersionName, context)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**

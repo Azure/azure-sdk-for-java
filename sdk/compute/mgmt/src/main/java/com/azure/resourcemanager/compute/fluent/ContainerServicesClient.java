@@ -29,7 +29,6 @@ import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.util.polling.AsyncPollResponse;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.compute.ComputeManagementClient;
@@ -519,7 +518,7 @@ public final class ContainerServicesClient
         String resourceGroupName, String containerServiceName, ContainerServiceInner parameters) {
         return beginCreateOrUpdateAsync(resourceGroupName, containerServiceName, parameters)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -539,7 +538,7 @@ public final class ContainerServicesClient
         String resourceGroupName, String containerServiceName, ContainerServiceInner parameters, Context context) {
         return beginCreateOrUpdateAsync(resourceGroupName, containerServiceName, parameters, context)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -957,7 +956,7 @@ public final class ContainerServicesClient
     public Mono<Void> deleteAsync(String resourceGroupName, String containerServiceName) {
         return beginDeleteAsync(resourceGroupName, containerServiceName)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -978,7 +977,7 @@ public final class ContainerServicesClient
     public Mono<Void> deleteAsync(String resourceGroupName, String containerServiceName, Context context) {
         return beginDeleteAsync(resourceGroupName, containerServiceName, context)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**

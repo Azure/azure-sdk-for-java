@@ -29,7 +29,6 @@ import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.util.polling.AsyncPollResponse;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.compute.ComputeManagementClient;
@@ -444,7 +443,7 @@ public final class DiskEncryptionSetsClient
         String resourceGroupName, String diskEncryptionSetName, DiskEncryptionSetInner diskEncryptionSet) {
         return beginCreateOrUpdateAsync(resourceGroupName, diskEncryptionSetName, diskEncryptionSet)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -469,7 +468,7 @@ public final class DiskEncryptionSetsClient
         Context context) {
         return beginCreateOrUpdateAsync(resourceGroupName, diskEncryptionSetName, diskEncryptionSet, context)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -742,7 +741,7 @@ public final class DiskEncryptionSetsClient
         String resourceGroupName, String diskEncryptionSetName, DiskEncryptionSetUpdate diskEncryptionSet) {
         return beginUpdateAsync(resourceGroupName, diskEncryptionSetName, diskEncryptionSet)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -767,7 +766,7 @@ public final class DiskEncryptionSetsClient
         Context context) {
         return beginUpdateAsync(resourceGroupName, diskEncryptionSetName, diskEncryptionSet, context)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -1186,7 +1185,7 @@ public final class DiskEncryptionSetsClient
     public Mono<Void> deleteAsync(String resourceGroupName, String diskEncryptionSetName) {
         return beginDeleteAsync(resourceGroupName, diskEncryptionSetName)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -1206,7 +1205,7 @@ public final class DiskEncryptionSetsClient
     public Mono<Void> deleteAsync(String resourceGroupName, String diskEncryptionSetName, Context context) {
         return beginDeleteAsync(resourceGroupName, diskEncryptionSetName, context)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**

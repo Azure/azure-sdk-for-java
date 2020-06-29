@@ -30,7 +30,6 @@ import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.util.polling.AsyncPollResponse;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.compute.ComputeManagementClient;
@@ -425,7 +424,7 @@ public final class ImagesClient
     public Mono<ImageInner> createOrUpdateAsync(String resourceGroupName, String imageName, ImageInner parameters) {
         return beginCreateOrUpdateAsync(resourceGroupName, imageName, parameters)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -447,7 +446,7 @@ public final class ImagesClient
         String resourceGroupName, String imageName, ImageInner parameters, Context context) {
         return beginCreateOrUpdateAsync(resourceGroupName, imageName, parameters, context)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -687,7 +686,7 @@ public final class ImagesClient
     public Mono<ImageInner> updateAsync(String resourceGroupName, String imageName, ImageUpdate parameters) {
         return beginUpdateAsync(resourceGroupName, imageName, parameters)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -707,7 +706,7 @@ public final class ImagesClient
         String resourceGroupName, String imageName, ImageUpdate parameters, Context context) {
         return beginUpdateAsync(resourceGroupName, imageName, parameters, context)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -910,7 +909,7 @@ public final class ImagesClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String imageName) {
-        return beginDeleteAsync(resourceGroupName, imageName).last().flatMap(AsyncPollResponse::getFinalResult);
+        return beginDeleteAsync(resourceGroupName, imageName).last().flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -928,7 +927,7 @@ public final class ImagesClient
     public Mono<Void> deleteAsync(String resourceGroupName, String imageName, Context context) {
         return beginDeleteAsync(resourceGroupName, imageName, context)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**

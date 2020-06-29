@@ -23,7 +23,6 @@ import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.util.polling.AsyncPollResponse;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.compute.ComputeManagementClient;
@@ -310,7 +309,7 @@ public final class LogAnalyticsClient {
         String location, RequestRateByIntervalInput parameters) {
         return beginExportRequestRateByIntervalAsync(location, parameters)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -330,7 +329,7 @@ public final class LogAnalyticsClient {
         String location, RequestRateByIntervalInput parameters, Context context) {
         return beginExportRequestRateByIntervalAsync(location, parameters, context)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -551,7 +550,7 @@ public final class LogAnalyticsClient {
         String location, LogAnalyticsInputBase parameters) {
         return beginExportThrottledRequestsAsync(location, parameters)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -570,7 +569,7 @@ public final class LogAnalyticsClient {
         String location, LogAnalyticsInputBase parameters, Context context) {
         return beginExportThrottledRequestsAsync(location, parameters, context)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**

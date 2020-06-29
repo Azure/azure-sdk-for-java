@@ -31,7 +31,6 @@ import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.util.polling.AsyncPollResponse;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.resourcemanager.network.NetworkManagementClient;
 import com.azure.resourcemanager.network.fluent.inner.BgpPeerStatusListResultInner;
@@ -764,7 +763,7 @@ public final class VirtualNetworkGatewaysClient
             .<VirtualNetworkGatewayInner, VirtualNetworkGatewayInner>getLroResultAsync(
                 mono, this.client.getHttpPipeline(), VirtualNetworkGatewayInner.class, VirtualNetworkGatewayInner.class)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -792,7 +791,7 @@ public final class VirtualNetworkGatewaysClient
             .<VirtualNetworkGatewayInner, VirtualNetworkGatewayInner>getLroResultAsync(
                 mono, this.client.getHttpPipeline(), VirtualNetworkGatewayInner.class, VirtualNetworkGatewayInner.class)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -1160,7 +1159,7 @@ public final class VirtualNetworkGatewaysClient
             .client
             .<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -1182,7 +1181,7 @@ public final class VirtualNetworkGatewaysClient
             .client
             .<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -1391,7 +1390,7 @@ public final class VirtualNetworkGatewaysClient
             .<VirtualNetworkGatewayInner, VirtualNetworkGatewayInner>getLroResultAsync(
                 mono, this.client.getHttpPipeline(), VirtualNetworkGatewayInner.class, VirtualNetworkGatewayInner.class)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -1416,7 +1415,7 @@ public final class VirtualNetworkGatewaysClient
             .<VirtualNetworkGatewayInner, VirtualNetworkGatewayInner>getLroResultAsync(
                 mono, this.client.getHttpPipeline(), VirtualNetworkGatewayInner.class, VirtualNetworkGatewayInner.class)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -1973,7 +1972,7 @@ public final class VirtualNetworkGatewaysClient
             .<VirtualNetworkGatewayInner, VirtualNetworkGatewayInner>getLroResultAsync(
                 mono, this.client.getHttpPipeline(), VirtualNetworkGatewayInner.class, VirtualNetworkGatewayInner.class)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -1999,7 +1998,7 @@ public final class VirtualNetworkGatewaysClient
             .<VirtualNetworkGatewayInner, VirtualNetworkGatewayInner>getLroResultAsync(
                 mono, this.client.getHttpPipeline(), VirtualNetworkGatewayInner.class, VirtualNetworkGatewayInner.class)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -2023,7 +2022,7 @@ public final class VirtualNetworkGatewaysClient
             .<VirtualNetworkGatewayInner, VirtualNetworkGatewayInner>getLroResultAsync(
                 mono, this.client.getHttpPipeline(), VirtualNetworkGatewayInner.class, VirtualNetworkGatewayInner.class)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -2232,7 +2231,7 @@ public final class VirtualNetworkGatewaysClient
             .client
             .<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -2255,7 +2254,7 @@ public final class VirtualNetworkGatewaysClient
             .client
             .<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -2462,7 +2461,7 @@ public final class VirtualNetworkGatewaysClient
             .client
             .<String, String>getLroResultAsync(mono, this.client.getHttpPipeline(), String.class, String.class)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -2487,7 +2486,7 @@ public final class VirtualNetworkGatewaysClient
             .client
             .<String, String>getLroResultAsync(mono, this.client.getHttpPipeline(), String.class, String.class)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -2704,7 +2703,7 @@ public final class VirtualNetworkGatewaysClient
             .client
             .<String, String>getLroResultAsync(mono, this.client.getHttpPipeline(), String.class, String.class)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -2729,7 +2728,7 @@ public final class VirtualNetworkGatewaysClient
             .client
             .<String, String>getLroResultAsync(mono, this.client.getHttpPipeline(), String.class, String.class)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -2930,7 +2929,7 @@ public final class VirtualNetworkGatewaysClient
             .client
             .<String, String>getLroResultAsync(mono, this.client.getHttpPipeline(), String.class, String.class)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -2954,7 +2953,7 @@ public final class VirtualNetworkGatewaysClient
             .client
             .<String, String>getLroResultAsync(mono, this.client.getHttpPipeline(), String.class, String.class)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -3166,7 +3165,7 @@ public final class VirtualNetworkGatewaysClient
                 BgpPeerStatusListResultInner.class,
                 BgpPeerStatusListResultInner.class)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -3194,7 +3193,7 @@ public final class VirtualNetworkGatewaysClient
                 BgpPeerStatusListResultInner.class,
                 BgpPeerStatusListResultInner.class)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -3222,7 +3221,7 @@ public final class VirtualNetworkGatewaysClient
                 BgpPeerStatusListResultInner.class,
                 BgpPeerStatusListResultInner.class)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -3627,7 +3626,7 @@ public final class VirtualNetworkGatewaysClient
                 GatewayRouteListResultInner.class,
                 GatewayRouteListResultInner.class)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -3655,7 +3654,7 @@ public final class VirtualNetworkGatewaysClient
                 GatewayRouteListResultInner.class,
                 GatewayRouteListResultInner.class)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -3874,7 +3873,7 @@ public final class VirtualNetworkGatewaysClient
                 GatewayRouteListResultInner.class,
                 GatewayRouteListResultInner.class)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -3902,7 +3901,7 @@ public final class VirtualNetworkGatewaysClient
                 GatewayRouteListResultInner.class,
                 GatewayRouteListResultInner.class)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -4150,7 +4149,7 @@ public final class VirtualNetworkGatewaysClient
                 VpnClientIPsecParametersInner.class,
                 VpnClientIPsecParametersInner.class)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -4183,7 +4182,7 @@ public final class VirtualNetworkGatewaysClient
                 VpnClientIPsecParametersInner.class,
                 VpnClientIPsecParametersInner.class)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -4405,7 +4404,7 @@ public final class VirtualNetworkGatewaysClient
                 VpnClientIPsecParametersInner.class,
                 VpnClientIPsecParametersInner.class)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -4433,7 +4432,7 @@ public final class VirtualNetworkGatewaysClient
                 VpnClientIPsecParametersInner.class,
                 VpnClientIPsecParametersInner.class)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -4872,7 +4871,7 @@ public final class VirtualNetworkGatewaysClient
                     VpnClientConnectionHealthDetailListResultInner.class,
                     VpnClientConnectionHealthDetailListResultInner.class)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -4902,7 +4901,7 @@ public final class VirtualNetworkGatewaysClient
                     VpnClientConnectionHealthDetailListResultInner.class,
                     VpnClientConnectionHealthDetailListResultInner.class)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**

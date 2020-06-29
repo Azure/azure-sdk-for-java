@@ -30,7 +30,6 @@ import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.util.polling.AsyncPollResponse;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.compute.ComputeManagementClient;
@@ -463,7 +462,7 @@ public final class VirtualMachineScaleSetExtensionsClient {
         VirtualMachineScaleSetExtensionInner extensionParameters) {
         return beginCreateOrUpdateAsync(resourceGroupName, vmScaleSetName, vmssExtensionName, extensionParameters)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -489,7 +488,7 @@ public final class VirtualMachineScaleSetExtensionsClient {
         return beginCreateOrUpdateAsync(
                 resourceGroupName, vmScaleSetName, vmssExtensionName, extensionParameters, context)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -793,7 +792,7 @@ public final class VirtualMachineScaleSetExtensionsClient {
         VirtualMachineScaleSetExtensionUpdate extensionParameters) {
         return beginUpdateAsync(resourceGroupName, vmScaleSetName, vmssExtensionName, extensionParameters)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -818,7 +817,7 @@ public final class VirtualMachineScaleSetExtensionsClient {
         Context context) {
         return beginUpdateAsync(resourceGroupName, vmScaleSetName, vmssExtensionName, extensionParameters, context)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -1057,7 +1056,7 @@ public final class VirtualMachineScaleSetExtensionsClient {
     public Mono<Void> deleteAsync(String resourceGroupName, String vmScaleSetName, String vmssExtensionName) {
         return beginDeleteAsync(resourceGroupName, vmScaleSetName, vmssExtensionName)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -1077,7 +1076,7 @@ public final class VirtualMachineScaleSetExtensionsClient {
         String resourceGroupName, String vmScaleSetName, String vmssExtensionName, Context context) {
         return beginDeleteAsync(resourceGroupName, vmScaleSetName, vmssExtensionName, context)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**

@@ -26,7 +26,6 @@ import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.util.polling.AsyncPollResponse;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.compute.ComputeManagementClient;
@@ -444,7 +443,7 @@ public final class VirtualMachineExtensionsClient {
         VirtualMachineExtensionInner extensionParameters) {
         return beginCreateOrUpdateAsync(resourceGroupName, vmName, vmExtensionName, extensionParameters)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -469,7 +468,7 @@ public final class VirtualMachineExtensionsClient {
         Context context) {
         return beginCreateOrUpdateAsync(resourceGroupName, vmName, vmExtensionName, extensionParameters, context)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -767,7 +766,7 @@ public final class VirtualMachineExtensionsClient {
         VirtualMachineExtensionUpdate extensionParameters) {
         return beginUpdateAsync(resourceGroupName, vmName, vmExtensionName, extensionParameters)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -792,7 +791,7 @@ public final class VirtualMachineExtensionsClient {
         Context context) {
         return beginUpdateAsync(resourceGroupName, vmName, vmExtensionName, extensionParameters, context)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -1030,7 +1029,7 @@ public final class VirtualMachineExtensionsClient {
     public Mono<Void> deleteAsync(String resourceGroupName, String vmName, String vmExtensionName) {
         return beginDeleteAsync(resourceGroupName, vmName, vmExtensionName)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -1049,7 +1048,7 @@ public final class VirtualMachineExtensionsClient {
     public Mono<Void> deleteAsync(String resourceGroupName, String vmName, String vmExtensionName, Context context) {
         return beginDeleteAsync(resourceGroupName, vmName, vmExtensionName, context)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**

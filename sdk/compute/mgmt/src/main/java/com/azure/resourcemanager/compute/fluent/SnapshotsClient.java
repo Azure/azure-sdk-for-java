@@ -31,7 +31,6 @@ import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.util.polling.AsyncPollResponse;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.compute.ComputeManagementClient;
@@ -480,7 +479,7 @@ public final class SnapshotsClient
         String resourceGroupName, String snapshotName, SnapshotInner snapshot) {
         return beginCreateOrUpdateAsync(resourceGroupName, snapshotName, snapshot)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -501,7 +500,7 @@ public final class SnapshotsClient
         String resourceGroupName, String snapshotName, SnapshotInner snapshot, Context context) {
         return beginCreateOrUpdateAsync(resourceGroupName, snapshotName, snapshot, context)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -746,7 +745,7 @@ public final class SnapshotsClient
     public Mono<SnapshotInner> updateAsync(String resourceGroupName, String snapshotName, SnapshotUpdate snapshot) {
         return beginUpdateAsync(resourceGroupName, snapshotName, snapshot)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -767,7 +766,7 @@ public final class SnapshotsClient
         String resourceGroupName, String snapshotName, SnapshotUpdate snapshot, Context context) {
         return beginUpdateAsync(resourceGroupName, snapshotName, snapshot, context)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -1156,7 +1155,7 @@ public final class SnapshotsClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String snapshotName) {
-        return beginDeleteAsync(resourceGroupName, snapshotName).last().flatMap(AsyncPollResponse::getFinalResult);
+        return beginDeleteAsync(resourceGroupName, snapshotName).last().flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -1175,7 +1174,7 @@ public final class SnapshotsClient
     public Mono<Void> deleteAsync(String resourceGroupName, String snapshotName, Context context) {
         return beginDeleteAsync(resourceGroupName, snapshotName, context)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -1702,7 +1701,7 @@ public final class SnapshotsClient
         String resourceGroupName, String snapshotName, GrantAccessData grantAccessData) {
         return beginGrantAccessAsync(resourceGroupName, snapshotName, grantAccessData)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -1723,7 +1722,7 @@ public final class SnapshotsClient
         String resourceGroupName, String snapshotName, GrantAccessData grantAccessData, Context context) {
         return beginGrantAccessAsync(resourceGroupName, snapshotName, grantAccessData, context)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -1940,7 +1939,7 @@ public final class SnapshotsClient
     public Mono<Void> revokeAccessAsync(String resourceGroupName, String snapshotName) {
         return beginRevokeAccessAsync(resourceGroupName, snapshotName)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -1959,7 +1958,7 @@ public final class SnapshotsClient
     public Mono<Void> revokeAccessAsync(String resourceGroupName, String snapshotName, Context context) {
         return beginRevokeAccessAsync(resourceGroupName, snapshotName, context)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**
