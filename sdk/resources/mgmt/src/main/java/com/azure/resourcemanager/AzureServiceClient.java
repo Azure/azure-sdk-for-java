@@ -13,10 +13,12 @@ import com.azure.core.management.polling.PollResult;
 import com.azure.core.management.serializer.AzureJacksonAdapter;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.AsyncPollResponse;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.serializer.SerializerAdapter;
+import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -45,6 +47,8 @@ import java.util.Enumeration;
  * ServiceClient is the abstraction for accessing REST operations and their payload data types.
  */
 public abstract class AzureServiceClient {
+
+    private final ClientLogger clientLogger = new ClientLogger(AzureServiceClient.class);
 
     protected AzureServiceClient(HttpPipeline httpPipeline, AzureEnvironment environment) {
         ((AzureJacksonAdapter) serializerAdapter).serializer().registerModule(DateTimeDeserializer.getModule());
@@ -182,11 +186,34 @@ public abstract class AzureServiceClient {
      */
     public <T, U> Mono<U> getLroFinalResultOrError(AsyncPollResponse<PollResult<T>, U> response) {
         if (response.getStatus() != LongRunningOperationStatus.SUCCESSFULLY_COMPLETED) {
-            String errorMessage = response.getValue().getError() != null
-                ? response.getValue().getError().getMessage()
-                : "Unknown error";
-            return Mono.error(new ManagementException(errorMessage, null,
-                new ManagementError(response.getStatus().toString(), errorMessage)));
+            String errorMessage;
+            ManagementError managementError = null;
+            if (response.getValue().getError() != null) {
+                errorMessage = response.getValue().getError().getMessage();
+                String errorBody = response.getValue().getError().getResponseBody();
+                if (errorBody != null) {
+                    // try to deserialize error body to ManagementError
+                    try {
+                        managementError = this.getSerializerAdapter().deserialize(
+                            errorBody,
+                            ManagementError.class,
+                            SerializerEncoding.JSON);
+                        if (managementError.getCode() == null || managementError.getMessage() == null) {
+                            managementError = null;
+                        }
+                    } catch (IOException ioe) {
+                        clientLogger.logThrowableAsWarning(ioe);
+                    }
+                }
+            } else {
+                // fallback to default error message
+                errorMessage = "Long running operation failed.";
+            }
+            if (managementError == null) {
+                // fallback to default ManagementError
+                managementError = new ManagementError(response.getStatus().toString(), errorMessage);
+            }
+            return Mono.error(new ManagementException(errorMessage, null, managementError));
         } else {
             return response.getFinalResult();
         }
