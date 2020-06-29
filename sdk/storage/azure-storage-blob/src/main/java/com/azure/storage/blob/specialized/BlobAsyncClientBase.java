@@ -35,6 +35,7 @@ import com.azure.storage.blob.implementation.util.ChunkedDownloadUtils;
 import com.azure.storage.blob.implementation.util.ModelHelper;
 import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.ArchiveStatus;
+import com.azure.storage.blob.models.BlobDownloadHeaders;
 import com.azure.storage.blob.options.BlobBeginCopyOptions;
 import com.azure.storage.blob.options.BlobCopyFromUrlOptions;
 import com.azure.storage.blob.models.BlobCopyInfo;
@@ -1054,9 +1055,7 @@ public class BlobAsyncClientBase {
 
     private static Response<BlobProperties> buildBlobPropertiesResponse(BlobDownloadAsyncResponse response) {
         // blobSize determination - contentLength only returns blobSize if the download is not chunked.
-        long blobSize = response.getDeserializedHeaders().getContentRange() == null
-            ? response.getDeserializedHeaders().getContentLength()
-            : ChunkedDownloadUtils.extractTotalBlobLength(response.getDeserializedHeaders().getContentRange());
+        long blobSize = getBlobLength(response.getDeserializedHeaders());
         BlobProperties properties = new BlobProperties(null, response.getDeserializedHeaders().getLastModified(),
             response.getDeserializedHeaders().getETag(), blobSize, response.getDeserializedHeaders().getContentType(),
             null, response.getDeserializedHeaders().getContentEncoding(),
@@ -1079,6 +1078,11 @@ public class BlobAsyncClientBase {
             response.getDeserializedHeaders().getObjectReplicationSourcePolicies(),
             response.getDeserializedHeaders().getObjectReplicationDestinationPolicyId());
         return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), properties);
+    }
+
+    static long getBlobLength(BlobDownloadHeaders headers) {
+        return headers.getContentRange() == null ? headers.getContentLength()
+            : ChunkedDownloadUtils.extractTotalBlobLength(headers.getContentRange());
     }
 
     private void downloadToFileCleanup(AsynchronousFileChannel channel, String filePath, SignalType signalType) {

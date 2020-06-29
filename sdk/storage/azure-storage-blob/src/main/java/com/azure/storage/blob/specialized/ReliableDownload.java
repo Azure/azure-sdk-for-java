@@ -6,6 +6,7 @@ package com.azure.storage.blob.specialized;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.storage.blob.BlobAsyncClient;
 import com.azure.storage.blob.HttpGetterInfo;
 import com.azure.storage.blob.implementation.models.BlobsDownloadResponse;
 import com.azure.storage.blob.implementation.util.ChunkedDownloadUtils;
@@ -55,8 +56,8 @@ final class ReliableDownload {
         from the response for better book keeping towards the end.
          */
         if (this.info.getCount() == null) {
-            long blobLength = ChunkedDownloadUtils.extractTotalBlobLength(rawResponse.getDeserializedHeaders()
-                .getContentRange());
+            long blobLength = BlobAsyncClientBase.getBlobLength(
+                ModelHelper.populateBlobDownloadHeaders(rawResponse.getDeserializedHeaders()));
             info.setCount(blobLength - info.getOffset());
         }
     }
