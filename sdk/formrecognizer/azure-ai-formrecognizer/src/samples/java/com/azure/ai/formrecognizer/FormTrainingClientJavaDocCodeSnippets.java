@@ -159,11 +159,11 @@ public class FormTrainingClientJavaDocCodeSnippets {
     public void listCustomModels() {
         // BEGIN: com.azure.ai.formrecognizer.training.FormTrainingClient.listCustomModels
         formTrainingClient.listCustomModels().forEach(customModel ->
-            System.out.printf("Model Id: %s, Model status: %s, Created on: %s, Last updated on: %s.%n",
+            System.out.printf("Model Id: %s, Model status: %s, Training started on: %s, Training completed on: %s.%n",
                 customModel.getModelId(),
                 customModel.getStatus(),
-                customModel.getRequestedOn(),
-                customModel.getCompletedOn())
+                customModel.getTrainingStartedOn(),
+                customModel.getTrainingCompletedOn())
         );
         // END: com.azure.ai.formrecognizer.training.FormTrainingClient.listCustomModels
     }
@@ -174,11 +174,11 @@ public class FormTrainingClientJavaDocCodeSnippets {
     public void listCustomModelsWithContext() {
         // BEGIN: com.azure.ai.formrecognizer.training.FormTrainingClient.listCustomModels#Context
         formTrainingClient.listCustomModels(Context.NONE).forEach(customModel ->
-            System.out.printf("Model Id: %s, Model status: %s, Created on: %s, Last updated on: %s.%n",
+            System.out.printf("Model Id: %s, Model status: %s, Training started on: %s, Training completed on: %s.%n",
                 customModel.getModelId(),
                 customModel.getStatus(),
-                customModel.getRequestedOn(),
-                customModel.getCompletedOn())
+                customModel.getTrainingStartedOn(),
+                customModel.getTrainingCompletedOn())
         );
         // END: com.azure.ai.formrecognizer.training.FormTrainingClient.listCustomModels#Context
     }
@@ -198,12 +198,12 @@ public class FormTrainingClientJavaDocCodeSnippets {
             resourceRegion);
         formTrainingClient.beginCopyModel(copyModelId, copyAuthorization).waitForCompletion();
         CustomFormModel modelCopy = targetFormTrainingClient.getCustomModel(copyAuthorization.getModelId());
-        System.out.printf("Copied model has model Id: %s, model status: %s, was requested on: %s,"
-                + " transfer completed on: %s.%n",
+        System.out.printf("Copied model has model Id: %s, model status: %s, training started on: %s,"
+                + " training completed on: %s.%n",
             modelCopy.getModelId(),
             modelCopy.getModelStatus(),
-            modelCopy.getRequestedOn(),
-            modelCopy.getCompletedOn());
+            modelCopy.getTrainingStartedOn(),
+            modelCopy.getTrainingCompletedOn());
         // END: com.azure.ai.formrecognizer.training.FormTrainingClient.beginCopyModel#string-copyAuthorization
     }
 
@@ -226,8 +226,8 @@ public class FormTrainingClientJavaDocCodeSnippets {
                 + " transfer completed on: %s.%n",
             modelCopy.getModelId(),
             modelCopy.getModelStatus(),
-            modelCopy.getRequestedOn(),
-            modelCopy.getCompletedOn());
+            modelCopy.getTrainingStartedOn(),
+            modelCopy.getTrainingCompletedOn());
         // END: com.azure.ai.formrecognizer.training.FormTrainingClient.beginCopyModel#string-copyAuthorization-Duration
     }
 
