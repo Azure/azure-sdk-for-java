@@ -10,45 +10,45 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The ListP2SVpnServerConfigurationsResult model. */
+/** The BastionSessionDeleteResult model. */
 @Fluent
-public final class ListP2SVpnServerConfigurationsResultInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ListP2SVpnServerConfigurationsResultInner.class);
+public final class BastionSessionDeleteResultInner {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(BastionSessionDeleteResultInner.class);
 
     /*
-     * List of P2SVpnServerConfigurations.
+     * List of sessions with their corresponding state.
      */
     @JsonProperty(value = "value")
-    private List<P2SVpnServerConfigurationInner> value;
+    private List<BastionSessionStateInner> value;
 
     /*
-     * URL to get the next set of operation list results if there are any.
+     * The URL to get the next set of results.
      */
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
     /**
-     * Get the value property: List of P2SVpnServerConfigurations.
+     * Get the value property: List of sessions with their corresponding state.
      *
      * @return the value value.
      */
-    public List<P2SVpnServerConfigurationInner> value() {
+    public List<BastionSessionStateInner> value() {
         return this.value;
     }
 
     /**
-     * Set the value property: List of P2SVpnServerConfigurations.
+     * Set the value property: List of sessions with their corresponding state.
      *
      * @param value the value value to set.
-     * @return the ListP2SVpnServerConfigurationsResultInner object itself.
+     * @return the BastionSessionDeleteResultInner object itself.
      */
-    public ListP2SVpnServerConfigurationsResultInner withValue(List<P2SVpnServerConfigurationInner> value) {
+    public BastionSessionDeleteResultInner withValue(List<BastionSessionStateInner> value) {
         this.value = value;
         return this;
     }
 
     /**
-     * Get the nextLink property: URL to get the next set of operation list results if there are any.
+     * Get the nextLink property: The URL to get the next set of results.
      *
      * @return the nextLink value.
      */
@@ -57,12 +57,12 @@ public final class ListP2SVpnServerConfigurationsResultInner {
     }
 
     /**
-     * Set the nextLink property: URL to get the next set of operation list results if there are any.
+     * Set the nextLink property: The URL to get the next set of results.
      *
      * @param nextLink the nextLink value to set.
-     * @return the ListP2SVpnServerConfigurationsResultInner object itself.
+     * @return the BastionSessionDeleteResultInner object itself.
      */
-    public ListP2SVpnServerConfigurationsResultInner withNextLink(String nextLink) {
+    public BastionSessionDeleteResultInner withNextLink(String nextLink) {
         this.nextLink = nextLink;
         return this;
     }

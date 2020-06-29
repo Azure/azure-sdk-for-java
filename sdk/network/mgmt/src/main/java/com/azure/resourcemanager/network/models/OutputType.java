@@ -7,28 +7,28 @@ package com.azure.resourcemanager.network.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for PublicIpPrefixSkuName. */
-public enum PublicIpPrefixSkuName {
-    /** Enum value Standard. */
-    STANDARD("Standard");
+/** Defines values for OutputType. */
+public enum OutputType {
+    /** Enum value Workspace. */
+    WORKSPACE("Workspace");
 
-    /** The actual serialized value for a PublicIpPrefixSkuName instance. */
+    /** The actual serialized value for a OutputType instance. */
     private final String value;
 
-    PublicIpPrefixSkuName(String value) {
+    OutputType(String value) {
         this.value = value;
     }
 
     /**
-     * Parses a serialized value to a PublicIpPrefixSkuName instance.
+     * Parses a serialized value to a OutputType instance.
      *
      * @param value the serialized value to parse.
-     * @return the parsed PublicIpPrefixSkuName object, or null if unable to parse.
+     * @return the parsed OutputType object, or null if unable to parse.
      */
     @JsonCreator
-    public static PublicIpPrefixSkuName fromString(String value) {
-        PublicIpPrefixSkuName[] items = PublicIpPrefixSkuName.values();
-        for (PublicIpPrefixSkuName item : items) {
+    public static OutputType fromString(String value) {
+        OutputType[] items = OutputType.values();
+        for (OutputType item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
                 return item;
             }

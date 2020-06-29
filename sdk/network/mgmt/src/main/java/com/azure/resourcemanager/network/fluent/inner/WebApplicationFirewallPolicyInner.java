@@ -7,8 +7,11 @@ package com.azure.resourcemanager.network.fluent.inner;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
+import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.network.models.ManagedRulesDefinition;
 import com.azure.resourcemanager.network.models.PolicySettings;
+import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.azure.resourcemanager.network.models.WebApplicationFirewallCustomRule;
 import com.azure.resourcemanager.network.models.WebApplicationFirewallPolicyResourceState;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -22,20 +25,19 @@ public class WebApplicationFirewallPolicyInner extends Resource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(WebApplicationFirewallPolicyInner.class);
 
     /*
-     * Gets a unique read-only string that changes whenever the resource is
-     * updated.
+     * A unique read-only string that changes whenever the resource is updated.
      */
-    @JsonProperty(value = "etag")
+    @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
 
     /*
-     * Describes policySettings for policy.
+     * The PolicySettings for policy.
      */
     @JsonProperty(value = "properties.policySettings")
     private PolicySettings policySettings;
 
     /*
-     * Describes custom rules inside the policy.
+     * The custom rules inside the policy.
      */
     @JsonProperty(value = "properties.customRules")
     private List<WebApplicationFirewallCustomRule> customRules;
@@ -47,10 +49,10 @@ public class WebApplicationFirewallPolicyInner extends Resource {
     private List<ApplicationGatewayInner> applicationGateways;
 
     /*
-     * Provisioning state of the WebApplicationFirewallPolicy.
+     * The provisioning state of the web application firewall policy resource.
      */
     @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private String provisioningState;
+    private ProvisioningState provisioningState;
 
     /*
      * Resource status of the policy.
@@ -59,13 +61,31 @@ public class WebApplicationFirewallPolicyInner extends Resource {
     private WebApplicationFirewallPolicyResourceState resourceState;
 
     /*
+     * Describes the managedRules structure.
+     */
+    @JsonProperty(value = "properties.managedRules")
+    private ManagedRulesDefinition managedRules;
+
+    /*
+     * A collection of references to application gateway http listeners.
+     */
+    @JsonProperty(value = "properties.httpListeners", access = JsonProperty.Access.WRITE_ONLY)
+    private List<SubResource> httpListeners;
+
+    /*
+     * A collection of references to application gateway path rules.
+     */
+    @JsonProperty(value = "properties.pathBasedRules", access = JsonProperty.Access.WRITE_ONLY)
+    private List<SubResource> pathBasedRules;
+
+    /*
      * Resource ID.
      */
     @JsonProperty(value = "id")
     private String id;
 
     /**
-     * Get the etag property: Gets a unique read-only string that changes whenever the resource is updated.
+     * Get the etag property: A unique read-only string that changes whenever the resource is updated.
      *
      * @return the etag value.
      */
@@ -74,18 +94,7 @@ public class WebApplicationFirewallPolicyInner extends Resource {
     }
 
     /**
-     * Set the etag property: Gets a unique read-only string that changes whenever the resource is updated.
-     *
-     * @param etag the etag value to set.
-     * @return the WebApplicationFirewallPolicyInner object itself.
-     */
-    public WebApplicationFirewallPolicyInner withEtag(String etag) {
-        this.etag = etag;
-        return this;
-    }
-
-    /**
-     * Get the policySettings property: Describes policySettings for policy.
+     * Get the policySettings property: The PolicySettings for policy.
      *
      * @return the policySettings value.
      */
@@ -94,7 +103,7 @@ public class WebApplicationFirewallPolicyInner extends Resource {
     }
 
     /**
-     * Set the policySettings property: Describes policySettings for policy.
+     * Set the policySettings property: The PolicySettings for policy.
      *
      * @param policySettings the policySettings value to set.
      * @return the WebApplicationFirewallPolicyInner object itself.
@@ -105,7 +114,7 @@ public class WebApplicationFirewallPolicyInner extends Resource {
     }
 
     /**
-     * Get the customRules property: Describes custom rules inside the policy.
+     * Get the customRules property: The custom rules inside the policy.
      *
      * @return the customRules value.
      */
@@ -114,7 +123,7 @@ public class WebApplicationFirewallPolicyInner extends Resource {
     }
 
     /**
-     * Set the customRules property: Describes custom rules inside the policy.
+     * Set the customRules property: The custom rules inside the policy.
      *
      * @param customRules the customRules value to set.
      * @return the WebApplicationFirewallPolicyInner object itself.
@@ -134,11 +143,11 @@ public class WebApplicationFirewallPolicyInner extends Resource {
     }
 
     /**
-     * Get the provisioningState property: Provisioning state of the WebApplicationFirewallPolicy.
+     * Get the provisioningState property: The provisioning state of the web application firewall policy resource.
      *
      * @return the provisioningState value.
      */
-    public String provisioningState() {
+    public ProvisioningState provisioningState() {
         return this.provisioningState;
     }
 
@@ -149,6 +158,44 @@ public class WebApplicationFirewallPolicyInner extends Resource {
      */
     public WebApplicationFirewallPolicyResourceState resourceState() {
         return this.resourceState;
+    }
+
+    /**
+     * Get the managedRules property: Describes the managedRules structure.
+     *
+     * @return the managedRules value.
+     */
+    public ManagedRulesDefinition managedRules() {
+        return this.managedRules;
+    }
+
+    /**
+     * Set the managedRules property: Describes the managedRules structure.
+     *
+     * @param managedRules the managedRules value to set.
+     * @return the WebApplicationFirewallPolicyInner object itself.
+     */
+    public WebApplicationFirewallPolicyInner withManagedRules(ManagedRulesDefinition managedRules) {
+        this.managedRules = managedRules;
+        return this;
+    }
+
+    /**
+     * Get the httpListeners property: A collection of references to application gateway http listeners.
+     *
+     * @return the httpListeners value.
+     */
+    public List<SubResource> httpListeners() {
+        return this.httpListeners;
+    }
+
+    /**
+     * Get the pathBasedRules property: A collection of references to application gateway path rules.
+     *
+     * @return the pathBasedRules value.
+     */
+    public List<SubResource> pathBasedRules() {
+        return this.pathBasedRules;
     }
 
     /**
@@ -185,6 +232,9 @@ public class WebApplicationFirewallPolicyInner extends Resource {
         }
         if (applicationGateways() != null) {
             applicationGateways().forEach(e -> e.validate());
+        }
+        if (managedRules() != null) {
+            managedRules().validate();
         }
     }
 }

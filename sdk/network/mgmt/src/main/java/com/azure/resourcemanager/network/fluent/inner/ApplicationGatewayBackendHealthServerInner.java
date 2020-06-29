@@ -22,7 +22,7 @@ public final class ApplicationGatewayBackendHealthServerInner {
     private String address;
 
     /*
-     * Reference of IP configuration of backend server.
+     * Reference to IP configuration of backend server.
      */
     @JsonProperty(value = "ipConfiguration")
     private NetworkInterfaceIpConfigurationInner ipConfiguration;
@@ -60,7 +60,7 @@ public final class ApplicationGatewayBackendHealthServerInner {
     }
 
     /**
-     * Get the ipConfiguration property: Reference of IP configuration of backend server.
+     * Get the ipConfiguration property: Reference to IP configuration of backend server.
      *
      * @return the ipConfiguration value.
      */
@@ -69,7 +69,7 @@ public final class ApplicationGatewayBackendHealthServerInner {
     }
 
     /**
-     * Set the ipConfiguration property: Reference of IP configuration of backend server.
+     * Set the ipConfiguration property: Reference to IP configuration of backend server.
      *
      * @param ipConfiguration the ipConfiguration value to set.
      * @return the ApplicationGatewayBackendHealthServerInner object itself.

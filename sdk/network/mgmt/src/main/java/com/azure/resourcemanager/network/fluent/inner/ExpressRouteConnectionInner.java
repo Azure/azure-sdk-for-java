@@ -26,7 +26,7 @@ public class ExpressRouteConnectionInner extends SubResource {
     private String name;
 
     /*
-     * The provisioning state of the resource.
+     * The provisioning state of the express route connection resource.
      */
     @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
@@ -49,6 +49,12 @@ public class ExpressRouteConnectionInner extends SubResource {
     @JsonProperty(value = "properties.routingWeight")
     private Integer routingWeight;
 
+    /*
+     * Enable internet security.
+     */
+    @JsonProperty(value = "properties.enableInternetSecurity")
+    private Boolean enableInternetSecurity;
+
     /**
      * Get the name property: The name of the resource.
      *
@@ -70,7 +76,7 @@ public class ExpressRouteConnectionInner extends SubResource {
     }
 
     /**
-     * Get the provisioningState property: The provisioning state of the resource.
+     * Get the provisioningState property: The provisioning state of the express route connection resource.
      *
      * @return the provisioningState value.
      */
@@ -136,6 +142,26 @@ public class ExpressRouteConnectionInner extends SubResource {
      */
     public ExpressRouteConnectionInner withRoutingWeight(Integer routingWeight) {
         this.routingWeight = routingWeight;
+        return this;
+    }
+
+    /**
+     * Get the enableInternetSecurity property: Enable internet security.
+     *
+     * @return the enableInternetSecurity value.
+     */
+    public Boolean enableInternetSecurity() {
+        return this.enableInternetSecurity;
+    }
+
+    /**
+     * Set the enableInternetSecurity property: Enable internet security.
+     *
+     * @param enableInternetSecurity the enableInternetSecurity value to set.
+     * @return the ExpressRouteConnectionInner object itself.
+     */
+    public ExpressRouteConnectionInner withEnableInternetSecurity(Boolean enableInternetSecurity) {
+        this.enableInternetSecurity = enableInternetSecurity;
         return this;
     }
 
