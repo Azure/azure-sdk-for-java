@@ -13,9 +13,7 @@ import com.azure.ai.formrecognizer.implementation.models.TextLine;
 import com.azure.ai.formrecognizer.implementation.models.TextWord;
 import com.azure.ai.formrecognizer.models.BoundingBox;
 import com.azure.ai.formrecognizer.models.FieldData;
-import com.azure.ai.formrecognizer.models.FieldText;
 import com.azure.ai.formrecognizer.models.FieldValueType;
-import com.azure.ai.formrecognizer.models.FormContent;
 import com.azure.ai.formrecognizer.models.FormElement;
 import com.azure.ai.formrecognizer.models.FormField;
 import com.azure.ai.formrecognizer.models.FormLine;
@@ -218,7 +216,7 @@ final class Transforms {
                     extractedFieldMap.put(key, setFormField(labelText, key, fieldValue, valueText, pageNumber,
                         readResults));
                 } else {
-                    FieldText labelText = new FieldText(key, null, null, null);
+                    FieldData labelText = new FieldData(key, null, null, null);
                     extractedFieldMap.put(key, new FormField<>(DEFAULT_CONFIDENCE_VALUE, labelText,
                         key, null, null, null));
                 }
@@ -240,8 +238,8 @@ final class Transforms {
      *
      * @return The strongly typed {@link FormField} for the field input.
      */
-    private static FormField<?> setFormField(FieldText labelText, String key, FieldValue fieldValue,
-        FieldText valueText, Integer pageNumber, List<ReadResult> readResults) {
+    private static FormField<?> setFormField(FieldData labelText, String key, FieldValue fieldValue,
+        FieldData valueText, Integer pageNumber, List<ReadResult> readResults) {
         FormField<?> value;
         switch (fieldValue.getType()) {
             case PHONE_NUMBER:
@@ -386,7 +384,7 @@ final class Transforms {
 
             String fieldName = "field-" + index;
             FormField<?> formField = new FormField<>(setDefaultConfidenceValue(keyValuePair.getConfidence()),
-                labelFieldText, fieldName,  keyValuePair.getValue().getText(), valueText, FieldValueType.STRING);
+                labelFieldData, fieldName,  keyValuePair.getValue().getText(), valueText, FieldValueType.STRING);
             formFieldMap.put(fieldName, formField);
         }));
         return formFieldMap;

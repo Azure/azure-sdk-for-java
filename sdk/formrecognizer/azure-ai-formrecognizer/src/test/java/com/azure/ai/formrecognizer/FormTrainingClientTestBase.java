@@ -12,7 +12,7 @@ import com.azure.ai.formrecognizer.models.CustomFormModelField;
 import com.azure.ai.formrecognizer.models.CustomFormSubmodel;
 import com.azure.ai.formrecognizer.models.ErrorInformation;
 import com.azure.ai.formrecognizer.models.FormRecognizerError;
-import com.azure.ai.formrecognizer.models.RecognizedReceipt;
+import com.azure.ai.formrecognizer.models.RecognizedForm;
 import com.azure.ai.formrecognizer.models.TrainingDocumentInfo;
 import com.azure.ai.formrecognizer.training.FormTrainingClientBuilder;
 import com.azure.core.credential.AzureKeyCredential;
@@ -348,10 +348,10 @@ public abstract class FormTrainingClientTestBase extends TestBase {
             : Configuration.getGlobalConfiguration().get(AZURE_FORM_RECOGNIZER_ENDPOINT);
     }
 
-    void validateBlankPdfResultData(List<RecognizedReceipt> actualReceiptList) {
+    void validateBlankPdfResultData(List<RecognizedForm> actualReceiptList) {
         assertEquals(1, actualReceiptList.size());
-        final RecognizedReceipt actualReceipt = actualReceiptList.get(0);
-        assertTrue(actualReceipt.getRecognizedForm().getFields().isEmpty());
+        final RecognizedForm actualReceipt = actualReceiptList.get(0);
+        assertTrue(actualReceipt.getFields().isEmpty());
     }
 
     void blankPdfDataRunner(Consumer<InputStream> testRunner) {

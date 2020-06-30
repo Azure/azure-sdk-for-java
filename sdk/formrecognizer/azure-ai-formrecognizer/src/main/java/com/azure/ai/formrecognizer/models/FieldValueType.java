@@ -127,7 +127,7 @@ public final class FieldValueType extends ExpandableStringEnum<com.azure.ai.form
             }
         }
         if (INTEGER.equals(this)) {
-            if (FLOAT == formField.getValueType()) {
+            if (INTEGER == formField.getValueType()) {
                 return (T) formField.getValue();
             } else {
                 throw logger.logExceptionAsError(new UnsupportedOperationException(String.format("Unsupported cast "

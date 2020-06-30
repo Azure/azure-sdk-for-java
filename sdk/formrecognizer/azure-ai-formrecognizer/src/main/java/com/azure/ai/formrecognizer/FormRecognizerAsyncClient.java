@@ -362,17 +362,17 @@ public final class FormRecognizerAsyncClient {
      * analyzing a receipt.
      *
      * @return A {@link PollerFlux} that polls the recognize receipt operation until it has completed, has failed,
-     * or has been cancelled. The completed operation returns a List of {@link RecognizedReceipt}.
+     * or has been cancelled. The completed operation returns a List of {@link RecognizedForm}.
      * @throws FormRecognizerException If recognize operation fails and the {@link AnalyzeOperationResult} returned with
      * an {@link OperationStatus#FAILED}.
      * @throws NullPointerException If {@code receiptUrl} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PollerFlux<OperationResult, List<RecognizedReceipt>>
+    public PollerFlux<OperationResult, List<RecognizedForm>>
         beginRecognizeReceiptsFromUrl(String receiptUrl, RecognizeOptions recognizeOptions) {
         try {
             recognizeOptions = getRecognizeOptionsProperties(recognizeOptions);
-            return new PollerFlux<OperationResult, List<RecognizedReceipt>>(
+            return new PollerFlux<OperationResult, List<RecognizedForm>>(
                 recognizeOptions.getPollInterval(),
                 receiptAnalyzeActivationOperation(receiptUrl, recognizeOptions.isIncludeFieldElements()),
                 extractReceiptPollOperation(),
@@ -407,7 +407,7 @@ public final class FormRecognizerAsyncClient {
      * @throws NullPointerException If {@code receipt} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PollerFlux<OperationResult, List<RecognizedReceipt>> beginRecognizeReceipts(
+    public PollerFlux<OperationResult, List<RecognizedForm>> beginRecognizeReceipts(
         Flux<ByteBuffer> receipt, long length) {
         return beginRecognizeReceipts(receipt, length, null);
     }
@@ -437,7 +437,7 @@ public final class FormRecognizerAsyncClient {
      * @throws NullPointerException If {@code recognizeOptions} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PollerFlux<OperationResult, List<RecognizedReceipt>>
+    public PollerFlux<OperationResult, List<RecognizedForm>>
         beginRecognizeReceipts(Flux<ByteBuffer> receipt, long length, RecognizeOptions recognizeOptions) {
         try {
             recognizeOptions = getRecognizeOptionsProperties(recognizeOptions);
@@ -520,7 +520,8 @@ public final class FormRecognizerAsyncClient {
                 return service.getAnalyzeReceiptResultWithResponseAsync(resultUid)
                     .map(modelSimpleResponse -> {
                         throwIfAnalyzeStatusInvalid(modelSimpleResponse.getValue());
-                        return toRecognizedForm(modelSimpleResponse.getValue().getAnalyzeResult(), includeFieldElements);
+                        return toRecognizedForm(modelSimpleResponse.getValue().getAnalyzeResult(),
+                            includeFieldElements);
                     })
                     .onErrorMap(Utility::mapToHttpResponseExceptionIfExist);
             } catch (RuntimeException ex) {

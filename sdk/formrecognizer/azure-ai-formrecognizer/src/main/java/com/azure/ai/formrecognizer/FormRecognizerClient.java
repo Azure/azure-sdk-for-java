@@ -262,7 +262,7 @@ public final class FormRecognizerClient {
      * @throws NullPointerException If {@code receiptUrl} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public SyncPoller<OperationResult, List<RecognizedReceipt>> beginRecognizeReceiptsFromUrl(String receiptUrl) {
+    public SyncPoller<OperationResult, List<RecognizedForm>> beginRecognizeReceiptsFromUrl(String receiptUrl) {
         return beginRecognizeReceiptsFromUrl(receiptUrl, null);
     }
 
@@ -280,13 +280,13 @@ public final class FormRecognizerClient {
      * analyzing a receipt. Include text lines and element references in the result.
      *
      * @return A {@link SyncPoller} to poll the progress of the recognize receipt operation until it has completed,
-     * has failed, or has been cancelled. The completed operation returns a List of {@link RecognizedReceipt}.
+     * has failed, or has been cancelled. The completed operation returns a List of {@link RecognizedForm}.
      * @throws FormRecognizerException If recognize operation fails and the {@link AnalyzeOperationResult} returned with
      * an {@link OperationStatus#FAILED}.
      * @throws NullPointerException If {@code receiptUrl} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public SyncPoller<OperationResult, List<RecognizedReceipt>>
+    public SyncPoller<OperationResult, List<RecognizedForm>>
         beginRecognizeReceiptsFromUrl(String receiptUrl, RecognizeOptions recognizeOptions) {
         return client.beginRecognizeReceiptsFromUrl(receiptUrl, recognizeOptions).getSyncPoller();
     }
@@ -311,7 +311,7 @@ public final class FormRecognizerClient {
      * @throws NullPointerException If {@code receipt} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public SyncPoller<OperationResult, List<RecognizedReceipt>>
+    public SyncPoller<OperationResult, List<RecognizedForm>>
         beginRecognizeReceipts(InputStream receipt, long length) {
         return beginRecognizeReceipts(receipt, length, null);
     }
@@ -338,7 +338,7 @@ public final class FormRecognizerClient {
      * @throws NullPointerException If {@code recognizeOptions} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public SyncPoller<OperationResult, List<RecognizedReceipt>>
+    public SyncPoller<OperationResult, List<RecognizedForm>>
         beginRecognizeReceipts(InputStream receipt, long length, RecognizeOptions recognizeOptions) {
         Flux<ByteBuffer> buffer = Utility.toFluxByteBuffer(receipt);
         return client.beginRecognizeReceipts(buffer, length, recognizeOptions).getSyncPoller();

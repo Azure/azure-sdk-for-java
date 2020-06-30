@@ -253,7 +253,8 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
         }
     }
 
-    private static void validateFieldValueTransforms(FieldValue expectedFieldValue, FormField actualFormField,
+    @SuppressWarnings("unchecked")
+    private static void validateFieldValueTransforms(FieldValue expectedFieldValue, FormField<?> actualFormField,
         List<ReadResult> readResults, boolean includeFieldElements) {
         if (expectedFieldValue != null) {
             if (expectedFieldValue.getBoundingBox() != null) {
@@ -492,7 +493,7 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
         FormRecognizerServiceVersion serviceVersion);
 
     // Receipt
-    void validateReceiptDataFields(Map<String, <FormField<?>> actualRecognizedReceiptFields, boolean includeFieldElements) {
+    void validateReceiptDataFields(Map<String, FormField<?>> actualRecognizedReceiptFields, boolean includeFieldElements) {
         final AnalyzeResult analyzeResult = getAnalyzeRawResponse().getAnalyzeResult();
         List<ReadResult> readResults = analyzeResult.getReadResults();
         DocumentResult documentResult = analyzeResult.getDocumentResults().get(0);
@@ -501,9 +502,8 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
         assertEquals(expectedReceiptFields.get("ReceiptType").getValueString(),
             FieldValueType.STRING.cast(actualRecognizedReceiptFields.get("ReceiptType")));
         assertEquals(expectedReceiptFields.get("ReceiptType").getConfidence(),
-            actualRecognizedFormFields.get("ReceiptType").getConfidence());
+            actualRecognizedReceiptFields.get("ReceiptType").getConfidence());
         validateFieldValueTransforms(expectedReceiptFields.get("MerchantName"),
-<<<<<<< HEAD
             actualRecognizedReceiptFields.get("MerchantName"), readResults, includeFieldElements);
         validateFieldValueTransforms(expectedReceiptFields.get("MerchantPhoneNumber"),
             actualRecognizedReceiptFields.get("MerchantPhoneNumber"), readResults, includeFieldElements);
@@ -548,23 +548,13 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
         }
     }
 
-<<<<<<< HEAD
-    void validateReceiptResultData(List<RecognizedReceipt> actualReceiptList, boolean includeFieldElements) {
-        final AnalyzeResult rawResponse = getAnalyzeRawResponse().getAnalyzeResult();
-        for (int i = 0; i < actualReceiptList.size(); i++) {
-            final RecognizedReceipt actualReceipt = actualReceiptList.get(i);
-            validateLabeledData(actualReceipt.getRecognizedForm(), includeFieldElements, rawResponse.getReadResults(),
-                rawResponse.getDocumentResults().get(i));
-            validateReceiptDataFields(actualReceipt.getRecognizedForm().getFields(), includeFieldElements);
-=======
-    void validateReceiptResultData(List<RecognizedForm> actualReceiptList, boolean includeTextContent) {
+    void validateReceiptResultData(List<RecognizedForm> actualReceiptList, boolean includeFieldElements) {
         final AnalyzeResult rawResponse = getAnalyzeRawResponse().getAnalyzeResult();
         for (int i = 0; i < actualReceiptList.size(); i++) {
             final RecognizedForm actualReceipt = actualReceiptList.get(i);
-            validateLabeledData(actualReceipt, includeTextContent, rawResponse.getReadResults(),
+            validateLabeledData(actualReceipt, includeFieldElements, rawResponse.getReadResults(),
                 rawResponse.getDocumentResults().get(i));
-            validateReceiptDataFields(actualReceipt.getFields(), includeTextContent);
->>>>>>> 6c5c3d603c... receipt design update
+            validateReceiptDataFields(actualReceipt.getFields(), includeFieldElements);
         }
     }
 
@@ -752,15 +742,9 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
             assertEquals(3, recognizedForm.getPages().size());
             recognizedForm.getFields().forEach((label, formField) -> {
                 assertNotNull(formField.getName());
-<<<<<<< HEAD
-                assertNotNull(formField.getFieldValue());
+                assertNotNull(formField.getValue());
                 assertNotNull(formField.getValueData().getText());
                 assertNotNull(formField.getLabelData().getText());
-=======
-                assertNotNull(formField.getValue());
-                assertNotNull(formField.getValueText().getText());
-                assertNotNull(formField.getLabelText().getText());
->>>>>>> 15ade76b8b... update changelog and add casting in samples
             });
         });
     }
@@ -771,15 +755,10 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
             assertEquals(1, (long) recognizedForm.getPages().size());
             recognizedForm.getFields().forEach((label, formField) -> {
                 assertNotNull(formField.getName());
-<<<<<<< HEAD
-                assertNotNull(formField.getFieldValue());
+                assertNotNull(formField.getValue());
                 assertNotNull(formField.getValueData().getText());
                 assertNotNull(formField.getLabelData().getText());
-=======
-                assertNotNull(formField.getValue());
-                assertNotNull(formField.getValueText().getText());
-                assertNotNull(formField.getLabelText().getText());
->>>>>>> 15ade76b8b... update changelog and add casting in samples
+
             });
         });
     }

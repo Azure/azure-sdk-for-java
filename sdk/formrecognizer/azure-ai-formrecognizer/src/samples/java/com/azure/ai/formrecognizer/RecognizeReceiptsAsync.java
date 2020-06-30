@@ -67,81 +67,83 @@ public class RecognizeReceiptsAsync {
                 }
             });
 
-        for (int i = 0; i < receiptPageResults.size(); i++) {
-            RecognizedForm recognizedReceipt = receiptPageResults.get(i);
-            Map<String, FormField<?>> recognizedFields = recognizedReceipt.getFields();
-            System.out.printf("----------- Recognized Receipt page %d -----------%n", i);
-            FormField<?> merchantNameField = recognizedFields.get("MerchantName");
-            if (merchantNameField != null) {
-                if (FieldValueType.STRING.equals(merchantNameField.getValueType())) {
-                    String merchantName = FieldValueType.STRING.cast(merchantNameField);
-                    System.out.printf("Merchant Name: %s, confidence: %.2f%n",
-                        merchantName, merchantNameField.getConfidence());
+        receiptPageResultsMono.subscribe(receiptPageResults -> {
+            for (int i = 0; i < receiptPageResults.size(); i++) {
+                RecognizedForm recognizedReceipt = receiptPageResults.get(i);
+                Map<String, FormField<?>> recognizedFields = recognizedReceipt.getFields();
+                System.out.printf("----------- Recognized Receipt page %d -----------%n", i);
+                FormField<?> merchantNameField = recognizedFields.get("MerchantName");
+                if (merchantNameField != null) {
+                    if (FieldValueType.STRING.equals(merchantNameField.getValueType())) {
+                        String merchantName = FieldValueType.STRING.cast(merchantNameField);
+                        System.out.printf("Merchant Name: %s, confidence: %.2f%n",
+                            merchantName, merchantNameField.getConfidence());
+                    }
                 }
-            }
 
-            FormField<?> merchantPhoneNumberField = recognizedFields.get("MerchantPhoneNumber");
-            if (merchantPhoneNumberField != null) {
-                if (FieldValueType.PHONE_NUMBER.equals(merchantNameField.getValueType())) {
-                    String merchantAddress = FieldValueType.PHONE_NUMBER.cast(merchantPhoneNumberField);
-                    System.out.printf("Merchant Phone number: %s, confidence: %.2f%n",
-                        merchantAddress, merchantPhoneNumberField.getConfidence());
+                FormField<?> merchantPhoneNumberField = recognizedFields.get("MerchantPhoneNumber");
+                if (merchantPhoneNumberField != null) {
+                    if (FieldValueType.PHONE_NUMBER.equals(merchantNameField.getValueType())) {
+                        String merchantAddress = FieldValueType.PHONE_NUMBER.cast(merchantPhoneNumberField);
+                        System.out.printf("Merchant Phone number: %s, confidence: %.2f%n",
+                            merchantAddress, merchantPhoneNumberField.getConfidence());
+                    }
                 }
-            }
 
-            FormField<?> merchantAddressField = recognizedFields.get("MerchantAddress");
-            if (merchantAddressField != null) {
-                if (FieldValueType.STRING.equals(merchantNameField.getValueType())) {
-                    String merchantAddress = FieldValueType.STRING.cast(merchantAddressField);
-                    System.out.printf("Merchant Address: %s, confidence: %.2f%n",
-                        merchantAddress, merchantAddressField.getConfidence());
+                FormField<?> merchantAddressField = recognizedFields.get("MerchantAddress");
+                if (merchantAddressField != null) {
+                    if (FieldValueType.STRING.equals(merchantNameField.getValueType())) {
+                        String merchantAddress = FieldValueType.STRING.cast(merchantAddressField);
+                        System.out.printf("Merchant Address: %s, confidence: %.2f%n",
+                            merchantAddress, merchantAddressField.getConfidence());
+                    }
                 }
-            }
 
-            FormField<?> transactionDateField = recognizedFields.get("TransactionDate");
-            if (transactionDateField != null) {
-                if (FieldValueType.DATE.equals(transactionDateField.getValueType())) {
-                    LocalDate transactionDate = FieldValueType.DATE.cast(transactionDateField);
-                    System.out.printf("Transaction Date: %s, confidence: %.2f%n",
-                        transactionDate, transactionDateField.getConfidence());
+                FormField<?> transactionDateField = recognizedFields.get("TransactionDate");
+                if (transactionDateField != null) {
+                    if (FieldValueType.DATE.equals(transactionDateField.getValueType())) {
+                        LocalDate transactionDate = FieldValueType.DATE.cast(transactionDateField);
+                        System.out.printf("Transaction Date: %s, confidence: %.2f%n",
+                            transactionDate, transactionDateField.getConfidence());
+                    }
                 }
-            }
 
-            FormField<?> receiptItemsField = recognizedFields.get("Items");
-            if (receiptItemsField != null) {
-                System.out.printf("Receipt Items: %n");
-                if (FieldValueType.LIST.equals(receiptItemsField.getValueType())) {
-                    List<FormField<?>> receiptItems = FieldValueType.LIST.cast(receiptItemsField);
-                    receiptItems.forEach(receiptItem -> {
-                        if (FieldValueType.MAP.equals(receiptItem.getValueType())) {
-                            Map<String, FormField<?>> formFieldMap = FieldValueType.MAP.cast(receiptItem);
-                            formFieldMap.forEach((key, formField) -> {
-                                if ("Name".equals(key)) {
-                                    if (FieldValueType.STRING.equals(formField.getValueType())) {
-                                        String name = FieldValueType.STRING.cast(formField);
-                                        System.out.printf("Name: %s, confidence: %.2fs%n",
-                                            name, formField.getConfidence());
+                FormField<?> receiptItemsField = recognizedFields.get("Items");
+                if (receiptItemsField != null) {
+                    System.out.printf("Receipt Items: %n");
+                    if (FieldValueType.LIST.equals(receiptItemsField.getValueType())) {
+                        List<FormField<?>> receiptItems = FieldValueType.LIST.cast(receiptItemsField);
+                        receiptItems.forEach(receiptItem -> {
+                            if (FieldValueType.MAP.equals(receiptItem.getValueType())) {
+                                Map<String, FormField<?>> formFieldMap = FieldValueType.MAP.cast(receiptItem);
+                                formFieldMap.forEach((key, formField) -> {
+                                    if ("Name".equals(key)) {
+                                        if (FieldValueType.STRING.equals(formField.getValueType())) {
+                                            String name = FieldValueType.STRING.cast(formField);
+                                            System.out.printf("Name: %s, confidence: %.2fs%n",
+                                                name, formField.getConfidence());
+                                        }
                                     }
-                                }
-                                if ("Quantity".equals(key)) {
-                                    if (FieldValueType.FLOAT.equals(formField.getValueType())) {
-                                        Float quantity = FieldValueType.FLOAT.cast(formField);
-                                        System.out.printf("Quantity: %f, confidence: %.2f%n",
-                                            quantity, formField.getConfidence());
+                                    if ("Quantity".equals(key)) {
+                                        if (FieldValueType.FLOAT.equals(formField.getValueType())) {
+                                            Float quantity = FieldValueType.FLOAT.cast(formField);
+                                            System.out.printf("Quantity: %f, confidence: %.2f%n",
+                                                quantity, formField.getConfidence());
+                                        }
                                     }
-                                }
-                                if ("Price".equals(key)) {
-                                    if (FieldValueType.FLOAT.equals(formField.getValueType())) {
-                                        Float price = FieldValueType.FLOAT.cast(formField);
-                                        System.out.printf("Price: %f, confidence: %.2f%n",
-                                            price, formField.getConfidence());
+                                    if ("Price".equals(key)) {
+                                        if (FieldValueType.FLOAT.equals(formField.getValueType())) {
+                                            Float price = FieldValueType.FLOAT.cast(formField);
+                                            System.out.printf("Price: %f, confidence: %.2f%n",
+                                                price, formField.getConfidence());
+                                        }
                                     }
-                                }
-                                if ("TotalPrice".equals(key)) {
-                                    if (FieldValueType.FLOAT.equals(formField.getValueType())) {
-                                        Float totalPrice = FieldValueType.FLOAT.cast(formField);
-                                        System.out.printf("Total Price: %f, confidence: %.2f%n",
-                                            totalPrice, formField.getConfidence());
+                                    if ("TotalPrice".equals(key)) {
+                                        if (FieldValueType.FLOAT.equals(formField.getValueType())) {
+                                            Float totalPrice = FieldValueType.FLOAT.cast(formField);
+                                            System.out.printf("Total Price: %f, confidence: %.2f%n",
+                                                totalPrice, formField.getConfidence());
+                                        }
                                     }
                                 });
                             }

@@ -22,7 +22,6 @@ public class StronglyTypedRecognizedForm {
      *
      * @param args Unused. Arguments to the program.
      */
-    @SuppressWarnings("unchecked")
     public static void main(final String[] args) {
         // Instantiate a client that will be used to call the service.
         FormRecognizerClient client = new FormRecognizerClientBuilder()
