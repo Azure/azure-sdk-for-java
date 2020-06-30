@@ -4,6 +4,7 @@
 package com.azure.messaging.servicebus;
 
 import com.azure.core.exception.ResourceExistsException;
+import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
@@ -119,6 +120,20 @@ class ServiceBusManagementAsyncClientIntegrationTest extends TestBase {
                 assertNotNull(runtimeInfo.getAccessedAt());
             })
             .verifyComplete();
+    }
+
+    @ParameterizedTest
+    @MethodSource("createHttpClients")
+    void getSubscriptionDoesNotExist(HttpClient httpClient) {
+        // Arrange
+        final ServiceBusManagementAsyncClient client = createClient(httpClient);
+        final String topicName = TestUtils.getTopicName();
+        final String subscriptionName = "subscription-session-not-exist";
+
+        // Act & Assert
+        StepVerifier.create(client.getSubscription(topicName, subscriptionName))
+            .expectError(ResourceNotFoundException.class)
+            .verify();
     }
 
     private ServiceBusManagementAsyncClient createClient(HttpClient httpClient) {
