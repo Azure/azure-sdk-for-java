@@ -243,6 +243,7 @@
   <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck"
             files="com.azure.storage.common.implementation.StorageImplUtils.java"/>
   <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck" files="com.azure.core.http.ProxyOptions.java"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck" files="com.azure.storage.blob.changefeed.implementation.util.DownloadUtils.java"/>
   <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck" files="com.azure.core.util.serializer.SerializerEncoding.java"/>
   <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck" files="com.azure.core.util.serializer.GeometryDeserializer.java"/>
   <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck" files="com.azure.core.util.serializer.GeometrySerializer.java"/>
@@ -466,6 +467,10 @@
   <!-- The variables are assigned by jcommander annotation injection framework, cannot be made final. -->
   <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck"
             files="com.azure.perf.test.core.PerfStressOptions.java"/>
+
+  <!-- Nested blocks are still readable in the switch statements in Avro. -->
+  <suppress checks="AvoidNestedBlocks" files="com.azure.storage.internal.avro.implementation.schema.AvroSchema.java"/>
+  <suppress checks="AvoidNestedBlocks" files="com.azure.storage.internal.avro.implementation.schema.AvroType.java"/>
   <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck"
             files="com.microsoft.azure.spring.data.cosmosdb.config.AbstractCosmosConfiguration.java"/>
   <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck"
@@ -477,6 +482,7 @@
 
   <!-- Checkstyle suppressions for resource manager package -->
   <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files="com.azure.resourcemanager.*"/>
+
   <!-- Checkstyle suppressions for spring-data-cosmosdb package -->
   <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck|ExternalDependencyExposedCheck|ThrowFromClientLoggerCheck" files="com.microsoft.azure.spring.data.cosmosdb.*\.java"/>
   <suppress checks="MethodName|MemberName|ParameterName|VisibilityModifier" files="com.microsoft.azure.spring.data.cosmosdb.domain|repository|config.*\.java"/>
