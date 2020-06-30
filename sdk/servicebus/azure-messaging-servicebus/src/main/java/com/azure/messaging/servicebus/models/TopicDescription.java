@@ -270,7 +270,7 @@ public final class TopicDescription {
      *
      * @return the requiresDuplicateDetection value.
      */
-    public Boolean isRequiresDuplicateDetection() {
+    public Boolean requiresDuplicateDetection() {
         return this.requiresDuplicateDetection;
     }
 
@@ -313,7 +313,7 @@ public final class TopicDescription {
      *
      * @return the enableBatchedOperations value.
      */
-    public Boolean isEnableBatchedOperations() {
+    public Boolean enableBatchedOperations() {
         return this.enableBatchedOperations;
     }
 
@@ -334,7 +334,7 @@ public final class TopicDescription {
      *
      * @return the sizeInBytes value.
      */
-    public Integer getSizeInBytes() {
+    Integer getSizeInBytes() {
         return this.sizeInBytes;
     }
 
@@ -344,7 +344,7 @@ public final class TopicDescription {
      * @param sizeInBytes the sizeInBytes value to set.
      * @return the TopicDescription object itself.
      */
-    public TopicDescription setSizeInBytes(Integer sizeInBytes) {
+    TopicDescription setSizeInBytes(Integer sizeInBytes) {
         this.sizeInBytes = sizeInBytes;
         return this;
     }
@@ -354,7 +354,7 @@ public final class TopicDescription {
      *
      * @return the filteringMessagesBeforePublishing value.
      */
-    public Boolean isFilteringMessagesBeforePublishing() {
+    Boolean isFilteringMessagesBeforePublishing() {
         return this.filteringMessagesBeforePublishing;
     }
 
@@ -364,7 +364,7 @@ public final class TopicDescription {
      * @param filteringMessagesBeforePublishing the filteringMessagesBeforePublishing value to set.
      * @return the TopicDescription object itself.
      */
-    public TopicDescription setFilteringMessagesBeforePublishing(Boolean filteringMessagesBeforePublishing) {
+    TopicDescription setFilteringMessagesBeforePublishing(Boolean filteringMessagesBeforePublishing) {
         this.filteringMessagesBeforePublishing = filteringMessagesBeforePublishing;
         return this;
     }
@@ -374,7 +374,7 @@ public final class TopicDescription {
      *
      * @return the isAnonymousAccessible value.
      */
-    public Boolean isAnonymousAccessible() {
+    Boolean isAnonymousAccessible() {
         return this.isAnonymousAccessible;
     }
 
@@ -384,7 +384,7 @@ public final class TopicDescription {
      * @param isAnonymousAccessible the isAnonymousAccessible value to set.
      * @return the TopicDescription object itself.
      */
-    public TopicDescription setIsAnonymousAccessible(Boolean isAnonymousAccessible) {
+    TopicDescription setIsAnonymousAccessible(Boolean isAnonymousAccessible) {
         this.isAnonymousAccessible = isAnonymousAccessible;
         return this;
     }
@@ -407,7 +407,7 @@ public final class TopicDescription {
      * @param authorizationRules the authorizationRules value to set.
      * @return the TopicDescription object itself.
      */
-    public TopicDescription setAuthorizationRules(List<AuthorizationRule> authorizationRules) {
+    TopicDescription setAuthorizationRules(List<AuthorizationRule> authorizationRules) {
         this.authorizationRules = new AuthorizationRulesWrapper(authorizationRules);
         return this;
     }
@@ -427,7 +427,7 @@ public final class TopicDescription {
      * @param status the status value to set.
      * @return the TopicDescription object itself.
      */
-    public TopicDescription setStatus(EntityStatus status) {
+    TopicDescription setStatus(EntityStatus status) {
         this.status = status;
         return this;
     }
@@ -437,7 +437,7 @@ public final class TopicDescription {
      *
      * @return the createdAt value.
      */
-    public OffsetDateTime getCreatedAt() {
+    OffsetDateTime getCreatedAt() {
         return this.createdAt;
     }
 
@@ -447,7 +447,7 @@ public final class TopicDescription {
      * @param createdAt the createdAt value to set.
      * @return the TopicDescription object itself.
      */
-    public TopicDescription setCreatedAt(OffsetDateTime createdAt) {
+    TopicDescription setCreatedAt(OffsetDateTime createdAt) {
         this.createdAt = createdAt;
         return this;
     }
@@ -457,7 +457,7 @@ public final class TopicDescription {
      *
      * @return the updatedAt value.
      */
-    public OffsetDateTime getUpdatedAt() {
+    OffsetDateTime getUpdatedAt() {
         return this.updatedAt;
     }
 
@@ -467,7 +467,7 @@ public final class TopicDescription {
      * @param updatedAt the updatedAt value to set.
      * @return the TopicDescription object itself.
      */
-    public TopicDescription setUpdatedAt(OffsetDateTime updatedAt) {
+    TopicDescription setUpdatedAt(OffsetDateTime updatedAt) {
         this.updatedAt = updatedAt;
         return this;
     }
@@ -478,7 +478,7 @@ public final class TopicDescription {
      *
      * @return the accessedAt value.
      */
-    public OffsetDateTime getAccessedAt() {
+    OffsetDateTime getAccessedAt() {
         return this.accessedAt;
     }
 
@@ -489,7 +489,7 @@ public final class TopicDescription {
      * @param accessedAt the accessedAt value to set.
      * @return the TopicDescription object itself.
      */
-    public TopicDescription setAccessedAt(OffsetDateTime accessedAt) {
+    TopicDescription setAccessedAt(OffsetDateTime accessedAt) {
         this.accessedAt = accessedAt;
         return this;
     }
@@ -499,7 +499,7 @@ public final class TopicDescription {
      *
      * @return the supportOrdering value.
      */
-    public Boolean isSupportOrdering() {
+    public Boolean supportOrdering() {
         return this.supportOrdering;
     }
 
@@ -519,7 +519,7 @@ public final class TopicDescription {
      *
      * @return the messageCountDetails value.
      */
-    public MessageCountDetails getMessageCountDetails() {
+    MessageCountDetails getMessageCountDetails() {
         return this.messageCountDetails;
     }
 
@@ -529,7 +529,7 @@ public final class TopicDescription {
      * @param messageCountDetails the messageCountDetails value to set.
      * @return the TopicDescription object itself.
      */
-    public TopicDescription setMessageCountDetails(MessageCountDetails messageCountDetails) {
+    TopicDescription setMessageCountDetails(MessageCountDetails messageCountDetails) {
         this.messageCountDetails = messageCountDetails;
         return this;
     }
@@ -539,7 +539,7 @@ public final class TopicDescription {
      *
      * @return the subscriptionCount value.
      */
-    public Integer getSubscriptionCount() {
+    Integer getSubscriptionCount() {
         return this.subscriptionCount;
     }
 
@@ -549,7 +549,7 @@ public final class TopicDescription {
      * @param subscriptionCount the subscriptionCount value to set.
      * @return the TopicDescription object itself.
      */
-    public TopicDescription setSubscriptionCount(Integer subscriptionCount) {
+    TopicDescription setSubscriptionCount(Integer subscriptionCount) {
         this.subscriptionCount = subscriptionCount;
         return this;
     }
@@ -582,7 +582,7 @@ public final class TopicDescription {
      *
      * @return the enablePartitioning value.
      */
-    public Boolean isEnablePartitioning() {
+    public Boolean enablePartitioning() {
         return this.enablePartitioning;
     }
 
@@ -603,7 +603,7 @@ public final class TopicDescription {
      *
      * @return the entityAvailabilityStatus value.
      */
-    public EntityAvailabilityStatus getEntityAvailabilityStatus() {
+    EntityAvailabilityStatus getEntityAvailabilityStatus() {
         return this.entityAvailabilityStatus;
     }
 
@@ -613,7 +613,7 @@ public final class TopicDescription {
      * @param entityAvailabilityStatus the entityAvailabilityStatus value to set.
      * @return the TopicDescription object itself.
      */
-    public TopicDescription setEntityAvailabilityStatus(EntityAvailabilityStatus entityAvailabilityStatus) {
+    TopicDescription setEntityAvailabilityStatus(EntityAvailabilityStatus entityAvailabilityStatus) {
         this.entityAvailabilityStatus = entityAvailabilityStatus;
         return this;
     }
@@ -624,7 +624,7 @@ public final class TopicDescription {
      *
      * @return the enableSubscriptionPartitioning value.
      */
-    public Boolean isEnableSubscriptionPartitioning() {
+    Boolean isEnableSubscriptionPartitioning() {
         return this.enableSubscriptionPartitioning;
     }
 
@@ -635,7 +635,7 @@ public final class TopicDescription {
      * @param enableSubscriptionPartitioning the enableSubscriptionPartitioning value to set.
      * @return the TopicDescription object itself.
      */
-    public TopicDescription setEnableSubscriptionPartitioning(Boolean enableSubscriptionPartitioning) {
+    TopicDescription setEnableSubscriptionPartitioning(Boolean enableSubscriptionPartitioning) {
         this.enableSubscriptionPartitioning = enableSubscriptionPartitioning;
         return this;
     }
@@ -646,7 +646,7 @@ public final class TopicDescription {
      *
      * @return the enableExpress value.
      */
-    public Boolean isEnableExpress() {
+    Boolean isEnableExpress() {
         return this.enableExpress;
     }
 
@@ -657,7 +657,7 @@ public final class TopicDescription {
      * @param enableExpress the enableExpress value to set.
      * @return the TopicDescription object itself.
      */
-    public TopicDescription setEnableExpress(Boolean enableExpress) {
+    TopicDescription setEnableExpress(Boolean enableExpress) {
         this.enableExpress = enableExpress;
         return this;
     }
