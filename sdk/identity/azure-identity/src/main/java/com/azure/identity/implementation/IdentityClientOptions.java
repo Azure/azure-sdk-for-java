@@ -207,7 +207,7 @@ public final class IdentityClientOptions {
      */
     public IdentityClientOptions setTokenRefreshOffset(Duration tokenRefreshOffset) {
         Objects.requireNonNull(tokenRefreshOffset, "The token refresh offset cannot be null.");
-        this.tokenRefreshOptions.setTokenRefreshOffset(tokenRefreshOffset);
+        this.tokenRefreshOptions.setOffset(tokenRefreshOffset);
         return this;
     }
 
@@ -221,7 +221,7 @@ public final class IdentityClientOptions {
      */
     public IdentityClientOptions setTokenRefreshRetryTimeout(Duration tokenRefreshRetryTimeout) {
         Objects.requireNonNull(tokenRefreshRetryTimeout, "The token refresh retry timeout cannot be null.");
-        this.tokenRefreshOptions.setTokenRefreshRetryTimeout(tokenRefreshRetryTimeout);
+        this.tokenRefreshOptions.setRetryTimeout(tokenRefreshRetryTimeout);
         return this;
     }
 

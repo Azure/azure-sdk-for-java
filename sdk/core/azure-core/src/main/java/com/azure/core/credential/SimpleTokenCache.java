@@ -128,25 +128,7 @@ public class SimpleTokenCache {
             } catch (Throwable t) {
                 return Mono.error(t);
             }
-        } catch (Throwable t) {
-            return Mono.error(t);
-        }
-    }
-
-    private String refreshLog(AccessToken cache, OffsetDateTime now, String log) {
-        StringBuilder info = new StringBuilder(log);
-        if (cache == null) {
-            info.append(".");
-        } else {
-            Duration tte = Duration.between(now, cache.getExpiresAt());
-            info.append(" at ").append(tte.abs().getSeconds()).append(" seconds ")
-                .append(tte.isNegative() ? "after" : "before").append(" expiry. ")
-                .append("Retry may be attempted after ").append(refreshRetryTimeout.getSeconds()).append(" seconds.");
-            if (!tte.isNegative()) {
-                info.append(" The token currently cached will be used.");
-            }
-        }
-        return info.toString();
+        });
     }
 
     private String refreshLog(AccessToken cache, OffsetDateTime now, String log) {

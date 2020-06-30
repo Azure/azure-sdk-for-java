@@ -460,7 +460,7 @@ public class IdentityClient {
                 }
             }).map(MsalToken::new)
                 .filter(t -> OffsetDateTime.now().isBefore(t.getExpiresAt().minus(
-                    options.getTokenRefreshOptions().getTokenRefreshOffset())))
+                    options.getTokenRefreshOptions().getOffset())))
                 .switchIfEmpty(Mono.fromFuture(() -> {
                     SilentParameters.SilentParametersBuilder forceParametersBuilder = SilentParameters.builder(
                         new HashSet<>(request.getScopes())).forceRefresh(true);
@@ -493,7 +493,7 @@ public class IdentityClient {
                 }
             }).map(ar -> (AccessToken) new MsalToken(ar))
                 .filter(t -> OffsetDateTime.now().isBefore(t.getExpiresAt().minus(
-                    options.getTokenRefreshOptions().getTokenRefreshOffset()))));
+                    options.getTokenRefreshOptions().getOffset()))));
     }
 
     /**
