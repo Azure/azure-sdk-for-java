@@ -47,7 +47,7 @@ public final class DistinctHash {
             return getHashFromJsonSerializable((JsonSerializable) resource, seed);
         }
         if (resource instanceof List) {
-            return getHashFromList((List<Object>) resource, seed);
+            return getHashFromIterator(((List) resource).iterator(), seed);
         }
         if (resource instanceof Boolean) {
             return (Boolean)resource ? MurmurHash3_128.hash128(HashSeeds.TRUE, seed) : MurmurHash3_128.hash128(HashSeeds.FALSE, seed);
@@ -69,10 +69,10 @@ public final class DistinctHash {
             return MurmurHash3_128.hash128(resource, hash);
         }
         if (resource instanceof ValueNode) {
-            return getHash(JsonSerializable.getValue((JsonNode) resource));
+            return getHash(JsonSerializable.getValue((JsonNode) resource), seed);
         }
         if (resource instanceof ArrayNode) {
-            return getHashFromArrayNode((ArrayNode) resource, seed);
+            return getHashFromIterator(((ArrayNode) resource).iterator(), seed);
         }
         if (resource instanceof ObjectNode) {
             return getHashFromObjectNode((ObjectNode) resource, seed);
@@ -84,18 +84,6 @@ public final class DistinctHash {
     private static UInt128 getHashFromJsonSerializable(JsonSerializable resource, UInt128 seed) throws IOException {
         resource.populatePropertyBag();
         return getHash(resource.getPropertyBag(), seed);
-    }
-
-    private static UInt128 getHashFromArrayNode(ArrayNode arrayNode, UInt128 seed) throws IOException {
-        // Start the array with a distinct hash, so that empty array doesn't hash to another value.
-        UInt128 hash = MurmurHash3_128.hash128(HashSeeds.ARRAY, seed);
-
-        for (int i = 0; i < arrayNode.size(); i++) {
-            // Order of array items matter in equality check, so add the index just in case that property does not hold in the future.
-            UInt128 arrayItemSeed = HashSeeds.ARRAY_INDEX.add(i);
-            hash = MurmurHash3_128.hash128(hash, getHash(arrayNode.get(i), arrayItemSeed));
-        }
-        return hash;
     }
 
     private static UInt128 getHashFromObjectNode(ObjectNode objectNode, UInt128 seed) throws IOException {
@@ -119,14 +107,16 @@ public final class DistinctHash {
         return hash;
     }
 
-    private static UInt128 getHashFromList(List<Object> resource, UInt128 seed) throws IOException {
+    private static <T extends Object>UInt128 getHashFromIterator (Iterator<T> iterator, UInt128 seed) throws IOException {
         UInt128 hash = MurmurHash3_128.hash128(HashSeeds.ARRAY, seed);
 
-        for (int i = 0; i < resource.size(); i++) {
+        int index = 0;
+        while (iterator.hasNext()) {
             // index matters
-            UInt128 arrayItemSeed = HashSeeds.ARRAY_INDEX.add(i);
-            hash = MurmurHash3_128.hash128(hash, getHash(resource.get(i), arrayItemSeed));
+            UInt128 arrayItemSeed = HashSeeds.ARRAY_INDEX.add(index);
+            hash = MurmurHash3_128.hash128(hash, getHash(iterator.next(), arrayItemSeed));
         }
+
         return hash;
     }
 }
