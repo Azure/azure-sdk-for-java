@@ -13,7 +13,8 @@ import java.util.Objects;
  * Used to access internal methods on {@link QueueDescription}.
  */
 public final class EntityHelper {
-    private static QueueAccessor accessor;
+    private static QueueAccessor queueAccessor;
+    private static SubscriptionAccessor subscriptionAccessor;
 
     static {
         try {
@@ -24,34 +25,57 @@ public final class EntityHelper {
     }
 
     /**
+     * Sets the queue accessor.
+     *
+     * @param accessor The queue accessor to set on the queue helper.
+     */
+    public static void setQueueAccessor(QueueAccessor accessor) {
+        Objects.requireNonNull(accessor, "'subscriptionAccessor' cannot be null.");
+
+        if (EntityHelper.queueAccessor != null) {
+            throw new ClientLogger(EntityHelper.class).logExceptionAsError(new IllegalStateException(
+                "'accessor' is already set."));
+        }
+
+        EntityHelper.queueAccessor = accessor;
+    }
+
+    /**
      * Sets the queue name on a {@link QueueDescription}.
      *
      * @param queueDescription Queue to set name on.
      * @param name Name of the queue.
      */
     public static void setQueueName(QueueDescription queueDescription, String name) {
-        if (accessor == null) {
+        if (queueAccessor == null) {
             throw new ClientLogger(EntityHelper.class).logExceptionAsError(
-                new IllegalStateException("'QueueAccessor.accessor' should not be null."));
+                new IllegalStateException("'queueAccessor' should not be null."));
         }
 
-        accessor.setName(queueDescription, name);
+        queueAccessor.setName(queueDescription, name);
     }
 
     /**
-     * Sets the queue accessor.
+     * Sets the subscription accessor.
      *
-     * @param accessor The queue accessor to set on the queue helper.
+     * @param accessor The subscription accessor.
      */
-    public static void setQueueAccessor(QueueAccessor accessor) {
+    public static void setSubscriptionAccessor(SubscriptionAccessor accessor) {
         Objects.requireNonNull(accessor, "'accessor' cannot be null.");
 
-        if (EntityHelper.accessor != null) {
+        if (EntityHelper.subscriptionAccessor != null) {
             throw new ClientLogger(EntityHelper.class).logExceptionAsError(new IllegalStateException(
-                "'accessor' is already set."));
+                "'subscriptionAccessor' is already set."));
         }
 
-        EntityHelper.accessor = accessor;
+        EntityHelper.subscriptionAccessor = accessor;
+    }
+
+    public static void setSubscriptionName(SubscriptionDescription subscription, String subscriptionName) {
+    }
+
+    public static void setTopicName(SubscriptionDescription subscription, String topicName) {
+
     }
 
     /**
