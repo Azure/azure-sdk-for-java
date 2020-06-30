@@ -298,11 +298,11 @@ public final class TestHelpers {
     private static List<Map<String, Object>> readJsonFileToList(String filename) {
         Reader reader = new InputStreamReader(Objects.requireNonNull(TestHelpers.class.getClassLoader()
             .getResourceAsStream(filename)));
-        ObjectMapper MAPPER = new JacksonAdapter().serializer();
+        ObjectMapper mapper = new JacksonAdapter().serializer();
 //        SerializationUtil.configureMapper(MAPPER);
-        SerializationUtil.configureMapper(MAPPER);
+        SerializationUtil.configureMapper(mapper);
         try {
-            return MAPPER.readValue(reader, new TypeReference<List<Map<String, Object>>>() { });
+            return mapper.readValue(reader, new TypeReference<List<Map<String, Object>>>() { });
         } catch (IOException e) {
             throw new UncheckedIOException(e);
         }
