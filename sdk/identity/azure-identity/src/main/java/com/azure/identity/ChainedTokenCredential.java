@@ -12,9 +12,8 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
-import java.util.Deque;
+import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * A token credential provider that can provide a credential from a list of providers.
@@ -25,15 +24,16 @@ import java.util.stream.Collectors;
  */
 @Immutable
 public class ChainedTokenCredential implements TokenCredential {
-    private final Deque<TokenCredential> credentials;
     private final ClientLogger logger = new ClientLogger(getClass());
+    private final List<TokenCredential> credentials;
+    private final String unavailableError = this.getClass().getSimpleName() + " authentication failed. ---> ";
 
     /**
      * Create an instance of chained token credential that aggregates a list of token
      * credentials.
      */
-    ChainedTokenCredential(Deque<TokenCredential> credentials) {
-        this.credentials = credentials;
+    ChainedTokenCredential(List<TokenCredential> credentials) {
+        this.credentials = Collections.unmodifiableList(credentials);
     }
 
     @Override
@@ -41,30 +41,34 @@ public class ChainedTokenCredential implements TokenCredential {
         List<CredentialUnavailableException> exceptions = new ArrayList<>(4);
         return Flux.fromIterable(credentials)
             .flatMap(p -> p.getToken(request)
-                .doOnNext(t -> logger.info("Azure Identity => Attempted credential {} returns a token",
-                    p.getClass().getSimpleName()))
-                .onErrorResume(CredentialUnavailableException.class, t -> {
-                    exceptions.add(t);
-                    logger.info("Azure Identity => Attempted credential {} is unavailable.",
-                        p.getClass().getSimpleName());
-                    return Mono.empty();
-                }), 1)
+            .doOnNext(t -> logger.info("Azure Identity => Attempted credential {} returns a token",
+                p.getClass().getSimpleName()))
+            .onErrorResume(CredentialUnavailableException.class, t -> {
+                exceptions.add(t);
+                logger.info("Azure Identity => Attempted credential {} is unavailable.",
+                    p.getClass().getSimpleName());
+                return Mono.empty();
+            }), 1)
             .next()
             .switchIfEmpty(Mono.defer(() -> {
-                StringBuilder message = new StringBuilder("Tried "
-                    + credentials.stream().map(c -> c.getClass().getSimpleName())
-                    .collect(Collectors.joining(", "))
-                    + " but failed to acquire a token for any of them. Please verify the"
-                    + " environment for the credentials"
-                    + " and see more details in the causes below.");
-
                 // Chain Exceptions.
                 CredentialUnavailableException last = exceptions.get(exceptions.size() - 1);
                 for (int z = exceptions.size() - 2; z >= 0; z--) {
                     CredentialUnavailableException current = exceptions.get(z);
-                    last = new CredentialUnavailableException(current.getMessage(), last);
+                    last = new CredentialUnavailableException(current.getMessage() + "\r\n" + last.getMessage(),
+                        last.getCause());
                 }
-                return Mono.error(new CredentialUnavailableException(message.toString(), last));
+                return Mono.error(last);
             }));
+    }
+
+
+    /**
+     * Get the read-only list of credentials sequentially used to attempt authentication.
+     *
+     * @return The list of {@link TokenCredential}.
+     */
+    public List<TokenCredential> getCredentials() {
+        return credentials;
     }
 }

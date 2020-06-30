@@ -644,6 +644,10 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
 
         // Assert & Act
         receiver.abandon(receivedMessage);
+
+        // Cleanup
+        int messagesCompleted = completeMessages(receiver, maxMessages);
+        messagesPending.addAndGet(-messagesCompleted);
     }
 
     /**
@@ -721,6 +725,10 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
 
         // Act & Assert
         receiver.defer(receivedMessage);
+
+        // cleanup
+        completeDeferredMessages(receiver, receivedMessage, isSessionEnabled);
+        messagesPending.addAndGet(-maxMessages);
     }
 
     @MethodSource("com.azure.messaging.servicebus.IntegrationTestBase#messagingEntityWithSessions")
@@ -826,5 +834,24 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
         sender.send(message);
         int number = messagesPending.incrementAndGet();
         logger.info("Number sent: {}", number);
+    }
+
+    private int completeMessages(ServiceBusReceiverClient client, int totalMessages) {
+        final IterableStream<ServiceBusReceivedMessageContext> contextStream = client.receive(totalMessages, TIMEOUT);
+        final List<ServiceBusReceivedMessageContext> asList = contextStream.stream().collect(Collectors.toList());
+        for (ServiceBusReceivedMessageContext context : asList) {
+            receiver.complete(context.getMessage());
+        }
+        return asList.size();
+    }
+
+    private void completeDeferredMessages(ServiceBusReceiverClient client, ServiceBusReceivedMessage receivedMessage, boolean isSessionEnabled) {
+        final ServiceBusReceivedMessage message;
+        if (isSessionEnabled) {
+            message = client.receiveDeferredMessage(receivedMessage.getSequenceNumber(), sessionId);
+        } else {
+            message = client.receiveDeferredMessage(receivedMessage.getSequenceNumber());
+        }
+        receiver.complete(message);
     }
 }

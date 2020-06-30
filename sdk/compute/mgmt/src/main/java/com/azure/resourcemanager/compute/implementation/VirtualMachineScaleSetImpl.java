@@ -153,6 +153,8 @@ public class VirtualMachineScaleSetImpl
     private String newProximityPlacementGroupName;
     // Type fo the new proximity placement group
     private ProximityPlacementGroupType newProximityPlacementGroupType;
+    // To manage OS profile
+    private boolean removeOsProfile;
     private final ClientLogger logger = new ClientLogger(VirtualMachineScaleSetImpl.class);
 
     VirtualMachineScaleSetImpl(
@@ -828,7 +830,7 @@ public class VirtualMachineScaleSetImpl
     }
 
     @Override
-    public VirtualMachineScaleSetImpl withWindowsCustomImage(String customImageId) {
+    public VirtualMachineScaleSetImpl withGeneralizedWindowsCustomImage(String customImageId) {
         ImageReference imageReferenceInner = new ImageReference();
         imageReferenceInner.withId(customImageId);
         this
@@ -842,6 +844,13 @@ public class VirtualMachineScaleSetImpl
         // sets defaults for "Stored(Custom)Image" or "VM(Platform)Image"
         this.inner().virtualMachineProfile().osProfile().windowsConfiguration().withProvisionVMAgent(true);
         this.inner().virtualMachineProfile().osProfile().windowsConfiguration().withEnableAutomaticUpdates(true);
+        return this;
+    }
+
+    @Override
+    public VirtualMachineScaleSetImpl withSpecializedWindowsCustomImage(String customImageId) {
+        this.withGeneralizedWindowsCustomImage(customImageId);
+        this.removeOsProfile = true;
         return this;
     }
 
@@ -892,7 +901,7 @@ public class VirtualMachineScaleSetImpl
     }
 
     @Override
-    public VirtualMachineScaleSetImpl withLinuxCustomImage(String customImageId) {
+    public VirtualMachineScaleSetImpl withGeneralizedLinuxCustomImage(String customImageId) {
         ImageReference imageReferenceInner = new ImageReference();
         imageReferenceInner.withId(customImageId);
         this
@@ -904,6 +913,13 @@ public class VirtualMachineScaleSetImpl
         this.inner().virtualMachineProfile().storageProfile().withImageReference(imageReferenceInner);
         this.inner().virtualMachineProfile().osProfile().withLinuxConfiguration(new LinuxConfiguration());
         this.isMarketplaceLinuxImage = true;
+        return this;
+    }
+
+    @Override
+    public VirtualMachineScaleSetImpl withSpecializedLinuxCustomImage(String customImageId) {
+        this.withGeneralizedLinuxCustomImage(customImageId);
+        this.removeOsProfile = true;
         return this;
     }
 
@@ -1586,7 +1602,7 @@ public class VirtualMachineScaleSetImpl
         }
         VirtualMachineScaleSetOSProfile osProfile = this.inner().virtualMachineProfile().osProfile();
         VirtualMachineScaleSetOSDisk osDisk = this.inner().virtualMachineProfile().storageProfile().osDisk();
-        if (isOSDiskFromImage(osDisk)) {
+        if (!removeOsProfile && isOSDiskFromImage(osDisk)) {
             // ODDisk CreateOption: FROM_IMAGE
             //
             if (this.osType() == OperatingSystemTypes.LINUX || this.isMarketplaceLinuxImage) {
@@ -2378,6 +2394,19 @@ public class VirtualMachineScaleSetImpl
     @Override
     public VirtualMachineScaleSetImpl withLowPriorityVirtualMachine(VirtualMachineEvictionPolicyTypes policy) {
         this.withLowPriorityVirtualMachine();
+        this.inner().virtualMachineProfile().withEvictionPolicy(policy);
+        return this;
+    }
+
+    @Override
+    public VirtualMachineScaleSetImpl withSpotPriorityVirtualMachine() {
+        this.withVirtualMachinePriority(VirtualMachinePriorityTypes.SPOT);
+        return this;
+    }
+
+    @Override
+    public VirtualMachineScaleSetImpl withSpotPriorityVirtualMachine(VirtualMachineEvictionPolicyTypes policy) {
+        this.withSpotPriorityVirtualMachine();
         this.inner().virtualMachineProfile().withEvictionPolicy(policy);
         return this;
     }

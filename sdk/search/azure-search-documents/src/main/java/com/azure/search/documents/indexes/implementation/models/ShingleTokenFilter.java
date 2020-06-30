@@ -7,18 +7,18 @@
 package com.azure.search.documents.indexes.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.JsonFlatten;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/**
- * Creates combinations of tokens as a single token. This token filter is
- * implemented using Apache Lucene.
- */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata.type")
+/** The ShingleTokenFilter model. */
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata\\.type")
 @JsonTypeName("#Microsoft.Azure.Search.ShingleTokenFilter")
+@JsonFlatten
 @Fluent
-public final class ShingleTokenFilter extends TokenFilter {
+public class ShingleTokenFilter extends TokenFilter {
     /*
      * The maximum shingle size. Default and minimum value is 2.
      */
@@ -61,9 +61,14 @@ public final class ShingleTokenFilter extends TokenFilter {
     @JsonProperty(value = "filterToken")
     private String filterToken;
 
+    /** Creates an instance of ShingleTokenFilter class. */
+    @JsonCreator
+    public ShingleTokenFilter(@JsonProperty(value = "name") String name) {
+        super(name);
+    }
+
     /**
-     * Get the maxShingleSize property: The maximum shingle size. Default and
-     * minimum value is 2.
+     * Get the maxShingleSize property: The maximum shingle size. Default and minimum value is 2.
      *
      * @return the maxShingleSize value.
      */
@@ -72,8 +77,7 @@ public final class ShingleTokenFilter extends TokenFilter {
     }
 
     /**
-     * Set the maxShingleSize property: The maximum shingle size. Default and
-     * minimum value is 2.
+     * Set the maxShingleSize property: The maximum shingle size. Default and minimum value is 2.
      *
      * @param maxShingleSize the maxShingleSize value to set.
      * @return the ShingleTokenFilter object itself.
@@ -84,8 +88,8 @@ public final class ShingleTokenFilter extends TokenFilter {
     }
 
     /**
-     * Get the minShingleSize property: The minimum shingle size. Default and
-     * minimum value is 2. Must be less than the value of maxShingleSize.
+     * Get the minShingleSize property: The minimum shingle size. Default and minimum value is 2. Must be less than the
+     * value of maxShingleSize.
      *
      * @return the minShingleSize value.
      */
@@ -94,8 +98,8 @@ public final class ShingleTokenFilter extends TokenFilter {
     }
 
     /**
-     * Set the minShingleSize property: The minimum shingle size. Default and
-     * minimum value is 2. Must be less than the value of maxShingleSize.
+     * Set the minShingleSize property: The minimum shingle size. Default and minimum value is 2. Must be less than the
+     * value of maxShingleSize.
      *
      * @param minShingleSize the minShingleSize value to set.
      * @return the ShingleTokenFilter object itself.
@@ -106,9 +110,8 @@ public final class ShingleTokenFilter extends TokenFilter {
     }
 
     /**
-     * Get the outputUnigrams property: A value indicating whether the output
-     * stream will contain the input tokens (unigrams) as well as shingles.
-     * Default is true.
+     * Get the outputUnigrams property: A value indicating whether the output stream will contain the input tokens
+     * (unigrams) as well as shingles. Default is true.
      *
      * @return the outputUnigrams value.
      */
@@ -117,9 +120,8 @@ public final class ShingleTokenFilter extends TokenFilter {
     }
 
     /**
-     * Set the outputUnigrams property: A value indicating whether the output
-     * stream will contain the input tokens (unigrams) as well as shingles.
-     * Default is true.
+     * Set the outputUnigrams property: A value indicating whether the output stream will contain the input tokens
+     * (unigrams) as well as shingles. Default is true.
      *
      * @param outputUnigrams the outputUnigrams value to set.
      * @return the ShingleTokenFilter object itself.
@@ -130,10 +132,8 @@ public final class ShingleTokenFilter extends TokenFilter {
     }
 
     /**
-     * Get the outputUnigramsIfNoShingles property: A value indicating whether
-     * to output unigrams for those times when no shingles are available. This
-     * property takes precedence when outputUnigrams is set to false. Default
-     * is false.
+     * Get the outputUnigramsIfNoShingles property: A value indicating whether to output unigrams for those times when
+     * no shingles are available. This property takes precedence when outputUnigrams is set to false. Default is false.
      *
      * @return the outputUnigramsIfNoShingles value.
      */
@@ -142,13 +142,10 @@ public final class ShingleTokenFilter extends TokenFilter {
     }
 
     /**
-     * Set the outputUnigramsIfNoShingles property: A value indicating whether
-     * to output unigrams for those times when no shingles are available. This
-     * property takes precedence when outputUnigrams is set to false. Default
-     * is false.
+     * Set the outputUnigramsIfNoShingles property: A value indicating whether to output unigrams for those times when
+     * no shingles are available. This property takes precedence when outputUnigrams is set to false. Default is false.
      *
-     * @param outputUnigramsIfNoShingles the outputUnigramsIfNoShingles value
-     * to set.
+     * @param outputUnigramsIfNoShingles the outputUnigramsIfNoShingles value to set.
      * @return the ShingleTokenFilter object itself.
      */
     public ShingleTokenFilter setOutputUnigramsIfNoShingles(Boolean outputUnigramsIfNoShingles) {
@@ -157,8 +154,8 @@ public final class ShingleTokenFilter extends TokenFilter {
     }
 
     /**
-     * Get the tokenSeparator property: The string to use when joining adjacent
-     * tokens to form a shingle. Default is a single space (" ").
+     * Get the tokenSeparator property: The string to use when joining adjacent tokens to form a shingle. Default is a
+     * single space (" ").
      *
      * @return the tokenSeparator value.
      */
@@ -167,8 +164,8 @@ public final class ShingleTokenFilter extends TokenFilter {
     }
 
     /**
-     * Set the tokenSeparator property: The string to use when joining adjacent
-     * tokens to form a shingle. Default is a single space (" ").
+     * Set the tokenSeparator property: The string to use when joining adjacent tokens to form a shingle. Default is a
+     * single space (" ").
      *
      * @param tokenSeparator the tokenSeparator value to set.
      * @return the ShingleTokenFilter object itself.
@@ -179,8 +176,8 @@ public final class ShingleTokenFilter extends TokenFilter {
     }
 
     /**
-     * Get the filterToken property: The string to insert for each position at
-     * which there is no token. Default is an underscore ("_").
+     * Get the filterToken property: The string to insert for each position at which there is no token. Default is an
+     * underscore ("_").
      *
      * @return the filterToken value.
      */
@@ -189,8 +186,8 @@ public final class ShingleTokenFilter extends TokenFilter {
     }
 
     /**
-     * Set the filterToken property: The string to insert for each position at
-     * which there is no token. Default is an underscore ("_").
+     * Set the filterToken property: The string to insert for each position at which there is no token. Default is an
+     * underscore ("_").
      *
      * @param filterToken the filterToken value to set.
      * @return the ShingleTokenFilter object itself.
@@ -198,5 +195,15 @@ public final class ShingleTokenFilter extends TokenFilter {
     public ShingleTokenFilter setFilterToken(String filterToken) {
         this.filterToken = filterToken;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    @Override
+    public void validate() {
+        super.validate();
     }
 }

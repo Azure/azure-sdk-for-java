@@ -19,22 +19,20 @@ import java.util.List;
 @Fluent
 public class IndexDocumentsBatch<T> extends IndexBatchBase<T> {
     /**
-     * Constructor
+     * Constructor of {@link IndexDocumentsBatch}.
      */
     public IndexDocumentsBatch() {
-        this.actions(new ArrayList<>());
+        super(new ArrayList<IndexAction<T>>());
     }
 
     /**
-     * Set the actions property: The actions in the batch.
+     * Constructor of {@link IndexDocumentsBatch}
      *
      * @param actions the actions value to set.
-     * @return the IndexBatch object itself.
      */
-    public IndexDocumentsBatch<T> actions(List<IndexAction<T>> actions) {
-        return (IndexDocumentsBatch<T>) super.setActions(actions);
+    public IndexDocumentsBatch(List<IndexAction<T>> actions) {
+        super(actions);
     }
-
 
     /**
      * Adds an Upload IndexAction to the IndexAction chain for a document.

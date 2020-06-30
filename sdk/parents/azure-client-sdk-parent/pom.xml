@@ -432,16 +432,15 @@
         <version>1.0.1</version> <!-- {x-version-update;net.jonathangiles.tools:whitelistgenerator-maven-plugin;external_dependency} -->
         <executions>
           <execution>
-            <id>generateWhitelistReport</id>
+            <id>generateAllowlistReport</id>
             <phase>package</phase>
             <goals>
               <goal>report</goal>
             </goals>
             <configuration>
               <baseDir>.</baseDir>
-              <reportFile>target/dependency-whitelist.json</reportFile>
+              <reportFile>target/dependency-allowlist.json</reportFile>
               <ignoredGA>
-                <param>com.azure:azure-cosmos-examples</param>
                 <param>com.azure:azure-cosmos-benchmark</param>
                 <param>com.azure:azure-core-test</param>
                 <param>com.azure:azure-e2e</param>

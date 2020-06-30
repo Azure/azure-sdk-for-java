@@ -14,8 +14,6 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 public class SerializationUtil {
     /**
      * Configures an {@link ObjectMapper} with custom behavior needed to work with the Azure Cognitive Search REST API.
-     *
-     * @param mapper the mapper to be configured
      */
     public static void configureMapper(ObjectMapper mapper) {
         mapper.registerModule(new JavaTimeModule());

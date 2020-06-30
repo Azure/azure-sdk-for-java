@@ -5,6 +5,7 @@ package com.azure.ai.formrecognizer.models;
 
 import com.azure.core.annotation.Immutable;
 
+import java.util.Collections;
 import java.util.Map;
 
 /**
@@ -19,9 +20,11 @@ public final class CustomFormSubmodel {
     private final Float accuracy;
 
     /*
-     * Map of fields used to train the model.
+     * A map of the fields recognized from the input document.
+     * For models trained with labels, this is the training-time label of the field. For models trained with forms
+     * only, a unique name is generated for each field.
      */
-    private final Map<String, CustomFormModelField> fieldMap;
+    private final Map<String, CustomFormModelField> fields;
 
     /*
      * The form type.
@@ -32,13 +35,13 @@ public final class CustomFormSubmodel {
      * Constructs a CustomFormSubmodel object.
      *
      * @param accuracy The estimated extraction accuracy for this model.
-     * @param fieldMap The Map of fields used to train the model.
+     * @param fields The Map of fields used to train the model.
      * @param formType The recognized form type.
      */
-    public CustomFormSubmodel(final Float accuracy, final Map<String, CustomFormModelField> fieldMap,
+    public CustomFormSubmodel(final Float accuracy, final Map<String, CustomFormModelField> fields,
         final String formType) {
         this.accuracy = accuracy;
-        this.fieldMap = fieldMap;
+        this.fields = fields == null ? null : Collections.unmodifiableMap(fields);
         this.formType = formType;
     }
 
@@ -61,11 +64,13 @@ public final class CustomFormSubmodel {
     }
 
     /**
-     * Gets the extracted fields map.
+     * A map of the fields recognized from the input document.
+     * For models trained with labels, this is the training-time label of the field. For models trained with forms
+     * only, a unique name is generated for each field.
      *
-     * @return The extracted fields map.
+     * @return the unmodifiable map of recognized fields.
      */
-    public Map<String, CustomFormModelField> getFieldMap() {
-        return this.fieldMap;
+    public Map<String, CustomFormModelField> getFields() {
+        return this.fields;
     }
 }

@@ -9,28 +9,18 @@ package com.azure.search.documents.indexes.implementation.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/**
- * Defines values for IndexerStatus.
- */
+/** Defines values for IndexerStatus. */
 public enum IndexerStatus {
-    /**
-     * Enum value unknown.
-     */
+    /** Enum value unknown. */
     UNKNOWN("unknown"),
 
-    /**
-     * Enum value error.
-     */
+    /** Enum value error. */
     ERROR("error"),
 
-    /**
-     * Enum value running.
-     */
+    /** Enum value running. */
     RUNNING("running");
 
-    /**
-     * The actual serialized value for a IndexerStatus instance.
-     */
+    /** The actual serialized value for a IndexerStatus instance. */
     private final String value;
 
     IndexerStatus(String value) {
