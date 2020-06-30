@@ -501,7 +501,7 @@ public final class ServiceBusManagementAsyncClient {
             return managementClient.getSubscriptions().putWithResponseAsync(subscription.getTopicName(),
                 subscription.getSubscriptionName(), createEntity, null, withTracing)
                 .onErrorMap(ServiceBusManagementAsyncClient::mapException)
-                .map(this::deserializeSubscription);
+                .map(response -> deserializeSubscription(subscription.getTopicName(), response));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -628,7 +628,7 @@ public final class ServiceBusManagementAsyncClient {
             return managementClient.getSubscriptions().getWithResponseAsync(topicName, subscriptionName, true,
                 withTracing)
                 .onErrorMap(ServiceBusManagementAsyncClient::mapException)
-                .map(this::deserializeSubscription);
+                .map(response -> deserializeSubscription(topicName, response));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -777,7 +777,7 @@ public final class ServiceBusManagementAsyncClient {
      *
      * @return The corresponding HTTP response with convenience properties set.
      */
-    private Response<SubscriptionDescription> deserializeSubscription(Response<Object> response) {
+    private Response<SubscriptionDescription> deserializeSubscription(String topicName, Response<Object> response) {
         final SubscriptionDescriptionEntry entry = deserialize(response.getValue(), SubscriptionDescriptionEntry.class);
 
         // This was an empty response (ie. 204).
@@ -788,11 +788,13 @@ public final class ServiceBusManagementAsyncClient {
             return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), null);
         }
 
-        final SubscriptionDescription result = entry.getContent().getSubscriptionDescription();
-        final String topicName = getTitleValue(entry.getTitle());
-        EntityHelper.setTopicName(result, topicName);
+        final SubscriptionDescription subscription = entry.getContent().getSubscriptionDescription();
+        final String subscriptionName = getTitleValue(entry.getTitle());
+        EntityHelper.setSubscriptionName(subscription, subscriptionName);
+        EntityHelper.setTopicName(subscription, topicName);
 
-        return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), result);
+        return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
+            subscription);
     }
 
     /**

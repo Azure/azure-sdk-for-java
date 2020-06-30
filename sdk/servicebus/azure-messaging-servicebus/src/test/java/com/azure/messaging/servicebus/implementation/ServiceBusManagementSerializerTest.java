@@ -17,10 +17,12 @@ import com.azure.messaging.servicebus.models.QueueDescription;
 import com.azure.messaging.servicebus.models.QueueRuntimeInfo;
 import com.azure.messaging.servicebus.models.SubscriptionDescription;
 import com.azure.messaging.servicebus.models.SubscriptionRuntimeInfo;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -401,6 +403,16 @@ class ServiceBusManagementSerializerTest {
             assertSubscriptionEquals(expectedEntry.getContent().getSubscriptionDescription(), EntityStatus.ACTIVE,
                 actualEntry.getContent().getSubscriptionDescription());
         }
+    }
+
+    @Test
+    void test() throws MalformedURLException {
+        String url ="https://sb-java-conniey-5.servicebus.windows.net/topic/Subscriptions/subscription-0?api-version=2017-04";
+        URL url1 = new URL(url);
+
+        String path = url1.getPath();
+
+        Assertions.assertNotNull(path);
     }
 
     /**

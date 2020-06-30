@@ -71,11 +71,24 @@ public final class EntityHelper {
         EntityHelper.subscriptionAccessor = accessor;
     }
 
+    /**
+     * Sets the subscription name on a {@link SubscriptionDescription}.
+     *
+     * @param subscription Subscription to set name on.
+     * @param subscriptionName Name of the subscription.
+     */
     public static void setSubscriptionName(SubscriptionDescription subscription, String subscriptionName) {
+        subscriptionAccessor.setSubscriptionName(subscription, subscriptionName);
     }
 
+    /**
+     * Sets the topic name on a {@link SubscriptionDescription}.
+     *
+     * @param subscription Subscription to set name on.
+     * @param topicName Name of the topic.
+     */
     public static void setTopicName(SubscriptionDescription subscription, String topicName) {
-
+        subscriptionAccessor.setTopicName(subscription, topicName);
     }
 
     /**
@@ -91,9 +104,24 @@ public final class EntityHelper {
         void setName(QueueDescription queueDescription, String name);
     }
 
+    /**
+     * Interface for accessing methods on a subscription.
+     */
     public interface SubscriptionAccessor {
+        /**
+         * Sets the topic name on a subscription.
+         *
+         * @param subscriptionDescription Subscription to set name on.
+         * @param topicName Name of the topic.
+         */
         void setTopicName(SubscriptionDescription subscriptionDescription, String topicName);
 
+        /**
+         * Sets the subscription name on a subscription description.
+         *
+         * @param subscriptionDescription Subscription to set name on.
+         * @param subscriptionName Name of the subscription.
+         */
         void setSubscriptionName(SubscriptionDescription subscriptionDescription, String subscriptionName);
     }
 }
