@@ -11,6 +11,7 @@ import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.test.TestBase;
 import com.azure.messaging.servicebus.models.QueueDescription;
 import com.azure.messaging.servicebus.models.QueueRuntimeInfo;
+import com.azure.messaging.servicebus.models.SubscriptionRuntimeInfo;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -55,6 +56,7 @@ class ServiceBusManagementAsyncClientIntegrationTest extends TestBase {
             ? "queue-5"
             : TestUtils.getEntityName(TestUtils.getQueueBaseName(), 5);
         final OffsetDateTime nowUtc = OffsetDateTime.now(Clock.systemUTC());
+
         // Act & Assert
         StepVerifier.create(client.getQueue(queueName))
             .assertNext(queueDescription -> {
@@ -89,6 +91,34 @@ class ServiceBusManagementAsyncClientIntegrationTest extends TestBase {
                 assertTrue(error instanceof ResourceExistsException);
             })
             .verify();
+    }
+
+    @ParameterizedTest
+    @MethodSource("createHttpClients")
+    void getSubscription(HttpClient httpClient) {
+        // Arrange
+        final ServiceBusManagementAsyncClient client = createClient(httpClient);
+        final String topicName = TestUtils.getTopicName();
+        final String subscriptionName = interceptorManager.isPlaybackMode()
+            ? "subscription-session-1"
+            : TestUtils.getEntityName(TestUtils.getSessionSubscriptionBaseName(), 1);
+        final OffsetDateTime nowUtc = OffsetDateTime.now(Clock.systemUTC());
+
+        // Act & Assert
+        StepVerifier.create(client.getSubscription(topicName, subscriptionName))
+            .assertNext(description -> {
+                assertEquals(topicName, description.getTopicName());
+                assertEquals(subscriptionName, description.getSubscriptionName());
+
+                assertTrue(description.requiresSession());
+                assertNotNull(description.getLockDuration());
+
+                final SubscriptionRuntimeInfo runtimeInfo = new SubscriptionRuntimeInfo(description);
+                assertNotNull(runtimeInfo.getCreatedAt());
+                assertTrue(nowUtc.isAfter(runtimeInfo.getCreatedAt()));
+                assertNotNull(runtimeInfo.getAccessedAt());
+            })
+            .verifyComplete();
     }
 
     private ServiceBusManagementAsyncClient createClient(HttpClient httpClient) {

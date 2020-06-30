@@ -37,6 +37,7 @@ import com.azure.messaging.servicebus.implementation.models.SubscriptionDescript
 import com.azure.messaging.servicebus.models.QueueDescription;
 import com.azure.messaging.servicebus.models.QueueRuntimeInfo;
 import com.azure.messaging.servicebus.models.SubscriptionDescription;
+import com.azure.messaging.servicebus.models.SubscriptionRuntimeInfo;
 import reactor.core.publisher.Mono;
 
 import java.io.IOException;
@@ -290,6 +291,62 @@ public final class ServiceBusManagementAsyncClient {
     }
 
     /**
+     * Gets information about the queue.
+     *
+     * @param subscriptionName Name of subscription to get information about.
+     *
+     * @return A Mono that completes with information about the subscription.
+     * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
+     *     namespace.
+     * @throws HttpResponseException If error occurred processing the request.
+     * @throws IllegalArgumentException if {@code topicName} or {@code subscriptionName} are null or empty strings.
+     * @throws ResourceNotFoundException if the {@code subscriptionName} does not exist in the {@code topicName}.
+     * @see <a href="https://docs.microsoft.com/rest/api/servicebus/get-entity">Get Entity</a>
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<SubscriptionDescription> getSubscription(String topicName, String subscriptionName) {
+        return getSubscriptionWithResponse(topicName, subscriptionName).map(Response::getValue);
+    }
+
+    /**
+     * Gets information about the subscription along with its HTTP response.
+     *
+     * @param subscriptionName Name of subscription to get information about.
+     *
+     * @return A Mono that completes with information about the subscription and the associated HTTP response.
+     * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
+     *     namespace.
+     * @throws HttpResponseException If error occurred processing the request.
+     * @throws IllegalArgumentException if {@code topicName} or {@code subscriptionName} are null or empty strings.
+     * @throws ResourceNotFoundException if the {@code subscriptionName} does not exist.
+     * @see <a href="https://docs.microsoft.com/rest/api/servicebus/get-entity">Get Entity</a>
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<SubscriptionDescription>> getSubscriptionWithResponse(String topicName, String subscriptionName) {
+        return withContext(context -> getSubscriptionWithResponse(topicName, subscriptionName, context));
+    }
+
+    /**
+     * Gets runtime information about the queue.
+     *
+     * @param subscriptionName Name of subscription to get information about.
+     *
+     * @return A Mono that completes with runtime information about the queue.
+     * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
+     *     namespace.
+     * @throws HttpResponseException If error occurred processing the request.
+     * @throws IllegalArgumentException if {@code subscriptionName} is an empty string.
+     * @throws NullPointerException if {@code subscriptionName} is null.
+     * @throws ResourceNotFoundException if the {@code subscriptionName} does not exist.
+     * @see <a href="https://docs.microsoft.com/rest/api/servicebus/get-entity">Get Entity</a>
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<SubscriptionRuntimeInfo> getSubscriptionRuntimeInfo(String topicName, String subscriptionName) {
+        return getSubscriptionWithResponse(topicName, subscriptionName)
+            .map(response -> new SubscriptionRuntimeInfo(response.getValue()));
+    }
+
+    /**
      * Fetches all the queues in the Service Bus namespace.
      *
      * @return A Flux of {@link QueueDescription queues} in the Service Bus namespace.
@@ -540,6 +597,38 @@ public final class ServiceBusManagementAsyncClient {
             return entityClient.getWithResponseAsync(queueName, true, withTracing)
                 .onErrorMap(ServiceBusManagementAsyncClient::mapException)
                 .map(this::deserializeQueue);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    /**
+     * Gets a subscription with its context.
+     *
+     * @param topicName Name of the topic associated with the subscription.
+     * @param subscriptionName Name of subscription to fetch information for.
+     * @param context Context to pass into request.
+     *
+     * @return A Mono that completes with the {@link SubscriptionDescription}.
+     */
+    Mono<Response<SubscriptionDescription>> getSubscriptionWithResponse(String topicName, String subscriptionName,
+        Context context) {
+        if (topicName == null || topicName.isEmpty()) {
+            return monoError(logger, new IllegalArgumentException("'topicName' cannot be null or an empty string."));
+        } else if (subscriptionName == null || subscriptionName.isEmpty()) {
+            return monoError(logger,
+                new IllegalArgumentException("'subscriptionName' cannot be null or an empty string."));
+        } else if (context == null) {
+            return monoError(logger, new NullPointerException("'context' cannot be null."));
+        }
+
+        final Context withTracing = context.addData(AZ_TRACING_NAMESPACE_KEY, SERVICE_BUS_TRACING_NAMESPACE_VALUE);
+
+        try {
+            return managementClient.getSubscriptions().getWithResponseAsync(topicName, subscriptionName, true,
+                withTracing)
+                .onErrorMap(ServiceBusManagementAsyncClient::mapException)
+                .map(this::deserializeSubscription);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
