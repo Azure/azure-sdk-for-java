@@ -6,14 +6,12 @@
 
 package com.azure.search.documents.indexes.implementation.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * Statistics for a given index. Statistics are collected periodically and are
- * not guaranteed to always be up-to-date.
- */
-@Fluent
+/** The GetIndexStatisticsResult model. */
+@Immutable
 public final class GetIndexStatisticsResult {
     /*
      * The number of documents in the index.
@@ -27,6 +25,15 @@ public final class GetIndexStatisticsResult {
     @JsonProperty(value = "storageSize", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private long storageSize;
 
+    /** Creates an instance of GetIndexStatisticsResult class. */
+    @JsonCreator
+    public GetIndexStatisticsResult(
+            @JsonProperty(value = "documentCount") long documentCount,
+            @JsonProperty(value = "storageSize") long storageSize) {
+        this.documentCount = documentCount;
+        this.storageSize = storageSize;
+    }
+
     /**
      * Get the documentCount property: The number of documents in the index.
      *
@@ -37,12 +44,18 @@ public final class GetIndexStatisticsResult {
     }
 
     /**
-     * Get the storageSize property: The amount of storage in bytes consumed by
-     * the index.
+     * Get the storageSize property: The amount of storage in bytes consumed by the index.
      *
      * @return the storageSize value.
      */
     public long getStorageSize() {
         return this.storageSize;
     }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {}
 }

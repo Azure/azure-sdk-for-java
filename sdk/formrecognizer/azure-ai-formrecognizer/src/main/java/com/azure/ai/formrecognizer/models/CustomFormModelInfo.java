@@ -24,29 +24,29 @@ public final class CustomFormModelInfo {
     private final CustomFormModelStatus status;
 
     /*
-     * Date and time (UTC) when the training model was requested.
+     * Date and time (UTC) when the training of the model was started.
      */
-    private final OffsetDateTime requestedOn;
+    private final OffsetDateTime trainingStartedOn;
 
     /*
      * Date and time (UTC) when the model training was completed.
      */
-    private final OffsetDateTime completedOn;
+    private final OffsetDateTime trainingCompletedOn;
 
     /**
      * Constructs a {@link CustomFormModelInfo} object.
      *
      * @param modelId The model identifier.
      * @param status The status of the model.
-     * @param requestedOn Date and time (UTC) when the training model was requested.
-     * @param completedOn Date and time (UTC) when the model training was completed.
+     * @param trainingStartedOn Date and time (UTC) when the training of the model was started.
+     * @param trainingCompletedOn Date and time (UTC) when the model training was completed.
      */
     public CustomFormModelInfo(final String modelId, final CustomFormModelStatus status,
-        final OffsetDateTime requestedOn, final OffsetDateTime completedOn) {
+        final OffsetDateTime trainingStartedOn, final OffsetDateTime trainingCompletedOn) {
         this.modelId = modelId;
         this.status = status;
-        this.requestedOn = requestedOn;
-        this.completedOn = completedOn;
+        this.trainingStartedOn = trainingStartedOn;
+        this.trainingCompletedOn = trainingCompletedOn;
     }
 
     /**
@@ -68,21 +68,21 @@ public final class CustomFormModelInfo {
     }
 
     /**
-     * Get the date and time (UTC) when the training was requested.
+     * Get the date and time (UTC) when the training of the model was started.
      *
-     * @return the {@code requestedOn} value.
+     * @return the {@code trainingStartedOn} value.
      */
-    public OffsetDateTime getRequestedOn() {
-        return this.requestedOn;
+    public OffsetDateTime getTrainingStartedOn() {
+        return this.trainingStartedOn;
     }
 
     /**
      * Get the date and time (UTC) when the model training was completed.
      *
-     * @return the {@code completedOn} value.
+     * @return the {@code trainingCompletedOn} value.
      */
-    public OffsetDateTime getCompletedOn() {
-        return this.completedOn;
+    public OffsetDateTime getTrainingCompletedOn() {
+        return this.trainingCompletedOn;
     }
 
 }

@@ -8,7 +8,7 @@ import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
-import com.azure.messaging.servicebus.implementation.QueuesImpl;
+import com.azure.messaging.servicebus.implementation.EntitysImpl;
 import com.azure.messaging.servicebus.implementation.ServiceBusManagementClientImpl;
 import com.azure.messaging.servicebus.implementation.ServiceBusManagementSerializer;
 import com.azure.messaging.servicebus.implementation.models.CreateQueueBody;
@@ -17,7 +17,6 @@ import com.azure.messaging.servicebus.implementation.models.QueueDescriptionEntr
 import com.azure.messaging.servicebus.implementation.models.QueueDescriptionEntryContent;
 import com.azure.messaging.servicebus.implementation.models.QueueDescriptionFeed;
 import com.azure.messaging.servicebus.implementation.models.ResponseLink;
-import com.azure.messaging.servicebus.implementation.models.ResponseTitle;
 import com.azure.messaging.servicebus.models.QueueDescription;
 import com.azure.messaging.servicebus.models.QueueRuntimeInfo;
 import org.junit.jupiter.api.AfterAll;
@@ -38,6 +37,7 @@ import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.Arrays;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -58,7 +58,7 @@ class ServiceBusManagementAsyncClientTest {
     @Mock
     private ServiceBusManagementClientImpl serviceClient;
     @Mock
-    private QueuesImpl queuesClient;
+    private EntitysImpl entitys;
     @Mock
     private ServiceBusManagementSerializer serializer;
     @Mock
@@ -107,7 +107,7 @@ class ServiceBusManagementAsyncClientTest {
         when(secondObjectResponse.getHeaders()).thenReturn(httpHeaders);
         when(secondObjectResponse.getRequest()).thenReturn(httpRequest);
 
-        when(serviceClient.getQueues()).thenReturn(queuesClient);
+        when(serviceClient.getEntitys()).thenReturn(entitys);
 
         client = new ServiceBusManagementAsyncClient(serviceClient, serializer);
     }
@@ -121,13 +121,13 @@ class ServiceBusManagementAsyncClientTest {
     void createQueue() throws IOException {
         // Arrange
         final String updatedName = "some-new-name";
-        final QueueDescription description = new QueueDescription().setName(queueName);
-        final QueueDescription expectedDescription = new QueueDescription();
+        final QueueDescription description = new QueueDescription(queueName);
+        final QueueDescription expectedDescription = new QueueDescription(updatedName);
         final QueueDescriptionEntry expected = new QueueDescriptionEntry()
-            .setTitle(new ResponseTitle().setTitle(updatedName))
+            .setTitle(getResponseTitle(updatedName))
             .setContent(new QueueDescriptionEntryContent().setQueueDescription(expectedDescription));
 
-        when(queuesClient.putWithResponseAsync(eq(queueName),
+        when(entitys.putWithResponseAsync(eq(queueName),
             argThat(arg -> createBodyContentEquals(arg, description)), isNull(), any(Context.class)))
             .thenReturn(Mono.just(objectResponse));
 
@@ -143,13 +143,13 @@ class ServiceBusManagementAsyncClientTest {
     void createQueueWithResponse() throws IOException {
         // Arrange
         final String updatedName = "some-new-name";
-        final QueueDescription description = new QueueDescription().setName(queueName);
-        final QueueDescription expectedDescription = new QueueDescription();
+        final QueueDescription description = new QueueDescription(queueName);
+        final QueueDescription expectedDescription = new QueueDescription(updatedName);
         final QueueDescriptionEntry expected = new QueueDescriptionEntry()
-            .setTitle(new ResponseTitle().setTitle(updatedName))
+            .setTitle(getResponseTitle(updatedName))
             .setContent(new QueueDescriptionEntryContent().setQueueDescription(expectedDescription));
 
-        when(queuesClient.putWithResponseAsync(eq(queueName),
+        when(entitys.putWithResponseAsync(eq(queueName),
             argThat(arg -> createBodyContentEquals(arg, description)), isNull(), any(Context.class)))
             .thenReturn(Mono.just(objectResponse));
 
@@ -168,7 +168,7 @@ class ServiceBusManagementAsyncClientTest {
     @Test
     void deleteQueue() {
         // Arrange
-        when(queuesClient.deleteWithResponseAsync(eq(queueName), any(Context.class)))
+        when(entitys.deleteWithResponseAsync(eq(queueName), any(Context.class)))
             .thenReturn(Mono.just(objectResponse));
 
         // Act & Assert
@@ -179,7 +179,7 @@ class ServiceBusManagementAsyncClientTest {
     @Test
     void deleteQueueWithResponse() {
         // Arrange
-        when(queuesClient.deleteWithResponseAsync(eq(queueName), any(Context.class)))
+        when(entitys.deleteWithResponseAsync(eq(queueName), any(Context.class)))
             .thenReturn(Mono.just(objectResponse));
 
         // Act & Assert
@@ -191,12 +191,12 @@ class ServiceBusManagementAsyncClientTest {
     @Test
     void getQueue() throws IOException {
         // Arrange
-        final QueueDescription expected = new QueueDescription();
+        final QueueDescription expected = new QueueDescription(queueName);
         final QueueDescriptionEntry entry = new QueueDescriptionEntry()
-            .setTitle(new ResponseTitle().setTitle(queueName))
+            .setTitle(getResponseTitle(queueName))
             .setContent(new QueueDescriptionEntryContent().setQueueDescription(expected));
 
-        when(queuesClient.getWithResponseAsync(eq(queueName), eq(true), any(Context.class)))
+        when(entitys.getWithResponseAsync(eq(queueName), eq(true), any(Context.class)))
             .thenReturn(Mono.just(objectResponse));
 
         when(serializer.deserialize(responseString, QueueDescriptionEntry.class)).thenReturn(entry);
@@ -211,13 +211,12 @@ class ServiceBusManagementAsyncClientTest {
     void getQueueWithResponse() throws IOException {
         // Arrange
         final String updatedName = "some-new-name";
-        final QueueDescription expectedDescription = new QueueDescription();
+        final QueueDescription expectedDescription = new QueueDescription(updatedName);
         final QueueDescriptionEntry expected = new QueueDescriptionEntry()
-            .setTitle(new ResponseTitle().setTitle(updatedName))
+            .setTitle(getResponseTitle(updatedName))
             .setContent(new QueueDescriptionEntryContent().setQueueDescription(expectedDescription));
 
-
-        when(queuesClient.getWithResponseAsync(eq(queueName), eq(true), any(Context.class)))
+        when(entitys.getWithResponseAsync(eq(queueName), eq(true), any(Context.class)))
             .thenReturn(Mono.just(objectResponse));
 
         when(serializer.deserialize(responseString, QueueDescriptionEntry.class)).thenReturn(expected);
@@ -235,18 +234,17 @@ class ServiceBusManagementAsyncClientTest {
     @Test
     void getQueueRuntimeInfo() throws IOException {
         // Arrange
-        final QueueDescription expectedDescription = new QueueDescription()
-            .setName(queueName)
+        final QueueDescription expectedDescription = new QueueDescription(queueName)
             .setMessageCount(100)
             .setSizeInBytes(1053)
             .setAccessedAt(OffsetDateTime.of(2020, 10, 6, 12, 1, 20, 300, ZoneOffset.UTC))
             .setCreatedAt(OffsetDateTime.of(2010, 12, 10, 12, 1, 20, 300, ZoneOffset.UTC))
             .setUpdatedAt(OffsetDateTime.of(2019, 4, 25, 7, 1, 20, 300, ZoneOffset.UTC));
         final QueueDescriptionEntry expected = new QueueDescriptionEntry()
-            .setTitle(new ResponseTitle().setTitle(queueName))
+            .setTitle(getResponseTitle(queueName))
             .setContent(new QueueDescriptionEntryContent().setQueueDescription(expectedDescription));
 
-        when(queuesClient.getWithResponseAsync(eq(queueName), eq(true), any(Context.class)))
+        when(entitys.getWithResponseAsync(eq(queueName), eq(true), any(Context.class)))
             .thenReturn(Mono.just(objectResponse));
 
         when(serializer.deserialize(responseString, QueueDescriptionEntry.class)).thenReturn(expected);
@@ -267,18 +265,17 @@ class ServiceBusManagementAsyncClientTest {
     @Test
     void getQueueRuntimeInfoWithResponse() throws IOException {
         // Arrange
-        final QueueDescription expectedDescription = new QueueDescription()
-            .setName(queueName)
+        final QueueDescription expectedDescription = new QueueDescription(queueName)
             .setMessageCount(100)
             .setSizeInBytes(1053)
             .setAccessedAt(OffsetDateTime.of(2020, 10, 6, 12, 1, 20, 300, ZoneOffset.UTC))
             .setCreatedAt(OffsetDateTime.of(2010, 12, 10, 12, 1, 20, 300, ZoneOffset.UTC))
             .setUpdatedAt(OffsetDateTime.of(2019, 4, 25, 7, 1, 20, 300, ZoneOffset.UTC));
         final QueueDescriptionEntry expected = new QueueDescriptionEntry()
-            .setTitle(new ResponseTitle().setTitle(queueName))
+            .setTitle(getResponseTitle(queueName))
             .setContent(new QueueDescriptionEntryContent().setQueueDescription(expectedDescription));
 
-        when(queuesClient.getWithResponseAsync(eq(queueName), eq(true), any(Context.class)))
+        when(entitys.getWithResponseAsync(eq(queueName), eq(true), any(Context.class)))
             .thenReturn(Mono.just(objectResponse));
 
         when(serializer.deserialize(responseString, QueueDescriptionEntry.class)).thenReturn(expected);
@@ -306,12 +303,12 @@ class ServiceBusManagementAsyncClientTest {
         final String entityType = "queues";
         final List<QueueDescriptionEntry> firstEntries = IntStream.range(0, 4).mapToObj(number -> {
             final String name = String.valueOf(number);
-            final QueueDescription description = new QueueDescription();
+            final QueueDescription description = new QueueDescription(name);
             final QueueDescriptionEntryContent content = new QueueDescriptionEntryContent()
                 .setQueueDescription(description);
             return new QueueDescriptionEntry()
                 .setContent(content)
-                .setTitle(new ResponseTitle().setTitle(name));
+                .setTitle(getResponseTitle(name));
         }).collect(Collectors.toList());
         final List<ResponseLink> links = Arrays.asList(
             new ResponseLink().setRel("self").setHref("foo"),
@@ -324,13 +321,14 @@ class ServiceBusManagementAsyncClientTest {
             .setId("first-id");
 
         final List<QueueDescriptionEntry> secondEntries = IntStream.range(5, 7).mapToObj(number -> {
-            final QueueDescription description = new QueueDescription();
+            final String name = String.valueOf(number);
+            final QueueDescription description = new QueueDescription(name);
             final QueueDescriptionEntryContent content = new QueueDescriptionEntryContent()
                 .setQueueDescription(description);
 
             return new QueueDescriptionEntry()
                 .setContent(content)
-                .setTitle(new ResponseTitle().setTitle(String.valueOf(number)));
+                .setTitle(getResponseTitle(name));
         }).collect(Collectors.toList());
         final List<ResponseLink> secondLinks = Arrays.asList(
             new ResponseLink().setRel("self").setHref("foo"),
@@ -360,14 +358,14 @@ class ServiceBusManagementAsyncClientTest {
     @Test
     void updateQueue() throws IOException {
         // Arrange
-        final QueueDescription description = new QueueDescription().setName(queueName);
+        final QueueDescription description = new QueueDescription(queueName);
         final String updatedName = "some-new-name";
-        final QueueDescription expectedDescription = new QueueDescription();
+        final QueueDescription expectedDescription = new QueueDescription(updatedName);
         final QueueDescriptionEntry expected = new QueueDescriptionEntry()
-            .setTitle(new ResponseTitle().setTitle(updatedName))
+            .setTitle(getResponseTitle(updatedName))
             .setContent(new QueueDescriptionEntryContent().setQueueDescription(expectedDescription));
 
-        when(queuesClient.putWithResponseAsync(eq(queueName),
+        when(entitys.putWithResponseAsync(eq(queueName),
             argThat(arg -> createBodyContentEquals(arg, description)), eq("*"), any(Context.class)))
             .thenReturn(Mono.just(objectResponse));
 
@@ -382,14 +380,14 @@ class ServiceBusManagementAsyncClientTest {
     @Test
     void updateQueueWithResponse() throws IOException {
         // Arrange
-        final QueueDescription description = new QueueDescription().setName(queueName);
+        final QueueDescription description = new QueueDescription(queueName);
         final String updatedName = "some-new-name";
-        final QueueDescription expectedDescription = new QueueDescription();
+        final QueueDescription expectedDescription = new QueueDescription(updatedName);
         final QueueDescriptionEntry expected = new QueueDescriptionEntry()
-            .setTitle(new ResponseTitle().setTitle(updatedName))
+            .setTitle(getResponseTitle(updatedName))
             .setContent(new QueueDescriptionEntryContent().setQueueDescription(expectedDescription));
 
-        when(queuesClient.putWithResponseAsync(eq(queueName),
+        when(entitys.putWithResponseAsync(eq(queueName),
             argThat(arg -> createBodyContentEquals(arg, description)), eq("*"), any(Context.class)))
             .thenReturn(Mono.just(objectResponse));
 
@@ -421,5 +419,12 @@ class ServiceBusManagementAsyncClientTest {
         return content != null
             && Objects.equals(expected, content.getQueueDescription())
             && "application/xml".equals(content.getType());
+    }
+
+    private static LinkedHashMap<String, String> getResponseTitle(String entityName) {
+        final LinkedHashMap<String, String> map = new LinkedHashMap<>();
+        map.put("", entityName);
+        map.put("type", "text");
+        return map;
     }
 }

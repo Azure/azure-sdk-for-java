@@ -8,7 +8,6 @@ import com.azure.messaging.servicebus.implementation.models.QueueDescriptionEntr
 import com.azure.messaging.servicebus.implementation.models.QueueDescriptionFeed;
 import com.azure.messaging.servicebus.implementation.models.ResponseAuthor;
 import com.azure.messaging.servicebus.implementation.models.ResponseLink;
-import com.azure.messaging.servicebus.implementation.models.ResponseTitle;
 import com.azure.messaging.servicebus.models.EntityAvailabilityStatus;
 import com.azure.messaging.servicebus.models.EntityStatus;
 import com.azure.messaging.servicebus.models.MessageCountDetails;
@@ -26,7 +25,10 @@ import java.nio.file.Paths;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -34,6 +36,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
 class ServiceBusManagementSerializerTest {
+    private static final String TITLE_KEY = "";
+
     private final ServiceBusManagementSerializer serializer = new ServiceBusManagementSerializer();
 
     /**
@@ -43,8 +47,7 @@ class ServiceBusManagementSerializerTest {
     void deserializeQueueDescription() throws IOException {
         // Arrange
         final String contents = getContents("QueueDescriptionEntry.xml");
-        final QueueDescription expected = new QueueDescription()
-            .setName("my-test-queue")
+        final QueueDescription expected = new QueueDescription("my-test-queue")
             .setLockDuration(Duration.ofMinutes(5))
             .setMaxSizeInMegabytes(1024)
             .setRequiresDuplicateDetection(true)
@@ -75,7 +78,7 @@ class ServiceBusManagementSerializerTest {
         assertNotNull(entry.getContent());
 
         // The entry title is the name of the queue.
-        assertEquals(expected.getName(), entry.getTitle().getTitle());
+        assertTitle(expected.getName(), entry.getTitle());
 
         final QueueDescription actual = entry.getContent().getQueueDescription();
         assertQueueDescriptionEquals(expected, actual);
@@ -87,8 +90,7 @@ class ServiceBusManagementSerializerTest {
     @Test
     void deserializeQueueRuntimeInfo() throws IOException {
         final String contents = getContents("QueueDescriptionEntry.xml");
-        final QueueDescription queueDescription = new QueueDescription()
-            .setName("my-test-queue")
+        final QueueDescription queueDescription = new QueueDescription("my-test-queue")
             .setSizeInBytes(2048)
             .setMessageCount(23)
             .setCreatedAt(OffsetDateTime.parse("2020-06-05T03:55:07.5Z"))
@@ -121,7 +123,7 @@ class ServiceBusManagementSerializerTest {
             new ResponseLink().setRel("next")
                 .setHref("https://sb-java.servicebus.windows.net/$Resources/queues?api-version=2017-04&enrich=false&%24skip=5&%24top=5")
         );
-        final QueueDescription queueDescription = new QueueDescription()
+        final QueueDescription queueDescription = new QueueDescription("")
             .setLockDuration(Duration.ofMinutes(10))
             .setMaxSizeInMegabytes(102)
             .setRequiresDuplicateDetection(true)
@@ -146,7 +148,7 @@ class ServiceBusManagementSerializerTest {
         final QueueDescriptionEntry entry1 = new QueueDescriptionEntry()
             .setBase("https://sb-java.servicebus.windows.net/$Resources/queues?api-version=2017-04&enrich=false&$skip=0&$top=5")
             .setId("https://sb-java.servicebus.windows.net/q-0?api-version=2017-04")
-            .setTitle(new ResponseTitle().setType("text").setTitle("q-0"))
+            .setTitle(getResponseTitle("q-0"))
             .setPublished(OffsetDateTime.parse("2020-03-05T07:17:04Z"))
             .setUpdated(OffsetDateTime.parse("2020-01-05T07:17:04Z"))
             .setAuthor(new ResponseAuthor().setName("sb-java"))
@@ -156,7 +158,7 @@ class ServiceBusManagementSerializerTest {
         final QueueDescriptionEntry entry2 = new QueueDescriptionEntry()
             .setBase("https://sb-java.servicebus.windows.net/$Resources/queues?api-version=2017-04&enrich=false&$skip=0&$top=5")
             .setId("https://sb-java.servicebus.windows.net/q-1?api-version=2017-04")
-            .setTitle(new ResponseTitle().setType("text").setTitle("q-1"))
+            .setTitle(getResponseTitle("q-1"))
             .setPublished(OffsetDateTime.parse("2020-06-10T07:16:25Z"))
             .setUpdated(OffsetDateTime.parse("2020-06-15T07:16:25Z"))
             .setAuthor(new ResponseAuthor().setName("sb-java2"))
@@ -166,7 +168,7 @@ class ServiceBusManagementSerializerTest {
         final QueueDescriptionEntry entry3 = new QueueDescriptionEntry()
             .setBase("https://sb-java.servicebus.windows.net/$Resources/queues?api-version=2017-04&enrich=false&$skip=0&$top=5")
             .setId("https://sb-java.servicebus.windows.net/q-2?api-version=2017-04")
-            .setTitle(new ResponseTitle().setType("text").setTitle("q-2"))
+            .setTitle(getResponseTitle("q-2"))
             .setPublished(OffsetDateTime.parse("2020-06-05T07:17:06Z"))
             .setUpdated(OffsetDateTime.parse("2020-06-05T07:17:06Z"))
             .setAuthor(new ResponseAuthor().setName("sb-java3"))
@@ -174,10 +176,14 @@ class ServiceBusManagementSerializerTest {
             .setContent(new QueueDescriptionEntryContent().setType("application/xml")
                 .setQueueDescription(queueDescription));
 
+
+        final Map<String, String> titleMap = new HashMap<>();
+        titleMap.put("", "Queues");
+        titleMap.put("type", "text");
         final List<QueueDescriptionEntry> entries = Arrays.asList(entry1, entry2, entry3);
         final QueueDescriptionFeed expected = new QueueDescriptionFeed()
             .setId("feed-id")
-            .setTitle("Queues")
+            .setTitle(titleMap)
             .setUpdated(OffsetDateTime.parse("2020-12-05T07:17:21Z"))
             .setLink(responseLinks)
             .setEntry(entries);
@@ -230,10 +236,11 @@ class ServiceBusManagementSerializerTest {
     }
 
     private static void assertQueueEntryEquals(QueueDescriptionEntry expected, QueueDescriptionEntry actual) {
+
         assertEquals(expected.getId(), actual.getId());
         assertNotNull(actual.getTitle());
-        assertEquals(expected.getTitle().getType(), actual.getTitle().getType());
-        assertEquals(expected.getTitle().getTitle(), actual.getTitle().getTitle());
+
+        assertResponseTitle(expected.getTitle(), actual.getTitle());
         assertEquals(expected.getUpdated(), actual.getUpdated());
         assertEquals(expected.getPublished(), actual.getPublished());
         assertEquals(expected.getAuthor().getName(), actual.getAuthor().getName());
@@ -280,5 +287,31 @@ class ServiceBusManagementSerializerTest {
         assertEquals(expectedCount.getScheduledMessageCount(), details.getScheduledMessageCount());
         assertEquals(expectedCount.getTransferMessageCount(), details.getTransferMessageCount());
         assertEquals(expectedCount.getTransferDeadLetterMessageCount(), details.getTransferDeadLetterMessageCount());
+    }
+
+    @SuppressWarnings("unchecked")
+    private static void assertTitle(String expectedTitle, Object responseTitle) {
+        assertTrue(responseTitle instanceof LinkedHashMap);
+
+        final LinkedHashMap<String, String> map = (LinkedHashMap<String, String>) responseTitle;
+        assertTrue(map.containsKey(TITLE_KEY));
+        assertEquals(expectedTitle, map.get(TITLE_KEY));
+    }
+
+    @SuppressWarnings("unchecked")
+    private static void assertResponseTitle(Object expectedResponseTitle, Object actualResponseTitle) {
+        assertTrue(actualResponseTitle instanceof LinkedHashMap);
+
+        final LinkedHashMap<String, String> actualMap = (LinkedHashMap<String, String>) actualResponseTitle;
+
+        assertTrue(actualMap.containsKey(TITLE_KEY));
+        assertTitle(actualMap.get(TITLE_KEY), expectedResponseTitle);
+    }
+
+    private static LinkedHashMap<String, String> getResponseTitle(String entityName) {
+        final LinkedHashMap<String, String> map = new LinkedHashMap<>();
+        map.put("", entityName);
+        map.put("type", "text");
+        return map;
     }
 }

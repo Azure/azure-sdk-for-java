@@ -7,7 +7,7 @@ import com.azure.core.credential.TokenCredential;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 
-import java.util.ArrayDeque;
+import java.util.ArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.ForkJoinPool;
 
@@ -98,8 +98,8 @@ public class DefaultAzureCredentialBuilder extends CredentialBuilderBase<Default
         return new DefaultAzureCredential(getCredentialsChain(), identityClientOptions);
     }
 
-    private ArrayDeque<TokenCredential> getCredentialsChain() {
-        ArrayDeque<TokenCredential> output = new ArrayDeque<>(6);
+    private ArrayList<TokenCredential> getCredentialsChain() {
+        ArrayList<TokenCredential> output = new ArrayList<TokenCredential>(6);
         output.add(new EnvironmentCredential(identityClientOptions));
         output.add(new ManagedIdentityCredential(null, identityClientOptions));
         output.add(new SharedTokenCacheCredential(null, "04b07795-8ddb-461a-bbee-02f9e1bf7b46",

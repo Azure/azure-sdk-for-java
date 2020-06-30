@@ -69,10 +69,10 @@ public final class IndexActionConverter {
         Map<String, Object> additionalProperties;
         TypeReference<Map<String, Object>> typeRef = new TypeReference<Map<String, Object>>() {};
 
-        if (obj.getParamMap() != null) {
-            Map<String, Object> properties = obj.getParamMap();
+        Map<String, Object> mapProperties = PrivateFieldAccessHelper.get(obj, "properties", Map.class);
+        if (mapProperties != null) {
             DYNAMIC_TYPE_MAPPER.setSerializationInclusion(JsonInclude.Include.ALWAYS);
-            additionalProperties = DYNAMIC_TYPE_MAPPER.convertValue(properties, typeRef);
+            additionalProperties = DYNAMIC_TYPE_MAPPER.convertValue(mapProperties, typeRef);
         } else {
             T properties = obj.getDocument();
             additionalProperties = STRONGLY_TYPE_MAPPER.convertValue(properties, typeRef);

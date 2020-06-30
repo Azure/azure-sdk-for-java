@@ -56,7 +56,7 @@ public final class IndexBatchException extends AzureException {
     public <T> IndexBatchBase<T> findFailedActionsToRetry(IndexBatchBase<T> originBatch,
         Function<T, String> keySelector) {
         List<IndexAction<T>> failedActions = doFindFailedActionsToRetry(originBatch, keySelector);
-        return new IndexBatchBase<T>().setActions(failedActions);
+        return new IndexBatchBase<T>(failedActions);
     }
 
     /**
@@ -87,8 +87,6 @@ public final class IndexBatchException extends AzureException {
         Function<T, String> keySelector) {
         if (action.getDocument() != null) {
             return uniqueRetriableKeys.contains(keySelector.apply(action.getDocument()));
-        } else if (action.getParamMap() != null) {
-            return uniqueRetriableKeys.contains(keySelector.apply((T) action.getParamMap()));
         }
         return false;
     }

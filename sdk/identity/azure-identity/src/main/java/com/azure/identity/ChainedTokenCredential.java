@@ -14,7 +14,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
-import java.util.Deque;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -26,17 +26,16 @@ import java.util.List;
  */
 @Immutable
 public class ChainedTokenCredential implements TokenCredential {
-    private final Deque<TokenCredential> credentials;
     private volatile TokenRefreshOptions tokenRefreshOptions;
+    private final List<TokenCredential> credentials;
     private final String unavailableError = this.getClass().getSimpleName() + " authentication failed. ---> ";
 
     /**
      * Create an instance of chained token credential that aggregates a list of token
      * credentials.
      */
-    ChainedTokenCredential(Deque<TokenCredential> credentials) {
-        this.credentials = credentials;
-        tokenRefreshOptions = new TokenRefreshOptions();
+    ChainedTokenCredential(List<TokenCredential> credentials) {
+        this.credentials = Collections.unmodifiableList(credentials);
     }
 
     @Override
@@ -69,5 +68,15 @@ public class ChainedTokenCredential implements TokenCredential {
     @Override
     public TokenRefreshOptions getTokenRefreshOptions() {
         return tokenRefreshOptions;
+    }
+
+
+    /**
+     * Get the read-only list of credentials sequentially used to attempt authentication.
+     *
+     * @return The list of {@link TokenCredential}.
+     */
+    public List<TokenCredential> getCredentials() {
+        return credentials;
     }
 }

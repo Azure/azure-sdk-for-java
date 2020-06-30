@@ -191,8 +191,8 @@ public class FormTrainingAsyncClientJavaDocCodeSnippets {
             System.out.printf("Model Id: %s, Model status: %s, Created on: %s, Last updated on: %s.%n",
                 customModel.getModelId(),
                 customModel.getStatus(),
-                customModel.getRequestedOn(),
-                customModel.getCompletedOn()));
+                customModel.getTrainingStartedOn(),
+                customModel.getTrainingCompletedOn()));
         // END: com.azure.ai.formrecognizer.training.FormTrainingAsyncClient.listCustomModels
     }
 
@@ -207,12 +207,12 @@ public class FormTrainingAsyncClientJavaDocCodeSnippets {
         formTrainingAsyncClient.getCopyAuthorization(resourceId, resourceRegion)
             .subscribe(copyAuthorization -> formTrainingAsyncClient.beginCopyModel(copyModelId, copyAuthorization)
                 .subscribe(copyPoller -> copyPoller.getFinalResult().subscribe(customFormModelInfo -> {
-                    System.out.printf("Copied model has model Id: %s, model status: %s, was requested on: %s,"
-                            + " transfer completed on: %s.%n",
+                    System.out.printf("Copied model has model Id: %s, model status: %s, training started on: %s,"
+                            + " training completed on: %s.%n",
                         customFormModelInfo.getModelId(),
                         customFormModelInfo.getStatus(),
-                        customFormModelInfo.getRequestedOn(),
-                        customFormModelInfo.getCompletedOn());
+                        customFormModelInfo.getTrainingStartedOn(),
+                        customFormModelInfo.getTrainingCompletedOn());
                 })));
         // END: com.azure.ai.formrecognizer.training.FormTrainingAsyncClient.beginCopyModel#string-copyAuthorization
     }
@@ -229,12 +229,12 @@ public class FormTrainingAsyncClientJavaDocCodeSnippets {
             .subscribe(copyAuthorization -> formTrainingAsyncClient.beginCopyModel(copyModelId, copyAuthorization,
                 Duration.ofSeconds(5)).subscribe(copyPoller ->
                 copyPoller.getFinalResult().subscribe(customFormModelInfo -> {
-                    System.out.printf("Copied model has model Id: %s, model status: %s, was requested on: %s,"
-                            + "transfer completed on: %s.%n",
+                    System.out.printf("Copied model has model Id: %s, model status: %s, training started on: %s,"
+                            + "training completed on: %s.%n",
                         customFormModelInfo.getModelId(),
                         customFormModelInfo.getStatus(),
-                        customFormModelInfo.getRequestedOn(),
-                        customFormModelInfo.getCompletedOn());
+                        customFormModelInfo.getTrainingStartedOn(),
+                        customFormModelInfo.getTrainingCompletedOn());
                 })));
         // END: com.azure.ai.formrecognizer.training.FormTrainingAsyncClient.beginCopyModel#string-copyAuthorization-Duration
     }

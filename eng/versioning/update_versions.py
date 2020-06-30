@@ -81,7 +81,7 @@ def update_versions(update_type, version_map, ext_dep_map, target_file, skip_rea
 
                 if repl_thisline:
                     # If the module isn't found then just continue. This can happen if we're going through and updating
-                    # library versions for one track and tag entry is for another track or if we're only updating 
+                    # library versions for one track and tag entry is for another track or if we're only updating
                     # external_dependency versions.
                     if module_name not in version_map and (version_type == 'current' or version_type == 'dependency'):
                         newlines.append(line)
@@ -111,7 +111,7 @@ def update_versions(update_type, version_map, ext_dep_map, target_file, skip_rea
                         if is_include:
                             try:
                                 module = ext_dep_map[module_name]
-                                new_include_version = module.string_for_whitelist_include()
+                                new_include_version = module.string_for_allowlist_include()
                                 newline = re.sub(external_dependency_include_regex, new_include_version, line)
                             except AttributeError:
                                 raise ValueError('Module: {0} does not have an external dependency version.\nFile={1}\nLine={2}'.format(module_name, target_file, line))
@@ -147,7 +147,7 @@ def update_versions(update_type, version_map, ext_dep_map, target_file, skip_rea
         print("Unexpected exception: " + str(e))
         traceback.print_exc(file=sys.stderr)
 
-# Updating the changelog is special. Grab the version from the respective pom file 
+# Updating the changelog is special. Grab the version from the respective pom file
 def update_changelog(pom_file, is_unreleased, replace_version):
 
     # Before doing anything, ensure that there is a changelog.md file sitting next to the pom file
@@ -186,7 +186,7 @@ def load_version_map_from_file(the_file, version_map):
                 continue
             module = CodeModule(stripped_line)
             if (module.name in version_map):
-                raise ValueError('Version file: {0} contains a duplicate entry: {1}'.format(the_file, module.name)) 
+                raise ValueError('Version file: {0} contains a duplicate entry: {1}'.format(the_file, module.name))
             version_map[module.name] = module
 
 def display_version_info(version_map):

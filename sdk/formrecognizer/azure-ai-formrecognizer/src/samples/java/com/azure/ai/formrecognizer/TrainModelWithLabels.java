@@ -37,8 +37,8 @@ public class TrainModelWithLabels {
         // Model Info
         System.out.printf("Model Id: %s%n", customFormModel.getModelId());
         System.out.printf("Model Status: %s%n", customFormModel.getModelStatus());
-        System.out.printf("Model requested on: %s%n", customFormModel.getRequestedOn());
-        System.out.printf("Model training completed on: %s%n%n", customFormModel.getCompletedOn());
+        System.out.printf("Training started on: %s%n", customFormModel.getTrainingStartedOn());
+        System.out.printf("Training completed on: %s%n%n", customFormModel.getTrainingCompletedOn());
 
         // looping through the sub-models, which contains the fields they were trained on
         // The labels are based on the ones you gave the training document.

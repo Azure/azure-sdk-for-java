@@ -30,6 +30,17 @@ public final class LengthTokenFilter extends TokenFilter {
     private Integer maxLength;
 
     /**
+     * Constructor of {@link LengthTokenFilter}.
+     *
+     * @param name The name of the token filter. It must only contain letters, digits,
+     * spaces, dashes or underscores, can only start and end with alphanumeric
+     * characters, and is limited to 128 characters.
+     */
+    public LengthTokenFilter(String name) {
+        super(name);
+    }
+
+    /**
      * Get the minLength property: The minimum length in characters. Default is
      * 0. Maximum is 300. Must be less than the value of max.
      *

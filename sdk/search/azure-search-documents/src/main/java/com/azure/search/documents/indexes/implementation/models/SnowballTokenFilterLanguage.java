@@ -9,123 +9,75 @@ package com.azure.search.documents.indexes.implementation.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/**
- * Defines values for SnowballTokenFilterLanguage.
- */
+/** Defines values for SnowballTokenFilterLanguage. */
 public enum SnowballTokenFilterLanguage {
-    /**
-     * Enum value armenian.
-     */
+    /** Enum value armenian. */
     ARMENIAN("armenian"),
 
-    /**
-     * Enum value basque.
-     */
+    /** Enum value basque. */
     BASQUE("basque"),
 
-    /**
-     * Enum value catalan.
-     */
+    /** Enum value catalan. */
     CATALAN("catalan"),
 
-    /**
-     * Enum value danish.
-     */
+    /** Enum value danish. */
     DANISH("danish"),
 
-    /**
-     * Enum value dutch.
-     */
+    /** Enum value dutch. */
     DUTCH("dutch"),
 
-    /**
-     * Enum value english.
-     */
+    /** Enum value english. */
     ENGLISH("english"),
 
-    /**
-     * Enum value finnish.
-     */
+    /** Enum value finnish. */
     FINNISH("finnish"),
 
-    /**
-     * Enum value french.
-     */
+    /** Enum value french. */
     FRENCH("french"),
 
-    /**
-     * Enum value german.
-     */
+    /** Enum value german. */
     GERMAN("german"),
 
-    /**
-     * Enum value german2.
-     */
+    /** Enum value german2. */
     GERMAN2("german2"),
 
-    /**
-     * Enum value hungarian.
-     */
+    /** Enum value hungarian. */
     HUNGARIAN("hungarian"),
 
-    /**
-     * Enum value italian.
-     */
+    /** Enum value italian. */
     ITALIAN("italian"),
 
-    /**
-     * Enum value kp.
-     */
+    /** Enum value kp. */
     KP("kp"),
 
-    /**
-     * Enum value lovins.
-     */
+    /** Enum value lovins. */
     LOVINS("lovins"),
 
-    /**
-     * Enum value norwegian.
-     */
+    /** Enum value norwegian. */
     NORWEGIAN("norwegian"),
 
-    /**
-     * Enum value porter.
-     */
+    /** Enum value porter. */
     PORTER("porter"),
 
-    /**
-     * Enum value portuguese.
-     */
+    /** Enum value portuguese. */
     PORTUGUESE("portuguese"),
 
-    /**
-     * Enum value romanian.
-     */
+    /** Enum value romanian. */
     ROMANIAN("romanian"),
 
-    /**
-     * Enum value russian.
-     */
+    /** Enum value russian. */
     RUSSIAN("russian"),
 
-    /**
-     * Enum value spanish.
-     */
+    /** Enum value spanish. */
     SPANISH("spanish"),
 
-    /**
-     * Enum value swedish.
-     */
+    /** Enum value swedish. */
     SWEDISH("swedish"),
 
-    /**
-     * Enum value turkish.
-     */
+    /** Enum value turkish. */
     TURKISH("turkish");
 
-    /**
-     * The actual serialized value for a SnowballTokenFilterLanguage instance.
-     */
+    /** The actual serialized value for a SnowballTokenFilterLanguage instance. */
     private final String value;
 
     SnowballTokenFilterLanguage(String value) {

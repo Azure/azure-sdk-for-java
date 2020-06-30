@@ -4,6 +4,7 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -77,6 +78,33 @@ public final class IndexerExecutionResult {
      */
     @JsonProperty(value = "finalTrackingState", access = JsonProperty.Access.WRITE_ONLY)
     private String finalTrackingState;
+
+    /**
+     * Constructor of {@link IndexerExecutionResult}.
+     *
+     * @param status The outcome of this indexer execution. Possible values include:
+     * 'TransientFailure', 'Success', 'InProgress', 'Reset'
+     * @param errors The item-level indexing errors.
+     * @param warnings The item-level indexing warnings.
+     * @param itemCount The number of items that were processed during this indexer execution.
+     * This includes both successfully processed items and items where indexing
+     * was attempted but failed.
+     * @param failedItemCount The number of items that failed to be indexed during this indexer
+     * execution.
+     */
+    @JsonCreator
+    public IndexerExecutionResult(
+        @JsonProperty(value = "status") IndexerExecutionStatus status,
+        @JsonProperty(value = "errors") List<SearchIndexerError> errors,
+        @JsonProperty(value = "warnings") List<SearchIndexerWarning> warnings,
+        @JsonProperty(value = "itemsProcessed") int itemCount,
+        @JsonProperty(value = "itemsFailed") int failedItemCount) {
+        this.status = status;
+        this.errors = errors;
+        this.warnings = warnings;
+        this.itemCount = itemCount;
+        this.failedItemCount = failedItemCount;
+    }
 
     /**
      * Get the status property: The outcome of this indexer execution. Possible

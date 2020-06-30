@@ -60,12 +60,12 @@ public class GeoPointTests extends SearchTestBase {
 
     @Test
     public void canDeserializeGeoPoint() throws Exception {
-        client = getSearchIndexClientBuilder(createHotelIndex()).buildClient();
+        client = getSearchClientBuilder(createHotelIndex()).buildClient();
 
         uploadDocuments();
         SearchOptions searchOptions = new SearchOptions().setFilter("HotelId eq '1'");
         SearchPagedIterable results = client.search("Location",
-            searchOptions, new RequestOptions(), Context.NONE);
+            searchOptions, Context.NONE);
         assertNotNull(results);
 
         PointGeometry expected = createPointGeometry(47.678581, -122.131577);
@@ -75,29 +75,22 @@ public class GeoPointTests extends SearchTestBase {
 
     @Test
     public void canSerializeGeoPoint() {
-        SearchIndex index = new SearchIndex()
-            .setName("geopoints")
+        SearchIndex index = new SearchIndex("geopoints")
             .setFields(Arrays.asList(
-                new SearchField()
-                    .setName("Id")
-                    .setType(SearchFieldDataType.STRING)
+                new SearchField("Id", SearchFieldDataType.STRING)
                     .setKey(true)
                     .setFilterable(true)
                     .setSortable(true),
-                new SearchField()
-                    .setName("Name")
-                    .setType(SearchFieldDataType.STRING)
+                new SearchField("Name", SearchFieldDataType.STRING)
                     .setSearchable(true)
                     .setFilterable(true)
                     .setSortable(true),
-                new SearchField()
-                    .setName("Location")
-                    .setType(SearchFieldDataType.GEOGRAPHY_POINT)
+                new SearchField("Location", SearchFieldDataType.GEOGRAPHY_POINT)
                     .setFilterable(true)
                     .setSortable(true)
             ));
 
-        client = getSearchIndexClientBuilder(setupIndex(index)).buildClient();
+        client = getSearchClientBuilder(setupIndex(index)).buildClient();
 
         List<Map<String, Object>> docs = new ArrayList<>();
 

@@ -7,13 +7,11 @@
 package com.azure.search.documents.indexes.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * Specifies some text and analysis components used to break that text into
- * tokens.
- */
+/** The AnalyzeRequest model. */
 @Fluent
 public final class AnalyzeRequest {
     /*
@@ -25,27 +23,7 @@ public final class AnalyzeRequest {
     /*
      * The name of the analyzer to use to break the given text. If this
      * parameter is not specified, you must specify a tokenizer instead. The
-     * tokenizer and analyzer parameters are mutually exclusive. Possible
-     * values include: 'ArMicrosoft', 'ArLucene', 'HyLucene', 'BnMicrosoft',
-     * 'EuLucene', 'BgMicrosoft', 'BgLucene', 'CaMicrosoft', 'CaLucene',
-     * 'ZhHansMicrosoft', 'ZhHansLucene', 'ZhHantMicrosoft', 'ZhHantLucene',
-     * 'HrMicrosoft', 'CsMicrosoft', 'CsLucene', 'DaMicrosoft', 'DaLucene',
-     * 'NlMicrosoft', 'NlLucene', 'EnMicrosoft', 'EnLucene', 'EtMicrosoft',
-     * 'FiMicrosoft', 'FiLucene', 'FrMicrosoft', 'FrLucene', 'GlLucene',
-     * 'DeMicrosoft', 'DeLucene', 'ElMicrosoft', 'ElLucene', 'GuMicrosoft',
-     * 'HeMicrosoft', 'HiMicrosoft', 'HiLucene', 'HuMicrosoft', 'HuLucene',
-     * 'IsMicrosoft', 'IdMicrosoft', 'IdLucene', 'GaLucene', 'ItMicrosoft',
-     * 'ItLucene', 'JaMicrosoft', 'JaLucene', 'KnMicrosoft', 'KoMicrosoft',
-     * 'KoLucene', 'LvMicrosoft', 'LvLucene', 'LtMicrosoft', 'MlMicrosoft',
-     * 'MsMicrosoft', 'MrMicrosoft', 'NbMicrosoft', 'NoLucene', 'FaLucene',
-     * 'PlMicrosoft', 'PlLucene', 'PtBrMicrosoft', 'PtBrLucene',
-     * 'PtPtMicrosoft', 'PtPtLucene', 'PaMicrosoft', 'RoMicrosoft', 'RoLucene',
-     * 'RuMicrosoft', 'RuLucene', 'SrCyrillicMicrosoft', 'SrLatinMicrosoft',
-     * 'SkMicrosoft', 'SlMicrosoft', 'EsMicrosoft', 'EsLucene', 'SvMicrosoft',
-     * 'SvLucene', 'TaMicrosoft', 'TeMicrosoft', 'ThMicrosoft', 'ThLucene',
-     * 'TrMicrosoft', 'TrLucene', 'UkMicrosoft', 'UrMicrosoft', 'ViMicrosoft',
-     * 'StandardLucene', 'StandardAsciiFoldingLucene', 'Keyword', 'Pattern',
-     * 'Simple', 'Stop', 'Whitespace'
+     * tokenizer and analyzer parameters are mutually exclusive.
      */
     @JsonProperty(value = "analyzer")
     private LexicalAnalyzerName analyzer;
@@ -53,11 +31,7 @@ public final class AnalyzeRequest {
     /*
      * The name of the tokenizer to use to break the given text. If this
      * parameter is not specified, you must specify an analyzer instead. The
-     * tokenizer and analyzer parameters are mutually exclusive. Possible
-     * values include: 'Classic', 'EdgeNGram', 'Keyword', 'Letter',
-     * 'Lowercase', 'MicrosoftLanguageTokenizer',
-     * 'MicrosoftLanguageStemmingTokenizer', 'NGram', 'PathHierarchy',
-     * 'Pattern', 'Standard', 'UaxUrlEmail', 'Whitespace'
+     * tokenizer and analyzer parameters are mutually exclusive.
      */
     @JsonProperty(value = "tokenizer")
     private LexicalTokenizerName tokenizer;
@@ -76,6 +50,12 @@ public final class AnalyzeRequest {
     @JsonProperty(value = "charFilters")
     private List<CharFilterName> charFilters;
 
+    /** Creates an instance of AnalyzeRequest class. */
+    @JsonCreator
+    public AnalyzeRequest(@JsonProperty(value = "text") String text) {
+        this.text = text;
+    }
+
     /**
      * Get the text property: The text to break into tokens.
      *
@@ -91,36 +71,9 @@ public final class AnalyzeRequest {
      * @param text the text value to set.
      * @return the AnalyzeRequest object itself.
      */
-    public AnalyzeRequest setText(String text) {
-        this.text = text;
-        return this;
-    }
-
     /**
-     * Get the analyzer property: The name of the analyzer to use to break the
-     * given text. If this parameter is not specified, you must specify a
-     * tokenizer instead. The tokenizer and analyzer parameters are mutually
-     * exclusive. Possible values include: 'ArMicrosoft', 'ArLucene',
-     * 'HyLucene', 'BnMicrosoft', 'EuLucene', 'BgMicrosoft', 'BgLucene',
-     * 'CaMicrosoft', 'CaLucene', 'ZhHansMicrosoft', 'ZhHansLucene',
-     * 'ZhHantMicrosoft', 'ZhHantLucene', 'HrMicrosoft', 'CsMicrosoft',
-     * 'CsLucene', 'DaMicrosoft', 'DaLucene', 'NlMicrosoft', 'NlLucene',
-     * 'EnMicrosoft', 'EnLucene', 'EtMicrosoft', 'FiMicrosoft', 'FiLucene',
-     * 'FrMicrosoft', 'FrLucene', 'GlLucene', 'DeMicrosoft', 'DeLucene',
-     * 'ElMicrosoft', 'ElLucene', 'GuMicrosoft', 'HeMicrosoft', 'HiMicrosoft',
-     * 'HiLucene', 'HuMicrosoft', 'HuLucene', 'IsMicrosoft', 'IdMicrosoft',
-     * 'IdLucene', 'GaLucene', 'ItMicrosoft', 'ItLucene', 'JaMicrosoft',
-     * 'JaLucene', 'KnMicrosoft', 'KoMicrosoft', 'KoLucene', 'LvMicrosoft',
-     * 'LvLucene', 'LtMicrosoft', 'MlMicrosoft', 'MsMicrosoft', 'MrMicrosoft',
-     * 'NbMicrosoft', 'NoLucene', 'FaLucene', 'PlMicrosoft', 'PlLucene',
-     * 'PtBrMicrosoft', 'PtBrLucene', 'PtPtMicrosoft', 'PtPtLucene',
-     * 'PaMicrosoft', 'RoMicrosoft', 'RoLucene', 'RuMicrosoft', 'RuLucene',
-     * 'SrCyrillicMicrosoft', 'SrLatinMicrosoft', 'SkMicrosoft', 'SlMicrosoft',
-     * 'EsMicrosoft', 'EsLucene', 'SvMicrosoft', 'SvLucene', 'TaMicrosoft',
-     * 'TeMicrosoft', 'ThMicrosoft', 'ThLucene', 'TrMicrosoft', 'TrLucene',
-     * 'UkMicrosoft', 'UrMicrosoft', 'ViMicrosoft', 'StandardLucene',
-     * 'StandardAsciiFoldingLucene', 'Keyword', 'Pattern', 'Simple', 'Stop',
-     * 'Whitespace'.
+     * Get the analyzer property: The name of the analyzer to use to break the given text. If this parameter is not
+     * specified, you must specify a tokenizer instead. The tokenizer and analyzer parameters are mutually exclusive.
      *
      * @return the analyzer value.
      */
@@ -129,30 +82,8 @@ public final class AnalyzeRequest {
     }
 
     /**
-     * Set the analyzer property: The name of the analyzer to use to break the
-     * given text. If this parameter is not specified, you must specify a
-     * tokenizer instead. The tokenizer and analyzer parameters are mutually
-     * exclusive. Possible values include: 'ArMicrosoft', 'ArLucene',
-     * 'HyLucene', 'BnMicrosoft', 'EuLucene', 'BgMicrosoft', 'BgLucene',
-     * 'CaMicrosoft', 'CaLucene', 'ZhHansMicrosoft', 'ZhHansLucene',
-     * 'ZhHantMicrosoft', 'ZhHantLucene', 'HrMicrosoft', 'CsMicrosoft',
-     * 'CsLucene', 'DaMicrosoft', 'DaLucene', 'NlMicrosoft', 'NlLucene',
-     * 'EnMicrosoft', 'EnLucene', 'EtMicrosoft', 'FiMicrosoft', 'FiLucene',
-     * 'FrMicrosoft', 'FrLucene', 'GlLucene', 'DeMicrosoft', 'DeLucene',
-     * 'ElMicrosoft', 'ElLucene', 'GuMicrosoft', 'HeMicrosoft', 'HiMicrosoft',
-     * 'HiLucene', 'HuMicrosoft', 'HuLucene', 'IsMicrosoft', 'IdMicrosoft',
-     * 'IdLucene', 'GaLucene', 'ItMicrosoft', 'ItLucene', 'JaMicrosoft',
-     * 'JaLucene', 'KnMicrosoft', 'KoMicrosoft', 'KoLucene', 'LvMicrosoft',
-     * 'LvLucene', 'LtMicrosoft', 'MlMicrosoft', 'MsMicrosoft', 'MrMicrosoft',
-     * 'NbMicrosoft', 'NoLucene', 'FaLucene', 'PlMicrosoft', 'PlLucene',
-     * 'PtBrMicrosoft', 'PtBrLucene', 'PtPtMicrosoft', 'PtPtLucene',
-     * 'PaMicrosoft', 'RoMicrosoft', 'RoLucene', 'RuMicrosoft', 'RuLucene',
-     * 'SrCyrillicMicrosoft', 'SrLatinMicrosoft', 'SkMicrosoft', 'SlMicrosoft',
-     * 'EsMicrosoft', 'EsLucene', 'SvMicrosoft', 'SvLucene', 'TaMicrosoft',
-     * 'TeMicrosoft', 'ThMicrosoft', 'ThLucene', 'TrMicrosoft', 'TrLucene',
-     * 'UkMicrosoft', 'UrMicrosoft', 'ViMicrosoft', 'StandardLucene',
-     * 'StandardAsciiFoldingLucene', 'Keyword', 'Pattern', 'Simple', 'Stop',
-     * 'Whitespace'.
+     * Set the analyzer property: The name of the analyzer to use to break the given text. If this parameter is not
+     * specified, you must specify a tokenizer instead. The tokenizer and analyzer parameters are mutually exclusive.
      *
      * @param analyzer the analyzer value to set.
      * @return the AnalyzeRequest object itself.
@@ -163,13 +94,8 @@ public final class AnalyzeRequest {
     }
 
     /**
-     * Get the tokenizer property: The name of the tokenizer to use to break
-     * the given text. If this parameter is not specified, you must specify an
-     * analyzer instead. The tokenizer and analyzer parameters are mutually
-     * exclusive. Possible values include: 'Classic', 'EdgeNGram', 'Keyword',
-     * 'Letter', 'Lowercase', 'MicrosoftLanguageTokenizer',
-     * 'MicrosoftLanguageStemmingTokenizer', 'NGram', 'PathHierarchy',
-     * 'Pattern', 'Standard', 'UaxUrlEmail', 'Whitespace'.
+     * Get the tokenizer property: The name of the tokenizer to use to break the given text. If this parameter is not
+     * specified, you must specify an analyzer instead. The tokenizer and analyzer parameters are mutually exclusive.
      *
      * @return the tokenizer value.
      */
@@ -178,13 +104,8 @@ public final class AnalyzeRequest {
     }
 
     /**
-     * Set the tokenizer property: The name of the tokenizer to use to break
-     * the given text. If this parameter is not specified, you must specify an
-     * analyzer instead. The tokenizer and analyzer parameters are mutually
-     * exclusive. Possible values include: 'Classic', 'EdgeNGram', 'Keyword',
-     * 'Letter', 'Lowercase', 'MicrosoftLanguageTokenizer',
-     * 'MicrosoftLanguageStemmingTokenizer', 'NGram', 'PathHierarchy',
-     * 'Pattern', 'Standard', 'UaxUrlEmail', 'Whitespace'.
+     * Set the tokenizer property: The name of the tokenizer to use to break the given text. If this parameter is not
+     * specified, you must specify an analyzer instead. The tokenizer and analyzer parameters are mutually exclusive.
      *
      * @param tokenizer the tokenizer value to set.
      * @return the AnalyzeRequest object itself.
@@ -195,9 +116,8 @@ public final class AnalyzeRequest {
     }
 
     /**
-     * Get the tokenFilters property: An optional list of token filters to use
-     * when breaking the given text. This parameter can only be set when using
-     * the tokenizer parameter.
+     * Get the tokenFilters property: An optional list of token filters to use when breaking the given text. This
+     * parameter can only be set when using the tokenizer parameter.
      *
      * @return the tokenFilters value.
      */
@@ -206,9 +126,8 @@ public final class AnalyzeRequest {
     }
 
     /**
-     * Set the tokenFilters property: An optional list of token filters to use
-     * when breaking the given text. This parameter can only be set when using
-     * the tokenizer parameter.
+     * Set the tokenFilters property: An optional list of token filters to use when breaking the given text. This
+     * parameter can only be set when using the tokenizer parameter.
      *
      * @param tokenFilters the tokenFilters value to set.
      * @return the AnalyzeRequest object itself.
@@ -219,9 +138,8 @@ public final class AnalyzeRequest {
     }
 
     /**
-     * Get the charFilters property: An optional list of character filters to
-     * use when breaking the given text. This parameter can only be set when
-     * using the tokenizer parameter.
+     * Get the charFilters property: An optional list of character filters to use when breaking the given text. This
+     * parameter can only be set when using the tokenizer parameter.
      *
      * @return the charFilters value.
      */
@@ -230,9 +148,8 @@ public final class AnalyzeRequest {
     }
 
     /**
-     * Set the charFilters property: An optional list of character filters to
-     * use when breaking the given text. This parameter can only be set when
-     * using the tokenizer parameter.
+     * Set the charFilters property: An optional list of character filters to use when breaking the given text. This
+     * parameter can only be set when using the tokenizer parameter.
      *
      * @param charFilters the charFilters value to set.
      * @return the AnalyzeRequest object itself.
@@ -240,5 +157,16 @@ public final class AnalyzeRequest {
     public AnalyzeRequest setCharFilters(List<CharFilterName> charFilters) {
         this.charFilters = charFilters;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (getText() == null) {
+            throw new IllegalArgumentException("Missing required property text in model AnalyzeRequest");
+        }
     }
 }

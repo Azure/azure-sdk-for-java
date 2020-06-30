@@ -32,7 +32,6 @@ import java.util.function.Supplier;
 import static com.azure.search.documents.TestHelpers.assertMapEquals;
 import static com.azure.search.documents.TestHelpers.assertObjectEquals;
 import static com.azure.search.documents.TestHelpers.createPointGeometry;
-import static com.azure.search.documents.TestHelpers.generateRequestOptions;
 import static com.azure.search.documents.TestHelpers.uploadDocument;
 import static java.lang.Double.NEGATIVE_INFINITY;
 import static java.lang.Double.NaN;
@@ -57,7 +56,7 @@ public class LookupSyncTests extends SearchTestBase {
         String indexName = indexSupplier.get();
         indexesToDelete.add(indexName);
 
-        return getSearchIndexClientBuilder(indexName).buildClient();
+        return getSearchClientBuilder(indexName).buildClient();
     }
 
     @Test
@@ -120,7 +119,7 @@ public class LookupSyncTests extends SearchTestBase {
 
         List<String> selectedFields = Arrays.asList("Description", "HotelName", "Address/City", "Rooms/BaseRate");
         Response<Hotel> actual = client.getDocumentWithResponse(indexedDoc.hotelId(), Hotel.class,
-            selectedFields, generateRequestOptions(), Context.NONE);
+            selectedFields, Context.NONE);
         assertObjectEquals(expected, actual.getValue(), true);
     }
 
@@ -152,7 +151,7 @@ public class LookupSyncTests extends SearchTestBase {
         List<String> selectedFields = Arrays.asList("HotelId", "HotelName", "Tags", "ParkingIncluded", "LastRenovationDate", "Rating", "Location", "Address", "Rooms/BaseRate", "Rooms/BedOptions", "Rooms/SleepsCount", "Rooms/SmokingAllowed", "Rooms/Tags");
 
         Response<SearchDocument> response = client.getDocumentWithResponse("1", SearchDocument.class,
-            selectedFields, generateRequestOptions(), Context.NONE);
+            selectedFields, Context.NONE);
         assertEquals(expectedDoc, response.getValue());
     }
 
@@ -181,7 +180,7 @@ public class LookupSyncTests extends SearchTestBase {
         List<String> selectedFields = Arrays.asList("HotelId", "Address");
 
         Response<SearchDocument> response = client.getDocumentWithResponse("1", SearchDocument.class,
-            selectedFields, generateRequestOptions(), Context.NONE);
+            selectedFields, Context.NONE);
         assertEquals(expectedDoc, response.getValue());
     }
 
@@ -261,7 +260,7 @@ public class LookupSyncTests extends SearchTestBase {
         List<String> selectedFields = Arrays.asList("HotelId", "Rooms");
 
         Response<SearchDocument> response = client.getDocumentWithResponse("1", SearchDocument.class,
-            selectedFields, generateRequestOptions(), Context.NONE);
+            selectedFields, Context.NONE);
         assertEquals(expectedDoc, response.getValue());
     }
 
@@ -287,7 +286,7 @@ public class LookupSyncTests extends SearchTestBase {
         // Select only the fields set in the test case so we don't get superfluous data back.
         List<String> selectedFields = Arrays.asList("HotelId", "LastRenovationDate", "Location", "Rooms/BaseRate");
         assertMapEquals(expectedDoc, client.getDocumentWithResponse("1", SearchDocument.class, selectedFields,
-            null, Context.NONE).getValue(), false, "properties");
+            Context.NONE).getValue(), false, "properties");
     }
 
     @Test
@@ -301,7 +300,7 @@ public class LookupSyncTests extends SearchTestBase {
 
         client.indexDocuments(new IndexDocumentsBatch<>().addUploadActions(expectedDoc));
         assertEquals(client.getDocumentWithResponse(complexKey, SearchDocument.class,
-            new ArrayList<>(expectedDoc.keySet()), null, Context.NONE).getValue(), expectedDoc);
+            new ArrayList<>(expectedDoc.keySet()), Context.NONE).getValue(), expectedDoc);
     }
 
     @Test
@@ -319,7 +318,7 @@ public class LookupSyncTests extends SearchTestBase {
 
         client.indexDocuments(new IndexDocumentsBatch<>().addUploadActions(indexedDoc));
         SearchDocument actualDoc = client.getDocumentWithResponse("1", SearchDocument.class,
-            new ArrayList<>(expectedDoc.keySet()), null, Context.NONE).getValue();
+            new ArrayList<>(expectedDoc.keySet()), Context.NONE).getValue();
         assertMapEquals(expectedDoc, actualDoc, false);
     }
 
@@ -353,7 +352,7 @@ public class LookupSyncTests extends SearchTestBase {
         List<String> selectedFields = Arrays.asList("HotelId", "Rooms/BaseRate", "Rooms/BedOptions", "Rooms/SleepsCount", "Rooms/SmokingAllowed", "Rooms/Tags");
 
         Response<SearchDocument> response = client.getDocumentWithResponse("1", SearchDocument.class,
-            selectedFields, generateRequestOptions(), Context.NONE);
+            selectedFields, Context.NONE);
         assertEquals(expectedDoc, response.getValue());
     }
 
@@ -478,41 +477,24 @@ public class LookupSyncTests extends SearchTestBase {
     }
 
     String setupIndexWithDataTypes() {
-        SearchIndex index = new SearchIndex()
-            .setName("data-types-tests-index")
+        SearchIndex index = new SearchIndex("data-types-tests-index")
             .setFields(Arrays.asList(
-                 new SearchField()
-                    .setName("Key")
-                    .setType(SearchFieldDataType.STRING)
+                 new SearchField("Key", SearchFieldDataType.STRING)
                     .setKey(true)
                     .setHidden(false),
-                 new SearchField()
-                    .setName("Bools")
-                    .setType(SearchFieldDataType.collection(SearchFieldDataType.BOOLEAN))
+                 new SearchField("Bools", SearchFieldDataType.collection(SearchFieldDataType.BOOLEAN))
                     .setHidden(false),
-                 new SearchField()
-                    .setName("Dates")
-                    .setType(SearchFieldDataType.collection(SearchFieldDataType.DATE_TIME_OFFSET))
+                 new SearchField("Dates", SearchFieldDataType.collection(SearchFieldDataType.DATE_TIME_OFFSET))
                     .setHidden(false),
-                 new SearchField()
-                    .setName("Doubles")
-                    .setType(SearchFieldDataType.collection(SearchFieldDataType.DOUBLE))
+                 new SearchField("Doubles", SearchFieldDataType.collection(SearchFieldDataType.DOUBLE))
                     .setHidden(false),
-                 new SearchField()
-                    .setName("Points")
-                    .setType(SearchFieldDataType.collection(SearchFieldDataType.GEOGRAPHY_POINT))
+                 new SearchField("Points", SearchFieldDataType.collection(SearchFieldDataType.GEOGRAPHY_POINT))
                     .setHidden(false),
-                 new SearchField()
-                    .setName("Ints")
-                    .setType(SearchFieldDataType.collection(SearchFieldDataType.INT32))
+                 new SearchField("Ints", SearchFieldDataType.collection(SearchFieldDataType.INT32))
                     .setHidden(false),
-                 new SearchField()
-                    .setName("Longs")
-                    .setType(SearchFieldDataType.collection(SearchFieldDataType.INT64))
+                 new SearchField("Longs", SearchFieldDataType.collection(SearchFieldDataType.INT64))
                     .setHidden(false),
-                 new SearchField()
-                    .setName("Strings")
-                    .setType(SearchFieldDataType.collection(SearchFieldDataType.STRING))
+                 new SearchField("Strings", SearchFieldDataType.collection(SearchFieldDataType.STRING))
                     .setHidden(false)
             ));
 

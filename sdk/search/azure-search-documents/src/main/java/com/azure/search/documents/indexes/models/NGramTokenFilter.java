@@ -28,9 +28,14 @@ public final class NGramTokenFilter extends TokenFilter {
     private Integer maxGram;
 
     /**
-     * Constructor for {@link NGramTokenFilter}.
+     * Constructor of {@link NGramTokenFilter}.
+     *
+     * @param name The name of the token filter. It must only contain letters, digits,
+     * spaces, dashes or underscores, can only start and end with alphanumeric
+     * characters, and is limited to 128 characters.
      */
-    public NGramTokenFilter() {
+    public NGramTokenFilter(String name) {
+        super(name);
         odataType = "#Microsoft.Azure.Search.KeywordTokenizerV2";
     }
 

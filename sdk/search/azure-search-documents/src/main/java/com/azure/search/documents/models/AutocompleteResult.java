@@ -4,6 +4,7 @@
 package com.azure.search.documents.models;
 
 import com.azure.core.annotation.Fluent;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.List;
@@ -26,6 +27,17 @@ public final class AutocompleteResult {
      */
     @JsonProperty(value = "value", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private List<AutocompleteItem> results;
+
+    /**
+     * Constructor of {@link AutocompleteResult}.
+     *
+     * @param results The list of returned Autocompleted items.
+     */
+    @JsonCreator
+    public AutocompleteResult(
+        @JsonProperty(value = "value") List<AutocompleteItem> results) {
+        this.results = results;
+    }
 
     /**
      * Get the coverage property: A value indicating the percentage of the

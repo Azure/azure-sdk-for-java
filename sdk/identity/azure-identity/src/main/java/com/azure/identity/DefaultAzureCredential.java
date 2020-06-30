@@ -8,7 +8,7 @@ import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.TokenRefreshOptions;
 import com.azure.identity.implementation.IdentityClientOptions;
 
-import java.util.ArrayDeque;
+import java.util.List;
 
 /**
  * Creates a credential using environment variables or the shared token cache. It tries to create a valid credential in
@@ -37,7 +37,7 @@ public final class DefaultAzureCredential extends ChainedTokenCredential {
      * @param tokenCredentials the list of credentials to execute for authentication.
      * @param identityClientOptions the options for configuring the identity client.
      */
-    DefaultAzureCredential(ArrayDeque<TokenCredential> tokenCredentials, IdentityClientOptions identityClientOptions) {
+    DefaultAzureCredential(List<TokenCredential> tokenCredentials, IdentityClientOptions identityClientOptions) {
         super(tokenCredentials);
         this.identityClientOptions = identityClientOptions;
     }
@@ -45,5 +45,17 @@ public final class DefaultAzureCredential extends ChainedTokenCredential {
     @Override
     public TokenRefreshOptions getTokenRefreshOptions() {
         return identityClientOptions.getTokenRefreshOptions();
+    }
+
+
+    /**
+     * {@inheritDoc}
+     * The credentials in the returned list and their order may change in future versions of Identity.
+     * This API is not intended to be used in production ready code and should only be used for development purposes.
+     *
+     * @return The list of {@link TokenCredential}.
+     */
+    public List<TokenCredential> getCredentials() {
+        return super.getCredentials();
     }
 }
