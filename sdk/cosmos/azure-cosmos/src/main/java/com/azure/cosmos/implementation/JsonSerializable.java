@@ -117,6 +117,8 @@ public class JsonSerializable {
                     }
                 case STRING:
                     return value.asText();
+                case NULL:
+                    return null;
                 default:
                     return value;
             }
