@@ -271,6 +271,8 @@ public final class TopicDescription {
         this.duplicateDetectionHistoryTimeWindow = Duration.ofSeconds(60);
         this.maxSizeInMegabytes = 1024L;
         this.supportOrdering = false;
+
+        this.authorizationRules = new AuthorizationRulesWrapper(new ArrayList<>());
     }
 
     /**

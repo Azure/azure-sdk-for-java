@@ -308,9 +308,15 @@ public final class QueueDescription {
         this.autoDeleteOnIdle = MAX_DURATION;
         this.defaultMessageTimeToLive = MAX_DURATION;
         this.duplicateDetectionHistoryTimeWindow = Duration.ofSeconds(60);
+        this.enableBatchedOperations = true;
+        this.enablePartitioning = false;
         this.lockDuration = DEFAULT_LOCK_DURATION;
         this.maxDeliveryCount = 10;
         this.maxSizeInMegabytes = 1024;
+        this.requiresDuplicateDetection = false;
+        this.requiresSession = false;
+        this.deadLetteringOnMessageExpiration = false;
+        this.authorizationRules = new AuthorizationRulesWrapper(new ArrayList<>());
     }
 
     /**
@@ -831,7 +837,7 @@ public final class QueueDescription {
      *
      * @return the supportOrdering value.
      */
-    public Boolean supportOrdering() {
+    Boolean supportOrdering() {
         return this.supportOrdering;
     }
 
@@ -841,7 +847,7 @@ public final class QueueDescription {
      * @param supportOrdering the supportOrdering value to set.
      * @return the QueueDescription object itself.
      */
-    public QueueDescription setSupportOrdering(Boolean supportOrdering) {
+    QueueDescription setSupportOrdering(Boolean supportOrdering) {
         this.supportOrdering = supportOrdering;
         return this;
     }
