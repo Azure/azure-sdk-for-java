@@ -24,21 +24,6 @@ import java.util.Map;
  */
 public interface MongoDBDatabaseGetResults extends HasInner<MongoDBDatabaseGetResultsInner>, Indexable, Refreshable<MongoDBDatabaseGetResults>, Updatable<MongoDBDatabaseGetResults.Update>, HasManager<CosmosDBManager> {
     /**
-     * @return the _etag value.
-     */
-    String _etag();
-
-    /**
-     * @return the _rid value.
-     */
-    String _rid();
-
-    /**
-     * @return the _ts value.
-     */
-    Object _ts();
-
-    /**
      * @return the id value.
      */
     String id();
@@ -49,14 +34,14 @@ public interface MongoDBDatabaseGetResults extends HasInner<MongoDBDatabaseGetRe
     String location();
 
     /**
-     * @return the mongoDBDatabaseGetResultsId value.
-     */
-    String mongoDBDatabaseGetResultsId();
-
-    /**
      * @return the name value.
      */
     String name();
+
+    /**
+     * @return the resource value.
+     */
+    MongoDBDatabaseGetPropertiesResource resource();
 
     /**
      * @return the tags value.
