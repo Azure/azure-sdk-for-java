@@ -21,7 +21,6 @@ import org.mockito.MockitoAnnotations;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
-import java.time.OffsetDateTime;
 import java.util.Arrays;
 import java.util.List;
 
@@ -72,8 +71,7 @@ class ServiceBusManagementClientTest {
             .setAutoDeleteOnIdle(Duration.ofSeconds(10));
         final QueueDescription result = new QueueDescription("queue-name-2")
             .setMaxDeliveryCount(4)
-            .setAutoDeleteOnIdle(Duration.ofSeconds(30))
-            .setAccessedAt(OffsetDateTime.now());
+            .setAutoDeleteOnIdle(Duration.ofSeconds(30));
 
         when(asyncClient.createQueue(description)).thenReturn(Mono.just(result));
 
@@ -252,8 +250,7 @@ class ServiceBusManagementClientTest {
             .setAutoDeleteOnIdle(Duration.ofSeconds(10));
         final QueueDescription result = new QueueDescription("queue-name-2")
             .setMaxDeliveryCount(4)
-            .setAutoDeleteOnIdle(Duration.ofSeconds(30))
-            .setAccessedAt(OffsetDateTime.now());
+            .setAutoDeleteOnIdle(Duration.ofSeconds(30));
 
         when(asyncClient.updateQueue(description)).thenReturn(Mono.just(result));
 

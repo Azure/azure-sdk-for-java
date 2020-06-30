@@ -147,9 +147,6 @@ class ServiceBusManagementSerializerTest {
             .setAutoDeleteOnIdle(Duration.ofSeconds(5))
             .setEnablePartitioning(true);
 
-            EntityHelper.setSizeInBytes(queueDescription, 0);
-            EntityHelper.setMessageCount(queueDescription, 0);
-
         final QueueDescriptionEntry entry1 = new QueueDescriptionEntry()
             .setBase("https://sb-java.servicebus.windows.net/$Resources/queues?api-version=2017-04&enrich=false&$skip=0&$top=5")
             .setId("https://sb-java.servicebus.windows.net/q-0?api-version=2017-04")
