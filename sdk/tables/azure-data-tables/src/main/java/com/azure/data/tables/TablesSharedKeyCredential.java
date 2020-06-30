@@ -54,9 +54,10 @@ public class TablesSharedKeyCredential {
     private String buildStringToSign(URL requestURL, Map<String, String> headers) {
         String dateHeader = headers.containsKey("x-ms-date") ? "" : this.getStandardHeaderValue(headers,
             "Date");
-        return String.join("\n",
+        String s =  String.join("\n",
             dateHeader,  //date
             this.getCanonicalizedResource(requestURL)); //Canonicalized resource
+        return s;
     }
 
     /**

@@ -4,7 +4,7 @@
 
 ### Setup
 ```ps
-Fork and clone https://github.com/Azure/autorest.java
+ForowKey and clone https://github.com/Azure/autorest.java
 git checkout v4
 git submodule update --init --recursive
 mvn package -Dlocal
@@ -15,7 +15,7 @@ npm install -g autorest
 ### Generation
 ```ps
 cd <swagger-folder>
-autorest --java --use=C:/work/autorest.java
+autorest --java --use=C:/worowKey/autorest.java
 ```
 
 ### Code generation settings
