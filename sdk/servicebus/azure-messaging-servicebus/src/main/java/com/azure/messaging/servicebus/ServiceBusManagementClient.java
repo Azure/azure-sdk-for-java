@@ -19,6 +19,7 @@ import com.azure.messaging.servicebus.models.QueueRuntimeInfo;
 
 import java.time.Duration;
 import java.util.Objects;
+import java.util.function.Function;
 
 /**
  * A <b>synchronous</b> client for managing a Service Bus namespace.
@@ -157,7 +158,7 @@ public final class ServiceBusManagementClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<QueueDescription> getQueueWithResponse(String queueName, Context context) {
-        return asyncClient.getQueueWithResponse(queueName, context).block();
+        return asyncClient.getQueueWithResponse(queueName, context, Function.identity()).block();
     }
 
     /**
@@ -196,7 +197,7 @@ public final class ServiceBusManagementClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<QueueRuntimeInfo> getQueueRuntimeInfoWithResponse(String queueName, Context context) {
-        return asyncClient.getQueueRuntimeInfoWithResponse(queueName, context).block();
+        return asyncClient.getQueueWithResponse(queueName, context, QueueRuntimeInfo::new).block();
     }
 
     /**

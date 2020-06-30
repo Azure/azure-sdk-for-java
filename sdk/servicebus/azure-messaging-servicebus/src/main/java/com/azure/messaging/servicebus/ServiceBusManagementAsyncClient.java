@@ -34,10 +34,13 @@ import com.azure.messaging.servicebus.implementation.models.ResponseLink;
 import com.azure.messaging.servicebus.implementation.models.ServiceBusManagementError;
 import com.azure.messaging.servicebus.implementation.models.ServiceBusManagementErrorException;
 import com.azure.messaging.servicebus.implementation.models.SubscriptionDescriptionEntry;
+import com.azure.messaging.servicebus.implementation.models.TopicDescriptionEntry;
 import com.azure.messaging.servicebus.models.QueueDescription;
 import com.azure.messaging.servicebus.models.QueueRuntimeInfo;
 import com.azure.messaging.servicebus.models.SubscriptionDescription;
 import com.azure.messaging.servicebus.models.SubscriptionRuntimeInfo;
+import com.azure.messaging.servicebus.models.TopicDescription;
+import com.azure.messaging.servicebus.models.TopicRuntimeInfo;
 import reactor.core.publisher.Mono;
 
 import java.io.IOException;
@@ -52,6 +55,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import static com.azure.core.util.FluxUtil.monoError;
@@ -247,7 +251,7 @@ public final class ServiceBusManagementAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<QueueDescription>> getQueueWithResponse(String queueName) {
-        return withContext(context -> getQueueWithResponse(queueName, context));
+        return withContext(context -> getQueueWithResponse(queueName, context, Function.identity()));
     }
 
     /**
@@ -266,7 +270,7 @@ public final class ServiceBusManagementAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<QueueRuntimeInfo> getQueueRuntimeInfo(String queueName) {
-        return getQueueWithResponse(queueName).map(response -> new QueueRuntimeInfo(response.getValue()));
+        return getQueueRuntimeInfoWithResponse(queueName).map(response -> response.getValue());
     }
 
     /**
@@ -285,7 +289,7 @@ public final class ServiceBusManagementAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<QueueRuntimeInfo>> getQueueRuntimeInfoWithResponse(String queueName) {
-        return withContext(context -> getQueueRuntimeInfoWithResponse(queueName, context));
+        return withContext(context -> getQueueWithResponse(queueName, context, QueueRuntimeInfo::new));
     }
 
     /**
@@ -320,8 +324,10 @@ public final class ServiceBusManagementAsyncClient {
      * @see <a href="https://docs.microsoft.com/rest/api/servicebus/get-entity">Get Entity</a>
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<SubscriptionDescription>> getSubscriptionWithResponse(String topicName, String subscriptionName) {
-        return withContext(context -> getSubscriptionWithResponse(topicName, subscriptionName, context));
+    public Mono<Response<SubscriptionDescription>> getSubscriptionWithResponse(String topicName,
+        String subscriptionName) {
+        return withContext(context -> getSubscriptionWithResponse(topicName, subscriptionName, context,
+            Function.identity()));
     }
 
     /**
@@ -340,8 +346,106 @@ public final class ServiceBusManagementAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SubscriptionRuntimeInfo> getSubscriptionRuntimeInfo(String topicName, String subscriptionName) {
-        return getSubscriptionWithResponse(topicName, subscriptionName)
-            .map(response -> new SubscriptionRuntimeInfo(response.getValue()));
+        return getSubscriptionRuntimeInfoWithResponse(topicName, subscriptionName)
+            .map(response -> response.getValue());
+    }
+
+    /**
+     * Gets runtime information about the queue.
+     *
+     * @param subscriptionName Name of subscription to get information about.
+     *
+     * @return A Mono that completes with runtime information about the queue.
+     * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
+     *     namespace.
+     * @throws HttpResponseException If error occurred processing the request.
+     * @throws IllegalArgumentException if {@code subscriptionName} is an empty string.
+     * @throws NullPointerException if {@code subscriptionName} is null.
+     * @throws ResourceNotFoundException if the {@code subscriptionName} does not exist.
+     * @see <a href="https://docs.microsoft.com/rest/api/servicebus/get-entity">Get Entity</a>
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<SubscriptionRuntimeInfo>> getSubscriptionRuntimeInfoWithResponse(String topicName,
+        String subscriptionName) {
+
+        return withContext(context -> getSubscriptionWithResponse(topicName, subscriptionName, context,
+            SubscriptionRuntimeInfo::new));
+    }
+
+    /**
+     * Gets information about the topic.
+     *
+     * @param topicName Name of topic to get information about.
+     *
+     * @return A Mono that completes with information about the topic.
+     * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
+     *     namespace.
+     * @throws HttpResponseException If error occurred processing the request.
+     * @throws IllegalArgumentException if {@code topicName} is an empty string.
+     * @throws NullPointerException if {@code topicName} is null.
+     * @throws ResourceNotFoundException if the {@code topicName} does not exist.
+     * @see <a href="https://docs.microsoft.com/rest/api/servicebus/get-entity">Get Entity</a>
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<TopicDescription> getTopic(String topicName) {
+        return getTopicWithResponse(topicName).map(Response::getValue);
+    }
+
+    /**
+     * Gets information about the topic along with its HTTP response.
+     *
+     * @param topicName Name of topic to get information about.
+     *
+     * @return A Mono that completes with information about the topic and the associated HTTP response.
+     * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
+     *     namespace.
+     * @throws HttpResponseException If error occurred processing the request.
+     * @throws IllegalArgumentException if {@code topicName} is an empty string.
+     * @throws NullPointerException if {@code topicName} is null.
+     * @throws ResourceNotFoundException if the {@code topicName} does not exist.
+     * @see <a href="https://docs.microsoft.com/rest/api/servicebus/get-entity">Get Entity</a>
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<TopicDescription>> getTopicWithResponse(String topicName) {
+        return withContext(context -> getTopicWithResponse(topicName, context, Function.identity()));
+    }
+
+    /**
+     * Gets runtime information about the topic.
+     *
+     * @param topicName Name of topic to get information about.
+     *
+     * @return A Mono that completes with runtime information about the topic.
+     * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
+     *     namespace.
+     * @throws HttpResponseException If error occurred processing the request.
+     * @throws IllegalArgumentException if {@code topicName} is an empty string.
+     * @throws NullPointerException if {@code topicName} is null.
+     * @throws ResourceNotFoundException if the {@code topicName} does not exist.
+     * @see <a href="https://docs.microsoft.com/rest/api/servicebus/get-entity">Get Entity</a>
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<TopicRuntimeInfo> getTopicRuntimeInfo(String topicName) {
+        return getTopicRuntimeInfoWithResponse(topicName).map(response -> response.getValue());
+    }
+
+    /**
+     * Gets runtime information about the topic with its HTTP response.
+     *
+     * @param topicName Name of topic to get information about.
+     *
+     * @return A Mono that completes with runtime information about the topic and the associated HTTP response.
+     * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
+     *     namespace.
+     * @throws HttpResponseException If error occurred processing the request.
+     * @throws IllegalArgumentException if {@code topicName} is an empty string.
+     * @throws NullPointerException if {@code topicName} is null.
+     * @throws ResourceNotFoundException if the {@code topicName} does not exist.
+     * @see <a href="https://docs.microsoft.com/rest/api/servicebus/get-entity">Get Entity</a>
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<TopicRuntimeInfo>> getTopicRuntimeInfoWithResponse(String topicName) {
+        return withContext(context -> getTopicWithResponse(topicName, context, TopicRuntimeInfo::new));
     }
 
     /**
@@ -622,7 +726,8 @@ public final class ServiceBusManagementAsyncClient {
      *
      * @return A Mono that completes with the {@link QueueDescription}.
      */
-    Mono<Response<QueueRuntimeInfo>> getQueueRuntimeInfoWithResponse(String queueName, Context context) {
+    <T> Mono<Response<T>> getQueueWithResponse(String queueName, Context context,
+        Function<QueueDescription, T> mapper) {
         if (queueName == null) {
             return monoError(logger, new NullPointerException("'queueName' cannot be null"));
         } else if (queueName.isEmpty()) {
@@ -637,42 +742,16 @@ public final class ServiceBusManagementAsyncClient {
             return entityClient.getWithResponseAsync(queueName, true, withTracing)
                 .onErrorMap(ServiceBusManagementAsyncClient::mapException)
                 .map(response -> {
-                    final Response<QueueDescription> deserializeQueue = deserializeQueue(response);
-                    final QueueRuntimeInfo runtimeInfo = deserializeQueue.getValue() != null
-                        ? new QueueRuntimeInfo(deserializeQueue.getValue())
+                    final Response<QueueDescription> deserialize = deserializeQueue(response);
+
+                    // In the case this is a 204, do not try to map it.
+                    final T mapped = deserialize.getValue() != null
+                        ? mapper.apply(deserialize.getValue())
                         : null;
 
                     return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
-                        runtimeInfo);
+                        mapped);
                 });
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
-    }
-
-    /**
-     * Gets a queue with its context.
-     *
-     * @param queueName Name of queue to fetch information for.
-     * @param context Context to pass into request.
-     *
-     * @return A Mono that completes with the {@link QueueDescription}.
-     */
-    Mono<Response<QueueDescription>> getQueueWithResponse(String queueName, Context context) {
-        if (queueName == null) {
-            return monoError(logger, new NullPointerException("'queueName' cannot be null"));
-        } else if (queueName.isEmpty()) {
-            return monoError(logger, new IllegalArgumentException("'queueName' cannot be empty."));
-        } else if (context == null) {
-            return monoError(logger, new NullPointerException("'context' cannot be null."));
-        }
-
-        final Context withTracing = context.addData(AZ_TRACING_NAMESPACE_KEY, SERVICE_BUS_TRACING_NAMESPACE_VALUE);
-
-        try {
-            return entityClient.getWithResponseAsync(queueName, true, withTracing)
-                .onErrorMap(ServiceBusManagementAsyncClient::mapException)
-                .map(this::deserializeQueue);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -687,8 +766,8 @@ public final class ServiceBusManagementAsyncClient {
      *
      * @return A Mono that completes with the {@link SubscriptionDescription}.
      */
-    Mono<Response<SubscriptionDescription>> getSubscriptionWithResponse(String topicName, String subscriptionName,
-        Context context) {
+    <T> Mono<Response<T>> getSubscriptionWithResponse(String topicName, String subscriptionName, Context context,
+        Function<SubscriptionDescription, T> mapper) {
         if (topicName == null || topicName.isEmpty()) {
             return monoError(logger, new IllegalArgumentException("'topicName' cannot be null or an empty string."));
         } else if (subscriptionName == null || subscriptionName.isEmpty()) {
@@ -704,7 +783,56 @@ public final class ServiceBusManagementAsyncClient {
             return managementClient.getSubscriptions().getWithResponseAsync(topicName, subscriptionName, true,
                 withTracing)
                 .onErrorMap(ServiceBusManagementAsyncClient::mapException)
-                .map(response -> deserializeSubscription(topicName, response));
+                .map(response -> {
+                    final Response<SubscriptionDescription> deserialize = deserializeSubscription(topicName, response);
+
+                    // In the case this is a 204, do not try to map it.
+                    final T mapped = deserialize.getValue() != null
+                        ? mapper.apply(deserialize.getValue())
+                        : null;
+
+                    return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
+                        mapped);
+                });
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    /**
+     * Gets a topic with its context.
+     *
+     * @param topicName Name of topic to fetch information for.
+     * @param context Context to pass into request.
+     *
+     * @return A Mono that completes with the {@link TopicDescription}.
+     */
+    <T> Mono<Response<T>> getTopicWithResponse(String topicName, Context context,
+        Function<TopicDescription, T> mapper) {
+        if (topicName == null) {
+            return monoError(logger, new NullPointerException("'topicName' cannot be null"));
+        } else if (topicName.isEmpty()) {
+            return monoError(logger, new IllegalArgumentException("'topicName' cannot be empty."));
+        } else if (context == null) {
+            return monoError(logger, new NullPointerException("'context' cannot be null."));
+        }
+
+        final Context withTracing = context.addData(AZ_TRACING_NAMESPACE_KEY, SERVICE_BUS_TRACING_NAMESPACE_VALUE);
+
+        try {
+            return entityClient.getWithResponseAsync(topicName, true, withTracing)
+                .onErrorMap(ServiceBusManagementAsyncClient::mapException)
+                .map(response -> {
+                    final Response<TopicDescription> deserialize = deserializeTopic(response);
+
+                    // In the case this is a 204, do not try to map it.
+                    final T mapped = deserialize.getValue() != null
+                        ? mapper.apply(deserialize.getValue())
+                        : null;
+
+                    return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
+                        mapped);
+                });
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -914,6 +1042,32 @@ public final class ServiceBusManagementAsyncClient {
 
         return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
             subscription);
+    }
+
+    /**
+     * Converts a Response into its corresponding {@link TopicDescriptionEntry} then mapped into {@link
+     * QueueDescription}.
+     *
+     * @param response HTTP Response to deserialize.
+     *
+     * @return The corresponding HTTP response with convenience properties set.
+     */
+    private Response<TopicDescription> deserializeTopic(Response<Object> response) {
+        final TopicDescriptionEntry entry = deserialize(response.getValue(), TopicDescriptionEntry.class);
+
+        // This was an empty response (ie. 204).
+        if (entry == null) {
+            return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), null);
+        } else if (entry.getContent() == null) {
+            logger.warning("entry.getContent() is null. There should have been content returned. Entry: {}", entry);
+            return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), null);
+        }
+
+        final TopicDescription result = entry.getContent().getTopicDescription();
+        final String queueName = getTitleValue(entry.getTitle());
+        EntityHelper.setTopicName(result, queueName);
+
+        return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), result);
     }
 
     /**

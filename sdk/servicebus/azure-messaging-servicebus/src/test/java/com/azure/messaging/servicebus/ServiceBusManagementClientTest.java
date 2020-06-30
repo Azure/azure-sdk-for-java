@@ -25,6 +25,8 @@ import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -143,7 +145,8 @@ class ServiceBusManagementClientTest {
         final QueueDescription result = mock(QueueDescription.class);
 
         when(queueDescriptionResponse.getValue()).thenReturn(result);
-        when(asyncClient.getQueueWithResponse(queueName, context)).thenReturn(Mono.just(queueDescriptionResponse));
+        when(asyncClient.<QueueDescription>getQueueWithResponse(eq(queueName), eq(context), any()))
+            .thenReturn(Mono.just(queueDescriptionResponse));
 
         // Act
         final Response<QueueDescription> actual = client.getQueueWithResponse(queueName, context);
@@ -172,7 +175,7 @@ class ServiceBusManagementClientTest {
         final QueueRuntimeInfo result = mock(QueueRuntimeInfo.class);
 
         when(queueRuntimeInfoResponse.getValue()).thenReturn(result);
-        when(asyncClient.getQueueRuntimeInfoWithResponse(queueName, context))
+        when(asyncClient.<QueueRuntimeInfo>getQueueWithResponse(eq(queueName), eq(context), any()))
             .thenReturn(Mono.just(queueRuntimeInfoResponse));
 
         // Act
@@ -240,7 +243,6 @@ class ServiceBusManagementClientTest {
 
         assertEquals(expectedSize, size);
     }
-
 
     @Test
     void updateQueue() {
