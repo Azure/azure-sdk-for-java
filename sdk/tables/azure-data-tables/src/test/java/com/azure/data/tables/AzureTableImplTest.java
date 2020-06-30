@@ -40,7 +40,7 @@ public class AzureTableImplTest extends TestBase {
     protected void beforeTest() {
         super.beforeTest();
         String connectionString = interceptorManager.isPlaybackMode()
-            ? "DefaultEndpointsProtocol=https;=AccountName=dummyAccount;AccountKey=xyzDummy;EndpointSuffix=core.windows.net"
+            ? "DefaultEndpointsProtocol=https;AccountName=dummyAccount;AccountKey=xyzDummy==;EndpointSuffix=core.windows.net"
             : System.getenv("AZURE_TABLES_CONNECTION_STRING");
         StorageConnectionString storageConnectionString
             = StorageConnectionString.create(connectionString, new ClientLogger(AzureTableImplTest.class));
@@ -119,7 +119,7 @@ public class AzureTableImplTest extends TestBase {
     @Test
     void createTable() {
         // Arrange
-        String tableName = randomCharOnlyName("test", 20);
+        String tableName = "tableA"; // randomCharOnlyName("test", 20);
         TableProperties tableProperties = new TableProperties().setTableName(tableName);
         int expectedStatusCode = 201;
         String requestId = testResourceNamer.randomUuid();
