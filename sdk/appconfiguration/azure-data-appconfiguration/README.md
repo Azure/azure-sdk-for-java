@@ -28,7 +28,7 @@ Use the client library for App Configuration to create and manage application co
 ```
 [//]: # ({x-version-update-end})
 
-### Create an App Configuration Store
+#### Create an App Configuration Store
 
 To create a Configuration Store you can use the Azure Portal or [Azure CLI][azure_cli].
 
