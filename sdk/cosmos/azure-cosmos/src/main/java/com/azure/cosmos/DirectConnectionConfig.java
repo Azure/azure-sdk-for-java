@@ -15,7 +15,7 @@ import java.time.Duration;
  */
 public final class DirectConnectionConfig {
     //  Constants
-    private static final Duration DEFAULT_IDLE_ENDPOINT_TIMEOUT = Duration.ofHours(24L);
+    private static final Duration DEFAULT_IDLE_ENDPOINT_TIMEOUT = Duration.ofHours(1l);
     private static final Duration DEFAULT_CONNECT_TIMEOUT = Duration.ofSeconds(5L);
     private static final Duration DEFAULT_REQUEST_TIMEOUT = Duration.ofSeconds(5L);
     private static final int DEFAULT_MAX_CONNECTIONS_PER_ENDPOINT = 130;
@@ -112,7 +112,7 @@ public final class DirectConnectionConfig {
     /**
      * Gets the idle endpoint timeout
      *
-     * Default value is 24 hours.
+     * Default value is 1 hour.
      *
      * If there are no requests to a specific endpoint for idle endpoint timeout duration,
      * direct client closes all connections to that endpoint to save resources and I/O cost.
@@ -126,7 +126,7 @@ public final class DirectConnectionConfig {
     /**
      * Sets the idle endpoint timeout
      *
-     * Default value is 24 hours.
+     * Default value is 1 hour.
      *
      * If there are no requests to a specific endpoint for idle endpoint timeout duration,
      * direct client closes all connections to that endpoint to save resources and I/O cost.
