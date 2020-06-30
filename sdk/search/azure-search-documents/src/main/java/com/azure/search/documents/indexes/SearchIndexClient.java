@@ -62,6 +62,12 @@ public final class SearchIndexClient {
     /**
      * Creates a new Azure Cognitive Search index
      *
+     * <p><strong>Code Sample</strong></p>
+     *
+     * <p> Create search index named "searchIndex". </p>
+     *
+     * {@codesnippet com.azure.search.documents.indexes.SearchIndexClient.createIndex#SearchIndex}
+     *
      * @param index definition of the index to create
      * @return the created Index.
      */
@@ -72,6 +78,12 @@ public final class SearchIndexClient {
 
     /**
      * Creates a new Azure Cognitive Search index
+     *
+     * <p><strong>Code Sample</strong></p>
+     *
+     * <p> Create search index named "searchIndex" with response. </p>
+     *
+     * {@codesnippet com.azure.search.documents.indexes.SearchIndexClient.createIndexWithResponse#SearchIndex-Context}
      *
      * @param index definition of the index to create
      * @param context additional context that is passed through the HTTP pipeline during the service call
@@ -85,6 +97,12 @@ public final class SearchIndexClient {
     /**
      * Retrieves an index definition from the Azure Cognitive Search.
      *
+     * <p><strong>Code Sample</strong></p>
+     *
+     * <p> Get search index with name "searchIndex". </p>
+     *
+     * {@codesnippet com.azure.search.documents.indexes.SearchIndexClient.getIndex#String}
+     *
      * @param indexName the name of the index to retrieve
      * @return the Index.
      */
@@ -95,6 +113,12 @@ public final class SearchIndexClient {
 
     /**
      * Retrieves an index definition from the Azure Cognitive Search.
+     *
+     * <p><strong>Code Sample</strong></p>
+     *
+     * <p> Get search index response with "searchIndex. </p>
+     *
+     * {@codesnippet com.azure.search.documents.indexes.SearchIndexClient.getIndexWithResponse#String-Context}
      *
      * @param indexName the name of the index to retrieve
      * @param context additional context that is passed through the HTTP pipeline during the service call
@@ -108,6 +132,12 @@ public final class SearchIndexClient {
     /**
      * Returns statistics for the given index, including a document count and storage usage.
      *
+     * <p><strong>Code Sample</strong></p>
+     *
+     * <p> Get search index "searchIndex" statistics. </p>
+     *
+     * {@codesnippet com.azure.search.documents.indexes.SearchIndexClient.getIndexStatistics#String}
+     *
      * @param indexName the name of the index for which to retrieve statistics
      * @return the index statistics result.
      */
@@ -118,6 +148,12 @@ public final class SearchIndexClient {
 
     /**
      * Returns statistics for the given index, including a document count and storage usage.
+     *
+     * <p><strong>Code Sample</strong></p>
+     *
+     * <p> Get search index "searchIndex" statistics with response. </p>
+     *
+     * {@codesnippet com.azure.search.documents.indexes.SearchIndexClient.getIndexStatisticsWithResponse#String-Context}
      *
      * @param indexName the name of the index for which to retrieve statistics
      * @param context additional context that is passed through the HTTP pipeline during the service call
@@ -131,6 +167,12 @@ public final class SearchIndexClient {
     /**
      * Lists all indexes available for an Azure Cognitive Search service.
      *
+     * <p><strong>Code Sample</strong></p>
+     *
+     * <p> List all search indexes. </p>
+     *
+     * {@codesnippet com.azure.search.documents.indexes.SearchIndexClient.listIndexes}
+     *
      * @return the list of indexes.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -140,6 +182,12 @@ public final class SearchIndexClient {
 
     /**
      * Lists all indexes available for an Azure Cognitive Search service.
+     *
+     * <p><strong>Code Sample</strong></p>
+     *
+     * <p> List all search indexes with response. </p>
+     *
+     * {@codesnippet com.azure.search.documents.indexes.SearchIndexClient.listIndexes#Context}
      *
      * @param context additional context that is passed through the HTTP pipeline during the service call
      * @return the list of indexes.
@@ -152,6 +200,12 @@ public final class SearchIndexClient {
     /**
      * Lists all index names for an Azure Cognitive Search service.
      *
+     * <p><strong>Code Sample</strong></p>
+     *
+     * <p> List all search indexes names. </p>
+     *
+     * {@codesnippet com.azure.search.documents.indexes.SearchIndexClient.listIndexNames}
+     *
      * @return the list of index names.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -161,6 +215,12 @@ public final class SearchIndexClient {
 
     /**
      * Lists all indexes names for an Azure Cognitive Search service.
+     *
+     * <p><strong>Code Sample</strong></p>
+     *
+     * <p> List all search indexes names with response. </p>
+     *
+     * {@codesnippet com.azure.search.documents.indexes.SearchIndexClient.listIndexNames#Context}
      *
      * @param context additional context that is passed through the HTTP pipeline during the service call
      * @return the list of index names.
@@ -173,6 +233,12 @@ public final class SearchIndexClient {
     /**
      * Creates a new Azure Cognitive Search index or updates an index if it already exists.
      *
+     * <p><strong>Code Sample</strong></p>
+     *
+     * <p> Create or update search index named "searchIndex". </p>
+     *
+     * {@codesnippet com.azure.search.documents.indexes.SearchIndexClient.createOrUpdateIndex#SearchIndex}
+     *
      * @param index the definition of the index to create or update
      * @return the index that was created or updated.
      */
@@ -183,6 +249,12 @@ public final class SearchIndexClient {
 
     /**
      * Creates a new Azure Cognitive Search index or updates an index if it already exists.
+     *
+     * <p><strong>Code Sample</strong></p>
+     *
+     * <p> Create or update search index named "searchIndex" with response. </p>
+     *
+     * {@codesnippet com.azure.search.documents.indexes.SearchIndexClient.createOrUpdateIndexWithResponse#SearchIndex-boolean-boolean-Context}
      *
      * @param index the {@link SearchIndex} to create or update
      * @param allowIndexDowntime allows new analyzers, tokenizers, token filters, or char filters to be added to an
@@ -203,6 +275,12 @@ public final class SearchIndexClient {
     /**
      * Deletes an Azure Cognitive Search index and all the documents it contains.
      *
+     * <p><strong>Code Sample</strong></p>
+     *
+     * <p> Delete search index with name "searchIndex". </p>
+     *
+     * {@codesnippet com.azure.search.documents.indexes.SearchIndexClient.deleteIndex#String}
+     *
      * @param indexName the name of the index to delete
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -212,6 +290,12 @@ public final class SearchIndexClient {
 
     /**
      * Deletes an Azure Cognitive Search index and all the documents it contains.
+     *
+     * <p><strong>Code Sample</strong></p>
+     *
+     * <p> Delete search index response with name "searchIndex". </p>
+     *
+     * {@codesnippet com.azure.search.documents.indexes.SearchIndexClient.deleteIndexWithResponse#SearchIndex-boolean-Context}
      *
      * @param index the Search {@link SearchIndex} to delete.
      * @param onlyIfUnchanged {@code true} to delete if the {@code index} is the same as the current service value.
@@ -228,6 +312,12 @@ public final class SearchIndexClient {
     /**
      * Shows how an analyzer breaks text into tokens.
      *
+     * <p><strong>Code Sample</strong></p>
+     *
+     * <p> Analyzer text with LexicalTokenizerName "Classic" in search index "searchIndex". </p>
+     *
+     * {@codesnippet com.azure.search.documents.indexes.SearchIndexClient.analyzeText#String-AnalyzeTextOptions}
+     *
      * @param indexName the name of the index for which to test an analyzer
      * @param analyzeTextOptions the text and analyzer or analysis components to test. Requires to provide either {@link
      * LexicalTokenizerName} or {@link LexicalAnalyzerName}.
@@ -240,6 +330,12 @@ public final class SearchIndexClient {
 
     /**
      * Shows how an analyzer breaks text into tokens.
+     *
+     * <p><strong>Code Sample</strong></p>
+     *
+     * <p> Analyzer text response with LexicalTokenizerName "Classic" in search index "searchIndex". </p>
+     *
+     * {@codesnippet com.azure.search.documents.indexes.SearchIndexClient.analyzeText#String-AnalyzeTextOptions-Context}
      *
      * @param indexName the name of the index for which to test an analyzer
      * @param analyzeTextOptions the text and analyzer or analysis components to test. Requires to provide either {@link
@@ -256,6 +352,12 @@ public final class SearchIndexClient {
     /**
      * Creates a new Azure Cognitive Search synonym map.
      *
+     * <p><strong>Code Sample</strong></p>
+     *
+     * <p> Create synonym map named "synonymMap". </p>
+     *
+     * {@codesnippet com.azure.search.documents.indexes.SearchIndexClient.createSynonymMap#SynonymMap}
+     *
      * @param synonymMap the definition of the synonym map to create
      * @return the created {@link SynonymMap}.
      */
@@ -266,6 +368,12 @@ public final class SearchIndexClient {
 
     /**
      * Creates a new Azure Cognitive Search synonym map.
+     *
+     * <p><strong>Code Sample</strong></p>
+     *
+     * <p> Create synonym map response named "synonymMap". </p>
+     *
+     * {@codesnippet com.azure.search.documents.indexes.SearchIndexClient.createSynonymMapWithResponse#SynonymMap-Context}
      *
      * @param synonymMap the definition of the synonym map to create
      * @param context additional context that is passed through the HTTP pipeline during the service call
@@ -279,6 +387,12 @@ public final class SearchIndexClient {
     /**
      * Retrieves a synonym map definition.
      *
+     * <p><strong>Code Sample</strong></p>
+     *
+     * <p> Get synonym map with name "synonymMap". </p>
+     *
+     * {@codesnippet com.azure.search.documents.indexes.SearchIndexClient.getSynonymMap#String}
+     *
      * @param synonymMapName name of the synonym map to retrieve
      * @return the {@link SynonymMap} definition
      */
@@ -289,6 +403,12 @@ public final class SearchIndexClient {
 
     /**
      * Retrieves a synonym map definition.
+     *
+     * <p><strong>Code Sample</strong></p>
+     *
+     * <p> Get synonym map response with name "synonymMap". </p>
+     *
+     * {@codesnippet com.azure.search.documents.indexes.SearchIndexClient.getSynonymMapWithResponse#String-Context}
      *
      * @param synonymMapName name of the synonym map to retrieve
      * @param context a context that is passed through the HTTP pipeline during the service call
@@ -302,6 +422,12 @@ public final class SearchIndexClient {
     /**
      * Lists all synonym maps available for an Azure Cognitive Search service.
      *
+     * <p><strong>Code Sample</strong></p>
+     *
+     * <p> List all synonym maps. </p>
+     *
+     * {@codesnippet com.azure.search.documents.indexes.SearchIndexClient.listSynonymMaps}
+     *
      * @return the list of synonym maps.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -311,6 +437,12 @@ public final class SearchIndexClient {
 
     /**
      * Lists all synonym maps available for an Azure Cognitive Search service.
+     *
+     * <p><strong>Code Sample</strong></p>
+     *
+     * <p> List all synonym maps response. </p>
+     *
+     * {@codesnippet com.azure.search.documents.indexes.SearchIndexClient.listSynonymMaps#Context}
      *
      * @param context additional context that is passed through the HTTP pipeline during the service call
      * @return the list of synonym map names.
@@ -323,6 +455,12 @@ public final class SearchIndexClient {
     /**
      * Lists all synonym maps names for an Azure Cognitive Search service.
      *
+     * <p><strong>Code Sample</strong></p>
+     *
+     * <p> List all synonym map names. </p>
+     *
+     * {@codesnippet com.azure.search.documents.indexes.SearchIndexClient.listSynonymMapNames}
+     *
      * @return the list of synonym maps.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -332,6 +470,12 @@ public final class SearchIndexClient {
 
     /**
      * Lists all synonym maps names for an Azure Cognitive Search service.
+     *
+     * <p><strong>Code Sample</strong></p>
+     *
+     * <p> List all synonym map names response. </p>
+     *
+     * {@codesnippet com.azure.search.documents.indexes.SearchIndexClient.listSynonymMapNames#Context}
      *
      * @param context additional context that is passed through the HTTP pipeline during the service call
      * @return the list of synonym map names.
@@ -344,6 +488,12 @@ public final class SearchIndexClient {
     /**
      * Creates a new Azure Cognitive Search synonym map or updates a synonym map if it already exists.
      *
+     * <p><strong>Code Sample</strong></p>
+     *
+     * <p> Create or update synonym map named "synonymMap". </p>
+     *
+     * {@codesnippet com.azure.search.documents.indexes.SearchIndexClient.createOrUpdateSynonymMap#SynonymMap}
+     *
      * @param synonymMap the definition of the synonym map to create or update
      * @return the synonym map that was created or updated.
      */
@@ -354,6 +504,12 @@ public final class SearchIndexClient {
 
     /**
      * Creates a new Azure Cognitive Search synonym map or updates a synonym map if it already exists.
+     *
+     * <p><strong>Code Sample</strong></p>
+     *
+     * <p> Create or update synonym map response named "synonymMap". </p>
+     *
+     * {@codesnippet com.azure.search.documents.indexes.SearchIndexClient.createOrUpdateSynonymMapWithResponse#SynonymMap-boolean-Context}
      *
      * @param synonymMap the definition of the synonym map to create or update
      * @param onlyIfUnchanged {@code true} to update if the {@code synonymMap} is the same as the current service value.
@@ -371,6 +527,12 @@ public final class SearchIndexClient {
     /**
      * Deletes an Azure Cognitive Search synonym map.
      *
+     * <p><strong>Code Sample</strong></p>
+     *
+     * <p> Delete synonym map with name "synonymMap". </p>
+     *
+     * {@codesnippet com.azure.search.documents.indexes.SearchIndexClient.deleteSynonymMap#String}
+     *
      * @param synonymMapName the name of the synonym map to delete
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -380,6 +542,12 @@ public final class SearchIndexClient {
 
     /**
      * Deletes an Azure Cognitive Search synonym map.
+     *
+     * <p><strong>Code Sample</strong></p>
+     *
+     * <p> Delete synonym map response with name "synonymMap". </p>
+     *
+     * {@codesnippet com.azure.search.documents.indexes.SearchIndexClient.deleteSynonymMapWithResponse#SynonymMap-boolean-Context}
      *
      * @param synonymMap the {@link SynonymMap} to delete.
      * @param onlyIfUnchanged {@code true} to delete if the {@code synonymMap} is the same as the current service value.
@@ -397,6 +565,12 @@ public final class SearchIndexClient {
     /**
      * Returns service level statistics for a search service, including service counters and limits.
      *
+     * <p><strong>Code Sample</strong></p>
+     *
+     * <p> Get service statistics. </p>
+     *
+     * {@codesnippet com.azure.search.documents.indexes.SearchIndexClient.getServiceStatistics}
+     *
      * @return the search service statistics result.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -406,6 +580,12 @@ public final class SearchIndexClient {
 
     /**
      * Returns service level statistics for a search service, including service counters and limits.
+     *
+     * <p><strong>Code Sample</strong></p>
+     *
+     * <p> Get service statistics with response. </p>
+     *
+     * {@codesnippet com.azure.search.documents.indexes.SearchIndexClient.getServiceStatisticsWithResponse#Context}
      *
      * @param context additional context that is passed through the HTTP pipeline during the service call
      * @return the search service statistics result.

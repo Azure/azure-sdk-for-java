@@ -36,10 +36,10 @@ import java.util.Objects;
  * SearchIndexClient SearchIndexClients} and {@link SearchIndexAsyncClient SearchIndexAsyncClients}. Call {@link
  * #buildClient() buildClient} and {@link #buildAsyncClient() buildAsyncClient} respectively to construct an instance of
  * the desired client.
- * <p>
- * The client needs the service endpoint of the Azure Cognitive Search to access the resource service.
- * {@link #credential(AzureKeyCredential)} gives the builder access credential.
- * </p>
+ * <ul>
+ * <li>the service endpoint of the Azure Cognitive Search to access the resource service.</li>
+ * <li>{@link #credential(AzureKeyCredential)} gives the builder access credential.</li>
+ * </ul>
  *
  * <p><strong>Instantiating an asynchronous Search Index Client</strong></p>
  *
