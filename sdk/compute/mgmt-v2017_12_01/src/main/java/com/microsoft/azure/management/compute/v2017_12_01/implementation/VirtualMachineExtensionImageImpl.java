@@ -23,6 +23,7 @@ class VirtualMachineExtensionImageImpl extends IndexableRefreshableWrapperImpl<V
     VirtualMachineExtensionImageImpl(VirtualMachineExtensionImageInner inner,  ComputeManager manager) {
         super(null, inner);
         this.manager = manager;
+        // set resource ancestor and positional variables
         this.location = IdParsingUtils.getValueFromIdByName(inner.id(), "locations");
         this.publisherName = IdParsingUtils.getValueFromIdByName(inner.id(), "publishers");
         this.type = IdParsingUtils.getValueFromIdByName(inner.id(), "types");
