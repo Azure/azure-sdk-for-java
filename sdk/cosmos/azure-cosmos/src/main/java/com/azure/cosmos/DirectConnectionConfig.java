@@ -15,8 +15,8 @@ import java.time.Duration;
  */
 public final class DirectConnectionConfig {
     //  Constants
-    private static final Duration DEFAULT_IDLE_ENDPOINT_TIMEOUT = Duration.ofSeconds(70L);
-    private static final Duration DEFAULT_CONNECT_TIMEOUT = Duration.ofSeconds(60L);
+    private static final Duration DEFAULT_IDLE_ENDPOINT_TIMEOUT = Duration.ofHours(24L);
+    private static final Duration DEFAULT_CONNECT_TIMEOUT = Duration.ofSeconds(5L);
     private static final Duration DEFAULT_REQUEST_TIMEOUT = Duration.ofSeconds(5L);
     private static final int DEFAULT_MAX_CONNECTIONS_PER_ENDPOINT = 130;
     private static final int DEFAULT_MAX_REQUESTS_PER_CONNECTION = 30;
@@ -55,7 +55,7 @@ public final class DirectConnectionConfig {
      *
      * Configures timeout for underlying Netty Channel {@link ChannelOption#CONNECT_TIMEOUT_MILLIS}
      *
-     * By default, the connect timeout is 60 seconds.
+     * By default, the connect timeout is 5 seconds.
      *
      * @return direct connect timeout
      */
@@ -69,7 +69,7 @@ public final class DirectConnectionConfig {
      *
      * Configures timeout for underlying Netty Channel {@link ChannelOption#CONNECT_TIMEOUT_MILLIS}
      *
-     * By default, the connect timeout is 60 seconds.
+     * By default, the connect timeout is 5 seconds.
      *
      * @param connectTimeout the connection timeout
      * @return the {@link DirectConnectionConfig}
@@ -112,7 +112,7 @@ public final class DirectConnectionConfig {
     /**
      * Gets the idle endpoint timeout
      *
-     * Default value is 70 seconds.
+     * Default value is 24 hours.
      *
      * If there are no requests to a specific endpoint for idle endpoint timeout duration,
      * direct client closes all connections to that endpoint to save resources and I/O cost.
@@ -126,7 +126,7 @@ public final class DirectConnectionConfig {
     /**
      * Sets the idle endpoint timeout
      *
-     * Default value is 70 seconds.
+     * Default value is 24 hours.
      *
      * If there are no requests to a specific endpoint for idle endpoint timeout duration,
      * direct client closes all connections to that endpoint to save resources and I/O cost.
