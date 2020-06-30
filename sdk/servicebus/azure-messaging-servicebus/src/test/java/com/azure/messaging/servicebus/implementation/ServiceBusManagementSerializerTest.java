@@ -8,10 +8,12 @@ import com.azure.messaging.servicebus.implementation.models.QueueDescriptionEntr
 import com.azure.messaging.servicebus.implementation.models.QueueDescriptionFeed;
 import com.azure.messaging.servicebus.implementation.models.ResponseAuthor;
 import com.azure.messaging.servicebus.implementation.models.ResponseLink;
+import com.azure.messaging.servicebus.implementation.models.SubscriptionDescriptionEntry;
 import com.azure.messaging.servicebus.models.EntityStatus;
 import com.azure.messaging.servicebus.models.MessageCountDetails;
 import com.azure.messaging.servicebus.models.QueueDescription;
 import com.azure.messaging.servicebus.models.QueueRuntimeInfo;
+import com.azure.messaging.servicebus.models.SubscriptionDescription;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
@@ -76,7 +78,7 @@ class ServiceBusManagementSerializerTest {
         assertTitle(spy.getName(), entry.getTitle());
 
         final QueueDescription actual = entry.getContent().getQueueDescription();
-        assertQueueDescriptionEquals(spy, actual);
+        assertQueueEquals(spy, actual);
     }
 
     /**
@@ -194,56 +196,6 @@ class ServiceBusManagementSerializerTest {
         final QueueDescriptionFeed actual = serializer.deserialize(contents, QueueDescriptionFeed.class);
 
         // Assert
-        assertQueueFeedEquals(expected, actual);
-    }
-
-    private String getContents(String fileName) {
-        final URL resourceUrl = getClass().getClassLoader().getResource(".");
-        assertNotNull(resourceUrl);
-
-        final File resourceFolder = new File(resourceUrl.getFile(), "xml");
-        assertTrue(resourceFolder.exists());
-
-        final Path path = Paths.get(resourceFolder.getPath(), fileName);
-        try {
-            return new String(Files.readAllBytes(path), StandardCharsets.UTF_8);
-        } catch (IOException e) {
-            fail(String.format("Unable to read file: '  %s'. Error: %s", path.getFileName(), e));
-            return null;
-        }
-    }
-
-    private static void assertQueueDescriptionEquals(QueueDescription expected, QueueDescription actual) {
-        assertEquals(expected.getLockDuration(), actual.getLockDuration());
-        assertEquals(expected.getMaxSizeInMegabytes(), actual.getMaxSizeInMegabytes());
-        assertEquals(expected.requiresDuplicateDetection(), actual.requiresDuplicateDetection());
-        assertEquals(expected.requiresSession(), actual.requiresSession());
-        assertEquals(expected.getDefaultMessageTimeToLive(), actual.getDefaultMessageTimeToLive());
-        assertEquals(expected.deadLetteringOnMessageExpiration(), actual.deadLetteringOnMessageExpiration());
-        assertEquals(expected.getDuplicateDetectionHistoryTimeWindow(), actual.getDuplicateDetectionHistoryTimeWindow());
-        assertEquals(expected.getMaxDeliveryCount(), actual.getMaxDeliveryCount());
-        assertEquals(expected.enableBatchedOperations(), actual.enableBatchedOperations());
-
-        assertEquals(expected.getStatus(), actual.getStatus());
-        assertEquals(expected.getUpdatedAt(), actual.getUpdatedAt());
-        assertEquals(expected.supportOrdering(), actual.supportOrdering());
-        assertEquals(expected.getAutoDeleteOnIdle(), actual.getAutoDeleteOnIdle());
-        assertEquals(expected.enablePartitioning(), actual.enablePartitioning());
-    }
-
-    private static void assertQueueEntryEquals(QueueDescriptionEntry expected, QueueDescriptionEntry actual) {
-        assertEquals(expected.getId(), actual.getId());
-        assertNotNull(actual.getTitle());
-
-        assertResponseTitle(expected.getTitle(), actual.getTitle());
-        assertEquals(expected.getUpdated(), actual.getUpdated());
-        assertEquals(expected.getPublished(), actual.getPublished());
-        assertEquals(expected.getAuthor().getName(), actual.getAuthor().getName());
-
-        assertQueueDescriptionEquals(expected.getContent().getQueueDescription(), actual.getContent().getQueueDescription());
-    }
-
-    private static void assertQueueFeedEquals(QueueDescriptionFeed expected, QueueDescriptionFeed actual) {
         assertEquals(expected.getId(), actual.getId());
         assertEquals(expected.getTitle(), actual.getTitle());
         assertEquals(expected.getUpdated(), actual.getUpdated());
@@ -264,8 +216,101 @@ class ServiceBusManagementSerializerTest {
             final QueueDescriptionEntry expectedEntry = expected.getEntry().get(i);
             final QueueDescriptionEntry actualEntry = actual.getEntry().get(i);
 
-            assertQueueEntryEquals(expectedEntry, actualEntry);
+            assertEquals(expected.getId(), actual.getId());
+            assertNotNull(actual.getTitle());
+
+            assertResponseTitle(expectedEntry.getTitle(), actualEntry.getTitle());
+            assertEquals(expectedEntry.getUpdated(), actualEntry.getUpdated());
+            assertEquals(expectedEntry.getPublished(), actualEntry.getPublished());
+            assertEquals(expectedEntry.getAuthor().getName(), actualEntry.getAuthor().getName());
+
+            assertQueueEquals(expectedEntry.getContent().getQueueDescription(),
+                actualEntry.getContent().getQueueDescription());
         }
+    }
+
+    /**
+     * Verify we can deserialize XML from a GET subscription request.
+     */
+    @Test
+    void deserializeSubscription() throws IOException {
+        // Arrange
+        final String contents = getContents("SubscriptionDescriptionEntry.xml");
+        final SubscriptionDescription expected = new SubscriptionDescription("my-topic", "subscription-session-9")
+            .setLockDuration(Duration.ofSeconds(15))
+            .setRequiresSession(true)
+            .setDefaultMessageTimeToLive(ServiceBusConstants.MAX_DURATION)
+            .setDeadLetteringOnMessageExpiration(false)
+            .setEnableDeadLetteringOnFilterEvaluationExceptions(true)
+            .setEnableBatchedOperations(true)
+            .setMaxDeliveryCount(10)
+            .setAutoDeleteOnIdle(Duration.parse("PTH48M5"));
+
+        // Act
+        final SubscriptionDescriptionEntry entry = serializer.deserialize(contents, SubscriptionDescriptionEntry.class);
+
+        // Assert
+        assertNotNull(entry);
+        assertNotNull(entry.getContent());
+
+        final SubscriptionDescription actual = entry.getContent().getSubscriptionDescription();
+
+        assertSubscriptionEquals(expected, EntityStatus.ACTIVE, actual);
+    }
+
+    /**
+     * Given a file name, gets the corresponding resource and its contents as a string.
+     *
+     * @param fileName Name of file to fetch.
+     * @return Contents of the file.
+     */
+    private String getContents(String fileName) {
+        final URL resourceUrl = getClass().getClassLoader().getResource(".");
+        assertNotNull(resourceUrl);
+
+        final File resourceFolder = new File(resourceUrl.getFile(), "xml");
+        assertTrue(resourceFolder.exists());
+
+        final Path path = Paths.get(resourceFolder.getPath(), fileName);
+        try {
+            return new String(Files.readAllBytes(path), StandardCharsets.UTF_8);
+        } catch (IOException e) {
+            fail(String.format("Unable to read file: '  %s'. Error: %s", path.getFileName(), e));
+            return null;
+        }
+    }
+
+    private static void assertQueueEquals(QueueDescription expected, QueueDescription actual) {
+        assertEquals(expected.getLockDuration(), actual.getLockDuration());
+        assertEquals(expected.getMaxSizeInMegabytes(), actual.getMaxSizeInMegabytes());
+        assertEquals(expected.requiresDuplicateDetection(), actual.requiresDuplicateDetection());
+        assertEquals(expected.requiresSession(), actual.requiresSession());
+        assertEquals(expected.getDefaultMessageTimeToLive(), actual.getDefaultMessageTimeToLive());
+        assertEquals(expected.deadLetteringOnMessageExpiration(), actual.deadLetteringOnMessageExpiration());
+        assertEquals(expected.getDuplicateDetectionHistoryTimeWindow(), actual.getDuplicateDetectionHistoryTimeWindow());
+        assertEquals(expected.getMaxDeliveryCount(), actual.getMaxDeliveryCount());
+        assertEquals(expected.enableBatchedOperations(), actual.enableBatchedOperations());
+
+        assertEquals(expected.getStatus(), actual.getStatus());
+        assertEquals(expected.supportOrdering(), actual.supportOrdering());
+        assertEquals(expected.getAutoDeleteOnIdle(), actual.getAutoDeleteOnIdle());
+        assertEquals(expected.enablePartitioning(), actual.enablePartitioning());
+    }
+
+    private static void assertSubscriptionEquals(SubscriptionDescription expected, EntityStatus expectedStatus,
+        SubscriptionDescription actual) {
+
+        assertEquals(expected.getLockDuration(), actual.getLockDuration());
+        assertEquals(expected.enableDeadLetteringOnFilterEvaluationExceptions(),
+            actual.enableDeadLetteringOnFilterEvaluationExceptions());
+        assertEquals(expected.requiresSession(), actual.requiresSession());
+        assertEquals(expected.getDefaultMessageTimeToLive(), actual.getDefaultMessageTimeToLive());
+        assertEquals(expected.deadLetteringOnMessageExpiration(), actual.deadLetteringOnMessageExpiration());
+        assertEquals(expected.getMaxDeliveryCount(), actual.getMaxDeliveryCount());
+        assertEquals(expected.enableBatchedOperations(), actual.enableBatchedOperations());
+        assertEquals(expected.getAutoDeleteOnIdle(), actual.getAutoDeleteOnIdle());
+
+        assertEquals(expectedStatus, actual.getStatus());
     }
 
     @SuppressWarnings("unchecked")
