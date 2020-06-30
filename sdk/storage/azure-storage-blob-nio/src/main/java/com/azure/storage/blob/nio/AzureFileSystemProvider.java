@@ -782,14 +782,16 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
             if (attributeName.equals("*")) {
                 Set<String> attributesToAdd;
                 if (viewType.equals("azureBasic")) {
-                    attributesToAdd = AzureBasicFileAttributes.ATTRIBUTE_STRINGS;
+                    for (String attr : AzureBasicFileAttributes.ATTRIBUTE_STRINGS) {
+                        results.put(attr, attributeSuppliers.get(attr).get());
+                    }
                 } else {
                     // attributeSuppliers is guaranteed to have been set by this point.
-                    attributesToAdd = attributeSuppliers.keySet();
+                    for (Map.Entry<String, Supplier<Object>> entry: attributeSuppliers.entrySet()) {
+                        results.put(entry.getKey(), entry.getValue().get());
+                    }
                 }
-                for (String attr : attributesToAdd) {
-                    results.put(attr, attributeSuppliers.get(attr).get());
-                }
+
             } else if (!attributeSuppliers.containsKey(attributeName)) {
                 // Validate that the attribute is legal and add the value returned by the supplier to the results.
                 throw LoggingUtility.logError(logger,
