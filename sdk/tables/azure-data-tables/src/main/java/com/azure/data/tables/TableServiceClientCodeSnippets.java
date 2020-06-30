@@ -3,6 +3,7 @@
 package com.azure.data.tables;
 
 import com.azure.core.exception.HttpResponseException;
+import com.azure.data.tables.implementation.models.QueryOptions;
 import com.azure.data.tables.implementation.models.TableServiceErrorException;
 
 import java.util.List;

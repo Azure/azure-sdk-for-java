@@ -4,6 +4,7 @@ package com.azure.data.tables;
 
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.http.rest.PagedFlux;
+import com.azure.data.tables.implementation.models.QueryOptions;
 import reactor.core.publisher.Mono;
 
 import java.util.Map;
