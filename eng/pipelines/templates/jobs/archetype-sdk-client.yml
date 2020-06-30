@@ -108,7 +108,7 @@ jobs:
         inputs:
           mavenPomFile: pom.xml
           goals: 'package'
-          options: '$(DefaultOptions) "-DpackageOutputDirectory=$(Build.ArtifactStagingDirectory)" -DskipTests -Dinject-codesnippets -Dgenerate-overview -X -pl $(ProjectList) -am' # We include template-module so we ensure it always builds in CI
+          options: '$(DefaultOptions) "-DpackageOutputDirectory=$(Build.ArtifactStagingDirectory)" -DskipTests -Dinject-codesnippets -Dgenerate-overview -pl $(ProjectList) -am' # We include template-module so we ensure it always builds in CI
           mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
           javaHomeOption: 'JDKVersion'
           jdkVersionOption: $(JavaBuildVersion)

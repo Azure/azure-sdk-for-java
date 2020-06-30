@@ -66,3 +66,5 @@ extends:
         groupId: com.azure
       - name: perf-test-core
         groupId: com.azure
+      - name: spring-data-gremlin
+        groupId: com.microsoft.spring.data.gremlin
