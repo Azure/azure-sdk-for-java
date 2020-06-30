@@ -65,7 +65,7 @@ public final class FormPage {
     public FormPage(final float height, final float textAngle, final LengthUnit unit,
         final float width, final List<FormLine> lines, final List<FormTable> tables, final Integer pageNumber) {
         this.height = height;
-        this.textAngle = textAngle;
+        this.textAngle = textAngle > 180 ? textAngle - 360 : textAngle;
         this.unit = unit;
         this.width = width;
         this.lines = lines == null ? null : Collections.unmodifiableList(lines);
