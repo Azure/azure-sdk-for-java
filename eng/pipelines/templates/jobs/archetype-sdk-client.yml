@@ -152,6 +152,10 @@ jobs:
           $(Build.SourcesDirectory)/eng/versioning/pom_file_version_scanner.ps1
         displayName: "Verify versions in POM files"
 
+      - template: ../../../common/pipelines/templates/steps/verify-links.yml
+        parameters:
+          Directory: sdk/${{ parameters.ServiceDirectory }}
+
       - task: UsePythonVersion@0
         displayName: 'Use Python 3.6'
         inputs:
