@@ -15,11 +15,13 @@ import com.azure.search.documents.indexes.SearchIndexerClient;
 import com.azure.search.documents.indexes.SearchIndexerClientBuilder;
 import com.azure.search.documents.indexes.models.AnalyzeTextOptions;
 import com.azure.search.documents.indexes.models.AnalyzedTokenInfo;
+import com.azure.search.documents.indexes.models.FieldMapping;
 import com.azure.search.documents.indexes.models.LexicalTokenizerName;
 import com.azure.search.documents.indexes.models.SearchField;
 import com.azure.search.documents.indexes.models.SearchFieldDataType;
 import com.azure.search.documents.indexes.models.SearchIndex;
 import com.azure.search.documents.indexes.models.SearchIndexStatistics;
+import com.azure.search.documents.indexes.models.SearchIndexer;
 import com.azure.search.documents.indexes.models.SearchServiceStatistics;
 import com.azure.search.documents.indexes.models.SearchSuggester;
 import com.azure.search.documents.indexes.models.SearchableFieldBuilder;
@@ -499,6 +501,211 @@ public class SearchJavaDocCodeSnippets {
             .endpoint("{endpoint}")
             .buildClient();
         // END: com.azure.search.documents.indexes.SearchIndexerClient.instantiation
+    }
+
+    /**
+     * Code snippet for creating {@link SearchIndexerClient#createIndexer(SearchIndexer)}.
+     */
+    public void createSearchIndexer() {
+        // BEGIN: com.azure.search.documents.indexes.SearchIndexerClient.createIndexer#SearchIndexer
+        SearchIndexer searchIndexer = new SearchIndexer("searchIndexer", "dataSource",
+            "searchIndex");
+        SearchIndexer indexerFromService = searchIndexerClient.createIndexer(searchIndexer);
+        System.out.printf("The indexer name is %s. The etag of indexer is %s.%n", indexerFromService.getName(),
+            indexerFromService.getETag());
+        // END: com.azure.search.documents.indexes.SearchIndexerClient.createIndexer#SearchIndexer
+    }
+
+    /**
+     * Code snippet for {@link SearchIndexerClient#createIndexerWithResponse(SearchIndexer, Context)}.
+     */
+    public void createSearchIndexerWithResponse() {
+        // BEGIN: com.azure.search.documents.indexes.SearchIndexerClient.createIndexerWithResponse#SearchIndexer-Context
+        SearchIndexer searchIndexer = new SearchIndexer("searchIndexer", "dataSource",
+            "searchIndex");
+        Response<SearchIndexer> indexerFromServiceResponse = searchIndexerClient.createIndexerWithResponse(
+            searchIndexer, new Context(key1, value1));
+
+        System.out.printf("The status code of the response is %s. The indexer name is %s.%n",
+            indexerFromServiceResponse.getStatusCode(), indexerFromServiceResponse.getValue().getName());
+        // END: com.azure.search.documents.indexes.SearchIndexerClient.createIndexerWithResponse#SearchIndexer-Context
+    }
+
+    /**
+     * Code snippet for {@link SearchIndexerClient#getIndexer(String)}
+     */
+    public void getSearchIndexer() {
+        // BEGIN: com.azure.search.documents.indexes.SearchIndexerClient.getIndexer#String
+        SearchIndexer indexerFromService =
+            searchIndexerClient.getIndexer("searchIndexer");
+        System.out.printf("The indexer name is %s. The etag of indexer is %s.%n", indexerFromService.getName(),
+            indexerFromService.getETag());
+        // END: com.azure.search.documents.indexes.SearchIndexerClient.getIndexer#String
+    }
+
+    /**
+     * Code snippet for {@link SearchIndexerClient#getIndexerWithResponse(String, Context)}}
+     */
+    public void getSearchIndexerWithResponse() {
+        // BEGIN: com.azure.search.documents.indexes.SearchIndexerClient.getIndexerWithResponse#String-Context
+        Response<SearchIndexer> indexerFromServiceResponse = searchIndexerClient.getIndexerWithResponse(
+            "searchIndexer", new Context(key1, value1));
+
+        System.out.printf("The status code of the response is %s. The indexer name is %s.%n",
+            indexerFromServiceResponse.getStatusCode(), indexerFromServiceResponse.getValue().getName());
+        // END: com.azure.search.documents.indexes.SearchIndexerClient.getIndexerWithResponse#String-Context
+    }
+
+
+    /**
+     * Code snippet for {@link SearchIndexerClient#listIndexers()}
+     */
+    public void listIndexers() {
+        // BEGIN: com.azure.search.documents.indexes.SearchIndexerClient.listIndexers
+        PagedIterable<SearchIndexer> indexers = searchIndexerClient.listIndexers();
+        for (SearchIndexer indexer: indexers) {
+            System.out.printf("The indexer name is %s. The etag of indexer is %s.%n", indexer.getName(),
+                indexer.getETag());
+        }
+        // END: com.azure.search.documents.indexes.SearchIndexerClient.listIndexers
+    }
+
+    /**
+     * Code snippet for {@link SearchIndexerClient#listIndexers(Context)}
+     */
+    public void listIndexersWithContext() {
+        // BEGIN: com.azure.search.documents.indexes.SearchIndexerClient.listIndexersWithResponse#Context
+        PagedIterable<SearchIndexer> indexers = searchIndexerClient.listIndexers(new Context(key1, value1));
+        System.out.println("The status code of the response is"
+            + indexers.iterableByPage().iterator().next().getStatusCode());
+        for (SearchIndexer indexer: indexers) {
+            System.out.printf("The indexer name is %s. The etag of index is %s.%n",
+                indexer.getName(), indexer.getETag());
+        }
+        // END: com.azure.search.documents.indexes.SearchIndexerClient.listIndexersWithResponse#Context
+    }
+
+    /**
+     * Code snippet for {@link SearchIndexerClient#listIndexerNames()}
+     */
+    public void listIndexerNames() {
+        // BEGIN: com.azure.search.documents.indexes.SearchIndexerClient.listIndexerNames
+        PagedIterable<String> indexers = searchIndexerClient.listIndexerNames();
+        for (String indexerName: indexers) {
+            System.out.printf("The indexer name is %s.%n", indexerName);
+        }
+        // END: com.azure.search.documents.indexes.SearchIndexerClient.listIndexerNames
+    }
+
+    /**
+     * Code snippet for {@link SearchIndexerClient#listIndexerNames(Context)}
+     */
+    public void listIndexerNamesWithContext() {
+        // BEGIN: com.azure.search.documents.indexes.SearchIndexerClient.listIndexerNames#Context
+        PagedIterable<String> indexers = searchIndexerClient.listIndexerNames(new Context(key1, value1));
+        System.out.println("The status code of the response is"
+            + indexers.iterableByPage().iterator().next().getStatusCode());
+        for (String indexerName: indexers) {
+            System.out.printf("The indexer name is %s.%n", indexerName);
+        }
+        // END: com.azure.search.documents.indexes.SearchIndexerClient.listIndexerNames#Context
+    }
+
+
+    /**
+     * Code snippet for {@link SearchIndexerClient#createOrUpdateIndexer(SearchIndexer)}
+     */
+    public void createOrUpdateIndexer() {
+        // BEGIN: com.azure.search.documents.indexes.SearchIndexerClient.createOrUpdateIndexer#SearchIndexer
+        SearchIndexer searchIndexerFromService = searchIndexerClient.getIndexer("searchIndexer");
+        searchIndexerFromService.setFieldMappings(Collections.singletonList(
+            new FieldMapping("hotelName").setTargetFieldName("HotelName")));
+        SearchIndexer searchIndexer = new SearchIndexer("searchIndexer", "dataSource",
+            "searchIndex");
+        SearchIndexer indexerFromService = searchIndexerClient.createOrUpdateIndexer(searchIndexer);
+        System.out.printf("The indexer name is %s. The target field name of indexer is %s.%n",
+            indexerFromService.getName(), indexerFromService.getFieldMappings().get(0).getTargetFieldName());
+        // END: com.azure.search.documents.indexes.SearchIndexerClient.createOrUpdateIndexer#SearchIndexer
+    }
+
+    /**
+     * Code snippet for {@link SearchIndexerClient#createIndexerWithResponse(SearchIndexer, Context)}
+     */
+    public void createOrUpdateIndexerWithResponse() {
+        // BEGIN: com.azure.search.documents.indexes.SearchIndexerClient.createOrUpdateIndexerWithResponse#SearchIndexer-boolean-Context
+        SearchIndexer searchIndexerFromService = searchIndexerClient.getIndexer("searchIndexer");
+        searchIndexerFromService.setFieldMappings(Collections.singletonList(
+            new FieldMapping("hotelName").setTargetFieldName("HotelName")));
+        SearchIndexer searchIndexer = new SearchIndexer("searchIndexer", "dataSource",
+            "searchIndex");
+        Response<SearchIndexer> indexerFromService = searchIndexerClient.createOrUpdateIndexerWithResponse(
+            searchIndexer, true, new Context(key1, value1));
+        System.out.printf("The status code of the response is %s.%nThe indexer name is %s. "
+            + "The target field name of indexer is %s.%n", indexerFromService.getStatusCode(),
+            indexerFromService.getValue().getName(),
+            indexerFromService.getValue().getFieldMappings().get(0).getTargetFieldName());
+        // END: com.azure.search.documents.indexes.SearchIndexerClient.createOrUpdateIndexerWithResponse#SearchIndexer-boolean-Context
+    }
+
+    /**
+     * Code snippet for {@link SearchIndexerClient#deleteIndexer(String)}
+     */
+    public void deleteSearchIndexer() {
+        // BEGIN: com.azure.search.documents.indexes.SearchIndexerClient.deleteIndexer#String
+        searchIndexerClient.deleteIndexer("searchIndexer");
+        // END: com.azure.search.documents.indexes.SearchIndexerClient.deleteIndexer#String
+    }
+
+    /**
+     * Code snippet for {@link SearchIndexerClient#deleteIndexerWithResponse(SearchIndexer, boolean, Context)}
+     */
+    public void deleteSearchIndexerWithResponse() {
+        // BEGIN: com.azure.search.documents.indexes.SearchIndexerClient.deleteIndexerWithResponse#SearchIndexer-boolean-Context
+        SearchIndexer searchIndexer = searchIndexerClient.getIndexer("searchIndexer");
+        Response<Void> deleteResponse = searchIndexerClient.deleteIndexerWithResponse(searchIndexer, true,
+            new Context(key1, value1));
+        System.out.printf("The status code of the response is %d.%n", deleteResponse.getStatusCode());
+        // END: com.azure.search.documents.indexes.SearchIndexerClient.deleteIndexerWithResponse#SearchIndexer-boolean-Context
+    }
+
+    /**
+     * Code snippet for {@link SearchIndexerClient#resetIndexer(String)}
+     */
+    public void resetIndexer() {
+        // BEGIN: com.azure.search.documents.indexes.SearchIndexerClient.resetIndexer#String
+        searchIndexerClient.resetIndexer("searchIndexer");
+        // END: com.azure.search.documents.indexes.SearchIndexerClient.resetIndexer#String
+    }
+
+    /**
+     * Code snippet for {@link SearchIndexerClient#resetIndexerWithResponse(String, Context)}
+     */
+    public void resetIndexerWithResponse() {
+        // BEGIN: com.azure.search.documents.indexes.SearchIndexerClient.resetIndexerWithResponse#String-Context
+        Response<Void> response = searchIndexerClient.resetIndexerWithResponse("searchIndexer",
+            new Context(key1, value1));
+        System.out.println("The status code of the response is " + response.getStatusCode());
+        // END: com.azure.search.documents.indexes.SearchIndexerClient.resetIndexerWithResponse#String-Context
+    }
+
+    /**
+     * Code snippet for {@link SearchIndexerClient#runIndexer(String)}
+     */
+    public void runIndexer() {
+        // BEGIN: com.azure.search.documents.indexes.SearchIndexerClient.runIndexer#String
+        searchIndexerClient.runIndexer("searchIndexer");
+        // END: com.azure.search.documents.indexes.SearchIndexerClient.runIndexer#String
+    }
+
+    /**
+     * Code snippet for {@link SearchIndexerClient#runIndexerWithResponse(String, Context)}
+     */
+    public void runIndexerWithResponse() {
+        // BEGIN: com.azure.search.documents.indexes.SearchIndexerClient.runIndexerWithResponse#String-Context
+        Response<Void> response = searchIndexerClient.runIndexerWithResponse("searchIndexer",
+            new Context(key1, value1));
+        System.out.println("The status code of the response is " + response.getStatusCode());
+        // END: com.azure.search.documents.indexes.SearchIndexerClient.runIndexerWithResponse#String-Context
     }
 
     private SearchIndexerAsyncClient searchIndexerAsyncClient = new SearchIndexerClientBuilder().buildAsyncClient();

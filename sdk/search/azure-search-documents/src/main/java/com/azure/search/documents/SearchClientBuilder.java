@@ -38,12 +38,12 @@ import java.util.Objects;
  * client.
  * <p>
  * The client needs to at least provide the following required fields
+ * </p>
  * <ul>
  * <li>the service endpoint of the Azure Cognitive Search to access the resource service.</li>
  * <li>{@link #credential(AzureKeyCredential)} gives the builder access credential.</li>
  * <li>The search index name.</li>
  * </ul>
- * </p>
  *
  * <p><strong>Instantiating an asynchronous Search Client</strong></p>
  *

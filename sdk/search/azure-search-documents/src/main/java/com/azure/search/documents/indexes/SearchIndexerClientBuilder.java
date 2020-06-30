@@ -37,6 +37,9 @@ import java.util.Objects;
  * SearchIndexerClient SearchIndexerClients} and {@link SearchIndexerAsyncClient SearchIndexerAsyncClients}. Call {@link
  * #buildClient() buildClient} and {@link #buildAsyncClient() buildAsyncClient} respectively to construct an instance of
  * the desired client.
+ * <p>
+ * The client needs to at least provide the following required fields
+ * </p>
  * <ul>
  * <li>the service endpoint of the Azure Cognitive Search to access the resource service.</li>
  * <li>{@link #credential(AzureKeyCredential)} gives the builder access credential.</li>

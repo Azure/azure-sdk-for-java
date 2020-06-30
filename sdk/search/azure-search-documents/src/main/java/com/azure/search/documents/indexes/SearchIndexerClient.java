@@ -198,6 +198,12 @@ public class SearchIndexerClient {
     /**
      * Creates a new Azure Cognitive Search indexer.
      *
+     * <p><strong>Code Sample</strong></p>
+     *
+     * <p> Create search indexer named "searchIndexer". </p>
+     *
+     * {@codesnippet com.azure.search.documents.indexes.SearchIndexerClient.createIndexer#SearchIndexer}
+     *
      * @param indexer definition of the indexer to create.
      * @return the created Indexer.
      */
@@ -208,6 +214,12 @@ public class SearchIndexerClient {
 
     /**
      * Creates a new Azure Cognitive Search indexer.
+     *
+     * <p><strong>Code Sample</strong></p>
+     *
+     * <p> Create search indexer named "searchIndexer" with response. </p>
+     *
+     * {@codesnippet com.azure.search.documents.indexes.SearchIndexerClient.createIndexerWithResponse#SearchIndexer-Context}
      *
      * @param indexer definition of the indexer to create
      * @param context additional context that is passed through the HTTP pipeline during the service call
@@ -222,6 +234,12 @@ public class SearchIndexerClient {
     /**
      * Creates a new Azure Cognitive Search indexer or updates an indexer if it already exists.
      *
+     * <p><strong>Code Sample</strong></p>
+     *
+     * <p> Create or update search indexer named "searchIndexer". </p>
+     *
+     * {@codesnippet com.azure.search.documents.indexes.SearchIndexerClient.createOrUpdateIndexer#SearchIndexer}
+     *
      * @param indexer The definition of the indexer to create or update.
      * @return a response containing the created Indexer.
      */
@@ -232,6 +250,12 @@ public class SearchIndexerClient {
 
     /**
      * Creates a new Azure Cognitive Search indexer or updates an indexer if it already exists.
+     *
+     * <p><strong>Code Sample</strong></p>
+     *
+     * <p> Create or update search indexer named "searchIndexer" with response. </p>
+     *
+     * {@codesnippet com.azure.search.documents.indexes.SearchIndexerClient.createOrUpdateIndexerWithResponse#SearchIndexer-boolean-Context}
      *
      * @param indexer The {@link SearchIndexer} to create or update.
      * @param onlyIfUnchanged {@code true} to update if the {@code indexer} is the same as the current service value.
@@ -248,6 +272,12 @@ public class SearchIndexerClient {
     /**
      * Lists all indexers available for an Azure Cognitive Search service.
      *
+     * <p><strong>Code Sample</strong></p>
+     *
+     * <p> List all search indexer. </p>
+     *
+     * {@codesnippet com.azure.search.documents.indexes.SearchIndexerClient.listIndexers}
+     *
      * @return all Indexers from the Search service.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -257,6 +287,12 @@ public class SearchIndexerClient {
 
     /**
      * Lists all indexers available for an Azure Cognitive Search service.
+     *
+     * <p><strong>Code Sample</strong></p>
+     *
+     * <p> List all search indexer with response. </p>
+     *
+     * {@codesnippet com.azure.search.documents.indexes.SearchIndexerClient.listIndexersWithResponse#Context}
      *
      * @param context additional context that is passed through the HTTP pipeline during the service call
      * @return all Indexers from the Search service.
@@ -269,6 +305,12 @@ public class SearchIndexerClient {
     /**
      * Lists all indexers names for an Azure Cognitive Search service.
      *
+     * <p><strong>Code Sample</strong></p>
+     *
+     * <p> List all search indexer names. </p>
+     *
+     * {@codesnippet com.azure.search.documents.indexes.SearchIndexerClient.listIndexerNames}
+     *
      * @return all Indexer names from the Search service .
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -278,6 +320,12 @@ public class SearchIndexerClient {
 
     /**
      * Lists all indexers names for an Azure Cognitive Search service.
+     *
+     * <p><strong>Code Sample</strong></p>
+     *
+     * <p> List all search indexer names with response. </p>
+     *
+     * {@codesnippet com.azure.search.documents.indexes.SearchIndexerClient.listIndexerNames#Context}
      *
      * @param context additional context that is passed through the HTTP pipeline during the service call
      * @return all Indexer names from the Search service.
@@ -290,6 +338,12 @@ public class SearchIndexerClient {
     /**
      * Retrieves an indexer definition.
      *
+     * <p><strong>Code Sample</strong></p>
+     *
+     * <p> Get search indexer with name "searchIndexer". </p>
+     *
+     * {@codesnippet com.azure.search.documents.indexes.SearchIndexerClient.getIndexer#String}
+     *
      * @param indexerName the name of the indexer to retrieve
      * @return the indexer.
      */
@@ -300,6 +354,12 @@ public class SearchIndexerClient {
 
     /**
      * Retrieves an indexer definition.
+     *
+     * <p><strong>Code Sample</strong></p>
+     *
+     * <p> Get search indexer response with name "searchIndexer". </p>
+     *
+     * {@codesnippet com.azure.search.documents.indexes.SearchIndexerClient.getIndexerWithResponse#String-Context}
      *
      * @param indexerName the name of the indexer to retrieve
      * @param context additional context that is passed through the HTTP pipeline during the service call
@@ -314,6 +374,12 @@ public class SearchIndexerClient {
     /**
      * Deletes an Azure Cognitive Search indexer.
      *
+     * <p><strong>Code Sample</strong></p>
+     *
+     * <p> Delete search indexer named "searchIndexer". </p>
+     *
+     * {@codesnippet com.azure.search.documents.indexes.SearchIndexerClient.deleteIndexer#String}
+     *
      * @param indexerName the name of the indexer to delete
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -323,6 +389,12 @@ public class SearchIndexerClient {
 
     /**
      * Deletes an Azure Cognitive Search indexer.
+     *
+     * <p><strong>Code Sample</strong></p>
+     *
+     * <p> Delete search indexer response named "searchIndexer".  </p>
+     *
+     * {@codesnippet com.azure.search.documents.indexes.SearchIndexerClient.deleteIndexerWithResponse#SearchIndexer-boolean-Context}
      *
      * @param indexer the search {@link SearchIndexer}
      * @param onlyIfUnchanged {@code true} to delete if the {@code indexer} is the same as the current service value.
@@ -340,6 +412,12 @@ public class SearchIndexerClient {
     /**
      * Resets the change tracking state associated with an indexer.
      *
+     * <p><strong>Code Sample</strong></p>
+     *
+     * <p> Reset search indexer named "searchIndexer".  </p>
+     *
+     * {@codesnippet com.azure.search.documents.indexes.SearchIndexerClient.resetIndexer#String}
+     *
      * @param indexerName the name of the indexer to reset
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -349,6 +427,12 @@ public class SearchIndexerClient {
 
     /**
      * Resets the change tracking state associated with an indexer.
+     *
+     * <p><strong>Code Sample</strong></p>
+     *
+     * <p> Reset search indexer response named "searchIndexer".  </p>
+     *
+     * {@codesnippet com.azure.search.documents.indexes.SearchIndexerClient.resetIndexerWithResponse#String-Context}
      *
      * @param indexerName the name of the indexer to reset
      * @param context additional context that is passed through the HTTP pipeline during the service call
@@ -362,6 +446,12 @@ public class SearchIndexerClient {
     /**
      * Runs an indexer on-demand.
      *
+     * <p><strong>Code Sample</strong></p>
+     *
+     * <p> Run search indexer named "searchIndexer".  </p>
+     *
+     * {@codesnippet com.azure.search.documents.indexes.SearchIndexerClient.runIndexer#String}
+     *
      * @param indexerName the name of the indexer to run
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -371,6 +461,12 @@ public class SearchIndexerClient {
 
     /**
      * Runs an indexer on-demand.
+     *
+     * <p><strong>Code Sample</strong></p>
+     *
+     * <p> Run search indexer response named "searchIndexer".  </p>
+     *
+     * {@codesnippet com.azure.search.documents.indexes.SearchIndexerClient.runIndexerWithResponse#String-Context}
      *
      * @param indexerName the name of the indexer to run
      * @param context additional context that is passed through the HTTP pipeline during the service call
