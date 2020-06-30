@@ -195,12 +195,12 @@ class ServiceBusReceiverAsyncClientTest {
             .thenReturn(Mono.just(receivedMessage), Mono.just(receivedMessage2));
 
         // Act & Assert
-        StepVerifier.create(receiver.peek())
+        StepVerifier.create(receiver.peekMessage())
             .expectNext(receivedMessage)
             .verifyComplete();
 
         // Act & Assert
-        StepVerifier.create(receiver.peek())
+        StepVerifier.create(receiver.peekMessage())
             .expectNext(receivedMessage2)
             .verifyComplete();
 
@@ -226,7 +226,7 @@ class ServiceBusReceiverAsyncClientTest {
         when(managementNode.peek(fromSequenceNumber, null, null)).thenReturn(Mono.just(receivedMessage));
 
         // Act & Assert
-        StepVerifier.create(receiver.peekAt(fromSequenceNumber))
+        StepVerifier.create(receiver.peekMessageAt(fromSequenceNumber))
             .expectNext(receivedMessage)
             .verifyComplete();
     }
@@ -247,7 +247,7 @@ class ServiceBusReceiverAsyncClientTest {
             .thenReturn(receivedMessage);
 
         // Act & Assert
-        StepVerifier.create(receiver.receive().take(numberOfEvents))
+        StepVerifier.create(receiver.receiveMessages().take(numberOfEvents))
             .then(() -> messages.forEach(m -> messageSink.next(m)))
             .expectNextCount(numberOfEvents)
             .verifyComplete();
@@ -399,7 +399,7 @@ class ServiceBusReceiverAsyncClientTest {
             .thenReturn(Flux.fromArray(new ServiceBusReceivedMessage[]{receivedMessage, receivedMessage2}));
 
         // Act & Assert
-        StepVerifier.create(receiver.peekBatch(numberOfEvents))
+        StepVerifier.create(receiver.peekMessages(numberOfEvents))
             .expectNextCount(numberOfEvents)
             .verifyComplete();
     }
@@ -417,7 +417,7 @@ class ServiceBusReceiverAsyncClientTest {
             .thenReturn(Flux.fromArray(new ServiceBusReceivedMessage[]{receivedMessage, receivedMessage2}));
 
         // Act & Assert
-        StepVerifier.create(receiver.peekBatchAt(numberOfEvents, fromSequenceNumber))
+        StepVerifier.create(receiver.peekMessagesAt(numberOfEvents, fromSequenceNumber))
             .expectNext(receivedMessage, receivedMessage2)
             .verifyComplete();
     }
@@ -449,7 +449,7 @@ class ServiceBusReceiverAsyncClientTest {
         when(amqpReceiveLink.updateDisposition(eq(lockToken1), argThat(e -> e.getType() == DeliveryStateType.Rejected))).thenReturn(Mono.empty());
 
         // Act & Assert
-        StepVerifier.create(receiver.receive()
+        StepVerifier.create(receiver.receiveMessages()
             .take(1)
             .flatMap(context -> receiver.deadLetter(context.getMessage().getLockToken(), deadLetterOptions)))
             .then(() -> messageSink.next(message))
@@ -508,7 +508,7 @@ class ServiceBusReceiverAsyncClientTest {
 
         // Pretend we receive these before. This is to simulate that so that the receiver keeps track of them in
         // the lock map.
-        StepVerifier.create(receiver.receiveDeferredMessageBatch(Arrays.asList(sequenceNumber, sequenceNumber2)))
+        StepVerifier.create(receiver.receiveDeferredMessages(Arrays.asList(sequenceNumber, sequenceNumber2)))
             .expectNext(receivedMessage, receivedMessage2)
             .verifyComplete();
 
@@ -568,7 +568,7 @@ class ServiceBusReceiverAsyncClientTest {
             .thenReturn(Flux.fromArray(new ServiceBusReceivedMessage[]{receivedMessage, receivedMessage2}));
 
         // Act & Assert
-        StepVerifier.create(receiver.receiveDeferredMessageBatch(Arrays.asList(fromSequenceNumber1, fromSequenceNumber2)))
+        StepVerifier.create(receiver.receiveDeferredMessages(Arrays.asList(fromSequenceNumber1, fromSequenceNumber2)))
             .expectNext(receivedMessage)
             .expectNext(receivedMessage2)
             .verifyComplete();

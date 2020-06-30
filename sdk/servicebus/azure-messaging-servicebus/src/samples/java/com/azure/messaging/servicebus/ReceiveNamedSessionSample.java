@@ -47,7 +47,7 @@ public class ReceiveNamedSessionSample {
             .buildClient();
 
         while (isRunning.get()) {
-            IterableStream<ServiceBusReceivedMessageContext> messages = receiver.receive(10, Duration.ofSeconds(30));
+            IterableStream<ServiceBusReceivedMessageContext> messages = receiver.receiveMessages(10, Duration.ofSeconds(30));
 
             for (ServiceBusReceivedMessageContext context : messages) {
                 System.out.println("Processing message from session: " + context.getSessionId());
