@@ -35,8 +35,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
-import static org.mockito.Mockito.spy;
-import static org.mockito.Mockito.when;
 
 class ServiceBusManagementSerializerTest {
     private static final String TITLE_KEY = "";
@@ -64,9 +62,6 @@ class ServiceBusManagementSerializerTest {
             .setAutoDeleteOnIdle(Duration.ofHours(5))
             .setEnablePartitioning(true);
 
-        final QueueDescription spy = spy(expected);
-        when(spy.getStatus()).thenReturn(EntityStatus.DELETING);
-
         // Act
         final QueueDescriptionEntry entry = serializer.deserialize(contents, QueueDescriptionEntry.class);
 
@@ -75,10 +70,10 @@ class ServiceBusManagementSerializerTest {
         assertNotNull(entry.getContent());
 
         // The entry title is the name of the queue.
-        assertTitle(spy.getName(), entry.getTitle());
+        assertTitle(expected.getName(), entry.getTitle());
 
         final QueueDescription actual = entry.getContent().getQueueDescription();
-        assertQueueEquals(spy, actual);
+        assertQueueEquals(expected, EntityStatus.DELETING, actual);
     }
 
     /**
@@ -135,7 +130,7 @@ class ServiceBusManagementSerializerTest {
                 .setHref("https://sb-java.servicebus.windows.net/$Resources/queues?api-version=2017-04&enrich=false&%24skip=5&%24top=5")
         );
 
-        final QueueDescription queueDescription = new QueueDescription("")
+        final QueueDescription queueDescription = new QueueDescription("q-0")
             .setLockDuration(Duration.ofMinutes(10))
             .setMaxSizeInMegabytes(102)
             .setRequiresDuplicateDetection(true)
@@ -224,7 +219,7 @@ class ServiceBusManagementSerializerTest {
             assertEquals(expectedEntry.getPublished(), actualEntry.getPublished());
             assertEquals(expectedEntry.getAuthor().getName(), actualEntry.getAuthor().getName());
 
-            assertQueueEquals(expectedEntry.getContent().getQueueDescription(),
+            assertQueueEquals(expectedEntry.getContent().getQueueDescription(), EntityStatus.ACTIVE,
                 actualEntry.getContent().getQueueDescription());
         }
     }
@@ -243,8 +238,8 @@ class ServiceBusManagementSerializerTest {
             .setDeadLetteringOnMessageExpiration(false)
             .setEnableDeadLetteringOnFilterEvaluationExceptions(true)
             .setEnableBatchedOperations(true)
-            .setMaxDeliveryCount(10)
-            .setAutoDeleteOnIdle(Duration.parse("PTH48M5"));
+            .setMaxDeliveryCount(5)
+            .setAutoDeleteOnIdle(Duration.ofHours(1).plusMinutes(48));
 
         // Act
         final SubscriptionDescriptionEntry entry = serializer.deserialize(contents, SubscriptionDescriptionEntry.class);
@@ -280,7 +275,7 @@ class ServiceBusManagementSerializerTest {
         }
     }
 
-    private static void assertQueueEquals(QueueDescription expected, QueueDescription actual) {
+    private static void assertQueueEquals(QueueDescription expected, EntityStatus expectedStatus, QueueDescription actual) {
         assertEquals(expected.getLockDuration(), actual.getLockDuration());
         assertEquals(expected.getMaxSizeInMegabytes(), actual.getMaxSizeInMegabytes());
         assertEquals(expected.requiresDuplicateDetection(), actual.requiresDuplicateDetection());
@@ -291,10 +286,11 @@ class ServiceBusManagementSerializerTest {
         assertEquals(expected.getMaxDeliveryCount(), actual.getMaxDeliveryCount());
         assertEquals(expected.enableBatchedOperations(), actual.enableBatchedOperations());
 
-        assertEquals(expected.getStatus(), actual.getStatus());
         assertEquals(expected.supportOrdering(), actual.supportOrdering());
         assertEquals(expected.getAutoDeleteOnIdle(), actual.getAutoDeleteOnIdle());
         assertEquals(expected.enablePartitioning(), actual.enablePartitioning());
+
+        assertEquals(expectedStatus, actual.getStatus());
     }
 
     private static void assertSubscriptionEquals(SubscriptionDescription expected, EntityStatus expectedStatus,
