@@ -42,6 +42,7 @@ import org.junit.jupiter.api.Test;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
+import java.time.Duration;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -50,6 +51,7 @@ import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.regex.Pattern;
 
+import static com.azure.ai.formrecognizer.FormRecognizerClientBuilder.DEFAULT_DURATION;
 import static com.azure.ai.formrecognizer.FormTrainingClientTestBase.AZURE_FORM_RECOGNIZER_ENDPOINT;
 import static com.azure.ai.formrecognizer.FormTrainingClientTestBase.FORM_RECOGNIZER_MULTIPAGE_TRAINING_BLOB_CONTAINER_SAS_URL;
 import static com.azure.ai.formrecognizer.FormTrainingClientTestBase.FORM_RECOGNIZER_TESTING_BLOB_CONTAINER_SAS_URL;
@@ -81,6 +83,7 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
     private static final String EXPECTED_MULTIPAGE_ADDRESS_VALUE = "123 Hobbit Lane 567 Main St. Redmond, WA Redmond, WA";
     private static final String EXPECTED_MULTIPAGE_PHONE_NUMBER_VALUE = "+15555555555";
     private static final String ITEMIZED_RECEIPT_VALUE = "Itemized";
+    private static final String IS_PLAYBACK_MODE = "isPlaybackMode";
     static final String OCR_EXTRACTION_INVALID_URL_ERROR = "OCR extraction error: [Wrong response code: "
         + "InvalidImageURL. Message: Image URL is badly formatted..]";
     static final String EXPECTED_INVALID_URL_ERROR_CODE = "3014";
@@ -92,6 +95,20 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
         "Max retries 3 times exceeded. Error Details: Key credentials require HTTPS to prevent leaking the key.";
     static final String EXPECTED_INVALID_UUID_EXCEPTION_MESSAGE = "Invalid UUID string: ";
     static final String EXPECTED_MODEL_ID_IS_REQUIRED_EXCEPTION_MESSAGE = "'modelId' is required and cannot be null.";
+
+    static Duration durationTestMode;
+
+    /**
+     * Use duration of nearly zero value for PLAYBACK test mode, otherwise, use default duration value for LIVE mode.
+     */
+    @Override
+    protected void beforeTest() {
+        if (interceptorManager.isPlaybackMode()) {
+            durationTestMode = Duration.ofNanos(1);
+        } else {
+            durationTestMode = DEFAULT_DURATION;
+        }
+    }
 
     FormRecognizerClientBuilder getFormRecognizerClientBuilder(HttpClient httpClient,
         FormRecognizerServiceVersion serviceVersion) {
@@ -570,7 +587,7 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
 
     void receiptDataRunner(BiConsumer<InputStream, Long> testRunner) {
         if (interceptorManager.isPlaybackMode()) {
-            testRunner.accept(new ByteArrayInputStream("isPlaybackMode".getBytes()), RECEIPT_FILE_LENGTH);
+            testRunner.accept(new ByteArrayInputStream(IS_PLAYBACK_MODE.getBytes()), RECEIPT_FILE_LENGTH);
         } else {
             testRunner.accept(getFileData(getStorageTestingFileUrl(RECEIPT_CONTOSO_JPG)), RECEIPT_FILE_LENGTH);
         }
@@ -578,7 +595,7 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
 
     void receiptDataRunnerTextDetails(BiConsumer<InputStream, Boolean> testRunner) {
         if (interceptorManager.isPlaybackMode()) {
-            testRunner.accept(new ByteArrayInputStream("isPlaybackMode".getBytes()), true);
+            testRunner.accept(new ByteArrayInputStream(IS_PLAYBACK_MODE.getBytes()), true);
         } else {
             testRunner.accept(getFileData(getStorageTestingFileUrl(RECEIPT_CONTOSO_JPG)), true);
         }
@@ -586,7 +603,7 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
 
     void receiptPngDataRunnerTextDetails(BiConsumer<InputStream, Boolean> testRunner) {
         if (interceptorManager.isPlaybackMode()) {
-            testRunner.accept(new ByteArrayInputStream("isPlaybackMode".getBytes()), true);
+            testRunner.accept(new ByteArrayInputStream(IS_PLAYBACK_MODE.getBytes()), true);
         } else {
             testRunner.accept(getFileData(getStorageTestingFileUrl(RECEIPT_CONTOSO_PNG)), true);
         }
@@ -598,7 +615,7 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
 
     void contentFromDataRunner(BiConsumer<InputStream, Long> testRunner) {
         if (interceptorManager.isPlaybackMode()) {
-            testRunner.accept(new ByteArrayInputStream("isPlaybackMode".getBytes()), LAYOUT_FILE_LENGTH);
+            testRunner.accept(new ByteArrayInputStream(IS_PLAYBACK_MODE.getBytes()), LAYOUT_FILE_LENGTH);
         } else {
             testRunner.accept(getFileData(getStorageTestingFileUrl(FORM_JPG)), LAYOUT_FILE_LENGTH);
         }
@@ -606,7 +623,7 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
 
     void multipageFromDataRunner(BiConsumer<InputStream, Long> testRunner) {
         if (interceptorManager.isPlaybackMode()) {
-            testRunner.accept(new ByteArrayInputStream("isPlaybackMode".getBytes()), MULTIPAGE_INVOICE_FILE_LENGTH);
+            testRunner.accept(new ByteArrayInputStream(IS_PLAYBACK_MODE.getBytes()), MULTIPAGE_INVOICE_FILE_LENGTH);
         } else {
             testRunner.accept(
                 getFileData(getStorageTestingFileUrl(MULTIPAGE_INVOICE_PDF)), MULTIPAGE_INVOICE_FILE_LENGTH);

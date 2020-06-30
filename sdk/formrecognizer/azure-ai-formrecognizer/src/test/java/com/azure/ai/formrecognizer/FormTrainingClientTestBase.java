@@ -31,11 +31,13 @@ import org.junit.jupiter.api.Test;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.time.Duration;
 import java.util.List;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
+import static com.azure.ai.formrecognizer.FormRecognizerClientBuilder.DEFAULT_DURATION;
 import static com.azure.ai.formrecognizer.TestUtils.BLANK_PDF;
 import static com.azure.ai.formrecognizer.TestUtils.INVALID_KEY;
 import static com.azure.ai.formrecognizer.TestUtils.INVALID_RECEIPT_URL;
@@ -68,6 +70,20 @@ public abstract class FormTrainingClientTestBase extends TestBase {
         + " Please conform to the document format/size/page/dimensions requirements.";
     static final String PREFIX_SUBFOLDER = "subfolder";
     static final String INVALID_PREFIX_FILE_NAME = "XXXXX";
+
+    static Duration durationTestMode;
+
+    /**
+     * Use duration of nearly zero value for PLAYBACK test mode, otherwise, use default duration value for LIVE mode.
+     */
+    @Override
+    protected void beforeTest() {
+        if (interceptorManager.isPlaybackMode()) {
+            durationTestMode = Duration.ofNanos(1);
+        } else {
+            durationTestMode = DEFAULT_DURATION;
+        }
+    }
 
     void validateCopyAuthorizationResult(String expectedResourceId, String expectedResourceRegion,
         CopyAuthorization actualResult) {
@@ -171,10 +187,6 @@ public abstract class FormTrainingClientTestBase extends TestBase {
                     assertTrue(fields.contains(customFormModelField.getLabel())));
             });
         }
-    }
-
-    void validateMulPageModelData(CustomFormModel actualCustomModel, boolean isLabeled) {
-
     }
 
     /**
