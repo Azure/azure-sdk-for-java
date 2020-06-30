@@ -239,7 +239,6 @@ public final class ServiceBusClientBuilder {
     /**
      * A new instance of {@link ServiceBusDeadLetterReceiverClientBuilder} used to configure Service Bus message
      * consumers from dead letter queue.
-     *
      * @return A new instance of {@link ServiceBusDeadLetterReceiverClientBuilder}.
      */
     public ServiceBusDeadLetterReceiverClientBuilder deadLetterReceiver() {
@@ -454,7 +453,7 @@ public final class ServiceBusClientBuilder {
     private static String getDeadLetterEntityPath(ClientLogger logger, MessagingEntityType entityType, String queueName,
         String topicName, String subscriptionName) {
         String entityPath = getEntityPath(logger, entityType, queueName, topicName, subscriptionName);
-        return  entityPath + "/$deadletterqueue";
+        return entityPath + "/$deadletterqueue";
     }
 
     /**
@@ -698,13 +697,7 @@ public final class ServiceBusClientBuilder {
                 queueName);
             final String entityPath = getEntityPath(logger, entityType, queueName, topicName, subscriptionName);
 
-            if (prefetchCount < 1) {
-                throw logger.logExceptionAsError(new IllegalArgumentException(String.format(
-                    "prefetchCount (%s) cannot be less than 1.", prefetchCount)));
-            } else if (maxAutoLockRenewalDuration != null && maxAutoLockRenewalDuration.isNegative()) {
-                throw logger.logExceptionAsError(new IllegalArgumentException(String.format(
-                    "maxAutoLockRenewalDuration (%s) cannot be negative.", maxAutoLockRenewalDuration)));
-            }
+            validateAndThrow(prefetchCount, maxAutoLockRenewalDuration);
 
             final ServiceBusConnectionProcessor connectionProcessor = getOrCreateConnectionProcessor(messageSerializer);
             final ReceiverOptions receiverOptions = new ReceiverOptions(receiveMode, prefetchCount,
@@ -879,13 +872,7 @@ public final class ServiceBusClientBuilder {
                 queueName);
             final String entityPath = getEntityPath(logger, entityType, queueName, topicName, subscriptionName);
 
-            if (prefetchCount < 1) {
-                throw logger.logExceptionAsError(new IllegalArgumentException(String.format(
-                    "prefetchCount (%s) cannot be less than 1.", prefetchCount)));
-            } else if (maxAutoLockRenewalDuration != null && maxAutoLockRenewalDuration.isNegative()) {
-                throw logger.logExceptionAsError(new IllegalArgumentException(String.format(
-                    "maxAutoLockRenewalDuration (%s) cannot be negative.", maxAutoLockRenewalDuration)));
-            }
+            validateAndThrow(prefetchCount, maxAutoLockRenewalDuration);
 
             final ServiceBusConnectionProcessor connectionProcessor = getOrCreateConnectionProcessor(messageSerializer);
             final ReceiverOptions receiverOptions = new ReceiverOptions(receiveMode, prefetchCount,
@@ -899,7 +886,6 @@ public final class ServiceBusClientBuilder {
         /**
          * Creates <b>synchronous</b> Service Bus receiver responsible for reading {@link ServiceBusMessage messages}
          * from a specific queue or topic.
-         *
          * @return An new {@link ServiceBusReceiverClient} that receives messages from a queue or topic.
          * @throws IllegalStateException if {@link #queueName(String) queueName} or {@link #topicName(String)
          *     topicName} are not set or, both of these fields are set. It is also thrown if the Service Bus {@link
@@ -918,10 +904,9 @@ public final class ServiceBusClientBuilder {
      * Azure Service Bus queues and topic subscriptions provide a secondary subqueue, called a dead-letter queue (DLQ).
      * The dead-letter queue doesn't need to be explicitly created and can't be deleted or otherwise managed
      * independent of the main entity.
-     *
-     * This is builder for creating {@link ServiceBusReceiverClient} and {@link ServiceBusReceiverAsyncClient} to
+     * <p>
+     * This is builder for creating  {@link ServiceBusReceiverClient} and {@link ServiceBusReceiverAsyncClient} to
      * consume dead-letter messages from Service Bus entity.
-     *
      * @see ServiceBusReceiverAsyncClient
      * @see ServiceBusReceiverClient
      */
@@ -940,8 +925,8 @@ public final class ServiceBusClientBuilder {
         /**
          * Enables auto-lock renewal by renewing each message lock renewal until the {@code maxAutoLockRenewalDuration}
          * has elapsed.
-         *
          * @param maxAutoLockRenewalDuration Maximum amount of time to renew the session lock.
+         *
          * @return The modified {@link ServiceBusDeadLetterReceiverClientBuilder} object.
          */
         public ServiceBusDeadLetterReceiverClientBuilder maxAutoLockRenewalDuration(
@@ -953,11 +938,10 @@ public final class ServiceBusClientBuilder {
         /**
          * Sets the prefetch count of the receiver. For both {@link ReceiveMode#PEEK_LOCK PEEK_LOCK} and {@link
          * ReceiveMode#RECEIVE_AND_DELETE RECEIVE_AND_DELETE} modes the default value is 1.
-         *
+         * <p>
          * Prefetch speeds up the message flow by aiming to have a message readily available for local retrieval when
          * and before the application asks for one using {@link ServiceBusReceiverAsyncClient#receive()}. Setting a
          * non-zero value will prefetch that number of messages. Setting the value to zero turns prefetch off.
-         *
          * @param prefetchCount The prefetch count.
          *
          * @return The modified {@link ServiceBusDeadLetterReceiverClientBuilder} object.
@@ -969,7 +953,6 @@ public final class ServiceBusClientBuilder {
 
         /**
          * Sets the name of the queue to create a receiver for.
-         *
          * @param queueName Name of the queue.
          *
          * @return The modified {@link ServiceBusDeadLetterReceiverClientBuilder} object.
@@ -981,7 +964,6 @@ public final class ServiceBusClientBuilder {
 
         /**
          * Sets the receive mode for the receiver.
-         *
          * @param receiveMode Mode for receiving messages.
          *
          * @return The modified {@link ServiceBusDeadLetterReceiverClientBuilder} object.
@@ -994,7 +976,6 @@ public final class ServiceBusClientBuilder {
         /**
          * Sets the name of the subscription in the topic to listen to. <b>{@link #topicName(String)} must also be set.
          * </b>
-         *
          * @param subscriptionName Name of the subscription.
          *
          * @return The modified {@link ServiceBusDeadLetterReceiverClientBuilder} object.
@@ -1007,7 +988,6 @@ public final class ServiceBusClientBuilder {
 
         /**
          * Sets the name of the topic. <b>{@link #subscriptionName(String)} must also be set.</b>
-         *
          * @param topicName Name of the topic.
          *
          * @return The modified {@link ServiceBusDeadLetterReceiverClientBuilder} object.
@@ -1020,9 +1000,9 @@ public final class ServiceBusClientBuilder {
 
         /**
          * Creates an <b>asynchronous</b> Service Bus receiver responsible for reading {@link ServiceBusMessage
-         * messages} from a specific queue or topic.
-         *
-         * @return An new {@link ServiceBusReceiverAsyncClient} that receives messages from a queue or topic.
+         * messages} from secondary subqueue, called a dead-letter queue (DLQ).
+         * @return An new {@link ServiceBusReceiverAsyncClient} that receives messages from secondary subqueue, called
+         * a dead-letter queue (DLQ).
          * @throws IllegalStateException if {@link #queueName(String) queueName} or {@link #topicName(String)
          *     topicName} are not set or, both of these fields are set. It is also thrown if the Service Bus {@link
          *     #connectionString(String) connectionString} contains an {@code EntityPath} that does not match one set in
@@ -1037,13 +1017,7 @@ public final class ServiceBusClientBuilder {
             final String entityPath = getDeadLetterEntityPath(logger, entityType, queueName, topicName,
                 subscriptionName);
 
-            if (prefetchCount < 1) {
-                throw logger.logExceptionAsError(new IllegalArgumentException(String.format(
-                    "prefetchCount (%s) cannot be less than 1.", prefetchCount)));
-            } else if (maxAutoLockRenewalDuration != null && maxAutoLockRenewalDuration.isNegative()) {
-                throw logger.logExceptionAsError(new IllegalArgumentException(String.format(
-                    "maxAutoLockRenewalDuration (%s) cannot be negative.", maxAutoLockRenewalDuration)));
-            }
+            validateAndThrow(prefetchCount, maxAutoLockRenewalDuration);
 
             final ServiceBusConnectionProcessor connectionProcessor = getOrCreateConnectionProcessor(messageSerializer);
             final ReceiverOptions receiverOptions = new ReceiverOptions(receiveMode, prefetchCount,
@@ -1056,9 +1030,10 @@ public final class ServiceBusClientBuilder {
 
         /**
          * Creates <b>synchronous</b> Service Bus receiver responsible for reading {@link ServiceBusMessage messages}
-         * from a specific queue or topic.
+         * from secondary subqueue, called a dead-letter queue (DLQ).
          *
-         * @return An new {@link ServiceBusReceiverClient} that receives messages from a queue or topic.
+         * @return An new {@link ServiceBusReceiverClient} that receives messages from secondary subqueue, called a
+         * dead-letter queue (DLQ).
          * @throws IllegalStateException if {@link #queueName(String) queueName} or {@link #topicName(String)
          *     topicName} are not set or, both of these fields are set. It is also thrown if the Service Bus {@link
          *     #connectionString(String) connectionString} contains an {@code EntityPath} that does not match one set in
@@ -1069,6 +1044,16 @@ public final class ServiceBusClientBuilder {
          */
         public ServiceBusReceiverClient buildClient() {
             return new ServiceBusReceiverClient(buildAsyncClient(), retryOptions.getTryTimeout());
+        }
+    }
+
+    private void validateAndThrow(int prefetchCount, Duration maxAutoLockRenewalDuration) {
+        if (prefetchCount < 1) {
+            throw logger.logExceptionAsError(new IllegalArgumentException(String.format(
+                "prefetchCount (%s) cannot be less than 1.", prefetchCount)));
+        } else if (maxAutoLockRenewalDuration != null && maxAutoLockRenewalDuration.isNegative()) {
+            throw logger.logExceptionAsError(new IllegalArgumentException(String.format(
+                "maxAutoLockRenewalDuration (%s) cannot be negative.", maxAutoLockRenewalDuration)));
         }
     }
 }

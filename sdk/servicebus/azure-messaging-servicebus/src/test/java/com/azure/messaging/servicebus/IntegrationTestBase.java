@@ -256,31 +256,6 @@ public abstract class IntegrationTestBase extends TestBase {
 
     }
 
-    protected ServiceBusClientBuilder.ServiceBusDeadLetterReceiverClientBuilder getDeadLetterReceiverBuilder(boolean useCredentials, MessagingEntityType entityType,
-        int entityIndex, Function<ServiceBusClientBuilder, ServiceBusClientBuilder> onBuilderCreate, boolean sharedConnection) {
-
-        ServiceBusClientBuilder builder = getBuilder(useCredentials, sharedConnection);
-        builder = onBuilderCreate.apply(builder);
-
-        switch (entityType) {
-            case QUEUE:
-                final String queueName = getQueueName(entityIndex);
-                assertNotNull(queueName, "'queueName' cannot be null.");
-
-                return builder.deadLetterReceiver().queueName(queueName);
-            case SUBSCRIPTION:
-                final String topicName = getTopicName();
-                final String subscriptionName = getSubscriptionName(entityIndex);
-                assertNotNull(topicName, "'topicName' cannot be null.");
-                assertNotNull(subscriptionName, "'subscriptionName' cannot be null.");
-
-                return builder.deadLetterReceiver().topicName(topicName).subscriptionName(subscriptionName);
-            default:
-                throw logger.logExceptionAsError(new IllegalArgumentException("Unknown entity type: " + entityType));
-        }
-
-    }
-
     protected ServiceBusReceiverClientBuilder getReceiverBuilder(boolean useCredentials, MessagingEntityType entityType,
         int entityIndex, Function<ServiceBusClientBuilder, ServiceBusClientBuilder> onBuilderCreate, boolean sharedConnection) {
 

@@ -33,6 +33,7 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import static com.azure.messaging.servicebus.TestUtils.MESSAGE_POSITION_ID;
+import static com.azure.messaging.servicebus.TestUtils.getSubscriptionBaseName;
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -981,7 +982,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         final boolean isSessionEnabled = false;
         setSenderAndReceiver(entityType, 0, isSessionEnabled);
         ServiceBusReceiverAsyncClient deadLetterReceiver = getDeadLetterReceiverBuilder(false, entityType,
-            0, Function.identity(), false)
+            0, Function.identity())
             .buildAsyncClient();
 
         final String messageId = UUID.randomUUID().toString();
@@ -1078,4 +1079,28 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         receiver.complete(receivedDeferredMessage).block(TIMEOUT);
     }
 
+    private ServiceBusClientBuilder.ServiceBusDeadLetterReceiverClientBuilder getDeadLetterReceiverBuilder(boolean useCredentials,
+        MessagingEntityType entityType, int entityIndex, Function<ServiceBusClientBuilder, ServiceBusClientBuilder> onBuilderCreate) {
+
+        ServiceBusClientBuilder builder = getBuilder(useCredentials);
+        builder = onBuilderCreate.apply(builder);
+
+        switch (entityType) {
+            case QUEUE:
+                final String queueName = getQueueName(entityIndex);
+                assertNotNull(queueName, "'queueName' cannot be null.");
+
+                return builder.deadLetterReceiver().queueName(queueName);
+            case SUBSCRIPTION:
+                final String topicName = getTopicName(entityIndex);
+                final String subscriptionName = getSubscriptionBaseName();
+                assertNotNull(topicName, "'topicName' cannot be null.");
+                assertNotNull(subscriptionName, "'subscriptionName' cannot be null.");
+
+                return builder.deadLetterReceiver().topicName(topicName).subscriptionName(subscriptionName);
+            default:
+                throw logger.logExceptionAsError(new IllegalArgumentException("Unknown entity type: " + entityType));
+        }
+
+    }
 }
