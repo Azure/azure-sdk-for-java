@@ -43,7 +43,7 @@ public class LuisResult {
      * The entities extracted from the utterance.
      */
     @JsonProperty(value = "entities")
-    private List<EntityModel> entities;
+    private List<EntityWithAll> entities;
 
     /**
      * The composite entities extracted from the utterance.
@@ -142,7 +142,7 @@ public class LuisResult {
      *
      * @return the entities value
      */
-    public List<EntityModel> entities() {
+    public List<EntityWithAll> entities() {
         return this.entities;
     }
 
@@ -152,7 +152,7 @@ public class LuisResult {
      * @param entities the entities value to set
      * @return the LuisResult object itself.
      */
-    public LuisResult withEntities(List<EntityModel> entities) {
+    public LuisResult withEntities(List<EntityWithAll> entities) {
         this.entities = entities;
         return this;
     }
