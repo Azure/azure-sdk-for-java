@@ -59,8 +59,6 @@ class ServiceBusManagementAsyncClientIntegrationTest extends TestBase {
         StepVerifier.create(client.getQueue(queueName))
             .assertNext(queueDescription -> {
                 assertEquals(queueName, queueDescription.getName());
-                assertNotNull(queueDescription.getUpdatedAt());
-                assertTrue(nowUtc.isAfter(queueDescription.getUpdatedAt()));
 
                 assertFalse(queueDescription.enablePartitioning());
                 assertFalse(queueDescription.requiresSession());
