@@ -34,8 +34,9 @@ public class TableServiceAsyncClientCodeSnippets {
 
 
         // Query tables
-        String filterString = "$filter=TableName eq 'OfficeSupplies'";
-        tableServiceAsyncClient.queryTables(null, null, filterString).subscribe(azureTable -> {
+        QueryOptions queryOptions = new QueryOptions();
+        queryOptions.setFilter("TableName eq OfficeSupplies");
+        tableServiceAsyncClient.queryTables(queryOptions).subscribe(azureTable -> {
             System.out.println(azureTable.getName());
         }, error -> {
             System.out.println("There was an error querying the service. Error: " + error);
@@ -68,9 +69,10 @@ public class TableServiceAsyncClientCodeSnippets {
             .buildAsyncClient();
 
         TableAsyncClient tableAsyncClient = tableServiceAsyncClient.getClient("OfficeSupplies");
-        String filterString = "$filter=RowKey eq 'crayolaMarkers'";
+        QueryOptions queryOptions = new QueryOptions();
+        queryOptions.setFilter("RowKey eq crayolaMarkers");
 
-        tableAsyncClient.queryEntity(null, null, filterString).flatMap(tableEntity -> {
+        tableAsyncClient.queryEntity(queryOptions).flatMap(tableEntity -> {
             System.out.println("Table Entity: " + tableEntity);
             Mono<Void> deleteEntityMono = tableAsyncClient.deleteEntity(tableEntity);
             return deleteEntityMono;
@@ -89,9 +91,10 @@ public class TableServiceAsyncClientCodeSnippets {
             .buildAsyncClient();
 
         TableAsyncClient tableAsyncClient = tableServiceAsyncClient.getClient("OfficeSupplies");
-        String filterString2 = "$filter=RowKey eq 'crayolaMarkers'";
+        QueryOptions queryOptions = new QueryOptions();
+        queryOptions.setFilter("RowKey eq crayolaMarkers");
 
-        tableAsyncClient.queryEntity(null, null, filterString2).flatMap(tableEntity -> {
+        tableAsyncClient.queryEntity(queryOptions).flatMap(tableEntity -> {
             System.out.println("Table Entity: " + tableEntity);
             tableEntity.addProperty("Price", "5");
             Mono<Void> updateEntityMono = tableAsyncClient.updateEntity(tableEntity);
@@ -111,10 +114,11 @@ public class TableServiceAsyncClientCodeSnippets {
             .buildAsyncClient();
 
         TableAsyncClient tableAsyncClient = tableServiceAsyncClient.getClient("OfficeSupplies");
-        String filterString2 = "$filter=Product eq 'markers'";
-        String selectString2 = "$select=Seller, Price";
+        QueryOptions queryOptions = new QueryOptions();
+        queryOptions.setFilter("Product eq markers");
+        queryOptions.setSelect("Seller, Price");
 
-        tableAsyncClient.queryEntity(null, selectString2, filterString2).subscribe(tableEntity -> {
+        tableAsyncClient.queryEntity(queryOptions).subscribe(tableEntity -> {
             System.out.println("Table Entity: " + tableEntity);
         }, error -> {
             System.out.println("There was an error querying the table. Error: " + error);

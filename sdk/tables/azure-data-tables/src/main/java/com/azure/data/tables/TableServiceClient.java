@@ -43,12 +43,10 @@ public class TableServiceClient {
     /**
      * query all the tables under the storage account and return them
      *
-     * @param top odata top integer
-     * @param selectString odata select string
-     * @param filterString odata filter string
+     * @param queryOptions the odata query object
      * @return a list of tables that meet the query
      */
-    public List<AzureTable> queryTables(Integer top, String selectString, String filterString) {
+    public List<AzureTable> queryTables(QueryOptions queryOptions) {
         return null;
     }
 

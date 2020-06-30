@@ -29,12 +29,10 @@ public class TableClient {
     /**
      * Queries and returns entities in the given table using the select and filter strings
      *
-     * @param top odata top integer
-     * @param selectString odata select string
-     * @param filterString odata filter string
+     * @param queryOptions the odata query object
      * @return a list of the tables that fit the query
      */
-    public List<TableEntity> queryEntity(Integer top, String selectString, String filterString) {
+    public List<TableEntity> queryEntity(QueryOptions queryOptions) {
         return null;
     }
 
@@ -52,6 +50,7 @@ public class TableClient {
 
     /**
      * insert a TableEntity with the given row and partition key and return that TableEntity
+     *
      * @param row row key
      * @param partition partition key
      * @return the created TableEntity

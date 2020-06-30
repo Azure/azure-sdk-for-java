@@ -31,12 +31,10 @@ public class TableAsyncClient {
     /**
      * Queries and returns entities in the given table using the select and filter strings
      *
-     * @param top odata top parameter
-     * @param selectString odata select string
-     * @param filterString odata filter string
+     * @param queryOptions the odata query object
      * @return a paged flux of all the entity which fit this criteria
      */
-    public PagedFlux<TableEntity> queryEntity(Integer top, String selectString, String filterString) {
+    public PagedFlux<TableEntity> queryEntity(QueryOptions queryOptions) {
         return null;
     }
 
@@ -54,11 +52,12 @@ public class TableAsyncClient {
 
     /**
      * insert a TableEntity with the given row and partition key
+     *
      * @param row row key
      * @param partition partition key
      * @return the table entity which is inserted
      */
-    public Mono<TableEntity> insertEntity(String row, String partition ) {
+    public Mono<TableEntity> insertEntity(String row, String partition) {
         return null;
     }
 

@@ -47,12 +47,10 @@ public class TableServiceAsyncClient {
     /**
      * query all the tables under the storage account and return them
      *
-     * @param top odata top integer
-     * @param selectString odata select string
-     * @param filterString odata filter string
+     * @param queryOptions the odata query object
      * @return a flux of the tables that met this criteria
      */
-    public PagedFlux<AzureTable> queryTables(Integer top, String selectString, String filterString) {
+    public PagedFlux<AzureTable> queryTables(QueryOptions queryOptions) {
         return null;
     }
 

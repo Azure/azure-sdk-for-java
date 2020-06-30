@@ -38,10 +38,11 @@ public class TableServiceClientCodeSnippets {
         }
 
         //query tables
-        String filterString = "$filter=TableName eq 'OfficeSupplies'";
+        QueryOptions queryOptions = new QueryOptions();
+        queryOptions.setFilter("TableName eq OfficeSupplies");
 
         try {
-            List<AzureTable> responseTables = tableServiceClient.queryTables(null, null, filterString);
+            List<AzureTable> responseTables = tableServiceClient.queryTables(queryOptions);
         } catch (HttpResponseException e) {
             System.out.println("Table Query Unsuccessful. Error: " + e);
         }
@@ -88,10 +89,10 @@ public class TableServiceClientCodeSnippets {
         }
 
         //query a table
-        String filterString2 = "$filter=Product eq 'markers'";
-        String selectString2 = "$select=Seller, Price";
+        queryOptions.setFilter("Product eq markers");
+        queryOptions.setSelect("Seller, Price");
         try {
-            List<TableEntity> list = tableClient.queryEntity(null, filterString2, selectString2);
+            List<TableEntity> list = tableClient.queryEntity(queryOptions);
         } catch (HttpResponseException e) {
             System.out.println("Query Table Entities Unsuccessful. Error: " + e);
         }
