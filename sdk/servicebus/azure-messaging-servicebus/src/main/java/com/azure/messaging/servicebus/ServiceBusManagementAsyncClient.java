@@ -441,7 +441,8 @@ public final class ServiceBusManagementAsyncClient {
         final Context withTracing = context.addData(AZ_TRACING_NAMESPACE_KEY, SERVICE_BUS_TRACING_NAMESPACE_VALUE);
 
         try {
-            return entityClient.putWithResponseAsync(subscription.getTopicName(), createEntity, null, withTracing)
+            return managementClient.getSubscriptions().putWithResponseAsync(subscription.getTopicName(),
+                subscription.getSubscriptionName(), createEntity, null, withTracing)
                 .onErrorMap(ServiceBusManagementAsyncClient::mapException)
                 .map(this::deserializeSubscription);
         } catch (RuntimeException ex) {
