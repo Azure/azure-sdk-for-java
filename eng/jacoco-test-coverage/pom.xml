@@ -78,6 +78,16 @@
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
+      <artifactId>azure-core-serializer-avro-apache</artifactId>
+      <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core-serializer-avro-apache;current} -->
+    </dependency>
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-core-serializer-avro-jackson</artifactId>
+      <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core-serializer-avro-jackson;current} -->
+    </dependency>
+    <dependency>
+      <groupId>com.azure</groupId>
       <artifactId>azure-core-serializer-json-gson</artifactId>
       <version>1.0.0-beta.2</version> <!-- {x-version-update;com.azure:azure-core-serializer-json-gson;current} -->
     </dependency>
