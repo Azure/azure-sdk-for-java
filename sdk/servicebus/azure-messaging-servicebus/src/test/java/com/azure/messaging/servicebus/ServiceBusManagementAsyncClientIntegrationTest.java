@@ -50,6 +50,45 @@ class ServiceBusManagementAsyncClientIntegrationTest extends TestBase {
 
     @ParameterizedTest
     @MethodSource("createHttpClients")
+    void createQueue(HttpClient httpClient) {
+        // Arrange
+        final ServiceBusManagementAsyncClient client = createClient(httpClient);
+        final String queueName = testResourceNamer.randomName("test", 10);
+        final OffsetDateTime nowUtc = OffsetDateTime.now(Clock.systemUTC());
+        final QueueDescription expected = new QueueDescription(queueName)
+            .setMaxSizeInMegabytes(500)
+            .setMaxDeliveryCount(7)
+            .setLockDuration(Duration.ofSeconds(45))
+            .setRequiresSession(true)
+            .setRequiresDuplicateDetection(true)
+            .setDuplicateDetectionHistoryTimeWindow(Duration.ofMinutes(2))
+            .setUserMetadata("some-metadata-for-testing");
+
+        // Act & Assert
+        StepVerifier.create(client.createQueue(expected))
+            .assertNext(actual -> {
+                assertEquals(queueName, expected.getName());
+                assertEquals(expected.getName(), actual.getName());
+
+                assertEquals(expected.getLockDuration(), actual.getLockDuration());
+                assertEquals(expected.getMaxDeliveryCount(), actual.getMaxDeliveryCount());
+                assertEquals(expected.getMaxSizeInMegabytes(), actual.getMaxSizeInMegabytes());
+                assertEquals(expected.getUserMetadata(), actual.getUserMetadata());
+
+                assertEquals(expected.deadLetteringOnMessageExpiration(), actual.deadLetteringOnMessageExpiration());
+                assertEquals(expected.enablePartitioning(), actual.enablePartitioning());
+                assertEquals(expected.requiresDuplicateDetection(), actual.requiresDuplicateDetection());
+                assertEquals(expected.requiresSession(), actual.requiresSession());
+
+                final QueueRuntimeInfo runtimeInfo = new QueueRuntimeInfo(actual);
+                assertNotNull(runtimeInfo.getCreatedAt());
+                assertTrue(nowUtc.isAfter(runtimeInfo.getCreatedAt()));
+            })
+            .verifyComplete();
+    }
+
+    @ParameterizedTest
+    @MethodSource("createHttpClients")
     void getQueue(HttpClient httpClient) {
         // Arrange
         final ServiceBusManagementAsyncClient client = createClient(httpClient);
@@ -65,7 +104,6 @@ class ServiceBusManagementAsyncClientIntegrationTest extends TestBase {
 
                 assertFalse(queueDescription.enablePartitioning());
                 assertFalse(queueDescription.requiresSession());
-                assertTrue(queueDescription.supportOrdering());
                 assertNotNull(queueDescription.getLockDuration());
 
                 final QueueRuntimeInfo runtimeInfo = new QueueRuntimeInfo(queueDescription);

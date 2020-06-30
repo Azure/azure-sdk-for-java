@@ -62,7 +62,6 @@ class ServiceBusManagementSerializerTest {
             .setDuplicateDetectionHistoryTimeWindow(Duration.ofMinutes(10))
             .setMaxDeliveryCount(10)
             .setEnableBatchedOperations(true)
-            .setSupportOrdering(true)
             .setAutoDeleteOnIdle(Duration.ofHours(5))
             .setEnablePartitioning(true);
 
@@ -144,7 +143,6 @@ class ServiceBusManagementSerializerTest {
             .setDuplicateDetectionHistoryTimeWindow(Duration.ofMinutes(10))
             .setMaxDeliveryCount(10)
             .setEnableBatchedOperations(true)
-            .setSupportOrdering(true)
             .setAutoDeleteOnIdle(Duration.ofSeconds(5))
             .setEnablePartitioning(true);
 
@@ -436,7 +434,6 @@ class ServiceBusManagementSerializerTest {
         assertEquals(expected.getMaxDeliveryCount(), actual.getMaxDeliveryCount());
         assertEquals(expected.enableBatchedOperations(), actual.enableBatchedOperations());
 
-        assertEquals(expected.supportOrdering(), actual.supportOrdering());
         assertEquals(expected.getAutoDeleteOnIdle(), actual.getAutoDeleteOnIdle());
         assertEquals(expected.enablePartitioning(), actual.enablePartitioning());
 
