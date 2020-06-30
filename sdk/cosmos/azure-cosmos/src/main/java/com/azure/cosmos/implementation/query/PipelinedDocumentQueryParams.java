@@ -14,16 +14,16 @@ import java.util.UUID;
 
 public class PipelinedDocumentQueryParams<T extends Resource> {
     private int top = -1;
-    private int initialPageSize;
-    private boolean isContinuationExpected;
-    private boolean getLazyResponseFeed;
+    private final int initialPageSize;
+    private final boolean isContinuationExpected;
+    private final boolean getLazyResponseFeed;
     private final String collectionRid;
     private final ResourceType resourceTypeEnum;
     private final Class<T> resourceType;
     private final SqlQuerySpec query;
     private final String resourceLink;
     private final UUID correlatedActivityId;
-    private final CosmosQueryRequestOptions cosmosQueryRequestOptions;
+    private CosmosQueryRequestOptions cosmosQueryRequestOptions;
     private final List<PartitionKeyRange> partitionKeyRanges;
     private final QueryInfo queryInfo;
 
@@ -33,7 +33,7 @@ public class PipelinedDocumentQueryParams<T extends Resource> {
         SqlQuerySpec query,
         String resourceLink,
         String collectionRid,
-        boolean getLazyFeedResponse,
+        boolean getLazyResponseFeed,
         boolean isContinuationExpected,
         int initialPageSize,
         List<PartitionKeyRange> partitionKeyRanges,
@@ -46,7 +46,7 @@ public class PipelinedDocumentQueryParams<T extends Resource> {
         this.query = query;
         this.resourceLink = resourceLink;
         this.collectionRid = collectionRid;
-        this.getLazyResponseFeed = getLazyFeedResponse;
+        this.getLazyResponseFeed = getLazyResponseFeed;
         this.isContinuationExpected = isContinuationExpected;
         this.initialPageSize = initialPageSize;
         this.correlatedActivityId = correlatedActivityId;
@@ -67,24 +67,12 @@ public class PipelinedDocumentQueryParams<T extends Resource> {
         return initialPageSize;
     }
 
-    public void setInitialPageSize(int initialPageSize) {
-        this.initialPageSize = initialPageSize;
-    }
-
     public boolean isContinuationExpected() {
         return isContinuationExpected;
     }
 
-    public void setContinuationExpected(boolean continuationExpected) {
-        isContinuationExpected = continuationExpected;
-    }
-
     public boolean isGetLazyResponseFeed() {
         return getLazyResponseFeed;
-    }
-
-    public void setGetLazyResponseFeed(boolean getLazyResponseFeed) {
-        this.getLazyResponseFeed = getLazyResponseFeed;
     }
 
     public String getCollectionRid() {
@@ -113,6 +101,10 @@ public class PipelinedDocumentQueryParams<T extends Resource> {
 
     public CosmosQueryRequestOptions getCosmosQueryRequestOptions() {
         return cosmosQueryRequestOptions;
+    }
+
+    public void setCosmosQueryRequestOptions(CosmosQueryRequestOptions cosmosQueryRequestOptions) {
+        this.cosmosQueryRequestOptions = cosmosQueryRequestOptions;
     }
 
     public List<PartitionKeyRange> getPartitionKeyRanges() {

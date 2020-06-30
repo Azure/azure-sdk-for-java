@@ -89,7 +89,7 @@ public class OrderByDocumentQueryExecutionContext<T extends Resource>
                 initParams.getResourceLink(),
                 initParams.getQueryInfo().getRewrittenQuery(),
                 initParams.isContinuationExpected(),
-                initParams.getGetLazyResponseFeed(),
+                initParams.isGetLazyResponseFeed(),
                 new OrderbyRowComparer<T>(initParams.getQueryInfo().getOrderBy()),
                 initParams.getCollectionRid(),
                 initParams.getCorrelatedActivityId());

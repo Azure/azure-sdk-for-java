@@ -8,6 +8,7 @@ import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.CosmosClientBuilder;
+import com.azure.cosmos.implementation.Resource;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.util.CosmosPagedFlux;
 import com.azure.cosmos.implementation.InternalObjectNode;
@@ -17,6 +18,7 @@ import com.azure.cosmos.implementation.FeedResponseListValidator;
 import com.azure.cosmos.implementation.FeedResponseValidator;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.query.OffsetContinuationToken;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.reactivex.subscribers.TestSubscriber;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
@@ -151,6 +153,32 @@ public class OffsetLimitQueryTests extends TestSuiteBase {
             new FeedResponseListValidator.Builder<InternalObjectNode>()
                 .containsExactly(expectedIds)
                 .numberOfPages(3)
+                .hasValidQueryMetrics(qmEnabled)
+                .build();
+
+        validateQuerySuccess(queryObservable.byPage(5), validator, TIMEOUT);
+    }
+
+    @Test(groups = {"simple"}, timeOut = TIMEOUT, dataProvider = "queryMetricsArgProvider")
+    public void queryDocumentsWithAggregate(boolean qmEnabled) {
+        int skipCount = 0;
+        int takeCount = 10;
+        String query =
+            String.format("SELECT VALUE MAX(c.%s) from c OFFSET %s LIMIT %s", field, skipCount, takeCount);
+        CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
+        options.setQueryMetricsEnabled(qmEnabled);
+        CosmosPagedFlux<JsonNode> queryObservable = createdCollection.queryItems(query, options, JsonNode.class);
+
+        // The pipeline execution sequence is Aggregrate, skip, and top/limit, hence finding the max from among the docs
+        InternalObjectNode expectedDoc = docs
+            .stream()
+            .max(Comparator.comparing(r -> ModelBridgeInternal.getIntFromJsonSerializable(r, field)))
+            .get();
+
+        FeedResponseListValidator<JsonNode> validator =
+            new FeedResponseListValidator.Builder<JsonNode>()
+                .withAggregateValue(ModelBridgeInternal.getIntFromJsonSerializable(expectedDoc, field))
+                .numberOfPages(1)
                 .hasValidQueryMetrics(qmEnabled)
                 .build();
 

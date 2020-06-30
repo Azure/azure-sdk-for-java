@@ -73,7 +73,7 @@ public class ParallelDocumentQueryExecutionContext<T extends Resource>
                 initParams.getQueryInfo().getRewrittenQuery(),
                 initParams.getCollectionRid(),
                 initParams.isContinuationExpected(),
-                initParams.getGetLazyResponseFeed(),
+                initParams.isGetLazyResponseFeed(),
                 initParams.getCorrelatedActivityId());
         context.setTop(initParams.getTop());
 

@@ -48,7 +48,7 @@ public class PipelinedDocumentQueryExecutionContext<T extends Resource> implemen
         IDocumentQueryClient client,
         PipelinedDocumentQueryParams<T> initParams) {
 
-        // Use nested callback pattern to unwrap the continuation token at each level.
+        // Use nested callback pattern to unwrap the continuation token and query params at each level.
         BiFunction<String, PipelinedDocumentQueryParams<T>, Flux<IDocumentQueryExecutionComponent<T>>> createBaseComponentFunction;
 
         QueryInfo queryInfo = initParams.getQueryInfo();
@@ -75,67 +75,66 @@ public class PipelinedDocumentQueryExecutionContext<T extends Resource> implemen
 
         BiFunction<String, PipelinedDocumentQueryParams<T>, Flux<IDocumentQueryExecutionComponent<T>>> createAggregateComponentFunction;
         if (queryInfo.hasAggregates() && !queryInfo.hasGroupBy()) {
-            createAggregateComponentFunction = (continuationToken, documentQueryParams) -> {
-                return AggregateDocumentQueryExecutionContext.createAsync(createBaseComponentFunction,
-                                                                          queryInfo.getAggregates(),
-                                                                          queryInfo.getGroupByAliasToAggregateType(),
-                                                                          queryInfo.getGroupByAliases(),
-                                                                          queryInfo.hasSelectValue(),
-                                                                          continuationToken,
-                                                                          documentQueryParams);
-            };
+            createAggregateComponentFunction =
+                (continuationToken, documentQueryParams) ->
+                    AggregateDocumentQueryExecutionContext.createAsync(createBaseComponentFunction,
+                                                                      queryInfo.getAggregates(),
+                                                                      queryInfo.getGroupByAliasToAggregateType(),
+                                                                      queryInfo.getGroupByAliases(),
+                                                                      queryInfo.hasSelectValue(),
+                                                                      continuationToken,
+                                                                      documentQueryParams);
         } else {
             createAggregateComponentFunction = createBaseComponentFunction;
         }
 
         BiFunction<String, PipelinedDocumentQueryParams<T>, Flux<IDocumentQueryExecutionComponent<T>>> createDistinctComponentFunction;
         if (queryInfo.hasDistinct()) {
-            createDistinctComponentFunction = (continuationToken, documentQueryParams) -> {
-                return DistinctDocumentQueryExecutionContext.createAsync(
-                    createAggregateComponentFunction,
-                    queryInfo.getDistinctQueryType(),
-                    continuationToken,
-                    documentQueryParams);
-            };
+            createDistinctComponentFunction =
+                (continuationToken, documentQueryParams) ->
+                    DistinctDocumentQueryExecutionContext.createAsync(createAggregateComponentFunction,
+                                                                    queryInfo.getDistinctQueryType(),
+                                                                    continuationToken,
+                                                                    documentQueryParams);
         } else {
             createDistinctComponentFunction = createAggregateComponentFunction;
         }
 
         BiFunction<String, PipelinedDocumentQueryParams<T>, Flux<IDocumentQueryExecutionComponent<T>>> createGroupByComponentFunction;
         if (queryInfo.hasGroupBy()) {
-            createGroupByComponentFunction = (continuationToken, documentQueryParams) -> {
-                return GroupByDocumentQueryExecutionContext.createAsync(createDistinctComponentFunction,
-                                                                        continuationToken,
-                                                                        queryInfo.getGroupByAliasToAggregateType(),
-                                                                        queryInfo.getGroupByAliases(),
-                                                                        queryInfo.hasSelectValue(),
-                                                                        documentQueryParams);
-            };
+            createGroupByComponentFunction =
+                (continuationToken, documentQueryParams) ->
+                    GroupByDocumentQueryExecutionContext.createAsync(createDistinctComponentFunction,
+                                                                    continuationToken,
+                                                                    queryInfo.getGroupByAliasToAggregateType(),
+                                                                    queryInfo.getGroupByAliases(),
+                                                                    queryInfo.hasSelectValue(),
+                                                                    documentQueryParams);
         } else{
             createGroupByComponentFunction = createDistinctComponentFunction;
         }
 
         BiFunction<String, PipelinedDocumentQueryParams<T>, Flux<IDocumentQueryExecutionComponent<T>>> createSkipComponentFunction;
         if (queryInfo.hasOffset()) {
-            createSkipComponentFunction = (continuationToken, documentQueryParams) -> {
-                return SkipDocumentQueryExecutionContext.createAsync(createGroupByComponentFunction,
-                                                                     queryInfo.getOffset(),
-                                                                     continuationToken,
-                                                                     documentQueryParams);
-            };
+            createSkipComponentFunction =
+                (continuationToken, documentQueryParams) ->
+                    SkipDocumentQueryExecutionContext.createAsync(createGroupByComponentFunction,
+                                                                 queryInfo.getOffset(),
+                                                                 continuationToken,
+                                                                 documentQueryParams);
         } else {
             createSkipComponentFunction = createGroupByComponentFunction;
         }
 
         BiFunction<String, PipelinedDocumentQueryParams<T>, Flux<IDocumentQueryExecutionComponent<T>>> createTopComponentFunction;
         if (queryInfo.hasTop()) {
-            createTopComponentFunction = (continuationToken, documentQueryParams) -> {
-                return TopDocumentQueryExecutionContext.createAsync(createSkipComponentFunction,
-                                                                    queryInfo.getTop(),
-                                                                    queryInfo.getTop(),
-                                                                    continuationToken,
-                                                                    documentQueryParams);
-            };
+            createTopComponentFunction =
+                (continuationToken, documentQueryParams) ->
+                    TopDocumentQueryExecutionContext.createAsync(createSkipComponentFunction,
+                                                                queryInfo.getTop(),
+                                                                queryInfo.getTop(),
+                                                                continuationToken,
+                                                                documentQueryParams);
         } else {
             createTopComponentFunction = createSkipComponentFunction;
         }
