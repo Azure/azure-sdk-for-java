@@ -243,7 +243,8 @@ class ServiceBusManagementAsyncClientTest {
     void getQueueRuntimeInfo() throws IOException {
         // Arrange
         final String contents = getContents("QueueDescriptionEntry.xml");
-        final QueueDescriptionEntry entry = serializer.deserialize(contents, QueueDescriptionEntry.class);
+        final ServiceBusManagementSerializer managementSerializer = new ServiceBusManagementSerializer();
+        final QueueDescriptionEntry entry = managementSerializer.deserialize(contents, QueueDescriptionEntry.class);
 
         final String name = "my-test-queue";
         final OffsetDateTime createdAt = OffsetDateTime.parse("2020-06-05T03:55:07.5Z");
@@ -289,7 +290,8 @@ class ServiceBusManagementAsyncClientTest {
     void getQueueRuntimeInfoWithResponse() throws IOException {
         // Arrange
         final String contents = getContents("QueueDescriptionEntry.xml");
-        final QueueDescriptionEntry entry = serializer.deserialize(contents, QueueDescriptionEntry.class);
+        final ServiceBusManagementSerializer managementSerializer = new ServiceBusManagementSerializer();
+        final QueueDescriptionEntry entry = managementSerializer.deserialize(contents, QueueDescriptionEntry.class);
 
         final String name = "my-test-queue";
         final OffsetDateTime createdAt = OffsetDateTime.parse("2020-06-05T03:55:07.5Z");
