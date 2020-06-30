@@ -14,7 +14,7 @@ import reactor.core.publisher.Flux;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Function;
+import java.util.function.BiFunction;
 import java.util.stream.Collectors;
 
 public final class SkipDocumentQueryExecutionContext<T extends Resource> implements IDocumentQueryExecutionComponent<T> {
@@ -31,9 +31,10 @@ public final class SkipDocumentQueryExecutionContext<T extends Resource> impleme
     }
 
     public static <T extends Resource> Flux<IDocumentQueryExecutionComponent<T>> createAsync(
-        Function<String, Flux<IDocumentQueryExecutionComponent<T>>> createSourceComponentFunction,
+        BiFunction<String, PipelinedDocumentQueryParams<T>, Flux<IDocumentQueryExecutionComponent<T>>> createSourceComponentFunction,
         int skipCount,
-        String continuationToken) {
+        String continuationToken,
+        PipelinedDocumentQueryParams<T> documentQueryParams) {
         OffsetContinuationToken offsetContinuationToken;
         Utils.ValueHolder<OffsetContinuationToken> outOffsetContinuationToken = new Utils.ValueHolder<>();
         if (continuationToken != null) {
@@ -51,7 +52,7 @@ public final class SkipDocumentQueryExecutionContext<T extends Resource> impleme
             offsetContinuationToken = new OffsetContinuationToken(skipCount, null);
         }
 
-        return createSourceComponentFunction.apply(offsetContinuationToken.getSourceToken())
+        return createSourceComponentFunction.apply(offsetContinuationToken.getSourceToken(), documentQueryParams)
                    .map(component -> new SkipDocumentQueryExecutionContext<>(component,
                        offsetContinuationToken.getOffset()));
     }

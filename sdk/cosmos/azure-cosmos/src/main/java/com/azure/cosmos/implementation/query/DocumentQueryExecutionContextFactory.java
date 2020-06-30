@@ -195,20 +195,21 @@ public class DocumentQueryExecutionContextFactory {
             //            }
         }
 
-        return PipelinedDocumentQueryExecutionContext.createAsync(
-                client,
-                resourceTypeEnum,
-                resourceType,
-                query,
-                cosmosQueryRequestOptions,
-                resourceLink,
-                collectionRid,
-                partitionedQueryExecutionInfo,
-                targetRanges,
-                initialPageSize,
-                isContinuationExpected,
-                getLazyFeedResponse,
-                correlatedActivityId);
+        PipelinedDocumentQueryParams<T> documentQueryParams = new PipelinedDocumentQueryParams(
+            resourceTypeEnum,
+            resourceType,
+            query,
+            resourceLink,
+            collectionRid,
+            getLazyFeedResponse,
+            isContinuationExpected,
+            initialPageSize,
+            targetRanges,
+            partitionedQueryExecutionInfo.getQueryInfo(),
+            cosmosQueryRequestOptions,
+            correlatedActivityId);
+
+        return PipelinedDocumentQueryExecutionContext.createAsync(client, documentQueryParams);
     }
 
     public static <T extends Resource> Flux<? extends IDocumentQueryExecutionContext<T>> createReadManyQueryAsync(

@@ -124,6 +124,54 @@ public class TopQueryTests extends TestSuiteBase {
         this.queryWithContinuationTokensAndPageSizes(query, new int[] { 1, 5, 10 }, 8);
     }
 
+    @Test(groups = { "simple" }, timeOut = TIMEOUT, dataProvider = "queryMetricsArgProvider", retryAnalyzer = RetryAnalyzer.class)
+    public void queryDocumentsWithTopAndAggregate(boolean qmEnabled) throws Exception {
+
+        CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
+        options.setMaxDegreeOfParallelism(2);
+        options.setQueryMetricsEnabled(qmEnabled);
+
+        int expectedTotalSize = 20;
+        int expectedNumberOfPages = 3;
+        int[] expectedPageLengths = new int[] { 9, 9, 2 };
+
+        for (int i = 0; i < 2; i++) {
+            CosmosPagedFlux<JsonNode> queryObservable1 = createdCollection.queryItems("SELECT TOP 0 value AVG(c.field) from c",
+                options,
+                JsonNode.class);
+
+            FeedResponseListValidator<JsonNode> validator1 = new FeedResponseListValidator.Builder<JsonNode>()
+                .totalSize(0).build();
+
+            validateQuerySuccess(queryObservable1.byPage(9), validator1, TIMEOUT);
+
+            CosmosPagedFlux<JsonNode> queryObservable2 = createdCollection.queryItems("SELECT TOP 1 value AVG(c.field) from c",
+                options,
+                JsonNode.class);
+
+            FeedResponseListValidator<JsonNode> validator2 = new FeedResponseListValidator.Builder<JsonNode>()
+                .totalSize(1).build();
+
+            validateQuerySuccess(queryObservable2.byPage(), validator2, TIMEOUT);
+
+            CosmosPagedFlux<InternalObjectNode> queryObservable3 = createdCollection.queryItems("SELECT TOP 20 * from c", options, InternalObjectNode.class);
+
+            FeedResponseListValidator<InternalObjectNode> validator3 = new FeedResponseListValidator.Builder<InternalObjectNode>()
+                .totalSize(expectedTotalSize).numberOfPages(expectedNumberOfPages).pageLengths(expectedPageLengths)
+                .hasValidQueryMetrics(qmEnabled).build();
+
+            validateQuerySuccess(queryObservable3.byPage(), validator3, TIMEOUT);
+
+            if (i == 0) {
+                options.setPartitionKey(new PartitionKey(firstPk));
+                expectedTotalSize = 10;
+                expectedNumberOfPages = 2;
+                expectedPageLengths = new int[] { 9, 1 };
+
+            }
+        }
+    }
+
     private void queryWithContinuationTokensAndPageSizes(String query, int[] pageSizes, int topCount) {
         for (int pageSize : pageSizes) {
             List<InternalObjectNode> receivedDocuments = this.queryWithContinuationTokens(query, pageSize);

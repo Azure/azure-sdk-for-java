@@ -18,7 +18,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicReference;
-import java.util.function.Function;
+import java.util.function.BiFunction;
 
 public class DistinctDocumentQueryExecutionContext<T extends Resource> implements IDocumentQueryExecutionComponent<T> {
     private final IDocumentQueryExecutionComponent<T> component;
@@ -43,9 +43,10 @@ public class DistinctDocumentQueryExecutionContext<T extends Resource> implement
     }
 
     public static <T extends Resource> Flux<IDocumentQueryExecutionComponent<T>> createAsync(
-        Function<String, Flux<IDocumentQueryExecutionComponent<T>>> createSourceComponentFunction,
+        BiFunction<String, PipelinedDocumentQueryParams<T>, Flux<IDocumentQueryExecutionComponent<T>>> createSourceComponentFunction,
         DistinctQueryType distinctQueryType,
-        String continuationToken) {
+        String continuationToken,
+        PipelinedDocumentQueryParams<T> documentQueryParams) {
 
         Utils.ValueHolder<DistinctContinuationToken> outDistinctcontinuationtoken = new Utils.ValueHolder<>();
         DistinctContinuationToken distinctContinuationToken = new DistinctContinuationToken(null /*lasthash*/,
@@ -70,7 +71,7 @@ public class DistinctDocumentQueryExecutionContext<T extends Resource> implement
 
         final UInt128 continuationTokenLastHash = distinctContinuationToken.getLastHash();
 
-        return createSourceComponentFunction.apply(distinctContinuationToken.getSourceToken()).map(component -> {
+        return createSourceComponentFunction.apply(distinctContinuationToken.getSourceToken(), documentQueryParams).map(component -> {
             return new DistinctDocumentQueryExecutionContext<T>(component,
                                                                 distinctQueryType,
                                                                 continuationTokenLastHash);

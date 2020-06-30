@@ -8,6 +8,7 @@ import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.CosmosClientBuilder;
+import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.util.CosmosPagedFlux;
 import com.azure.cosmos.implementation.InternalObjectNode;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
@@ -23,11 +24,13 @@ import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -128,6 +131,30 @@ public class OffsetLimitQueryTests extends TestSuiteBase {
         int takeCount = 10;
         String query = "SELECT * from c OFFSET " + skipCount + " LIMIT " + takeCount;
         this.queryWithContinuationTokensAndPageSizes(query, new int[] {1, 5, 15}, takeCount);
+    }
+
+    @Test(groups = {"simple"}, timeOut = TIMEOUT, dataProvider = "queryMetricsArgProvider")
+    public void queryDocumentsWithDistinct(boolean qmEnabled) {
+        int skipCount = 4;
+        int takeCount = 10;
+        String query =
+            String.format("SELECT DISTINCT c.id from c OFFSET %s LIMIT %s", skipCount, takeCount);
+        CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
+        options.setQueryMetricsEnabled(qmEnabled);
+        options.setMaxDegreeOfParallelism(2);
+        CosmosPagedFlux<InternalObjectNode> queryObservable = createdCollection.queryItems(query, options, InternalObjectNode.class);
+
+        List<String> expectedIds =
+            docs.stream().skip(4).limit(10).map(doc -> doc.getResourceId()).collect(Collectors.toList());
+
+        FeedResponseListValidator<InternalObjectNode> validator =
+            new FeedResponseListValidator.Builder<InternalObjectNode>()
+                .containsExactly(expectedIds)
+                .numberOfPages(3)
+                .hasValidQueryMetrics(qmEnabled)
+                .build();
+
+        validateQuerySuccess(queryObservable.byPage(5), validator, TIMEOUT);
     }
 
     private void queryWithContinuationTokensAndPageSizes(String query, int[] pageSizes, int takeCount) {
