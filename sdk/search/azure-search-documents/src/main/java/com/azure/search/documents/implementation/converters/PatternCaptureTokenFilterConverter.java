@@ -5,9 +5,6 @@ package com.azure.search.documents.implementation.converters;
 
 import com.azure.search.documents.indexes.models.PatternCaptureTokenFilter;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * A converter between {@link com.azure.search.documents.indexes.implementation.models.PatternCaptureTokenFilter} and
  * {@link PatternCaptureTokenFilter}.
@@ -21,15 +18,9 @@ public final class PatternCaptureTokenFilterConverter {
         if (obj == null) {
             return null;
         }
-        PatternCaptureTokenFilter patternCaptureTokenFilter = new PatternCaptureTokenFilter();
+        PatternCaptureTokenFilter patternCaptureTokenFilter = new PatternCaptureTokenFilter(obj.getName(),
+            obj.getPatterns());
 
-        String name = obj.getName();
-        patternCaptureTokenFilter.setName(name);
-
-        if (obj.getPatterns() != null) {
-            List<String> patterns = new ArrayList<>(obj.getPatterns());
-            patternCaptureTokenFilter.setPatterns(patterns);
-        }
 
         Boolean preserveOriginal = obj.isPreserveOriginal();
         patternCaptureTokenFilter.setPreserveOriginal(preserveOriginal);

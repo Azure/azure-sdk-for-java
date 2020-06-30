@@ -8,6 +8,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
+import java.util.List;
+
 /**
  * Text analytics positive-negative sentiment analysis, scored as a floating
  * point value in a range of zero to 1.
@@ -23,6 +25,18 @@ public final class SentimentSkill extends SearchIndexerSkill {
      */
     @JsonProperty(value = "defaultLanguageCode")
     private SentimentSkillLanguage defaultLanguageCode;
+
+    /**
+     * Constructor of {@link SearchIndexerSkill}.
+     *
+     * @param inputs Inputs of the skills could be a column in the source data set, or the
+     * output of an upstream skill.
+     * @param outputs The output of a skill is either a field in a search index, or a value
+     * that can be consumed as an input by another skill.
+     */
+    public SentimentSkill(List<InputFieldMappingEntry> inputs, List<OutputFieldMappingEntry> outputs) {
+        super(inputs, outputs);
+    }
 
     /**
      * Get the defaultLanguageCode property: A value indicating which language

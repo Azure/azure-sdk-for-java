@@ -67,13 +67,13 @@ class ServiceBusManagementClientImplIntegrationTests extends TestBase {
     void getQueueImplementation(HttpClient httpClient) {
         // Arrange
         final ServiceBusManagementClientImpl managementClient = createClient(httpClient);
-        final QueuesImpl queuesClient = managementClient.getQueues();
+        final EntitysImpl entityClient = managementClient.getEntitys();
         final String queueName = interceptorManager.isPlaybackMode()
             ? "queue-0"
             : TestUtils.getEntityName(TestUtils.getQueueBaseName(), 0);
 
         // Act & Assert
-        StepVerifier.create(queuesClient.getWithResponseAsync(queueName, true, Context.NONE))
+        StepVerifier.create(entityClient.getWithResponseAsync(queueName, true, Context.NONE))
             .assertNext(response -> {
                 final QueueDescriptionEntry deserialize = deserialize(response, QueueDescriptionEntry.class);
                 assertNotNull(deserialize);
@@ -94,10 +94,10 @@ class ServiceBusManagementClientImplIntegrationTests extends TestBase {
     void createQueueImplementation(HttpClient httpClient) {
         // Arrange
         final ServiceBusManagementClientImpl managementClient = createClient(httpClient);
-        final QueuesImpl queuesClient = managementClient.getQueues();
+        final EntitysImpl entityClient = managementClient.getEntitys();
 
         final String queueName = testResourceNamer.randomName("test", 7);
-        final QueueDescription description = new QueueDescription().setMaxDeliveryCount(15);
+        final QueueDescription description = new QueueDescription(queueName).setMaxDeliveryCount(15);
         final CreateQueueBody createEntity = new CreateQueueBody();
         final CreateQueueBodyContent content = new CreateQueueBodyContent()
             .setType("application/xml")
@@ -107,7 +107,7 @@ class ServiceBusManagementClientImplIntegrationTests extends TestBase {
         logger.info("Creating queue: {}", queueName);
 
         // Act & Assert
-        StepVerifier.create(queuesClient.putWithResponseAsync(queueName, createEntity, null, Context.NONE))
+        StepVerifier.create(entityClient.putWithResponseAsync(queueName, createEntity, null, Context.NONE))
             .assertNext(response -> {
                 Object body = response.getValue();
                 QueueDescription deserialize = null;
@@ -131,10 +131,10 @@ class ServiceBusManagementClientImplIntegrationTests extends TestBase {
     void deleteQueueImplementation(HttpClient httpClient) {
         // Arrange
         final ServiceBusManagementClientImpl managementClient = createClient(httpClient);
-        final QueuesImpl queuesClient = managementClient.getQueues();
+        final EntitysImpl entityClient = managementClient.getEntitys();
 
         final String queueName = testResourceNamer.randomName("test", 7);
-        final QueueDescription description = new QueueDescription().setMaxDeliveryCount(15);
+        final QueueDescription description = new QueueDescription(queueName).setMaxDeliveryCount(15);
         final CreateQueueBody createEntity = new CreateQueueBody();
         final CreateQueueBodyContent content = new CreateQueueBodyContent()
             .setType("application/xml")
@@ -144,12 +144,12 @@ class ServiceBusManagementClientImplIntegrationTests extends TestBase {
         logger.info("Creating queue: {}", queueName);
 
         // This is not part of the scenario. We'll ensure it is created.
-        Response<Object> response = queuesClient.putWithResponseAsync(queueName, createEntity, null, Context.NONE)
+        Response<Object> response = entityClient.putWithResponseAsync(queueName, createEntity, null, Context.NONE)
             .block(timeout);
         assertNotNull(response);
 
         // Act & Assert
-        StepVerifier.create(queuesClient.deleteWithResponseAsync(queueName, Context.NONE))
+        StepVerifier.create(entityClient.deleteWithResponseAsync(queueName, Context.NONE))
             .assertNext(deletedResponse -> {
                 assertEquals(200, deletedResponse.getStatusCode());
             })
@@ -164,12 +164,12 @@ class ServiceBusManagementClientImplIntegrationTests extends TestBase {
     void editQueueImplementation(HttpClient httpClient) {
         // Arrange
         final ServiceBusManagementClientImpl managementClient = createClient(httpClient);
-        final QueuesImpl queuesClient = managementClient.getQueues();
+        final EntitysImpl entityClient = managementClient.getEntitys();
 
         final String queueName = interceptorManager.isPlaybackMode()
             ? "queue-5"
             : TestUtils.getEntityName(TestUtils.getQueueBaseName(), 5);
-        final Response<Object> response = queuesClient.getWithResponseAsync(queueName, true, Context.NONE)
+        final Response<Object> response = entityClient.getWithResponseAsync(queueName, true, Context.NONE)
             .block(Duration.ofSeconds(30));
         assertNotNull(response);
         final QueueDescriptionResponse deserialize = deserialize(response, QueueDescriptionResponse.class);
@@ -190,7 +190,7 @@ class ServiceBusManagementClientImplIntegrationTests extends TestBase {
             new CreateQueueBodyContent().setQueueDescription(properties).setType("application/xml"));
 
         // Act & Assert
-        StepVerifier.create(queuesClient.putWithResponseAsync(queueName, updated, "*", Context.NONE))
+        StepVerifier.create(entityClient.putWithResponseAsync(queueName, updated, "*", Context.NONE))
             .assertNext(update -> {
                 final QueueDescriptionResponse updatedProperties = deserialize(update, QueueDescriptionResponse.class);
                 assertNotNull(updatedProperties);

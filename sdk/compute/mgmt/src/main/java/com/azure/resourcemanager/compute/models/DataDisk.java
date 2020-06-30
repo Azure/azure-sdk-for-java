@@ -90,6 +90,24 @@ public final class DataDisk {
     @JsonProperty(value = "toBeDetached")
     private Boolean toBeDetached;
 
+    /*
+     * Specifies the Read-Write IOPS for the managed disk when
+     * StorageAccountType is UltraSSD_LRS. Returned only for VirtualMachine
+     * ScaleSet VM disks. Can be updated only via updates to the VirtualMachine
+     * Scale Set.
+     */
+    @JsonProperty(value = "diskIOPSReadWrite", access = JsonProperty.Access.WRITE_ONLY)
+    private Long diskIopsReadWrite;
+
+    /*
+     * Specifies the bandwidth in MB per second for the managed disk when
+     * StorageAccountType is UltraSSD_LRS. Returned only for VirtualMachine
+     * ScaleSet VM disks. Can be updated only via updates to the VirtualMachine
+     * Scale Set.
+     */
+    @JsonProperty(value = "diskMBpsReadWrite", access = JsonProperty.Access.WRITE_ONLY)
+    private Long diskMBpsReadWrite;
+
     /**
      * Get the lun property: Specifies the logical unit number of the data disk. This value is used to identify data
      * disks within the VM and therefore must be unique for each data disk attached to a VM.
@@ -314,6 +332,28 @@ public final class DataDisk {
     public DataDisk withToBeDetached(Boolean toBeDetached) {
         this.toBeDetached = toBeDetached;
         return this;
+    }
+
+    /**
+     * Get the diskIopsReadWrite property: Specifies the Read-Write IOPS for the managed disk when StorageAccountType is
+     * UltraSSD_LRS. Returned only for VirtualMachine ScaleSet VM disks. Can be updated only via updates to the
+     * VirtualMachine Scale Set.
+     *
+     * @return the diskIopsReadWrite value.
+     */
+    public Long diskIopsReadWrite() {
+        return this.diskIopsReadWrite;
+    }
+
+    /**
+     * Get the diskMBpsReadWrite property: Specifies the bandwidth in MB per second for the managed disk when
+     * StorageAccountType is UltraSSD_LRS. Returned only for VirtualMachine ScaleSet VM disks. Can be updated only via
+     * updates to the VirtualMachine Scale Set.
+     *
+     * @return the diskMBpsReadWrite value.
+     */
+    public Long diskMBpsReadWrite() {
+        return this.diskMBpsReadWrite;
     }
 
     /**

@@ -3,7 +3,6 @@
 
 package com.azure.search.documents.implementation.converters;
 
-import com.azure.search.documents.implementation.util.PrivateFieldAccessHelper;
 import com.azure.search.documents.models.AutocompleteItem;
 
 /**
@@ -18,14 +17,7 @@ public final class AutocompleteItemConverter {
         if (obj == null) {
             return null;
         }
-        AutocompleteItem autocompleteItem = new AutocompleteItem();
-
-        String text = obj.getText();
-        PrivateFieldAccessHelper.set(autocompleteItem, "text", text);
-
-        String queryPlusText = obj.getQueryPlusText();
-        PrivateFieldAccessHelper.set(autocompleteItem, "queryPlusText", queryPlusText);
-        return autocompleteItem;
+        return new AutocompleteItem(obj.getText(), obj.getQueryPlusText());
     }
 
     /**

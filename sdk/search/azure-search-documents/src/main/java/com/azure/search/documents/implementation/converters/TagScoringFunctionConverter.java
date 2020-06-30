@@ -20,7 +20,10 @@ public final class TagScoringFunctionConverter {
         if (obj == null) {
             return null;
         }
-        TagScoringFunction tagScoringFunction = new TagScoringFunction();
+
+        TagScoringParameters parameters = obj.getParameters() == null ? null
+            : TagScoringParametersConverter.map(obj.getParameters());
+        TagScoringFunction tagScoringFunction = new TagScoringFunction(obj.getFieldName(), obj.getBoost(), parameters);
 
         if (obj.getInterpolation() != null) {
             ScoringFunctionInterpolation interpolation =
@@ -28,16 +31,6 @@ public final class TagScoringFunctionConverter {
             tagScoringFunction.setInterpolation(interpolation);
         }
 
-        String fieldName = obj.getFieldName();
-        tagScoringFunction.setFieldName(fieldName);
-
-        double boost = obj.getBoost();
-        tagScoringFunction.setBoost(boost);
-
-        if (obj.getParameters() != null) {
-            TagScoringParameters parameters = TagScoringParametersConverter.map(obj.getParameters());
-            tagScoringFunction.setParameters(parameters);
-        }
         return tagScoringFunction;
     }
 

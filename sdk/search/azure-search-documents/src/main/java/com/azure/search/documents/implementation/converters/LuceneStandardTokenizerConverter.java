@@ -23,11 +23,8 @@ public final class LuceneStandardTokenizerConverter {
         if (obj == null) {
             return null;
         }
-        LuceneStandardTokenizer luceneStandardTokenizer = new LuceneStandardTokenizer();
+        LuceneStandardTokenizer luceneStandardTokenizer = new LuceneStandardTokenizer(obj.getName());
         PrivateFieldAccessHelper.set(luceneStandardTokenizer, ODATA_FIELD_NAME, V1_ODATA_TYPE);
-
-        String name = obj.getName();
-        luceneStandardTokenizer.setName(name);
 
         Integer maxTokenLength = obj.getMaxTokenLength();
         luceneStandardTokenizer.setMaxTokenLength(maxTokenLength);
@@ -42,11 +39,8 @@ public final class LuceneStandardTokenizerConverter {
         if (obj == null) {
             return null;
         }
-        LuceneStandardTokenizer luceneStandardTokenizer = new LuceneStandardTokenizer();
+        LuceneStandardTokenizer luceneStandardTokenizer = new LuceneStandardTokenizer(obj.getName());
         PrivateFieldAccessHelper.set(luceneStandardTokenizer, ODATA_FIELD_NAME, V2_ODATA_TYPE);
-
-        String name = obj.getName();
-        luceneStandardTokenizer.setName(name);
 
         Integer maxTokenLength = obj.getMaxTokenLength();
         luceneStandardTokenizer.setMaxTokenLength(maxTokenLength);

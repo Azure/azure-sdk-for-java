@@ -4,7 +4,6 @@
 package com.azure.search.documents.implementation.converters;
 
 import com.azure.search.documents.indexes.models.MagnitudeScoringFunction;
-import com.azure.search.documents.indexes.models.MagnitudeScoringParameters;
 import com.azure.search.documents.indexes.models.ScoringFunctionInterpolation;
 
 /**
@@ -20,7 +19,9 @@ public final class MagnitudeScoringFunctionConverter {
         if (obj == null) {
             return null;
         }
-        MagnitudeScoringFunction magnitudeScoringFunction = new MagnitudeScoringFunction();
+
+        MagnitudeScoringFunction magnitudeScoringFunction = new MagnitudeScoringFunction(obj.getFieldName(),
+            obj.getBoost(), MagnitudeScoringParametersConverter.map(obj.getParameters()));
 
         if (obj.getInterpolation() != null) {
             ScoringFunctionInterpolation interpolation =
@@ -28,16 +29,6 @@ public final class MagnitudeScoringFunctionConverter {
             magnitudeScoringFunction.setInterpolation(interpolation);
         }
 
-        String fieldName = obj.getFieldName();
-        magnitudeScoringFunction.setFieldName(fieldName);
-
-        double boost = obj.getBoost();
-        magnitudeScoringFunction.setBoost(boost);
-
-        if (obj.getParameters() != null) {
-            MagnitudeScoringParameters parameters = MagnitudeScoringParametersConverter.map(obj.getParameters());
-            magnitudeScoringFunction.setParameters(parameters);
-        }
         return magnitudeScoringFunction;
     }
 

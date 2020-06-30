@@ -18,10 +18,7 @@ public final class PathHierarchyTokenizerConverter {
         if (obj == null) {
             return null;
         }
-        PathHierarchyTokenizer pathHierarchyTokenizer = new PathHierarchyTokenizer();
-
-        String name = obj.getName();
-        pathHierarchyTokenizer.setName(name);
+        PathHierarchyTokenizer pathHierarchyTokenizer = new PathHierarchyTokenizer(obj.getName());
 
         Integer maxTokenLength = obj.getMaxTokenLength();
         pathHierarchyTokenizer.setMaxTokenLength(maxTokenLength);

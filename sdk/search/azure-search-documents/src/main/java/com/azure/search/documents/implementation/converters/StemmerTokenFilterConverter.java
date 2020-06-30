@@ -19,16 +19,10 @@ public final class StemmerTokenFilterConverter {
         if (obj == null) {
             return null;
         }
-        StemmerTokenFilter stemmerTokenFilter = new StemmerTokenFilter();
 
-        String name = obj.getName();
-        stemmerTokenFilter.setName(name);
-
-        if (obj.getLanguage() != null) {
-            StemmerTokenFilterLanguage language = StemmerTokenFilterLanguageConverter.map(obj.getLanguage());
-            stemmerTokenFilter.setLanguage(language);
-        }
-        return stemmerTokenFilter;
+        StemmerTokenFilterLanguage language = obj.getLanguage() == null ? null
+        : StemmerTokenFilterLanguageConverter.map(obj.getLanguage());
+        return new StemmerTokenFilter(obj.getName(), language);
     }
 
     /**
@@ -43,7 +37,7 @@ public final class StemmerTokenFilterConverter {
 
         com.azure.search.documents.indexes.implementation.models.StemmerTokenFilterLanguage language =
             obj.getLanguage() == null ? null
-                : StemmerTokenFilterLanguageConverter.map(obj.getLanguage());
+            : StemmerTokenFilterLanguageConverter.map(obj.getLanguage());
         com.azure.search.documents.indexes.implementation.models.StemmerTokenFilter stemmerTokenFilter =
             new com.azure.search.documents.indexes.implementation.models.StemmerTokenFilter(obj.getName(), language);
 

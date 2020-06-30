@@ -37,6 +37,18 @@ public final class ImageAnalysisSkill extends SearchIndexerSkill {
     private List<ImageDetail> details;
 
     /**
+     * Constructor of {@link SearchIndexerSkill}.
+     *
+     * @param inputs Inputs of the skills could be a column in the source data set, or the
+     * output of an upstream skill.
+     * @param outputs The output of a skill is either a field in a search index, or a value
+     * that can be consumed as an input by another skill.
+     */
+    public ImageAnalysisSkill(List<InputFieldMappingEntry> inputs, List<OutputFieldMappingEntry> outputs) {
+        super(inputs, outputs);
+    }
+
+    /**
      * Get the defaultLanguageCode property: A value indicating which language
      * code to use. Default is en. Possible values include: 'en', 'es', 'ja',
      * 'pt', 'zh'.

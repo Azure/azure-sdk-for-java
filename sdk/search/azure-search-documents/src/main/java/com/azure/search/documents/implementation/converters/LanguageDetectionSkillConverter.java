@@ -23,19 +23,13 @@ public final class LanguageDetectionSkillConverter {
         if (obj == null) {
             return null;
         }
-        LanguageDetectionSkill languageDetectionSkill = new LanguageDetectionSkill();
 
-        if (obj.getOutputs() != null) {
-            List<OutputFieldMappingEntry> outputs =
-                obj.getOutputs().stream().map(OutputFieldMappingEntryConverter::map).collect(Collectors.toList());
-            languageDetectionSkill.setOutputs(outputs);
-        }
+        List<OutputFieldMappingEntry> outputs = obj.getOutputs() == null ? null :
+            obj.getOutputs().stream().map(OutputFieldMappingEntryConverter::map).collect(Collectors.toList());
 
-        if (obj.getInputs() != null) {
-            List<InputFieldMappingEntry> inputs =
-                obj.getInputs().stream().map(InputFieldMappingEntryConverter::map).collect(Collectors.toList());
-            languageDetectionSkill.setInputs(inputs);
-        }
+        List<InputFieldMappingEntry> inputs = obj.getInputs() == null ? null :
+            obj.getInputs().stream().map(InputFieldMappingEntryConverter::map).collect(Collectors.toList());
+        LanguageDetectionSkill languageDetectionSkill = new LanguageDetectionSkill(inputs, outputs);
 
         String name = obj.getName();
         languageDetectionSkill.setName(name);

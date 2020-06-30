@@ -22,10 +22,7 @@ public final class EdgeNGramTokenizerConverter {
         if (obj == null) {
             return null;
         }
-        EdgeNGramTokenizer edgeNGramTokenizer = new EdgeNGramTokenizer();
-
-        String name = obj.getName();
-        edgeNGramTokenizer.setName(name);
+        EdgeNGramTokenizer edgeNGramTokenizer = new EdgeNGramTokenizer(obj.getName());
 
         Integer maxGram = obj.getMaxGram();
         edgeNGramTokenizer.setMaxGram(maxGram);

@@ -67,12 +67,10 @@ class ServiceBusManagementClientTest {
     @Test
     void createQueue() {
         // Arrange
-        final QueueDescription description = new QueueDescription()
-            .setName(queueName)
+        final QueueDescription description = new QueueDescription(queueName)
             .setMaxDeliveryCount(10)
             .setAutoDeleteOnIdle(Duration.ofSeconds(10));
-        final QueueDescription result = new QueueDescription()
-            .setName("queue-name-2")
+        final QueueDescription result = new QueueDescription("queue-name-2")
             .setMaxDeliveryCount(4)
             .setAutoDeleteOnIdle(Duration.ofSeconds(30))
             .setAccessedAt(OffsetDateTime.now());
@@ -249,12 +247,10 @@ class ServiceBusManagementClientTest {
     @Test
     void updateQueue() {
         // Arrange
-        final QueueDescription description = new QueueDescription()
-            .setName(queueName)
+        final QueueDescription description = new QueueDescription(queueName)
             .setMaxDeliveryCount(10)
             .setAutoDeleteOnIdle(Duration.ofSeconds(10));
-        final QueueDescription result = new QueueDescription()
-            .setName("queue-name-2")
+        final QueueDescription result = new QueueDescription("queue-name-2")
             .setMaxDeliveryCount(4)
             .setAutoDeleteOnIdle(Duration.ofSeconds(30))
             .setAccessedAt(OffsetDateTime.now());
