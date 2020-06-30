@@ -315,14 +315,8 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      * @throws IllegalArgumentException if {@code lockToken} is {@code null} or an empty value.
      */
     public Mono<Void> complete(String lockToken) {
-        /*if (lockToken instanceof ServiceBusReceivedMessage) {
-            return complete(lockToken, ((ServiceBusReceivedMessage) lockToken).getSessionId());
-        } else {
-            return updateDisposition(lockToken, DispositionStatus.COMPLETED, null, null,
-                null, null, null);
-        }*/
         return updateDisposition(lockToken, DispositionStatus.COMPLETED, null, null,
-            null, null, null);
+            null, receiverOptions.getSessionId(), null);
     }
 
     /**
@@ -1219,14 +1213,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
         }
 
         final String sessionIdToUse;
-        /*if (message instanceof ServiceBusReceivedMessage) {
-            sessionIdToUse = ((ServiceBusReceivedMessage) message).getSessionId();
-            if (!CoreUtils.isNullOrEmpty(sessionIdToUse) && !CoreUtils.isNullOrEmpty(sessionId)
-                && !sessionIdToUse.equals(sessionId)) {
-                logger.warning("Given sessionId '{}' does not match message's sessionId '{}'",
-                    sessionId, sessionIdToUse);
-            }
-        } else */if (sessionId == null && !CoreUtils.isNullOrEmpty(receiverOptions.getSessionId())) {
+        if (sessionId == null && !CoreUtils.isNullOrEmpty(receiverOptions.getSessionId())) {
             sessionIdToUse = receiverOptions.getSessionId();
         } else {
             sessionIdToUse = sessionId;
