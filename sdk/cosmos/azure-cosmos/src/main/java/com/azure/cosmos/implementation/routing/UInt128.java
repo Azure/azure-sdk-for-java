@@ -80,7 +80,7 @@ public class UInt128 implements Comparable<UInt128>{
         if (this.equals(other)) {
             return 0;
         }
-        if ((this.high < this.high) || ((this.high == other.high) && (this.low < other.low))) {
+        if ((this.high < other.high) || ((this.high == other.high) && (this.low < other.low))) {
             return -1;
         }
         return 1;
