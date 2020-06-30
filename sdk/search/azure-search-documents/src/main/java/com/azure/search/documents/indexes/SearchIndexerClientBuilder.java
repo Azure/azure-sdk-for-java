@@ -44,11 +44,11 @@ import java.util.Objects;
  *
  * <p><strong>Instantiating an asynchronous Search Indexer Client</strong></p>
  *
- * {@codesnippet com.azure.search.documents.SearchIndexerAsyncClient.instantiation}
+ * {@codesnippet com.azure.search.documents.indexes.SearchIndexerAsyncClient.instantiation}
  *
  * <p><strong>Instantiating a synchronous Search Indexer Client</strong></p>
  *
- * {@codesnippet com.azure.search.documents.SearchIndexerClient.instantiation}
+ * {@codesnippet com.azure.search.documents.indexes.SearchIndexerClient.instantiation}
  *
  * @see SearchIndexerClient
  * @see SearchIndexerAsyncClient

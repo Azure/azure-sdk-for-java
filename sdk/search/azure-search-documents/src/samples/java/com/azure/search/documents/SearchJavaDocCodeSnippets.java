@@ -127,13 +127,13 @@ public class SearchJavaDocCodeSnippets {
      * Code snippet for {@link SearchIndexClient#getIndexWithResponse(String, Context)}}
      */
     public void getSearchIndexWithResponse() {
-        // BEGIN: com.azure.search.documents.indexes.SearchIndexClient.getSearchIndexWithResponse#String-Context
+        // BEGIN: com.azure.search.documents.indexes.SearchIndexClient.getIndexWithResponse#String-Context
         Response<SearchIndex> indexFromServiceResponse =
             searchIndexClient.getIndexWithResponse("searchIndex", new Context(key1, value1));
 
         System.out.printf("The status code of the response is %s. The index name is %s.%n",
             indexFromServiceResponse.getStatusCode(), indexFromServiceResponse.getValue().getName());
-        // END: com.azure.search.documents.indexes.SearchIndexClient.getSearchIndex#String
+        // END: com.azure.search.documents.indexes.SearchIndexClient.getIndexWithResponse#String-Context
     }
 
     /**
@@ -178,14 +178,14 @@ public class SearchJavaDocCodeSnippets {
      * Code snippet for {@link SearchIndexClient#listIndexes(Context)}
      */
     public void listIndexesWithContext() {
-        // BEGIN: com.azure.search.documents.indexes.SearchIndexClient.listIndexes#Context
+        // BEGIN: com.azure.search.documents.indexes.SearchIndexClient.listIndexesWithResponse#Context
         PagedIterable<SearchIndex> indexes = searchIndexClient.listIndexes(new Context(key1, value1));
         System.out.println("The status code of the response is"
             + indexes.iterableByPage().iterator().next().getStatusCode());
         for (SearchIndex index: indexes) {
             System.out.printf("The index name is %s. The etag of index is %s.%n", index.getName(), index.getETag());
         }
-        // END: com.azure.search.documents.indexes.SearchIndexClient.listIndexes#Context
+        // END: com.azure.search.documents.indexes.SearchIndexClient.listIndexesWithResponse#Context
     }
 
     /**
@@ -273,7 +273,7 @@ public class SearchJavaDocCodeSnippets {
         // BEGIN: com.azure.search.documents.indexes.SearchIndexClient.analyzeText#String-AnalyzeTextOptions
         PagedIterable<AnalyzedTokenInfo> tokenInfos = searchIndexClient.analyzeText("searchIndex",
             new AnalyzeTextOptions("The quick brown fox", LexicalTokenizerName.CLASSIC));
-        for(AnalyzedTokenInfo tokenInfo : tokenInfos) {
+        for (AnalyzedTokenInfo tokenInfo : tokenInfos) {
             System.out.printf("The token emitted by the analyzer is %s.%n", tokenInfo.getToken());
         }
         // END: com.azure.search.documents.indexes.SearchIndexClient.analyzeText#String-AnalyzeTextOptions
@@ -288,7 +288,7 @@ public class SearchJavaDocCodeSnippets {
             new AnalyzeTextOptions("The quick brown fox", LexicalTokenizerName.CLASSIC), new Context(key1, value1));
         System.out.println("The status code of the response is "
             + tokenInfos.iterableByPage().iterator().next().getStatusCode());
-        for(AnalyzedTokenInfo tokenInfo : tokenInfos) {
+        for (AnalyzedTokenInfo tokenInfo : tokenInfos) {
             System.out.printf("The token emitted by the analyzer is %s.%n", tokenInfo.getToken());
         }
         // END: com.azure.search.documents.indexes.SearchIndexClient.analyzeText#String-AnalyzeTextOptions-Context
@@ -351,53 +351,53 @@ public class SearchJavaDocCodeSnippets {
      * Code snippet for {@link SearchIndexClient#listSynonymMaps()}
      */
     public void listSynonymMaps() {
-        // BEGIN: com.azure.search.documents.synonymMaps.SearchIndexClient.listSynonymMaps
+        // BEGIN: com.azure.search.documents.indexes.SearchIndexClient.listSynonymMaps
         PagedIterable<SynonymMap> synonymMaps = searchIndexClient.listSynonymMaps();
         for (SynonymMap synonymMap: synonymMaps) {
             System.out.printf("The synonymMap name is %s. The etag of synonymMap is %s.%n", synonymMap.getName(),
                 synonymMap.getETag());
         }
-        // END: com.azure.search.documents.synonymMaps.SearchIndexClient.listSynonymMaps
+        // END: com.azure.search.documents.indexes.SearchIndexClient.listSynonymMaps
     }
 
     /**
      * Code snippet for {@link SearchIndexClient#listSynonymMaps(Context)}
      */
     public void listSynonymMapsWithContext() {
-        // BEGIN: com.azure.search.documents.synonymMaps.SearchIndexClient.listSynonymMaps#Context
+        // BEGIN: com.azure.search.documents.indexes.SearchIndexClient.listSynonymMapsWithResponse#Context
         PagedIterable<SynonymMap> synonymMaps = searchIndexClient.listSynonymMaps(new Context(key1, value1));
         System.out.println("The status code of the response is"
             + synonymMaps.iterableByPage().iterator().next().getStatusCode());
         for (SynonymMap index: synonymMaps) {
             System.out.printf("The index name is %s. The etag of index is %s.%n", index.getName(), index.getETag());
         }
-        // END: com.azure.search.documents.synonymMaps.SearchIndexClient.listSynonymMaps#Context
+        // END: com.azure.search.documents.indexes.SearchIndexClient.listSynonymMapsWithResponse#Context
     }
 
     /**
      * Code snippet for {@link SearchIndexClient#listSynonymMapNames()}
      */
     public void listSynonymMapNames() {
-        // BEGIN: com.azure.search.documents.indexes.SearchIndexClient.listIndexes
+        // BEGIN: com.azure.search.documents.indexes.SearchIndexClient.listSynonymMapNames
         PagedIterable<String> synonymMaps = searchIndexClient.listSynonymMapNames();
         for (String synonymMap: synonymMaps) {
             System.out.printf("The synonymMap name is %s.%n", synonymMap);
         }
-        // END: com.azure.search.documents.indexes.SearchIndexClient.listIndexes
+        // END: com.azure.search.documents.indexes.SearchIndexClient.listSynonymMapNames
     }
 
     /**
      * Code snippet for {@link SearchIndexClient#listSynonymMapNames(Context)}
      */
     public void listSynonymMapNamesWithContext() {
-        // BEGIN: com.azure.search.documents.synonymMaps.SearchIndexClient.listIndexNames#Context
+        // BEGIN: com.azure.search.documents.indexes.SearchIndexClient.listSynonymMapNamesWithResponse#Context
         PagedIterable<String> synonymMaps = searchIndexClient.listIndexNames(new Context(key1, value1));
         System.out.println("The status code of the response is"
             + synonymMaps.iterableByPage().iterator().next().getStatusCode());
         for (String synonymMapNames: synonymMaps) {
             System.out.printf("The synonymMap name is %s.%n", synonymMapNames);
         }
-        // END: com.azure.search.documents.synonymMaps.SearchIndexClient.listIndexNames#Context
+        // END: com.azure.search.documents.indexes.SearchIndexClient.listSynonymMapNamesWithResponse#Context
     }
 
     /**
@@ -442,12 +442,12 @@ public class SearchJavaDocCodeSnippets {
      * Code snippet for {@link SearchIndexClient#deleteSynonymMapWithResponse(SynonymMap, boolean, Context)}
      */
     public void deleteSynonymMapWithResponse() {
-        // BEGIN: com.azure.search.documents.indexes.SearchIndexClient.deleteSynonymMapWithResponse#SearchIndex-boolean-Context
+        // BEGIN: com.azure.search.documents.indexes.SearchIndexClient.deleteSynonymMapWithResponse#SynonymMap-boolean-Context
         SynonymMap synonymMap = searchIndexClient.getSynonymMap("synonymMap");
         Response<Void> response = searchIndexClient.deleteSynonymMapWithResponse(synonymMap, true,
             new Context(key1, value1));
         System.out.println("The status code of the response is" + response.getStatusCode());
-        // END: com.azure.search.documents.indexes.SearchIndexClient.deleteSynonymMapWithResponse#SearchIndex-boolean-Context
+        // END: com.azure.search.documents.indexes.SearchIndexClient.deleteSynonymMapWithResponse#SynonymMap-boolean-Context
     }
 
     /**
@@ -480,12 +480,12 @@ public class SearchJavaDocCodeSnippets {
      * Code snippet for creating a {@link SearchIndexAsyncClient}.
      */
     public void createSearchIndexAsyncClientFromBuilder() {
-        // BEGIN: com.azure.search.documents.SearchIndexAsyncClient.instantiation
+        // BEGIN: com.azure.search.documents.indexes.SearchIndexAsyncClient.instantiation
         SearchIndexAsyncClient searchIndexAsyncClient = new SearchIndexClientBuilder()
             .credential(new AzureKeyCredential("{key}"))
             .endpoint("{endpoint}")
             .buildAsyncClient();
-        // END: com.azure.search.documents.SearchIndexAsyncClient.instantiation
+        // END: com.azure.search.documents.indexes.SearchIndexAsyncClient.instantiation
     }
 
     private SearchIndexerClient searchIndexerClient = new SearchIndexerClientBuilder().buildClient();
@@ -493,12 +493,12 @@ public class SearchJavaDocCodeSnippets {
      * Code snippet for creating a {@link SearchIndexerClient}.
      */
     public void createSearchIndexerClientFromBuilder() {
-        // BEGIN: com.azure.search.documents.SearchIndexerClient.instantiation
+        // BEGIN: com.azure.search.documents.indexes.SearchIndexerClient.instantiation
         SearchIndexerClient searchIndexerClient = new SearchIndexerClientBuilder()
             .credential(new AzureKeyCredential("{key}"))
             .endpoint("{endpoint}")
             .buildClient();
-        // END: com.azure.search.documents.SearchIndexerClient.instantiation
+        // END: com.azure.search.documents.indexes.SearchIndexerClient.instantiation
     }
 
     private SearchIndexerAsyncClient searchIndexerAsyncClient = new SearchIndexerClientBuilder().buildAsyncClient();
@@ -507,11 +507,11 @@ public class SearchJavaDocCodeSnippets {
      * Code snippet for creating a {@link SearchIndexerAsyncClient}.
      */
     public void createSearchIndexerAsyncClientFromBuilder() {
-        // BEGIN: com.azure.search.documents.SearchIndexerAsyncClient.instantiation
+        // BEGIN: com.azure.search.documents.indexes.SearchIndexerAsyncClient.instantiation
         SearchIndexerAsyncClient searchIndexerAsyncClient = new SearchIndexerClientBuilder()
             .credential(new AzureKeyCredential("{key}"))
             .endpoint("{endpoint}")
             .buildAsyncClient();
-        // END: com.azure.search.documents.SearchIndexerAsyncClient.instantiation
+        // END: com.azure.search.documents.indexes.SearchIndexerAsyncClient.instantiation
     }
 }

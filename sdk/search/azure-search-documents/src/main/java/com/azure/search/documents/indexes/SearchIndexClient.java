@@ -187,7 +187,7 @@ public final class SearchIndexClient {
      *
      * <p> List all search indexes with response. </p>
      *
-     * {@codesnippet com.azure.search.documents.indexes.SearchIndexClient.listIndexes#Context}
+     * {@codesnippet com.azure.search.documents.indexes.SearchIndexClient.listIndexesWithResponse#Context}
      *
      * @param context additional context that is passed through the HTTP pipeline during the service call
      * @return the list of indexes.
@@ -442,7 +442,7 @@ public final class SearchIndexClient {
      *
      * <p> List all synonym maps response. </p>
      *
-     * {@codesnippet com.azure.search.documents.indexes.SearchIndexClient.listSynonymMaps#Context}
+     * {@codesnippet com.azure.search.documents.indexes.SearchIndexClient.listSynonymMapsWithResponse#Context}
      *
      * @param context additional context that is passed through the HTTP pipeline during the service call
      * @return the list of synonym map names.
@@ -475,7 +475,7 @@ public final class SearchIndexClient {
      *
      * <p> List all synonym map names response. </p>
      *
-     * {@codesnippet com.azure.search.documents.indexes.SearchIndexClient.listSynonymMapNames#Context}
+     * {@codesnippet com.azure.search.documents.indexes.SearchIndexClient.listSynonymMapNamesWithResponse#Context}
      *
      * @param context additional context that is passed through the HTTP pipeline during the service call
      * @return the list of synonym map names.
