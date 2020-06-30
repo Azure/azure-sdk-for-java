@@ -77,7 +77,7 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      * @throws NullPointerException if {@code lockToken} is null.
      * @throws UnsupportedOperationException if the receiver was opened in {@link ReceiveMode#RECEIVE_AND_DELETE}
      *     mode.
-     * @throws IllegalArgumentException if {@code lockToken} is {@code null} or an empty value.
+     * @throws IllegalArgumentException if {@code lockToken} is an empty value.
      */
     public void abandon(String lockToken) {
         asyncClient.abandon(lockToken).block(operationTimeout);
@@ -94,7 +94,7 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      * @throws NullPointerException if {@code lockToken} is null.
      * @throws UnsupportedOperationException if the receiver was opened in {@link ReceiveMode#RECEIVE_AND_DELETE}
      *     mode.
-     * @throws IllegalArgumentException if {@code lockToken} is {@code null} or an empty value.
+     * @throws IllegalArgumentException if {@code lockToken} is an empty value.
      */
     public void abandon(String lockToken, Map<String, Object> propertiesToModify) {
         asyncClient.abandon(lockToken, propertiesToModify).block(operationTimeout);
@@ -114,7 +114,7 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      * {@code transactionContext.transactionId} is null.
      * @throws UnsupportedOperationException if the receiver was opened in {@link ReceiveMode#RECEIVE_AND_DELETE}
      *     mode.
-     * @throws IllegalArgumentException if {@code lockToken} is {@code null} or an empty value.
+     * @throws IllegalArgumentException if {@code lockToken} is an empty value.
      */
     public void abandon(String lockToken, Map<String, Object> propertiesToModify,
         ServiceBusTransactionContext transactionContext) {
@@ -134,7 +134,7 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      * @throws NullPointerException if {@code lockToken} is null.
      * @throws UnsupportedOperationException if the receiver was opened in {@link ReceiveMode#RECEIVE_AND_DELETE}
      *     mode.
-     * @throws IllegalArgumentException if {@code lockToken} is {@code null} or an empty value.
+     * @throws IllegalArgumentException if {@code lockToken} is an empty value.
      */
     public void abandon(String lockToken, Map<String, Object> propertiesToModify, String sessionId) {
         asyncClient.abandon(lockToken, propertiesToModify, sessionId).block(operationTimeout);
@@ -155,7 +155,7 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      * {@code transactionContext.transactionId} is null.
      * @throws UnsupportedOperationException if the receiver was opened in {@link ReceiveMode#RECEIVE_AND_DELETE}
      *     mode.
-     * @throws IllegalArgumentException if {@code lockToken} is {@code null} or an empty value.
+     * @throws IllegalArgumentException if {@code lockToken} is an empty value.
      */
     public void abandon(String lockToken, Map<String, Object> propertiesToModify, String sessionId,
         ServiceBusTransactionContext transactionContext) {
@@ -171,7 +171,7 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      * @throws NullPointerException if {@code lockToken} is null.
      * @throws UnsupportedOperationException if the receiver was opened in {@link ReceiveMode#RECEIVE_AND_DELETE}
      *     mode.
-     * @throws if {@code lockToken} is {@code null} or an empty value.
+     * @throws IllegalArgumentException if {@code lockToken} is an empty value.
      */
     public void complete(String lockToken) {
         asyncClient.complete(lockToken).block(operationTimeout);
@@ -189,7 +189,7 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      * {@code transactionContext.transactionId} is null.
      * @throws UnsupportedOperationException if the receiver was opened in {@link ReceiveMode#RECEIVE_AND_DELETE}
      *     mode.
-     * @throws IllegalArgumentException if {@code lockToken} is {@code null} or an empty value.
+     * @throws IllegalArgumentException if {@code lockToken} is an empty value.
      */
     public void complete(String lockToken, ServiceBusTransactionContext transactionContext) {
         asyncClient.complete(lockToken, transactionContext).block(operationTimeout);
@@ -205,7 +205,7 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      * @throws NullPointerException if {@code lockToken} is null.
      * @throws UnsupportedOperationException if the receiver was opened in {@link ReceiveMode#RECEIVE_AND_DELETE}
      *     mode.
-     * @throws IllegalArgumentException if {@code lockToken} is {@code null} or an empty value.
+     * @throws IllegalArgumentException if {@code lockToken} is an empty value.
      */
     public void complete(String lockToken, String sessionId) {
         asyncClient.complete(lockToken, sessionId).block(operationTimeout);
@@ -224,7 +224,7 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      * {@code transactionContext.transactionId} is null.
      * @throws UnsupportedOperationException if the receiver was opened in {@link ReceiveMode#RECEIVE_AND_DELETE}
      *     mode.
-     * @throws IllegalArgumentException if {@code lockToken} is {@code null} or an empty value.
+     * @throws IllegalArgumentException if {@code lockToken} is an empty value.
      */
     public void complete(String lockToken, String sessionId, ServiceBusTransactionContext
         transactionContext) {
@@ -240,7 +240,7 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      * @throws NullPointerException if {@code lockToken} is null.
      * @throws UnsupportedOperationException if the receiver was opened in {@link ReceiveMode#RECEIVE_AND_DELETE}
      *     mode.
-     * @throws IllegalArgumentException if {@code lockToken} is {@code null} or an empty value.
+     * @throws IllegalArgumentException if {@code lockToken} is an empty value.
      * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/message-deferral">Message deferral</a>
      */
     public void defer(String lockToken) {
@@ -257,7 +257,7 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      * @throws NullPointerException if {@code lockToken} is null.
      * @throws UnsupportedOperationException if the receiver was opened in {@link ReceiveMode#RECEIVE_AND_DELETE}
      *     mode.
-     * @throws IllegalArgumentException if {@code lockToken} is {@code null} or an empty value.
+     * @throws IllegalArgumentException if {@code lockToken} is an empty value.
      * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/message-deferral">Message deferral</a>
      */
     public void defer(String lockToken, String sessionId) {
@@ -274,7 +274,7 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      * @throws NullPointerException if {@code lockToken} is null.
      * @throws UnsupportedOperationException if the receiver was opened in {@link ReceiveMode#RECEIVE_AND_DELETE}
      *     mode.
-     * @throws IllegalArgumentException if {@code lockToken} is {@code null} or an empty value.
+     * @throws IllegalArgumentException if {@code lockToken} is an empty value.
      * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/message-deferral">Message deferral</a>
      */
     public void defer(String lockToken, Map<String, Object> propertiesToModify) {
@@ -294,7 +294,7 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      * {@code transactionContext.transactionId} is null.
      * @throws UnsupportedOperationException if the receiver was opened in {@link ReceiveMode#RECEIVE_AND_DELETE}
      *     mode.
-     * @throws IllegalArgumentException if {@code lockToken} is {@code null} or an empty value.
+     * @throws IllegalArgumentException if {@code lockToken} is an empty value.
      * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/message-deferral">Message deferral</a>
      */
     public void defer(String lockToken, Map<String, Object> propertiesToModify, ServiceBusTransactionContext
@@ -314,7 +314,7 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      * @throws NullPointerException if {@code lockToken} is null.
      * @throws UnsupportedOperationException if the receiver was opened in {@link ReceiveMode#RECEIVE_AND_DELETE}
      *     mode.
-     * @throws IllegalArgumentException if {@code lockToken} is {@code null} or an empty value.
+     * @throws IllegalArgumentException if {@code lockToken} is an empty value.
      * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/message-deferral">Message deferral</a>
      */
     public void defer(String lockToken, Map<String, Object> propertiesToModify, String sessionId) {
@@ -335,7 +335,7 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      * {@code transactionContext.transactionId} is null.
      * @throws UnsupportedOperationException if the receiver was opened in {@link ReceiveMode#RECEIVE_AND_DELETE}
      *     mode.
-     * @throws IllegalArgumentException if {@code lockToken} is {@code null} or an empty value.
+     * @throws IllegalArgumentException if {@code lockToken} is an empty value.
      * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/message-deferral">Message deferral</a>
      */
     public void defer(String lockToken, Map<String, Object> propertiesToModify, String sessionId,
@@ -351,7 +351,7 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      * @throws NullPointerException if {@code lockToken} is null.
      * @throws UnsupportedOperationException if the receiver was opened in {@link ReceiveMode#RECEIVE_AND_DELETE}
      *     mode.
-     * @throws IllegalArgumentException if {@code lockToken} is {@code null} or an empty value.
+     * @throws IllegalArgumentException if {@code lockToken} is an empty value.
      * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/service-bus-dead-letter-queues">Dead letter
      *     queues</a>
      */
@@ -368,7 +368,7 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      * @throws NullPointerException if {@code lockToken} is null.
      * @throws UnsupportedOperationException if the receiver was opened in {@link ReceiveMode#RECEIVE_AND_DELETE}
      *     mode.
-     * @throws IllegalArgumentException if {@code lockToken} is {@code null} or an empty value.
+     * @throws IllegalArgumentException if {@code lockToken} is an empty value.
      * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/service-bus-dead-letter-queues">Dead letter
      *     queues</a>
      */
@@ -386,7 +386,7 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      * @throws NullPointerException if {@code lockToken} is null.
      * @throws UnsupportedOperationException if the receiver was opened in {@link ReceiveMode#RECEIVE_AND_DELETE}
      *     mode.
-     * @throws IllegalArgumentException iif {@code lockToken} is {@code null} or an empty value.
+     * @throws IllegalArgumentException if {@code lockToken} is an empty value.
      */
     public void deadLetter(String lockToken, DeadLetterOptions deadLetterOptions) {
         asyncClient.deadLetter(lockToken, deadLetterOptions).block(operationTimeout);
@@ -405,7 +405,7 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      * {@code transactionContext.transactionId} is null.
      * @throws UnsupportedOperationException if the receiver was opened in {@link ReceiveMode#RECEIVE_AND_DELETE}
      *     mode.
-     * @throws IllegalArgumentException if {@code lockToken} is {@code null} or an empty value.
+     * @throws IllegalArgumentException if {@code lockToken} is an empty value.
      */
     public void deadLetter(String lockToken, DeadLetterOptions deadLetterOptions,
         ServiceBusTransactionContext transactionContext) {
@@ -423,7 +423,7 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      * @throws NullPointerException if {@code lockToken} is null.
      * @throws UnsupportedOperationException if the receiver was opened in {@link ReceiveMode#RECEIVE_AND_DELETE}
      *     mode.
-     * @throws IllegalArgumentException if {@code lockToken} is {@code null} or an empty value.
+     * @throws IllegalArgumentException if {@code lockToken} is an empty value.
      */
     public void deadLetter(String lockToken, DeadLetterOptions deadLetterOptions, String sessionId) {
         asyncClient.deadLetter(lockToken, deadLetterOptions, sessionId).block(operationTimeout);
@@ -443,7 +443,7 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      * {@code transactionContext.transactionId} is null.
      * @throws UnsupportedOperationException if the receiver was opened in {@link ReceiveMode#RECEIVE_AND_DELETE}
      *     mode.
-     * @throws IllegalArgumentException if {@code lockToken} is {@code null} or an empty value.
+     * @throws IllegalArgumentException if {@code lockToken} is an empty value.
      */
     public void deadLetter(String lockToken, DeadLetterOptions deadLetterOptions, String sessionId,
         ServiceBusTransactionContext transactionContext) {
@@ -740,7 +740,7 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      * @throws NullPointerException if {@code lockToken} is null.
      * @throws UnsupportedOperationException if the receiver was opened in {@link ReceiveMode#RECEIVE_AND_DELETE}
      *     mode.
-     * @throws IllegalArgumentException if {@code lockToken} is {@code null} or an empty value.
+     * @throws IllegalArgumentException if {@code lockToken} is an empty value.
      * @throws IllegalStateException if the receiver is a session receiver.
      */
     public Instant renewMessageLock(String lockToken) {

@@ -343,8 +343,8 @@ public class ServiceBusReceiverAsyncClientJavaDocCodeSamples {
 
         // Keep a reference to `subscription`. When the program is finished receiving messages, call
         // subscription.dispose(). This will dispose it cleanly.
-        Disposable subscriber = receiver.abandon(messageContext.getMessage().getLockToken(), propertiesToModify, transactionContext)
-            .subscribe();
+        Disposable subscriber = receiver.abandon(messageContext.getMessage().getLockToken(), propertiesToModify,
+            transactionContext).subscribe();
 
         // When all the messages are processed and settled, you should commit/rollback this transaction.
         // END: com.azure.messaging.servicebus.servicebusasyncreceiverclient.abandonMessageWithTransaction
