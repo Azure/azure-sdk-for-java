@@ -815,17 +815,14 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
         assertEquals(3, receiptPage3.getFormPageRange().getFirstPageNumber());
         assertEquals(3, receiptPage3.getFormPageRange().getLastPageNumber());
         Map<String, FormField<?>> receiptPage3Fields = receiptPage3.getFields();
-        assertEquals(EXPECTED_MULTIPAGE_ADDRESS_VALUE, receiptPage3Fields.get("MerchantAddress")
-            .getValue());
-        assertEquals("Frodo Baggins", receiptPage3Fields.get("MerchantName")
-            .getValue());
-        assertEquals(EXPECTED_MULTIPAGE_PHONE_NUMBER_VALUE, receiptPage3Fields.get("MerchantPhoneNumber")
-            .getValue());
+        assertEquals(EXPECTED_MULTIPAGE_ADDRESS_VALUE, FieldValueType.STRING.cast(receiptPage3Fields.get("MerchantAddress")));
+        assertEquals("Frodo Baggins", FieldValueType.STRING.cast(receiptPage3Fields.get("MerchantName")));
+        assertEquals(EXPECTED_MULTIPAGE_PHONE_NUMBER_VALUE, FieldValueType.PHONE_NUMBER.cast(receiptPage3Fields.get("MerchantPhoneNumber")));
         assertNotNull(receiptPage3Fields.get("Total").getValue());
         // why isn't tip returned by service?
         // total value 1000 returned by service but should be 4300, service bug
-        assertEquals(3000.0f, receiptPage3Fields.get("Subtotal").getValue());
-        assertEquals(ITEMIZED_RECEIPT_VALUE, receiptPage3Fields.get("ReceiptType").getValue());
+        assertEquals(3000.0f, (Float) receiptPage3Fields.get("Subtotal").getValue());
+        assertEquals(ITEMIZED_RECEIPT_VALUE, FieldValueType.STRING.cast(receiptPage3Fields.get("ReceiptType")));
     }
 
     protected String getEndpoint() {

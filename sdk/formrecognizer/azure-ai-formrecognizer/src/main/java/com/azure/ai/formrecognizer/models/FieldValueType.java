@@ -37,7 +37,7 @@ public final class FieldValueType extends ExpandableStringEnum<com.azure.ai.form
     /**
      * Static value float for FieldValueType.
      */
-    public static final FieldValueType FLOAT = fromString("float");
+    public static final FieldValueType FLOAT = fromString("number");
 
     /**
      * Static value integer for FieldValueType.
@@ -47,12 +47,12 @@ public final class FieldValueType extends ExpandableStringEnum<com.azure.ai.form
     /**
      * Static value list for FieldValueType.
      */
-    public static final FieldValueType LIST = fromString("list");
+    public static final FieldValueType LIST = fromString("array");
 
     /**
      * Static value map for FieldValueType.
      */
-    public static final FieldValueType MAP = fromString("map");
+    public static final FieldValueType MAP = fromString("object");
 
     /**
      * Parses a serialized value to a {@link FieldValueType} instance.
