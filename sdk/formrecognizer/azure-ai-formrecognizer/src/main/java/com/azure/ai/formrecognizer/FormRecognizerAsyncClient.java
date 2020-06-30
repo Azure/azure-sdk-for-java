@@ -273,7 +273,7 @@ public final class FormRecognizerAsyncClient {
      * @param recognizeOptions The configurable {@code RecognizeOptions options} that may be passed when recognizing
      * content on a form.
      *
-     * @return A {@link PollerFlux} polls the recognize contentFr operation until it has completed, has failed, or has
+     * @return A {@link PollerFlux} polls the recognize content operation until it has completed, has failed, or has
      * been cancelled. The completed operation returns a List of {@link FormPage}.
      * @throws FormRecognizerException If recognize operation fails and the {@link AnalyzeOperationResult} returned with
      * an {@link OperationStatus#FAILED}.
