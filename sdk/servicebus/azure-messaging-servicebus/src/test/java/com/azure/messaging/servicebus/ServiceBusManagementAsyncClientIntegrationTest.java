@@ -136,6 +136,38 @@ class ServiceBusManagementAsyncClientIntegrationTest extends TestBase {
             .verify();
     }
 
+    @ParameterizedTest
+    @MethodSource("createHttpClients")
+    void getSubscriptionRuntimeInfo(HttpClient httpClient) {
+        // Arrange
+        final ServiceBusManagementAsyncClient client = createClient(httpClient);
+        final String topicName = TestUtils.getTopicName();
+        final String subscriptionName = interceptorManager.isPlaybackMode()
+            ? "subscription-1"
+            : TestUtils.getEntityName(TestUtils.getSubscriptionBaseName(), 1);
+        final OffsetDateTime nowUtc = OffsetDateTime.now(Clock.systemUTC());
+
+        // Act & Assert
+        StepVerifier.create(client.getSubscriptionRuntimeInfo(topicName, subscriptionName))
+            .assertNext(description -> {
+                assertEquals(topicName, description.getTopicName());
+                assertEquals(subscriptionName, description.getSubscriptionName());
+
+                assertTrue(description.getMessageCount() >= 0);
+                assertNotNull(description.getDetails());
+                assertNotNull(description.getDetails().getActiveMessageCount());
+                assertNotNull(description.getDetails().getScheduledMessageCount());
+                assertNotNull(description.getDetails().getTransferDeadLetterMessageCount());
+                assertNotNull(description.getDetails().getTransferMessageCount());
+                assertNotNull(description.getDetails().getDeadLetterMessageCount());
+
+                assertNotNull(description.getCreatedAt());
+                assertTrue(nowUtc.isAfter(description.getCreatedAt()));
+                assertNotNull(description.getAccessedAt());
+            })
+            .verifyComplete();
+    }
+
     private ServiceBusManagementAsyncClient createClient(HttpClient httpClient) {
         final String connectionString = interceptorManager.isPlaybackMode()
             ? "Endpoint=sb://foo.servicebus.windows.net;SharedAccessKeyName=dummyKey;SharedAccessKey=dummyAccessKey"

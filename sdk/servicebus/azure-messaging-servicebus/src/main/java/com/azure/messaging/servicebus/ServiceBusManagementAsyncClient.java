@@ -148,7 +148,6 @@ public final class ServiceBusManagementAsyncClient {
      *     processing the request.
      * @throws NullPointerException if {@code subscription} is null.
      * @throws ResourceExistsException if a subscription exists with the same topic and subscription name.
-     *
      * @see <a href="https://docs.microsoft.com/rest/api/servicebus/update-entity">Create or Update Entity</a>
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -168,7 +167,6 @@ public final class ServiceBusManagementAsyncClient {
      *     processing the request.
      * @throws NullPointerException if {@code subscription} is null.
      * @throws ResourceExistsException if a subscription exists with the same topic and subscription name.
-     *
      * @see <a href="https://docs.microsoft.com/rest/api/servicebus/update-entity">Create or Update Entity</a>
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -443,6 +441,84 @@ public final class ServiceBusManagementAsyncClient {
     }
 
     /**
+     * Updates a subscription with the given {@link SubscriptionDescription}. The {@link SubscriptionDescription} must
+     * be fully populated as all of the properties are replaced. If a property is not set the service default value is
+     * used.
+     *
+     * The suggested flow is:
+     * <ol>
+     *     <li>{@link #getSubscription(String, String) Get subscription description.}</li>
+     *     <li>Update the required elements.</li>
+     *     <li>Pass the updated description into this method.</li>
+     * </ol>
+     *
+     * <p>
+     * There are a subset of properties that can be updated. They are:
+     * <ul>
+     * <li>{@link SubscriptionDescription#setDefaultMessageTimeToLive(Duration) DefaultMessageTimeToLive}</li>
+     * <li>{@link SubscriptionDescription#setLockDuration(Duration) LockDuration}</li>
+     * <li>{@link SubscriptionDescription#setMaxDeliveryCount(Integer) MaxDeliveryCount}</li>
+     * </ul>
+     *
+     * @param subscription Information about the subscription to update. You must provide all the property values
+     *     that are desired on the updated entity. Any values not provided are set to the service default values.
+     *
+     * @return A Mono that returns the updated subscription in addition to the HTTP response.
+     * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
+     *     namespace.
+     * @throws HttpResponseException If the request body was invalid, the subscription quota is exceeded, or an
+     *     error occurred processing the request.
+     * @throws IllegalArgumentException if {@link SubscriptionDescription#getTopicName()} or {@link
+     *     SubscriptionDescription#getSubscriptionName()} is null or an empty string.
+     * @throws NullPointerException if {@code subscription} is null.
+     * @see <a href="https://docs.microsoft.com/rest/api/servicebus/update-entity">Create or Update Entity</a>
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<SubscriptionDescription> updateSubscription(SubscriptionDescription subscription) {
+        return updateSubscriptionWithResponse(subscription).map(Response::getValue);
+    }
+
+    /**
+     * Updates a subscription with the given {@link SubscriptionDescription}. The {@link SubscriptionDescription} must
+     * be fully populated as all of the properties are replaced. If a property is not set the service default value is
+     * used.
+     *
+     * The suggested flow is:
+     * <ol>
+     *     <li>{@link #getSubscription(String, String) Get subscription description.}</li>
+     *     <li>Update the required elements.</li>
+     *     <li>Pass the updated description into this method.</li>
+     * </ol>
+     *
+     * <p>
+     * There are a subset of properties that can be updated. They are:
+     * <ul>
+     * <li>{@link SubscriptionDescription#setDefaultMessageTimeToLive(Duration) DefaultMessageTimeToLive}</li>
+     * <li>{@link SubscriptionDescription#setLockDuration(Duration) LockDuration}</li>
+     * <li>{@link SubscriptionDescription#setMaxDeliveryCount(Integer) MaxDeliveryCount}</li>
+     * </ul>
+     *
+     * @param subscription Information about the subscription to update. You must provide all the property values
+     *     that are desired on the updated entity. Any values not provided are set to the service default values.
+     *
+     * @return A Mono that returns the updated subscription in addition to the HTTP response.
+     * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
+     *     namespace.
+     * @throws HttpResponseException If the request body was invalid, the subscription quota is exceeded, or an
+     *     error occurred processing the request.
+     * @throws IllegalArgumentException if {@link SubscriptionDescription#getTopicName()} or {@link
+     *     SubscriptionDescription#getSubscriptionName()} is null or an empty string.
+     * @throws NullPointerException if {@code subscription} is null.
+     * @see <a href="https://docs.microsoft.com/rest/api/servicebus/update-entity">Create or Update Entity</a>
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<SubscriptionDescription>> updateSubscriptionWithResponse(
+        SubscriptionDescription subscription) {
+
+        return withContext(context -> updateSubscriptionWithResponse(subscription, context));
+    }
+
+    /**
      * Creates a queue with its context.
      *
      * @param queue Queue to create.
@@ -704,6 +780,49 @@ public final class ServiceBusManagementAsyncClient {
             return entityClient.putWithResponseAsync(queue.getName(), createEntity, "*", withTracing)
                 .onErrorMap(ServiceBusManagementAsyncClient::mapException)
                 .map(response -> deserializeQueue(response));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    /**
+     * Updates a subscription with its context.
+     *
+     * @param subscription Information about the subscription to update. You must provide all the property values
+     *     that are desired on the updated entity. Any values not provided are set to the service default values.
+     * @param context Context to pass into request.
+     *
+     * @return A Mono that completes with the updated {@link SubscriptionDescription}.
+     */
+    Mono<Response<SubscriptionDescription>> updateSubscriptionWithResponse(SubscriptionDescription subscription,
+        Context context) {
+        if (subscription == null) {
+            return monoError(logger, new NullPointerException("'subscription' cannot be null"));
+        }
+
+        final String topicName = subscription.getTopicName();
+        final String subscriptionName = subscription.getSubscriptionName();
+        if (topicName == null || topicName.isEmpty()) {
+            return monoError(logger, new IllegalArgumentException("'getTopicName' cannot be null or empty."));
+        } else if (subscriptionName == null || subscriptionName.isEmpty()) {
+            return monoError(logger, new IllegalArgumentException("'getSubscriptionName' cannot be null or empty."));
+        } else if (context == null) {
+            return monoError(logger, new NullPointerException("'context' cannot be null."));
+        }
+
+        final CreateSubscriptionBodyContent content = new CreateSubscriptionBodyContent()
+            .setType(CONTENT_TYPE)
+            .setSubscriptionDescription(subscription);
+        final CreateSubscriptionBody createEntity = new CreateSubscriptionBody()
+            .setContent(content);
+        final Context withTracing = context.addData(AZ_TRACING_NAMESPACE_KEY, SERVICE_BUS_TRACING_NAMESPACE_VALUE);
+
+        try {
+            // If-Match == "*" to unconditionally update. This is in line with the existing client library behaviour.
+            return managementClient.getSubscriptions().putWithResponseAsync(topicName, subscriptionName, createEntity,
+                "*", withTracing)
+                .onErrorMap(ServiceBusManagementAsyncClient::mapException)
+                .map(response -> deserializeSubscription(topicName, response));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
