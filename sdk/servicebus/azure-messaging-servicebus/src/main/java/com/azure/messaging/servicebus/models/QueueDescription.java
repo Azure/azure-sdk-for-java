@@ -856,7 +856,7 @@ public final class QueueDescription {
      *
      * @return the updatedAt value.
      */
-    public OffsetDateTime getUpdatedAt() {
+    OffsetDateTime getUpdatedAt() {
         return this.updatedAt;
     }
 
