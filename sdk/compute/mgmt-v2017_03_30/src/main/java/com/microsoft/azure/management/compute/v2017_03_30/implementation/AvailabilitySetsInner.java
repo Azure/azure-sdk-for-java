@@ -10,9 +10,12 @@ package com.microsoft.azure.management.compute.v2017_03_30.implementation;
 
 import com.microsoft.azure.arm.collection.InnerSupportsGet;
 import com.microsoft.azure.arm.collection.InnerSupportsDelete;
+import com.microsoft.azure.arm.collection.InnerSupportsListing;
 import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
+import com.microsoft.azure.AzureServiceFuture;
 import com.microsoft.azure.CloudException;
+import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
 import com.microsoft.rest.ServiceCallback;
@@ -30,6 +33,7 @@ import retrofit2.http.HTTP;
 import retrofit2.http.Path;
 import retrofit2.http.PUT;
 import retrofit2.http.Query;
+import retrofit2.http.Url;
 import retrofit2.Response;
 import rx.functions.Func1;
 import rx.Observable;
@@ -38,7 +42,7 @@ import rx.Observable;
  * An instance of this class provides access to all the operations defined
  * in AvailabilitySets.
  */
-public class AvailabilitySetsInner implements InnerSupportsGet<AvailabilitySetInner>, InnerSupportsDelete<OperationStatusResponseInner> {
+public class AvailabilitySetsInner implements InnerSupportsGet<AvailabilitySetInner>, InnerSupportsDelete<OperationStatusResponseInner>, InnerSupportsListing<AvailabilitySetInner> {
     /** The Retrofit service to perform REST calls. */
     private AvailabilitySetsService service;
     /** The service client containing this operation class. */
@@ -72,6 +76,10 @@ public class AvailabilitySetsInner implements InnerSupportsGet<AvailabilitySetIn
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/availabilitySets/{availabilitySetName}")
         Observable<Response<ResponseBody>> getByResourceGroup(@Path("resourceGroupName") String resourceGroupName, @Path("availabilitySetName") String availabilitySetName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.compute.v2017_03_30.AvailabilitySets list" })
+        @GET("subscriptions/{subscriptionId}/providers/Microsoft.Compute/availabilitySets")
+        Observable<Response<ResponseBody>> list(@Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Query("$expand") String expand, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.compute.v2017_03_30.AvailabilitySets listByResourceGroup" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/availabilitySets")
         Observable<Response<ResponseBody>> listByResourceGroup(@Path("resourceGroupName") String resourceGroupName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
@@ -79,6 +87,14 @@ public class AvailabilitySetsInner implements InnerSupportsGet<AvailabilitySetIn
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.compute.v2017_03_30.AvailabilitySets listAvailableSizes" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/availabilitySets/{availabilitySetName}/vmSizes")
         Observable<Response<ResponseBody>> listAvailableSizes(@Path("resourceGroupName") String resourceGroupName, @Path("availabilitySetName") String availabilitySetName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.compute.v2017_03_30.AvailabilitySets listNext" })
+        @GET
+        Observable<Response<ResponseBody>> listNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.compute.v2017_03_30.AvailabilitySets listByResourceGroupNext" })
+        @GET
+        Observable<Response<ResponseBody>> listByResourceGroupNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
     }
 
@@ -350,19 +366,233 @@ public class AvailabilitySetsInner implements InnerSupportsGet<AvailabilitySetIn
     }
 
     /**
+     * Lists all availability sets in a subscription.
+     *
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the PagedList&lt;AvailabilitySetInner&gt; object if successful.
+     */
+    public PagedList<AvailabilitySetInner> list() {
+        ServiceResponse<Page<AvailabilitySetInner>> response = listSinglePageAsync().toBlocking().single();
+        return new PagedList<AvailabilitySetInner>(response.body()) {
+            @Override
+            public Page<AvailabilitySetInner> nextPage(String nextPageLink) {
+                return listNextSinglePageAsync(nextPageLink).toBlocking().single().body();
+            }
+        };
+    }
+
+    /**
+     * Lists all availability sets in a subscription.
+     *
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<List<AvailabilitySetInner>> listAsync(final ListOperationCallback<AvailabilitySetInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
+            listSinglePageAsync(),
+            new Func1<String, Observable<ServiceResponse<Page<AvailabilitySetInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<AvailabilitySetInner>>> call(String nextPageLink) {
+                    return listNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * Lists all availability sets in a subscription.
+     *
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;AvailabilitySetInner&gt; object
+     */
+    public Observable<Page<AvailabilitySetInner>> listAsync() {
+        return listWithServiceResponseAsync()
+            .map(new Func1<ServiceResponse<Page<AvailabilitySetInner>>, Page<AvailabilitySetInner>>() {
+                @Override
+                public Page<AvailabilitySetInner> call(ServiceResponse<Page<AvailabilitySetInner>> response) {
+                    return response.body();
+                }
+            });
+    }
+
+    /**
+     * Lists all availability sets in a subscription.
+     *
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;AvailabilitySetInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<AvailabilitySetInner>>> listWithServiceResponseAsync() {
+        return listSinglePageAsync()
+            .concatMap(new Func1<ServiceResponse<Page<AvailabilitySetInner>>, Observable<ServiceResponse<Page<AvailabilitySetInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<AvailabilitySetInner>>> call(ServiceResponse<Page<AvailabilitySetInner>> page) {
+                    String nextPageLink = page.body().nextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listNextWithServiceResponseAsync(nextPageLink));
+                }
+            });
+    }
+
+    /**
+     * Lists all availability sets in a subscription.
+     *
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the PagedList&lt;AvailabilitySetInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<AvailabilitySetInner>>> listSinglePageAsync() {
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        final String expand = null;
+        return service.list(this.client.subscriptionId(), this.client.apiVersion(), expand, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<AvailabilitySetInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<AvailabilitySetInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<AvailabilitySetInner>> result = listDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<AvailabilitySetInner>>(result.body(), result.response()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    /**
+     * Lists all availability sets in a subscription.
+     *
+     * @param expand The expand expression to apply to the operation. Allowed values are 'instanceView'.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the PagedList&lt;AvailabilitySetInner&gt; object if successful.
+     */
+    public PagedList<AvailabilitySetInner> list(final String expand) {
+        ServiceResponse<Page<AvailabilitySetInner>> response = listSinglePageAsync(expand).toBlocking().single();
+        return new PagedList<AvailabilitySetInner>(response.body()) {
+            @Override
+            public Page<AvailabilitySetInner> nextPage(String nextPageLink) {
+                return listNextSinglePageAsync(nextPageLink).toBlocking().single().body();
+            }
+        };
+    }
+
+    /**
+     * Lists all availability sets in a subscription.
+     *
+     * @param expand The expand expression to apply to the operation. Allowed values are 'instanceView'.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<List<AvailabilitySetInner>> listAsync(final String expand, final ListOperationCallback<AvailabilitySetInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
+            listSinglePageAsync(expand),
+            new Func1<String, Observable<ServiceResponse<Page<AvailabilitySetInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<AvailabilitySetInner>>> call(String nextPageLink) {
+                    return listNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * Lists all availability sets in a subscription.
+     *
+     * @param expand The expand expression to apply to the operation. Allowed values are 'instanceView'.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;AvailabilitySetInner&gt; object
+     */
+    public Observable<Page<AvailabilitySetInner>> listAsync(final String expand) {
+        return listWithServiceResponseAsync(expand)
+            .map(new Func1<ServiceResponse<Page<AvailabilitySetInner>>, Page<AvailabilitySetInner>>() {
+                @Override
+                public Page<AvailabilitySetInner> call(ServiceResponse<Page<AvailabilitySetInner>> response) {
+                    return response.body();
+                }
+            });
+    }
+
+    /**
+     * Lists all availability sets in a subscription.
+     *
+     * @param expand The expand expression to apply to the operation. Allowed values are 'instanceView'.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;AvailabilitySetInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<AvailabilitySetInner>>> listWithServiceResponseAsync(final String expand) {
+        return listSinglePageAsync(expand)
+            .concatMap(new Func1<ServiceResponse<Page<AvailabilitySetInner>>, Observable<ServiceResponse<Page<AvailabilitySetInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<AvailabilitySetInner>>> call(ServiceResponse<Page<AvailabilitySetInner>> page) {
+                    String nextPageLink = page.body().nextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listNextWithServiceResponseAsync(nextPageLink));
+                }
+            });
+    }
+
+    /**
+     * Lists all availability sets in a subscription.
+     *
+    ServiceResponse<PageImpl<AvailabilitySetInner>> * @param expand The expand expression to apply to the operation. Allowed values are 'instanceView'.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the PagedList&lt;AvailabilitySetInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<AvailabilitySetInner>>> listSinglePageAsync(final String expand) {
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        return service.list(this.client.subscriptionId(), this.client.apiVersion(), expand, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<AvailabilitySetInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<AvailabilitySetInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<AvailabilitySetInner>> result = listDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<AvailabilitySetInner>>(result.body(), result.response()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<PageImpl<AvailabilitySetInner>> listDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<AvailabilitySetInner>, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<PageImpl<AvailabilitySetInner>>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
      * Lists all availability sets in a resource group.
      *
      * @param resourceGroupName The name of the resource group.
-     * @return the PagedList<AvailabilitySetInner> object if successful.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the PagedList&lt;AvailabilitySetInner&gt; object if successful.
      */
-    public PagedList<AvailabilitySetInner> listByResourceGroup(String resourceGroupName) {
-        PageImpl<AvailabilitySetInner> page = new PageImpl<>();
-        page.setItems(listByResourceGroupWithServiceResponseAsync(resourceGroupName).toBlocking().single().body());
-        page.setNextPageLink(null);
-        return new PagedList<AvailabilitySetInner>(page) {
+    public PagedList<AvailabilitySetInner> listByResourceGroup(final String resourceGroupName) {
+        ServiceResponse<Page<AvailabilitySetInner>> response = listByResourceGroupSinglePageAsync(resourceGroupName).toBlocking().single();
+        return new PagedList<AvailabilitySetInner>(response.body()) {
             @Override
             public Page<AvailabilitySetInner> nextPage(String nextPageLink) {
-                return null;
+                return listByResourceGroupNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -372,36 +602,67 @@ public class AvailabilitySetsInner implements InnerSupportsGet<AvailabilitySetIn
      *
      * @param resourceGroupName The name of the resource group.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<List<AvailabilitySetInner>> listByResourceGroupAsync(String resourceGroupName, final ServiceCallback<List<AvailabilitySetInner>> serviceCallback) {
-        return ServiceFuture.fromResponse(listByResourceGroupWithServiceResponseAsync(resourceGroupName), serviceCallback);
+    public ServiceFuture<List<AvailabilitySetInner>> listByResourceGroupAsync(final String resourceGroupName, final ListOperationCallback<AvailabilitySetInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
+            listByResourceGroupSinglePageAsync(resourceGroupName),
+            new Func1<String, Observable<ServiceResponse<Page<AvailabilitySetInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<AvailabilitySetInner>>> call(String nextPageLink) {
+                    return listByResourceGroupNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
     }
 
     /**
      * Lists all availability sets in a resource group.
      *
      * @param resourceGroupName The name of the resource group.
-     * @return the observable to the List&lt;AvailabilitySetInner&gt; object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;AvailabilitySetInner&gt; object
      */
-    public Observable<Page<AvailabilitySetInner>> listByResourceGroupAsync(String resourceGroupName) {
-        return listByResourceGroupWithServiceResponseAsync(resourceGroupName).map(new Func1<ServiceResponse<List<AvailabilitySetInner>>, Page<AvailabilitySetInner>>() {
-            @Override
-            public Page<AvailabilitySetInner> call(ServiceResponse<List<AvailabilitySetInner>> response) {
-                PageImpl<AvailabilitySetInner> page = new PageImpl<>();
-                page.setItems(response.body());
-                return page;
-            }
-        });
+    public Observable<Page<AvailabilitySetInner>> listByResourceGroupAsync(final String resourceGroupName) {
+        return listByResourceGroupWithServiceResponseAsync(resourceGroupName)
+            .map(new Func1<ServiceResponse<Page<AvailabilitySetInner>>, Page<AvailabilitySetInner>>() {
+                @Override
+                public Page<AvailabilitySetInner> call(ServiceResponse<Page<AvailabilitySetInner>> response) {
+                    return response.body();
+                }
+            });
     }
 
     /**
      * Lists all availability sets in a resource group.
      *
      * @param resourceGroupName The name of the resource group.
-     * @return the observable to the List&lt;AvailabilitySetInner&gt; object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;AvailabilitySetInner&gt; object
      */
-    public Observable<ServiceResponse<List<AvailabilitySetInner>>> listByResourceGroupWithServiceResponseAsync(String resourceGroupName) {
+    public Observable<ServiceResponse<Page<AvailabilitySetInner>>> listByResourceGroupWithServiceResponseAsync(final String resourceGroupName) {
+        return listByResourceGroupSinglePageAsync(resourceGroupName)
+            .concatMap(new Func1<ServiceResponse<Page<AvailabilitySetInner>>, Observable<ServiceResponse<Page<AvailabilitySetInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<AvailabilitySetInner>>> call(ServiceResponse<Page<AvailabilitySetInner>> page) {
+                    String nextPageLink = page.body().nextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listByResourceGroupNextWithServiceResponseAsync(nextPageLink));
+                }
+            });
+    }
+
+    /**
+     * Lists all availability sets in a resource group.
+     *
+    ServiceResponse<PageImpl<AvailabilitySetInner>> * @param resourceGroupName The name of the resource group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the PagedList&lt;AvailabilitySetInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<AvailabilitySetInner>>> listByResourceGroupSinglePageAsync(final String resourceGroupName) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -412,17 +673,12 @@ public class AvailabilitySetsInner implements InnerSupportsGet<AvailabilitySetIn
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         return service.listByResourceGroup(resourceGroupName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<AvailabilitySetInner>>>>() {
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<AvailabilitySetInner>>>>() {
                 @Override
-                public Observable<ServiceResponse<List<AvailabilitySetInner>>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponse<Page<AvailabilitySetInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<AvailabilitySetInner>> result = listByResourceGroupDelegate(response);
-                        List<AvailabilitySetInner> items = null;
-                        if (result.body() != null) {
-                            items = result.body().items();
-                        }
-                        ServiceResponse<List<AvailabilitySetInner>> clientResponse = new ServiceResponse<List<AvailabilitySetInner>>(items, result.response());
-                        return Observable.just(clientResponse);
+                        return Observable.just(new ServiceResponse<Page<AvailabilitySetInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -507,7 +763,7 @@ public class AvailabilitySetsInner implements InnerSupportsGet<AvailabilitySetIn
                 @Override
                 public Observable<ServiceResponse<List<VirtualMachineSizeInner>>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<PageImpl<VirtualMachineSizeInner>> result = listAvailableSizesDelegate(response);
+                        ServiceResponse<PageImpl1<VirtualMachineSizeInner>> result = listAvailableSizesDelegate(response);
                         List<VirtualMachineSizeInner> items = null;
                         if (result.body() != null) {
                             items = result.body().items();
@@ -521,9 +777,231 @@ public class AvailabilitySetsInner implements InnerSupportsGet<AvailabilitySetIn
             });
     }
 
-    private ServiceResponse<PageImpl<VirtualMachineSizeInner>> listAvailableSizesDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<PageImpl<VirtualMachineSizeInner>, CloudException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<PageImpl<VirtualMachineSizeInner>>() { }.getType())
+    private ServiceResponse<PageImpl1<VirtualMachineSizeInner>> listAvailableSizesDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl1<VirtualMachineSizeInner>, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<PageImpl1<VirtualMachineSizeInner>>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Lists all availability sets in a subscription.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the PagedList&lt;AvailabilitySetInner&gt; object if successful.
+     */
+    public PagedList<AvailabilitySetInner> listNext(final String nextPageLink) {
+        ServiceResponse<Page<AvailabilitySetInner>> response = listNextSinglePageAsync(nextPageLink).toBlocking().single();
+        return new PagedList<AvailabilitySetInner>(response.body()) {
+            @Override
+            public Page<AvailabilitySetInner> nextPage(String nextPageLink) {
+                return listNextSinglePageAsync(nextPageLink).toBlocking().single().body();
+            }
+        };
+    }
+
+    /**
+     * Lists all availability sets in a subscription.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<List<AvailabilitySetInner>> listNextAsync(final String nextPageLink, final ServiceFuture<List<AvailabilitySetInner>> serviceFuture, final ListOperationCallback<AvailabilitySetInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
+            listNextSinglePageAsync(nextPageLink),
+            new Func1<String, Observable<ServiceResponse<Page<AvailabilitySetInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<AvailabilitySetInner>>> call(String nextPageLink) {
+                    return listNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * Lists all availability sets in a subscription.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;AvailabilitySetInner&gt; object
+     */
+    public Observable<Page<AvailabilitySetInner>> listNextAsync(final String nextPageLink) {
+        return listNextWithServiceResponseAsync(nextPageLink)
+            .map(new Func1<ServiceResponse<Page<AvailabilitySetInner>>, Page<AvailabilitySetInner>>() {
+                @Override
+                public Page<AvailabilitySetInner> call(ServiceResponse<Page<AvailabilitySetInner>> response) {
+                    return response.body();
+                }
+            });
+    }
+
+    /**
+     * Lists all availability sets in a subscription.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;AvailabilitySetInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<AvailabilitySetInner>>> listNextWithServiceResponseAsync(final String nextPageLink) {
+        return listNextSinglePageAsync(nextPageLink)
+            .concatMap(new Func1<ServiceResponse<Page<AvailabilitySetInner>>, Observable<ServiceResponse<Page<AvailabilitySetInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<AvailabilitySetInner>>> call(ServiceResponse<Page<AvailabilitySetInner>> page) {
+                    String nextPageLink = page.body().nextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listNextWithServiceResponseAsync(nextPageLink));
+                }
+            });
+    }
+
+    /**
+     * Lists all availability sets in a subscription.
+     *
+    ServiceResponse<PageImpl<AvailabilitySetInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the PagedList&lt;AvailabilitySetInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<AvailabilitySetInner>>> listNextSinglePageAsync(final String nextPageLink) {
+        if (nextPageLink == null) {
+            throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
+        }
+        String nextUrl = String.format("%s", nextPageLink);
+        return service.listNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<AvailabilitySetInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<AvailabilitySetInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<AvailabilitySetInner>> result = listNextDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<AvailabilitySetInner>>(result.body(), result.response()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<PageImpl<AvailabilitySetInner>> listNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<AvailabilitySetInner>, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<PageImpl<AvailabilitySetInner>>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Lists all availability sets in a resource group.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the PagedList&lt;AvailabilitySetInner&gt; object if successful.
+     */
+    public PagedList<AvailabilitySetInner> listByResourceGroupNext(final String nextPageLink) {
+        ServiceResponse<Page<AvailabilitySetInner>> response = listByResourceGroupNextSinglePageAsync(nextPageLink).toBlocking().single();
+        return new PagedList<AvailabilitySetInner>(response.body()) {
+            @Override
+            public Page<AvailabilitySetInner> nextPage(String nextPageLink) {
+                return listByResourceGroupNextSinglePageAsync(nextPageLink).toBlocking().single().body();
+            }
+        };
+    }
+
+    /**
+     * Lists all availability sets in a resource group.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<List<AvailabilitySetInner>> listByResourceGroupNextAsync(final String nextPageLink, final ServiceFuture<List<AvailabilitySetInner>> serviceFuture, final ListOperationCallback<AvailabilitySetInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
+            listByResourceGroupNextSinglePageAsync(nextPageLink),
+            new Func1<String, Observable<ServiceResponse<Page<AvailabilitySetInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<AvailabilitySetInner>>> call(String nextPageLink) {
+                    return listByResourceGroupNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * Lists all availability sets in a resource group.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;AvailabilitySetInner&gt; object
+     */
+    public Observable<Page<AvailabilitySetInner>> listByResourceGroupNextAsync(final String nextPageLink) {
+        return listByResourceGroupNextWithServiceResponseAsync(nextPageLink)
+            .map(new Func1<ServiceResponse<Page<AvailabilitySetInner>>, Page<AvailabilitySetInner>>() {
+                @Override
+                public Page<AvailabilitySetInner> call(ServiceResponse<Page<AvailabilitySetInner>> response) {
+                    return response.body();
+                }
+            });
+    }
+
+    /**
+     * Lists all availability sets in a resource group.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;AvailabilitySetInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<AvailabilitySetInner>>> listByResourceGroupNextWithServiceResponseAsync(final String nextPageLink) {
+        return listByResourceGroupNextSinglePageAsync(nextPageLink)
+            .concatMap(new Func1<ServiceResponse<Page<AvailabilitySetInner>>, Observable<ServiceResponse<Page<AvailabilitySetInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<AvailabilitySetInner>>> call(ServiceResponse<Page<AvailabilitySetInner>> page) {
+                    String nextPageLink = page.body().nextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listByResourceGroupNextWithServiceResponseAsync(nextPageLink));
+                }
+            });
+    }
+
+    /**
+     * Lists all availability sets in a resource group.
+     *
+    ServiceResponse<PageImpl<AvailabilitySetInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the PagedList&lt;AvailabilitySetInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<AvailabilitySetInner>>> listByResourceGroupNextSinglePageAsync(final String nextPageLink) {
+        if (nextPageLink == null) {
+            throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
+        }
+        String nextUrl = String.format("%s", nextPageLink);
+        return service.listByResourceGroupNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<AvailabilitySetInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<AvailabilitySetInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<AvailabilitySetInner>> result = listByResourceGroupNextDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<AvailabilitySetInner>>(result.body(), result.response()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<PageImpl<AvailabilitySetInner>> listByResourceGroupNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<AvailabilitySetInner>, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<PageImpl<AvailabilitySetInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
