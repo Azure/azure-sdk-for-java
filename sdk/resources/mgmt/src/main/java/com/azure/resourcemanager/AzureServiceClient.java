@@ -48,7 +48,7 @@ import java.util.Enumeration;
  */
 public abstract class AzureServiceClient {
 
-    private final ClientLogger logger = new ClientLogger(AzureServiceClient.class);
+    private final ClientLogger logger = new ClientLogger(getClass());
 
     protected AzureServiceClient(HttpPipeline httpPipeline, AzureEnvironment environment) {
         ((AzureJacksonAdapter) serializerAdapter).serializer().registerModule(DateTimeDeserializer.getModule());
