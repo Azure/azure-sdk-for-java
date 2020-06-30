@@ -60,7 +60,7 @@ public class ParallelDocumentQueryExecutionContext<T extends Resource>
 
     public static <T extends Resource> Flux<IDocumentQueryExecutionComponent<T>> createAsync(
             IDocumentQueryClient client,
-            PipelinedDocumentQueryParams initParams) {
+            PipelinedDocumentQueryParams<T> initParams) {
 
         ParallelDocumentQueryExecutionContext<T> context = new ParallelDocumentQueryExecutionContext<T>(
                 client,

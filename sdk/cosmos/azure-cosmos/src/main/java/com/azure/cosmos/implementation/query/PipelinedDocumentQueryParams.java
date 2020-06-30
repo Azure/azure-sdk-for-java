@@ -29,7 +29,7 @@ public class PipelinedDocumentQueryParams<T extends Resource> {
 
     public PipelinedDocumentQueryParams(
         ResourceType resourceTypeEnum,
-        Class resourceType,
+        Class<T> resourceType,
         SqlQuerySpec query,
         String resourceLink,
         String collectionRid,

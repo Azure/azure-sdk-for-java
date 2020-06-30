@@ -195,7 +195,7 @@ public class DocumentQueryExecutionContextFactory {
             //            }
         }
 
-        PipelinedDocumentQueryParams<T> documentQueryParams = new PipelinedDocumentQueryParams(
+        PipelinedDocumentQueryParams<T> documentQueryParams = new PipelinedDocumentQueryParams<T>(
             resourceTypeEnum,
             resourceType,
             query,

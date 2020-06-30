@@ -77,7 +77,7 @@ public class OrderByDocumentQueryExecutionContext<T extends Resource>
 
     public static <T extends Resource> Flux<IDocumentQueryExecutionComponent<T>> createAsync(
             IDocumentQueryClient client,
-            PipelinedDocumentQueryParams initParams) {
+            PipelinedDocumentQueryParams<T> initParams) {
 
         OrderByDocumentQueryExecutionContext<T> context = new OrderByDocumentQueryExecutionContext<T>(
                 client,
