@@ -30,7 +30,7 @@ public class AzureBasicFileAttributes implements BasicFileAttributes {
     private final ClientLogger logger = new ClientLogger(AzureBasicFileAttributes.class);
 
     // For verifying parameters on FileSystemProvider.readAttributes
-    static final Set<String> attributeStrings;
+    static final Set<String> ATTRIBUTE_STRINGS;
     static {
         Set<String> set = new HashSet<>();
         set.add("lastModifiedTime");
@@ -40,7 +40,7 @@ public class AzureBasicFileAttributes implements BasicFileAttributes {
         set.add("isOther");
         set.add("size");
         set.add("creationTime");
-        attributeStrings = Collections.unmodifiableSet(set);
+        ATTRIBUTE_STRINGS = Collections.unmodifiableSet(set);
     }
 
     private final BlobProperties properties;

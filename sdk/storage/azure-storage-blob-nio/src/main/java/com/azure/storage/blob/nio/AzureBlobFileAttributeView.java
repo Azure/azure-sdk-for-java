@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.storage.blob.nio;
 
 import com.azure.core.util.logging.ClientLogger;
@@ -23,7 +26,7 @@ import java.util.function.Consumer;
  * {@link #setTimes(FileTime, FileTime, FileTime)} is not supported.
  */
 public final class AzureBlobFileAttributeView implements BasicFileAttributeView {
-    private final ClientLogger logger = new ClientLogger(AzureBlobFileAttributes.class);
+    private final ClientLogger logger = new ClientLogger(AzureBlobFileAttributeView.class);
 
     static final String ATTR_CONSUMER_ERROR = "Exception thrown by attribute consumer";
 
@@ -57,7 +60,7 @@ public final class AzureBlobFileAttributeView implements BasicFileAttributeView 
         map.put("tier", obj -> {
             try {
                 view.setTier((AccessTier) obj);
-            } catch(IOException e) {
+            } catch (IOException e) {
                 throw LoggingUtility.logError(view.logger, new UncheckedIOException(ATTR_CONSUMER_ERROR, e));
             }
         });

@@ -714,7 +714,7 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
      * {@inheritDoc}
      */
     @Override
-    public final Map<String, Object> readAttributes(Path path, String s, LinkOption... linkOptions) throws IOException {
+    public Map<String, Object> readAttributes(Path path, String s, LinkOption... linkOptions) throws IOException {
         if (s == null) {
             throw LoggingUtility.logError(logger, new IllegalArgumentException("Attribute string cannot be null."));
         }
@@ -764,7 +764,7 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
              */
             // TODO: Put these strings in constants
             if (viewType.equals("azureBasic")) {
-                if (!AzureBasicFileAttributes.attributeStrings.contains(attributeName) && !attributeName.equals("*")) {
+                if (!AzureBasicFileAttributes.ATTRIBUTE_STRINGS.contains(attributeName) && !attributeName.equals("*")) {
                     throw LoggingUtility.logError(logger,
                         new IllegalArgumentException("Invalid attribute. View: " + viewType
                             + ". Attribute: " + attributeName));
@@ -782,7 +782,7 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
             if (attributeName.equals("*")) {
                 Set<String> attributesToAdd;
                 if (viewType.equals("azureBasic")) {
-                    attributesToAdd = AzureBasicFileAttributes.attributeStrings;
+                    attributesToAdd = AzureBasicFileAttributes.ATTRIBUTE_STRINGS;
                 } else {
                     // attributeSuppliers is guaranteed to have been set by this point.
                     attributesToAdd = attributeSuppliers.keySet();
