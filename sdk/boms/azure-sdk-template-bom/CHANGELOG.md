@@ -1,5 +1,8 @@
 # Release History
 
+## 1.0.0-beta.5 (Unreleased)
+
+
 ## 1.0.0-beta.4 (2020-06-30)
 
 - Release test 4
