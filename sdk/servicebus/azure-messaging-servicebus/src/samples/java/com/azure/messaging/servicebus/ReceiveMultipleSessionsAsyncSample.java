@@ -59,9 +59,9 @@ public class ReceiveMultipleSessionsAsyncSample {
                 // successful or not.
                 boolean messageProcessed = RANDOM.nextBoolean();
                 if (messageProcessed) {
-                    return receiver.complete(context.getMessage());
+                    return receiver.complete(context.getMessage().getLockToken());
                 } else {
-                    return receiver.abandon(context.getMessage());
+                    return receiver.abandon(context.getMessage().getLockToken());
                 }
             }).subscribe();
 

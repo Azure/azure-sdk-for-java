@@ -99,7 +99,7 @@ class UnnamedSessionManagerIntegrationTest extends IntegrationTestBase {
                 .verify(Duration.ofMinutes(2));
         } finally {
             subscription.dispose();
-            Mono.when(lockTokens.stream().map(e -> receiver.complete(MessageLockToken.fromString(e), sessionId))
+            Mono.when(lockTokens.stream().map(e -> receiver.complete(e, sessionId))
                 .collect(Collectors.toList()))
                 .block(TIMEOUT);
         }

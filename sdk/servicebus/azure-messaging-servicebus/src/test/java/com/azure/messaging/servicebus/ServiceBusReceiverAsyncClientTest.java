@@ -272,16 +272,16 @@ class ServiceBusReceiverAsyncClientTest {
         final Mono<Void> operation;
         switch (dispositionStatus) {
             case DEFERRED:
-                operation = receiver.defer(receivedMessage, null, nullTransaction);
+                operation = receiver.defer(receivedMessage.getLockToken(), null, nullTransaction);
                 break;
             case ABANDONED:
-                operation = receiver.abandon(receivedMessage, null, nullTransaction);
+                operation = receiver.abandon(receivedMessage.getLockToken(), null, nullTransaction);
                 break;
             case COMPLETED:
-                operation = receiver.complete(receivedMessage, nullTransaction);
+                operation = receiver.complete(receivedMessage.getLockToken(), nullTransaction);
                 break;
             case SUSPENDED:
-                operation = receiver.deadLetter(receivedMessage, new DeadLetterOptions(), nullTransaction);
+                operation = receiver.deadLetter(receivedMessage.getLockToken(), new DeadLetterOptions(), nullTransaction);
                 break;
             default:
                 throw new IllegalArgumentException("Unrecognized operation: " + dispositionStatus);
@@ -312,16 +312,16 @@ class ServiceBusReceiverAsyncClientTest {
         final Mono<Void> operation;
         switch (dispositionStatus) {
             case DEFERRED:
-                operation = receiver.defer(receivedMessage, null, nullTransactionId);
+                operation = receiver.defer(receivedMessage.getLockToken(), null, nullTransactionId);
                 break;
             case ABANDONED:
-                operation = receiver.abandon(receivedMessage, null, nullTransactionId);
+                operation = receiver.abandon(receivedMessage.getLockToken(), null, nullTransactionId);
                 break;
             case COMPLETED:
-                operation = receiver.complete(receivedMessage, nullTransactionId);
+                operation = receiver.complete(receivedMessage.getLockToken(), nullTransactionId);
                 break;
             case SUSPENDED:
-                operation = receiver.deadLetter(receivedMessage, new DeadLetterOptions(), nullTransactionId);
+                operation = receiver.deadLetter(receivedMessage.getLockToken(), new DeadLetterOptions(), nullTransactionId);
                 break;
             default:
                 throw new IllegalArgumentException("Unrecognized operation: " + dispositionStatus);
@@ -348,7 +348,7 @@ class ServiceBusReceiverAsyncClientTest {
 
         when(receivedMessage.getLockToken()).thenReturn(null);
 
-        StepVerifier.create(receiver.complete(receivedMessage))
+        StepVerifier.create(receiver.complete(receivedMessage.getLockToken()))
             .expectError(NullPointerException.class)
             .verify();
 
@@ -379,7 +379,7 @@ class ServiceBusReceiverAsyncClientTest {
         when(receivedMessage.getLockToken()).thenReturn(lockToken1);
 
         try {
-            StepVerifier.create(client.complete(receivedMessage))
+            StepVerifier.create(client.complete(receivedMessage.getLockToken()))
                 .expectError(UnsupportedOperationException.class)
                 .verify();
         } finally {
@@ -451,7 +451,7 @@ class ServiceBusReceiverAsyncClientTest {
         // Act & Assert
         StepVerifier.create(receiver.receive()
             .take(1)
-            .flatMap(context -> receiver.deadLetter(context.getMessage(), deadLetterOptions)))
+            .flatMap(context -> receiver.deadLetter(context.getMessage().getLockToken(), deadLetterOptions)))
             .then(() -> messageSink.next(message))
             .expectNext()
             .verifyComplete();
@@ -516,16 +516,16 @@ class ServiceBusReceiverAsyncClientTest {
         final Mono<Void> operation;
         switch (dispositionStatus) {
             case DEFERRED:
-                operation = receiver.defer(receivedMessage);
+                operation = receiver.defer(receivedMessage.getLockToken());
                 break;
             case ABANDONED:
-                operation = receiver.abandon(receivedMessage);
+                operation = receiver.abandon(receivedMessage.getLockToken());
                 break;
             case COMPLETED:
-                operation = receiver.complete(receivedMessage);
+                operation = receiver.complete(receivedMessage.getLockToken());
                 break;
             case SUSPENDED:
-                operation = receiver.deadLetter(receivedMessage);
+                operation = receiver.deadLetter(receivedMessage.getLockToken());
                 break;
             default:
                 throw new IllegalArgumentException("Unrecognized operation: " + dispositionStatus);
@@ -740,8 +740,7 @@ class ServiceBusReceiverAsyncClientTest {
     @Test
     void cannotRenewMessageLockInSession() {
         // Arrange
-        final UUID messageLock = UUID.randomUUID();
-        final MessageLockToken lockToken = MessageLockToken.fromString(messageLock.toString());
+        final String lockToken = UUID.randomUUID().toString();
 
         // Act & Assert
         StepVerifier.create(sessionReceiver.renewMessageLock(lockToken))

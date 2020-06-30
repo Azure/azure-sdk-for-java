@@ -344,7 +344,7 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
 
     /**
      * Starts a new transaction on Service Bus. The {@link ServiceBusTransactionContext} should be passed along with
-     * {@link ServiceBusReceivedMessage} or {@link MessageLockToken} to all operations that needs to be in
+     * {@link ServiceBusReceivedMessage} or {@code lockToken } to all operations that needs to be in
      * this transaction.
      *
      * @return a new {@link ServiceBusTransactionContext}.
