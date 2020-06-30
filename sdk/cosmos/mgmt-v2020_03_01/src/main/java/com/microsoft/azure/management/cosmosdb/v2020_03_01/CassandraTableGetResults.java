@@ -80,7 +80,7 @@ public interface CassandraTableGetResults extends HasInner<CassandraTableGetResu
         interface WithCassandraKeyspace {
            /**
             * Specifies resourceGroupName, accountName, keyspaceName.
-            * @param resourceGroupName Name of an Azure resource group
+            * @param resourceGroupName The name of the resource group. The name is case insensitive
             * @param accountName Cosmos DB database account name
             * @param keyspaceName Cosmos DB keyspace name
             * @return the next definition stage

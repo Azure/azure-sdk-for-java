@@ -19,7 +19,7 @@ public interface DatabaseAccountRegions extends HasInner<DatabaseAccountRegionsI
     /**
      * Retrieves the metrics determined by the given filter for the given database account and region.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param region Cosmos DB region, with spaces between words and each word capitalized.
      * @param filter An OData filter expression that describes a subset of metrics to return. The parameters that can be filtered are name.value (name of the metric, can have an or of multiple names), startTime, endTime, and timeGrain. The supported operator is eq.

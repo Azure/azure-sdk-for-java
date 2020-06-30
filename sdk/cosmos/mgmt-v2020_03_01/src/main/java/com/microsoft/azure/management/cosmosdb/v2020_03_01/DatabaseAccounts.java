@@ -30,7 +30,7 @@ public interface DatabaseAccounts extends SupportsCreating<DatabaseAccountGetRes
     /**
      * Changes the failover priority for the Azure Cosmos DB database account. A failover priority of 0 indicates a write region. The maximum value for a failover priority = (total number of regions - 1). Failover priority values must be unique for each of the regions in which the database account exists.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param failoverPolicies List of failover policies.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -41,7 +41,7 @@ public interface DatabaseAccounts extends SupportsCreating<DatabaseAccountGetRes
     /**
      * Lists the access keys for the specified Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
@@ -51,7 +51,7 @@ public interface DatabaseAccounts extends SupportsCreating<DatabaseAccountGetRes
     /**
      * Lists the connection strings for the specified Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
@@ -61,7 +61,7 @@ public interface DatabaseAccounts extends SupportsCreating<DatabaseAccountGetRes
     /**
      * Offline the specified region for the specified Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param region Cosmos DB region, with spaces between words and each word capitalized.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -72,7 +72,7 @@ public interface DatabaseAccounts extends SupportsCreating<DatabaseAccountGetRes
     /**
      * Online the specified region for the specified Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param region Cosmos DB region, with spaces between words and each word capitalized.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -83,7 +83,7 @@ public interface DatabaseAccounts extends SupportsCreating<DatabaseAccountGetRes
     /**
      * Lists the read-only access keys for the specified Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
@@ -93,7 +93,7 @@ public interface DatabaseAccounts extends SupportsCreating<DatabaseAccountGetRes
     /**
      * Regenerates an access key for the specified Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyKind The access key to regenerate. Possible values include: 'primary', 'secondary', 'primaryReadonly', 'secondaryReadonly'
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -104,7 +104,7 @@ public interface DatabaseAccounts extends SupportsCreating<DatabaseAccountGetRes
     /**
      * Lists the read-only access keys for the specified Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
@@ -123,7 +123,7 @@ public interface DatabaseAccounts extends SupportsCreating<DatabaseAccountGetRes
     /**
      * Retrieves the metrics determined by the given filter for the given database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param filter An OData filter expression that describes a subset of metrics to return. The parameters that can be filtered are name.value (name of the metric, can have an or of multiple names), startTime, endTime, and timeGrain. The supported operator is eq.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -134,7 +134,7 @@ public interface DatabaseAccounts extends SupportsCreating<DatabaseAccountGetRes
     /**
      * Retrieves the usages (most recent data) for the given database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
@@ -144,7 +144,7 @@ public interface DatabaseAccounts extends SupportsCreating<DatabaseAccountGetRes
     /**
      * Retrieves metric definitions for the given database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request

@@ -61,7 +61,7 @@ public class PercentileSourceTargetsInner {
     /**
      * Retrieves the metrics determined by the given filter for the given account, source and target region. This url is only for PBS and Replication Latency data.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param sourceRegion Source region from which data is written. Cosmos DB region, with spaces between words and each word capitalized.
      * @param targetRegion Target region to which data is written. Cosmos DB region, with spaces between words and each word capitalized.
@@ -78,7 +78,7 @@ public class PercentileSourceTargetsInner {
     /**
      * Retrieves the metrics determined by the given filter for the given account, source and target region. This url is only for PBS and Replication Latency data.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param sourceRegion Source region from which data is written. Cosmos DB region, with spaces between words and each word capitalized.
      * @param targetRegion Target region to which data is written. Cosmos DB region, with spaces between words and each word capitalized.
@@ -94,7 +94,7 @@ public class PercentileSourceTargetsInner {
     /**
      * Retrieves the metrics determined by the given filter for the given account, source and target region. This url is only for PBS and Replication Latency data.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param sourceRegion Source region from which data is written. Cosmos DB region, with spaces between words and each word capitalized.
      * @param targetRegion Target region to which data is written. Cosmos DB region, with spaces between words and each word capitalized.
@@ -114,7 +114,7 @@ public class PercentileSourceTargetsInner {
     /**
      * Retrieves the metrics determined by the given filter for the given account, source and target region. This url is only for PBS and Replication Latency data.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param sourceRegion Source region from which data is written. Cosmos DB region, with spaces between words and each word capitalized.
      * @param targetRegion Target region to which data is written. Cosmos DB region, with spaces between words and each word capitalized.
