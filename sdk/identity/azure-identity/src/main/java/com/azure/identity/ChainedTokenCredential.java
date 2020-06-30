@@ -7,6 +7,7 @@ import com.azure.core.annotation.Immutable;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.TokenRequestContext;
+import com.azure.core.exception.ClientAuthenticationException;
 import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -41,14 +42,20 @@ public class ChainedTokenCredential implements TokenCredential {
         List<CredentialUnavailableException> exceptions = new ArrayList<>(4);
         return Flux.fromIterable(credentials)
             .flatMap(p -> p.getToken(request)
-            .doOnNext(t -> logger.info("Azure Identity => Attempted credential {} returns a token",
-                p.getClass().getSimpleName()))
-            .onErrorResume(CredentialUnavailableException.class, t -> {
-                exceptions.add(t);
-                logger.info("Azure Identity => Attempted credential {} is unavailable.",
-                    p.getClass().getSimpleName());
-                return Mono.empty();
-            }), 1)
+                .doOnNext(t -> logger.info("Azure Identity => Attempted credential {} returns a token",
+                    p.getClass().getSimpleName()))
+                .onErrorResume(Exception.class, t -> {
+                    if (!t.getClass().getSimpleName().equals("CredentialUnavailableException")) {
+                        return Mono.error(new ClientAuthenticationException(
+                            unavailableError + p.getClass().getSimpleName()
+                                + " authentication failed. Error Details: " + t.getMessage(),
+                            null, t));
+                    }
+                    exceptions.add((CredentialUnavailableException) t);
+                    logger.info("Azure Identity => Attempted credential {} is unavailable.",
+                        p.getClass().getSimpleName());
+                    return Mono.empty();
+                }), 1)
             .next()
             .switchIfEmpty(Mono.defer(() -> {
                 // Chain Exceptions.
