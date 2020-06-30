@@ -63,6 +63,6 @@ public interface ServiceBusSession extends AmqpSession {
      *
      * @return A newly created AMQP link.
      */
-    Mono<AmqpLink> createSenderLink(String linkName, String entityPath, Duration timeout,
+    Mono<AmqpLink> createProducer(String linkName, String entityPath, Duration timeout,
         AmqpRetryPolicy retryPolicy, String transferDestinationPath);
 }

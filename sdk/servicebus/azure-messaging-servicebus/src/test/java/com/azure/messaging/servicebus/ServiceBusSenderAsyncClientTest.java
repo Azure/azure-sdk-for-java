@@ -143,8 +143,8 @@ class ServiceBusSenderAsyncClientTest {
             new ServiceBusConnectionProcessor(connectionOptions.getFullyQualifiedNamespace(),
                 connectionOptions.getRetry()));
 
-        sender = new ServiceBusSenderAsyncClient(ENTITY_NAME, null, MessagingEntityType.QUEUE, connectionProcessor,
-            retryOptions, tracerProvider, serializer, onClientClose);
+        sender = new ServiceBusSenderAsyncClient(ENTITY_NAME, MessagingEntityType.QUEUE, connectionProcessor,
+            retryOptions, tracerProvider, serializer, onClientClose, null);
 
         when(connection.getManagementNode(anyString(), any(MessagingEntityType.class)))
             .thenReturn(just(managementNode));

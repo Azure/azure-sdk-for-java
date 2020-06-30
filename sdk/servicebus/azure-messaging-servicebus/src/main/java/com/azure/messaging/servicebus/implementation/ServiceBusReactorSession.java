@@ -97,7 +97,7 @@ class ServiceBusReactorSession extends ReactorSession implements ServiceBusSessi
     }
 
     @Override
-    public Mono<AmqpLink> createSenderLink(String linkName, String entityPath, Duration timeout,
+    public Mono<AmqpLink> createProducer(String linkName, String entityPath, Duration timeout,
         AmqpRetryPolicy retry, String transferDestinationPath) {
         Objects.requireNonNull(entityPath, "'entityPath' cannot be null.");
         Objects.requireNonNull(timeout, "'timeout' cannot be null.");
@@ -115,9 +115,13 @@ class ServiceBusReactorSession extends ReactorSession implements ServiceBusSessi
             final TokenManager tokenManager = tokenManagerProvider.getTokenManager(cbsNodeSupplier,
                 transferDestinationPath);
 
-            return tokenManager.authorize().then(createProducer(linkName, entityPath, timeout, retry,
-                linkProperties))
-                .doFinally(signalType -> tokenManager.close());
+            return tokenManager.authorize()
+                .then(
+                    Mono.fromCallable(() -> {
+                        tokenManager.close();
+                        return Mono.empty();
+                    }))
+                .then(createProducer(linkName, entityPath, timeout, retry, linkProperties));
         } else {
             logger.verbose("Get or create sender link {} for entity path: '{}'", linkName, entityPath);
             return createProducer(linkName, entityPath, timeout, retry, linkProperties);

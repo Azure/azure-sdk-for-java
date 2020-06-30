@@ -93,9 +93,9 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
     /**
      * Creates a new instance of this {@link ServiceBusSenderAsyncClient} that sends messages to a Service Bus entity.
      */
-    ServiceBusSenderAsyncClient(String entityName, String viaEntityName, MessagingEntityType entityType,
-        ServiceBusConnectionProcessor connectionProcessor, AmqpRetryOptions retryOptions,
-        TracerProvider tracerProvider, MessageSerializer messageSerializer, Runnable onClientClose) {
+    ServiceBusSenderAsyncClient(String entityName, MessagingEntityType entityType,
+        ServiceBusConnectionProcessor connectionProcessor, AmqpRetryOptions retryOptions, TracerProvider tracerProvider,
+        MessageSerializer messageSerializer, Runnable onClientClose, String viaEntityName) {
         // Caching the created link so we don't invoke another link creation.
         this.messageSerializer = Objects.requireNonNull(messageSerializer,
             "'messageSerializer' cannot be null.");

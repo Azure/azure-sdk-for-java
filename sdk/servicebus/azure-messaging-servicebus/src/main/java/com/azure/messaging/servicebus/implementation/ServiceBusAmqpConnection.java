@@ -26,12 +26,12 @@ public interface ServiceBusAmqpConnection extends AmqpConnection {
      * @param linkName The name of the link.
      * @param entityPath The remote address to connect to for the message broker.
      * @param retryOptions Options to use when creating the link.
-     * @param transferDestinationPath Path if the message should be transferred this destination by message broker.
+     * @param transferEntityPath Path if the message should be transferred this destination by message broker.
      *
      * @return A new or existing send link that is connected to the given {@code entityPath}.
      */
     Mono<AmqpSendLink> createSendLink(String linkName, String entityPath, AmqpRetryOptions retryOptions,
-        String transferDestinationPath);
+        String transferEntityPath);
 
     /**
      * Creates or gets an existing receive link. The same link is returned if there is an existing receive link with the
@@ -39,14 +39,14 @@ public interface ServiceBusAmqpConnection extends AmqpConnection {
      *
      * @param linkName The name of the link.
      * @param entityPath The remote address to connect to for the message broker.
-     * @param transferDestinationPath Path if the message should be transferred to another link after being received
+     * @param transferEntityPath Path if the message should be transferred to another link after being received
      *     from this link.
      * @param receiveMode {@link ReceiveMode} to use when creating the link.
      *
      * @return A new or existing receive link that is connected to the given {@code entityPath}.
      */
     Mono<ServiceBusReceiveLink> createReceiveLink(String linkName, String entityPath, ReceiveMode receiveMode,
-        String transferDestinationPath, MessagingEntityType entityType);
+        String transferEntityPath, MessagingEntityType entityType);
 
     /**
      * Creates or gets an existing receive link for a given sessionId. The same link is returned if there is an
@@ -54,7 +54,7 @@ public interface ServiceBusAmqpConnection extends AmqpConnection {
      *
      * @param linkName The name of the link.
      * @param entityPath The remote address to connect to for the message broker.
-     * @param transferDestinationPath Path if the events should be transferred to another link after being received
+     * @param transferEntityPath Path if the events should be transferred to another link after being received
      *     from this link.
      * @param receiveMode {@link ReceiveMode} to use when creating the link.
      * @param sessionId to use when creating the link.
@@ -63,5 +63,5 @@ public interface ServiceBusAmqpConnection extends AmqpConnection {
      * @return A new or existing receive link that is connected to the given {@code entityPath}.
      */
     Mono<ServiceBusReceiveLink> createReceiveLink(String linkName, String entityPath, ReceiveMode receiveMode,
-        String transferDestinationPath, MessagingEntityType entityType, String sessionId);
+        String transferEntityPath, MessagingEntityType entityType, String sessionId);
 }
