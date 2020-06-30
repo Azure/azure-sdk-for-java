@@ -439,7 +439,6 @@ public class AzureTableImplTest extends TestBase {
         StepVerifier.create(azureTable.getTables().queryEntitiesWithResponseAsync(tableName, TIMEOUT,
             requestId, null, null, queryOptions, Context.NONE))
             .assertNext(response -> {
-                System.out.println(response);
                 Assertions.assertEquals(expectedStatusCode, response.getStatusCode());
                 Assertions.assertEquals(true, response.getValue().getValue().get(0).containsValue(rowKeyEntityA));
                 Assertions.assertEquals(true, response.getValue().getValue().get(1).containsValue(rowKeyEntityB));
