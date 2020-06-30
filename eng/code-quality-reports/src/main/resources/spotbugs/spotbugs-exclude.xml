@@ -1836,6 +1836,13 @@
     <Bug pattern="UPM_UNCALLED_PRIVATE_METHOD"/>
   </Match>
 
+
+  <Match>
+    <Class name="com.azure.cosmos.implementation.routing.UInt128"/>
+    <Method name="compareTo"/>
+    <Bug pattern="SA_FIELD_SELF_COMPARISON"/>
+  </Match>
+
   <!-- Serializing a null value should return null to allow client to handle null cases
     consistently instead of injecting null payload behavior from the payload. -->
   <Match>
