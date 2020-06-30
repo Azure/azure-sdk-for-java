@@ -14,6 +14,7 @@ import com.azure.ai.formrecognizer.implementation.models.TextWord;
 import com.azure.ai.formrecognizer.models.BoundingBox;
 import com.azure.ai.formrecognizer.models.FieldData;
 import com.azure.ai.formrecognizer.models.FieldText;
+import com.azure.ai.formrecognizer.models.FieldValueType;
 import com.azure.ai.formrecognizer.models.FormContent;
 import com.azure.ai.formrecognizer.models.FormElement;
 import com.azure.ai.formrecognizer.models.FormField;
@@ -219,7 +220,7 @@ final class Transforms {
                 } else {
                     FieldText labelText = new FieldText(key, null, null, null);
                     extractedFieldMap.put(key, new FormField<>(DEFAULT_CONFIDENCE_VALUE, labelText,
-                        key, null, null));
+                        key, null, null, null));
                 }
             });
         }
@@ -245,38 +246,38 @@ final class Transforms {
         switch (fieldValue.getType()) {
             case PHONE_NUMBER:
                 value = new FormField<>(setDefaultConfidenceValue(fieldValue.getConfidence()), labelText,
-                    key, fieldValue.getValuePhoneNumber(), valueText);
+                    key, fieldValue.getValuePhoneNumber(), valueText, FieldValueType.PHONE_NUMBER);
                 break;
             case STRING:
                 value = new FormField<>(setDefaultConfidenceValue(fieldValue.getConfidence()), labelText,
-                    key, fieldValue.getValueString(), valueText);
+                    key, fieldValue.getValueString(), valueText, FieldValueType.STRING);
                 break;
             case TIME:
                 LocalTime fieldTime = fieldValue.getValueTime() == null ? null : LocalTime
                     .parse(fieldValue.getValueTime(), DateTimeFormatter.ofPattern("HH:mm:ss"));
                 value = new FormField<>(setDefaultConfidenceValue(fieldValue.getConfidence()), labelText,
-                    key, fieldTime, valueText);
+                    key,  fieldTime, valueText, FieldValueType.TIME);
                 break;
             case DATE:
                 value = new FormField<>(setDefaultConfidenceValue(fieldValue.getConfidence()), labelText,
-                    key, fieldValue.getValueDate(), valueText);
+                    key,  fieldValue.getValueDate(), valueText, FieldValueType.DATE);
                 break;
             case INTEGER:
                 value = new FormField<>(setDefaultConfidenceValue(fieldValue.getConfidence()), labelText,
-                    key, fieldValue.getValueInteger(), valueText);
+                    key, fieldValue.getValueInteger(), valueText, FieldValueType.INTEGER);
                 break;
             case NUMBER:
                 value = new FormField<>(setDefaultConfidenceValue(fieldValue.getConfidence()), labelText,
-                    key, fieldValue.getValueNumber(), valueText);
+                    key, fieldValue.getValueNumber(), valueText, FieldValueType.FLOAT);
                 break;
             case ARRAY:
                 value = new FormField<>(setDefaultConfidenceValue(fieldValue.getConfidence()), null, key,
-                    toFormFieldArray(fieldValue.getValueArray(), readResults), null);
+                     toFormFieldArray(fieldValue.getValueArray(), readResults), null, FieldValueType.LIST);
                 break;
             case OBJECT:
                 value = new FormField<>(setDefaultConfidenceValue(fieldValue.getConfidence()), labelText,
-                    key, toFormFieldObject(fieldValue.getValueObject(), pageNumber, readResults), valueText
-                );
+                    key, toFormFieldObject(fieldValue.getValueObject(), pageNumber, readResults), valueText,
+                    FieldValueType.MAP);
                 break;
             default:
                 throw LOGGER.logExceptionAsError(new RuntimeException("FieldValue Type not supported"));
@@ -385,7 +386,7 @@ final class Transforms {
 
             String fieldName = "field-" + index;
             FormField<?> formField = new FormField<>(setDefaultConfidenceValue(keyValuePair.getConfidence()),
-                labelFieldText, fieldName, keyValuePair.getValue().getText(), valueText);
+                labelFieldText, fieldName,  keyValuePair.getValue().getText(), valueText, FieldValueType.STRING);
             formFieldMap.put(fieldName, formField);
         }));
         return formFieldMap;

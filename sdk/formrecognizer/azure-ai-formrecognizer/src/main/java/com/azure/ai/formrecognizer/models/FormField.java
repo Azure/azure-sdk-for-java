@@ -16,6 +16,7 @@ public final class FormField<T> {
     private final String name;
     private final FieldData valueData;
     private final T value;
+    private final FieldValueType valueType;
 
     /**
      * Constructs a FormField object.
@@ -25,14 +26,16 @@ public final class FormField<T> {
      * @param name The name the field or label.
      * @param value The value of the recognized field.
      * @param valueData The text, bounding box, and field elements for the field value.
+     * @param valueType The type of the value of the recognized field.
      */
     public FormField(final float confidence, final FieldData labelData, final String name, final T value,
-        final FieldData valueData) {
+        final FieldData valueData, FieldValueType valueType) {
         this.confidence = confidence;
         this.labelData = labelData;
         this.name = name;
         this.value = value;
         this.valueData = valueData;
+        this.valueType = valueType;
     }
 
     /**
@@ -63,8 +66,7 @@ public final class FormField<T> {
     }
 
     /**
-     * Get the value of the recognized field. Possible types include: 'String',
-     * 'LocalDate', 'LocalTime', 'Integer', 'Float', 'Map', or 'List'.
+     * Get the value of the recognized field.
      *
      * @return the value of the recognized field.
      */
@@ -74,6 +76,18 @@ public final class FormField<T> {
 
     /**
      * Get the text, bounding box, and field elements for the field value.
+     * The type of the value of the recognized field.
+     * Possible types include: 'String',
+     * 'LocalDate', 'LocalTime', 'Integer', 'Float', 'Map', or 'List'.
+     *
+     * @return the type of the value of the field.
+     */
+    public FieldValueType getValueType() {
+        return valueType;
+    }
+
+    /**
+     * Get the text, bounding box, and text content of the field value.
      *
      * @return the text, bounding box, and field elements for the field value.
      */

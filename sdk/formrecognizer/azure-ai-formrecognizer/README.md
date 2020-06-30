@@ -248,19 +248,10 @@ for (int i = 0; i < contentPageResults.size(); i++) {
 ```
 
 ### Recognize receipts
-Recognize data from a USA sales receipts using a prebuilt model. [Here][service_recognize_receipt] are the fields the
-<<<<<<< HEAD
-service returns for a recognized receipt.
-<<<<<<< HEAD
-<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L144-L190-->
-=======
-=======
-service returns for a recognized receipt. See [StronglyTypedRecognizedForm.java][strongly_typed_sample] for a suggested approach to extract
+Recognize data from a USA sales receipts using a prebuilt model. [Here][service_recognize_receipt] are the fields the service returns for a recognized receipt. See [StronglyTypedRecognizedForm.java][strongly_typed_sample] for a suggested approach to extract
 information from receipts.
 
->>>>>>> f513bd8c12... change model names, inner class
 <!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L141-L187-->
->>>>>>> 407953ed61... receipt design update
 ```java
 String receiptUrl = "https://docs.microsoft.com/en-us/azure/cognitive-services/form-recognizer/media"
     + "/contoso-allinone.jpg";
@@ -273,41 +264,52 @@ for (int i = 0; i < receiptPageResults.size(); i++) {
     Map<String, FormField<?>> recognizedFields = recognizedReceipt.getFields();
     System.out.printf("----------- Recognized Receipt page %d -----------%n", i);
     FormField<?> merchantNameField = recognizedFields.get("MerchantName");
-    if (merchantNameField.getValue() instanceof String) {
-        String merchantName = (String) merchantNameField.getValue();
-        System.out.printf("Merchant Name: %s, confidence: %.2f%n",
-            merchantName, merchantNameField.getConfidence());
+    if (merchantNameField != null) {
+        if (FieldValueType.STRING.equals(merchantNameField.getValueType())) {
+            String merchantName = FieldValueType.STRING.cast(merchantNameField);
+            System.out.printf("Merchant Name: %s, confidence: %.2f%n",
+                merchantName, merchantNameField.getConfidence());
+        }
     }
+
+    FormField<?> merchantPhoneNumberField = recognizedFields.get("MerchantPhoneNumber");
+    if (merchantPhoneNumberField != null) {
+        if (FieldValueType.PHONE_NUMBER.equals(merchantNameField.getValueType())) {
+            String merchantAddress = FieldValueType.PHONE_NUMBER.cast(merchantPhoneNumberField);
+            System.out.printf("Merchant Phone number: %s, confidence: %.2f%n",
+                merchantAddress, merchantPhoneNumberField.getConfidence());
+        }
+    }
+
     FormField<?> transactionDateField = recognizedFields.get("TransactionDate");
-    if (transactionDateField.getValue() instanceof LocalDate) {
-        LocalDate transactionDate = (LocalDate) transactionDateField.getValue();
-        System.out.printf("Transaction Date: %s, confidence: %.2f%n",
-            transactionDate, transactionDateField.getConfidence());
+    if (transactionDateField != null) {
+        if (FieldValueType.DATE.equals(transactionDateField.getValueType())) {
+            LocalDate transactionDate = FieldValueType.DATE.cast(transactionDateField);
+            System.out.printf("Transaction Date: %s, confidence: %.2f%n",
+                transactionDate, transactionDateField.getConfidence());
+        }
     }
+
     FormField<?> receiptItemsField = recognizedFields.get("Items");
-    System.out.printf("Receipt Items: %n");
-    if (receiptItemsField.getValue() instanceof List) {
-        List<FormField<?>> receiptItems = (List<FormField<?>>) receiptItemsField.getValue();
-        receiptItems.forEach(receiptItem -> {
-            if (receiptItem.getValue() instanceof Map) {
-                ((Map<String, FormField<?>>) receiptItem.getValue()).forEach((key, formField) -> {
-                    if ("Name".equals(key)) {
-                        if (formField.getValue() instanceof String) {
-                            String name = (String) formField.getValue();
-                            System.out.printf("Name: %s, confidence: %.2fs%n",
-                                name, formField.getConfidence());
+    if (receiptItemsField != null) {
+        System.out.printf("Receipt Items: %n");
+        if (FieldValueType.LIST.equals(receiptItemsField.getValueType())) {
+            List<FormField<?>> receiptItems = FieldValueType.LIST.cast(receiptItemsField);
+            receiptItems.forEach(receiptItem -> {
+                if (FieldValueType.MAP.equals(receiptItem.getValueType())) {
+                    Map<String, FormField<?>> formFieldMap = FieldValueType.MAP.cast(receiptItem);
+                    formFieldMap.forEach((key, formField) -> {
+                        if ("Quantity".equals(key)) {
+                            if (FieldValueType.FLOAT.equals(formField.getValueType())) {
+                                Float quantity = FieldValueType.FLOAT.cast(formField);
+                                System.out.printf("Quantity: %d, confidence: %.2f%n",
+                                    quantity, formField.getConfidence());
+                            }
                         }
-                    }
-                    if ("Quantity".equals(key)) {
-                        if (formField.getValue() instanceof Integer) {
-                            Integer quantity = (Integer) formField.getValue();
-                            System.out.printf("Quantity: %d, confidence: %.2f%n",
-                                quantity, formField.getConfidence());
-                        }
-                    }
-                });
-            }
-        });
+                    });
+                }
+            });
+        }
     }
 }
 ```
@@ -316,11 +318,7 @@ for (int i = 0; i < receiptPageResults.size(); i++) {
 Train a machine-learned model on your own form type. The resulting model will be able to recognize values from the types of forms it was trained on.
 Provide a container SAS url to your Azure Storage Blob container where you're storing the training documents. See details on setting this up
 in the [service quickstart documentation][quickstart_training].
-<<<<<<< HEAD
 <!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L194-L214 -->
-=======
-<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L191-L211 -->
->>>>>>> 407953ed61... receipt design update
 ```java
 String trainingFilesUrl = "{SAS-URL-of-your-container-in-blob-storage}";
 SyncPoller<OperationResult, CustomFormModel> trainingPoller =
@@ -347,11 +345,7 @@ customFormModel.getSubmodels().forEach(customFormSubmodel -> {
 
 ### Manage your models
 Manage the custom models attached to your account.
-<<<<<<< HEAD
 <!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L218-L247 -->
-=======
-<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L215-L244 -->
->>>>>>> 407953ed61... receipt design update
 ```java
 AtomicReference<String> modelId = new AtomicReference<>();
 // First, we see how many custom models we have, and what our limit is
@@ -393,11 +387,7 @@ to provide an invalid file source URL an `HttpResponseException` would be raised
 In the following code snippet, the error is handled
 gracefully by catching the exception and display the additional information about the error.
 
-<<<<<<< HEAD
 <!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L254-L258 -->
-=======
-<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L251-L255 -->
->>>>>>> 407953ed61... receipt design update
 ```java
 try {
     formRecognizerClient.beginRecognizeContentFromUrl("invalidSourceUrl");
@@ -435,11 +425,7 @@ These code samples show common scenario operations with the Azure Form Recognize
 #### Async APIs
 All the examples shown so far have been using synchronous APIs, but we provide full support for async APIs as well.
 You'll need to use `FormRecognizerAsyncClient`
-<<<<<<< HEAD
 <!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L265-L268 -->
-=======
-<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L262-L265 -->
->>>>>>> 407953ed61... receipt design update
 ```java
 FormRecognizerAsyncClient formRecognizerAsyncClient = new FormRecognizerClientBuilder()
     .credential(new AzureKeyCredential("{key}"))

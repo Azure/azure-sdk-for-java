@@ -3,6 +3,7 @@
 
 package com.azure.ai.formrecognizer;
 
+import com.azure.ai.formrecognizer.models.FieldValueType;
 import com.azure.ai.formrecognizer.models.FormField;
 import com.azure.ai.formrecognizer.models.OperationResult;
 import com.azure.ai.formrecognizer.models.RecognizedForm;
@@ -28,7 +29,6 @@ public class RecognizeReceiptsFromUrlAsync {
      *
      * @param args Unused. Arguments to the program.
      */
-    @SuppressWarnings("unchecked")
     public static void main(final String[] args) {
         // Instantiate a client that will be used to call the service.
         FormRecognizerAsyncClient client = new FormRecognizerClientBuilder()
@@ -61,19 +61,26 @@ public class RecognizeReceiptsFromUrlAsync {
                 System.out.printf("----------- Recognized Receipt page %d -----------%n", i);
                 FormField<?> merchantNameField = recognizedFields.get("MerchantName");
                 if (merchantNameField != null) {
-                    Object merchantNameFieldValue = merchantNameField.getValue();
-                    if (merchantNameFieldValue instanceof String) {
-                        String merchantName = (String) merchantNameFieldValue;
+                    if (FieldValueType.STRING.equals(merchantNameField.getValueType())) {
+                        String merchantName = FieldValueType.STRING.cast(merchantNameField);
                         System.out.printf("Merchant Name: %s, confidence: %.2f%n",
                             merchantName, merchantNameField.getConfidence());
                     }
                 }
 
+                FormField<?> merchantPhoneNumberField = recognizedFields.get("MerchantPhoneNumber");
+                if (merchantPhoneNumberField != null) {
+                    if (FieldValueType.PHONE_NUMBER.equals(merchantNameField.getValueType())) {
+                        String merchantAddress = FieldValueType.PHONE_NUMBER.cast(merchantPhoneNumberField);
+                        System.out.printf("Merchant Address: %s, confidence: %.2f%n",
+                            merchantAddress, merchantPhoneNumberField.getConfidence());
+                    }
+                }
+
                 FormField<?> merchantAddressField = recognizedFields.get("MerchantAddress");
                 if (merchantAddressField != null) {
-                    Object merchantAddressFieldValue = merchantAddressField.getValue();
-                    if (merchantAddressFieldValue instanceof String) {
-                        String merchantAddress = (String) merchantAddressFieldValue;
+                    if (FieldValueType.STRING.equals(merchantNameField.getValueType())) {
+                        String merchantAddress = FieldValueType.STRING.cast(merchantAddressField);
                         System.out.printf("Merchant Address: %s, confidence: %.2f%n",
                             merchantAddress, merchantAddressField.getConfidence());
                     }
@@ -81,9 +88,8 @@ public class RecognizeReceiptsFromUrlAsync {
 
                 FormField<?> transactionDateField = recognizedFields.get("TransactionDate");
                 if (transactionDateField != null) {
-                    Object transactionDateFieldValue = transactionDateField.getValue();
-                    if (transactionDateFieldValue instanceof LocalDate) {
-                        LocalDate transactionDate = (LocalDate) transactionDateFieldValue;
+                    if (FieldValueType.DATE.equals(transactionDateField.getValueType())) {
+                        LocalDate transactionDate = FieldValueType.DATE.cast(transactionDateField);
                         System.out.printf("Transaction Date: %s, confidence: %.2f%n",
                             transactionDate, transactionDateField.getConfidence());
                     }
@@ -92,35 +98,37 @@ public class RecognizeReceiptsFromUrlAsync {
                 FormField<?> receiptItemsField = recognizedFields.get("Items");
                 if (receiptItemsField != null) {
                     System.out.printf("Receipt Items: %n");
-                    if (receiptItemsField.getValue() instanceof List) {
-                        List<FormField<?>> receiptItems = (List<FormField<?>>) receiptItemsField.getValue();
+                    if (FieldValueType.LIST.equals(receiptItemsField.getValueType())) {
+                        List<FormField<?>> receiptItems = FieldValueType.LIST.cast(receiptItemsField);
                         receiptItems.forEach(receiptItem -> {
-                            if (receiptItem.getValue() instanceof Map) {
-                                ((Map<String, FormField<?>>) receiptItem.getValue()).forEach((key, formField) -> {
+                            if (FieldValueType.MAP.equals(receiptItem.getValueType())) {
+                                // we still have to cast or assign
+                                Map<String, FormField<?>> formFieldMap = FieldValueType.MAP.cast(receiptItem);
+                                formFieldMap.forEach((key, formField) -> {
                                     if ("Name".equals(key)) {
-                                        if (formField.getValue() instanceof String) {
-                                            String name = (String) formField.getValue();
+                                        if (FieldValueType.STRING.equals(formField.getValueType())) {
+                                            String name = FieldValueType.STRING.cast(formField);
                                             System.out.printf("Name: %s, confidence: %.2fs%n",
                                                 name, formField.getConfidence());
                                         }
                                     }
                                     if ("Quantity".equals(key)) {
-                                        if (formField.getValue() instanceof Integer) {
-                                            Integer quantity = (Integer) formField.getValue();
-                                            System.out.printf("Quantity: %d, confidence: %.2f%n",
+                                        if (FieldValueType.FLOAT.equals(formField.getValueType())) {
+                                            Float quantity = FieldValueType.FLOAT.cast(formField);
+                                            System.out.printf("Quantity: %f, confidence: %.2f%n",
                                                 quantity, formField.getConfidence());
                                         }
                                     }
                                     if ("Price".equals(key)) {
-                                        if (formField.getValue() instanceof Float) {
-                                            Float price = (Float) formField.getValue();
+                                        if (FieldValueType.FLOAT.equals(formField.getValueType())) {
+                                            Float price = FieldValueType.FLOAT.cast(formField);
                                             System.out.printf("Price: %f, confidence: %.2f%n",
                                                 price, formField.getConfidence());
                                         }
                                     }
                                     if ("TotalPrice".equals(key)) {
-                                        if (formField.getValue() instanceof Float) {
-                                            Float totalPrice = (Float) formField.getValue();
+                                        if (FieldValueType.FLOAT.equals(formField.getValueType())) {
+                                            Float totalPrice = FieldValueType.FLOAT.cast(formField);
                                             System.out.printf("Total Price: %f, confidence: %.2f%n",
                                                 totalPrice, formField.getConfidence());
                                         }
@@ -130,6 +138,7 @@ public class RecognizeReceiptsFromUrlAsync {
                         });
                     }
                 }
+                System.out.print("-----------------------------------");
             }
         });
 

@@ -16,6 +16,7 @@ import com.azure.ai.formrecognizer.implementation.models.ReadResult;
 import com.azure.ai.formrecognizer.implementation.models.TextLine;
 import com.azure.ai.formrecognizer.implementation.models.TextWord;
 import com.azure.ai.formrecognizer.models.BoundingBox;
+import com.azure.ai.formrecognizer.models.FieldValueType;
 import com.azure.ai.formrecognizer.models.FormElement;
 import com.azure.ai.formrecognizer.models.FormField;
 import com.azure.ai.formrecognizer.models.FormLine;
@@ -265,23 +266,23 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
             }
             switch (expectedFieldValue.getType()) {
                 case NUMBER:
-                    assertEquals(expectedFieldValue.getValueNumber(), actualFormField.getValue());
+                    assertEquals(expectedFieldValue.getValueNumber(), FieldValueType.FLOAT.cast(actualFormField));
                     break;
                 case DATE:
-                    assertEquals(expectedFieldValue.getValueDate(), actualFormField.getValue());
+                    assertEquals(expectedFieldValue.getValueDate(), FieldValueType.DATE.cast(actualFormField));
                     break;
                 case TIME:
                     assertEquals(LocalTime.parse(expectedFieldValue.getValueTime(),
-                        DateTimeFormatter.ofPattern("HH:mm:ss")), actualFormField.getValue());
+                        DateTimeFormatter.ofPattern("HH:mm:ss")), FieldValueType.TIME.cast(actualFormField));
                     break;
                 case STRING:
-                    assertEquals(expectedFieldValue.getValueString(), actualFormField.getValue());
+                    assertEquals(expectedFieldValue.getValueString(), FieldValueType.STRING.cast(actualFormField));
                     break;
                 case INTEGER:
-                    assertEquals(expectedFieldValue.getValueInteger(), actualFormField.getValue());
+                    assertEquals(expectedFieldValue.getValueInteger(), FieldValueType.INTEGER.cast(actualFormField));
                     break;
                 case PHONE_NUMBER:
-                    assertEquals(expectedFieldValue.getValuePhoneNumber(), actualFormField.getValue());
+                    assertEquals(expectedFieldValue.getValuePhoneNumber(), FieldValueType.PHONE_NUMBER.cast(actualFormField));
                     break;
                 case OBJECT:
                     expectedFieldValue.getValueObject().forEach((key, fieldValue) -> {
@@ -498,7 +499,7 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
         Map<String, FieldValue> expectedReceiptFields = documentResult.getFields();
 
         assertEquals(expectedReceiptFields.get("ReceiptType").getValueString(),
-            actualRecognizedFormFields.get("ReceiptType").getFieldValue());
+            FieldValueType.STRING.cast(actualRecognizedReceiptFields.get("ReceiptType")));
         assertEquals(expectedReceiptFields.get("ReceiptType").getConfidence(),
             actualRecognizedFormFields.get("ReceiptType").getConfidence());
         validateFieldValueTransforms(expectedReceiptFields.get("MerchantName"),
