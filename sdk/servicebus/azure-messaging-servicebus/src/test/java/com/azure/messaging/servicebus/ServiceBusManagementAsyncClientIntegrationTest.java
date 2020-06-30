@@ -10,6 +10,7 @@ import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.test.TestBase;
 import com.azure.messaging.servicebus.models.QueueDescription;
+import com.azure.messaging.servicebus.models.QueueRuntimeInfo;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -58,18 +59,18 @@ class ServiceBusManagementAsyncClientIntegrationTest extends TestBase {
         StepVerifier.create(client.getQueue(queueName))
             .assertNext(queueDescription -> {
                 assertEquals(queueName, queueDescription.getName());
-                assertNotNull(queueDescription.getCreatedAt());
-                assertTrue(nowUtc.isAfter(queueDescription.getCreatedAt()));
-
                 assertNotNull(queueDescription.getUpdatedAt());
                 assertTrue(nowUtc.isAfter(queueDescription.getUpdatedAt()));
-
-                assertNotNull(queueDescription.getAccessedAt());
 
                 assertFalse(queueDescription.enablePartitioning());
                 assertFalse(queueDescription.requiresSession());
                 assertTrue(queueDescription.supportOrdering());
                 assertNotNull(queueDescription.getLockDuration());
+
+                final QueueRuntimeInfo runtimeInfo = new QueueRuntimeInfo(queueDescription);
+                assertNotNull(runtimeInfo.getCreatedAt());
+                assertTrue(nowUtc.isAfter(runtimeInfo.getCreatedAt()));
+                assertNotNull(runtimeInfo.getAccessedAt());
             })
             .verifyComplete();
     }

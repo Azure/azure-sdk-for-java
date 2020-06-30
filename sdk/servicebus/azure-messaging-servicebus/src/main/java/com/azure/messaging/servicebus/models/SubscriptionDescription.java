@@ -5,6 +5,8 @@
 package com.azure.messaging.servicebus.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.messaging.servicebus.implementation.EntityHelper;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
@@ -174,6 +176,50 @@ public final class SubscriptionDescription {
             localName = "EntityAvailabilityStatus",
             namespace = "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect")
     private EntityAvailabilityStatus entityAvailabilityStatus;
+
+    static {
+        // This is used by classes in different packages to get access to private and package-private methods.
+        EntityHelper.setQueueAccessor(new EntityHelper.QueueAccessor() {
+            @Override
+            public void setName(QueueDescription entity, String name) {
+                entity.setName(name);
+            }
+        });
+    }
+
+    /**
+     * Json deserialization constructor.
+     */
+    @JsonCreator
+    SubscriptionDescription() {
+    }
+
+    /**
+     * Creates an instance with the name of the queue.
+     *
+     * @param queueName Name of the queue.
+     */
+    public SubscriptionDescription(String topicName, String subscriptionName) {
+        this.queueName = queueName;
+    }
+
+    /**
+     * Gets the name of the queue.
+     *
+     * @return The name of the queue;
+     */
+    public String getName() {
+        return queueName;
+    }
+
+    /**
+     * Sets the queue name.
+     *
+     * @param queueName Name of the queue.
+     */
+    void setName(String queueName) {
+        this.queueName = queueName;
+    }
 
     /**
      * Get the lockDuration property: ISO 8601 timespan duration of a peek-lock; that is, the amount of time that the

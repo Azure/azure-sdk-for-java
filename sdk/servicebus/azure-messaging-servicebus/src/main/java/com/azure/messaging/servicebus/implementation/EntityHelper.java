@@ -1,23 +1,25 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.messaging.servicebus.models;
+package com.azure.messaging.servicebus.implementation;
 
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.messaging.servicebus.models.QueueDescription;
+import com.azure.messaging.servicebus.models.SubscriptionDescription;
 
 import java.util.Objects;
 
 /**
  * Used to access internal methods on {@link QueueDescription}.
  */
-public final class QueueHelper {
+public final class EntityHelper {
     private static QueueAccessor accessor;
 
     static {
         try {
             Class.forName(QueueAccessor.class.getName(), true, QueueAccessor.class.getClassLoader());
         } catch (ClassNotFoundException e) {
-            throw new ClientLogger(QueueHelper.class).logThrowableAsError(new AssertionError(e));
+            throw new ClientLogger(EntityHelper.class).logThrowableAsError(new AssertionError(e));
         }
     }
 
@@ -27,13 +29,13 @@ public final class QueueHelper {
      * @param queueDescription Queue to set name on.
      * @param name Name of the queue.
      */
-    public static void setName(QueueDescription queueDescription, String name) {
+    public static void setQueueName(QueueDescription queueDescription, String name) {
         if (accessor == null) {
-            throw new ClientLogger(QueueHelper.class).logExceptionAsError(
+            throw new ClientLogger(EntityHelper.class).logExceptionAsError(
                 new IllegalStateException("'QueueAccessor.accessor' should not be null."));
         }
 
-        queueDescription.setName(name);
+        accessor.setName(queueDescription, name);
     }
 
     /**
@@ -44,12 +46,12 @@ public final class QueueHelper {
     public static void setQueueAccessor(QueueAccessor accessor) {
         Objects.requireNonNull(accessor, "'accessor' cannot be null.");
 
-        if (QueueHelper.accessor != null) {
-            throw new ClientLogger(QueueHelper.class).logExceptionAsError(new IllegalStateException(
+        if (EntityHelper.accessor != null) {
+            throw new ClientLogger(EntityHelper.class).logExceptionAsError(new IllegalStateException(
                 "'accessor' is already set."));
         }
 
-        QueueHelper.accessor = accessor;
+        EntityHelper.accessor = accessor;
     }
 
     /**
@@ -63,5 +65,11 @@ public final class QueueHelper {
          * @param name Name of the queue.
          */
         void setName(QueueDescription queueDescription, String name);
+    }
+
+    public interface SubscriptionAccessor {
+        void setTopicName(SubscriptionDescription subscriptionDescription, String topicName);
+
+        void setSubscriptionName(SubscriptionDescription subscriptionDescription, String subscriptionName);
     }
 }

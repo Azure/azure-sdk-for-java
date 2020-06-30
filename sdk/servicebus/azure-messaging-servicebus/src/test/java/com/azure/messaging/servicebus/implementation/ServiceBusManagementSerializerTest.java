@@ -8,7 +8,6 @@ import com.azure.messaging.servicebus.implementation.models.QueueDescriptionEntr
 import com.azure.messaging.servicebus.implementation.models.QueueDescriptionFeed;
 import com.azure.messaging.servicebus.implementation.models.ResponseAuthor;
 import com.azure.messaging.servicebus.implementation.models.ResponseLink;
-import com.azure.messaging.servicebus.models.EntityAvailabilityStatus;
 import com.azure.messaging.servicebus.models.EntityStatus;
 import com.azure.messaging.servicebus.models.MessageCountDetails;
 import com.azure.messaging.servicebus.models.QueueDescription;
@@ -34,6 +33,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
+import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.when;
 
 class ServiceBusManagementSerializerTest {
     private static final String TITLE_KEY = "";
@@ -57,18 +58,12 @@ class ServiceBusManagementSerializerTest {
             .setDuplicateDetectionHistoryTimeWindow(Duration.ofMinutes(10))
             .setMaxDeliveryCount(10)
             .setEnableBatchedOperations(true)
-            .setSizeInBytes(2048)
-            .setMessageCount(23)
-            .setIsAnonymousAccessible(false)
-            .setStatus(EntityStatus.DELETING)
-            .setCreatedAt(OffsetDateTime.parse("2020-06-05T03:55:07.5Z"))
-            .setUpdatedAt(OffsetDateTime.parse("2020-06-05T03:45:07.64Z"))
-            .setAccessedAt(OffsetDateTime.parse("0001-01-01T00:00:00Z"))
             .setSupportOrdering(true)
             .setAutoDeleteOnIdle(Duration.ofHours(5))
-            .setEnablePartitioning(true)
-            .setEntityAvailabilityStatus(EntityAvailabilityStatus.AVAILABLE)
-            .setEnableExpress(false);
+            .setEnablePartitioning(true);
+
+        final QueueDescription spy = spy(expected);
+        when(spy.getStatus()).thenReturn(EntityStatus.DELETING);
 
         // Act
         final QueueDescriptionEntry entry = serializer.deserialize(contents, QueueDescriptionEntry.class);
@@ -78,10 +73,10 @@ class ServiceBusManagementSerializerTest {
         assertNotNull(entry.getContent());
 
         // The entry title is the name of the queue.
-        assertTitle(expected.getName(), entry.getTitle());
+        assertTitle(spy.getName(), entry.getTitle());
 
         final QueueDescription actual = entry.getContent().getQueueDescription();
-        assertQueueDescriptionEquals(expected, actual);
+        assertQueueDescriptionEquals(spy, actual);
     }
 
     /**
@@ -90,13 +85,13 @@ class ServiceBusManagementSerializerTest {
     @Test
     void deserializeQueueRuntimeInfo() throws IOException {
         final String contents = getContents("QueueDescriptionEntry.xml");
-        final QueueDescription queueDescription = new QueueDescription("my-test-queue")
-            .setSizeInBytes(2048)
-            .setMessageCount(23)
-            .setCreatedAt(OffsetDateTime.parse("2020-06-05T03:55:07.5Z"))
-            .setUpdatedAt(OffsetDateTime.parse("2020-06-05T03:45:07.64Z"))
-            .setAccessedAt(OffsetDateTime.parse("0001-01-01T00:00:00Z"));
-        final MessageCountDetails countDetails = new MessageCountDetails()
+
+        final OffsetDateTime createdAt = OffsetDateTime.parse("2020-06-05T03:55:07.5Z");
+        final OffsetDateTime updatedAt = OffsetDateTime.parse("2020-06-05T03:45:07.64Z");
+        final OffsetDateTime accessedAt = OffsetDateTime.parse("0001-01-01T00:00:00Z");
+        final int sizeInBytes = 2048;
+        final int messageCount = 23;
+        final MessageCountDetails expectedCount = new MessageCountDetails()
             .setActiveMessageCount(5)
             .setDeadLetterMessageCount(3)
             .setScheduledMessageCount(65)
@@ -108,7 +103,21 @@ class ServiceBusManagementSerializerTest {
         final QueueRuntimeInfo actual = new QueueRuntimeInfo(entry.getContent().getQueueDescription());
 
         // Assert
-        assertQueueRuntimeInfoEquals(queueDescription, countDetails, actual);
+        assertEquals(sizeInBytes, actual.getSizeInBytes());
+        assertEquals(messageCount, actual.getMessageCount());
+
+        assertEquals(createdAt, actual.getCreatedAt());
+        assertEquals(updatedAt, actual.getUpdatedAt());
+        assertEquals(accessedAt, actual.getAccessedAt());
+
+        final MessageCountDetails details = actual.getDetails();
+        assertNotNull(details);
+
+        assertEquals(expectedCount.getActiveMessageCount(), details.getActiveMessageCount());
+        assertEquals(expectedCount.getDeadLetterMessageCount(), details.getDeadLetterMessageCount());
+        assertEquals(expectedCount.getScheduledMessageCount(), details.getScheduledMessageCount());
+        assertEquals(expectedCount.getTransferMessageCount(), details.getTransferMessageCount());
+        assertEquals(expectedCount.getTransferDeadLetterMessageCount(), details.getTransferDeadLetterMessageCount());
     }
 
     /**
@@ -123,6 +132,7 @@ class ServiceBusManagementSerializerTest {
             new ResponseLink().setRel("next")
                 .setHref("https://sb-java.servicebus.windows.net/$Resources/queues?api-version=2017-04&enrich=false&%24skip=5&%24top=5")
         );
+
         final QueueDescription queueDescription = new QueueDescription("")
             .setLockDuration(Duration.ofMinutes(10))
             .setMaxSizeInMegabytes(102)
@@ -133,18 +143,13 @@ class ServiceBusManagementSerializerTest {
             .setDuplicateDetectionHistoryTimeWindow(Duration.ofMinutes(10))
             .setMaxDeliveryCount(10)
             .setEnableBatchedOperations(true)
-            .setSizeInBytes(0)
-            .setMessageCount(0)
-            .setIsAnonymousAccessible(false)
-            .setStatus(EntityStatus.ACTIVE)
-            .setCreatedAt(OffsetDateTime.parse("2020-06-05T07:17:04.29Z"))
-            .setUpdatedAt(OffsetDateTime.parse("2020-06-05T07:17:04.353Z"))
-            .setAccessedAt(OffsetDateTime.parse("0001-01-01T00:00:00Z"))
             .setSupportOrdering(true)
             .setAutoDeleteOnIdle(Duration.ofSeconds(5))
-            .setEnablePartitioning(true)
-            .setEntityAvailabilityStatus(EntityAvailabilityStatus.AVAILABLE)
-            .setEnableExpress(true);
+            .setEnablePartitioning(true);
+
+            EntityHelper.setSizeInBytes(queueDescription, 0);
+            EntityHelper.setMessageCount(queueDescription, 0);
+
         final QueueDescriptionEntry entry1 = new QueueDescriptionEntry()
             .setBase("https://sb-java.servicebus.windows.net/$Resources/queues?api-version=2017-04&enrich=false&$skip=0&$top=5")
             .setId("https://sb-java.servicebus.windows.net/q-0?api-version=2017-04")
@@ -221,22 +226,15 @@ class ServiceBusManagementSerializerTest {
         assertEquals(expected.getDuplicateDetectionHistoryTimeWindow(), actual.getDuplicateDetectionHistoryTimeWindow());
         assertEquals(expected.getMaxDeliveryCount(), actual.getMaxDeliveryCount());
         assertEquals(expected.enableBatchedOperations(), actual.enableBatchedOperations());
-        assertEquals(expected.getSizeInBytes(), actual.getSizeInBytes());
-        assertEquals(expected.getMessageCount(), actual.getMessageCount());
-        assertEquals(expected.isAnonymousAccessible(), actual.isAnonymousAccessible());
+
         assertEquals(expected.getStatus(), actual.getStatus());
-        assertEquals(expected.getCreatedAt(), actual.getCreatedAt());
         assertEquals(expected.getUpdatedAt(), actual.getUpdatedAt());
-        assertEquals(expected.getAccessedAt(), actual.getAccessedAt());
         assertEquals(expected.supportOrdering(), actual.supportOrdering());
         assertEquals(expected.getAutoDeleteOnIdle(), actual.getAutoDeleteOnIdle());
         assertEquals(expected.enablePartitioning(), actual.enablePartitioning());
-        assertEquals(expected.getEntityAvailabilityStatus(), actual.getEntityAvailabilityStatus());
-        assertEquals(expected.enableExpress(), actual.enableExpress());
     }
 
     private static void assertQueueEntryEquals(QueueDescriptionEntry expected, QueueDescriptionEntry actual) {
-
         assertEquals(expected.getId(), actual.getId());
         assertNotNull(actual.getTitle());
 
@@ -271,22 +269,6 @@ class ServiceBusManagementSerializerTest {
 
             assertQueueEntryEquals(expectedEntry, actualEntry);
         }
-    }
-
-    private static void assertQueueRuntimeInfoEquals(QueueDescription expectedDescription,
-        MessageCountDetails expectedCount, QueueRuntimeInfo actual) {
-        assertEquals(expectedDescription.getCreatedAt(), actual.getCreatedAt());
-        assertEquals(expectedDescription.getUpdatedAt(), actual.getUpdatedAt());
-        assertEquals(expectedDescription.getAccessedAt(), actual.getAccessedAt());
-
-        final MessageCountDetails details = actual.getDetails();
-        assertNotNull(details);
-
-        assertEquals(expectedCount.getActiveMessageCount(), details.getActiveMessageCount());
-        assertEquals(expectedCount.getDeadLetterMessageCount(), details.getDeadLetterMessageCount());
-        assertEquals(expectedCount.getScheduledMessageCount(), details.getScheduledMessageCount());
-        assertEquals(expectedCount.getTransferMessageCount(), details.getTransferMessageCount());
-        assertEquals(expectedCount.getTransferDeadLetterMessageCount(), details.getTransferDeadLetterMessageCount());
     }
 
     @SuppressWarnings("unchecked")

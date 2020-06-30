@@ -31,7 +31,7 @@ import com.azure.messaging.servicebus.implementation.models.ResponseLink;
 import com.azure.messaging.servicebus.implementation.models.ServiceBusManagementError;
 import com.azure.messaging.servicebus.implementation.models.ServiceBusManagementErrorException;
 import com.azure.messaging.servicebus.models.QueueDescription;
-import com.azure.messaging.servicebus.models.QueueHelper;
+import com.azure.messaging.servicebus.implementation.EntityHelper;
 import com.azure.messaging.servicebus.models.QueueRuntimeInfo;
 import com.azure.messaging.servicebus.models.SubscriptionDescription;
 import reactor.core.publisher.Mono;
@@ -681,7 +681,7 @@ public final class ServiceBusManagementAsyncClient {
 
         final QueueDescription result = entry.getContent().getQueueDescription();
         final String queueName = getTitleValue(entry.getTitle());
-        QueueHelper.setName(result, queueName);
+        EntityHelper.setQueueName(result, queueName);
 
         return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), result);
     }
@@ -749,7 +749,7 @@ public final class ServiceBusManagementAsyncClient {
                     .map(e -> {
                         final String queueName = getTitleValue(e.getTitle());
                         final QueueDescription queueDescription = e.getContent().getQueueDescription();
-                        QueueHelper.setName(queueDescription, queueName);
+                        EntityHelper.setQueueName(queueDescription, queueName);
 
                         return queueDescription;
                     })

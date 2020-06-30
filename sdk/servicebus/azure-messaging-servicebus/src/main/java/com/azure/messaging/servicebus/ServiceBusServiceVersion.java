@@ -5,13 +5,17 @@ package com.azure.messaging.servicebus;
 import com.azure.core.util.ServiceVersion;
 
 /**
- * The versions of Azure Servicee Bus supported by this client library.
+ * The versions of Azure Service Bus supported by this client library.
  */
 public enum ServiceBusServiceVersion implements ServiceVersion {
     V2017_04("2017-04");
 
     private final String version;
 
+    /**
+     * Creates a new instance with the specified version.
+     * @param version The version of the service.
+     */
     ServiceBusServiceVersion(String version) {
         this.version = version;
     }

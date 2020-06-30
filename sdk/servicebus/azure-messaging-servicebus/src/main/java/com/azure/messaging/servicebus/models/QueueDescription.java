@@ -5,6 +5,7 @@
 package com.azure.messaging.servicebus.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.messaging.servicebus.implementation.EntityHelper;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
@@ -262,7 +263,7 @@ public final class QueueDescription {
 
     static {
         // This is used by classes in different packages to get access to private and package-private methods.
-        QueueHelper.setQueueAccessor(new QueueHelper.QueueAccessor() {
+        EntityHelper.setQueueAccessor(new EntityHelper.QueueAccessor() {
             @Override
             public void setName(QueueDescription entity, String name) {
                 entity.setName(name);
@@ -299,11 +300,9 @@ public final class QueueDescription {
      * Sets the queue name.
      *
      * @param queueName Name of the queue.
-     * @return the QueueDescription object itself.
      */
-    QueueDescription setName(String queueName) {
+    void setName(String queueName) {
         this.queueName = queueName;
-        return this;
     }
 
     /**
