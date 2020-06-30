@@ -7,9 +7,10 @@ package com.azure.resourcemanager.compute.fluent.inner;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
-import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.compute.models.InstanceViewStatus;
 import com.azure.resourcemanager.compute.models.ProximityPlacementGroupType;
+import com.azure.resourcemanager.compute.models.SubResourceWithColocationStatus;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -33,21 +34,27 @@ public class ProximityPlacementGroupInner extends Resource {
      * group.
      */
     @JsonProperty(value = "properties.virtualMachines", access = JsonProperty.Access.WRITE_ONLY)
-    private List<SubResource> virtualMachines;
+    private List<SubResourceWithColocationStatus> virtualMachines;
 
     /*
      * A list of references to all virtual machine scale sets in the proximity
      * placement group.
      */
     @JsonProperty(value = "properties.virtualMachineScaleSets", access = JsonProperty.Access.WRITE_ONLY)
-    private List<SubResource> virtualMachineScaleSets;
+    private List<SubResourceWithColocationStatus> virtualMachineScaleSets;
 
     /*
      * A list of references to all availability sets in the proximity placement
      * group.
      */
     @JsonProperty(value = "properties.availabilitySets", access = JsonProperty.Access.WRITE_ONLY)
-    private List<SubResource> availabilitySets;
+    private List<SubResourceWithColocationStatus> availabilitySets;
+
+    /*
+     * Describes colocation status of the Proximity Placement Group.
+     */
+    @JsonProperty(value = "properties.colocationStatus")
+    private InstanceViewStatus colocationStatus;
 
     /**
      * Get the proximityPlacementGroupType property: Specifies the type of the proximity placement group.
@@ -79,7 +86,7 @@ public class ProximityPlacementGroupInner extends Resource {
      *
      * @return the virtualMachines value.
      */
-    public List<SubResource> virtualMachines() {
+    public List<SubResourceWithColocationStatus> virtualMachines() {
         return this.virtualMachines;
     }
 
@@ -89,7 +96,7 @@ public class ProximityPlacementGroupInner extends Resource {
      *
      * @return the virtualMachineScaleSets value.
      */
-    public List<SubResource> virtualMachineScaleSets() {
+    public List<SubResourceWithColocationStatus> virtualMachineScaleSets() {
         return this.virtualMachineScaleSets;
     }
 
@@ -99,8 +106,28 @@ public class ProximityPlacementGroupInner extends Resource {
      *
      * @return the availabilitySets value.
      */
-    public List<SubResource> availabilitySets() {
+    public List<SubResourceWithColocationStatus> availabilitySets() {
         return this.availabilitySets;
+    }
+
+    /**
+     * Get the colocationStatus property: Describes colocation status of the Proximity Placement Group.
+     *
+     * @return the colocationStatus value.
+     */
+    public InstanceViewStatus colocationStatus() {
+        return this.colocationStatus;
+    }
+
+    /**
+     * Set the colocationStatus property: Describes colocation status of the Proximity Placement Group.
+     *
+     * @param colocationStatus the colocationStatus value to set.
+     * @return the ProximityPlacementGroupInner object itself.
+     */
+    public ProximityPlacementGroupInner withColocationStatus(InstanceViewStatus colocationStatus) {
+        this.colocationStatus = colocationStatus;
+        return this;
     }
 
     /**
@@ -109,5 +136,17 @@ public class ProximityPlacementGroupInner extends Resource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (virtualMachines() != null) {
+            virtualMachines().forEach(e -> e.validate());
+        }
+        if (virtualMachineScaleSets() != null) {
+            virtualMachineScaleSets().forEach(e -> e.validate());
+        }
+        if (availabilitySets() != null) {
+            availabilitySets().forEach(e -> e.validate());
+        }
+        if (colocationStatus() != null) {
+            colocationStatus().validate();
+        }
     }
 }

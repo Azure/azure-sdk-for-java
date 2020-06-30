@@ -146,7 +146,7 @@ public final class VirtualMachineExtensionImagesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-03-01";
+        final String apiVersion = "2019-12-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -203,7 +203,7 @@ public final class VirtualMachineExtensionImagesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-03-01";
+        final String apiVersion = "2019-12-01";
         return service
             .get(
                 this.client.getEndpoint(),
@@ -336,7 +336,7 @@ public final class VirtualMachineExtensionImagesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-03-01";
+        final String apiVersion = "2019-12-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -383,7 +383,7 @@ public final class VirtualMachineExtensionImagesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-03-01";
+        final String apiVersion = "2019-12-01";
         return service
             .listTypes(
                 this.client.getEndpoint(),
@@ -511,7 +511,7 @@ public final class VirtualMachineExtensionImagesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-03-01";
+        final String apiVersion = "2019-12-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -575,7 +575,7 @@ public final class VirtualMachineExtensionImagesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-03-01";
+        final String apiVersion = "2019-12-01";
         return service
             .listVersions(
                 this.client.getEndpoint(),

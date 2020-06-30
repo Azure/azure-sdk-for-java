@@ -30,7 +30,6 @@ import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.util.polling.AsyncPollResponse;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.resourcemanager.network.NetworkManagementClient;
 import com.azure.resourcemanager.network.fluent.inner.ExpressRoutePortInner;
@@ -360,7 +359,7 @@ public final class ExpressRoutePortsClient
             .client
             .<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -382,7 +381,7 @@ public final class ExpressRoutePortsClient
             .client
             .<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -760,7 +759,7 @@ public final class ExpressRoutePortsClient
             .<ExpressRoutePortInner, ExpressRoutePortInner>getLroResultAsync(
                 mono, this.client.getHttpPipeline(), ExpressRoutePortInner.class, ExpressRoutePortInner.class)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -785,7 +784,7 @@ public final class ExpressRoutePortsClient
             .<ExpressRoutePortInner, ExpressRoutePortInner>getLroResultAsync(
                 mono, this.client.getHttpPipeline(), ExpressRoutePortInner.class, ExpressRoutePortInner.class)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -990,7 +989,7 @@ public final class ExpressRoutePortsClient
             .<ExpressRoutePortInner, ExpressRoutePortInner>getLroResultAsync(
                 mono, this.client.getHttpPipeline(), ExpressRoutePortInner.class, ExpressRoutePortInner.class)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -1015,7 +1014,7 @@ public final class ExpressRoutePortsClient
             .<ExpressRoutePortInner, ExpressRoutePortInner>getLroResultAsync(
                 mono, this.client.getHttpPipeline(), ExpressRoutePortInner.class, ExpressRoutePortInner.class)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**

@@ -149,26 +149,8 @@ public abstract class IntegrationTestBase extends TestBase {
      *
      * @return Name of the topic.
      */
-    public String getTopicName() {
-        return TestUtils.getTopicName();
-    }
-
-    /**
-     * Gets the name of the first subscription.
-     *
-     * @return Name of the first subscription.
-     */
-    public String getSubscriptionName(int index) {
-        return getEntityName(getSubscriptionBaseName(), index);
-    }
-
-    /**
-     * Gets the name of the first session-enabled subscription.
-     *
-     * @return Name of the first session-enabled subscription.
-     */
-    public String getSessionSubscriptionName(int index) {
-        return getEntityName(getSessionSubscriptionBaseName(), index);
+    public String getTopicName(int index) {
+        return getEntityName(TestUtils.getTopicBaseName(), index);
     }
 
     /**
@@ -233,6 +215,7 @@ public abstract class IntegrationTestBase extends TestBase {
             .transportType(AmqpTransportType.AMQP)
             .scheduler(scheduler);
 
+        logger.info("Getting Builder using credentials : [{}] ", useCredentials);
         if (useCredentials) {
             final String fullyQualifiedDomainName = getFullyQualifiedDomainName();
 
@@ -263,7 +246,7 @@ public abstract class IntegrationTestBase extends TestBase {
                 return builder.sender()
                     .queueName(queueName);
             case SUBSCRIPTION:
-                final String topicName = getTopicName();
+                final String topicName = getTopicName(entityIndex);
                 assertNotNull(topicName, "'topicName' cannot be null.");
 
                 return builder.sender().topicName(topicName);
@@ -311,8 +294,8 @@ public abstract class IntegrationTestBase extends TestBase {
 
                 return builder.receiver().queueName(queueName);
             case SUBSCRIPTION:
-                final String topicName = getTopicName();
-                final String subscriptionName = getSubscriptionName(entityIndex);
+                final String topicName = getTopicName(entityIndex);
+                final String subscriptionName = getSubscriptionBaseName();
                 assertNotNull(topicName, "'topicName' cannot be null.");
                 assertNotNull(subscriptionName, "'subscriptionName' cannot be null.");
 
@@ -337,8 +320,8 @@ public abstract class IntegrationTestBase extends TestBase {
                     .queueName(queueName);
 
             case SUBSCRIPTION:
-                final String topicName = getTopicName();
-                final String subscriptionName = getSessionSubscriptionName(entityIndex);
+                final String topicName = getTopicName(entityIndex);
+                final String subscriptionName = getSessionSubscriptionBaseName();
                 assertNotNull(topicName, "'topicName' cannot be null.");
                 assertNotNull(subscriptionName, "'subscriptionName' cannot be null.");
                 return onBuilderCreate.apply(builder)

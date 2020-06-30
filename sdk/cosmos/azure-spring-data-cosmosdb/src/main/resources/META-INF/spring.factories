@@ -1,0 +1,1 @@
+org.springframework.data.repository.core.support.RepositoryFactorySupport=com.microsoft.azure.spring.data.cosmosdb.repository.support.CosmosRepositoryFactory

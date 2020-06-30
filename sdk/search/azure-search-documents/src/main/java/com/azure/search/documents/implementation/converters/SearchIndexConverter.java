@@ -16,6 +16,7 @@ import com.azure.search.documents.indexes.models.SearchSuggester;
 import com.azure.search.documents.indexes.models.TokenFilter;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
@@ -29,7 +30,10 @@ public final class SearchIndexConverter {
         if (obj == null) {
             return null;
         }
-        SearchIndex searchIndex = new SearchIndex();
+
+        List<SearchField> fields = obj.getFields() == null ? null
+            : obj.getFields().stream().map(SearchFieldConverter::map).collect(Collectors.toList());
+        SearchIndex searchIndex = new SearchIndex(obj.getName(), fields);
 
         if (obj.getTokenizers() != null) {
             List<LexicalTokenizer> tokenizers =
@@ -75,9 +79,6 @@ public final class SearchIndexConverter {
             searchIndex.setSimilarity(similarityAlgorithm);
         }
 
-        String name = obj.getName();
-        searchIndex.setName(name);
-
         if (obj.getCorsOptions() != null) {
             CorsOptions corsOptions = CorsOptionsConverter.map(obj.getCorsOptions());
             searchIndex.setCorsOptions(corsOptions);
@@ -92,11 +93,6 @@ public final class SearchIndexConverter {
             searchIndex.setScoringProfiles(scoringProfiles);
         }
 
-        if (obj.getFields() != null) {
-            List<SearchField> fields =
-                obj.getFields().stream().map(SearchFieldConverter::map).collect(Collectors.toList());
-            searchIndex.setFields(fields);
-        }
         return searchIndex;
     }
 
@@ -107,8 +103,11 @@ public final class SearchIndexConverter {
         if (obj == null) {
             return null;
         }
+        Objects.requireNonNull(obj.getName(), "The SearchIndex name cannot be null");
+        List<com.azure.search.documents.indexes.implementation.models.SearchField> fields = obj.getFields() == null ?
+            null : obj.getFields().stream().map(SearchFieldConverter::map).collect(Collectors.toList());
         com.azure.search.documents.indexes.implementation.models.SearchIndex searchIndex =
-            new com.azure.search.documents.indexes.implementation.models.SearchIndex();
+            new com.azure.search.documents.indexes.implementation.models.SearchIndex(obj.getName(), fields);
 
         if (obj.getTokenizers() != null) {
             List<com.azure.search.documents.indexes.implementation.models.LexicalTokenizer> tokenizers =
@@ -155,9 +154,6 @@ public final class SearchIndexConverter {
             searchIndex.setSimilarity(similarity);
         }
 
-        String name = obj.getName();
-        searchIndex.setName(name);
-
         if (obj.getCorsOptions() != null) {
             com.azure.search.documents.indexes.implementation.models.CorsOptions corsOptions =
                 CorsOptionsConverter.map(obj.getCorsOptions());
@@ -173,11 +169,6 @@ public final class SearchIndexConverter {
             searchIndex.setScoringProfiles(scoringProfiles);
         }
 
-        if (obj.getFields() != null) {
-            List<com.azure.search.documents.indexes.implementation.models.SearchField> fields =
-                obj.getFields().stream().map(SearchFieldConverter::map).collect(Collectors.toList());
-            searchIndex.setFields(fields);
-        }
         return searchIndex;
     }
 

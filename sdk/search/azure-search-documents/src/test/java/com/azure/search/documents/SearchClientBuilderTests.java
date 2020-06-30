@@ -20,7 +20,7 @@ public class SearchClientBuilderTests {
     private final AzureKeyCredential searchApiKeyCredential = new AzureKeyCredential("0123");
     private final String searchEndpoint = "https://test.search.windows.net";
     private final String indexName = "myindex";
-    private final SearchServiceVersion apiVersion = SearchServiceVersion.V2019_05_06_Preview;
+    private final SearchServiceVersion apiVersion = SearchServiceVersion.V2020_06_30;
 
     @Test
     public void buildSyncClientTest() {

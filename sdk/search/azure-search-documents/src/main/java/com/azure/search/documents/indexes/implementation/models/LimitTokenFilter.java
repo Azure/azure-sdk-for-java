@@ -7,18 +7,18 @@
 package com.azure.search.documents.indexes.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.JsonFlatten;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/**
- * Limits the number of tokens while indexing. This token filter is implemented
- * using Apache Lucene.
- */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata.type")
+/** The LimitTokenFilter model. */
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata\\.type")
 @JsonTypeName("#Microsoft.Azure.Search.LimitTokenFilter")
+@JsonFlatten
 @Fluent
-public final class LimitTokenFilter extends TokenFilter {
+public class LimitTokenFilter extends TokenFilter {
     /*
      * The maximum number of tokens to produce. Default is 1.
      */
@@ -32,9 +32,14 @@ public final class LimitTokenFilter extends TokenFilter {
     @JsonProperty(value = "consumeAllTokens")
     private Boolean consumeAllTokens;
 
+    /** Creates an instance of LimitTokenFilter class. */
+    @JsonCreator
+    public LimitTokenFilter(@JsonProperty(value = "name") String name) {
+        super(name);
+    }
+
     /**
-     * Get the maxTokenCount property: The maximum number of tokens to produce.
-     * Default is 1.
+     * Get the maxTokenCount property: The maximum number of tokens to produce. Default is 1.
      *
      * @return the maxTokenCount value.
      */
@@ -43,8 +48,7 @@ public final class LimitTokenFilter extends TokenFilter {
     }
 
     /**
-     * Set the maxTokenCount property: The maximum number of tokens to produce.
-     * Default is 1.
+     * Set the maxTokenCount property: The maximum number of tokens to produce. Default is 1.
      *
      * @param maxTokenCount the maxTokenCount value to set.
      * @return the LimitTokenFilter object itself.
@@ -55,9 +59,8 @@ public final class LimitTokenFilter extends TokenFilter {
     }
 
     /**
-     * Get the consumeAllTokens property: A value indicating whether all tokens
-     * from the input must be consumed even if maxTokenCount is reached.
-     * Default is false.
+     * Get the consumeAllTokens property: A value indicating whether all tokens from the input must be consumed even if
+     * maxTokenCount is reached. Default is false.
      *
      * @return the consumeAllTokens value.
      */
@@ -66,9 +69,8 @@ public final class LimitTokenFilter extends TokenFilter {
     }
 
     /**
-     * Set the consumeAllTokens property: A value indicating whether all tokens
-     * from the input must be consumed even if maxTokenCount is reached.
-     * Default is false.
+     * Set the consumeAllTokens property: A value indicating whether all tokens from the input must be consumed even if
+     * maxTokenCount is reached. Default is false.
      *
      * @param consumeAllTokens the consumeAllTokens value to set.
      * @return the LimitTokenFilter object itself.
@@ -76,5 +78,15 @@ public final class LimitTokenFilter extends TokenFilter {
     public LimitTokenFilter setConsumeAllTokens(Boolean consumeAllTokens) {
         this.consumeAllTokens = consumeAllTokens;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    @Override
+    public void validate() {
+        super.validate();
     }
 }

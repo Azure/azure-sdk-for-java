@@ -3,6 +3,8 @@
 
 package com.microsoft.azure.test.keyvault;
 
+import static org.junit.Assert.assertEquals;
+
 import com.microsoft.azure.management.Azure;
 import com.microsoft.azure.management.appservice.WebApp;
 import com.microsoft.azure.management.compute.RunCommandInput;
@@ -12,6 +14,12 @@ import com.microsoft.azure.test.management.ClientSecretAccess;
 import com.microsoft.azure.test.utils.AppRunner;
 import com.microsoft.azure.test.utils.MavenBasedProject;
 import com.microsoft.azure.test.utils.SSHShell;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.slf4j.Logger;
@@ -25,19 +33,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-
-import static org.junit.Assert.assertEquals;
-
 public class KeyVaultIT {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(KeyVaultIT.class);
-    private static final String AZURE_KEYVAULT_ENDPOINT = System.getenv("AZURE_KEYVAULT_ENDPOINT");
+    private static final String AZURE_KEYVAULT_URI = System.getenv("AZURE_KEYVAULT_URI");
     private static final String KEY_VAULT_SECRET_VALUE = System.getenv("KEY_VAULT_SECRET_VALUE");
     private static final String KEY_VAULT_SECRET_NAME = System.getenv("KEY_VAULT_SECRET_NAME");
     private static final String SPRING_RESOURCE_GROUP = System.getenv("SPRING_RESOURCE_GROUP");
@@ -60,11 +59,10 @@ public class KeyVaultIT {
     public void keyVaultAsPropertySource() {
         try (AppRunner app = new AppRunner(DumbApp.class)) {
             app.property("azure.keyvault.enabled", "true");
-            app.property("azure.keyvault.uri", AZURE_KEYVAULT_ENDPOINT);
+            app.property("azure.keyvault.uri", AZURE_KEYVAULT_URI);
             app.property("azure.keyvault.client-id", CLIENT_SECRET_ACCESS.clientId());
             app.property("azure.keyvault.client-key", CLIENT_SECRET_ACCESS.clientSecret());
             app.property("azure.keyvault.tenant-id", CLIENT_SECRET_ACCESS.tenantId());
-
 
             final ConfigurableApplicationContext dummy = app.start("dummy");
             final ConfigurableEnvironment environment = dummy.getEnvironment();
@@ -83,7 +81,7 @@ public class KeyVaultIT {
     public void keyVaultAsPropertySourceWithSpecificKeys() {
         try (AppRunner app = new AppRunner(DumbApp.class)) {
             app.property("azure.keyvault.enabled", "true");
-            app.property("azure.keyvault.uri", AZURE_KEYVAULT_ENDPOINT);
+            app.property("azure.keyvault.uri", AZURE_KEYVAULT_URI);
             app.property("azure.keyvault.client-id", CLIENT_SECRET_ACCESS.clientId());
             app.property("azure.keyvault.client-key", CLIENT_SECRET_ACCESS.clientSecret());
             app.property("azure.keyvault.tenant-id", CLIENT_SECRET_ACCESS.tenantId());
@@ -102,7 +100,6 @@ public class KeyVaultIT {
         final WebApp webApp = AZURE
             .webApps()
             .getByResourceGroup(SPRING_RESOURCE_GROUP, APP_SERVICE_NAME);
-
 
         final MavenBasedProject app = new MavenBasedProject("../azure-spring-boot-test-application");
         app.packageUp();
@@ -128,11 +125,8 @@ public class KeyVaultIT {
         LOGGER.info("restarting app service...");
         webApp.restart();
         LOGGER.info("restarting app service finished...");
-
-        final String resourceUrl = "https://" + webApp.name() + ".azurewebsites.net" + "/get";
-        // warm up
+        final String resourceUrl = "https://" + webApp.name() + ".azurewebsites.net/get";
         final ResponseEntity<String> response = curlWithRetry(resourceUrl, 3, 120_000, String.class);
-
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(KEY_VAULT_SECRET_VALUE, response.getBody());
         LOGGER.info("--------------------->test app service with MSI over");
@@ -155,7 +149,7 @@ public class KeyVaultIT {
             throw new FileNotFoundException("There's no app.jar file found.");
         }
         try (SSHShell sshShell = SSHShell.open(host, 22, VM_USER_USERNAME, VM_USER_PASSWORD);
-             FileInputStream fis = new FileInputStream(file)) {
+            FileInputStream fis = new FileInputStream(file)) {
             LOGGER.info("Uploading jar file...");
             sshShell.upload(fis, "app.jar", "", true, "4095");
         }
@@ -167,7 +161,7 @@ public class KeyVaultIT {
                 + "-Xrunjdwp:server=y,transport=dt_socket,address=4000,suspend=n "
                 + "-Dazure.keyvault.uri=%s %s &"
                 + " >/log.txt  2>&1",
-            AZURE_KEYVAULT_ENDPOINT,
+            AZURE_KEYVAULT_URI,
             "app.jar"));
 
         vm.runCommand(new RunCommandInput().withCommandId("RunShellScript").withScript(commands));
@@ -185,9 +179,9 @@ public class KeyVaultIT {
     }
 
     private static <T> ResponseEntity<T> curlWithRetry(String resourceUrl,
-                                                       final int retryTimes,
-                                                       int sleepMills,
-                                                       Class<T> clazz) {
+        final int retryTimes,
+        int sleepMills,
+        Class<T> clazz) {
         HttpStatus httpStatus = HttpStatus.BAD_REQUEST;
         ResponseEntity<T> response = ResponseEntity.of(Optional.empty());
         int rt = retryTimes;

@@ -4,6 +4,7 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -62,23 +63,42 @@ public final class SearchIndexerDataSourceConnection {
     private String eTag;
 
     /**
+     * Constructor of {@link SearchIndexerDataSourceConnection}.
+     *
+     * @param name The name of the datasource.
+     */
+    public SearchIndexerDataSourceConnection(String name) {
+        this.name = name;
+    }
+
+    /**
+     * Constructor of {@link SearchIndexerDataSourceConnection}.
+     *
+     * @param name The name of the datasource.
+     * @param type The type of the datasource. Possible values include: 'AzureSql',
+     * 'CosmosDb', 'AzureBlob', 'AzureTable', 'MySql'
+     * @param connectionString The connection string for the datasource.
+     * @param container The data container for the datasource.
+     */
+    @JsonCreator
+    public SearchIndexerDataSourceConnection(
+        @JsonProperty(value = "name") String name,
+        @JsonProperty(value = "type") SearchIndexerDataSourceType type,
+        @JsonProperty(value = "credentials") String connectionString,
+        @JsonProperty(value = "container") SearchIndexerDataContainer container) {
+        this.name = name;
+        this.type = type;
+        this.connectionString = connectionString;
+        this.container = container;
+    }
+
+    /**
      * Get the name property: The name of the datasource.
      *
      * @return the name value.
      */
     public String getName() {
         return this.name;
-    }
-
-    /**
-     * Set the name property: The name of the datasource.
-     *
-     * @param name the name value to set.
-     * @return the SearchIndexerDataSource object itself.
-     */
-    public SearchIndexerDataSourceConnection setName(String name) {
-        this.name = name;
-        return this;
     }
 
     /**

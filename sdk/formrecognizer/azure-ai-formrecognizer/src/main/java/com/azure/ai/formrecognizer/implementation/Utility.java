@@ -4,6 +4,9 @@
 package com.azure.ai.formrecognizer.implementation;
 
 import com.azure.ai.formrecognizer.implementation.models.ContentType;
+import com.azure.ai.formrecognizer.implementation.models.ErrorResponseException;
+import com.azure.ai.formrecognizer.models.ErrorInformation;
+import com.azure.core.exception.HttpResponseException;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Flux;
@@ -186,5 +189,22 @@ public final class Utility {
             this.readBytes = cnt;
             return this;
         }
+    }
+
+    /**
+     * Mapping a {@link ErrorResponseException} to {@link HttpResponseException} if exist. Otherwise, return
+     * original {@link Throwable}.
+     *
+     * @param throwable A {@link Throwable}.
+     * @return A {@link HttpResponseException} or the original throwable type.
+     */
+    public static Throwable mapToHttpResponseExceptionIfExist(Throwable throwable) {
+        if (throwable instanceof ErrorResponseException) {
+            ErrorResponseException errorResponseException = (ErrorResponseException) throwable;
+            return new HttpResponseException(errorResponseException.getMessage(), errorResponseException.getResponse(),
+                new ErrorInformation().setCode(errorResponseException.getValue().getError().getCode()).setMessage(
+                    errorResponseException.getValue().getError().getMessage()));
+        }
+        return throwable;
     }
 }

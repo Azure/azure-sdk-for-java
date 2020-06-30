@@ -5,6 +5,7 @@ package com.azure.ai.formrecognizer.models;
 
 import com.azure.core.annotation.Immutable;
 
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -45,7 +46,7 @@ public final class FormTable {
         final Integer pageNumber) {
         this.rowCount = rowCount;
         this.columnCount = columnCount;
-        this.cells = cells;
+        this.cells = cells == null ? null : Collections.unmodifiableList(cells);
         this.pageNumber = pageNumber;
     }
 
@@ -70,7 +71,7 @@ public final class FormTable {
     /**
      * Get the cells property: List of cells contained in the table.
      *
-     * @return the cells value.
+     * @return the unmodifiable list of cells in the table.
      */
     public List<FormTableCell> getCells() {
         return this.cells;

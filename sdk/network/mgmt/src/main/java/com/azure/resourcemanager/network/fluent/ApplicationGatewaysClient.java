@@ -31,7 +31,6 @@ import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.util.polling.AsyncPollResponse;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.resourcemanager.network.NetworkManagementClient;
 import com.azure.resourcemanager.network.fluent.inner.ApplicationGatewayAvailableSslOptionsInner;
@@ -573,7 +572,7 @@ public final class ApplicationGatewaysClient
             .client
             .<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -595,7 +594,7 @@ public final class ApplicationGatewaysClient
             .client
             .<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -978,7 +977,7 @@ public final class ApplicationGatewaysClient
             .<ApplicationGatewayInner, ApplicationGatewayInner>getLroResultAsync(
                 mono, this.client.getHttpPipeline(), ApplicationGatewayInner.class, ApplicationGatewayInner.class)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -1003,7 +1002,7 @@ public final class ApplicationGatewaysClient
             .<ApplicationGatewayInner, ApplicationGatewayInner>getLroResultAsync(
                 mono, this.client.getHttpPipeline(), ApplicationGatewayInner.class, ApplicationGatewayInner.class)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -1210,7 +1209,7 @@ public final class ApplicationGatewaysClient
             .<ApplicationGatewayInner, ApplicationGatewayInner>getLroResultAsync(
                 mono, this.client.getHttpPipeline(), ApplicationGatewayInner.class, ApplicationGatewayInner.class)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -1235,7 +1234,7 @@ public final class ApplicationGatewaysClient
             .<ApplicationGatewayInner, ApplicationGatewayInner>getLroResultAsync(
                 mono, this.client.getHttpPipeline(), ApplicationGatewayInner.class, ApplicationGatewayInner.class)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -1702,7 +1701,7 @@ public final class ApplicationGatewaysClient
             .client
             .<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -1724,7 +1723,7 @@ public final class ApplicationGatewaysClient
             .client
             .<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -1903,7 +1902,7 @@ public final class ApplicationGatewaysClient
             .client
             .<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -1925,7 +1924,7 @@ public final class ApplicationGatewaysClient
             .client
             .<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -2131,7 +2130,7 @@ public final class ApplicationGatewaysClient
                 ApplicationGatewayBackendHealthInner.class,
                 ApplicationGatewayBackendHealthInner.class)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -2159,7 +2158,7 @@ public final class ApplicationGatewaysClient
                 ApplicationGatewayBackendHealthInner.class,
                 ApplicationGatewayBackendHealthInner.class)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -2187,7 +2186,7 @@ public final class ApplicationGatewaysClient
                 ApplicationGatewayBackendHealthInner.class,
                 ApplicationGatewayBackendHealthInner.class)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -2468,7 +2467,7 @@ public final class ApplicationGatewaysClient
                     ApplicationGatewayBackendHealthOnDemandInner.class,
                     ApplicationGatewayBackendHealthOnDemandInner.class)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -2505,7 +2504,7 @@ public final class ApplicationGatewaysClient
                     ApplicationGatewayBackendHealthOnDemandInner.class,
                     ApplicationGatewayBackendHealthOnDemandInner.class)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -2537,7 +2536,7 @@ public final class ApplicationGatewaysClient
                     ApplicationGatewayBackendHealthOnDemandInner.class,
                     ApplicationGatewayBackendHealthOnDemandInner.class)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**

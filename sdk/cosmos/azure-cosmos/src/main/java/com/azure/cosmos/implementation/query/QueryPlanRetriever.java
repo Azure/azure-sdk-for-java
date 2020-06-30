@@ -23,10 +23,13 @@ class QueryPlanRetriever {
     private static final String SUPPORTED_QUERY_FEATURES = QueryFeature.Aggregate.name() + ", " +
                                                                QueryFeature.CompositeAggregate.name() + ", " +
                                                                QueryFeature.MultipleOrderBy.name() + ", " +
+                                                               QueryFeature.MultipleAggregates.name() + ", " +
                                                                QueryFeature.OrderBy.name() + ", " +
                                                                QueryFeature.OffsetAndLimit.name() + ", " +
                                                                QueryFeature.Distinct.name() + ", " +
-                                                               QueryFeature.Top.name();
+                                                               QueryFeature.GroupBy.name() + ", " +
+                                                               QueryFeature.Top.name() + ", " +
+                                                               QueryFeature.NonValueAggregate.name();
 
     static Mono<PartitionedQueryExecutionInfo> getQueryPlanThroughGatewayAsync(IDocumentQueryClient queryClient,
                                                                                SqlQuerySpec sqlQuerySpec,

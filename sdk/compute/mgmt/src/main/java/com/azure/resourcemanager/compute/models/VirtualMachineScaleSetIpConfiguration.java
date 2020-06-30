@@ -70,7 +70,7 @@ public class VirtualMachineScaleSetIpConfiguration extends SubResource {
      * Specifies an array of references to backend address pools of load
      * balancers. A scale set can reference backend address pools of one public
      * and one internal load balancer. Multiple scale sets cannot use the same
-     * load balancer.
+     * basic sku load balancer.
      */
     @JsonProperty(value = "properties.loadBalancerBackendAddressPools")
     private List<SubResource> loadBalancerBackendAddressPools;
@@ -78,8 +78,8 @@ public class VirtualMachineScaleSetIpConfiguration extends SubResource {
     /*
      * Specifies an array of references to inbound Nat pools of the load
      * balancers. A scale set can reference inbound nat pools of one public and
-     * one internal load balancer. Multiple scale sets cannot use the same load
-     * balancer
+     * one internal load balancer. Multiple scale sets cannot use the same
+     * basic sku load balancer.
      */
     @JsonProperty(value = "properties.loadBalancerInboundNatPools")
     private List<SubResource> loadBalancerInboundNatPools;
@@ -238,7 +238,7 @@ public class VirtualMachineScaleSetIpConfiguration extends SubResource {
     /**
      * Get the loadBalancerBackendAddressPools property: Specifies an array of references to backend address pools of
      * load balancers. A scale set can reference backend address pools of one public and one internal load balancer.
-     * Multiple scale sets cannot use the same load balancer.
+     * Multiple scale sets cannot use the same basic sku load balancer.
      *
      * @return the loadBalancerBackendAddressPools value.
      */
@@ -249,7 +249,7 @@ public class VirtualMachineScaleSetIpConfiguration extends SubResource {
     /**
      * Set the loadBalancerBackendAddressPools property: Specifies an array of references to backend address pools of
      * load balancers. A scale set can reference backend address pools of one public and one internal load balancer.
-     * Multiple scale sets cannot use the same load balancer.
+     * Multiple scale sets cannot use the same basic sku load balancer.
      *
      * @param loadBalancerBackendAddressPools the loadBalancerBackendAddressPools value to set.
      * @return the VirtualMachineScaleSetIpConfiguration object itself.
@@ -263,7 +263,7 @@ public class VirtualMachineScaleSetIpConfiguration extends SubResource {
     /**
      * Get the loadBalancerInboundNatPools property: Specifies an array of references to inbound Nat pools of the load
      * balancers. A scale set can reference inbound nat pools of one public and one internal load balancer. Multiple
-     * scale sets cannot use the same load balancer.
+     * scale sets cannot use the same basic sku load balancer.
      *
      * @return the loadBalancerInboundNatPools value.
      */
@@ -274,7 +274,7 @@ public class VirtualMachineScaleSetIpConfiguration extends SubResource {
     /**
      * Set the loadBalancerInboundNatPools property: Specifies an array of references to inbound Nat pools of the load
      * balancers. A scale set can reference inbound nat pools of one public and one internal load balancer. Multiple
-     * scale sets cannot use the same load balancer.
+     * scale sets cannot use the same basic sku load balancer.
      *
      * @param loadBalancerInboundNatPools the loadBalancerInboundNatPools value to set.
      * @return the VirtualMachineScaleSetIpConfiguration object itself.

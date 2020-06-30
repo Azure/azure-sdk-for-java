@@ -43,7 +43,7 @@ public class VirtualMachineBootDiagnosticsTests extends ComputeManagementTest {
                 .withoutPrimaryPublicIPAddress()
                 .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
                 .withRootUsername("Foo12")
-                .withRootPassword("abc!@#F0orL")
+                .withRootPassword(password())
                 .withBootDiagnostics()
                 .create();
 
@@ -69,7 +69,7 @@ public class VirtualMachineBootDiagnosticsTests extends ComputeManagementTest {
                 .withoutPrimaryPublicIPAddress()
                 .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
                 .withRootUsername("Foo12")
-                .withRootPassword("abc!@#F0orL")
+                .withRootPassword(password())
                 .withBootDiagnostics(creatableStorageAccount)
                 .create();
         Assertions.assertNotNull(virtualMachine);
@@ -100,7 +100,7 @@ public class VirtualMachineBootDiagnosticsTests extends ComputeManagementTest {
                 .withoutPrimaryPublicIPAddress()
                 .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
                 .withRootUsername("Foo12")
-                .withRootPassword("abc!@#F0orL")
+                .withRootPassword(password())
                 .withBootDiagnostics(storageAccount)
                 .create();
 
@@ -151,7 +151,7 @@ public class VirtualMachineBootDiagnosticsTests extends ComputeManagementTest {
                 .withoutPrimaryPublicIPAddress()
                 .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
                 .withRootUsername("Foo12")
-                .withRootPassword("abc!@#F0orL")
+                .withRootPassword(password())
                 .withUnmanagedDisks() // The implicit storage account for OS disk should be used for boot diagnostics as
                                       // well
                 .withBootDiagnostics()
@@ -191,7 +191,7 @@ public class VirtualMachineBootDiagnosticsTests extends ComputeManagementTest {
                 .withoutPrimaryPublicIPAddress()
                 .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
                 .withRootUsername("Foo12")
-                .withRootPassword("abc!@#F0orL")
+                .withRootPassword(password())
                 .withUnmanagedDisks()
                 .withBootDiagnostics()
                 .withExistingStorageAccount(
@@ -217,7 +217,7 @@ public class VirtualMachineBootDiagnosticsTests extends ComputeManagementTest {
                 .withoutPrimaryPublicIPAddress()
                 .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
                 .withRootUsername("Foo12")
-                .withRootPassword("abc!@#F0orL")
+                .withRootPassword(password())
                 .withUnmanagedDisks()
                 .create();
 
@@ -267,7 +267,7 @@ public class VirtualMachineBootDiagnosticsTests extends ComputeManagementTest {
                 .withoutPrimaryPublicIPAddress()
                 .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
                 .withRootUsername("Foo12")
-                .withRootPassword("abc!@#F0orL")
+                .withRootPassword(password())
                 .withUnmanagedDisks()
                 .withBootDiagnostics(
                     creatableStorageAccount) // This storage account should be used for BDiagnostics not OS disk storage

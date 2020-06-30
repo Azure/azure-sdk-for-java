@@ -45,7 +45,7 @@ The value of `AZURE_AUTHORITY_HOST` can be set via [`KnownAuthorityHosts`](https
 
 ### Preparing AzureProfile
   * The `AzureProfile` is a class holding `AzureEnvironment`, `subscriptionId`, `tenantId` to configure the requests sending to wire. 
-  * The `subscriptionId` is mandantory for most resource management while the `tenantId` would be required only for Graph RBAC. They can be set via environment variables.
+  * The `subscriptionId` is mandatory for most resource management while the `tenantId` would be required only for Graph RBAC. They can be set via environment variables.
   
 |variable name|value
 |-|-

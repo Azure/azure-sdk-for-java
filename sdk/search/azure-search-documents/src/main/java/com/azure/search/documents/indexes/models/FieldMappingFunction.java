@@ -4,6 +4,7 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
@@ -27,23 +28,22 @@ public final class FieldMappingFunction {
     private Map<String, Object> parameters;
 
     /**
+     * Constructor of {@link FieldMappingFunction}.
+     *
+     * @param name The name of the field mapping function.
+     */
+    @JsonCreator
+    public FieldMappingFunction(@JsonProperty(value = "name", required = true) String name) {
+        this.name = name;
+    }
+
+    /**
      * Get the name property: The name of the field mapping function.
      *
      * @return the name value.
      */
     public String getName() {
         return this.name;
-    }
-
-    /**
-     * Set the name property: The name of the field mapping function.
-     *
-     * @param name the name value to set.
-     * @return the FieldMappingFunction object itself.
-     */
-    public FieldMappingFunction setName(String name) {
-        this.name = name;
-        return this;
     }
 
     /**
