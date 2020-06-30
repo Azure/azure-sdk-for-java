@@ -8,11 +8,15 @@ import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.policy.*;
+import com.azure.core.test.TestBase;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.data.tables.implementation.AzureTableImpl;
 import com.azure.data.tables.implementation.AzureTableImplBuilder;
-import com.azure.data.tables.implementation.models.*;
+import com.azure.data.tables.implementation.models.OdataMetadataFormat;
+import com.azure.data.tables.implementation.models.QueryOptions;
+import com.azure.data.tables.implementation.models.ResponseFormat;
+import com.azure.data.tables.implementation.models.TableProperties;
 import com.azure.storage.common.implementation.connectionstring.StorageAuthenticationSettings;
 import com.azure.storage.common.implementation.connectionstring.StorageConnectionString;
 import org.junit.jupiter.api.Assertions;
@@ -20,7 +24,7 @@ import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
-import com.azure.core.test.TestBase;
+
 import java.util.*;
 
 /**
@@ -64,7 +68,7 @@ public class AzureTableImplTest extends TestBase {
             .httpClient(httpClientToUse)
             .policies(policies.toArray(new HttpPipelinePolicy[0]))
             .build();
-         azureTable = new AzureTableImplBuilder()
+        azureTable = new AzureTableImplBuilder()
             .pipeline(pipeline)
             .version("2019-02-02")
             .url(storageConnectionString.getTableEndpoint().getPrimaryUri())
@@ -99,7 +103,7 @@ public class AzureTableImplTest extends TestBase {
         String requestId = testResourceNamer.randomUuid();
 
         azureTable.getTables().insertEntityWithResponseAsync(tableName, TIMEOUT,
-           requestId, ResponseFormat.RETURN_CONTENT, properties, null, Context.NONE).log().block();
+            requestId, ResponseFormat.RETURN_CONTENT, properties, null, Context.NONE).log().block();
     }
 
     String randomCharOnlyName(String prefix, int length) {
@@ -426,7 +430,7 @@ public class AzureTableImplTest extends TestBase {
         String partitionKeyEntityB = randomCharOnlyName("partitionKeyB", 20);
         String rowKeyEntityB = randomCharOnlyName("rowKeyB", 20);
         entityB.put(PARTITION_KEY, partitionKeyEntityB);
-        entityB.put(ROW_KEY, rowKeyEntityB );
+        entityB.put(ROW_KEY, rowKeyEntityB);
         insertNoETag(tableName, entityB);
         int expectedStatusCode = 200;
         queryOptions.setSelect(ROW_KEY);
