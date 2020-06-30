@@ -228,7 +228,7 @@ public final class QueueDescription {
     @JacksonXmlProperty(
             localName = "SizeInBytes",
             namespace = "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect")
-    private Integer sizeInBytes;
+    private Long sizeInBytes;
 
     /*
      * Status of a Service Bus resource
@@ -791,7 +791,7 @@ public final class QueueDescription {
      *
      * @return the sizeInBytes value.
      */
-    Integer getSizeInBytes() {
+    Long getSizeInBytes() {
         return this.sizeInBytes;
     }
 
@@ -801,7 +801,7 @@ public final class QueueDescription {
      * @param sizeInBytes the sizeInBytes value to set.
      * @return the QueueDescription object itself.
      */
-    QueueDescription setSizeInBytes(Integer sizeInBytes) {
+    QueueDescription setSizeInBytes(Long sizeInBytes) {
         this.sizeInBytes = sizeInBytes;
         return this;
     }
