@@ -6,6 +6,7 @@ package com.azure.messaging.servicebus.implementation;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.models.QueueDescription;
 import com.azure.messaging.servicebus.models.SubscriptionDescription;
+import com.azure.messaging.servicebus.models.TopicDescription;
 
 import java.util.Objects;
 
@@ -15,6 +16,7 @@ import java.util.Objects;
 public final class EntityHelper {
     private static QueueAccessor queueAccessor;
     private static SubscriptionAccessor subscriptionAccessor;
+    private static TopicAccessor topicAccessor;
 
     static {
         try {
@@ -78,7 +80,28 @@ public final class EntityHelper {
      * @param subscriptionName Name of the subscription.
      */
     public static void setSubscriptionName(SubscriptionDescription subscription, String subscriptionName) {
+        if (subscriptionAccessor == null) {
+            throw new ClientLogger(EntityHelper.class).logExceptionAsError(
+                new IllegalStateException("'subscriptionAccessor' should not be null."));
+        }
+
         subscriptionAccessor.setSubscriptionName(subscription, subscriptionName);
+    }
+
+    /**
+     * Sets the queue accessor.
+     *
+     * @param accessor The queue accessor to set on the queue helper.
+     */
+    public static void setTopicAccessor(TopicAccessor accessor) {
+        Objects.requireNonNull(accessor, "'accessor' cannot be null.");
+
+        if (EntityHelper.topicAccessor != null) {
+            throw new ClientLogger(EntityHelper.class).logExceptionAsError(new IllegalStateException(
+                "'topicAccessor' is already set."));
+        }
+
+        EntityHelper.topicAccessor = accessor;
     }
 
     /**
@@ -88,7 +111,27 @@ public final class EntityHelper {
      * @param topicName Name of the topic.
      */
     public static void setTopicName(SubscriptionDescription subscription, String topicName) {
+        if (subscriptionAccessor == null) {
+            throw new ClientLogger(EntityHelper.class).logExceptionAsError(new IllegalStateException(
+                "'subscriptionAccessor' should not be null."));
+        }
+
         subscriptionAccessor.setTopicName(subscription, topicName);
+    }
+
+    /**
+     * Sets the topic name on a {@link TopicDescription}.
+     *
+     * @param topicDescription Topic to set name on.
+     * @param topicName Name of the topic.
+     */
+    public static void setTopicName(TopicDescription topicDescription, String topicName) {
+        if (topicAccessor == null) {
+            throw new ClientLogger(EntityHelper.class).logExceptionAsError(new IllegalStateException(
+                "'topicAccessor' should not be null."));
+        }
+
+        topicAccessor.setName(topicDescription, topicName);
     }
 
     /**
@@ -123,5 +166,18 @@ public final class EntityHelper {
          * @param subscriptionName Name of the subscription.
          */
         void setSubscriptionName(SubscriptionDescription subscriptionDescription, String subscriptionName);
+    }
+
+    /**
+     * Interface for accessing methods on a topic.
+     */
+    public interface TopicAccessor {
+        /**
+         * Sets the name on a topicDescription.
+         *
+         * @param topicDescription Topic to set name.
+         * @param name Name of the topic.
+         */
+        void setName(TopicDescription topicDescription, String name);
     }
 }

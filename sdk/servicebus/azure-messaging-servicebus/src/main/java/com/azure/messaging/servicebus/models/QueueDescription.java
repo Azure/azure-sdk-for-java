@@ -267,12 +267,7 @@ public final class QueueDescription {
 
     static {
         // This is used by classes in different packages to get access to private and package-private methods.
-        EntityHelper.setQueueAccessor(new EntityHelper.QueueAccessor() {
-            @Override
-            public void setName(QueueDescription entity, String name) {
-                entity.setName(name);
-            }
-        });
+        EntityHelper.setQueueAccessor((entity, name) -> entity.setName(name));
     }
 
     /**

@@ -5,6 +5,8 @@
 package com.azure.messaging.servicebus.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.messaging.servicebus.implementation.EntityHelper;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
@@ -13,6 +15,8 @@ import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.MAX_DURATION;
 
 /** The TopicDescription model. */
 @JacksonXmlRootElement(
@@ -218,6 +222,76 @@ public final class TopicDescription {
             localName = "UserMetadata",
             namespace = "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect")
     private String userMetadata;
+
+    private String topicName;
+
+    static {
+        // This is used by classes in different packages to get access to private and package-private methods.
+        EntityHelper.setTopicAccessor((topicDescription, name) -> topicDescription.setName(name));
+    }
+
+    /**
+     * Json deserialization constructor.
+     */
+    @JsonCreator
+    TopicDescription() {
+    }
+
+    /**
+     * Creates an instance with the name of the topic. Default values for the topic are populated. The properties
+     * populated with defaults are:
+     *
+     * <ul>
+     *     <li>{@link #setAutoDeleteOnIdle(Duration)}</li>
+     *     <li>{@link #setDefaultMessageTimeToLive(Duration)}</li>
+     *     <li>{@link #setDuplicateDetectionHistoryTimeWindow(Duration)}</li>
+     *     <li>{@link #setEnableBatchedOperations(Boolean)}</li>
+     *     <li>{@link #setEnablePartitioning(Boolean)}</li>
+     *     <li>{@link #setMaxSizeInMegabytes(Long)}</li>
+     *     <li>{@link #setRequiresDuplicateDetection(Boolean)}</li>
+     *     <li>{@link #setSupportOrdering(Boolean)}</li>
+     * </ul>
+     *
+     * @param topicName Name of the topic.
+     * @throws IllegalArgumentException if {@code topicName} is a null or empty string.
+     */
+    public TopicDescription(String topicName) {
+        if (topicName == null || topicName.isEmpty()) {
+            throw new ClientLogger(TopicDescription.class).logThrowableAsError(
+                new IllegalArgumentException("'topicName' cannot be null or an empty string."));
+        }
+
+        this.topicName = topicName;
+
+        this.autoDeleteOnIdle = MAX_DURATION;
+        this.defaultMessageTimeToLive = MAX_DURATION;
+        this.requiresDuplicateDetection = false;
+        this.enablePartitioning = false;
+        this.enableBatchedOperations = true;
+        this.duplicateDetectionHistoryTimeWindow = Duration.ofSeconds(60);
+        this.maxSizeInMegabytes = 1024L;
+        this.supportOrdering = false;
+    }
+
+    /**
+     * Gets the name of the topic.
+     *
+     * @return The name of the topic;
+     */
+    public String getName() {
+        return topicName;
+    }
+
+    /**
+     * Sets the topic name.
+     *
+     * @param topicName Name of the topic.
+     * @return the TopicDescription object itself.
+     */
+    TopicDescription setName(String topicName) {
+        this.topicName = topicName;
+        return this;
+    }
 
     /**
      * Get the defaultMessageTimeToLive property: ISO 8601 default message timespan to live value. This is the duration
