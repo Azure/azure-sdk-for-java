@@ -38,7 +38,7 @@
     <dependency>
       <groupId>com.microsoft.spring.data.gremlin</groupId>
       <artifactId>spring-data-gremlin</artifactId>
-      <version>2.3.1-beta.1</version>
+      <version>2.3.1-beta.1</version> <!-- {x-version-update;com.microsoft.spring.data.gremlin:spring-data-gremlin;current} -->
     </dependency>
 
   </dependencies>
