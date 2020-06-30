@@ -254,7 +254,6 @@ public class DatabaseAccountsInner implements InnerSupportsGet<DatabaseAccountGe
     private ServiceResponse<DatabaseAccountGetResultsInner> getByResourceGroupDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<DatabaseAccountGetResultsInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<DatabaseAccountGetResultsInner>() { }.getType())
-                .register(404, new TypeToken<Void>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
