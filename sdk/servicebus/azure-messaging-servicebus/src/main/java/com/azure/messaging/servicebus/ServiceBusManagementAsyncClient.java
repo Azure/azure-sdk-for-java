@@ -20,18 +20,21 @@ import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.IterableStream;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.messaging.servicebus.implementation.EntityHelper;
 import com.azure.messaging.servicebus.implementation.EntitysImpl;
 import com.azure.messaging.servicebus.implementation.ServiceBusManagementClientImpl;
 import com.azure.messaging.servicebus.implementation.ServiceBusManagementSerializer;
 import com.azure.messaging.servicebus.implementation.models.CreateQueueBody;
 import com.azure.messaging.servicebus.implementation.models.CreateQueueBodyContent;
+import com.azure.messaging.servicebus.implementation.models.CreateSubscriptionBody;
+import com.azure.messaging.servicebus.implementation.models.CreateSubscriptionBodyContent;
 import com.azure.messaging.servicebus.implementation.models.QueueDescriptionEntry;
 import com.azure.messaging.servicebus.implementation.models.QueueDescriptionFeed;
 import com.azure.messaging.servicebus.implementation.models.ResponseLink;
 import com.azure.messaging.servicebus.implementation.models.ServiceBusManagementError;
 import com.azure.messaging.servicebus.implementation.models.ServiceBusManagementErrorException;
+import com.azure.messaging.servicebus.implementation.models.SubscriptionDescriptionEntry;
 import com.azure.messaging.servicebus.models.QueueDescription;
-import com.azure.messaging.servicebus.implementation.EntityHelper;
 import com.azure.messaging.servicebus.models.QueueRuntimeInfo;
 import com.azure.messaging.servicebus.models.SubscriptionDescription;
 import reactor.core.publisher.Mono;
@@ -71,7 +74,7 @@ public final class ServiceBusManagementAsyncClient {
     private static final int NUMBER_OF_ELEMENTS = 10;
 
     private final ServiceBusManagementClientImpl managementClient;
-    private final EntitysImpl queuesClient;
+    private final EntitysImpl entityClient;
     private final ClientLogger logger = new ClientLogger(ServiceBusManagementAsyncClient.class);
     private final ServiceBusManagementSerializer serializer;
 
@@ -84,7 +87,7 @@ public final class ServiceBusManagementAsyncClient {
     ServiceBusManagementAsyncClient(ServiceBusManagementClientImpl managementClient,
         ServiceBusManagementSerializer serializer) {
         this.managementClient = Objects.requireNonNull(managementClient, "'managementClient' cannot be null.");
-        this.queuesClient = managementClient.getEntitys();
+        this.entityClient = managementClient.getEntitys();
         this.serializer = serializer;
     }
 
@@ -135,45 +138,41 @@ public final class ServiceBusManagementAsyncClient {
     /**
      * Creates a subscription the {@link SubscriptionDescription}.
      *
-     * @param queue Information about the queue to create.
+     * @param subscription Information about the subscription to create.
      *
-     * @return A Mono that completes with information about the created queue.
+     * @return A Mono that completes with information about the created subscription.
      * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
      *     namespace.
-     * @throws HttpResponseException If the request body was invalid, the queue quota is exceeded, or an error
-     *     occurred processing the request.
-     * @throws IllegalArgumentException if {@link QueueDescription#getName() queue.getName()} is null or an empty
-     *     string.
-     * @throws NullPointerException if {@code queue} is null.
-     * @throws ResourceExistsException if a queue exists with the same {@link QueueDescription#getName()
-     *     queueName}.
+     * @throws HttpResponseException If the request body was invalid, the quota is exceeded, or an error occurred
+     *     processing the request.
+     * @throws NullPointerException if {@code subscription} is null.
+     * @throws ResourceExistsException if a subscription exists with the same topic and subscription name.
+     *
      * @see <a href="https://docs.microsoft.com/rest/api/servicebus/update-entity">Create or Update Entity</a>
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SubscriptionDescription> createSubscription(SubscriptionDescription subscription) {
-        return createQueueWithResponse(queue).map(Response::getValue);
+        return createSubscriptionWithResponse(subscription).map(Response::getValue);
     }
 
     /**
      * Creates a queue and returns the created queue in addition to the HTTP response.
      *
-     * @param queue The queue to create.
+     * @param subscription Information about the subscription to create.
      *
      * @return A Mono that returns the created queue in addition to the HTTP response.
      * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
      *     namespace.
-     * @throws HttpResponseException If the request body was invalid, the queue quota is exceeded, or an error
-     *     occurred processing the request.
-     * @throws IllegalArgumentException if {@link QueueDescription#getName() queue.getName()} is null or an empty
-     *     string.
-     * @throws NullPointerException if {@code queue} is null.
-     * @throws ResourceExistsException if a queue exists with the same {@link QueueDescription#getName()
-     *     queueName}.
+     * @throws HttpResponseException If the request body was invalid, the quota is exceeded, or an error occurred
+     *     processing the request.
+     * @throws NullPointerException if {@code subscription} is null.
+     * @throws ResourceExistsException if a subscription exists with the same topic and subscription name.
+     *
      * @see <a href="https://docs.microsoft.com/rest/api/servicebus/update-entity">Create or Update Entity</a>
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SubscriptionDescription>> createSubscriptionWithResponse(SubscriptionDescription subscription) {
-        return withContext(context -> createQueueWithResponse(queue, context));
+        return withContext(context -> createSubscriptionWithResponse(subscription, context));
     }
 
     /**
@@ -412,7 +411,7 @@ public final class ServiceBusManagementAsyncClient {
         final Context withTracing = context.addData(AZ_TRACING_NAMESPACE_KEY, SERVICE_BUS_TRACING_NAMESPACE_VALUE);
 
         try {
-            return queuesClient.putWithResponseAsync(queue.getName(), createEntity, null, withTracing)
+            return entityClient.putWithResponseAsync(queue.getName(), createEntity, null, withTracing)
                 .onErrorMap(ServiceBusManagementAsyncClient::mapException)
                 .map(this::deserializeQueue);
         } catch (RuntimeException ex) {
@@ -431,30 +430,24 @@ public final class ServiceBusManagementAsyncClient {
     Mono<Response<SubscriptionDescription>> createSubscriptionWithResponse(SubscriptionDescription subscription,
         Context context) {
         if (subscription == null) {
-            return monoError(logger, new NullPointerException("'queue' cannot be null"));
-        } else if (subscription.get() == null || subscription.getName().isEmpty()) {
-            return monoError(logger, new IllegalArgumentException("'queue.getName' cannot be null or empty."));
-        } else if (context == null) {
-            return monoError(logger, new NullPointerException("'context' cannot be null."));
+            return monoError(logger, new NullPointerException("'subscription' cannot be null"));
         }
 
-        final CreateQueueBodyContent content = new CreateQueueBodyContent()
+        final CreateSubscriptionBodyContent content = new CreateSubscriptionBodyContent()
             .setType(CONTENT_TYPE)
-            .setQueueDescription(subscription);
-        final CreateQueueBody createEntity = new CreateQueueBody()
-            .setContent(content);
+            .setSubscriptionDescription(subscription);
+        final CreateSubscriptionBody createEntity = new CreateSubscriptionBody().setContent(content);
 
         final Context withTracing = context.addData(AZ_TRACING_NAMESPACE_KEY, SERVICE_BUS_TRACING_NAMESPACE_VALUE);
 
         try {
-            return queuesClient.putWithResponseAsync(subscription.getName(), createEntity, null, withTracing)
+            return entityClient.putWithResponseAsync(subscription.getTopicName(), createEntity, null, withTracing)
                 .onErrorMap(ServiceBusManagementAsyncClient::mapException)
-                .map(this::deserializeQueue);
+                .map(this::deserializeSubscription);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
-
 
     /**
      * Deletes a queue with its context.
@@ -476,7 +469,7 @@ public final class ServiceBusManagementAsyncClient {
         final Context withTracing = context.addData(AZ_TRACING_NAMESPACE_KEY, SERVICE_BUS_TRACING_NAMESPACE_VALUE);
 
         try {
-            return queuesClient.deleteWithResponseAsync(queueName, withTracing)
+            return entityClient.deleteWithResponseAsync(queueName, withTracing)
                 .onErrorMap(ServiceBusManagementAsyncClient::mapException)
                 .map(response -> {
                     return new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
@@ -507,7 +500,7 @@ public final class ServiceBusManagementAsyncClient {
         final Context withTracing = context.addData(AZ_TRACING_NAMESPACE_KEY, SERVICE_BUS_TRACING_NAMESPACE_VALUE);
 
         try {
-            return queuesClient.getWithResponseAsync(queueName, true, withTracing)
+            return entityClient.getWithResponseAsync(queueName, true, withTracing)
                 .onErrorMap(ServiceBusManagementAsyncClient::mapException)
                 .map(response -> {
                     final Response<QueueDescription> deserializeQueue = deserializeQueue(response);
@@ -543,7 +536,7 @@ public final class ServiceBusManagementAsyncClient {
         final Context withTracing = context.addData(AZ_TRACING_NAMESPACE_KEY, SERVICE_BUS_TRACING_NAMESPACE_VALUE);
 
         try {
-            return queuesClient.getWithResponseAsync(queueName, true, withTracing)
+            return entityClient.getWithResponseAsync(queueName, true, withTracing)
                 .onErrorMap(ServiceBusManagementAsyncClient::mapException)
                 .map(this::deserializeQueue);
         } catch (RuntimeException ex) {
@@ -618,7 +611,7 @@ public final class ServiceBusManagementAsyncClient {
 
         try {
             // If-Match == "*" to unconditionally update. This is in line with the existing client library behaviour.
-            return queuesClient.putWithResponseAsync(queue.getName(), createEntity, "*", withTracing)
+            return entityClient.putWithResponseAsync(queue.getName(), createEntity, "*", withTracing)
                 .onErrorMap(ServiceBusManagementAsyncClient::mapException)
                 .map(response -> deserializeQueue(response));
         } catch (RuntimeException ex) {
@@ -682,6 +675,32 @@ public final class ServiceBusManagementAsyncClient {
         final QueueDescription result = entry.getContent().getQueueDescription();
         final String queueName = getTitleValue(entry.getTitle());
         EntityHelper.setQueueName(result, queueName);
+
+        return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), result);
+    }
+
+    /**
+     * Converts a Response into its corresponding {@link SubscriptionDescriptionEntry} then mapped into {@link
+     * SubscriptionDescription}.
+     *
+     * @param response HTTP Response to deserialize.
+     *
+     * @return The corresponding HTTP response with convenience properties set.
+     */
+    private Response<SubscriptionDescription> deserializeSubscription(Response<Object> response) {
+        final SubscriptionDescriptionEntry entry = deserialize(response.getValue(), SubscriptionDescriptionEntry.class);
+
+        // This was an empty response (ie. 204).
+        if (entry == null) {
+            return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), null);
+        } else if (entry.getContent() == null) {
+            logger.warning("entry.getContent() is null. There should have been content returned. Entry: {}", entry);
+            return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), null);
+        }
+
+        final SubscriptionDescription result = entry.getContent().getSubscriptionDescription();
+        final String topicName = getTitleValue(entry.getTitle());
+        EntityHelper.setTopicName(result, topicName);
 
         return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), result);
     }
