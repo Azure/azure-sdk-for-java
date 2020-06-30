@@ -16,16 +16,16 @@ public class PipelinedDocumentQueryParams<T extends Resource> {
     private int top = -1;
     private int initialPageSize;
     private boolean isContinuationExpected;
-    private String collectionRid;
-    private ResourceType resourceTypeEnum;
-    private Class<T> resourceType;
-    private SqlQuerySpec query;
-    private String resourceLink;
-    private Boolean getLazyResponseFeed;
-    private UUID correlatedActivityId;
-    private CosmosQueryRequestOptions cosmosQueryRequestOptions;
+    private boolean getLazyResponseFeed;
+    private final String collectionRid;
+    private final ResourceType resourceTypeEnum;
+    private final Class<T> resourceType;
+    private final SqlQuerySpec query;
+    private final String resourceLink;
+    private final UUID correlatedActivityId;
+    private final CosmosQueryRequestOptions cosmosQueryRequestOptions;
     private final List<PartitionKeyRange> partitionKeyRanges;
-    private QueryInfo queryInfo;
+    private final QueryInfo queryInfo;
 
     public PipelinedDocumentQueryParams(
         ResourceType resourceTypeEnum,
@@ -79,68 +79,40 @@ public class PipelinedDocumentQueryParams<T extends Resource> {
         isContinuationExpected = continuationExpected;
     }
 
-    public String getCollectionRid() {
-        return collectionRid;
+    public boolean isGetLazyResponseFeed() {
+        return getLazyResponseFeed;
     }
 
-    public void setCollectionRid(String collectionRid) {
-        this.collectionRid = collectionRid;
+    public void setGetLazyResponseFeed(boolean getLazyResponseFeed) {
+        this.getLazyResponseFeed = getLazyResponseFeed;
+    }
+
+    public String getCollectionRid() {
+        return collectionRid;
     }
 
     public ResourceType getResourceTypeEnum() {
         return resourceTypeEnum;
     }
 
-    public void setResourceTypeEnum(ResourceType resourceTypeEnum) {
-        this.resourceTypeEnum = resourceTypeEnum;
-    }
-
     public Class<T> getResourceType() {
         return resourceType;
-    }
-
-    public void setResourceType(Class<T> resourceType) {
-        this.resourceType = resourceType;
     }
 
     public SqlQuerySpec getQuery() {
         return query;
     }
 
-    public void setQuery(SqlQuerySpec query) {
-        this.query = query;
-    }
-
     public String getResourceLink() {
         return resourceLink;
-    }
-
-    public void setResourceLink(String resourceLink) {
-        this.resourceLink = resourceLink;
-    }
-
-    public Boolean getGetLazyResponseFeed() {
-        return getLazyResponseFeed;
-    }
-
-    public void setGetLazyResponseFeed(Boolean getLazyResponseFeed) {
-        this.getLazyResponseFeed = getLazyResponseFeed;
     }
 
     public UUID getCorrelatedActivityId() {
         return correlatedActivityId;
     }
 
-    public void setCorrelatedActivityId(UUID correlatedActivityId) {
-        this.correlatedActivityId = correlatedActivityId;
-    }
-
     public CosmosQueryRequestOptions getCosmosQueryRequestOptions() {
         return cosmosQueryRequestOptions;
-    }
-
-    public void setCosmosQueryRequestOptions(CosmosQueryRequestOptions cosmosQueryRequestOptions) {
-        this.cosmosQueryRequestOptions = cosmosQueryRequestOptions;
     }
 
     public List<PartitionKeyRange> getPartitionKeyRanges() {
@@ -149,9 +121,5 @@ public class PipelinedDocumentQueryParams<T extends Resource> {
 
     public QueryInfo getQueryInfo() {
         return queryInfo;
-    }
-
-    public void setQueryInfo(QueryInfo queryInfo) {
-        this.queryInfo = queryInfo;
     }
 }
