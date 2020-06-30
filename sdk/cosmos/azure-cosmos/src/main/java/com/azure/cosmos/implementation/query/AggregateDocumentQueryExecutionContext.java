@@ -57,8 +57,8 @@ public class AggregateDocumentQueryExecutionContext<T extends Resource> implemen
                 .map( superList -> {
 
                     double requestCharge = 0;
-                    List<Document> aggregateResults = new ArrayList<Document>();
-                    HashMap<String, String> headers = new HashMap<String, String>();
+                    List<Document> aggregateResults = new ArrayList<>();
+                    HashMap<String, String> headers = new HashMap<>();
 
                     for(FeedResponse<T> page : superList) {
 
@@ -114,14 +114,12 @@ public class AggregateDocumentQueryExecutionContext<T extends Resource> implemen
 
         return createSourceComponentFunction
                    .apply(continuationToken, documentQueryParams)
-                   .map(component -> {
-                       return new AggregateDocumentQueryExecutionContext<T>(component,
-                                                                            new ArrayList<>(aggregates),
-                                                                            groupByAliasToAggregateType,
-                                                                            groupByAliases,
-                                                                            hasSelectValue,
-                                                                            continuationToken);
-                   });
+                   .map(component -> new AggregateDocumentQueryExecutionContext<T>(component,
+                                                                        new ArrayList<>(aggregates),
+                                                                        groupByAliasToAggregateType,
+                                                                        groupByAliases,
+                                                                        hasSelectValue,
+                                                                        continuationToken));
     }
 
     public IDocumentQueryExecutionComponent<T> getComponent() {

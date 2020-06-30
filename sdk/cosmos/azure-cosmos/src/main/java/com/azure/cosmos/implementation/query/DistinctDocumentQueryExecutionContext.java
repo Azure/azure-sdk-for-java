@@ -71,11 +71,9 @@ public class DistinctDocumentQueryExecutionContext<T extends Resource> implement
 
         final UInt128 continuationTokenLastHash = distinctContinuationToken.getLastHash();
 
-        return createSourceComponentFunction.apply(distinctContinuationToken.getSourceToken(), documentQueryParams).map(component -> {
-            return new DistinctDocumentQueryExecutionContext<T>(component,
-                                                                distinctQueryType,
-                                                                continuationTokenLastHash);
-        });
+        return createSourceComponentFunction
+            .apply(distinctContinuationToken.getSourceToken(), documentQueryParams)
+            .map(component -> new DistinctDocumentQueryExecutionContext<T>(component, distinctQueryType, continuationTokenLastHash));
     }
 
     IDocumentQueryExecutionComponent<T> getComponent() {
