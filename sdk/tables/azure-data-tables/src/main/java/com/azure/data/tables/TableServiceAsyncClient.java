@@ -27,10 +27,20 @@ public class TableServiceAsyncClient {
     /**
      * deletes the given table. Will error if the table doesn't exists or cannot be found with the given name.
      *
-     * @param name the name of the table to create
+     * @param name the name of the table to delete
      * @return mono void
      */
     public Mono<Void> deleteTable(String name) {
+        return Mono.empty();
+    }
+
+    /**
+     * deletes the given table. Will error if the table doesn't exists or cannot be found with the given name.
+     *
+     * @param azureTable the table to delete
+     * @return mono void
+     */
+    public Mono<Void> deleteTable(AzureTable azureTable) {
         return Mono.empty();
     }
 

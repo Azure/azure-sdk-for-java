@@ -19,16 +19,6 @@ public class TableAsyncClient {
     }
 
     /**
-     * returns the table associated with this table client
-     *
-     * @param tableName the name of the table
-     * @return the table
-     */
-    public Mono<AzureTable> getTable(String tableName) {
-        return null;
-    }
-
-    /**
      * Queries and returns entities in the given table using the select and filter strings
      *
      * @param queryOptions the odata query object
@@ -47,17 +37,6 @@ public class TableAsyncClient {
      * @return the created TableEntity
      */
     public Mono<TableEntity> insertEntity(String row, String partition, Map<String, Object> tableEntityProperties) {
-        return null;
-    }
-
-    /**
-     * insert a TableEntity with the given row and partition key
-     *
-     * @param row row key
-     * @param partition partition key
-     * @return the table entity which is inserted
-     */
-    public Mono<TableEntity> insertEntity(String row, String partition) {
         return null;
     }
 

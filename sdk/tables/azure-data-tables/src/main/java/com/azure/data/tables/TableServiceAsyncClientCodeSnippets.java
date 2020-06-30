@@ -54,7 +54,7 @@ public class TableServiceAsyncClientCodeSnippets {
         String row = "crayolaMarkers";
         String partitionKey = "markers";
 
-        tableAsyncClient.insertEntity(row, partitionKey).subscribe(tableEntity -> {
+        tableAsyncClient.insertEntity(new TableEntity(row, partitionKey, null)).subscribe(tableEntity -> {
             System.out.println("Insert Entity Successful. Entity: " + tableEntity);
         }, error -> {
             System.out.println("There was an error inserting the Entity. Error: " + error);

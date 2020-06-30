@@ -24,7 +24,7 @@ public class TableServiceClientCodeSnippets {
 
         //create a table
         try {
-            tableServiceClient.createTable("OfficeSupplies");
+            AzureTable officeSuppliesTable = tableServiceClient.createTable("OfficeSupplies");
         } catch (TableServiceErrorException e) {
             //use azure core errors? based on
             System.out.println("Create Table Unsuccessful. Error: " + e);

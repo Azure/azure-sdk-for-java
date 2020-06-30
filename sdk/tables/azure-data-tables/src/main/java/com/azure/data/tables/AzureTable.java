@@ -17,4 +17,12 @@ public class AzureTable {
     public String getName() {
         return name;
     }
+
+    /**
+     * returns the associated table client or null if it doesn't exist
+     * @return the associated table client
+     */
+    public TableClient getClient() {
+        return null;
+    }
 }

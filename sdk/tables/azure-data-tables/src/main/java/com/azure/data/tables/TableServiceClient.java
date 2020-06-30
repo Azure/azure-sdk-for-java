@@ -25,18 +25,26 @@ public class TableServiceClient {
     /**
      * deletes the given table. Will error if the table doesn't exists or cannot be found with the given name.
      *
-     * @param name
+     * @param name the name of the table to be deleted
      */
     public void deleteTable(String name) {
     }
 
     /**
-     * retrieves the table client for the provided table or creates one if it doesn't exist
+     * deletes the given table. Will error if the table doesn't exists or cannot be found with the given name.
+     *
+     * @param azureTable the table to be deleted
+     */
+    public void deleteTable(AzureTable azureTable) {
+    }
+
+    /**
+     * gets a given table by name
      *
      * @param name the name of the table
-     * @return associated TableClient
+     * @return associated azure table object
      */
-    public TableClient getTableClient(String name) {
+    public AzureTable getTable(String name) {
         return null;
     }
 
