@@ -102,7 +102,7 @@ public class VirtualMachineScaleSetManagedDiskOperationsTests extends ComputeMan
         virtualMachineScaleSetVMs = vmScaleSet.virtualMachines();
         virtualMachines = virtualMachineScaleSetVMs.list();
 
-        SdkContext.getDelayDuration(Duration.ofMinutes(1));
+        SdkContext.sleep(60 * 1000);
 
         Assertions.assertEquals(TestUtilities.getSize(virtualMachines), vmScaleSet.capacity());
         for (VirtualMachineScaleSetVM vm : virtualMachines) {
