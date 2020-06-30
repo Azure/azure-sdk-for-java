@@ -154,7 +154,7 @@ public class FormRecognizerAsyncClientJavaDocCodeSnippets {
             recognizePollingOperation -> recognizePollingOperation.getFinalResult().subscribe(contentPageResult -> {
                 // Table information
                 contentPageResult.forEach(recognizedForm -> {
-                    System.out.printf("Page Angle: %s%n", recognizedForm.getTextAngle());
+                    System.out.printf("Text angle: %s%n", recognizedForm.getTextAngle());
                     System.out.printf("Page Dimension unit: %s%n", recognizedForm.getUnit());
                     System.out.println("Recognized Tables: ");
                     recognizedForm.getTables().forEach(formTable ->
