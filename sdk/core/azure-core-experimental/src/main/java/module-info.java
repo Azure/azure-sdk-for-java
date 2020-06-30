@@ -5,4 +5,6 @@ module com.azure.core.experimental {
     requires transitive com.azure.core;
 
     exports com.azure.core.experimental.serializer;
+
+    uses com.azure.core.experimental.serializer.JsonSerializerProvider;
 }
