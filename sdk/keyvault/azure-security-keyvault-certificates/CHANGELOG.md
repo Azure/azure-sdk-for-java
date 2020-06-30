@@ -111,9 +111,9 @@ For details on the Azure SDK for Java (August 2019 Preview) release refer to the
 
 This library is not a direct replacement for certificates management operations from [microsoft-azure-keyvault](https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/keyvault/microsoft-azure-keyvault). Applications using that library would require code changes to use `azure-keyvault-certificates`.
 This package's
-[documentation](https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/keyvault/azure-keyvault-certificates/README.md)
+[documentation](https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/keyvault/azure-security-keyvault-certificates/README.md)
 and
-[samples](https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/keyvault/azure-keyvault-certificates/src/samples/java)
+[samples](https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/keyvault/azure-security-keyvault-certificates/src/samples/java)
 demonstrate the new API.
 
 
