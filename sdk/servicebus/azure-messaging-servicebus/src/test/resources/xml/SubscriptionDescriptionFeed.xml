@@ -1,20 +1,20 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
   <title type="text">Subscriptions</title>
-  <id>https://sb-java-conniey-5.servicebus.windows.net/topic/Subscriptions?api-version=2017-04&amp;enrich=false&amp;$skip=0&amp;$top=100</id>
+  <id>feed-id</id>
   <updated>2020-06-30T11:41:32Z</updated>
   <link rel="self" href="https://sb-java-conniey-5.servicebus.windows.net/topic/Subscriptions?api-version=2017-04&amp;enrich=false&amp;$skip=0&amp;$top=100"/>
   <entry xml:base="https://sb-java-conniey-5.servicebus.windows.net/topic/Subscriptions?api-version=2017-04&amp;enrich=false&amp;$skip=0&amp;$top=100">
     <id>https://sb-java-conniey-5.servicebus.windows.net/topic/Subscriptions/subscription-0?api-version=2017-04</id>
     <title type="text">subscription-0</title>
     <published>2020-06-22T23:47:53Z</published>
-    <updated>2020-06-22T23:47:53Z</updated>
+    <updated>2020-06-23T23:47:53Z</updated>
     <link rel="self" href="Subscriptions/subscription-0?api-version=2017-04"/>
     <content type="application/xml">
       <SubscriptionDescription xmlns="http://schemas.microsoft.com/netservices/2010/10/servicebus/connect"
       >
         <LockDuration>PT15S</LockDuration>
         <RequiresSession>false</RequiresSession>
-        <DefaultMessageTimeToLive>P10675199DT2H48M5.4775807S</DefaultMessageTimeToLive>
+        <DefaultMessageTimeToLive>PT5M</DefaultMessageTimeToLive>
         <DeadLetteringOnMessageExpiration>false</DeadLetteringOnMessageExpiration>
         <DeadLetteringOnFilterEvaluationExceptions>true</DeadLetteringOnFilterEvaluationExceptions>
         <MessageCount>0</MessageCount>
@@ -22,8 +22,8 @@
         <EnableBatchedOperations>true</EnableBatchedOperations>
         <Status>Active</Status>
         <CreatedAt>2020-06-22T23:47:53.9193827Z</CreatedAt>
-        <UpdatedAt>2020-06-22T23:47:53.9193827Z</UpdatedAt>
-        <AccessedAt>2020-06-22T23:47:53.92Z</AccessedAt>
+        <UpdatedAt>2020-06-21T23:47:53.9193827Z</UpdatedAt>
+        <AccessedAt>2020-06-20T23:47:53.92Z</AccessedAt>
         <CountDetails xmlns:d2p1="http://schemas.microsoft.com/netservices/2011/06/servicebus">
           <d2p1:ActiveMessageCount>0</d2p1:ActiveMessageCount>
           <d2p1:DeadLetterMessageCount>0</d2p1:DeadLetterMessageCount>
@@ -31,304 +31,7 @@
           <d2p1:TransferMessageCount>0</d2p1:TransferMessageCount>
           <d2p1:TransferDeadLetterMessageCount>0</d2p1:TransferDeadLetterMessageCount>
         </CountDetails>
-        <AutoDeleteOnIdle>P10675199DT2H48M5.4775807S</AutoDeleteOnIdle>
-        <EntityAvailabilityStatus>Available</EntityAvailabilityStatus>
-      </SubscriptionDescription>
-    </content>
-  </entry>
-  <entry xml:base="https://sb-java-conniey-5.servicebus.windows.net/topic/Subscriptions?api-version=2017-04&amp;enrich=false&amp;$skip=0&amp;$top=100">
-    <id>https://sb-java-conniey-5.servicebus.windows.net/topic/Subscriptions/subscription-1?api-version=2017-04</id>
-    <title type="text">subscription-1</title>
-    <published>2020-06-22T23:47:53Z</published>
-    <updated>2020-06-22T23:47:53Z</updated>
-    <link rel="self" href="Subscriptions/subscription-1?api-version=2017-04"/>
-    <content type="application/xml">
-      <SubscriptionDescription xmlns="http://schemas.microsoft.com/netservices/2010/10/servicebus/connect"
-      >
-        <LockDuration>PT15S</LockDuration>
-        <RequiresSession>false</RequiresSession>
-        <DefaultMessageTimeToLive>P10675199DT2H48M5.4775807S</DefaultMessageTimeToLive>
-        <DeadLetteringOnMessageExpiration>false</DeadLetteringOnMessageExpiration>
-        <DeadLetteringOnFilterEvaluationExceptions>true</DeadLetteringOnFilterEvaluationExceptions>
-        <MessageCount>0</MessageCount>
-        <MaxDeliveryCount>5</MaxDeliveryCount>
-        <EnableBatchedOperations>true</EnableBatchedOperations>
-        <Status>Active</Status>
-        <CreatedAt>2020-06-22T23:47:53.9193827Z</CreatedAt>
-        <UpdatedAt>2020-06-22T23:47:53.9193827Z</UpdatedAt>
-        <AccessedAt>2020-06-22T23:47:53.92Z</AccessedAt>
-        <CountDetails xmlns:d2p1="http://schemas.microsoft.com/netservices/2011/06/servicebus">
-          <d2p1:ActiveMessageCount>0</d2p1:ActiveMessageCount>
-          <d2p1:DeadLetterMessageCount>0</d2p1:DeadLetterMessageCount>
-          <d2p1:ScheduledMessageCount>0</d2p1:ScheduledMessageCount>
-          <d2p1:TransferMessageCount>0</d2p1:TransferMessageCount>
-          <d2p1:TransferDeadLetterMessageCount>0</d2p1:TransferDeadLetterMessageCount>
-        </CountDetails>
-        <AutoDeleteOnIdle>P10675199DT2H48M5.4775807S</AutoDeleteOnIdle>
-        <EntityAvailabilityStatus>Available</EntityAvailabilityStatus>
-      </SubscriptionDescription>
-    </content>
-  </entry>
-  <entry xml:base="https://sb-java-conniey-5.servicebus.windows.net/topic/Subscriptions?api-version=2017-04&amp;enrich=false&amp;$skip=0&amp;$top=100">
-    <id>https://sb-java-conniey-5.servicebus.windows.net/topic/Subscriptions/subscription-2?api-version=2017-04</id>
-    <title type="text">subscription-2</title>
-    <published>2020-06-22T23:47:53Z</published>
-    <updated>2020-06-22T23:47:53Z</updated>
-    <link rel="self" href="Subscriptions/subscription-2?api-version=2017-04"/>
-    <content type="application/xml">
-      <SubscriptionDescription xmlns="http://schemas.microsoft.com/netservices/2010/10/servicebus/connect"
-      >
-        <LockDuration>PT15S</LockDuration>
-        <RequiresSession>false</RequiresSession>
-        <DefaultMessageTimeToLive>P10675199DT2H48M5.4775807S</DefaultMessageTimeToLive>
-        <DeadLetteringOnMessageExpiration>false</DeadLetteringOnMessageExpiration>
-        <DeadLetteringOnFilterEvaluationExceptions>true</DeadLetteringOnFilterEvaluationExceptions>
-        <MessageCount>0</MessageCount>
-        <MaxDeliveryCount>5</MaxDeliveryCount>
-        <EnableBatchedOperations>true</EnableBatchedOperations>
-        <Status>Active</Status>
-        <CreatedAt>2020-06-22T23:47:53.9037826Z</CreatedAt>
-        <UpdatedAt>2020-06-22T23:47:53.9037826Z</UpdatedAt>
-        <AccessedAt>2020-06-22T23:47:53.903Z</AccessedAt>
-        <CountDetails xmlns:d2p1="http://schemas.microsoft.com/netservices/2011/06/servicebus">
-          <d2p1:ActiveMessageCount>0</d2p1:ActiveMessageCount>
-          <d2p1:DeadLetterMessageCount>0</d2p1:DeadLetterMessageCount>
-          <d2p1:ScheduledMessageCount>0</d2p1:ScheduledMessageCount>
-          <d2p1:TransferMessageCount>0</d2p1:TransferMessageCount>
-          <d2p1:TransferDeadLetterMessageCount>0</d2p1:TransferDeadLetterMessageCount>
-        </CountDetails>
-        <AutoDeleteOnIdle>P10675199DT2H48M5.4775807S</AutoDeleteOnIdle>
-        <EntityAvailabilityStatus>Available</EntityAvailabilityStatus>
-      </SubscriptionDescription>
-    </content>
-  </entry>
-  <entry xml:base="https://sb-java-conniey-5.servicebus.windows.net/topic/Subscriptions?api-version=2017-04&amp;enrich=false&amp;$skip=0&amp;$top=100">
-    <id>https://sb-java-conniey-5.servicebus.windows.net/topic/Subscriptions/subscription-3?api-version=2017-04</id>
-    <title type="text">subscription-3</title>
-    <published>2020-06-22T23:47:53Z</published>
-    <updated>2020-06-22T23:47:53Z</updated>
-    <link rel="self" href="Subscriptions/subscription-3?api-version=2017-04"/>
-    <content type="application/xml">
-      <SubscriptionDescription xmlns="http://schemas.microsoft.com/netservices/2010/10/servicebus/connect"
-      >
-        <LockDuration>PT15S</LockDuration>
-        <RequiresSession>false</RequiresSession>
-        <DefaultMessageTimeToLive>P10675199DT2H48M5.4775807S</DefaultMessageTimeToLive>
-        <DeadLetteringOnMessageExpiration>false</DeadLetteringOnMessageExpiration>
-        <DeadLetteringOnFilterEvaluationExceptions>true</DeadLetteringOnFilterEvaluationExceptions>
-        <MessageCount>0</MessageCount>
-        <MaxDeliveryCount>5</MaxDeliveryCount>
-        <EnableBatchedOperations>true</EnableBatchedOperations>
-        <Status>Active</Status>
-        <CreatedAt>2020-06-22T23:47:53.8569185Z</CreatedAt>
-        <UpdatedAt>2020-06-22T23:47:53.8569185Z</UpdatedAt>
-        <AccessedAt>2020-06-22T23:47:53.857Z</AccessedAt>
-        <CountDetails xmlns:d2p1="http://schemas.microsoft.com/netservices/2011/06/servicebus">
-          <d2p1:ActiveMessageCount>0</d2p1:ActiveMessageCount>
-          <d2p1:DeadLetterMessageCount>0</d2p1:DeadLetterMessageCount>
-          <d2p1:ScheduledMessageCount>0</d2p1:ScheduledMessageCount>
-          <d2p1:TransferMessageCount>0</d2p1:TransferMessageCount>
-          <d2p1:TransferDeadLetterMessageCount>0</d2p1:TransferDeadLetterMessageCount>
-        </CountDetails>
-        <AutoDeleteOnIdle>P10675199DT2H48M5.4775807S</AutoDeleteOnIdle>
-        <EntityAvailabilityStatus>Available</EntityAvailabilityStatus>
-      </SubscriptionDescription>
-    </content>
-  </entry>
-  <entry xml:base="https://sb-java-conniey-5.servicebus.windows.net/topic/Subscriptions?api-version=2017-04&amp;enrich=false&amp;$skip=0&amp;$top=100">
-    <id>https://sb-java-conniey-5.servicebus.windows.net/topic/Subscriptions/subscription-4?api-version=2017-04</id>
-    <title type="text">subscription-4</title>
-    <published>2020-06-22T23:47:54Z</published>
-    <updated>2020-06-22T23:47:54Z</updated>
-    <link rel="self" href="Subscriptions/subscription-4?api-version=2017-04"/>
-    <content type="application/xml">
-      <SubscriptionDescription xmlns="http://schemas.microsoft.com/netservices/2010/10/servicebus/connect"
-      >
-        <LockDuration>PT15S</LockDuration>
-        <RequiresSession>false</RequiresSession>
-        <DefaultMessageTimeToLive>P10675199DT2H48M5.4775807S</DefaultMessageTimeToLive>
-        <DeadLetteringOnMessageExpiration>false</DeadLetteringOnMessageExpiration>
-        <DeadLetteringOnFilterEvaluationExceptions>true</DeadLetteringOnFilterEvaluationExceptions>
-        <MessageCount>0</MessageCount>
-        <MaxDeliveryCount>5</MaxDeliveryCount>
-        <EnableBatchedOperations>true</EnableBatchedOperations>
-        <Status>Active</Status>
-        <CreatedAt>2020-06-22T23:47:54.0131447Z</CreatedAt>
-        <UpdatedAt>2020-06-22T23:47:54.0131447Z</UpdatedAt>
-        <AccessedAt>2020-06-22T23:47:54.013Z</AccessedAt>
-        <CountDetails xmlns:d2p1="http://schemas.microsoft.com/netservices/2011/06/servicebus">
-          <d2p1:ActiveMessageCount>0</d2p1:ActiveMessageCount>
-          <d2p1:DeadLetterMessageCount>0</d2p1:DeadLetterMessageCount>
-          <d2p1:ScheduledMessageCount>0</d2p1:ScheduledMessageCount>
-          <d2p1:TransferMessageCount>0</d2p1:TransferMessageCount>
-          <d2p1:TransferDeadLetterMessageCount>0</d2p1:TransferDeadLetterMessageCount>
-        </CountDetails>
-        <AutoDeleteOnIdle>P10675199DT2H48M5.4775807S</AutoDeleteOnIdle>
-        <EntityAvailabilityStatus>Available</EntityAvailabilityStatus>
-      </SubscriptionDescription>
-    </content>
-  </entry>
-  <entry xml:base="https://sb-java-conniey-5.servicebus.windows.net/topic/Subscriptions?api-version=2017-04&amp;enrich=false&amp;$skip=0&amp;$top=100">
-    <id>https://sb-java-conniey-5.servicebus.windows.net/topic/Subscriptions/subscription-5?api-version=2017-04</id>
-    <title type="text">subscription-5</title>
-    <published>2020-06-22T23:47:53Z</published>
-    <updated>2020-06-22T23:47:53Z</updated>
-    <link rel="self" href="Subscriptions/subscription-5?api-version=2017-04"/>
-    <content type="application/xml">
-      <SubscriptionDescription xmlns="http://schemas.microsoft.com/netservices/2010/10/servicebus/connect"
-      >
-        <LockDuration>PT15S</LockDuration>
-        <RequiresSession>false</RequiresSession>
-        <DefaultMessageTimeToLive>P10675199DT2H48M5.4775807S</DefaultMessageTimeToLive>
-        <DeadLetteringOnMessageExpiration>false</DeadLetteringOnMessageExpiration>
-        <DeadLetteringOnFilterEvaluationExceptions>true</DeadLetteringOnFilterEvaluationExceptions>
-        <MessageCount>0</MessageCount>
-        <MaxDeliveryCount>5</MaxDeliveryCount>
-        <EnableBatchedOperations>true</EnableBatchedOperations>
-        <Status>Active</Status>
-        <CreatedAt>2020-06-22T23:47:53.7944244Z</CreatedAt>
-        <UpdatedAt>2020-06-22T23:47:53.7944244Z</UpdatedAt>
-        <AccessedAt>2020-06-22T23:47:53.793Z</AccessedAt>
-        <CountDetails xmlns:d2p1="http://schemas.microsoft.com/netservices/2011/06/servicebus">
-          <d2p1:ActiveMessageCount>0</d2p1:ActiveMessageCount>
-          <d2p1:DeadLetterMessageCount>0</d2p1:DeadLetterMessageCount>
-          <d2p1:ScheduledMessageCount>0</d2p1:ScheduledMessageCount>
-          <d2p1:TransferMessageCount>0</d2p1:TransferMessageCount>
-          <d2p1:TransferDeadLetterMessageCount>0</d2p1:TransferDeadLetterMessageCount>
-        </CountDetails>
-        <AutoDeleteOnIdle>P10675199DT2H48M5.4775807S</AutoDeleteOnIdle>
-        <EntityAvailabilityStatus>Available</EntityAvailabilityStatus>
-      </SubscriptionDescription>
-    </content>
-  </entry>
-  <entry xml:base="https://sb-java-conniey-5.servicebus.windows.net/topic/Subscriptions?api-version=2017-04&amp;enrich=false&amp;$skip=0&amp;$top=100">
-    <id>https://sb-java-conniey-5.servicebus.windows.net/topic/Subscriptions/subscription-6?api-version=2017-04</id>
-    <title type="text">subscription-6</title>
-    <published>2020-06-22T23:47:53Z</published>
-    <updated>2020-06-22T23:47:53Z</updated>
-    <link rel="self" href="Subscriptions/subscription-6?api-version=2017-04"/>
-    <content type="application/xml">
-      <SubscriptionDescription xmlns="http://schemas.microsoft.com/netservices/2010/10/servicebus/connect"
-      >
-        <LockDuration>PT15S</LockDuration>
-        <RequiresSession>false</RequiresSession>
-        <DefaultMessageTimeToLive>P10675199DT2H48M5.4775807S</DefaultMessageTimeToLive>
-        <DeadLetteringOnMessageExpiration>false</DeadLetteringOnMessageExpiration>
-        <DeadLetteringOnFilterEvaluationExceptions>true</DeadLetteringOnFilterEvaluationExceptions>
-        <MessageCount>0</MessageCount>
-        <MaxDeliveryCount>5</MaxDeliveryCount>
-        <EnableBatchedOperations>true</EnableBatchedOperations>
-        <Status>Active</Status>
-        <CreatedAt>2020-06-22T23:47:53.9193827Z</CreatedAt>
-        <UpdatedAt>2020-06-22T23:47:53.9193827Z</UpdatedAt>
-        <AccessedAt>2020-06-22T23:47:53.92Z</AccessedAt>
-        <CountDetails xmlns:d2p1="http://schemas.microsoft.com/netservices/2011/06/servicebus">
-          <d2p1:ActiveMessageCount>0</d2p1:ActiveMessageCount>
-          <d2p1:DeadLetterMessageCount>0</d2p1:DeadLetterMessageCount>
-          <d2p1:ScheduledMessageCount>0</d2p1:ScheduledMessageCount>
-          <d2p1:TransferMessageCount>0</d2p1:TransferMessageCount>
-          <d2p1:TransferDeadLetterMessageCount>0</d2p1:TransferDeadLetterMessageCount>
-        </CountDetails>
-        <AutoDeleteOnIdle>P10675199DT2H48M5.4775807S</AutoDeleteOnIdle>
-        <EntityAvailabilityStatus>Available</EntityAvailabilityStatus>
-      </SubscriptionDescription>
-    </content>
-  </entry>
-  <entry xml:base="https://sb-java-conniey-5.servicebus.windows.net/topic/Subscriptions?api-version=2017-04&amp;enrich=false&amp;$skip=0&amp;$top=100">
-    <id>https://sb-java-conniey-5.servicebus.windows.net/topic/Subscriptions/subscription-7?api-version=2017-04</id>
-    <title type="text">subscription-7</title>
-    <published>2020-06-22T23:47:53Z</published>
-    <updated>2020-06-22T23:47:53Z</updated>
-    <link rel="self" href="Subscriptions/subscription-7?api-version=2017-04"/>
-    <content type="application/xml">
-      <SubscriptionDescription xmlns="http://schemas.microsoft.com/netservices/2010/10/servicebus/connect"
-      >
-        <LockDuration>PT15S</LockDuration>
-        <RequiresSession>false</RequiresSession>
-        <DefaultMessageTimeToLive>P10675199DT2H48M5.4775807S</DefaultMessageTimeToLive>
-        <DeadLetteringOnMessageExpiration>false</DeadLetteringOnMessageExpiration>
-        <DeadLetteringOnFilterEvaluationExceptions>true</DeadLetteringOnFilterEvaluationExceptions>
-        <MessageCount>0</MessageCount>
-        <MaxDeliveryCount>5</MaxDeliveryCount>
-        <EnableBatchedOperations>true</EnableBatchedOperations>
-        <Status>Active</Status>
-        <CreatedAt>2020-06-22T23:47:53.8569185Z</CreatedAt>
-        <UpdatedAt>2020-06-22T23:47:53.8569185Z</UpdatedAt>
-        <AccessedAt>2020-06-22T23:47:53.857Z</AccessedAt>
-        <CountDetails xmlns:d2p1="http://schemas.microsoft.com/netservices/2011/06/servicebus">
-          <d2p1:ActiveMessageCount>0</d2p1:ActiveMessageCount>
-          <d2p1:DeadLetterMessageCount>0</d2p1:DeadLetterMessageCount>
-          <d2p1:ScheduledMessageCount>0</d2p1:ScheduledMessageCount>
-          <d2p1:TransferMessageCount>0</d2p1:TransferMessageCount>
-          <d2p1:TransferDeadLetterMessageCount>0</d2p1:TransferDeadLetterMessageCount>
-        </CountDetails>
-        <AutoDeleteOnIdle>P10675199DT2H48M5.4775807S</AutoDeleteOnIdle>
-        <EntityAvailabilityStatus>Available</EntityAvailabilityStatus>
-      </SubscriptionDescription>
-    </content>
-  </entry>
-  <entry xml:base="https://sb-java-conniey-5.servicebus.windows.net/topic/Subscriptions?api-version=2017-04&amp;enrich=false&amp;$skip=0&amp;$top=100">
-    <id>https://sb-java-conniey-5.servicebus.windows.net/topic/Subscriptions/subscription-8?api-version=2017-04</id>
-    <title type="text">subscription-8</title>
-    <published>2020-06-22T23:47:53Z</published>
-    <updated>2020-06-22T23:47:53Z</updated>
-    <link rel="self" href="Subscriptions/subscription-8?api-version=2017-04"/>
-    <content type="application/xml">
-      <SubscriptionDescription xmlns="http://schemas.microsoft.com/netservices/2010/10/servicebus/connect"
-      >
-        <LockDuration>PT15S</LockDuration>
-        <RequiresSession>false</RequiresSession>
-        <DefaultMessageTimeToLive>P10675199DT2H48M5.4775807S</DefaultMessageTimeToLive>
-        <DeadLetteringOnMessageExpiration>false</DeadLetteringOnMessageExpiration>
-        <DeadLetteringOnFilterEvaluationExceptions>true</DeadLetteringOnFilterEvaluationExceptions>
-        <MessageCount>0</MessageCount>
-        <MaxDeliveryCount>5</MaxDeliveryCount>
-        <EnableBatchedOperations>true</EnableBatchedOperations>
-        <Status>Active</Status>
-        <CreatedAt>2020-06-22T23:47:53.8412585Z</CreatedAt>
-        <UpdatedAt>2020-06-22T23:47:53.8412585Z</UpdatedAt>
-        <AccessedAt>2020-06-22T23:47:53.84Z</AccessedAt>
-        <CountDetails xmlns:d2p1="http://schemas.microsoft.com/netservices/2011/06/servicebus">
-          <d2p1:ActiveMessageCount>0</d2p1:ActiveMessageCount>
-          <d2p1:DeadLetterMessageCount>0</d2p1:DeadLetterMessageCount>
-          <d2p1:ScheduledMessageCount>0</d2p1:ScheduledMessageCount>
-          <d2p1:TransferMessageCount>0</d2p1:TransferMessageCount>
-          <d2p1:TransferDeadLetterMessageCount>0</d2p1:TransferDeadLetterMessageCount>
-        </CountDetails>
-        <AutoDeleteOnIdle>P10675199DT2H48M5.4775807S</AutoDeleteOnIdle>
-        <EntityAvailabilityStatus>Available</EntityAvailabilityStatus>
-      </SubscriptionDescription>
-    </content>
-  </entry>
-  <entry xml:base="https://sb-java-conniey-5.servicebus.windows.net/topic/Subscriptions?api-version=2017-04&amp;enrich=false&amp;$skip=0&amp;$top=100">
-    <id>https://sb-java-conniey-5.servicebus.windows.net/topic/Subscriptions/subscription-9?api-version=2017-04</id>
-    <title type="text">subscription-9</title>
-    <published>2020-06-22T23:47:53Z</published>
-    <updated>2020-06-22T23:47:53Z</updated>
-    <link rel="self" href="Subscriptions/subscription-9?api-version=2017-04"/>
-    <content type="application/xml">
-      <SubscriptionDescription xmlns="http://schemas.microsoft.com/netservices/2010/10/servicebus/connect"
-      >
-        <LockDuration>PT15S</LockDuration>
-        <RequiresSession>false</RequiresSession>
-        <DefaultMessageTimeToLive>P10675199DT2H48M5.4775807S</DefaultMessageTimeToLive>
-        <DeadLetteringOnMessageExpiration>false</DeadLetteringOnMessageExpiration>
-        <DeadLetteringOnFilterEvaluationExceptions>true</DeadLetteringOnFilterEvaluationExceptions>
-        <MessageCount>0</MessageCount>
-        <MaxDeliveryCount>5</MaxDeliveryCount>
-        <EnableBatchedOperations>true</EnableBatchedOperations>
-        <Status>Active</Status>
-        <CreatedAt>2020-06-22T23:47:53.8569185Z</CreatedAt>
-        <UpdatedAt>2020-06-22T23:47:53.8569185Z</UpdatedAt>
-        <AccessedAt>2020-06-22T23:47:53.857Z</AccessedAt>
-        <CountDetails xmlns:d2p1="http://schemas.microsoft.com/netservices/2011/06/servicebus">
-          <d2p1:ActiveMessageCount>0</d2p1:ActiveMessageCount>
-          <d2p1:DeadLetterMessageCount>0</d2p1:DeadLetterMessageCount>
-          <d2p1:ScheduledMessageCount>0</d2p1:ScheduledMessageCount>
-          <d2p1:TransferMessageCount>0</d2p1:TransferMessageCount>
-          <d2p1:TransferDeadLetterMessageCount>0</d2p1:TransferDeadLetterMessageCount>
-        </CountDetails>
-        <AutoDeleteOnIdle>P10675199DT2H48M5.4775807S</AutoDeleteOnIdle>
+        <AutoDeleteOnIdle>PT24H</AutoDeleteOnIdle>
         <EntityAvailabilityStatus>Available</EntityAvailabilityStatus>
       </SubscriptionDescription>
     </content>
@@ -337,7 +40,7 @@
     <id>https://sb-java-conniey-5.servicebus.windows.net/topic/Subscriptions/subscription-session-0?api-version=2017-04</id>
     <title type="text">subscription-session-0</title>
     <published>2020-06-22T23:47:53Z</published>
-    <updated>2020-06-22T23:47:53Z</updated>
+    <updated>2020-05-22T23:47:53Z</updated>
     <link rel="self" href="Subscriptions/subscription-session-0?api-version=2017-04"/>
     <content type="application/xml">
       <SubscriptionDescription xmlns="http://schemas.microsoft.com/netservices/2010/10/servicebus/connect"
@@ -370,7 +73,7 @@
     <id>https://sb-java-conniey-5.servicebus.windows.net/topic/Subscriptions/subscription-session-1?api-version=2017-04</id>
     <title type="text">subscription-session-1</title>
     <published>2020-06-22T23:47:54Z</published>
-    <updated>2020-06-22T23:47:54Z</updated>
+    <updated>2020-04-22T23:47:54Z</updated>
     <link rel="self" href="Subscriptions/subscription-session-1?api-version=2017-04"/>
     <content type="application/xml">
       <SubscriptionDescription xmlns="http://schemas.microsoft.com/netservices/2010/10/servicebus/connect"

@@ -9,11 +9,14 @@ import com.azure.messaging.servicebus.implementation.models.QueueDescriptionFeed
 import com.azure.messaging.servicebus.implementation.models.ResponseAuthor;
 import com.azure.messaging.servicebus.implementation.models.ResponseLink;
 import com.azure.messaging.servicebus.implementation.models.SubscriptionDescriptionEntry;
+import com.azure.messaging.servicebus.implementation.models.SubscriptionDescriptionEntryContent;
+import com.azure.messaging.servicebus.implementation.models.SubscriptionDescriptionFeed;
 import com.azure.messaging.servicebus.models.EntityStatus;
 import com.azure.messaging.servicebus.models.MessageCountDetails;
 import com.azure.messaging.servicebus.models.QueueDescription;
 import com.azure.messaging.servicebus.models.QueueRuntimeInfo;
 import com.azure.messaging.servicebus.models.SubscriptionDescription;
+import com.azure.messaging.servicebus.models.SubscriptionRuntimeInfo;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
@@ -26,6 +29,7 @@ import java.nio.file.Paths;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -175,7 +179,6 @@ class ServiceBusManagementSerializerTest {
             .setContent(new QueueDescriptionEntryContent().setType("application/xml")
                 .setQueueDescription(queueDescription));
 
-
         final Map<String, String> titleMap = new HashMap<>();
         titleMap.put("", "Queues");
         titleMap.put("type", "text");
@@ -251,6 +254,153 @@ class ServiceBusManagementSerializerTest {
         final SubscriptionDescription actual = entry.getContent().getSubscriptionDescription();
 
         assertSubscriptionEquals(expected, EntityStatus.ACTIVE, actual);
+    }
+
+    /**
+     * Verify we can deserialize XML from a GET subscription request and create convenience model,
+     * {@link SubscriptionRuntimeInfo}.
+     */
+    @Test
+    void deserializeSubscriptionRuntimeInfo() throws IOException {
+        final String contents = getContents("SubscriptionDescriptionEntry.xml");
+
+        final OffsetDateTime createdAt = OffsetDateTime.parse("2020-06-22T23:47:54.0131447Z");
+        final OffsetDateTime updatedAt = OffsetDateTime.parse("2020-06-22T23:47:20.0131447Z");
+        final OffsetDateTime accessedAt = OffsetDateTime.parse("2020-06-22T23:47:54.013Z");
+        final int messageCount = 13;
+        final MessageCountDetails expectedCount = new MessageCountDetails()
+            .setActiveMessageCount(10)
+            .setDeadLetterMessageCount(50)
+            .setScheduledMessageCount(34)
+            .setTransferMessageCount(11)
+            .setTransferDeadLetterMessageCount(2);
+
+        // Act
+        final SubscriptionDescriptionEntry entry = serializer.deserialize(contents, SubscriptionDescriptionEntry.class);
+        final SubscriptionRuntimeInfo actual = new SubscriptionRuntimeInfo(
+            entry.getContent().getSubscriptionDescription());
+
+        // Assert
+        assertEquals(messageCount, actual.getMessageCount());
+
+        assertEquals(createdAt, actual.getCreatedAt());
+        assertEquals(updatedAt, actual.getUpdatedAt());
+        assertEquals(accessedAt, actual.getAccessedAt());
+
+        final MessageCountDetails details = actual.getDetails();
+        assertNotNull(details);
+
+        assertEquals(expectedCount.getActiveMessageCount(), details.getActiveMessageCount());
+        assertEquals(expectedCount.getDeadLetterMessageCount(), details.getDeadLetterMessageCount());
+        assertEquals(expectedCount.getScheduledMessageCount(), details.getScheduledMessageCount());
+        assertEquals(expectedCount.getTransferMessageCount(), details.getTransferMessageCount());
+        assertEquals(expectedCount.getTransferDeadLetterMessageCount(), details.getTransferDeadLetterMessageCount());
+    }
+
+    /**
+     * Verify we can deserialize feed XML from a list of subscriptions that has a paged response.
+     */
+    @Test
+    void deserializeSubscriptionDescriptionFeed() throws IOException {
+        // Arrange
+        final String contents = getContents("SubscriptionDescriptionFeed.xml");
+        final List<ResponseLink> responseLinks = Collections.singletonList(
+            new ResponseLink().setRel("self")
+                .setHref("https://sb-java-conniey-5.servicebus.windows.net/topic/Subscriptions?api-version=2017-04&enrich=false&$skip=0&$top=100")
+        );
+
+        final SubscriptionDescription subscription1 = new SubscriptionDescription("topic", "subscription-0")
+            .setLockDuration(Duration.ofSeconds(15))
+            .setDefaultMessageTimeToLive(Duration.ofMinutes(5))
+            .setMaxDeliveryCount(5)
+            .setAutoDeleteOnIdle(Duration.ofDays(1));
+        final SubscriptionDescription subscription2 = new SubscriptionDescription("topic", "subscription-session-0")
+            .setRequiresSession(true)
+            .setLockDuration(Duration.ofSeconds(15))
+            .setMaxDeliveryCount(5);
+        final SubscriptionDescription subscription3 = new SubscriptionDescription("topic", "subscription-session-1")
+            .setRequiresSession(true)
+            .setLockDuration(Duration.ofSeconds(15))
+            .setMaxDeliveryCount(5);
+
+        final SubscriptionDescriptionEntry entry1 = new SubscriptionDescriptionEntry()
+            .setId("https://sb-java-conniey-5.servicebus.windows.net/topic/Subscriptions/subscription-0?api-version=2017-04")
+            .setTitle(getResponseTitle(subscription1.getSubscriptionName()))
+            .setPublished(OffsetDateTime.parse("2020-06-22T23:47:53Z"))
+            .setUpdated(OffsetDateTime.parse("2020-06-23T23:47:53Z"))
+            .setLink(new ResponseLink().setRel("self").setHref("Subscriptions/subscription-0?api-version=2017-04"))
+            .setContent(new SubscriptionDescriptionEntryContent()
+                .setType("application/xml")
+                .setSubscriptionDescription(subscription1));
+        final SubscriptionDescriptionEntry entry2 = new SubscriptionDescriptionEntry()
+            .setId("https://sb-java-conniey-5.servicebus.windows.net/topic/Subscriptions/subscription-session-0?api-version=2017-04")
+            .setTitle(getResponseTitle(subscription2.getSubscriptionName()))
+            .setPublished(OffsetDateTime.parse("2020-06-22T23:47:53Z"))
+            .setUpdated(OffsetDateTime.parse("2020-05-22T23:47:53Z"))
+            .setLink(new ResponseLink().setRel("self").setHref("Subscriptions/subscription-session-0?api-version=2017-04"))
+            .setContent(new SubscriptionDescriptionEntryContent()
+                .setType("application/xml")
+                .setSubscriptionDescription(subscription2));
+        final SubscriptionDescriptionEntry entry3 = new SubscriptionDescriptionEntry()
+            .setId("https://sb-java-conniey-5.servicebus.windows.net/topic/Subscriptions/subscription-session-1?api-version=2017-04")
+            .setTitle(getResponseTitle(subscription3.getSubscriptionName()))
+            .setPublished(OffsetDateTime.parse("2020-06-22T23:47:54Z"))
+            .setUpdated(OffsetDateTime.parse("2020-04-22T23:47:54Z"))
+            .setLink(new ResponseLink().setRel("self").setHref("Subscriptions/subscription-session-1?api-version=2017-04"))
+            .setContent(new SubscriptionDescriptionEntryContent()
+                .setType("application/xml")
+                .setSubscriptionDescription(subscription3));
+
+        final Map<String, String> titleMap = new HashMap<>();
+        titleMap.put("", "Subscriptions");
+        titleMap.put("type", "text");
+        final List<SubscriptionDescriptionEntry> entries = Arrays.asList(entry1, entry2, entry3);
+        final SubscriptionDescriptionFeed expected = new SubscriptionDescriptionFeed()
+            .setId("feed-id")
+            .setTitle(titleMap)
+            .setUpdated(OffsetDateTime.parse("2020-06-30T11:41:32Z"))
+            .setLink(responseLinks)
+            .setEntry(entries);
+        final int expectedNumberOfEntries = 11;
+
+        // Act
+        final SubscriptionDescriptionFeed actual = serializer.deserialize(contents, SubscriptionDescriptionFeed.class);
+
+        // Assert
+        assertEquals(expected.getId(), actual.getId());
+        assertEquals(expected.getTitle(), actual.getTitle());
+        assertEquals(expected.getUpdated(), actual.getUpdated());
+
+        assertNotNull(actual.getLink());
+        assertEquals(expected.getLink().size(), actual.getLink().size());
+        for (int i = 0; i < expected.getLink().size(); i++) {
+            final ResponseLink expectedLink = expected.getLink().get(i);
+            final ResponseLink actualLink = actual.getLink().get(i);
+
+            assertEquals(expectedLink.getRel(), actualLink.getRel());
+            assertEquals(expectedLink.getHref(), actualLink.getHref());
+        }
+
+        assertNotNull(actual.getEntry());
+
+        // We're not going to assert all 13 entries.
+        assertTrue(expected.getEntry().size() < actual.getEntry().size());
+        assertEquals(expectedNumberOfEntries, actual.getEntry().size());
+
+        for (int i = 0; i < expected.getEntry().size(); i++) {
+            final SubscriptionDescriptionEntry expectedEntry = expected.getEntry().get(i);
+            final SubscriptionDescriptionEntry actualEntry = actual.getEntry().get(i);
+
+            assertEquals(expected.getId(), actual.getId());
+            assertNotNull(actual.getTitle());
+
+            assertResponseTitle(expectedEntry.getTitle(), actualEntry.getTitle());
+            assertEquals(expectedEntry.getUpdated(), actualEntry.getUpdated());
+            assertEquals(expectedEntry.getPublished(), actualEntry.getPublished());
+
+            assertSubscriptionEquals(expectedEntry.getContent().getSubscriptionDescription(), EntityStatus.ACTIVE,
+                actualEntry.getContent().getSubscriptionDescription());
+        }
     }
 
     /**

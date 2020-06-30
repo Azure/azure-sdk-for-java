@@ -12,7 +12,7 @@
       <DefaultMessageTimeToLive>P10675199DT2H48M5.4775807S</DefaultMessageTimeToLive>
       <DeadLetteringOnMessageExpiration>false</DeadLetteringOnMessageExpiration>
       <DeadLetteringOnFilterEvaluationExceptions>true</DeadLetteringOnFilterEvaluationExceptions>
-      <MessageCount>0</MessageCount>
+      <MessageCount>13</MessageCount>
       <MaxDeliveryCount>5</MaxDeliveryCount>
       <EnableBatchedOperations>true</EnableBatchedOperations>
       <Status>Active</Status>
