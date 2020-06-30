@@ -239,9 +239,9 @@
         <configuration>
           <show>private</show>
           <sourceFileExcludes>
-            <sourceFileExclude>spring/data/cosmosdb/core/mapping/BasicCosmosPersistentProperty.java</sourceFileExclude>
+            <sourceFileExclude>core/mapping/BasicCosmosPersistentProperty.java</sourceFileExclude>
           </sourceFileExcludes>
-          <sourcepath>${basedir}/src/main/java/com/microsoft/azure/</sourcepath>
+          <sourcepath>${basedir}/src/main/java/com/microsoft/azure/spring/data/cosmosdb/</sourcepath>
           <additionalDependencies>
             <additionalDependency>
               <groupId>org.projectlombok</groupId>
@@ -253,4 +253,5 @@
       </plugin>
     </plugins>
   </build>
+
 </project>

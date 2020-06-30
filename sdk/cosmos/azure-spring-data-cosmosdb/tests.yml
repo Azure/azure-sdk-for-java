@@ -1,0 +1,26 @@
+trigger: none
+
+variables:
+  - template: ../../../eng/pipelines/templates/variables/globals.yml
+  - name: AdditionalArgs
+    value: ''
+
+jobs:
+  - template: ../../../eng/pipelines/templates/jobs/archetype-sdk-tests.yml
+    parameters:
+      TestName: Integration_Test_Spring_Data_Cosmosdb
+      ServiceDirectory: cosmos/azure-spring-data-cosmosdb
+      Artifacts:
+        - name: spring-data-cosmosdb
+          groupId: com.microsoft.azure
+          safeName: springdatacosmosdb
+      TimeoutInMinutes: 120
+      EnvVars:
+        AZURE_TEST_MODE: LIVE
+      PreRunSteps:
+        - template: /eng/pipelines/templates/steps/install-reporting-tools.yml
+      TestStepMavenInputs:
+        goals: verify
+        options: '-Dmaven.wagon.http.pool=false $(DefaultOptions) -Dmaven.javadoc.skip=true -Drevapi.skip=true -Dskip.integration.tests=false -pl $(ProjectList)'
+
+      TestResultsFiles: '**/junitreports/TEST-*.xml'
