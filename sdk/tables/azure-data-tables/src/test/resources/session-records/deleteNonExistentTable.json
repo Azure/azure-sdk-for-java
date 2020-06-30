@@ -1,0 +1,48 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "DELETE",
+    "Uri" : "https://REDACTED.table.core.windows.net/Tables('testygepqeuzwpizpjqk')",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "x-ms-client-request-id" : "3b9bf4b5-cb3d-4519-8b3a-52514086d2b8"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-Table/1.0 Microsoft-HTTPAPI/2.0",
+      "Cache-Control" : "no-cache",
+      "X-Content-Type-Options" : "nosniff",
+      "retry-after" : "0",
+      "StatusCode" : "404",
+      "x-ms-request-id" : "f81e6ae0-7002-0064-06f2-4ea465000000",
+      "Body" : "{\"odata.error\":{\"code\":\"ResourceNotFound\",\"message\":{\"lang\":\"en-US\",\"value\":\"The specified resource does not exist.\\nRequestId:f81e6ae0-7002-0064-06f2-4ea465000000\\nTime:2020-06-30T15:21:41.3025206Z\"}}}",
+      "Date" : "Tue, 30 Jun 2020 15:21:40 GMT",
+      "x-ms-client-request-id" : "3b9bf4b5-cb3d-4519-8b3a-52514086d2b8",
+      "Content-Type" : "application/json;odata=minimalmetadata;streaming=true;charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.table.core.windows.net/Tables?$format=application/json%3Bodata%3Dminimalmetadata",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "x-ms-client-request-id" : "93d5263f-8931-4a4c-bd7a-edada97b2556"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-Table/1.0 Microsoft-HTTPAPI/2.0",
+      "Cache-Control" : "no-cache",
+      "X-Content-Type-Options" : "nosniff",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "x-ms-request-id" : "dd939a42-6002-009c-2ef2-4ef89b000000",
+      "Body" : "{\"odata.metadata\":\"https://telboytrial.table.core.windows.net/$metadata#Tables\",\"value\":[]}",
+      "Date" : "Tue, 30 Jun 2020 15:21:41 GMT",
+      "x-ms-client-request-id" : "93d5263f-8931-4a4c-bd7a-edada97b2556",
+      "Content-Type" : "application/json;odata=minimalmetadata;streaming=true;charset=utf-8"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "3b9bf4b5-cb3d-4519-8b3a-52514086d2b8" ]
+}

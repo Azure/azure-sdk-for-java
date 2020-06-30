@@ -1,0 +1,94 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.table.core.windows.net/Tables",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "x-ms-client-request-id" : "b291239a-a4ae-4d0e-9487-94eef9400f40",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-Table/1.0 Microsoft-HTTPAPI/2.0",
+      "X-Content-Type-Options" : "nosniff",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "Date" : "Tue, 30 Jun 2020 15:21:40 GMT",
+      "Cache-Control" : "no-cache",
+      "x-ms-request-id" : "f81e6acf-7002-0064-7cf2-4ea465000000",
+      "Body" : "{\"odata.metadata\":\"https://telboytrial.table.core.windows.net/$metadata#Tables/@Element\",\"TableName\":\"testclusawuoexlptiey\"}",
+      "Preference-Applied" : "return-content",
+      "x-ms-client-request-id" : "b291239a-a4ae-4d0e-9487-94eef9400f40",
+      "Content-Type" : "application/json;odata=minimalmetadata;streaming=true;charset=utf-8",
+      "Location" : "https://telboytrial.table.core.windows.net/Tables('testclusawuoexlptiey')"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.table.core.windows.net/testclusawuoexlptiey(PartitionKey='partitionKeywmdlgnpu',RowKey='rowKeydedsxyaifawnbi')?timeout=5000",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "x-ms-client-request-id" : "95e5f69a-242d-4e6d-85e6-d66f2cb4e1e8",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-Table/1.0 Microsoft-HTTPAPI/2.0",
+      "Cache-Control" : "no-cache",
+      "X-Content-Type-Options" : "nosniff",
+      "retry-after" : "0",
+      "StatusCode" : "404",
+      "x-ms-request-id" : "dd939a2d-6002-009c-1df2-4ef89b000000",
+      "Body" : "{\"odata.error\":{\"code\":\"ResourceNotFound\",\"message\":{\"lang\":\"en-US\",\"value\":\"The specified resource does not exist.\\nRequestId:dd939a2d-6002-009c-1df2-4ef89b000000\\nTime:2020-06-30T15:21:40.9761373Z\"}}}",
+      "Date" : "Tue, 30 Jun 2020 15:21:40 GMT",
+      "x-ms-client-request-id" : "95e5f69a-242d-4e6d-85e6-d66f2cb4e1e8",
+      "Content-Type" : "application/json;odata=minimalmetadata;streaming=true;charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.table.core.windows.net/Tables?$format=application/json%3Bodata%3Dminimalmetadata",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "x-ms-client-request-id" : "94ea0bb5-d8aa-44f4-8cf3-a786b298bd58"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-Table/1.0 Microsoft-HTTPAPI/2.0",
+      "Cache-Control" : "no-cache",
+      "X-Content-Type-Options" : "nosniff",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "x-ms-request-id" : "7871c019-4002-0040-0cf2-4e52c5000000",
+      "Body" : "{\"odata.metadata\":\"https://telboytrial.table.core.windows.net/$metadata#Tables\",\"value\":[{\"TableName\":\"testclusawuoexlptiey\"}]}",
+      "Date" : "Tue, 30 Jun 2020 15:21:40 GMT",
+      "x-ms-client-request-id" : "94ea0bb5-d8aa-44f4-8cf3-a786b298bd58",
+      "Content-Type" : "application/json;odata=minimalmetadata;streaming=true;charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://REDACTED.table.core.windows.net/Tables('testclusawuoexlptiey')",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "x-ms-client-request-id" : "7c9d5516-7a63-44c4-8334-91268fd431b5"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-Table/1.0 Microsoft-HTTPAPI/2.0",
+      "Cache-Control" : "no-cache",
+      "X-Content-Type-Options" : "nosniff",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "204",
+      "x-ms-request-id" : "f81e6ad2-7002-0064-7ef2-4ea465000000",
+      "Date" : "Tue, 30 Jun 2020 15:21:40 GMT",
+      "x-ms-client-request-id" : "7c9d5516-7a63-44c4-8334-91268fd431b5"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "b291239a-a4ae-4d0e-9487-94eef9400f40", "95e5f69a-242d-4e6d-85e6-d66f2cb4e1e8", "7c9d5516-7a63-44c4-8334-91268fd431b5" ]
+}

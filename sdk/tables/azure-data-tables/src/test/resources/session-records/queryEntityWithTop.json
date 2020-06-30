@@ -1,0 +1,93 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.table.core.windows.net/Tables",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "x-ms-client-request-id" : "04a28429-10f6-4126-80ba-8d09aca4c812",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-Table/1.0 Microsoft-HTTPAPI/2.0",
+      "X-Content-Type-Options" : "nosniff",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "Date" : "Tue, 30 Jun 2020 15:21:38 GMT",
+      "Cache-Control" : "no-cache",
+      "x-ms-request-id" : "f81e6a53-7002-0064-18f2-4ea465000000",
+      "Body" : "{\"odata.metadata\":\"https://telboytrial.table.core.windows.net/$metadata#Tables/@Element\",\"TableName\":\"testmxtjvghrwlkrrjdh\"}",
+      "Preference-Applied" : "return-content",
+      "x-ms-client-request-id" : "04a28429-10f6-4126-80ba-8d09aca4c812",
+      "Content-Type" : "application/json;odata=minimalmetadata;streaming=true;charset=utf-8",
+      "Location" : "https://telboytrial.table.core.windows.net/Tables('testmxtjvghrwlkrrjdh')"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.table.core.windows.net/testmxtjvghrwlkrrjdh()?timeout=5000&$format=application/json%3Bodata%3Dfullmetadata&$top=0",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "x-ms-client-request-id" : "981740a1-f9b2-4ccd-889e-74c715ebb3ae"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-Table/1.0 Microsoft-HTTPAPI/2.0",
+      "Cache-Control" : "no-cache",
+      "X-Content-Type-Options" : "nosniff",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "x-ms-request-id" : "dd9399d0-6002-009c-56f2-4ef89b000000",
+      "Body" : "{\"odata.metadata\":\"https://telboytrial.table.core.windows.net/$metadata#testmxtjvghrwlkrrjdh\",\"value\":[]}",
+      "Date" : "Tue, 30 Jun 2020 15:21:38 GMT",
+      "x-ms-client-request-id" : "981740a1-f9b2-4ccd-889e-74c715ebb3ae",
+      "Content-Type" : "application/json;odata=fullmetadata;streaming=true;charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.table.core.windows.net/Tables?$format=application/json%3Bodata%3Dminimalmetadata",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "x-ms-client-request-id" : "b89cbe3e-4cb1-4222-99d6-c58ec4e9ac52"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-Table/1.0 Microsoft-HTTPAPI/2.0",
+      "Cache-Control" : "no-cache",
+      "X-Content-Type-Options" : "nosniff",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "x-ms-request-id" : "f81e6a55-7002-0064-19f2-4ea465000000",
+      "Body" : "{\"odata.metadata\":\"https://telboytrial.table.core.windows.net/$metadata#Tables\",\"value\":[{\"TableName\":\"testmxtjvghrwlkrrjdh\"}]}",
+      "Date" : "Tue, 30 Jun 2020 15:21:38 GMT",
+      "x-ms-client-request-id" : "b89cbe3e-4cb1-4222-99d6-c58ec4e9ac52",
+      "Content-Type" : "application/json;odata=minimalmetadata;streaming=true;charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://REDACTED.table.core.windows.net/Tables('testmxtjvghrwlkrrjdh')",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "x-ms-client-request-id" : "295e99d9-eee1-4a4a-8bf3-caa19c0c3e04"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-Table/1.0 Microsoft-HTTPAPI/2.0",
+      "Cache-Control" : "no-cache",
+      "X-Content-Type-Options" : "nosniff",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "204",
+      "x-ms-request-id" : "dd9399d8-6002-009c-5df2-4ef89b000000",
+      "Date" : "Tue, 30 Jun 2020 15:21:38 GMT",
+      "x-ms-client-request-id" : "295e99d9-eee1-4a4a-8bf3-caa19c0c3e04"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "981740a1-f9b2-4ccd-889e-74c715ebb3ae", "04a28429-10f6-4126-80ba-8d09aca4c812", "295e99d9-eee1-4a4a-8bf3-caa19c0c3e04" ]
+}

@@ -1,0 +1,95 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.table.core.windows.net/Tables",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "x-ms-client-request-id" : "f144cd7d-6238-4467-825b-d1646a66bef6",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-Table/1.0 Microsoft-HTTPAPI/2.0",
+      "X-Content-Type-Options" : "nosniff",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "Date" : "Tue, 30 Jun 2020 15:21:39 GMT",
+      "Cache-Control" : "no-cache",
+      "x-ms-request-id" : "dd9399f3-6002-009c-6cf2-4ef89b000000",
+      "Body" : "{\"odata.metadata\":\"https://telboytrial.table.core.windows.net/$metadata#Tables/@Element\",\"TableName\":\"testxlkrkwkqgibisiks\"}",
+      "Preference-Applied" : "return-content",
+      "x-ms-client-request-id" : "f144cd7d-6238-4467-825b-d1646a66bef6",
+      "Content-Type" : "application/json;odata=minimalmetadata;streaming=true;charset=utf-8",
+      "Location" : "https://telboytrial.table.core.windows.net/Tables('testxlkrkwkqgibisiks')"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.table.core.windows.net/Tables",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "x-ms-client-request-id" : "bdb27d04-1814-4c0b-8e42-7d6839d5f7aa",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-Table/1.0 Microsoft-HTTPAPI/2.0",
+      "X-Content-Type-Options" : "nosniff",
+      "retry-after" : "0",
+      "StatusCode" : "409",
+      "Date" : "Tue, 30 Jun 2020 15:21:39 GMT",
+      "Cache-Control" : "no-cache",
+      "x-ms-request-id" : "f81e6a82-7002-0064-3cf2-4ea465000000",
+      "Body" : "{\"odata.error\":{\"code\":\"TableAlreadyExists\",\"message\":{\"lang\":\"en-US\",\"value\":\"The table specified already exists.\\nRequestId:f81e6a82-7002-0064-3cf2-4ea465000000\\nTime:2020-06-30T15:21:39.9155417Z\"}}}",
+      "Preference-Applied" : "return-content",
+      "x-ms-client-request-id" : "bdb27d04-1814-4c0b-8e42-7d6839d5f7aa",
+      "Content-Type" : "application/json;odata=minimalmetadata;streaming=true;charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.table.core.windows.net/Tables?$format=application/json%3Bodata%3Dminimalmetadata",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "x-ms-client-request-id" : "57523d9f-22c9-4d94-aa60-44d2fca5c663"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-Table/1.0 Microsoft-HTTPAPI/2.0",
+      "Cache-Control" : "no-cache",
+      "X-Content-Type-Options" : "nosniff",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "x-ms-request-id" : "dd9399f5-6002-009c-6df2-4ef89b000000",
+      "Body" : "{\"odata.metadata\":\"https://telboytrial.table.core.windows.net/$metadata#Tables\",\"value\":[{\"TableName\":\"testxlkrkwkqgibisiks\"}]}",
+      "Date" : "Tue, 30 Jun 2020 15:21:39 GMT",
+      "x-ms-client-request-id" : "57523d9f-22c9-4d94-aa60-44d2fca5c663",
+      "Content-Type" : "application/json;odata=minimalmetadata;streaming=true;charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://REDACTED.table.core.windows.net/Tables('testxlkrkwkqgibisiks')",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "x-ms-client-request-id" : "b6190095-cd61-4b60-afd9-6bad5edd0b1a"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-Table/1.0 Microsoft-HTTPAPI/2.0",
+      "Cache-Control" : "no-cache",
+      "X-Content-Type-Options" : "nosniff",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "204",
+      "x-ms-request-id" : "f81e6a85-7002-0064-3ef2-4ea465000000",
+      "Date" : "Tue, 30 Jun 2020 15:21:39 GMT",
+      "x-ms-client-request-id" : "b6190095-cd61-4b60-afd9-6bad5edd0b1a"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "f144cd7d-6238-4467-825b-d1646a66bef6", "bdb27d04-1814-4c0b-8e42-7d6839d5f7aa", "b6190095-cd61-4b60-afd9-6bad5edd0b1a" ]
+}
