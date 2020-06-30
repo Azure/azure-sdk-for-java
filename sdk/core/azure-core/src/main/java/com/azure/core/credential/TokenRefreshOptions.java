@@ -9,11 +9,11 @@ import java.time.Duration;
  * The options to configure the token refresh behavior.
  */
 public class TokenRefreshOptions {
-    private static final Duration DEFAULT_REFRESH_RETRY_TIMEOUT = Duration.ofSeconds(30);
-    private static final Duration DEFAULT_REFRESH_OFFSET = Duration.ofMinutes(2);
+    private static final Duration DEFAULT_RETRY_TIMEOUT = Duration.ofSeconds(30);
+    private static final Duration DEFAULT_OFFSET = Duration.ofMinutes(2);
 
-    private Duration tokenRefreshRetryTimeout = DEFAULT_REFRESH_RETRY_TIMEOUT;
-    private Duration tokenRefreshOffset = DEFAULT_REFRESH_OFFSET;
+    private Duration retryTimeout = DEFAULT_RETRY_TIMEOUT;
+    private Duration offset = DEFAULT_OFFSET;
 
     /**
      * Returns a Duration value representing the amount of time to wait before retrying a token refresh. This is to
@@ -21,19 +21,19 @@ public class TokenRefreshOptions {
      *
      * @return the duration value representing the amount of time to wait before retrying a token refresh
      */
-    public Duration getTokenRefreshRetryTimeout() {
-        return tokenRefreshRetryTimeout;
+    public Duration getRetryTimeout() {
+        return retryTimeout;
     }
 
     /**
      * Specifies a Duration value representing the amount of time to wait before retrying a token refresh. This is to
      * prevent sending too many requests to the authentication service.
      *
-     * @param tokenRefreshRetryTimeout the amount of time to wait before retrying a token refresh
-     * @return TokenRefreshOptions
+     * @param retryTimeout the amount of time to wait before retrying a token refresh
+     * @return the updated TokenRefreshOptions object
      */
-    public TokenRefreshOptions setTokenRefreshRetryTimeout(Duration tokenRefreshRetryTimeout) {
-        this.tokenRefreshRetryTimeout = tokenRefreshRetryTimeout;
+    public TokenRefreshOptions setRetryTimeout(Duration retryTimeout) {
+        this.retryTimeout = retryTimeout;
         return this;
     }
 
@@ -44,8 +44,8 @@ public class TokenRefreshOptions {
      *
      * @return the duration value representing the amount of time to subtract from the token expiry time
      */
-    public Duration getTokenRefreshOffset() {
-        return tokenRefreshOffset;
+    public Duration getOffset() {
+        return offset;
     }
 
     /**
@@ -53,11 +53,11 @@ public class TokenRefreshOptions {
      * attempts will be made to refresh the token. By default this will occur two minutes prior to the expiry of the
      * token.
      *
-     * @param tokenRefreshOffset the duration representing the amount of time to subtract from the token expiry time
-     * @return TokenRefreshOptions
+     * @param offset the duration representing the amount of time to subtract from the token expiry time
+     * @return the updated TokenRefreshOptions object
      */
-    public TokenRefreshOptions setTokenRefreshOffset(Duration tokenRefreshOffset) {
-        this.tokenRefreshOffset = tokenRefreshOffset;
+    public TokenRefreshOptions setOffset(Duration offset) {
+        this.offset = offset;
         return this;
     }
 }

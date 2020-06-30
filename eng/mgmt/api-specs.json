@@ -66,6 +66,10 @@
     "source": "specification/consumption/resource-manager/readme.md",
     "args": "--multiapi --fluent"
   },
+  "containerinstance/resource-manager": {
+    "source": "specification/containerinstance/resource-manager/readme.md",
+    "args": "--multiapi --fluent"
+  },
   "containerservice/resource-manager": {
     "source": "specification/containerservice/resource-manager/readme.md",
     "args": "--multiapi --fluent"

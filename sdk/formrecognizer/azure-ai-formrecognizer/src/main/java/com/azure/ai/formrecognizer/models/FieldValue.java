@@ -7,6 +7,7 @@ import com.azure.core.annotation.Fluent;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -42,7 +43,7 @@ public final class FieldValue {
      * @return the FieldValue object itself.
      */
     public FieldValue setFormFieldMap(final Map<String, FormField> formFieldMap) {
-        this.formFieldMap = formFieldMap;
+        this.formFieldMap = formFieldMap == null ? null : Collections.unmodifiableMap(formFieldMap);
         return this;
     }
 
@@ -54,7 +55,8 @@ public final class FieldValue {
      * @return the FieldValue object itself.
      */
     public FieldValue setFormFieldList(final List<FormField> formFieldList) {
-        this.formFieldList = formFieldList;
+        this.formFieldList = formFieldList == null ? null
+            : Collections.unmodifiableList(formFieldList);
         return this;
     }
 
@@ -196,7 +198,7 @@ public final class FieldValue {
     /**
      * Gets the value of the field as a {@link List}.
      *
-     * @return the value of the field as a {@link List}.
+     * @return the value of the field as an unmodifiable {@link List}.
      */
     public List<FormField> asList() {
         return this.formFieldList;
@@ -205,7 +207,7 @@ public final class FieldValue {
     /**
      * Gets the value of the field as a {@link Map}.
      *
-     * @return the value of the field as a {@link Map}.
+     * @return the value of the field as an unmodifiable {@link Map}.
      */
     public Map<String, FormField> asMap() {
         return this.formFieldMap;

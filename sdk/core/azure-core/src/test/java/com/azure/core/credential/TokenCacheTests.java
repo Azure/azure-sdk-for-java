@@ -57,7 +57,7 @@ public class TokenCacheTests {
         SimpleTokenCache cache = new SimpleTokenCache(() -> {
             refreshes.incrementAndGet();
             return remoteGetTokenThatExpiresSoonAsync(1000, 0);
-        }, new TokenRefreshOptions().setTokenRefreshRetryTimeout(Duration.ZERO));
+        }, new TokenRefreshOptions().setRetryTimeout(Duration.ZERO));
 
         CountDownLatch latch = new CountDownLatch(1);
 
@@ -82,7 +82,7 @@ public class TokenCacheTests {
         AtomicInteger latency = new AtomicInteger(1);
         SimpleTokenCache cache = new SimpleTokenCache(
             () -> remoteGetTokenThatExpiresSoonAsync(1000 * latency.getAndIncrement(), 60 * 1000),
-            new TokenRefreshOptions().setTokenRefreshOffset(Duration.ofSeconds(58)).setTokenRefreshRetryTimeout(Duration.ofSeconds(1)));
+            new TokenRefreshOptions().setOffset(Duration.ofSeconds(58)).setRetryTimeout(Duration.ofSeconds(1)));
 
         CountDownLatch latch = new CountDownLatch(1);
         AtomicLong maxMillis = new AtomicLong(0);
@@ -111,7 +111,7 @@ public class TokenCacheTests {
         AtomicInteger latency = new AtomicInteger(1);
         SimpleTokenCache cache = new SimpleTokenCache(
             () -> remoteGetTokenThatExpiresSoonAsync(1000 * latency.getAndIncrement(), 1000),
-            new TokenRefreshOptions().setTokenRefreshOffset(Duration.ofSeconds(1)).setTokenRefreshRetryTimeout(Duration.ofSeconds(5)));
+            new TokenRefreshOptions().setOffset(Duration.ofSeconds(1)).setRetryTimeout(Duration.ofSeconds(5)));
 
         CountDownLatch latch = new CountDownLatch(1);
         AtomicLong maxMillis = new AtomicLong(0);
@@ -141,7 +141,7 @@ public class TokenCacheTests {
         AtomicInteger tryCount = new AtomicInteger(0);
         SimpleTokenCache cache = new SimpleTokenCache(
             () -> remoteGetTokenWithPersistentError(1000 * latency.getAndIncrement(), 3 * 1000, 2, tryCount),
-            new TokenRefreshOptions().setTokenRefreshOffset(Duration.ofSeconds(2)).setTokenRefreshRetryTimeout(Duration.ofSeconds(1)));
+            new TokenRefreshOptions().setOffset(Duration.ofSeconds(2)).setRetryTimeout(Duration.ofSeconds(1)));
 
         CountDownLatch latch = new CountDownLatch(1);
         AtomicLong maxMillis = new AtomicLong(0);
@@ -174,7 +174,7 @@ public class TokenCacheTests {
         AtomicInteger tryCount = new AtomicInteger(0);
         SimpleTokenCache cache = new SimpleTokenCache(
             () -> remoteGetTokenWithTemporaryError(1000 * latency.getAndIncrement(), 4 * 1000, 2, tryCount),
-            new TokenRefreshOptions().setTokenRefreshOffset(Duration.ofSeconds(2)).setTokenRefreshRetryTimeout(Duration.ofSeconds(1)));
+            new TokenRefreshOptions().setOffset(Duration.ofSeconds(2)).setRetryTimeout(Duration.ofSeconds(1)));
 
         CountDownLatch latch = new CountDownLatch(1);
         AtomicLong maxMillis = new AtomicLong(0);
@@ -208,7 +208,7 @@ public class TokenCacheTests {
         SimpleTokenCache cache = new SimpleTokenCache(() -> {
             refreshes.incrementAndGet();
             return remoteGetTokenThatExpiresSoonAsync(1000, 3 * 1000);
-        }, new TokenRefreshOptions().setTokenRefreshOffset(Duration.ZERO).setTokenRefreshRetryTimeout(Duration.ZERO));
+        }, new TokenRefreshOptions().setOffset(Duration.ZERO).setRetryTimeout(Duration.ZERO));
 
         CountDownLatch latch = new CountDownLatch(100);
 
@@ -226,7 +226,7 @@ public class TokenCacheTests {
             .subscribe();
 
         latch.await(20, TimeUnit.SECONDS);
-        Assertions.assertEquals(2 , refreshes.get());
+        Assertions.assertEquals(2, refreshes.get());
         Assertions.assertEquals(0, latch.getCount());
     }
 
