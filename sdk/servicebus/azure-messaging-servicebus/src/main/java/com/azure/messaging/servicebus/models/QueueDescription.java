@@ -5,6 +5,7 @@
 package com.azure.messaging.servicebus.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.implementation.EntityHelper;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
@@ -14,6 +15,9 @@ import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.DEFAULT_LOCK_DURATION;
+import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.MAX_DURATION;
 
 /** The QueueDescription model. */
 @JacksonXmlRootElement(
@@ -279,12 +283,39 @@ public final class QueueDescription {
     }
 
     /**
-     * Creates an instance with the name of the queue.
+     * Creates an instance with the name of the queue. Default values for the queue are populated. The properties
+     * populated with defaults are:
+     *
+     * <ul>
+     *     <li>{@link #setAutoDeleteOnIdle(Duration)}</li>
+     *     <li>{@link #setDeadLetteringOnMessageExpiration(Boolean)}</li>
+     *     <li>{@link #setDefaultMessageTimeToLive(Duration)}</li>
+     *     <li>{@link #setRequiresDuplicateDetection(Boolean)}</li>
+     *     <li>{@link #setDuplicateDetectionHistoryTimeWindow(Duration)}</li>
+     *     <li>{@link #setEnableBatchedOperations(Boolean)}</li>
+     *     <li>{@link #setLockDuration(Duration)}</li>
+     *     <li>{@link #setMaxDeliveryCount(Integer)}</li>
+     *     <li>{@link #setMaxSizeInMegabytes(Integer)}</li>
+     *     <li>{@link #setRequiresSession(Boolean)}</li>
+     * </ul>
      *
      * @param queueName Name of the queue.
+     * @throws IllegalArgumentException if {@code queueName} is a null or empty string.
      */
     public QueueDescription(String queueName) {
+        if (queueName == null || queueName.isEmpty()) {
+            throw new ClientLogger(QueueDescription.class).logThrowableAsError(
+                new IllegalArgumentException("'queueName' cannot be null or an empty string."));
+        }
+
         this.queueName = queueName;
+
+        this.autoDeleteOnIdle = MAX_DURATION;
+        this.defaultMessageTimeToLive = MAX_DURATION;
+        this.duplicateDetectionHistoryTimeWindow = Duration.ofSeconds(60);
+        this.lockDuration = DEFAULT_LOCK_DURATION;
+        this.maxDeliveryCount = 10;
+        this.maxSizeInMegabytes = 1024;
     }
 
     /**
@@ -300,9 +331,11 @@ public final class QueueDescription {
      * Sets the queue name.
      *
      * @param queueName Name of the queue.
+     * @return the QueueDescription object itself.
      */
-    void setName(String queueName) {
+    QueueDescription setName(String queueName) {
         this.queueName = queueName;
+        return this;
     }
 
     /**
