@@ -7,7 +7,13 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
-import com.azure.core.http.policy.*;
+import com.azure.core.http.policy.AddDatePolicy;
+import com.azure.core.http.policy.AddHeadersPolicy;
+import com.azure.core.http.policy.HttpLogDetailLevel;
+import com.azure.core.http.policy.HttpLogOptions;
+import com.azure.core.http.policy.HttpLoggingPolicy;
+import com.azure.core.http.policy.HttpPipelinePolicy;
+import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.test.TestBase;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
@@ -19,13 +25,16 @@ import com.azure.data.tables.implementation.models.ResponseFormat;
 import com.azure.data.tables.implementation.models.TableProperties;
 import com.azure.storage.common.implementation.connectionstring.StorageAuthenticationSettings;
 import com.azure.storage.common.implementation.connectionstring.StorageConnectionString;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
-import java.util.*;
 
 /**
  * This class tests the Autorest code for the Tables track 2 SDK
@@ -106,20 +115,10 @@ public class AzureTableImplTest extends TestBase {
             requestId, ResponseFormat.RETURN_CONTENT, properties, null, Context.NONE).log().block();
     }
 
-    String randomCharOnlyName(String prefix, int length) {
-        Random rnd = new Random();
-        String result = prefix;
-        while (result.length() < length) {
-            char c = (char) (rnd.nextInt(26) + 'a');
-            result += c;
-        }
-        return result;
-    }
-
     @Test
     void createTable() {
         // Arrange
-        String tableName = randomCharOnlyName("test", 20);
+        String tableName = testResourceNamer.randomName("test", 20);
         TableProperties tableProperties = new TableProperties().setTableName(tableName);
         int expectedStatusCode = 201;
         String requestId = testResourceNamer.randomUuid();
@@ -137,7 +136,7 @@ public class AzureTableImplTest extends TestBase {
     @Test
     void createTableDuplicateName() {
         // Arrange
-        String tableName = randomCharOnlyName("test", 20);
+        String tableName = testResourceNamer.randomName("test", 20);
         TableProperties tableProperties = new TableProperties().setTableName(tableName);
         createTable(tableName);
         String requestId = testResourceNamer.randomUuid();
@@ -152,7 +151,7 @@ public class AzureTableImplTest extends TestBase {
     @Test
     void deleteTable() {
         // Arrange
-        String tableName = randomCharOnlyName("test", 20);
+        String tableName = testResourceNamer.randomName("test", 20);
         createTable(tableName);
         int expectedStatusCode = 204;
         String requestId = testResourceNamer.randomUuid();
@@ -170,7 +169,7 @@ public class AzureTableImplTest extends TestBase {
     @Test
     void deleteNonExistentTable() {
         // Arrange
-        String tableName = randomCharOnlyName("test", 20);
+        String tableName = testResourceNamer.randomName("test", 20);
         String requestId = testResourceNamer.randomUuid();
 
         // Act & Assert
@@ -185,8 +184,8 @@ public class AzureTableImplTest extends TestBase {
         // Arrange
         QueryOptions queryOptions = new QueryOptions()
             .setFormat(OdataMetadataFormat.APPLICATION_JSON_ODATA_MINIMALMETADATA);
-        String tableA = randomCharOnlyName("AtestA", 20);
-        String tableB = randomCharOnlyName("BtestB", 20);
+        String tableA = testResourceNamer.randomName("AtestA", 20);
+        String tableB = testResourceNamer.randomName("BtestB", 20);
         createTable(tableA);
         createTable(tableB);
         int expectedStatusCode = 200;
@@ -209,8 +208,8 @@ public class AzureTableImplTest extends TestBase {
         // Arrange
         QueryOptions queryOptions = new QueryOptions()
             .setFormat(OdataMetadataFormat.APPLICATION_JSON_ODATA_MINIMALMETADATA);
-        String tableA = randomCharOnlyName("AtestA", 20);
-        String tableB = randomCharOnlyName("BtestB", 20);
+        String tableA = testResourceNamer.randomName("AtestA", 20);
+        String tableB = testResourceNamer.randomName("BtestB", 20);
         createTable(tableA);
         createTable(tableB);
         int expectedStatusCode = 200;
@@ -233,11 +232,11 @@ public class AzureTableImplTest extends TestBase {
     @Test
     void insertNoEtag() {
         // Arrange
-        String tableName = randomCharOnlyName("test", 20);
+        String tableName = testResourceNamer.randomName("test", 20);
         createTable(tableName);
         Map<String, Object> properties = new HashMap<>();
-        String partitionKeyValue = randomCharOnlyName("partitionKey", 20);
-        String rowKeyValue = randomCharOnlyName("rowKey", 20);
+        String partitionKeyValue = testResourceNamer.randomName("partitionKey", 20);
+        String rowKeyValue = testResourceNamer.randomName("rowKey", 20);
         properties.put(PARTITION_KEY, partitionKeyValue);
         properties.put(ROW_KEY, rowKeyValue);
         int expectedStatusCode = 201;
@@ -256,17 +255,17 @@ public class AzureTableImplTest extends TestBase {
     @Test
     void mergeEntity() {
         // Arrange
-        String tableName = randomCharOnlyName("test", 20);
+        String tableName = testResourceNamer.randomName("test", 20);
         createTable(tableName);
         Map<String, Object> properties = new HashMap<>();
-        String partitionKeyValue = randomCharOnlyName("partitionKey", 20);
-        String rowKeyValue = randomCharOnlyName("rowKey", 20);
+        String partitionKeyValue = testResourceNamer.randomName("partitionKey", 20);
+        String rowKeyValue = testResourceNamer.randomName("rowKey", 20);
         properties.put(PARTITION_KEY, partitionKeyValue);
         properties.put(ROW_KEY, rowKeyValue);
         int expectedStatusCode = 204;
         String requestId = testResourceNamer.randomUuid();
         insertNoETag(tableName, properties);
-        properties.put("extraProperty", randomCharOnlyName("extraProperty", 16));
+        properties.put("extraProperty", testResourceNamer.randomName("extraProperty", 16));
 
         // Act & Assert
         StepVerifier.create(azureTable.getTables().mergeEntityWithResponseAsync(tableName, partitionKeyValue,
@@ -281,11 +280,11 @@ public class AzureTableImplTest extends TestBase {
     @Test
     void mergeNonExistentEntity() {
         // Arrange
-        String tableName = randomCharOnlyName("test", 20);
+        String tableName = testResourceNamer.randomName("test", 20);
         createTable(tableName);
         Map<String, Object> properties = new HashMap<>();
-        String partitionKeyValue = randomCharOnlyName("partitionKey", 20);
-        String rowKeyValue = randomCharOnlyName("rowKey", 20);
+        String partitionKeyValue = testResourceNamer.randomName("partitionKey", 20);
+        String rowKeyValue = testResourceNamer.randomName("rowKey", 20);
         String requestId = testResourceNamer.randomUuid();
 
         // Act & Assert
@@ -298,17 +297,17 @@ public class AzureTableImplTest extends TestBase {
     @Test
     void updateEntity() {
         // Arrange
-        String tableName = randomCharOnlyName("test", 20);
+        String tableName = testResourceNamer.randomName("test", 20);
         createTable(tableName);
         Map<String, Object> properties = new HashMap<>();
-        String partitionKeyValue = randomCharOnlyName("partitionKey", 20);
-        String rowKeyValue = randomCharOnlyName("rowKey", 20);
+        String partitionKeyValue = testResourceNamer.randomName("partitionKey", 20);
+        String rowKeyValue = testResourceNamer.randomName("rowKey", 20);
         properties.put(PARTITION_KEY, partitionKeyValue);
         properties.put(ROW_KEY, rowKeyValue);
         int expectedStatusCode = 204;
         String requestId = testResourceNamer.randomUuid();
         insertNoETag(tableName, properties);
-        properties.put("extraProperty", randomCharOnlyName("extraProperty", 16));
+        properties.put("extraProperty", testResourceNamer.randomName("extraProperty", 16));
 
         // Act & Assert
         StepVerifier.create(azureTable.getTables().updateEntityWithResponseAsync(tableName, partitionKeyValue,
@@ -323,11 +322,11 @@ public class AzureTableImplTest extends TestBase {
     @Test
     void updateNonExistentEntity() {
         // Arrange
-        String tableName = randomCharOnlyName("test", 20);
+        String tableName = testResourceNamer.randomName("test", 20);
         createTable(tableName);
         Map<String, Object> properties = new HashMap<>();
-        String partitionKeyValue = randomCharOnlyName("partitionKey", 20);
-        String rowKeyValue = randomCharOnlyName("rowKey", 20);
+        String partitionKeyValue = testResourceNamer.randomName("partitionKey", 20);
+        String rowKeyValue = testResourceNamer.randomName("rowKey", 20);
         String requestId = testResourceNamer.randomUuid();
 
         // Act & Assert
@@ -340,11 +339,11 @@ public class AzureTableImplTest extends TestBase {
     @Test
     void deleteEntity() {
         // Arrange
-        String tableName = randomCharOnlyName("test", 20);
+        String tableName = testResourceNamer.randomName("test", 20);
         createTable(tableName);
         Map<String, Object> properties = new HashMap<>();
-        String partitionKeyValue = randomCharOnlyName("partitionKey", 20);
-        String rowKeyValue = randomCharOnlyName("rowKey", 20);
+        String partitionKeyValue = testResourceNamer.randomName("partitionKey", 20);
+        String rowKeyValue = testResourceNamer.randomName("rowKey", 20);
         properties.put(PARTITION_KEY, partitionKeyValue);
         properties.put(ROW_KEY, rowKeyValue);
         int expectedStatusCode = 204;
@@ -364,10 +363,10 @@ public class AzureTableImplTest extends TestBase {
     @Test
     void deleteNonExistentEntity() {
         // Arrange
-        String tableName = randomCharOnlyName("test", 20);
+        String tableName = testResourceNamer.randomName("test", 20);
         createTable(tableName);
-        String partitionKeyValue = randomCharOnlyName("partitionKey", 20);
-        String rowKeyValue = randomCharOnlyName("rowKey", 20);
+        String partitionKeyValue = testResourceNamer.randomName("partitionKey", 20);
+        String rowKeyValue = testResourceNamer.randomName("rowKey", 20);
         String requestId = testResourceNamer.randomUuid();
 
         // Act & Assert
@@ -382,19 +381,19 @@ public class AzureTableImplTest extends TestBase {
         // Arrange
         String requestId = testResourceNamer.randomUuid();
         QueryOptions queryOptions = new QueryOptions().setFormat(OdataMetadataFormat.APPLICATION_JSON_ODATA_FULLMETADATA);
-        String tableName = randomCharOnlyName("test", 20);
+        String tableName = testResourceNamer.randomName("test", 20);
         createTable(tableName);
         //insert entity A
         Map<String, Object> entityA = new HashMap<>();
-        String partitionKeyEntityA = randomCharOnlyName("partitionKeyA", 20);
+        String partitionKeyEntityA = testResourceNamer.randomName("partitionKeyA", 20);
         entityA.put(PARTITION_KEY, partitionKeyEntityA);
-        entityA.put(ROW_KEY, randomCharOnlyName("rowKeyA", 20));
+        entityA.put(ROW_KEY, testResourceNamer.randomName("rowKeyA", 20));
         insertNoETag(tableName, entityA);
         //insert entity B
         Map<String, Object> entityB = new HashMap<>();
-        String partitionKeyEntityB = randomCharOnlyName("partitionKeyB", 20);
+        String partitionKeyEntityB = testResourceNamer.randomName("partitionKeyB", 20);
         entityB.put(PARTITION_KEY, partitionKeyEntityB);
-        entityB.put(ROW_KEY, randomCharOnlyName("rowKeyB", 20));
+        entityB.put(ROW_KEY, testResourceNamer.randomName("rowKeyB", 20));
         insertNoETag(tableName, entityB);
         int expectedStatusCode = 200;
 
@@ -416,19 +415,19 @@ public class AzureTableImplTest extends TestBase {
         // Arrange
         String requestId = testResourceNamer.randomUuid();
         QueryOptions queryOptions = new QueryOptions().setFormat(OdataMetadataFormat.APPLICATION_JSON_ODATA_FULLMETADATA);
-        String tableName = randomCharOnlyName("test", 20);
+        String tableName = testResourceNamer.randomName("test", 20);
         createTable(tableName);
         //insert entity A
         Map<String, Object> entityA = new HashMap<>();
-        String partitionKeyEntityA = randomCharOnlyName("partitionKeyA", 20);
-        String rowKeyEntityA = randomCharOnlyName("rowKeyA", 20);
+        String partitionKeyEntityA = testResourceNamer.randomName("partitionKeyA", 20);
+        String rowKeyEntityA = testResourceNamer.randomName("rowKeyA", 20);
         entityA.put(PARTITION_KEY, partitionKeyEntityA);
         entityA.put(ROW_KEY, rowKeyEntityA);
         insertNoETag(tableName, entityA);
         //insert entity B
         Map<String, Object> entityB = new HashMap<>();
-        String partitionKeyEntityB = randomCharOnlyName("partitionKeyB", 20);
-        String rowKeyEntityB = randomCharOnlyName("rowKeyB", 20);
+        String partitionKeyEntityB = testResourceNamer.randomName("partitionKeyB", 20);
+        String rowKeyEntityB = testResourceNamer.randomName("rowKeyB", 20);
         entityB.put(PARTITION_KEY, partitionKeyEntityB);
         entityB.put(ROW_KEY, rowKeyEntityB);
         insertNoETag(tableName, entityB);
@@ -453,12 +452,12 @@ public class AzureTableImplTest extends TestBase {
         // Arrange
         String requestId = testResourceNamer.randomUuid();
         QueryOptions queryOptions = new QueryOptions().setFormat(OdataMetadataFormat.APPLICATION_JSON_ODATA_FULLMETADATA);
-        String tableName = randomCharOnlyName("test", 20);
+        String tableName = testResourceNamer.randomName("test", 20);
         createTable(tableName);
         Map<String, Object> entityA = new HashMap<>();
-        String partitionKeyEntityA = randomCharOnlyName("partitionKeyA", 20);
+        String partitionKeyEntityA = testResourceNamer.randomName("partitionKeyA", 20);
         entityA.put(PARTITION_KEY, partitionKeyEntityA);
-        entityA.put(ROW_KEY, randomCharOnlyName("rowKeyA", 20));
+        entityA.put(ROW_KEY, testResourceNamer.randomName("rowKeyA", 20));
         insertNoETag(tableName, entityA);
         int expectedStatusCode = 200;
         queryOptions.setSelect(PARTITION_KEY + "eq" + partitionKeyEntityA);
@@ -479,7 +478,7 @@ public class AzureTableImplTest extends TestBase {
         // Arrange
         String requestId = testResourceNamer.randomUuid();
         QueryOptions queryOptions = new QueryOptions().setFormat(OdataMetadataFormat.APPLICATION_JSON_ODATA_FULLMETADATA);
-        String tableName = randomCharOnlyName("test", 20);
+        String tableName = testResourceNamer.randomName("test", 20);
         createTable(tableName);
         int expectedStatusCode = 200;
         queryOptions.setTop(0);
@@ -500,18 +499,18 @@ public class AzureTableImplTest extends TestBase {
     void queryEntitiesWithPartitionAndRowKey() {
         // Arrange
         QueryOptions queryOptions = new QueryOptions().setFormat(OdataMetadataFormat.APPLICATION_JSON_ODATA_FULLMETADATA);
-        String tableName = randomCharOnlyName("test", 20);
+        String tableName = testResourceNamer.randomName("test", 20);
         createTable(tableName);
         Map<String, Object> properties = new HashMap<>();
-        String partitionKeyValue = randomCharOnlyName("partitionKey", 20);
-        String rowKeyValue = randomCharOnlyName("rowKey", 20);
+        String partitionKeyValue = testResourceNamer.randomName("partitionKey", 20);
+        String rowKeyValue = testResourceNamer.randomName("rowKey", 20);
         properties.put(PARTITION_KEY, partitionKeyValue);
         properties.put(ROW_KEY, rowKeyValue);
         insertNoETag(tableName, properties);
 
         // Act & Assert
         StepVerifier.create(azureTable.getTables().queryEntitiesWithPartitionAndRowKeyWithResponseAsync(tableName, partitionKeyValue,
-            rowKeyValue, TIMEOUT, UUID.randomUUID().toString(), queryOptions, Context.NONE))
+            rowKeyValue, TIMEOUT, testResourceNamer.randomUuid(), queryOptions, Context.NONE))
             .assertNext(response -> {
                 Assertions.assertEquals(200, response.getStatusCode());
             })
