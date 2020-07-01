@@ -3,15 +3,17 @@
 package com.azure.data.tables;
 
 import com.azure.core.annotation.ServiceClient;
-import com.azure.data.tables.implementation.models.QueryOptions;
 
 import java.util.List;
 import java.util.Map;
 
+/**
+ * sync client for table operations
+ */
 @ServiceClient(
     builder = TableClientBuilder.class)
 public class TableClient {
-    String tableName;
+    final String tableName;
 
     TableClient(String tableName) {
         this.tableName = tableName;

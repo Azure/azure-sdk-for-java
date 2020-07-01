@@ -2,6 +2,9 @@
 // Licensed under the MIT License.
 package com.azure.data.tables;
 
+/**
+ * class for a table object
+ */
 public class AzureTable {
     private final String name;
 

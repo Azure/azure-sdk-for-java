@@ -4,8 +4,11 @@ package com.azure.data.tables;
 
 import java.util.Map;
 
+/**
+ * table entity class
+ */
 public class TableEntity {
-    Map<String, Object> properties;
+    private Map<String, Object> properties;
 
     TableEntity() {
     }
@@ -38,5 +41,13 @@ public class TableEntity {
      */
     public void addProperty(String key, Object value) {
 
+    }
+
+    /**
+     * set the properties
+     * @param properties properties to set to this entity
+     */
+    public void setProperties(Map<String, Object> properties) {
+        this.properties = properties;
     }
 }

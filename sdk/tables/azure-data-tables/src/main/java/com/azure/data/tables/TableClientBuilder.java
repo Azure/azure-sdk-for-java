@@ -4,6 +4,9 @@ package com.azure.data.tables;
 
 import com.azure.core.annotation.ServiceClientBuilder;
 
+/**
+ * builds table client
+ */
 @ServiceClientBuilder(serviceClients = {TableClient.class, TableAsyncClient.class})
 public class TableClientBuilder {
     String connectionString;

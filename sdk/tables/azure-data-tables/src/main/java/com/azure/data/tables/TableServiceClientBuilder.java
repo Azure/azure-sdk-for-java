@@ -2,6 +2,12 @@
 // Licensed under the MIT License.
 package com.azure.data.tables;
 
+import com.azure.core.annotation.ServiceClientBuilder;
+
+/**
+ * builds the table service clients
+ */
+@ServiceClientBuilder(serviceClients = {TableServiceClient.class, TableServiceAsyncClient.class})
 public class TableServiceClientBuilder {
 
     String connectionString;
@@ -29,12 +35,15 @@ public class TableServiceClientBuilder {
     /**
      * builds an async TableServiceAsyncClient
      *
-     * @return an aysnc TableServiceAsyncClient
+     * @return TableServiceAsyncClient an aysnc TableServiceAsyncClient
      */
     public TableServiceAsyncClient buildAsyncClient() {
         return new TableServiceAsyncClient();
     }
 
+    /**
+     * constructor
+     */
     public TableServiceClientBuilder() {
 
     }

@@ -3,10 +3,12 @@
 package com.azure.data.tables;
 
 import com.azure.core.annotation.ServiceClient;
-import com.azure.data.tables.implementation.models.QueryOptions;
 
 import java.util.List;
 
+/**
+ * client for table service
+ */
 @ServiceClient(
     builder = TableServiceClientBuilder.class)
 public class TableServiceClient {

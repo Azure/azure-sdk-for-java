@@ -3,14 +3,17 @@
 package com.azure.data.tables;
 
 import com.azure.core.exception.HttpResponseException;
-import com.azure.data.tables.implementation.models.QueryOptions;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.data.tables.implementation.models.TableServiceErrorException;
-
 import java.util.List;
 
+/**
+ * sync code snippets for the table service
+ */
 public class TableServiceClientCodeSnippets {
 
-    public static void methods() {
+    private static void methods() {
+        ClientLogger logger = new ClientLogger("TableServiceClientCodeSnippets");
 
         //create a tableServiceClient
         TableServiceClient tableServiceClient = new TableServiceClientBuilder()
@@ -27,15 +30,14 @@ public class TableServiceClientCodeSnippets {
         try {
             AzureTable officeSuppliesTable = tableServiceClient.createTable("OfficeSupplies");
         } catch (TableServiceErrorException e) {
-            //use azure core errors? based on
-            System.out.println("Create Table Unsuccessful. Error: " + e);
+            logger.error("Create Table Unsuccessful. Error: " + e);
         }
 
         //delete  table
         try {
             tableServiceClient.deleteTable("OfficeSupplies");
         } catch (TableServiceErrorException e) {
-            System.out.println("Delete Table Unsuccessful. Error: " + e);
+            logger.error("Delete Table Unsuccessful. Error: " + e);
         }
 
         //query tables
@@ -45,7 +47,7 @@ public class TableServiceClientCodeSnippets {
         try {
             List<AzureTable> responseTables = tableServiceClient.queryTables(queryOptions);
         } catch (HttpResponseException e) {
-            System.out.println("Table Query Unsuccessful. Error: " + e);
+            logger.error("Table Query Unsuccessful. Error: " + e);
         }
 
         //insert entity
@@ -55,7 +57,7 @@ public class TableServiceClientCodeSnippets {
         try {
             tableEntity = tableClient.insertEntity(tableEntity);
         } catch (HttpResponseException e) {
-            System.out.println("Insert Entity Unsuccessful. Error: " + e);
+            logger.error("Insert Entity Unsuccessful. Error: " + e);
         }
 
         //update entity
@@ -63,7 +65,7 @@ public class TableServiceClientCodeSnippets {
         try {
             tableClient.updateEntity(tableEntity);
         } catch (HttpResponseException e) {
-            System.out.println("Update Entity Unsuccessful. Error: " + e);
+            logger.error("Update Entity Unsuccessful. Error: " + e);
         }
 
         //upsert entity (where it is an insert or replace)
@@ -71,7 +73,7 @@ public class TableServiceClientCodeSnippets {
         try {
             tableClient.insertOrReplaceEntity(tableEntity);
         } catch (HttpResponseException e) {
-            System.out.println("Upsert Entity Unsuccessful. Error: " + e);
+            logger.error("Upsert Entity Unsuccessful. Error: " + e);
         }
 
         //upsert entity (where it is an insert or merge)
@@ -79,14 +81,14 @@ public class TableServiceClientCodeSnippets {
         try {
             tableClient.insertOrMergeEntity(tableEntity);
         } catch (HttpResponseException e) {
-            System.out.println("Upsert Entity Unsuccessful. Error: " + e);
+            logger.error("Upsert Entity Unsuccessful. Error: " + e);
         }
 
         //delete entity
         try {
             tableClient.deleteEntity(tableEntity);
         } catch (HttpResponseException e) {
-            System.out.println("Delete Entity Unsuccessful. Error: " + e);
+            logger.error("Delete Entity Unsuccessful. Error: " + e);
         }
 
         //query a table
@@ -95,7 +97,7 @@ public class TableServiceClientCodeSnippets {
         try {
             List<TableEntity> list = tableClient.queryEntity(queryOptions);
         } catch (HttpResponseException e) {
-            System.out.println("Query Table Entities Unsuccessful. Error: " + e);
+            logger.error("Query Table Entities Unsuccessful. Error: " + e);
         }
     }
 }
