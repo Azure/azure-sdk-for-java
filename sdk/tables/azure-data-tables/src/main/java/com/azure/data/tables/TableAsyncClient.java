@@ -15,7 +15,7 @@ import java.util.Map;
     builder = TableClientBuilder.class,
     isAsync = true)
 public class TableAsyncClient {
-    final String tableName;
+    private final String tableName;
 
     TableAsyncClient(String tableName) {
         this.tableName = tableName;
