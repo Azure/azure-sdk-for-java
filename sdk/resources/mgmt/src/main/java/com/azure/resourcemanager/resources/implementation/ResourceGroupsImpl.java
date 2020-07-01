@@ -5,6 +5,10 @@ package com.azure.resourcemanager.resources.implementation;
 
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.http.rest.Response;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.resources.fluentcore.model.Accepted;
+import com.azure.resourcemanager.resources.fluentcore.model.implementation.AcceptedImpl;
 import com.azure.resourcemanager.resources.ResourceManager;
 import com.azure.resourcemanager.resources.models.ResourceGroup;
 import com.azure.resourcemanager.resources.models.ResourceGroups;
@@ -12,7 +16,11 @@ import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.CreatableResourcesImpl;
 import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
 import com.azure.resourcemanager.resources.fluent.inner.ResourceGroupInner;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+
+import java.nio.ByteBuffer;
+import java.util.function.Function;
 
 /**
  * The implementation for ResourceGroups.
@@ -20,6 +28,8 @@ import reactor.core.publisher.Mono;
 public final class ResourceGroupsImpl
         extends CreatableResourcesImpl<ResourceGroup, ResourceGroupImpl, ResourceGroupInner>
         implements ResourceGroups {
+
+    private final ClientLogger logger = new ClientLogger(ResourceGroupsImpl.class);
 
     private final ResourceManager resourceManager;
 
@@ -89,15 +99,26 @@ public final class ResourceGroupsImpl
     }
 
     @Override
-    public void beginDeleteByName(String id) {
-        beginDeleteByNameAsync(id).block();
+    public Accepted<Void> beginDeleteByName(String name) {
+        Response<Flux<ByteBuffer>> activationResponse = manager().inner().getResourceGroups()
+            .deleteWithResponseAsync(name).block();
+        if (activationResponse == null) {
+            throw logger.logExceptionAsError(new NullPointerException());
+        } else {
+            return new AcceptedImpl<Void, Void>(activationResponse,
+                manager().inner().getSerializerAdapter(),
+                manager().inner().getHttpPipeline(),
+                Void.class,
+                Void.class,
+                Function.identity());
+        }
     }
 
-    @Override
-    public Mono<Void> beginDeleteByNameAsync(String name) {
-        // DELETE
-        return manager().inner().getResourceGroups().beginDeleteWithoutPollingAsync(name);
-    }
+//    @Override
+//    public Mono<Void> beginDeleteByNameAsync(String name) {
+//        // DELETE
+//        return client.beginDeleteWithoutPollingAsync(name);
+//    }
 
     @Override
     public Mono<Void> deleteByIdAsync(String id) {

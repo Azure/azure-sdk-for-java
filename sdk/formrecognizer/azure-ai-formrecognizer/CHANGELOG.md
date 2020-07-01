@@ -2,13 +2,20 @@
 
 ## 1.0.0-beta.4 (Unreleased)
 ### Breaking Changes
+- Rename properties `requestedOn` to `trainingStartedOn` and `completedOn` to `trainingCompletedOn` on model
+- Throw `HttpResponseException` instead of `ErrorResponseException` to model service side exceptions
+`CustomFormModel` and `CustomFormModelInfo`.
+- Change `CopyAuthorization.getExpiresOn()` to return a `OffsetDateTime` instead of a `long` value
 - Add `RecognizeOptions` and `RecognizeCustomFormOptions` to pass configurable options when using recognize APIs on FormRecognizerClient.
-- Rename `includeTextDetails` to `includeTextContent`
 - Change `submodels` property on `CustomFormModel` to return a `List` instead of `IterableStream`
 - Rename `fieldMap` property to `fields` on `CustomFormSubmodel` model
 - Rename `elements` property on model `FormTableCell` to `textContent`
-- Rename `includeTextDetails` refernces in parameter and model properties to `includeTextContent`
+- Rename `includeTextDetails` references in parameter and model properties to `includeTextContent`
 - Remove `TextContentType` model and use `instanceOf` to detect the FormContent type
+
+### Key Bug Fixes
+- Fixes `textAngle` to be returned between `(-180, 180]`.
+
 ## 1.0.0-beta.3 (2020-06-10)
 ### New Features
 - Support to copy a custom model from one Form Recognizer resource to another

@@ -31,7 +31,6 @@ import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.util.polling.AsyncPollResponse;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.resourcemanager.network.NetworkManagementClient;
 import com.azure.resourcemanager.network.fluent.inner.AvailableProvidersListInner;
@@ -1049,7 +1048,7 @@ public final class NetworkWatchersClient
             .client
             .<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -1070,7 +1069,7 @@ public final class NetworkWatchersClient
             .client
             .<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -1923,7 +1922,7 @@ public final class NetworkWatchersClient
                 VerificationIpFlowResultInner.class,
                 VerificationIpFlowResultInner.class)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -1951,7 +1950,7 @@ public final class NetworkWatchersClient
                 VerificationIpFlowResultInner.class,
                 VerificationIpFlowResultInner.class)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -2162,7 +2161,7 @@ public final class NetworkWatchersClient
             .<NextHopResultInner, NextHopResultInner>getLroResultAsync(
                 mono, this.client.getHttpPipeline(), NextHopResultInner.class, NextHopResultInner.class)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -2187,7 +2186,7 @@ public final class NetworkWatchersClient
             .<NextHopResultInner, NextHopResultInner>getLroResultAsync(
                 mono, this.client.getHttpPipeline(), NextHopResultInner.class, NextHopResultInner.class)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -2409,7 +2408,7 @@ public final class NetworkWatchersClient
                 SecurityGroupViewResultInner.class,
                 SecurityGroupViewResultInner.class)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -2437,7 +2436,7 @@ public final class NetworkWatchersClient
                 SecurityGroupViewResultInner.class,
                 SecurityGroupViewResultInner.class)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -2654,7 +2653,7 @@ public final class NetworkWatchersClient
             .<TroubleshootingResultInner, TroubleshootingResultInner>getLroResultAsync(
                 mono, this.client.getHttpPipeline(), TroubleshootingResultInner.class, TroubleshootingResultInner.class)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -2679,7 +2678,7 @@ public final class NetworkWatchersClient
             .<TroubleshootingResultInner, TroubleshootingResultInner>getLroResultAsync(
                 mono, this.client.getHttpPipeline(), TroubleshootingResultInner.class, TroubleshootingResultInner.class)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -2898,7 +2897,7 @@ public final class NetworkWatchersClient
             .<TroubleshootingResultInner, TroubleshootingResultInner>getLroResultAsync(
                 mono, this.client.getHttpPipeline(), TroubleshootingResultInner.class, TroubleshootingResultInner.class)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -2923,7 +2922,7 @@ public final class NetworkWatchersClient
             .<TroubleshootingResultInner, TroubleshootingResultInner>getLroResultAsync(
                 mono, this.client.getHttpPipeline(), TroubleshootingResultInner.class, TroubleshootingResultInner.class)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -3134,7 +3133,7 @@ public final class NetworkWatchersClient
             .<FlowLogInformationInner, FlowLogInformationInner>getLroResultAsync(
                 mono, this.client.getHttpPipeline(), FlowLogInformationInner.class, FlowLogInformationInner.class)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -3159,7 +3158,7 @@ public final class NetworkWatchersClient
             .<FlowLogInformationInner, FlowLogInformationInner>getLroResultAsync(
                 mono, this.client.getHttpPipeline(), FlowLogInformationInner.class, FlowLogInformationInner.class)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -3372,7 +3371,7 @@ public final class NetworkWatchersClient
             .<FlowLogInformationInner, FlowLogInformationInner>getLroResultAsync(
                 mono, this.client.getHttpPipeline(), FlowLogInformationInner.class, FlowLogInformationInner.class)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -3397,7 +3396,7 @@ public final class NetworkWatchersClient
             .<FlowLogInformationInner, FlowLogInformationInner>getLroResultAsync(
                 mono, this.client.getHttpPipeline(), FlowLogInformationInner.class, FlowLogInformationInner.class)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -3622,7 +3621,7 @@ public final class NetworkWatchersClient
                 ConnectivityInformationInner.class,
                 ConnectivityInformationInner.class)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -3651,7 +3650,7 @@ public final class NetworkWatchersClient
                 ConnectivityInformationInner.class,
                 ConnectivityInformationInner.class)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -3881,7 +3880,7 @@ public final class NetworkWatchersClient
                 AzureReachabilityReportInner.class,
                 AzureReachabilityReportInner.class)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -3912,7 +3911,7 @@ public final class NetworkWatchersClient
                 AzureReachabilityReportInner.class,
                 AzureReachabilityReportInner.class)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -4141,7 +4140,7 @@ public final class NetworkWatchersClient
                 AvailableProvidersListInner.class,
                 AvailableProvidersListInner.class)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -4172,7 +4171,7 @@ public final class NetworkWatchersClient
                 AvailableProvidersListInner.class,
                 AvailableProvidersListInner.class)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -4409,7 +4408,7 @@ public final class NetworkWatchersClient
                     NetworkConfigurationDiagnosticResponseInner.class,
                     NetworkConfigurationDiagnosticResponseInner.class)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -4442,7 +4441,7 @@ public final class NetworkWatchersClient
                     NetworkConfigurationDiagnosticResponseInner.class,
                     NetworkConfigurationDiagnosticResponseInner.class)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**

@@ -7,6 +7,7 @@ package com.azure.storage.blob.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+
 import java.util.Map;
 
 /**
@@ -15,6 +16,7 @@ import java.util.Map;
 @JacksonXmlRootElement(localName = "Blob")
 @Fluent
 public final class BlobItem {
+
     /*
      * The name property.
      */
@@ -45,11 +47,27 @@ public final class BlobItem {
     @JsonProperty(value = "Metadata")
     private Map<String, String> metadata;
 
+    private Map<String, String> tags;
+
     /*
      * The versionId property.
      */
     @JsonProperty(value = "VersionId", required = true)
     private String versionId;
+
+    private Boolean isCurrentVersion;
+
+    /*
+     * The objectReplicationPolicyId property.
+     */
+    @JsonProperty(value = "ObjectReplicationPolicyId")
+    private String objectReplicationPolicyId;
+
+    /*
+     * The objectReplicationRuleStatus property.
+     */
+    @JsonProperty(value = "BlobObjectReplicationRuleStatus")
+    private Map<String, String> objectReplicationRuleStatus;
 
     /*
      * The isPrefix property.
@@ -158,6 +176,26 @@ public final class BlobItem {
     }
 
     /**
+     * Get the tags property: The tags property.
+     *
+     * @return the metadata value.
+     */
+    public Map<String, String> getTags() {
+        return this.tags;
+    }
+
+    /**
+     * Set the tags property: The tags property.
+     *
+     * @param tags the tags value to set.
+     * @return the BlobItem object itself.
+     */
+    public BlobItem setTags(Map<String, String> tags) {
+        this.tags = tags;
+        return this;
+    }
+
+    /**
      * Get the versionId property: The versionId property.
      *
      * @return the versionId value.
@@ -174,6 +212,72 @@ public final class BlobItem {
      */
     public BlobItem setVersionId(String versionId) {
         this.versionId = versionId;
+        return this;
+    }
+
+    /**
+     * Get the isCurrentVersion property: The isCurrentVersion property.
+     *
+     * @return the isCurrentVersion value.
+     */
+    public Boolean isCurrentVersion() {
+        return this.isCurrentVersion;
+    }
+
+    /**
+     *  Set the isCurrentVersion property: The isCurrentVersion property.
+     *
+     * @param isCurrentVersion the isCurrentVersion value to set.
+     * @return the BlobItem object itself.
+     */
+    public BlobItem setCurrentVersion(Boolean isCurrentVersion) {
+        this.isCurrentVersion = isCurrentVersion;
+        return this;
+    }
+
+    /**
+     * Get the objectReplicationPolicyId property: The
+     * objectReplicationPolicyId property.
+     *
+     * @return the objectReplicationPolicyId value.
+     */
+    public String getObjectReplicationPolicyId() {
+        return this.objectReplicationPolicyId;
+    }
+
+    /**
+     * Set the objectReplicationPolicyId property: The
+     * objectReplicationPolicyId property.
+     *
+     * @param objectReplicationPolicyId the objectReplicationPolicyId value to
+     * set.
+     * @return the BlobItem object itself.
+     */
+    public BlobItem setObjectReplicationPolicyId(String objectReplicationPolicyId) {
+        this.objectReplicationPolicyId = objectReplicationPolicyId;
+        return this;
+    }
+
+    /**
+     * Get the objectReplicationRuleStatus property: The
+     * objectReplicationRuleStatus property.
+     *
+     * @return the objectReplicationRuleStatus value.
+     */
+    public Map<String, String> getObjectReplicationRuleStatus() {
+        return this.objectReplicationRuleStatus;
+    }
+
+    /**
+     * Set the objectReplicationRuleStatus property: The
+     * objectReplicationRuleStatus property.
+     *
+     * @param objectReplicationRuleStatus the objectReplicationRuleStatus value
+     * to set.
+     * @return the BlobItem object itself.
+     */
+    public BlobItem setObjectReplicationRuleStatus(Map<String, String> objectReplicationRuleStatus) {
+        this.objectReplicationRuleStatus = objectReplicationRuleStatus;
         return this;
     }
 

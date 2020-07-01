@@ -5,7 +5,6 @@ package com.azure.ai.formrecognizer;
 
 import com.azure.ai.formrecognizer.models.CustomFormModel;
 import com.azure.ai.formrecognizer.models.ErrorInformation;
-import com.azure.ai.formrecognizer.models.ErrorResponseException;
 import com.azure.ai.formrecognizer.models.FormContentType;
 import com.azure.ai.formrecognizer.models.FormPage;
 import com.azure.ai.formrecognizer.models.FormRecognizerException;
@@ -15,6 +14,7 @@ import com.azure.ai.formrecognizer.models.RecognizeOptions;
 import com.azure.ai.formrecognizer.models.RecognizedForm;
 import com.azure.ai.formrecognizer.models.RecognizedReceipt;
 import com.azure.ai.formrecognizer.training.FormTrainingClient;
+import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.util.polling.SyncPoller;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -138,7 +138,7 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
         receiptDataRunnerTextDetails((data, includeTextContent) -> {
             SyncPoller<OperationResult, List<RecognizedReceipt>> syncPoller =
                 client.beginRecognizeReceipts(new RecognizeOptions(data, RECEIPT_FILE_LENGTH)
-                    .setFormContentType(FormContentType.IMAGE_PNG).setIncludeTextContent(includeTextContent));
+                    .setFormContentType(FormContentType.IMAGE_JPEG).setIncludeTextContent(includeTextContent));
             syncPoller.waitForCompletion();
             validateReceiptResultData(syncPoller.getFinalResult(), true);
         });
@@ -204,7 +204,7 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
     public void recognizeContentInvalidSourceUrl(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
         client = getFormRecognizerClient(httpClient, serviceVersion);
-        invalidSourceUrlRunner((invalidSourceUrl) -> assertThrows(ErrorResponseException.class, () ->
+        invalidSourceUrlRunner((invalidSourceUrl) -> assertThrows(HttpResponseException.class, () ->
             client.beginRecognizeContentFromUrl(invalidSourceUrl)));
     }
 
@@ -222,8 +222,8 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
             syncPoller.waitForCompletion();
             CustomFormModel createdModel = syncPoller.getFinalResult();
 
-            ErrorResponseException httpResponseException = assertThrows(
-                ErrorResponseException.class,
+            HttpResponseException httpResponseException = assertThrows(
+                HttpResponseException.class,
                 () -> client.beginRecognizeCustomFormsFromUrl(INVALID_URL, createdModel.getModelId()).getFinalResult());
 
             assertEquals(httpResponseException.getMessage(), (INVALID_SOURCE_URL_ERROR));

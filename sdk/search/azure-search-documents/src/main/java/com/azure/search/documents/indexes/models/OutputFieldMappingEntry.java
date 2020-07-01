@@ -4,6 +4,7 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -24,23 +25,22 @@ public final class OutputFieldMappingEntry {
     private String targetName;
 
     /**
+     * Constructor of {@link OutputFieldMappingEntry}.
+     *
+     * @param name The name of the output defined by the skill.
+     */
+    @JsonCreator
+    public OutputFieldMappingEntry(@JsonProperty(value = "name", required = true) String name) {
+        this.name = name;
+    }
+
+    /**
      * Get the name property: The name of the output defined by the skill.
      *
      * @return the name value.
      */
     public String getName() {
         return this.name;
-    }
-
-    /**
-     * Set the name property: The name of the output defined by the skill.
-     *
-     * @param name the name value to set.
-     * @return the OutputFieldMappingEntry object itself.
-     */
-    public OutputFieldMappingEntry setName(String name) {
-        this.name = name;
-        return this;
     }
 
     /**

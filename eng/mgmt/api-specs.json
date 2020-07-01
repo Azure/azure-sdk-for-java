@@ -54,6 +54,10 @@
     "source": "specification/batchai/resource-manager/readme.md",
     "args": "--multiapi --fluent"
   },
+  "cdn/resource-manager": {
+    "source": "specification/cdn/resource-manager/readme.md",
+    "args": "--multiapi --fluent"
+  },
   "cognitiveservices/resource-manager": {
     "source": "specification/cognitiveservices/resource-manager/readme.md",
     "args": "--multiapi --fluent"
@@ -64,6 +68,10 @@
   },
   "consumption/resource-manager": {
     "source": "specification/consumption/resource-manager/readme.md",
+    "args": "--multiapi --fluent"
+  },
+  "containerinstance/resource-manager": {
+    "source": "specification/containerinstance/resource-manager/readme.md",
     "args": "--multiapi --fluent"
   },
   "containerservice/resource-manager": {

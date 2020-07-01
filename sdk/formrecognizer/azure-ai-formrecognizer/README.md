@@ -306,8 +306,8 @@ CustomFormModel customFormModel = trainingPoller.getFinalResult();
 // Model Info
 System.out.printf("Model Id: %s%n", customFormModel.getModelId());
 System.out.printf("Model Status: %s%n", customFormModel.getModelStatus());
-System.out.printf("Model requested on: %s%n", customFormModel.getRequestedOn());
-System.out.printf("Model training completed on: %s%n%n", customFormModel.getCompletedOn());
+System.out.printf("Training started on: %s%n", customFormModel.getTrainingStartedOn());
+System.out.printf("Training completed on: %s%n%n", customFormModel.getTrainingCompletedOn());
 
 System.out.println("Recognized Fields:");
 // looping through the sub-models, which contains the fields they were trained on
@@ -339,8 +339,8 @@ customModels.forEach(customFormModelInfo -> {
     modelId.set(customFormModelInfo.getModelId());
     CustomFormModel customModel = formTrainingClient.getCustomModel(customFormModelInfo.getModelId());
     System.out.printf("Model Status: %s%n", customModel.getModelStatus());
-    System.out.printf("Created on: %s%n", customModel.getRequestedOn());
-    System.out.printf("Updated on: %s%n", customModel.getCompletedOn());
+    System.out.printf("Training started on: %s%n", customModel.getTrainingStartedOn());
+    System.out.printf("Training completed on: %s%n", customModel.getTrainingCompletedOn());
     customModel.getSubmodels().forEach(customFormSubmodel -> {
         System.out.printf("Custom Model Form type: %s%n", customFormSubmodel.getFormType());
         System.out.printf("Custom Model Accuracy: %f%n", customFormSubmodel.getAccuracy());
@@ -359,8 +359,8 @@ For more detailed examples, refer to [samples][sample_readme].
 
 ## Troubleshooting
 ### General
-Form Recognizer clients raises `ErrorResponseException` [exceptions][error_response_exception]. For example, if you try
-to provide an invalid file source URL an `ErrorResponseException` would be raised with an error indicating the failure cause.
+Form Recognizer clients raises `HttpResponseException` [exceptions][http_response_exception]. For example, if you try
+to provide an invalid file source URL an `HttpResponseException` would be raised with an error indicating the failure cause.
 In the following code snippet, the error is handled
 gracefully by catching the exception and display the additional information about the error.
 
@@ -368,7 +368,7 @@ gracefully by catching the exception and display the additional information abou
 ```java
 try {
     formRecognizerClient.beginRecognizeContentFromUrl("invalidSourceUrl");
-} catch (ErrorResponseException e) {
+} catch (HttpResponseException e) {
     System.out.println(e.getMessage());
 }
 ```
@@ -441,7 +441,7 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [fr_labeling_tool]: https://docs.microsoft.com/azure/cognitive-services/form-recognizer/quickstarts/label-tool
 [fr_train_without_labels]: https://docs.microsoft.com/azure/cognitive-services/form-recognizer/overview#train-without-labels
 [fr_train_with_labels]: https://docs.microsoft.com/azure/cognitive-services/form-recognizer/overview#train-with-labels
-[error_response_exception]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/formrecognizer/azure-ai-formrecognizer/src/main/java/com/azure/ai/formrecognizer/models/ErrorResponseException.java
+[http_response_exception]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/core/azure-core/src/main/java/com/azure/core/exception/HttpResponseException.java
 [logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-with-Azure-SDK
 [package]: https://mvnrepository.com/artifact/com.azure/azure-ai-formrecognizer
 [performance_tuning]: https://github.com/Azure/azure-sdk-for-java/wiki/Performance-Tuning
