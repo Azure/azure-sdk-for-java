@@ -27,7 +27,7 @@ public class GrantAccessData {
     private int durationInSeconds;
 
     /**
-     * Get the access value.
+     * Get possible values include: 'None', 'Read'.
      *
      * @return the access value
      */
@@ -36,7 +36,7 @@ public class GrantAccessData {
     }
 
     /**
-     * Set the access value.
+     * Set possible values include: 'None', 'Read'.
      *
      * @param access the access value to set
      * @return the GrantAccessData object itself.
@@ -47,7 +47,7 @@ public class GrantAccessData {
     }
 
     /**
-     * Get the durationInSeconds value.
+     * Get time duration in seconds until the SAS access expires.
      *
      * @return the durationInSeconds value
      */
@@ -56,7 +56,7 @@ public class GrantAccessData {
     }
 
     /**
-     * Set the durationInSeconds value.
+     * Set time duration in seconds until the SAS access expires.
      *
      * @param durationInSeconds the durationInSeconds value to set
      * @return the GrantAccessData object itself.
