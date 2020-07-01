@@ -47,7 +47,9 @@ import com.azure.search.documents.models.SearchResult;
 import com.azure.search.documents.models.SuggestOptions;
 import com.azure.search.documents.models.SuggestResult;
 import com.azure.search.documents.util.AutocompletePagedIterable;
+import com.azure.search.documents.util.SearchPagedFlux;
 import com.azure.search.documents.util.SearchPagedIterable;
+import com.azure.search.documents.util.SearchPagedResponse;
 import com.azure.search.documents.util.SuggestPagedIterable;
 
 import java.util.Arrays;
@@ -306,11 +308,16 @@ public class SearchJavaDocCodeSnippets {
         // BEGIN: com.azure.search.documents.SearchClient.search#String
         SearchPagedIterable searchPagedIterable = searchClient.search("searchText");
         System.out.printf("There are around %d results.", searchPagedIterable.getTotalCount());
-        for (SearchResult result: searchPagedIterable) {
-            SearchDocument searchDocument = result.getDocument(SearchDocument.class);
-            for (Map.Entry<String, Object> keyValuePair: searchDocument.entrySet()) {
-                System.out.printf("Document key %s, document value %s", keyValuePair.getKey(), keyValuePair.getValue());
-            }
+
+        for (SearchPagedResponse resultResponse: searchPagedIterable.iterableByPage()) {
+            System.out.println("The status code of the response is " + resultResponse.getStatusCode());
+            resultResponse.getValue().forEach(searchResult -> {
+                for (Map.Entry<String, Object> keyValuePair: searchResult
+                    .getDocument(SearchDocument.class).entrySet()) {
+                    System.out.printf("Document key %s, document value %s", keyValuePair.getKey(),
+                        keyValuePair.getValue());
+                }
+            });
         }
         // END: com.azure.search.documents.SearchClient.search#String
     }
@@ -323,11 +330,15 @@ public class SearchJavaDocCodeSnippets {
         SearchPagedIterable searchPagedIterable = searchClient.search("searchText",
             new SearchOptions().setOrderBy("hotelId desc"), new Context(key1, value1));
         System.out.printf("There are around %d results.", searchPagedIterable.getTotalCount());
-        for (SearchResult result: searchPagedIterable) {
-            SearchDocument searchDocument = result.getDocument(SearchDocument.class);
-            for (Map.Entry<String, Object> keyValuePair: searchDocument.entrySet()) {
-                System.out.printf("Document key %s, document value %s", keyValuePair.getKey(), keyValuePair.getValue());
-            }
+        for (SearchPagedResponse resultResponse: searchPagedIterable.iterableByPage()) {
+            System.out.println("The status code of the response is " + resultResponse.getStatusCode());
+            resultResponse.getValue().forEach(searchResult -> {
+                for (Map.Entry<String, Object> keyValuePair: searchResult
+                    .getDocument(SearchDocument.class).entrySet()) {
+                    System.out.printf("Document key %s, document value %s", keyValuePair.getKey(),
+                        keyValuePair.getValue());
+                }
+            });
         }
         // END: com.azure.search.documents.SearchClient.search#String-SearchOptions-Context
     }
@@ -390,6 +401,358 @@ public class SearchJavaDocCodeSnippets {
     }
 
     private SearchAsyncClient searchAsyncClient = new SearchClientBuilder().buildAsyncClient();
+
+    /**
+     * Code snippet for {@link SearchAsyncClient#uploadDocuments(Iterable)}.
+     */
+    public void uploadDocumentsAsync() {
+        // BEGIN: com.azure.search.documents.SearchAsyncClient.uploadDocuments#Iterable
+        SearchDocument searchDocument = new SearchDocument();
+        searchDocument.put("hotelId", "1");
+        searchDocument.put("hotelName", "test");
+        searchAsyncClient.uploadDocuments(Collections.singletonList(searchDocument))
+            .subscribe(result -> {
+                for (IndexingResult indexingResult : result.getResults()) {
+                    System.out.printf("Does document with key %s upload successfully? %b%n",
+                        indexingResult.getKey(), indexingResult.isSucceeded());
+                }
+            });
+        // END: com.azure.search.documents.SearchAsyncClient.uploadDocuments#Iterable
+    }
+
+    /**
+     * Code snippet for {@link SearchAsyncClient#uploadDocumentsWithResponse(Iterable, IndexDocumentsOptions)}
+     */
+    public void uploadDocumentsWithResponseAsync() {
+        // BEGIN: com.azure.search.documents.SearchAsyncClient.uploadDocumentsWithResponse#Iterable-IndexDocumentsOptions
+        SearchDocument searchDocument = new SearchDocument();
+        searchDocument.put("hotelId", "1");
+        searchDocument.put("hotelName", "test");
+        searchAsyncClient.uploadDocumentsWithResponse(Collections.singletonList(searchDocument), null)
+            .subscribe(resultResponse -> {
+                System.out.println("The status code of the response is " + resultResponse.getStatusCode());
+                for (IndexingResult indexingResult : resultResponse.getValue().getResults()) {
+                    System.out.printf("Does document with key %s upload successfully? %b%n", indexingResult.getKey(),
+                        indexingResult.isSucceeded());
+                }
+            });
+        // END: com.azure.search.documents.SearchAsyncClient.uploadDocumentsWithResponse#Iterable-IndexDocumentsOptions
+    }
+
+    /**
+     * Code snippet for {@link SearchAsyncClient#mergeDocuments(Iterable)}
+     */
+    public void mergeDocumentsAsync() {
+        // BEGIN: com.azure.search.documents.SearchAsyncClient.mergeDocuments#Iterable
+        SearchDocument searchDocument = new SearchDocument();
+        searchDocument.put("hotelName", "merge");
+        searchAsyncClient.mergeDocuments(Collections.singletonList(searchDocument))
+            .subscribe(result -> {
+                for (IndexingResult indexingResult : result.getResults()) {
+                    System.out.printf("Does document with key %s merge successfully? %b%n", indexingResult.getKey(),
+                        indexingResult.isSucceeded());
+                }
+            });
+        // END: com.azure.search.documents.SearchAsyncClient.mergeDocuments#Iterable
+    }
+
+    /**
+     * Code snippet for {@link SearchAsyncClient#mergeDocumentsWithResponse(Iterable, IndexDocumentsOptions)}
+     */
+    public void mergeDocumentsWithResponseAsync() {
+        // BEGIN: com.azure.search.documents.SearchAsyncClient.mergeDocumentsWithResponse#Iterable-IndexDocumentsOptions
+        SearchDocument searchDocument = new SearchDocument();
+        searchDocument.put("hotelName", "test");
+        searchAsyncClient.mergeDocumentsWithResponse(Collections.singletonList(searchDocument), null)
+            .subscribe(resultResponse -> {
+                System.out.println("The status code of the response is " + resultResponse.getStatusCode());
+                for (IndexingResult indexingResult : resultResponse.getValue().getResults()) {
+                    System.out.printf("Does document with key %s merge successfully? %b%n", indexingResult.getKey(),
+                        indexingResult.isSucceeded());
+                }
+            });
+        // END: com.azure.search.documents.SearchAsyncClient.mergeDocumentsWithResponse#Iterable-IndexDocumentsOptions
+    }
+
+    /**
+     * Code snippet for {@link SearchAsyncClient#mergeOrUploadDocuments(Iterable)}
+     */
+    public void mergeOrUploadDocumentsAsync() {
+        // BEGIN: com.azure.search.documents.SearchAsyncClient.mergeOrUploadDocuments#Iterable
+        SearchDocument searchDocument = new SearchDocument();
+        searchDocument.put("hotelId", "1");
+        searchDocument.put("hotelName", "test");
+        searchAsyncClient.mergeOrUploadDocuments(Collections.singletonList(searchDocument))
+            .subscribe(result -> {
+                for (IndexingResult indexingResult : result.getResults()) {
+                    System.out.printf("Does document with key %s mergeOrUpload successfully? %b%n",
+                        indexingResult.getKey(), indexingResult.isSucceeded());
+                }
+            });
+        // END: com.azure.search.documents.SearchAsyncClient.mergeOrUploadDocuments#Iterable
+    }
+
+    /**
+     * Code snippet for {@link SearchAsyncClient#mergeOrUploadDocumentsWithResponse(Iterable, IndexDocumentsOptions)}
+     */
+    public void mergeOrUploadDocumentsWithResponseAsync() {
+        // BEGIN: com.azure.search.documents.SearchAsyncClient.mergeOrUploadDocumentsWithResponse#Iterable-IndexDocumentsOptions
+        SearchDocument searchDocument = new SearchDocument();
+        searchDocument.put("hotelId", "1");
+        searchDocument.put("hotelName", "test");
+        searchAsyncClient.mergeOrUploadDocumentsWithResponse(Collections.singletonList(searchDocument), null)
+            .subscribe(resultResponse -> {
+                System.out.println("The status code of the response is " + resultResponse.getStatusCode());
+                for (IndexingResult indexingResult : resultResponse.getValue().getResults()) {
+                    System.out.printf("Does document with key %s mergeOrUpload successfully? %b%n",
+                        indexingResult.getKey(), indexingResult.isSucceeded());
+                }
+            });
+        // END: com.azure.search.documents.SearchAsyncClient.mergeOrUploadDocumentsWithResponse#Iterable-IndexDocumentsOptions
+    }
+
+    /**
+     * Code snippet for {@link SearchAsyncClient#deleteDocuments(Iterable)}
+     */
+    public void deleteDocumentsAsync() {
+        // BEGIN: com.azure.search.documents.SearchAsyncClient.deleteDocuments#Iterable
+        SearchDocument searchDocument = new SearchDocument();
+        searchDocument.put("hotelId", "1");
+        searchDocument.put("hotelName", "test");
+        searchAsyncClient.deleteDocuments(Collections.singletonList(searchDocument))
+            .subscribe(result -> {
+                for (IndexingResult indexingResult : result.getResults()) {
+                    System.out.printf("Does document with key %s delete successfully? %b%n", indexingResult.getKey(),
+                        indexingResult.isSucceeded());
+                }
+            });
+        // END: com.azure.search.documents.SearchAsyncClient.deleteDocuments#Iterable
+    }
+
+
+    /**
+     * Code snippet for {@link SearchAsyncClient#deleteDocumentsWithResponse(Iterable, IndexDocumentsOptions)}
+     */
+    public void deleteDocumentsWithResponseAsync() {
+        // BEGIN: com.azure.search.documents.SearchAsyncClient.deleteDocumentsWithResponse#Iterable-IndexDocumentsOptions
+        SearchDocument searchDocument = new SearchDocument();
+        searchDocument.put("hotelId", "1");
+        searchDocument.put("hotelName", "test");
+        searchAsyncClient.deleteDocumentsWithResponse(Collections.singletonList(searchDocument), null)
+            .subscribe(resultResponse -> {
+                System.out.println("The status code of the response is " + resultResponse.getStatusCode());
+                for (IndexingResult indexingResult : resultResponse.getValue().getResults()) {
+                    System.out.printf("Does document with key %s delete successfully? %b%n", indexingResult.getKey(),
+                        indexingResult.isSucceeded());
+                }
+            });
+        // END: com.azure.search.documents.SearchAsyncClient.deleteDocumentsWithResponse#Iterable-IndexDocumentsOptions
+    }
+
+    /**
+     * Code snippet for {@link SearchAsyncClient#indexDocuments(IndexDocumentsBatch)}
+     */
+    public void indexDocumentsAsync() {
+        // BEGIN: com.azure.search.documents.SearchAsyncClient.indexDocuments#IndexDocumentsBatch
+        SearchDocument searchDocument1 = new SearchDocument();
+        searchDocument1.put("hotelId", "1");
+        searchDocument1.put("hotelName", "test1");
+        SearchDocument searchDocument2 = new SearchDocument();
+        searchDocument2.put("hotelId", "2");
+        searchDocument2.put("hotelName", "test2");
+        IndexDocumentsBatch<SearchDocument> indexDocumentsBatch = new IndexDocumentsBatch<>();
+        indexDocumentsBatch.addUploadActions(searchDocument1);
+        indexDocumentsBatch.addDeleteActions(searchDocument2);
+        searchAsyncClient.indexDocuments(indexDocumentsBatch)
+            .subscribe(result -> {
+                for (IndexingResult indexingResult : result.getResults()) {
+                    System.out.printf("Does document with key %s finish successfully? %b%n", indexingResult.getKey(),
+                        indexingResult.isSucceeded());
+                }
+            });
+        // END: com.azure.search.documents.SearchAsyncClient.indexDocuments#IndexDocumentsBatch
+    }
+
+    /**
+     * Code snippet for {@link SearchAsyncClient#indexDocumentsWithResponse(IndexDocumentsBatch, IndexDocumentsOptions)}
+     */
+    public void indexDocumentsWithResponseAsync() {
+        // BEGIN: com.azure.search.documents.SearchAsyncClient.indexDocumentsWithResponse#IndexDocumentsBatch-IndexDocumentsOptions
+        SearchDocument searchDocument1 = new SearchDocument();
+        searchDocument1.put("hotelId", "1");
+        searchDocument1.put("hotelName", "test1");
+        SearchDocument searchDocument2 = new SearchDocument();
+        searchDocument2.put("hotelId", "2");
+        searchDocument2.put("hotelName", "test2");
+        IndexDocumentsBatch<SearchDocument> indexDocumentsBatch = new IndexDocumentsBatch<>();
+        indexDocumentsBatch.addUploadActions(searchDocument1);
+        indexDocumentsBatch.addDeleteActions(searchDocument2);
+        searchAsyncClient.indexDocumentsWithResponse(indexDocumentsBatch, null)
+            .subscribe(resultResponse -> {
+                System.out.println("The status code of the response is " + resultResponse.getStatusCode());
+                for (IndexingResult indexingResult : resultResponse.getValue().getResults()) {
+                    System.out.printf("Does document with key %s finish successfully? %b%n", indexingResult.getKey(),
+                        indexingResult.isSucceeded());
+                }
+            });
+        // END: com.azure.search.documents.SearchAsyncClient.indexDocumentsWithResponse#IndexDocumentsBatch-IndexDocumentsOptions
+    }
+
+    /**
+     * Code snippet for {@link SearchAsyncClient#getDocument(String, Class)}
+     */
+    public void getDocumentsAsync() {
+        // BEGIN: com.azure.search.documents.SearchAsyncClient.getDocuments#String-Class
+        searchAsyncClient.getDocument("hotelId", SearchDocument.class)
+            .subscribe(result -> {
+                for (Map.Entry<String, Object> keyValuePair : result.entrySet()) {
+                    System.out.printf("Document key %s, Document value %s", keyValuePair.getKey(),
+                        keyValuePair.getValue());
+                }
+            });
+        // END: com.azure.search.documents.SearchAsyncClient.getDocuments#String-Class
+    }
+
+    /**
+     * Code snippet for {@link SearchAsyncClient#getDocumentWithResponse(String, Class, List)}
+     */
+    public void getDocumentsWithResponseAsync() {
+        // BEGIN: com.azure.search.documents.SearchAsyncClient.getDocumentWithResponse#String-Class-List
+        searchAsyncClient.getDocumentWithResponse("hotelId", SearchDocument.class, null)
+            .subscribe(resultResponse -> {
+                System.out.println("The status code of the response is " + resultResponse.getStatusCode());
+                for (Map.Entry<String, Object> keyValuePair : resultResponse.getValue().entrySet()) {
+                    System.out.printf("Document key %s, Document value %s", keyValuePair.getKey(),
+                        keyValuePair.getValue());
+                }
+            });
+        // END: com.azure.search.documents.SearchAsyncClient.getDocumentWithResponse#String-Class-List
+    }
+
+    /**
+     * Code snippet for {@link SearchAsyncClient#getDocumentCount()}
+     */
+    public void getDocumentCountAsync() {
+        // BEGIN: com.azure.search.documents.SearchAsyncClient.getDocumentCount
+        searchAsyncClient.getDocumentCount()
+            .subscribe(count -> System.out.printf("There are %d documents in service.", count));
+        // END: com.azure.search.documents.SearchAsyncClient.getDocumentCount
+    }
+
+    /**
+     * Code snippet for {@link SearchAsyncClient#getDocumentCountWithResponse()}
+     */
+    public void getDocumentCountWithResponseAsync() {
+        // BEGIN: com.azure.search.documents.SearchAsyncClient.getDocumentCountWithResponse
+        searchAsyncClient.getDocumentCountWithResponse()
+            .subscribe(countResponse -> {
+                System.out.println("The status code of the response is " + countResponse.getStatusCode());
+                System.out.printf("There are %d documents in service.", countResponse.getValue());
+            });
+        // END: com.azure.search.documents.SearchAsyncClient.getDocumentCountWithResponse
+    }
+
+    /**
+     * Code snippet for {@link SearchAsyncClient#search(String)}
+     */
+    public void searchDocumentsAsync() {
+        // BEGIN: com.azure.search.documents.SearchAsyncClient.search#String
+        SearchPagedFlux searchPagedFlux = searchAsyncClient.search("searchText");
+        searchPagedFlux.getTotalCount().subscribe(
+            count -> System.out.printf("There are around %d results.", count)
+        );
+        searchPagedFlux.byPage()
+            .subscribe(resultRespones -> {
+                for (SearchResult result: resultRespones.getValue()) {
+                    SearchDocument searchDocument = result.getDocument(SearchDocument.class);
+                    for (Map.Entry<String, Object> keyValuePair: searchDocument.entrySet()) {
+                        System.out.printf("Document key %s, document value %s", keyValuePair.getKey(), keyValuePair.getValue());
+                    }
+                }
+            });
+        // END: com.azure.search.documents.SearchAsyncClient.search#String
+    }
+
+    /**
+     * Code snippet for {@link SearchAsyncClient#search(String, SearchOptions, Context)}
+     */
+    public void searchDocumentsWithOptionsAsync() {
+        // BEGIN: com.azure.search.documents.SearchAsyncClient.search#String-SearchOptions
+        SearchPagedFlux pagedFlux = searchAsyncClient.search("searchText",
+            new SearchOptions().setOrderBy("hotelId desc"));
+
+        pagedFlux.getTotalCount().subscribe(count -> {
+            System.out.printf("There are around %d results.", count);
+        });
+
+        pagedFlux.byPage()
+            .subscribe(searchResultResponse -> {
+                searchResultResponse.getValue().forEach(searchDocument -> {
+                    for (Map.Entry<String, Object> keyValuePair
+                        : searchDocument.getDocument(SearchDocument.class).entrySet()) {
+                        System.out.printf("Document key %s, document value %s", keyValuePair.getKey(),
+                            keyValuePair.getValue());
+                    }
+                });
+            });
+        // END: com.azure.search.documents.SearchAsyncClient.search#String-SearchOptions
+    }
+
+    /**
+     * Code snippet for {@link SearchAsyncClient#suggest(String, String)}
+     */
+    public void suggestDocumentsAsync() {
+        // BEGIN: com.azure.search.documents.SearchAsyncClient.suggest#String-String
+        searchAsyncClient.suggest("searchText", "sg")
+            .subscribe(results -> {
+                for (Map.Entry<String, Object> keyValuePair: results.getDocument(SearchDocument.class).entrySet()) {
+                    System.out.printf("Document key %s, document value %s", keyValuePair.getKey(),
+                        keyValuePair.getValue());
+                }
+            });
+        // END: com.azure.search.documents.SearchAsyncClient.suggest#String-String
+    }
+
+    /**
+     * Code snippet for {@link SearchAsyncClient#suggest(String, String, SuggestOptions)}
+     */
+    public void suggestDocumentsWithOptionsAsync() {
+        // BEGIN: com.azure.search.documents.SearchAsyncClient.suggest#String-String-SuggestOptions
+        searchAsyncClient.suggest("searchText", "sg",
+            new SuggestOptions().setOrderBy("hotelId desc"))
+            .subscribe(results -> {
+                for (Map.Entry<String, Object> keyValuePair: results.getDocument(SearchDocument.class).entrySet()) {
+                    System.out.printf("Document key %s, document value %s", keyValuePair.getKey(),
+                        keyValuePair.getValue());
+                }
+            });
+        // END: com.azure.search.documents.SearchAsyncClient.suggest#String-String-SuggestOptions
+    }
+
+    /**
+     * Code snippet for {@link SearchAsyncClient#autocomplete(String, String)}
+     */
+    public void autocompleteDocumentsAsync() {
+        // BEGIN: com.azure.search.documents.SearchAsyncClient.autocomplete#String-String
+        searchAsyncClient.autocomplete("searchText", "sg")
+            .subscribe(result -> {
+                System.out.printf("The complete term is %s", result.getText());
+            });
+        // END: com.azure.search.documents.SearchAsyncClient.autocomplete#String-String
+    }
+
+    /**
+     * Code snippet for {@link SearchAsyncClient#autocomplete(String, String, AutocompleteOptions)}
+     */
+    public void autocompleteDocumentsWithOptionsAsync() {
+        // BEGIN: com.azure.search.documents.SearchAsyncClient.autocomplete#String-String-AutocompleteOptions
+        searchAsyncClient.autocomplete("searchText", "sg",
+            new AutocompleteOptions().setAutocompleteMode(AutocompleteMode.ONE_TERM_WITH_CONTEXT))
+            .subscribe(result ->
+                System.out.printf("The complete term is %s", result.getText())
+            );
+        // END: com.azure.search.documents.SearchAsyncClient.autocomplete#String-String-AutocompleteOptions
+    }
 
     /**
      * Code snippet for creating a {@link SearchAsyncClient}.
