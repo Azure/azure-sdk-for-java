@@ -14,6 +14,7 @@ import com.azure.messaging.servicebus.models.QueueDescription;
 import com.azure.messaging.servicebus.models.QueueRuntimeInfo;
 import com.azure.messaging.servicebus.models.SubscriptionDescription;
 import com.azure.messaging.servicebus.models.SubscriptionRuntimeInfo;
+import com.azure.messaging.servicebus.models.TopicRuntimeInfo;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -113,7 +114,9 @@ class ServiceBusManagementAsyncClientIntegrationTest extends TestBase {
     void createSubscription(HttpClient httpClient) {
         // Arrange
         final ServiceBusManagementAsyncClient client = createClient(httpClient);
-        final String topicName = TestUtils.getTopicName();
+        final String topicName = interceptorManager.isPlaybackMode()
+            ? "topic"
+            : TestUtils.getTopicName();
         final String subscriptionName = testResourceNamer.randomName("sub", 10);
         final SubscriptionDescription expected = new SubscriptionDescription(topicName, subscriptionName)
             .setMaxDeliveryCount(7)
@@ -187,6 +190,64 @@ class ServiceBusManagementAsyncClientIntegrationTest extends TestBase {
                 assertNotNull(runtimeInfo.getCreatedAt());
                 assertTrue(nowUtc.isAfter(runtimeInfo.getCreatedAt()));
                 assertNotNull(runtimeInfo.getAccessedAt());
+            })
+            .verifyComplete();
+    }
+
+    @ParameterizedTest
+    @MethodSource("createHttpClients")
+    void getTopic(HttpClient httpClient) {
+        // Arrange
+        final ServiceBusManagementAsyncClient client = createClient(httpClient);
+        final String topicName = interceptorManager.isPlaybackMode()
+            ? "topic"
+            : TestUtils.getTopicName();
+        final OffsetDateTime nowUtc = OffsetDateTime.now(Clock.systemUTC());
+
+        // Act & Assert
+        StepVerifier.create(client.getTopic(topicName))
+            .assertNext(topicDescription -> {
+                assertEquals(topicName, topicDescription.getName());
+
+                assertTrue(topicDescription.enableBatchedOperations());
+                assertFalse(topicDescription.requiresDuplicateDetection());
+                assertNotNull(topicDescription.getDuplicateDetectionHistoryTimeWindow());
+                assertNotNull(topicDescription.getDefaultMessageTimeToLive());
+                assertFalse(topicDescription.enablePartitioning());
+
+                final TopicRuntimeInfo runtimeInfo = new TopicRuntimeInfo(topicDescription);
+                assertNotNull(runtimeInfo.getCreatedAt());
+                assertTrue(nowUtc.isAfter(runtimeInfo.getCreatedAt()));
+                assertNotNull(runtimeInfo.getAccessedAt());
+            })
+            .verifyComplete();
+    }
+
+    @ParameterizedTest
+    @MethodSource("createHttpClients")
+    void getTopicRuntimeInfo(HttpClient httpClient) {
+        // Arrange
+        final ServiceBusManagementAsyncClient client = createClient(httpClient);
+        final String topicName = interceptorManager.isPlaybackMode()
+            ? "topic"
+            : TestUtils.getTopicName();
+        final OffsetDateTime nowUtc = OffsetDateTime.now(Clock.systemUTC());
+
+        // Act & Assert
+        StepVerifier.create(client.getTopicRuntimeInfo(topicName))
+            .assertNext(runtimeInfo -> {
+                assertEquals(topicName, runtimeInfo.getName());
+
+                if (interceptorManager.isPlaybackMode()) {
+                    assertEquals(22, runtimeInfo.getSubscriptionCount());
+                } else {
+                    assertTrue(runtimeInfo.getSubscriptionCount() > 1);
+                }
+
+                assertNotNull(runtimeInfo.getCreatedAt());
+                assertTrue(nowUtc.isAfter(runtimeInfo.getCreatedAt()));
+                assertNotNull(runtimeInfo.getAccessedAt());
+                assertTrue(nowUtc.isAfter(runtimeInfo.getAccessedAt()));
             })
             .verifyComplete();
     }
