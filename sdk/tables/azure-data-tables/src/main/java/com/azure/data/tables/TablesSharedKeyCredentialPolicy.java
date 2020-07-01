@@ -30,7 +30,7 @@ public final class TablesSharedKeyCredentialPolicy implements HttpPipelinePolicy
      * creates an Http response
      *
      * @param context the context of the http pipeline
-     * @param next    the next Http pipeline policy
+     * @param next the next Http pipeline policy
      * @return an Http response
      */
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {

@@ -91,11 +91,11 @@ public class AzureTableImplTest extends TestBase {
 
         Mono.when(azureTable.getTables().queryWithResponseAsync(testResourceNamer.randomUuid(), null,
             queryOptions, Context.NONE).flatMapMany(tablesQueryResponse -> {
-            return Flux.fromIterable(tablesQueryResponse.getValue().getValue()).flatMap(tableResponseProperty -> {
-                return azureTable.getTables().deleteWithResponseAsync(tableResponseProperty.getTableName(),
-                    testResourceNamer.randomUuid(), Context.NONE);
+                return Flux.fromIterable(tablesQueryResponse.getValue().getValue()).flatMap(tableResponseProperty -> {
+                    return azureTable.getTables().deleteWithResponseAsync(tableResponseProperty.getTableName(),
+                        testResourceNamer.randomUuid(), Context.NONE);
             });
-        })).block();
+            })).block();
     }
 
     void createTable(String tableName) {

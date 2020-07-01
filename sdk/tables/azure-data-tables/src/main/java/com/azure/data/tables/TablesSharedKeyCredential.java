@@ -6,14 +6,18 @@ package com.azure.data.tables;
 import com.azure.storage.common.implementation.StorageImplUtils;
 
 import java.net.URL;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Objects;
 
 /**
  * A Class which helps generate the shared key credentials for a given storage account to create a Http requests to
  * access Azure Tables
  */
 public class TablesSharedKeyCredential {
-
     private static final String AUTHORIZATION_HEADER_FORMAT = "SharedKeyLite %s:%s";
     private final String accountName;
     private final String accountKey;
@@ -35,7 +39,7 @@ public class TablesSharedKeyCredential {
      * Generates the Auth Headers
      *
      * @param requestURL the URL which the request is going to
-     * @param headers    the headers of the request
+     * @param headers the headers of the request
      * @return the auth header
      */
     public String generateAuthorizationHeader(URL requestURL, Map<String, String> headers) {
@@ -48,7 +52,7 @@ public class TablesSharedKeyCredential {
      * creates the String to Sign
      *
      * @param requestURL the URL which the request is going to
-     * @param headers    the headers of the request
+     * @param headers the headers of the request
      * @return a string to sign for the request
      */
     private String buildStringToSign(URL requestURL, Map<String, String> headers) {
@@ -62,7 +66,7 @@ public class TablesSharedKeyCredential {
     /**
      * gets necessary headers if the request does not already contain them
      *
-     * @param headers    a map of the headers which the request has
+     * @param headers a map of the headers which the request has
      * @param headerName the name of the header to get the standard header for
      * @return the standard header for the given name
      */
