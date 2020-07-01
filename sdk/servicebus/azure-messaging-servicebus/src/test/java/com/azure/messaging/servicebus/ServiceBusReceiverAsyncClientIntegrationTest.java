@@ -33,6 +33,7 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import static com.azure.messaging.servicebus.TestUtils.MESSAGE_POSITION_ID;
+import static com.azure.messaging.servicebus.TestUtils.getSubscriptionBaseName;
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -972,6 +973,49 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
     }
 
     /**
+     * Verifies that we can receive a message from dead letter queue.
+     */
+    @MethodSource("com.azure.messaging.servicebus.IntegrationTestBase#messagingEntityProvider")
+    @ParameterizedTest
+    void receiveFromDeadLetter(MessagingEntityType entityType) {
+        // Arrange
+        final boolean isSessionEnabled = false;
+        setSenderAndReceiver(entityType, 0, isSessionEnabled);
+        ServiceBusReceiverAsyncClient deadLetterReceiver = getDeadLetterReceiverBuilder(false, entityType,
+            0, Function.identity())
+            .buildAsyncClient();
+
+        final String messageId = UUID.randomUUID().toString();
+        final ServiceBusMessage message = getMessage(messageId, isSessionEnabled);
+        final List<String> lockTokens = new ArrayList<>();
+
+        sendMessage(message).block(TIMEOUT);
+
+        final ServiceBusReceivedMessageContext receivedContext = receiver.receiveMessages().next().block(OPERATION_TIMEOUT);
+        assertNotNull(receivedContext);
+
+        final ServiceBusReceivedMessage receivedMessage = receivedContext.getMessage();
+        assertNotNull(receivedMessage);
+
+        StepVerifier.create(receiver.deadLetter(receivedMessage.getLockToken()))
+            .verifyComplete();
+
+        // Assert & Act
+        try {
+            StepVerifier.create(deadLetterReceiver.receiveMessages().take(1))
+                .assertNext(messageContext -> {
+                    lockTokens.add(messageContext.getMessage().getLockToken());
+                    assertMessageEquals(receivedMessage, messageId, isSessionEnabled);
+                })
+                .thenCancel()
+                .verify();
+        } finally {
+            int numberCompleted = completeMessages(deadLetterReceiver, lockTokens);
+            messagesPending.addAndGet(-numberCompleted);
+        }
+    }
+
+    /**
      * Sets the sender and receiver. If session is enabled, then a single-named session receiver is created.
      */
     private void setSenderAndReceiver(MessagingEntityType entityType, int entityIndex, boolean isSessionEnabled) {
@@ -1035,4 +1079,28 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         receiver.complete(receivedDeferredMessage.getLockToken()).block(TIMEOUT);
     }
 
+    private ServiceBusClientBuilder.ServiceBusDeadLetterReceiverClientBuilder getDeadLetterReceiverBuilder(boolean useCredentials,
+        MessagingEntityType entityType, int entityIndex, Function<ServiceBusClientBuilder, ServiceBusClientBuilder> onBuilderCreate) {
+
+        ServiceBusClientBuilder builder = getBuilder(useCredentials);
+        builder = onBuilderCreate.apply(builder);
+
+        switch (entityType) {
+            case QUEUE:
+                final String queueName = getQueueName(entityIndex);
+                assertNotNull(queueName, "'queueName' cannot be null.");
+
+                return builder.deadLetterReceiver().queueName(queueName);
+            case SUBSCRIPTION:
+                final String topicName = getTopicName(entityIndex);
+                final String subscriptionName = getSubscriptionBaseName();
+                assertNotNull(topicName, "'topicName' cannot be null.");
+                assertNotNull(subscriptionName, "'subscriptionName' cannot be null.");
+
+                return builder.deadLetterReceiver().topicName(topicName).subscriptionName(subscriptionName);
+            default:
+                throw logger.logExceptionAsError(new IllegalArgumentException("Unknown entity type: " + entityType));
+        }
+
+    }
 }
