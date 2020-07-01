@@ -16,12 +16,20 @@ import com.azure.search.documents.indexes.SearchIndexerClientBuilder;
 import com.azure.search.documents.indexes.models.AnalyzeTextOptions;
 import com.azure.search.documents.indexes.models.AnalyzedTokenInfo;
 import com.azure.search.documents.indexes.models.FieldMapping;
+import com.azure.search.documents.indexes.models.InputFieldMappingEntry;
 import com.azure.search.documents.indexes.models.LexicalTokenizerName;
+import com.azure.search.documents.indexes.models.OcrSkill;
+import com.azure.search.documents.indexes.models.OutputFieldMappingEntry;
 import com.azure.search.documents.indexes.models.SearchField;
 import com.azure.search.documents.indexes.models.SearchFieldDataType;
 import com.azure.search.documents.indexes.models.SearchIndex;
 import com.azure.search.documents.indexes.models.SearchIndexStatistics;
 import com.azure.search.documents.indexes.models.SearchIndexer;
+import com.azure.search.documents.indexes.models.SearchIndexerDataContainer;
+import com.azure.search.documents.indexes.models.SearchIndexerDataSourceConnection;
+import com.azure.search.documents.indexes.models.SearchIndexerDataSourceType;
+import com.azure.search.documents.indexes.models.SearchIndexerSkillset;
+import com.azure.search.documents.indexes.models.SearchIndexerStatus;
 import com.azure.search.documents.indexes.models.SearchServiceStatistics;
 import com.azure.search.documents.indexes.models.SearchSuggester;
 import com.azure.search.documents.indexes.models.SearchableFieldBuilder;
@@ -629,7 +637,7 @@ public class SearchJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link SearchIndexerClient#createIndexerWithResponse(SearchIndexer, Context)}
+     * Code snippet for {@link SearchIndexerClient#createOrUpdateIndexer(SearchIndexer)}
      */
     public void createOrUpdateIndexerWithResponse() {
         // BEGIN: com.azure.search.documents.indexes.SearchIndexerClient.createOrUpdateIndexerWithResponse#SearchIndexer-boolean-Context
@@ -706,6 +714,385 @@ public class SearchJavaDocCodeSnippets {
             new Context(key1, value1));
         System.out.println("The status code of the response is " + response.getStatusCode());
         // END: com.azure.search.documents.indexes.SearchIndexerClient.runIndexerWithResponse#String-Context
+    }
+
+    /**
+     * Code snippet for {@link SearchIndexerClient#getIndexerStatus(String)}
+     */
+    public void getIndexerStatus() {
+        // BEGIN: com.azure.search.documents.indexes.SearchIndexerClient.getIndexerStatus#String
+        SearchIndexerStatus indexerStatus = searchIndexerClient.getIndexerStatus("searchIndexer");
+        System.out.printf("The indexer status is %s.%n", indexerStatus.getStatus());
+        // END: com.azure.search.documents.indexes.SearchIndexerClient.getIndexerStatus#String
+    }
+
+    /**
+     * Code snippet for {@link SearchIndexerClient#getIndexerStatusWithResponse(String, Context)}
+     */
+    public void getIndexerStatusWithResponse() {
+        // BEGIN: com.azure.search.documents.indexes.SearchIndexerClient.getIndexerStatusWithResponse#String-Context
+        Response<SearchIndexerStatus> response = searchIndexerClient.getIndexerStatusWithResponse("searchIndexer",
+            new Context(key1, value1));
+        System.out.printf("The status code of the response is %s.%nThe indexer status is %s.%n",
+            response.getStatusCode(), response.getValue().getStatus());
+        // END: com.azure.search.documents.indexes.SearchIndexerClient.getIndexerStatusWithResponse#String-Context
+    }
+
+    /**
+     * Code snippet for creating {@link SearchIndexerClient#createDataSourceConnection(SearchIndexerDataSourceConnection)}.
+     */
+    public void createDataSource() {
+        // BEGIN: com.azure.search.documents.indexes.SearchIndexerClient.createDataSourceConnection#SearchIndexerDataSourceConnection
+        SearchIndexerDataSourceConnection dataSource = new SearchIndexerDataSourceConnection("dataSource",
+            com.azure.search.documents.indexes.models.SearchIndexerDataSourceType.AZURE_BLOB, "{connectionString}",
+            new com.azure.search.documents.indexes.models.SearchIndexerDataContainer("container"));
+        SearchIndexerDataSourceConnection dataSourceFromService =
+            searchIndexerClient.createDataSourceConnection(dataSource);
+        System.out.printf("The data source name is %s. The etag of data source is %s.%n",
+            dataSourceFromService.getName(), dataSourceFromService.getETag());
+        // END: com.azure.search.documents.indexes.SearchIndexerClient.createDataSourceConnection#SearchIndexerDataSourceConnection
+    }
+
+    /**
+     * Code snippet for {@link SearchIndexerClient#createDataSourceConnectionWithResponse(SearchIndexerDataSourceConnection, Context)}.
+     */
+    public void createDataSourceWithResponse() {
+        // BEGIN: com.azure.search.documents.indexes.SearchIndexerClient.createDataSourceConnectionWithResponse#SearchIndexerDataSourceConnection-Context
+        SearchIndexerDataSourceConnection dataSource = new SearchIndexerDataSourceConnection("dataSource",
+            SearchIndexerDataSourceType.AZURE_BLOB, "{connectionString}",
+            new SearchIndexerDataContainer("container"));
+        Response<SearchIndexerDataSourceConnection> dataSourceFromService =
+            searchIndexerClient.createDataSourceConnectionWithResponse(dataSource, new Context(key1, value1));
+
+        System.out.printf("The status code of the response is %s. The data source name is %s.%n",
+            dataSourceFromService.getStatusCode(), dataSourceFromService.getValue().getName());
+        // END: com.azure.search.documents.indexes.SearchIndexerClient.createDataSourceConnectionWithResponse#SearchIndexerDataSourceConnection-Context
+    }
+
+    /**
+     * Code snippet for {@link SearchIndexerClient#getDataSourceConnection(String)}
+     */
+    public void getDataSource() {
+        // BEGIN: com.azure.search.documents.indexes.SearchIndexerClient.getDataSourceConnection#String
+        SearchIndexerDataSourceConnection dataSource =
+            searchIndexerClient.getDataSourceConnection("dataSource");
+        System.out.printf("The dataSource name is %s. The etag of dataSource is %s.%n", dataSource.getName(),
+            dataSource.getETag());
+        // END: com.azure.search.documents.indexes.SearchIndexerClient.getDataSourceConnection#String
+    }
+
+    /**
+     * Code snippet for {@link SearchIndexerClient#getDataSourceConnectionWithResponse(String, Context)}
+     */
+    public void getDataSourceWithResponse() {
+        // BEGIN: com.azure.search.documents.indexes.SearchIndexerClient.getDataSourceConnectionWithResponse#String-Context
+        Response<SearchIndexerDataSourceConnection> dataSource =
+            searchIndexerClient.getDataSourceConnectionWithResponse(
+                "dataSource", new Context(key1, value1));
+
+        System.out.printf("The status code of the response is %s. The data source name is %s.%n",
+            dataSource.getStatusCode(), dataSource.getValue().getName());
+        // END: com.azure.search.documents.indexes.SearchIndexerClient.getDataSourceConnectionWithResponse#String-Context
+    }
+
+
+    /**
+     * Code snippet for {@link SearchIndexerClient#listDataSourceConnections()}
+     */
+    public void listDataSources() {
+        // BEGIN: com.azure.search.documents.indexes.SearchIndexerClient.listDataSourceConnections
+        PagedIterable<SearchIndexerDataSourceConnection> dataSources = searchIndexerClient.listDataSourceConnections();
+        for (SearchIndexerDataSourceConnection dataSource: dataSources) {
+            System.out.printf("The dataSource name is %s. The etag of dataSource is %s.%n", dataSource.getName(),
+                dataSource.getETag());
+        }
+        // END: com.azure.search.documents.indexes.SearchIndexerClient.listDataSourceConnections
+    }
+
+    /**
+     * Code snippet for {@link SearchIndexerClient#listDataSourceConnections(Context)}
+     */
+    public void listDataSourcesWithContext() {
+        // BEGIN: com.azure.search.documents.indexes.SearchIndexerClient.listDataSourceConnectionsWithResponse#Context
+        PagedIterable<SearchIndexerDataSourceConnection> dataSources =
+            searchIndexerClient.listDataSourceConnections(new Context(key1, value1));
+
+        System.out.println("The status code of the response is"
+            + dataSources.iterableByPage().iterator().next().getStatusCode());
+        for (SearchIndexerDataSourceConnection dataSource: dataSources) {
+            System.out.printf("The dataSource name is %s. The etag of dataSource is %s.%n",
+                dataSource.getName(), dataSource.getETag());
+        }
+        // END: com.azure.search.documents.indexes.SearchIndexerClient.listDataSourceConnectionsWithResponse#Context
+    }
+
+    /**
+     * Code snippet for {@link SearchIndexerClient#listDataSourceConnectionNames()}
+     */
+    public void listDataSourceNames() {
+        // BEGIN: com.azure.search.documents.indexes.SearchIndexerClient.listDataSourceConnectionNames
+        PagedIterable<String> dataSources = searchIndexerClient.listDataSourceConnectionNames();
+        for (String dataSourceName: dataSources) {
+            System.out.printf("The dataSource name is %s.%n", dataSourceName);
+        }
+        // END: com.azure.search.documents.indexes.SearchIndexerClient.listDataSourceConnectionNames
+    }
+
+    /**
+     * Code snippet for {@link SearchIndexerClient#listDataSourceConnectionNames(Context)}
+     */
+    public void listDataSourceNamesWithContext() {
+        // BEGIN: com.azure.search.documents.indexes.SearchIndexerClient.listDataSourceConnectionNamesWithContext#Context
+        PagedIterable<String> dataSources = searchIndexerClient.listDataSourceConnectionNames(new Context(key1, value1));
+        System.out.println("The status code of the response is"
+            + dataSources.iterableByPage().iterator().next().getStatusCode());
+        for (String dataSourceName: dataSources) {
+            System.out.printf("The dataSource name is %s.%n", dataSourceName);
+        }
+        // END: com.azure.search.documents.indexes.SearchIndexerClient.listDataSourceConnectionNamesWithContext#Context
+    }
+
+
+    /**
+     * Code snippet for {@link SearchIndexerClient#createOrUpdateDataSourceConnection(SearchIndexerDataSourceConnection)}
+     */
+    public void createOrUpdateDataSource() {
+        // BEGIN: com.azure.search.documents.indexes.SearchIndexerClient.createOrUpdateDataSourceConnection#SearchIndexerDataSourceConnection
+        SearchIndexerDataSourceConnection dataSource = searchIndexerClient.getDataSourceConnection("dataSource");
+        dataSource.setContainer(new SearchIndexerDataContainer("updatecontainer"));
+
+        SearchIndexerDataSourceConnection updateDataSource = searchIndexerClient.createOrUpdateDataSourceConnection(dataSource);
+        System.out.printf("The dataSource name is %s. The container name of dataSource is %s.%n",
+            updateDataSource.getName(), updateDataSource.getContainer().getName());
+        // END: com.azure.search.documents.indexes.SearchIndexerClient.createOrUpdateDataSourceConnection#SearchIndexerDataSourceConnection
+    }
+
+    /**
+     * Code snippet for {@link SearchIndexerClient#createIndexerWithResponse(SearchIndexer, Context)}
+     */
+    public void createOrUpdateDataSourceWithResponse() {
+        // BEGIN: com.azure.search.documents.indexes.SearchIndexerClient.createOrUpdateDataSourceConnectionWithResponse#SearchIndexerDataSourceConnection-boolean-Context
+        SearchIndexerDataSourceConnection dataSource = searchIndexerClient.getDataSourceConnection("dataSource");
+        dataSource.setContainer(new SearchIndexerDataContainer("updatecontainer"));
+
+        Response<SearchIndexerDataSourceConnection> updateDataSource = searchIndexerClient
+            .createOrUpdateDataSourceConnectionWithResponse(dataSource, true, new Context(key1, value1));
+        System.out.printf("The status code of the response is %s.%nThe dataSource name is %s. "
+            + "The container name of dataSource is %s.%n", updateDataSource.getStatusCode(),
+            updateDataSource.getValue().getName(), updateDataSource.getValue().getContainer().getName());
+        // END: com.azure.search.documents.indexes.SearchIndexerClient.createOrUpdateDataSourceConnectionWithResponse#SearchIndexerDataSourceConnection-boolean-Context
+    }
+
+    /**
+     * Code snippet for {@link SearchIndexerClient#deleteDataSourceConnection(String)}
+     */
+    public void deleteDataSource() {
+        // BEGIN: com.azure.search.documents.indexes.SearchIndexerClient.deleteDataSourceConnection#String
+        searchIndexerClient.deleteDataSourceConnection("dataSource");
+        // END: com.azure.search.documents.indexes.SearchIndexerClient.deleteDataSourceConnection#String
+    }
+
+    /**
+     * Code snippet for {@link SearchIndexerClient#deleteDataSourceConnectionWithResponse(SearchIndexerDataSourceConnection, boolean, Context)}
+     */
+    public void deleteDataSourceWithResponse() {
+        // BEGIN: com.azure.search.documents.indexes.SearchIndexerClient.deleteDataSourceConnectionWithResponse#SearchIndexerDataSourceConnection-boolean-Context
+        SearchIndexerDataSourceConnection dataSource =
+            searchIndexerClient.getDataSourceConnection("dataSource");
+        Response<Void> deleteResponse = searchIndexerClient.deleteDataSourceConnectionWithResponse(dataSource, true,
+            new Context(key1, value1));
+        System.out.printf("The status code of the response is %d.%n", deleteResponse.getStatusCode());
+        // END: com.azure.search.documents.indexes.SearchIndexerClient.deleteDataSourceConnectionWithResponse#SearchIndexerDataSourceConnection-boolean-Context
+    }
+
+    /**
+     * Code snippet for {@link SearchIndexerClient#createSkillset(SearchIndexerSkillset)}
+     */
+    public void createSearchIndexerSkillset() {
+        // BEGIN: com.azure.search.documents.indexes.SearchIndexerClient.createSkillset#SearchIndexerSkillset
+        List<InputFieldMappingEntry> inputs = Collections.singletonList(
+            new InputFieldMappingEntry("image")
+                .setSource("/document/normalized_images/*")
+        );
+
+        List<OutputFieldMappingEntry> outputs = Arrays.asList(
+            new OutputFieldMappingEntry("text")
+                .setTargetName("mytext"),
+            new OutputFieldMappingEntry("layoutText")
+                .setTargetName("myLayoutText")
+        );
+        SearchIndexerSkillset searchIndexerSkillset = new SearchIndexerSkillset("searchIndexerSkillset",
+            Collections.singletonList(new OcrSkill(inputs, outputs)
+                .setShouldDetectOrientation(true)
+                .setDefaultLanguageCode(null)
+                .setName("myocr")
+                .setDescription("Extracts text (plain and structured) from image.")
+                .setContext("/document/normalized_images/*")));
+        SearchIndexerSkillset skillset = searchIndexerClient.createSkillset(searchIndexerSkillset);
+        System.out.printf("The indexer skillset name is %s. The etag of indexer skillset is %s.%n",
+            skillset.getName(), skillset.getETag());
+        // END: com.azure.search.documents.indexes.SearchIndexerClient.createSkillset#SearchIndexerSkillset
+    }
+
+    /**
+     * Code snippet for {@link SearchIndexerClient#createSkillsetWithResponse(SearchIndexerSkillset, Context)}.
+     */
+    public void createSearchIndexerSkillsetWithResponse() {
+        // BEGIN: com.azure.search.documents.indexes.SearchIndexerClient.createSkillsetWithResponse#SearchIndexerSkillset-Context
+        List<InputFieldMappingEntry> inputs = Collections.singletonList(
+            new InputFieldMappingEntry("image")
+                .setSource("/document/normalized_images/*")
+        );
+
+        List<OutputFieldMappingEntry> outputs = Arrays.asList(
+            new OutputFieldMappingEntry("text")
+                .setTargetName("mytext"),
+            new OutputFieldMappingEntry("layoutText")
+                .setTargetName("myLayoutText")
+        );
+        SearchIndexerSkillset searchIndexerSkillset = new SearchIndexerSkillset("searchIndexerSkillset",
+            Collections.singletonList(new OcrSkill(inputs, outputs)
+                .setShouldDetectOrientation(true)
+                .setDefaultLanguageCode(null)
+                .setName("myocr")
+                .setDescription("Extracts text (plain and structured) from image.")
+                .setContext("/document/normalized_images/*")));
+        Response<SearchIndexerSkillset> skillsetWithResponse =
+            searchIndexerClient.createSkillsetWithResponse(searchIndexerSkillset, new Context(key1, value1));
+        System.out.printf("The status code of the response is %s. The indexer skillset name is %s.%n",
+            skillsetWithResponse.getStatusCode(), skillsetWithResponse.getValue().getName());
+        // END: com.azure.search.documents.indexes.SearchIndexerClient.createSkillsetWithResponse#SearchIndexerSkillset-Context
+    }
+
+    /**
+     * Code snippet for {@link SearchIndexerClient#getSkillset(String)}
+     */
+    public void getSearchIndexerSkillset() {
+        // BEGIN: com.azure.search.documents.indexes.SearchIndexerClient.getSearchIndexerSkillset#String
+        SearchIndexerSkillset indexerSkillset =
+            searchIndexerClient.getSkillset("searchIndexerSkillset");
+        System.out.printf("The indexer skillset name is %s. The etag of indexer skillset is %s.%n",
+            indexerSkillset.getName(), indexerSkillset.getETag());
+        // END: com.azure.search.documents.indexes.SearchIndexerClient.getSearchIndexerSkillset#String
+    }
+
+    /**
+     * Code snippet for {@link SearchIndexerClient#getSkillsetWithResponse(String, Context)}
+     */
+    public void getSearchIndexerSkillsetWithResponse() {
+        // BEGIN: com.azure.search.documents.indexes.SearchIndexerClient.getSkillsetWithResponse#String-Context
+        Response<SearchIndexerSkillset> skillsetWithResponse = searchIndexerClient.getSkillsetWithResponse(
+            "searchIndexerSkillset", new Context(key1, value1));
+
+        System.out.printf("The status code of the response is %s. The indexer skillset name is %s.%n",
+            skillsetWithResponse.getStatusCode(), skillsetWithResponse.getValue().getName());
+        // END: com.azure.search.documents.indexes.SearchIndexerClient.getSkillsetWithResponse#String-Context
+    }
+
+
+    /**
+     * Code snippet for {@link SearchIndexerClient#listSkillsets()}
+     */
+    public void listIndexerSkillset() {
+        // BEGIN: com.azure.search.documents.indexes.SearchIndexerClient.listSkillsets
+        PagedIterable<SearchIndexerSkillset> indexerSkillsets = searchIndexerClient.listSkillsets();
+        for (SearchIndexerSkillset skillset: indexerSkillsets) {
+            System.out.printf("The skillset name is %s. The etag of skillset is %s.%n", skillset.getName(),
+                skillset.getETag());
+        }
+        // END: com.azure.search.documents.indexes.SearchIndexerClient.listSkillsets
+    }
+
+    /**
+     * Code snippet for {@link SearchIndexerClient#listSkillsets(Context)}
+     */
+    public void listIndexerSkillsetsWithContext() {
+        // BEGIN: com.azure.search.documents.indexes.SearchIndexerClient.listSkillsetsWithContext#Context
+        PagedIterable<SearchIndexerSkillset> indexerSkillsets = searchIndexerClient.listSkillsets(new Context(key1, value1));
+        System.out.println("The status code of the response is"
+            + indexerSkillsets.iterableByPage().iterator().next().getStatusCode());
+        for (SearchIndexerSkillset skillset: indexerSkillsets) {
+            System.out.printf("The skillset name is %s. The etag of skillset is %s.%n",
+                skillset.getName(), skillset.getETag());
+        }
+        // END: com.azure.search.documents.indexes.SearchIndexerClient.listSkillsetsWithContext#Context
+    }
+
+    /**
+     * Code snippet for {@link SearchIndexerClient#listSkillsetNames()}
+     */
+    public void listIndexerSkillsetNames() {
+        // BEGIN: com.azure.search.documents.indexes.SearchIndexerClient.listSkillsetNames
+        PagedIterable<String> skillsetNames = searchIndexerClient.listSkillsetNames();
+        for (String skillsetName: skillsetNames) {
+            System.out.printf("The indexer skillset name is %s.%n", skillsetName);
+        }
+        // END: com.azure.search.documents.indexes.SearchIndexerClient.listSkillsetNames
+    }
+
+    /**
+     * Code snippet for {@link SearchIndexerClient#listSkillsetNames(Context)}
+     */
+    public void listIndexerSkillsetNamesWithContext() {
+        // BEGIN: com.azure.search.documents.indexes.SearchIndexerClient.listSkillsetNamesWithResponse#Context
+        PagedIterable<String> skillsetNames = searchIndexerClient.listSkillsetNames(new Context(key1, value1));
+        System.out.println("The status code of the response is"
+            + skillsetNames.iterableByPage().iterator().next().getStatusCode());
+        for (String skillsetName: skillsetNames) {
+            System.out.printf("The indexer skillset name is %s.%n", skillsetName);
+        }
+        // END: com.azure.search.documents.indexes.SearchIndexerClient.listSkillsetNamesWithResponse#Context
+    }
+
+
+    /**
+     * Code snippet for {@link SearchIndexerClient#createOrUpdateSkillset(SearchIndexerSkillset)}
+     */
+    public void createOrUpdateIndexerSkillset() {
+        // BEGIN: com.azure.search.documents.indexes.SearchIndexerClient.createOrUpdateIndexerSkillset#SearchIndexerSkillset
+        SearchIndexerSkillset indexerSkillset = searchIndexerClient.getSkillset("searchIndexerSkilset");
+        indexerSkillset.setDescription("This is new description!");
+        SearchIndexerSkillset updateSkillset = searchIndexerClient.createOrUpdateSkillset(indexerSkillset);
+        System.out.printf("The indexer skillset name is %s. The description of indexer skillset is %s.%n",
+            updateSkillset.getName(), updateSkillset.getDescription());
+        // END: com.azure.search.documents.indexes.SearchIndexerClient.createOrUpdateIndexerSkillset#SearchIndexerSkillset
+    }
+
+    /**
+     * Code snippet for {@link SearchIndexerClient#createOrUpdateSkillsetWithResponse(SearchIndexerSkillset, boolean, Context)}
+     */
+    public void createOrUpdateIndexerSkillsetWithResponse() {
+        // BEGIN: com.azure.search.documents.indexes.SearchIndexerClient.createOrUpdateSkillsetWithResponse#SearchIndexerSkillset-boolean-Context
+        SearchIndexerSkillset indexerSkillset = searchIndexerClient.getSkillset("searchIndexerSkilset");
+        indexerSkillset.setDescription("This is new description!");
+        Response<SearchIndexerSkillset> updateSkillsetResponse = searchIndexerClient.createOrUpdateSkillsetWithResponse(
+            indexerSkillset, true, new Context(key1, value1));
+        System.out.printf("The status code of the response is %s.%nThe indexer skillset name is %s. "
+                + "The description of indexer skilset is %s.%n", updateSkillsetResponse.getStatusCode(),
+            updateSkillsetResponse.getValue().getName(),
+            updateSkillsetResponse.getValue().getDescription());
+        // END: com.azure.search.documents.indexes.SearchIndexerClient.createOrUpdateSkillsetWithResponse#SearchIndexerSkillset-boolean-Context
+    }
+
+    /**
+     * Code snippet for {@link SearchIndexerClient#deleteSkillset(String)}
+     */
+    public void deleteSearchIndexerSkillset() {
+        // BEGIN: com.azure.search.documents.indexes.SearchIndexerClient.deleteSkillset#String
+        searchIndexerClient.deleteSkillset("searchIndexerSkillset");
+        // END: com.azure.search.documents.indexes.SearchIndexerClient.deleteSkillset#String
+    }
+
+    /**
+     * Code snippet for {@link SearchIndexerClient#deleteSkillsetWithResponse(SearchIndexerSkillset, boolean, Context)}
+     */
+    public void deleteSearchIndexerSkillsetWithResponse() {
+        // BEGIN: com.azure.search.documents.indexes.SearchIndexerClient.deleteSkillsetWithResponse#SearchIndexerSkillset-boolean-Context
+        SearchIndexerSkillset searchIndexerSkilset = searchIndexerClient.getSkillset("searchIndexerSkilset");
+        Response<Void> deleteResponse = searchIndexerClient.deleteSkillsetWithResponse(searchIndexerSkilset, true,
+            new Context(key1, value1));
+        System.out.printf("The status code of the response is %d.%n", deleteResponse.getStatusCode());
+        // END: com.azure.search.documents.indexes.SearchIndexerClient.deleteSkillsetWithResponse#SearchIndexerSkillset-boolean-Context
     }
 
     private SearchIndexerAsyncClient searchIndexerAsyncClient = new SearchIndexerClientBuilder().buildAsyncClient();
