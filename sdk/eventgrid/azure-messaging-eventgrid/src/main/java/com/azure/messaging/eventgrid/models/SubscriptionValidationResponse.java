@@ -1,0 +1,37 @@
+package com.azure.messaging.eventgrid.models;
+
+import com.azure.core.annotation.Fluent;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+/** The SubscriptionValidationResponse model. */
+@Fluent
+public final class SubscriptionValidationResponse {
+    /*
+     * The validation response sent by the subscriber to Azure Event Grid to
+     * complete the validation of an event subscription.
+     */
+    @JsonProperty(value = "validationResponse")
+    private String validationResponse;
+
+    /**
+     * Get the validationResponse property: The validation response sent by the subscriber to Azure Event Grid to
+     * complete the validation of an event subscription.
+     *
+     * @return the validationResponse value.
+     */
+    public String getValidationResponse() {
+        return this.validationResponse;
+    }
+
+    /**
+     * Set the validationResponse property: The validation response sent by the subscriber to Azure Event Grid to
+     * complete the validation of an event subscription.
+     *
+     * @param validationResponse the validationResponse value to set.
+     * @return the SubscriptionValidationResponse object itself.
+     */
+    public SubscriptionValidationResponse setValidationResponse(String validationResponse) {
+        this.validationResponse = validationResponse;
+        return this;
+    }
+}
