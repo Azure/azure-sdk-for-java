@@ -252,7 +252,7 @@ public final class ServiceBusClientBuilder {
                 logger.warning("There should not be less than 0 clients. actual: {}", numberOfOpenClients);
             }
 
-            logger.info("No more open clients, closing shared connection.");
+            logger.info("No more open clients, closing shared connection [{}].", sharedConnection);
             if (sharedConnection != null) {
                 sharedConnection.dispose();
                 sharedConnection = null;
@@ -589,8 +589,8 @@ public final class ServiceBusClientBuilder {
          * ReceiveMode#RECEIVE_AND_DELETE RECEIVE_AND_DELETE} modes the default value is 1.
          *
          * Prefetch speeds up the message flow by aiming to have a message readily available for local retrieval when
-         * and before the application asks for one using {@link ServiceBusReceiverAsyncClient#receive()}. Setting a
-         * non-zero value will prefetch that number of messages. Setting the value to zero turns prefetch off.
+         * and before the application asks for one using {@link ServiceBusReceiverAsyncClient#receiveMessages()}.
+         * Setting a non-zero value will prefetch that number of messages. Setting the value to zero turns prefetch off.
          *
          * @param prefetchCount The prefetch count.
          *
@@ -782,8 +782,8 @@ public final class ServiceBusClientBuilder {
          * ReceiveMode#RECEIVE_AND_DELETE RECEIVE_AND_DELETE} modes the default value is 1.
          *
          * Prefetch speeds up the message flow by aiming to have a message readily available for local retrieval when
-         * and before the application asks for one using {@link ServiceBusReceiverAsyncClient#receive()}. Setting a
-         * non-zero value will prefetch that number of messages. Setting the value to zero turns prefetch off.
+         * and before the application asks for one using {@link ServiceBusReceiverAsyncClient#receiveMessages()}.
+         * Setting a non-zero value will prefetch that number of messages. Setting the value to zero turns prefetch off.
          *
          * @param prefetchCount The prefetch count.
          *

@@ -5,6 +5,7 @@ package com.azure.ai.formrecognizer.models;
 
 import com.azure.core.annotation.Immutable;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -15,7 +16,9 @@ import java.util.Map;
 public final class RecognizedForm {
 
     /*
-     * Dictionary of named field values.
+     * A map of the fields recognized from the input document.
+     * For models trained with labels, this is the training-time label of the field. For models trained with forms
+     * only, a unique name is generated for each field.
      */
     private final Map<String, FormField> fields;
 
@@ -44,16 +47,18 @@ public final class RecognizedForm {
      */
     public RecognizedForm(final Map<String, FormField> fields, final String formType,
         final FormPageRange formPageRange, final List<FormPage> pages) {
-        this.fields = fields;
+        this.fields = fields == null ? null : Collections.unmodifiableMap(fields);
         this.formType = formType;
         this.formPageRange = formPageRange;
-        this.pages = pages;
+        this.pages = pages == null ? null : Collections.unmodifiableList(pages);
     }
 
     /**
-     * Get the dictionary of named field values.
+     * A map of the fields recognized from the input document.
+     * For models trained with labels, this is the training-time label of the field. For models trained with forms
+     * only, a unique name is generated for each field.
      *
-     * @return the fields value.
+     * @return the unmodifiable map of recognized fields.
      */
     public Map<String, FormField> getFields() {
         return this.fields;
@@ -80,7 +85,7 @@ public final class RecognizedForm {
     /**
      * Get the list of extracted pages.
      *
-     * @return the pages value.
+     * @return the unmodifiable list of recognized pages.
      */
     public List<FormPage> getPages() {
         return this.pages;

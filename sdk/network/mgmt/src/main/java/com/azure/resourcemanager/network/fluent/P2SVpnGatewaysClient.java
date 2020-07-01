@@ -31,7 +31,6 @@ import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.util.polling.AsyncPollResponse;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.resourcemanager.network.NetworkManagementClient;
 import com.azure.resourcemanager.network.fluent.inner.ListP2SVpnGatewaysResultInner;
@@ -623,7 +622,7 @@ public final class P2SVpnGatewaysClient
             .<P2SVpnGatewayInner, P2SVpnGatewayInner>getLroResultAsync(
                 mono, this.client.getHttpPipeline(), P2SVpnGatewayInner.class, P2SVpnGatewayInner.class)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -648,7 +647,7 @@ public final class P2SVpnGatewaysClient
             .<P2SVpnGatewayInner, P2SVpnGatewayInner>getLroResultAsync(
                 mono, this.client.getHttpPipeline(), P2SVpnGatewayInner.class, P2SVpnGatewayInner.class)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -849,7 +848,7 @@ public final class P2SVpnGatewaysClient
             .<P2SVpnGatewayInner, P2SVpnGatewayInner>getLroResultAsync(
                 mono, this.client.getHttpPipeline(), P2SVpnGatewayInner.class, P2SVpnGatewayInner.class)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -874,7 +873,7 @@ public final class P2SVpnGatewaysClient
             .<P2SVpnGatewayInner, P2SVpnGatewayInner>getLroResultAsync(
                 mono, this.client.getHttpPipeline(), P2SVpnGatewayInner.class, P2SVpnGatewayInner.class)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -1052,7 +1051,7 @@ public final class P2SVpnGatewaysClient
             .client
             .<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -1073,7 +1072,7 @@ public final class P2SVpnGatewaysClient
             .client
             .<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -1553,7 +1552,7 @@ public final class P2SVpnGatewaysClient
             .<VpnProfileResponseInner, VpnProfileResponseInner>getLroResultAsync(
                 mono, this.client.getHttpPipeline(), VpnProfileResponseInner.class, VpnProfileResponseInner.class)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -1578,7 +1577,7 @@ public final class P2SVpnGatewaysClient
             .<VpnProfileResponseInner, VpnProfileResponseInner>getLroResultAsync(
                 mono, this.client.getHttpPipeline(), VpnProfileResponseInner.class, VpnProfileResponseInner.class)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -1769,7 +1768,7 @@ public final class P2SVpnGatewaysClient
             .<P2SVpnGatewayInner, P2SVpnGatewayInner>getLroResultAsync(
                 mono, this.client.getHttpPipeline(), P2SVpnGatewayInner.class, P2SVpnGatewayInner.class)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -1793,7 +1792,7 @@ public final class P2SVpnGatewaysClient
             .<P2SVpnGatewayInner, P2SVpnGatewayInner>getLroResultAsync(
                 mono, this.client.getHttpPipeline(), P2SVpnGatewayInner.class, P2SVpnGatewayInner.class)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**

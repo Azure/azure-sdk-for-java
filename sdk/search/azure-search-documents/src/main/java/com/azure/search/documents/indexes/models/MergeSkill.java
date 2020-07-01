@@ -8,6 +8,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
+import java.util.List;
+
 /**
  * A skill for merging two or more strings into a single unified string, with
  * an optional user-defined delimiter separating each component part.
@@ -29,6 +31,17 @@ public final class MergeSkill extends SearchIndexerSkill {
      */
     @JsonProperty(value = "insertPostTag")
     private String insertPostTag;
+
+    /**
+     * Constructor of {@link MergeSkill}.
+     *
+     * @param inputs Inputs of the skills could be a column in the source data set, or the
+     * output of an upstream skill.
+     * @param outputs The output of a skill is either a field in a search index, or a value
+     */
+    public MergeSkill(List<InputFieldMappingEntry> inputs, List<OutputFieldMappingEntry> outputs) {
+        super(inputs, outputs);
+    }
 
     /**
      * Get the insertPreTag property: The tag indicates the start of the merged

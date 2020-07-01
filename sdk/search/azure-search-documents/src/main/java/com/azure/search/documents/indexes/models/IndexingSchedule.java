@@ -4,6 +4,7 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.Duration;
 import java.time.OffsetDateTime;
@@ -26,6 +27,16 @@ public final class IndexingSchedule {
     private OffsetDateTime startTime;
 
     /**
+     * Constructor of {@link IndexingSchedule}.
+     *
+     * @param interval The interval of time between indexer executions.
+     */
+    @JsonCreator
+    public IndexingSchedule(@JsonProperty(value = "interval", required = true) Duration interval) {
+        this.interval = interval;
+    }
+
+    /**
      * Get the interval property: The interval of time between indexer
      * executions.
      *
@@ -33,18 +44,6 @@ public final class IndexingSchedule {
      */
     public Duration getInterval() {
         return this.interval;
-    }
-
-    /**
-     * Set the interval property: The interval of time between indexer
-     * executions.
-     *
-     * @param interval the interval value to set.
-     * @return the IndexingSchedule object itself.
-     */
-    public IndexingSchedule setInterval(Duration interval) {
-        this.interval = interval;
-        return this;
     }
 
     /**

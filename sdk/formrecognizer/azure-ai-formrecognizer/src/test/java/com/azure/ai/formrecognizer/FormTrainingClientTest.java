@@ -9,10 +9,10 @@ import com.azure.ai.formrecognizer.models.CustomFormModel;
 import com.azure.ai.formrecognizer.models.CustomFormModelInfo;
 import com.azure.ai.formrecognizer.models.CustomFormModelStatus;
 import com.azure.ai.formrecognizer.models.ErrorInformation;
-import com.azure.ai.formrecognizer.models.ErrorResponseException;
 import com.azure.ai.formrecognizer.models.FormRecognizerException;
 import com.azure.ai.formrecognizer.models.OperationResult;
 import com.azure.ai.formrecognizer.training.FormTrainingClient;
+import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
@@ -156,7 +156,7 @@ public class FormTrainingClientTest extends FormTrainingClientTestBase {
                 Context.NONE);
             assertEquals(deleteModelWithResponse.getStatusCode(), HttpResponseStatus.NO_CONTENT.code());
 
-            ErrorResponseException exception = assertThrows(ErrorResponseException.class, () ->
+            HttpResponseException exception = assertThrows(HttpResponseException.class, () ->
                 client.getCustomModelWithResponse(createdModel.getModelId(), Context.NONE));
             assertEquals(exception.getResponse().getStatusCode(), HttpResponseStatus.NOT_FOUND.code());
         });
@@ -170,8 +170,8 @@ public class FormTrainingClientTest extends FormTrainingClientTestBase {
     public void listCustomModels(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
         client = getFormTrainingClient(httpClient, serviceVersion);
         for (CustomFormModelInfo modelInfo : client.listCustomModels()) {
-            assertTrue(modelInfo.getModelId() != null && modelInfo.getRequestedOn() != null
-                && modelInfo.getCompletedOn() != null && modelInfo.getStatus() != null);
+            assertTrue(modelInfo.getModelId() != null && modelInfo.getTrainingStartedOn() != null
+                && modelInfo.getTrainingCompletedOn() != null && modelInfo.getStatus() != null);
         }
     }
 
@@ -183,8 +183,8 @@ public class FormTrainingClientTest extends FormTrainingClientTestBase {
     public void listCustomModelsWithContext(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
         client = getFormTrainingClient(httpClient, serviceVersion);
         for (CustomFormModelInfo modelInfo : client.listCustomModels(Context.NONE)) {
-            assertTrue(modelInfo.getModelId() != null && modelInfo.getRequestedOn() != null
-                && modelInfo.getCompletedOn() != null && modelInfo.getStatus() != null);
+            assertTrue(modelInfo.getModelId() != null && modelInfo.getTrainingStartedOn() != null
+                && modelInfo.getTrainingCompletedOn() != null && modelInfo.getStatus() != null);
         }
     }
 
@@ -250,15 +250,15 @@ public class FormTrainingClientTest extends FormTrainingClientTestBase {
                     CustomFormModelInfo> copyPoller = client.beginCopyModel(actualModel.getModelId(), target);
                 CustomFormModelInfo copyModel = copyPoller.getFinalResult();
                 assertEquals(target.getModelId(), copyModel.getModelId());
-                assertNotNull(actualModel.getRequestedOn());
-                assertNotNull(actualModel.getCompletedOn());
+                assertNotNull(actualModel.getTrainingStartedOn());
+                assertNotNull(actualModel.getTrainingCompletedOn());
                 assertEquals(CustomFormModelStatus.READY, copyModel.getStatus());
             });
         });
     }
 
     /**
-     * Verifies the Invalid region ErrorResponseException is thrown for invalid region input to copy operation.
+     * Verifies the Invalid region HttpResponseException is thrown for invalid region input to copy operation.
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
@@ -272,7 +272,7 @@ public class FormTrainingClientTest extends FormTrainingClientTestBase {
 
             beginCopyInvalidRegionRunner((resourceId, resourceRegion) -> {
                 final CopyAuthorization target = client.getCopyAuthorization(resourceId, resourceRegion);
-                Exception thrown = assertThrows(ErrorResponseException.class,
+                Exception thrown = assertThrows(HttpResponseException.class,
                     () -> client.beginCopyModel(actualModel.getModelId(), target));
                 assertEquals(EXPECTED_COPY_REQUEST_INVALID_TARGET_RESOURCE_REGION, thrown.getMessage());
             });

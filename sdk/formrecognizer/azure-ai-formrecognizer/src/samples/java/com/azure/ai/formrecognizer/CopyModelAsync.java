@@ -44,21 +44,21 @@ public class CopyModelAsync {
             .subscribe(copyAuthorization -> sourceClient.beginCopyModel(copyModelId, copyAuthorization)
                 .subscribe(copyPoller -> copyPoller.getFinalResult()
                     .subscribe(customFormModelInfo -> {
-                        System.out.printf("Original model has model Id: %s, model status: %s, was created on: %s,"
-                                + " last updated on: %s.%n",
+                        System.out.printf("Original model has model Id: %s, model status: %s, training started on: %s,"
+                                + " training completed on: %s.%n",
                             customFormModelInfo.getModelId(),
                             customFormModelInfo.getStatus(),
-                            customFormModelInfo.getRequestedOn(),
-                            customFormModelInfo.getCompletedOn());
+                            customFormModelInfo.getTrainingStartedOn(),
+                            customFormModelInfo.getTrainingCompletedOn());
 
                         // Get the copied model from the target resource
                         targetClient.getCustomModel(copyAuthorization.getModelId()).subscribe(customFormModel ->
-                            System.out.printf("Copied model has model Id: %s, model status: %s, was created on: %s,"
-                                    + " last updated on: %s.%n",
+                            System.out.printf("Copied model has model Id: %s, model status: %s, training started on: %s,"
+                                    + " training completed on: %s.%n",
                                 customFormModel.getModelId(),
                                 customFormModel.getModelStatus(),
-                                customFormModel.getRequestedOn(),
-                                customFormModel.getCompletedOn()));
+                                customFormModel.getTrainingStartedOn(),
+                                customFormModel.getTrainingCompletedOn()));
                     })));
 
         // The .subscribe() creation and assignment is not a blocking call. For the purpose of this example, we sleep

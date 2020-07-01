@@ -24,6 +24,17 @@ public final class StopAnalyzer extends LexicalAnalyzer {
     private List<String> stopwords;
 
     /**
+     * Constructor of {@link StopAnalyzer}.
+     *
+     * @param name The name of the analyzer. It must only contain letters, digits, spaces,
+     * dashes or underscores, can only start and end with alphanumeric
+     * characters, and is limited to 128 characters.
+     */
+    public StopAnalyzer(String name) {
+        super(name);
+    }
+
+    /**
      * Get the stopwords property: A list of stopwords.
      *
      * @return the stopwords value.

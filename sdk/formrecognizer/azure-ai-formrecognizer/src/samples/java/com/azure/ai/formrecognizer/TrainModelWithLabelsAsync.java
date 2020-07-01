@@ -53,8 +53,8 @@ public class TrainModelWithLabelsAsync {
             // Model Info
             System.out.printf("Model Id: %s%n", customFormModel.getModelId());
             System.out.printf("Model Status: %s%n", customFormModel.getModelStatus());
-            System.out.printf("Model requested on: %s%n", customFormModel.getRequestedOn());
-            System.out.printf("Model training completed on: %s%n%n", customFormModel.getCompletedOn());
+            System.out.printf("Training started on: %s%n", customFormModel.getTrainingStartedOn());
+            System.out.printf("Training completed on: %s%n%n", customFormModel.getTrainingCompletedOn());
 
             // looping through the sub-models, which contains the fields they were trained on
             // The labels are based on the ones you gave the training document.
@@ -62,7 +62,7 @@ public class TrainModelWithLabelsAsync {
             // Since the data is labeled, we are able to return the accuracy of the model
             customFormModel.getSubmodels().forEach(customFormSubmodel -> {
                 System.out.printf("Sub-model accuracy: %.2f%n", customFormSubmodel.getAccuracy());
-                customFormSubmodel.getFieldMap().forEach((label, customFormModelField) ->
+                customFormSubmodel.getFields().forEach((label, customFormModelField) ->
                     System.out.printf("Field: %s Field Name: %s Field Accuracy: %.2f%n",
                         label, customFormModelField.getName(), customFormModelField.getAccuracy()));
             });

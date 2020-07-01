@@ -7,6 +7,7 @@ package com.azure.resourcemanager.compute.fluent.inner;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.compute.models.InstanceViewStatus;
+import com.azure.resourcemanager.compute.models.OrchestrationServiceSummary;
 import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetInstanceViewStatusesSummary;
 import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetVMExtensionsSummary;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -35,6 +36,12 @@ public final class VirtualMachineScaleSetInstanceViewInner {
      */
     @JsonProperty(value = "statuses")
     private List<InstanceViewStatus> statuses;
+
+    /*
+     * The orchestration services information.
+     */
+    @JsonProperty(value = "orchestrationServices", access = JsonProperty.Access.WRITE_ONLY)
+    private List<OrchestrationServiceSummary> orchestrationServices;
 
     /**
      * Get the virtualMachine property: The instance view status summary for the virtual machine scale set.
@@ -75,6 +82,15 @@ public final class VirtualMachineScaleSetInstanceViewInner {
     }
 
     /**
+     * Get the orchestrationServices property: The orchestration services information.
+     *
+     * @return the orchestrationServices value.
+     */
+    public List<OrchestrationServiceSummary> orchestrationServices() {
+        return this.orchestrationServices;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -88,6 +104,9 @@ public final class VirtualMachineScaleSetInstanceViewInner {
         }
         if (statuses() != null) {
             statuses().forEach(e -> e.validate());
+        }
+        if (orchestrationServices() != null) {
+            orchestrationServices().forEach(e -> e.validate());
         }
     }
 }

@@ -76,20 +76,20 @@ public class SendAndReceiveSessionMessageSample {
             }
 
             // Publish the batch since we are done.
-            return sender.send(batch);
+            return sender.sendMessages(batch);
         }).subscribe(unused -> System.out.println("Batch sent."),
             error -> System.err.println("Error occurred while publishing message batch: " + error),
             () -> System.out.println("Batch send complete."));
 
         // After sending that message, we receive the messages for that sessionId.
-        receiver.receive().flatMap(context -> {
+        receiver.receiveMessages().flatMap(context -> {
             ServiceBusReceivedMessage message = context.getMessage();
 
             System.out.println("Received Message Id: " + message.getMessageId());
             System.out.println("Received Message Session Id: " + message.getSessionId());
             System.out.println("Received Message: " + new String(message.getBody()));
 
-            return receiver.complete(message);
+            return receiver.complete(message.getLockToken(), message.getSessionId());
         }).subscribe();
 
         // subscribe() is not a blocking call. We sleep here so the program does not end before the send is complete.
