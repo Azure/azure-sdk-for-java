@@ -143,7 +143,9 @@ class ServiceBusManagementAsyncClientIntegrationTest extends TestBase {
     @MethodSource("createHttpClients")
     void createSubscriptionExistingName(HttpClient httpClient) {
         // Arrange
-        final String topicName = TestUtils.getTopicName();
+        final String topicName = interceptorManager.isPlaybackMode()
+            ? "topic"
+            : TestUtils.getTopicName();
         final String subscriptionName = interceptorManager.isPlaybackMode()
             ? "subscription-session-1"
             : TestUtils.getEntityName(TestUtils.getSessionSubscriptionBaseName(), 1);
@@ -166,6 +168,36 @@ class ServiceBusManagementAsyncClientIntegrationTest extends TestBase {
 
         // Act & Assert
         StepVerifier.create(client.deleteQueue(queueName))
+            .verifyComplete();
+    }
+
+    @ParameterizedTest
+    @MethodSource("createHttpClients")
+    void deleteSubscription(HttpClient httpClient) {
+        // Arrange
+        final ServiceBusManagementAsyncClient client = createClient(httpClient);
+        final String topicName = testResourceNamer.randomName("topic", 10);
+        final String subscriptionName = testResourceNamer.randomName("sub", 7);
+
+        client.createTopic(topicName).block(TIMEOUT);
+        client.createSubscription(topicName, subscriptionName).block(TIMEOUT);
+
+        // Act & Assert
+        StepVerifier.create(client.deleteSubscription(topicName, subscriptionName))
+            .verifyComplete();
+    }
+
+    @ParameterizedTest
+    @MethodSource("createHttpClients")
+    void deleteTopic(HttpClient httpClient) {
+        // Arrange
+        final ServiceBusManagementAsyncClient client = createClient(httpClient);
+        final String topicName = testResourceNamer.randomName("topic", 10);
+
+        client.createTopic(topicName).block(TIMEOUT);
+
+        // Act & Assert
+        StepVerifier.create(client.deleteTopic(topicName))
             .verifyComplete();
     }
 

@@ -333,6 +333,84 @@ public final class ServiceBusManagementAsyncClient {
     }
 
     /**
+     * Deletes a subscription the matching {@code subscriptionName}.
+     *
+     * @param topicName Name of topic associated with subscription to delete.
+     * @param subscriptionName Name of subscription to delete.
+     *
+     * @return A Mono that completes when the subscription is deleted.
+     * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
+     *     namespace.
+     * @throws HttpResponseException If error occurred processing the request.
+     * @throws IllegalArgumentException if {@code topicName} or {@code subscriptionName} is an empty string.
+     * @throws NullPointerException if {@code topicName} or {@code subscriptionName} is null.
+     * @throws ResourceNotFoundException if the {@code subscriptionName} does not exist.
+     * @see <a href="https://docs.microsoft.com/rest/api/servicebus/delete-subscription">Delete Subscription</a>
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> deleteSubscription(String topicName, String subscriptionName) {
+        return deleteSubscriptionWithResponse(topicName, subscriptionName).then();
+    }
+
+    /**
+     * Deletes a subscription the matching {@code subscriptionName} and returns the HTTP response.
+     *
+     * @param topicName Name of topic associated with subscription to delete.
+     * @param subscriptionName Name of subscription to delete.
+     *
+     * @return A Mono that completes when the subscription is deleted and returns the HTTP response.
+     * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
+     *     namespace.
+     * @throws HttpResponseException If error occurred processing the request.
+     * @throws IllegalArgumentException if {@code topicName} or {@code subscriptionName} is an empty string.
+     * @throws NullPointerException if {@code topicName} or {@code subscriptionName} is null.
+     * @throws ResourceNotFoundException if the {@code subscriptionName} does not exist.
+     * @see <a href="https://docs.microsoft.com/rest/api/servicebus/delete-subscription">Delete Subscription</a>
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> deleteSubscriptionWithResponse(String topicName, String subscriptionName) {
+        return withContext(context -> deleteSubscriptionWithResponse(topicName, subscriptionName, context));
+    }
+
+    /**
+     * Deletes a topic the matching {@code topicName}.
+     *
+     * @param topicName Name of topic to delete.
+     *
+     * @return A Mono that completes when the topic is deleted.
+     * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
+     *     namespace.
+     * @throws HttpResponseException If error occurred processing the request.
+     * @throws IllegalArgumentException if {@code topicName} is an empty string.
+     * @throws NullPointerException if {@code topicName} is null.
+     * @throws ResourceNotFoundException if the {@code topicName} does not exist.
+     * @see <a href="https://docs.microsoft.com/rest/api/servicebus/delete-topic">Delete Topic</a>
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> deleteTopic(String topicName) {
+        return deleteTopicWithResponse(topicName).then();
+    }
+
+    /**
+     * Deletes a topic the matching {@code topicName} and returns the HTTP response.
+     *
+     * @param topicName Name of topic to delete.
+     *
+     * @return A Mono that completes when the topic is deleted and returns the HTTP response.
+     * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
+     *     namespace.
+     * @throws HttpResponseException If error occurred processing the request.
+     * @throws IllegalArgumentException if {@code topicName} is an empty string.
+     * @throws NullPointerException if {@code topicName} is null.
+     * @throws ResourceNotFoundException if the {@code topicName} does not exist.
+     * @see <a href="https://docs.microsoft.com/rest/api/servicebus/delete-topic">Delete Topic</a>
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> deleteTopicWithResponse(String topicName) {
+        return withContext(context -> deleteTopicWithResponse(topicName, context));
+    }
+
+    /**
      * Gets information about the queue.
      *
      * @param queueName Name of queue to get information about.
@@ -739,6 +817,82 @@ public final class ServiceBusManagementAsyncClient {
     }
 
     /**
+     * Updates a topic with the given {@link TopicDescription}. The {@link TopicDescription} must be fully populated as
+     * all of the properties are replaced. If a property is not set the service default value is used.
+     *
+     * The suggested flow is:
+     * <ol>
+     *     <li>{@link #getTopic(String) Get topic description.}</li>
+     *     <li>Update the required elements.</li>
+     *     <li>Pass the updated description into this method.</li>
+     * </ol>
+     *
+     * <p>
+     * There are a subset of properties that can be updated. They are:
+     * <ul>
+     * <li>{@link TopicDescription#setDefaultMessageTimeToLive(Duration) DefaultMessageTimeToLive}</li>
+     * <li>{@link TopicDescription#setDuplicateDetectionHistoryTimeWindow(Duration) DuplicateDetectionHistoryTimeWindow}
+     * </li>
+     * </ul>
+     *
+     * @param topic Information about the topic to update. You must provide all the property values that are desired
+     *     on the updated entity. Any values not provided are set to the service default values.
+     *
+     * @return A Mono that completes with information about the created topic.
+     * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
+     *     namespace.
+     * @throws HttpResponseException If the request body was invalid, the topic quota is exceeded, or an error
+     *     occurred processing the request.
+     * @throws IllegalArgumentException if {@link TopicDescription#getName() topic.getName()} is null or an empty
+     *     string.
+     * @throws NullPointerException if {@code topic} is null.
+     * @see <a href="https://docs.microsoft.com/rest/api/servicebus/update-entity">Create or Update Entity</a>
+     * @see <a href="https://docs.microsoft.com/rest/api/servicebus/update-topic">Update Topic</a>
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<TopicDescription> updateTopic(TopicDescription topic) {
+        return updateTopicWithResponse(topic).map(Response::getValue);
+    }
+
+    /**
+     * Updates a topic with the given {@link TopicDescription}. The {@link TopicDescription} must be fully populated as
+     * all of the properties are replaced. If a property is not set the service default value is used.
+     *
+     * The suggested flow is:
+     * <ol>
+     *     <li>{@link #getTopic(String) Get topic description.}</li>
+     *     <li>Update the required elements.</li>
+     *     <li>Pass the updated description into this method.</li>
+     * </ol>
+     *
+     * <p>
+     * There are a subset of properties that can be updated. They are:
+     * <ul>
+     * <li>{@link TopicDescription#setDefaultMessageTimeToLive(Duration) DefaultMessageTimeToLive}</li>
+     * <li>{@link TopicDescription#setDuplicateDetectionHistoryTimeWindow(Duration) DuplicateDetectionHistoryTimeWindow}
+     * </li>
+     * </ul>
+     *
+     * @param topic Information about the topic to update. You must provide all the property values that are desired
+     *     on the updated entity. Any values not provided are set to the service default values.
+     *
+     * @return A Mono that completes with information about the created topic.
+     * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
+     *     namespace.
+     * @throws HttpResponseException If the request body was invalid, the topic quota is exceeded, or an error
+     *     occurred processing the request.
+     * @throws IllegalArgumentException if {@link TopicDescription#getName() topic.getName()} is null or an empty
+     *     string.
+     * @throws NullPointerException if {@code topic} is null.
+     * @see <a href="https://docs.microsoft.com/rest/api/servicebus/update-entity">Create or Update Entity</a>
+     * @see <a href="https://docs.microsoft.com/rest/api/servicebus/update-topic">Update Topic</a>
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<TopicDescription>> updateTopicWithResponse(TopicDescription topic) {
+        return withContext(context -> updateTopicWithResponse(topic, context));
+    }
+
+    /**
      * Creates a queue with its context.
      *
      * @param queue Queue to create.
@@ -863,6 +1017,70 @@ public final class ServiceBusManagementAsyncClient {
                     return new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
                         response.getHeaders(), null);
                 });
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    /**
+     * Deletes a subscription with its context.
+     *
+     * @param topicName Name of topic associated with subscription to delete.
+     * @param subscriptionName Name of subscription to delete.
+     * @param context Context to pass into request.
+     *
+     * @return A Mono that completes with the created {@link SubscriptionDescription}.
+     */
+    Mono<Response<Void>> deleteSubscriptionWithResponse(String topicName, String subscriptionName, Context context) {
+        if (subscriptionName == null) {
+            return monoError(logger, new NullPointerException("'subscriptionName' cannot be null"));
+        } else if (subscriptionName.isEmpty()) {
+            return monoError(logger, new IllegalArgumentException("'subscriptionName' cannot be empty."));
+        } if (topicName == null) {
+            return monoError(logger, new NullPointerException("'topicName' cannot be null"));
+        } else if (topicName.isEmpty()) {
+            return monoError(logger, new IllegalArgumentException("'topicName' cannot be empty."));
+        } else if (context == null) {
+            return monoError(logger, new NullPointerException("'context' cannot be null."));
+        }
+
+        final Context withTracing = context.addData(AZ_TRACING_NAMESPACE_KEY, SERVICE_BUS_TRACING_NAMESPACE_VALUE);
+
+        try {
+            return managementClient.getSubscriptions().deleteWithResponseAsync(topicName, subscriptionName,
+                withTracing)
+                .onErrorMap(ServiceBusManagementAsyncClient::mapException)
+                .map(response -> new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
+                    response.getHeaders(), null));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    /**
+     * Deletes a topic with its context.
+     *
+     * @param topicName Name of topic to delete.
+     * @param context Context to pass into request.
+     *
+     * @return A Mono that completes with the created {@link TopicDescription}.
+     */
+    Mono<Response<Void>> deleteTopicWithResponse(String topicName, Context context) {
+        if (topicName == null) {
+            return monoError(logger, new NullPointerException("'topicName' cannot be null"));
+        } else if (topicName.isEmpty()) {
+            return monoError(logger, new IllegalArgumentException("'topicName' cannot be empty."));
+        } else if (context == null) {
+            return monoError(logger, new NullPointerException("'context' cannot be null."));
+        }
+
+        final Context withTracing = context.addData(AZ_TRACING_NAMESPACE_KEY, SERVICE_BUS_TRACING_NAMESPACE_VALUE);
+
+        try {
+            return entityClient.deleteWithResponseAsync(topicName, withTracing)
+                .onErrorMap(ServiceBusManagementAsyncClient::mapException)
+                .map(response -> new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
+                    response.getHeaders(), null));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -1101,6 +1319,41 @@ public final class ServiceBusManagementAsyncClient {
                 "*", withTracing)
                 .onErrorMap(ServiceBusManagementAsyncClient::mapException)
                 .map(response -> deserializeSubscription(topicName, response));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    /**
+     * Updates a topic with its context.
+     *
+     * @param topic Information about the topic to update. You must provide all the property values that are desired
+     *     on the updated entity. Any values not provided are set to the service default values.
+     * @param context Context to pass into request.
+     *
+     * @return A Mono that completes with the updated {@link TopicDescription}.
+     */
+    Mono<Response<TopicDescription>> updateTopicWithResponse(TopicDescription topic, Context context) {
+        if (topic == null) {
+            return monoError(logger, new NullPointerException("'topic' cannot be null"));
+        } else if (topic.getName() == null || topic.getName().isEmpty()) {
+            return monoError(logger, new IllegalArgumentException("'topic.getName' cannot be null or empty."));
+        } else if (context == null) {
+            return monoError(logger, new NullPointerException("'context' cannot be null."));
+        }
+
+        final CreateTopicBodyContent content = new CreateTopicBodyContent()
+            .setType(CONTENT_TYPE)
+            .setTopicDescription(topic);
+        final CreateTopicBody createEntity = new CreateTopicBody()
+            .setContent(content);
+        final Context withTracing = context.addData(AZ_TRACING_NAMESPACE_KEY, SERVICE_BUS_TRACING_NAMESPACE_VALUE);
+
+        try {
+            // If-Match == "*" to unconditionally update. This is in line with the existing client library behaviour.
+            return entityClient.putWithResponseAsync(topic.getName(), createEntity, "*", withTracing)
+                .onErrorMap(ServiceBusManagementAsyncClient::mapException)
+                .map(response -> deserializeTopic(response));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
