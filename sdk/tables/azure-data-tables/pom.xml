@@ -31,7 +31,7 @@ Licensed under the MIT License.
     <connection>scm:git:git@github.com:Azure/azure-sdk-for-java.git</connection>
     <tag>HEAD</tag>
   </scm>
-  
+
   <properties>
     <jacoco.skip.coverage.check>true</jacoco.skip.coverage.check>
   </properties>
