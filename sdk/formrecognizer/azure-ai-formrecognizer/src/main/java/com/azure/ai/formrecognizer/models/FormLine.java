@@ -12,7 +12,7 @@ import java.util.List;
  * The FormLine model.
  */
 @Immutable
-public final class FormLine extends FormContent {
+public final class FormLine extends FormElement {
 
     /*
      * List of words in the text line.
@@ -21,7 +21,7 @@ public final class FormLine extends FormContent {
 
     /**
      * Creates raw OCR item.
-     * When includeTextContent is set to true, a list of recognized text lines.
+     * When includeFieldElement is set to true, a list of recognized text lines.
      *
      * @param text The text content of recognized field.
      * @param boundingBox The BoundingBox of the recognized field.

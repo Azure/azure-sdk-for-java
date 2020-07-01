@@ -19,7 +19,7 @@ public final class FormField {
     /*
      * The label text of the field.
      */
-    private final FieldText labelText;
+    private final FieldData labelData;
 
     /*
      * The name value of the field.
@@ -34,24 +34,24 @@ public final class FormField {
     /*
      * The text value field..
      */
-    private final FieldText valueText;
+    private final FieldData valueData;
 
     /**
      * Constructs a FormField object.
      *
      * @param confidence The confidence of the recognized field.
-     * @param labelText The label text value for the field.
+     * @param labelData The label text value for the field.
      * @param name The name the field.
      * @param fieldValue The value of the field.
-     * @param valueText The label value text for the field.
+     * @param valueData The label value text for the field.
      */
-    public FormField(final float confidence, final FieldText labelText, final String name, final FieldValue fieldValue,
-        final FieldText valueText) {
+    public FormField(final float confidence, final FieldData labelData, final String name, final FieldValue fieldValue,
+        final FieldData valueData) {
         this.confidence = confidence;
-        this.labelText = labelText;
+        this.labelData = labelData;
         this.name = name;
         this.fieldValue = fieldValue;
-        this.valueText = valueText;
+        this.valueData = valueData;
     }
 
     /**
@@ -68,8 +68,8 @@ public final class FormField {
      *
      * @return the text-label value.
      */
-    public FieldText getLabelText() {
-        return this.labelText;
+    public FieldData getLabelData() {
+        return this.labelData;
     }
 
     /**
@@ -95,7 +95,7 @@ public final class FormField {
      *
      * @return the value text of the field.
      */
-    public FieldText getValueText() {
-        return this.valueText;
+    public FieldData getValueData() {
+        return this.valueData;
     }
 }

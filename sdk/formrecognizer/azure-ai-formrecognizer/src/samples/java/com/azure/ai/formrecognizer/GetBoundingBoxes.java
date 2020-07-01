@@ -36,7 +36,7 @@ public class GetBoundingBoxes {
         String filePath = "{analyze_file_path}";
         SyncPoller<OperationResult, List<RecognizedForm>> recognizeFormPoller =
             client.beginRecognizeCustomForms(new RecognizeCustomFormsOptions(filePath, modelId)
-                .setIncludeTextContent(true));
+                .setIncludeFieldElement(true));
 
         List<RecognizedForm> recognizedForms = recognizeFormPoller.getFinalResult();
 
@@ -50,7 +50,7 @@ public class GetBoundingBoxes {
             recognizedForm.getFields().forEach((fieldText, fieldValue) -> System.out.printf("Field %s has value %s "
                     + "based on %s with a confidence score "
                     + "of %.2f.%n",
-                fieldText, fieldValue.getFieldValue(), fieldValue.getValueText().getText(),
+                fieldText, fieldValue.getFieldValue(), fieldValue.getValueData().getText(),
                 fieldValue.getConfidence()));
 
             // Page Information
@@ -72,7 +72,7 @@ public class GetBoundingBoxes {
                         // call to beginRecognizeCustomFormsFromUrl
                         // It is also a list of FormWords and FormLines, but in this example, we only deal with
                         // FormWords
-                        formTableCell.getTextContent().forEach(formContent -> {
+                        formTableCell.getFieldElements().forEach(formContent -> {
                             if (formContent instanceof FormWord) {
                                 FormWord formWordElement = (FormWord) (formContent);
                                 StringBuilder boundingBoxStr = new StringBuilder();

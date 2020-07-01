@@ -19,7 +19,7 @@ public class RecognizeOptions {
     private final long length;
     private final String formUrl;
     private FormContentType formContentType;
-    private boolean includeTextContent;
+    private boolean includeFieldElement;
     private Duration pollInterval = DEFAULT_POLL_INTERVAL;
     private static final Duration DEFAULT_POLL_INTERVAL = Duration.ofSeconds(5);
 
@@ -71,12 +71,12 @@ public class RecognizeOptions {
     }
 
     /**
-     * Get the boolean which specifies if to include text lines and element references in the result.
+     * Get the boolean which specifies if to include form element references in the result.
      *
-     * @return the {@code isIncludeTextContent} value.
+     * @return the {@code includeFieldElement} value.
      */
-    public boolean isIncludeTextContent() {
-        return includeTextContent;
+    public boolean isIncludeFieldElement() {
+        return includeFieldElement;
     }
 
     /**
@@ -139,14 +139,14 @@ public class RecognizeOptions {
     }
 
     /**
-     * Set the boolean which specifies if to include text lines and element references in the result.
+     * Set the boolean which specifies if to include form element references in the result.
      *
-     * @param includeTextContent the boolean to specify if to include text and line references in the result.
+     * @param includeFieldElement the boolean to specify if to include form element references in the result.
      *
      * @return the updated {@code RecognizeOptions} value.
      */
-    public RecognizeOptions setIncludeTextContent(final boolean includeTextContent) {
-        this.includeTextContent = includeTextContent;
+    public RecognizeOptions setIncludeFieldElement(final boolean includeFieldElement) {
+        this.includeFieldElement = includeFieldElement;
         return this;
     }
 

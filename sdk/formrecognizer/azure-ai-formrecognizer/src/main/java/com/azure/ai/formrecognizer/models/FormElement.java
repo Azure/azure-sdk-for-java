@@ -6,10 +6,10 @@ package com.azure.ai.formrecognizer.models;
 import com.azure.core.annotation.Immutable;
 
 /**
- * The FormContent model.
+ * The FormElement model.
  */
 @Immutable
-public abstract class FormContent {
+public abstract class FormElement {
 
     /*
      * Text content of the extracted element.
@@ -33,7 +33,7 @@ public abstract class FormContent {
      * @param boundingBox The BoundingBox specifying relative coordinates of the element.
      * @param pageNumber the 1 based page number.
      */
-    FormContent(final String text, final BoundingBox boundingBox, final Integer pageNumber) {
+    FormElement(final String text, final BoundingBox boundingBox, final Integer pageNumber) {
         this.text = text;
         this.boundingBox = boundingBox;
         this.pageNumber = pageNumber;

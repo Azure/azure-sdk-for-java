@@ -16,7 +16,7 @@ import com.azure.ai.formrecognizer.implementation.models.ReadResult;
 import com.azure.ai.formrecognizer.implementation.models.TextLine;
 import com.azure.ai.formrecognizer.implementation.models.TextWord;
 import com.azure.ai.formrecognizer.models.BoundingBox;
-import com.azure.ai.formrecognizer.models.FormContent;
+import com.azure.ai.formrecognizer.models.FormElement;
 import com.azure.ai.formrecognizer.models.FormField;
 import com.azure.ai.formrecognizer.models.FormLine;
 import com.azure.ai.formrecognizer.models.FormPage;
@@ -148,10 +148,10 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
     }
 
     private static void validateReferenceElementsData(List<String> expectedElements,
-        List<FormContent> actualFormContentList, List<ReadResult> readResults) {
-        if (expectedElements != null && actualFormContentList != null) {
-            assertEquals(expectedElements.size(), actualFormContentList.size());
-            for (int i = 0; i < actualFormContentList.size(); i++) {
+        List<FormElement> actualFormElementList, List<ReadResult> readResults) {
+        if (expectedElements != null && actualFormElementList != null) {
+            assertEquals(expectedElements.size(), actualFormElementList.size());
+            for (int i = 0; i < actualFormElementList.size(); i++) {
                 String[] indices = NON_DIGIT_PATTERN.matcher(expectedElements.get(i)).replaceAll(" ").trim().split(" ");
 
                 if (indices.length < 2) {
@@ -166,11 +166,11 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
                         readResults.get(readResultIndex).getLines().get(lineIndex).getWords().get(wordIndex);
                     TextLine expectedTextLine = readResults.get(readResultIndex).getLines().get(lineIndex);
 
-                    if (actualFormContentList.get(i) instanceof FormLine) {
-                        FormLine actualFormLine = (FormLine) actualFormContentList.get(i);
+                    if (actualFormElementList.get(i) instanceof FormLine) {
+                        FormLine actualFormLine = (FormLine) actualFormElementList.get(i);
                         validateFormWordData(expectedTextLine.getWords(), actualFormLine.getFormWords());
                     }
-                    FormWord actualFormContent = (FormWord) actualFormContentList.get(i);
+                    FormWord actualFormContent = (FormWord) actualFormElementList.get(i);
                     assertEquals(expectedTextWord.getText(), actualFormContent.getText());
                     if (expectedTextWord.getConfidence() != null) {
                         assertEquals(expectedTextWord.getConfidence(), actualFormContent.getConfidence());
@@ -208,7 +208,7 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
             assertEquals(expectedTableCell.getRowSpan(), actualTableCell.getRowSpan());
             validateBoundingBoxData(expectedTableCell.getBoundingBox(), actualTableCell.getBoundingBox());
             if (includeTextContent) {
-                validateReferenceElementsData(expectedTableCell.getElements(), actualTableCell.getTextContent(),
+                validateReferenceElementsData(expectedTableCell.getElements(), actualTableCell.getFieldElements(),
                     readResults);
             }
         }
@@ -258,11 +258,11 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
         if (expectedFieldValue != null) {
             if (expectedFieldValue.getBoundingBox() != null) {
                 validateBoundingBoxData(expectedFieldValue.getBoundingBox(),
-                    actualFormField.getValueText().getBoundingBox());
+                    actualFormField.getValueData().getBoundingBox());
             }
             if (includeTextContent && expectedFieldValue.getElements() != null) {
                 validateReferenceElementsData(expectedFieldValue.getElements(),
-                    actualFormField.getValueText().getTextContent(), readResults);
+                    actualFormField.getValueData().getFieldElements(), readResults);
             }
             switch (expectedFieldValue.getType()) {
                 case NUMBER:
@@ -699,18 +699,18 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
             final KeyValuePair expectedFormField = expectedPage.getKeyValuePairs().get(i);
             final FormField actualFormField = actualForm.getFields().get("field-" + i);
             assertEquals(expectedFormField.getConfidence(), actualFormField.getConfidence());
-            assertEquals(expectedFormField.getKey().getText(), actualFormField.getLabelText().getText());
+            assertEquals(expectedFormField.getKey().getText(), actualFormField.getLabelData().getText());
             validateBoundingBoxData(expectedFormField.getKey().getBoundingBox(),
-                actualFormField.getLabelText().getBoundingBox());
+                actualFormField.getLabelData().getBoundingBox());
             if (includeTextContent) {
                 validateReferenceElementsData(expectedFormField.getKey().getElements(),
-                    actualFormField.getLabelText().getTextContent(), readResults);
+                    actualFormField.getLabelData().getFieldElements(), readResults);
                 validateReferenceElementsData(expectedFormField.getValue().getElements(),
-                    actualFormField.getValueText().getTextContent(), readResults);
+                    actualFormField.getValueData().getFieldElements(), readResults);
             }
-            assertEquals(expectedFormField.getValue().getText(), actualFormField.getValueText().getText());
+            assertEquals(expectedFormField.getValue().getText(), actualFormField.getValueData().getText());
             validateBoundingBoxData(expectedFormField.getValue().getBoundingBox(),
-                actualFormField.getValueText().getBoundingBox());
+                actualFormField.getValueData().getBoundingBox());
         }
     }
 
@@ -742,8 +742,8 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
             recognizedForm.getFields().forEach((label, formField) -> {
                 assertNotNull(formField.getName());
                 assertNotNull(formField.getFieldValue());
-                assertNotNull(formField.getValueText().getText());
-                assertNotNull(formField.getLabelText().getText());
+                assertNotNull(formField.getValueData().getText());
+                assertNotNull(formField.getLabelData().getText());
             });
         });
     }
@@ -755,8 +755,8 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
             recognizedForm.getFields().forEach((label, formField) -> {
                 assertNotNull(formField.getName());
                 assertNotNull(formField.getFieldValue());
-                assertNotNull(formField.getValueText().getText());
-                assertNotNull(formField.getLabelText().getText());
+                assertNotNull(formField.getValueData().getText());
+                assertNotNull(formField.getLabelData().getText());
             });
         });
     }

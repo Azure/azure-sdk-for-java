@@ -9,28 +9,28 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * The FieldText model.
+ * The FieldData model.
  */
 @Immutable
-public final class FieldText extends FormContent {
+public final class FieldData extends FormElement {
 
     /**
-     * The list of text element references for the field value.
+     * The list of element references for the field value.
      */
-    private final List<FormContent> textContent;
+    private final List<FormElement> fieldElements;
 
     /**
-     * Creates raw OCR FieldText item.
+     * Creates raw OCR FieldData item.
      *
      * @param text The text content of ExtractedField.
      * @param boundingBox The BoundingBox of ExtractedField.
      * @param pageNumber the 1 based page number.
-     * @param textContent The list of text element references when includeTextContent is set to true.
+     * @param fieldElements The list of element references when includeFieldElement is set to true.
      */
-    public FieldText(String text, BoundingBox boundingBox, Integer pageNumber,
-                     final List<FormContent> textContent) {
+    public FieldData(String text, BoundingBox boundingBox, Integer pageNumber,
+                     final List<FormElement> fieldElements) {
         super(text, boundingBox, pageNumber);
-        this.textContent = textContent == null ? null : Collections.unmodifiableList(textContent);
+        this.fieldElements = fieldElements == null ? null : Collections.unmodifiableList(fieldElements);
     }
 
     /**
@@ -58,12 +58,12 @@ public final class FieldText extends FormContent {
     }
 
     /**
-     * When `includeTextContent` is set to true, gets a list of reference text elements constituting
-     * this {@code FieldText}.
+     * When `includeFieldElement` is set to true, gets a list of reference elements constituting
+     * this {@code FieldData}.
      *
-     * @return The unmodifiable list of reference elements constituting this {@code FieldText}.
+     * @return The unmodifiable list of reference elements constituting this {@code FieldData}.
      */
-    public List<FormContent> getTextContent() {
-        return this.textContent;
+    public List<FormElement> getFieldElements() {
+        return this.fieldElements;
     }
 }
