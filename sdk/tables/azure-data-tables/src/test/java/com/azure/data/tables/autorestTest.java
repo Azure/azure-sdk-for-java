@@ -23,10 +23,7 @@ import org.junit.jupiter.api.Test;
 import reactor.test.StepVerifier;
 
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 public class autorestTest {
 
@@ -77,7 +74,7 @@ public class autorestTest {
 
 
     @Test
-    void fromConnie () {
+    AzureTableImpl auth () {
         final String connectionString = System.getenv("azure_tables_connection_string");
 
         StorageConnectionString storageConnectionString
@@ -102,21 +99,40 @@ public class autorestTest {
             .version("2019-02-02")
             .url("https://telboytrial.table.core.windows.net")
             .buildClient();
-        TableProperties tableProperties = new TableProperties().setTableName("ebTable6");
+        return azureTable;
+    }
+
+    @Test
+    void createTable(String tableName) {
+
+        AzureTableImpl azureTable = auth();
+
+        TableProperties tableProperties = new TableProperties().setTableName(tableName);
         QueryOptions queryOptions = new QueryOptions();
         String requestId = UUID.randomUUID().toString();
 
 
-//        StepVerifier.create(azureTable.getTables().createWithResponseAsync(tableProperties, requestId,
-//            ResponseFormat.RETURN_CONTENT, queryOptions, Context.NONE))
-//            .assertNext(response -> {
-//                System.out.println(response);
-//                Assertions.assertEquals(201, response.getStatusCode());
-//            })
-//            .expectComplete()
-//            .verify();
+        StepVerifier.create(azureTable.getTables().createWithResponseAsync(tableProperties, requestId,
+            ResponseFormat.RETURN_CONTENT, queryOptions, Context.NONE))
+            .assertNext(response -> {
+                System.out.println(response);
+                Assertions.assertEquals(201, response.getStatusCode());
+            })
+            .expectComplete()
+            .verify();
 
-        StepVerifier.create(azureTable.getTables().deleteWithResponseAsync("ebTableSeven", requestId,
+    }
+
+
+    // tests deleting a table
+    @Test
+    void deleteTable(String tableName) {
+
+        AzureTableImpl azureTable = auth();
+        String requestId = UUID.randomUUID().toString();
+
+
+        StepVerifier.create(azureTable.getTables().deleteWithResponseAsync(tableName, requestId,
             Context.NONE))
             .assertNext(response -> {
                 System.out.println(response);
@@ -124,6 +140,53 @@ public class autorestTest {
             })
             .expectComplete()
             .verify();
+
+    }
+
+    @Test
+    void queryTable(String tableName){
+        AzureTableImpl azureTable = auth();
+        String requestId = UUID.randomUUID().toString();
+        QueryOptions queryOptions = new QueryOptions();
+        queryOptions.setTop(2);
+
+        StepVerifier.create(azureTable.getTables().queryWithResponseAsync(requestId, tableName,
+            queryOptions, Context.NONE))
+            .assertNext(response -> {
+                System.out.println(response);
+                Assertions.assertEquals(204, response.getStatusCode());
+            })
+            .expectComplete()
+            .verify();
+    }
+
+    @Test
+    void insertEntity(String tableName){
+        AzureTableImpl azureTable = auth();
+        String requestId = UUID.randomUUID().toString();
+
+        Map<String, Object> properties = new HashMap<>();
+        properties.put("PartitionKey", "pk");
+        properties.put("RowKey", "rk");
+
+        StepVerifier.create(azureTable.getTables().insertEntityWithResponseAsync(tableName, 500,
+            requestId, ResponseFormat.RETURN_CONTENT, properties, null, Context.NONE))
+            .assertNext(response -> {
+                System.out.println(response);
+                Assertions.assertEquals(204, response.getStatusCode());
+            })
+            .expectComplete()
+            .verify();
+    }
+
+    @Test
+    void allTests() {
+        String tableName = "testTable2";
+        //deleteTable(tableName);
+        //createTable(tableName);
+        //insertEntity(tableName);
+        queryTable(tableName);
+        //deleteTable(tableName);
 
     }
 
