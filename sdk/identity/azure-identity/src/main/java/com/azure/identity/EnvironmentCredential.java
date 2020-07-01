@@ -76,16 +76,16 @@ public class EnvironmentCredential implements TokenCredential {
                         null, identityClientOptions);
                 } else {
                     // 1.3 Log error if neither is found
-                    logger.error("Azure Identity => ERROR in EnvironmentCredential: Failed to create a " +
-                        "ClientSecretCredential or ClientCertificateCredential. Missing required environment " +
-                        "variable either {} or {}", Configuration.PROPERTY_AZURE_CLIENT_SECRET,
+                    logger.error("Azure Identity => ERROR in EnvironmentCredential: Failed to create a "
+                        + "ClientSecretCredential or ClientCertificateCredential. Missing required environment "
+                        + "variable either {} or {}", Configuration.PROPERTY_AZURE_CLIENT_SECRET,
                         Configuration.PROPERTY_AZURE_CLIENT_CERTIFICATE_PATH);
                 }
             } else if (verifyNotNull(clientSecret) || verifyNotNull(certPath)) {
                 // 1.4 Log error if secret / cert is found but tenant is missing
-                logger.error("Azure Identity => ERROR in EnvironmentCredential: Failed to create a " +
-                        "ClientSecretCredential or ClientCertificateCredential. Missing required environment " +
-                        "variable {}", Configuration.PROPERTY_AZURE_TENANT_ID);
+                logger.error("Azure Identity => ERROR in EnvironmentCredential: Failed to create a "
+                        + "ClientSecretCredential or ClientCertificateCredential. Missing required environment "
+                        + "variable {}", Configuration.PROPERTY_AZURE_TENANT_ID);
             }
 
             // 2 - Attempt UsernamePasswordCredential (tenant not required)
@@ -96,20 +96,20 @@ public class EnvironmentCredential implements TokenCredential {
                     identityClientOptions);
             } else if (verifyNotNull(username) ^ verifyNotNull(password)) {
                 // 2.2 - only one is found, likely missing the other
-                logger.error("Azure Identity => ERROR in EnvironmentCredential: Failed to create a " +
-                    "UsernamePasswordCredential. Missing required environment variable {}",
+                logger.error("Azure Identity => ERROR in EnvironmentCredential: Failed to create a "
+                    + "UsernamePasswordCredential. Missing required environment variable {}",
                     username == null ? Configuration.PROPERTY_AZURE_USERNAME : Configuration.PROPERTY_AZURE_PASSWORD);
             }
 
             // 3 - cannot determine scenario based on clientId alone
             if (targetCredential == null) {
-                String msg = String.format("Azure Identity => ERROR in EnvironmentCredential: Failed to determine " +
-                    "an authentication scheme based on the available environment variables. Please specify %1$s and " +
-                    "%2$s to authenticate through a ClientSecretCredential; %1$s and %3$s to authenticate through a " +
-                    "ClientCertificateCredential; or %4$s and %5$s to authenticate through a UserPasswordCredential.",
-                    Configuration.PROPERTY_AZURE_TENANT_ID, Configuration.PROPERTY_AZURE_CLIENT_SECRET,
-                    Configuration.PROPERTY_AZURE_CLIENT_CERTIFICATE_PATH, Configuration.PROPERTY_AZURE_USERNAME,
-                    Configuration.PROPERTY_AZURE_PASSWORD);
+                String msg = String.format("Azure Identity => ERROR in EnvironmentCredential: Failed to determine an "
+                    + "authentication scheme based on the available environment variables. Please specify %1$s and "
+                    + "%2$s to authenticate through a ClientSecretCredential; %1$s and %3$s to authenticate through a "
+                    + "ClientCertificateCredential; or %4$s and %5$s to authenticate through a "
+                    + "UserPasswordCredential.", Configuration.PROPERTY_AZURE_TENANT_ID,
+                    Configuration.PROPERTY_AZURE_CLIENT_SECRET, Configuration.PROPERTY_AZURE_CLIENT_CERTIFICATE_PATH,
+                    Configuration.PROPERTY_AZURE_USERNAME, Configuration.PROPERTY_AZURE_PASSWORD);
                 logger.error(msg);
             }
         } else {
