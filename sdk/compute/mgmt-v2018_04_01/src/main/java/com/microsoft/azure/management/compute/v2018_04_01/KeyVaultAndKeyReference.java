@@ -28,7 +28,7 @@ public class KeyVaultAndKeyReference {
     private String keyUrl;
 
     /**
-     * Get the sourceVault value.
+     * Get resource id of the KeyVault containing the key or secret.
      *
      * @return the sourceVault value
      */
@@ -37,7 +37,7 @@ public class KeyVaultAndKeyReference {
     }
 
     /**
-     * Set the sourceVault value.
+     * Set resource id of the KeyVault containing the key or secret.
      *
      * @param sourceVault the sourceVault value to set
      * @return the KeyVaultAndKeyReference object itself.
@@ -48,7 +48,7 @@ public class KeyVaultAndKeyReference {
     }
 
     /**
-     * Get the keyUrl value.
+     * Get url pointing to a key or secret in KeyVault.
      *
      * @return the keyUrl value
      */
@@ -57,7 +57,7 @@ public class KeyVaultAndKeyReference {
     }
 
     /**
-     * Set the keyUrl value.
+     * Set url pointing to a key or secret in KeyVault.
      *
      * @param keyUrl the keyUrl value to set
      * @return the KeyVaultAndKeyReference object itself.
