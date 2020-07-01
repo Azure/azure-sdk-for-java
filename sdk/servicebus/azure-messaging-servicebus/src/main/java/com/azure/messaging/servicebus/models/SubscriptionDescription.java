@@ -223,15 +223,20 @@ public final class SubscriptionDescription {
      *
      * @param topicName Name of the topic associated with this subscription.
      * @param subscriptionName Name of the subscription.
-     * @throws IllegalArgumentException if {@code topicName} or {@code subscriptionName} are null or empty strings.
+     * @throws NullPointerException if {@code topicName} or {@code subscriptionName} are null.
+     * @throws IllegalArgumentException if {@code topicName} or {@code subscriptionName} are empty strings.
      */
     public SubscriptionDescription(String topicName, String subscriptionName) {
         final ClientLogger logger = new ClientLogger(SubscriptionDescription.class);
-        if (topicName == null || topicName.isEmpty()) {
-            throw logger.logThrowableAsError(new IllegalArgumentException("'topicName' cannot be null or empty."));
-        } else if (subscriptionName == null || subscriptionName.isEmpty()) {
-            throw logger.logThrowableAsError(new IllegalArgumentException(
-                "'subscriptionName' cannot be null or empty."));
+        if (topicName == null) {
+            throw logger.logExceptionAsError(new NullPointerException("'topicName' cannot be null."));
+        } else if (topicName.isEmpty()) {
+            throw logger.logExceptionAsError(new IllegalArgumentException("'topicName' cannot be an empty string."));
+        } else if (subscriptionName == null) {
+            throw logger.logExceptionAsError(new NullPointerException("'subscriptionName' cannot be null."));
+        } else if (subscriptionName.isEmpty()) {
+            throw logger.logExceptionAsError(
+                new IllegalArgumentException("'subscriptionName' cannot be an empty string."));
         }
 
         this.topicName = topicName;

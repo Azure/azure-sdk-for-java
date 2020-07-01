@@ -253,12 +253,15 @@ public final class TopicDescription {
      * </ul>
      *
      * @param topicName Name of the topic.
-     * @throws IllegalArgumentException if {@code topicName} is a null or empty string.
+     * @throws NullPointerException if {@code topicName} is null.
+     * @throws IllegalArgumentException if {@code topicName} is an empty string.
      */
     public TopicDescription(String topicName) {
-        if (topicName == null || topicName.isEmpty()) {
-            throw new ClientLogger(TopicDescription.class).logThrowableAsError(
-                new IllegalArgumentException("'topicName' cannot be null or an empty string."));
+        final ClientLogger logger = new ClientLogger(TopicDescription.class);
+        if (topicName == null) {
+            throw logger.logExceptionAsError(new NullPointerException("'topicName' cannot be null."));
+        } else if (topicName.isEmpty()) {
+            throw logger.logExceptionAsError(new IllegalArgumentException("'topicName' cannot be an empty string."));
         }
 
         this.topicName = topicName;

@@ -295,12 +295,15 @@ public final class QueueDescription {
      * </ul>
      *
      * @param queueName Name of the queue.
-     * @throws IllegalArgumentException if {@code queueName} is a null or empty string.
+     * @throws NullPointerException if {@code queueName} is a null.
+     * @throws IllegalArgumentException if {@code queueName} is an empty string.
      */
     public QueueDescription(String queueName) {
-        if (queueName == null || queueName.isEmpty()) {
-            throw new ClientLogger(QueueDescription.class).logThrowableAsError(
-                new IllegalArgumentException("'queueName' cannot be null or an empty string."));
+        final ClientLogger logger = new ClientLogger(QueueDescription.class);
+        if (queueName == null) {
+            throw logger.logExceptionAsError(new NullPointerException("'queueName' cannot be null."));
+        } else if (queueName.isEmpty()) {
+            throw logger.logExceptionAsError(new IllegalArgumentException("'queueName' cannot be an empty string."));
         }
 
         this.queueName = queueName;
