@@ -182,11 +182,11 @@ class ServiceBusSenderAsyncClientIntegrationTest extends IntegrationTestBase {
             .verifyComplete();
         assertNotNull(transaction.get());
 
-        StepVerifier.create(intermediateSender.send(messages, transaction.get()))
+        StepVerifier.create(intermediateSender.sendMessages(messages, transaction.get()))
             .verifyComplete();
-        StepVerifier.create(destination1ViaSender.send(messages, transaction.get()))
+        StepVerifier.create(destination1ViaSender.sendMessages(messages, transaction.get()))
             .verifyComplete();
-        StepVerifier.create(destination1ViaSender.send(messages, transaction.get()))
+        StepVerifier.create(destination1ViaSender.sendMessages(messages, transaction.get()))
             .verifyComplete();
 
         StepVerifier.create(destination1ViaSender.commitTransaction(transaction.get()).delaySubscription(Duration.ofSeconds(1)))
@@ -194,7 +194,7 @@ class ServiceBusSenderAsyncClientIntegrationTest extends IntegrationTestBase {
 
         // Assert
         // Verify message is received by final destination Entity
-        StepVerifier.create(destination1Receiver.receive().take(totalToDestination).timeout(shortTimeout))
+        StepVerifier.create(destination1Receiver.receiveMessages().take(totalToDestination).timeout(shortTimeout))
             .assertNext(receivedMessage -> {
                 assertMessageEquals(receivedMessage, messageId, isSessionEnabled);
                 messagesPending.decrementAndGet();
@@ -206,7 +206,7 @@ class ServiceBusSenderAsyncClientIntegrationTest extends IntegrationTestBase {
             .verifyComplete();
 
         // Verify, intermediate-via queue has is delivered to intermediate Entity.
-        StepVerifier.create(intermediateReceiver.receive().take(total).timeout(shortTimeout))
+        StepVerifier.create(intermediateReceiver.receiveMessages().take(total).timeout(shortTimeout))
             .assertNext(receivedMessage -> {
                 assertMessageEquals(receivedMessage, messageId, isSessionEnabled);
                 messagesPending.decrementAndGet();
