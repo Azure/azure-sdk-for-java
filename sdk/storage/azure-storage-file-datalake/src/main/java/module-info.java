@@ -8,6 +8,7 @@ module com.azure.storage.file.datalake {
     exports com.azure.storage.file.datalake.models;
     exports com.azure.storage.file.datalake.sas;
     exports com.azure.storage.file.datalake.specialized;
+    exports com.azure.storage.file.datalake.options;
 
     exports com.azure.storage.file.datalake.implementation.models to
         com.fasterxml.jackson.databind,
