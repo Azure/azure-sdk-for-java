@@ -92,10 +92,7 @@ public class EnvironmentCredential implements TokenCredential {
             if (targetCredential == null && verifyNotNull(username, password)) {
                 // 2.1 - both username and password found
                 logger.info("Azure Identity => EnvironmentCredential invoking UsernamePasswordCredential");
-                targetCredential = new UsernamePasswordCredential(clientId,
-                    tenantId,
-                    username,
-                    password,
+                targetCredential = new UsernamePasswordCredential(clientId, tenantId, username, password,
                     identityClientOptions);
             } else if (verifyNotNull(username) ^ verifyNotNull(password)) {
                 // 2.2 - only one is found, likely missing the other
