@@ -113,7 +113,8 @@ public final class ServiceBusManagementAsyncClient {
      *     namespace.
      * @throws HttpResponseException If the request body was invalid, the queue quota is exceeded, or an error
      *     occurred processing the request.
-     * @throws IllegalArgumentException if {@code queueName} is null or an empty string.
+     * @throws NullPointerException if {@code queueName} is null.
+     * @throws IllegalArgumentException if {@code queueName} is an empty string.
      * @throws ResourceExistsException if a queue exists with the same {@code queueName}.
      * @see <a href="https://docs.microsoft.com/rest/api/servicebus/update-entity">Create or Update Entity</a>
      */
@@ -734,7 +735,7 @@ public final class ServiceBusManagementAsyncClient {
      * @param queue Information about the queue to update. You must provide all the property values that are desired
      *     on the updated entity. Any values not provided are set to the service default values.
      *
-     * @return A Mono that completes with information about the created queue.
+     * @return A Mono that completes with the updated queue.
      * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
      *     namespace.
      * @throws HttpResponseException If the request body was invalid, the queue quota is exceeded, or an error
@@ -813,7 +814,7 @@ public final class ServiceBusManagementAsyncClient {
      * @param subscription Information about the subscription to update. You must provide all the property values
      *     that are desired on the updated entity. Any values not provided are set to the service default values.
      *
-     * @return A Mono that returns the updated subscription in addition to the HTTP response.
+     * @return A Mono that returns the updated subscription.
      * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
      *     namespace.
      * @throws HttpResponseException If the request body was invalid, the subscription quota is exceeded, or an
@@ -890,7 +891,7 @@ public final class ServiceBusManagementAsyncClient {
      * @param topic Information about the topic to update. You must provide all the property values that are desired
      *     on the updated entity. Any values not provided are set to the service default values.
      *
-     * @return A Mono that completes with information about the created topic.
+     * @return A Mono that completes with the updated topic.
      * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
      *     namespace.
      * @throws HttpResponseException If the request body was invalid, the topic quota is exceeded, or an error
@@ -928,7 +929,7 @@ public final class ServiceBusManagementAsyncClient {
      * @param topic Information about the topic to update. You must provide all the property values that are desired
      *     on the updated entity. Any values not provided are set to the service default values.
      *
-     * @return A Mono that completes with information about the created topic.
+     * @return A Mono that completes with the updated topic and its HTTP response.
      * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
      *     namespace.
      * @throws HttpResponseException If the request body was invalid, the topic quota is exceeded, or an error

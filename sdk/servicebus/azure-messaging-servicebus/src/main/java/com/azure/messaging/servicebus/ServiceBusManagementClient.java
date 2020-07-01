@@ -16,6 +16,10 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.messaging.servicebus.models.QueueDescription;
 import com.azure.messaging.servicebus.models.QueueRuntimeInfo;
+import com.azure.messaging.servicebus.models.SubscriptionDescription;
+import com.azure.messaging.servicebus.models.SubscriptionRuntimeInfo;
+import com.azure.messaging.servicebus.models.TopicDescription;
+import com.azure.messaging.servicebus.models.TopicRuntimeInfo;
 
 import java.time.Duration;
 import java.util.Objects;
@@ -37,6 +41,26 @@ public final class ServiceBusManagementClient {
      */
     ServiceBusManagementClient(ServiceBusManagementAsyncClient asyncClient) {
         this.asyncClient = Objects.requireNonNull(asyncClient, "'asyncClient' cannot be null.");
+    }
+
+    /**
+     * Creates a queue with the given name.
+     *
+     * @param queueName Name of the queue to create.
+     *
+     * @return The created queue.
+     * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
+     *     namespace.
+     * @throws HttpResponseException If the request body was invalid, the queue quota is exceeded, or an error
+     *     occurred processing the request.
+     * @throws NullPointerException if {@code queueName} is null.
+     * @throws IllegalArgumentException if {@code queueName} is an empty string.
+     * @throws ResourceExistsException if a queue exists with the same {@code queueName}.
+     * @see <a href="https://docs.microsoft.com/rest/api/servicebus/update-entity">Create or Update Entity</a>
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public QueueDescription createQueue(String queueName) {
+        return asyncClient.createQueue(queueName).block();
     }
 
     /**
@@ -85,6 +109,130 @@ public final class ServiceBusManagementClient {
     }
 
     /**
+     * Creates a subscription with the given topic and subscription names.
+     *
+     * @param topicName Name of the topic associated with subscription.
+     * @param subscriptionName Name of the subscription.
+     *
+     * @return Information about the created subscription.
+     * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
+     *     namespace.
+     * @throws HttpResponseException If the request body was invalid, the quota is exceeded, or an error occurred
+     *     processing the request.
+     * @throws IllegalArgumentException if {@code topicName} or {@code subscriptionName} are null or are empty strings.
+     * @throws ResourceExistsException if a subscription exists with the same topic and subscription name.
+     * @see <a href="https://docs.microsoft.com/rest/api/servicebus/update-entity">Create or Update Entity</a>
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SubscriptionDescription createSubscription(String topicName, String subscriptionName) {
+        return asyncClient.createSubscription(topicName, subscriptionName).block();
+    }
+
+    /**
+     * Creates a subscription with the {@link SubscriptionDescription}.
+     *
+     * @param subscription Information about the subscription to create.
+     *
+     * @return Information about the created subscription.
+     * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
+     *     namespace.
+     * @throws HttpResponseException If the request body was invalid, the quota is exceeded, or an error occurred
+     *     processing the request.
+     * @throws NullPointerException if {@code subscription} is null.
+     * @throws ResourceExistsException if a subscription exists with the same topic and subscription name.
+     * @see <a href="https://docs.microsoft.com/rest/api/servicebus/update-entity">Create or Update Entity</a>
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SubscriptionDescription createSubscription(SubscriptionDescription subscription) {
+        return asyncClient.createSubscription(subscription).block();
+    }
+
+    /**
+     * Creates a queue and returns the created queue in addition to the HTTP response.
+     *
+     * @param subscription Information about the subscription to create.
+     * @param context Additional context that is passed through the HTTP pipeline during the service call.
+     *
+     * @return The created queue in addition to the HTTP response.
+     * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
+     *     namespace.
+     * @throws HttpResponseException If the request body was invalid, the quota is exceeded, or an error occurred
+     *     processing the request.
+     * @throws NullPointerException if {@code subscription} is null.
+     * @throws ResourceExistsException if a subscription exists with the same topic and subscription name.
+     * @see <a href="https://docs.microsoft.com/rest/api/servicebus/update-entity">Create or Update Entity</a>
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<SubscriptionDescription> createSubscriptionWithResponse(SubscriptionDescription subscription,
+        Context context) {
+        return asyncClient.createSubscriptionWithResponse(subscription, context).block();
+    }
+
+    /**
+     * Creates a topic with the given name.
+     *
+     * @param topicName Name of the topic to create.
+     *
+     * @return Information about the created topic.
+     * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
+     *     namespace.
+     * @throws HttpResponseException If the request body was invalid, the topic quota is exceeded, or an error
+     *     occurred processing the request.
+     * @throws IllegalArgumentException if {@code topicName} is null or an empty string.
+     * @throws ResourceExistsException if a topic exists with the same {@code topicName}.
+     * @see <a href="https://docs.microsoft.com/rest/api/servicebus/update-entity">Create or Update Entity</a>
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public TopicDescription createTopic(String topicName) {
+        return asyncClient.createTopic(topicName).block();
+    }
+
+    /**
+     * Creates a topic with the {@link TopicDescription}.
+     *
+     * @param topic Information about the topic to create.
+     *
+     * @return Information about the created topic.
+     * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
+     *     namespace.
+     * @throws HttpResponseException If the request body was invalid, the topic quota is exceeded, or an error
+     *     occurred processing the request.
+     * @throws IllegalArgumentException if {@link TopicDescription#getName() topic.getName()} is null or an empty
+     *     string.
+     * @throws NullPointerException if {@code topic} is null.
+     * @throws ResourceExistsException if a topic exists with the same {@link TopicDescription#getName()
+     *     topicName}.
+     * @see <a href="https://docs.microsoft.com/rest/api/servicebus/update-entity">Create or Update Entity</a>
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public TopicDescription createTopic(TopicDescription topic) {
+        return asyncClient.createTopic(topic).block();
+    }
+
+    /**
+     * Creates a topic and returns the created topic in addition to the HTTP response.
+     *
+     * @param topic The topic to create.
+     * @param context Additional context that is passed through the HTTP pipeline during the service call.
+     *
+     * @return The created topic in addition to the HTTP response.
+     * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
+     *     namespace.
+     * @throws HttpResponseException If the request body was invalid, the topic quota is exceeded, or an error
+     *     occurred processing the request.
+     * @throws IllegalArgumentException if {@link TopicDescription#getName() topic.getName()} is null or an empty
+     *     string.
+     * @throws NullPointerException if {@code topic} is null.
+     * @throws ResourceExistsException if a topic exists with the same {@link TopicDescription#getName()
+     *     topicName}.
+     * @see <a href="https://docs.microsoft.com/rest/api/servicebus/update-entity">Create or Update Entity</a>
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<TopicDescription> createTopicWithResponse(TopicDescription topic, Context context) {
+        return asyncClient.createTopicWithResponse(topic, context).block();
+    }
+
+    /**
      * Deletes a queue the matching {@code queueName}.
      *
      * @param queueName Name of queue to delete.
@@ -120,6 +268,84 @@ public final class ServiceBusManagementClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteQueueWithResponse(String queueName, Context context) {
         return asyncClient.deleteQueueWithResponse(queueName, context).block();
+    }
+
+    /**
+     * Deletes a subscription the matching {@code subscriptionName}.
+     *
+     * @param topicName Name of topic associated with subscription to delete.
+     * @param subscriptionName Name of subscription to delete.
+     *
+     * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
+     *     namespace.
+     * @throws HttpResponseException If error occurred processing the request.
+     * @throws IllegalArgumentException if {@code topicName} or {@code subscriptionName} is an empty string.
+     * @throws NullPointerException if {@code topicName} or {@code subscriptionName} is null.
+     * @throws ResourceNotFoundException if the {@code subscriptionName} does not exist.
+     * @see <a href="https://docs.microsoft.com/rest/api/servicebus/delete-subscription">Delete Subscription</a>
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void deleteSubscription(String topicName, String subscriptionName) {
+        asyncClient.deleteSubscription(topicName, subscriptionName);
+    }
+
+    /**
+     * Deletes a subscription the matching {@code subscriptionName} and returns the HTTP response.
+     *
+     * @param topicName Name of topic associated with subscription to delete.
+     * @param subscriptionName Name of subscription to delete.
+     * @param context Additional context that is passed through the HTTP pipeline during the service call.
+     *
+     * @return The HTTP response.
+     * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
+     *     namespace.
+     * @throws HttpResponseException If error occurred processing the request.
+     * @throws IllegalArgumentException if {@code topicName} or {@code subscriptionName} is an empty string.
+     * @throws NullPointerException if {@code topicName} or {@code subscriptionName} is null.
+     * @throws ResourceNotFoundException if the {@code subscriptionName} does not exist.
+     * @see <a href="https://docs.microsoft.com/rest/api/servicebus/delete-subscription">Delete Subscription</a>
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> deleteSubscriptionWithResponse(String topicName, String subscriptionName, Context context) {
+        return asyncClient.deleteSubscriptionWithResponse(topicName, subscriptionName, context).block();
+    }
+
+    /**
+     * Deletes a topic the matching {@code topicName}.
+     *
+     * @param topicName Name of topic to delete.
+     *
+     * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
+     *     namespace.
+     * @throws HttpResponseException If error occurred processing the request.
+     * @throws IllegalArgumentException if {@code topicName} is an empty string.
+     * @throws NullPointerException if {@code topicName} is null.
+     * @throws ResourceNotFoundException if the {@code topicName} does not exist.
+     * @see <a href="https://docs.microsoft.com/rest/api/servicebus/delete-topic">Delete Topic</a>
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void deleteTopic(String topicName) {
+        asyncClient.deleteTopic(topicName).block();
+    }
+
+    /**
+     * Deletes a topic the matching {@code topicName} and returns the HTTP response.
+     *
+     * @param topicName Name of topic to delete.
+     * @param context Additional context that is passed through the HTTP pipeline during the service call.
+     *
+     * @return The HTTP response.
+     * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
+     *     namespace.
+     * @throws HttpResponseException If error occurred processing the request.
+     * @throws IllegalArgumentException if {@code topicName} is an empty string.
+     * @throws NullPointerException if {@code topicName} is null.
+     * @throws ResourceNotFoundException if the {@code topicName} does not exist.
+     * @see <a href="https://docs.microsoft.com/rest/api/servicebus/delete-topic">Delete Topic</a>
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> deleteTopicWithResponse(String topicName, Context context) {
+        return asyncClient.deleteTopicWithResponse(topicName, context).block();
     }
 
     /**
@@ -201,6 +427,167 @@ public final class ServiceBusManagementClient {
     }
 
     /**
+     * Gets information about the queue.
+     *
+     * @param topicName Name of topic associated with subscription.
+     * @param subscriptionName Name of subscription to get information about.
+     *
+     * @return Information about the subscription.
+     * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
+     *     namespace.
+     * @throws HttpResponseException If error occurred processing the request.
+     * @throws IllegalArgumentException if {@code topicName} or {@code subscriptionName} are null or empty strings.
+     * @throws ResourceNotFoundException if the {@code subscriptionName} does not exist in the {@code topicName}.
+     * @see <a href="https://docs.microsoft.com/rest/api/servicebus/get-entity">Get Entity</a>
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SubscriptionDescription getSubscription(String topicName, String subscriptionName) {
+        return asyncClient.getSubscription(topicName, subscriptionName).block();
+    }
+
+    /**
+     * Gets information about the subscription along with its HTTP response.
+     *
+     * @param topicName Name of topic associated with subscription.
+     * @param subscriptionName Name of subscription to get information about.
+     * @param context Additional context that is passed through the HTTP pipeline during the service call.
+     *
+     * @return Information about the subscription and the associated HTTP response.
+     * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
+     *     namespace.
+     * @throws HttpResponseException If error occurred processing the request.
+     * @throws IllegalArgumentException if {@code topicName} or {@code subscriptionName} are null or empty strings.
+     * @throws ResourceNotFoundException if the {@code subscriptionName} does not exist.
+     * @see <a href="https://docs.microsoft.com/rest/api/servicebus/get-entity">Get Entity</a>
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<SubscriptionDescription> getSubscriptionWithResponse(String topicName,
+        String subscriptionName, Context context) {
+        return asyncClient.getSubscriptionWithResponse(topicName, subscriptionName, context,
+            Function.identity()).block();
+    }
+
+    /**
+     * Gets runtime information about the queue.
+     *
+     * @param topicName Name of topic associated with subscription.
+     * @param subscriptionName Name of subscription to get information about.
+     *
+     * @return Runtime information about the queue.
+     * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
+     *     namespace.
+     * @throws HttpResponseException If error occurred processing the request.
+     * @throws IllegalArgumentException if {@code subscriptionName} is an empty string.
+     * @throws NullPointerException if {@code subscriptionName} is null.
+     * @throws ResourceNotFoundException if the {@code subscriptionName} does not exist.
+     * @see <a href="https://docs.microsoft.com/rest/api/servicebus/get-entity">Get Entity</a>
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SubscriptionRuntimeInfo getSubscriptionRuntimeInfo(String topicName, String subscriptionName) {
+        return asyncClient.getSubscriptionRuntimeInfo(topicName, subscriptionName).block();
+    }
+
+    /**
+     * Gets runtime information about the queue.
+     *
+     * @param topicName Name of topic associated with subscription.
+     * @param subscriptionName Name of subscription to get information about.
+     * @param context Additional context that is passed through the HTTP pipeline during the service call.
+     *
+     * @return Runtime information about the queue.
+     * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
+     *     namespace.
+     * @throws HttpResponseException If error occurred processing the request.
+     * @throws IllegalArgumentException if {@code subscriptionName} is an empty string.
+     * @throws NullPointerException if {@code subscriptionName} is null.
+     * @throws ResourceNotFoundException if the {@code subscriptionName} does not exist.
+     * @see <a href="https://docs.microsoft.com/rest/api/servicebus/get-entity">Get Entity</a>
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<SubscriptionRuntimeInfo> getSubscriptionRuntimeInfoWithResponse(String topicName,
+        String subscriptionName, Context context) {
+        return asyncClient.getSubscriptionWithResponse(topicName, subscriptionName, context,
+            SubscriptionRuntimeInfo::new).block();
+    }
+
+    /**
+     * Gets information about the topic.
+     *
+     * @param topicName Name of topic to get information about.
+     *
+     * @return Information about the topic.
+     * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
+     *     namespace.
+     * @throws HttpResponseException If error occurred processing the request.
+     * @throws IllegalArgumentException if {@code topicName} is an empty string.
+     * @throws NullPointerException if {@code topicName} is null.
+     * @throws ResourceNotFoundException if the {@code topicName} does not exist.
+     * @see <a href="https://docs.microsoft.com/rest/api/servicebus/get-entity">Get Entity</a>
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public TopicDescription getTopic(String topicName) {
+        return asyncClient.getTopic(topicName).block();
+    }
+
+    /**
+     * Gets information about the topic along with its HTTP response.
+     *
+     * @param topicName Name of topic to get information about.
+     *
+     * @return Information about the topic and the associated HTTP response.
+     * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
+     *     namespace.
+     * @throws HttpResponseException If error occurred processing the request.
+     * @throws IllegalArgumentException if {@code topicName} is an empty string.
+     * @throws NullPointerException if {@code topicName} is null.
+     * @throws ResourceNotFoundException if the {@code topicName} does not exist.
+     * @see <a href="https://docs.microsoft.com/rest/api/servicebus/get-entity">Get Entity</a>
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<TopicDescription> getTopicWithResponse(String topicName, Context context) {
+        return asyncClient.getTopicWithResponse(topicName, context, Function.identity()).block();
+    }
+
+    /**
+     * Gets runtime information about the topic.
+     *
+     * @param topicName Name of topic to get information about.
+     *
+     * @return Runtime information about the topic.
+     * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
+     *     namespace.
+     * @throws HttpResponseException If error occurred processing the request.
+     * @throws IllegalArgumentException if {@code topicName} is an empty string.
+     * @throws NullPointerException if {@code topicName} is null.
+     * @throws ResourceNotFoundException if the {@code topicName} does not exist.
+     * @see <a href="https://docs.microsoft.com/rest/api/servicebus/get-entity">Get Entity</a>
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public TopicRuntimeInfo getTopicRuntimeInfo(String topicName) {
+        return asyncClient.getTopicRuntimeInfo(topicName).block();
+    }
+
+    /**
+     * Gets runtime information about the topic with its HTTP response.
+     *
+     * @param topicName Name of topic to get information about.
+     * @param context Additional context that is passed through the HTTP pipeline during the service call.
+     *
+     * @return Runtime information about the topic and the associated HTTP response.
+     * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
+     *     namespace.
+     * @throws HttpResponseException If error occurred processing the request.
+     * @throws IllegalArgumentException if {@code topicName} is an empty string.
+     * @throws NullPointerException if {@code topicName} is null.
+     * @throws ResourceNotFoundException if the {@code topicName} does not exist.
+     * @see <a href="https://docs.microsoft.com/rest/api/servicebus/get-entity">Get Entity</a>
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<TopicRuntimeInfo> getTopicRuntimeInfoWithResponse(String topicName, Context context) {
+        return asyncClient.getTopicWithResponse(topicName, context, TopicRuntimeInfo::new).block();
+    }
+
+    /**
      * Fetches all the queues in the Service Bus namespace.
      *
      * @return A PagedIterable of {@link QueueDescription queues} in the Service Bus namespace.
@@ -230,6 +617,81 @@ public final class ServiceBusManagementClient {
         final PagedFlux<QueueDescription> pagedFlux = new PagedFlux<>(
             () -> asyncClient.listQueuesFirstPage(context),
             continuationToken -> asyncClient.listQueuesNextPage(continuationToken, context));
+
+        return new PagedIterable<>(pagedFlux);
+    }
+
+    /**
+     * Fetches all the subscriptions for a topic.
+     *
+     * @param topicName The topic name under which all the subscriptions need to be retrieved.
+     *
+     * @return A paged iterable of {@link SubscriptionDescription subscriptions} for the {@code topicName}.
+     * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
+     *     namespace.
+     * @throws NullPointerException if {@code topicName} is null.
+     * @throws IllegalArgumentException if {@code topicName} is an empty string.
+     * @see <a href="https://docs.microsoft.com/rest/api/servicebus/enumeration">List entities, subscriptions, or
+     *     authorization rules</a>
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<SubscriptionDescription> listSubscriptions(String topicName) {
+        return new PagedIterable<>(asyncClient.listSubscriptions(topicName));
+    }
+
+    /**
+     * Fetches all the subscriptions for a topic.
+     *
+     * @param topicName The topic name under which all the subscriptions need to be retrieved.
+     * @param context Additional context that is passed through the HTTP pipeline during the service call.
+     *
+     * @return A paged iterable of {@link SubscriptionDescription subscriptions} for the {@code topicName}.
+     * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
+     *     namespace.
+     * @throws NullPointerException if {@code topicName} is null.
+     * @throws IllegalArgumentException if {@code topicName} is an empty string.
+     * @see <a href="https://docs.microsoft.com/rest/api/servicebus/enumeration">List entities, subscriptions, or
+     *     authorization rules</a>
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<SubscriptionDescription> listSubscriptions(String topicName, Context context) {
+        final PagedFlux<SubscriptionDescription> pagedFlux = new PagedFlux<>(
+            () -> asyncClient.listSubscriptionsFirstPage(topicName, context),
+            continuationToken -> asyncClient.listSubscriptionsNextPage(topicName, continuationToken, context));
+
+        return new PagedIterable<>(pagedFlux);
+    }
+
+    /**
+     * Fetches all the topics in the Service Bus namespace.
+     *
+     * @return A paged iterable of {@link TopicDescription topics} in the Service Bus namespace.
+     * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
+     *     namespace.
+     * @see <a href="https://docs.microsoft.com/rest/api/servicebus/enumeration">List entities, subscriptions, or
+     *     authorization rules</a>
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<TopicDescription> listTopics() {
+        return new PagedIterable<>(asyncClient.listTopics());
+    }
+
+    /**
+     * Fetches all the topics in the Service Bus namespace.
+     *
+     * @param context Additional context that is passed through the HTTP pipeline during the service call.
+     *
+     * @return A paged iterable of {@link TopicDescription topics} in the Service Bus namespace.
+     * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
+     *     namespace.
+     * @see <a href="https://docs.microsoft.com/rest/api/servicebus/enumeration">List entities, subscriptions, or
+     *     authorization rules</a>
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<TopicDescription> listTopics(Context context) {
+        final PagedFlux<TopicDescription> pagedFlux = new PagedFlux<>(
+            () -> asyncClient.listTopicsFirstPage(context),
+            continuationToken -> asyncClient.listTopicsNextPage(continuationToken, context));
 
         return new PagedIterable<>(pagedFlux);
     }
@@ -313,5 +775,160 @@ public final class ServiceBusManagementClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<QueueDescription> updateQueueWithResponse(QueueDescription queue, Context context) {
         return asyncClient.updateQueueWithResponse(queue, context).block();
+    }
+
+    /**
+     * Updates a subscription with the given {@link SubscriptionDescription}. The {@link SubscriptionDescription} must
+     * be fully populated as all of the properties are replaced. If a property is not set the service default value is
+     * used.
+     *
+     * The suggested flow is:
+     * <ol>
+     *     <li>{@link #getSubscription(String, String) Get subscription description.}</li>
+     *     <li>Update the required elements.</li>
+     *     <li>Pass the updated description into this method.</li>
+     * </ol>
+     *
+     * <p>
+     * There are a subset of properties that can be updated. They are:
+     * <ul>
+     * <li>{@link SubscriptionDescription#setDefaultMessageTimeToLive(Duration) DefaultMessageTimeToLive}</li>
+     * <li>{@link SubscriptionDescription#setLockDuration(Duration) LockDuration}</li>
+     * <li>{@link SubscriptionDescription#setMaxDeliveryCount(Integer) MaxDeliveryCount}</li>
+     * </ul>
+     *
+     * @param subscription Information about the subscription to update. You must provide all the property values
+     *     that are desired on the updated entity. Any values not provided are set to the service default values.
+     *
+     * @return A Mono that returns the updated subscription in addition to the HTTP response.
+     * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
+     *     namespace.
+     * @throws HttpResponseException If the request body was invalid, the subscription quota is exceeded, or an
+     *     error occurred processing the request.
+     * @throws IllegalArgumentException if {@link SubscriptionDescription#getTopicName()} or {@link
+     *     SubscriptionDescription#getSubscriptionName()} is null or an empty string.
+     * @throws NullPointerException if {@code subscription} is null.
+     * @see <a href="https://docs.microsoft.com/rest/api/servicebus/update-entity">Create or Update Entity</a>
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SubscriptionDescription updateSubscription(SubscriptionDescription subscription) {
+        return asyncClient.updateSubscription(subscription).block();
+    }
+
+    /**
+     * Updates a subscription with the given {@link SubscriptionDescription}. The {@link SubscriptionDescription} must
+     * be fully populated as all of the properties are replaced. If a property is not set the service default value is
+     * used.
+     *
+     * The suggested flow is:
+     * <ol>
+     *     <li>{@link #getSubscription(String, String) Get subscription description.}</li>
+     *     <li>Update the required elements.</li>
+     *     <li>Pass the updated description into this method.</li>
+     * </ol>
+     *
+     * <p>
+     * There are a subset of properties that can be updated. They are:
+     * <ul>
+     * <li>{@link SubscriptionDescription#setDefaultMessageTimeToLive(Duration) DefaultMessageTimeToLive}</li>
+     * <li>{@link SubscriptionDescription#setLockDuration(Duration) LockDuration}</li>
+     * <li>{@link SubscriptionDescription#setMaxDeliveryCount(Integer) MaxDeliveryCount}</li>
+     * </ul>
+     *
+     * @param subscription Information about the subscription to update. You must provide all the property values
+     *     that are desired on the updated entity. Any values not provided are set to the service default values.
+     * @param context Additional context that is passed through the HTTP pipeline during the service call.
+     *
+     * @return A Mono that returns the updated subscription in addition to the HTTP response.
+     * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
+     *     namespace.
+     * @throws HttpResponseException If the request body was invalid, the subscription quota is exceeded, or an
+     *     error occurred processing the request.
+     * @throws IllegalArgumentException if {@link SubscriptionDescription#getTopicName()} or {@link
+     *     SubscriptionDescription#getSubscriptionName()} is null or an empty string.
+     * @throws NullPointerException if {@code subscription} is null.
+     * @see <a href="https://docs.microsoft.com/rest/api/servicebus/update-entity">Create or Update Entity</a>
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<SubscriptionDescription> updateSubscriptionWithResponse(
+        SubscriptionDescription subscription, Context context) {
+        return asyncClient.updateSubscriptionWithResponse(subscription, context).block();
+    }
+
+    /**
+     * Updates a topic with the given {@link TopicDescription}. The {@link TopicDescription} must be fully populated as
+     * all of the properties are replaced. If a property is not set the service default value is used.
+     *
+     * The suggested flow is:
+     * <ol>
+     *     <li>{@link #getTopic(String) Get topic description.}</li>
+     *     <li>Update the required elements.</li>
+     *     <li>Pass the updated description into this method.</li>
+     * </ol>
+     *
+     * <p>
+     * There are a subset of properties that can be updated. They are:
+     * <ul>
+     * <li>{@link TopicDescription#setDefaultMessageTimeToLive(Duration) DefaultMessageTimeToLive}</li>
+     * <li>{@link TopicDescription#setDuplicateDetectionHistoryTimeWindow(Duration) DuplicateDetectionHistoryTimeWindow}
+     * </li>
+     * </ul>
+     *
+     * @param topic Information about the topic to update. You must provide all the property values that are desired
+     *     on the updated entity. Any values not provided are set to the service default values.
+     *
+     * @return The updated topic.
+     * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
+     *     namespace.
+     * @throws HttpResponseException If the request body was invalid, the topic quota is exceeded, or an error
+     *     occurred processing the request.
+     * @throws IllegalArgumentException if {@link TopicDescription#getName() topic.getName()} is null or an empty
+     *     string.
+     * @throws NullPointerException if {@code topic} is null.
+     * @see <a href="https://docs.microsoft.com/rest/api/servicebus/update-entity">Create or Update Entity</a>
+     * @see <a href="https://docs.microsoft.com/rest/api/servicebus/update-topic">Update Topic</a>
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public TopicDescription updateTopic(TopicDescription topic) {
+        return asyncClient.updateTopic(topic).block();
+    }
+
+    /**
+     * Updates a topic with the given {@link TopicDescription}. The {@link TopicDescription} must be fully populated as
+     * all of the properties are replaced. If a property is not set the service default value is used.
+     *
+     * The suggested flow is:
+     * <ol>
+     *     <li>{@link #getTopic(String) Get topic description.}</li>
+     *     <li>Update the required elements.</li>
+     *     <li>Pass the updated description into this method.</li>
+     * </ol>
+     *
+     * <p>
+     * There are a subset of properties that can be updated. They are:
+     * <ul>
+     * <li>{@link TopicDescription#setDefaultMessageTimeToLive(Duration) DefaultMessageTimeToLive}</li>
+     * <li>{@link TopicDescription#setDuplicateDetectionHistoryTimeWindow(Duration) DuplicateDetectionHistoryTimeWindow}
+     * </li>
+     * </ul>
+     *
+     * @param topic Information about the topic to update. You must provide all the property values that are desired
+     *     on the updated entity. Any values not provided are set to the service default values.
+     * @param context Additional context that is passed through the HTTP pipeline during the service call.
+     *
+     * @return The updated topic with its HTTP response.
+     * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
+     *     namespace.
+     * @throws HttpResponseException If the request body was invalid, the topic quota is exceeded, or an error
+     *     occurred processing the request.
+     * @throws IllegalArgumentException if {@link TopicDescription#getName() topic.getName()} is null or an empty
+     *     string.
+     * @throws NullPointerException if {@code topic} is null.
+     * @see <a href="https://docs.microsoft.com/rest/api/servicebus/update-entity">Create or Update Entity</a>
+     * @see <a href="https://docs.microsoft.com/rest/api/servicebus/update-topic">Update Topic</a>
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<TopicDescription> updateTopicWithResponse(TopicDescription topic, Context context) {
+        return asyncClient.updateTopicWithResponse(topic, context).block();
     }
 }
