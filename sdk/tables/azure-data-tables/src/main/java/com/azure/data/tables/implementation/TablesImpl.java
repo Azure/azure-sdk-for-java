@@ -4,28 +4,52 @@
 
 package com.azure.data.tables.implementation;
 
-import com.azure.core.annotation.*;
+import com.azure.core.annotation.BodyParam;
+import com.azure.core.annotation.Delete;
+import com.azure.core.annotation.ExpectedResponses;
+import com.azure.core.annotation.Get;
+import com.azure.core.annotation.HeaderParam;
+import com.azure.core.annotation.Host;
+import com.azure.core.annotation.HostParam;
+import com.azure.core.annotation.Patch;
+import com.azure.core.annotation.PathParam;
+import com.azure.core.annotation.Post;
+import com.azure.core.annotation.Put;
+import com.azure.core.annotation.QueryParam;
+import com.azure.core.annotation.ReturnType;
+import com.azure.core.annotation.ServiceInterface;
+import com.azure.core.annotation.ServiceMethod;
+import com.azure.core.annotation.UnexpectedResponseExceptionType;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Context;
-import com.azure.data.tables.implementation.models.*;
-import reactor.core.publisher.Mono;
-
+import com.azure.data.tables.implementation.models.OdataMetadataFormat;
+import com.azure.data.tables.implementation.models.QueryOptions;
+import com.azure.data.tables.implementation.models.ResponseFormat;
+import com.azure.data.tables.implementation.models.SignedIdentifier;
+import com.azure.data.tables.implementation.models.TableProperties;
+import com.azure.data.tables.implementation.models.TableServiceErrorException;
+import com.azure.data.tables.implementation.models.TablesCreateResponse;
+import com.azure.data.tables.implementation.models.TablesDeleteEntityResponse;
+import com.azure.data.tables.implementation.models.TablesDeleteResponse;
+import com.azure.data.tables.implementation.models.TablesGetAccessPolicyResponse;
+import com.azure.data.tables.implementation.models.TablesInsertEntityResponse;
+import com.azure.data.tables.implementation.models.TablesMergeEntityResponse;
+import com.azure.data.tables.implementation.models.TablesQueryEntitiesResponse;
+import com.azure.data.tables.implementation.models.TablesQueryEntitiesWithPartitionAndRowKeyResponse;
+import com.azure.data.tables.implementation.models.TablesQueryResponse;
+import com.azure.data.tables.implementation.models.TablesSetAccessPolicyResponse;
+import com.azure.data.tables.implementation.models.TablesUpdateEntityResponse;
 import java.util.List;
 import java.util.Map;
+import reactor.core.publisher.Mono;
 
-/**
- * An instance of this class provides access to all the operations defined in Tables.
- */
+/** An instance of this class provides access to all the operations defined in Tables. */
 public final class TablesImpl {
-    /**
-     * The proxy service used to perform REST calls.
-     */
+    /** The proxy service used to perform REST calls. */
     private final TablesService service;
 
-    /**
-     * The service client containing this operation class.
-     */
+    /** The service client containing this operation class. */
     private final AzureTableImpl client;
 
     /**
@@ -212,15 +236,15 @@ public final class TablesImpl {
     /**
      * Queries tables under the given account.
      *
-     * @param requestId     Provides a client-generated, opaque value with a 1 KB character limit that is recorded in
-     *                      the analytics logs when analytics logging is enabled.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     *     analytics logs when analytics logging is enabled.
      * @param nextTableName A table query continuation token from a previous call.
-     * @param queryOptions  Parameter group.
-     * @param context       The context to associate with this operation.
-     * @return the properties for the table query response.
+     * @param queryOptions Parameter group.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException    thrown if the request is rejected by server.
-     * @throws RuntimeException         all other wrapped checked exceptions if the request fails to be sent.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the properties for the table query response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<TablesQueryResponse> queryWithResponseAsync(
@@ -247,32 +271,32 @@ public final class TablesImpl {
         }
         String filter = filterInternal;
         return service.query(
-                this.client.getUrl(),
-                this.client.getVersion(),
-                requestId,
-                dataServiceVersion,
-                format,
-                top,
-                select,
-                filter,
-                nextTableName,
-                context);
+            this.client.getUrl(),
+            this.client.getVersion(),
+            requestId,
+            dataServiceVersion,
+            format,
+            top,
+            select,
+            filter,
+            nextTableName,
+            context);
     }
 
     /**
      * Creates a new table under the given account.
      *
-     * @param tableProperties    The properties for creating a table.
-     * @param requestId          Provides a client-generated, opaque value with a 1 KB character limit that is recorded
-     *                           in the analytics logs when analytics logging is enabled.
+     * @param tableProperties The properties for creating a table.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     *     analytics logs when analytics logging is enabled.
      * @param responsePreference Specifies whether the response should include the inserted entity in the payload.
-     *                           Possible values are return-no-content and return-content.
-     * @param queryOptions       Parameter group.
-     * @param context            The context to associate with this operation.
-     * @return the response for a single table.
-     * @throws IllegalArgumentException   thrown if parameters fail the validation.
+     *     Possible values are return-no-content and return-content.
+     * @param queryOptions Parameter group.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws TableServiceErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException           all other wrapped checked exceptions if the request fails to be sent.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response for a single table.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<TablesCreateResponse> createWithResponseAsync(
@@ -301,14 +325,14 @@ public final class TablesImpl {
     /**
      * Operation permanently deletes the specified table.
      *
-     * @param table     The name of the table.
+     * @param table The name of the table.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
-     *                  analytics logs when analytics logging is enabled.
-     * @param context   The context to associate with this operation.
-     * @return the completion.
-     * @throws IllegalArgumentException   thrown if parameters fail the validation.
+     *     analytics logs when analytics logging is enabled.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws TableServiceErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException           all other wrapped checked exceptions if the request fails to be sent.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<TablesDeleteResponse> deleteWithResponseAsync(String table, String requestId, Context context) {
@@ -318,18 +342,18 @@ public final class TablesImpl {
     /**
      * Queries entities in a table.
      *
-     * @param table            The name of the table.
-     * @param timeout          The timeout parameter is expressed in seconds.
-     * @param requestId        Provides a client-generated, opaque value with a 1 KB character limit that is recorded
-     *                         in the analytics logs when analytics logging is enabled.
+     * @param table The name of the table.
+     * @param timeout The timeout parameter is expressed in seconds.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     *     analytics logs when analytics logging is enabled.
      * @param nextPartitionKey An entity query continuation token from a previous call.
-     * @param nextRowKey       An entity query continuation token from a previous call.
-     * @param queryOptions     Parameter group.
-     * @param context          The context to associate with this operation.
-     * @return the properties for the table entity query response.
-     * @throws IllegalArgumentException   thrown if parameters fail the validation.
+     * @param nextRowKey An entity query continuation token from a previous call.
+     * @param queryOptions Parameter group.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws TableServiceErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException           all other wrapped checked exceptions if the request fails to be sent.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the properties for the table entity query response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<TablesQueryEntitiesResponse> queryEntitiesWithResponseAsync(
@@ -380,18 +404,18 @@ public final class TablesImpl {
     /**
      * Queries entities in a table.
      *
-     * @param table        The name of the table.
+     * @param table The name of the table.
      * @param partitionKey The partition key of the entity.
-     * @param rowKey       The row key of the entity.
-     * @param timeout      The timeout parameter is expressed in seconds.
-     * @param requestId    Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
-     *                     analytics logs when analytics logging is enabled.
+     * @param rowKey The row key of the entity.
+     * @param timeout The timeout parameter is expressed in seconds.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     *     analytics logs when analytics logging is enabled.
      * @param queryOptions Parameter group.
-     * @param context      The context to associate with this operation.
-     * @return the properties for the table entity query response.
-     * @throws IllegalArgumentException   thrown if parameters fail the validation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws TableServiceErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException           all other wrapped checked exceptions if the request fails to be sent.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the properties for the table entity query response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<TablesQueryEntitiesWithPartitionAndRowKeyResponse> queryEntitiesWithPartitionAndRowKeyWithResponseAsync(
@@ -436,24 +460,23 @@ public final class TablesImpl {
     /**
      * Update entity in a table.
      *
-     * @param table                 The name of the table.
-     * @param partitionKey          The partition key of the entity.
-     * @param rowKey                The row key of the entity.
-     * @param timeout               The timeout parameter is expressed in seconds.
-     * @param requestId             Provides a client-generated, opaque value with a 1 KB character limit that is
-     *                              recorded in the analytics logs when analytics logging is enabled.
-     * @param ifMatch               Match condition for an entity to be updated. If specified and a matching entity
-     *                              is not found, an error will be raised. To force an unconditional update, set to the
-     *                              wildcard character (*). If not specified, an insert will be performed when no
-     *                              existing entity is found to update and a replace will be performed if an
-     *                              existing entity is found.
+     * @param table The name of the table.
+     * @param partitionKey The partition key of the entity.
+     * @param rowKey The row key of the entity.
+     * @param timeout The timeout parameter is expressed in seconds.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     *     analytics logs when analytics logging is enabled.
+     * @param ifMatch Match condition for an entity to be updated. If specified and a matching entity is not found, an
+     *     error will be raised. To force an unconditional update, set to the wildcard character (*). If not specified,
+     *     an insert will be performed when no existing entity is found to update and a replace will be performed if an
+     *     existing entity is found.
      * @param tableEntityProperties The other properties of the table entity.
-     * @param queryOptions          Parameter group.
-     * @param context               The context to associate with this operation.
-     * @return the completion.
-     * @throws IllegalArgumentException   thrown if parameters fail the validation.
+     * @param queryOptions Parameter group.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws TableServiceErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException           all other wrapped checked exceptions if the request fails to be sent.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<TablesUpdateEntityResponse> updateEntityWithResponseAsync(
@@ -490,24 +513,23 @@ public final class TablesImpl {
     /**
      * Merge entity in a table.
      *
-     * @param table                 The name of the table.
-     * @param partitionKey          The partition key of the entity.
-     * @param rowKey                The row key of the entity.
-     * @param timeout               The timeout parameter is expressed in seconds.
-     * @param requestId             Provides a client-generated, opaque value with a 1 KB character limit that is
-     *                              recorded in the analytics logs when analytics logging is enabled.
-     * @param ifMatch               Match condition for an entity to be updated. If specified and a matching entity is
-     *                              not found, an error will be raised. To force an unconditional update, set to the
-     *                              wildcard character (*). If not specified, an insert will be performed when no
-     *                              existing entity is found to update and a merge will be performed if an
-     *                              existing entity is found.
+     * @param table The name of the table.
+     * @param partitionKey The partition key of the entity.
+     * @param rowKey The row key of the entity.
+     * @param timeout The timeout parameter is expressed in seconds.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     *     analytics logs when analytics logging is enabled.
+     * @param ifMatch Match condition for an entity to be updated. If specified and a matching entity is not found, an
+     *     error will be raised. To force an unconditional update, set to the wildcard character (*). If not specified,
+     *     an insert will be performed when no existing entity is found to update and a merge will be performed if an
+     *     existing entity is found.
      * @param tableEntityProperties The other properties of the table entity.
-     * @param queryOptions          Parameter group.
-     * @param context               The context to associate with this operation.
-     * @return the completion.
-     * @throws IllegalArgumentException   thrown if parameters fail the validation.
+     * @param queryOptions Parameter group.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws TableServiceErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException           all other wrapped checked exceptions if the request fails to be sent.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<TablesMergeEntityResponse> mergeEntityWithResponseAsync(
@@ -544,21 +566,20 @@ public final class TablesImpl {
     /**
      * Deletes the specified entity in a table.
      *
-     * @param table        The name of the table.
+     * @param table The name of the table.
      * @param partitionKey The partition key of the entity.
-     * @param rowKey       The row key of the entity.
-     * @param ifMatch      Match condition for an entity to be deleted. If specified and a matching entity is not
-     *                     found, an error will be raised. To force an unconditional delete, set to the wildcard
-     *                     character (*).
-     * @param timeout      The timeout parameter is expressed in seconds.
-     * @param requestId    Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
-     *                     analytics logs when analytics logging is enabled.
+     * @param rowKey The row key of the entity.
+     * @param ifMatch Match condition for an entity to be deleted. If specified and a matching entity is not found, an
+     *     error will be raised. To force an unconditional delete, set to the wildcard character (*).
+     * @param timeout The timeout parameter is expressed in seconds.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     *     analytics logs when analytics logging is enabled.
      * @param queryOptions Parameter group.
-     * @param context      The context to associate with this operation.
-     * @return the completion.
-     * @throws IllegalArgumentException   thrown if parameters fail the validation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws TableServiceErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException           all other wrapped checked exceptions if the request fails to be sent.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<TablesDeleteEntityResponse> deleteEntityWithResponseAsync(
@@ -593,19 +614,19 @@ public final class TablesImpl {
     /**
      * Insert entity in a table.
      *
-     * @param table                 The name of the table.
-     * @param timeout               The timeout parameter is expressed in seconds.
-     * @param requestId             Provides a client-generated, opaque value with a 1 KB character limit that is
-     *                              recorded in the analytics logs when analytics logging is enabled.
-     * @param responsePreference    Specifies whether the response should include the inserted entity in the payload.
-     *                              Possible values are return-no-content and return-content.
+     * @param table The name of the table.
+     * @param timeout The timeout parameter is expressed in seconds.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     *     analytics logs when analytics logging is enabled.
+     * @param responsePreference Specifies whether the response should include the inserted entity in the payload.
+     *     Possible values are return-no-content and return-content.
      * @param tableEntityProperties The other properties of the table entity.
-     * @param queryOptions          Parameter group.
-     * @param context               The context to associate with this operation.
-     * @return the other properties of the table entity.
-     * @throws IllegalArgumentException   thrown if parameters fail the validation.
+     * @param queryOptions Parameter group.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws TableServiceErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException           all other wrapped checked exceptions if the request fails to be sent.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the other properties of the table entity.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<TablesInsertEntityResponse> insertEntityWithResponseAsync(
@@ -639,15 +660,15 @@ public final class TablesImpl {
      * Retrieves details about any stored access policies specified on the table that may be used with Shared Access
      * Signatures.
      *
-     * @param table     The name of the table.
-     * @param timeout   The timeout parameter is expressed in seconds.
+     * @param table The name of the table.
+     * @param timeout The timeout parameter is expressed in seconds.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
-     *                  analytics logs when analytics logging is enabled.
-     * @param context   The context to associate with this operation.
-     * @return a collection of signed identifiers.
-     * @throws IllegalArgumentException   thrown if parameters fail the validation.
+     *     analytics logs when analytics logging is enabled.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws TableServiceErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException           all other wrapped checked exceptions if the request fails to be sent.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a collection of signed identifiers.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<TablesGetAccessPolicyResponse> getAccessPolicyWithResponseAsync(
@@ -660,16 +681,16 @@ public final class TablesImpl {
     /**
      * Sets stored access policies for the table that may be used with Shared Access Signatures.
      *
-     * @param table     The name of the table.
-     * @param timeout   The timeout parameter is expressed in seconds.
+     * @param table The name of the table.
+     * @param timeout The timeout parameter is expressed in seconds.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
-     *                  analytics logs when analytics logging is enabled.
-     * @param tableAcl  A collection of signed identifiers.
-     * @param context   The context to associate with this operation.
-     * @return the completion.
-     * @throws IllegalArgumentException   thrown if parameters fail the validation.
+     *     analytics logs when analytics logging is enabled.
+     * @param tableAcl A collection of signed identifiers.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws TableServiceErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException           all other wrapped checked exceptions if the request fails to be sent.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<TablesSetAccessPolicyResponse> setAccessPolicyWithResponseAsync(
