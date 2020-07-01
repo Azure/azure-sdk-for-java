@@ -9,6 +9,8 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 
+// If "azure.activedirectory.tenant-id" is not configured,
+// this bean will take effect to disable login.
 @ConditionalOnMissingBean(AADOAuth2LoginSecurityConfig.class)
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
