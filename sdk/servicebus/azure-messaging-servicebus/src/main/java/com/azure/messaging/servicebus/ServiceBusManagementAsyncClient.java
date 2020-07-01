@@ -1250,8 +1250,10 @@ public final class ServiceBusManagementAsyncClient {
      */
     <T> Mono<Response<Boolean>> entityExistsWithResponse(Mono<Response<T>> getEntityOperation) {
         return getEntityOperation.map(response -> {
+            // When an entity does not exist, it does not have any description object in it.
+            final boolean exists = response.getValue() != null;
             return (Response<Boolean>) new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
-                response.getHeaders(), true);
+                response.getHeaders(), exists);
         })
             .onErrorResume(ResourceNotFoundException.class, exception -> {
                 final HttpResponse response = exception.getResponse();
@@ -1668,7 +1670,7 @@ public final class ServiceBusManagementAsyncClient {
         if (entry == null) {
             return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), null);
         } else if (entry.getContent() == null) {
-            logger.info("entry.getContent() is null. There should have been content returned. Entry: {}", entry);
+            logger.info("entry.getContent() is null. The entity may not exist. {}", entry);
             return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), null);
         }
 

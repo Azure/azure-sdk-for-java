@@ -516,6 +516,65 @@ class ServiceBusManagementAsyncClientIntegrationTest extends TestBase {
             .verify();
     }
 
+    @ParameterizedTest
+    @MethodSource("createHttpClients")
+    void queueExists(HttpClient httpClient) {
+        // Arrange
+        final ServiceBusManagementAsyncClient client = createClient(httpClient);
+        final String queueName = interceptorManager.isPlaybackMode()
+            ? "queue-5"
+            : TestUtils.getEntityName(TestUtils.getQueueBaseName(), 5);
+
+        // Act & Assert
+        StepVerifier.create(client.queueExists(queueName))
+            .expectNext(true)
+            .verifyComplete();
+    }
+
+    @ParameterizedTest
+    @MethodSource("createHttpClients")
+    void queueExistsNotFound(HttpClient httpClient) {
+        // Arrange
+        final ServiceBusManagementAsyncClient client = createClient(httpClient);
+        final String queueName = testResourceNamer.randomName("exists", 10);
+
+        // Act & Assert
+        StepVerifier.create(client.queueExists(queueName))
+            .expectNext(false)
+            .verifyComplete();
+    }
+
+    @ParameterizedTest
+    @MethodSource("createHttpClients")
+    void subscriptionExists(HttpClient httpClient) {
+        // Arrange
+        final ServiceBusManagementAsyncClient client = createClient(httpClient);
+        final String topicName = interceptorManager.isPlaybackMode() ? "topic" : TestUtils.getTopicName();
+        final String subscriptionName = interceptorManager.isPlaybackMode()
+            ? "subscription-1"
+            : TestUtils.getEntityName(TestUtils.getSubscriptionBaseName(), 1);
+        final OffsetDateTime nowUtc = OffsetDateTime.now(Clock.systemUTC());
+
+        // Act & Assert
+        StepVerifier.create(client.subscriptionExists(topicName, subscriptionName))
+            .expectNext(true)
+            .verifyComplete();
+    }
+
+    @ParameterizedTest
+    @MethodSource("createHttpClients")
+    void subscriptionExistsNotFound(HttpClient httpClient) {
+        // Arrange
+        final ServiceBusManagementAsyncClient client = createClient(httpClient);
+        final String topicName = interceptorManager.isPlaybackMode() ? "topic" : TestUtils.getTopicName();
+        final String subscriptionName = "subscription-session-not-exist";
+
+        // Act & Assert
+        StepVerifier.create(client.subscriptionExists(topicName, subscriptionName))
+            .expectNext(false)
+            .verifyComplete();
+    }
+
     private ServiceBusManagementAsyncClient createClient(HttpClient httpClient) {
         final String connectionString = interceptorManager.isPlaybackMode()
             ? "Endpoint=sb://foo.servicebus.windows.net;SharedAccessKeyName=dummyKey;SharedAccessKey=dummyAccessKey"
