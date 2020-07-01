@@ -13,9 +13,6 @@ import com.azure.identity.implementation.IdentityClientOptions;
 import com.azure.identity.implementation.util.LoggingUtil;
 import reactor.core.publisher.Mono;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * A credential provider that provides token credentials based on environment variables.  The environment variables
  * expected are:
