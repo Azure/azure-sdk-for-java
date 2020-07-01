@@ -12,9 +12,9 @@ import com.azure.ai.formrecognizer.implementation.models.CopyAuthorizationResult
 import com.azure.ai.formrecognizer.implementation.models.CopyOperationResult;
 import com.azure.ai.formrecognizer.implementation.models.CopyRequest;
 import com.azure.ai.formrecognizer.implementation.models.Model;
-import com.azure.ai.formrecognizer.implementation.models.OperationStatus;
 import com.azure.ai.formrecognizer.implementation.models.ModelInfo;
 import com.azure.ai.formrecognizer.implementation.models.ModelStatus;
+import com.azure.ai.formrecognizer.implementation.models.OperationStatus;
 import com.azure.ai.formrecognizer.implementation.models.TrainRequest;
 import com.azure.ai.formrecognizer.implementation.models.TrainSourceFilter;
 import com.azure.ai.formrecognizer.models.AccountProperties;
