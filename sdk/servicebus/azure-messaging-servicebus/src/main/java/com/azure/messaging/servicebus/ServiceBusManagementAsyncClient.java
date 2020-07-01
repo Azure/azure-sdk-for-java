@@ -97,6 +97,29 @@ public final class ServiceBusManagementAsyncClient {
     }
 
     /**
+     * Creates a queue with the given name.
+     *
+     * @param queueName Name of the queue to create.
+     *
+     * @return A Mono that completes with information about the created queue.
+     * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
+     *     namespace.
+     * @throws HttpResponseException If the request body was invalid, the queue quota is exceeded, or an error
+     *     occurred processing the request.
+     * @throws IllegalArgumentException if {@code queueName} is null or an empty string.
+     * @throws ResourceExistsException if a queue exists with the same {@code queueName}.
+     * @see <a href="https://docs.microsoft.com/rest/api/servicebus/update-entity">Create or Update Entity</a>
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<QueueDescription> createQueue(String queueName) {
+        try {
+            return createQueueWithResponse(new QueueDescription(queueName)).map(Response::getValue);
+        } catch (RuntimeException e) {
+            return monoError(logger, e);
+        }
+    }
+
+    /**
      * Creates a queue with the {@link QueueDescription}.
      *
      * @param queue Information about the queue to create.
@@ -141,7 +164,31 @@ public final class ServiceBusManagementAsyncClient {
     }
 
     /**
-     * Creates a subscription the {@link SubscriptionDescription}.
+     * Creates a subscription with the given topic and subscription names.
+     *
+     * @param topicName Name of the topic associated with subscription.
+     * @param subscriptionName Name of the subscription.
+     *
+     * @return A Mono that completes with information about the created subscription.
+     * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
+     *     namespace.
+     * @throws HttpResponseException If the request body was invalid, the quota is exceeded, or an error occurred
+     *     processing the request.
+     * @throws IllegalArgumentException if {@code topicName} or {@code subscriptionName} are null or are empty strings.
+     * @throws ResourceExistsException if a subscription exists with the same topic and subscription name.
+     * @see <a href="https://docs.microsoft.com/rest/api/servicebus/update-entity">Create or Update Entity</a>
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<SubscriptionDescription> createSubscription(String topicName, String subscriptionName) {
+        try {
+            return createSubscription(new SubscriptionDescription(topicName, subscriptionName));
+        } catch (RuntimeException e) {
+            return monoError(logger, e);
+        }
+    }
+
+    /**
+     * Creates a subscription with the {@link SubscriptionDescription}.
      *
      * @param subscription Information about the subscription to create.
      *
