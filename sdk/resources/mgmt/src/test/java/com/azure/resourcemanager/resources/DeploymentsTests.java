@@ -5,6 +5,8 @@ package com.azure.resourcemanager.resources;
 
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.management.exception.ManagementError;
+import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollResponse;
 import com.azure.resourcemanager.resources.core.TestUtilities;
@@ -23,6 +25,8 @@ import com.azure.resourcemanager.resources.models.WhatIfOperationResult;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
+
+import java.util.Optional;
 
 public class DeploymentsTests extends ResourceManagerTestBase {
     private ResourceGroups resourceGroups;
@@ -44,8 +48,8 @@ public class DeploymentsTests extends ResourceManagerTestBase {
         resourceGroups = resourceClient.resourceGroups();
         rgName = "rg" + testId;
         resourceGroup = resourceGroups.define(rgName)
-                .withRegion(Region.US_SOUTH_CENTRAL)
-                .create();
+            .withRegion(Region.US_SOUTH_CENTRAL)
+            .create();
     }
 
     @Override
@@ -59,12 +63,12 @@ public class DeploymentsTests extends ResourceManagerTestBase {
 
         // Create
         resourceClient.deployments()
-                .define(dpName)
-                .withExistingResourceGroup(rgName)
-                .withTemplateLink(templateUri, contentVersion)
-                .withParametersLink(parametersUri, contentVersion)
-                .withMode(DeploymentMode.COMPLETE)
-                .create();
+            .define(dpName)
+            .withExistingResourceGroup(rgName)
+            .withTemplateLink(templateUri, contentVersion)
+            .withParametersLink(parametersUri, contentVersion)
+            .withMode(DeploymentMode.COMPLETE)
+            .create();
         // List
         PagedIterable<Deployment> deployments = resourceClient.deployments().listByResourceGroup(rgName);
         boolean found = false;
@@ -101,12 +105,12 @@ public class DeploymentsTests extends ResourceManagerTestBase {
 
         // Create
         resourceClient.deployments()
-                .define(dpName)
-                .withExistingResourceGroup(rgName)
-                .withTemplateLink(templateUri, contentVersion)
-                .withParametersLink(parametersUri, contentVersion)
-                .withMode(DeploymentMode.COMPLETE)
-                .create();
+            .define(dpName)
+            .withExistingResourceGroup(rgName)
+            .withTemplateLink(templateUri, contentVersion)
+            .withParametersLink(parametersUri, contentVersion)
+            .withMode(DeploymentMode.COMPLETE)
+            .create();
         // List
         PagedIterable<Deployment> deployments = resourceClient.deployments().listByResourceGroup(rgName);
         boolean found = false;
@@ -124,9 +128,9 @@ public class DeploymentsTests extends ResourceManagerTestBase {
 
         //What if
         WhatIfOperationResult result = deployment.prepareWhatIf()
-                .withIncrementalMode()
-                .withWhatIfTemplateLink(templateUri, contentVersion)
-                .whatIf();
+            .withIncrementalMode()
+            .withWhatIfTemplateLink(templateUri, contentVersion)
+            .whatIf();
 
         Assertions.assertEquals("Succeeded", result.status());
         Assertions.assertEquals(3, result.changes().size());
@@ -140,12 +144,12 @@ public class DeploymentsTests extends ResourceManagerTestBase {
 
         // Create
         resourceClient.deployments()
-                .define(dpName)
-                .withExistingResourceGroup(rgName)
-                .withTemplateLink(templateUri, contentVersion)
-                .withParametersLink(parametersUri, contentVersion)
-                .withMode(DeploymentMode.COMPLETE)
-                .create();
+            .define(dpName)
+            .withExistingResourceGroup(rgName)
+            .withTemplateLink(templateUri, contentVersion)
+            .withParametersLink(parametersUri, contentVersion)
+            .withMode(DeploymentMode.COMPLETE)
+            .create();
         // List
         PagedIterable<Deployment> deployments = resourceClient.deployments().listByResourceGroup(rgName);
         boolean found = false;
@@ -163,10 +167,10 @@ public class DeploymentsTests extends ResourceManagerTestBase {
 
         //What if
         WhatIfOperationResult result = deployment.prepareWhatIf()
-                .withLocation("westus")
-                .withIncrementalMode()
-                .withWhatIfTemplateLink(blankTemplateUri, contentVersion)
-                .whatIfAtSubscriptionScope();
+            .withLocation("westus")
+            .withIncrementalMode()
+            .withWhatIfTemplateLink(blankTemplateUri, contentVersion)
+            .whatIfAtSubscriptionScope();
 
         Assertions.assertEquals("Succeeded", result.status());
         Assertions.assertEquals(0, result.changes().size());
@@ -181,12 +185,12 @@ public class DeploymentsTests extends ResourceManagerTestBase {
 
         // Begin create
         resourceClient.deployments()
-                .define(dp)
-                .withExistingResourceGroup(rgName)
-                .withTemplateLink(templateUri, contentVersion)
-                .withParametersLink(parametersUri, contentVersion)
-                .withMode(DeploymentMode.COMPLETE)
-                .beginCreate();
+            .define(dp)
+            .withExistingResourceGroup(rgName)
+            .withTemplateLink(templateUri, contentVersion)
+            .withParametersLink(parametersUri, contentVersion)
+            .withMode(DeploymentMode.COMPLETE)
+            .beginCreate();
         Deployment deployment = resourceClient.deployments().getByResourceGroup(rgName, dp);
         Assertions.assertEquals(dp, deployment.name());
         // Cancel
@@ -202,12 +206,12 @@ public class DeploymentsTests extends ResourceManagerTestBase {
 
         // Begin create
         Accepted<Deployment> acceptedDeployment = resourceClient.deployments()
-                .define(dp)
-                .withExistingResourceGroup(rgName)
-                .withTemplateLink(templateUri, contentVersion)
-                .withParametersLink(parametersUri, contentVersion)
-                .withMode(DeploymentMode.COMPLETE)
-                .beginCreate();
+            .define(dp)
+            .withExistingResourceGroup(rgName)
+            .withTemplateLink(templateUri, contentVersion)
+            .withParametersLink(parametersUri, contentVersion)
+            .withMode(DeploymentMode.COMPLETE)
+            .beginCreate();
         Deployment createdDeployment = acceptedDeployment.getAcceptedResult().getValue();
         Deployment deployment = resourceClient.deployments().getByResourceGroup(rgName, dp);
         Assertions.assertEquals(createdDeployment.correlationId(), deployment.correlationId());
@@ -218,10 +222,10 @@ public class DeploymentsTests extends ResourceManagerTestBase {
         Assertions.assertEquals("Canceled", deployment.provisioningState());
         // Update
         deployment.update()
-                .withTemplate(updateTemplate)
-                .withParameters(updateParameters)
-                .withMode(DeploymentMode.INCREMENTAL)
-                .apply();
+            .withTemplate(updateTemplate)
+            .withParameters(updateParameters)
+            .withMode(DeploymentMode.INCREMENTAL)
+            .apply();
         deployment = resourceClient.deployments().getByResourceGroup(rgName, dp);
         Assertions.assertEquals(DeploymentMode.INCREMENTAL, deployment.mode());
         Assertions.assertEquals("Succeeded", deployment.provisioningState());
@@ -249,7 +253,7 @@ public class DeploymentsTests extends ResourceManagerTestBase {
         int delayInMills = acceptedDeployment.getAcceptedResult().getRetryAfter() == null
             ? 0
             : (int) acceptedDeployment.getAcceptedResult().getRetryAfter().toMillis();
-        while (pollStatus != LongRunningOperationStatus.SUCCESSFULLY_COMPLETED) {
+        while (!pollStatus.isComplete()) {
             SdkContext.sleep(delayInMills);
 
             PollResponse<Void> pollResponse = acceptedDeployment.getSyncPoller().poll();
@@ -261,5 +265,104 @@ public class DeploymentsTests extends ResourceManagerTestBase {
         Assertions.assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, pollStatus);
         Deployment deployment = acceptedDeployment.getFinalResult();
         Assertions.assertEquals("Succeeded", deployment.provisioningState());
+    }
+
+    @Test
+    public void canDeployVirtualNetworkSyncPollWithFailure() throws Exception {
+        final String templateJson = "{ \"$schema\": \"https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#\", \"contentVersion\": \"1.0.0.0\", \"resources\": [ { \"type\": \"Microsoft.Storage/storageAccounts\", \"apiVersion\": \"2019-04-01\", \"name\": \"satestnameconflict\", \"location\": \"eastus\", \"sku\": { \"name\": \"Standard_LRS\" }, \"kind\": \"StorageV2\", \"properties\": { \"supportsHttpsTrafficOnly\": true } } ] }";
+
+        final String dp = "dpE" + testId;
+        // Begin create
+        Accepted<Deployment> acceptedDeployment = resourceClient.deployments()
+            .define(dp)
+            .withExistingResourceGroup(rgName)
+            .withTemplate(templateJson)
+            .withParameters("{}")
+            .withMode(DeploymentMode.COMPLETE)
+            .beginCreate();
+        Deployment createdDeployment = acceptedDeployment.getAcceptedResult().getValue();
+        Assertions.assertNotEquals("Succeeded", createdDeployment.provisioningState());
+
+        LongRunningOperationStatus pollStatus = acceptedDeployment.getAcceptedResult().getStatus();
+        int delayInMills = acceptedDeployment.getAcceptedResult().getRetryAfter() == null
+            ? 0
+            : (int) acceptedDeployment.getAcceptedResult().getRetryAfter().toMillis();
+        while (!pollStatus.isComplete()) {
+            SdkContext.sleep(delayInMills);
+
+            PollResponse<Void> pollResponse = acceptedDeployment.getSyncPoller().poll();
+            pollStatus = pollResponse.getStatus();
+            delayInMills = pollResponse.getRetryAfter() == null
+                ? 10000
+                : (int) pollResponse.getRetryAfter().toMillis();
+        }
+        Assertions.assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, pollStatus);
+        Deployment deployment = acceptedDeployment.getFinalResult();
+        Assertions.assertEquals("Succeeded", deployment.provisioningState());
+
+        final String newRgName = sdkContext.randomResourceName("rg", 10);
+        try {
+            final String dp2 = "dpF" + testId;
+
+            // storage name conflict
+            acceptedDeployment = resourceClient.deployments()
+                .define(dp2)
+                .withNewResourceGroup(newRgName, Region.US_EAST2)
+                .withTemplate(templateJson)
+                .withParameters("{}")
+                .withMode(DeploymentMode.COMPLETE)
+                .beginCreate();
+            createdDeployment = acceptedDeployment.getAcceptedResult().getValue();
+            Assertions.assertNotEquals("Succeeded", createdDeployment.provisioningState());
+
+            pollStatus = acceptedDeployment.getAcceptedResult().getStatus();
+            delayInMills = acceptedDeployment.getAcceptedResult().getRetryAfter() == null
+                ? 0
+                : (int) acceptedDeployment.getAcceptedResult().getRetryAfter().toMillis();
+            while (!pollStatus.isComplete()) {
+                SdkContext.sleep(delayInMills);
+
+                PollResponse<Void> pollResponse = acceptedDeployment.getSyncPoller().poll();
+                pollStatus = pollResponse.getStatus();
+                delayInMills = pollResponse.getRetryAfter() == null
+                    ? 10000
+                    : (int) pollResponse.getRetryAfter().toMillis();
+            }
+            Assertions.assertEquals(LongRunningOperationStatus.FAILED, pollStatus);
+
+            // check exception
+            boolean exceptionOnFinalResult = false;
+            try {
+                deployment = acceptedDeployment.getFinalResult();
+            } catch (ManagementException exception) {
+                exceptionOnFinalResult = true;
+
+                ManagementError managementError = exception.getValue();
+                Assertions.assertEquals("DeploymentFailed", managementError.getCode());
+                Assertions.assertNotNull(managementError.getMessage());
+            }
+            Assertions.assertTrue(exceptionOnFinalResult);
+
+            // check operations
+            deployment = resourceClient.deployments().getByResourceGroup(newRgName, dp2);
+            Assertions.assertEquals("Failed", deployment.provisioningState());
+            PagedIterable<DeploymentOperation> operations = deployment.deploymentOperations().list();
+            Optional<DeploymentOperation> failedOperation = operations.stream()
+                .filter(o -> "Failed".equalsIgnoreCase(o.provisioningState())).findFirst();
+            Assertions.assertTrue(failedOperation.isPresent());
+            Assertions.assertEquals("Conflict", failedOperation.get().statusCode());
+
+            // check poll result again, should stay failed
+            Assertions.assertEquals(LongRunningOperationStatus.FAILED, acceptedDeployment.getSyncPoller().poll().getStatus());
+            exceptionOnFinalResult = false;
+            try {
+                deployment = acceptedDeployment.getFinalResult();
+            } catch (ManagementException exception) {
+                exceptionOnFinalResult = true;
+            }
+            Assertions.assertTrue(exceptionOnFinalResult);
+        } finally {
+            resourceClient.resourceGroups().beginDeleteByName(newRgName);
+        }
     }
 }
