@@ -26,6 +26,7 @@ import org.apache.qpid.proton.amqp.transport.SenderSettleMode;
 import org.apache.qpid.proton.engine.Receiver;
 import org.apache.qpid.proton.engine.Session;
 import reactor.core.publisher.Mono;
+import reactor.core.publisher.SignalType;
 
 import java.time.Duration;
 import java.util.HashMap;
@@ -116,14 +117,7 @@ class ServiceBusReactorSession extends ReactorSession implements ServiceBusSessi
                 transferEntityPath);
 
             return tokenManager.authorize()
-                /*.then(Mono.defer(() -> {
-                    tokenManager.close();
-                    return Mono.empty();
-                }))*/
-                .doFinally(signalType -> {
-                    logger.verbose("!!!! signalType " + signalType);
-                    tokenManager.close();
-                })
+                .doFinally(signalType -> tokenManager.close())
                 .then(createProducer(linkName, entityPath, timeout, retry, linkProperties));
         } else {
             logger.verbose("Get or create sender link {} for entity path: '{}'", linkName, entityPath);
