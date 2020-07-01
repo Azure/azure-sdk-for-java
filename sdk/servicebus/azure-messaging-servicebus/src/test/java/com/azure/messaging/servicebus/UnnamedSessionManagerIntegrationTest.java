@@ -14,11 +14,13 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import reactor.core.Disposable;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -63,11 +65,12 @@ class UnnamedSessionManagerIntegrationTest extends IntegrationTestBase {
     @MethodSource("com.azure.messaging.servicebus.IntegrationTestBase#messagingEntityProvider")
     void singleUnnamedSession(MessagingEntityType entityType) {
         // Arrange
-        final int entityIndex = 0;
+        final int entityIndex = TestUtils.USE_CASE_SINGLE_SESSION;
         final String messageId = "singleUnnamedSession";
         final String sessionId = "singleUnnamedSession-" + Instant.now().toString();
         final String contents = "Some-contents";
         final int numberToSend = 5;
+        final List<String> lockTokens = new ArrayList<>();
 
         setSenderAndReceiver(entityType, entityIndex, TIMEOUT,
             builder -> builder.maxAutoLockRenewalDuration(Duration.ofMinutes(2)));
@@ -92,10 +95,13 @@ class UnnamedSessionManagerIntegrationTest extends IntegrationTestBase {
                 .assertNext(context -> assertMessageEquals(sessionId, messageId, contents, context))
                 .assertNext(context -> assertMessageEquals(sessionId, messageId, contents, context))
                 .assertNext(context -> assertMessageEquals(sessionId, messageId, contents, context))
-                .expectComplete()
+                .thenCancel()
                 .verify(Duration.ofMinutes(2));
         } finally {
             subscription.dispose();
+            Mono.when(lockTokens.stream().map(e -> receiver.complete(e, sessionId))
+                .collect(Collectors.toList()))
+                .block(TIMEOUT);
         }
     }
 
@@ -105,7 +111,7 @@ class UnnamedSessionManagerIntegrationTest extends IntegrationTestBase {
     @Test
     void multipleSessions() {
         // Arrange
-        final int entityIndex = 0;
+        final int entityIndex = TestUtils.USE_CASE_MULTIPLE_SESSION;
         final String messageId = "singleUnnamedSession";
         final String now = Instant.now().toString();
         final List<String> sessionIds = IntStream.range(0, 3)

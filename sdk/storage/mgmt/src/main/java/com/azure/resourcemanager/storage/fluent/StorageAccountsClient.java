@@ -31,7 +31,6 @@ import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.util.polling.AsyncPollResponse;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
@@ -727,7 +726,7 @@ public final class StorageAccountsClient
         String resourceGroupName, String accountName, StorageAccountCreateParameters parameters) {
         return beginCreateAsync(resourceGroupName, accountName, parameters)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -752,7 +751,7 @@ public final class StorageAccountsClient
         String resourceGroupName, String accountName, StorageAccountCreateParameters parameters, Context context) {
         return beginCreateAsync(resourceGroupName, accountName, parameters, context)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -2774,7 +2773,7 @@ public final class StorageAccountsClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> failoverAsync(String resourceGroupName, String accountName) {
-        return beginFailoverAsync(resourceGroupName, accountName).last().flatMap(AsyncPollResponse::getFinalResult);
+        return beginFailoverAsync(resourceGroupName, accountName).last().flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -2796,7 +2795,7 @@ public final class StorageAccountsClient
     public Mono<Void> failoverAsync(String resourceGroupName, String accountName, Context context) {
         return beginFailoverAsync(resourceGroupName, accountName, context)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -3081,7 +3080,7 @@ public final class StorageAccountsClient
         String resourceGroupName, String accountName, OffsetDateTime timeToRestore, List<BlobRestoreRange> blobRanges) {
         return beginRestoreBlobRangesAsync(resourceGroupName, accountName, timeToRestore, blobRanges)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -3108,7 +3107,7 @@ public final class StorageAccountsClient
         Context context) {
         return beginRestoreBlobRangesAsync(resourceGroupName, accountName, timeToRestore, blobRanges, context)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**

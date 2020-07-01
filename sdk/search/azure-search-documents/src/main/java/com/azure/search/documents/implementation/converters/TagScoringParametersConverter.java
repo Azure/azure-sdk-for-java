@@ -18,11 +18,7 @@ public final class TagScoringParametersConverter {
         if (obj == null) {
             return null;
         }
-        TagScoringParameters tagScoringParameters = new TagScoringParameters();
-
-        String tagsParameter = obj.getTagsParameter();
-        tagScoringParameters.setTagsParameter(tagsParameter);
-        return tagScoringParameters;
+        return new TagScoringParameters(obj.getTagsParameter());
     }
 
     /**
@@ -34,10 +30,8 @@ public final class TagScoringParametersConverter {
             return null;
         }
         com.azure.search.documents.indexes.implementation.models.TagScoringParameters tagScoringParameters =
-            new com.azure.search.documents.indexes.implementation.models.TagScoringParameters();
-
-        String tagsParameter = obj.getTagsParameter();
-        tagScoringParameters.setTagsParameter(tagsParameter);
+            new com.azure.search.documents.indexes.implementation.models.TagScoringParameters(obj.getTagsParameter());
+        tagScoringParameters.validate();
         return tagScoringParameters;
     }
 

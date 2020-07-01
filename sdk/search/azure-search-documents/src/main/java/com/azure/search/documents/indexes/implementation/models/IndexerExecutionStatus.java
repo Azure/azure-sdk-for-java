@@ -9,33 +9,21 @@ package com.azure.search.documents.indexes.implementation.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/**
- * Defines values for IndexerExecutionStatus.
- */
+/** Defines values for IndexerExecutionStatus. */
 public enum IndexerExecutionStatus {
-    /**
-     * Enum value transientFailure.
-     */
+    /** Enum value transientFailure. */
     TRANSIENT_FAILURE("transientFailure"),
 
-    /**
-     * Enum value success.
-     */
+    /** Enum value success. */
     SUCCESS("success"),
 
-    /**
-     * Enum value inProgress.
-     */
+    /** Enum value inProgress. */
     IN_PROGRESS("inProgress"),
 
-    /**
-     * Enum value reset.
-     */
+    /** Enum value reset. */
     RESET("reset");
 
-    /**
-     * The actual serialized value for a IndexerExecutionStatus instance.
-     */
+    /** The actual serialized value for a IndexerExecutionStatus instance. */
     private final String value;
 
     IndexerExecutionStatus(String value) {

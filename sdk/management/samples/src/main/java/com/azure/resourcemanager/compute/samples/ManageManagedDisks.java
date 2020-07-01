@@ -181,7 +181,7 @@ public final class ManageManagedDisks {
                     .withNewPrimaryNetwork("10.0.0.0/28")
                     .withPrimaryPrivateIPAddressDynamic()
                     .withoutPrimaryPublicIPAddress()
-                    .withLinuxCustomImage(virtualMachineCustomImage.id())
+                    .withGeneralizedLinuxCustomImage(virtualMachineCustomImage.id())
                     .withRootUsername(userName)
                     .withSsh(sshkey)
                     .withSize(VirtualMachineSizeTypes.STANDARD_D3_V2)

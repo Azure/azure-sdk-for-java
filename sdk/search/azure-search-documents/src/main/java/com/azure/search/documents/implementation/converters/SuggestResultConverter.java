@@ -18,13 +18,11 @@ public final class SuggestResultConverter {
         if (obj == null) {
             return null;
         }
-        SuggestResult suggestResult = new SuggestResult();
+        SuggestResult suggestResult = new SuggestResult(obj.getText());
 
         SearchDocument additionalProperties = new SearchDocument(obj.getAdditionalProperties());
         PrivateFieldAccessHelper.set(suggestResult, "additionalProperties", additionalProperties);
 
-        String text = obj.getText();
-        PrivateFieldAccessHelper.set(suggestResult, "text", text);
         return suggestResult;
     }
 
@@ -36,13 +34,11 @@ public final class SuggestResultConverter {
             return null;
         }
         com.azure.search.documents.implementation.models.SuggestResult suggestResult =
-            new com.azure.search.documents.implementation.models.SuggestResult();
+            new com.azure.search.documents.implementation.models.SuggestResult(obj.getText());
 
         SearchDocument additionalProperties = obj.getDocument(SearchDocument.class);
         PrivateFieldAccessHelper.set(suggestResult, "additionalProperties", additionalProperties);
-
-        String text = obj.getText();
-        PrivateFieldAccessHelper.set(suggestResult, "text", text);
+        suggestResult.validate();
         return suggestResult;
     }
 

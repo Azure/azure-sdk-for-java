@@ -198,6 +198,10 @@
 
   <!-- Suppress external dependency Checkstyle on serialization packages -->
   <suppress checks="com.azure.tools.checkstyle.checks.ExternalDependencyExposedCheck"
+            files="com.azure.core.serializer.avro.apache.ApacheAvroSerializerBuilder"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.ExternalDependencyExposedCheck"
+            files="com.azure.core.serializer.avro.jackson.JacksonAvroSerializerBuilder"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.ExternalDependencyExposedCheck"
             files="com.azure.core.serializer.json.gson.GsonJsonSerializerBuilder"/>
   <suppress checks="com.azure.tools.checkstyle.checks.ExternalDependencyExposedCheck"
             files="com.azure.core.serializer.json.jackson.JacksonJsonSerializerBuilder"/>
@@ -242,6 +246,8 @@
   <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck" files="com.azure.core.util.serializer.SerializerEncoding.java"/>
   <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck" files="com.azure.core.util.serializer.GeometryDeserializer.java"/>
   <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck" files="com.azure.core.util.serializer.GeometrySerializer.java"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck" files="com.azure.core.serializer.json.gson.JsonNodeUtils.java"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck" files="com.azure.core.serializer.json.jackson.JsonNodeUtils.java"/>
 
   <!-- Azure Core Test -->
   <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck" files=".*[/\\]core[/\\]test[/\\].*\.java"/>
@@ -345,7 +351,7 @@
             files="com.azure.storage.blob.BlobClient.java"/>
 
   <!-- Checkstyle rules should not check files in generated-test-sources -->
-  <suppress checks="[a-zA-Z0-9]*" files="[/\\]generated-test-sources[/\\]"/>
+  <suppress checks="[a-zA-Z0-9]*" files="[/\\](generated-test-sources|generatedtestsources)[/\\]"/>
 
   <!-- Allows the HttpPipelinePolicy derived class in Implementation folder -->
   <suppress checks="com.azure.tools.checkstyle.checks.HttpPipelinePolicy" files="com.azure.messaging.servicebus.implementation.ServiceBusTokenCredentialHttpPolicy.java"/>
@@ -460,6 +466,10 @@
   <!-- The variables are assigned by jcommander annotation injection framework, cannot be made final. -->
   <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck"
             files="com.azure.perf.test.core.PerfStressOptions.java"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck"
+            files="com.microsoft.azure.spring.data.cosmosdb.config.AbstractCosmosConfiguration.java"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck"
+            files="com.microsoft.azure.spring.data.cosmosdb.core.query.CosmosPageRequest.java"/>
 
   <!-- Checkstyle suppressions for azure-test-watch package -->
   <suppress checks="com.azure.tools.checkstyle.checks.ExternalDependencyExposedCheck" files="com.azure.testing.AzureTestWatcher.java"/>
@@ -467,4 +477,9 @@
 
   <!-- Checkstyle suppressions for resource manager package -->
   <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files="com.azure.resourcemanager.*"/>
+  <!-- Checkstyle suppressions for spring-data-cosmosdb package -->
+  <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck|ExternalDependencyExposedCheck|ThrowFromClientLoggerCheck" files="com.microsoft.azure.spring.data.cosmosdb.*\.java"/>
+  <suppress checks="MethodName|MemberName|ParameterName|VisibilityModifier" files="com.microsoft.azure.spring.data.cosmosdb.domain|repository|config.*\.java"/>
+  <suppress checks="ConstantName" files="com.microsoft.azure.spring.data.cosmosdb.repository|common.*\.java" />
+
 </suppressions>

@@ -11,8 +11,8 @@ import com.azure.messaging.servicebus.models.ReceiveMode;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Tag;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -46,6 +46,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
     private final ClientLogger logger = new ClientLogger(ServiceBusReceiverAsyncClientIntegrationTest.class);
     private final AtomicInteger messagesPending = new AtomicInteger();
+    private final List<Long> messagesDeferredPending = new ArrayList<>();
 
     private ServiceBusReceiverAsyncClient receiver;
     private ServiceBusSenderAsyncClient sender;
@@ -67,24 +68,43 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
 
     @Override
     protected void afterTest() {
-        sharedBuilder =  null;
+        sharedBuilder = null;
         final int pending = messagesPending.get();
-        if (pending < 1) {
+        final int pendingDeferred = messagesDeferredPending.size();
+        if (pending < 1 && pendingDeferred < 1) {
             dispose(receiver, sender, receiveAndDeleteReceiver);
             return;
         }
 
         // In the case that this test failed... we're going to drain the queue or subscription.
         try {
-            receiveAndDeleteReceiver.receive()
-                .map(message -> {
-                    logger.info("Message received: {}", message.getMessage().getSequenceNumber());
-                    return message;
-                })
-                .timeout(Duration.ofSeconds(15), Mono.empty())
-                .blockLast();
+            if (pending > 0) {
+                receiveAndDeleteReceiver.receive()
+                    .map(message -> {
+                        logger.info("Message received: {}", message.getMessage().getSequenceNumber());
+                        return message;
+                    })
+                    .timeout(Duration.ofSeconds(15), Mono.empty())
+                    .blockLast();
+            }
         } catch (Exception e) {
             logger.warning("Error occurred when draining queue.", e);
+        }
+
+        try {
+            if (pendingDeferred > 0) {
+                for (Long sequenceNumber : messagesDeferredPending) {
+                    receiveAndDeleteReceiver.receiveDeferredMessage(sequenceNumber)
+                        .map(message -> {
+                            logger.info("Message received: {}", message.getSequenceNumber());
+                            return message;
+                        })
+                        .timeout(Duration.ofSeconds(15), Mono.empty())
+                        .block();
+                }
+            }
+        } catch (Exception e) {
+            logger.warning("Error occurred when draining for deferred messages.", e);
         } finally {
             dispose(receiver, sender, receiveAndDeleteReceiver);
         }
@@ -138,7 +158,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         assertNotNull(receivedMessage);
 
         // Assert & Act
-        StepVerifier.create(receiver.complete(receivedMessage, transaction.get()))
+        StepVerifier.create(receiver.complete(receivedMessage.getLockToken(), transaction.get()))
             .verifyComplete();
 
         StepVerifier.create(receiver.rollbackTransaction(transaction.get()))
@@ -176,13 +196,13 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
             })
             .verifyComplete();
 
-        AtomicReference<MessageLockToken> messageLockToken = new AtomicReference<>();
+        AtomicReference<String> messageLockToken = new AtomicReference<>();
 
         // receive a message and get lock token.
         StepVerifier.create(receiver.receive().next()
             .map(messageContext -> {
                 ServiceBusReceivedMessage received =  messageContext.getMessage();
-                messageLockToken.set(MessageLockToken.fromString(received.getLockToken()));
+                messageLockToken.set(received.getLockToken());
                 return messageContext;
             }))
             .assertNext(receivedMessage -> assertMessageEquals(receivedMessage, messageId, isSessionEnabled))
@@ -212,7 +232,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
 
         // Arrange
         final MessagingEntityType entityType = MessagingEntityType.QUEUE;
-        setSenderAndReceiver(entityType, 0, isSessionEnabled);
+        setSenderAndReceiver(entityType, TestUtils.USE_CASE_PEEK_TRANSACTION_SENDRECEIVE_AND_COMPLETE, isSessionEnabled);
 
         final String messageId1 = UUID.randomUUID().toString();
         final ServiceBusMessage message1 = getMessage(messageId1, isSessionEnabled);
@@ -240,19 +260,19 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         final Mono<Void> operation;
         switch (dispositionStatus) {
             case COMPLETED:
-                operation = receiver.complete(receivedMessage, transaction.get());
+                operation = receiver.complete(receivedMessage.getLockToken(), transaction.get());
                 messagesPending.decrementAndGet();
                 break;
             case ABANDONED:
-                operation = receiver.abandon(receivedMessage, null, transaction.get());
+                operation = receiver.abandon(receivedMessage.getLockToken(), null, transaction.get());
                 break;
             case SUSPENDED:
                 DeadLetterOptions deadLetterOptions = new DeadLetterOptions().setDeadLetterReason(deadLetterReason);
-                operation = receiver.deadLetter(receivedMessage, deadLetterOptions, transaction.get());
+                operation = receiver.deadLetter(receivedMessage.getLockToken(), deadLetterOptions, transaction.get());
                 messagesPending.decrementAndGet();
                 break;
             case DEFERRED:
-                operation = receiver.defer(receivedMessage, null, transaction.get());
+                operation = receiver.defer(receivedMessage.getLockToken(), null, transaction.get());
                 break;
             default:
                 throw logger.logExceptionAsError(new IllegalArgumentException(
@@ -264,6 +284,10 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
 
         StepVerifier.create(receiver.commitTransaction(transaction.get()))
             .verifyComplete();
+
+        if (dispositionStatus == DispositionStatus.DEFERRED) {
+            messagesDeferredPending.add(receivedMessage.getSequenceNumber());
+        }
     }
 
     /**
@@ -301,7 +325,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         final ServiceBusReceivedMessage receivedMessage = receivedContext.getMessage();
         assertNotNull(receivedMessage);
 
-        StepVerifier.create(receiver.complete(receivedMessage, transaction.get()))
+        StepVerifier.create(receiver.complete(receivedMessage.getLockToken(), transaction.get()))
             .verifyComplete();
 
         StepVerifier.create(sender.commitTransaction(transaction.get()))
@@ -478,8 +502,9 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
                 })
                 .verifyComplete();
         } finally {
-            receiver.complete(receivedMessage)
+            receiver.complete(receivedMessage.getLockToken())
                 .block(Duration.ofSeconds(10));
+            messagesPending.decrementAndGet();
         }
     }
 
@@ -542,7 +567,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
     @ParameterizedTest
     void peekBatchMessagesFromSequence(MessagingEntityType entityType) {
         // Arrange
-        setSenderAndReceiver(entityType, 5, false);
+        setSenderAndReceiver(entityType, TestUtils.USE_CASE_PEEK_MESSAGE_FROM_SEQUENCE, false);
 
         final String messageId = UUID.randomUUID().toString();
         final ServiceBusMessage message = getMessage(messageId, false);
@@ -578,7 +603,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         assertNotNull(receivedMessage);
 
         // Assert & Act
-        StepVerifier.create(receiver.deadLetter(receivedMessage))
+        StepVerifier.create(receiver.deadLetter(receivedMessage.getLockToken()))
             .verifyComplete();
 
         messagesPending.decrementAndGet();
@@ -602,7 +627,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         assertNotNull(receivedMessage);
 
         // Assert & Act
-        StepVerifier.create(receiver.complete(receivedMessage))
+        StepVerifier.create(receiver.complete(receivedMessage.getLockToken()))
             .verifyComplete();
 
         messagesPending.decrementAndGet();
@@ -636,7 +661,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         // Assert & Act
         try {
             StepVerifier.create(Mono.delay(Duration.ofSeconds(7))
-                .then(Mono.defer(() -> receiver.renewMessageLock(receivedMessage))))
+                .then(Mono.defer(() -> receiver.renewMessageLock(receivedMessage.getLockToken()))))
                 .assertNext(lockedUntil -> {
                     assertTrue(lockedUntil.isAfter(initialLock),
                         String.format("Updated lock is not after the initial Lock. updated: [%s]. initial:[%s]",
@@ -648,7 +673,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         } finally {
             logger.info("Completing message. Seq: {}.", receivedMessage.getSequenceNumber());
 
-            receiver.complete(receivedMessage)
+            receiver.complete(receivedMessage.getLockToken())
                 .doOnSuccess(aVoid -> messagesPending.decrementAndGet())
                 .block(TIMEOUT);
         }
@@ -703,7 +728,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
                         "Latest should be after or equal to initial. initial: %s. latest: %s", initial, latest));
                 } finally {
                     logger.info("Completing message.");
-                    receiver.complete(received).block(Duration.ofSeconds(15));
+                    receiver.complete(received.getLockToken()).block(Duration.ofSeconds(15));
                     messagesPending.decrementAndGet();
                 }
             })
@@ -730,15 +755,17 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         assertNotNull(receivedMessage);
 
         // Assert & Act
-        StepVerifier.create(receiver.abandon(receivedMessage))
+        StepVerifier.create(receiver.abandon(receivedMessage.getLockToken()))
             .verifyComplete();
+
+        messagesPending.decrementAndGet();
     }
 
     @MethodSource("com.azure.messaging.servicebus.IntegrationTestBase#messagingEntityWithSessions")
     @ParameterizedTest
     void receiveAndDefer(MessagingEntityType entityType, boolean isSessionEnabled) {
         // Arrange
-        setSenderAndReceiver(entityType, 0, isSessionEnabled);
+        setSenderAndReceiver(entityType, TestUtils.USE_CASE_PEEK_RECEIVE_AND_DEFER, isSessionEnabled);
 
         final String messageId = UUID.randomUUID().toString();
         final ServiceBusMessage message = getMessage(messageId, isSessionEnabled);
@@ -753,8 +780,12 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         assertNotNull(receivedMessage);
 
         // Act & Assert
-        StepVerifier.create(receiver.defer(receivedMessage))
+        StepVerifier.create(receiver.defer(receivedMessage.getLockToken()))
             .verifyComplete();
+
+        messagesPending.decrementAndGet();
+        completeDeferredMessages(receiver, receivedMessage);
+
     }
 
     /**
@@ -775,7 +806,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         final ServiceBusReceivedMessage receivedMessage = receivedContext.getMessage();
         assertNotNull(receivedMessage);
 
-        receiver.defer(receivedMessage).block(TIMEOUT);
+        receiver.defer(receivedMessage.getLockToken()).block(TIMEOUT);
 
         final ServiceBusReceivedMessage receivedDeferredMessage = receiver
             .receiveDeferredMessage(receivedMessage.getSequenceNumber())
@@ -787,13 +818,14 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         final Mono<Void> operation;
         switch (dispositionStatus) {
             case ABANDONED:
-                operation = receiver.abandon(receivedDeferredMessage);
+                operation = receiver.abandon(receivedDeferredMessage.getLockToken());
+                messagesDeferredPending.add(receivedDeferredMessage.getSequenceNumber());
                 break;
             case SUSPENDED:
-                operation = receiver.deadLetter(receivedDeferredMessage);
+                operation = receiver.deadLetter(receivedDeferredMessage.getLockToken());
                 break;
             case COMPLETED:
-                operation = receiver.complete(receivedDeferredMessage);
+                operation = receiver.complete(receivedDeferredMessage.getLockToken());
                 break;
             default:
                 throw logger.logExceptionAsError(new IllegalArgumentException(
@@ -805,7 +837,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
             .expectComplete()
             .verify();
 
-        if (dispositionStatus == DispositionStatus.ABANDONED || dispositionStatus == DispositionStatus.COMPLETED) {
+        if (dispositionStatus != DispositionStatus.COMPLETED) {
             messagesPending.decrementAndGet();
         }
     }
@@ -876,11 +908,15 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         sendMessage(messageToSend).block(Duration.ofSeconds(10));
 
         // Act
+        AtomicReference<String> messageLockToken = new AtomicReference<>();
+        AtomicReference<String> session = new AtomicReference<>();
         StepVerifier.create(receiver.receive()
             .take(1)
             .flatMap(m -> {
                 logger.info("SessionId: {}. LockToken: {}. LockedUntil: {}. Message received.",
                     m.getSessionId(), m.getMessage().getLockToken(), m.getMessage().getLockedUntil());
+                messageLockToken.set(m.getMessage().getLockToken());
+                session.set(m.getSessionId());
                 return receiver.setSessionState(sessionId, sessionState);
             }))
             .expectComplete()
@@ -892,6 +928,9 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
                 assertArrayEquals(sessionState, state);
             })
             .verifyComplete();
+
+        receiver.complete(messageLockToken.get(), session.get()).block(Duration.ofSeconds(15));
+        messagesPending.decrementAndGet();
     }
 
     @MethodSource("com.azure.messaging.servicebus.IntegrationTestBase#messagingEntityProvider")
@@ -982,10 +1021,18 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
     }
 
     private int completeMessages(ServiceBusReceiverAsyncClient client, List<String> lockTokens) {
-        Mono.when(lockTokens.stream().map(e -> client.complete(MessageLockToken.fromString(e)))
+        Mono.when(lockTokens.stream().map(e -> client.complete(e))
             .collect(Collectors.toList()))
             .block(TIMEOUT);
 
         return lockTokens.size();
     }
+
+    private void completeDeferredMessages(ServiceBusReceiverAsyncClient client, ServiceBusReceivedMessage receivedMessage) {
+        final ServiceBusReceivedMessage receivedDeferredMessage = client
+            .receiveDeferredMessage(receivedMessage.getSequenceNumber())
+            .block(TIMEOUT);
+        receiver.complete(receivedDeferredMessage.getLockToken()).block(TIMEOUT);
+    }
+
 }

@@ -254,7 +254,7 @@ receiver.receive(10).forEach(context -> {
     ServiceBusReceivedMessage message = context.getMessage();
 
     // Process message and then complete it.
-    receiver.complete(message);
+    receiver.complete(message.getLockToken());
 });
 ```
 

@@ -28,7 +28,6 @@ import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.util.polling.AsyncPollResponse;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.resourcemanager.sql.SqlManagementClient;
 import com.azure.resourcemanager.sql.fluent.inner.ExtendedServerBlobAuditingPolicyInner;
@@ -515,7 +514,7 @@ public final class ExtendedServerBlobAuditingPoliciesClient {
                 ExtendedServerBlobAuditingPolicyInner.class,
                 ExtendedServerBlobAuditingPolicyInner.class)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -547,7 +546,7 @@ public final class ExtendedServerBlobAuditingPoliciesClient {
                 ExtendedServerBlobAuditingPolicyInner.class,
                 ExtendedServerBlobAuditingPolicyInner.class)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**

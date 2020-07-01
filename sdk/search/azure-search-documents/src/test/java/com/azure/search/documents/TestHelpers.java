@@ -12,7 +12,6 @@ import com.azure.core.util.Configuration;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.search.documents.implementation.SerializationUtil;
-import com.azure.search.documents.models.RequestOptions;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -37,7 +36,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
-import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -56,20 +54,21 @@ public final class TestHelpers {
     public static final String SQL_DATASOURCE_NAME = "azs-java-test-sql";
     public static final String ISO8601_FORMAT = "yyyy-MM-dd'T'HH:mm:ss'Z'";
 
-//    public static final ObjectMapper MAPPER;
-//    static {
-//
-//    }
-
     public static PointGeometry createPointGeometry(Double latitude, Double longitude) {
-        return new PointGeometry(new GeometryPosition(longitude, latitude),
-            null, Collections.singletonMap("crs", new HashMap<String, Object>() {
-                {
-                    put("type", "name");
-                    put("properties", Collections.singletonMap("name", "EPSG:4326"));
-                }}));
+        return new PointGeometry(new GeometryPosition(longitude, latitude), null, Collections.singletonMap("crs", new HashMap<String, Object>() {
+            {
+                put("type", "name");
+                put("properties", Collections.singletonMap("name", "EPSG:4326"));
+            }
+        }));
     }
 
+    private static final ObjectMapper MAPPER;
+
+    static {
+        MAPPER = new JacksonAdapter().serializer();
+        SerializationUtil.configureMapper(MAPPER);
+    }
     /**
      * Assert whether two objects are equal.
      *
@@ -231,10 +230,6 @@ public final class TestHelpers {
         }
     }
 
-    public static RequestOptions generateRequestOptions() {
-        return new RequestOptions().setClientRequestId(UUID.randomUUID());
-    }
-
     public static void waitForIndexing() {
         // Wait 2 seconds to allow index request to finish.
         sleepIfRunningAgainstService(3000);
@@ -298,9 +293,6 @@ public final class TestHelpers {
     private static List<Map<String, Object>> readJsonFileToList(String filename) {
         Reader reader = new InputStreamReader(Objects.requireNonNull(TestHelpers.class.getClassLoader()
             .getResourceAsStream(filename)));
-        ObjectMapper MAPPER = new JacksonAdapter().serializer();
-//        SerializationUtil.configureMapper(MAPPER);
-        SerializationUtil.configureMapper(MAPPER);
         try {
             return MAPPER.readValue(reader, new TypeReference<List<Map<String, Object>>>() { });
         } catch (IOException e) {

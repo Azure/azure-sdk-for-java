@@ -30,7 +30,6 @@ import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.util.polling.AsyncPollResponse;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.resourcemanager.appservice.WebSiteManagementClient;
 import com.azure.resourcemanager.appservice.fluent.inner.AppServiceCertificateCollectionInner;
@@ -1236,7 +1235,7 @@ public final class AppServiceCertificateOrdersClient
                 AppServiceCertificateOrderInner.class,
                 AppServiceCertificateOrderInner.class)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -1268,7 +1267,7 @@ public final class AppServiceCertificateOrdersClient
                 AppServiceCertificateOrderInner.class,
                 AppServiceCertificateOrderInner.class)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -2259,7 +2258,7 @@ public final class AppServiceCertificateOrdersClient
                 AppServiceCertificateResourceInner.class,
                 AppServiceCertificateResourceInner.class)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -2293,7 +2292,7 @@ public final class AppServiceCertificateOrdersClient
                 AppServiceCertificateResourceInner.class,
                 AppServiceCertificateResourceInner.class)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**

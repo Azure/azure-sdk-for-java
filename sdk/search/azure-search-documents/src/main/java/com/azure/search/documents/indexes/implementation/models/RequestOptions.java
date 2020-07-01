@@ -10,20 +10,17 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.UUID;
 
-/**
- * Additional parameters for a set of operations.
- */
+/** The RequestOptions model. */
 @Fluent
 public final class RequestOptions {
     /*
      * The tracking ID sent with the request to help with debugging.
      */
-    @JsonProperty(value = "")
+    @JsonProperty(value = "x-ms-client-request-id")
     private UUID xMsClientRequestId;
 
     /**
-     * Get the xMsClientRequestId property: The tracking ID sent with the
-     * request to help with debugging.
+     * Get the xMsClientRequestId property: The tracking ID sent with the request to help with debugging.
      *
      * @return the xMsClientRequestId value.
      */
@@ -32,8 +29,7 @@ public final class RequestOptions {
     }
 
     /**
-     * Set the xMsClientRequestId property: The tracking ID sent with the
-     * request to help with debugging.
+     * Set the xMsClientRequestId property: The tracking ID sent with the request to help with debugging.
      *
      * @param xMsClientRequestId the xMsClientRequestId value to set.
      * @return the RequestOptions object itself.
@@ -42,4 +38,11 @@ public final class RequestOptions {
         this.xMsClientRequestId = xMsClientRequestId;
         return this;
     }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {}
 }

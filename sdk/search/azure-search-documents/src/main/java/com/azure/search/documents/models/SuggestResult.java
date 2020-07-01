@@ -6,6 +6,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.search.documents.SearchDocument;
 import com.azure.search.documents.implementation.SerializationUtil;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -34,6 +35,18 @@ public final class SuggestResult {
      */
     @JsonProperty(value = "@search.text", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private String text;
+
+    /**
+     * Constructor of {@link SuggestResult}.
+     *
+     * @param text The text of the suggestion result.
+     */
+    @JsonCreator
+    public SuggestResult(
+        @JsonProperty(value = "@search.text", required = true, access = JsonProperty.Access.WRITE_ONLY)
+            String text) {
+        this.text = text;
+    }
 
     /**
      * Get the additionalProperties property: Unmatched properties from the

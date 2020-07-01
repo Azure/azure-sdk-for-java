@@ -57,8 +57,6 @@ class ServiceBusReceiverClientTest {
     @Mock
     private ServiceBusReceiverAsyncClient asyncClient;
     @Mock
-    private MessageLockToken messageLockToken;
-    @Mock
     private Map<String, Object> propertiesToModify;
     @Mock
     ServiceBusTransactionContext transactionContext;
@@ -71,8 +69,6 @@ class ServiceBusReceiverClientTest {
         when(asyncClient.getFullyQualifiedNamespace()).thenReturn(NAMESPACE);
         when(asyncClient.getReceiverOptions()).thenReturn(new ReceiverOptions(ReceiveMode.PEEK_LOCK, 1,
             maxAutoLockRenewalDuration));
-
-        when(messageLockToken.getLockToken()).thenReturn(LOCK_TOKEN);
 
         client = new ServiceBusReceiverClient(asyncClient, OPERATION_TIMEOUT);
     }
@@ -97,10 +93,10 @@ class ServiceBusReceiverClientTest {
     @Test
     void abandonMessageWithTransaction() {
         // Arrange
-        when(asyncClient.abandon(any(MessageLockToken.class), isNull(), any(ServiceBusTransactionContext.class))).thenReturn(Mono.empty());
+        when(asyncClient.abandon(eq(LOCK_TOKEN), isNull(), any(ServiceBusTransactionContext.class))).thenReturn(Mono.empty());
 
         // Act
-        client.abandon(messageLockToken, null, transactionContext);
+        client.abandon(LOCK_TOKEN, null, transactionContext);
 
         // Assert
         verify(asyncClient).abandon(argThat(ServiceBusReceiverClientTest::lockTokenEquals), isNull(), eq(transactionContext));
@@ -109,10 +105,10 @@ class ServiceBusReceiverClientTest {
     @Test
     void abandonMessage() {
         // Arrange
-        when(asyncClient.abandon(any(MessageLockToken.class))).thenReturn(Mono.empty());
+        when(asyncClient.abandon(eq(LOCK_TOKEN))).thenReturn(Mono.empty());
 
         // Act
-        client.abandon(messageLockToken);
+        client.abandon(LOCK_TOKEN);
 
         // Assert
         verify(asyncClient).abandon(argThat(ServiceBusReceiverClientTest::lockTokenEquals));
@@ -121,11 +117,11 @@ class ServiceBusReceiverClientTest {
     @Test
     void abandonMessageWithProperties() {
         // Arrange
-        when(asyncClient.abandon(any(MessageLockToken.class), anyMap())).thenReturn(Mono.empty());
-        when(asyncClient.abandon(any(MessageLockToken.class), any(), anyString())).thenReturn(Mono.empty());
+        when(asyncClient.abandon(eq(LOCK_TOKEN), anyMap())).thenReturn(Mono.empty());
+        when(asyncClient.abandon(eq(LOCK_TOKEN), any(), anyString())).thenReturn(Mono.empty());
 
         // Act
-        client.abandon(messageLockToken, propertiesToModify);
+        client.abandon(LOCK_TOKEN, propertiesToModify);
 
         // Assert
         verify(asyncClient).abandon(argThat(ServiceBusReceiverClientTest::lockTokenEquals), eq(propertiesToModify));
@@ -134,10 +130,10 @@ class ServiceBusReceiverClientTest {
     @Test
     void completeMessageWithTransaction() {
         // Arrange
-        when(asyncClient.complete(any(MessageLockToken.class), any(ServiceBusTransactionContext.class))).thenReturn(Mono.empty());
+        when(asyncClient.complete(eq(LOCK_TOKEN), any(ServiceBusTransactionContext.class))).thenReturn(Mono.empty());
 
         // Act
-        client.complete(messageLockToken, transactionContext);
+        client.complete(LOCK_TOKEN, transactionContext);
 
         // Assert
         verify(asyncClient).complete(argThat(ServiceBusReceiverClientTest::lockTokenEquals), eq(transactionContext));
@@ -146,10 +142,10 @@ class ServiceBusReceiverClientTest {
     @Test
     void completeMessage() {
         // Arrange
-        when(asyncClient.complete(any(MessageLockToken.class))).thenReturn(Mono.empty());
+        when(asyncClient.complete(eq(LOCK_TOKEN))).thenReturn(Mono.empty());
 
         // Act
-        client.complete(messageLockToken);
+        client.complete(LOCK_TOKEN);
 
         // Assert
         verify(asyncClient).complete(argThat(ServiceBusReceiverClientTest::lockTokenEquals));
@@ -158,10 +154,10 @@ class ServiceBusReceiverClientTest {
     @Test
     void deferMessage() {
         // Arrange
-        when(asyncClient.defer(any(MessageLockToken.class))).thenReturn(Mono.empty());
+        when(asyncClient.defer(eq(LOCK_TOKEN))).thenReturn(Mono.empty());
 
         // Act
-        client.defer(messageLockToken);
+        client.defer(LOCK_TOKEN);
 
         // Assert
         verify(asyncClient).defer(argThat(ServiceBusReceiverClientTest::lockTokenEquals));
@@ -170,11 +166,11 @@ class ServiceBusReceiverClientTest {
     @Test
     void deferMessageWithPropertiesWithTransaction() {
         // Arrange
-        when(asyncClient.defer(any(MessageLockToken.class), anyMap(), any(ServiceBusTransactionContext.class))).thenReturn(Mono.empty());
-        when(asyncClient.defer(any(MessageLockToken.class), any(), anyString(), any(ServiceBusTransactionContext.class))).thenReturn(Mono.empty());
+        when(asyncClient.defer(eq(LOCK_TOKEN), anyMap(), any(ServiceBusTransactionContext.class))).thenReturn(Mono.empty());
+        when(asyncClient.defer(eq(LOCK_TOKEN), any(), anyString(), any(ServiceBusTransactionContext.class))).thenReturn(Mono.empty());
 
         // Act
-        client.defer(messageLockToken, propertiesToModify, transactionContext);
+        client.defer(LOCK_TOKEN, propertiesToModify, transactionContext);
 
         // Assert
         verify(asyncClient).defer(argThat(ServiceBusReceiverClientTest::lockTokenEquals), eq(propertiesToModify), eq(transactionContext));
@@ -183,11 +179,11 @@ class ServiceBusReceiverClientTest {
     @Test
     void deferMessageWithProperties() {
         // Arrange
-        when(asyncClient.defer(any(MessageLockToken.class), anyMap())).thenReturn(Mono.empty());
-        when(asyncClient.defer(any(MessageLockToken.class), any(), anyString())).thenReturn(Mono.empty());
+        when(asyncClient.defer(eq(LOCK_TOKEN), anyMap())).thenReturn(Mono.empty());
+        when(asyncClient.defer(eq(LOCK_TOKEN), any(), anyString())).thenReturn(Mono.empty());
 
         // Act
-        client.defer(messageLockToken, propertiesToModify);
+        client.defer(LOCK_TOKEN, propertiesToModify);
 
         // Assert
         verify(asyncClient).defer(argThat(ServiceBusReceiverClientTest::lockTokenEquals), eq(propertiesToModify));
@@ -196,10 +192,10 @@ class ServiceBusReceiverClientTest {
     @Test
     void deadLetterMessage() {
         // Arrange
-        when(asyncClient.deadLetter(any(MessageLockToken.class))).thenReturn(Mono.empty());
+        when(asyncClient.deadLetter(eq(LOCK_TOKEN))).thenReturn(Mono.empty());
 
         // Act
-        client.deadLetter(messageLockToken);
+        client.deadLetter(LOCK_TOKEN);
 
         // Assert
         verify(asyncClient).deadLetter(argThat(ServiceBusReceiverClientTest::lockTokenEquals));
@@ -213,11 +209,11 @@ class ServiceBusReceiverClientTest {
             .setDeadLetterReason("bar")
             .setPropertiesToModify(propertiesToModify);
 
-        when(asyncClient.deadLetter(any(MessageLockToken.class), any(DeadLetterOptions.class), any(ServiceBusTransactionContext.class)))
+        when(asyncClient.deadLetter(eq(LOCK_TOKEN), any(DeadLetterOptions.class), any(ServiceBusTransactionContext.class)))
             .thenReturn(Mono.empty());
 
         // Act
-        client.deadLetter(messageLockToken, options, transactionContext);
+        client.deadLetter(LOCK_TOKEN, options, transactionContext);
 
         // Assert
         verify(asyncClient).deadLetter(argThat(ServiceBusReceiverClientTest::lockTokenEquals), eq(options), eq(transactionContext));
@@ -231,11 +227,11 @@ class ServiceBusReceiverClientTest {
             .setDeadLetterReason("bar")
             .setPropertiesToModify(propertiesToModify);
 
-        when(asyncClient.deadLetter(any(MessageLockToken.class), any(DeadLetterOptions.class)))
+        when(asyncClient.deadLetter(eq(LOCK_TOKEN), any(DeadLetterOptions.class)))
             .thenReturn(Mono.empty());
 
         // Act
-        client.deadLetter(messageLockToken, options);
+        client.deadLetter(LOCK_TOKEN, options);
 
         // Assert
         verify(asyncClient).deadLetter(argThat(ServiceBusReceiverClientTest::lockTokenEquals), eq(options));
@@ -617,10 +613,10 @@ class ServiceBusReceiverClientTest {
     void renewMessageLock() {
         // Arrange
         final Instant response = Instant.ofEpochSecond(1585259339);
-        when(asyncClient.renewMessageLock(messageLockToken)).thenReturn(Mono.just(response));
+        when(asyncClient.renewMessageLock(LOCK_TOKEN)).thenReturn(Mono.just(response));
 
         // Act
-        final Instant actual = client.renewMessageLock(messageLockToken);
+        final Instant actual = client.renewMessageLock(LOCK_TOKEN);
 
         // Assert
         assertEquals(response, actual);
@@ -654,7 +650,7 @@ class ServiceBusReceiverClientTest {
         verify(asyncClient).setSessionState(sessionId, contents);
     }
 
-    private static boolean lockTokenEquals(MessageLockToken compared) {
-        return compared != null && LOCK_TOKEN.equals(compared.getLockToken());
+    private static boolean lockTokenEquals(String compared) {
+        return compared != null && LOCK_TOKEN.equals(compared);
     }
 }

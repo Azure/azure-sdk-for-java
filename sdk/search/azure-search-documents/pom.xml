@@ -16,11 +16,10 @@
 
   <groupId>com.azure</groupId>
   <artifactId>azure-search-documents</artifactId>
-  <version>1.0.0-beta.5</version> <!-- {x-version-update;com.azure:azure-search-documents;current} -->
+  <version>11.0.0</version> <!-- {x-version-update;com.azure:azure-search-documents;current} -->
   <packaging>jar</packaging>
 
   <properties>
-    <project.automatic.module.name>com.azure.search</project.automatic.module.name>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
   </properties>

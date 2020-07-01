@@ -187,9 +187,9 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      * @throws NullPointerException if {@code lockToken} is null.
      * @throws UnsupportedOperationException if the receiver was opened in {@link ReceiveMode#RECEIVE_AND_DELETE}
      *     mode.
-     * @throws IllegalArgumentException if {@link MessageLockToken#getLockToken()} returns a null lock token.
+     * @throws IllegalArgumentException if {@code lockToken} is an empty value.
      */
-    public Mono<Void> abandon(MessageLockToken lockToken) {
+    public Mono<Void> abandon(String lockToken) {
         return abandon(lockToken, receiverOptions.getSessionId());
     }
 
@@ -204,9 +204,9 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      * @throws NullPointerException if {@code lockToken} is null.
      * @throws UnsupportedOperationException if the receiver was opened in {@link ReceiveMode#RECEIVE_AND_DELETE}
      *     mode.
-     * @throws IllegalArgumentException if {@link MessageLockToken#getLockToken()} returns a null lock token.
+     * @throws IllegalArgumentException if {@code lockToken} is an empty value.
      */
-    public Mono<Void> abandon(MessageLockToken lockToken, String sessionId) {
+    public Mono<Void> abandon(String lockToken, String sessionId) {
         return abandon(lockToken, null, sessionId);
     }
 
@@ -222,9 +222,9 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      * @throws NullPointerException if {@code lockToken} is null.
      * @throws UnsupportedOperationException if the receiver was opened in {@link ReceiveMode#RECEIVE_AND_DELETE}
      *     mode.
-     * @throws IllegalArgumentException if {@link MessageLockToken#getLockToken()} returns a null lock token.
+     * @throws IllegalArgumentException if {@code lockToken} is an empty value.
      */
-    public Mono<Void> abandon(MessageLockToken lockToken, Map<String, Object> propertiesToModify) {
+    public Mono<Void> abandon(String lockToken, Map<String, Object> propertiesToModify) {
         return abandon(lockToken, propertiesToModify, receiverOptions.getSessionId());
     }
 
@@ -246,9 +246,9 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      * {@code transactionContext.transactionId} is null.
      * @throws UnsupportedOperationException if the receiver was opened in {@link ReceiveMode#RECEIVE_AND_DELETE}
      *     mode.
-     * @throws IllegalArgumentException if {@link MessageLockToken#getLockToken()} returns a null lock token.
+     * @throws IllegalArgumentException if {@code lockToken} is an empty value.
      */
-    public Mono<Void> abandon(MessageLockToken lockToken, Map<String, Object> propertiesToModify,
+    public Mono<Void> abandon(String lockToken, Map<String, Object> propertiesToModify,
         ServiceBusTransactionContext transactionContext) {
         return abandon(lockToken, propertiesToModify, receiverOptions.getSessionId(), transactionContext);
     }
@@ -266,9 +266,9 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      * @throws NullPointerException if {@code lockToken} is null.
      * @throws UnsupportedOperationException if the receiver was opened in {@link ReceiveMode#RECEIVE_AND_DELETE}
      *     mode.
-     * @throws IllegalArgumentException if {@link MessageLockToken#getLockToken()} returns a null lock token.
+     * @throws IllegalArgumentException if {@code lockToken} is an empty value.
      */
-    public Mono<Void> abandon(MessageLockToken lockToken, Map<String, Object> propertiesToModify, String sessionId) {
+    public Mono<Void> abandon(String lockToken, Map<String, Object> propertiesToModify, String sessionId) {
         return updateDisposition(lockToken, DispositionStatus.ABANDONED, null, null,
             propertiesToModify, sessionId, null);
     }
@@ -289,9 +289,9 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      * {@code transactionContext.transactionId} is null.
      * @throws UnsupportedOperationException if the receiver was opened in {@link ReceiveMode#RECEIVE_AND_DELETE}
      *     mode.
-     * @throws IllegalArgumentException if {@link MessageLockToken#getLockToken()} returns a null lock token.
+     * @throws IllegalArgumentException if {@code lockToken} is an empty value.
      */
-    public Mono<Void> abandon(MessageLockToken lockToken, Map<String, Object> propertiesToModify, String sessionId,
+    public Mono<Void> abandon(String lockToken, Map<String, Object> propertiesToModify, String sessionId,
         ServiceBusTransactionContext transactionContext) {
         if (Objects.isNull(transactionContext)) {
             return monoError(logger, new NullPointerException("'transactionContext' cannot be null."));
@@ -312,15 +312,11 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      * @throws NullPointerException if {@code lockToken} is null.
      * @throws UnsupportedOperationException if the receiver was opened in {@link ReceiveMode#RECEIVE_AND_DELETE}
      * mode.
-     * @throws IllegalArgumentException if {@link MessageLockToken#getLockToken()} returns a null lock token.
+     * @throws IllegalArgumentException if {@code lockToken} is an empty value.
      */
-    public Mono<Void> complete(MessageLockToken lockToken) {
-        if (lockToken instanceof ServiceBusReceivedMessage) {
-            return complete(lockToken, ((ServiceBusReceivedMessage) lockToken).getSessionId());
-        } else {
-            return updateDisposition(lockToken, DispositionStatus.COMPLETED, null, null,
-                null, null, null);
-        }
+    public Mono<Void> complete(String lockToken) {
+        return updateDisposition(lockToken, DispositionStatus.COMPLETED, null, null,
+            null, receiverOptions.getSessionId(), null);
     }
 
     /**
@@ -339,9 +335,9 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      * {@code transactionContext.transactionId} is null.
      * @throws UnsupportedOperationException if the receiver was opened in {@link ReceiveMode#RECEIVE_AND_DELETE}
      *     mode.
-     * @throws IllegalArgumentException if {@link MessageLockToken#getLockToken()} returns a null lock token.
+     * @throws IllegalArgumentException if {@code lockToken} is an empty value.
      */
-    public Mono<Void> complete(MessageLockToken lockToken, ServiceBusTransactionContext transactionContext) {
+    public Mono<Void> complete(String lockToken, ServiceBusTransactionContext transactionContext) {
         return complete(lockToken, receiverOptions.getSessionId(), transactionContext);
     }
 
@@ -356,9 +352,9 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      * @throws NullPointerException if {@code lockToken} is null.
      * @throws UnsupportedOperationException if the receiver was opened in {@link ReceiveMode#RECEIVE_AND_DELETE}
      *     mode.
-     * @throws IllegalArgumentException if {@link MessageLockToken#getLockToken()} returns a null lock token.
+     * @throws IllegalArgumentException if {@code lockToken} is an empty value.
      */
-    public Mono<Void> complete(MessageLockToken lockToken, String sessionId) {
+    public Mono<Void> complete(String lockToken, String sessionId) {
         return updateDisposition(lockToken, DispositionStatus.COMPLETED, null, null,
             null, sessionId, null);
     }
@@ -378,9 +374,9 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      * {@code transactionContext.transactionId} is null.
      * @throws UnsupportedOperationException if the receiver was opened in {@link ReceiveMode#RECEIVE_AND_DELETE}
      *     mode.
-     * @throws IllegalArgumentException if {@link MessageLockToken#getLockToken()} returns a null lock token.
+     * @throws IllegalArgumentException if {@code lockToken} is an empty value.
      */
-    public Mono<Void> complete(MessageLockToken lockToken, String sessionId,
+    public Mono<Void> complete(String lockToken, String sessionId,
         ServiceBusTransactionContext transactionContext) {
         if (Objects.isNull(transactionContext)) {
             return monoError(logger, new NullPointerException("'transactionContext' cannot be null."));
@@ -401,10 +397,10 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      * @throws NullPointerException if {@code lockToken} is null.
      * @throws UnsupportedOperationException if the receiver was opened in {@link ReceiveMode#RECEIVE_AND_DELETE}
      *     mode.
-     * @throws IllegalArgumentException if {@link MessageLockToken#getLockToken()} returns a null lock token.
+     * @throws IllegalArgumentException if {@code lockToken} is an empty value.
      * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/message-deferral">Message deferral</a>
      */
-    public Mono<Void> defer(MessageLockToken lockToken) {
+    public Mono<Void> defer(String lockToken) {
         return defer(lockToken, receiverOptions.getSessionId());
     }
 
@@ -419,10 +415,10 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      * @throws NullPointerException if {@code lockToken} is null.
      * @throws UnsupportedOperationException if the receiver was opened in {@link ReceiveMode#RECEIVE_AND_DELETE}
      *     mode.
-     * @throws IllegalArgumentException if {@link MessageLockToken#getLockToken()} returns a null lock token.
+     * @throws IllegalArgumentException if {@code lockToken} is an empty value.
      * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/message-deferral">Message deferral</a>
      */
-    public Mono<Void> defer(MessageLockToken lockToken, String sessionId) {
+    public Mono<Void> defer(String lockToken, String sessionId) {
         return defer(lockToken, null, sessionId);
     }
 
@@ -437,10 +433,10 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      * @throws NullPointerException if {@code lockToken} is null.
      * @throws UnsupportedOperationException if the receiver was opened in {@link ReceiveMode#RECEIVE_AND_DELETE}
      *     mode.
-     * @throws IllegalArgumentException if {@link MessageLockToken#getLockToken()} returns a null lock token.
+     * @throws IllegalArgumentException if {@code lockToken} is an empty value.
      * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/message-deferral">Message deferral</a>
      */
-    public Mono<Void> defer(MessageLockToken lockToken, Map<String, Object> propertiesToModify) {
+    public Mono<Void> defer(String lockToken, Map<String, Object> propertiesToModify) {
         return defer(lockToken, propertiesToModify, receiverOptions.getSessionId());
     }
 
@@ -459,10 +455,10 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      * {@code transactionContext.transactionId} is null.
      * @throws UnsupportedOperationException if the receiver was opened in {@link ReceiveMode#RECEIVE_AND_DELETE}
      *     mode.
-     * @throws IllegalArgumentException if {@link MessageLockToken#getLockToken()} returns a null lock token.
+     * @throws IllegalArgumentException if {@code lockToken} is an empty value.
      * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/message-deferral">Message deferral</a>
      */
-    public Mono<Void> defer(MessageLockToken lockToken, Map<String, Object> propertiesToModify,
+    public Mono<Void> defer(String lockToken, Map<String, Object> propertiesToModify,
         ServiceBusTransactionContext transactionContext) {
         return defer(lockToken, propertiesToModify, receiverOptions.getSessionId(), transactionContext);
     }
@@ -479,10 +475,10 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      * @throws NullPointerException if {@code lockToken} is null.
      * @throws UnsupportedOperationException if the receiver was opened in {@link ReceiveMode#RECEIVE_AND_DELETE}
      *     mode.
-     * @throws IllegalArgumentException if {@link MessageLockToken#getLockToken()} returns a null lock token.
+     * @throws IllegalArgumentException if {@code lockToken} is an empty value.
      * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/message-deferral">Message deferral</a>
      */
-    public Mono<Void> defer(MessageLockToken lockToken, Map<String, Object> propertiesToModify, String sessionId) {
+    public Mono<Void> defer(String lockToken, Map<String, Object> propertiesToModify, String sessionId) {
         return updateDisposition(lockToken, DispositionStatus.DEFERRED, null, null,
             propertiesToModify, sessionId, null);
     }
@@ -503,10 +499,10 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      * {@code transactionContext.transactionId} is null.
      * @throws UnsupportedOperationException if the receiver was opened in {@link ReceiveMode#RECEIVE_AND_DELETE}
      *     mode.
-     * @throws IllegalArgumentException if {@link MessageLockToken#getLockToken()} returns a null lock token.
+     * @throws IllegalArgumentException if {@code lockToken} is an empty value.
      * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/message-deferral">Message deferral</a>
      */
-    public Mono<Void> defer(MessageLockToken lockToken, Map<String, Object> propertiesToModify, String sessionId,
+    public Mono<Void> defer(String lockToken, Map<String, Object> propertiesToModify, String sessionId,
         ServiceBusTransactionContext transactionContext) {
         if (Objects.isNull(transactionContext)) {
             return monoError(logger, new NullPointerException("'transactionContext' cannot be null."));
@@ -526,11 +522,11 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      * @throws NullPointerException if {@code lockToken} is null.
      * @throws UnsupportedOperationException if the receiver was opened in {@link ReceiveMode#RECEIVE_AND_DELETE}
      *     mode.
-     * @throws IllegalArgumentException if {@link MessageLockToken#getLockToken()} returns a null lock token.
+     * @throws IllegalArgumentException if {@code lockToken} is an empty value.
      * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/service-bus-dead-letter-queues">Dead letter
      *     queues</a>
      */
-    public Mono<Void> deadLetter(MessageLockToken lockToken) {
+    public Mono<Void> deadLetter(String lockToken) {
         return deadLetter(lockToken, receiverOptions.getSessionId());
     }
 
@@ -544,11 +540,11 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      * @throws NullPointerException if {@code lockToken} is null.
      * @throws UnsupportedOperationException if the receiver was opened in {@link ReceiveMode#RECEIVE_AND_DELETE}
      *     mode.
-     * @throws IllegalArgumentException if {@link MessageLockToken#getLockToken()} returns a null lock token.
+     * @throws IllegalArgumentException if {@code lockToken} is an empty value.
      * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/service-bus-dead-letter-queues">Dead letter
      *     queues</a>
      */
-    public Mono<Void> deadLetter(MessageLockToken lockToken, String sessionId) {
+    public Mono<Void> deadLetter(String lockToken, String sessionId) {
         return deadLetter(lockToken, DEFAULT_DEAD_LETTER_OPTIONS, sessionId);
     }
 
@@ -566,11 +562,11 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      * {@code transactionContext.transactionId} is null.
      * @throws UnsupportedOperationException if the receiver was opened in {@link ReceiveMode#RECEIVE_AND_DELETE}
      *     mode.
-     * @throws IllegalArgumentException if {@link MessageLockToken#getLockToken()} returns a null lock token.
+     * @throws IllegalArgumentException if {@code lockToken} is an empty value.
      * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/service-bus-dead-letter-queues">Dead letter
      *     queues</a>
      */
-    public Mono<Void> deadLetter(MessageLockToken lockToken, String sessionId,
+    public Mono<Void> deadLetter(String lockToken, String sessionId,
         ServiceBusTransactionContext transactionContext) {
         return deadLetter(lockToken, DEFAULT_DEAD_LETTER_OPTIONS, sessionId, transactionContext);
     }
@@ -586,9 +582,9 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      * @throws NullPointerException if {@code lockToken} or {@code deadLetterOptions} is null.
      * @throws UnsupportedOperationException if the receiver was opened in {@link ReceiveMode#RECEIVE_AND_DELETE}
      *     mode.
-     * @throws IllegalArgumentException if {@link MessageLockToken#getLockToken()} returns a null lock token.
+     * @throws IllegalArgumentException if {@code lockToken} is an empty value.
      */
-    public Mono<Void> deadLetter(MessageLockToken lockToken, DeadLetterOptions deadLetterOptions) {
+    public Mono<Void> deadLetter(String lockToken, DeadLetterOptions deadLetterOptions) {
         return deadLetter(lockToken, deadLetterOptions, receiverOptions.getSessionId());
     }
 
@@ -607,9 +603,9 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      * {@code transactionContext.transactionId} is null.
      * @throws UnsupportedOperationException if the receiver was opened in {@link ReceiveMode#RECEIVE_AND_DELETE}
      *     mode.
-     * @throws IllegalArgumentException if {@link MessageLockToken#getLockToken()} returns a null lock token.
+     * @throws IllegalArgumentException if {@code lockToken} is an empty value.
      */
-    public Mono<Void> deadLetter(MessageLockToken lockToken, DeadLetterOptions deadLetterOptions,
+    public Mono<Void> deadLetter(String lockToken, DeadLetterOptions deadLetterOptions,
         ServiceBusTransactionContext transactionContext) {
         return deadLetter(lockToken, deadLetterOptions, receiverOptions.getSessionId(), transactionContext);
     }
@@ -626,9 +622,9 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      * @throws NullPointerException if {@code lockToken} is null.
      * @throws UnsupportedOperationException if the receiver was opened in {@link ReceiveMode#RECEIVE_AND_DELETE}
      *     mode.
-     * @throws IllegalArgumentException if {@link MessageLockToken#getLockToken()} returns a null lock token.
+     * @throws IllegalArgumentException if {@code lockToken} is an empty value.
      */
-    public Mono<Void> deadLetter(MessageLockToken lockToken, DeadLetterOptions deadLetterOptions, String sessionId) {
+    public Mono<Void> deadLetter(String lockToken, DeadLetterOptions deadLetterOptions, String sessionId) {
         if (Objects.isNull(deadLetterOptions)) {
             return monoError(logger, new NullPointerException("'deadLetterOptions' cannot be null."));
         }
@@ -653,9 +649,9 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      * @throws NullPointerException if {@code lockToken} is null.
      * @throws UnsupportedOperationException if the receiver was opened in {@link ReceiveMode#RECEIVE_AND_DELETE}
      *     mode.
-     * @throws IllegalArgumentException if {@link MessageLockToken#getLockToken()} returns a null lock token.
+     * @throws IllegalArgumentException if {@code lockToken} is an empty value.
      */
-    public Mono<Void> deadLetter(MessageLockToken lockToken, DeadLetterOptions deadLetterOptions, String sessionId,
+    public Mono<Void> deadLetter(String lockToken, DeadLetterOptions deadLetterOptions, String sessionId,
         ServiceBusTransactionContext transactionContext) {
         if (Objects.isNull(transactionContext)) {
             return monoError(logger, new NullPointerException("'transactionContext' cannot be null."));
@@ -1014,34 +1010,26 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      * @throws UnsupportedOperationException if the receiver was opened in {@link ReceiveMode#RECEIVE_AND_DELETE}
      *     mode.
      * @throws IllegalStateException if the receiver is a session receiver.
-     * @throws IllegalArgumentException if {@link MessageLockToken#getLockToken()} returns an empty value.
+     * @throws IllegalArgumentException if {@code lockToken} is an empty value.
      */
-    public Mono<Instant> renewMessageLock(MessageLockToken lockToken) {
+    public Mono<Instant> renewMessageLock(String lockToken) {
         if (isDisposed.get()) {
             return monoError(logger, new IllegalStateException(
                 String.format(INVALID_OPERATION_DISPOSED_RECEIVER, "renewMessageLock")));
         } else if (Objects.isNull(lockToken)) {
-            return monoError(logger, new NullPointerException("'receivedMessage' cannot be null."));
-        } else if (Objects.isNull(lockToken.getLockToken())) {
-            return monoError(logger, new NullPointerException("'receivedMessage.lockToken' cannot be null."));
-        } else if (lockToken.getLockToken().isEmpty()) {
-            return monoError(logger, new IllegalArgumentException("'message.lockToken' cannot be empty."));
+            return monoError(logger, new NullPointerException("'lockToken' cannot be null."));
+        } else if (lockToken.isEmpty()) {
+            return monoError(logger, new IllegalArgumentException("'lockToken' cannot be empty."));
         } else if (receiverOptions.isSessionReceiver()) {
             return monoError(logger, new IllegalStateException(
-                String.format("Cannot renew message lock [%s] for a session receiver.", lockToken.getLockToken())));
+                String.format("Cannot renew message lock [%s] for a session receiver.", lockToken)));
         }
 
         return connectionProcessor
             .flatMap(connection -> connection.getManagementNode(entityPath, entityType))
             .flatMap(serviceBusManagementNode ->
-                serviceBusManagementNode.renewMessageLock(lockToken.getLockToken(), getLinkName(null)))
-            .map(instant -> {
-                if (lockToken instanceof ServiceBusReceivedMessage) {
-                    ((ServiceBusReceivedMessage) lockToken).setLockedUntil(instant);
-                }
-
-                return managementNodeLocks.addOrUpdate(lockToken.getLockToken(), instant);
-            });
+                serviceBusManagementNode.renewMessageLock(lockToken, getLinkName(null)))
+            .map(instant -> managementNodeLocks.addOrUpdate(lockToken, instant));
     }
 
     /**
@@ -1206,40 +1194,26 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
         return managementNodeLocks.contains(lockToken);
     }
 
-    private Mono<Void> updateDisposition(MessageLockToken message, DispositionStatus dispositionStatus,
+    private Mono<Void> updateDisposition(String lockToken, DispositionStatus dispositionStatus,
         String deadLetterReason, String deadLetterErrorDescription, Map<String, Object> propertiesToModify,
         String sessionId, ServiceBusTransactionContext transactionContext) {
 
         if (isDisposed.get()) {
             return monoError(logger, new IllegalStateException(
                 String.format(INVALID_OPERATION_DISPOSED_RECEIVER, dispositionStatus.getValue())));
-        } else if (Objects.isNull(message)) {
-            return monoError(logger, new NullPointerException("'receivedMessage' cannot be null."));
-        } else if (Objects.isNull(message.getLockToken())) {
-            return monoError(logger, new NullPointerException("'receivedMessage.lockToken' cannot be null."));
-        } else if (message.getLockToken().isEmpty()) {
-            return monoError(logger, new IllegalArgumentException("'message.lockToken' cannot be empty."));
+        } else if (Objects.isNull(lockToken)) {
+            return monoError(logger, new NullPointerException("'lockToken' cannot be null."));
+        } else if (lockToken.isEmpty()) {
+            return monoError(logger, new IllegalArgumentException("'lockToken' cannot be empty."));
         }
 
         if (receiverOptions.getReceiveMode() != ReceiveMode.PEEK_LOCK) {
             return Mono.error(logger.logExceptionAsError(new UnsupportedOperationException(String.format(
                 "'%s' is not supported on a receiver opened in ReceiveMode.RECEIVE_AND_DELETE.", dispositionStatus))));
-        } else if (Objects.isNull(message.getLockToken())) {
-            return monoError(logger, new NullPointerException("'receivedMessage.lockToken' cannot be null."));
-        } else if (message.getLockToken().isEmpty()) {
-            return monoError(logger, new IllegalArgumentException("'message.lockToken' cannot be empty."));
         }
 
-        final String lockToken = message.getLockToken();
         final String sessionIdToUse;
-        if (message instanceof ServiceBusReceivedMessage) {
-            sessionIdToUse = ((ServiceBusReceivedMessage) message).getSessionId();
-            if (!CoreUtils.isNullOrEmpty(sessionIdToUse) && !CoreUtils.isNullOrEmpty(sessionId)
-                && !sessionIdToUse.equals(sessionId)) {
-                logger.warning("Given sessionId '{}' does not match message's sessionId '{}'",
-                    sessionId, sessionIdToUse);
-            }
-        } else if (sessionId == null && !CoreUtils.isNullOrEmpty(receiverOptions.getSessionId())) {
+        if (sessionId == null && !CoreUtils.isNullOrEmpty(receiverOptions.getSessionId())) {
             sessionIdToUse = receiverOptions.getSessionId();
         } else {
             sessionIdToUse = sessionId;
@@ -1260,7 +1234,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
             }));
 
         if (unnamedSessionManager != null) {
-            return unnamedSessionManager.updateDisposition(message, sessionId, dispositionStatus, propertiesToModify,
+            return unnamedSessionManager.updateDisposition(lockToken, sessionId, dispositionStatus, propertiesToModify,
                 deadLetterReason, deadLetterErrorDescription, transactionContext)
                 .flatMap(isSuccess -> {
                     if (isSuccess) {
@@ -1340,17 +1314,11 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
     /**
      * Renews the message lock, and updates its value in the container.
      */
-    private Mono<Instant> renewMessageLock(MessageLockToken lockToken, String linkName) {
+    private Mono<Instant> renewMessageLock(String lockToken, String linkName) {
         return connectionProcessor
             .flatMap(connection -> connection.getManagementNode(entityPath, entityType))
             .flatMap(serviceBusManagementNode ->
-                serviceBusManagementNode.renewMessageLock(lockToken.getLockToken(), linkName))
-            .map(instant -> {
-                if (lockToken instanceof ServiceBusReceivedMessage) {
-                    ((ServiceBusReceivedMessage) lockToken).setLockedUntil(instant);
-                }
-                return instant;
-            });
+                serviceBusManagementNode.renewMessageLock(lockToken, linkName));
     }
 
     /**
