@@ -35,7 +35,7 @@ public class PurchasePlan {
     private String product;
 
     /**
-     * Get the publisher value.
+     * Get the publisher ID.
      *
      * @return the publisher value
      */
@@ -44,7 +44,7 @@ public class PurchasePlan {
     }
 
     /**
-     * Set the publisher value.
+     * Set the publisher ID.
      *
      * @param publisher the publisher value to set
      * @return the PurchasePlan object itself.
@@ -55,7 +55,7 @@ public class PurchasePlan {
     }
 
     /**
-     * Get the name value.
+     * Get the plan ID.
      *
      * @return the name value
      */
@@ -64,7 +64,7 @@ public class PurchasePlan {
     }
 
     /**
-     * Set the name value.
+     * Set the plan ID.
      *
      * @param name the name value to set
      * @return the PurchasePlan object itself.
@@ -75,7 +75,7 @@ public class PurchasePlan {
     }
 
     /**
-     * Get the product value.
+     * Get specifies the product of the image from the marketplace. This is the same value as Offer under the imageReference element.
      *
      * @return the product value
      */
@@ -84,7 +84,7 @@ public class PurchasePlan {
     }
 
     /**
-     * Set the product value.
+     * Set specifies the product of the image from the marketplace. This is the same value as Offer under the imageReference element.
      *
      * @param product the product value to set
      * @return the PurchasePlan object itself.
