@@ -52,11 +52,10 @@ public final class AnalyzedTokenInfo {
      */
     @JsonCreator
     public AnalyzedTokenInfo(
-        @JsonProperty(value = "token", required = true, access = JsonProperty.Access.WRITE_ONLY) String token,
-        @JsonProperty(value = "startOffset", required = true, access = JsonProperty.Access.WRITE_ONLY)
-            int startOffset,
-        @JsonProperty(value = "endOffset", required = true, access = JsonProperty.Access.WRITE_ONLY) int endOffset,
-        @JsonProperty(value = "position", required = true, access = JsonProperty.Access.WRITE_ONLY) int position) {
+        @JsonProperty(value = "token") String token,
+        @JsonProperty(value = "startOffset") int startOffset,
+        @JsonProperty(value = "endOffset") int endOffset,
+        @JsonProperty(value = "position") int position) {
         this.token = token;
         this.startOffset = startOffset;
         this.endOffset = endOffset;

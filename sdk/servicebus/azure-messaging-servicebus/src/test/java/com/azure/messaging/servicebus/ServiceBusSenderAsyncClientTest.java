@@ -289,7 +289,7 @@ class ServiceBusSenderAsyncClientTest {
         when(sendLink.send(anyList(), any(DeliveryState.class))).thenReturn(Mono.empty());
 
         // Act
-        StepVerifier.create(sender.send(batch, transactionContext))
+        StepVerifier.create(sender.sendMessages(batch, transactionContext))
             .verifyComplete();
 
         // Assert
@@ -326,7 +326,7 @@ class ServiceBusSenderAsyncClientTest {
             .thenReturn(Mono.just(sendLink));
         when(sendLink.send(anyList())).thenReturn(Mono.empty());
         // Act
-        StepVerifier.create(sender.send(batch))
+        StepVerifier.create(sender.sendMessages(batch))
             .verifyComplete();
 
         // Assert
@@ -353,7 +353,7 @@ class ServiceBusSenderAsyncClientTest {
         when(sendLink.send(anyList(), any(DeliveryState.class))).thenReturn(Mono.empty());
 
         // Act
-        StepVerifier.create(sender.send(messages, transactionContext))
+        StepVerifier.create(sender.sendMessages(messages, transactionContext))
             .verifyComplete();
 
         // Assert
@@ -385,7 +385,7 @@ class ServiceBusSenderAsyncClientTest {
         when(sendLink.send(anyList())).thenReturn(Mono.empty());
 
         // Act
-        StepVerifier.create(sender.send(messages))
+        StepVerifier.create(sender.sendMessages(messages))
             .verifyComplete();
 
         // Assert
@@ -412,7 +412,7 @@ class ServiceBusSenderAsyncClientTest {
         when(sendLink.getLinkSize()).thenReturn(linkMaxSize);
 
         // Act & Assert
-        StepVerifier.create(sender.send(messages))
+        StepVerifier.create(sender.sendMessages(messages))
             .verifyErrorMatches(error -> error instanceof AmqpException
                 && ((AmqpException) error).getErrorCondition() == AmqpErrorCondition.LINK_PAYLOAD_SIZE_EXCEEDED);
 
@@ -434,7 +434,7 @@ class ServiceBusSenderAsyncClientTest {
         when(sendLink.send(any(org.apache.qpid.proton.message.Message.class), any(DeliveryState.class))).thenReturn(Mono.empty());
 
         // Act
-        StepVerifier.create(sender.send(testData, transactionContext))
+        StepVerifier.create(sender.sendMessage(testData, transactionContext))
             .verifyComplete();
 
         // Assert
@@ -468,7 +468,7 @@ class ServiceBusSenderAsyncClientTest {
         when(sendLink.send(any(org.apache.qpid.proton.message.Message.class))).thenReturn(Mono.empty());
 
         // Act
-        StepVerifier.create(sender.send(testData))
+        StepVerifier.create(sender.sendMessage(testData))
             .verifyComplete();
 
         // Assert

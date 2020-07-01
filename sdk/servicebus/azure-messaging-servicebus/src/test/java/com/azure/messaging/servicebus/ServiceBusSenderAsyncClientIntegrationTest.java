@@ -57,7 +57,7 @@ class ServiceBusSenderAsyncClientIntegrationTest extends IntegrationTestBase {
         }
 
         try {
-            receiver.receive()
+            receiver.receiveMessages()
                 .take(numberOfMessages)
                 .map(message -> {
                     logger.info("Message received: {}", message.getMessage().getSequenceNumber());
@@ -92,7 +92,7 @@ class ServiceBusSenderAsyncClientIntegrationTest extends IntegrationTestBase {
         final ServiceBusMessage message = TestUtils.getServiceBusMessage(CONTENTS_BYTES, messageId);
 
         // Assert & Act
-        StepVerifier.create(sender.send(message).doOnSuccess(aVoid -> messagesPending.incrementAndGet()))
+        StepVerifier.create(sender.sendMessage(message).doOnSuccess(aVoid -> messagesPending.incrementAndGet()))
             .verifyComplete();
     }
 
@@ -109,7 +109,7 @@ class ServiceBusSenderAsyncClientIntegrationTest extends IntegrationTestBase {
         final List<ServiceBusMessage> messages = TestUtils.getServiceBusMessages(count, UUID.randomUUID().toString(), CONTENTS_BYTES);
 
         // Assert & Act
-        StepVerifier.create(sender.send(messages).doOnSuccess(aVoid -> {
+        StepVerifier.create(sender.sendMessages(messages).doOnSuccess(aVoid -> {
             messages.forEach(serviceBusMessage -> messagesPending.incrementAndGet());
         }))
             .verifyComplete();
@@ -135,7 +135,7 @@ class ServiceBusSenderAsyncClientIntegrationTest extends IntegrationTestBase {
                     Assertions.assertTrue(batch.tryAdd(message));
                 }
 
-                return sender.send(batch).doOnSuccess(aVoid -> messagesPending.incrementAndGet());
+                return sender.sendMessages(batch).doOnSuccess(aVoid -> messagesPending.incrementAndGet());
             }))
             .verifyComplete();
     }
@@ -242,12 +242,12 @@ class ServiceBusSenderAsyncClientIntegrationTest extends IntegrationTestBase {
         assertNotNull(transaction.get());
 
         // Assert & Act
-        StepVerifier.create(sender.send(messages, transaction.get()))
+        StepVerifier.create(sender.sendMessages(messages, transaction.get()))
             .verifyComplete();
         if (isCommit) {
             StepVerifier.create(sender.commitTransaction(transaction.get()).delaySubscription(Duration.ofSeconds(1)))
                 .verifyComplete();
-            StepVerifier.create(receiver.receive().take(total).timeout(shortTimeout))
+            StepVerifier.create(receiver.receiveMessages().take(total).timeout(shortTimeout))
                 .assertNext(receivedMessage -> {
                     assertMessageEquals(receivedMessage, messageId, isSessionEnabled);
                     messagesPending.decrementAndGet();
@@ -264,7 +264,7 @@ class ServiceBusSenderAsyncClientIntegrationTest extends IntegrationTestBase {
         } else {
             StepVerifier.create(sender.rollbackTransaction(transaction.get()).delaySubscription(Duration.ofSeconds(1)))
                 .verifyComplete();
-            StepVerifier.create(receiver.receive().take(total))
+            StepVerifier.create(receiver.receiveMessages().take(total))
                 .verifyTimeout(shortTimeout);
         }
     }
@@ -286,7 +286,7 @@ class ServiceBusSenderAsyncClientIntegrationTest extends IntegrationTestBase {
             .flatMap(batch -> {
                 messages.forEach(m -> Assertions.assertTrue(batch.tryAdd(m)));
 
-                return sender.send(batch).doOnSuccess(aVoid -> messagesPending.incrementAndGet());
+                return sender.sendMessages(batch).doOnSuccess(aVoid -> messagesPending.incrementAndGet());
             }))
             .expectComplete()
             .verify();
@@ -323,7 +323,7 @@ class ServiceBusSenderAsyncClientIntegrationTest extends IntegrationTestBase {
 
         StepVerifier.create(sender.commitTransaction(transaction.get()))
             .verifyComplete();
-        StepVerifier.create(Mono.delay(scheduleDuration).then(receiver.receive().next()))
+        StepVerifier.create(Mono.delay(scheduleDuration).then(receiver.receiveMessages().next()))
             .assertNext(receivedMessage -> {
                 assertMessageEquals(receivedMessage, messageId, isSessionEnabled);
                 messagesPending.decrementAndGet();
