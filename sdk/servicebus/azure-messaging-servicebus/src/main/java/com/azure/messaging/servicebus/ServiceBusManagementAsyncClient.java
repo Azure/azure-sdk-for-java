@@ -716,6 +716,110 @@ public final class ServiceBusManagementAsyncClient {
     }
 
     /**
+     * Gets whether or not a queue with {@code queueName} exists in the Service Bus namespace.
+     *
+     * @param queueName Name of the queue.
+     *
+     * @return A Mono that completes indicating whether or not the queue exists.
+     * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
+     *     namespace.
+     * @throws HttpResponseException If error occurred processing the request.
+     * @throws IllegalArgumentException if {@code queueName} is an empty string.
+     * @throws NullPointerException if {@code queueName} is null.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Boolean> queueExists(String queueName) {
+        return queueExistsWithResponse(queueName).map(Response::getValue);
+    }
+
+    /**
+     * Gets whether or not a queue with {@code queueName} exists in the Service Bus namespace.
+     *
+     * @param queueName Name of the queue.
+     *
+     * @return A Mono that completes indicating whether or not the queue exists along with its HTTP response.
+     * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
+     *     namespace.
+     * @throws HttpResponseException If error occurred processing the request.
+     * @throws IllegalArgumentException if {@code queueName} is an empty string.
+     * @throws NullPointerException if {@code queueName} is null.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Boolean>> queueExistsWithResponse(String queueName) {
+        return entityExistsWithResponse(getQueueWithResponse(queueName));
+    }
+
+    /**
+     * Gets whether or not a subscription within a topic exists.
+     *
+     * @param topicName Name of topic associated with subscription.
+     * @param subscriptionName Name of the subscription.
+     *
+     * @return A Mono that completes indicating whether or not the subscription exists.
+     * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
+     *     namespace.
+     * @throws HttpResponseException If error occurred processing the request.
+     * @throws IllegalArgumentException if {@code subscriptionName} is an empty string.
+     * @throws NullPointerException if {@code subscriptionName} is null.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Boolean> subscriptionExists(String topicName, String subscriptionName) {
+        return subscriptionExistsWithResponse(topicName, subscriptionName).map(Response::getValue);
+    }
+
+    /**
+     * Gets whether or not a subscription within a topic exists.
+     *
+     * @param topicName Name of topic associated with subscription.
+     * @param subscriptionName Name of the subscription.
+     *
+     * @return A Mono that completes indicating whether or not the subscription exists along with its HTTP response.
+     * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
+     *     namespace.
+     * @throws HttpResponseException If error occurred processing the request.
+     * @throws IllegalArgumentException if {@code subscriptionName} is an empty string.
+     * @throws NullPointerException if {@code subscriptionName} is null.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Boolean>> subscriptionExistsWithResponse(String topicName, String subscriptionName) {
+        return entityExistsWithResponse(getSubscriptionWithResponse(topicName, subscriptionName));
+    }
+
+    /**
+     * Gets whether or not a topic with {@code topicName} exists in the Service Bus namespace.
+     *
+     * @param topicName Name of the topic.
+     *
+     * @return A Mono that completes indicating whether or not the topic exists.
+     * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
+     *     namespace.
+     * @throws HttpResponseException If error occurred processing the request.
+     * @throws IllegalArgumentException if {@code topicName} is an empty string.
+     * @throws NullPointerException if {@code topicName} is null.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Boolean> topicExists(String topicName) {
+        return topicExistsWithResponse(topicName).map(Response::getValue);
+    }
+
+    /**
+     * Gets whether or not a topic with {@code topicName} exists in the Service Bus namespace.
+     *
+     * @param topicName Name of the topic.
+     *
+     * @return A Mono that completes indicating whether or not the topic exists along with its HTTP response.
+     * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
+     *     namespace.
+     * @throws HttpResponseException If error occurred processing the request.
+     * @throws IllegalArgumentException if {@code topicName} is an empty string.
+     * @throws NullPointerException if {@code topicName} is null.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Boolean>> topicExistsWithResponse(String topicName) {
+        return entityExistsWithResponse(getTopicWithResponse(topicName));
+    }
+
+    /**
      * Updates a queue with the given {@link QueueDescription}. The {@link QueueDescription} must be fully populated as
      * all of the properties are replaced. If a property is not set the service default value is used.
      *
@@ -1133,6 +1237,29 @@ public final class ServiceBusManagementAsyncClient {
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
+    }
+
+    /**
+     * Gets whether an entity exists.
+     *
+     * @param getEntityOperation Operation to get information about entity. If {@link ResourceNotFoundException} is
+     *     thrown, then it is mapped to false.
+     * @param <T> Entity type.
+     *
+     * @return True if the entity exists, false otherwise.
+     */
+    <T> Mono<Response<Boolean>> entityExistsWithResponse(Mono<Response<T>> getEntityOperation) {
+        return getEntityOperation.map(response -> {
+            return (Response<Boolean>) new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
+                response.getHeaders(), true);
+        })
+            .onErrorResume(ResourceNotFoundException.class, exception -> {
+                final HttpResponse response = exception.getResponse();
+                final Response<Boolean> result = new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
+                    response.getHeaders(), false);
+
+                return Mono.just(result);
+            });
     }
 
     /**
