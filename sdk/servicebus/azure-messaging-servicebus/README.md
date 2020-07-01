@@ -130,7 +130,7 @@ on which actual message transmission takes place. The namespace often serves as 
  - [Receive messages](#receive-messages)
  - [Settle messages](#settle-messages)
  - [Send and receive from session enabled queues or topics](#send-and-receive-from-session-enabled-queues-or-topics) 
-
+ - [Create a dead-letter queue Receiver](#create-a-dead-letter-queue-receiver)
 ### Send messages
 
 You'll need to create an asynchronous [`ServiceBusSenderAsyncClient`][ServiceBusSenderAsyncClient] or a synchronous
@@ -307,6 +307,21 @@ ServiceBusReceiverAsyncClient receiver = new ServiceBusClientBuilder()
     .queueName("<< QUEUE NAME >>")
     .buildAsyncClient();
 ```
+### Create a dead-letter queue Receiver
+
+Azure Service Bus queues and topic subscriptions provide a secondary sub-queue, called a dead-letter queue (DLQ).
+The dead-letter queue doesn't need to be explicitly created and can't be deleted or otherwise managed independent 
+of the main entity. Learn more about dead-letter queue [here][dead-letter-queue].
+
+<!-- embedme ./src/samples/java/com/azure/messaging/servicebus/ReadmeSamples.java#L200-L205 -->
+```java
+ServiceBusReceiverClient receiver = new ServiceBusClientBuilder()
+    .connectionString("<< CONNECTION STRING FOR THE SERVICE BUS NAMESPACE >>")
+    .deadLetterReceiver()
+    .topicName("<< TOPIC NAME >>")
+    .subscriptionName("<< SUBSCRIPTION NAME >>")
+    .buildClient();
+```
 
 ## Troubleshooting
 
@@ -403,5 +418,6 @@ Guidelines](./../../../CONTRIBUTING.md) for more information.
 [java_development_kit]: https://docs.microsoft.com/en-us/java/azure/jdk/?view=azure-java-stable
 [AmqpRetryOptons]: ../../core/azure-core-amqp/src/main/java/com/azure/core/amqp/AmqpRetryOptions.java
 [service_bus_create]: https://docs.microsoft.com/azure/service-bus-messaging/service-bus-create-namespace-portal
+[dead-letter-queue]: https://docs.microsoft.com/en-us/azure/service-bus-messaging/service-bus-dead-letter-queues
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fservicebus%2Fazure-messaging-servicebus%2FREADME.png)
