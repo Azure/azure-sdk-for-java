@@ -18,6 +18,7 @@ public class TableServiceClient {
      * creates the table with the given name.  If a table with the same name already exists, the operation fails.
      *
      * @param name the name of the table to create
+     * @return AzureTable of the created table
      */
     public AzureTable createTable(String name) {
         return null;
