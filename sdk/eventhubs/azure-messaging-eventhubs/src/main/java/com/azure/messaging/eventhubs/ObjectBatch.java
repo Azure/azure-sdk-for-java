@@ -4,6 +4,11 @@ import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.implementation.ErrorContextProvider;
 import com.azure.core.amqp.implementation.TracerProvider;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.experimental.serializer.ObjectSerializer;
+import reactor.core.publisher.Mono;
+
+import java.io.ByteArrayOutputStream;
+import java.io.OutputStream;
 
 public final class ObjectBatch<T> extends Batch {
     private final ClientLogger logger = new ClientLogger(ObjectBatch.class);
@@ -46,9 +51,15 @@ public final class ObjectBatch<T> extends Batch {
             throw logger.logExceptionAsWarning(new IllegalArgumentException("object cannot be null"));
         }
 
-        EventData eventData = new EventData(serializer.serialize(object).block());
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        serializer.serialize(outputStream, object).block();
+        EventData eventData = new EventData(outputStream.toByteArray());
         EventData event = tracerProvider.isEnabled() ? traceMessageSpan(eventData) : eventData;
 
         return tryAdd(event);
+    }
+
+    <S extends OutputStream> Mono<S> serialize(S stream, Object value) {
+        return null;
     }
 }
