@@ -127,7 +127,7 @@ public class FormRecognizerAsyncClientJavaDocCodeSnippets {
         formRecognizerAsyncClient.beginRecognizeCustomForms(
             new RecognizeCustomFormsOptions(buffer, form.length(), modelId)
                 .setFormContentType(FormContentType.IMAGE_JPEG)
-                .setIncludeFieldElement(includeTextContent)
+                .setIncludeFieldElements(includeTextContent)
                 .setPollInterval(Duration.ofSeconds(5)))
             .subscribe(recognizePollingOperation ->
                 // if training polling operation completed, retrieve the final result.
@@ -333,7 +333,7 @@ public class FormRecognizerAsyncClientJavaDocCodeSnippets {
         // Utility method to convert input stream to Byte buffer
         Flux<ByteBuffer> buffer = toFluxByteBuffer(new ByteArrayInputStream(Files.readAllBytes(receipt.toPath())));
         formRecognizerAsyncClient.beginRecognizeReceipts(new RecognizeOptions(buffer, receipt.length())
-            .setFormContentType(FormContentType.IMAGE_JPEG).setIncludeFieldElement(includeTextContent)
+            .setFormContentType(FormContentType.IMAGE_JPEG).setIncludeFieldElements(includeTextContent)
             .setPollInterval(Duration.ofSeconds(5))).subscribe(recognizePollingOperation -> {
                 // if training polling operation completed, retrieve the final result.
                 recognizePollingOperation.getFinalResult().subscribe(recognizedReceipts -> {

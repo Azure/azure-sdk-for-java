@@ -57,17 +57,17 @@ final class Transforms {
      * Helper method to transform the service returned {@link AnalyzeResult} to SDK model {@link RecognizedForm}.
      *
      * @param analyzeResult The service returned result for analyze custom forms.
-     * @param includeFieldElement Boolean to indicate if to set reference elements data on fields.
+     * @param includeFieldElements Boolean to indicate if to set reference elements data on fields.
      *
      * @return The List of {@code RecognizedForm}.
      */
-    static List<RecognizedForm> toRecognizedForm(AnalyzeResult analyzeResult, boolean includeFieldElement) {
+    static List<RecognizedForm> toRecognizedForm(AnalyzeResult analyzeResult, boolean includeFieldElements) {
         List<ReadResult> readResults = analyzeResult.getReadResults();
         List<DocumentResult> documentResults = analyzeResult.getDocumentResults();
         List<PageResult> pageResults = analyzeResult.getPageResults();
         List<RecognizedForm> extractedFormList;
 
-        List<FormPage> formPages = toRecognizedLayout(analyzeResult, includeFieldElement);
+        List<FormPage> formPages = toRecognizedLayout(analyzeResult, includeFieldElements);
 
         if (!CoreUtils.isNullOrEmpty(documentResults)) {
             extractedFormList = new ArrayList<>();
@@ -81,7 +81,7 @@ final class Transforms {
                 }
 
                 Map<String, FormField> extractedFieldMap = getUnlabeledFieldMap(documentResultItem, readResults,
-                    includeFieldElement);
+                    includeFieldElements);
                 extractedFormList.add(new RecognizedForm(
                     extractedFieldMap,
                     documentResultItem.getDocType(),
@@ -97,7 +97,7 @@ final class Transforms {
                 if (clusterId != null) {
                     formType.append(clusterId);
                 }
-                Map<String, FormField> extractedFieldMap = getLabeledFieldMap(includeFieldElement, readResults,
+                Map<String, FormField> extractedFieldMap = getLabeledFieldMap(includeFieldElements, readResults,
                     pageResultItem, pageNumber);
 
                 extractedFormList.add(new RecognizedForm(
@@ -114,12 +114,12 @@ final class Transforms {
      * Helper method to transform the service returned {@link AnalyzeResult} to SDK model {@link RecognizedReceipt}.
      *
      * @param analyzeResult The service returned result for analyze receipts.
-     * @param includeFieldElement Boolean to indicate if to set reference elements data on fields.
+     * @param includeFieldElements Boolean to indicate if to set reference elements data on fields.
      *
      * @return The List of {@code RecognizedReceipt}.
      */
-    static List<RecognizedReceipt> toReceipt(AnalyzeResult analyzeResult, boolean includeFieldElement) {
-        return toRecognizedForm(analyzeResult, includeFieldElement)
+    static List<RecognizedReceipt> toReceipt(AnalyzeResult analyzeResult, boolean includeFieldElements) {
+        return toRecognizedForm(analyzeResult, includeFieldElements)
             .stream()
             .map(recognizedForm -> new RecognizedReceipt(recognizedForm))
             .collect(Collectors.toList());
@@ -129,11 +129,11 @@ final class Transforms {
      * Helper method to transform the service returned {@link AnalyzeResult} to SDK model {@link FormPage}.
      *
      * @param analyzeResult The service returned result for analyze layouts.
-     * @param includeFieldElement Boolean to indicate if to set reference elements data on fields.
+     * @param includeFieldElements Boolean to indicate if to set reference elements data on fields.
      *
      * @return The List of {@code FormPage}.
      */
-    static List<FormPage> toRecognizedLayout(AnalyzeResult analyzeResult, boolean includeFieldElement) {
+    static List<FormPage> toRecognizedLayout(AnalyzeResult analyzeResult, boolean includeFieldElements) {
         List<ReadResult> readResults = analyzeResult.getReadResults();
         List<PageResult> pageResults = analyzeResult.getPageResults();
         List<FormPage> formPages = new ArrayList<>();
@@ -149,7 +149,7 @@ final class Transforms {
 
             // add form lines
             List<FormLine> perPageFormLineList = new ArrayList<>();
-            if (includeFieldElement && !CoreUtils.isNullOrEmpty(readResultItem.getLines())) {
+            if (includeFieldElements && !CoreUtils.isNullOrEmpty(readResultItem.getLines())) {
                 perPageFormLineList = getReadResultFormLines(readResultItem);
             }
 
@@ -209,12 +209,12 @@ final class Transforms {
      *
      * @param documentResultItem The extracted document level information.
      * @param readResults The text extraction result returned by the service.
-     * @param includeFieldElement Boolean to indicate if to set reference elements data on fields.
+     * @param includeFieldElements Boolean to indicate if to set reference elements data on fields.
      *
      * @return The {@code RecognizedForm#getFields}.
      */
     private static Map<String, FormField> getUnlabeledFieldMap(DocumentResult documentResultItem,
-        List<ReadResult> readResults, boolean includeFieldElement) {
+        List<ReadResult> readResults, boolean includeFieldElements) {
         Map<String, FormField> extractedFieldMap = new TreeMap<>();
         // add receipt fields
         if (!CoreUtils.isNullOrEmpty(documentResultItem.getFields())) {
@@ -223,7 +223,7 @@ final class Transforms {
                     Integer pageNumber = fieldValue.getPage();
                     FieldData labelText = new FieldData(key, null, pageNumber, null);
                     List<FormElement> formElementList = null;
-                    if (includeFieldElement) {
+                    if (includeFieldElements) {
                         formElementList = setReferenceElements(fieldValue.getElements(), readResults, pageNumber);
                     }
                     FieldData valueText = new FieldData(fieldValue.getText(),
@@ -243,7 +243,7 @@ final class Transforms {
 
     /**
      * Helper method that converts the incoming service field value to one of the strongly typed SDK level
-     * {@link FormField} with reference elements set when {@code includeFieldElement} is set to true.
+     * {@link FormField} with reference elements set when {@code includeFieldElements} is set to true.
      *
      * @param labelText The label text of the field.
      * @param key The name of the field.
@@ -381,14 +381,14 @@ final class Transforms {
      * Helper method to set the {@link RecognizedForm#getFields() fields} from unlabeled result returned from the
      * service.
      *
-     * @param includeFieldElement Boolean to indicate if to set reference elements data on fields.
+     * @param includeFieldElements Boolean to indicate if to set reference elements data on fields.
      * @param readResults The text extraction result returned by the service.
      * @param pageResultItem The extracted page level information returned by the service.
      * @param pageNumber The 1 based page number on which these fields exist.
      *
      * @return The fields populated on {@link RecognizedForm#getFields() fields}.
      */
-    private static Map<String, FormField> getLabeledFieldMap(boolean includeFieldElement,
+    private static Map<String, FormField> getLabeledFieldMap(boolean includeFieldElements,
         List<ReadResult> readResults,
         PageResult pageResultItem, Integer pageNumber) {
         Map<String, FormField> formFieldMap = new TreeMap<>();
@@ -396,7 +396,7 @@ final class Transforms {
         forEachWithIndex(keyValuePairs, ((index, keyValuePair) -> {
             List<FormElement> formKeyContentList = null;
             List<FormElement> formValueContentList = null;
-            if (includeFieldElement) {
+            if (includeFieldElements) {
                 formKeyContentList = setReferenceElements(keyValuePair.getKey().getElements(), readResults, pageNumber);
                 formValueContentList = setReferenceElements(keyValuePair.getValue().getElements(), readResults,
                     pageNumber);
@@ -417,7 +417,7 @@ final class Transforms {
     }
 
     /**
-     * Helper method to set the text reference elements on FieldValue/fields when {@code includeFieldElement} set to
+     * Helper method to set the text reference elements on FieldValue/fields when {@code includeFieldElements} set to
      * true.
      *
      * @return The list if referenced elements.

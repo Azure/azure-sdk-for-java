@@ -21,7 +21,7 @@ public final class FormLine extends FormElement {
 
     /**
      * Creates raw OCR item.
-     * When includeFieldElement is set to true, a list of recognized text lines.
+     * When includeFieldElements is set to true, a list of recognized text lines.
      *
      * @param text The text content of recognized field.
      * @param boundingBox The BoundingBox of the recognized field.

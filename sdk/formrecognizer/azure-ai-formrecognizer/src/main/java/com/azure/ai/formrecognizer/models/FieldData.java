@@ -25,7 +25,7 @@ public final class FieldData extends FormElement {
      * @param text The text content of ExtractedField.
      * @param boundingBox The BoundingBox of ExtractedField.
      * @param pageNumber the 1 based page number.
-     * @param fieldElements The list of element references when includeFieldElement is set to true.
+     * @param fieldElements The list of element references when includeFieldElements is set to true.
      */
     public FieldData(String text, BoundingBox boundingBox, Integer pageNumber,
                      final List<FormElement> fieldElements) {
@@ -58,7 +58,7 @@ public final class FieldData extends FormElement {
     }
 
     /**
-     * When `includeFieldElement` is set to true, gets a list of reference elements constituting
+     * When `includeFieldElements` is set to true, gets a list of reference elements constituting
      * this {@code FieldData}.
      *
      * @return The unmodifiable list of reference elements constituting this {@code FieldData}.

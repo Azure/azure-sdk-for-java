@@ -119,7 +119,7 @@ public class FormRecognizerClientJavaDocCodeSnippets {
 
         formRecognizerClient.beginRecognizeCustomForms(new RecognizeCustomFormsOptions(targetStream,
             form.length(), modelId).setFormContentType(FormContentType.IMAGE_JPEG)
-            .setIncludeFieldElement(includeTextContent).setPollInterval(Duration.ofSeconds(5))).getFinalResult()
+            .setIncludeFieldElements(includeTextContent).setPollInterval(Duration.ofSeconds(5))).getFinalResult()
             .forEach(recognizedForm -> recognizedForm.getFields().entrySet().forEach(entry -> {
                 String fieldText = entry.getKey();
                 FormField fieldValue = entry.getValue();
@@ -301,7 +301,7 @@ public class FormRecognizerClientJavaDocCodeSnippets {
         InputStream targetStream = new ByteArrayInputStream(fileContent);
         formRecognizerClient.beginRecognizeReceipts(new RecognizeOptions(targetStream, receipt.length())
             .setFormContentType(FormContentType.IMAGE_JPEG)
-            .setIncludeFieldElement(includeTextContent)
+            .setIncludeFieldElements(includeTextContent)
             .setPollInterval(Duration.ofSeconds(5))).getFinalResult()
             .forEach(recognizedReceipt -> {
                 Map<String, FormField> recognizedFields = recognizedReceipt.getRecognizedForm().getFields();

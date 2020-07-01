@@ -2,8 +2,7 @@
 
 ## 1.0.0-beta.4 (Unreleased)
 ### Breaking Changes
-- Renamed property `includeTextContent` to `includeFieldElement` on `RecognizeOptions` model.
-- Methods returning `textContent` have been renamed to `getFieldElements()` on `FieldData` and `FormTableCell`
+- Methods returning `textContent` have been renamed to `fieldElements` on `FieldData` and `FormTableCell`
 - Renamed `FormContent` to `FormElement`
 - Renamed `FieldText` to `FieldData`
 - Renamed properties `requestedOn` to `trainingStartedOn` and `completedOn` to `trainingCompletedOn` on model
@@ -14,7 +13,7 @@
 - Changed `submodels` property on `CustomFormModel` to return a `List` instead of `IterableStream`
 - Renamed `fieldMap` property to `fields` on `CustomFormSubmodel` model
 - Renamed `elements` property on model `FormTableCell` to `textContent`
-- Renamed `includeTextDetails` references in parameter and model properties to `includeTextContent`
+- Renamed `includeTextDetails` references in parameter and model properties to `includeFieldElements`
 - Removed `TextContentType` model and use `instanceOf` to detect the FormContent type
 
 ### Key Bug Fixes

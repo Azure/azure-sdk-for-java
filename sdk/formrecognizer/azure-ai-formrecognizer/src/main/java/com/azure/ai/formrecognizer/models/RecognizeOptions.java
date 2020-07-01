@@ -19,7 +19,7 @@ public class RecognizeOptions {
     private final long length;
     private final String formUrl;
     private FormContentType formContentType;
-    private boolean includeFieldElement;
+    private boolean includeFieldElements;
     private Duration pollInterval = DEFAULT_POLL_INTERVAL;
     private static final Duration DEFAULT_POLL_INTERVAL = Duration.ofSeconds(5);
 
@@ -73,10 +73,10 @@ public class RecognizeOptions {
     /**
      * Get the boolean which specifies if to include form element references in the result.
      *
-     * @return the {@code includeFieldElement} value.
+     * @return the {@code includeFieldElements} value.
      */
-    public boolean isIncludeFieldElement() {
-        return includeFieldElement;
+    public boolean isIncludeFieldElements() {
+        return includeFieldElements;
     }
 
     /**
@@ -125,7 +125,6 @@ public class RecognizeOptions {
         return formData;
     }
 
-
     /**
      * Set the type of the form. Supported Media types including .pdf, .jpg, .png or .tiff type file stream.
      *
@@ -141,12 +140,12 @@ public class RecognizeOptions {
     /**
      * Set the boolean which specifies if to include form element references in the result.
      *
-     * @param includeFieldElement the boolean to specify if to include form element references in the result.
+     * @param includeFieldElements the boolean to specify if to include form element references in the result.
      *
      * @return the updated {@code RecognizeOptions} value.
      */
-    public RecognizeOptions setIncludeFieldElement(final boolean includeFieldElement) {
-        this.includeFieldElement = includeFieldElement;
+    public RecognizeOptions setIncludeFieldElements(final boolean includeFieldElements) {
+        this.includeFieldElements = includeFieldElements;
         return this;
     }
 

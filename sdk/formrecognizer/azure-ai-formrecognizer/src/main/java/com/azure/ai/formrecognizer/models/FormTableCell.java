@@ -156,7 +156,7 @@ public final class FormTableCell extends FormElement {
     }
 
     /**
-     * When includeFieldElement is set to true, gets the list of references to the elements
+     * When includeFieldElements is set to true, gets the list of references to the elements
      * constituting this table cell.
      *
      * @return the unmodifiable list of list of references to the text elements constituting this table cell.

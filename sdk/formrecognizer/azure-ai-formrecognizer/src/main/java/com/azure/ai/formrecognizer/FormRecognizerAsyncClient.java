@@ -108,10 +108,10 @@ public final class FormRecognizerAsyncClient {
             return new PollerFlux<OperationResult, List<RecognizedForm>>(
                 recognizeCustomFormsOptions.getPollInterval(),
                 analyzeFormActivationOperation(recognizeCustomFormsOptions.getFormUrl(), modelId,
-                    recognizeCustomFormsOptions.isIncludeFieldElement()),
+                    recognizeCustomFormsOptions.isIncludeFieldElements()),
                 createAnalyzeFormPollOperation(modelId),
                 (activationResponse, context) -> Mono.error(new RuntimeException("Cancellation is not supported")),
-                fetchAnalyzeFormResultOperation(modelId, recognizeCustomFormsOptions.isIncludeFieldElement()));
+                fetchAnalyzeFormResultOperation(modelId, recognizeCustomFormsOptions.isIncludeFieldElements()));
         } catch (RuntimeException ex) {
             return PollerFlux.error(ex);
         }
@@ -185,10 +185,10 @@ public final class FormRecognizerAsyncClient {
                 recognizeCustomFormsOptions.getPollInterval(),
                 analyzeFormStreamActivationOperation(buffer, modelId,
                     recognizeCustomFormsOptions.getLength(), recognizeCustomFormsOptions.getFormContentType(),
-                    recognizeCustomFormsOptions.isIncludeFieldElement()),
+                    recognizeCustomFormsOptions.isIncludeFieldElements()),
                 createAnalyzeFormPollOperation(modelId),
                 (activationResponse, context) -> Mono.error(new RuntimeException("Cancellation is not supported")),
-                fetchAnalyzeFormResultOperation(modelId, recognizeCustomFormsOptions.isIncludeFieldElement()));
+                fetchAnalyzeFormResultOperation(modelId, recognizeCustomFormsOptions.isIncludeFieldElements()));
         } catch (RuntimeException ex) {
             return PollerFlux.error(ex);
         }
@@ -332,11 +332,11 @@ public final class FormRecognizerAsyncClient {
                 "'recognizeOptions' is required and cannot be null.");
             return new PollerFlux<OperationResult, List<RecognizedReceipt>>(recognizeOptions.getPollInterval(),
                 receiptAnalyzeActivationOperation(recognizeOptions.getFormUrl(),
-                    recognizeOptions.isIncludeFieldElement()),
+                    recognizeOptions.isIncludeFieldElements()),
                 extractReceiptPollOperation(),
                 (activationResponse, context) -> monoError(logger,
                     new RuntimeException("Cancellation is not supported")),
-                fetchExtractReceiptResult(recognizeOptions.isIncludeFieldElement()));
+                fetchExtractReceiptResult(recognizeOptions.isIncludeFieldElements()));
         } catch (RuntimeException ex) {
             return PollerFlux.error(ex);
         }
@@ -407,22 +407,22 @@ public final class FormRecognizerAsyncClient {
             return new PollerFlux<>(
                 recognizeOptions.getPollInterval(),
                 receiptStreamActivationOperation(buffer, recognizeOptions.getLength(),
-                    recognizeOptions.getFormContentType(), recognizeOptions.isIncludeFieldElement()),
+                    recognizeOptions.getFormContentType(), recognizeOptions.isIncludeFieldElements()),
                 extractReceiptPollOperation(),
                 (activationResponse, context) -> monoError(logger,
                     new RuntimeException("Cancellation is not supported")),
-                fetchExtractReceiptResult(recognizeOptions.isIncludeFieldElement()));
+                fetchExtractReceiptResult(recognizeOptions.isIncludeFieldElements()));
         } catch (RuntimeException ex) {
             return PollerFlux.error(ex);
         }
     }
 
     private Function<PollingContext<OperationResult>, Mono<OperationResult>> receiptAnalyzeActivationOperation(
-        String receiptUrl, boolean includeFieldElement) {
+        String receiptUrl, boolean includeFieldElements) {
         return (pollingContext) -> {
             try {
                 Objects.requireNonNull(receiptUrl, "'receiptUrl' is required and cannot be null.");
-                return service.analyzeReceiptAsyncWithResponseAsync(includeFieldElement,
+                return service.analyzeReceiptAsyncWithResponseAsync(includeFieldElements,
                     new SourcePath().setSource(receiptUrl))
                     .map(response ->
                         new OperationResult(parseModelId(response.getDeserializedHeaders().getOperationLocation())))
@@ -434,20 +434,21 @@ public final class FormRecognizerAsyncClient {
     }
 
     private Function<PollingContext<OperationResult>, Mono<OperationResult>> receiptStreamActivationOperation(
-        Flux<ByteBuffer> form, long length, FormContentType formContentType, boolean includeFieldElement) {
+        Flux<ByteBuffer> form, long length, FormContentType formContentType, boolean includeFieldElements) {
         return pollingContext -> {
             try {
                 Objects.requireNonNull(form, "'form' is required and cannot be null.");
                 if (formContentType != null) {
                     return service.analyzeReceiptAsyncWithResponseAsync(
-                        ContentType.fromString(formContentType.toString()), form, length, includeFieldElement)
+                        ContentType.fromString(formContentType.toString()), form, length, includeFieldElements)
                         .map(response -> new OperationResult(
                             parseModelId(response.getDeserializedHeaders().getOperationLocation())))
                         .onErrorMap(throwable -> throwable);
                 } else {
                     return detectContentType(form)
                         .flatMap(contentType ->
-                            service.analyzeReceiptAsyncWithResponseAsync(contentType, form, length, includeFieldElement)
+                            service.analyzeReceiptAsyncWithResponseAsync(contentType, form, length,
+                                includeFieldElements)
                                 .map(response -> new OperationResult(
                                     parseModelId(response.getDeserializedHeaders().getOperationLocation()))))
                         .onErrorMap(Utility::mapToHttpResponseExceptionIfExist);
@@ -475,14 +476,14 @@ public final class FormRecognizerAsyncClient {
     }
 
     private Function<PollingContext<OperationResult>, Mono<List<RecognizedReceipt>>>
-        fetchExtractReceiptResult(boolean includeFieldElement) {
+        fetchExtractReceiptResult(boolean includeFieldElements) {
         return (pollingContext) -> {
             try {
                 final UUID resultUid = UUID.fromString(pollingContext.getLatestResponse().getValue().getResultId());
                 return service.getAnalyzeReceiptResultWithResponseAsync(resultUid)
                     .map(modelSimpleResponse -> {
                         throwIfAnalyzeStatusInvalid(modelSimpleResponse.getValue());
-                        return toReceipt(modelSimpleResponse.getValue().getAnalyzeResult(), includeFieldElement);
+                        return toReceipt(modelSimpleResponse.getValue().getAnalyzeResult(), includeFieldElements);
                     })
                     .onErrorMap(Utility::mapToHttpResponseExceptionIfExist);
             } catch (RuntimeException ex) {
@@ -565,7 +566,7 @@ public final class FormRecognizerAsyncClient {
     }
 
     private Function<PollingContext<OperationResult>, Mono<List<RecognizedForm>>>
-        fetchAnalyzeFormResultOperation(String modelId, boolean includeFieldElement) {
+        fetchAnalyzeFormResultOperation(String modelId, boolean includeFieldElements) {
         return (pollingContext) -> {
             try {
                 Objects.requireNonNull(modelId, "'modelId' is required and cannot be null.");
@@ -574,7 +575,8 @@ public final class FormRecognizerAsyncClient {
                 return service.getAnalyzeFormResultWithResponseAsync(modelUid, resultUid)
                     .map(modelSimpleResponse -> {
                         throwIfAnalyzeStatusInvalid(modelSimpleResponse.getValue());
-                        return toRecognizedForm(modelSimpleResponse.getValue().getAnalyzeResult(), includeFieldElement);
+                        return toRecognizedForm(modelSimpleResponse.getValue().getAnalyzeResult(),
+                            includeFieldElements);
                     })
                     .onErrorMap(Utility::mapToHttpResponseExceptionIfExist);
             } catch (RuntimeException ex) {
@@ -619,12 +621,12 @@ public final class FormRecognizerAsyncClient {
     }
 
     private Function<PollingContext<OperationResult>, Mono<OperationResult>> analyzeFormActivationOperation(
-        String formUrl, String modelId, boolean includeFieldElement) {
+        String formUrl, String modelId, boolean includeFieldElements) {
         return (pollingContext) -> {
             try {
                 Objects.requireNonNull(formUrl, "'formUrl' is required and cannot be null.");
                 Objects.requireNonNull(modelId, "'modelId' is required and cannot be null.");
-                return service.analyzeWithCustomModelWithResponseAsync(UUID.fromString(modelId), includeFieldElement,
+                return service.analyzeWithCustomModelWithResponseAsync(UUID.fromString(modelId), includeFieldElements,
                     new SourcePath().setSource(formUrl))
                     .map(response ->
                         new OperationResult(parseModelId(response.getDeserializedHeaders().getOperationLocation())))
@@ -637,7 +639,7 @@ public final class FormRecognizerAsyncClient {
 
     private Function<PollingContext<OperationResult>, Mono<OperationResult>> analyzeFormStreamActivationOperation(
         Flux<ByteBuffer> form, String modelId, long length, FormContentType formContentType,
-        boolean includeFieldElement) {
+        boolean includeFieldElements) {
 
         return pollingContext -> {
             try {
@@ -645,7 +647,7 @@ public final class FormRecognizerAsyncClient {
                 Objects.requireNonNull(modelId, "'modelId' is required and cannot be null.");
                 if (formContentType != null) {
                     return service.analyzeWithCustomModelWithResponseAsync(UUID.fromString(modelId),
-                        ContentType.fromString(formContentType.toString()), form, length, includeFieldElement)
+                        ContentType.fromString(formContentType.toString()), form, length, includeFieldElements)
                         .map(response -> new OperationResult(parseModelId(
                             response.getDeserializedHeaders().getOperationLocation())))
                         .onErrorMap(Utility::mapToHttpResponseExceptionIfExist);
@@ -653,7 +655,7 @@ public final class FormRecognizerAsyncClient {
                     return detectContentType(form)
                         .flatMap(contentType ->
                             service.analyzeWithCustomModelWithResponseAsync(UUID.fromString(modelId), contentType, form,
-                                length, includeFieldElement)
+                                length, includeFieldElements)
                                 .map(response -> new OperationResult(
                                     parseModelId(response.getDeserializedHeaders().getOperationLocation()))))
                         .onErrorMap(Utility::mapToHttpResponseExceptionIfExist);
