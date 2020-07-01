@@ -35,7 +35,7 @@ public class VirtualMachineIdentity {
     private ResourceIdentityType type;
 
     /**
-     * Get the principalId value.
+     * Get the principal id of virtual machine identity.
      *
      * @return the principalId value
      */
@@ -44,7 +44,7 @@ public class VirtualMachineIdentity {
     }
 
     /**
-     * Get the tenantId value.
+     * Get the tenant id associated with the virtual machine.
      *
      * @return the tenantId value
      */
@@ -53,7 +53,7 @@ public class VirtualMachineIdentity {
     }
 
     /**
-     * Get the type value.
+     * Get the type of identity used for the virtual machine. Currently, the only supported type is 'SystemAssigned', which implicitly creates an identity. Possible values include: 'SystemAssigned'.
      *
      * @return the type value
      */
@@ -62,7 +62,7 @@ public class VirtualMachineIdentity {
     }
 
     /**
-     * Set the type value.
+     * Set the type of identity used for the virtual machine. Currently, the only supported type is 'SystemAssigned', which implicitly creates an identity. Possible values include: 'SystemAssigned'.
      *
      * @param type the type value to set
      * @return the VirtualMachineIdentity object itself.

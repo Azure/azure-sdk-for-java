@@ -94,6 +94,9 @@ public interface VirtualMachineScaleSetExtension extends HasInner<VirtualMachine
         interface WithVirtualMachineScaleSet {
            /**
             * Specifies resourceGroupName, vmScaleSetName.
+            * @param resourceGroupName The name of the resource group
+            * @param vmScaleSetName The name of the VM scale set where the extension should be create or updated
+            * @return the next definition stage
             */
             WithCreate withExistingVirtualMachineScaleSet(String resourceGroupName, String vmScaleSetName);
         }
@@ -104,6 +107,8 @@ public interface VirtualMachineScaleSetExtension extends HasInner<VirtualMachine
         interface WithAutoUpgradeMinorVersion {
             /**
              * Specifies autoUpgradeMinorVersion.
+             * @param autoUpgradeMinorVersion Indicates whether the extension should use a newer minor version if one is available at deployment time. Once deployed, however, the extension will not upgrade minor versions unless redeployed, even with this property set to true
+             * @return the next definition stage
              */
             WithCreate withAutoUpgradeMinorVersion(Boolean autoUpgradeMinorVersion);
         }
@@ -114,6 +119,8 @@ public interface VirtualMachineScaleSetExtension extends HasInner<VirtualMachine
         interface WithForceUpdateTag {
             /**
              * Specifies forceUpdateTag.
+             * @param forceUpdateTag If a value is provided and is different from the previous value, the extension handler will be forced to update even if the extension configuration has not changed
+             * @return the next definition stage
              */
             WithCreate withForceUpdateTag(String forceUpdateTag);
         }
@@ -124,6 +131,8 @@ public interface VirtualMachineScaleSetExtension extends HasInner<VirtualMachine
         interface WithName {
             /**
              * Specifies name.
+             * @param name The name of the extension
+             * @return the next definition stage
              */
             WithCreate withName(String name);
         }
@@ -134,6 +143,8 @@ public interface VirtualMachineScaleSetExtension extends HasInner<VirtualMachine
         interface WithProtectedSettings {
             /**
              * Specifies protectedSettings.
+             * @param protectedSettings The extension can contain either protectedSettings or protectedSettingsFromKeyVault or no protected settings at all
+             * @return the next definition stage
              */
             WithCreate withProtectedSettings(Object protectedSettings);
         }
@@ -144,6 +155,8 @@ public interface VirtualMachineScaleSetExtension extends HasInner<VirtualMachine
         interface WithPublisher {
             /**
              * Specifies publisher.
+             * @param publisher The name of the extension handler publisher
+             * @return the next definition stage
              */
             WithCreate withPublisher(String publisher);
         }
@@ -154,6 +167,8 @@ public interface VirtualMachineScaleSetExtension extends HasInner<VirtualMachine
         interface WithSettings {
             /**
              * Specifies settings.
+             * @param settings Json formatted public settings for the extension
+             * @return the next definition stage
              */
             WithCreate withSettings(Object settings);
         }
@@ -164,6 +179,8 @@ public interface VirtualMachineScaleSetExtension extends HasInner<VirtualMachine
         interface WithType {
             /**
              * Specifies type.
+             * @param type Specifies the type of the extension; an example is "CustomScriptExtension"
+             * @return the next definition stage
              */
             WithCreate withType(String type);
         }
@@ -174,6 +191,8 @@ public interface VirtualMachineScaleSetExtension extends HasInner<VirtualMachine
         interface WithTypeHandlerVersion {
             /**
              * Specifies typeHandlerVersion.
+             * @param typeHandlerVersion Specifies the version of the script handler
+             * @return the next definition stage
              */
             WithCreate withTypeHandlerVersion(String typeHandlerVersion);
         }
@@ -202,6 +221,8 @@ public interface VirtualMachineScaleSetExtension extends HasInner<VirtualMachine
         interface WithAutoUpgradeMinorVersion {
             /**
              * Specifies autoUpgradeMinorVersion.
+             * @param autoUpgradeMinorVersion Indicates whether the extension should use a newer minor version if one is available at deployment time. Once deployed, however, the extension will not upgrade minor versions unless redeployed, even with this property set to true
+             * @return the next update stage
              */
             Update withAutoUpgradeMinorVersion(Boolean autoUpgradeMinorVersion);
         }
@@ -212,6 +233,8 @@ public interface VirtualMachineScaleSetExtension extends HasInner<VirtualMachine
         interface WithForceUpdateTag {
             /**
              * Specifies forceUpdateTag.
+             * @param forceUpdateTag If a value is provided and is different from the previous value, the extension handler will be forced to update even if the extension configuration has not changed
+             * @return the next update stage
              */
             Update withForceUpdateTag(String forceUpdateTag);
         }
@@ -222,6 +245,8 @@ public interface VirtualMachineScaleSetExtension extends HasInner<VirtualMachine
         interface WithName {
             /**
              * Specifies name.
+             * @param name The name of the extension
+             * @return the next update stage
              */
             Update withName(String name);
         }
@@ -232,6 +257,8 @@ public interface VirtualMachineScaleSetExtension extends HasInner<VirtualMachine
         interface WithProtectedSettings {
             /**
              * Specifies protectedSettings.
+             * @param protectedSettings The extension can contain either protectedSettings or protectedSettingsFromKeyVault or no protected settings at all
+             * @return the next update stage
              */
             Update withProtectedSettings(Object protectedSettings);
         }
@@ -242,6 +269,8 @@ public interface VirtualMachineScaleSetExtension extends HasInner<VirtualMachine
         interface WithPublisher {
             /**
              * Specifies publisher.
+             * @param publisher The name of the extension handler publisher
+             * @return the next update stage
              */
             Update withPublisher(String publisher);
         }
@@ -252,6 +281,8 @@ public interface VirtualMachineScaleSetExtension extends HasInner<VirtualMachine
         interface WithSettings {
             /**
              * Specifies settings.
+             * @param settings Json formatted public settings for the extension
+             * @return the next update stage
              */
             Update withSettings(Object settings);
         }
@@ -262,6 +293,8 @@ public interface VirtualMachineScaleSetExtension extends HasInner<VirtualMachine
         interface WithType {
             /**
              * Specifies type.
+             * @param type Specifies the type of the extension; an example is "CustomScriptExtension"
+             * @return the next update stage
              */
             Update withType(String type);
         }
@@ -272,6 +305,8 @@ public interface VirtualMachineScaleSetExtension extends HasInner<VirtualMachine
         interface WithTypeHandlerVersion {
             /**
              * Specifies typeHandlerVersion.
+             * @param typeHandlerVersion Specifies the version of the script handler
+             * @return the next update stage
              */
             Update withTypeHandlerVersion(String typeHandlerVersion);
         }
