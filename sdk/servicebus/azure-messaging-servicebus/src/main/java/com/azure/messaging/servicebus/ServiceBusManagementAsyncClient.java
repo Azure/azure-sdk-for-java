@@ -223,7 +223,8 @@ public final class ServiceBusManagementAsyncClient {
      * @see <a href="https://docs.microsoft.com/rest/api/servicebus/update-entity">Create or Update Entity</a>
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<SubscriptionDescription>> createSubscriptionWithResponse(SubscriptionDescription subscription) {
+    public Mono<Response<SubscriptionDescription>> createSubscriptionWithResponse(
+        SubscriptionDescription subscription) {
         return withContext(context -> createSubscriptionWithResponse(subscription, context));
     }
 
@@ -489,6 +490,7 @@ public final class ServiceBusManagementAsyncClient {
     /**
      * Gets information about the queue.
      *
+     * @param topicName Name of topic associated with subscription.
      * @param subscriptionName Name of subscription to get information about.
      *
      * @return A Mono that completes with information about the subscription.
@@ -507,6 +509,7 @@ public final class ServiceBusManagementAsyncClient {
     /**
      * Gets information about the subscription along with its HTTP response.
      *
+     * @param topicName Name of topic associated with subscription.
      * @param subscriptionName Name of subscription to get information about.
      *
      * @return A Mono that completes with information about the subscription and the associated HTTP response.
@@ -527,6 +530,7 @@ public final class ServiceBusManagementAsyncClient {
     /**
      * Gets runtime information about the queue.
      *
+     * @param topicName Name of topic associated with subscription.
      * @param subscriptionName Name of subscription to get information about.
      *
      * @return A Mono that completes with runtime information about the queue.
@@ -547,6 +551,7 @@ public final class ServiceBusManagementAsyncClient {
     /**
      * Gets runtime information about the queue.
      *
+     * @param topicName Name of topic associated with subscription.
      * @param subscriptionName Name of subscription to get information about.
      *
      * @return A Mono that completes with runtime information about the queue.
@@ -1036,7 +1041,7 @@ public final class ServiceBusManagementAsyncClient {
             return monoError(logger, new NullPointerException("'subscriptionName' cannot be null"));
         } else if (subscriptionName.isEmpty()) {
             return monoError(logger, new IllegalArgumentException("'subscriptionName' cannot be empty."));
-        } if (topicName == null) {
+        } else if (topicName == null) {
             return monoError(logger, new NullPointerException("'topicName' cannot be null"));
         } else if (topicName.isEmpty()) {
             return monoError(logger, new IllegalArgumentException("'topicName' cannot be empty."));
