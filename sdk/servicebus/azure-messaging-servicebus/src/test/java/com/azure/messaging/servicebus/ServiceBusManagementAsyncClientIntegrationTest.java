@@ -14,6 +14,7 @@ import com.azure.messaging.servicebus.models.QueueDescription;
 import com.azure.messaging.servicebus.models.QueueRuntimeInfo;
 import com.azure.messaging.servicebus.models.SubscriptionDescription;
 import com.azure.messaging.servicebus.models.SubscriptionRuntimeInfo;
+import com.azure.messaging.servicebus.models.TopicDescription;
 import com.azure.messaging.servicebus.models.TopicRuntimeInfo;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
@@ -155,6 +156,45 @@ class ServiceBusManagementAsyncClientIntegrationTest extends TestBase {
         StepVerifier.create(client.createSubscription(topicName, subscriptionName))
             .expectError(ResourceExistsException.class)
             .verify();
+    }
+
+    @ParameterizedTest
+    @MethodSource("createHttpClients")
+    void createTopicWithResponse(HttpClient httpClient) {
+        // Arrange
+        final ServiceBusManagementAsyncClient client = createClient(httpClient);
+        final String topicName = testResourceNamer.randomName("test", 10);
+        final OffsetDateTime nowUtc = OffsetDateTime.now(Clock.systemUTC());
+        final TopicDescription expected = new TopicDescription(topicName)
+            .setMaxSizeInMegabytes(2048L)
+            .setRequiresDuplicateDetection(true)
+            .setDuplicateDetectionHistoryTimeWindow(Duration.ofMinutes(2))
+            .setUserMetadata("some-metadata-for-testing-topic");
+
+        // Act & Assert
+        StepVerifier.create(client.createTopicWithResponse(expected))
+            .assertNext(response -> {
+                assertEquals(201, response.getStatusCode());
+
+                // Assert values on a topic.
+                final TopicDescription actual = response.getValue();
+
+                assertEquals(topicName, expected.getName());
+                assertEquals(expected.getName(), actual.getName());
+
+                assertEquals(expected.getMaxSizeInMegabytes(), actual.getMaxSizeInMegabytes());
+                assertEquals(expected.getUserMetadata(), actual.getUserMetadata());
+
+                assertEquals(expected.enablePartitioning(), actual.enablePartitioning());
+                assertEquals(expected.requiresDuplicateDetection(), actual.requiresDuplicateDetection());
+
+                final TopicRuntimeInfo runtimeInfo = new TopicRuntimeInfo(actual);
+                assertEquals(0, runtimeInfo.getSubscriptionCount());
+                assertEquals(0, runtimeInfo.getSizeInBytes());
+                assertNotNull(runtimeInfo.getCreatedAt());
+                assertTrue(nowUtc.isAfter(runtimeInfo.getCreatedAt()));
+            })
+            .verifyComplete();
     }
 
     @ParameterizedTest
