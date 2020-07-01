@@ -36,6 +36,7 @@ import com.azure.messaging.servicebus.implementation.models.ResponseLink;
 import com.azure.messaging.servicebus.implementation.models.ServiceBusManagementError;
 import com.azure.messaging.servicebus.implementation.models.ServiceBusManagementErrorException;
 import com.azure.messaging.servicebus.implementation.models.SubscriptionDescriptionEntry;
+import com.azure.messaging.servicebus.implementation.models.SubscriptionDescriptionFeed;
 import com.azure.messaging.servicebus.implementation.models.TopicDescriptionEntry;
 import com.azure.messaging.servicebus.implementation.models.TopicDescriptionFeed;
 import com.azure.messaging.servicebus.models.QueueDescription;
@@ -62,6 +63,7 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import static com.azure.core.util.FluxUtil.monoError;
+import static com.azure.core.util.FluxUtil.pagedFluxError;
 import static com.azure.core.util.FluxUtil.withContext;
 import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
 
@@ -77,11 +79,12 @@ public final class ServiceBusManagementAsyncClient {
     private static final String SERVICE_BUS_TRACING_NAMESPACE_VALUE = "Microsoft.ServiceBus";
     private static final String CONTENT_TYPE = "application/xml";
 
-    // Name of the entity type when listing queues and topics.
+    // Name of the entity type when listing queues, topics, and subscriptions.
     private static final String QUEUES_ENTITY_TYPE = "queues";
     private static final String TOPICS_ENTITY_TYPE = "topics";
+    private static final String SUBSCRIPTIONS_PATH = "%s/Subscriptions";
 
-    private static final int NUMBER_OF_ELEMENTS = 10;
+    private static final int NUMBER_OF_ELEMENTS = 100;
 
     private final ServiceBusManagementClientImpl managementClient;
     private final EntitysImpl entityClient;
@@ -656,8 +659,8 @@ public final class ServiceBusManagementAsyncClient {
      * @return A Flux of {@link QueueDescription queues} in the Service Bus namespace.
      * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
      *     namespace.
-     * @see <a href="https://docs.microsoft.com/rest/api/servicebus/enumeration">List Queues, Subscriptions, or
-     *     Authorization Rules</a>
+     * @see <a href="https://docs.microsoft.com/rest/api/servicebus/enumeration">List entities, subscriptions, or
+     *     authorization rules</a>
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<QueueDescription> listQueues() {
@@ -667,13 +670,39 @@ public final class ServiceBusManagementAsyncClient {
     }
 
     /**
+     * Fetches all the subscriptions for a topic.
+     *
+     * @param topicName The topic name under which all the subscriptions need to be retrieved.
+     *
+     * @return A Flux of {@link SubscriptionDescription subscriptions} for the {@code topicName}.
+     * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
+     *     namespace.
+     * @throws NullPointerException if {@code topicName} is null.
+     * @throws IllegalArgumentException if {@code topicName} is an empty string.
+     * @see <a href="https://docs.microsoft.com/rest/api/servicebus/enumeration">List entities, subscriptions, or
+     *     authorization rules</a>
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<SubscriptionDescription> listSubscriptions(String topicName) {
+        if (topicName == null) {
+            return pagedFluxError(logger, new NullPointerException("'topicName' cannot be null."));
+        } else if (topicName.isEmpty()) {
+            return pagedFluxError(logger, new IllegalArgumentException("'topicName' cannot be an empty string."));
+        }
+
+        return new PagedFlux<>(
+            () -> withContext(context -> listSubscriptionsFirstPage(topicName, context)),
+            token -> withContext(context -> listSubscriptionsNextPage(topicName, token, context)));
+    }
+
+    /**
      * Fetches all the topics in the Service Bus namespace.
      *
      * @return A Flux of {@link TopicDescription topics} in the Service Bus namespace.
      * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
      *     namespace.
-     * @see <a href="https://docs.microsoft.com/rest/api/servicebus/enumeration">List Topics, Subscriptions, or
-     *     Authorization Rules</a>
+     * @see <a href="https://docs.microsoft.com/rest/api/servicebus/enumeration">List entities, subscriptions, or
+     *     authorization rules</a>
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<TopicDescription> listTopics() {
@@ -1241,7 +1270,7 @@ public final class ServiceBusManagementAsyncClient {
         final Context withTracing = context.addData(AZ_TRACING_NAMESPACE_KEY, SERVICE_BUS_TRACING_NAMESPACE_VALUE);
 
         try {
-            return listQueues(0, NUMBER_OF_ELEMENTS, withTracing);
+            return listQueues(0, withTracing);
         } catch (RuntimeException e) {
             return monoError(logger, e);
         }
@@ -1264,7 +1293,48 @@ public final class ServiceBusManagementAsyncClient {
             final Context withTracing = context.addData(AZ_TRACING_NAMESPACE_KEY, SERVICE_BUS_TRACING_NAMESPACE_VALUE);
             final int skip = Integer.parseInt(continuationToken);
 
-            return listQueues(skip, NUMBER_OF_ELEMENTS, withTracing);
+            return listQueues(skip, withTracing);
+        } catch (RuntimeException e) {
+            return monoError(logger, e);
+        }
+    }
+
+    /**
+     * Gets the first page of subscriptions with context.
+     *
+     * @param context Context to pass into request.
+     *
+     * @return A Mono that completes with a page of subscriptions.
+     */
+    Mono<PagedResponse<SubscriptionDescription>> listSubscriptionsFirstPage(String topicName, Context context) {
+        final Context withTracing = context.addData(AZ_TRACING_NAMESPACE_KEY, SERVICE_BUS_TRACING_NAMESPACE_VALUE);
+
+        try {
+            return listSubscriptions(topicName, 0, withTracing);
+        } catch (RuntimeException e) {
+            return monoError(logger, e);
+        }
+    }
+
+    /**
+     * Gets the next page of subscriptions with context.
+     *
+     * @param continuationToken Number of items to skip in feed.
+     * @param context Context to pass into request.
+     *
+     * @return A Mono that completes with a page of subscriptions or empty if there are no items left.
+     */
+    Mono<PagedResponse<SubscriptionDescription>> listSubscriptionsNextPage(String topicName, String continuationToken,
+        Context context) {
+        if (continuationToken == null || continuationToken.isEmpty()) {
+            return Mono.empty();
+        }
+
+        try {
+            final Context withTracing = context.addData(AZ_TRACING_NAMESPACE_KEY, SERVICE_BUS_TRACING_NAMESPACE_VALUE);
+            final int skip = Integer.parseInt(continuationToken);
+
+            return listSubscriptions(topicName, skip, withTracing);
         } catch (RuntimeException e) {
             return monoError(logger, e);
         }
@@ -1281,7 +1351,7 @@ public final class ServiceBusManagementAsyncClient {
         final Context withTracing = context.addData(AZ_TRACING_NAMESPACE_KEY, SERVICE_BUS_TRACING_NAMESPACE_VALUE);
 
         try {
-            return listTopics(0, NUMBER_OF_ELEMENTS, withTracing);
+            return listTopics(0, withTracing);
         } catch (RuntimeException e) {
             return monoError(logger, e);
         }
@@ -1304,7 +1374,7 @@ public final class ServiceBusManagementAsyncClient {
             final Context withTracing = context.addData(AZ_TRACING_NAMESPACE_KEY, SERVICE_BUS_TRACING_NAMESPACE_VALUE);
             final int skip = Integer.parseInt(continuationToken);
 
-            return listTopics(skip, NUMBER_OF_ELEMENTS, withTracing);
+            return listTopics(skip, withTracing);
         } catch (RuntimeException e) {
             return monoError(logger, e);
         }
@@ -1579,19 +1649,18 @@ public final class ServiceBusManagementAsyncClient {
      * Helper method that invokes the service method, extracts the data and translates it to a PagedResponse.
      *
      * @param skip Number of elements to skip.
-     * @param top Number of elements to fetch.
      * @param context Context for the query.
      *
      * @return A Mono that completes with a paged response of queues.
      */
-    private Mono<PagedResponse<QueueDescription>> listQueues(int skip, int top, Context context) {
-        return managementClient.listEntitiesWithResponseAsync(QUEUES_ENTITY_TYPE, skip, top, context)
+    private Mono<PagedResponse<QueueDescription>> listQueues(int skip, Context context) {
+        return managementClient.listEntitiesWithResponseAsync(QUEUES_ENTITY_TYPE, skip, ServiceBusManagementAsyncClient.NUMBER_OF_ELEMENTS, context)
             .onErrorMap(ServiceBusManagementAsyncClient::mapException)
             .flatMap(response -> {
                 final Response<QueueDescriptionFeed> feedResponse = deserialize(response, QueueDescriptionFeed.class);
                 final QueueDescriptionFeed feed = feedResponse.getValue();
                 if (feed == null) {
-                    logger.warning("Could not deserialize QueueDescriptionFeed. skip {}, top: {}", skip, top);
+                    logger.warning("Could not deserialize QueueDescriptionFeed. skip {}, top: {}", skip, ServiceBusManagementAsyncClient.NUMBER_OF_ELEMENTS);
                     return Mono.empty();
                 }
 
@@ -1618,19 +1687,59 @@ public final class ServiceBusManagementAsyncClient {
      * Helper method that invokes the service method, extracts the data and translates it to a PagedResponse.
      *
      * @param skip Number of elements to skip.
-     * @param top Number of elements to fetch.
+     * @param context Context for the query.
+     *
+     * @return A Mono that completes with a paged response of subscriptions.
+     */
+    private Mono<PagedResponse<SubscriptionDescription>> listSubscriptions(String topicName, int skip,
+        Context context) {
+
+        final String entityPath = String.format(SUBSCRIPTIONS_PATH, topicName);
+        return managementClient.listEntitiesWithResponseAsync(entityPath, skip, NUMBER_OF_ELEMENTS, context)
+            .onErrorMap(ServiceBusManagementAsyncClient::mapException)
+            .flatMap(response -> {
+                final Response<SubscriptionDescriptionFeed> feedResponse = deserialize(response, SubscriptionDescriptionFeed.class);
+                final SubscriptionDescriptionFeed feed = feedResponse.getValue();
+                if (feed == null) {
+                    logger.warning("Could not deserialize SubscriptionDescriptionFeed. skip {}, top: {}", skip, ServiceBusManagementAsyncClient.NUMBER_OF_ELEMENTS);
+                    return Mono.empty();
+                }
+
+                final List<SubscriptionDescription> entities = feed.getEntry().stream()
+                    .filter(e -> e.getContent() != null && e.getContent().getSubscriptionDescription() != null)
+                    .map(e -> {
+                        final String subscriptionName = getTitleValue(e.getTitle());
+                        final SubscriptionDescription subscriptionDescription = e.getContent().getSubscriptionDescription();
+                        EntityHelper.setSubscriptionName(subscriptionDescription, subscriptionName);
+
+                        return subscriptionDescription;
+                    })
+                    .collect(Collectors.toList());
+                try {
+                    return Mono.just(extractPage(feedResponse, entities, feed.getLink()));
+                } catch (MalformedURLException | UnsupportedEncodingException error) {
+                    return Mono.error(new RuntimeException("Could not parse response into FeedPage<SubscriptionDescription>",
+                        error));
+                }
+            });
+    }
+
+    /**
+     * Helper method that invokes the service method, extracts the data and translates it to a PagedResponse.
+     *
+     * @param skip Number of elements to skip.
      * @param context Context for the query.
      *
      * @return A Mono that completes with a paged response of topics.
      */
-    private Mono<PagedResponse<TopicDescription>> listTopics(int skip, int top, Context context) {
-        return managementClient.listEntitiesWithResponseAsync(TOPICS_ENTITY_TYPE, skip, top, context)
+    private Mono<PagedResponse<TopicDescription>> listTopics(int skip, Context context) {
+        return managementClient.listEntitiesWithResponseAsync(TOPICS_ENTITY_TYPE, skip, ServiceBusManagementAsyncClient.NUMBER_OF_ELEMENTS, context)
             .onErrorMap(ServiceBusManagementAsyncClient::mapException)
             .flatMap(response -> {
                 final Response<TopicDescriptionFeed> feedResponse = deserialize(response, TopicDescriptionFeed.class);
                 final TopicDescriptionFeed feed = feedResponse.getValue();
                 if (feed == null) {
-                    logger.warning("Could not deserialize TopicDescriptionFeed. skip {}, top: {}", skip, top);
+                    logger.warning("Could not deserialize TopicDescriptionFeed. skip {}, top: {}", skip, ServiceBusManagementAsyncClient.NUMBER_OF_ELEMENTS);
                     return Mono.empty();
                 }
 
