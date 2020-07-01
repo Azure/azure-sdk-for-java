@@ -561,7 +561,6 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
                 } else {
                     return connection.createSendLink(entityName, entityName, retryOptions, null);
                 }
-
             })
             .doOnNext(next -> linkName.compareAndSet(null, next.getLinkName()));
     }
