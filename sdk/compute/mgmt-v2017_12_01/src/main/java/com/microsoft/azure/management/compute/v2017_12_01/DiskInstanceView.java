@@ -35,7 +35,7 @@ public class DiskInstanceView {
     private List<InstanceViewStatus> statuses;
 
     /**
-     * Get the name value.
+     * Get the disk name.
      *
      * @return the name value
      */
@@ -44,7 +44,7 @@ public class DiskInstanceView {
     }
 
     /**
-     * Set the name value.
+     * Set the disk name.
      *
      * @param name the name value to set
      * @return the DiskInstanceView object itself.
@@ -55,7 +55,7 @@ public class DiskInstanceView {
     }
 
     /**
-     * Get the encryptionSettings value.
+     * Get specifies the encryption settings for the OS Disk. &lt;br&gt;&lt;br&gt; Minimum api-version: 2015-06-15.
      *
      * @return the encryptionSettings value
      */
@@ -64,7 +64,7 @@ public class DiskInstanceView {
     }
 
     /**
-     * Set the encryptionSettings value.
+     * Set specifies the encryption settings for the OS Disk. &lt;br&gt;&lt;br&gt; Minimum api-version: 2015-06-15.
      *
      * @param encryptionSettings the encryptionSettings value to set
      * @return the DiskInstanceView object itself.
@@ -75,7 +75,7 @@ public class DiskInstanceView {
     }
 
     /**
-     * Get the statuses value.
+     * Get the resource status information.
      *
      * @return the statuses value
      */
@@ -84,7 +84,7 @@ public class DiskInstanceView {
     }
 
     /**
-     * Set the statuses value.
+     * Set the resource status information.
      *
      * @param statuses the statuses value to set
      * @return the DiskInstanceView object itself.
