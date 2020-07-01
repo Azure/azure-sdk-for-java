@@ -76,7 +76,7 @@ public class DeviceCodeCredential implements TokenCredential {
                 return identityClient.authenticateWithDeviceCode(request, challengeConsumer);
             }))
             .map(this::updateCache)
-            .doOnSuccess(token -> LoggingUtil.logTokenSuccess(logger, request))
+            .doOnNext(token -> LoggingUtil.logTokenSuccess(logger, request))
             .doOnError(error -> LoggingUtil.logTokenError(logger, request, error));
     }
 

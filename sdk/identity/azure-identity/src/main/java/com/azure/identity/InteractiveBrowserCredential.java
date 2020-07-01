@@ -80,7 +80,7 @@ public class InteractiveBrowserCredential implements TokenCredential {
             }
             return identityClient.authenticateWithBrowserInteraction(request, port);
         })).map(this::updateCache)
-            .doOnSuccess(token -> LoggingUtil.logTokenSuccess(logger, request))
+            .doOnNext(token -> LoggingUtil.logTokenSuccess(logger, request))
             .doOnError(error -> LoggingUtil.logTokenError(logger, request, error));
     }
 
