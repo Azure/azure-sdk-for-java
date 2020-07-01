@@ -51,7 +51,7 @@ public class ServiceBusManagementSerializer implements SerializerAdapter {
         // entities are created.
         if (matcher.find(0)) {
             logger.verbose("Found instances of '{}' to replace. Value: {}", MINIMUM_DATETIME_PATTERN.pattern(), value);
-            serializedString = matcher.replaceAll(matchResult -> MINIMUM_DATETIME_FORMATTED);
+            serializedString = matcher.replaceAll(MINIMUM_DATETIME_FORMATTED);
         } else {
             serializedString = value;
         }
