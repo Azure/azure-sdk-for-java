@@ -7,8 +7,8 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.implementation.annotation.Beta;
-import com.azure.resourcemanager.appplatform.AppPlatformManagementClient;
 import com.azure.resourcemanager.appplatform.AppPlatformManager;
+import com.azure.resourcemanager.appplatform.fluent.ServicesClient;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsDeletingByResourceGroup;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsGettingById;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsGettingByResourceGroup;
@@ -24,7 +24,7 @@ import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
 @Beta
 public interface SpringServices
     extends HasManager<AppPlatformManager>,
-        HasInner<AppPlatformManagementClient>,
+        HasInner<ServicesClient>,
         SupportsCreating<SpringService.DefinitionStages.Blank>,
         SupportsGettingById<SpringService>,
         SupportsGettingByResourceGroup<SpringService>,

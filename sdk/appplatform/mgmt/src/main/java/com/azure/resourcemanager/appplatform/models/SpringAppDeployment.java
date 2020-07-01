@@ -12,7 +12,7 @@ import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
 import com.azure.resourcemanager.resources.fluentcore.model.Updatable;
 
-import java.nio.file.Path;
+import java.io.File;
 import java.time.OffsetDateTime;
 import java.util.List;
 
@@ -22,12 +22,15 @@ import java.util.List;
 public interface SpringAppDeployment
     extends ExternalChildResource<SpringAppDeployment, SpringApp>,
         HasInner<DeploymentResourceInner>,
-        Updatable<SpringAppDeployment> {
+        Updatable<SpringAppDeployment.Update> {
     /** @return the app name of the deployment */
     String appName();
 
+    /** @return the deploy settings of the deployment */
+    DeploymentSettings settings();
+
     /** @return the status of the deployment */
-    String status();
+    DeploymentResourceStatus status();
 
     /** @return whether the deployment is active */
     boolean isActive();
@@ -43,7 +46,6 @@ public interface SpringAppDeployment
         extends DefinitionStages.Blank,
             DefinitionStages.WithSource,
             DefinitionStages.WithModule,
-            DefinitionStages.WithActivation,
             DefinitionStages.WithPredefinedSettings,
             DefinitionStages.WithSettingsAndCreate {}
 
@@ -56,31 +58,39 @@ public interface SpringAppDeployment
         interface WithSource {
             /**
              * Specifies the jar package for the deployment.
-             * @param jarPath the path of the jar
+             * @param jar the file of the jar
              * @return the next stage of deployment definition
              */
-            WithActivation withJarPath(Path jarPath);
+            WithPredefinedSettings withJarPath(File jar);
 
             /**
              * Specifies the jar package for the deployment.
              * @param jar the content of the jar
              * @return the next stage of deployment definition
              */
-            WithActivation withJarFile(byte[] jar);
+            WithPredefinedSettings withJarFile(byte[] jar);
 
             /**
              * Specifies the source code for the deployment.
-             * @param sourceCodePath the path of the source code
+             * @param sourceCode the folder of the source code
              * @return the next stage of deployment definition
              */
-            WithModule withSourceCodePath(Path sourceCodePath);
+            WithModule withSourceCodeFolder(File sourceCode);
 
             /**
              * Specifies the source code for the deployment.
-             * @param sourceCodeTarGzPath the path for a tar.gz file of the source code
+             * @param sourceCodeTarGz a tar.gz file of the source code
              * @return the next stage of deployment definition
              */
-            WithModule withSourceCodeTarGzPath(Path sourceCodeTarGzPath);
+            WithModule withSourceCodeTarGzFile(File sourceCodeTarGz);
+
+            /**
+             * Specifies the a existing source in the cloud storage.
+             * @param type the source type in previous upload
+             * @param relativePath the relative path gotten from getResourceUploadUrl
+             * @return the next stage of deployment definition
+             */
+            WithPredefinedSettings withExistingSource(UserSourceType type, String relativePath);
         }
 
         /** The stage of a deployment definition allowing to specify the module of the source code. */
@@ -90,28 +100,13 @@ public interface SpringAppDeployment
              * @param moduleName the target module of the multi-module source code
              * @return the next stage of deployment definition
              */
-            WithActivation withTargetModule(String moduleName);
+            WithPredefinedSettings withTargetModule(String moduleName);
 
             /**
              * Specifies the only module of the source code.
              * @return the next stage of deployment definition
              */
-            WithActivation withSingleModule();
-        }
-
-        /** The stage of a deployment definition allowing to specify whether it is active. */
-        interface WithActivation {
-            /**
-             * Specifies the activation of the deployment.
-             * @return the next stage of deployment definition
-             */
-            WithPredefinedSettings withActivation();
-
-            /**
-             * Specifies the deactivation of the deployment.
-             * @return the next stage of deployment definition
-             */
-            WithPredefinedSettings withDeactivation();
+            WithPredefinedSettings withSingleModule();
         }
 
         /** The stage of a deployment definition allowing to specify predefined settings. */
@@ -187,12 +182,43 @@ public interface SpringAppDeployment
              * @return the next stage of deployment definition
              */
             WithSettingsAndCreate withEnvironment(String key, String value);
+
+            /**
+             * Specifies the version of the deployment.
+             * @param versionName the version name of the deployment
+             * @return the next stage of deployment definition
+             */
+            WithSettingsAndCreate withVersionName(String versionName);
+
+            /**
+             * Activates of the deployment after definition.
+             * @return the next stage of deployment definition
+             */
+            WithSettingsAndCreate activate();
+        }
+
+        interface WithBaseSettings {
+            /**
+             * Specifies the version of the deployment.
+             * @param versionName the version name of the deployment
+             * @return the next stage of deployment definition
+             */
+            WithCreate withVersionName(String versionName);
+
+
+            /**
+             * Activates of the deployment after definition.
+             * @return the next stage of deployment definition
+             */
+            WithCreate activate();
         }
 
         /**
          * The stage of the definition which contains all required inputs for the resource to be created.
          */
-        interface WithCreate extends Creatable<SpringAppDeployment> {}
+        interface WithCreate
+            extends Creatable<SpringAppDeployment>,
+                WithBaseSettings {}
 
         /**
          * The stage of the definition which contains all the minimum required inputs for the resource to be created,

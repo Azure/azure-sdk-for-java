@@ -6,13 +6,15 @@ package com.azure.resourcemanager.appplatform.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.implementation.annotation.Beta;
 import com.azure.resourcemanager.appplatform.fluent.inner.AppResourceInner;
+import com.azure.resourcemanager.appplatform.fluent.inner.ResourceUploadDefinitionInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.ExternalChildResource;
 import com.azure.resourcemanager.resources.fluentcore.model.Appliable;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
 import com.azure.resourcemanager.resources.fluentcore.model.Updatable;
+import reactor.core.publisher.Mono;
 
-import java.nio.file.Path;
+import java.io.File;
 import java.time.OffsetDateTime;
 
 /** An immutable client-side representation of an Azure Spring App. */
@@ -21,7 +23,7 @@ import java.time.OffsetDateTime;
 public interface SpringApp
     extends ExternalChildResource<SpringApp, SpringService>,
         HasInner<AppResourceInner>,
-        Updatable<SpringApp> {
+        Updatable<SpringApp.Update> {
     /** @return whether the app exposes public endpoint */
     boolean isPublic();
 
@@ -48,6 +50,12 @@ public interface SpringApp
 
     /** @return the entry point of the spring app deployment */
     SpringAppDeployments deploy();
+
+    /** @return the blob url to upload deployment */
+    Mono<ResourceUploadDefinitionInner> getResourceUploadUrlAsync();
+
+    /** @return the blob url to upload deployment */
+    ResourceUploadDefinitionInner getResourceUploadUrl();
 
     /** Container interface for all the definitions that need to be implemented. */
     interface Definition
@@ -107,19 +115,19 @@ public interface SpringApp
             /**
              * Deploys the jar package for the spring app with default scale.
              * @param name the name of the deployment
-             * @param jarPath the path of the jar
+             * @param jarFile the file of the jar
              * @return the next stage of spring app definition
              */
-            WithCreate deployJar(String name, Path jarPath);
+            WithCreate deployJar(String name, File jarFile);
 
             /**
              * Deploys the source code for the spring app with default scale.
              * @param name the name of the deployment
-             * @param sourceCodePath the path of the source code
+             * @param sourceCode the source code folder
              * @param targetModule the target module of the source code
              * @return the next stage of spring app definition
              */
-            WithCreate deploySource(String name, Path sourceCodePath, String targetModule);
+            WithCreate deploySource(String name, File sourceCode, String targetModule);
         }
 
         /**
@@ -222,19 +230,26 @@ public interface SpringApp
             /**
              * Deploys the jar package for the spring app with default scale.
              * @param name the name of the deployment
-             * @param jarPath the path of the jar
-             * @return the next stage of spring app definition
+             * @param jarFile the file of the jar
+             * @return the next stage of spring app update
              */
-            Update deployJar(String name, Path jarPath);
+            Update deployJar(String name, File jarFile);
 
             /**
              * Deploys the source code for the spring app with default scale.
              * @param name the name of the deployment
-             * @param sourceCodePath the path of the source code
+             * @param sourceCode the source code folder
              * @param targetModule the target module of the source code
-             * @return the next stage of spring app definition
+             * @return the next stage of spring app update
              */
-            Update deploySource(String name, Path sourceCodePath, String targetModule);
+            Update deploySource(String name, File sourceCode, String targetModule);
+
+            /**
+             * Specifies active deployment for the spring app.
+             * @param name the name of the deployment
+             * @return the next stage of spring app update
+             */
+            Update withActiveDeployment(String name);
         }
     }
 }

@@ -5,8 +5,8 @@ package com.azure.resourcemanager.appplatform.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.implementation.annotation.Beta;
-import com.azure.resourcemanager.appplatform.AppPlatformManagementClient;
 import com.azure.resourcemanager.appplatform.AppPlatformManager;
+import com.azure.resourcemanager.appplatform.fluent.AppsClient;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsGettingById;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsGettingByName;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.HasManager;
@@ -22,7 +22,7 @@ import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
 @Beta
 public interface SpringApps
     extends HasManager<AppPlatformManager>,
-        HasInner<AppPlatformManagementClient>,
+        HasInner<AppsClient>,
         HasParent<SpringService>,
         SupportsCreating<SpringApp.DefinitionStages.Blank>,
         SupportsGettingById<SpringApp>,

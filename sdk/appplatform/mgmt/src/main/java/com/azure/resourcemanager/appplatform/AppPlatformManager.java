@@ -6,6 +6,7 @@ package com.azure.resourcemanager.appplatform;
 
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpPipeline;
+import com.azure.resourcemanager.appplatform.implementation.SpringServicesImpl;
 import com.azure.resourcemanager.appplatform.models.SpringServices;
 import com.azure.resourcemanager.resources.fluentcore.arm.AzureConfigurable;
 import com.azure.resourcemanager.resources.fluentcore.arm.implementation.AzureConfigurableImpl;
@@ -96,7 +97,7 @@ public final class AppPlatformManager extends Manager<AppPlatformManager, AppPla
     /** @return Entry point for Spring Service management API. */
     public SpringServices springServices() {
         if (springServices == null) {
-            springServices = null; // TODO change after impl
+            springServices = new SpringServicesImpl(this);
         }
         return springServices;
     }
