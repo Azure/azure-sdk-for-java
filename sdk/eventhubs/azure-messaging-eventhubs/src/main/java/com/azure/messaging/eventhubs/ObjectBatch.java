@@ -4,13 +4,12 @@ import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.implementation.ErrorContextProvider;
 import com.azure.core.amqp.implementation.TracerProvider;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.data.schemaregistry.SchemaRegistryDataSerializer;
 
 public final class ObjectBatch<T> extends Batch {
     private final ClientLogger logger = new ClientLogger(ObjectBatch.class);
     private final Object lock = new Object();
     private final Class<T> batchType;
-    private final SchemaRegistryDataSerializer registrySerializer;
+    private final ObjectSerializer serializer;
 
     /**
      *
@@ -20,16 +19,16 @@ public final class ObjectBatch<T> extends Batch {
      * @param batchType
      * @param contextProvider
      * @param tracerProvider
-     * @param registrySerializer
+     * @param serializer
      * @param entityPath
      * @param hostname
      */
     ObjectBatch(int maxMessageSize, String partitionId, String partitionKey, Class<T> batchType,
                     ErrorContextProvider contextProvider, TracerProvider tracerProvider,
-                    SchemaRegistryDataSerializer registrySerializer, String entityPath, String hostname) {
+                ObjectSerializer serializer, String entityPath, String hostname) {
         super(maxMessageSize, partitionId, partitionKey, contextProvider, tracerProvider, entityPath, hostname);
         this.batchType = batchType;
-        this.registrySerializer = registrySerializer;
+        this.serializer = serializer;
     }
 
     /**
@@ -47,7 +46,7 @@ public final class ObjectBatch<T> extends Batch {
             throw logger.logExceptionAsWarning(new IllegalArgumentException("object cannot be null"));
         }
 
-        EventData eventData = new EventData(registrySerializer.serialize(object).block());
+        EventData eventData = new EventData(serializer.serialize(object).block());
         EventData event = tracerProvider.isEnabled() ? traceMessageSpan(eventData) : eventData;
 
         return tryAdd(event);

@@ -19,7 +19,6 @@ import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.tracing.ProcessKind;
-import com.azure.data.schemaregistry.SchemaRegistryDataSerializer;
 import com.azure.messaging.eventhubs.implementation.EventHubConnectionProcessor;
 import com.azure.messaging.eventhubs.implementation.EventHubManagementNode;
 import com.azure.messaging.eventhubs.models.CreateBatchOptions;
@@ -111,7 +110,7 @@ public class EventHubProducerAsyncClient implements Closeable {
     private final Scheduler scheduler;
     private final boolean isSharedConnection;
     private final Runnable onClientClose;
-    private final SchemaRegistryDataSerializer registrySerializer;
+    private final ObjectSerializer serializer;
 
     private enum SendMode {
         EVENT_DATA,
@@ -125,7 +124,7 @@ public class EventHubProducerAsyncClient implements Closeable {
      */
     EventHubProducerAsyncClient(String fullyQualifiedNamespace, String eventHubName,
                                 EventHubConnectionProcessor connectionProcessor, AmqpRetryOptions retryOptions, TracerProvider tracerProvider,
-                                MessageSerializer messageSerializer, Scheduler scheduler, boolean isSharedConnection, Runnable onClientClose, SchemaRegistryDataSerializer registrySerializer) {
+                                MessageSerializer messageSerializer, Scheduler scheduler, boolean isSharedConnection, Runnable onClientClose, ObjectSerializer serializer) {
         this.fullyQualifiedNamespace = Objects.requireNonNull(fullyQualifiedNamespace,
             "'fullyQualifiedNamespace' cannot be null.");
         this.eventHubName = Objects.requireNonNull(eventHubName, "'eventHubName' cannot be null.");
@@ -139,7 +138,7 @@ public class EventHubProducerAsyncClient implements Closeable {
         this.retryPolicy = getRetryPolicy(retryOptions);
         this.scheduler = scheduler;
         this.isSharedConnection = isSharedConnection;
-        this.registrySerializer = registrySerializer;
+        this.serializer = serializer;
     }
 
     /**
@@ -313,7 +312,7 @@ public class EventHubProducerAsyncClient implements Closeable {
                         : maximumLinkSize;
 
                     return Mono.just(new ObjectBatch<>(batchSize, partitionId, partitionKey, objectType,
-                        link::getErrorContext, tracerProvider, registrySerializer,
+                        link::getErrorContext, tracerProvider, serializer,
                         link.getEntityPath(), link.getHostname()));
                 }));
     }
@@ -583,12 +582,12 @@ public class EventHubProducerAsyncClient implements Closeable {
     private <T> Mono<T> verifySendMode(SendMode mode) {
         switch (mode) {
             case EVENT_DATA:
-                if (registrySerializer != null) {
+                if (serializer != null) {
                     return monoError(logger, new IllegalStateException());
                 }
                 break;
             case OBJECT:
-                if (registrySerializer == null) {
+                if (serializer == null) {
                     return monoError(logger, new IllegalStateException());
                 }
                 break;
