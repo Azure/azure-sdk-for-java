@@ -255,6 +255,30 @@ class ServiceBusManagementSerializerTest {
     }
 
     /**
+     * Verify we can deserialize XML from a PUT subscription request.
+     */
+    @Test
+    void deserializeCreateSubscription() throws IOException {
+        // Arrange
+        final String contents = getContents("CreateSubscriptionEntry.xml");
+        final SubscriptionDescription expected = new SubscriptionDescription("topic", "sub46850f")
+            .setLockDuration(Duration.ofSeconds(45))
+            .setEnableDeadLetteringOnFilterEvaluationExceptions(true)
+            .setMaxDeliveryCount(7);
+
+        // Act
+        final SubscriptionDescriptionEntry entry = serializer.deserialize(contents, SubscriptionDescriptionEntry.class);
+
+        // Assert
+        assertNotNull(entry);
+        assertNotNull(entry.getContent());
+
+        final SubscriptionDescription actual = entry.getContent().getSubscriptionDescription();
+
+        assertSubscriptionEquals(expected, EntityStatus.ACTIVE, actual);
+    }
+
+    /**
      * Verify we can deserialize XML from a GET subscription request and create convenience model,
      * {@link SubscriptionRuntimeInfo}.
      */

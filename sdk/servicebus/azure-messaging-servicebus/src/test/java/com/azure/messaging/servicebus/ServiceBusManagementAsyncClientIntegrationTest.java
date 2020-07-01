@@ -12,6 +12,7 @@ import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.test.TestBase;
 import com.azure.messaging.servicebus.models.QueueDescription;
 import com.azure.messaging.servicebus.models.QueueRuntimeInfo;
+import com.azure.messaging.servicebus.models.SubscriptionDescription;
 import com.azure.messaging.servicebus.models.SubscriptionRuntimeInfo;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
@@ -81,8 +82,56 @@ class ServiceBusManagementAsyncClientIntegrationTest extends TestBase {
                 assertEquals(expected.requiresSession(), actual.requiresSession());
 
                 final QueueRuntimeInfo runtimeInfo = new QueueRuntimeInfo(actual);
+                assertEquals(0, runtimeInfo.getMessageCount());
+                assertEquals(0, runtimeInfo.getSizeInBytes());
                 assertNotNull(runtimeInfo.getCreatedAt());
                 assertTrue(nowUtc.isAfter(runtimeInfo.getCreatedAt()));
+            })
+            .verifyComplete();
+    }
+
+    @ParameterizedTest
+    @MethodSource("createHttpClients")
+    void createQueueExistingName(HttpClient httpClient) {
+        // Arrange
+        final String queueName = interceptorManager.isPlaybackMode()
+            ? "queue-5"
+            : TestUtils.getEntityName(TestUtils.getQueueBaseName(), 5);
+        final QueueDescription queueDescription = new QueueDescription(queueName);
+        final ServiceBusManagementAsyncClient client = createClient(httpClient);
+
+        // Act & Assert
+        StepVerifier.create(client.createQueue(queueDescription))
+            .consumeErrorWith(error -> {
+                assertTrue(error instanceof ResourceExistsException);
+            })
+            .verify();
+    }
+
+    @ParameterizedTest
+    @MethodSource("createHttpClients")
+    void createSubscription(HttpClient httpClient) {
+        // Arrange
+        final ServiceBusManagementAsyncClient client = createClient(httpClient);
+        final String topicName = TestUtils.getTopicName();
+        final String subscriptionName = testResourceNamer.randomName("sub", 10);
+        final SubscriptionDescription expected = new SubscriptionDescription(topicName, subscriptionName)
+            .setMaxDeliveryCount(7)
+            .setLockDuration(Duration.ofSeconds(45))
+            .setUserMetadata("some-metadata-for-testing-subscriptions");
+
+        // Act & Assert
+        StepVerifier.create(client.createSubscription(expected))
+            .assertNext(actual -> {
+                assertEquals(topicName, expected.getTopicName());
+                assertEquals(subscriptionName, expected.getSubscriptionName());
+
+                assertEquals(expected.getLockDuration(), actual.getLockDuration());
+                assertEquals(expected.getMaxDeliveryCount(), actual.getMaxDeliveryCount());
+                assertEquals(expected.getUserMetadata(), actual.getUserMetadata());
+
+                assertEquals(expected.deadLetteringOnMessageExpiration(), actual.deadLetteringOnMessageExpiration());
+                assertEquals(expected.requiresSession(), actual.requiresSession());
             })
             .verifyComplete();
     }
@@ -112,24 +161,6 @@ class ServiceBusManagementAsyncClientIntegrationTest extends TestBase {
                 assertNotNull(runtimeInfo.getAccessedAt());
             })
             .verifyComplete();
-    }
-
-    @ParameterizedTest
-    @MethodSource("createHttpClients")
-    void createQueueExistingName(HttpClient httpClient) {
-        // Arrange
-        final String queueName = interceptorManager.isPlaybackMode()
-            ? "queue-5"
-            : TestUtils.getEntityName(TestUtils.getQueueBaseName(), 5);
-        final QueueDescription queueDescription = new QueueDescription(queueName);
-        final ServiceBusManagementAsyncClient client = createClient(httpClient);
-
-        // Act & Assert
-        StepVerifier.create(client.createQueue(queueDescription))
-            .consumeErrorWith(error -> {
-                assertTrue(error instanceof ResourceExistsException);
-            })
-            .verify();
     }
 
     @ParameterizedTest
