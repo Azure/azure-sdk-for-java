@@ -46,7 +46,7 @@ public class ApiError {
     private String message;
 
     /**
-     * Get the details value.
+     * Get the Api error details.
      *
      * @return the details value
      */
@@ -55,7 +55,7 @@ public class ApiError {
     }
 
     /**
-     * Set the details value.
+     * Set the Api error details.
      *
      * @param details the details value to set
      * @return the ApiError object itself.
@@ -66,7 +66,7 @@ public class ApiError {
     }
 
     /**
-     * Get the innererror value.
+     * Get the Api inner error.
      *
      * @return the innererror value
      */
@@ -75,7 +75,7 @@ public class ApiError {
     }
 
     /**
-     * Set the innererror value.
+     * Set the Api inner error.
      *
      * @param innererror the innererror value to set
      * @return the ApiError object itself.
@@ -86,7 +86,7 @@ public class ApiError {
     }
 
     /**
-     * Get the code value.
+     * Get the error code.
      *
      * @return the code value
      */
@@ -95,7 +95,7 @@ public class ApiError {
     }
 
     /**
-     * Set the code value.
+     * Set the error code.
      *
      * @param code the code value to set
      * @return the ApiError object itself.
@@ -106,7 +106,7 @@ public class ApiError {
     }
 
     /**
-     * Get the target value.
+     * Get the target of the particular error.
      *
      * @return the target value
      */
@@ -115,7 +115,7 @@ public class ApiError {
     }
 
     /**
-     * Set the target value.
+     * Set the target of the particular error.
      *
      * @param target the target value to set
      * @return the ApiError object itself.
@@ -126,7 +126,7 @@ public class ApiError {
     }
 
     /**
-     * Get the message value.
+     * Get the error message.
      *
      * @return the message value
      */
@@ -135,7 +135,7 @@ public class ApiError {
     }
 
     /**
-     * Set the message value.
+     * Set the error message.
      *
      * @param message the message value to set
      * @return the ApiError object itself.
