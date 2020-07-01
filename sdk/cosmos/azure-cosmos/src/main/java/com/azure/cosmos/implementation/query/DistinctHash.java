@@ -7,6 +7,7 @@ import com.azure.cosmos.implementation.routing.MurmurHash3_128;
 import com.azure.cosmos.implementation.routing.UInt128;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.NullNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.fasterxml.jackson.databind.node.ValueNode;
 
@@ -68,6 +69,9 @@ public final class DistinctHash {
             UInt128 hash = MurmurHash3_128.hash128(HashSeeds.STRING, seed);
             return MurmurHash3_128.hash128(resource, hash);
         }
+        if (resource instanceof NullNode) {
+            return getHash(null, seed);
+        }
         if (resource instanceof ValueNode) {
             return getHash(JsonSerializable.getValue((JsonNode) resource), seed);
         }
@@ -100,7 +104,7 @@ public final class DistinctHash {
             intermediateHash = intermediateHash.xor(propertyHash);
         }
 
-        if (intermediateHash.compareTo(UInt128.ZERO) == 1) {
+        if (!intermediateHash.equals(UInt128.ZERO)) {
             hash = MurmurHash3_128.hash128(intermediateHash, hash);
         }
 
