@@ -441,6 +441,24 @@ class ServiceBusManagementAsyncClientIntegrationTest extends TestBase {
             .verify();
     }
 
+    @ParameterizedTest
+    @MethodSource("createHttpClients")
+    void listTopics(HttpClient httpClient) {
+        // Arrange
+        final ServiceBusManagementAsyncClient client = createClient(httpClient);
+
+        // Act & Assert
+        StepVerifier.create(client.listTopics())
+            .assertNext(topics -> {
+                assertNotNull(topics.getName());
+                assertTrue(topics.enableBatchedOperations());
+                assertFalse(topics.enablePartitioning());
+            })
+            .expectNextCount(2)
+            .thenCancel()
+            .verify();
+    }
+
     private ServiceBusManagementAsyncClient createClient(HttpClient httpClient) {
         final String connectionString = interceptorManager.isPlaybackMode()
             ? "Endpoint=sb://foo.servicebus.windows.net;SharedAccessKeyName=dummyKey;SharedAccessKey=dummyAccessKey"

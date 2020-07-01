@@ -37,6 +37,7 @@ import com.azure.messaging.servicebus.implementation.models.ServiceBusManagement
 import com.azure.messaging.servicebus.implementation.models.ServiceBusManagementErrorException;
 import com.azure.messaging.servicebus.implementation.models.SubscriptionDescriptionEntry;
 import com.azure.messaging.servicebus.implementation.models.TopicDescriptionEntry;
+import com.azure.messaging.servicebus.implementation.models.TopicDescriptionFeed;
 import com.azure.messaging.servicebus.models.QueueDescription;
 import com.azure.messaging.servicebus.models.QueueRuntimeInfo;
 import com.azure.messaging.servicebus.models.SubscriptionDescription;
@@ -76,8 +77,10 @@ public final class ServiceBusManagementAsyncClient {
     private static final String SERVICE_BUS_TRACING_NAMESPACE_VALUE = "Microsoft.ServiceBus";
     private static final String CONTENT_TYPE = "application/xml";
 
-    // Name of the entity type when listing queues.
+    // Name of the entity type when listing queues and topics.
     private static final String QUEUES_ENTITY_TYPE = "queues";
+    private static final String TOPICS_ENTITY_TYPE = "topics";
+
     private static final int NUMBER_OF_ELEMENTS = 10;
 
     private final ServiceBusManagementClientImpl managementClient;
@@ -661,6 +664,22 @@ public final class ServiceBusManagementAsyncClient {
         return new PagedFlux<>(
             () -> withContext(context -> listQueuesFirstPage(context)),
             token -> withContext(context -> listQueuesNextPage(token, context)));
+    }
+
+    /**
+     * Fetches all the topics in the Service Bus namespace.
+     *
+     * @return A Flux of {@link TopicDescription topics} in the Service Bus namespace.
+     * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
+     *     namespace.
+     * @see <a href="https://docs.microsoft.com/rest/api/servicebus/enumeration">List Topics, Subscriptions, or
+     *     Authorization Rules</a>
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<TopicDescription> listTopics() {
+        return new PagedFlux<>(
+            () -> withContext(context -> listTopicsFirstPage(context)),
+            token -> withContext(context -> listTopicsNextPage(token, context)));
     }
 
     /**
@@ -1252,6 +1271,46 @@ public final class ServiceBusManagementAsyncClient {
     }
 
     /**
+     * Gets the first page of topics with context.
+     *
+     * @param context Context to pass into request.
+     *
+     * @return A Mono that completes with a page of topics.
+     */
+    Mono<PagedResponse<TopicDescription>> listTopicsFirstPage(Context context) {
+        final Context withTracing = context.addData(AZ_TRACING_NAMESPACE_KEY, SERVICE_BUS_TRACING_NAMESPACE_VALUE);
+
+        try {
+            return listTopics(0, NUMBER_OF_ELEMENTS, withTracing);
+        } catch (RuntimeException e) {
+            return monoError(logger, e);
+        }
+    }
+
+    /**
+     * Gets the next page of topics with context.
+     *
+     * @param continuationToken Number of items to skip in feed.
+     * @param context Context to pass into request.
+     *
+     * @return A Mono that completes with a page of topics or empty if there are no items left.
+     */
+    Mono<PagedResponse<TopicDescription>> listTopicsNextPage(String continuationToken, Context context) {
+        if (continuationToken == null || continuationToken.isEmpty()) {
+            return Mono.empty();
+        }
+
+        try {
+            final Context withTracing = context.addData(AZ_TRACING_NAMESPACE_KEY, SERVICE_BUS_TRACING_NAMESPACE_VALUE);
+            final int skip = Integer.parseInt(continuationToken);
+
+            return listTopics(skip, NUMBER_OF_ELEMENTS, withTracing);
+        } catch (RuntimeException e) {
+            return monoError(logger, e);
+        }
+    }
+
+    /**
      * Updates a queue with its context.
      *
      * @param queue Information about the queue to update. You must provide all the property values that are desired
@@ -1550,6 +1609,45 @@ public final class ServiceBusManagementAsyncClient {
                     return Mono.just(extractPage(feedResponse, entities, feed.getLink()));
                 } catch (MalformedURLException | UnsupportedEncodingException error) {
                     return Mono.error(new RuntimeException("Could not parse response into FeedPage<QueueDescription>",
+                        error));
+                }
+            });
+    }
+
+    /**
+     * Helper method that invokes the service method, extracts the data and translates it to a PagedResponse.
+     *
+     * @param skip Number of elements to skip.
+     * @param top Number of elements to fetch.
+     * @param context Context for the query.
+     *
+     * @return A Mono that completes with a paged response of topics.
+     */
+    private Mono<PagedResponse<TopicDescription>> listTopics(int skip, int top, Context context) {
+        return managementClient.listEntitiesWithResponseAsync(TOPICS_ENTITY_TYPE, skip, top, context)
+            .onErrorMap(ServiceBusManagementAsyncClient::mapException)
+            .flatMap(response -> {
+                final Response<TopicDescriptionFeed> feedResponse = deserialize(response, TopicDescriptionFeed.class);
+                final TopicDescriptionFeed feed = feedResponse.getValue();
+                if (feed == null) {
+                    logger.warning("Could not deserialize TopicDescriptionFeed. skip {}, top: {}", skip, top);
+                    return Mono.empty();
+                }
+
+                final List<TopicDescription> entities = feed.getEntry().stream()
+                    .filter(e -> e.getContent() != null && e.getContent().getTopicDescription() != null)
+                    .map(e -> {
+                        final String topicName = getTitleValue(e.getTitle());
+                        final TopicDescription topicDescription = e.getContent().getTopicDescription();
+                        EntityHelper.setTopicName(topicDescription, topicName);
+
+                        return topicDescription;
+                    })
+                    .collect(Collectors.toList());
+                try {
+                    return Mono.just(extractPage(feedResponse, entities, feed.getLink()));
+                } catch (MalformedURLException | UnsupportedEncodingException error) {
+                    return Mono.error(new RuntimeException("Could not parse response into FeedPage<TopicDescription>",
                         error));
                 }
             });
