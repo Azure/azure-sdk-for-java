@@ -25,7 +25,6 @@ import com.azure.resourcemanager.resources.fluentcore.arm.Region;
 import com.azure.resourcemanager.resources.fluentcore.profile.AzureProfile;
 import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 
-import java.time.Duration;
 import java.util.Iterator;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
