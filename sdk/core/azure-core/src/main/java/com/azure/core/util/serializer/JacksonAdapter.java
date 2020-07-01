@@ -9,6 +9,7 @@ import com.azure.core.http.HttpHeaders;
 import com.azure.core.implementation.TypeUtil;
 import com.azure.core.implementation.serializer.MalformedValueException;
 import com.azure.core.util.CoreUtils;
+import com.azure.core.util.ExpandableStringEnum;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -33,6 +34,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.function.Function;
 
 /**
  * Implementation of {@link SerializerAdapter} for Jackson.
@@ -166,54 +168,73 @@ public class JacksonAdapter implements SerializerAdapter {
             } else {
                 return (T) serializer().readValue(value, javaType);
             }
-        } catch (JsonParseException jpe) {
-            throw logger.logExceptionAsError(new MalformedValueException(jpe.getMessage(), jpe));
+        } catch (JsonParseException | ReflectiveOperationException ex) {
+            throw logger.logExceptionAsError(new MalformedValueException(ex.getMessage(), ex));
         }
     }
 
-    @SuppressWarnings("unchecked")
-    private static <T> T convertText(String value, Class<T> type) {
-        // Value is null or empty, return the default.
-        if (CoreUtils.isNullOrEmpty(value)) {
-            return null;
-        }
-
+    @SuppressWarnings({"unchecked", "rawtypes"})
+    static <T> T convertText(String value, Class<T> type) throws ReflectiveOperationException {
         // Check the default value's type to determine how it needs to be converted.
         Object convertedValue;
-        if (type.isAssignableFrom(byte.class)) {
-            convertedValue = Byte.parseByte(value);
-        } else if (type.isAssignableFrom(Byte.class)) {
-            convertedValue = Byte.valueOf(value);
-        } else if (type.isAssignableFrom(short.class)) {
-            convertedValue = Short.parseShort(value);
-        } else if (type.isAssignableFrom(Short.class)) {
-            convertedValue = Short.valueOf(value);
-        } else if (type.isAssignableFrom(int.class)) {
-            convertedValue = Integer.parseInt(value);
-        } else if (type.isAssignableFrom(Integer.class)) {
-            convertedValue = Integer.valueOf(value);
-        } else if (type.isAssignableFrom(long.class)) {
-            convertedValue = Long.parseLong(value);
-        } else if (type.isAssignableFrom(Long.class)) {
-            convertedValue = Long.valueOf(value);
-        } else if (type.isAssignableFrom(float.class)) {
-            convertedValue = Float.parseFloat(value);
-        } else if (type.isAssignableFrom(Float.class)) {
-            convertedValue = Float.valueOf(value);
-        } else if (type.isAssignableFrom(double.class)) {
-            convertedValue = Double.parseDouble(value);
-        } else if (type.isAssignableFrom(Double.class)) {
-            convertedValue = Double.valueOf(value);
-        } else if (type.isAssignableFrom(boolean.class)) {
+        if (byte.class.isAssignableFrom(type)) {
+            convertedValue = convertToPrimitive(value, Byte::parseByte);
+        } else if (Byte.class.isAssignableFrom(type)) {
+            convertedValue = convertToBoxedPrimitive(value, Byte::valueOf);
+        } else if (short.class.isAssignableFrom(type)) {
+            convertedValue = convertToPrimitive(value, Short::parseShort);
+        } else if (Short.class.isAssignableFrom(type)) {
+            convertedValue = convertToBoxedPrimitive(value, Short::valueOf);
+        } else if (int.class.isAssignableFrom(type)) {
+            convertedValue = convertToPrimitive(value, Integer::parseInt);
+        } else if (Integer.class.isAssignableFrom(type)) {
+            convertedValue = convertToBoxedPrimitive(value, Integer::valueOf);
+        } else if (long.class.isAssignableFrom(type)) {
+            convertedValue = convertToPrimitive(value, Long::parseLong);
+        } else if (Long.class.isAssignableFrom(type)) {
+            convertedValue = convertToBoxedPrimitive(value, Long::valueOf);
+        } else if (float.class.isAssignableFrom(type)) {
+            convertedValue = convertToPrimitive(value, Float::parseFloat);
+        } else if (Float.class.isAssignableFrom(type)) {
+            convertedValue = convertToBoxedPrimitive(value, Float::valueOf);
+        } else if (double.class.isAssignableFrom(type)) {
+            convertedValue = convertToPrimitive(value, Double::parseDouble);
+        } else if (Double.class.isAssignableFrom(type)) {
+            convertedValue = convertToBoxedPrimitive(value, Double::valueOf);
+        } else if (boolean.class.isAssignableFrom(type)) {
             convertedValue = Boolean.parseBoolean(value);
-        } else if (type.isAssignableFrom(Boolean.class)) {
-            convertedValue = Boolean.valueOf(value);
-        } else {
+        } else if (Boolean.class.isAssignableFrom(type)) {
+            convertedValue = convertToBoxedPrimitive(value, Boolean::valueOf);
+        } else if (Enum.class.isAssignableFrom(type)) {
+            if (CoreUtils.isNullOrEmpty(value)) {
+                return null;
+            }
+
+            Class<? extends Enum> enumType = (Class<? extends Enum>) type;
+            convertedValue = Enum.valueOf(enumType, value);
+        } else if (ExpandableStringEnum.class.isAssignableFrom(type)) {
+            if (CoreUtils.isNullOrEmpty(value)) {
+                return null;
+            }
+
+            Class<? extends ExpandableStringEnum> enumType = (Class<? extends ExpandableStringEnum>) type;
+            convertedValue = ExpandableStringEnum.fromString(value, enumType);
+        } else if (CharSequence.class.isAssignableFrom(type)) {
             // Should this check if there are any String only constructors or static factories?
             convertedValue = value;
+        } else {
+            throw new IllegalStateException(String.format("Unable to convert 'text' to type %s.", type.getName()));
         }
 
         return (T) convertedValue;
+    }
+
+    private static <T> T convertToBoxedPrimitive(String value, Function<String, T> converter) {
+        return CoreUtils.isNullOrEmpty(value) ? null : converter.apply(value);
+    }
+
+    private static <T> T convertToPrimitive(String value, Function<String, T> converter) {
+        return CoreUtils.isNullOrEmpty(value) ? converter.apply("0") : converter.apply(value);
     }
 
     @Override
