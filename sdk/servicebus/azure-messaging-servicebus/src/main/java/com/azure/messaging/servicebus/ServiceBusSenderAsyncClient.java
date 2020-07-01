@@ -555,7 +555,8 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
         return connectionProcessor
             .flatMap(connection -> {
                 if (!CoreUtils.isNullOrEmpty(viaEntityName)) {
-                    return connection.createSendLink("VIA-".concat(viaEntityName), viaEntityName, retryOptions, entityName);
+                    return connection.createSendLink("VIA-".concat(viaEntityName), viaEntityName, retryOptions,
+                        entityName);
                 } else {
                     return connection.createSendLink(entityName, entityName, retryOptions, null);
                 }

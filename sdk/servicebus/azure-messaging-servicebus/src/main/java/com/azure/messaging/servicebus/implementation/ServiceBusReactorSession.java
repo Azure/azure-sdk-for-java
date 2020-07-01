@@ -26,7 +26,6 @@ import org.apache.qpid.proton.amqp.transport.SenderSettleMode;
 import org.apache.qpid.proton.engine.Receiver;
 import org.apache.qpid.proton.engine.Session;
 import reactor.core.publisher.Mono;
-import reactor.core.publisher.SignalType;
 
 import java.time.Duration;
 import java.util.HashMap;

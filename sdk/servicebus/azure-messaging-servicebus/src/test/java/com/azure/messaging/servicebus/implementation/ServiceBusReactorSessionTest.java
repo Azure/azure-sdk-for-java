@@ -30,7 +30,6 @@ import org.apache.qpid.proton.reactor.Reactor;
 import org.apache.qpid.proton.reactor.Selectable;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -86,7 +85,7 @@ public class ServiceBusReactorSessionTest {
     @Mock
     private Session session;
     @Mock
-    Mono< ClaimsBasedSecurityNode > cbsNodeSupplier;
+    Mono<ClaimsBasedSecurityNode> cbsNodeSupplier;
     @Mock
     AmqpRetryPolicy retryPolicy;
     @Mock
@@ -174,7 +173,7 @@ public class ServiceBusReactorSessionTest {
 
         when(tokenManagerEntity.getAuthorizationResults()).thenReturn(Flux.just(AmqpResponseCode.ACCEPTED));
         when(tokenManagerEntity.authorize()).thenReturn(Mono.just(1L));
-         when(tokenManagerViaQueue.authorize()).thenReturn(Mono.just(1L));
+        when(tokenManagerViaQueue.authorize()).thenReturn(Mono.just(1L));
 
         when(session.sender(viaEntityPathSenderLinkName)).thenReturn(senderViaEntity);
         when(session.sender(entityPath)).thenReturn(senderEntity);
@@ -253,7 +252,8 @@ public class ServiceBusReactorSessionTest {
         verify(tokenManagerEntity).authorize();
         verify(tokenManagerViaQueue).authorize();
         verifyZeroInteractions(dispatcher);
-   }
+    }
+
     /**
      * Test for create Sender Link.
      */
