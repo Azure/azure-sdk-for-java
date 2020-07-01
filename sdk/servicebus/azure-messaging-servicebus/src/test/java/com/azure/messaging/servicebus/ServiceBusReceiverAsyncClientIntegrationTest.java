@@ -991,18 +991,18 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
 
         sendMessage(message).block(TIMEOUT);
 
-        final ServiceBusReceivedMessageContext receivedContext = receiver.receive().next().block(OPERATION_TIMEOUT);
+        final ServiceBusReceivedMessageContext receivedContext = receiver.receiveMessages().next().block(OPERATION_TIMEOUT);
         assertNotNull(receivedContext);
 
         final ServiceBusReceivedMessage receivedMessage = receivedContext.getMessage();
         assertNotNull(receivedMessage);
 
-        StepVerifier.create(receiver.deadLetter(receivedMessage))
+        StepVerifier.create(receiver.deadLetter(receivedMessage.getLockToken()))
             .verifyComplete();
 
         // Assert & Act
         try {
-            StepVerifier.create(deadLetterReceiver.receive().take(1))
+            StepVerifier.create(deadLetterReceiver.receiveMessages().take(1))
                 .assertNext(messageContext -> {
                     lockTokens.add(messageContext.getMessage().getLockToken());
                     assertMessageEquals(receivedMessage, messageId, isSessionEnabled);
