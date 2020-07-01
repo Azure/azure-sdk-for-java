@@ -36,6 +36,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  * Tests {@link ServiceBusManagementAsyncClient}.
  */
 class ServiceBusManagementAsyncClientIntegrationTest extends TestBase {
+    private static final Duration TIMEOUT = Duration.ofSeconds(20);
+
     @BeforeAll
     static void beforeAll() {
         StepVerifier.setDefaultTimeout(Duration.ofSeconds(30));
@@ -103,9 +105,7 @@ class ServiceBusManagementAsyncClientIntegrationTest extends TestBase {
 
         // Act & Assert
         StepVerifier.create(client.createQueue(queueDescription))
-            .consumeErrorWith(error -> {
-                assertTrue(error instanceof ResourceExistsException);
-            })
+            .expectError(ResourceExistsException.class)
             .verify();
     }
 
@@ -141,6 +141,36 @@ class ServiceBusManagementAsyncClientIntegrationTest extends TestBase {
 
     @ParameterizedTest
     @MethodSource("createHttpClients")
+    void createSubscriptionExistingName(HttpClient httpClient) {
+        // Arrange
+        final String topicName = TestUtils.getTopicName();
+        final String subscriptionName = interceptorManager.isPlaybackMode()
+            ? "subscription-session-1"
+            : TestUtils.getEntityName(TestUtils.getSessionSubscriptionBaseName(), 1);
+        final ServiceBusManagementAsyncClient client = createClient(httpClient);
+
+        // Act & Assert
+        StepVerifier.create(client.createSubscription(topicName, subscriptionName))
+            .expectError(ResourceExistsException.class)
+            .verify();
+    }
+
+    @ParameterizedTest
+    @MethodSource("createHttpClients")
+    void deleteQueue(HttpClient httpClient) {
+        // Arrange
+        final ServiceBusManagementAsyncClient client = createClient(httpClient);
+        final String queueName = testResourceNamer.randomName("sub", 10);
+
+        client.createQueue(queueName).block(TIMEOUT);
+
+        // Act & Assert
+        StepVerifier.create(client.deleteQueue(queueName))
+            .verifyComplete();
+    }
+
+    @ParameterizedTest
+    @MethodSource("createHttpClients")
     void getQueue(HttpClient httpClient) {
         // Arrange
         final ServiceBusManagementAsyncClient client = createClient(httpClient);
@@ -159,6 +189,28 @@ class ServiceBusManagementAsyncClientIntegrationTest extends TestBase {
                 assertNotNull(queueDescription.getLockDuration());
 
                 final QueueRuntimeInfo runtimeInfo = new QueueRuntimeInfo(queueDescription);
+                assertNotNull(runtimeInfo.getCreatedAt());
+                assertTrue(nowUtc.isAfter(runtimeInfo.getCreatedAt()));
+                assertNotNull(runtimeInfo.getAccessedAt());
+            })
+            .verifyComplete();
+    }
+
+    @ParameterizedTest
+    @MethodSource("createHttpClients")
+    void getQueueRuntimeInfo(HttpClient httpClient) {
+        // Arrange
+        final ServiceBusManagementAsyncClient client = createClient(httpClient);
+        final String queueName = interceptorManager.isPlaybackMode()
+            ? "queue-2"
+            : TestUtils.getEntityName(TestUtils.getQueueBaseName(), 2);
+        final OffsetDateTime nowUtc = OffsetDateTime.now(Clock.systemUTC());
+
+        // Act & Assert
+        StepVerifier.create(client.getQueueRuntimeInfo(queueName))
+            .assertNext(runtimeInfo -> {
+                assertEquals(queueName, runtimeInfo.getName());
+
                 assertNotNull(runtimeInfo.getCreatedAt());
                 assertTrue(nowUtc.isAfter(runtimeInfo.getCreatedAt()));
                 assertNotNull(runtimeInfo.getAccessedAt());
@@ -190,6 +242,52 @@ class ServiceBusManagementAsyncClientIntegrationTest extends TestBase {
                 assertNotNull(runtimeInfo.getCreatedAt());
                 assertTrue(nowUtc.isAfter(runtimeInfo.getCreatedAt()));
                 assertNotNull(runtimeInfo.getAccessedAt());
+            })
+            .verifyComplete();
+    }
+
+    @ParameterizedTest
+    @MethodSource("createHttpClients")
+    void getSubscriptionDoesNotExist(HttpClient httpClient) {
+        // Arrange
+        final ServiceBusManagementAsyncClient client = createClient(httpClient);
+        final String topicName = TestUtils.getTopicName();
+        final String subscriptionName = "subscription-session-not-exist";
+
+        // Act & Assert
+        StepVerifier.create(client.getSubscription(topicName, subscriptionName))
+            .expectError(ResourceNotFoundException.class)
+            .verify();
+    }
+
+    @ParameterizedTest
+    @MethodSource("createHttpClients")
+    void getSubscriptionRuntimeInfo(HttpClient httpClient) {
+        // Arrange
+        final ServiceBusManagementAsyncClient client = createClient(httpClient);
+        final String topicName = TestUtils.getTopicName();
+        final String subscriptionName = interceptorManager.isPlaybackMode()
+            ? "subscription-1"
+            : TestUtils.getEntityName(TestUtils.getSubscriptionBaseName(), 1);
+        final OffsetDateTime nowUtc = OffsetDateTime.now(Clock.systemUTC());
+
+        // Act & Assert
+        StepVerifier.create(client.getSubscriptionRuntimeInfo(topicName, subscriptionName))
+            .assertNext(description -> {
+                assertEquals(topicName, description.getTopicName());
+                assertEquals(subscriptionName, description.getSubscriptionName());
+
+                assertTrue(description.getMessageCount() >= 0);
+                assertNotNull(description.getDetails());
+                assertNotNull(description.getDetails().getActiveMessageCount());
+                assertNotNull(description.getDetails().getScheduledMessageCount());
+                assertNotNull(description.getDetails().getTransferDeadLetterMessageCount());
+                assertNotNull(description.getDetails().getTransferMessageCount());
+                assertNotNull(description.getDetails().getDeadLetterMessageCount());
+
+                assertNotNull(description.getCreatedAt());
+                assertTrue(nowUtc.isAfter(description.getCreatedAt()));
+                assertNotNull(description.getAccessedAt());
             })
             .verifyComplete();
     }
@@ -248,52 +346,6 @@ class ServiceBusManagementAsyncClientIntegrationTest extends TestBase {
                 assertTrue(nowUtc.isAfter(runtimeInfo.getCreatedAt()));
                 assertNotNull(runtimeInfo.getAccessedAt());
                 assertTrue(nowUtc.isAfter(runtimeInfo.getAccessedAt()));
-            })
-            .verifyComplete();
-    }
-
-    @ParameterizedTest
-    @MethodSource("createHttpClients")
-    void getSubscriptionDoesNotExist(HttpClient httpClient) {
-        // Arrange
-        final ServiceBusManagementAsyncClient client = createClient(httpClient);
-        final String topicName = TestUtils.getTopicName();
-        final String subscriptionName = "subscription-session-not-exist";
-
-        // Act & Assert
-        StepVerifier.create(client.getSubscription(topicName, subscriptionName))
-            .expectError(ResourceNotFoundException.class)
-            .verify();
-    }
-
-    @ParameterizedTest
-    @MethodSource("createHttpClients")
-    void getSubscriptionRuntimeInfo(HttpClient httpClient) {
-        // Arrange
-        final ServiceBusManagementAsyncClient client = createClient(httpClient);
-        final String topicName = TestUtils.getTopicName();
-        final String subscriptionName = interceptorManager.isPlaybackMode()
-            ? "subscription-1"
-            : TestUtils.getEntityName(TestUtils.getSubscriptionBaseName(), 1);
-        final OffsetDateTime nowUtc = OffsetDateTime.now(Clock.systemUTC());
-
-        // Act & Assert
-        StepVerifier.create(client.getSubscriptionRuntimeInfo(topicName, subscriptionName))
-            .assertNext(description -> {
-                assertEquals(topicName, description.getTopicName());
-                assertEquals(subscriptionName, description.getSubscriptionName());
-
-                assertTrue(description.getMessageCount() >= 0);
-                assertNotNull(description.getDetails());
-                assertNotNull(description.getDetails().getActiveMessageCount());
-                assertNotNull(description.getDetails().getScheduledMessageCount());
-                assertNotNull(description.getDetails().getTransferDeadLetterMessageCount());
-                assertNotNull(description.getDetails().getTransferMessageCount());
-                assertNotNull(description.getDetails().getDeadLetterMessageCount());
-
-                assertNotNull(description.getCreatedAt());
-                assertTrue(nowUtc.isAfter(description.getCreatedAt()));
-                assertNotNull(description.getAccessedAt());
             })
             .verifyComplete();
     }
