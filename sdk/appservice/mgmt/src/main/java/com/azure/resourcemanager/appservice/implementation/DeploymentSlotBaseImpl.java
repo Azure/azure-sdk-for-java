@@ -4,26 +4,26 @@
 package com.azure.resourcemanager.appservice.implementation;
 
 import com.azure.core.util.FluxUtil;
-import com.azure.resourcemanager.appservice.AppSetting;
-import com.azure.resourcemanager.appservice.ConnectionString;
-import com.azure.resourcemanager.appservice.CsmPublishingProfileOptions;
-import com.azure.resourcemanager.appservice.CsmSlotEntity;
-import com.azure.resourcemanager.appservice.HostnameBinding;
-import com.azure.resourcemanager.appservice.MSDeploy;
-import com.azure.resourcemanager.appservice.PublishingProfile;
-import com.azure.resourcemanager.appservice.WebAppBase;
-import com.azure.resourcemanager.appservice.WebAppSourceControl;
-import com.azure.resourcemanager.appservice.models.ConnectionStringDictionaryInner;
-import com.azure.resourcemanager.appservice.models.IdentifierInner;
-import com.azure.resourcemanager.appservice.models.MSDeployStatusInner;
-import com.azure.resourcemanager.appservice.models.SiteAuthSettingsInner;
-import com.azure.resourcemanager.appservice.models.SiteConfigResourceInner;
-import com.azure.resourcemanager.appservice.models.SiteInner;
-import com.azure.resourcemanager.appservice.models.SiteLogsConfigInner;
-import com.azure.resourcemanager.appservice.models.SitePatchResourceInner;
-import com.azure.resourcemanager.appservice.models.SiteSourceControlInner;
-import com.azure.resourcemanager.appservice.models.SlotConfigNamesResourceInner;
-import com.azure.resourcemanager.appservice.models.StringDictionaryInner;
+import com.azure.resourcemanager.appservice.models.AppSetting;
+import com.azure.resourcemanager.appservice.models.ConnectionString;
+import com.azure.resourcemanager.appservice.models.CsmPublishingProfileOptions;
+import com.azure.resourcemanager.appservice.models.CsmSlotEntity;
+import com.azure.resourcemanager.appservice.models.HostnameBinding;
+import com.azure.resourcemanager.appservice.models.MSDeploy;
+import com.azure.resourcemanager.appservice.models.PublishingProfile;
+import com.azure.resourcemanager.appservice.models.WebAppBase;
+import com.azure.resourcemanager.appservice.models.WebAppSourceControl;
+import com.azure.resourcemanager.appservice.fluent.inner.ConnectionStringDictionaryInner;
+import com.azure.resourcemanager.appservice.fluent.inner.IdentifierInner;
+import com.azure.resourcemanager.appservice.fluent.inner.MSDeployStatusInner;
+import com.azure.resourcemanager.appservice.fluent.inner.SiteAuthSettingsInner;
+import com.azure.resourcemanager.appservice.fluent.inner.SiteConfigResourceInner;
+import com.azure.resourcemanager.appservice.fluent.inner.SiteInner;
+import com.azure.resourcemanager.appservice.fluent.inner.SiteLogsConfigInner;
+import com.azure.resourcemanager.appservice.fluent.inner.SitePatchResourceInner;
+import com.azure.resourcemanager.appservice.fluent.inner.SiteSourceControlInner;
+import com.azure.resourcemanager.appservice.fluent.inner.SlotConfigNamesResourceInner;
+import com.azure.resourcemanager.appservice.fluent.inner.StringDictionaryInner;
 import com.azure.resourcemanager.resources.fluentcore.model.Indexable;
 import java.nio.charset.StandardCharsets;
 import java.util.Collections;
@@ -73,7 +73,7 @@ abstract class DeploymentSlotBaseImpl<
         return this
             .manager()
             .inner()
-            .webApps()
+            .getWebApps()
             .listHostnameBindingsSlotAsync(resourceGroupName(), parent().name(), name())
             .mapPage(
                 hostNameBindingInner ->
@@ -103,7 +103,7 @@ abstract class DeploymentSlotBaseImpl<
             .collectBytesInByteBufferStream(
                 manager()
                     .inner()
-                    .webApps()
+                    .getWebApps()
                     .listPublishingProfileXmlWithSecretsSlotAsync(
                         resourceGroupName(), this.parent().name(), name(), new CsmPublishingProfileOptions()))
             .map(bytes -> new PublishingProfileImpl(new String(bytes, StandardCharsets.UTF_8), this));
@@ -118,7 +118,7 @@ abstract class DeploymentSlotBaseImpl<
     public Mono<Void> startAsync() {
         return manager()
             .inner()
-            .webApps()
+            .getWebApps()
             .startSlotAsync(resourceGroupName(), this.parent().name(), name())
             .then(refreshAsync())
             .then(Mono.empty());
@@ -133,7 +133,7 @@ abstract class DeploymentSlotBaseImpl<
     public Mono<Void> stopAsync() {
         return manager()
             .inner()
-            .webApps()
+            .getWebApps()
             .stopSlotAsync(resourceGroupName(), this.parent().name(), name())
             .then(refreshAsync())
             .then(Mono.empty());
@@ -148,7 +148,7 @@ abstract class DeploymentSlotBaseImpl<
     public Mono<Void> restartAsync() {
         return manager()
             .inner()
-            .webApps()
+            .getWebApps()
             .restartSlotAsync(resourceGroupName(), this.parent().name(), name())
             .then(refreshAsync())
             .then(Mono.empty());
@@ -227,7 +227,7 @@ abstract class DeploymentSlotBaseImpl<
     Mono<SiteInner> createOrUpdateInner(SiteInner site) {
         return manager()
             .inner()
-            .webApps()
+            .getWebApps()
             .createOrUpdateSlotAsync(resourceGroupName(), this.parent().name(), name(), site);
     }
 
@@ -235,25 +235,25 @@ abstract class DeploymentSlotBaseImpl<
     Mono<SiteInner> updateInner(SitePatchResourceInner siteUpdate) {
         return manager()
             .inner()
-            .webApps()
+            .getWebApps()
             .updateSlotAsync(resourceGroupName(), this.parent().name(), name(), siteUpdate);
     }
 
     @Override
     Mono<SiteInner> getInner() {
-        return manager().inner().webApps().getSlotAsync(resourceGroupName(), this.parent().name(), name());
+        return manager().inner().getWebApps().getSlotAsync(resourceGroupName(), this.parent().name(), name());
     }
 
     @Override
     Mono<SiteConfigResourceInner> getConfigInner() {
-        return manager().inner().webApps().getConfigurationSlotAsync(resourceGroupName(), parent().name(), name());
+        return manager().inner().getWebApps().getConfigurationSlotAsync(resourceGroupName(), parent().name(), name());
     }
 
     @Override
     Mono<SiteConfigResourceInner> createOrUpdateSiteConfig(SiteConfigResourceInner siteConfig) {
         return manager()
             .inner()
-            .webApps()
+            .getWebApps()
             .createOrUpdateConfigurationSlotAsync(resourceGroupName(), this.parent().name(), name(), siteConfig);
     }
 
@@ -261,7 +261,7 @@ abstract class DeploymentSlotBaseImpl<
     Mono<Void> deleteHostnameBinding(String hostname) {
         return manager()
             .inner()
-            .webApps()
+            .getWebApps()
             .deleteHostnameBindingSlotAsync(resourceGroupName(), parent().name(), name(), hostname);
     }
 
@@ -269,7 +269,7 @@ abstract class DeploymentSlotBaseImpl<
     Mono<StringDictionaryInner> listAppSettings() {
         return manager()
             .inner()
-            .webApps()
+            .getWebApps()
             .listApplicationSettingsSlotAsync(resourceGroupName(), parent().name(), name());
     }
 
@@ -277,33 +277,34 @@ abstract class DeploymentSlotBaseImpl<
     Mono<StringDictionaryInner> updateAppSettings(StringDictionaryInner inner) {
         return manager()
             .inner()
-            .webApps()
+            .getWebApps()
             .updateApplicationSettingsSlotAsync(resourceGroupName(), parent().name(), name(), inner);
     }
 
     @Override
     Mono<ConnectionStringDictionaryInner> listConnectionStrings() {
-        return manager().inner().webApps().listConnectionStringsSlotAsync(resourceGroupName(), parent().name(), name());
+        return manager().inner().getWebApps()
+            .listConnectionStringsSlotAsync(resourceGroupName(), parent().name(), name());
     }
 
     @Override
     Mono<ConnectionStringDictionaryInner> updateConnectionStrings(ConnectionStringDictionaryInner inner) {
         return manager()
             .inner()
-            .webApps()
+            .getWebApps()
             .updateConnectionStringsSlotAsync(resourceGroupName(), parent().name(), name(), inner);
     }
 
     @Override
     Mono<SlotConfigNamesResourceInner> listSlotConfigurations() {
-        return manager().inner().webApps().listSlotConfigurationNamesAsync(resourceGroupName(), parent().name());
+        return manager().inner().getWebApps().listSlotConfigurationNamesAsync(resourceGroupName(), parent().name());
     }
 
     @Override
     Mono<SlotConfigNamesResourceInner> updateSlotConfigurations(SlotConfigNamesResourceInner inner) {
         return manager()
             .inner()
-            .webApps()
+            .getWebApps()
             .updateSlotConfigurationNamesAsync(resourceGroupName(), parent().name(), inner);
     }
 
@@ -311,7 +312,7 @@ abstract class DeploymentSlotBaseImpl<
     Mono<SiteSourceControlInner> createOrUpdateSourceControl(SiteSourceControlInner inner) {
         return manager()
             .inner()
-            .webApps()
+            .getWebApps()
             .createOrUpdateSourceControlSlotAsync(resourceGroupName(), parent().name(), name(), inner);
     }
 
@@ -324,7 +325,7 @@ abstract class DeploymentSlotBaseImpl<
     public Mono<Void> swapAsync(String slotName) {
         return manager()
             .inner()
-            .webApps()
+            .getWebApps()
             .swapSlotAsync(
                 resourceGroupName(), this.parent().name(), name(), new CsmSlotEntity().withTargetSlot(slotName))
             .then(refreshAsync())
@@ -340,7 +341,7 @@ abstract class DeploymentSlotBaseImpl<
     public Mono<Void> applySlotConfigurationsAsync(String slotName) {
         return manager()
             .inner()
-            .webApps()
+            .getWebApps()
             .applySlotConfigurationSlotAsync(
                 resourceGroupName(), this.parent().name(), name(), new CsmSlotEntity().withTargetSlot(slotName))
             .then(refreshAsync())
@@ -356,7 +357,7 @@ abstract class DeploymentSlotBaseImpl<
     public Mono<Void> resetSlotConfigurationsAsync() {
         return manager()
             .inner()
-            .webApps()
+            .getWebApps()
             .resetSlotConfigurationSlotAsync(resourceGroupName(), this.parent().name(), name())
             .then(refreshAsync())
             .then(Mono.empty());
@@ -366,7 +367,7 @@ abstract class DeploymentSlotBaseImpl<
     Mono<Void> deleteSourceControl() {
         return manager()
             .inner()
-            .webApps()
+            .getWebApps()
             .deleteSourceControlSlotAsync(resourceGroupName(), parent().name(), name())
             .then(refreshAsync())
             .then(Mono.empty());
@@ -376,13 +377,13 @@ abstract class DeploymentSlotBaseImpl<
     Mono<SiteAuthSettingsInner> updateAuthentication(SiteAuthSettingsInner inner) {
         return manager()
             .inner()
-            .webApps()
+            .getWebApps()
             .updateAuthSettingsSlotAsync(resourceGroupName(), parent().name(), name(), inner);
     }
 
     @Override
     Mono<SiteAuthSettingsInner> getAuthentication() {
-        return manager().inner().webApps().getAuthSettingsSlotAsync(resourceGroupName(), parent().name(), name());
+        return manager().inner().getWebApps().getAuthSettingsSlotAsync(resourceGroupName(), parent().name(), name());
     }
 
     @Override
@@ -390,7 +391,7 @@ abstract class DeploymentSlotBaseImpl<
         return parent()
             .manager()
             .inner()
-            .webApps()
+            .getWebApps()
             .createMSDeployOperationAsync(parent().resourceGroupName(), parent().name(), msDeployInner);
     }
 
@@ -403,7 +404,7 @@ abstract class DeploymentSlotBaseImpl<
     public Mono<WebAppSourceControl> getSourceControlAsync() {
         return manager()
             .inner()
-            .webApps()
+            .getWebApps()
             .getSourceControlSlotAsync(resourceGroupName(), parent().name(), name())
             .map(
                 siteSourceControlInner ->
@@ -421,7 +422,7 @@ abstract class DeploymentSlotBaseImpl<
             .collectBytesInByteBufferStream(
                 manager()
                     .inner()
-                    .webApps()
+                    .getWebApps()
                     .getWebSiteContainerLogsSlotAsync(resourceGroupName(), parent().name(), name()));
     }
 
@@ -434,14 +435,15 @@ abstract class DeploymentSlotBaseImpl<
     public Mono<byte[]> getContainerLogsZipAsync() {
         return FluxUtil
             .collectBytesInByteBufferStream(
-                manager().inner().webApps().getContainerLogsZipSlotAsync(resourceGroupName(), parent().name(), name()));
+                manager().inner().getWebApps()
+                    .getContainerLogsZipSlotAsync(resourceGroupName(), parent().name(), name()));
     }
 
     @Override
     Mono<SiteLogsConfigInner> updateDiagnosticLogsConfig(SiteLogsConfigInner siteLogsConfigInner) {
         return manager()
             .inner()
-            .webApps()
+            .getWebApps()
             .updateDiagnosticLogsConfigSlotAsync(resourceGroupName(), parent().name(), name(), siteLogsConfigInner);
     }
 
@@ -455,7 +457,7 @@ abstract class DeploymentSlotBaseImpl<
         IdentifierInner identifierInner = new IdentifierInner().withValue(domainVerificationToken);
         return manager()
             .inner()
-            .webApps()
+            .getWebApps()
             .createOrUpdateDomainOwnershipIdentifierSlotAsync(
                 resourceGroupName(), parent().name(), name(), certificateOrderName, identifierInner)
             .then(Mono.empty());

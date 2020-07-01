@@ -15,7 +15,7 @@
     "dir": "../appservice/mgmt",
     "source": "specification/web/resource-manager/readme.md",
     "package": "com.azure.resourcemanager.appservice",
-    "args": "--payload-flattening-threshold=1 --tag=package-2019-08 --add-inner=AppServiceCertificate"
+    "args": "--payload-flattening-threshold=1 --tag=package-2019-08 --add-inner=AppServiceCertificate --name-for-ungrouped-operations=ResourceProvider"
   },
   "authorization": {
     "dir": "../authorization/mgmt",
@@ -70,7 +70,7 @@
     "dir": "../compute/mgmt",
     "source": "specification/compute/resource-manager/readme.md",
     "package": "com.azure.resourcemanager.compute",
-    "args": "--payload-flattening-threshold=1 --tag=package-2019-07-01"
+    "args": "--payload-flattening-threshold=1 --tag=package-2019-12-01"
   },
   "consumption": {
     "dir": "../consumption/mgmt",

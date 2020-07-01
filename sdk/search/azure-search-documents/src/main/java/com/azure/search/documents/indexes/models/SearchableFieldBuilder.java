@@ -129,9 +129,7 @@ public class SearchableFieldBuilder extends SimpleFieldBuilder {
      * @return The {@link SearchField} object.
      */
     public SearchField build() {
-        return new SearchField()
-            .setName(super.getName())
-            .setType(super.getDataType())
+        return new SearchField(super.getName(), super.getDataType())
             .setSearchable(true)
             .setKey(super.isKey())
             .setSortable(super.isSortable())

@@ -4,7 +4,7 @@
 package com.azure.resourcemanager.authorization.implementation;
 
 import com.azure.core.http.rest.PagedFlux;
-import com.azure.resourcemanager.authorization.GraphRbacManager;
+import com.azure.resourcemanager.authorization.AuthorizationManager;
 import com.azure.resourcemanager.authorization.models.ActiveDirectoryGroup;
 import com.azure.resourcemanager.authorization.models.ActiveDirectoryObject;
 import com.azure.resourcemanager.authorization.models.ActiveDirectoryUser;
@@ -28,12 +28,12 @@ class ActiveDirectoryGroupImpl
     extends CreatableUpdatableImpl<ActiveDirectoryGroup, ADGroupInner, ActiveDirectoryGroupImpl>
     implements ActiveDirectoryGroup, ActiveDirectoryGroup.Definition, ActiveDirectoryGroup.Update {
 
-    private final GraphRbacManager manager;
+    private final AuthorizationManager manager;
     private GroupCreateParameters createParameters;
     private Set<String> membersToAdd;
     private Set<String> membersToRemove;
 
-    ActiveDirectoryGroupImpl(ADGroupInner innerModel, GraphRbacManager manager) {
+    ActiveDirectoryGroupImpl(ADGroupInner innerModel, AuthorizationManager manager) {
         super(innerModel.displayName(), innerModel);
         this.manager = manager;
         this.createParameters =
@@ -188,7 +188,7 @@ class ActiveDirectoryGroupImpl
     }
 
     @Override
-    public GraphRbacManager manager() {
+    public AuthorizationManager manager() {
         return this.manager;
     }
 }

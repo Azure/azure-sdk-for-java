@@ -15,8 +15,13 @@ import reactor.core.publisher.Mono;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Async sample to train a model with unlabeled data. See RecognizeCustomFormsAsync to recognize forms with your
- * created custom model.
+ * Async sample to train a model with unlabeled data.
+ * For instructions on setting up forms for training in an Azure Storage Blob Container, see
+ * https://docs.microsoft.com/azure/cognitive-services/form-recognizer/build-training-data-set#upload-your-training-data
+ * For this sample, you can use the training forms found in
+ * https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/java/sample-forms/training to
+ * create your own custom models.
+ * Further, see RecognizeCustomForms.java to recognize forms with your custom built model.
  */
 public class TrainModelWithoutLabelsAsync {
 
@@ -53,17 +58,16 @@ public class TrainModelWithoutLabelsAsync {
             // Model Info
             System.out.printf("Model Id: %s%n", customFormModel.getModelId());
             System.out.printf("Model Status: %s%n", customFormModel.getModelStatus());
-            System.out.printf("Model requested on: %s%n", customFormModel.getRequestedOn());
-            System.out.printf("Model training completed on: %s%n%n", customFormModel.getCompletedOn());
+            System.out.printf("Training started on: %s%n", customFormModel.getTrainingStartedOn());
+            System.out.printf("Training completed on: %s%n%n", customFormModel.getTrainingCompletedOn());
 
             System.out.println("Recognized Fields:");
             // looping through the sub-models, which contains the fields they were trained on
             // Since the given training documents are unlabeled, we still group them but they do not have a label.
             customFormModel.getSubmodels().forEach(customFormSubmodel -> {
                 // Since the training data is unlabeled, we are unable to return the accuracy of this model
-                customFormSubmodel.getFieldMap().forEach((field, customFormModelField) ->
-                    System.out.printf("Field: %s Field Label: %s%n",
-                        field, customFormModelField.getLabel()));
+                customFormSubmodel.getFields().forEach((field, customFormModelField) ->
+                    System.out.printf("Field: %s Field Label: %s%n", field, customFormModelField.getLabel()));
             });
             System.out.println();
 
@@ -71,7 +75,7 @@ public class TrainModelWithoutLabelsAsync {
             customFormModel.getTrainingDocuments().forEach(trainingDocumentInfo -> {
                 System.out.printf("Document name: %s%n", trainingDocumentInfo.getName());
                 System.out.printf("Document status: %s%n", trainingDocumentInfo.getName());
-                System.out.printf("Document page count: %s%n", trainingDocumentInfo.getPageCount());
+                System.out.printf("Document page count: %d%n", trainingDocumentInfo.getPageCount());
                 if (!trainingDocumentInfo.getDocumentErrors().isEmpty()) {
                     System.out.println("Document Errors:");
                     trainingDocumentInfo.getDocumentErrors().forEach(formRecognizerError ->

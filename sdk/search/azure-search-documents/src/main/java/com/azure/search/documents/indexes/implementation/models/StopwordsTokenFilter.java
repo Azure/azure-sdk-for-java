@@ -7,19 +7,19 @@
 package com.azure.search.documents.indexes.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.JsonFlatten;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 
-/**
- * Removes stop words from a token stream. This token filter is implemented
- * using Apache Lucene.
- */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata.type")
+/** The StopwordsTokenFilter model. */
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata\\.type")
 @JsonTypeName("#Microsoft.Azure.Search.StopwordsTokenFilter")
+@JsonFlatten
 @Fluent
-public final class StopwordsTokenFilter extends TokenFilter {
+public class StopwordsTokenFilter extends TokenFilter {
     /*
      * The list of stopwords. This property and the stopwords list property
      * cannot both be set.
@@ -29,12 +29,7 @@ public final class StopwordsTokenFilter extends TokenFilter {
 
     /*
      * A predefined list of stopwords to use. This property and the stopwords
-     * property cannot both be set. Default is English. Possible values
-     * include: 'Arabic', 'Armenian', 'Basque', 'Brazilian', 'Bulgarian',
-     * 'Catalan', 'Czech', 'Danish', 'Dutch', 'English', 'Finnish', 'French',
-     * 'Galician', 'German', 'Greek', 'Hindi', 'Hungarian', 'Indonesian',
-     * 'Irish', 'Italian', 'Latvian', 'Norwegian', 'Persian', 'Portuguese',
-     * 'Romanian', 'Russian', 'Sorani', 'Spanish', 'Swedish', 'Thai', 'Turkish'
+     * property cannot both be set. Default is English.
      */
     @JsonProperty(value = "stopwordsList")
     private StopwordsList stopwordsList;
@@ -53,9 +48,15 @@ public final class StopwordsTokenFilter extends TokenFilter {
     @JsonProperty(value = "removeTrailing")
     private Boolean removeTrailingStopWords;
 
+    /** Creates an instance of StopwordsTokenFilter class. */
+    @JsonCreator
+    public StopwordsTokenFilter(@JsonProperty(value = "name") String name) {
+        super(name);
+    }
+
     /**
-     * Get the stopwords property: The list of stopwords. This property and the
-     * stopwords list property cannot both be set.
+     * Get the stopwords property: The list of stopwords. This property and the stopwords list property cannot both be
+     * set.
      *
      * @return the stopwords value.
      */
@@ -64,8 +65,8 @@ public final class StopwordsTokenFilter extends TokenFilter {
     }
 
     /**
-     * Set the stopwords property: The list of stopwords. This property and the
-     * stopwords list property cannot both be set.
+     * Set the stopwords property: The list of stopwords. This property and the stopwords list property cannot both be
+     * set.
      *
      * @param stopwords the stopwords value to set.
      * @return the StopwordsTokenFilter object itself.
@@ -76,14 +77,8 @@ public final class StopwordsTokenFilter extends TokenFilter {
     }
 
     /**
-     * Get the stopwordsList property: A predefined list of stopwords to use.
-     * This property and the stopwords property cannot both be set. Default is
-     * English. Possible values include: 'Arabic', 'Armenian', 'Basque',
-     * 'Brazilian', 'Bulgarian', 'Catalan', 'Czech', 'Danish', 'Dutch',
-     * 'English', 'Finnish', 'French', 'Galician', 'German', 'Greek', 'Hindi',
-     * 'Hungarian', 'Indonesian', 'Irish', 'Italian', 'Latvian', 'Norwegian',
-     * 'Persian', 'Portuguese', 'Romanian', 'Russian', 'Sorani', 'Spanish',
-     * 'Swedish', 'Thai', 'Turkish'.
+     * Get the stopwordsList property: A predefined list of stopwords to use. This property and the stopwords property
+     * cannot both be set. Default is English.
      *
      * @return the stopwordsList value.
      */
@@ -92,14 +87,8 @@ public final class StopwordsTokenFilter extends TokenFilter {
     }
 
     /**
-     * Set the stopwordsList property: A predefined list of stopwords to use.
-     * This property and the stopwords property cannot both be set. Default is
-     * English. Possible values include: 'Arabic', 'Armenian', 'Basque',
-     * 'Brazilian', 'Bulgarian', 'Catalan', 'Czech', 'Danish', 'Dutch',
-     * 'English', 'Finnish', 'French', 'Galician', 'German', 'Greek', 'Hindi',
-     * 'Hungarian', 'Indonesian', 'Irish', 'Italian', 'Latvian', 'Norwegian',
-     * 'Persian', 'Portuguese', 'Romanian', 'Russian', 'Sorani', 'Spanish',
-     * 'Swedish', 'Thai', 'Turkish'.
+     * Set the stopwordsList property: A predefined list of stopwords to use. This property and the stopwords property
+     * cannot both be set. Default is English.
      *
      * @param stopwordsList the stopwordsList value to set.
      * @return the StopwordsTokenFilter object itself.
@@ -110,8 +99,8 @@ public final class StopwordsTokenFilter extends TokenFilter {
     }
 
     /**
-     * Get the ignoreCase property: A value indicating whether to ignore case.
-     * If true, all words are converted to lower case first. Default is false.
+     * Get the ignoreCase property: A value indicating whether to ignore case. If true, all words are converted to lower
+     * case first. Default is false.
      *
      * @return the ignoreCase value.
      */
@@ -120,8 +109,8 @@ public final class StopwordsTokenFilter extends TokenFilter {
     }
 
     /**
-     * Set the ignoreCase property: A value indicating whether to ignore case.
-     * If true, all words are converted to lower case first. Default is false.
+     * Set the ignoreCase property: A value indicating whether to ignore case. If true, all words are converted to lower
+     * case first. Default is false.
      *
      * @param ignoreCase the ignoreCase value to set.
      * @return the StopwordsTokenFilter object itself.
@@ -132,8 +121,8 @@ public final class StopwordsTokenFilter extends TokenFilter {
     }
 
     /**
-     * Get the removeTrailingStopWords property: A value indicating whether to
-     * ignore the last search term if it's a stop word. Default is true.
+     * Get the removeTrailingStopWords property: A value indicating whether to ignore the last search term if it's a
+     * stop word. Default is true.
      *
      * @return the removeTrailingStopWords value.
      */
@@ -142,8 +131,8 @@ public final class StopwordsTokenFilter extends TokenFilter {
     }
 
     /**
-     * Set the removeTrailingStopWords property: A value indicating whether to
-     * ignore the last search term if it's a stop word. Default is true.
+     * Set the removeTrailingStopWords property: A value indicating whether to ignore the last search term if it's a
+     * stop word. Default is true.
      *
      * @param removeTrailingStopWords the removeTrailingStopWords value to set.
      * @return the StopwordsTokenFilter object itself.
@@ -151,5 +140,15 @@ public final class StopwordsTokenFilter extends TokenFilter {
     public StopwordsTokenFilter setRemoveTrailingStopWords(Boolean removeTrailingStopWords) {
         this.removeTrailingStopWords = removeTrailingStopWords;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    @Override
+    public void validate() {
+        super.validate();
     }
 }

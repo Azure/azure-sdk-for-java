@@ -3,10 +3,10 @@
 
 package com.azure.resourcemanager;
 
-import com.azure.resourcemanager.network.ExpressRouteCircuit;
-import com.azure.resourcemanager.network.ExpressRouteCircuitSkuType;
-import com.azure.resourcemanager.network.ExpressRouteCircuits;
-import com.azure.resourcemanager.network.ExpressRoutePeeringType;
+import com.azure.resourcemanager.network.models.ExpressRouteCircuit;
+import com.azure.resourcemanager.network.models.ExpressRouteCircuitSkuType;
+import com.azure.resourcemanager.network.models.ExpressRouteCircuits;
+import com.azure.resourcemanager.network.models.ExpressRoutePeeringType;
 import com.azure.resourcemanager.resources.fluentcore.arm.Region;
 import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 import org.junit.jupiter.api.Assertions;
@@ -109,7 +109,7 @@ public class TestExpressRouteCircuit {
         public ExpressRouteCircuit updateResource(ExpressRouteCircuit resource) throws Exception {
             Assertions
                 .assertTrue(resource.peeringsMap().containsKey(ExpressRoutePeeringType.MICROSOFT_PEERING.toString()));
-            com.azure.resourcemanager.network.ExpressRouteCircuitPeering peering =
+            com.azure.resourcemanager.network.models.ExpressRouteCircuitPeering peering =
                 resource
                     .peeringsMap()
                     .get(ExpressRoutePeeringType.MICROSOFT_PEERING.toString())

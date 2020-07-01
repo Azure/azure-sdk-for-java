@@ -10,6 +10,7 @@ import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.policy.AddDatePolicy;
+import com.azure.core.http.policy.AddHeadersFromContextPolicy;
 import com.azure.core.http.policy.AddHeadersPolicy;
 import com.azure.core.http.policy.AzureKeyCredentialPolicy;
 import com.azure.core.http.policy.HttpLogOptions;
@@ -37,11 +38,23 @@ import java.util.Objects;
  * #buildClient() buildClient} and {@link #buildAsyncClient() buildAsyncClient} respectively to construct an instance of
  * the desired client.
  * <p>
- * The following information must be provided to successfully create a client.
+ * The client needs to at least provide the following required fields
+ * </p>
  * <ul>
- *     <li>{@link #endpoint(String)}</li>
- *     <li>{@link #credential(AzureKeyCredential)} or {@link #pipeline(HttpPipeline)}</li>
+ * <li>the service endpoint of the Azure Cognitive Search to access the resource service.</li>
+ * <li>{@link #credential(AzureKeyCredential)} gives the builder access credential.</li>
  * </ul>
+ *
+ * <p><strong>Instantiating an asynchronous Search Indexer Client</strong></p>
+ *
+ * {@codesnippet com.azure.search.documents.indexes.SearchIndexerAsyncClient.instantiation}
+ *
+ * <p><strong>Instantiating a synchronous Search Indexer Client</strong></p>
+ *
+ * {@codesnippet com.azure.search.documents.indexes.SearchIndexerClient.instantiation}
+ *
+ * @see SearchIndexerClient
+ * @see SearchIndexerAsyncClient
  */
 @ServiceClientBuilder(serviceClients = {SearchIndexerClient.class, SearchIndexerAsyncClient.class})
 public class SearchIndexerClientBuilder {
@@ -126,6 +139,7 @@ public class SearchIndexerClientBuilder {
             : configuration;
         final List<HttpPipelinePolicy> httpPipelinePolicies = new ArrayList<>();
         httpPipelinePolicies.add(new AddHeadersPolicy(headers));
+        httpPipelinePolicies.add(new AddHeadersFromContextPolicy());
         httpPipelinePolicies.add(new RequestIdPolicy());
 
         HttpPolicyProviders.addBeforeRetryPolicies(httpPipelinePolicies);

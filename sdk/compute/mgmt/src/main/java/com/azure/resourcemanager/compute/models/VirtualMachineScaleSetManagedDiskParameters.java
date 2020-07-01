@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -21,6 +22,13 @@ public final class VirtualMachineScaleSetManagedDiskParameters {
      */
     @JsonProperty(value = "storageAccountType")
     private StorageAccountTypes storageAccountType;
+
+    /*
+     * Specifies the customer managed disk encryption set resource id for the
+     * managed disk.
+     */
+    @JsonProperty(value = "diskEncryptionSet")
+    private SubResource diskEncryptionSet;
 
     /**
      * Get the storageAccountType property: Specifies the storage account type for the managed disk. NOTE: UltraSSD_LRS
@@ -41,6 +49,28 @@ public final class VirtualMachineScaleSetManagedDiskParameters {
      */
     public VirtualMachineScaleSetManagedDiskParameters withStorageAccountType(StorageAccountTypes storageAccountType) {
         this.storageAccountType = storageAccountType;
+        return this;
+    }
+
+    /**
+     * Get the diskEncryptionSet property: Specifies the customer managed disk encryption set resource id for the
+     * managed disk.
+     *
+     * @return the diskEncryptionSet value.
+     */
+    public SubResource diskEncryptionSet() {
+        return this.diskEncryptionSet;
+    }
+
+    /**
+     * Set the diskEncryptionSet property: Specifies the customer managed disk encryption set resource id for the
+     * managed disk.
+     *
+     * @param diskEncryptionSet the diskEncryptionSet value to set.
+     * @return the VirtualMachineScaleSetManagedDiskParameters object itself.
+     */
+    public VirtualMachineScaleSetManagedDiskParameters withDiskEncryptionSet(SubResource diskEncryptionSet) {
+        this.diskEncryptionSet = diskEncryptionSet;
         return this;
     }
 

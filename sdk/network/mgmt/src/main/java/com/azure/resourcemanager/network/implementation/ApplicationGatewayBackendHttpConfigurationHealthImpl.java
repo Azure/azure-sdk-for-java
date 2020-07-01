@@ -2,12 +2,12 @@
 // Licensed under the MIT License.
 package com.azure.resourcemanager.network.implementation;
 
-import com.azure.resourcemanager.network.ApplicationGatewayBackendHealth;
-import com.azure.resourcemanager.network.ApplicationGatewayBackendHealthHttpSettings;
-import com.azure.resourcemanager.network.ApplicationGatewayBackendHttpConfiguration;
-import com.azure.resourcemanager.network.ApplicationGatewayBackendHttpConfigurationHealth;
-import com.azure.resourcemanager.network.ApplicationGatewayBackendServerHealth;
-import com.azure.resourcemanager.network.models.ApplicationGatewayBackendHealthServerInner;
+import com.azure.resourcemanager.network.models.ApplicationGatewayBackendHealth;
+import com.azure.resourcemanager.network.models.ApplicationGatewayBackendHealthHttpSettings;
+import com.azure.resourcemanager.network.models.ApplicationGatewayBackendHttpConfiguration;
+import com.azure.resourcemanager.network.models.ApplicationGatewayBackendHttpConfigurationHealth;
+import com.azure.resourcemanager.network.models.ApplicationGatewayBackendServerHealth;
+import com.azure.resourcemanager.network.fluent.inner.ApplicationGatewayBackendHealthServerInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import java.util.Collections;
 import java.util.Map;

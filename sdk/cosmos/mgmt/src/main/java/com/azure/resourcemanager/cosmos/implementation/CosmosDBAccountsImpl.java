@@ -5,7 +5,7 @@ package com.azure.resourcemanager.cosmos.implementation;
 
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.resourcemanager.cosmos.CosmosDBManager;
+import com.azure.resourcemanager.cosmos.CosmosManager;
 import com.azure.resourcemanager.cosmos.fluent.DatabaseAccountsClient;
 import com.azure.resourcemanager.cosmos.fluent.inner.DatabaseAccountGetResultsInner;
 import com.azure.resourcemanager.cosmos.models.CosmosDBAccount;
@@ -25,10 +25,10 @@ import java.util.List;
 /** Implementation for Registries. */
 public class CosmosDBAccountsImpl
     extends GroupableResourcesImpl<
-        CosmosDBAccount, CosmosDBAccountImpl, DatabaseAccountGetResultsInner, DatabaseAccountsClient, CosmosDBManager>
+        CosmosDBAccount, CosmosDBAccountImpl, DatabaseAccountGetResultsInner, DatabaseAccountsClient, CosmosManager>
     implements CosmosDBAccounts {
 
-    public CosmosDBAccountsImpl(final CosmosDBManager manager) {
+    public CosmosDBAccountsImpl(final CosmosManager manager) {
         super(manager.inner().getDatabaseAccounts(), manager);
     }
 

@@ -5,10 +5,11 @@ package com.azure.resourcemanager.network.implementation;
 
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.resourcemanager.network.VirtualMachineScaleSetNetworkInterface;
-import com.azure.resourcemanager.network.VirtualMachineScaleSetNetworkInterfaces;
-import com.azure.resourcemanager.network.models.NetworkInterfaceInner;
-import com.azure.resourcemanager.network.models.NetworkInterfacesInner;
+import com.azure.resourcemanager.network.NetworkManager;
+import com.azure.resourcemanager.network.fluent.NetworkInterfacesClient;
+import com.azure.resourcemanager.network.fluent.inner.NetworkInterfaceInner;
+import com.azure.resourcemanager.network.models.VirtualMachineScaleSetNetworkInterface;
+import com.azure.resourcemanager.network.models.VirtualMachineScaleSetNetworkInterfaces;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.ReadableWrappersImpl;
 
 /** Implementation for VirtualMachineScaleSetNetworkInterfaces. */
@@ -28,8 +29,8 @@ class VirtualMachineScaleSetNetworkInterfacesImpl
     }
 
     @Override
-    public NetworkInterfacesInner inner() {
-        return this.manager().inner().networkInterfaces();
+    public NetworkInterfacesClient inner() {
+        return this.manager().inner().getNetworkInterfaces();
     }
 
     @Override

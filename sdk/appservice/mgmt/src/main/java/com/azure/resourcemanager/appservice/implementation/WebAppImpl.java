@@ -3,17 +3,18 @@
 
 package com.azure.resourcemanager.appservice.implementation;
 
-import com.azure.resourcemanager.appservice.AppServicePlan;
-import com.azure.resourcemanager.appservice.DeploymentSlots;
-import com.azure.resourcemanager.appservice.OperatingSystem;
-import com.azure.resourcemanager.appservice.PricingTier;
-import com.azure.resourcemanager.appservice.RuntimeStack;
-import com.azure.resourcemanager.appservice.WebApp;
-import com.azure.resourcemanager.appservice.WebAppRuntimeStack;
-import com.azure.resourcemanager.appservice.models.SiteConfigResourceInner;
-import com.azure.resourcemanager.appservice.models.SiteInner;
-import com.azure.resourcemanager.appservice.models.SiteLogsConfigInner;
-import com.azure.resourcemanager.appservice.models.StringDictionaryInner;
+import com.azure.resourcemanager.appservice.AppServiceManager;
+import com.azure.resourcemanager.appservice.models.AppServicePlan;
+import com.azure.resourcemanager.appservice.models.DeploymentSlots;
+import com.azure.resourcemanager.appservice.models.OperatingSystem;
+import com.azure.resourcemanager.appservice.models.PricingTier;
+import com.azure.resourcemanager.appservice.models.RuntimeStack;
+import com.azure.resourcemanager.appservice.models.WebApp;
+import com.azure.resourcemanager.appservice.models.WebAppRuntimeStack;
+import com.azure.resourcemanager.appservice.fluent.inner.SiteConfigResourceInner;
+import com.azure.resourcemanager.appservice.fluent.inner.SiteInner;
+import com.azure.resourcemanager.appservice.fluent.inner.SiteLogsConfigInner;
+import com.azure.resourcemanager.appservice.fluent.inner.StringDictionaryInner;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import com.azure.resourcemanager.resources.fluentcore.model.Indexable;
 import java.io.File;
@@ -259,10 +260,10 @@ class WebAppImpl extends AppServiceBaseImpl<WebApp, WebAppImpl, WebApp.Definitio
     }
 
     Mono<StringDictionaryInner> listMetadata() {
-        return this.manager().inner().webApps().listMetadataAsync(resourceGroupName(), name());
+        return this.manager().inner().getWebApps().listMetadataAsync(resourceGroupName(), name());
     }
 
     Mono<StringDictionaryInner> updateMetadata(StringDictionaryInner inner) {
-        return this.manager().inner().webApps().updateMetadataAsync(resourceGroupName(), name(), inner);
+        return this.manager().inner().getWebApps().updateMetadataAsync(resourceGroupName(), name(), inner);
     }
 }

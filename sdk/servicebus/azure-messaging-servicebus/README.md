@@ -54,7 +54,7 @@ have to be online at the same time.
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-messaging-servicebus</artifactId>
-    <version>7.0.0-beta.2</version>
+    <version>7.0.0-beta.3</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -164,7 +164,7 @@ List<ServiceBusMessage> messages = Arrays.asList(
     new ServiceBusMessage("Hello world").setMessageId("1"),
     new ServiceBusMessage("Bonjour").setMessageId("2"));
 
-sender.send(messages);
+sender.sendMessages(messages);
 
 // When you are done using the sender, dispose of it.
 sender.close();
@@ -198,7 +198,7 @@ ServiceBusReceiverClient receiver = new ServiceBusClientBuilder()
 
 // Receives a batch of messages when 10 messages are received or until 30 seconds have elapsed, whichever
 // happens first.
-IterableStream<ServiceBusReceivedMessageContext> messages = receiver.receive(10, Duration.ofSeconds(30));
+IterableStream<ServiceBusReceivedMessageContext> messages = receiver.receiveMessages(10, Duration.ofSeconds(30));
 messages.forEach(context -> {
     ServiceBusReceivedMessage message = context.getMessage();
     System.out.printf("Id: %s. Contents: %s%n", message.getMessageId(),
@@ -224,7 +224,7 @@ ServiceBusReceiverAsyncClient receiver = new ServiceBusClientBuilder()
 
 // receive() operation continuously fetches messages until the subscription is disposed.
 // The stream is infinite, and completes when the subscription or receiver is closed.
-Disposable subscription = receiver.receive().subscribe(context -> {
+Disposable subscription = receiver.receiveMessages().subscribe(context -> {
     ServiceBusReceivedMessage message = context.getMessage();
     System.out.printf("Id: %s%n", message.getMessageId());
     System.out.printf("Contents: %s%n", new String(message.getBody(), StandardCharsets.UTF_8));
@@ -250,11 +250,11 @@ overloads. The sample below completes a received message from synchronous
 <!-- embedme ./src/samples/java/com/azure/messaging/servicebus/ReadmeSamples.java#L145-L151 -->
 ```java
 // This fetches a batch of 10 messages or until the default operation timeout has elapsed.
-receiver.receive(10).forEach(context -> {
+receiver.receiveMessages(10).forEach(context -> {
     ServiceBusReceivedMessage message = context.getMessage();
 
     // Process message and then complete it.
-    receiver.complete(message);
+    receiver.complete(message.getLockToken());
 });
 ```
 
@@ -293,7 +293,7 @@ session does not exist, it is created.
 ServiceBusMessage message = new ServiceBusMessage("Hello world")
     .setSessionId("greetings");
 
-sender.send(message);
+sender.sendMessage(message);
 ```
 
 #### Receive messages from a session

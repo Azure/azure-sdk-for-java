@@ -4,14 +4,14 @@
 package com.azure.resourcemanager.appservice.implementation;
 
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.appservice.AppServiceDomain;
-import com.azure.resourcemanager.appservice.AzureResourceType;
-import com.azure.resourcemanager.appservice.CustomHostnameDnsRecordType;
-import com.azure.resourcemanager.appservice.DeploymentSlot;
-import com.azure.resourcemanager.appservice.HostnameBinding;
-import com.azure.resourcemanager.appservice.HostnameType;
-import com.azure.resourcemanager.appservice.WebAppBase;
-import com.azure.resourcemanager.appservice.models.HostnameBindingInner;
+import com.azure.resourcemanager.appservice.models.AppServiceDomain;
+import com.azure.resourcemanager.appservice.models.AzureResourceType;
+import com.azure.resourcemanager.appservice.models.CustomHostnameDnsRecordType;
+import com.azure.resourcemanager.appservice.models.DeploymentSlot;
+import com.azure.resourcemanager.appservice.models.HostnameBinding;
+import com.azure.resourcemanager.appservice.models.HostnameType;
+import com.azure.resourcemanager.appservice.models.WebAppBase;
+import com.azure.resourcemanager.appservice.fluent.inner.HostnameBindingInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.Region;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import com.azure.resourcemanager.resources.fluentcore.model.Indexable;
@@ -142,7 +142,7 @@ class HostnameBindingImpl<FluentT extends WebAppBase, FluentImplT extends WebApp
                     .parent()
                     .manager()
                     .inner()
-                    .webApps()
+                    .getWebApps()
                     .getHostnameBindingSlotAsync(
                         parent().resourceGroupName(),
                         ((DeploymentSlot) parent).parent().name(),
@@ -154,7 +154,7 @@ class HostnameBindingImpl<FluentT extends WebAppBase, FluentImplT extends WebApp
                     .parent()
                     .manager()
                     .inner()
-                    .webApps()
+                    .getWebApps()
                     .getHostnameBindingAsync(parent().resourceGroupName(), parent().name(), name());
         }
 
@@ -188,7 +188,7 @@ class HostnameBindingImpl<FluentT extends WebAppBase, FluentImplT extends WebApp
                     .parent()
                     .manager()
                     .inner()
-                    .webApps()
+                    .getWebApps()
                     .createOrUpdateHostnameBindingSlotAsync(
                         parent().resourceGroupName(),
                         ((DeploymentSlot) parent).parent().name(),
@@ -202,7 +202,7 @@ class HostnameBindingImpl<FluentT extends WebAppBase, FluentImplT extends WebApp
                     .parent()
                     .manager()
                     .inner()
-                    .webApps()
+                    .getWebApps()
                     .createOrUpdateHostnameBindingAsync(parent().resourceGroupName(), parent().name(), name, inner())
                     .map(mapper);
         }

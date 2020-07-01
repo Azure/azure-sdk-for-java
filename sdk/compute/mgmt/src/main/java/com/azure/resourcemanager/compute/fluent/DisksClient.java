@@ -31,8 +31,8 @@ import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.util.polling.AsyncPollResponse;
 import com.azure.core.util.polling.PollerFlux;
+import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.compute.ComputeManagementClient;
 import com.azure.resourcemanager.compute.fluent.inner.AccessUriInner;
 import com.azure.resourcemanager.compute.fluent.inner.DiskInner;
@@ -309,7 +309,7 @@ public final class DisksClient
         } else {
             disk.validate();
         }
-        final String apiVersion = "2019-07-01";
+        final String apiVersion = "2019-11-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -365,7 +365,7 @@ public final class DisksClient
         } else {
             disk.validate();
         }
-        final String apiVersion = "2019-07-01";
+        final String apiVersion = "2019-11-01";
         return service
             .createOrUpdate(
                 this.client.getEndpoint(),
@@ -390,7 +390,7 @@ public final class DisksClient
      * @return disk resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<DiskInner>, DiskInner> beginCreateOrUpdate(
+    public PollerFlux<PollResult<DiskInner>, DiskInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String diskName, DiskInner disk) {
         Mono<Response<Flux<ByteBuffer>>> mono = createOrUpdateWithResponseAsync(resourceGroupName, diskName, disk);
         return this
@@ -413,7 +413,7 @@ public final class DisksClient
      * @return disk resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<DiskInner>, DiskInner> beginCreateOrUpdate(
+    public PollerFlux<PollResult<DiskInner>, DiskInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String diskName, DiskInner disk, Context context) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             createOrUpdateWithResponseAsync(resourceGroupName, diskName, disk, context);
@@ -436,14 +436,47 @@ public final class DisksClient
      * @return disk resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<DiskInner>, DiskInner> beginCreateOrUpdate(
+        String resourceGroupName, String diskName, DiskInner disk) {
+        return beginCreateOrUpdateAsync(resourceGroupName, diskName, disk).getSyncPoller();
+    }
+
+    /**
+     * Creates or updates a disk.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param diskName The name of the managed disk that is being created. The name can't be changed after the disk is
+     *     created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum name length is 80 characters.
+     * @param disk Disk resource.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return disk resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<DiskInner>, DiskInner> beginCreateOrUpdate(
+        String resourceGroupName, String diskName, DiskInner disk, Context context) {
+        return beginCreateOrUpdateAsync(resourceGroupName, diskName, disk, context).getSyncPoller();
+    }
+
+    /**
+     * Creates or updates a disk.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param diskName The name of the managed disk that is being created. The name can't be changed after the disk is
+     *     created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum name length is 80 characters.
+     * @param disk Disk resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return disk resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DiskInner> createOrUpdateAsync(String resourceGroupName, String diskName, DiskInner disk) {
-        Mono<Response<Flux<ByteBuffer>>> mono = createOrUpdateWithResponseAsync(resourceGroupName, diskName, disk);
-        return this
-            .client
-            .<DiskInner, DiskInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), DiskInner.class, DiskInner.class)
+        return beginCreateOrUpdateAsync(resourceGroupName, diskName, disk)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -462,14 +495,9 @@ public final class DisksClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DiskInner> createOrUpdateAsync(
         String resourceGroupName, String diskName, DiskInner disk, Context context) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, diskName, disk, context);
-        return this
-            .client
-            .<DiskInner, DiskInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), DiskInner.class, DiskInner.class)
+        return beginCreateOrUpdateAsync(resourceGroupName, diskName, disk, context)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -546,7 +574,7 @@ public final class DisksClient
         } else {
             disk.validate();
         }
-        final String apiVersion = "2019-07-01";
+        final String apiVersion = "2019-11-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -602,7 +630,7 @@ public final class DisksClient
         } else {
             disk.validate();
         }
-        final String apiVersion = "2019-07-01";
+        final String apiVersion = "2019-11-01";
         return service
             .update(
                 this.client.getEndpoint(),
@@ -627,7 +655,7 @@ public final class DisksClient
      * @return disk resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<DiskInner>, DiskInner> beginUpdate(
+    public PollerFlux<PollResult<DiskInner>, DiskInner> beginUpdateAsync(
         String resourceGroupName, String diskName, DiskUpdate disk) {
         Mono<Response<Flux<ByteBuffer>>> mono = updateWithResponseAsync(resourceGroupName, diskName, disk);
         return this
@@ -650,7 +678,7 @@ public final class DisksClient
      * @return disk resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<DiskInner>, DiskInner> beginUpdate(
+    public PollerFlux<PollResult<DiskInner>, DiskInner> beginUpdateAsync(
         String resourceGroupName, String diskName, DiskUpdate disk, Context context) {
         Mono<Response<Flux<ByteBuffer>>> mono = updateWithResponseAsync(resourceGroupName, diskName, disk, context);
         return this
@@ -672,14 +700,45 @@ public final class DisksClient
      * @return disk resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<DiskInner>, DiskInner> beginUpdate(
+        String resourceGroupName, String diskName, DiskUpdate disk) {
+        return beginUpdateAsync(resourceGroupName, diskName, disk).getSyncPoller();
+    }
+
+    /**
+     * Updates (patches) a disk.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param diskName The name of the managed disk that is being created. The name can't be changed after the disk is
+     *     created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum name length is 80 characters.
+     * @param disk Disk update resource.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return disk resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<DiskInner>, DiskInner> beginUpdate(
+        String resourceGroupName, String diskName, DiskUpdate disk, Context context) {
+        return beginUpdateAsync(resourceGroupName, diskName, disk, context).getSyncPoller();
+    }
+
+    /**
+     * Updates (patches) a disk.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param diskName The name of the managed disk that is being created. The name can't be changed after the disk is
+     *     created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum name length is 80 characters.
+     * @param disk Disk update resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return disk resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DiskInner> updateAsync(String resourceGroupName, String diskName, DiskUpdate disk) {
-        Mono<Response<Flux<ByteBuffer>>> mono = updateWithResponseAsync(resourceGroupName, diskName, disk);
-        return this
-            .client
-            .<DiskInner, DiskInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), DiskInner.class, DiskInner.class)
-            .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+        return beginUpdateAsync(resourceGroupName, diskName, disk).last().flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -697,13 +756,9 @@ public final class DisksClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DiskInner> updateAsync(String resourceGroupName, String diskName, DiskUpdate disk, Context context) {
-        Mono<Response<Flux<ByteBuffer>>> mono = updateWithResponseAsync(resourceGroupName, diskName, disk, context);
-        return this
-            .client
-            .<DiskInner, DiskInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), DiskInner.class, DiskInner.class)
+        return beginUpdateAsync(resourceGroupName, diskName, disk, context)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -773,7 +828,7 @@ public final class DisksClient
         if (diskName == null) {
             return Mono.error(new IllegalArgumentException("Parameter diskName is required and cannot be null."));
         }
-        final String apiVersion = "2019-07-01";
+        final String apiVersion = "2019-11-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -822,7 +877,7 @@ public final class DisksClient
         if (diskName == null) {
             return Mono.error(new IllegalArgumentException("Parameter diskName is required and cannot be null."));
         }
-        final String apiVersion = "2019-07-01";
+        final String apiVersion = "2019-11-01";
         return service
             .getByResourceGroup(
                 this.client.getEndpoint(),
@@ -947,7 +1002,7 @@ public final class DisksClient
         if (diskName == null) {
             return Mono.error(new IllegalArgumentException("Parameter diskName is required and cannot be null."));
         }
-        final String apiVersion = "2019-07-01";
+        final String apiVersion = "2019-11-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -996,7 +1051,7 @@ public final class DisksClient
         if (diskName == null) {
             return Mono.error(new IllegalArgumentException("Parameter diskName is required and cannot be null."));
         }
-        final String apiVersion = "2019-07-01";
+        final String apiVersion = "2019-11-01";
         return service
             .delete(
                 this.client.getEndpoint(),
@@ -1019,7 +1074,7 @@ public final class DisksClient
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<Void>, Void> beginDelete(String resourceGroupName, String diskName) {
+    public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String diskName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, diskName);
         return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
     }
@@ -1037,7 +1092,8 @@ public final class DisksClient
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<Void>, Void> beginDelete(String resourceGroupName, String diskName, Context context) {
+    public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
+        String resourceGroupName, String diskName, Context context) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, diskName, context);
         return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
     }
@@ -1054,13 +1110,41 @@ public final class DisksClient
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String diskName) {
+        return beginDeleteAsync(resourceGroupName, diskName).getSyncPoller();
+    }
+
+    /**
+     * Deletes a disk.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param diskName The name of the managed disk that is being created. The name can't be changed after the disk is
+     *     created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum name length is 80 characters.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String diskName, Context context) {
+        return beginDeleteAsync(resourceGroupName, diskName, context).getSyncPoller();
+    }
+
+    /**
+     * Deletes a disk.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param diskName The name of the managed disk that is being created. The name can't be changed after the disk is
+     *     created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum name length is 80 characters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String diskName) {
-        Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, diskName);
-        return this
-            .client
-            .<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class)
-            .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+        return beginDeleteAsync(resourceGroupName, diskName).last().flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -1077,12 +1161,7 @@ public final class DisksClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String diskName, Context context) {
-        Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, diskName, context);
-        return this
-            .client
-            .<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class)
-            .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+        return beginDeleteAsync(resourceGroupName, diskName, context).last().flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -1143,7 +1222,7 @@ public final class DisksClient
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2019-07-01";
+        final String apiVersion = "2019-11-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -1195,7 +1274,7 @@ public final class DisksClient
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2019-07-01";
+        final String apiVersion = "2019-11-01";
         return service
             .listByResourceGroup(
                 this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, apiVersion, context)
@@ -1293,7 +1372,7 @@ public final class DisksClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-07-01";
+        final String apiVersion = "2019-11-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -1333,7 +1412,7 @@ public final class DisksClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-07-01";
+        final String apiVersion = "2019-11-01";
         return service
             .list(this.client.getEndpoint(), this.client.getSubscriptionId(), apiVersion, context)
             .map(
@@ -1439,7 +1518,7 @@ public final class DisksClient
         } else {
             grantAccessData.validate();
         }
-        final String apiVersion = "2019-07-01";
+        final String apiVersion = "2019-11-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -1496,7 +1575,7 @@ public final class DisksClient
         } else {
             grantAccessData.validate();
         }
-        final String apiVersion = "2019-07-01";
+        final String apiVersion = "2019-11-01";
         return service
             .grantAccess(
                 this.client.getEndpoint(),
@@ -1521,7 +1600,7 @@ public final class DisksClient
      * @return a disk access SAS uri.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<AccessUriInner>, AccessUriInner> beginGrantAccess(
+    public PollerFlux<PollResult<AccessUriInner>, AccessUriInner> beginGrantAccessAsync(
         String resourceGroupName, String diskName, GrantAccessData grantAccessData) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             grantAccessWithResponseAsync(resourceGroupName, diskName, grantAccessData);
@@ -1545,7 +1624,7 @@ public final class DisksClient
      * @return a disk access SAS uri.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<AccessUriInner>, AccessUriInner> beginGrantAccess(
+    public PollerFlux<PollResult<AccessUriInner>, AccessUriInner> beginGrantAccessAsync(
         String resourceGroupName, String diskName, GrantAccessData grantAccessData, Context context) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             grantAccessWithResponseAsync(resourceGroupName, diskName, grantAccessData, context);
@@ -1568,16 +1647,48 @@ public final class DisksClient
      * @return a disk access SAS uri.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<AccessUriInner>, AccessUriInner> beginGrantAccess(
+        String resourceGroupName, String diskName, GrantAccessData grantAccessData) {
+        return beginGrantAccessAsync(resourceGroupName, diskName, grantAccessData).getSyncPoller();
+    }
+
+    /**
+     * Grants access to a disk.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param diskName The name of the managed disk that is being created. The name can't be changed after the disk is
+     *     created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum name length is 80 characters.
+     * @param grantAccessData Data used for requesting a SAS.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a disk access SAS uri.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<AccessUriInner>, AccessUriInner> beginGrantAccess(
+        String resourceGroupName, String diskName, GrantAccessData grantAccessData, Context context) {
+        return beginGrantAccessAsync(resourceGroupName, diskName, grantAccessData, context).getSyncPoller();
+    }
+
+    /**
+     * Grants access to a disk.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param diskName The name of the managed disk that is being created. The name can't be changed after the disk is
+     *     created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum name length is 80 characters.
+     * @param grantAccessData Data used for requesting a SAS.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a disk access SAS uri.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AccessUriInner> grantAccessAsync(
         String resourceGroupName, String diskName, GrantAccessData grantAccessData) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            grantAccessWithResponseAsync(resourceGroupName, diskName, grantAccessData);
-        return this
-            .client
-            .<AccessUriInner, AccessUriInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), AccessUriInner.class, AccessUriInner.class)
+        return beginGrantAccessAsync(resourceGroupName, diskName, grantAccessData)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -1596,14 +1707,9 @@ public final class DisksClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AccessUriInner> grantAccessAsync(
         String resourceGroupName, String diskName, GrantAccessData grantAccessData, Context context) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            grantAccessWithResponseAsync(resourceGroupName, diskName, grantAccessData, context);
-        return this
-            .client
-            .<AccessUriInner, AccessUriInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), AccessUriInner.class, AccessUriInner.class)
+        return beginGrantAccessAsync(resourceGroupName, diskName, grantAccessData, context)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -1674,7 +1780,7 @@ public final class DisksClient
         if (diskName == null) {
             return Mono.error(new IllegalArgumentException("Parameter diskName is required and cannot be null."));
         }
-        final String apiVersion = "2019-07-01";
+        final String apiVersion = "2019-11-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -1723,7 +1829,7 @@ public final class DisksClient
         if (diskName == null) {
             return Mono.error(new IllegalArgumentException("Parameter diskName is required and cannot be null."));
         }
-        final String apiVersion = "2019-07-01";
+        final String apiVersion = "2019-11-01";
         return service
             .revokeAccess(
                 this.client.getEndpoint(),
@@ -1746,7 +1852,7 @@ public final class DisksClient
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<Void>, Void> beginRevokeAccess(String resourceGroupName, String diskName) {
+    public PollerFlux<PollResult<Void>, Void> beginRevokeAccessAsync(String resourceGroupName, String diskName) {
         Mono<Response<Flux<ByteBuffer>>> mono = revokeAccessWithResponseAsync(resourceGroupName, diskName);
         return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
     }
@@ -1764,7 +1870,7 @@ public final class DisksClient
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<Void>, Void> beginRevokeAccess(
+    public PollerFlux<PollResult<Void>, Void> beginRevokeAccessAsync(
         String resourceGroupName, String diskName, Context context) {
         Mono<Response<Flux<ByteBuffer>>> mono = revokeAccessWithResponseAsync(resourceGroupName, diskName, context);
         return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
@@ -1782,13 +1888,42 @@ public final class DisksClient
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<Void>, Void> beginRevokeAccess(String resourceGroupName, String diskName) {
+        return beginRevokeAccessAsync(resourceGroupName, diskName).getSyncPoller();
+    }
+
+    /**
+     * Revokes access to a disk.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param diskName The name of the managed disk that is being created. The name can't be changed after the disk is
+     *     created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum name length is 80 characters.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<Void>, Void> beginRevokeAccess(
+        String resourceGroupName, String diskName, Context context) {
+        return beginRevokeAccessAsync(resourceGroupName, diskName, context).getSyncPoller();
+    }
+
+    /**
+     * Revokes access to a disk.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param diskName The name of the managed disk that is being created. The name can't be changed after the disk is
+     *     created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum name length is 80 characters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> revokeAccessAsync(String resourceGroupName, String diskName) {
-        Mono<Response<Flux<ByteBuffer>>> mono = revokeAccessWithResponseAsync(resourceGroupName, diskName);
-        return this
-            .client
-            .<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class)
-            .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+        return beginRevokeAccessAsync(resourceGroupName, diskName).last().flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -1805,12 +1940,9 @@ public final class DisksClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> revokeAccessAsync(String resourceGroupName, String diskName, Context context) {
-        Mono<Response<Flux<ByteBuffer>>> mono = revokeAccessWithResponseAsync(resourceGroupName, diskName, context);
-        return this
-            .client
-            .<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class)
+        return beginRevokeAccessAsync(resourceGroupName, diskName, context)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -1883,7 +2015,7 @@ public final class DisksClient
         } else {
             disk.validate();
         }
-        final String apiVersion = "2019-07-01";
+        final String apiVersion = "2019-11-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -1939,7 +2071,7 @@ public final class DisksClient
         } else {
             disk.validate();
         }
-        final String apiVersion = "2019-07-01";
+        final String apiVersion = "2019-11-01";
         return service
             .beginCreateOrUpdateWithoutPolling(
                 this.client.getEndpoint(),
@@ -2079,7 +2211,7 @@ public final class DisksClient
         } else {
             disk.validate();
         }
-        final String apiVersion = "2019-07-01";
+        final String apiVersion = "2019-11-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -2135,7 +2267,7 @@ public final class DisksClient
         } else {
             disk.validate();
         }
-        final String apiVersion = "2019-07-01";
+        final String apiVersion = "2019-11-01";
         return service
             .beginUpdateWithoutPolling(
                 this.client.getEndpoint(),
@@ -2267,7 +2399,7 @@ public final class DisksClient
         if (diskName == null) {
             return Mono.error(new IllegalArgumentException("Parameter diskName is required and cannot be null."));
         }
-        final String apiVersion = "2019-07-01";
+        final String apiVersion = "2019-11-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -2316,7 +2448,7 @@ public final class DisksClient
         if (diskName == null) {
             return Mono.error(new IllegalArgumentException("Parameter diskName is required and cannot be null."));
         }
-        final String apiVersion = "2019-07-01";
+        final String apiVersion = "2019-11-01";
         return service
             .beginDeleteWithoutPolling(
                 this.client.getEndpoint(),
@@ -2433,7 +2565,7 @@ public final class DisksClient
         } else {
             grantAccessData.validate();
         }
-        final String apiVersion = "2019-07-01";
+        final String apiVersion = "2019-11-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -2490,7 +2622,7 @@ public final class DisksClient
         } else {
             grantAccessData.validate();
         }
-        final String apiVersion = "2019-07-01";
+        final String apiVersion = "2019-11-01";
         return service
             .beginGrantAccessWithoutPolling(
                 this.client.getEndpoint(),
@@ -2625,7 +2757,7 @@ public final class DisksClient
         if (diskName == null) {
             return Mono.error(new IllegalArgumentException("Parameter diskName is required and cannot be null."));
         }
-        final String apiVersion = "2019-07-01";
+        final String apiVersion = "2019-11-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -2674,7 +2806,7 @@ public final class DisksClient
         if (diskName == null) {
             return Mono.error(new IllegalArgumentException("Parameter diskName is required and cannot be null."));
         }
-        final String apiVersion = "2019-07-01";
+        final String apiVersion = "2019-11-01";
         return service
             .beginRevokeAccessWithoutPolling(
                 this.client.getEndpoint(),

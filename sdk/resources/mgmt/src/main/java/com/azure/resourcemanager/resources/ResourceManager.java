@@ -238,7 +238,7 @@ public final class ResourceManager extends ManagerBase implements HasInner<Resou
      */
     public ResourceGroups resourceGroups() {
         if (resourceGroups == null) {
-            resourceGroups = new ResourceGroupsImpl(resourceManagementClient);
+            resourceGroups = new ResourceGroupsImpl(this);
         }
         return resourceGroups;
     }

@@ -1,26 +1,26 @@
 {
   "networkCallRecords" : [ {
     "Method" : "GET",
-    "Uri" : "https://gapradev.queue.core.windows.net/queueaysncapitestspeekmessageserror0349347e90e5aeb/messages?peekonly=true",
+    "Uri" : "https://REDACTED.queue.core.windows.net/queueaysncapitestspeekmessageserror799859ff4627857/messages?peekonly=true",
     "Headers" : {
-      "x-ms-version" : "2019-07-07",
-      "User-Agent" : "azsdk-java-azure-storage-queue/12.3.0-beta.1 (11.0.4; Windows 10 10.0)",
-      "x-ms-client-request-id" : "dce91d2b-ca56-4a47-9e82-a9295924fb80"
+      "x-ms-version" : "2019-12-12",
+      "User-Agent" : "azsdk-java-azure-storage-queue/12.6.0-beta.1 (11.0.6; Windows 10 10.0)",
+      "x-ms-client-request-id" : "51c9705d-90ab-41ee-9ae6-38c51774c2b6"
     },
     "Response" : {
-      "x-ms-version" : "2019-07-07",
+      "x-ms-version" : "2019-12-12",
       "Server" : "Windows-Azure-Queue/1.0 Microsoft-HTTPAPI/2.0",
       "x-ms-error-code" : "QueueNotFound",
       "retry-after" : "0",
       "Content-Length" : "217",
       "StatusCode" : "404",
-      "x-ms-request-id" : "d25b836f-f003-0012-7971-e0e9eb000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>QueueNotFound</Code><Message>The specified queue does not exist.\nRequestId:d25b836f-f003-0012-7971-e0e9eb000000\nTime:2020-02-11T00:25:00.0964714Z</Message></Error>",
-      "Date" : "Tue, 11 Feb 2020 00:24:59 GMT",
-      "x-ms-client-request-id" : "dce91d2b-ca56-4a47-9e82-a9295924fb80",
+      "x-ms-request-id" : "37a3a272-3003-009b-5f03-3a8ca5000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>QueueNotFound</Code><Message>The specified queue does not exist.\nRequestId:37a3a272-3003-009b-5f03-3a8ca5000000\nTime:2020-06-04T00:05:25.5235486Z</Message></Error>",
+      "Date" : "Thu, 04 Jun 2020 00:05:24 GMT",
+      "x-ms-client-request-id" : "51c9705d-90ab-41ee-9ae6-38c51774c2b6",
       "Content-Type" : "application/xml"
     },
     "Exception" : null
   } ],
-  "variables" : [ "queueaysncapitestspeekmessageserror0349347e90e5aeb" ]
+  "variables" : [ "queueaysncapitestspeekmessageserror799859ff4627857" ]
 }

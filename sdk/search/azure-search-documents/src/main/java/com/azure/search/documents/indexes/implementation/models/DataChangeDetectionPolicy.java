@@ -6,20 +6,34 @@
 
 package com.azure.search.documents.indexes.implementation.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
+import com.azure.core.annotation.JsonFlatten;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/**
- * Base type for data change detection policies.
- */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata.type", defaultImpl = DataChangeDetectionPolicy.class)
+/** The DataChangeDetectionPolicy model. */
+@JsonTypeInfo(
+        use = JsonTypeInfo.Id.NAME,
+        include = JsonTypeInfo.As.PROPERTY,
+        property = "@odata\\.type",
+        defaultImpl = DataChangeDetectionPolicy.class)
 @JsonTypeName("DataChangeDetectionPolicy")
 @JsonSubTypes({
-    @JsonSubTypes.Type(name = "#Microsoft.Azure.Search.HighWaterMarkChangeDetectionPolicy", value = HighWaterMarkChangeDetectionPolicy.class),
-    @JsonSubTypes.Type(name = "#Microsoft.Azure.Search.SqlIntegratedChangeTrackingPolicy", value = SqlIntegratedChangeTrackingPolicy.class)
+    @JsonSubTypes.Type(
+            name = "#Microsoft.Azure.Search.HighWaterMarkChangeDetectionPolicy",
+            value = HighWaterMarkChangeDetectionPolicy.class),
+    @JsonSubTypes.Type(
+            name = "#Microsoft.Azure.Search.SqlIntegratedChangeTrackingPolicy",
+            value = SqlIntegratedChangeTrackingPolicy.class)
 })
-@Fluent
+@JsonFlatten
+@Immutable
 public class DataChangeDetectionPolicy {
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {}
 }

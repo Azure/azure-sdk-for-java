@@ -5,24 +5,24 @@ package com.azure.resourcemanager.network.implementation;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.network.BgpSettings;
-import com.azure.resourcemanager.network.Network;
-import com.azure.resourcemanager.network.PublicIpAddress;
-import com.azure.resourcemanager.network.VirtualNetworkGateway;
-import com.azure.resourcemanager.network.VirtualNetworkGatewayConnection;
-import com.azure.resourcemanager.network.VirtualNetworkGatewayConnections;
-import com.azure.resourcemanager.network.VirtualNetworkGatewayIpConfiguration;
-import com.azure.resourcemanager.network.VirtualNetworkGatewaySku;
-import com.azure.resourcemanager.network.VirtualNetworkGatewaySkuName;
-import com.azure.resourcemanager.network.VirtualNetworkGatewaySkuTier;
-import com.azure.resourcemanager.network.VirtualNetworkGatewayType;
-import com.azure.resourcemanager.network.VpnClientConfiguration;
-import com.azure.resourcemanager.network.VpnClientParameters;
-import com.azure.resourcemanager.network.VpnType;
-import com.azure.resourcemanager.network.models.GroupableParentResourceWithTagsImpl;
-import com.azure.resourcemanager.network.models.VirtualNetworkGatewayConnectionListEntityInner;
-import com.azure.resourcemanager.network.models.VirtualNetworkGatewayIpConfigurationInner;
-import com.azure.resourcemanager.network.models.VirtualNetworkGatewayInner;
+import com.azure.resourcemanager.network.NetworkManager;
+import com.azure.resourcemanager.network.models.BgpSettings;
+import com.azure.resourcemanager.network.models.Network;
+import com.azure.resourcemanager.network.models.PublicIpAddress;
+import com.azure.resourcemanager.network.models.VirtualNetworkGateway;
+import com.azure.resourcemanager.network.models.VirtualNetworkGatewayConnection;
+import com.azure.resourcemanager.network.models.VirtualNetworkGatewayConnections;
+import com.azure.resourcemanager.network.models.VirtualNetworkGatewayIpConfiguration;
+import com.azure.resourcemanager.network.models.VirtualNetworkGatewaySku;
+import com.azure.resourcemanager.network.models.VirtualNetworkGatewaySkuName;
+import com.azure.resourcemanager.network.models.VirtualNetworkGatewaySkuTier;
+import com.azure.resourcemanager.network.models.VirtualNetworkGatewayType;
+import com.azure.resourcemanager.network.models.VpnClientConfiguration;
+import com.azure.resourcemanager.network.models.VpnClientParameters;
+import com.azure.resourcemanager.network.models.VpnType;
+import com.azure.resourcemanager.network.fluent.inner.VirtualNetworkGatewayConnectionListEntityInner;
+import com.azure.resourcemanager.network.fluent.inner.VirtualNetworkGatewayIpConfigurationInner;
+import com.azure.resourcemanager.network.fluent.inner.VirtualNetworkGatewayInner;
 import com.azure.resourcemanager.resources.models.ResourceGroup;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.Resource;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
@@ -180,7 +180,7 @@ class VirtualNetworkGatewayImpl
         return this
             .manager()
             .inner()
-            .virtualNetworkGateways()
+            .getVirtualNetworkGateways()
             .resetAsync(resourceGroupName(), name())
             .map(
                 inner -> {
@@ -198,7 +198,8 @@ class VirtualNetworkGatewayImpl
     @Override
     public PagedFlux<VirtualNetworkGatewayConnection> listConnectionsAsync() {
         PagedFlux<VirtualNetworkGatewayConnectionListEntityInner> connectionInners =
-            this.manager().inner().virtualNetworkGateways().listConnectionsAsync(this.resourceGroupName(), this.name());
+            this.manager().inner().getVirtualNetworkGateways()
+            .listConnectionsAsync(this.resourceGroupName(), this.name());
         return PagedConverter
             .flatMapPage(connectionInners, connectionInner -> connections().getByIdAsync(connectionInner.id()));
     }
@@ -208,7 +209,7 @@ class VirtualNetworkGatewayImpl
         return this
             .manager()
             .inner()
-            .virtualNetworkGateways()
+            .getVirtualNetworkGateways()
             .generateVpnProfile(resourceGroupName(), name(), new VpnClientParameters());
     }
 
@@ -217,7 +218,7 @@ class VirtualNetworkGatewayImpl
         return this
             .manager()
             .inner()
-            .virtualNetworkGateways()
+            .getVirtualNetworkGateways()
             .generateVpnProfileAsync(resourceGroupName(), name(), new VpnClientParameters());
     }
 
@@ -226,7 +227,7 @@ class VirtualNetworkGatewayImpl
         return this
             .manager()
             .inner()
-            .virtualNetworkGateways()
+            .getVirtualNetworkGateways()
             .updateTagsAsync(resourceGroupName(), name(), inner().tags());
     }
 
@@ -309,7 +310,7 @@ class VirtualNetworkGatewayImpl
         return this
             .manager()
             .inner()
-            .virtualNetworkGateways()
+            .getVirtualNetworkGateways()
             .getByResourceGroupAsync(this.resourceGroupName(), this.name());
     }
 
@@ -440,7 +441,7 @@ class VirtualNetworkGatewayImpl
                         .this
                         .manager()
                         .inner()
-                        .virtualNetworkGateways()
+                        .getVirtualNetworkGateways()
                         .createOrUpdateAsync(resourceGroupName(), name(), inner()));
     }
 

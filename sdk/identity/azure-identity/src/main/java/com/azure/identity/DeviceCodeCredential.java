@@ -12,6 +12,8 @@ import com.azure.identity.implementation.IdentityClient;
 import com.azure.identity.implementation.IdentityClientBuilder;
 import com.azure.identity.implementation.IdentityClientOptions;
 import com.azure.identity.implementation.MsalAuthenticationAccount;
+import com.azure.identity.implementation.MsalToken;
+import com.azure.identity.implementation.util.LoggingUtil;
 import reactor.core.publisher.Mono;
 
 import java.util.concurrent.atomic.AtomicReference;
@@ -73,13 +75,9 @@ public class DeviceCodeCredential implements TokenCredential {
                 }
                 return identityClient.authenticateWithDeviceCode(request, challengeConsumer);
             }))
-            .map(msalToken -> {
-                cachedToken.set(
-                        new MsalAuthenticationAccount(
-                                new AuthenticationRecord(msalToken.getAuthenticationResult(),
-                                        identityClient.getTenantId())));
-                return msalToken;
-            });
+            .map(this::updateCache)
+            .doOnNext(token -> LoggingUtil.logTokenSuccess(logger, request))
+            .doOnError(error -> LoggingUtil.logTokenError(logger, request, error));
     }
 
     /**
@@ -97,8 +95,8 @@ public class DeviceCodeCredential implements TokenCredential {
      */
     public Mono<AuthenticationRecord> authenticate(TokenRequestContext request) {
         return Mono.defer(() -> identityClient.authenticateWithDeviceCode(request, challengeConsumer))
-                       .map(msalToken -> new AuthenticationRecord(msalToken.getAuthenticationResult(),
-                               identityClient.getTenantId()));
+                       .map(this::updateCache)
+                       .map(msalToken -> cachedToken.get().getAuthenticationRecord());
     }
 
     /**
@@ -119,5 +117,13 @@ public class DeviceCodeCredential implements TokenCredential {
                                                     + "environment requires specifying a TokenRequestContext.")));
         }
         return authenticate(new TokenRequestContext().addScopes(defaultScope));
+    }
+
+    private AccessToken updateCache(MsalToken msalToken) {
+        cachedToken.set(
+                new MsalAuthenticationAccount(
+                        new AuthenticationRecord(msalToken.getAuthenticationResult(),
+                                identityClient.getTenantId())));
+        return msalToken;
     }
 }

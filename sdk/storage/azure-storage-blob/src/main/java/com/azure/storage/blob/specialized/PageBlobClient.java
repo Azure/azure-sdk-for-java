@@ -14,6 +14,7 @@ import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.BlobStorageException;
 import com.azure.storage.blob.models.CopyStatusType;
+import com.azure.storage.blob.options.PageBlobCreateOptions;
 import com.azure.storage.blob.models.PageBlobItem;
 import com.azure.storage.blob.models.PageBlobRequestConditions;
 import com.azure.storage.blob.models.PageList;
@@ -160,8 +161,29 @@ public final class PageBlobClient extends BlobClientBase {
      */
     public Response<PageBlobItem> createWithResponse(long size, Long sequenceNumber, BlobHttpHeaders headers,
         Map<String, String> metadata, BlobRequestConditions requestConditions, Duration timeout, Context context) {
-        Mono<Response<PageBlobItem>> response = pageBlobAsyncClient.createWithResponse(size, sequenceNumber, headers,
-            metadata, requestConditions, context);
+        return this.createWithResponse(new PageBlobCreateOptions(size).setSequenceNumber(sequenceNumber)
+            .setHeaders(headers).setMetadata(metadata).setRequestConditions(requestConditions), timeout,
+            context);
+    }
+
+    /**
+     * Creates a page blob of the specified length. Call PutPage to upload data data to a page blob. For more
+     * information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/put-blob">Azure Docs</a>.
+     * <p>
+     * To avoid overwriting, pass "*" to {@link BlobRequestConditions#setIfNoneMatch(String)}.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.specialized.PageBlobClient.createWithResponse#PageBlobCreateOptions-Duration-Context}
+     *
+     * @param options {@link PageBlobCreateOptions}
+     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return The information of the created page blob.
+     */
+    public Response<PageBlobItem> createWithResponse(PageBlobCreateOptions options, Duration timeout, Context context) {
+        Mono<Response<PageBlobItem>> response = pageBlobAsyncClient.createWithResponse(options, context);
         return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
     }
 
@@ -179,7 +201,10 @@ public final class PageBlobClient extends BlobClientBase {
      * @param pageRange A {@link PageRange} object. Given that pages must be aligned with 512-byte boundaries, the start
      * offset must be a modulus of 512 and the end offset must be a modulus of 512 - 1. Examples of valid byte ranges
      * are 0-511, 512-1023, etc.
-     * @param body The data to upload.
+     * @param body The data to upload. The data must be markable. This is in order to support retries. If
+     * the data is not markable, consider using {@link #getBlobOutputStream(PageRange)} and writing to the returned
+     * OutputStream. Alternatively, consider wrapping your data source in a {@link java.io.BufferedInputStream} to add
+     * mark support.
      * @return The information of the uploaded pages.
      */
     public PageBlobItem uploadPages(PageRange pageRange, InputStream body) {
@@ -200,7 +225,10 @@ public final class PageBlobClient extends BlobClientBase {
      * @param pageRange A {@link PageRange} object. Given that pages must be aligned with 512-byte boundaries, the start
      * offset must be a modulus of 512 and the end offset must be a modulus of 512 - 1. Examples of valid byte ranges
      * are 0-511, 512-1023, etc.
-     * @param body The data to upload.
+     * @param body The data to upload. The data must be markable. This is in order to support retries. If
+     * the data is not markable, consider using {@link #getBlobOutputStream(PageRange)} and writing to the returned
+     * OutputStream. Alternatively, consider wrapping your data source in a {@link java.io.BufferedInputStream} to add
+     * mark support.
      * @param contentMd5 An MD5 hash of the page content. This hash is used to verify the integrity of the page during
      * transport. When this header is specified, the storage service compares the hash of the content that has arrived
      * with this header value. Note that this MD5 hash is not stored with the blob. If the two hashes do not match, the

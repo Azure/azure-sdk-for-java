@@ -3,7 +3,7 @@
 package com.azure.resourcemanager.cosmos.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.resourcemanager.cosmos.CosmosDBManager;
+import com.azure.resourcemanager.cosmos.CosmosManager;
 import com.azure.resourcemanager.cosmos.fluent.DatabaseAccountsClient;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsDeletingByResourceGroup;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsGettingById;
@@ -23,7 +23,7 @@ import java.util.List;
 @Fluent
 public interface CosmosDBAccounts
     extends SupportsCreating<CosmosDBAccount.DefinitionStages.Blank>,
-        HasManager<CosmosDBManager>,
+        HasManager<CosmosManager>,
         HasInner<DatabaseAccountsClient>,
         SupportsBatchCreation<CosmosDBAccount>,
         SupportsGettingById<CosmosDBAccount>,

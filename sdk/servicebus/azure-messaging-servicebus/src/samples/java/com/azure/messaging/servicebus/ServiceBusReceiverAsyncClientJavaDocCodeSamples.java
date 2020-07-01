@@ -63,7 +63,7 @@ public class ServiceBusReceiverAsyncClientJavaDocCodeSamples {
 
         // Keep a reference to `subscription`. When the program is finished receiving messages, call
         // subscription.dispose(). This will stop fetching messages from the Service Bus.
-        Disposable subscription = receiver.receive()
+        Disposable subscription = receiver.receiveMessages()
             .subscribe(context -> {
                 ServiceBusReceivedMessage message = context.getMessage();
                 System.out.printf("Received message id: %s%n", message.getMessageId());
@@ -88,7 +88,7 @@ public class ServiceBusReceiverAsyncClientJavaDocCodeSamples {
             .buildAsyncClient();
 
         // BEGIN: com.azure.messaging.servicebus.servicebusasyncreceiverclient.receive#basesubscriber
-        receiver.receive().subscribe(new BaseSubscriber<ServiceBusReceivedMessageContext>() {
+        receiver.receiveMessages().subscribe(new BaseSubscriber<ServiceBusReceivedMessageContext>() {
             private static final int NUMBER_OF_MESSAGES = 5;
             private final AtomicInteger currentNumberOfMessages = new AtomicInteger();
 
@@ -126,11 +126,11 @@ public class ServiceBusReceiverAsyncClientJavaDocCodeSamples {
             .buildAsyncClient();
 
         // BEGIN: com.azure.messaging.servicebus.servicebusasyncreceiverclient.receive#all
-        Disposable subscription = receiver.receive().flatMap(context -> {
+        Disposable subscription = receiver.receiveMessages().flatMap(context -> {
             ServiceBusReceivedMessage message = context.getMessage();
             System.out.printf("Received message id: %s%n", message.getMessageId());
             System.out.printf("Contents of message as string: %s%n", new String(message.getBody(), UTF_8));
-            return receiver.complete(message);
+            return receiver.complete(message.getLockToken());
         }).subscribe(aVoid -> System.out.println("Processed message."),
             error -> System.out.println("Error occurred: " + error));
 
@@ -151,12 +151,12 @@ public class ServiceBusReceiverAsyncClientJavaDocCodeSamples {
             .buildAsyncClient();
 
         // BEGIN: com.azure.messaging.servicebus.servicebusasyncreceiverclient.receive#int-duration
-        Disposable subscription = receiver.receive(15, Duration.ofSeconds(30))
+        Disposable subscription = receiver.receiveMessages(15, Duration.ofSeconds(30))
             .flatMap(context -> {
                 ServiceBusReceivedMessage message = context.getMessage();
                 System.out.printf("Received message id: %s%n", message.getMessageId());
                 System.out.printf("Contents of message as string: %s%n", new String(message.getBody(), UTF_8));
-                return receiver.complete(message);
+                return receiver.complete(message.getLockToken());
             }).subscribe(aVoid -> System.out.println("Processed message."),
                 error -> System.out.println("Error occurred: " + error));
 
@@ -313,7 +313,7 @@ public class ServiceBusReceiverAsyncClientJavaDocCodeSamples {
 
         // Keep a reference to `subscription`. When the program is finished receiving messages, call
         // subscription.dispose(). This will dispose it cleanly.
-        Disposable subscriber = receiver.complete(messageContext.getMessage(), transactionContext)
+        Disposable subscriber = receiver.complete(messageContext.getMessage().getLockToken(), transactionContext)
             .subscribe();
 
         // When all the messages are processed and settled, you should commit/rollback this transaction.
@@ -343,8 +343,8 @@ public class ServiceBusReceiverAsyncClientJavaDocCodeSamples {
 
         // Keep a reference to `subscription`. When the program is finished receiving messages, call
         // subscription.dispose(). This will dispose it cleanly.
-        Disposable subscriber = receiver.abandon(messageContext.getMessage(), propertiesToModify, transactionContext)
-            .subscribe();
+        Disposable subscriber = receiver.abandon(messageContext.getMessage().getLockToken(), propertiesToModify,
+            transactionContext).subscribe();
 
         // When all the messages are processed and settled, you should commit/rollback this transaction.
         // END: com.azure.messaging.servicebus.servicebusasyncreceiverclient.abandonMessageWithTransaction

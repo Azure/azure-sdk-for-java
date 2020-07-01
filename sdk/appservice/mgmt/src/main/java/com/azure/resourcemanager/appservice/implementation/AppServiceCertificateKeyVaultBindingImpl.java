@@ -3,11 +3,12 @@
 
 package com.azure.resourcemanager.appservice.implementation;
 
-import com.azure.resourcemanager.appservice.AppServiceCertificateKeyVaultBinding;
-import com.azure.resourcemanager.appservice.AppServiceCertificateOrder;
-import com.azure.resourcemanager.appservice.AppServicePlan;
-import com.azure.resourcemanager.appservice.KeyVaultSecretStatus;
-import com.azure.resourcemanager.appservice.models.AppServiceCertificateResourceInner;
+import com.azure.resourcemanager.appservice.AppServiceManager;
+import com.azure.resourcemanager.appservice.models.AppServiceCertificateKeyVaultBinding;
+import com.azure.resourcemanager.appservice.models.AppServiceCertificateOrder;
+import com.azure.resourcemanager.appservice.models.AppServicePlan;
+import com.azure.resourcemanager.appservice.models.KeyVaultSecretStatus;
+import com.azure.resourcemanager.appservice.fluent.inner.AppServiceCertificateResourceInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.IndependentChildResourceImpl;
 import reactor.core.publisher.Mono;
 
@@ -18,7 +19,7 @@ class AppServiceCertificateKeyVaultBindingImpl
         AppServiceCertificateOrder,
         AppServiceCertificateResourceInner,
         AppServiceCertificateKeyVaultBindingImpl,
-        AppServiceManager>
+    AppServiceManager>
     implements AppServiceCertificateKeyVaultBinding {
 
     private final AppServiceCertificateOrderImpl parent;
@@ -40,7 +41,7 @@ class AppServiceCertificateKeyVaultBindingImpl
         return parent
             .manager()
             .inner()
-            .appServiceCertificateOrders()
+            .getAppServiceCertificateOrders()
             .createOrUpdateCertificateAsync(parent.resourceGroupName(), parent.name(), name(), inner())
             .map(
                 appServiceCertificateInner -> {
@@ -69,7 +70,7 @@ class AppServiceCertificateKeyVaultBindingImpl
         return parent
             .manager()
             .inner()
-            .appServiceCertificateOrders()
+            .getAppServiceCertificateOrders()
             .getCertificateAsync(parent.resourceGroupName(), parent.name(), name());
     }
 }

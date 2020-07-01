@@ -51,7 +51,7 @@ public final class VirtualMachineScaleSetUpdateVMProfile {
     private String licenseType;
 
     /*
-     * Specifies the billing related details of a low priority VMSS.
+     * Specifies the billing related details of a Azure Spot VMSS.
      * <br><br>Minimum api-version: 2019-03-01.
      */
     @JsonProperty(value = "billingProfile")
@@ -187,7 +187,7 @@ public final class VirtualMachineScaleSetUpdateVMProfile {
     }
 
     /**
-     * Get the billingProfile property: Specifies the billing related details of a low priority VMSS.
+     * Get the billingProfile property: Specifies the billing related details of a Azure Spot VMSS.
      * &lt;br&gt;&lt;br&gt;Minimum api-version: 2019-03-01.
      *
      * @return the billingProfile value.
@@ -197,7 +197,7 @@ public final class VirtualMachineScaleSetUpdateVMProfile {
     }
 
     /**
-     * Set the billingProfile property: Specifies the billing related details of a low priority VMSS.
+     * Set the billingProfile property: Specifies the billing related details of a Azure Spot VMSS.
      * &lt;br&gt;&lt;br&gt;Minimum api-version: 2019-03-01.
      *
      * @param billingProfile the billingProfile value to set.

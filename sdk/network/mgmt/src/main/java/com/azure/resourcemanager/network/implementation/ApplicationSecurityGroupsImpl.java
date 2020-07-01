@@ -2,24 +2,25 @@
 // Licensed under the MIT License.
 package com.azure.resourcemanager.network.implementation;
 
-import com.azure.resourcemanager.network.ApplicationSecurityGroup;
-import com.azure.resourcemanager.network.ApplicationSecurityGroups;
-import com.azure.resourcemanager.network.models.ApplicationSecurityGroupInner;
-import com.azure.resourcemanager.network.models.ApplicationSecurityGroupsInner;
+import com.azure.resourcemanager.network.NetworkManager;
+import com.azure.resourcemanager.network.fluent.ApplicationSecurityGroupsClient;
+import com.azure.resourcemanager.network.fluent.inner.ApplicationSecurityGroupInner;
+import com.azure.resourcemanager.network.models.ApplicationSecurityGroup;
+import com.azure.resourcemanager.network.models.ApplicationSecurityGroups;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.TopLevelModifiableResourcesImpl;
 
 /** Implementation for ApplicationSecurityGroups. */
-class ApplicationSecurityGroupsImpl
+public class ApplicationSecurityGroupsImpl
     extends TopLevelModifiableResourcesImpl<
         ApplicationSecurityGroup,
         ApplicationSecurityGroupImpl,
         ApplicationSecurityGroupInner,
-        ApplicationSecurityGroupsInner,
-        NetworkManager>
+    ApplicationSecurityGroupsClient,
+    NetworkManager>
     implements ApplicationSecurityGroups {
 
-    ApplicationSecurityGroupsImpl(final NetworkManager networkManager) {
-        super(networkManager.inner().applicationSecurityGroups(), networkManager);
+    public ApplicationSecurityGroupsImpl(final NetworkManager networkManager) {
+        super(networkManager.inner().getApplicationSecurityGroups(), networkManager);
     }
 
     @Override

@@ -5,7 +5,7 @@ package com.azure.resourcemanager.authorization.implementation;
 
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.authorization.GraphRbacManager;
+import com.azure.resourcemanager.authorization.AuthorizationManager;
 import com.azure.resourcemanager.authorization.models.ActiveDirectoryGroup;
 import com.azure.resourcemanager.authorization.models.ActiveDirectoryUser;
 import com.azure.resourcemanager.authorization.models.BuiltInRole;
@@ -27,7 +27,7 @@ import java.util.Locale;
 /** Implementation for ServicePrincipal and its parent interfaces. */
 class RoleAssignmentImpl extends CreatableImpl<RoleAssignment, RoleAssignmentInner, RoleAssignmentImpl>
     implements RoleAssignment, RoleAssignment.Definition {
-    private GraphRbacManager manager;
+    private AuthorizationManager manager;
     // Active Directory identify info
     private String objectId;
     private String userName;
@@ -37,7 +37,7 @@ class RoleAssignmentImpl extends CreatableImpl<RoleAssignment, RoleAssignmentInn
     private String roleName;
     private final ClientLogger logger = new ClientLogger(RoleAssignmentImpl.class);
 
-    RoleAssignmentImpl(String name, RoleAssignmentInner innerObject, GraphRbacManager manager) {
+    RoleAssignmentImpl(String name, RoleAssignmentInner innerObject, AuthorizationManager manager) {
         super(name, innerObject);
         this.manager = manager;
     }
@@ -213,7 +213,7 @@ class RoleAssignmentImpl extends CreatableImpl<RoleAssignment, RoleAssignmentInn
     }
 
     @Override
-    public GraphRbacManager manager() {
+    public AuthorizationManager manager() {
         return this.manager;
     }
 }

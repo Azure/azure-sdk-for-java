@@ -45,6 +45,15 @@ public final class ImageReference extends SubResource {
     @JsonProperty(value = "version")
     private String version;
 
+    /*
+     * Specifies in decimal numbers, the version of platform image or
+     * marketplace image used to create the virtual machine. This readonly
+     * field differs from 'version', only if the value specified in 'version'
+     * field is 'latest'.
+     */
+    @JsonProperty(value = "exactVersion", access = JsonProperty.Access.WRITE_ONLY)
+    private String exactVersion;
+
     /**
      * Get the publisher property: The image publisher.
      *
@@ -131,6 +140,17 @@ public final class ImageReference extends SubResource {
     public ImageReference withVersion(String version) {
         this.version = version;
         return this;
+    }
+
+    /**
+     * Get the exactVersion property: Specifies in decimal numbers, the version of platform image or marketplace image
+     * used to create the virtual machine. This readonly field differs from 'version', only if the value specified in
+     * 'version' field is 'latest'.
+     *
+     * @return the exactVersion value.
+     */
+    public String exactVersion() {
+        return this.exactVersion;
     }
 
     /**

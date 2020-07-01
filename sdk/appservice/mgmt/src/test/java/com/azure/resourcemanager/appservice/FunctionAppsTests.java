@@ -6,6 +6,13 @@ package com.azure.resourcemanager.appservice;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.exception.ManagementException;
+import com.azure.resourcemanager.appservice.models.AppServicePlan;
+import com.azure.resourcemanager.appservice.models.AppSetting;
+import com.azure.resourcemanager.appservice.models.FunctionApp;
+import com.azure.resourcemanager.appservice.models.FunctionEnvelope;
+import com.azure.resourcemanager.appservice.models.FunctionRuntimeStack;
+import com.azure.resourcemanager.appservice.models.PricingTier;
+import com.azure.resourcemanager.appservice.models.SkuName;
 import com.azure.resourcemanager.resources.core.TestUtilities;
 import com.azure.resourcemanager.resources.fluentcore.arm.Region;
 import com.azure.resourcemanager.resources.fluentcore.profile.AzureProfile;
@@ -209,7 +216,7 @@ public class FunctionAppsTests extends AppServiceTest {
                 .withAppSetting("WEBSITE_RUN_FROM_PACKAGE", FUNCTION_APP_PACKAGE_URL)
                 .create();
         Assertions.assertNotNull(functionApp1);
-        assertLinuxJava8(functionApp1, FunctionRuntimeStack.JAVA_8.getLinuxFxVersionForConsumptionPlan());
+        assertLinuxJava(functionApp1, FunctionRuntimeStack.JAVA_8.getLinuxFxVersionForConsumptionPlan());
 
         AppServicePlan plan1 = appServiceManager.appServicePlans().getById(functionApp1.appServicePlanId());
         Assertions.assertNotNull(plan1);
@@ -238,7 +245,7 @@ public class FunctionAppsTests extends AppServiceTest {
                 .withAppSetting("WEBSITE_RUN_FROM_PACKAGE", FUNCTION_APP_PACKAGE_URL)
                 .create();
         Assertions.assertNotNull(functionApp2);
-        assertLinuxJava8(functionApp2, FunctionRuntimeStack.JAVA_8.getLinuxFxVersionForDedicatedPlan());
+        assertLinuxJava(functionApp2, FunctionRuntimeStack.JAVA_8.getLinuxFxVersionForDedicatedPlan());
 
         AppServicePlan plan2 = appServiceManager.appServicePlans().getById(functionApp2.appServicePlanId());
         Assertions.assertNotNull(plan2);
@@ -257,7 +264,7 @@ public class FunctionAppsTests extends AppServiceTest {
                 .withAppSetting("WEBSITE_RUN_FROM_PACKAGE", FUNCTION_APP_PACKAGE_URL)
                 .create();
         Assertions.assertNotNull(functionApp3);
-        assertLinuxJava8(functionApp3, FunctionRuntimeStack.JAVA_8.getLinuxFxVersionForDedicatedPlan());
+        assertLinuxJava(functionApp3, FunctionRuntimeStack.JAVA_8.getLinuxFxVersionForDedicatedPlan());
 
         // wait for deploy
         if (!isPlaybackMode()) {
@@ -302,7 +309,7 @@ public class FunctionAppsTests extends AppServiceTest {
         Assertions.assertNotNull(plan1);
         Assertions.assertEquals(new PricingTier(SkuName.ELASTIC_PREMIUM.toString(), "EP1"), plan1.pricingTier());
         Assertions.assertTrue(plan1.inner().reserved());
-        assertLinuxJava8(functionApp1, FunctionRuntimeStack.JAVA_8.getLinuxFxVersionForDedicatedPlan());
+        assertLinuxJava(functionApp1, FunctionRuntimeStack.JAVA_8.getLinuxFxVersionForDedicatedPlan());
 
         // wait for deploy
         if (!isPlaybackMode()) {
@@ -339,7 +346,24 @@ public class FunctionAppsTests extends AppServiceTest {
         }
     }
 
-    private static Map<String, AppSetting> assertLinuxJava8(FunctionApp functionApp, String linuxFxVersion) {
+    @Test
+    public void canCRUDLinuxFunctionAppJava11() throws Exception {
+        rgName2 = null;
+
+        // function app with consumption plan
+        FunctionApp functionApp1 = appServiceManager.functionApps().define(webappName1)
+            .withRegion(Region.US_EAST)
+            .withNewResourceGroup(rgName1)
+            .withNewLinuxConsumptionPlan()
+            .withBuiltInImage(FunctionRuntimeStack.JAVA_11)
+            .withHttpsOnly(true)
+            .withAppSetting("WEBSITE_RUN_FROM_PACKAGE", FUNCTION_APP_PACKAGE_URL)
+            .create();
+        Assertions.assertNotNull(functionApp1);
+        assertLinuxJava(functionApp1, FunctionRuntimeStack.JAVA_11.getLinuxFxVersionForConsumptionPlan());
+    }
+
+    private static Map<String, AppSetting> assertLinuxJava(FunctionApp functionApp, String linuxFxVersion) {
         Assertions.assertEquals(linuxFxVersion, functionApp.linuxFxVersion());
         Assertions
             .assertTrue(

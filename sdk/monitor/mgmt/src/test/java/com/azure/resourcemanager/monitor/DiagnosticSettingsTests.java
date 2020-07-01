@@ -4,6 +4,7 @@
 package com.azure.resourcemanager.monitor;
 
 import com.azure.core.http.HttpPipeline;
+import com.azure.resourcemanager.monitor.models.DiagnosticSetting;
 import com.azure.resourcemanager.resources.fluentcore.profile.AzureProfile;
 import org.junit.jupiter.api.Assertions;
 

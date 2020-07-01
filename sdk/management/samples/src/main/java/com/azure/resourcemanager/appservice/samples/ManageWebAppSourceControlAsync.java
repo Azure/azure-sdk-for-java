@@ -7,10 +7,10 @@ import com.azure.core.credential.TokenCredential;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.resourcemanager.Azure;
-import com.azure.resourcemanager.appservice.JavaVersion;
-import com.azure.resourcemanager.appservice.PricingTier;
-import com.azure.resourcemanager.appservice.WebApp;
-import com.azure.resourcemanager.appservice.WebContainer;
+import com.azure.resourcemanager.appservice.models.JavaVersion;
+import com.azure.resourcemanager.appservice.models.PricingTier;
+import com.azure.resourcemanager.appservice.models.WebApp;
+import com.azure.resourcemanager.appservice.models.WebContainer;
 import com.azure.resourcemanager.resources.fluentcore.arm.Region;
 import com.azure.resourcemanager.resources.fluentcore.profile.AzureProfile;
 import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
@@ -191,7 +191,7 @@ public final class ManageWebAppSourceControlAsync {
         } finally {
             try {
                 System.out.println("Deleting Resource Group: " + rgName);
-                azure.resourceGroups().beginDeleteByNameAsync(rgName).block();
+                azure.resourceGroups().beginDeleteByName(rgName);
                 System.out.println("Deleted Resource Group: " + rgName);
             } catch (NullPointerException npe) {
                 System.out.println("Did not create any resources in Azure. No clean up is necessary");

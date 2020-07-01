@@ -229,7 +229,8 @@ public interface RegistrySourceTrigger extends HasInner<SourceTrigger> {
              * @param sourceControl the source control the user wishes to use.
              * @return the next stage of the container registry source trigger definition.
              */
-            Update withSourceControl(com.azure.resourcemanager.containerregistry.models.SourceControlType sourceControl);
+            Update withSourceControl(
+                com.azure.resourcemanager.containerregistry.models.SourceControlType sourceControl);
         }
 
         /**

@@ -7,8 +7,8 @@ import com.azure.resourcemanager.compute.models.KnownLinuxVirtualMachineImage;
 import com.azure.resourcemanager.compute.models.VirtualMachine;
 import com.azure.resourcemanager.compute.models.VirtualMachineSizeTypes;
 import com.azure.resourcemanager.compute.models.VirtualMachines;
-import com.azure.resourcemanager.network.PublicIpAddress;
-import com.azure.resourcemanager.network.PublicIpAddresses;
+import com.azure.resourcemanager.network.models.PublicIpAddress;
+import com.azure.resourcemanager.network.models.PublicIpAddresses;
 import com.azure.resourcemanager.resources.core.TestBase;
 import com.azure.resourcemanager.resources.fluentcore.arm.Region;
 import com.jcraft.jsch.JSch;
@@ -47,7 +47,7 @@ public class TestVirtualMachineSsh extends TestTemplate<VirtualMachine, VirtualM
                 .withNewPrimaryNetwork("10.0.0.0/28")
                 .withPrimaryPrivateIPAddressDynamic()
                 .withExistingPrimaryPublicIPAddress(pip)
-                .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_14_04_LTS)
+                .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_18_04_LTS)
                 .withRootUsername("testuser")
                 .withRootPassword("12NewPA$$w0rd!")
                 .withSsh(sshKey)

@@ -2,13 +2,13 @@
 // Licensed under the MIT License.
 package com.azure.resourcemanager;
 
-import com.azure.resourcemanager.network.ApplicationSecurityGroup;
-import com.azure.resourcemanager.network.NetworkInterface;
-import com.azure.resourcemanager.network.NetworkSecurityGroup;
-import com.azure.resourcemanager.network.NetworkSecurityGroups;
-import com.azure.resourcemanager.network.NetworkSecurityRule;
-import com.azure.resourcemanager.network.SecurityRuleProtocol;
-import com.azure.resourcemanager.network.Subnet;
+import com.azure.resourcemanager.network.models.ApplicationSecurityGroup;
+import com.azure.resourcemanager.network.models.NetworkInterface;
+import com.azure.resourcemanager.network.models.NetworkSecurityGroup;
+import com.azure.resourcemanager.network.models.NetworkSecurityGroups;
+import com.azure.resourcemanager.network.models.NetworkSecurityRule;
+import com.azure.resourcemanager.network.models.SecurityRuleProtocol;
+import com.azure.resourcemanager.network.models.Subnet;
 import com.azure.resourcemanager.resources.fluentcore.arm.Region;
 import com.azure.resourcemanager.resources.fluentcore.model.Indexable;
 import com.google.common.util.concurrent.SettableFuture;

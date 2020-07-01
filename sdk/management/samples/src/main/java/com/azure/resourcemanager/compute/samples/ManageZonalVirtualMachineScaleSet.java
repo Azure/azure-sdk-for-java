@@ -11,12 +11,12 @@ import com.azure.resourcemanager.Azure;
 import com.azure.resourcemanager.compute.models.KnownLinuxVirtualMachineImage;
 import com.azure.resourcemanager.compute.models.VirtualMachineScaleSet;
 import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetSkuTypes;
-import com.azure.resourcemanager.network.LoadBalancer;
-import com.azure.resourcemanager.network.LoadBalancerSkuType;
-import com.azure.resourcemanager.network.Network;
-import com.azure.resourcemanager.network.PublicIpAddress;
-import com.azure.resourcemanager.network.PublicIPSkuType;
-import com.azure.resourcemanager.network.TransportProtocol;
+import com.azure.resourcemanager.network.models.LoadBalancer;
+import com.azure.resourcemanager.network.models.LoadBalancerSkuType;
+import com.azure.resourcemanager.network.models.Network;
+import com.azure.resourcemanager.network.models.PublicIpAddress;
+import com.azure.resourcemanager.network.models.PublicIPSkuType;
+import com.azure.resourcemanager.network.models.TransportProtocol;
 import com.azure.resourcemanager.resources.models.ResourceGroup;
 import com.azure.resourcemanager.resources.fluentcore.arm.AvailabilityZoneId;
 import com.azure.resourcemanager.resources.fluentcore.arm.Region;
@@ -54,8 +54,7 @@ public final class ManageZonalVirtualMachineScaleSet {
         final String vmssName2 = azure.sdkContext().randomResourceName("vmss2", 15);
 
         final String userName = "tirekicker";
-        // [SuppressMessage("Microsoft.Security", "CS002:SecretInNextLine", Justification="Serves as an example, not for deployment. Please change when using this in your code.")]
-        final String password = "12NewPA23w0rd!";
+        final String password = Utils.password();
 
         try {
             ResourceGroup resourceGroup = azure.resourceGroups()

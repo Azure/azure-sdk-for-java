@@ -210,7 +210,8 @@ public class SqlElasticPoolOperationsImpl
         List<SqlElasticPool> elasticPoolSet = new ArrayList<>();
         if (sqlServer != null) {
             for (ElasticPoolInner inner
-                : this.manager.inner().getElasticPools().listByServer(sqlServer.resourceGroupName(), sqlServer.name())) {
+                : this.manager.inner().getElasticPools()
+                    .listByServer(sqlServer.resourceGroupName(), sqlServer.name())) {
                 elasticPoolSet.add(new SqlElasticPoolImpl(inner.name(), (SqlServerImpl) sqlServer, inner, manager));
             }
         }

@@ -9,38 +9,24 @@ package com.azure.search.documents.indexes.implementation.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/**
- * Defines values for ScoringFunctionAggregation.
- */
+/** Defines values for ScoringFunctionAggregation. */
 public enum ScoringFunctionAggregation {
-    /**
-     * Enum value sum.
-     */
+    /** Enum value sum. */
     SUM("sum"),
 
-    /**
-     * Enum value average.
-     */
+    /** Enum value average. */
     AVERAGE("average"),
 
-    /**
-     * Enum value minimum.
-     */
+    /** Enum value minimum. */
     MINIMUM("minimum"),
 
-    /**
-     * Enum value maximum.
-     */
+    /** Enum value maximum. */
     MAXIMUM("maximum"),
 
-    /**
-     * Enum value firstMatching.
-     */
+    /** Enum value firstMatching. */
     FIRST_MATCHING("firstMatching");
 
-    /**
-     * The actual serialized value for a ScoringFunctionAggregation instance.
-     */
+    /** The actual serialized value for a ScoringFunctionAggregation instance. */
     private final String value;
 
     ScoringFunctionAggregation(String value) {

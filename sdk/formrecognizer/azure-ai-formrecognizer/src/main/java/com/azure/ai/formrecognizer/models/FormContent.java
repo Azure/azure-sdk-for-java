@@ -12,7 +12,7 @@ import com.azure.core.annotation.Immutable;
 public abstract class FormContent {
 
     /*
-     * Text content of the extracted field.
+     * Text content of the extracted element.
      */
     private final String text;
 
@@ -26,25 +26,17 @@ public abstract class FormContent {
      */
     private final BoundingBox boundingBox;
 
-    /*
-     * Form text content type.
-     */
-    private final TextContentType textContentType;
-
     /**
      * Creates raw OCR item.
      *
-     * @param text The text content of ExtractedField.
-     * @param boundingBox The BoundingBox of ExtractedField.
+     * @param text The text content of the extracted element.
+     * @param boundingBox The BoundingBox specifying relative coordinates of the element.
      * @param pageNumber the 1 based page number.
-     * @param textContentType The type of text content.
      */
-    FormContent(final String text, final BoundingBox boundingBox, 
-        final Integer pageNumber, final TextContentType textContentType) {
-        this.boundingBox = boundingBox;
+    FormContent(final String text, final BoundingBox boundingBox, final Integer pageNumber) {
         this.text = text;
+        this.boundingBox = boundingBox;
         this.pageNumber = pageNumber;
-        this.textContentType = textContentType;
     }
 
     /**
@@ -57,9 +49,9 @@ public abstract class FormContent {
     }
 
     /**
-     * The text of the extracted item.
+     * The text content of the extracted element.
      *
-     * @return The text of the extracted item.
+     * @return The text content of the extracted element.
      */
     public String getText() {
         return text;
@@ -72,14 +64,5 @@ public abstract class FormContent {
      */
     public Integer getPageNumber() {
         return this.pageNumber;
-    }
-
-    /**
-     * Get the TextContent type of the FormContent.
-     *
-     * @return The TextContent type of the FormContent.
-     */
-    public TextContentType getTextContentType() {
-        return this.textContentType;
     }
 }

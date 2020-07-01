@@ -17,12 +17,12 @@ public class RoleAssignmentTests extends GraphRbacManagementTest {
         String spName = sdkContext.randomResourceName("sp", 20);
 
         ServicePrincipal sp =
-            graphRbacManager.servicePrincipals().define(spName).withNewApplication("http://" + spName).create();
+            authorizationManager.servicePrincipals().define(spName).withNewApplication("http://" + spName).create();
 
         SdkContext.sleep(15000);
 
         RoleAssignment roleAssignment =
-            graphRbacManager
+            authorizationManager
                 .roleAssignments()
                 .define(roleAssignmentName)
                 .forServicePrincipal(sp)

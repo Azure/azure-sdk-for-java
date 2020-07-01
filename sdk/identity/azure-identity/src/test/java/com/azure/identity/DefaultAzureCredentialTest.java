@@ -52,7 +52,7 @@ public class DefaultAzureCredentialTest {
             IdentityClient identityClient = PowerMockito.mock(IdentityClient.class);
             when(identityClient.authenticateWithConfidentialClientCache(any())).thenReturn(Mono.empty());
             when(identityClient.authenticateWithConfidentialClient(request1)).thenReturn(TestUtils.getMockAccessToken(token1, expiresOn));
-            PowerMockito.whenNew(IdentityClient.class).withArguments(eq(tenantId), eq(clientId), eq(secret), isNull(), isNull(), any()).thenReturn(identityClient);
+            PowerMockito.whenNew(IdentityClient.class).withArguments(eq(tenantId), eq(clientId), eq(secret), isNull(), isNull(), eq(false), any()).thenReturn(identityClient);
 
             IntelliJCredential intelliJCredential = PowerMockito.mock(IntelliJCredential.class);
             when(intelliJCredential.getToken(request1))
@@ -171,14 +171,9 @@ public class DefaultAzureCredentialTest {
         DefaultAzureCredential credential = new DefaultAzureCredentialBuilder().build();
         StepVerifier.create(credential.getToken(request))
             .expectErrorMatches(t -> t instanceof CredentialUnavailableException && t.getMessage()
-                                      .matches("Tried EnvironmentCredential, ManagedIdentityCredential, "
-                                                   + "SharedTokenCacheCredential[\\$\\w]+\\$\\d*, "
-                                                   + "IntelliJCredential[\\$\\w]+\\$\\d*, "
-                                                   + "VisualStudioCodeCredential[\\$\\w]+\\$\\d*, "
-                                                   + "AzureCliCredential[\\$\\w]+\\$\\d* but [\\$\\w\\s\\.]+"))
+                                      .startsWith("EnvironmentCredential authentication unavailable. "))
             .verify();
     }
-
 
     @Test
     public void testCredentialUnavailable() throws Exception {
@@ -210,12 +205,7 @@ public class DefaultAzureCredentialTest {
                                                 .build();
         StepVerifier.create(credential.getToken(request))
             .expectErrorMatches(t -> t instanceof CredentialUnavailableException && t.getMessage()
-                                        .matches("Tried EnvironmentCredential, "
-                                                    + "ManagedIdentityCredential[\\$\\w]+\\$\\d*, "
-                                                    + "SharedTokenCacheCredential, "
-                                                    + "IntelliJCredential[\\$\\w]+\\$\\d*, "
-                                                    + "VisualStudioCodeCredential[\\$\\w]+\\$\\d*, "
-                                                    + "AzureCliCredential but [\\$\\w\\s\\.]+"))
+                                        .startsWith("EnvironmentCredential authentication unavailable. "))
             .verify();
     }
 }

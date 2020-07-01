@@ -6,13 +6,19 @@ package com.azure.resourcemanager;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.Response;
 import com.azure.core.management.AzureEnvironment;
+import com.azure.core.management.exception.ManagementError;
+import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollerFactory;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.management.serializer.AzureJacksonAdapter;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.polling.AsyncPollResponse;
+import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.serializer.SerializerAdapter;
+import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -42,6 +48,8 @@ import java.util.Enumeration;
  */
 public abstract class AzureServiceClient {
 
+    private final ClientLogger logger = new ClientLogger(getClass());
+
     protected AzureServiceClient(HttpPipeline httpPipeline, AzureEnvironment environment) {
         ((AzureJacksonAdapter) serializerAdapter).serializer().registerModule(DateTimeDeserializer.getModule());
     }
@@ -64,7 +72,7 @@ public abstract class AzureServiceClient {
     private static final String OS_NAME;
     private static final String OS_VERSION;
     private static final String JAVA_VERSION;
-    private static final String SDK_VERSION = "2.0.0";
+    private static final String SDK_VERSION = "2.0.0-SNAPSHOT";
 
     static {
         OS_NAME = System.getProperty("os.name");
@@ -166,6 +174,49 @@ public abstract class AzureServiceClient {
             e.printStackTrace();
         }
         return "Unknown";
+    }
+
+    /**
+     * Gets the final result, or an error, based on last async poll response.
+     *
+     * @param response the last async poll response.
+     * @param <T> type of poll result.
+     * @param <U> type of final result.
+     * @return the final result, or an error.
+     */
+    public <T, U> Mono<U> getLroFinalResultOrError(AsyncPollResponse<PollResult<T>, U> response) {
+        if (response.getStatus() != LongRunningOperationStatus.SUCCESSFULLY_COMPLETED) {
+            String errorMessage;
+            ManagementError managementError = null;
+            if (response.getValue().getError() != null) {
+                errorMessage = response.getValue().getError().getMessage();
+                String errorBody = response.getValue().getError().getResponseBody();
+                if (errorBody != null) {
+                    // try to deserialize error body to ManagementError
+                    try {
+                        managementError = this.getSerializerAdapter().deserialize(
+                            errorBody,
+                            ManagementError.class,
+                            SerializerEncoding.JSON);
+                        if (managementError.getCode() == null || managementError.getMessage() == null) {
+                            managementError = null;
+                        }
+                    } catch (IOException ioe) {
+                        logger.logThrowableAsWarning(ioe);
+                    }
+                }
+            } else {
+                // fallback to default error message
+                errorMessage = "Long running operation failed.";
+            }
+            if (managementError == null) {
+                // fallback to default ManagementError
+                managementError = new ManagementError(response.getStatus().toString(), errorMessage);
+            }
+            return Mono.error(new ManagementException(errorMessage, null, managementError));
+        } else {
+            return response.getFinalResult();
+        }
     }
 
     // this should be moved to core-mgmt when stable.
