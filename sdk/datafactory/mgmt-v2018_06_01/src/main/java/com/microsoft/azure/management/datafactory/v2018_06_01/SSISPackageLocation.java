@@ -26,7 +26,7 @@ public class SSISPackageLocation {
 
     /**
      * The type of SSIS package location. Possible values include: 'SSISDB',
-     * 'File', 'InlinePackage'.
+     * 'File', 'InlinePackage', 'PackageStore'.
      */
     @JsonProperty(value = "type")
     private SsisPackageLocationType type;
@@ -49,6 +49,12 @@ public class SSISPackageLocation {
      */
     @JsonProperty(value = "typeProperties.configurationPath")
     private Object configurationPath;
+
+    /**
+     * The configuration file access credential.
+     */
+    @JsonProperty(value = "typeProperties.configurationAccessCredential")
+    private SSISAccessCredential configurationAccessCredential;
 
     /**
      * The package name.
@@ -96,7 +102,7 @@ public class SSISPackageLocation {
     }
 
     /**
-     * Get the type of SSIS package location. Possible values include: 'SSISDB', 'File', 'InlinePackage'.
+     * Get the type of SSIS package location. Possible values include: 'SSISDB', 'File', 'InlinePackage', 'PackageStore'.
      *
      * @return the type value
      */
@@ -105,7 +111,7 @@ public class SSISPackageLocation {
     }
 
     /**
-     * Set the type of SSIS package location. Possible values include: 'SSISDB', 'File', 'InlinePackage'.
+     * Set the type of SSIS package location. Possible values include: 'SSISDB', 'File', 'InlinePackage', 'PackageStore'.
      *
      * @param type the type value to set
      * @return the SSISPackageLocation object itself.
@@ -172,6 +178,26 @@ public class SSISPackageLocation {
      */
     public SSISPackageLocation withConfigurationPath(Object configurationPath) {
         this.configurationPath = configurationPath;
+        return this;
+    }
+
+    /**
+     * Get the configuration file access credential.
+     *
+     * @return the configurationAccessCredential value
+     */
+    public SSISAccessCredential configurationAccessCredential() {
+        return this.configurationAccessCredential;
+    }
+
+    /**
+     * Set the configuration file access credential.
+     *
+     * @param configurationAccessCredential the configurationAccessCredential value to set
+     * @return the SSISPackageLocation object itself.
+     */
+    public SSISPackageLocation withConfigurationAccessCredential(SSISAccessCredential configurationAccessCredential) {
+        this.configurationAccessCredential = configurationAccessCredential;
         return this;
     }
 

@@ -3,6 +3,7 @@ parameters:
   ArtifactName: 'not-specified'
   TargetDocRepoOwner: ''
   TargetDocRepoName: ''
+  EnableIntegrationStage: true
 
 stages:
   # The signing stage is responsible for submitting binaries to ESRP for our official signing
@@ -137,6 +138,7 @@ stages:
                           ArtifactID: ${{artifact.name}}
                           GroupID: ${{artifact.groupId}}
                           ArtifactDirectory: $(Pipeline.Workspace)/${{parameters.ArtifactName}}-signed
+                          RepositoryUrl: https://pkgs.dev.azure.com/azure-sdk/public/_packaging/azure-sdk-for-java/maven/v1
                           Target: JavaDevFeed
                           BuildToolsPath: $(Pipeline.Workspace)/azure-sdk-build-tools
                           JavaRepoRoot: $(Pipeline.Workspace)/azure-sdk-for-java
@@ -146,7 +148,6 @@ stages:
               displayName: "Publish Updates for Docs.MS"
               condition: and(succeeded(), ne(variables['Skip.PublishDocs'], 'true'))
               environment: github
-              timeoutInMinutes: 5
               dependsOn: PublishPackage
               variables:
                 - template: ../variables/globals.yml
@@ -248,34 +249,51 @@ stages:
                           CommitMsg: "Increment package version after release of ${{ artifact.groupId }} ${{ artifact.name }}"
                           PRTitle: "Increment version for ${{ parameters.ServiceDirectory }} releases"
 
-  - stage: Integration
-    dependsOn: Signing
-    jobs:
-    - job: PublishPackages
-      condition: or(eq(variables['SetDevVersion'], 'true'), and(eq(variables['Build.Reason'],'Schedule'), eq(variables['System.TeamProject'], 'internal')))
-      displayName: Publish package to daily feed
-      variables:
-        - template: ../variables/globals.yml
-      pool:
-        vmImage: vs2017-win2016
-      steps:
-      - checkout: self
-        path: azure-sdk-for-java
-      - checkout: azure-sdk-build-tools
-        path: azure-sdk-build-tools
+  - ${{if ne(parameters.EnableIntegrationStage, false)}}:
+    - stage: Integration
+      dependsOn: Signing
+      jobs:
+      - job: PublishPackages
+        condition: or(eq(variables['SetDevVersion'], 'true'), and(eq(variables['Build.Reason'],'Schedule'), eq(variables['System.TeamProject'], 'internal')))
+        displayName: Publish package to daily feed
+        variables:
+          - template: ../variables/globals.yml
+          - name: RepositoryUrl
+            value: https://pkgs.dev.azure.com/azure-sdk/internal/_packaging/azure-sdk-for-java-pr/maven/v1
 
-      - download: current
-        artifact: ${{parameters.ArtifactName}}-signed
-        timeoutInMinutes: 5
+        pool:
+          vmImage: vs2017-win2016
+        steps:
+        - checkout: self
+          path: azure-sdk-for-java
+        - checkout: azure-sdk-build-tools
+          path: azure-sdk-build-tools
 
-      - template: tools/gpg/gpg.yml@azure-sdk-build-tools
+        - download: current
+          artifact: ${{parameters.ArtifactName}}-signed
+        - pwsh: |
+            # For safety default to publishing to the private feed.
+            # Publish to https://pkgs.dev.azure.com/azure-sdk/internal/_packaging/azure-sdk-for-java-pr/maven/v1
+            if ('$(Build.Repository.Name)' -eq 'Azure/azure-sdk-for-java') {
+              # Publish to the public feed
+              # Publish to https://pkgs.dev.azure.com/azure-sdk/public/_packaging/azure-sdk-for-java/maven/v1
+              echo "##vso[task.setvariable variable=RepositoryUrl]https://pkgs.dev.azure.com/azure-sdk/public/_packaging/azure-sdk-for-java/maven/v1"
+              echo "Using Java Public Dev Feed"
+            } else {
+              echo "Using Java Private Dev Feed"
+            }
+          displayName: Setup TargetFeed
+          timeoutInMinutes: 5
 
-      - ${{ each artifact in parameters.Artifacts }}:
-        - template: /eng/pipelines/templates/steps/java-publishing.yml
-          parameters:
-            ArtifactID: ${{artifact.name}}
-            GroupID: ${{artifact.groupId}}
-            ArtifactDirectory: $(Pipeline.Workspace)/${{parameters.ArtifactName}}-signed
-            Target: JavaDevFeed
-            BuildToolsPath: $(Pipeline.Workspace)/azure-sdk-build-tools
-            JavaRepoRoot: $(Pipeline.Workspace)/azure-sdk-for-java
+        - template: tools/gpg/gpg.yml@azure-sdk-build-tools
+
+        - ${{ each artifact in parameters.Artifacts }}:
+          - template: /eng/pipelines/templates/steps/java-publishing.yml
+            parameters:
+              ArtifactID: ${{artifact.name}}
+              GroupID: ${{artifact.groupId}}
+              ArtifactDirectory: $(Pipeline.Workspace)/${{parameters.ArtifactName}}-signed
+              RepositoryUrl: $(RepositoryUrl)
+              Target: JavaDevFeed
+              BuildToolsPath: $(Pipeline.Workspace)/azure-sdk-build-tools
+              JavaRepoRoot: $(Pipeline.Workspace)/azure-sdk-for-java

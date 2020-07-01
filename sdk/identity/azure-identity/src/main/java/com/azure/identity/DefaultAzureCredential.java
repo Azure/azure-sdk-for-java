@@ -6,7 +6,7 @@ package com.azure.identity;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.credential.TokenCredential;
 
-import java.util.ArrayDeque;
+import java.util.List;
 
 /**
  * Creates a credential using environment variables or the shared token cache. It tries to create a valid credential in
@@ -33,7 +33,19 @@ public final class DefaultAzureCredential extends ChainedTokenCredential {
      *
      * @param tokenCredentials the list of credentials to execute for authentication.
      */
-    DefaultAzureCredential(ArrayDeque<TokenCredential> tokenCredentials) {
+    DefaultAzureCredential(List<TokenCredential> tokenCredentials) {
         super(tokenCredentials);
+    }
+
+
+    /**
+     * {@inheritDoc}
+     * The credentials in the returned list and their order may change in future versions of Identity.
+     * This API is not intended to be used in production ready code and should only be used for development purposes.
+     *
+     * @return The list of {@link TokenCredential}.
+     */
+    public List<TokenCredential> getCredentials() {
+        return super.getCredentials();
     }
 }

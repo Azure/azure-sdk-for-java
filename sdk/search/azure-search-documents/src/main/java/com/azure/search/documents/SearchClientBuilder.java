@@ -10,6 +10,7 @@ import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.policy.AddDatePolicy;
+import com.azure.core.http.policy.AddHeadersFromContextPolicy;
 import com.azure.core.http.policy.AddHeadersPolicy;
 import com.azure.core.http.policy.AzureKeyCredentialPolicy;
 import com.azure.core.http.policy.HttpLogOptions;
@@ -36,12 +37,24 @@ import java.util.Objects;
  * buildClient} and {@link #buildAsyncClient() buildAsyncClient} respectively to construct an instance of the desired
  * client.
  * <p>
- * The following information must be provided to successfully create a client.
+ * The client needs to at least provide the following required fields
+ * </p>
  * <ul>
- *     <li>{@link #endpoint(String)}</li>
- *     <li>{@link #indexName(String)}</li>
- *     <li>{@link #credential(AzureKeyCredential)} or {@link #pipeline(HttpPipeline)}</li>
+ * <li>the service endpoint of the Azure Cognitive Search to access the resource service.</li>
+ * <li>{@link #credential(AzureKeyCredential)} gives the builder access credential.</li>
+ * <li>The search index name.</li>
  * </ul>
+ *
+ * <p><strong>Instantiating an asynchronous Search Client</strong></p>
+ *
+ * {@codesnippet com.azure.search.documents.SearchAsyncClient.instantiation}
+ *
+ * <p><strong>Instantiating a synchronous Search Client</strong></p>
+ *
+ * {@codesnippet com.azure.search.documents.SearchClient.instantiation}
+ *
+ * @see SearchClient
+ * @see SearchAsyncClient
  */
 @ServiceClientBuilder(serviceClients = {SearchClient.class, SearchAsyncClient.class})
 public final class SearchClientBuilder {
@@ -64,7 +77,7 @@ public final class SearchClientBuilder {
     private final String clientName;
     private final String clientVersion;
 
-    private AzureKeyCredential keyCredential;
+    private AzureKeyCredential credential;
     private SearchServiceVersion serviceVersion;
     private String endpoint;
     private HttpClient httpClient;
@@ -122,7 +135,7 @@ public final class SearchClientBuilder {
             return new SearchAsyncClient(endpoint, indexName, buildVersion, httpPipeline);
         }
 
-        Objects.requireNonNull(keyCredential, "'keyCredential' cannot be null.");
+        Objects.requireNonNull(credential, "'credential' cannot be null.");
         Configuration buildConfiguration = (configuration == null)
             ? Configuration.getGlobalConfiguration()
             : configuration;
@@ -130,6 +143,7 @@ public final class SearchClientBuilder {
         // Closest to API goes first, closest to wire goes last.
         final List<HttpPipelinePolicy> httpPipelinePolicies = new ArrayList<>();
         httpPipelinePolicies.add(new AddHeadersPolicy(headers));
+        httpPipelinePolicies.add(new AddHeadersFromContextPolicy());
         httpPipelinePolicies.add(new UserAgentPolicy(httpLogOptions.getApplicationId(), clientName, clientVersion,
             buildConfiguration));
         httpPipelinePolicies.add(new RequestIdPolicy());
@@ -139,7 +153,7 @@ public final class SearchClientBuilder {
 
         httpPipelinePolicies.add(new AddDatePolicy());
 
-        this.policies.add(new AzureKeyCredentialPolicy(API_KEY, keyCredential));
+        this.policies.add(new AzureKeyCredentialPolicy(API_KEY, credential));
 
         httpPipelinePolicies.addAll(this.policies);
 
@@ -175,14 +189,14 @@ public final class SearchClientBuilder {
     /**
      * Sets the {@link AzureKeyCredential} used to authenticate HTTP requests.
      *
-     * @param keyCredential The {@link AzureKeyCredential} used to authenticate HTTP requests.
+     * @param credential The {@link AzureKeyCredential} used to authenticate HTTP requests.
      * @return The updated SearchClientBuilder object.
-     * @throws NullPointerException If {@code keyCredential} is {@code null}.
+     * @throws NullPointerException If {@code credential} is {@code null}.
      * @throws IllegalArgumentException If {@link AzureKeyCredential#getKey()} is {@code null} or empty.
      */
-    public SearchClientBuilder credential(AzureKeyCredential keyCredential) {
-        Objects.requireNonNull(keyCredential, "'keyCredential' cannot be null.");
-        this.keyCredential = keyCredential;
+    public SearchClientBuilder credential(AzureKeyCredential credential) {
+        Objects.requireNonNull(credential, "'credential' cannot be null.");
+        this.credential = credential;
         return this;
     }
 

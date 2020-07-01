@@ -44,12 +44,23 @@ public final class PatternAnalyzer extends LexicalAnalyzer {
     private List<String> stopwords;
 
     /**
+     * Constructor of {@link PatternAnalyzer}.
+     *
+     * @param name The name of the analyzer. It must only contain letters, digits, spaces,
+     * dashes or underscores, can only start and end with alphanumeric
+     * characters, and is limited to 128 characters.
+     */
+    public PatternAnalyzer(String name) {
+        super(name);
+    }
+
+    /**
      * Get the lowerCaseTerms property: A value indicating whether terms should
      * be lower-cased. Default is true.
      *
      * @return the lowerCaseTerms value.
      */
-    public Boolean isLowerCaseTerms() {
+    public Boolean areLowerCaseTerms() {
         return this.lowerCaseTerms;
     }
 

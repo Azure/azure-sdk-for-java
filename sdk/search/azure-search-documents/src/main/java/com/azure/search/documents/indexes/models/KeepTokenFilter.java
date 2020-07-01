@@ -31,6 +31,19 @@ public final class KeepTokenFilter extends TokenFilter {
     private Boolean lowerCaseKeepWords;
 
     /**
+     * Constructor of {@link TokenFilter}.
+     *
+     * @param name The name of the token filter. It must only contain letters, digits,
+     * spaces, dashes or underscores, can only start and end with alphanumeric
+     * characters, and is limited to 128 characters.
+     * @param keepWords The list of words to keep.
+     */
+    public KeepTokenFilter(String name, List<String> keepWords) {
+        super(name);
+        this.keepWords = keepWords;
+    }
+
+    /**
      * Get the keepWords property: The list of words to keep.
      *
      * @return the keepWords value.
@@ -40,23 +53,12 @@ public final class KeepTokenFilter extends TokenFilter {
     }
 
     /**
-     * Set the keepWords property: The list of words to keep.
-     *
-     * @param keepWords the keepWords value to set.
-     * @return the KeepTokenFilter object itself.
-     */
-    public KeepTokenFilter setKeepWords(List<String> keepWords) {
-        this.keepWords = keepWords;
-        return this;
-    }
-
-    /**
      * Get the lowerCaseKeepWords property: A value indicating whether to lower
      * case all words first. Default is false.
      *
      * @return the lowerCaseKeepWords value.
      */
-    public Boolean isLowerCaseKeepWords() {
+    public Boolean areLowerCaseKeepWords() {
         return this.lowerCaseKeepWords;
     }
 

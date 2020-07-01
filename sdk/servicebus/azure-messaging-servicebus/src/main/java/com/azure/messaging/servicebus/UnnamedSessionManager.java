@@ -182,24 +182,24 @@ class UnnamedSessionManager implements AutoCloseable {
      * @return {@code true} if the {@code lockToken} was updated on receive link. {@code false} otherwise. This means
      *     there isn't an open link with that {@code sessionId}.
      */
-    Mono<Boolean> updateDisposition(MessageLockToken lockToken, String sessionId,
+    Mono<Boolean> updateDisposition(String lockToken, String sessionId,
         DispositionStatus dispositionStatus, Map<String, Object> propertiesToModify, String deadLetterReason,
-        String deadLetterDescription) {
+        String deadLetterDescription, ServiceBusTransactionContext transactionContext) {
 
         final String operation = "updateDisposition";
         return Mono.when(
             validateParameter(lockToken, "lockToken", operation),
-            validateParameter(lockToken.getLockToken(), "lockToken.getLockToken()", operation),
+            validateParameter(lockToken, "lockToken", operation),
             validateParameter(sessionId, "'sessionId'", operation)).then(
             Mono.defer(() -> {
-                final String lock = lockToken.getLockToken();
+                final String lock = lockToken;
                 final UnnamedSessionReceiver receiver = sessionReceivers.get(sessionId);
                 if (receiver == null || !receiver.containsLockToken(lock)) {
                     return Mono.just(false);
                 }
 
                 final DeliveryState deliveryState = MessageUtils.getDeliveryState(dispositionStatus, deadLetterReason,
-                    deadLetterDescription, propertiesToModify);
+                    deadLetterDescription, propertiesToModify, transactionContext);
 
                 return receiver.updateDisposition(lock, deliveryState).thenReturn(true);
             }));
@@ -290,7 +290,9 @@ class UnnamedSessionManager implements AutoCloseable {
             .flatMapMany(session -> session.receive().doFinally(signalType -> {
                 logger.verbose("Adding scheduler back to pool.");
                 availableSchedulers.push(scheduler);
-                onSessionRequest(1L);
+                if (receiverOptions.isRollingSessionReceiver()) {
+                    onSessionRequest(1L);
+                }
             }))
             .publishOn(scheduler);
     }

@@ -23,7 +23,6 @@ import reactor.core.publisher.Mono;
 import java.time.Duration;
 
 public class GoneAndRetryWithRetryPolicy extends RetryPolicyWithDiagnostics {
-
     private final static Logger logger = LoggerFactory.getLogger(GoneAndRetryWithRetryPolicy.class);
     private final static int DEFAULT_WAIT_TIME_IN_SECONDS = 30;
     private final static int MAXIMUM_BACKOFF_TIME_IN_SECONDS = 15;
@@ -85,10 +84,8 @@ public class GoneAndRetryWithRetryPolicy extends RetryPolicyWithDiagnostics {
                     } else {
                         logger.warn("Received gone exception after backoff/retry. Will fail the request. {}",
                                 exception.toString());
-                        exceptionToThrow = BridgeInternal.createCosmosException(HttpConstants.StatusCodes.SERVICE_UNAVAILABLE,
-                                exception);
+                        exceptionToThrow = BridgeInternal.createServiceUnavailableException(exception);
                     }
-
                 } else if (exception instanceof PartitionKeyRangeGoneException) {
                     if (this.lastRetryWithException != null) {
                         logger.warn(
@@ -100,8 +97,7 @@ public class GoneAndRetryWithRetryPolicy extends RetryPolicyWithDiagnostics {
                         logger.warn(
                                 "Received partition key range gone exception after backoff/retry. Will fail the request. {}",
                                 exception.toString());
-                        exceptionToThrow = BridgeInternal.createCosmosException(HttpConstants.StatusCodes.SERVICE_UNAVAILABLE,
-                                exception);
+                        exceptionToThrow = BridgeInternal.createServiceUnavailableException(exception);
                     }
                 } else if (exception instanceof InvalidPartitionException) {
                     if (this.lastRetryWithException != null) {
@@ -113,8 +109,7 @@ public class GoneAndRetryWithRetryPolicy extends RetryPolicyWithDiagnostics {
                         logger.warn(
                                 "Received invalid collection partition exception after backoff/retry. Will fail the request. {}",
                                 exception.toString());
-                        exceptionToThrow = BridgeInternal.createCosmosException(HttpConstants.StatusCodes.SERVICE_UNAVAILABLE,
-                                exception);
+                        exceptionToThrow = BridgeInternal.createServiceUnavailableException(exception);
                     }
                 } else {
                     logger.warn("Received retrywith exception after backoff/retry. Will fail the request. {}",
@@ -135,7 +130,7 @@ public class GoneAndRetryWithRetryPolicy extends RetryPolicyWithDiagnostics {
         timeout = timeoutInMillSec > 0 ? Duration.ofMillis(timeoutInMillSec)
                 : Duration.ofSeconds(GoneAndRetryWithRetryPolicy.MAXIMUM_BACKOFF_TIME_IN_SECONDS);
         if (exception instanceof GoneException) {
-            logger.warn("Received gone exception, will retry, {}", exception.toString());
+            logger.info("Received gone exception, will retry, {}", exception.toString());
             forceRefreshAddressCache = true; // indicate we are in retry.
         } else if (exception instanceof PartitionIsMigratingException) {
             logger.warn("Received PartitionIsMigratingException, will retry, {}", exception.toString());
@@ -151,7 +146,7 @@ public class GoneAndRetryWithRetryPolicy extends RetryPolicyWithDiagnostics {
                 logger.warn("Received second InvalidPartitionException after backoff/retry. Will fail the request. {}",
                         exception.toString());
                 return Mono.just(ShouldRetryResult
-                        .error(BridgeInternal.createCosmosException(HttpConstants.StatusCodes.SERVICE_UNAVAILABLE, exception)));
+                        .error(BridgeInternal.createServiceUnavailableException(exception)));
             }
 
             if (this.request != null) {

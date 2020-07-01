@@ -3,6 +3,10 @@
 ## 1.6.0-beta.1 (Unreleased)
 
 
+## 1.5.1 (2020-06-08)
+
+- Added handling for more complex `Content-Type` headers such as `text/custom+xml`.
+
 ## 1.5.0 (2020-05-04)
 
 - Fixed issue where `FluxUtil.toReactorContext` would include `null` values which aren't allowed in Reactor's `Context`.

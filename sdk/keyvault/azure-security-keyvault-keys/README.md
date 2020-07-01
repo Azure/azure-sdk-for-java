@@ -14,7 +14,7 @@ Maven dependency for the Azure Key Vault Key client library. Add it to your proj
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-security-keyvault-keys</artifactId>
-    <version>4.2.0-beta.1</version>
+    <version>4.1.4</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -87,8 +87,8 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.security.keyvault.keys.KeyClient;
 import com.azure.security.keyvault.keys.KeyClientBuilder;
 
-KeyClient client = new KeyClientBuilder()
-    .vaultUrl(<your-key-vault-url>)
+KeyClient keyClient = new KeyClientBuilder()
+    .vaultUrl("<your-key-vault-url>")
     .credential(new DefaultAzureCredentialBuilder().build())
     .buildClient();
 ```
@@ -114,7 +114,7 @@ CryptographyClient cryptoClient = new CryptographyClientBuilder()
 
 ## Key concepts
 ### Key
-  Azure Key Vault supports multiple key types (`RSA` & `EC`) and algorithms, and enables the use of Hardware Security Modules (HSM) for high value keys. In addition to the key material, the following attributes may be specified:
+Azure Key Vault supports multiple key types (`RSA` & `EC`) and algorithms, and enables the use of Hardware Security Modules (HSM) for high value keys. In addition to the key material, the following attributes may be specified:
 * enabled: Specifies whether the key is enabled and usable for cryptographic operations.
 * not_before: Identifies the time before which the key must not be used for cryptographic operations.
 * expires: Identifies the expiration time on or after which the key MUST NOT be used for cryptographic operations.
@@ -125,7 +125,7 @@ CryptographyClient cryptoClient = new CryptographyClientBuilder()
 The key client performs the interactions with the Azure Key Vault service for getting, setting, updating, deleting, and listing keys and its versions. Asynchronous (KeyAsyncClient) and synchronous (KeyClient) clients exist in the SDK allowing for the selection of a client based on an application's use case. Once you've initialized a key, you can interact with the primary resource types in Key Vault.
 
 ### Cryptography client:
-The Cryptography client performs the cryptographic operations locally or calls the Azure Key Vault service depending on how much key information is available locally. It supports encrypting, decrypting, signing, verifying, key wrapping, key unwrapping, and retrieving the configured key. Asynchronous (CryptographyAsyncClient) and synchronous (CryptographyClient) clients exist in the SDK allowing for the selection of a client based on an application's use case.
+The cryptography client performs the cryptographic operations locally or calls the Azure Key Vault service depending on how much key information is available locally. It supports encrypting, decrypting, signing, verifying, key wrapping, key unwrapping, and retrieving the configured key. Asynchronous (CryptographyAsyncClient) and synchronous (CryptographyClient) clients exist in the SDK allowing for the selection of a client based on an application's use case.
 
 ## Examples
 ### Sync API
@@ -152,7 +152,7 @@ import com.azure.security.keyvault.keys.models.KeyVaultKey;
 import com.azure.security.keyvault.keys.KeyClientBuilder;
 
 KeyClient keyClient = new KeyClientBuilder()
-    .vaultUrl(<your-key-vault-url>)
+    .vaultUrl("<your-key-vault-url>")
     .credential(new DefaultAzureCredentialBuilder().build())
     .buildClient();
 
@@ -197,7 +197,7 @@ PollResponse<DeletedKey> deletedKeyPollResponse = deletedKeyPoller.poll();
 
 // Deleted key is accessible as soon as polling begins.
 DeletedKey deletedKey = deletedKeyPollResponse.getValue();
-// Deletion date only works for SoftDelete Enabled Key Vault.
+// Deletion date only works for a SoftDelete-enabled Key Vault.
 System.out.printf("Deletion date: %s\n", deletedKey.getDeletedOn().toString());
 
 // Key is being deleted on server.
@@ -272,7 +272,7 @@ import com.azure.security.keyvault.keys.models.CreateEcKeyOptions;
 import com.azure.security.keyvault.keys.models.CreateRsaKeyOptions;
 
 KeyAsyncClient keyAsyncClient = new KeyClientBuilder()
-    .vaultUrl(<your-key-vault-url>)
+    .vaultUrl("<your-key-vault-url>")
     .credential(new DefaultAzureCredentialBuilder().build())
     .buildAsyncClient();
 
@@ -353,7 +353,7 @@ new Random(0x1234567L).nextBytes(plainText);
 // Let's encrypt a simple plain text of size 100 bytes.
 cryptoAsyncClient.encrypt(EncryptionAlgorithm.RSA_OAEP, plainText)
     .subscribe(encryptionResult -> {
-        System.out.printf("Returned cipherText size is %d bytes with algorithm \"%s\"\n"
+        System.out.printf("Returned cipherText size is %d bytes with algorithm \"%s\"\n",
             encryptionResult.getCipherText().length, encryptionResult.getAlgorithm().toString());
     });
 ```
@@ -398,10 +398,10 @@ All client libraries, by default, use the Tomcat-native Boring SSL library to en
 ## Next steps
 Several Key Vault Java SDK samples are available to you in the SDK's GitHub repository. These samples provide example code for additional scenarios commonly encountered while working with Azure Key Vault.
 
-## Next steps Samples
+## Next steps samples
 Samples are explained in detail [here][samples_readme].
 
-###  Additional Documentation
+###  Additional documentation
 For more extensive documentation on Azure Key Vault, see the [API reference documentation][azkeyvault_rest].
 
 ## Contributing

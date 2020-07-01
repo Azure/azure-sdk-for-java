@@ -4,6 +4,7 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -49,7 +50,7 @@ public final class SearchIndex {
      * The suggesters for the index.
      */
     @JsonProperty(value = "suggesters")
-    private List<SearchSuggester> searchSuggesters;
+    private List<SearchSuggester> suggesters;
 
     /*
      * The analyzers for the index.
@@ -97,13 +98,35 @@ public final class SearchIndex {
      * indexes. If null, the ClassicSimilarity algorithm is used.
      */
     @JsonProperty(value = "similarity")
-    private SimilarityAlgorithm similarityAlgorithm;
+    private SimilarityAlgorithm similarity;
 
     /*
      * The ETag of the index.
      */
     @JsonProperty(value = "@odata.etag")
     private String eTag;
+
+
+    /**
+     * Constructor of {@link SearchIndex}.
+     * @param name The name of the index.
+     */
+    public SearchIndex(String name) {
+        this.name = name;
+    }
+
+    /**
+     * Constructor of {@link SearchIndex}.
+     * @param name The name of the index.
+     * @param fields The fields of the index.
+     */
+    @JsonCreator
+    public SearchIndex(
+        @JsonProperty(value = "name") String name,
+        @JsonProperty(value = "fields") List<SearchField> fields) {
+        this.name = name;
+        this.fields = fields;
+    }
 
     /**
      * Get the name property: The name of the index.
@@ -112,17 +135,6 @@ public final class SearchIndex {
      */
     public String getName() {
         return this.name;
-    }
-
-    /**
-     * Set the name property: The name of the index.
-     *
-     * @param name the name value to set.
-     * @return the SearchIndex object itself.
-     */
-    public SearchIndex setName(String name) {
-        this.name = name;
-        return this;
     }
 
     /**
@@ -218,18 +230,18 @@ public final class SearchIndex {
      *
      * @return the suggesters value.
      */
-    public List<SearchSuggester> getSearchSuggesters() {
-        return this.searchSuggesters;
+    public List<SearchSuggester> getSuggesters() {
+        return this.suggesters;
     }
 
     /**
      * Set the suggesters property: The suggesters for the index.
      *
-     * @param searchSuggesters the suggesters value to set.
+     * @param suggesters the suggesters value to set.
      * @return the SearchIndex object itself.
      */
-    public SearchIndex setSearchSuggesters(List<SearchSuggester> searchSuggesters) {
-        this.searchSuggesters = searchSuggesters;
+    public SearchIndex setSuggesters(List<SearchSuggester> suggesters) {
+        this.suggesters = suggesters;
         return this;
     }
 
@@ -362,8 +374,8 @@ public final class SearchIndex {
      *
      * @return the similarity value.
      */
-    public SimilarityAlgorithm getSimilarityAlgorithm() {
-        return this.similarityAlgorithm;
+    public SimilarityAlgorithm getSimilarity() {
+        return this.similarity;
     }
 
     /**
@@ -373,11 +385,11 @@ public final class SearchIndex {
      * cannot be modified on existing indexes. If null, the ClassicSimilarity
      * algorithm is used.
      *
-     * @param similarityAlgorithm the similarity value to set.
+     * @param similarity the similarity value to set.
      * @return the SearchIndex object itself.
      */
-    public SearchIndex setSimilarityAlgorithm(SimilarityAlgorithm similarityAlgorithm) {
-        this.similarityAlgorithm = similarityAlgorithm;
+    public SearchIndex setSimilarity(SimilarityAlgorithm similarity) {
+        this.similarity = similarity;
         return this;
     }
 

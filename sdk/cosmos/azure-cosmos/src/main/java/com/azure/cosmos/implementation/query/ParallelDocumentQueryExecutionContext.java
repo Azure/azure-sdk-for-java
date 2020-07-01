@@ -5,7 +5,7 @@ package com.azure.cosmos.implementation.query;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.models.ModelBridgeInternal;
-import com.azure.cosmos.models.QueryRequestOptions;
+import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.implementation.Resource;
 import com.azure.cosmos.models.SqlQuerySpec;
@@ -38,7 +38,7 @@ import java.util.stream.Collectors;
  */
 public class ParallelDocumentQueryExecutionContext<T extends Resource>
         extends ParallelDocumentQueryExecutionContextBase<T> {
-    private QueryRequestOptions queryRequestOptions;
+    private CosmosQueryRequestOptions cosmosQueryRequestOptions;
 
     private ParallelDocumentQueryExecutionContext(
             IDocumentQueryClient client,
@@ -46,16 +46,16 @@ public class ParallelDocumentQueryExecutionContext<T extends Resource>
             ResourceType resourceTypeEnum,
             Class<T> resourceType,
             SqlQuerySpec query,
-            QueryRequestOptions queryRequestOptions,
+            CosmosQueryRequestOptions cosmosQueryRequestOptions,
             String resourceLink,
             String rewrittenQuery,
             String collectionRid,
             boolean isContinuationExpected,
             boolean getLazyFeedResponse,
             UUID correlatedActivityId) {
-        super(client, partitionKeyRanges, resourceTypeEnum, resourceType, query, queryRequestOptions, resourceLink,
+        super(client, partitionKeyRanges, resourceTypeEnum, resourceType, query, cosmosQueryRequestOptions, resourceLink,
                 rewrittenQuery, isContinuationExpected, getLazyFeedResponse, correlatedActivityId);
-        this.queryRequestOptions = queryRequestOptions;
+        this.cosmosQueryRequestOptions = cosmosQueryRequestOptions;
     }
 
     public static <T extends Resource> Flux<IDocumentQueryExecutionComponent<T>> createAsync(
@@ -63,7 +63,7 @@ public class ParallelDocumentQueryExecutionContext<T extends Resource>
             ResourceType resourceTypeEnum,
             Class<T> resourceType,
             SqlQuerySpec query,
-            QueryRequestOptions queryRequestOptions,
+            CosmosQueryRequestOptions cosmosQueryRequestOptions,
             String resourceLink,
             String collectionRid,
             PartitionedQueryExecutionInfo partitionedQueryExecutionInfo,
@@ -78,7 +78,7 @@ public class ParallelDocumentQueryExecutionContext<T extends Resource>
                 resourceTypeEnum,
                 resourceType,
                 query,
-                queryRequestOptions,
+                cosmosQueryRequestOptions,
                 resourceLink,
                 partitionedQueryExecutionInfo.getQueryInfo().getRewrittenQuery(),
                 collectionRid,
@@ -90,7 +90,7 @@ public class ParallelDocumentQueryExecutionContext<T extends Resource>
             context.initialize(collectionRid,
                     targetRanges,
                     initialPageSize,
-                    ModelBridgeInternal.getRequestContinuationFromQueryRequestOptions(queryRequestOptions));
+                    ModelBridgeInternal.getRequestContinuationFromQueryRequestOptions(cosmosQueryRequestOptions));
             return Flux.just(context);
         } catch (CosmosException dce) {
             return Flux.error(dce);
@@ -98,11 +98,11 @@ public class ParallelDocumentQueryExecutionContext<T extends Resource>
     }
 
     public static <T extends Resource> Flux<IDocumentQueryExecutionComponent<T>> createReadManyQueryAsync(
-            IDocumentQueryClient queryClient,
-            String collectionResourceId, SqlQuerySpec sqlQuery,
-            Map<PartitionKeyRange, SqlQuerySpec> rangeQueryMap,
-            QueryRequestOptions queryRequestOptions, String collectionRid, String collectionLink, UUID activityId, Class<T> klass,
-            ResourceType resourceTypeEnum) {
+        IDocumentQueryClient queryClient,
+        String collectionResourceId, SqlQuerySpec sqlQuery,
+        Map<PartitionKeyRange, SqlQuerySpec> rangeQueryMap,
+        CosmosQueryRequestOptions cosmosQueryRequestOptions, String collectionRid, String collectionLink, UUID activityId, Class<T> klass,
+        ResourceType resourceTypeEnum) {
 
         List<PartitionKeyRange> ranges = new ArrayList<>();
         ranges.addAll(rangeQueryMap.keySet());
@@ -112,7 +112,7 @@ public class ParallelDocumentQueryExecutionContext<T extends Resource>
                                                                                                         resourceTypeEnum,
                                                                                                         klass,
                                                                                                         sqlQuery,
-                                                                                                        queryRequestOptions,
+                                                                                                        cosmosQueryRequestOptions,
                                                                                                         collectionLink,
                                                                                                         sqlQuery.getQueryText(),
                                                                                                         collectionRid,
@@ -121,7 +121,7 @@ public class ParallelDocumentQueryExecutionContext<T extends Resource>
                                                                                                         activityId);
 
         context
-            .initializeReadMany(queryClient, collectionResourceId, sqlQuery, rangeQueryMap, queryRequestOptions,
+            .initializeReadMany(queryClient, collectionResourceId, sqlQuery, rangeQueryMap, cosmosQueryRequestOptions,
                                 activityId, collectionRid);
         return Flux.just(context);
     }
@@ -205,9 +205,9 @@ public class ParallelDocumentQueryExecutionContext<T extends Resource>
             implements Function<Flux<DocumentProducer<T>.DocumentProducerFeedResponse>, Flux<FeedResponse<T>>> {
         private final RequestChargeTracker tracker;
         private DocumentProducer<T>.DocumentProducerFeedResponse previousPage;
-        private final QueryRequestOptions queryRequestOptions;
+        private final CosmosQueryRequestOptions cosmosQueryRequestOptions;
 
-        public EmptyPagesFilterTransformer(RequestChargeTracker tracker, QueryRequestOptions options) {
+        public EmptyPagesFilterTransformer(RequestChargeTracker tracker, CosmosQueryRequestOptions options) {
 
             if (tracker == null) {
                 throw new IllegalArgumentException("Request Charge Tracker must not be null.");
@@ -215,7 +215,7 @@ public class ParallelDocumentQueryExecutionContext<T extends Resource>
 
             this.tracker = tracker;
             this.previousPage = null;
-            this.queryRequestOptions = options;
+            this.cosmosQueryRequestOptions = options;
         }
 
         private DocumentProducer<T>.DocumentProducerFeedResponse plusCharge(
@@ -260,7 +260,7 @@ public class ParallelDocumentQueryExecutionContext<T extends Resource>
             // results.
             return source.filter(documentProducerFeedResponse -> {
                 if (documentProducerFeedResponse.pageResult.getResults().isEmpty()
-                        && !ModelBridgeInternal.getEmptyPagesAllowedFromQueryRequestOptions(this.queryRequestOptions)) {
+                        && !ModelBridgeInternal.getEmptyPagesAllowedFromQueryRequestOptions(this.cosmosQueryRequestOptions)) {
                     // filter empty pages and accumulate charge
                     tracker.addCharge(documentProducerFeedResponse.pageResult.getRequestCharge());
                     return false;
@@ -343,18 +343,19 @@ public class ParallelDocumentQueryExecutionContext<T extends Resource>
                 // Merge results from all partitions.
                 .collect(Collectors.toList());
 
-        int fluxConcurrency = fluxSequentialMergeConcurrency(queryRequestOptions, obs.size());
-        int fluxPrefetch = fluxSequentialMergePrefetch(queryRequestOptions, obs.size(), maxPageSize, fluxConcurrency);
+        int fluxConcurrency = fluxSequentialMergeConcurrency(cosmosQueryRequestOptions, obs.size());
+        int fluxPrefetch = fluxSequentialMergePrefetch(cosmosQueryRequestOptions, obs.size(),
+            maxPageSize, fluxConcurrency);
 
         logger.debug("ParallelQuery: flux mergeSequential" +
                          " concurrency {}, prefetch {}", fluxConcurrency, fluxPrefetch);
         return Flux.mergeSequential(obs, fluxConcurrency, fluxPrefetch)
-            .compose(new EmptyPagesFilterTransformer<>(new RequestChargeTracker(), this.queryRequestOptions));
+            .compose(new EmptyPagesFilterTransformer<>(new RequestChargeTracker(), this.cosmosQueryRequestOptions));
     }
 
     @Override
     public Flux<FeedResponse<T>> executeAsync() {
-        return this.drainAsync(ModelBridgeInternal.getMaxItemCountFromQueryRequestOptions(queryRequestOptions));
+        return this.drainAsync(ModelBridgeInternal.getMaxItemCountFromQueryRequestOptions(cosmosQueryRequestOptions));
     }
 
     protected DocumentProducer<T> createDocumentProducer(
@@ -362,7 +363,7 @@ public class ParallelDocumentQueryExecutionContext<T extends Resource>
             PartitionKeyRange targetRange,
             String initialContinuationToken,
             int initialPageSize,
-            QueryRequestOptions queryRequestOptions,
+            CosmosQueryRequestOptions cosmosQueryRequestOptions,
             SqlQuerySpec querySpecForInit,
             Map<String, String> commonRequestHeaders,
             TriFunction<PartitionKeyRange, String, Integer, RxDocumentServiceRequest> createRequestFunc,
@@ -370,7 +371,7 @@ public class ParallelDocumentQueryExecutionContext<T extends Resource>
             Callable<DocumentClientRetryPolicy> createRetryPolicyFunc) {
         return new DocumentProducer<T>(client,
                 collectionRid,
-                queryRequestOptions,
+                cosmosQueryRequestOptions,
                 createRequestFunc,
                 executeFunc,
                 targetRange,
@@ -383,7 +384,7 @@ public class ParallelDocumentQueryExecutionContext<T extends Resource>
                 top);
     }
 
-    private int fluxSequentialMergeConcurrency(QueryRequestOptions options, int numberOfPartitions) {
+    private int fluxSequentialMergeConcurrency(CosmosQueryRequestOptions options, int numberOfPartitions) {
         int parallelism = options.getMaxDegreeOfParallelism();
         if (parallelism < 0) {
             parallelism = Configs.getCPUCnt();
@@ -394,7 +395,7 @@ public class ParallelDocumentQueryExecutionContext<T extends Resource>
         return Math.min(numberOfPartitions, parallelism);
     }
 
-    private int fluxSequentialMergePrefetch(QueryRequestOptions options, int numberOfPartitions, int pageSize, int fluxConcurrency) {
+    private int fluxSequentialMergePrefetch(CosmosQueryRequestOptions options, int numberOfPartitions, int pageSize, int fluxConcurrency) {
         int maxBufferedItemCount = options.getMaxBufferedItemCount();
 
         if (maxBufferedItemCount <= 0) {

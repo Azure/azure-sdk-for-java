@@ -29,7 +29,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 public class SearchIndexerClientBuilderTests {
     private final AzureKeyCredential searchApiKeyCredential = new AzureKeyCredential("0123");
     private final String searchEndpoint = "https://test.search.windows.net";
-    private final SearchServiceVersion apiVersion = SearchServiceVersion.V2019_05_06_Preview;
+    private final SearchServiceVersion apiVersion = SearchServiceVersion.V2020_06_30;
 
     @Test
     public void buildSyncClientTest() {
@@ -78,26 +78,6 @@ public class SearchIndexerClientBuilderTests {
     }
 
     @Test
-    public void whenApiVersionSpecifiedThenSpecifiedValueExists() {
-        SearchServiceVersion expectedApiVersion = SearchServiceVersion.V2019_05_06_Preview;
-
-        SearchIndexerClient client = new SearchIndexerClientBuilder()
-            .endpoint(searchEndpoint)
-            .credential(searchApiKeyCredential)
-            .serviceVersion(expectedApiVersion)
-            .buildClient();
-
-        assertEquals(expectedApiVersion.getVersion(), client.getServiceVersion().getVersion());
-
-        SearchIndexerAsyncClient asyncClient = new SearchIndexerClientBuilder()
-            .endpoint(searchEndpoint)
-            .credential(searchApiKeyCredential)
-            .serviceVersion(expectedApiVersion)
-            .buildAsyncClient();
-        assertEquals(expectedApiVersion.getVersion(), asyncClient.getServiceVersion().getVersion());
-    }
-
-    @Test
     public void whenBuildClientAndVerifyPropertiesThenSuccess() {
         SearchIndexerClient client = new SearchIndexerClientBuilder()
             .endpoint(searchEndpoint)
@@ -105,7 +85,6 @@ public class SearchIndexerClientBuilderTests {
             .buildClient();
 
         assertEquals(searchEndpoint, client.getEndpoint());
-        assertEquals(apiVersion, client.getServiceVersion());
 
         SearchIndexerAsyncClient asyncClient = new SearchIndexerClientBuilder()
             .endpoint(searchEndpoint)
@@ -114,7 +93,6 @@ public class SearchIndexerClientBuilderTests {
             .buildAsyncClient();
 
         assertEquals(searchEndpoint, asyncClient.getEndpoint());
-        assertEquals(apiVersion, asyncClient.getServiceVersion());
     }
 
     @Test
@@ -131,37 +109,6 @@ public class SearchIndexerClientBuilderTests {
     public void credentialWithEmptyApiKeyThrowsIllegalArgumentException() {
         assertThrows(IllegalArgumentException.class, () -> new SearchIndexerClientBuilder()
             .credential(new AzureKeyCredential("")));
-    }
-
-    @Test
-    void nullApiVersionSetsLatest() {
-        SearchIndexerClientBuilder builder = new SearchIndexerClientBuilder()
-            .endpoint(searchEndpoint)
-            .credential(searchApiKeyCredential)
-            .serviceVersion(null);
-
-        assertEquals(SearchServiceVersion.getLatest(), builder.buildAsyncClient().getServiceVersion());
-        assertEquals(SearchServiceVersion.getLatest(), builder.buildClient().getServiceVersion());
-    }
-
-    @Test
-    public void verifyEmptyApiVersionSetsLatest() {
-        SearchIndexerClient searchIndexerClient = new SearchIndexerClientBuilder()
-            .endpoint(searchEndpoint)
-            .credential(searchApiKeyCredential)
-            .buildClient();
-
-        assertEquals(SearchServiceVersion.getLatest(), searchIndexerClient.getServiceVersion());
-    }
-
-    @Test
-    public void verifyEmptyApiVersionSetsLatestAsync() {
-        SearchIndexerAsyncClient searchIndexerAsyncClient = new SearchIndexerClientBuilder()
-            .endpoint(searchEndpoint)
-            .credential(searchApiKeyCredential)
-            .buildAsyncClient();
-
-        assertEquals(SearchServiceVersion.getLatest(), searchIndexerAsyncClient.getServiceVersion());
     }
 
     @Test

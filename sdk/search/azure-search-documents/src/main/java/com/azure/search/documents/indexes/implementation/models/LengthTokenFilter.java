@@ -7,18 +7,18 @@
 package com.azure.search.documents.indexes.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.JsonFlatten;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/**
- * Removes words that are too long or too short. This token filter is
- * implemented using Apache Lucene.
- */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata.type")
+/** The LengthTokenFilter model. */
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata\\.type")
 @JsonTypeName("#Microsoft.Azure.Search.LengthTokenFilter")
+@JsonFlatten
 @Fluent
-public final class LengthTokenFilter extends TokenFilter {
+public class LengthTokenFilter extends TokenFilter {
     /*
      * The minimum length in characters. Default is 0. Maximum is 300. Must be
      * less than the value of max.
@@ -32,9 +32,15 @@ public final class LengthTokenFilter extends TokenFilter {
     @JsonProperty(value = "max")
     private Integer maxLength;
 
+    /** Creates an instance of LengthTokenFilter class. */
+    @JsonCreator
+    public LengthTokenFilter(@JsonProperty(value = "name") String name) {
+        super(name);
+    }
+
     /**
-     * Get the minLength property: The minimum length in characters. Default is
-     * 0. Maximum is 300. Must be less than the value of max.
+     * Get the minLength property: The minimum length in characters. Default is 0. Maximum is 300. Must be less than the
+     * value of max.
      *
      * @return the minLength value.
      */
@@ -43,8 +49,8 @@ public final class LengthTokenFilter extends TokenFilter {
     }
 
     /**
-     * Set the minLength property: The minimum length in characters. Default is
-     * 0. Maximum is 300. Must be less than the value of max.
+     * Set the minLength property: The minimum length in characters. Default is 0. Maximum is 300. Must be less than the
+     * value of max.
      *
      * @param minLength the minLength value to set.
      * @return the LengthTokenFilter object itself.
@@ -55,8 +61,7 @@ public final class LengthTokenFilter extends TokenFilter {
     }
 
     /**
-     * Get the maxLength property: The maximum length in characters. Default
-     * and maximum is 300.
+     * Get the maxLength property: The maximum length in characters. Default and maximum is 300.
      *
      * @return the maxLength value.
      */
@@ -65,8 +70,7 @@ public final class LengthTokenFilter extends TokenFilter {
     }
 
     /**
-     * Set the maxLength property: The maximum length in characters. Default
-     * and maximum is 300.
+     * Set the maxLength property: The maximum length in characters. Default and maximum is 300.
      *
      * @param maxLength the maxLength value to set.
      * @return the LengthTokenFilter object itself.
@@ -74,5 +78,15 @@ public final class LengthTokenFilter extends TokenFilter {
     public LengthTokenFilter setMaxLength(Integer maxLength) {
         this.maxLength = maxLength;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    @Override
+    public void validate() {
+        super.validate();
     }
 }

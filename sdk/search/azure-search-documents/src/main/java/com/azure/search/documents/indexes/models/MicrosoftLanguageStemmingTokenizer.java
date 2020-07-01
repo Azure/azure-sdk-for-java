@@ -32,7 +32,7 @@ public final class MicrosoftLanguageStemmingTokenizer extends LexicalTokenizer {
      * Default is false.
      */
     @JsonProperty(value = "isSearchTokenizer")
-    private Boolean isSearchTokenizer;
+    private Boolean isSearchTokenizerUsed;
 
     /*
      * The language to use. The default is English. Possible values include:
@@ -47,6 +47,17 @@ public final class MicrosoftLanguageStemmingTokenizer extends LexicalTokenizer {
      */
     @JsonProperty(value = "language")
     private MicrosoftStemmingTokenizerLanguage language;
+
+    /**
+     * Constructor of {@link MicrosoftLanguageStemmingTokenizer}.
+     *
+     * @param name The name of the tokenizer. It must only contain letters, digits, spaces,
+     * dashes or underscores, can only start and end with alphanumeric
+     * characters, and is limited to 128 characters.
+     */
+    public MicrosoftLanguageStemmingTokenizer(String name) {
+        super(name);
+    }
 
     /**
      * Get the maxTokenLength property: The maximum token length. Tokens longer
@@ -84,7 +95,7 @@ public final class MicrosoftLanguageStemmingTokenizer extends LexicalTokenizer {
      * @return the isSearchTokenizer value.
      */
     public Boolean isSearchTokenizer() {
-        return this.isSearchTokenizer;
+        return this.isSearchTokenizerUsed;
     }
 
     /**
@@ -92,11 +103,11 @@ public final class MicrosoftLanguageStemmingTokenizer extends LexicalTokenizer {
      * is used. Set to true if used as the search tokenizer, set to false if
      * used as the indexing tokenizer. Default is false.
      *
-     * @param isSearchTokenizer the isSearchTokenizer value to set.
+     * @param isSearchTokenizerUsed the isSearchTokenizer value to set.
      * @return the MicrosoftLanguageStemmingTokenizer object itself.
      */
-    public MicrosoftLanguageStemmingTokenizer setIsSearchTokenizer(Boolean isSearchTokenizer) {
-        this.isSearchTokenizer = isSearchTokenizer;
+    public MicrosoftLanguageStemmingTokenizer setIsSearchTokenizerUsed(Boolean isSearchTokenizerUsed) {
+        this.isSearchTokenizerUsed = isSearchTokenizerUsed;
         return this;
     }
 

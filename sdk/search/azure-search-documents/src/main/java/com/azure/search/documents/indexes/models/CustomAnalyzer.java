@@ -29,7 +29,7 @@ public final class CustomAnalyzer extends LexicalAnalyzer {
      * 'Pattern', 'Standard', 'UaxUrlEmail', 'Whitespace'
      */
     @JsonProperty(value = "tokenizer", required = true)
-    private LexicalTokenizerName tokenizer;
+    private LexicalTokenizerName tokenizerName;
 
     /*
      * A list of token filters used to filter out or modify the tokens
@@ -50,6 +50,24 @@ public final class CustomAnalyzer extends LexicalAnalyzer {
     private List<CharFilterName> charFilters;
 
     /**
+     * Constructor of {@link LexicalAnalyzer}.
+     *
+     * @param name The name of the analyzer. It must only contain letters, digits, spaces,
+     * dashes or underscores, can only start and end with alphanumeric
+     * characters, and is limited to 128 characters.
+     * @param tokenizerName The name of the tokenizer to use to divide continuous text into a
+     * sequence of tokens, such as breaking a sentence into words. Possible
+     * values include: 'Classic', 'EdgeNGram', 'Keyword', 'Letter',
+     * 'Lowercase', 'MicrosoftLanguageTokenizer',
+     * 'MicrosoftLanguageStemmingTokenizer', 'NGram', 'PathHierarchy',
+     * 'Pattern', 'Standard', 'UaxUrlEmail', 'Whitespace'
+     */
+    public CustomAnalyzer(String name, LexicalTokenizerName tokenizerName) {
+        super(name);
+        this.tokenizerName = tokenizerName;
+    }
+
+    /**
      * Get the tokenizer property: The name of the tokenizer to use to divide
      * continuous text into a sequence of tokens, such as breaking a sentence
      * into words. Possible values include: 'Classic', 'EdgeNGram', 'Keyword',
@@ -60,23 +78,7 @@ public final class CustomAnalyzer extends LexicalAnalyzer {
      * @return the tokenizer value.
      */
     public LexicalTokenizerName getTokenizer() {
-        return this.tokenizer;
-    }
-
-    /**
-     * Set the tokenizer property: The name of the tokenizer to use to divide
-     * continuous text into a sequence of tokens, such as breaking a sentence
-     * into words. Possible values include: 'Classic', 'EdgeNGram', 'Keyword',
-     * 'Letter', 'Lowercase', 'MicrosoftLanguageTokenizer',
-     * 'MicrosoftLanguageStemmingTokenizer', 'NGram', 'PathHierarchy',
-     * 'Pattern', 'Standard', 'UaxUrlEmail', 'Whitespace'.
-     *
-     * @param tokenizer the tokenizer value to set.
-     * @return the CustomAnalyzer object itself.
-     */
-    public CustomAnalyzer setTokenizer(LexicalTokenizerName tokenizer) {
-        this.tokenizer = tokenizer;
-        return this;
+        return this.tokenizerName;
     }
 
     /**

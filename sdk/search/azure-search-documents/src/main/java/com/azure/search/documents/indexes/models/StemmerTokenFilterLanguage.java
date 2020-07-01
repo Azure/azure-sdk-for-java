@@ -3,7 +3,6 @@
 
 package com.azure.search.documents.indexes.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 /**
@@ -287,23 +286,6 @@ public enum StemmerTokenFilterLanguage {
 
     StemmerTokenFilterLanguage(String value) {
         this.value = value;
-    }
-
-    /**
-     * Parses a serialized value to a StemmerTokenFilterLanguage instance.
-     *
-     * @param value the serialized value to parse.
-     * @return the parsed StemmerTokenFilterLanguage object, or null if unable to parse.
-     */
-    @JsonCreator
-    public static StemmerTokenFilterLanguage fromString(String value) {
-        StemmerTokenFilterLanguage[] items = StemmerTokenFilterLanguage.values();
-        for (StemmerTokenFilterLanguage item : items) {
-            if (item.toString().equalsIgnoreCase(value)) {
-                return item;
-            }
-        }
-        return null;
     }
 
     @JsonValue

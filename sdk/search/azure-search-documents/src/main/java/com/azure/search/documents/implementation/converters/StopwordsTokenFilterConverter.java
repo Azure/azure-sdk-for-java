@@ -22,16 +22,13 @@ public final class StopwordsTokenFilterConverter {
         if (obj == null) {
             return null;
         }
-        StopwordsTokenFilter stopwordsTokenFilter = new StopwordsTokenFilter();
-
-        String name = obj.getName();
-        stopwordsTokenFilter.setName(name);
+        StopwordsTokenFilter stopwordsTokenFilter = new StopwordsTokenFilter(obj.getName());
 
         Boolean removeTrailingStopWords = obj.isRemoveTrailingStopWords();
-        stopwordsTokenFilter.setRemoveTrailingStopWords(removeTrailingStopWords);
+        stopwordsTokenFilter.setTrailingStopWordsRemoved(removeTrailingStopWords);
 
         Boolean ignoreCase = obj.isIgnoreCase();
-        stopwordsTokenFilter.setIgnoreCase(ignoreCase);
+        stopwordsTokenFilter.setCaseIgnored(ignoreCase);
 
         if (obj.getStopwords() != null) {
             List<String> stopwords = new ArrayList<>(obj.getStopwords());
@@ -54,15 +51,13 @@ public final class StopwordsTokenFilterConverter {
             return null;
         }
         com.azure.search.documents.indexes.implementation.models.StopwordsTokenFilter stopwordsTokenFilter =
-            new com.azure.search.documents.indexes.implementation.models.StopwordsTokenFilter();
+            new com.azure.search.documents.indexes.implementation.models.StopwordsTokenFilter(obj.getName());
 
-        String name = obj.getName();
-        stopwordsTokenFilter.setName(name);
 
-        Boolean removeTrailingStopWords = obj.isRemoveTrailingStopWords();
+        Boolean removeTrailingStopWords = obj.areTrailingStopWordsRemoved();
         stopwordsTokenFilter.setRemoveTrailingStopWords(removeTrailingStopWords);
 
-        Boolean ignoreCase = obj.isIgnoreCase();
+        Boolean ignoreCase = obj.isCaseIgnored();
         stopwordsTokenFilter.setIgnoreCase(ignoreCase);
 
         if (obj.getStopwords() != null) {
@@ -75,6 +70,7 @@ public final class StopwordsTokenFilterConverter {
                 StopwordsListConverter.map(obj.getStopwordsList());
             stopwordsTokenFilter.setStopwordsList(stopwordsList);
         }
+        stopwordsTokenFilter.validate();
         return stopwordsTokenFilter;
     }
 

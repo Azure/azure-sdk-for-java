@@ -5,9 +5,6 @@ package com.azure.search.documents.implementation.converters;
 
 import com.azure.search.documents.indexes.models.CommonGramTokenFilter;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * A converter between {@link com.azure.search.documents.indexes.implementation.models.CommonGramTokenFilter} and
  * {@link CommonGramTokenFilter}.
@@ -21,21 +18,15 @@ public final class CommonGramTokenFilterConverter {
         if (obj == null) {
             return null;
         }
-        CommonGramTokenFilter commonGramTokenFilter = new CommonGramTokenFilter();
 
-        String name = obj.getName();
-        commonGramTokenFilter.setName(name);
+        CommonGramTokenFilter commonGramTokenFilter = new CommonGramTokenFilter(obj.getName(), obj.getCommonWords());
 
         Boolean ignoreCase = obj.isIgnoreCase();
-        commonGramTokenFilter.setIgnoreCase(ignoreCase);
+        commonGramTokenFilter.setCaseIgnored(ignoreCase);
 
         Boolean useQueryMode = obj.isUseQueryMode();
-        commonGramTokenFilter.setUseQueryMode(useQueryMode);
+        commonGramTokenFilter.setQueryModeUsed(useQueryMode);
 
-        if (obj.getCommonWords() != null) {
-            List<String> commonWords = new ArrayList<>(obj.getCommonWords());
-            commonGramTokenFilter.setCommonWords(commonWords);
-        }
         return commonGramTokenFilter;
     }
 
@@ -48,21 +39,15 @@ public final class CommonGramTokenFilterConverter {
             return null;
         }
         com.azure.search.documents.indexes.implementation.models.CommonGramTokenFilter commonGramTokenFilter =
-            new com.azure.search.documents.indexes.implementation.models.CommonGramTokenFilter();
+            new com.azure.search.documents.indexes.implementation.models.CommonGramTokenFilter(obj.getName(),
+                obj.getCommonWords());
 
-        String name = obj.getName();
-        commonGramTokenFilter.setName(name);
-
-        Boolean ignoreCase = obj.isIgnoreCase();
+        Boolean ignoreCase = obj.isCaseIgnored();
         commonGramTokenFilter.setIgnoreCase(ignoreCase);
 
-        Boolean useQueryMode = obj.isUseQueryMode();
+        Boolean useQueryMode = obj.isQueryModeUsed();
         commonGramTokenFilter.setUseQueryMode(useQueryMode);
-
-        if (obj.getCommonWords() != null) {
-            List<String> commonWords = new ArrayList<>(obj.getCommonWords());
-            commonGramTokenFilter.setCommonWords(commonWords);
-        }
+        commonGramTokenFilter.validate();
         return commonGramTokenFilter;
     }
 

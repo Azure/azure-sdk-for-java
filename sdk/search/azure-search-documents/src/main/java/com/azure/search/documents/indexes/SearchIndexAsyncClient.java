@@ -2,12 +2,13 @@
 // Licensed under the MIT License.
 package com.azure.search.documents.indexes;
 
+import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
+import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
-import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
@@ -15,21 +16,18 @@ import com.azure.search.documents.SearchAsyncClient;
 import com.azure.search.documents.SearchClientBuilder;
 import com.azure.search.documents.SearchServiceVersion;
 import com.azure.search.documents.implementation.converters.AnalyzeRequestConverter;
-import com.azure.search.documents.implementation.converters.RequestOptionsIndexesConverter;
 import com.azure.search.documents.implementation.converters.SearchIndexConverter;
 import com.azure.search.documents.implementation.converters.SynonymMapConverter;
 import com.azure.search.documents.implementation.util.MappingUtils;
-import com.azure.search.documents.indexes.implementation.SearchServiceRestClientBuilder;
-import com.azure.search.documents.indexes.implementation.SearchServiceRestClientImpl;
-import com.azure.search.documents.indexes.implementation.models.ListIndexesResult;
+import com.azure.search.documents.indexes.implementation.SearchServiceClientImpl;
+import com.azure.search.documents.indexes.implementation.SearchServiceClientImplBuilder;
 import com.azure.search.documents.indexes.implementation.models.ListSynonymMapsResult;
-import com.azure.search.documents.indexes.models.AnalyzeRequest;
+import com.azure.search.documents.indexes.models.AnalyzeTextOptions;
 import com.azure.search.documents.indexes.models.AnalyzedTokenInfo;
-import com.azure.search.documents.indexes.models.GetIndexStatisticsResult;
 import com.azure.search.documents.indexes.models.SearchIndex;
-import com.azure.search.documents.indexes.models.ServiceStatistics;
+import com.azure.search.documents.indexes.models.SearchIndexStatistics;
+import com.azure.search.documents.indexes.models.SearchServiceStatistics;
 import com.azure.search.documents.indexes.models.SynonymMap;
-import com.azure.search.documents.models.RequestOptions;
 import reactor.core.publisher.Mono;
 
 import java.util.Objects;
@@ -63,7 +61,7 @@ public final class SearchIndexAsyncClient {
     /**
      * The underlying AutoRest client used to interact with the Search service
      */
-    private final SearchServiceRestClientImpl restClient;
+    private final SearchServiceClientImpl restClient;
 
     /**
      * The pipeline that powers this client.
@@ -75,11 +73,11 @@ public final class SearchIndexAsyncClient {
         this.serviceVersion = serviceVersion;
         this.httpPipeline = httpPipeline;
 
-        this.restClient = new SearchServiceRestClientBuilder()
+        this.restClient = new SearchServiceClientImplBuilder()
             .endpoint(endpoint)
-            .apiVersion(serviceVersion.getVersion())
+          //  .apiVersion(serviceVersion.getVersion())
             .pipeline(httpPipeline)
-            .build();
+            .buildClient();
     }
 
     /**
@@ -89,15 +87,6 @@ public final class SearchIndexAsyncClient {
      */
     HttpPipeline getHttpPipeline() {
         return this.httpPipeline;
-    }
-
-    /**
-     * Gets search service version.
-     *
-     * @return the search service version value.
-     */
-    public SearchServiceVersion getServiceVersion() {
-        return this.serviceVersion;
     }
 
     /**
@@ -134,29 +123,27 @@ public final class SearchIndexAsyncClient {
      * @param index definition of the index to create.
      * @return the created Index.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SearchIndex> createIndex(SearchIndex index) {
-        return createIndexWithResponse(index, null).map(Response::getValue);
+        return createIndexWithResponse(index).map(Response::getValue);
     }
 
     /**
      * Creates a new Azure Cognitive Search index.
      *
      * @param index definition of the index to create
-     * @param requestOptions additional parameters for the operation. Contains the tracking ID sent with the request to
-     * help with debugging
      * @return a response containing the created Index.
      */
-    public Mono<Response<SearchIndex>> createIndexWithResponse(SearchIndex index, RequestOptions requestOptions) {
-        return withContext(context -> createIndexWithResponse(index, requestOptions, context));
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<SearchIndex>> createIndexWithResponse(SearchIndex index) {
+        return withContext(context -> createIndexWithResponse(index, context));
     }
 
-    Mono<Response<SearchIndex>> createIndexWithResponse(SearchIndex index, RequestOptions requestOptions,
-        Context context) {
+    Mono<Response<SearchIndex>> createIndexWithResponse(SearchIndex index, Context context) {
         Objects.requireNonNull(index, "'Index' cannot be null");
         try {
-            return restClient.indexes()
-                .createWithRestResponseAsync(SearchIndexConverter.map(index),
-                    RequestOptionsIndexesConverter.map(requestOptions), context)
+            return restClient.getIndexes()
+                .createWithResponseAsync(SearchIndexConverter.map(index), null, context)
                 .onErrorMap(MappingUtils::exceptionMapper)
                 .map(MappingUtils::mappingExternalSearchIndex);
         } catch (RuntimeException ex) {
@@ -170,26 +157,26 @@ public final class SearchIndexAsyncClient {
      * @param indexName The name of the index to retrieve
      * @return the Index.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SearchIndex> getIndex(String indexName) {
-        return getIndexWithResponse(indexName, null).map(Response::getValue);
+        return getIndexWithResponse(indexName).map(Response::getValue);
     }
 
     /**
      * Retrieves an index definition from the Azure Cognitive Search.
      *
      * @param indexName the name of the index to retrieve
-     * @param requestOptions additional parameters for the operation. Contains the tracking ID sent with the request to
-     * help with debugging
      * @return a response containing the Index.
      */
-    public Mono<Response<SearchIndex>> getIndexWithResponse(String indexName, RequestOptions requestOptions) {
-        return withContext(context -> getIndexWithResponse(indexName, requestOptions, context));
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<SearchIndex>> getIndexWithResponse(String indexName) {
+        return withContext(context -> getIndexWithResponse(indexName, context));
     }
 
-    Mono<Response<SearchIndex>> getIndexWithResponse(String indexName, RequestOptions requestOptions, Context context) {
+    Mono<Response<SearchIndex>> getIndexWithResponse(String indexName, Context context) {
         try {
-            return restClient.indexes()
-                .getWithRestResponseAsync(indexName, RequestOptionsIndexesConverter.map(requestOptions), context)
+            return restClient.getIndexes()
+                .getWithResponseAsync(indexName, null, context)
                 .onErrorMap(MappingUtils::exceptionMapper)
                 .map(MappingUtils::mappingExternalSearchIndex);
         } catch (RuntimeException ex) {
@@ -203,29 +190,27 @@ public final class SearchIndexAsyncClient {
      * @param indexName the name of the index for which to retrieve statistics
      * @return the index statistics result.
      */
-    public Mono<GetIndexStatisticsResult> getIndexStatistics(String indexName) {
-        return getIndexStatisticsWithResponse(indexName, null).map(Response::getValue);
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<SearchIndexStatistics> getIndexStatistics(String indexName) {
+        return getIndexStatisticsWithResponse(indexName).map(Response::getValue);
     }
 
     /**
      * Returns statistics for the given index, including a document count and storage usage.
      *
      * @param indexName the name of the index for which to retrieve statistics
-     * @param requestOptions additional parameters for the operation. Contains the tracking ID sent with the request to
-     * help with debugging
      * @return a response containing the index statistics result.
      */
-    public Mono<Response<GetIndexStatisticsResult>> getIndexStatisticsWithResponse(String indexName,
-        RequestOptions requestOptions) {
-        return withContext(context -> getIndexStatisticsWithResponse(indexName, requestOptions, context));
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<SearchIndexStatistics>> getIndexStatisticsWithResponse(String indexName) {
+        return withContext(context -> getIndexStatisticsWithResponse(indexName, context));
     }
 
-    Mono<Response<GetIndexStatisticsResult>> getIndexStatisticsWithResponse(String indexName,
-        RequestOptions requestOptions, Context context) {
+    Mono<Response<SearchIndexStatistics>> getIndexStatisticsWithResponse(String indexName,
+        Context context) {
         try {
-            return restClient.indexes()
-                .getStatisticsWithRestResponseAsync(indexName, RequestOptionsIndexesConverter.map(requestOptions),
-                    context)
+            return restClient.getIndexes()
+                .getStatisticsWithResponseAsync(indexName, null, context)
                 .onErrorMap(MappingUtils::exceptionMapper)
                 .map(MappingUtils::mappingGetIndexStatistics);
         } catch (RuntimeException ex) {
@@ -238,31 +223,19 @@ public final class SearchIndexAsyncClient {
      *
      * @return a reactive response emitting the list of indexes.
      */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<SearchIndex> listIndexes() {
-        return listIndexes(null, null);
-    }
-
-    /**
-     * Lists all indexes available for an Azure Cognitive Search service.
-     *
-     * @param requestOptions additional parameters for the operation. Contains the tracking ID sent with the request to
-     * help with debugging
-     * @return a reactive response emitting the list of indexes.
-     */
-    public PagedFlux<SearchIndex> listIndexes(RequestOptions requestOptions) {
         try {
             return new PagedFlux<>(() ->
-                withContext(context -> this.listIndexesWithResponse(null, requestOptions, context))
-                    .map(MappingUtils::mappingPagingSearchIndex));
+                withContext(context -> this.listIndexesWithResponse(null, context)));
         } catch (RuntimeException ex) {
             return pagedFluxError(logger, ex);
         }
     }
 
-    PagedFlux<SearchIndex> listIndexes(RequestOptions requestOptions, Context context) {
+    PagedFlux<SearchIndex> listIndexes(Context context) {
         try {
-            return new PagedFlux<>(() -> this.listIndexesWithResponse(null, requestOptions, context)
-            .map(MappingUtils::mappingPagingSearchIndex));
+            return new PagedFlux<>(() -> this.listIndexesWithResponse(null, context));
         } catch (RuntimeException ex) {
             return pagedFluxError(logger, ex);
         }
@@ -271,23 +244,22 @@ public final class SearchIndexAsyncClient {
     /**
      * Lists all indexes names for an Azure Cognitive Search service.
      *
-     * @param requestOptions additional parameters for the operation. Contains the tracking ID sent with the request to
-     * help with debugging
      * @return a reactive response emitting the list of index names.
      */
-    public PagedFlux<String> listIndexNames(RequestOptions requestOptions) {
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<String> listIndexNames() {
         try {
             return new PagedFlux<>(() ->
-                withContext(context -> this.listIndexesWithResponse("name", requestOptions, context))
+                withContext(context -> this.listIndexesWithResponse("name", context))
                     .map(MappingUtils::mappingPagingSearchIndexNames));
         } catch (RuntimeException ex) {
             return pagedFluxError(logger, ex);
         }
     }
 
-    PagedFlux<String> listIndexNames(RequestOptions requestOptions, Context context) {
+    PagedFlux<String> listIndexNames(Context context) {
         try {
-            return new PagedFlux<>(() -> this.listIndexesWithResponse("name", requestOptions, context)
+            return new PagedFlux<>(() -> this.listIndexesWithResponse("name", context)
                 .map(MappingUtils::mappingPagingSearchIndexNames)
             );
         } catch (RuntimeException ex) {
@@ -295,11 +267,11 @@ public final class SearchIndexAsyncClient {
         }
     }
 
-    private Mono<SimpleResponse<ListIndexesResult>> listIndexesWithResponse(String select,
-        RequestOptions requestOptions, Context context) {
-        return restClient.indexes()
-            .listWithRestResponseAsync(select, RequestOptionsIndexesConverter.map(requestOptions), context)
-            .onErrorMap(MappingUtils::exceptionMapper);
+    private Mono<PagedResponse<SearchIndex>> listIndexesWithResponse(String select, Context context) {
+        return restClient.getIndexes()
+            .listSinglePageAsync(select, null, context)
+            .onErrorMap(MappingUtils::exceptionMapper)
+            .map(MappingUtils::mappingListingSearchIndex);
     }
 
     /**
@@ -308,8 +280,9 @@ public final class SearchIndexAsyncClient {
      * @param index the definition of the {@link SearchIndex} to create or update.
      * @return the index that was created or updated.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SearchIndex> createOrUpdateIndex(SearchIndex index) {
-        return createOrUpdateIndexWithResponse(index, false, false, null).map(Response::getValue);
+        return createOrUpdateIndexWithResponse(index, false, false).map(Response::getValue);
     }
 
     /**
@@ -322,25 +295,24 @@ public final class SearchIndexAsyncClient {
      * updated, or longer for very large indexes
      * @param onlyIfUnchanged {@code true} to update if the {@code index} is the same as the current service value.
      * {@code false} to always update existing value.
-     * @param requestOptions additional parameters for the operation. Contains the tracking ID sent with the request to
-     * help with debugging
      * @return a response containing the index that was created or updated
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SearchIndex>> createOrUpdateIndexWithResponse(SearchIndex index, boolean allowIndexDowntime,
-        boolean onlyIfUnchanged, RequestOptions requestOptions) {
+        boolean onlyIfUnchanged) {
         return withContext(context ->
-            createOrUpdateIndexWithResponse(index, allowIndexDowntime, onlyIfUnchanged, requestOptions, context));
+            createOrUpdateIndexWithResponse(index, allowIndexDowntime, onlyIfUnchanged, context));
     }
 
     Mono<Response<SearchIndex>> createOrUpdateIndexWithResponse(SearchIndex index, boolean allowIndexDowntime,
-        boolean onlyIfUnchanged, RequestOptions requestOptions, Context context) {
+        boolean onlyIfUnchanged, Context context) {
         try {
             Objects.requireNonNull(index, "'Index' cannot null.");
             String ifMatch = onlyIfUnchanged ? index.getETag() : null;
-            return restClient.indexes()
-                .createOrUpdateWithRestResponseAsync(index.getName(), SearchIndexConverter.map(index),
+            return restClient.getIndexes()
+                .createOrUpdateWithResponseAsync(index.getName(), SearchIndexConverter.map(index),
                     allowIndexDowntime, ifMatch, null,
-                    RequestOptionsIndexesConverter.map(requestOptions), context)
+                    null, context)
                 .onErrorMap(MappingUtils::exceptionMapper)
                 .map(MappingUtils::mappingExternalSearchIndex);
         } catch (RuntimeException ex) {
@@ -354,8 +326,9 @@ public final class SearchIndexAsyncClient {
      * @param indexName the name of the index to delete
      * @return a response signalling completion.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteIndex(String indexName) {
-        return withContext(context -> deleteIndexWithResponse(indexName, null, null, null).flatMap(FluxUtil::toMono));
+        return deleteIndexWithResponse(indexName, null, null).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -364,23 +337,20 @@ public final class SearchIndexAsyncClient {
      * @param index the {@link SearchIndex} to delete.
      * @param onlyIfUnchanged {@code true} to delete if the {@code index} is the same as the current service value.
      * {@code false} to always delete existing value.
-     * @param requestOptions additional parameters for the operation. Contains the tracking ID sent with the request to
-     * help with debugging
      * @return a response signalling completion.
      */
-    public Mono<Response<Void>> deleteIndexWithResponse(SearchIndex index, boolean onlyIfUnchanged,
-        RequestOptions requestOptions) {
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> deleteIndexWithResponse(SearchIndex index, boolean onlyIfUnchanged) {
         Objects.requireNonNull(index, "'Index' cannot be null.");
         String etag = onlyIfUnchanged ? index.getETag() : null;
-        return withContext(context -> deleteIndexWithResponse(index.getName(), etag, requestOptions, context));
+        return withContext(context -> deleteIndexWithResponse(index.getName(), etag, context));
     }
 
-    Mono<Response<Void>> deleteIndexWithResponse(String indexName, String etag, RequestOptions requestOptions,
-        Context context) {
+    Mono<Response<Void>> deleteIndexWithResponse(String indexName, String etag, Context context) {
         try {
-            return restClient.indexes()
-                .deleteWithRestResponseAsync(indexName, etag, null,
-                    RequestOptionsIndexesConverter.map(requestOptions), context)
+            return restClient.getIndexes()
+                .deleteWithResponseAsync(indexName, etag, null,
+                    null, context)
                 .onErrorMap(MappingUtils::exceptionMapper)
                 .map(Function.identity());
         } catch (RuntimeException ex) {
@@ -392,46 +362,33 @@ public final class SearchIndexAsyncClient {
      * Shows how an analyzer breaks text into tokens.
      *
      * @param indexName the name of the index for which to test an analyzer
-     * @param analyzeRequest the text and analyzer or analysis components to test
-     * @return analyze result.
-     */
-    public PagedFlux<AnalyzedTokenInfo> analyzeText(String indexName, AnalyzeRequest analyzeRequest) {
-        return analyzeText(indexName, analyzeRequest, null);
-    }
-
-    /**
-     * Shows how an analyzer breaks text into tokens.
-     *
-     * @param indexName the name of the index for which to test an analyzer
-     * @param analyzeRequest the text and analyzer or analysis components to test
-     * @param requestOptions additional parameters for the operation. Contains the tracking ID sent with the request to
-     * help with debugging
+     * @param analyzeTextOptions the text and analyzer or analysis components to test
      * @return a response containing analyze result.
      */
-    public PagedFlux<AnalyzedTokenInfo> analyzeText(String indexName, AnalyzeRequest analyzeRequest,
-        RequestOptions requestOptions) {
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<AnalyzedTokenInfo> analyzeText(String indexName, AnalyzeTextOptions analyzeTextOptions) {
         try {
-            return new PagedFlux<>(() ->
-                withContext(context -> analyzeTextWithResponse(indexName, analyzeRequest, requestOptions, context)));
+            return new PagedFlux<>(() -> withContext(context ->
+                analyzeTextWithResponse(indexName, analyzeTextOptions, context)));
         } catch (RuntimeException ex) {
             return pagedFluxError(logger, ex);
         }
     }
 
-    PagedFlux<AnalyzedTokenInfo> analyzeText(String indexName, AnalyzeRequest analyzeRequest,
-        RequestOptions requestOptions, Context context) {
+    PagedFlux<AnalyzedTokenInfo> analyzeText(String indexName, AnalyzeTextOptions analyzeTextOptions,
+        Context context) {
         try {
-            return new PagedFlux<>(() -> analyzeTextWithResponse(indexName, analyzeRequest, requestOptions, context));
+            return new PagedFlux<>(() -> analyzeTextWithResponse(indexName, analyzeTextOptions, context));
         } catch (RuntimeException ex) {
             return pagedFluxError(logger, ex);
         }
     }
 
     private Mono<PagedResponse<AnalyzedTokenInfo>> analyzeTextWithResponse(String indexName,
-        AnalyzeRequest analyzeRequest, RequestOptions requestOptions, Context context) {
-        return restClient.indexes()
-            .analyzeWithRestResponseAsync(indexName, AnalyzeRequestConverter.map(analyzeRequest),
-                RequestOptionsIndexesConverter.map(requestOptions), context)
+        AnalyzeTextOptions analyzeTextOptions, Context context) {
+        return restClient.getIndexes()
+            .analyzeWithResponseAsync(indexName, AnalyzeRequestConverter.map(analyzeTextOptions),
+                null, context)
             .onErrorMap(MappingUtils::exceptionMapper)
             .map(MappingUtils::mappingTokenInfo);
     }
@@ -442,30 +399,29 @@ public final class SearchIndexAsyncClient {
      * @param synonymMap the definition of the synonym map to create
      * @return the created {@link SynonymMap}.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SynonymMap> createSynonymMap(SynonymMap synonymMap) {
-        return createSynonymMapWithResponse(synonymMap, null).map(Response::getValue);
+        return createSynonymMapWithResponse(synonymMap).map(Response::getValue);
     }
 
     /**
      * Creates a new Azure Cognitive Search synonym map.
      *
      * @param synonymMap the definition of the {@link SynonymMap} to create
-     * @param requestOptions additional parameters for the operation. Contains the tracking ID sent with the request to
-     * help with debugging
      * @return a response containing the created SynonymMap.
      */
-    public Mono<Response<SynonymMap>> createSynonymMapWithResponse(SynonymMap synonymMap,
-        RequestOptions requestOptions) {
-        return withContext(context -> createSynonymMapWithResponse(synonymMap, requestOptions, context));
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<SynonymMap>> createSynonymMapWithResponse(SynonymMap synonymMap) {
+        return withContext(context -> createSynonymMapWithResponse(synonymMap, context));
     }
 
-    Mono<Response<SynonymMap>> createSynonymMapWithResponse(SynonymMap synonymMap, RequestOptions requestOptions,
+    Mono<Response<SynonymMap>> createSynonymMapWithResponse(SynonymMap synonymMap,
         Context context) {
         Objects.requireNonNull(synonymMap, "'SynonymMap' cannot be null.");
         try {
-            return restClient.synonymMaps()
-                .createWithRestResponseAsync(SynonymMapConverter.map(synonymMap),
-                    RequestOptionsIndexesConverter.map(requestOptions), context)
+            return restClient.getSynonymMaps()
+                .createWithResponseAsync(SynonymMapConverter.map(synonymMap),
+                    null, context)
                 .onErrorMap(MappingUtils::exceptionMapper)
                 .map(MappingUtils::mappingExternalSynonymMap);
         } catch (RuntimeException ex) {
@@ -479,27 +435,27 @@ public final class SearchIndexAsyncClient {
      * @param synonymMapName name of the synonym map to retrieve
      * @return the {@link SynonymMap} definition
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SynonymMap> getSynonymMap(String synonymMapName) {
-        return getSynonymMapWithResponse(synonymMapName, null).map(Response::getValue);
+        return getSynonymMapWithResponse(synonymMapName).map(Response::getValue);
     }
 
     /**
      * Retrieves a synonym map definition.
      *
      * @param synonymMapName name of the synonym map to retrieve
-     * @param requestOptions additional parameters for the operation. Contains the tracking ID sent with the request to
-     * help with debugging
      * @return a response containing the SynonymMap.
      */
-    public Mono<Response<SynonymMap>> getSynonymMapWithResponse(String synonymMapName, RequestOptions requestOptions) {
-        return withContext(context -> getSynonymMapWithResponse(synonymMapName, requestOptions, context));
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<SynonymMap>> getSynonymMapWithResponse(String synonymMapName) {
+        return withContext(context -> getSynonymMapWithResponse(synonymMapName, context));
     }
 
-    Mono<Response<SynonymMap>> getSynonymMapWithResponse(String synonymMapName, RequestOptions requestOptions,
+    Mono<Response<SynonymMap>> getSynonymMapWithResponse(String synonymMapName,
         Context context) {
         try {
-            return restClient.synonymMaps()
-                .getWithRestResponseAsync(synonymMapName, RequestOptionsIndexesConverter.map(requestOptions), context)
+            return restClient.getSynonymMaps()
+                .getWithResponseAsync(synonymMapName, null, context)
                 .onErrorMap(MappingUtils::exceptionMapper)
                 .map(MappingUtils::mappingExternalSynonymMap);
         } catch (RuntimeException ex) {
@@ -512,30 +468,20 @@ public final class SearchIndexAsyncClient {
      *
      * @return a reactive response emitting the list of synonym maps.
      */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<SynonymMap> listSynonymMaps() {
-        return listSynonymMaps(null);
-    }
-
-    /**
-     * Lists all synonym maps available for an Azure Cognitive Search service.
-     *
-     * @param requestOptions additional parameters for the operation. Contains the tracking ID sent with the request to
-     * help with debugging
-     * @return a reactive response emitting the list of synonym maps.
-     */
-    public PagedFlux<SynonymMap> listSynonymMaps(RequestOptions requestOptions) {
         try {
             return new PagedFlux<>(() ->
-                withContext(context -> listSynonymMapsWithResponse(null, requestOptions, context))
-                .map(MappingUtils::mappingPagingSynonymMap));
+                withContext(context -> listSynonymMapsWithResponse(null, context))
+                    .map(MappingUtils::mappingPagingSynonymMap));
         } catch (RuntimeException ex) {
             return pagedFluxError(logger, ex);
         }
     }
 
-    PagedFlux<SynonymMap> listSynonymMaps(RequestOptions requestOptions, Context context) {
+    PagedFlux<SynonymMap> listSynonymMaps(Context context) {
         try {
-            return new PagedFlux<>(() -> listSynonymMapsWithResponse(null, requestOptions, context)
+            return new PagedFlux<>(() -> listSynonymMapsWithResponse(null, context)
                 .map(MappingUtils::mappingPagingSynonymMap));
         } catch (RuntimeException ex) {
             return pagedFluxError(logger, ex);
@@ -545,33 +491,32 @@ public final class SearchIndexAsyncClient {
     /**
      * Lists all synonym map names for an Azure Cognitive Search service.
      *
-     * @param requestOptions additional parameters for the operation. Contains the tracking ID sent with the request to
-     * help with debugging
      * @return a reactive response emitting the list of synonym map names.
      */
-    public PagedFlux<String> listSynonymMapNames(RequestOptions requestOptions) {
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<String> listSynonymMapNames() {
         try {
             return new PagedFlux<>(() ->
-                withContext(context -> listSynonymMapsWithResponse("name", requestOptions, context))
+                withContext(context -> listSynonymMapsWithResponse("name", context))
                     .map(MappingUtils::mappingPagingSynonymMapNames));
         } catch (RuntimeException ex) {
             return pagedFluxError(logger, ex);
         }
     }
 
-    PagedFlux<String> listSynonymMapNames(RequestOptions requestOptions, Context context) {
+    PagedFlux<String> listSynonymMapNames(Context context) {
         try {
-            return new PagedFlux<>(() -> listSynonymMapsWithResponse("name", requestOptions, context)
+            return new PagedFlux<>(() -> listSynonymMapsWithResponse("name", context)
                 .map(MappingUtils::mappingPagingSynonymMapNames));
         } catch (RuntimeException ex) {
             return pagedFluxError(logger, ex);
         }
     }
 
-    private Mono<SimpleResponse<ListSynonymMapsResult>> listSynonymMapsWithResponse(String select,
-        RequestOptions requestOptions, Context context) {
-        return restClient.synonymMaps()
-            .listWithRestResponseAsync(select, RequestOptionsIndexesConverter.map(requestOptions), context)
+    private Mono<Response<ListSynonymMapsResult>> listSynonymMapsWithResponse(String select,
+        Context context) {
+        return restClient.getSynonymMaps()
+            .listWithResponseAsync(select, null, context)
             .onErrorMap(MappingUtils::exceptionMapper);
     }
 
@@ -581,8 +526,9 @@ public final class SearchIndexAsyncClient {
      * @param synonymMap the definition of the {@link SynonymMap} to create or update
      * @return the synonym map that was created or updated.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SynonymMap> createOrUpdateSynonymMap(SynonymMap synonymMap) {
-        return createOrUpdateSynonymMapWithResponse(synonymMap, false, null).map(Response::getValue);
+        return createOrUpdateSynonymMapWithResponse(synonymMap, false).map(Response::getValue);
     }
 
     /**
@@ -591,25 +537,24 @@ public final class SearchIndexAsyncClient {
      * @param synonymMap the definition of the {@link SynonymMap} to create or update
      * @param onlyIfUnchanged {@code true} to update if the {@code synonymMap} is the same as the current service value.
      * {@code false} to always update existing value.
-     * @param requestOptions additional parameters for the operation. Contains the tracking ID sent with the request to
-     * help with debugging
      * @return a response containing the synonym map that was created or updated.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SynonymMap>> createOrUpdateSynonymMapWithResponse(SynonymMap synonymMap,
-        boolean onlyIfUnchanged, RequestOptions requestOptions) {
+        boolean onlyIfUnchanged) {
         return withContext(context ->
-            createOrUpdateSynonymMapWithResponse(synonymMap, onlyIfUnchanged, requestOptions, context));
+            createOrUpdateSynonymMapWithResponse(synonymMap, onlyIfUnchanged, context));
     }
 
     Mono<Response<SynonymMap>> createOrUpdateSynonymMapWithResponse(SynonymMap synonymMap,
-        boolean onlyIfUnchanged, RequestOptions requestOptions, Context context) {
+        boolean onlyIfUnchanged, Context context) {
         Objects.requireNonNull(synonymMap, "'SynonymMap' cannot be null.");
         String ifMatch = onlyIfUnchanged ? synonymMap.getETag() : null;
         try {
-            return restClient.synonymMaps()
-                .createOrUpdateWithRestResponseAsync(synonymMap.getName(), SynonymMapConverter.map(synonymMap),
+            return restClient.getSynonymMaps()
+                .createOrUpdateWithResponseAsync(synonymMap.getName(), SynonymMapConverter.map(synonymMap),
                     ifMatch, null,
-                    RequestOptionsIndexesConverter.map(requestOptions),
+                    null,
                     context)
                 .onErrorMap(MappingUtils::exceptionMapper)
                 .map(MappingUtils::mappingExternalSynonymMap);
@@ -624,8 +569,9 @@ public final class SearchIndexAsyncClient {
      * @param synonymMapName the name of the {@link SynonymMap} to delete
      * @return a response signalling completion.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteSynonymMap(String synonymMapName) {
-        return withContext(context -> deleteSynonymMapWithResponse(synonymMapName, null, null, context)
+        return withContext(context -> deleteSynonymMapWithResponse(synonymMapName, null, context)
             .flatMap(FluxUtil::toMono));
     }
 
@@ -635,24 +581,22 @@ public final class SearchIndexAsyncClient {
      * @param synonymMap the {@link SynonymMap} to delete.
      * @param onlyIfUnchanged {@code true} to delete if the {@code synonymMap} is the same as the current service value.
      * {@code false} to always delete existing value.
-     * @param requestOptions additional parameters for the operation. Contains the tracking ID sent with the request to
-     * help with debugging
      * @return a response signalling completion.
      */
-    public Mono<Response<Void>> deleteSynonymMapWithResponse(SynonymMap synonymMap, boolean onlyIfUnchanged,
-        RequestOptions requestOptions) {
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> deleteSynonymMapWithResponse(SynonymMap synonymMap, boolean onlyIfUnchanged) {
         Objects.requireNonNull(synonymMap, "'SynonymMap' cannot be null");
         String etag = onlyIfUnchanged ? synonymMap.getETag() : null;
         return withContext(context ->
-            deleteSynonymMapWithResponse(synonymMap.getName(), etag, requestOptions, context));
+            deleteSynonymMapWithResponse(synonymMap.getName(), etag, context));
     }
 
     Mono<Response<Void>> deleteSynonymMapWithResponse(String synonymMapName, String etag,
-        RequestOptions requestOptions, Context context) {
+        Context context) {
         try {
-            return restClient.synonymMaps()
-                .deleteWithRestResponseAsync(synonymMapName, etag, null,
-                    RequestOptionsIndexesConverter.map(requestOptions), context)
+            return restClient.getSynonymMaps()
+                .deleteWithResponseAsync(synonymMapName, etag, null,
+                    null, context)
                 .onErrorMap(MappingUtils::exceptionMapper)
                 .map(Function.identity());
         } catch (RuntimeException ex) {
@@ -667,26 +611,25 @@ public final class SearchIndexAsyncClient {
      *
      * @return the search service statistics result.
      */
-    public Mono<ServiceStatistics> getServiceStatistics() {
-        return getServiceStatisticsWithResponse(null).map(Response::getValue);
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<SearchServiceStatistics> getServiceStatistics() {
+        return getServiceStatisticsWithResponse().map(Response::getValue);
     }
 
 
     /**
      * Returns service level statistics for a search service, including service counters and limits.
      *
-     * @param requestOptions additional parameters for the operation. Contains the tracking ID sent with the request to
-     * help with debugging
      * @return the search service statistics result.
      */
-    public Mono<Response<ServiceStatistics>> getServiceStatisticsWithResponse(RequestOptions requestOptions) {
-        return withContext(context -> getServiceStatisticsWithResponse(requestOptions, context));
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<SearchServiceStatistics>> getServiceStatisticsWithResponse() {
+        return withContext(this::getServiceStatisticsWithResponse);
     }
 
-    Mono<Response<ServiceStatistics>> getServiceStatisticsWithResponse(RequestOptions requestOptions, Context context) {
+    Mono<Response<SearchServiceStatistics>> getServiceStatisticsWithResponse(Context context) {
         try {
-            return restClient.getServiceStatisticsWithRestResponseAsync(
-                RequestOptionsIndexesConverter.map(requestOptions), context)
+            return restClient.getServiceStatisticsWithResponseAsync(null, context)
                 .onErrorMap(MappingUtils::exceptionMapper)
                 .map(MappingUtils::mappingExternalServiceStatistics);
         } catch (RuntimeException ex) {

@@ -3,7 +3,6 @@
 
 package com.azure.search.documents.indexes.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 /**
@@ -27,23 +26,6 @@ public enum EdgeNGramTokenFilterSide {
 
     EdgeNGramTokenFilterSide(String value) {
         this.value = value;
-    }
-
-    /**
-     * Parses a serialized value to a EdgeNGramTokenFilterSide instance.
-     *
-     * @param value the serialized value to parse.
-     * @return the parsed EdgeNGramTokenFilterSide object, or null if unable to parse.
-     */
-    @JsonCreator
-    public static EdgeNGramTokenFilterSide fromString(String value) {
-        EdgeNGramTokenFilterSide[] items = EdgeNGramTokenFilterSide.values();
-        for (EdgeNGramTokenFilterSide item : items) {
-            if (item.toString().equalsIgnoreCase(value)) {
-                return item;
-            }
-        }
-        return null;
     }
 
     @JsonValue

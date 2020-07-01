@@ -68,10 +68,13 @@ public class ReadmeSamples {
             .queueName("<< QUEUE NAME >>")
             .buildClient();
         List<ServiceBusMessage> messages = Arrays.asList(
-            new ServiceBusMessage("Hello world".getBytes()).setMessageId("1"),
-            new ServiceBusMessage("Bonjour".getBytes()).setMessageId("2"));
+            new ServiceBusMessage("Hello world").setMessageId("1"),
+            new ServiceBusMessage("Bonjour").setMessageId("2"));
 
-        sender.send(messages);
+        sender.sendMessages(messages);
+
+        // When you are done using the sender, dispose of it.
+        sender.close();
     }
 
     /**
@@ -83,15 +86,19 @@ public class ReadmeSamples {
             .receiver()
             .topicName("<< TOPIC NAME >>")
             .subscriptionName("<< SUBSCRIPTION NAME >>")
-            .receiveMode(ReceiveMode.PEEK_LOCK)
             .buildClient();
 
-        IterableStream<ServiceBusReceivedMessageContext> messages = receiver.receive(10, Duration.ofSeconds(30));
+        // Receives a batch of messages when 10 messages are received or until 30 seconds have elapsed, whichever
+        // happens first.
+        IterableStream<ServiceBusReceivedMessageContext> messages = receiver.receiveMessages(10, Duration.ofSeconds(30));
         messages.forEach(context -> {
             ServiceBusReceivedMessage message = context.getMessage();
             System.out.printf("Id: %s. Contents: %s%n", message.getMessageId(),
                 new String(message.getBody(), StandardCharsets.UTF_8));
         });
+
+        // When you are done using the receiver, dispose of it.
+        receiver.close();
     }
 
     /**
@@ -104,7 +111,9 @@ public class ReadmeSamples {
             .queueName("<< QUEUE NAME >>")
             .buildAsyncClient();
 
-        Disposable subscription = receiver.receive().subscribe(context -> {
+        // receive() operation continuously fetches messages until the subscription is disposed.
+        // The stream is infinite, and completes when the subscription or receiver is closed.
+        Disposable subscription = receiver.receiveMessages().subscribe(context -> {
             ServiceBusReceivedMessage message = context.getMessage();
             System.out.printf("Id: %s%n", message.getMessageId());
             System.out.printf("Contents: %s%n", new String(message.getBody(), StandardCharsets.UTF_8));
@@ -113,6 +122,12 @@ public class ReadmeSamples {
             }, () -> {
                 System.out.println("Finished receiving messages.");
             });
+
+        // Continue application processing. When you are finished receiving messages, dispose of the subscription.
+        subscription.dispose();
+
+        // When you are done using the receiver, dispose of it.
+        receiver.close();
     }
 
     /**
@@ -127,11 +142,12 @@ public class ReadmeSamples {
             .receiveMode(ReceiveMode.PEEK_LOCK)
             .buildClient();
 
-        receiver.receive(10).forEach(context -> {
+        // This fetches a batch of 10 messages or until the default operation timeout has elapsed.
+        receiver.receiveMessages(10).forEach(context -> {
             ServiceBusReceivedMessage message = context.getMessage();
 
             // Process message and then complete it.
-            receiver.complete(message);
+            receiver.complete(message.getLockToken());
         });
     }
 
@@ -145,16 +161,18 @@ public class ReadmeSamples {
             .queueName("<< QUEUE NAME >>")
             .buildClient();
 
-        ServiceBusMessage message = new ServiceBusMessage("Hello world".getBytes())
+        // Setting sessionId publishes that message to a specific session, in this case, "greeting".
+        ServiceBusMessage message = new ServiceBusMessage("Hello world")
             .setSessionId("greetings");
 
-        sender.send(message);
+        sender.sendMessage(message);
     }
 
     /**
      * Create session receiver for "greetings"
      */
     public void namedSessionReceiver() {
+        // Creates a session-enabled receiver that gets messages from the session "greetings".
         ServiceBusReceiverAsyncClient receiver = new ServiceBusClientBuilder()
             .connectionString("<< CONNECTION STRING FOR THE SERVICE BUS NAMESPACE >>")
             .sessionReceiver()
@@ -167,6 +185,7 @@ public class ReadmeSamples {
      * Create session receiver for the first available session.
      */
     public void unnamedSessionReceiver() {
+        // Creates a session-enabled receiver that gets messages from the first available session.
         ServiceBusReceiverAsyncClient receiver = new ServiceBusClientBuilder()
             .connectionString("<< CONNECTION STRING FOR THE SERVICE BUS NAMESPACE >>")
             .sessionReceiver()

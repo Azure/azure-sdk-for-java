@@ -16,9 +16,9 @@ import com.azure.search.documents.indexes.models.SearchIndex;
 import com.azure.search.documents.indexes.models.SearchIndexer;
 import com.azure.search.documents.indexes.models.SearchIndexerSkill;
 import com.azure.search.documents.indexes.models.SearchIndexerSkillset;
-import com.azure.search.documents.indexes.models.ServiceCounters;
-import com.azure.search.documents.indexes.models.ServiceLimits;
-import com.azure.search.documents.indexes.models.ServiceStatistics;
+import com.azure.search.documents.indexes.models.SearchServiceCounters;
+import com.azure.search.documents.indexes.models.SearchServiceLimits;
+import com.azure.search.documents.indexes.models.SearchServiceStatistics;
 import com.azure.search.documents.indexes.models.SynonymMap;
 import com.azure.search.documents.indexes.models.WebApiSkill;
 import com.azure.search.documents.models.Hotel;
@@ -67,33 +67,27 @@ public class RefineSearchCapabilitiesExample {
     private static void addCustomWebSkillset(SearchIndexerClient client) {
         String skillsetName = "custom-web-skillset";
         List<InputFieldMappingEntry> inputs = Collections.singletonList(
-            new InputFieldMappingEntry()
-                .setName("text")
+            new InputFieldMappingEntry("text")
                 .setSource("/document/Description")
         );
 
         List<OutputFieldMappingEntry> outputs = Collections.singletonList(
-            new OutputFieldMappingEntry()
-                .setName("textItems")
+            new OutputFieldMappingEntry("textItems")
                 .setTargetName("TextItems")
         );
 
         HashMap<String, String> headers = new HashMap<>();
         headers.put("Ocp-Apim-Subscription-Key", "Bing entity search API key");
 
-        SearchIndexerSkill webApiSkill = new WebApiSkill()
-            .setUri("https://api.cognitive.microsoft.com/bing/v7.0/entities/")
+        SearchIndexerSkill webApiSkill = new WebApiSkill(inputs, outputs,
+            "https://api.cognitive.microsoft.com/bing/v7.0/entities/")
             .setHttpMethod("POST") // Supports only "POST" and "PUT" HTTP methods
             .setHttpHeaders(headers)
-            .setInputs(inputs)
-            .setOutputs(outputs)
             .setName("webapi-skill")
             .setDescription("A WebApi skill that can be used as a custom skillset");
 
-        SearchIndexerSkillset skillset = new SearchIndexerSkillset()
-            .setName(skillsetName)
-            .setDescription("Skillset for testing custom skillsets")
-            .setSkills(Collections.singletonList(webApiSkill));
+        SearchIndexerSkillset skillset = new SearchIndexerSkillset(skillsetName, Collections.singletonList(webApiSkill))
+            .setDescription("Skillset for testing custom skillsets");
 
         client.createOrUpdateSkillset(skillset);
         System.out.printf("Created Skillset %s%n", skillsetName);
@@ -104,9 +98,9 @@ public class RefineSearchCapabilitiesExample {
     }
 
     private static void getServiceStatistics(SearchIndexClient client) {
-        ServiceStatistics statistics = client.getServiceStatistics();
-        ServiceCounters counters = statistics.getCounters();
-        ServiceLimits limits = statistics.getLimits();
+        SearchServiceStatistics statistics = client.getServiceStatistics();
+        SearchServiceCounters counters = statistics.getCounters();
+        SearchServiceLimits limits = statistics.getLimits();
 
         System.out.println("Service Statistics:");
         System.out.printf("     Documents quota: %d, documents usage: %d%n", counters.getDocumentCounter().getQuota(), counters.getDocumentCounter().getUsage());
@@ -128,9 +122,8 @@ public class RefineSearchCapabilitiesExample {
 
     private static void addSynonymMapToIndex(SearchIndexClient client) {
         String synonymMapName = "hotel-synonym-sample";
-        SynonymMap synonymMap = new SynonymMap()
-            .setName(synonymMapName)
-            .setSynonyms("hotel, motel\ninternet,wifi\nfive star=>luxury\neconomy,inexpensive=>budget");
+        SynonymMap synonymMap = new SynonymMap(synonymMapName,
+            "hotel, motel\ninternet,wifi\nfive star=>luxury\neconomy,inexpensive=>budget");
 
         client.createOrUpdateSynonymMap(synonymMap);
 

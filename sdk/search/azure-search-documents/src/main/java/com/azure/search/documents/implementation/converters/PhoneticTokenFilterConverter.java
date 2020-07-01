@@ -19,13 +19,10 @@ public final class PhoneticTokenFilterConverter {
         if (obj == null) {
             return null;
         }
-        PhoneticTokenFilter phoneticTokenFilter = new PhoneticTokenFilter();
-
-        String name = obj.getName();
-        phoneticTokenFilter.setName(name);
+        PhoneticTokenFilter phoneticTokenFilter = new PhoneticTokenFilter(obj.getName());
 
         Boolean replaceOriginalTokens = obj.isReplaceOriginalTokens();
-        phoneticTokenFilter.setReplaceOriginalTokens(replaceOriginalTokens);
+        phoneticTokenFilter.setOriginalTokensReplaced(replaceOriginalTokens);
 
         if (obj.getEncoder() != null) {
             PhoneticEncoder encoder = PhoneticEncoderConverter.map(obj.getEncoder());
@@ -43,12 +40,9 @@ public final class PhoneticTokenFilterConverter {
             return null;
         }
         com.azure.search.documents.indexes.implementation.models.PhoneticTokenFilter phoneticTokenFilter =
-            new com.azure.search.documents.indexes.implementation.models.PhoneticTokenFilter();
+            new com.azure.search.documents.indexes.implementation.models.PhoneticTokenFilter(obj.getName());
 
-        String name = obj.getName();
-        phoneticTokenFilter.setName(name);
-
-        Boolean replaceOriginalTokens = obj.isReplaceOriginalTokens();
+        Boolean replaceOriginalTokens = obj.areOriginalTokensReplaced();
         phoneticTokenFilter.setReplaceOriginalTokens(replaceOriginalTokens);
 
         if (obj.getEncoder() != null) {
@@ -56,6 +50,7 @@ public final class PhoneticTokenFilterConverter {
                 PhoneticEncoderConverter.map(obj.getEncoder());
             phoneticTokenFilter.setEncoder(encoder);
         }
+        phoneticTokenFilter.validate();
         return phoneticTokenFilter;
     }
 

@@ -18,24 +18,21 @@ public final class PathHierarchyTokenizerConverter {
         if (obj == null) {
             return null;
         }
-        PathHierarchyTokenizer pathHierarchyTokenizer = new PathHierarchyTokenizer();
-
-        String name = obj.getName();
-        pathHierarchyTokenizer.setName(name);
+        PathHierarchyTokenizer pathHierarchyTokenizer = new PathHierarchyTokenizer(obj.getName());
 
         Integer maxTokenLength = obj.getMaxTokenLength();
         pathHierarchyTokenizer.setMaxTokenLength(maxTokenLength);
 
-        String delimiter = obj.getDelimiter();
+        Character delimiter = obj.getDelimiter();
         pathHierarchyTokenizer.setDelimiter(delimiter);
 
         Boolean reverseTokenOrder = obj.isReverseTokenOrder();
-        pathHierarchyTokenizer.setReverseTokenOrder(reverseTokenOrder);
+        pathHierarchyTokenizer.setTokenOrderReversed(reverseTokenOrder);
 
         Integer numberOfTokensToSkip = obj.getNumberOfTokensToSkip();
         pathHierarchyTokenizer.setNumberOfTokensToSkip(numberOfTokensToSkip);
 
-        String replacement = obj.getReplacement();
+        Character replacement = obj.getReplacement();
         pathHierarchyTokenizer.setReplacement(replacement);
         return pathHierarchyTokenizer;
     }
@@ -49,25 +46,23 @@ public final class PathHierarchyTokenizerConverter {
             return null;
         }
         com.azure.search.documents.indexes.implementation.models.PathHierarchyTokenizerV2 pathHierarchyTokenizerV2 =
-            new com.azure.search.documents.indexes.implementation.models.PathHierarchyTokenizerV2();
-
-        String name = obj.getName();
-        pathHierarchyTokenizerV2.setName(name);
+            new com.azure.search.documents.indexes.implementation.models.PathHierarchyTokenizerV2(obj.getName());
 
         Integer maxTokenLength = obj.getMaxTokenLength();
         pathHierarchyTokenizerV2.setMaxTokenLength(maxTokenLength);
 
-        String delimiter = obj.getDelimiter();
+        Character delimiter = obj.getDelimiter();
         pathHierarchyTokenizerV2.setDelimiter(delimiter);
 
-        Boolean reverseTokenOrder = obj.isReverseTokenOrder();
+        Boolean reverseTokenOrder = obj.isTokenOrderReversed();
         pathHierarchyTokenizerV2.setReverseTokenOrder(reverseTokenOrder);
 
         Integer numberOfTokensToSkip = obj.getNumberOfTokensToSkip();
         pathHierarchyTokenizerV2.setNumberOfTokensToSkip(numberOfTokensToSkip);
 
-        String replacement = obj.getReplacement();
+        Character replacement = obj.getReplacement();
         pathHierarchyTokenizerV2.setReplacement(replacement);
+        pathHierarchyTokenizerV2.validate();
         return pathHierarchyTokenizerV2;
     }
 

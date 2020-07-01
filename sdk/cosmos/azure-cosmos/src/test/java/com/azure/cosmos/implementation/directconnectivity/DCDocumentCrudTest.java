@@ -6,7 +6,7 @@ import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.DirectConnectionConfig;
 import com.azure.cosmos.implementation.ConnectionPolicy;
 import com.azure.cosmos.ConsistencyLevel;
-import com.azure.cosmos.models.QueryRequestOptions;
+import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKey;
@@ -220,7 +220,7 @@ public class DCDocumentCrudTest extends TestSuiteBase {
 
         waitIfNeededForReplicasToCatchUp(clientBuilder());
 
-        QueryRequestOptions options = new QueryRequestOptions();
+        CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
         options.setMaxDegreeOfParallelism(-1);
         ModelBridgeInternal.setQueryRequestOptionsMaxItemCount(options, 100);
 

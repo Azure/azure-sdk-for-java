@@ -9,6 +9,7 @@ import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.policy.AddDatePolicy;
+import com.azure.core.http.policy.AddHeadersFromContextPolicy;
 import com.azure.core.http.policy.AddHeadersPolicy;
 import com.azure.core.http.policy.AzureKeyCredentialPolicy;
 import com.azure.core.http.policy.HttpLogOptions;
@@ -36,11 +37,23 @@ import java.util.Objects;
  * #buildClient() buildClient} and {@link #buildAsyncClient() buildAsyncClient} respectively to construct an instance of
  * the desired client.
  * <p>
- * The following information must be provided to successfully create a client.
+ * The client needs to at least provide the following required fields
+ * </p>
  * <ul>
- *     <li>{@link #endpoint(String)}</li>
- *     <li>{@link #credential(AzureKeyCredential)} or {@link #pipeline(HttpPipeline)}</li>
+ * <li>the service endpoint of the Azure Cognitive Search to access the resource service.</li>
+ * <li>{@link #credential(AzureKeyCredential)} gives the builder access credential.</li>
  * </ul>
+ *
+ * <p><strong>Instantiating an asynchronous Search Index Client</strong></p>
+ *
+ * {@codesnippet com.azure.search.documents.indexes.SearchIndexAsyncClient.instantiation}
+ *
+ * <p><strong>Instantiating a synchronous Search Index Client</strong></p>
+ *
+ * {@codesnippet com.azure.search.documents.indexes.SearchIndexClient.instantiation}
+ *
+ * @see SearchIndexClient
+ * @see SearchIndexAsyncClient
  */
 @ServiceClientBuilder(serviceClients = {SearchIndexClient.class, SearchIndexAsyncClient.class})
 public final class SearchIndexClientBuilder {
@@ -63,7 +76,7 @@ public final class SearchIndexClientBuilder {
     private final String clientName;
     private final String clientVersion;
 
-    private AzureKeyCredential keyCredential;
+    private AzureKeyCredential credential;
     private SearchServiceVersion serviceVersion;
     private String endpoint;
     private HttpClient httpClient;
@@ -109,7 +122,7 @@ public final class SearchIndexClientBuilder {
      */
     public SearchIndexAsyncClient buildAsyncClient() {
         Objects.requireNonNull(endpoint, "'endpoint' cannot be null.");
-        Objects.requireNonNull(keyCredential, "'keyCredential' cannot be null.");
+        Objects.requireNonNull(credential, "'credential' cannot be null.");
 
         SearchServiceVersion buildVersion = (serviceVersion == null)
             ? SearchServiceVersion.getLatest()
@@ -119,12 +132,13 @@ public final class SearchIndexClientBuilder {
             return new SearchIndexAsyncClient(endpoint, buildVersion, httpPipeline);
         }
 
-        Objects.requireNonNull(keyCredential, "'keyCredential' cannot be null.");
+        Objects.requireNonNull(credential, "'credential' cannot be null.");
         Configuration buildConfiguration = (configuration == null)
             ? Configuration.getGlobalConfiguration()
             : configuration;
         final List<HttpPipelinePolicy> httpPipelinePolicies = new ArrayList<>();
         httpPipelinePolicies.add(new AddHeadersPolicy(headers));
+        httpPipelinePolicies.add(new AddHeadersFromContextPolicy());
         httpPipelinePolicies.add(new UserAgentPolicy(httpLogOptions.getApplicationId(), clientName, clientVersion,
             buildConfiguration));
         httpPipelinePolicies.add(new RequestIdPolicy());
@@ -134,7 +148,7 @@ public final class SearchIndexClientBuilder {
 
         httpPipelinePolicies.add(new AddDatePolicy());
 
-        this.policies.add(new AzureKeyCredentialPolicy(API_KEY, keyCredential));
+        this.policies.add(new AzureKeyCredentialPolicy(API_KEY, credential));
 
         httpPipelinePolicies.addAll(this.policies);
 
@@ -170,14 +184,14 @@ public final class SearchIndexClientBuilder {
     /**
      * Sets the {@link AzureKeyCredential} used to authenticate HTTP requests.
      *
-     * @param keyCredential The {@link AzureKeyCredential} used to authenticate HTTP requests.
+     * @param credential The {@link AzureKeyCredential} used to authenticate HTTP requests.
      * @return The updated SearchIndexClientBuilder object.
-     * @throws NullPointerException If {@code keyCredential} is {@code null}.
+     * @throws NullPointerException If {@code credential} is {@code null}.
      * @throws IllegalArgumentException If {@link AzureKeyCredential#getKey()} is {@code null} or empty.
      */
-    public SearchIndexClientBuilder credential(AzureKeyCredential keyCredential) {
-        Objects.requireNonNull(keyCredential, "'keyCredential' cannot be null.");
-        this.keyCredential = keyCredential;
+    public SearchIndexClientBuilder credential(AzureKeyCredential credential) {
+        Objects.requireNonNull(credential, "'credential' cannot be null.");
+        this.credential = credential;
         return this;
     }
 

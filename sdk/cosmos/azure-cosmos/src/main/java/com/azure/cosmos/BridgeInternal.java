@@ -6,7 +6,7 @@ package com.azure.cosmos;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.CosmosError;
-import com.azure.cosmos.implementation.CosmosItemProperties;
+import com.azure.cosmos.implementation.InternalObjectNode;
 import com.azure.cosmos.implementation.DatabaseAccount;
 import com.azure.cosmos.implementation.Document;
 import com.azure.cosmos.implementation.FeedResponseDiagnostics;
@@ -20,6 +20,7 @@ import com.azure.cosmos.implementation.ResourceResponse;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.RxDocumentServiceResponse;
 import com.azure.cosmos.implementation.SerializationDiagnosticsContext;
+import com.azure.cosmos.implementation.ServiceUnavailableException;
 import com.azure.cosmos.implementation.StoredProcedureResponse;
 import com.azure.cosmos.implementation.Warning;
 import com.azure.cosmos.implementation.directconnectivity.StoreResponse;
@@ -39,6 +40,7 @@ import io.micrometer.core.instrument.MeterRegistry;
 
 import java.net.URI;
 import java.nio.ByteBuffer;
+import java.time.Duration;
 import java.time.Instant;
 import java.util.Collection;
 import java.util.List;
@@ -65,7 +67,7 @@ public final class BridgeInternal {
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static ByteBuffer serializeJsonToByteBuffer(Object document, ObjectMapper mapper) {
-        return CosmosItemProperties.serializeJsonToByteBuffer(document, mapper);
+        return InternalObjectNode.serializeJsonToByteBuffer(document, mapper);
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
@@ -432,8 +434,8 @@ public final class BridgeInternal {
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static <T> CosmosItemProperties getProperties(CosmosItemResponse<T> cosmosItemResponse) {
-        return ModelBridgeInternal.getCosmosItemProperties(cosmosItemResponse);
+    public static <T> InternalObjectNode getProperties(CosmosItemResponse<T> cosmosItemResponse) {
+        return ModelBridgeInternal.getInternalObjectNode(cosmosItemResponse);
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
@@ -484,5 +486,20 @@ public final class BridgeInternal {
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static ConsistencyLevel fromServiceSerializedFormat(String consistencyLevel) {
         return ConsistencyLevel.fromServiceSerializedFormat(consistencyLevel);
+    }
+
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
+    public static CosmosException createServiceUnavailableException(Exception innerException) {
+        return new ServiceUnavailableException(innerException.getMessage(), innerException, null, null);
+    }
+
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
+    public static Duration getRequestTimeoutFromDirectConnectionConfig(DirectConnectionConfig directConnectionConfig) {
+        return directConnectionConfig.getRequestTimeout();
+    }
+
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
+    public static Duration getRequestTimeoutFromGatewayConnectionConfig(GatewayConnectionConfig gatewayConnectionConfig) {
+        return gatewayConnectionConfig.getRequestTimeout();
     }
 }

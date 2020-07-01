@@ -18,10 +18,7 @@ public final class ShingleTokenFilterConverter {
         if (obj == null) {
             return null;
         }
-        ShingleTokenFilter shingleTokenFilter = new ShingleTokenFilter();
-
-        String name = obj.getName();
-        shingleTokenFilter.setName(name);
+        ShingleTokenFilter shingleTokenFilter = new ShingleTokenFilter(obj.getName());
 
         Integer minShingleSize = obj.getMinShingleSize();
         shingleTokenFilter.setMinShingleSize(minShingleSize);
@@ -52,21 +49,18 @@ public final class ShingleTokenFilterConverter {
             return null;
         }
         com.azure.search.documents.indexes.implementation.models.ShingleTokenFilter shingleTokenFilter =
-            new com.azure.search.documents.indexes.implementation.models.ShingleTokenFilter();
-
-        String name = obj.getName();
-        shingleTokenFilter.setName(name);
+            new com.azure.search.documents.indexes.implementation.models.ShingleTokenFilter(obj.getName());
 
         Integer minShingleSize = obj.getMinShingleSize();
         shingleTokenFilter.setMinShingleSize(minShingleSize);
 
-        Boolean outputUnigrams = obj.isOutputUnigrams();
+        Boolean outputUnigrams = obj.areOutputUnigrams();
         shingleTokenFilter.setOutputUnigrams(outputUnigrams);
 
         String filterToken = obj.getFilterToken();
         shingleTokenFilter.setFilterToken(filterToken);
 
-        Boolean outputUnigramsIfNoShingles = obj.isOutputUnigramsIfNoShingles();
+        Boolean outputUnigramsIfNoShingles = obj.areOutputUnigramsIfNoShingles();
         shingleTokenFilter.setOutputUnigramsIfNoShingles(outputUnigramsIfNoShingles);
 
         Integer maxShingleSize = obj.getMaxShingleSize();
@@ -74,6 +68,7 @@ public final class ShingleTokenFilterConverter {
 
         String tokenSeparator = obj.getTokenSeparator();
         shingleTokenFilter.setTokenSeparator(tokenSeparator);
+        shingleTokenFilter.validate();
         return shingleTokenFilter;
     }
 

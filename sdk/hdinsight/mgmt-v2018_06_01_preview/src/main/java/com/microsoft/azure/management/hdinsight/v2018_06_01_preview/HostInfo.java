@@ -8,36 +8,18 @@
 
 package com.microsoft.azure.management.hdinsight.v2018_06_01_preview;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.microsoft.azure.arm.model.HasInner;
+import com.microsoft.azure.arm.resources.models.HasManager;
+import com.microsoft.azure.management.hdinsight.v2018_06_01_preview.implementation.HDInsightManager;
+import com.microsoft.azure.management.hdinsight.v2018_06_01_preview.implementation.HostInfoInner;
 
 /**
- * The cluster host information.
+ * Type representing HostInfo.
  */
-public class HostInfo {
+public interface HostInfo extends HasInner<HostInfoInner>, HasManager<HDInsightManager> {
     /**
-     * The host name.
+     * @return the name value.
      */
-    @JsonProperty(value = "name")
-    private String name;
-
-    /**
-     * Get the host name.
-     *
-     * @return the name value
-     */
-    public String name() {
-        return this.name;
-    }
-
-    /**
-     * Set the host name.
-     *
-     * @param name the name value to set
-     * @return the HostInfo object itself.
-     */
-    public HostInfo withName(String name) {
-        this.name = name;
-        return this;
-    }
+    String name();
 
 }

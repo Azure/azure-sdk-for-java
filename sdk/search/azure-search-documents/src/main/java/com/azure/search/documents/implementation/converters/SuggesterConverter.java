@@ -5,14 +5,10 @@ package com.azure.search.documents.implementation.converters;
 
 import com.azure.search.documents.indexes.models.SearchSuggester;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * A converter between {@link com.azure.search.documents.indexes.implementation.models.Suggester} and {@link SearchSuggester}.
  */
 public final class SuggesterConverter {
-    private static final String SEARCH_MODE = "analyzingInfixMatching";
     /**
      * Maps from {@link com.azure.search.documents.indexes.implementation.models.Suggester} to {@link SearchSuggester}.
      */
@@ -20,17 +16,7 @@ public final class SuggesterConverter {
         if (obj == null) {
             return null;
         }
-        SearchSuggester searchSuggester = new SearchSuggester();
-
-        if (obj.getSourceFields() != null) {
-            List<String> sourceFields = new ArrayList<>(obj.getSourceFields());
-            searchSuggester.setSourceFields(sourceFields);
-        }
-
-        String name = obj.getName();
-        searchSuggester.setName(name);
-
-        return searchSuggester;
+        return new SearchSuggester(obj.getName(), obj.getSourceFields());
     }
 
     /**
@@ -41,17 +27,9 @@ public final class SuggesterConverter {
             return null;
         }
         com.azure.search.documents.indexes.implementation.models.Suggester suggester =
-            new com.azure.search.documents.indexes.implementation.models.Suggester();
-
-        if (obj.getSourceFields() != null) {
-            List<String> sourceFields = new ArrayList<>(obj.getSourceFields());
-            suggester.setSourceFields(sourceFields);
-        }
-
-        String name = obj.getName();
-        suggester.setName(name);
-
-        suggester.setSearchMode(SEARCH_MODE);
+            new com.azure.search.documents.indexes.implementation.models.Suggester(obj.getName(),
+                "analyzingInfixMatching", obj.getSourceFields());
+        suggester.validate();
         return suggester;
     }
 

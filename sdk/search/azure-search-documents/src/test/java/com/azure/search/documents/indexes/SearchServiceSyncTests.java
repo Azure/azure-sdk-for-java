@@ -5,15 +5,11 @@ package com.azure.search.documents.indexes;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.search.documents.SearchTestBase;
-import com.azure.search.documents.indexes.models.ServiceCounters;
-import com.azure.search.documents.indexes.models.ServiceStatistics;
-import com.azure.search.documents.models.RequestOptions;
+import com.azure.search.documents.indexes.models.SearchServiceCounters;
+import com.azure.search.documents.indexes.models.SearchServiceStatistics;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import java.util.UUID;
-
-import static com.azure.search.documents.TestHelpers.generateRequestOptions;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class SearchServiceSyncTests extends SearchTestBase {
@@ -29,18 +25,16 @@ public class SearchServiceSyncTests extends SearchTestBase {
     public void getServiceStatsReturnsCorrectDefinitionWithResponse() {
         SearchIndexClient serviceClient = getSearchIndexClientBuilder().buildClient();
 
-        ServiceStatistics serviceStatistics = serviceClient.getServiceStatisticsWithResponse(generateRequestOptions(),
-            Context.NONE).getValue();
-        validateServiceStatistics(serviceStatistics);
+        SearchServiceStatistics searchServiceStatistics = serviceClient.getServiceStatisticsWithResponse(Context.NONE)
+            .getValue();
+        validateServiceStatistics(searchServiceStatistics);
     }
 
     @Test
     public void getServiceStatsReturnsRequestId() {
         SearchIndexClient serviceClient = getSearchIndexClientBuilder().buildClient();
 
-        RequestOptions requestOptions = new RequestOptions().setXMsClientRequestId(UUID.randomUUID());
-        Response<ServiceStatistics> response = serviceClient.getServiceStatisticsWithResponse(requestOptions,
-            Context.NONE);
+        Response<SearchServiceStatistics> response = serviceClient.getServiceStatisticsWithResponse(Context.NONE);
 
         /*
          * The service will always return a request-id and will conditionally return client-request-id if
@@ -56,12 +50,12 @@ public class SearchServiceSyncTests extends SearchTestBase {
         validateServiceStatistics(response.getValue());
     }
 
-    private static void validateServiceStatistics(ServiceStatistics serviceStatistics) {
-        ServiceCounters serviceCounters = serviceStatistics.getCounters();
-        assertTrue(serviceCounters.getIndexCounter().getQuota() >= 1);
-        assertTrue(serviceCounters.getIndexerCounter().getQuota() >= 1);
-        assertTrue(serviceCounters.getDataSourceCounter().getQuota() >= 1);
-        assertTrue(serviceCounters.getStorageSizeCounter().getQuota() >= 1);
-        assertTrue(serviceCounters.getSynonymMapCounter().getQuota() >= 1);
+    private static void validateServiceStatistics(SearchServiceStatistics searchServiceStatistics) {
+        SearchServiceCounters searchServiceCounters = searchServiceStatistics.getCounters();
+        assertTrue(searchServiceCounters.getIndexCounter().getQuota() >= 1);
+        assertTrue(searchServiceCounters.getIndexerCounter().getQuota() >= 1);
+        assertTrue(searchServiceCounters.getDataSourceCounter().getQuota() >= 1);
+        assertTrue(searchServiceCounters.getStorageSizeCounter().getQuota() >= 1);
+        assertTrue(searchServiceCounters.getSynonymMapCounter().getQuota() >= 1);
     }
 }

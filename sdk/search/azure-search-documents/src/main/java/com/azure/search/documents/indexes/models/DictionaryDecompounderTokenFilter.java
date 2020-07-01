@@ -49,7 +49,20 @@ public final class DictionaryDecompounderTokenFilter extends TokenFilter {
      * the output. Default is false.
      */
     @JsonProperty(value = "onlyLongestMatch")
-    private Boolean onlyLongestMatch;
+    private Boolean onlyLongestMatched;
+
+    /**
+     * Constructor of {@link TokenFilter}.
+     *
+     * @param name The name of the token filter. It must only contain letters, digits,
+     * spaces, dashes or underscores, can only start and end with alphanumeric
+     * characters, and is limited to 128 characters.
+     * @param wordList The list of words to match against.
+     */
+    public DictionaryDecompounderTokenFilter(String name, List<String> wordList) {
+        super(name);
+        this.wordList = wordList;
+    }
 
     /**
      * Get the wordList property: The list of words to match against.
@@ -58,17 +71,6 @@ public final class DictionaryDecompounderTokenFilter extends TokenFilter {
      */
     public List<String> getWordList() {
         return this.wordList;
-    }
-
-    /**
-     * Set the wordList property: The list of words to match against.
-     *
-     * @param wordList the wordList value to set.
-     * @return the DictionaryDecompounderTokenFilter object itself.
-     */
-    public DictionaryDecompounderTokenFilter setWordList(List<String> wordList) {
-        this.wordList = wordList;
-        return this;
     }
 
     /**
@@ -143,19 +145,19 @@ public final class DictionaryDecompounderTokenFilter extends TokenFilter {
      *
      * @return the onlyLongestMatch value.
      */
-    public Boolean isOnlyLongestMatch() {
-        return this.onlyLongestMatch;
+    public Boolean isOnlyLongestMatched() {
+        return this.onlyLongestMatched;
     }
 
     /**
      * Set the onlyLongestMatch property: A value indicating whether to add
      * only the longest matching subword to the output. Default is false.
      *
-     * @param onlyLongestMatch the onlyLongestMatch value to set.
+     * @param onlyLongestMatched the onlyLongestMatch value to set.
      * @return the DictionaryDecompounderTokenFilter object itself.
      */
-    public DictionaryDecompounderTokenFilter setOnlyLongestMatch(Boolean onlyLongestMatch) {
-        this.onlyLongestMatch = onlyLongestMatch;
+    public DictionaryDecompounderTokenFilter setOnlyLongestMatched(Boolean onlyLongestMatched) {
+        this.onlyLongestMatched = onlyLongestMatched;
         return this;
     }
 }

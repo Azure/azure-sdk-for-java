@@ -30,7 +30,18 @@ public final class PhoneticTokenFilter extends TokenFilter {
      * tokens. If false, encoded tokens are added as synonyms. Default is true.
      */
     @JsonProperty(value = "replace")
-    private Boolean replaceOriginalTokens;
+    private Boolean originalTokensReplaced;
+
+    /**
+     * Constructor of {@link PhoneticTokenFilter}.
+     *
+     * @param name The name of the token filter. It must only contain letters, digits,
+     * spaces, dashes or underscores, can only start and end with alphanumeric
+     * characters, and is limited to 128 characters.
+     */
+    public PhoneticTokenFilter(String name) {
+        super(name);
+    }
 
     /**
      * Get the encoder property: The phonetic encoder to use. Default is
@@ -65,8 +76,8 @@ public final class PhoneticTokenFilter extends TokenFilter {
      *
      * @return the replaceOriginalTokens value.
      */
-    public Boolean isReplaceOriginalTokens() {
-        return this.replaceOriginalTokens;
+    public Boolean areOriginalTokensReplaced() {
+        return this.originalTokensReplaced;
     }
 
     /**
@@ -74,11 +85,11 @@ public final class PhoneticTokenFilter extends TokenFilter {
      * encoded tokens should replace original tokens. If false, encoded tokens
      * are added as synonyms. Default is true.
      *
-     * @param replaceOriginalTokens the replaceOriginalTokens value to set.
+     * @param originalTokensReplaced the replaceOriginalTokens value to set.
      * @return the PhoneticTokenFilter object itself.
      */
-    public PhoneticTokenFilter setReplaceOriginalTokens(Boolean replaceOriginalTokens) {
-        this.replaceOriginalTokens = replaceOriginalTokens;
+    public PhoneticTokenFilter setOriginalTokensReplaced(Boolean originalTokensReplaced) {
+        this.originalTokensReplaced = originalTokensReplaced;
         return this;
     }
 }

@@ -3,48 +3,37 @@
 
 package com.azure.search.documents.implementation.converters;
 
-import com.azure.search.documents.implementation.util.PrivateFieldAccessHelper;
-import com.azure.search.documents.indexes.models.GetIndexStatisticsResult;
+import com.azure.search.documents.indexes.models.SearchIndexStatistics;
 
 /**
  * A converter between {@link com.azure.search.documents.indexes.implementation.models.GetIndexStatisticsResult} and
- * {@link GetIndexStatisticsResult}.
+ * {@link SearchIndexStatistics}.
  */
 public final class GetIndexStatisticsResultConverter {
     /**
      * Maps from {@link com.azure.search.documents.indexes.implementation.models.GetIndexStatisticsResult} to
-     * {@link GetIndexStatisticsResult}.
+     * {@link SearchIndexStatistics}.
      */
-    public static GetIndexStatisticsResult map(com.azure.search.documents.indexes.implementation.models.GetIndexStatisticsResult obj) {
+    public static SearchIndexStatistics map(com.azure.search.documents.indexes.implementation.models.GetIndexStatisticsResult obj) {
         if (obj == null) {
             return null;
         }
-        GetIndexStatisticsResult getIndexStatisticsResult = new GetIndexStatisticsResult();
-
-        long documentCount = obj.getDocumentCount();
-        PrivateFieldAccessHelper.set(getIndexStatisticsResult, "documentCount", documentCount);
-
-        long storageSize = obj.getStorageSize();
-        PrivateFieldAccessHelper.set(getIndexStatisticsResult, "storageSize", storageSize);
-        return getIndexStatisticsResult;
+        return new SearchIndexStatistics(obj.getDocumentCount(), obj.getStorageSize());
     }
 
     /**
-     * Maps from {@link GetIndexStatisticsResult} to
+     * Maps from {@link SearchIndexStatistics} to
      * {@link com.azure.search.documents.indexes.implementation.models.GetIndexStatisticsResult}.
      */
-    public static com.azure.search.documents.indexes.implementation.models.GetIndexStatisticsResult map(GetIndexStatisticsResult obj) {
+    public static com.azure.search.documents.indexes.implementation.models.GetIndexStatisticsResult map(SearchIndexStatistics obj) {
         if (obj == null) {
             return null;
         }
         com.azure.search.documents.indexes.implementation.models.GetIndexStatisticsResult getIndexStatisticsResult =
-            new com.azure.search.documents.indexes.implementation.models.GetIndexStatisticsResult();
+            new com.azure.search.documents.indexes.implementation.models.GetIndexStatisticsResult(
+                obj.getDocumentCount(), obj.getStorageSize());
 
-        long documentCount = obj.getDocumentCount();
-        PrivateFieldAccessHelper.set(getIndexStatisticsResult, "documentCount", documentCount);
-
-        long storageSize = obj.getStorageSize();
-        PrivateFieldAccessHelper.set(getIndexStatisticsResult, "storageSize", storageSize);
+        getIndexStatisticsResult.validate();
         return getIndexStatisticsResult;
     }
 

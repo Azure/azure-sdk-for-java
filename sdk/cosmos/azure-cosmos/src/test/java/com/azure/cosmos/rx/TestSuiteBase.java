@@ -13,9 +13,9 @@ import com.azure.cosmos.CosmosAsyncUser;
 import com.azure.cosmos.CosmosBridgeInternal;
 import com.azure.cosmos.CosmosClient;
 import com.azure.cosmos.CosmosClientBuilder;
-import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.CosmosDatabase;
 import com.azure.cosmos.CosmosDatabaseForTest;
+import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.CosmosResponseValidator;
 import com.azure.cosmos.DirectConnectionConfig;
 import com.azure.cosmos.GatewayConnectionConfig;
@@ -23,9 +23,9 @@ import com.azure.cosmos.TestNGLogListener;
 import com.azure.cosmos.ThrottlingRetryOptions;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.ConnectionPolicy;
-import com.azure.cosmos.implementation.CosmosItemProperties;
 import com.azure.cosmos.implementation.FailureValidator;
 import com.azure.cosmos.implementation.FeedResponseListValidator;
+import com.azure.cosmos.implementation.InternalObjectNode;
 import com.azure.cosmos.implementation.PathParser;
 import com.azure.cosmos.implementation.Resource;
 import com.azure.cosmos.implementation.TestConfigurations;
@@ -35,20 +35,18 @@ import com.azure.cosmos.implementation.guava25.base.CaseFormat;
 import com.azure.cosmos.implementation.guava25.collect.ImmutableList;
 import com.azure.cosmos.models.CompositePath;
 import com.azure.cosmos.models.CompositePathSortOrder;
-import com.azure.cosmos.models.CosmosDatabaseResponse;
-import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.CosmosContainerRequestOptions;
 import com.azure.cosmos.models.CosmosDatabaseProperties;
+import com.azure.cosmos.models.CosmosDatabaseResponse;
+import com.azure.cosmos.models.CosmosItemResponse;
+import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.CosmosResponse;
 import com.azure.cosmos.models.CosmosStoredProcedureRequestOptions;
 import com.azure.cosmos.models.CosmosUserProperties;
 import com.azure.cosmos.models.CosmosUserResponse;
-import com.azure.cosmos.models.DataType;
-import com.azure.cosmos.models.QueryRequestOptions;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.IncludedPath;
-import com.azure.cosmos.models.Index;
 import com.azure.cosmos.models.IndexingPolicy;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKey;
@@ -229,13 +227,13 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
         String cosmosContainerId = cosmosContainerProperties.getId();
         logger.info("Truncating collection {} ...", cosmosContainerId);
         List<String> paths = cosmosContainerProperties.getPartitionKeyDefinition().getPaths();
-        QueryRequestOptions options = new QueryRequestOptions();
+        CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
         options.setMaxDegreeOfParallelism(-1);
         int maxItemCount = 100;
 
         logger.info("Truncating collection {} documents ...", cosmosContainer.getId());
 
-        cosmosContainer.queryItems("SELECT * FROM root", options, CosmosItemProperties.class)
+        cosmosContainer.queryItems("SELECT * FROM root", options, InternalObjectNode.class)
             .byPage(maxItemCount)
             .publishOn(Schedulers.parallel())
             .flatMap(page -> Flux.fromIterable(page.getResults()))
@@ -470,7 +468,7 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
         client.getDatabase(dbId).getContainer(collectionId).delete().block();
     }
 
-    public static CosmosItemProperties createDocument(CosmosAsyncContainer cosmosContainer, CosmosItemProperties item) {
+    public static InternalObjectNode createDocument(CosmosAsyncContainer cosmosContainer, InternalObjectNode item) {
         return BridgeInternal.getProperties(cosmosContainer.createItem(item).block());
     }
 
@@ -494,11 +492,9 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
             .block();
     }
 
-    public void voidBulkInsertBlocking(CosmosAsyncContainer cosmosContainer,
-                                       List<CosmosItemProperties> documentDefinitionList) {
+    public <T> void voidBulkInsertBlocking(CosmosAsyncContainer cosmosContainer, List<T> documentDefinitionList) {
         bulkInsert(cosmosContainer, documentDefinitionList, DEFAULT_BULK_INSERT_CONCURRENCY_LEVEL)
             .publishOn(Schedulers.parallel())
-            .map(itemResponse -> BridgeInternal.getProperties(itemResponse))
             .then()
             .block();
     }
@@ -545,10 +541,6 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
         IndexingPolicy indexingPolicy = new IndexingPolicy();
         List<IncludedPath> includedPaths = new ArrayList<>();
         IncludedPath includedPath = new IncludedPath("/*");
-        List<Index> indexes = new ArrayList<>();
-        indexes.add(Index.range(DataType.STRING, -1));
-        indexes.add(Index.range(DataType.NUMBER, -1));
-        includedPath.setIndexes(indexes);
         includedPaths.add(includedPath);
         indexingPolicy.setIncludedPaths(includedPaths);
 
@@ -579,12 +571,12 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
     }
 
     public static void deleteDocumentIfExists(CosmosAsyncClient client, String databaseId, String collectionId, String docId) {
-        QueryRequestOptions options = new QueryRequestOptions();
+        CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
         options.setPartitionKey(new PartitionKey(docId));
         CosmosAsyncContainer cosmosContainer = client.getDatabase(databaseId).getContainer(collectionId);
 
-        List<CosmosItemProperties> res = cosmosContainer
-            .queryItems(String.format("SELECT * FROM root r where r.id = '%s'", docId), options, CosmosItemProperties.class)
+        List<InternalObjectNode> res = cosmosContainer
+            .queryItems(String.format("SELECT * FROM root r where r.id = '%s'", docId), options, InternalObjectNode.class)
             .byPage()
             .flatMap(page -> Flux.fromIterable(page.getResults()))
             .collectList().block();

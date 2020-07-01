@@ -38,7 +38,7 @@ public final class EntityRecognitionSkill extends SearchIndexerSkill {
      * one of the pre-defined types will not be surfaced.
      */
     @JsonProperty(value = "includeTypelessEntities")
-    private Boolean includeTypelessEntities;
+    private Boolean typelessEntitiesIncluded;
 
     /*
      * A value between 0 and 1 that be used to only include entities whose
@@ -47,6 +47,17 @@ public final class EntityRecognitionSkill extends SearchIndexerSkill {
      */
     @JsonProperty(value = "minimumPrecision")
     private Double minimumPrecision;
+
+    /**
+     * Constructor of {@link SearchIndexerSkill}.
+     *
+     * @param inputs Inputs of the skills could be a column in the source data set, or the
+     * output of an upstream skill.
+     * @param outputs The output of a skill is either a field in a search index, or a value
+     */
+    public EntityRecognitionSkill(List<InputFieldMappingEntry> inputs, List<OutputFieldMappingEntry> outputs) {
+        super(inputs, outputs);
+    }
 
     /**
      * Get the categories property: A list of entity categories that should be
@@ -105,8 +116,8 @@ public final class EntityRecognitionSkill extends SearchIndexerSkill {
      *
      * @return the includeTypelessEntities value.
      */
-    public Boolean isIncludeTypelessEntities() {
-        return this.includeTypelessEntities;
+    public Boolean areTypelessEntitiesIncluded() {
+        return this.typelessEntitiesIncluded;
     }
 
     /**
@@ -116,11 +127,11 @@ public final class EntityRecognitionSkill extends SearchIndexerSkill {
      * false, entities which don't conform to one of the pre-defined types will
      * not be surfaced.
      *
-     * @param includeTypelessEntities the includeTypelessEntities value to set.
+     * @param typelessEntitiesIncluded the includeTypelessEntities value to set.
      * @return the EntityRecognitionSkill object itself.
      */
-    public EntityRecognitionSkill setIncludeTypelessEntities(Boolean includeTypelessEntities) {
-        this.includeTypelessEntities = includeTypelessEntities;
+    public EntityRecognitionSkill setTypelessEntitiesIncluded(Boolean typelessEntitiesIncluded) {
+        this.typelessEntitiesIncluded = typelessEntitiesIncluded;
         return this;
     }
 

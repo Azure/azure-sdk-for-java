@@ -8,6 +8,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
+import java.util.List;
+
 /**
  * A skill that extracts text from image files.
  */
@@ -30,6 +32,17 @@ public final class OcrSkill extends SearchIndexerSkill {
      */
     @JsonProperty(value = "detectOrientation")
     private Boolean shouldDetectOrientation;
+
+    /**
+     * Constructor of {@link OcrSkill}.
+     *
+     * @param inputs Inputs of the skills could be a column in the source data set, or the
+     * output of an upstream skill.
+     * @param outputs The output of a skill is either a field in a search index, or a value
+     */
+    public OcrSkill(List<InputFieldMappingEntry> inputs, List<OutputFieldMappingEntry> outputs) {
+        super(inputs, outputs);
+    }
 
     /**
      * Get the defaultLanguageCode property: A value indicating which language
@@ -65,7 +78,7 @@ public final class OcrSkill extends SearchIndexerSkill {
      *
      * @return the shouldDetectOrientation value.
      */
-    public Boolean shouldDetectOrientation() {
+    public Boolean setShouldDetectOrientation() {
         return this.shouldDetectOrientation;
     }
 
@@ -76,7 +89,7 @@ public final class OcrSkill extends SearchIndexerSkill {
      * @param shouldDetectOrientation the shouldDetectOrientation value to set.
      * @return the OcrSkill object itself.
      */
-    public OcrSkill shouldDetectOrientation(Boolean shouldDetectOrientation) {
+    public OcrSkill setShouldDetectOrientation(Boolean shouldDetectOrientation) {
         this.shouldDetectOrientation = shouldDetectOrientation;
         return this;
     }

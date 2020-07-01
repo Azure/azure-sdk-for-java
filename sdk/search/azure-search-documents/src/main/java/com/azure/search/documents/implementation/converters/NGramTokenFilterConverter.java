@@ -3,6 +3,7 @@
 
 package com.azure.search.documents.implementation.converters;
 
+import com.azure.search.documents.implementation.util.PrivateFieldAccessHelper;
 import com.azure.search.documents.indexes.models.NGramTokenFilter;
 
 /**
@@ -10,6 +11,10 @@ import com.azure.search.documents.indexes.models.NGramTokenFilter;
  * {@link NGramTokenFilter}.
  */
 public final class NGramTokenFilterConverter {
+    private static final String V1_ODATA_TYPE = "#Microsoft.Azure.Search.NGramTokenFilter";
+    private static final String V2_ODATA_TYPE = "#Microsoft.Azure.Search.NGramTokenFilterV2";
+    private static final String ODATA_FIELD_NAME = "odataType";
+
     /**
      * Maps from {@link com.azure.search.documents.indexes.implementation.models.NGramTokenFilter} to {@link NGramTokenFilter}.
      */
@@ -17,10 +22,8 @@ public final class NGramTokenFilterConverter {
         if (obj == null) {
             return null;
         }
-        NGramTokenFilter nGramTokenFilter = new NGramTokenFilter();
-
-        String name = obj.getName();
-        nGramTokenFilter.setName(name);
+        NGramTokenFilter nGramTokenFilter = new NGramTokenFilter(obj.getName());
+        PrivateFieldAccessHelper.set(nGramTokenFilter, ODATA_FIELD_NAME, V1_ODATA_TYPE);
 
         Integer maxGram = obj.getMaxGram();
         nGramTokenFilter.setMaxGram(maxGram);
@@ -37,10 +40,8 @@ public final class NGramTokenFilterConverter {
         if (obj == null) {
             return null;
         }
-        NGramTokenFilter nGramTokenFilter = new NGramTokenFilter();
-
-        String name = obj.getName();
-        nGramTokenFilter.setName(name);
+        NGramTokenFilter nGramTokenFilter = new NGramTokenFilter(obj.getName());
+        PrivateFieldAccessHelper.set(nGramTokenFilter, ODATA_FIELD_NAME, V2_ODATA_TYPE);
 
         Integer maxGram = obj.getMaxGram();
         nGramTokenFilter.setMaxGram(maxGram);
@@ -51,24 +52,30 @@ public final class NGramTokenFilterConverter {
     }
 
     /**
-     * Maps from {@link NGramTokenFilter} to {@link com.azure.search.documents.indexes.implementation.models.NGramTokenFilterV2}.
+     * Maps from {@link NGramTokenFilter} to
+     * {@link com.azure.search.documents.indexes.implementation.models.NGramTokenFilterV2} or
+     * {@link com.azure.search.documents.indexes.implementation.models.NGramTokenFilterV2} depends on @odata.type.
      */
-    public static com.azure.search.documents.indexes.implementation.models.NGramTokenFilterV2 map(NGramTokenFilter obj) {
+    public static com.azure.search.documents.indexes.implementation.models.TokenFilter map(NGramTokenFilter obj) {
         if (obj == null) {
             return null;
         }
-        com.azure.search.documents.indexes.implementation.models.NGramTokenFilterV2 nGramTokenFilter =
-            new com.azure.search.documents.indexes.implementation.models.NGramTokenFilterV2();
-
-        String name = obj.getName();
-        nGramTokenFilter.setName(name);
-
-        Integer maxGram = obj.getMaxGram();
-        nGramTokenFilter.setMaxGram(maxGram);
-
-        Integer minGram = obj.getMinGram();
-        nGramTokenFilter.setMinGram(minGram);
-        return nGramTokenFilter;
+        String identifier = PrivateFieldAccessHelper.get(obj, ODATA_FIELD_NAME, String.class);
+        if (V1_ODATA_TYPE.equals(identifier)) {
+            com.azure.search.documents.indexes.implementation.models.NGramTokenFilter nGramTokenFilter =
+                new com.azure.search.documents.indexes.implementation.models.NGramTokenFilter(obj.getName())
+                    .setMaxGram(obj.getMaxGram())
+                    .setMinGram(obj.getMinGram());
+            nGramTokenFilter.validate();
+            return nGramTokenFilter;
+        } else {
+            com.azure.search.documents.indexes.implementation.models.NGramTokenFilterV2 nGramTokenFilter =
+                new com.azure.search.documents.indexes.implementation.models.NGramTokenFilterV2(obj.getName())
+                    .setMaxGram(obj.getMaxGram())
+                    .setMinGram(obj.getMinGram());
+            nGramTokenFilter.validate();
+            return nGramTokenFilter;
+        }
     }
 
     private NGramTokenFilterConverter() {

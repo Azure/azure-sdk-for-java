@@ -55,12 +55,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-storage-blob</artifactId>
-      <version>12.7.0-beta.1</version> <!-- {x-version-update;com.azure:azure-storage-blob;current} -->
-    </dependency>
-    <dependency>
-      <groupId>com.azure</groupId>
-      <artifactId>azure-core</artifactId>
-      <version>1.5.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
+      <version>12.8.0-beta.1</version> <!-- {x-version-update;com.azure:azure-storage-blob;current} -->
     </dependency>
 
     <!-- Added this dependency to include necessary annotations used by reactor core.
@@ -76,13 +71,19 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-test</artifactId>
-      <version>1.2.1</version>  <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
+      <version>1.3.0</version>  <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-http-netty</artifactId>
-      <version>1.5.1</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
+      <version>1.5.2</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-identity</artifactId>
+      <version>1.0.7</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -98,9 +99,9 @@
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>com.azure</groupId>
-      <artifactId>azure-identity</artifactId>
-      <version>1.0.6</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
+      <groupId>cglib</groupId>
+      <artifactId>cglib-nodep</artifactId>
+      <version>3.2.7</version> <!-- {x-version-update;cglib:cglib-nodep;external_dependency} -->
       <scope>test</scope>
     </dependency>
   </dependencies>
@@ -167,10 +168,7 @@
                 </goals>
                 <configuration>
                   <compilerId>groovy-eclipse-compiler</compilerId>
-                  <compilerArgument>
-                    -Xlint:unchecked
-                    -warn:-unused
-                  </compilerArgument>
+                  <compilerArgs>-warn:-unused</compilerArgs>
                 </configuration>
               </execution>
             </executions>
@@ -222,10 +220,7 @@
                 </goals>
                 <configuration>
                   <compilerId>groovy-eclipse-compiler</compilerId>
-                  <compilerArgument>
-                    -Xlint:unchecked
-                    -warn:-unused
-                  </compilerArgument>
+                  <compilerArgs>-warn:-unused</compilerArgs>
                   <release>8</release>
                 </configuration>
               </execution>

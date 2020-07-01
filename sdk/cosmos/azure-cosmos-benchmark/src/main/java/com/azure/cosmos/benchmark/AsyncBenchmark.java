@@ -84,9 +84,7 @@ abstract class AsyncBenchmark<T> {
 
         try {
             cosmosAsyncDatabase = cosmosClient.getDatabase(this.configuration.getDatabaseId());
-            cosmosAsyncDatabase.read().doOnError(error ->
-                logger.error("Database {} creation failed due to ", this.configuration.getDatabaseId(), error)
-            ).block();
+            cosmosAsyncDatabase.read().block();
         } catch (CosmosException e) {
             if (e.getStatusCode() == HttpConstants.StatusCodes.NOTFOUND) {
                 cosmosClient.createDatabase(cfg.getDatabaseId()).block();
@@ -101,9 +99,7 @@ abstract class AsyncBenchmark<T> {
         try {
             cosmosAsyncContainer = cosmosAsyncDatabase.getContainer(this.configuration.getCollectionId());
 
-            cosmosAsyncContainer.read().doOnError(error ->
-                logger.error("Database {} creation failed due to ", this.configuration.getDatabaseId(), error)
-            ).block();
+            cosmosAsyncContainer.read().block();
 
         } catch (CosmosException e) {
             if (e.getStatusCode() == HttpConstants.StatusCodes.NOTFOUND) {
@@ -131,7 +127,7 @@ abstract class AsyncBenchmark<T> {
         if (configuration.getOperationType() != Configuration.Operation.WriteLatency
                 && configuration.getOperationType() != Configuration.Operation.WriteThroughput
                 && configuration.getOperationType() != Configuration.Operation.ReadMyWrites) {
-            logger.info("PRE-populating {} documents ....", cfg.getNumberOfOperations());
+            logger.info("PRE-populating {} documents ....", cfg.getNumberOfPreCreatedDocuments());
             String dataFieldValue = RandomStringUtils.randomAlphabetic(cfg.getDocumentDataFieldSize());
             for (int i = 0; i < cfg.getNumberOfPreCreatedDocuments(); i++) {
                 String uuid = UUID.randomUUID().toString();
@@ -144,7 +140,7 @@ abstract class AsyncBenchmark<T> {
                 }).flux();
                 createDocumentObservables.add(obs);
             }
-            logger.info("Finished pre-populating {} documents", cfg.getNumberOfOperations());
+            logger.info("Finished pre-populating {} documents", cfg.getNumberOfPreCreatedDocuments());
         }
 
         docsToRead = Flux.merge(Flux.fromIterable(createDocumentObservables), 100).collectList().block();

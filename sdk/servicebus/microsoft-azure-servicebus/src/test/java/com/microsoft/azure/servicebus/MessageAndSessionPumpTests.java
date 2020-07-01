@@ -288,7 +288,7 @@ public class MessageAndSessionPumpTests {
             CompletableFuture<Void> countingFuture = CompletableFuture.runAsync(() -> {
                 this.maxConcurrencyCounter.incrementCount();
                 //System.out.println("Message Received - " + message.getMessageId() + " - delivery count:" + message.getDeliveryCount() + " - Thread:" + Thread.currentThread());
-                if (this.firstThrowException && message.getDeliveryCount() == 0) {
+                if (this.firstThrowException && message.getDeliveryCount() == 1) {
                     this.messageCountDownLatch.countDown();
                     this.maxConcurrencyCounter.decrementCount();
                     throw new RuntimeException("Dummy exception to cause abandon");
@@ -359,7 +359,7 @@ public class MessageAndSessionPumpTests {
                 this.maxConcurrencyCounter.incrementCount();
                 this.receivedSeesions.add(session.getSessionId());
                 //System.out.println("SessionID:" + session.getSessionId() + " - Message Received - " + message.getMessageId() + " - delivery count:" + message.getDeliveryCount() + " - Thread:" + Thread.currentThread() + ":" + Instant.now());
-                if (this.firstThrowException && message.getDeliveryCount() == 0) {
+                if (this.firstThrowException && message.getDeliveryCount() == 1) {
                     this.messageCountDownLatch.countDown();
                     this.maxConcurrencyCounter.decrementCount();
                     throw new RuntimeException("Dummy exception to cause abandon");

@@ -20,10 +20,7 @@ public final class MicrosoftLanguageStemmingTokenizerConverter {
             return null;
         }
         MicrosoftLanguageStemmingTokenizer microsoftLanguageStemmingTokenizer =
-            new MicrosoftLanguageStemmingTokenizer();
-
-        String name = obj.getName();
-        microsoftLanguageStemmingTokenizer.setName(name);
+            new MicrosoftLanguageStemmingTokenizer(obj.getName());
 
         Integer maxTokenLength = obj.getMaxTokenLength();
         microsoftLanguageStemmingTokenizer.setMaxTokenLength(maxTokenLength);
@@ -35,7 +32,7 @@ public final class MicrosoftLanguageStemmingTokenizerConverter {
         }
 
         Boolean isSearchTokenizer = obj.isSearchTokenizer();
-        microsoftLanguageStemmingTokenizer.setIsSearchTokenizer(isSearchTokenizer);
+        microsoftLanguageStemmingTokenizer.setIsSearchTokenizerUsed(isSearchTokenizer);
         return microsoftLanguageStemmingTokenizer;
     }
 
@@ -47,10 +44,8 @@ public final class MicrosoftLanguageStemmingTokenizerConverter {
         if (obj == null) {
             return null;
         }
-        com.azure.search.documents.indexes.implementation.models.MicrosoftLanguageStemmingTokenizer microsoftLanguageStemmingTokenizer = new com.azure.search.documents.indexes.implementation.models.MicrosoftLanguageStemmingTokenizer();
-
-        String name = obj.getName();
-        microsoftLanguageStemmingTokenizer.setName(name);
+        com.azure.search.documents.indexes.implementation.models.MicrosoftLanguageStemmingTokenizer microsoftLanguageStemmingTokenizer
+            = new com.azure.search.documents.indexes.implementation.models.MicrosoftLanguageStemmingTokenizer(obj.getName());
 
         Integer maxTokenLength = obj.getMaxTokenLength();
         microsoftLanguageStemmingTokenizer.setMaxTokenLength(maxTokenLength);

@@ -11,6 +11,7 @@ import com.azure.storage.blob.models.UserDelegationKey
 import com.azure.storage.blob.sas.BlobContainerSasPermission
 import com.azure.storage.blob.sas.BlobSasPermission
 import com.azure.storage.blob.sas.BlobServiceSasSignatureValues
+import com.azure.storage.blob.sas.BlobSasServiceVersion
 import com.azure.storage.blob.specialized.SpecializedBlobClientBuilder
 import com.azure.storage.common.Utility
 import com.azure.storage.common.implementation.StorageImplUtils
@@ -158,7 +159,6 @@ class SASTest extends APISpec {
 
     def "serviceSASSignatureValues network test blob snapshot"() {
         setup:
-
         def data = "test".getBytes()
         def blobName = generateBlobName()
         def bu = getBlobClient(primaryCredential, cc.getBlobContainerUrl(), blobName).getBlockBlobClient()
@@ -312,14 +312,12 @@ class SASTest extends APISpec {
             .setContainerName(bu.getContainerName())
             .setBlobName(bu.getBlobName())
             .setSnapshotId(bu.getSnapshotId())
-            .setVersion(key.getSignedVersion())
+            .setVersion(BlobSasServiceVersion.getLatest().getVersion())
             .generateSasQueryParameters(key, primaryCredential.getAccountName())
             .encode()
 
         then:
         sas != null
-
-        when:
         def client = getBlobClient(sas, cc.getBlobContainerUrl(), blobName).getBlockBlobClient()
 
         def os = new ByteArrayOutputStream()
@@ -462,7 +460,7 @@ class SASTest extends APISpec {
             .setContainerName(snapshotBlob.getContainerName())
             .setBlobName(snapshotBlob.getBlobName())
             .setSnapshotId(snapshotBlob.getSnapshotId())
-            .setVersion(key.getSignedVersion())
+            .setVersion(BlobSasServiceVersion.getLatest().getVersion())
             .generateSasQueryParameters(key, primaryCredential.getAccountName())
             .encode()
 
@@ -737,16 +735,16 @@ class SASTest extends APISpec {
          */
         where:
         startTime                                                 | identifier | ipRange          | protocol               | snapId   | cacheControl | disposition   | encoding   | language   | type   || expectedStringToSign
-        OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC) | null       | null             | null                   | null     | null         | null          | null       | null       | null   || "r\n" + Constants.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\n" + Constants.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\n/blob/%s/containerName/blobName\n\n\n\n" + BlobServiceVersion.getLatest().getVersion() + "\nb\n\n\n\n\n\n"
-        null                                                      | "id"       | null             | null                   | null     | null         | null          | null       | null       | null   || "r\n\n" + Constants.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\n/blob/%s/containerName/blobName\nid\n\n\n" + BlobServiceVersion.getLatest().getVersion() + "\nb\n\n\n\n\n\n"
-        null                                                      | null       | new SasIpRange() | null                   | null     | null         | null          | null       | null       | null   || "r\n\n" + Constants.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\n/blob/%s/containerName/blobName\n\nip\n\n" + BlobServiceVersion.getLatest().getVersion() + "\nb\n\n\n\n\n\n"
-        null                                                      | null       | null             | SasProtocol.HTTPS_ONLY | null     | null         | null          | null       | null       | null   || "r\n\n" + Constants.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\n/blob/%s/containerName/blobName\n\n\n" + SasProtocol.HTTPS_ONLY + "\n" + BlobServiceVersion.getLatest().getVersion() + "\nb\n\n\n\n\n\n"
-        null                                                      | null       | null             | null                   | "snapId" | null         | null          | null       | null       | null   || "r\n\n" + Constants.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\n/blob/%s/containerName/blobName\n\n\n\n" + BlobServiceVersion.getLatest().getVersion() + "\nbs\nsnapId\n\n\n\n\n"
-        null                                                      | null       | null             | null                   | null     | "control"    | null          | null       | null       | null   || "r\n\n" + Constants.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\n/blob/%s/containerName/blobName\n\n\n\n" + BlobServiceVersion.getLatest().getVersion() + "\nb\n\ncontrol\n\n\n\n"
-        null                                                      | null       | null             | null                   | null     | null         | "disposition" | null       | null       | null   || "r\n\n" + Constants.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\n/blob/%s/containerName/blobName\n\n\n\n" + BlobServiceVersion.getLatest().getVersion() + "\nb\n\n\ndisposition\n\n\n"
-        null                                                      | null       | null             | null                   | null     | null         | null          | "encoding" | null       | null   || "r\n\n" + Constants.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\n/blob/%s/containerName/blobName\n\n\n\n" + BlobServiceVersion.getLatest().getVersion() + "\nb\n\n\n\nencoding\n\n"
-        null                                                      | null       | null             | null                   | null     | null         | null          | null       | "language" | null   || "r\n\n" + Constants.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\n/blob/%s/containerName/blobName\n\n\n\n" + BlobServiceVersion.getLatest().getVersion() + "\nb\n\n\n\n\nlanguage\n"
-        null                                                      | null       | null             | null                   | null     | null         | null          | null       | null       | "type" || "r\n\n" + Constants.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\n/blob/%s/containerName/blobName\n\n\n\n" + BlobServiceVersion.getLatest().getVersion() + "\nb\n\n\n\n\n\ntype"
+        OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC) | null       | null             | null                   | null     | null         | null          | null       | null       | null   || "r\n" + Constants.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\n" + Constants.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\n/blob/%s/containerName/blobName\n\n\n\n" + BlobSasServiceVersion.getLatest().getVersion() + "\nb\n\n\n\n\n\n"
+        null                                                      | "id"       | null             | null                   | null     | null         | null          | null       | null       | null   || "r\n\n" + Constants.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\n/blob/%s/containerName/blobName\nid\n\n\n" + BlobSasServiceVersion.getLatest().getVersion() + "\nb\n\n\n\n\n\n"
+        null                                                      | null       | new SasIpRange() | null                   | null     | null         | null          | null       | null       | null   || "r\n\n" + Constants.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\n/blob/%s/containerName/blobName\n\nip\n\n" + BlobSasServiceVersion.getLatest().getVersion() + "\nb\n\n\n\n\n\n"
+        null                                                      | null       | null             | SasProtocol.HTTPS_ONLY | null     | null         | null          | null       | null       | null   || "r\n\n" + Constants.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\n/blob/%s/containerName/blobName\n\n\n" + SasProtocol.HTTPS_ONLY + "\n" + BlobSasServiceVersion.getLatest().getVersion() + "\nb\n\n\n\n\n\n"
+        null                                                      | null       | null             | null                   | "snapId" | null         | null          | null       | null       | null   || "r\n\n" + Constants.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\n/blob/%s/containerName/blobName\n\n\n\n" + BlobSasServiceVersion.getLatest().getVersion() + "\nbs\nsnapId\n\n\n\n\n"
+        null                                                      | null       | null             | null                   | null     | "control"    | null          | null       | null       | null   || "r\n\n" + Constants.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\n/blob/%s/containerName/blobName\n\n\n\n" + BlobSasServiceVersion.getLatest().getVersion() + "\nb\n\ncontrol\n\n\n\n"
+        null                                                      | null       | null             | null                   | null     | null         | "disposition" | null       | null       | null   || "r\n\n" + Constants.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\n/blob/%s/containerName/blobName\n\n\n\n" + BlobSasServiceVersion.getLatest().getVersion() + "\nb\n\n\ndisposition\n\n\n"
+        null                                                      | null       | null             | null                   | null     | null         | null          | "encoding" | null       | null   || "r\n\n" + Constants.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\n/blob/%s/containerName/blobName\n\n\n\n" + BlobSasServiceVersion.getLatest().getVersion() + "\nb\n\n\n\nencoding\n\n"
+        null                                                      | null       | null             | null                   | null     | null         | null          | null       | "language" | null   || "r\n\n" + Constants.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\n/blob/%s/containerName/blobName\n\n\n\n" + BlobSasServiceVersion.getLatest().getVersion() + "\nb\n\n\n\n\nlanguage\n"
+        null                                                      | null       | null             | null                   | null     | null         | null          | null       | null       | "type" || "r\n\n" + Constants.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\n/blob/%s/containerName/blobName\n\n\n\n" + BlobSasServiceVersion.getLatest().getVersion() + "\nb\n\n\n\n\n\ntype"
     }
 
     @Unroll
@@ -795,21 +793,21 @@ class SASTest extends APISpec {
          */
         where:
         startTime                                                 | keyOid                                 | keyTid                                 | keyStart                                                              | keyExpiry                                                             | keyService | keyVersion   | keyValue                                       | ipRange          | protocol               | snapId   | cacheControl | disposition   | encoding   | language   | type   || expectedStringToSign
-        OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC) | null                                   | null                                   | null                                                                  | null                                                                  | null       | null         | "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=" | null             | null                   | null     | null         | null          | null       | null       | null   || "r\n" + Constants.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\n" + Constants.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\n/blob/%s/containerName/blobName\n\n\n\n\n\n\n\n\n" + BlobServiceVersion.getLatest().getVersion() + "\nb\n\n\n\n\n\n"
-        null                                                      | "11111111-1111-1111-1111-111111111111" | null                                   | null                                                                  | null                                                                  | null       | null         | "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=" | null             | null                   | null     | null         | null          | null       | null       | null   || "r\n\n" + Constants.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\n/blob/%s/containerName/blobName\n11111111-1111-1111-1111-111111111111\n\n\n\n\n\n\n\n" + BlobServiceVersion.getLatest().getVersion() + "\nb\n\n\n\n\n\n"
-        null                                                      | null                                   | "22222222-2222-2222-2222-222222222222" | null                                                                  | null                                                                  | null       | null         | "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=" | null             | null                   | null     | null         | null          | null       | null       | null   || "r\n\n" + Constants.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\n/blob/%s/containerName/blobName\n\n22222222-2222-2222-2222-222222222222\n\n\n\n\n\n\n" + BlobServiceVersion.getLatest().getVersion() + "\nb\n\n\n\n\n\n"
-        null                                                      | null                                   | null                                   | OffsetDateTime.of(LocalDateTime.of(2018, 1, 1, 0, 0), ZoneOffset.UTC) | null                                                                  | null       | null         | "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=" | null             | null                   | null     | null         | null          | null       | null       | null   || "r\n\n" + Constants.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\n/blob/%s/containerName/blobName\n\n\n2018-01-01T00:00:00Z\n\n\n\n\n\n" + BlobServiceVersion.getLatest().getVersion() + "\nb\n\n\n\n\n\n"
-        null                                                      | null                                   | null                                   | null                                                                  | OffsetDateTime.of(LocalDateTime.of(2018, 1, 1, 0, 0), ZoneOffset.UTC) | null       | null         | "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=" | null             | null                   | null     | null         | null          | null       | null       | null   || "r\n\n" + Constants.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\n/blob/%s/containerName/blobName\n\n\n\n2018-01-01T00:00:00Z\n\n\n\n\n" + BlobServiceVersion.getLatest().getVersion() + "\nb\n\n\n\n\n\n"
-        null                                                      | null                                   | null                                   | null                                                                  | null                                                                  | "b"        | null         | "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=" | null             | null                   | null     | null         | null          | null       | null       | null   || "r\n\n" + Constants.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\n/blob/%s/containerName/blobName\n\n\n\n\nb\n\n\n\n" + BlobServiceVersion.getLatest().getVersion() + "\nb\n\n\n\n\n\n"
-        null                                                      | null                                   | null                                   | null                                                                  | null                                                                  | null       | "2018-06-17" | "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=" | null             | null                   | null     | null         | null          | null       | null       | null   || "r\n\n" + Constants.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\n/blob/%s/containerName/blobName\n\n\n\n\n\n2018-06-17\n\n\n" + BlobServiceVersion.getLatest().getVersion() + "\nb\n\n\n\n\n\n"
-        null                                                      | null                                   | null                                   | null                                                                  | null                                                                  | null       | null         | "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=" | new SasIpRange() | null                   | null     | null         | null          | null       | null       | null   || "r\n\n" + Constants.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\n/blob/%s/containerName/blobName\n\n\n\n\n\n\nip\n\n" + BlobServiceVersion.getLatest().getVersion() + "\nb\n\n\n\n\n\n"
-        null                                                      | null                                   | null                                   | null                                                                  | null                                                                  | null       | null         | "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=" | null             | SasProtocol.HTTPS_ONLY | null     | null         | null          | null       | null       | null   || "r\n\n" + Constants.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\n/blob/%s/containerName/blobName\n\n\n\n\n\n\n\n" + SasProtocol.HTTPS_ONLY + "\n" + BlobServiceVersion.getLatest().getVersion() + "\nb\n\n\n\n\n\n"
-        null                                                      | null                                   | null                                   | null                                                                  | null                                                                  | null       | null         | "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=" | null             | null                   | "snapId" | null         | null          | null       | null       | null   || "r\n\n" + Constants.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\n/blob/%s/containerName/blobName\n\n\n\n\n\n\n\n\n" + BlobServiceVersion.getLatest().getVersion() + "\nbs\nsnapId\n\n\n\n\n"
-        null                                                      | null                                   | null                                   | null                                                                  | null                                                                  | null       | null         | "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=" | null             | null                   | null     | "control"    | null          | null       | null       | null   || "r\n\n" + Constants.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\n/blob/%s/containerName/blobName\n\n\n\n\n\n\n\n\n" + BlobServiceVersion.getLatest().getVersion() + "\nb\n\ncontrol\n\n\n\n"
-        null                                                      | null                                   | null                                   | null                                                                  | null                                                                  | null       | null         | "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=" | null             | null                   | null     | null         | "disposition" | null       | null       | null   || "r\n\n" + Constants.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\n/blob/%s/containerName/blobName\n\n\n\n\n\n\n\n\n" + BlobServiceVersion.getLatest().getVersion() + "\nb\n\n\ndisposition\n\n\n"
-        null                                                      | null                                   | null                                   | null                                                                  | null                                                                  | null       | null         | "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=" | null             | null                   | null     | null         | null          | "encoding" | null       | null   || "r\n\n" + Constants.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\n/blob/%s/containerName/blobName\n\n\n\n\n\n\n\n\n" + BlobServiceVersion.getLatest().getVersion() + "\nb\n\n\n\nencoding\n\n"
-        null                                                      | null                                   | null                                   | null                                                                  | null                                                                  | null       | null         | "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=" | null             | null                   | null     | null         | null          | null       | "language" | null   || "r\n\n" + Constants.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\n/blob/%s/containerName/blobName\n\n\n\n\n\n\n\n\n" + BlobServiceVersion.getLatest().getVersion() + "\nb\n\n\n\n\nlanguage\n"
-        null                                                      | null                                   | null                                   | null                                                                  | null                                                                  | null       | null         | "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=" | null             | null                   | null     | null         | null          | null       | null       | "type" || "r\n\n" + Constants.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\n/blob/%s/containerName/blobName\n\n\n\n\n\n\n\n\n" + BlobServiceVersion.getLatest().getVersion() + "\nb\n\n\n\n\n\ntype"
+        OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC) | null                                   | null                                   | null                                                                  | null                                                                  | null       | null         | "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=" | null             | null                   | null     | null         | null          | null       | null       | null   || "r\n" + Constants.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\n" + Constants.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\n/blob/%s/containerName/blobName\n\n\n\n\n\n\n\n\n" + BlobSasServiceVersion.getLatest().getVersion() + "\nb\n\n\n\n\n\n"
+        null                                                      | "11111111-1111-1111-1111-111111111111" | null                                   | null                                                                  | null                                                                  | null       | null         | "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=" | null             | null                   | null     | null         | null          | null       | null       | null   || "r\n\n" + Constants.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\n/blob/%s/containerName/blobName\n11111111-1111-1111-1111-111111111111\n\n\n\n\n\n\n\n" + BlobSasServiceVersion.getLatest().getVersion() + "\nb\n\n\n\n\n\n"
+        null                                                      | null                                   | "22222222-2222-2222-2222-222222222222" | null                                                                  | null                                                                  | null       | null         | "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=" | null             | null                   | null     | null         | null          | null       | null       | null   || "r\n\n" + Constants.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\n/blob/%s/containerName/blobName\n\n22222222-2222-2222-2222-222222222222\n\n\n\n\n\n\n" + BlobSasServiceVersion.getLatest().getVersion() + "\nb\n\n\n\n\n\n"
+        null                                                      | null                                   | null                                   | OffsetDateTime.of(LocalDateTime.of(2018, 1, 1, 0, 0), ZoneOffset.UTC) | null                                                                  | null       | null         | "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=" | null             | null                   | null     | null         | null          | null       | null       | null   || "r\n\n" + Constants.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\n/blob/%s/containerName/blobName\n\n\n2018-01-01T00:00:00Z\n\n\n\n\n\n" + BlobSasServiceVersion.getLatest().getVersion() + "\nb\n\n\n\n\n\n"
+        null                                                      | null                                   | null                                   | null                                                                  | OffsetDateTime.of(LocalDateTime.of(2018, 1, 1, 0, 0), ZoneOffset.UTC) | null       | null         | "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=" | null             | null                   | null     | null         | null          | null       | null       | null   || "r\n\n" + Constants.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\n/blob/%s/containerName/blobName\n\n\n\n2018-01-01T00:00:00Z\n\n\n\n\n" + BlobSasServiceVersion.getLatest().getVersion() + "\nb\n\n\n\n\n\n"
+        null                                                      | null                                   | null                                   | null                                                                  | null                                                                  | "b"        | null         | "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=" | null             | null                   | null     | null         | null          | null       | null       | null   || "r\n\n" + Constants.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\n/blob/%s/containerName/blobName\n\n\n\n\nb\n\n\n\n" + BlobSasServiceVersion.getLatest().getVersion() + "\nb\n\n\n\n\n\n"
+        null                                                      | null                                   | null                                   | null                                                                  | null                                                                  | null       | "2018-06-17" | "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=" | null             | null                   | null     | null         | null          | null       | null       | null   || "r\n\n" + Constants.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\n/blob/%s/containerName/blobName\n\n\n\n\n\n2018-06-17\n\n\n" + BlobSasServiceVersion.getLatest().getVersion() + "\nb\n\n\n\n\n\n"
+        null                                                      | null                                   | null                                   | null                                                                  | null                                                                  | null       | null         | "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=" | new SasIpRange() | null                   | null     | null         | null          | null       | null       | null   || "r\n\n" + Constants.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\n/blob/%s/containerName/blobName\n\n\n\n\n\n\nip\n\n" + BlobSasServiceVersion.getLatest().getVersion() + "\nb\n\n\n\n\n\n"
+        null                                                      | null                                   | null                                   | null                                                                  | null                                                                  | null       | null         | "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=" | null             | SasProtocol.HTTPS_ONLY | null     | null         | null          | null       | null       | null   || "r\n\n" + Constants.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\n/blob/%s/containerName/blobName\n\n\n\n\n\n\n\n" + SasProtocol.HTTPS_ONLY + "\n" + BlobSasServiceVersion.getLatest().getVersion() + "\nb\n\n\n\n\n\n"
+        null                                                      | null                                   | null                                   | null                                                                  | null                                                                  | null       | null         | "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=" | null             | null                   | "snapId" | null         | null          | null       | null       | null   || "r\n\n" + Constants.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\n/blob/%s/containerName/blobName\n\n\n\n\n\n\n\n\n" + BlobSasServiceVersion.getLatest().getVersion() + "\nbs\nsnapId\n\n\n\n\n"
+        null                                                      | null                                   | null                                   | null                                                                  | null                                                                  | null       | null         | "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=" | null             | null                   | null     | "control"    | null          | null       | null       | null   || "r\n\n" + Constants.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\n/blob/%s/containerName/blobName\n\n\n\n\n\n\n\n\n" + BlobSasServiceVersion.getLatest().getVersion() + "\nb\n\ncontrol\n\n\n\n"
+        null                                                      | null                                   | null                                   | null                                                                  | null                                                                  | null       | null         | "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=" | null             | null                   | null     | null         | "disposition" | null       | null       | null   || "r\n\n" + Constants.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\n/blob/%s/containerName/blobName\n\n\n\n\n\n\n\n\n" + BlobSasServiceVersion.getLatest().getVersion() + "\nb\n\n\ndisposition\n\n\n"
+        null                                                      | null                                   | null                                   | null                                                                  | null                                                                  | null       | null         | "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=" | null             | null                   | null     | null         | null          | "encoding" | null       | null   || "r\n\n" + Constants.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\n/blob/%s/containerName/blobName\n\n\n\n\n\n\n\n\n" + BlobSasServiceVersion.getLatest().getVersion() + "\nb\n\n\n\nencoding\n\n"
+        null                                                      | null                                   | null                                   | null                                                                  | null                                                                  | null       | null         | "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=" | null             | null                   | null     | null         | null          | null       | "language" | null   || "r\n\n" + Constants.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\n/blob/%s/containerName/blobName\n\n\n\n\n\n\n\n\n" + BlobSasServiceVersion.getLatest().getVersion() + "\nb\n\n\n\n\nlanguage\n"
+        null                                                      | null                                   | null                                   | null                                                                  | null                                                                  | null       | null         | "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=" | null             | null                   | null     | null         | null          | null       | null       | "type" || "r\n\n" + Constants.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\n/blob/%s/containerName/blobName\n\n\n\n\n\n\n\n\n" + BlobSasServiceVersion.getLatest().getVersion() + "\nb\n\n\n\n\n\ntype"
     }
 
     def "serviceSasSignatureValues IA"() {
@@ -834,18 +832,20 @@ class SASTest extends APISpec {
             .setDeletePermission(delete)
             .setCreatePermission(create)
             .setAddPermission(add)
+            .setDeleteVersionPermission(deleteVersion)
 
         expect:
         perms.toString() == expectedString
 
         where:
-        read  | write | delete | create | add   || expectedString
-        true  | false | false  | false  | false || "r"
-        false | true  | false  | false  | false || "w"
-        false | false | true   | false  | false || "d"
-        false | false | false  | true   | false || "c"
-        false | false | false  | false  | true  || "a"
-        true  | true  | true   | true   | true  || "racwd"
+        read  | write | delete | create | add   | deleteVersion || expectedString
+        true  | false | false  | false  | false | false         || "r"
+        false | true  | false  | false  | false | false         || "w"
+        false | false | true   | false  | false | false         || "d"
+        false | false | false  | true   | false | false         || "c"
+        false | false | false  | false  | true  | false         || "a"
+        false | false | false  | false  | false | true          || "x"
+        true  | true  | true   | true   | true  | true          || "racwdx"
     }
 
     @Unroll
@@ -859,16 +859,18 @@ class SASTest extends APISpec {
         perms.hasDeletePermission() == delete
         perms.hasCreatePermission() == create
         perms.hasAddPermission() == add
+        perms.hasDeleteVersionPermission() == deleteVersion
 
         where:
-        permString || read  | write | delete | create | add
-        "r"        || true  | false | false  | false  | false
-        "w"        || false | true  | false  | false  | false
-        "d"        || false | false | true   | false  | false
-        "c"        || false | false | false  | true   | false
-        "a"        || false | false | false  | false  | true
-        "racwd"    || true  | true  | true   | true   | true
-        "dcwra"    || true  | true  | true   | true   | true
+        permString || read  | write | delete | create | add   | deleteVersion
+        "r"        || true  | false | false  | false  | false | false
+        "w"        || false | true  | false  | false  | false | false
+        "d"        || false | false | true   | false  | false | false
+        "c"        || false | false | false  | true   | false | false
+        "a"        || false | false | false  | false  | true  | false
+        "x"        || false | false | false  | false  | false | true
+        "racwdx"    || true  | true  | true   | true   | true  | true
+        "dcxwra"    || true  | true  | true   | true   | true  | true
     }
 
     def "BlobSASPermissions parse IA"() {
@@ -889,19 +891,21 @@ class SASTest extends APISpec {
             .setCreatePermission(create)
             .setAddPermission(add)
             .setListPermission(list)
+            .setDeleteVersionPermission(deleteVersion)
 
         expect:
         perms.toString() == expectedString
 
         where:
-        read  | write | delete | create | add   | list  || expectedString
-        true  | false | false  | false  | false | false || "r"
-        false | true  | false  | false  | false | false || "w"
-        false | false | true   | false  | false | false || "d"
-        false | false | false  | true   | false | false || "c"
-        false | false | false  | false  | true  | false || "a"
-        false | false | false  | false  | false | true  || "l"
-        true  | true  | true   | true   | true  | true  || "racwdl"
+        read  | write | delete | create | add   | list  | deleteVersion || expectedString
+        true  | false | false  | false  | false | false | false         || "r"
+        false | true  | false  | false  | false | false | false         || "w"
+        false | false | true   | false  | false | false | false         || "d"
+        false | false | false  | true   | false | false | false         || "c"
+        false | false | false  | false  | true  | false | false         || "a"
+        false | false | false  | false  | false | true  | false         || "l"
+        false | false | false  | false  | false | false | true          || "x"
+        true  | true  | true   | true   | true  | true  | true          || "racwdxl"
     }
 
     @Unroll
@@ -916,17 +920,19 @@ class SASTest extends APISpec {
         perms.hasCreatePermission() == create
         perms.hasAddPermission() == add
         perms.hasListPermission() == list
+        perms.hasDeleteVersionPermission() == deleteVersion
 
         where:
-        permString || read  | write | delete | create | add   | list
-        "r"        || true  | false | false  | false  | false | false
-        "w"        || false | true  | false  | false  | false | false
-        "d"        || false | false | true   | false  | false | false
-        "c"        || false | false | false  | true   | false | false
-        "a"        || false | false | false  | false  | true  | false
-        "l"        || false | false | false  | false  | false | true
-        "racwdl"   || true  | true  | true   | true   | true  | true
-        "dcwrla"   || true  | true  | true   | true   | true  | true
+        permString || read  | write | delete | create | add   | list  | deleteVersion
+        "r"        || true  | false | false  | false  | false | false | false
+        "w"        || false | true  | false  | false  | false | false | false
+        "d"        || false | false | true   | false  | false | false | false
+        "c"        || false | false | false  | true   | false | false | false
+        "a"        || false | false | false  | false  | true  | false | false
+        "l"        || false | false | false  | false  | false | true  | false
+        "x"        || false | false | false  | false  | false | false | true
+        "racwdxl"  || true  | true  | true   | true   | true  | true  | true
+        "dcwxrla"  || true  | true  | true   | true   | true  | true  | true
     }
 
     def "ContainerSASPermissions parse IA"() {
@@ -985,7 +991,7 @@ class SASTest extends APISpec {
     def "ServiceSASSignatureValues assertGenerateOk"() {
         when:
         def serviceSASSignatureValues = new BlobServiceSasSignatureValues()
-            .setVersion(BlobServiceVersion.getLatest().getVersion())
+            .setVersion(BlobSasServiceVersion.getLatest().getVersion())
             .setContainerName("containerName")
             .setBlobName("blobName")
             .setSnapshotId(snapshotId)
@@ -1034,9 +1040,9 @@ class SASTest extends APISpec {
 
         where:
         startTime                                                 | ipRange          | protocol               || expectedStringToSign
-        OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC) | null             | null                   || "%s" + "\nr\nb\no\n" + Constants.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\n" + Constants.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\n\n\n" + BlobServiceVersion.getLatest().getVersion() + "\n"
-        null                                                      | new SasIpRange() | null                   || "%s" + "\nr\nb\no\n\n" + Constants.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\nip\n\n" + BlobServiceVersion.getLatest().getVersion() + "\n"
-        null                                                      | null             | SasProtocol.HTTPS_ONLY || "%s" + "\nr\nb\no\n\n" + Constants.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\n\n" + SasProtocol.HTTPS_ONLY + "\n" + BlobServiceVersion.getLatest().getVersion() + "\n"
+        OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC) | null             | null                   || "%s" + "\nr\nb\no\n" + Constants.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\n" + Constants.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\n\n\n" + BlobSasServiceVersion.getLatest().getVersion() + "\n"
+        null                                                      | new SasIpRange() | null                   || "%s" + "\nr\nb\no\n\n" + Constants.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\nip\n\n" + BlobSasServiceVersion.getLatest().getVersion() + "\n"
+        null                                                      | null             | SasProtocol.HTTPS_ONLY || "%s" + "\nr\nb\no\n\n" + Constants.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\n\n" + SasProtocol.HTTPS_ONLY + "\n" + BlobSasServiceVersion.getLatest().getVersion() + "\n"
     }
 
     @Unroll
@@ -1098,21 +1104,23 @@ class SASTest extends APISpec {
             .setCreatePermission(create)
             .setUpdatePermission(update)
             .setProcessMessages(process)
+            .setDeleteVersionPermission(deleteVersion)
 
         expect:
         perms.toString() == expectedString
 
         where:
-        read  | write | delete | list  | add   | create | update | process || expectedString
-        true  | false | false  | false | false | false  | false  | false   || "r"
-        false | true  | false  | false | false | false  | false  | false   || "w"
-        false | false | true   | false | false | false  | false  | false   || "d"
-        false | false | false  | true  | false | false  | false  | false   || "l"
-        false | false | false  | false | true  | false  | false  | false   || "a"
-        false | false | false  | false | false | true   | false  | false   || "c"
-        false | false | false  | false | false | false  | true   | false   || "u"
-        false | false | false  | false | false | false  | false  | true    || "p"
-        true  | true  | true   | true  | true  | true   | true   | true    || "rwdlacup"
+        read  | write | delete | list  | add   | create | update | process | deleteVersion || expectedString
+        true  | false | false  | false | false | false  | false  | false   | false         || "r"
+        false | true  | false  | false | false | false  | false  | false   | false         || "w"
+        false | false | true   | false | false | false  | false  | false   | false         || "d"
+        false | false | false  | true  | false | false  | false  | false   | false         || "l"
+        false | false | false  | false | true  | false  | false  | false   | false         || "a"
+        false | false | false  | false | false | true   | false  | false   | false         || "c"
+        false | false | false  | false | false | false  | true   | false   | false         || "u"
+        false | false | false  | false | false | false  | false  | true    | false         || "p"
+        false | false | false  | false | false | false  | false  | false   | true          || "x"
+        true  | true  | true   | true  | true  | true   | true   | true    | true          || "rwdxlacup"
     }
 
     @Unroll
@@ -1129,19 +1137,21 @@ class SASTest extends APISpec {
         perms.hasCreatePermission() == create
         perms.hasUpdatePermission() == update
         perms.hasProcessMessages() == process
+        perms.hasDeleteVersionPermission() == deleteVersion
 
         where:
-        permString || read  | write | delete | list  | add   | create | update | process
-        "r"        || true  | false | false  | false | false | false  | false  | false
-        "w"        || false | true  | false  | false | false | false  | false  | false
-        "d"        || false | false | true   | false | false | false  | false  | false
-        "l"        || false | false | false  | true  | false | false  | false  | false
-        "a"        || false | false | false  | false | true  | false  | false  | false
-        "c"        || false | false | false  | false | false | true   | false  | false
-        "u"        || false | false | false  | false | false | false  | true   | false
-        "p"        || false | false | false  | false | false | false  | false  | true
-        "rwdlacup" || true  | true  | true   | true  | true  | true   | true   | true
-        "lwrupcad" || true  | true  | true   | true  | true  | true   | true   | true
+        permString  || read  | write | delete | list  | add   | create | update | process | deleteVersion
+        "r"         || true  | false | false  | false | false | false  | false  | false   | false
+        "w"         || false | true  | false  | false | false | false  | false  | false   | false
+        "d"         || false | false | true   | false | false | false  | false  | false   | false
+        "l"         || false | false | false  | true  | false | false  | false  | false   | false
+        "a"         || false | false | false  | false | true  | false  | false  | false   | false
+        "c"         || false | false | false  | false | false | true   | false  | false   | false
+        "u"         || false | false | false  | false | false | false  | true   | false   | false
+        "p"         || false | false | false  | false | false | false  | false  | true    | false
+        "x"         || false | false | false  | false | false | false  | false  | false   | true
+        "rwdxlacup" || true  | true  | true   | true  | true  | true   | true   | true    | true
+        "lwrupcaxd" || true  | true  | true   | true  | true  | true   | true   | true    | true
     }
 
     def "AccountSASPermissions parse IA"() {
@@ -1229,7 +1239,7 @@ class SASTest extends APISpec {
 
     def "URLParser"() {
         when:
-        def parts = BlobUrlParts.parse(new URL("http://host/container/" + originalBlobName + "?snapshot=snapshot&sv=" + BlobServiceVersion.getLatest().getVersion() + "&sr=c&sp=r&sig=Ee%2BSodSXamKSzivSdRTqYGh7AeMVEk3wEoRZ1yzkpSc%3D"))
+        def parts = BlobUrlParts.parse(new URL("http://host/container/" + originalBlobName + "?snapshot=snapshot&sv=" + BlobSasServiceVersion.getLatest().getVersion() + "&sr=c&sp=r&sig=Ee%2BSodSXamKSzivSdRTqYGh7AeMVEk3wEoRZ1yzkpSc%3D"))
 
         then:
         parts.getScheme() == "http"
@@ -1238,7 +1248,7 @@ class SASTest extends APISpec {
         parts.getBlobName() == finalBlobName
         parts.getSnapshot() == "snapshot"
         parts.getSasQueryParameters().getPermissions() == "r"
-        parts.getSasQueryParameters().getVersion() == BlobServiceVersion.getLatest().getVersion()
+        parts.getSasQueryParameters().getVersion() == BlobSasServiceVersion.getLatest().getVersion()
         parts.getSasQueryParameters().getResource() == "c"
         parts.getSasQueryParameters().getSignature() == Utility.urlDecode("Ee%2BSodSXamKSzivSdRTqYGh7AeMVEk3wEoRZ1yzkpSc%3D")
 

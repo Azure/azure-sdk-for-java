@@ -1,12 +1,38 @@
+resources:
+  repositories:
+    - repository: azure-sdk-build-tools
+      type: git
+      name: internal/azure-sdk-build-tools
+      ref: refs/tags/azure-sdk-build-tools_20200618.4
+    - repository: azure-sdk-tools
+      type: github
+      name: Azure/azure-sdk-tools
+      endpoint: azure
+      ref: refs/tags/azure-sdk-tools_20200618.1
+
 parameters:
-  Artifacts: []
-  SDKType: pom
-  ServiceDirectory: not-specified
-  Skip.UpdatePackageVersion: true
-  Skip.VersionVerification: true
-  TargetDocRepoOwner: 'Azure'
-  TargetDocRepoName: 'azure-docs-sdk-java'
-  
+- name: Artifacts
+  type: object
+  default: []
+- name: SDKType
+  type: string
+  default: pom
+- name: ServiceDirectory
+  type: string
+  default: not-specified
+- name: Skip.UpdatePackageVersion
+  type: boolean
+  default: true
+- name: Skip.VersionVerification
+  type: boolean
+  default: true
+- name: TargetDocRepoOwner
+  type: string
+  default: Azure
+- name: TargetDocRepoName
+  type: string
+  default: azure-docs-sdk-java
+
 stages:
   - stage: Build
     jobs:
@@ -18,12 +44,15 @@ stages:
 
   # The Prerelease and Release stages are conditioned on whether we are building a pull request and the branch.
   - ${{if and(ne(variables['Build.Reason'], 'PullRequest'), eq(variables['System.TeamProject'], 'internal'))}}:
-      - template: archetype-java-release.yml
+      - template: archetype-java-release-pom-only.yml
         parameters:
           DependsOn: Build
           ServiceDirectory: ${{parameters.ServiceDirectory}}
+          RunIntegrationStage: false
           SDKType: ${{parameters.SDKType}}
           Artifacts: ${{parameters.Artifacts}}
           ArtifactName: packages
           TargetDocRepoOwner: ${{parameters.TargetDocRepoOwner}}
-          TargetDocRepoName: ${{parameters.TargetDocRepoName}} 
+          TargetDocRepoName: ${{parameters.TargetDocRepoName}}
+          EnableIntegrationStage: false
+
