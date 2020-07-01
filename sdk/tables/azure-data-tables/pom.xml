@@ -32,7 +32,6 @@ Licensed under the MIT License.
     <tag>HEAD</tag>
   </scm>
 
-  <!-- CosmosTableSkip - Needed temporary values to 10% not fail. -->
   <properties>
     <jacoco.skip.coverage.check>true</jacoco.skip.coverage.check>
   </properties>
