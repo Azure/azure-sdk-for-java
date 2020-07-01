@@ -77,14 +77,14 @@ public final class FormRecognizerAsyncClient {
 
     /**
      * Recognizes form data from documents using optical character recognition (OCR) and a custom trained
-     * model.
+     * model with or without labels.
      * <p>The service does not support cancellation of the long running operation and returns with an
      * error message indicating absence of cancellation support.</p>
      *
      * <p><strong>Code sample</strong></p>
      * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeCustomFormsFromUrl#string-string}
      *
-     * @param formUrl The source URL to the input form.
+     * @param formUrl The URL of the form to analyze.
      * @param modelId The UUID string format custom trained model Id to be used.
      *
      * @return A {@link PollerFlux} that polls the recognize custom form operation until it has completed, has failed,
@@ -119,7 +119,7 @@ public final class FormRecognizerAsyncClient {
 
     /**
      * Recognizes form data from documents using optical character recognition (OCR) and a custom trained
-     * model.
+     * model with or without labels.
      * <p>The service does not support cancellation of the long running operation and returns with an
      * error message indicating absence of cancellation support.</p>
      *
@@ -130,12 +130,12 @@ public final class FormRecognizerAsyncClient {
      * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeCustomForms#Flux-long-string-FormContentType}
      *
      * @param form The data of the form to recognize form information from.
-     * @param length The exact length of the data. Size of the file must be less than 50 MB.
+     * @param length The exact length of the data.
      * @param modelId The UUID string format custom trained model Id to be used.
      * @param formContentType The type of the provided form. Supported Media types including .pdf, .jpg, .png or
-     * .tiff type file stream.
+     * .tiff type file stream. Content-type is auto-detected and could be {@code null}.
      *
-     * @return A {@link PollerFlux} that polls the recognize receipt operation until it has completed, has failed,
+     * @return A {@link PollerFlux} that polls the recognize custom form operation until it has completed, has failed,
      * or has been cancelled. The completed operation returns a List of {@link RecognizedForm}.
      * @throws FormRecognizerException If recognize operation fails and the {@link AnalyzeOperationResult} returned with
      * an {@link OperationStatus#FAILED}.
@@ -150,7 +150,7 @@ public final class FormRecognizerAsyncClient {
 
     /**
      * Recognizes form data from documents using optical character recognition (OCR) and a custom trained
-     * model.
+     * model with or without labels.
      * <p>The service does not support cancellation of the long running operation and returns with an
      * error message indicating absence of cancellation support.</p>
      *
@@ -163,7 +163,7 @@ public final class FormRecognizerAsyncClient {
      * @param recognizeCustomFormsOptions The configurable {@code RecognizeCustomFormsOptions options} that may be
      * passed when recognizing custom form.
      *
-     * @return A {@link PollerFlux} that polls the recognize receipt operation until it has completed, has failed,
+     * @return A {@link PollerFlux} that polls the recognize custom form operation until it has completed, has failed,
      * or has been cancelled. The completed operation returns a List of {@link RecognizedForm}.
      * @throws FormRecognizerException If recognize operation fails and the {@link AnalyzeOperationResult} returned with
      * an {@link OperationStatus#FAILED}.
@@ -195,18 +195,17 @@ public final class FormRecognizerAsyncClient {
     }
 
     /**
-     * Recognizes layout data from documents using optical character recognition (OCR) and a custom trained
-     * model.
+     * Recognizes content/layout data from documents using optical character recognition (OCR).
      * <p>The service does not support cancellation of the long running operation and returns with an
      * error message indicating absence of cancellation support.</p>
      *
      * <p><strong>Code sample</strong></p>
      * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeContentFromUrl#string}
      *
-     * @param formUrl The source URL to the input form.
+     * @param formUrl The URL of the form to analyze.
      *
-     * @return A {@link PollerFlux} that polls the recognize custom form operation until it has completed, has failed,
-     * or has been cancelled. The completed operation returns a List of {@link FormPage}.
+     * @return A {@link PollerFlux} that polls the recognize content operation until it has completed, has failed, or
+     * has been cancelled. The completed operation returns a List of {@link FormPage}.
      * @throws FormRecognizerException If recognize operation fails and the {@link AnalyzeOperationResult} returned with
      * an {@link OperationStatus#FAILED}.
      * @throws NullPointerException If {@code formUrl} is {@code null}.
@@ -233,8 +232,7 @@ public final class FormRecognizerAsyncClient {
     }
 
     /**
-     * Recognizes layout data using optical character recognition (OCR) and a prebuilt receipt
-     * trained model.
+     * Recognizes content/layout data using optical character recognition (OCR).
      * <p>The service does not support cancellation of the long running operation and returns with an
      * error message indicating absence of cancellation support.</p>
      *
@@ -245,12 +243,12 @@ public final class FormRecognizerAsyncClient {
      * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeContent#Flux-long-FormContentType}
      *
      * @param form The data of the form to recognize content information from.
-     * @param length The exact length of the data. Size of the file must be less than 50 MB.
+     * @param length The exact length of the data.
      * @param formContentType The type of the provided form. Supported Media types including .pdf, .jpg, .png or
-     * .tiff type file stream.
+     * .tiff type file stream. Content-type is auto-detected and could be {@code null}.
      *
-     * @return A {@link PollerFlux} that polls the recognize receipt operation until it has completed, has failed,
-     * or has been cancelled. The completed operation returns a List of {@link FormPage}.
+     * @return A {@link PollerFlux} polls the recognize content operation until it has completed, has failed, or has
+     * been cancelled. The completed operation returns a List of {@link FormPage}.
      * @throws FormRecognizerException If recognize operation fails and the {@link AnalyzeOperationResult} returned with
      * an {@link OperationStatus#FAILED}.
      * @throws NullPointerException If {@code form} is {@code null}.
@@ -262,8 +260,7 @@ public final class FormRecognizerAsyncClient {
     }
 
     /**
-     * Recognizes layout data using optical character recognition (OCR) and a prebuilt receipt
-     * trained model.
+     * Recognizes content/layout data using optical character recognition (OCR).
      * <p>The service does not support cancellation of the long running operation and returns with an
      * error message indicating absence of cancellation support.</p>
      *
@@ -276,8 +273,8 @@ public final class FormRecognizerAsyncClient {
      * @param recognizeOptions The configurable {@code RecognizeOptions options} that may be passed when recognizing
      * content on a form.
      *
-     * @return A {@link PollerFlux} that polls the recognize receipt operation until it has completed, has failed,
-     * or has been cancelled. The completed operation returns a List of {@link FormPage}.
+     * @return A {@link PollerFlux} polls the recognize content operation until it has completed, has failed, or has
+     * been cancelled. The completed operation returns a List of {@link FormPage}.
      * @throws FormRecognizerException If recognize operation fails and the {@link AnalyzeOperationResult} returned with
      * an {@link OperationStatus#FAILED}.
      * @throws NullPointerException If {@code recognizeOptions} is {@code null}.
@@ -309,11 +306,12 @@ public final class FormRecognizerAsyncClient {
      * model.
      * <p>The service does not support cancellation of the long running operation and returns with an
      * error message indicating absence of cancellation support.</p>
+     * See <a href="https://aka.ms/azsdk/python/formrecognizer/receiptfields">here</a> for fields found on a receipt.
      *
      * <p><strong>Code sample</strong></p>
      * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeReceiptsFromUrl#string}
      *
-     * @param receiptUrl The source URL to the input receipt.
+     * @param receiptUrl The URL of the receipt to analyze.
      *
      * @return A {@link PollerFlux} that polls the recognize receipt operation until it has completed, has failed,
      * or has been cancelled. The completed operation returns a List of {@link RecognizedReceipt}.
@@ -349,17 +347,18 @@ public final class FormRecognizerAsyncClient {
      * trained model.
      * <p>The service does not support cancellation of the long running operation and returns with an
      * error message indicating absence of cancellation support.</p>
+     * See <a href="https://aka.ms/azsdk/python/formrecognizer/receiptfields">here</a> for fields found on a receipt.
      *
-     * Note that the {@code data} passed must be replayable if retries are enabled (the default). In other words, the
+     * Note that the {@code receipt} passed must be replayable if retries are enabled (the default). In other words, the
      * {@code Flux} must produce the same data each time it is subscribed to.
      *
      * <p><strong>Code sample</strong></p>
      * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeReceipts#Flux-long-FormContentType}
      *
-     * @param receipt The data of the document to recognize receipt information from.
-     * @param length The exact length of the data. Size of the file must be less than 50 MB.
+     * @param receipt The data/stream of the document to recognize receipt information from.
+     * @param length The exact length of the data.
      * @param formContentType The type of the provided form. Supported Media types including .pdf, .jpg, .png or
-     * .tiff type file stream.
+     * .tiff type file stream. Content-type is auto-detected and could be {@code null}.
      *
      * @return A {@link PollerFlux} that polls the recognize receipt operation until it has completed, has failed,
      * or has been cancelled. The completed operation returns a List of {@link RecognizedReceipt}.
@@ -378,6 +377,7 @@ public final class FormRecognizerAsyncClient {
      * and a prebuilt receipt trained model.
      * <p>The service does not support cancellation of the long running operation and returns with an
      * error message indicating absence of cancellation support.</p>
+     * See <a href="https://aka.ms/azsdk/python/formrecognizer/receiptfields">here</a> for fields found on a receipt.
      *
      * Note that the {@code data} passed must be replayable if retries are enabled (the default). In other words, the
      * {@code Flux} must produce the same data each time it is subscribed to.
