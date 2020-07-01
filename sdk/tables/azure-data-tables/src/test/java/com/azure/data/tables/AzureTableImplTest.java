@@ -94,7 +94,7 @@ public class AzureTableImplTest extends TestBase {
                 return Flux.fromIterable(tablesQueryResponse.getValue().getValue()).flatMap(tableResponseProperty -> {
                     return azureTable.getTables().deleteWithResponseAsync(tableResponseProperty.getTableName(),
                         testResourceNamer.randomUuid(), Context.NONE);
-            });
+                });
             })).block();
     }
 

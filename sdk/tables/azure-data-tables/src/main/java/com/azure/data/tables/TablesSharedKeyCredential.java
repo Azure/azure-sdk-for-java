@@ -26,7 +26,7 @@ public class TablesSharedKeyCredential {
      * Constructor for TableSharedKeyCredential Class
      *
      * @param accountName name of the storage account
-     * @param accountKey  key to the storage account
+     * @param accountKey key to the storage account
      */
     public TablesSharedKeyCredential(String accountName, String accountKey) {
         Objects.requireNonNull(accountName, "'accountName' cannot be null.");
