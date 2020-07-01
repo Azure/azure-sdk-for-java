@@ -11,7 +11,10 @@ import reactor.core.publisher.Mono;
 public class TableServiceAsyncClientCodeSnippets {
     final ClientLogger logger = new ClientLogger("TableServiceAsyncClientCodeSnippets");
 
-    private void methods() {
+    /**
+     * all methods on tables in the Tables SDK (Add, Delete, Query)
+     */
+    public void TableLevelMethods() {
 
         // Build service client
         TableServiceAsyncClient tableServiceAsyncClient = new TableServiceClientBuilder()
@@ -22,16 +25,16 @@ public class TableServiceAsyncClientCodeSnippets {
         tableServiceAsyncClient.createTable("OfficeSupplies").subscribe(Void -> {
             logger.info("Table creation successful.");
         }, error -> {
-                logger.error("There was an error creating the table. Error: " + error);
-            });
+            logger.error("There was an error creating the table. Error: " + error);
+        });
 
 
         // Delete a table
         tableServiceAsyncClient.deleteTable("OfficeSupplies").subscribe(Void -> {
             logger.info("Table deletion successful");
         }, error -> {
-                logger.error("There was an error deleting the table. Error: " + error);
-            });
+            logger.error("There was an error deleting the table. Error: " + error);
+        });
 
 
         // Query tables
@@ -40,10 +43,13 @@ public class TableServiceAsyncClientCodeSnippets {
         tableServiceAsyncClient.queryTables(queryOptions).subscribe(azureTable -> {
             logger.info(azureTable.getName());
         }, error -> {
-                logger.error("There was an error querying the service. Error: " + error);
-            });
+            logger.error("There was an error querying the service. Error: " + error);
+        });
     }
 
+    /**
+     * insert entity code snippet
+     */
     private void insertEntity() {
 
         // Build service client
@@ -58,10 +64,13 @@ public class TableServiceAsyncClientCodeSnippets {
         tableAsyncClient.insertEntity(new TableEntity(row, partitionKey, null)).subscribe(tableEntity -> {
             logger.info("Insert Entity Successful. Entity: " + tableEntity);
         }, error -> {
-                logger.error("There was an error inserting the Entity. Error: " + error);
-            });
+            logger.error("There was an error inserting the Entity. Error: " + error);
+        });
     }
 
+    /**
+     * delete entity code snippet
+     */
     private void deleteEntity() {
 
         // Build service client
@@ -80,10 +89,13 @@ public class TableServiceAsyncClientCodeSnippets {
         }).subscribe(Void -> {
             logger.info("Delete Entity Successful.");
         }, error -> {
-                logger.error("There was an error deleting the Entity. Error: " + error);
-            });
+            logger.error("There was an error deleting the Entity. Error: " + error);
+        });
     }
 
+    /**
+     * update entity code snippet
+     */
     private void updateEntity() {
 
         // Build service client
@@ -103,10 +115,13 @@ public class TableServiceAsyncClientCodeSnippets {
         }).subscribe(Void -> {
             logger.info("Update Entity Successful.");
         }, error -> {
-                logger.error("There was an error updating the Entity. Error: " + error);
-            });
+            logger.error("There was an error updating the Entity. Error: " + error);
+        });
     }
 
+    /**
+     * query entity code snippet
+     */
     private void queryEntities() {
 
         // Build service client
@@ -122,7 +137,8 @@ public class TableServiceAsyncClientCodeSnippets {
         tableAsyncClient.queryEntity(queryOptions).subscribe(tableEntity -> {
             logger.info("Table Entity: " + tableEntity);
         }, error -> {
-                logger.error("There was an error querying the table. Error: " + error);
-            });
+            logger.error("There was an error querying the table. Error: " + error);
+        });
     }
+
 }

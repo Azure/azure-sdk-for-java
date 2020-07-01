@@ -102,4 +102,12 @@ public class TableAsyncClient {
     public Mono<Void> insertOrMergeEntity(TableEntity tableEntity) {
         return Mono.empty();
     }
+
+    /**
+     * returns the table name associated with the client
+     * @return table name
+     */
+    public Mono<String> getTableName(){
+        return Mono.empty();
+    }
 }

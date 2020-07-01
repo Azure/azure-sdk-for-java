@@ -55,4 +55,12 @@ public class TableClientBuilder {
     TableClientBuilder() {
     }
 
+    /**
+     * gets the connection string
+     * @return the connection string
+     */
+    public String getConnectionString(){
+        return this.connectionString;
+    }
+
 }

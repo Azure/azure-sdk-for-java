@@ -10,7 +10,7 @@ import com.azure.core.annotation.ServiceClientBuilder;
 @ServiceClientBuilder(serviceClients = {TableServiceClient.class, TableServiceAsyncClient.class})
 public class TableServiceClientBuilder {
 
-    String connectionString;
+    private String connectionString;
 
     /**
      * Sets the connection string to help build the client
@@ -46,6 +46,14 @@ public class TableServiceClientBuilder {
      */
     public TableServiceClientBuilder() {
 
+    }
+
+    /**
+     * gets the connection string
+     * @return the connection string
+     */
+    public String getConnectionString(){
+        return this.connectionString;
     }
 
 }

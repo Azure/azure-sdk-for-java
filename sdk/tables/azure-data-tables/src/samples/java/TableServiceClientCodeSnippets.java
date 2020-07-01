@@ -12,7 +12,10 @@ import java.util.List;
  */
 public class TableServiceClientCodeSnippets {
 
-    private static void methods() {
+    /**
+     * all the functionality of the Tables SDK written sync
+     */
+    public static void methods() {
         ClientLogger logger = new ClientLogger("TableServiceClientCodeSnippets");
 
         //create a tableServiceClient
@@ -100,4 +103,5 @@ public class TableServiceClientCodeSnippets {
             logger.error("Query Table Entities Unsuccessful. Error: " + e);
         }
     }
+
 }
