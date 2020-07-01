@@ -67,6 +67,7 @@ class LargeFileTest extends APISpec{
     }
 
     @Requires({ liveMode() })
+    @Ignore("OOM")
     // This test does not send large payload over the wire
     def "Append Large Block"() {
         given:
@@ -82,6 +83,7 @@ class LargeFileTest extends APISpec{
     }
 
     @Requires({ liveMode() })
+    @Ignore("OOM")
     // This test does not send large payload over the wire
     def "Append Large Block Async"() {
         given:
@@ -97,6 +99,7 @@ class LargeFileTest extends APISpec{
     }
 
     @Requires({ liveMode() })
+    @Ignore("OOM")
     // This test does not send large payload over the wire
     def "Upload Large Data Async"() {
         given:
@@ -111,6 +114,7 @@ class LargeFileTest extends APISpec{
     }
 
     @Requires({ liveMode() })
+    @Ignore("OOM")
     // This test does not send large payload over the wire
     def "Append Large File"() {
         given:

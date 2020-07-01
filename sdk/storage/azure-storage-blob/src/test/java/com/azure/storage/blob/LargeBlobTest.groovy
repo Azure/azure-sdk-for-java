@@ -122,6 +122,7 @@ class LargeBlobTest extends APISpec {
     }
 
     @Requires({ liveMode() })
+    @Ignore("OOM")
     // This test does not send large payload over the wire
     def "Upload Large Blob in Single Upload"() {
         given:
@@ -140,6 +141,7 @@ class LargeBlobTest extends APISpec {
     }
 
     @Requires({ liveMode() })
+    @Ignore("OOM")
     // This test does not send large payload over the wire
     def "Upload Large Blob in Single Upload Async"() {
         given:
@@ -156,6 +158,7 @@ class LargeBlobTest extends APISpec {
     }
 
     @Requires({ liveMode() })
+    @Ignore("OOM")
     // This test does not send large payload over the wire
     def "Stage Large Blob"() {
         given:
@@ -172,6 +175,7 @@ class LargeBlobTest extends APISpec {
     }
 
     @Requires({ liveMode() })
+    @Ignore("OOM")
     // This test does not send large payload over the wire
     def "Upload Large Input"() {
         given:
@@ -209,6 +213,7 @@ class LargeBlobTest extends APISpec {
     }
 
     @Requires({ liveMode() })
+    @Ignore("OOM")
     // This test does not send large payload over the wire
     def "Upload Large Input Sync"() {
         given:
