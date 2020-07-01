@@ -18,7 +18,7 @@ import org.slf4j.helpers.MessageFormatter;
  */
 public final class DefaultLogger extends MarkerIgnoringBase {
     private static final long serialVersionUID = -144261058636441630L;
-    private static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+    private static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS");
 
     // The template for the log message:
     // YYYY-MM-DD HH:MM [thread] [level] classpath - message
