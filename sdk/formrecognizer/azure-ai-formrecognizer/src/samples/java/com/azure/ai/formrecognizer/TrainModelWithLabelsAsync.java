@@ -18,7 +18,7 @@ import java.util.concurrent.TimeUnit;
  * Async sample to train a model with labeled data.
  * For instructions on setting up forms for training in an Azure Storage Blob Container, see
  * https://docs.microsoft.com/azure/cognitive-services/form-recognizer/build-training-data-set#upload-your-training-data
- * For this sample, you can use the training forms found in https://aka.ms/azsdk/formrecognizer/docs/trainingdocs to
+ * For this sample, you can use the training forms found in https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/java/sample-forms/training to
  * create your own custom models.
  * Further, see RecognizeCustomForms.java to recognize forms with your custom built model.
  */
