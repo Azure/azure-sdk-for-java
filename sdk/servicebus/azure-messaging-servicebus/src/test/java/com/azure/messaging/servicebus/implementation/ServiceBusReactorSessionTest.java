@@ -30,6 +30,7 @@ import org.apache.qpid.proton.reactor.Reactor;
 import org.apache.qpid.proton.reactor.Selectable;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -56,6 +57,7 @@ import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
 
 /**
@@ -172,7 +174,7 @@ public class ServiceBusReactorSessionTest {
 
         when(tokenManagerEntity.getAuthorizationResults()).thenReturn(Flux.just(AmqpResponseCode.ACCEPTED));
         when(tokenManagerEntity.authorize()).thenReturn(Mono.just(1L));
-        when(tokenManagerViaQueue.authorize()).thenReturn(Mono.just(1L));
+         when(tokenManagerViaQueue.authorize()).thenReturn(Mono.just(1L));
 
         when(session.sender(viaEntityPathSenderLinkName)).thenReturn(senderViaEntity);
         when(session.sender(entityPath)).thenReturn(senderEntity);
@@ -231,6 +233,27 @@ public class ServiceBusReactorSessionTest {
         ));
     }
 
+    /**
+     * Test for create Sender Link when via-queue is used but `transferEntityPath` authorization fails.
+     */
+    @Test
+    void createViaSenderLinkDestinationEntityAuthorizeFails() throws IOException {
+        // Arrange
+        final Duration timeout = Duration.ofSeconds(20);
+        final AmqpRetryPolicy retryMock = mock(AmqpRetryPolicy.class);
+        final Throwable authorizeError = new RuntimeException("Failed to Authorize EntityPath");
+        doNothing().when(dispatcher).invoke(any(Runnable.class));
+        when(tokenManagerEntity.authorize()).thenReturn(Mono.error(authorizeError));
+
+        // Act
+        StepVerifier.create(serviceBusReactorSession.createProducer(viaEntityPathSenderLinkName, viaEntityPath, timeout,
+            retryMock, entityPath)).verifyError(RuntimeException.class);
+
+        // Assert
+        verify(tokenManagerEntity).authorize();
+        verify(tokenManagerViaQueue).authorize();
+        verifyZeroInteractions(dispatcher);
+   }
     /**
      * Test for create Sender Link.
      */

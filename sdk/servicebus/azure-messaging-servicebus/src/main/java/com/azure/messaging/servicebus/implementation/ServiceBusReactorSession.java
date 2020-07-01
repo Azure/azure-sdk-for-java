@@ -98,7 +98,7 @@ class ServiceBusReactorSession extends ReactorSession implements ServiceBusSessi
 
     @Override
     public Mono<AmqpLink> createProducer(String linkName, String entityPath, Duration timeout,
-        AmqpRetryPolicy retry, String transferDestinationPath) {
+        AmqpRetryPolicy retry, String transferEntityPath) {
         Objects.requireNonNull(entityPath, "'entityPath' cannot be null.");
         Objects.requireNonNull(timeout, "'timeout' cannot be null.");
         Objects.requireNonNull(retry, "'retry' cannot be null.");
@@ -108,19 +108,22 @@ class ServiceBusReactorSession extends ReactorSession implements ServiceBusSessi
 
         linkProperties.put(LINK_TIMEOUT_PROPERTY, UnsignedInteger.valueOf(serverTimeout.toMillis()));
 
-        if (!CoreUtils.isNullOrEmpty(transferDestinationPath)) {
-            linkProperties.put(LINK_TRANSFER_DESTINATION_PROPERTY, transferDestinationPath);
+        if (!CoreUtils.isNullOrEmpty(transferEntityPath)) {
+            linkProperties.put(LINK_TRANSFER_DESTINATION_PROPERTY, transferEntityPath);
             logger.verbose("Get or create sender link {} for via entity path: '{}'", linkName, entityPath);
 
             final TokenManager tokenManager = tokenManagerProvider.getTokenManager(cbsNodeSupplier,
-                transferDestinationPath);
+                transferEntityPath);
 
             return tokenManager.authorize()
-                .then(
-                    Mono.fromCallable(() -> {
-                        tokenManager.close();
-                        return Mono.empty();
-                    }))
+                /*.then(Mono.defer(() -> {
+                    tokenManager.close();
+                    return Mono.empty();
+                }))*/
+                .doFinally(signalType -> {
+                    logger.verbose("!!!! signalType " + signalType);
+                    tokenManager.close();
+                })
                 .then(createProducer(linkName, entityPath, timeout, retry, linkProperties));
         } else {
             logger.verbose("Get or create sender link {} for entity path: '{}'", linkName, entityPath);

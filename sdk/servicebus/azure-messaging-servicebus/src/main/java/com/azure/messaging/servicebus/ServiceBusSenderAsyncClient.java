@@ -554,12 +554,10 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
     private Mono<AmqpSendLink> getSendLink() {
         return connectionProcessor
             .flatMap(connection -> {
-                String linkName = entityName;
                 if (!CoreUtils.isNullOrEmpty(viaEntityName)) {
-                    linkName = "VIA-".concat(viaEntityName);
-                    return connection.createSendLink(linkName, viaEntityName, retryOptions, entityName);
+                    return connection.createSendLink("VIA-".concat(viaEntityName), viaEntityName, retryOptions, entityName);
                 } else {
-                    return connection.createSendLink(linkName, entityName, retryOptions, null);
+                    return connection.createSendLink(entityName, entityName, retryOptions, null);
                 }
 
             })
