@@ -8,6 +8,7 @@
 
 package com.microsoft.azure.management.cosmosdb.v2020_06_01_preview;
 
+import com.microsoft.azure.CloudError;
 import com.microsoft.rest.RestException;
 import okhttp3.ResponseBody;
 import retrofit2.Response;
@@ -34,12 +35,12 @@ public class ErrorResponseUpdatedFormatException extends RestException {
      * @param response the HTTP response
      * @param body the deserialized response body
      */
-    public ErrorResponseUpdatedFormatException(final String message, final Response<ResponseBody> response, final ErrorResponseUpdatedFormat body) {
+    public ErrorResponseUpdatedFormatException(final String message, final Response<ResponseBody> response, final ErrorResponse body) {
         super(message, response, body);
     }
 
     @Override
-    public ErrorResponseUpdatedFormat body() {
-        return (ErrorResponseUpdatedFormat) super.body();
+    public ErrorResponse body() {
+        return (ErrorResponse) super.body();
     }
 }
