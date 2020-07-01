@@ -16,6 +16,7 @@ import com.azure.search.documents.indexes.SearchIndexerClientBuilder;
 import com.azure.search.documents.indexes.models.AnalyzeTextOptions;
 import com.azure.search.documents.indexes.models.AnalyzedTokenInfo;
 import com.azure.search.documents.indexes.models.FieldMapping;
+import com.azure.search.documents.indexes.models.IndexDocumentsBatch;
 import com.azure.search.documents.indexes.models.InputFieldMappingEntry;
 import com.azure.search.documents.indexes.models.LexicalTokenizerName;
 import com.azure.search.documents.indexes.models.OcrSkill;
@@ -35,10 +36,24 @@ import com.azure.search.documents.indexes.models.SearchSuggester;
 import com.azure.search.documents.indexes.models.SearchableFieldBuilder;
 import com.azure.search.documents.indexes.models.SimpleFieldBuilder;
 import com.azure.search.documents.indexes.models.SynonymMap;
+import com.azure.search.documents.models.AutocompleteItem;
+import com.azure.search.documents.models.AutocompleteMode;
+import com.azure.search.documents.models.AutocompleteOptions;
+import com.azure.search.documents.models.IndexDocumentsOptions;
+import com.azure.search.documents.models.IndexDocumentsResult;
+import com.azure.search.documents.models.IndexingResult;
+import com.azure.search.documents.models.SearchOptions;
+import com.azure.search.documents.models.SearchResult;
+import com.azure.search.documents.models.SuggestOptions;
+import com.azure.search.documents.models.SuggestResult;
+import com.azure.search.documents.util.AutocompletePagedIterable;
+import com.azure.search.documents.util.SearchPagedIterable;
+import com.azure.search.documents.util.SuggestPagedIterable;
 
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 public class SearchJavaDocCodeSnippets {
     private SearchClient searchClient = new SearchClientBuilder().buildClient();
@@ -54,6 +69,324 @@ public class SearchJavaDocCodeSnippets {
             .indexName("{indexName}")
             .buildClient();
         // END: com.azure.search.documents.SearchClient.instantiation
+    }
+
+    /**
+     * Code snippet for {@link SearchClient#uploadDocuments(Iterable)}.
+     */
+    public void uploadDocuments() {
+        // BEGIN: com.azure.search.documents.SearchClient.uploadDocuments#Iterable
+        SearchDocument searchDocument = new SearchDocument();
+        searchDocument.put("hotelId", "1");
+        searchDocument.put("hotelName", "test");
+        IndexDocumentsResult result = searchClient.uploadDocuments(Collections.singletonList(searchDocument));
+        for (IndexingResult indexingResult : result.getResults()) {
+            System.out.printf("Does document with key %s upload successfully? %b%n", indexingResult.getKey(),
+                indexingResult.isSucceeded());
+        }
+        // END: com.azure.search.documents.SearchClient.uploadDocuments#Iterable
+    }
+
+    /**
+     * Code snippet for {@link SearchClient#uploadDocumentsWithResponse(Iterable, IndexDocumentsOptions, Context)}
+     */
+    public void uploadDocumentsWithResponse() {
+        // BEGIN: com.azure.search.documents.SearchClient.uploadDocumentsWithResponse#Iterable-IndexDocumentsOptions-Context
+        SearchDocument searchDocument = new SearchDocument();
+        searchDocument.put("hotelId", "1");
+        searchDocument.put("hotelName", "test");
+        Response<IndexDocumentsResult> resultResponse = searchClient.uploadDocumentsWithResponse(
+            Collections.singletonList(searchDocument), null, new Context(key1, value1));
+        System.out.println("The status code of the response is " + resultResponse.getStatusCode());
+        for (IndexingResult indexingResult : resultResponse.getValue().getResults()) {
+            System.out.printf("Does document with key %s upload successfully? %b%n", indexingResult.getKey(),
+                indexingResult.isSucceeded());
+        }
+        // END: com.azure.search.documents.SearchClient.uploadDocumentsWithResponse#Iterable-IndexDocumentsOptions-Context
+    }
+
+    /**
+     * Code snippet for {@link SearchClient#mergeDocuments(Iterable)}
+     */
+    public void mergeDocuments() {
+        // BEGIN: com.azure.search.documents.SearchClient.mergeDocuments#Iterable
+        SearchDocument searchDocument = new SearchDocument();
+        searchDocument.put("hotelName", "merge");
+        IndexDocumentsResult result = searchClient.mergeDocuments(Collections.singletonList(searchDocument));
+        for (IndexingResult indexingResult : result.getResults()) {
+            System.out.printf("Does document with key %s merge successfully? %b%n", indexingResult.getKey(),
+                indexingResult.isSucceeded());
+        }
+        // END: com.azure.search.documents.SearchClient.mergeDocuments#Iterable
+    }
+
+    /**
+     * Code snippet for {@link SearchClient#mergeDocumentsWithResponse(Iterable, IndexDocumentsOptions, Context)}
+     */
+    public void mergeDocumentsWithResponse() {
+        // BEGIN: com.azure.search.documents.SearchClient.mergeDocumentsWithResponse#Iterable-IndexDocumentsOptions-Context
+        SearchDocument searchDocument = new SearchDocument();
+        searchDocument.put("hotelName", "test");
+        Response<IndexDocumentsResult> resultResponse = searchClient.mergeDocumentsWithResponse(
+            Collections.singletonList(searchDocument), null, new Context(key1, value1));
+        System.out.println("The status code of the response is " + resultResponse.getStatusCode());
+        for (IndexingResult indexingResult : resultResponse.getValue().getResults()) {
+            System.out.printf("Does document with key %s merge successfully? %b%n", indexingResult.getKey(),
+                indexingResult.isSucceeded());
+        }
+        // END: com.azure.search.documents.SearchClient.mergeDocumentsWithResponse#Iterable-IndexDocumentsOptions-Context
+    }
+
+    /**
+     * Code snippet for {@link SearchClient#mergeOrUploadDocuments(Iterable)}
+     */
+    public void mergeOrUploadDocuments() {
+        // BEGIN: com.azure.search.documents.SearchClient.mergeOrUploadDocuments#Iterable
+        SearchDocument searchDocument = new SearchDocument();
+        searchDocument.put("hotelId", "1");
+        searchDocument.put("hotelName", "test");
+        IndexDocumentsResult result = searchClient.mergeOrUploadDocuments(Collections.singletonList(searchDocument));
+        for (IndexingResult indexingResult : result.getResults()) {
+            System.out.printf("Does document with key %s mergeOrUpload successfully? %b%n", indexingResult.getKey(),
+                indexingResult.isSucceeded());
+        }
+        // END: com.azure.search.documents.SearchClient.mergeOrUploadDocuments#Iterable
+    }
+
+    /**
+     * Code snippet for {@link SearchClient#mergeOrUploadDocumentsWithResponse(Iterable, IndexDocumentsOptions, Context)}
+     */
+    public void mergeOrUploadDocumentsWithResponse() {
+        // BEGIN: com.azure.search.documents.SearchClient.mergeOrUploadDocumentsWithResponse#Iterable-IndexDocumentsOptions-Context
+        SearchDocument searchDocument = new SearchDocument();
+        searchDocument.put("hotelId", "1");
+        searchDocument.put("hotelName", "test");
+        Response<IndexDocumentsResult> resultResponse = searchClient.mergeOrUploadDocumentsWithResponse(
+            Collections.singletonList(searchDocument), null, new Context(key1, value1));
+        System.out.println("The status code of the response is " + resultResponse.getStatusCode());
+        for (IndexingResult indexingResult : resultResponse.getValue().getResults()) {
+            System.out.printf("Does document with key %s mergeOrUpload successfully? %b%n", indexingResult.getKey(),
+                indexingResult.isSucceeded());
+        }
+        // END: com.azure.search.documents.SearchClient.mergeOrUploadDocumentsWithResponse#Iterable-IndexDocumentsOptions-Context
+    }
+
+    /**
+     * Code snippet for {@link SearchClient#deleteDocuments(Iterable)}
+     */
+    public void deleteDocuments() {
+        // BEGIN: com.azure.search.documents.SearchClient.deleteDocuments#Iterable
+        SearchDocument searchDocument = new SearchDocument();
+        searchDocument.put("hotelId", "1");
+        searchDocument.put("hotelName", "test");
+        IndexDocumentsResult result = searchClient.deleteDocuments(Collections.singletonList(searchDocument));
+        for (IndexingResult indexingResult : result.getResults()) {
+            System.out.printf("Does document with key %s delete successfully? %b%n", indexingResult.getKey(),
+                indexingResult.isSucceeded());
+        }
+        // END: com.azure.search.documents.SearchClient.deleteDocuments#Iterable
+    }
+
+
+    /**
+     * Code snippet for {@link SearchClient#deleteDocumentsWithResponse(Iterable, IndexDocumentsOptions, Context)}
+     */
+    public void deleteDocumentsWithResponse() {
+        // BEGIN: com.azure.search.documents.SearchClient.deleteDocumentsWithResponse#Iterable-IndexDocumentsOptions-Context
+        SearchDocument searchDocument = new SearchDocument();
+        searchDocument.put("hotelId", "1");
+        searchDocument.put("hotelName", "test");
+        Response<IndexDocumentsResult> resultResponse = searchClient.deleteDocumentsWithResponse(
+            Collections.singletonList(searchDocument), null, new Context(key1, value1));
+        System.out.println("The status code of the response is " + resultResponse.getStatusCode());
+        for (IndexingResult indexingResult : resultResponse.getValue().getResults()) {
+            System.out.printf("Does document with key %s delete successfully? %b%n", indexingResult.getKey(),
+                indexingResult.isSucceeded());
+        }
+        // END: com.azure.search.documents.SearchClient.deleteDocumentsWithResponse#Iterable-IndexDocumentsOptions-Context
+    }
+
+    /**
+     * Code snippet for {@link SearchClient#indexDocuments(IndexDocumentsBatch)}
+     */
+    public void indexDocuments() {
+        // BEGIN: com.azure.search.documents.SearchClient.indexDocuments#IndexDocumentsBatch
+        SearchDocument searchDocument1 = new SearchDocument();
+        searchDocument1.put("hotelId", "1");
+        searchDocument1.put("hotelName", "test1");
+        SearchDocument searchDocument2 = new SearchDocument();
+        searchDocument2.put("hotelId", "2");
+        searchDocument2.put("hotelName", "test2");
+        IndexDocumentsBatch<SearchDocument> indexDocumentsBatch = new IndexDocumentsBatch<>();
+        indexDocumentsBatch.addUploadActions(searchDocument1);
+        indexDocumentsBatch.addDeleteActions(searchDocument2);
+        IndexDocumentsResult result = searchClient.indexDocuments(indexDocumentsBatch);
+        for (IndexingResult indexingResult : result.getResults()) {
+            System.out.printf("Does document with key %s finish successfully? %b%n", indexingResult.getKey(),
+                indexingResult.isSucceeded());
+        }
+        // END: com.azure.search.documents.SearchClient.indexDocuments#IndexDocumentsBatch
+    }
+
+    /**
+     * Code snippet for {@link SearchClient#indexDocumentsWithResponse(IndexDocumentsBatch, IndexDocumentsOptions, Context)}
+     */
+    public void indexDocumentsWithResponse() {
+        // BEGIN: com.azure.search.documents.SearchClient.indexDocumentsWithResponse#IndexDocumentsBatch-IndexDocumentsOptions-Context
+        SearchDocument searchDocument1 = new SearchDocument();
+        searchDocument1.put("hotelId", "1");
+        searchDocument1.put("hotelName", "test1");
+        SearchDocument searchDocument2 = new SearchDocument();
+        searchDocument2.put("hotelId", "2");
+        searchDocument2.put("hotelName", "test2");
+        IndexDocumentsBatch<SearchDocument> indexDocumentsBatch = new IndexDocumentsBatch<>();
+        indexDocumentsBatch.addUploadActions(searchDocument1);
+        indexDocumentsBatch.addDeleteActions(searchDocument2);
+        Response<IndexDocumentsResult> resultResponse = searchClient.indexDocumentsWithResponse(indexDocumentsBatch,
+            null, new Context(key1, value1));
+        System.out.println("The status code of the response is " + resultResponse.getStatusCode());
+        for (IndexingResult indexingResult : resultResponse.getValue().getResults()) {
+            System.out.printf("Does document with key %s finish successfully? %b%n", indexingResult.getKey(),
+                indexingResult.isSucceeded());
+        }
+        // END: com.azure.search.documents.SearchClient.indexDocumentsWithResponse#IndexDocumentsBatch-IndexDocumentsOptions-Context
+    }
+
+    /**
+     * Code snippet for {@link SearchClient#getDocument(String, Class)}
+     */
+    public void getDocuments() {
+        // BEGIN: com.azure.search.documents.SearchClient.getDocuments#String-Class
+        SearchDocument result = searchClient.getDocument("hotelId", SearchDocument.class);
+        for (Map.Entry<String, Object> keyValuePair : result.entrySet()) {
+            System.out.printf("Document key %s, Document value %s", keyValuePair.getKey(), keyValuePair.getValue());
+        }
+        // END: com.azure.search.documents.SearchClient.getDocuments#String-Class
+    }
+
+    /**
+     * Code snippet for {@link SearchClient#getDocumentWithResponse(String, Class, List, Context)}
+     */
+    public void getDocumentsWithResponse() {
+        // BEGIN: com.azure.search.documents.SearchClient.getDocumentWithResponse#String-Class-List-Context
+        Response<SearchDocument> resultResponse = searchClient.getDocumentWithResponse("hotelId",
+            SearchDocument.class, null, new Context(key1, value1));
+        System.out.println("The status code of the response is " + resultResponse.getStatusCode());
+        for (Map.Entry<String, Object> keyValuePair : resultResponse.getValue().entrySet()) {
+            System.out.printf("Document key %s, Document value %s", keyValuePair.getKey(), keyValuePair.getValue());
+        }
+        // END: com.azure.search.documents.SearchClient.getDocumentWithResponse#String-Class-List-Context
+    }
+
+    /**
+     * Code snippet for {@link SearchClient#getDocumentCount()}
+     */
+    public void getDocumentCount() {
+        // BEGIN: com.azure.search.documents.SearchClient.getDocumentCount
+        long count = searchClient.getDocumentCount();
+        System.out.printf("There are %d documents in service.", count);
+        // END: com.azure.search.documents.SearchClient.getDocumentCount
+    }
+
+    /**
+     * Code snippet for {@link SearchClient#getDocumentCountWithResponse(Context)}
+     */
+    public void getDocumentCountWithResponse() {
+        // BEGIN: com.azure.search.documents.SearchClient.getDocumentCountWithResponse#Context
+        Response<Long> countResponse = searchClient.getDocumentCountWithResponse(new Context(key1, value1));
+        System.out.println("The status code of the response is " + countResponse.getStatusCode());
+        System.out.printf("There are %d documents in service.", countResponse.getValue());
+        // END: com.azure.search.documents.SearchClient.getDocumentCountWithResponse#Context
+    }
+
+    /**
+     * Code snippet for {@link SearchClient#search(String)}
+     */
+    public void searchDocuments() {
+        // BEGIN: com.azure.search.documents.SearchClient.search#String
+        SearchPagedIterable searchPagedIterable = searchClient.search("searchText");
+        System.out.printf("There are around %d results.", searchPagedIterable.getTotalCount());
+        for (SearchResult result: searchPagedIterable) {
+            SearchDocument searchDocument = result.getDocument(SearchDocument.class);
+            for (Map.Entry<String, Object> keyValuePair: searchDocument.entrySet()) {
+                System.out.printf("Document key %s, document value %s", keyValuePair.getKey(), keyValuePair.getValue());
+            }
+        }
+        // END: com.azure.search.documents.SearchClient.search#String
+    }
+
+    /**
+     * Code snippet for {@link SearchClient#search(String, SearchOptions, Context)}
+     */
+    public void searchDocumentsWithOptions() {
+        // BEGIN: com.azure.search.documents.SearchClient.search#String-SearchOptions-Context
+        SearchPagedIterable searchPagedIterable = searchClient.search("searchText",
+            new SearchOptions().setOrderBy("hotelId desc"), new Context(key1, value1));
+        System.out.printf("There are around %d results.", searchPagedIterable.getTotalCount());
+        for (SearchResult result: searchPagedIterable) {
+            SearchDocument searchDocument = result.getDocument(SearchDocument.class);
+            for (Map.Entry<String, Object> keyValuePair: searchDocument.entrySet()) {
+                System.out.printf("Document key %s, document value %s", keyValuePair.getKey(), keyValuePair.getValue());
+            }
+        }
+        // END: com.azure.search.documents.SearchClient.search#String-SearchOptions-Context
+    }
+
+    /**
+     * Code snippet for {@link SearchClient#suggest(String, String)}
+     */
+    public void suggestDocuments() {
+        // BEGIN: com.azure.search.documents.SearchClient.suggest#String-String
+        SuggestPagedIterable suggestPagedIterable = searchClient.suggest("searchText", "sg");
+        for (SuggestResult result: suggestPagedIterable) {
+            SearchDocument searchDocument = result.getDocument(SearchDocument.class);
+            for (Map.Entry<String, Object> keyValuePair: searchDocument.entrySet()) {
+                System.out.printf("Document key %s, document value %s", keyValuePair.getKey(), keyValuePair.getValue());
+            }
+        }
+        // END: com.azure.search.documents.SearchClient.suggest#String-String
+    }
+
+    /**
+     * Code snippet for {@link SearchClient#suggest(String, String, SuggestOptions, Context)}
+     */
+    public void suggestDocumentsWithOptions() {
+        // BEGIN: com.azure.search.documents.SearchClient.suggest#String-String-SuggestOptions-Context
+        SuggestPagedIterable suggestPagedIterable = searchClient.suggest("searchText", "sg",
+            new SuggestOptions().setOrderBy("hotelId desc"), new Context(key1, value1));
+        for (SuggestResult result: suggestPagedIterable) {
+            SearchDocument searchDocument = result.getDocument(SearchDocument.class);
+            for (Map.Entry<String, Object> keyValuePair: searchDocument.entrySet()) {
+                System.out.printf("Document key %s, document value %s", keyValuePair.getKey(), keyValuePair.getValue());
+            }
+        }
+        // END: com.azure.search.documents.SearchClient.suggest#String-String-SuggestOptions-Context
+    }
+
+    /**
+     * Code snippet for {@link SearchClient#autocomplete(String, String)}
+     */
+    public void autocompleteDocuments() {
+        // BEGIN: com.azure.search.documents.SearchClient.autocomplete#String-String
+        AutocompletePagedIterable autocompletePagedIterable = searchClient.autocomplete("searchText", "sg");
+        for (AutocompleteItem result: autocompletePagedIterable) {
+            System.out.printf("The complete term is %s", result.getText());
+        }
+        // END: com.azure.search.documents.SearchClient.autocomplete#String-String
+    }
+
+    /**
+     * Code snippet for {@link SearchClient#autocomplete(String, String, AutocompleteOptions, Context)}
+     */
+    public void autocompleteDocumentsWithOptions() {
+        // BEGIN: com.azure.search.documents.SearchClient.autocomplete#String-String-AutocompleteOptions-Context
+        AutocompletePagedIterable autocompletePagedIterable = searchClient.autocomplete("searchText", "sg",
+            new AutocompleteOptions().setAutocompleteMode(AutocompleteMode.ONE_TERM_WITH_CONTEXT),
+            new Context(key1, value1));
+        for (AutocompleteItem result: autocompletePagedIterable) {
+            System.out.printf("The complete term is %s", result.getText());
+        }
+        // END: com.azure.search.documents.SearchClient.autocomplete#String-String-AutocompleteOptions-Context
     }
 
     private SearchAsyncClient searchAsyncClient = new SearchClientBuilder().buildAsyncClient();
