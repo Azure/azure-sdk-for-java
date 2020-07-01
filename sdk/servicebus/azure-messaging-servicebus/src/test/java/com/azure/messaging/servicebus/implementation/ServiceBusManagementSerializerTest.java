@@ -262,6 +262,8 @@ class ServiceBusManagementSerializerTest {
         // Arrange
         final String contents = getContents("CreateSubscriptionEntry.xml");
         final SubscriptionDescription expected = new SubscriptionDescription("topic", "sub46850f")
+            .setAutoDeleteOnIdle(Duration.parse("P10675199DT2H48M5.477S"))
+            .setDefaultMessageTimeToLive(Duration.parse("P10675199DT2H48M5.477S"))
             .setLockDuration(Duration.ofSeconds(45))
             .setEnableDeadLetteringOnFilterEvaluationExceptions(true)
             .setMaxDeliveryCount(7);

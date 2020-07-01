@@ -223,7 +223,7 @@ class ServiceBusManagementAsyncClientIntegrationTest extends TestBase {
     void getSubscription(HttpClient httpClient) {
         // Arrange
         final ServiceBusManagementAsyncClient client = createClient(httpClient);
-        final String topicName = TestUtils.getTopicName();
+        final String topicName = interceptorManager.isPlaybackMode() ? "topic" : TestUtils.getTopicName();
         final String subscriptionName = interceptorManager.isPlaybackMode()
             ? "subscription-session-1"
             : TestUtils.getEntityName(TestUtils.getSessionSubscriptionBaseName(), 1);
@@ -251,7 +251,7 @@ class ServiceBusManagementAsyncClientIntegrationTest extends TestBase {
     void getSubscriptionDoesNotExist(HttpClient httpClient) {
         // Arrange
         final ServiceBusManagementAsyncClient client = createClient(httpClient);
-        final String topicName = TestUtils.getTopicName();
+        final String topicName = interceptorManager.isPlaybackMode() ? "topic" : TestUtils.getTopicName();
         final String subscriptionName = "subscription-session-not-exist";
 
         // Act & Assert
@@ -265,7 +265,7 @@ class ServiceBusManagementAsyncClientIntegrationTest extends TestBase {
     void getSubscriptionRuntimeInfo(HttpClient httpClient) {
         // Arrange
         final ServiceBusManagementAsyncClient client = createClient(httpClient);
-        final String topicName = TestUtils.getTopicName();
+        final String topicName = interceptorManager.isPlaybackMode() ? "topic" : TestUtils.getTopicName();
         final String subscriptionName = interceptorManager.isPlaybackMode()
             ? "subscription-1"
             : TestUtils.getEntityName(TestUtils.getSubscriptionBaseName(), 1);
