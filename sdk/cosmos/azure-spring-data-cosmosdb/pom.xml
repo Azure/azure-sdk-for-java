@@ -25,7 +25,7 @@
 
     <azure.test.resourcegroup>spring-data-cosmosdb-test</azure.test.resourcegroup>
     <azure.test.dbname>testdb-${maven.build.timestamp}</azure.test.dbname>
-    <skip.integration.tests>true</skip.integration.tests>
+    <skip.integration.tests>false</skip.integration.tests>
     <test.on.azure>false</test.on.azure>
     <test.on.emualator>false</test.on.emualator>
   </properties>
@@ -239,9 +239,8 @@
         <configuration>
           <show>private</show>
           <sourceFileExcludes>
-            <sourceFileExclude>core/mapping/BasicCosmosPersistentProperty.java</sourceFileExclude>
+            <sourceFileExclude>com/microsoft/azure/spring/data/cosmosdb/core/mapping/BasicCosmosPersistentProperty.java</sourceFileExclude>
           </sourceFileExcludes>
-          <sourcepath>${basedir}/src/main/java/com/microsoft/azure/spring/data/cosmosdb/</sourcepath>
           <additionalDependencies>
             <additionalDependency>
               <groupId>org.projectlombok</groupId>
