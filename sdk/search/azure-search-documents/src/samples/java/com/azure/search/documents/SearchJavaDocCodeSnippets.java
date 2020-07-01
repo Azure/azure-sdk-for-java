@@ -920,7 +920,6 @@ public class SearchJavaDocCodeSnippets {
         // END: com.azure.search.documents.indexes.SearchIndexClient.listIndexNames#Context
     }
 
-
     /**
      * Code snippet for {@link SearchIndexClient#createOrUpdateIndex(SearchIndex)}
      */
@@ -1192,6 +1191,335 @@ public class SearchJavaDocCodeSnippets {
             .endpoint("{endpoint}")
             .buildAsyncClient();
         // END: com.azure.search.documents.indexes.SearchIndexAsyncClient.instantiation
+    }
+
+    /**
+     * Code snippet for creating {@link SearchIndexAsyncClient#createIndex(SearchIndex)}.
+     */
+    public void createSearchIndexAsync() {
+        // BEGIN: com.azure.search.documents.indexes.SearchIndexAsyncClient.createIndex#SearchIndex
+        List<SearchField> searchFields = Arrays.asList(
+            new SimpleFieldBuilder("hotelId", SearchFieldDataType.STRING, false).setKey(true).build(),
+            new SearchableFieldBuilder("hotelName", false).build()
+        );
+        SearchIndex searchIndex = new SearchIndex("searchIndex", searchFields);
+        searchIndexAsyncClient.createIndex(searchIndex)
+            .subscribe(indexFromService ->
+                System.out.printf("The index name is %s. The etag of index is %s.%n", indexFromService.getName(),
+                indexFromService.getETag()));
+        // END: com.azure.search.documents.indexes.SearchIndexAsyncClient.createIndex#SearchIndex
+    }
+
+    /**
+     * Code snippet for {@link SearchIndexAsyncClient#createIndexWithResponse(SearchIndex)}.
+     */
+    public void createSearchIndexWithResponseAsync() {
+        // BEGIN: com.azure.search.documents.indexes.SearchIndexAsyncClient.createIndexWithResponse#SearchIndex
+        List<SearchField> searchFields = Arrays.asList(
+            new SimpleFieldBuilder("hotelId", SearchFieldDataType.STRING, false).setKey(true).build(),
+            new SearchableFieldBuilder("hotelName", false).build()
+        );
+        SearchIndex searchIndex = new SearchIndex("searchIndex", searchFields);
+
+        searchIndexAsyncClient.createIndexWithResponse(searchIndex)
+            .subscribe(indexFromServiceResponse ->
+                System.out.printf("The status code of the response is %s. The index name is %s.%n",
+                indexFromServiceResponse.getStatusCode(), indexFromServiceResponse.getValue().getName()));
+        // END: com.azure.search.documents.indexes.SearchIndexAsyncClient.createIndexWithResponse#SearchIndex
+    }
+
+    /**
+     * Code snippet for {@link SearchIndexAsyncClient#getIndex(String)}
+     */
+    public void getSearchIndexAsync() {
+        // BEGIN: com.azure.search.documents.indexes.SearchIndexAsyncClient.getIndex#String
+        searchIndexAsyncClient.getIndex("searchIndex")
+            .subscribe(indexFromService ->
+                System.out.printf("The index name is %s. The etag of index is %s.%n", indexFromService.getName(),
+                    indexFromService.getETag()));
+        // END: com.azure.search.documents.indexes.SearchIndexAsyncClient.getIndex#String
+    }
+
+    /**
+     * Code snippet for {@link SearchIndexAsyncClient#getIndexWithResponse(String)}}
+     */
+    public void getSearchIndexWithResponseAsync() {
+        // BEGIN: com.azure.search.documents.indexes.SearchIndexAsyncClient.getIndexWithResponse#String
+        searchIndexAsyncClient.getIndexWithResponse("searchIndex")
+            .subscribe(indexFromServiceResponse ->
+                System.out.printf("The status code of the response is %s. The index name is %s.%n",
+                    indexFromServiceResponse.getStatusCode(), indexFromServiceResponse.getValue().getName()));
+        // END: com.azure.search.documents.indexes.SearchIndexAsyncClient.getIndexWithResponse#String
+    }
+
+    /**
+     * Code snippet for {@link SearchIndexAsyncClient#getIndexStatistics(String)}
+     */
+    public void getSearchIndexStatisticsAsync() {
+        // BEGIN: com.azure.search.documents.indexes.SearchIndexAsyncClient.getIndexStatistics#String
+        searchIndexAsyncClient.getIndexStatistics("searchIndex")
+            .subscribe(statistics ->
+                System.out.printf("There are %d documents and storage size of %d available in 'searchIndex'.%n",
+                statistics.getDocumentCount(), statistics.getStorageSize()));
+        // END: com.azure.search.documents.indexes.SearchIndexAsyncClient.getIndexStatistics#String
+    }
+
+    /**
+     * Code snippet for {@link SearchIndexAsyncClient#getIndexStatisticsWithResponse(String)}
+     */
+    public void getSearchIndexStatisticsWithResponseAsync() {
+        // BEGIN: com.azure.search.documents.indexes.SearchIndexAsyncClient.getIndexStatisticsWithResponse#String
+        searchIndexAsyncClient.getIndexStatisticsWithResponse("searchIndex")
+            .subscribe(statistics -> System.out.printf("The status code of the response is %s.%n"
+                    + "There are %d documents and storage size of %d available in 'searchIndex'.%n",
+                statistics.getStatusCode(), statistics.getValue().getDocumentCount(),
+                statistics.getValue().getStorageSize()));
+        // END: com.azure.search.documents.indexes.SearchIndexAsyncClient.getIndexStatisticsWithResponse#String
+    }
+
+    /**
+     * Code snippet for {@link SearchIndexAsyncClient#listIndexes()}
+     */
+    public void listIndexesAsync() {
+        // BEGIN: com.azure.search.documents.indexes.SearchIndexAsyncClient.listIndexes
+        searchIndexAsyncClient.listIndexes()
+            .subscribe(index ->
+                System.out.printf("The index name is %s. The etag of index is %s.%n", index.getName(),
+                    index.getETag()));
+        // END: com.azure.search.documents.indexes.SearchIndexClient.listIndexes
+    }
+
+    /**
+     * Code snippet for {@link SearchIndexAsyncClient#listIndexNames()}
+     */
+    public void listIndexNamesAsync() {
+        // BEGIN: com.azure.search.documents.indexes.SearchIndexAsyncClient.listIndexNames
+        searchIndexAsyncClient.listIndexNames()
+            .subscribe(indexName -> System.out.printf("The index name is %s.%n", indexName));
+        // END: com.azure.search.documents.indexes.SearchIndexAsyncClient.listIndexNames
+    }
+
+    /**
+     * Code snippet for {@link SearchIndexAsyncClient#createOrUpdateIndex(SearchIndex)}
+     */
+    public void createOrUpdateIndexAsync() {
+        // BEGIN: com.azure.search.documents.indexes.SearchIndexAsyncClient.createOrUpdateIndex#SearchIndex
+        searchIndexAsyncClient.getIndex("searchIndex")
+            .doOnNext(indexFromService -> {
+                indexFromService.setSuggesters(Collections.singletonList(new SearchSuggester("sg",
+                    Collections.singletonList("hotelName"))));
+            })
+            .flatMap(index -> searchIndexAsyncClient.createOrUpdateIndex(index))
+            .subscribe(updatedIndex ->
+                System.out.printf("The index name is %s. The suggester name of index is %s.%n",
+                    updatedIndex.getName(), updatedIndex.getSuggesters().get(0).getName()));
+        // END: com.azure.search.documents.indexes.SearchIndexAsyncClient.createOrUpdateIndex#SearchIndex
+    }
+
+    /**
+     * Code snippet for {@link SearchIndexAsyncClient#createIndexWithResponse(SearchIndex)}
+     */
+    public void createOrUpdateIndexWithResponseAsync() {
+        // BEGIN: com.azure.search.documents.indexes.SearchIndexClient.createOrUpdateIndexWithResponse#SearchIndex-boolean-boolean-Context
+        searchIndexAsyncClient.getIndex("searchIndex")
+            .doOnNext(indexFromService -> indexFromService.setSuggesters(Collections.singletonList(
+                new SearchSuggester("sg", Collections.singletonList("hotelName")))))
+            .flatMap(indexFromService -> searchIndexAsyncClient.createOrUpdateIndexWithResponse(indexFromService, true,
+                false))
+            .subscribe(updatedIndexResponse -> System.out.printf("The status code of the normal response is %s.%n"
+                    + "The index name is %s. The etag of index is %s.%n", updatedIndexResponse.getStatusCode(),
+                updatedIndexResponse.getValue().getName(), updatedIndexResponse.getValue().getETag()));
+        // END: com.azure.search.documents.indexes.SearchIndexAsyncClient.createOrUpdateIndexWithResponse#SearchIndex-boolean-boolean-Context
+    }
+
+    /**
+     * Code snippet for {@link SearchIndexAsyncClient#deleteIndex(String)}
+     */
+    public void deleteSearchIndexAsync() {
+        // BEGIN: com.azure.search.documents.indexes.SearchIndexClient.deleteIndex#String
+        searchIndexAsyncClient.deleteIndex("searchIndex")
+            .subscribe();
+        // END: com.azure.search.documents.indexes.SearchIndexAsyncClient.deleteIndex#String
+    }
+
+    /**
+     * Code snippet for {@link SearchIndexAsyncClient#deleteIndexWithResponse(SearchIndex, boolean)}
+     */
+    public void deleteSearchIndexWithResponseAsync() {
+        // BEGIN: com.azure.search.documents.indexes.SearchIndexAsyncClient.deleteIndexWithResponse#SearchIndex-boolean
+        searchIndexAsyncClient.getIndex("searchIndex")
+            .flatMap(indexFromService -> searchIndexAsyncClient.deleteIndexWithResponse(indexFromService, true))
+            .subscribe(deleteResponse ->
+                System.out.printf("The status code of the response is %d.%n", deleteResponse.getStatusCode()));
+        // END: com.azure.search.documents.indexes.SearchIndexAsyncClient.deleteIndexWithResponse#SearchIndex-boolean
+    }
+
+    /**
+     * Code snippet for {@link SearchIndexClient#analyzeText(String, AnalyzeTextOptions)}
+     */
+    public void analyzeTextAsync() {
+        // BEGIN: com.azure.search.documents.indexes.SearchIndexAsyncClient.analyzeText#String-AnalyzeTextOptions
+        searchIndexAsyncClient.analyzeText("searchIndex",
+            new AnalyzeTextOptions("The quick brown fox", LexicalTokenizerName.CLASSIC))
+            .subscribe(tokenInfo ->
+                System.out.printf("The token emitted by the analyzer is %s.%n", tokenInfo.getToken()));
+        // END: com.azure.search.documents.indexes.SearchIndexAsyncClient.analyzeText#String-AnalyzeTextOptions
+    }
+
+    /**
+     * Code snippet for creating {@link SearchIndexAsyncClient#createSynonymMap(SynonymMap)}.
+     */
+    public void createSynonymMapAsync() {
+        // BEGIN: com.azure.search.documents.indexes.SearchIndexAsyncClient.createSynonymMap#SynonymMap
+        SynonymMap synonymMap = new SynonymMap("synonymMap",
+            "United States, United States of America, USA\nWashington, Wash. => WA");
+        searchIndexAsyncClient.createSynonymMap(synonymMap)
+            .subscribe(synonymMapFromService ->
+                System.out.printf("The synonym map name is %s. The etag of synonym map is %s.%n",
+                synonymMapFromService.getName(), synonymMapFromService.getETag()));
+        ;
+        // END: com.azure.search.documents.indexes.SearchIndexAsyncClient.createSynonymMap#SynonymMap
+    }
+
+    /**
+     * Code snippet for {@link SearchIndexAsyncClient#createSynonymMapWithResponse(SynonymMap)}
+     */
+    public void createSynonymMapWithResponseAsync() {
+        // BEGIN: com.azure.search.documents.indexes.SearchIndexAsyncClient.createSynonymMapWithResponse#SynonymMap
+        SynonymMap synonymMap = new SynonymMap("synonymMap",
+            "United States, United States of America, USA\nWashington, Wash. => WA");
+        searchIndexAsyncClient.createSynonymMapWithResponse(synonymMap)
+            .subscribe(synonymMapFromService ->
+                System.out.printf("The status code of the response is %d.%n"
+                    + "The synonym map name is %s. The etag of synonym map is %s.%n",
+                    synonymMapFromService.getStatusCode(),
+                synonymMapFromService.getValue().getName(), synonymMapFromService.getValue().getETag()));
+        // END: com.azure.search.documents.indexes.SearchIndexAsyncClient.createSynonymMapWithResponse#SynonymMap
+    }
+
+    /**
+     * Code snippet for {@link SearchIndexAsyncClient#getSynonymMap(String)}
+     */
+    public void getSynonymMapAsync() {
+        // BEGIN: com.azure.search.documents.indexes.SearchIndexAsyncClient.getSynonymMap#String
+        searchIndexAsyncClient.getSynonymMap("synonymMap")
+            .subscribe(synonymMapFromService ->
+                System.out.printf("The synonym map is %s. The etag of synonym map is %s.%n",
+                    synonymMapFromService.getName(), synonymMapFromService.getETag()));
+        // END: com.azure.search.documents.indexes.SearchIndexAsyncClient.getSynonymMap#String
+    }
+
+    /**
+     * Code snippet for {@link SearchIndexAsyncClient#getSynonymMapWithResponse(String)}}
+     */
+    public void getSynonymMapWithResponseAsync() {
+        // BEGIN: com.azure.search.documents.indexes.SearchIndexAsyncClient.getSynonymMapWithResponse#String
+        searchIndexAsyncClient.getSynonymMapWithResponse("synonymMap")
+            .subscribe(synonymMapFromService -> System.out.printf("The status code of the response is %d.%n"
+                    + "The synonym map name is %s. The etag of synonym map is %s.%n",
+                synonymMapFromService.getStatusCode(), synonymMapFromService.getValue().getName(),
+                synonymMapFromService.getValue().getETag()));
+        // END: com.azure.search.documents.indexes.SearchIndexAsyncClient.getSynonymMapWithResponse#String
+    }
+
+    /**
+     * Code snippet for {@link SearchIndexAsyncClient#listSynonymMaps()}
+     */
+    public void listSynonymMapsAsync() {
+        // BEGIN: com.azure.search.documents.indexes.SearchIndexAsyncClient.listSynonymMaps
+        searchIndexAsyncClient.listSynonymMaps()
+            .subscribe(synonymMap -> System.out.printf("The synonymMap name is %s. The etag of synonymMap is %s.%n",
+                synonymMap.getName(), synonymMap.getETag()));
+        // END: com.azure.search.documents.indexes.SearchIndexAsyncClient.listSynonymMaps
+    }
+
+    /**
+     * Code snippet for {@link SearchIndexAsyncClient#listSynonymMapNames()}
+     */
+    public void listSynonymMapNamesAsync() {
+        // BEGIN: com.azure.search.documents.indexes.SearchIndexAsyncClient.listSynonymMapNames
+        searchIndexAsyncClient.listSynonymMapNames()
+            .subscribe(synonymMap -> System.out.printf("The synonymMap name is %s.%n", synonymMap));
+        // END: com.azure.search.documents.indexes.SearchIndexAsyncClient.listSynonymMapNames
+    }
+
+    /**
+     * Code snippet for {@link SearchIndexAsyncClient#createOrUpdateSynonymMap(SynonymMap)}
+     */
+    public void createOrUpdateSynonymMapAsync() {
+        // BEGIN: com.azure.search.documents.indexes.SearchIndexAsyncClient.createOrUpdateSynonymMap#SynonymMap
+        searchIndexAsyncClient.getSynonymMap("searchIndex")
+            .doOnNext(synonymMap -> synonymMap
+                .setSynonyms("United States, United States of America, USA, America\nWashington, Wash. => WA"))
+            .flatMap(synonymMap -> searchIndexAsyncClient.createOrUpdateSynonymMap(synonymMap))
+            .subscribe(updatedSynonymMap ->
+                System.out.printf("The synonym map name is %s. The synonyms are %s.%n", updatedSynonymMap.getName(),
+                updatedSynonymMap.getSynonyms()));
+        // END: com.azure.search.documents.indexes.SearchIndexAsyncClient.createOrUpdateSynonymMap#SynonymMap
+    }
+
+    /**
+     * Code snippet for {@link SearchIndexAsyncClient#createOrUpdateSynonymMapWithResponse(SynonymMap, boolean)}
+     */
+    public void createOrUpdateSynonymMapWithResponseAsync() {
+        // BEGIN: com.azure.search.documents.indexes.SearchIndexAsyncClient.createOrUpdateSynonymMapWithResponse#SynonymMap-boolean-Context
+        searchIndexAsyncClient.getSynonymMap("searchIndex")
+            .flatMap(synonymMap -> {
+                synonymMap.setSynonyms(
+                    "United States, United States of America, USA, America\nWashington, Wash. => WA");
+                return searchIndexAsyncClient.createOrUpdateSynonymMapWithResponse(synonymMap, true);
+            })
+            .subscribe(updatedSynonymMap ->
+                System.out.printf("The status code of the normal response is %s.%n"
+                    + "The synonym map name is %s. The synonyms are %s.%n", updatedSynonymMap.getStatusCode(),
+                updatedSynonymMap.getValue().getName(), updatedSynonymMap.getValue().getSynonyms()));
+        // END: com.azure.search.documents.indexes.SearchIndexAsyncClient.createOrUpdateSynonymMapWithResponse#SynonymMap-boolean-Context
+    }
+
+    /**
+     * Code snippet for {@link SearchIndexAsyncClient#deleteSynonymMap(String)}
+     */
+    public void deleteSynonymMapAsync() {
+        // BEGIN: com.azure.search.documents.indexes.SearchIndexAsyncClient.deleteSynonymMap#String
+        searchIndexAsyncClient.deleteSynonymMap("synonymMap")
+            .subscribe();
+        // END: com.azure.search.documents.indexes.SearchIndexAsyncClient.deleteSynonymMap#String
+    }
+
+    /**
+     * Code snippet for {@link SearchIndexAsyncClient#deleteSynonymMapWithResponse(SynonymMap, boolean)}
+     */
+    public void deleteSynonymMapWithResponseAsync() {
+        // BEGIN: com.azure.search.documents.indexes.SearchIndexAsyncClient.deleteSynonymMapWithResponse#SynonymMap-boolean
+        searchIndexAsyncClient.getSynonymMap("synonymMap")
+            .flatMap(synonymMap -> searchIndexAsyncClient.deleteSynonymMapWithResponse(synonymMap, true))
+            .subscribe(response -> System.out.println("The status code of the response is" + response.getStatusCode()));
+        // END: com.azure.search.documents.indexes.SearchIndexAsyncClient.deleteSynonymMapWithResponse#SynonymMap-boolean
+    }
+
+    /**
+     * Code snippet for {@link SearchIndexAsyncClient#getServiceStatistics()}
+     */
+    public void getServiceStatisticsAsync() {
+        // BEGIN: com.azure.search.documents.indexes.SearchIndexAsyncClient.getServiceStatistics
+        searchIndexAsyncClient.getServiceStatistics()
+            .subscribe(serviceStatistics -> System.out.printf("There are %s search indexes in your service.%n",
+                serviceStatistics.getCounters().getIndexCounter()));
+        // END: com.azure.search.documents.indexes.SearchIndexAsyncClient.getServiceStatistics
+    }
+
+    /**
+     * Code snippet for {@link SearchIndexAsyncClient#getServiceStatisticsWithResponse()}
+     */
+    public void getServiceStatisticsWithResponseAsync() {
+        // BEGIN: com.azure.search.documents.indexes.SearchIndexAsyncClient.getServiceStatisticsWithResponse
+        searchIndexAsyncClient.getServiceStatisticsWithResponse()
+            .subscribe(serviceStatistics ->
+                System.out.printf("The status code of the response is %s.%n"
+                        + "There are %s search indexes in your service.%n",
+                serviceStatistics.getStatusCode(),
+                serviceStatistics.getValue().getCounters().getIndexCounter()));
+        // END: com.azure.search.documents.indexes.SearchIndexAsyncClient.getServiceStatisticsWithResponse
     }
 
     private SearchIndexerClient searchIndexerClient = new SearchIndexerClientBuilder().buildClient();

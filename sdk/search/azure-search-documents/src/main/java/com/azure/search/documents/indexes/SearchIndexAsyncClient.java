@@ -120,6 +120,12 @@ public final class SearchIndexAsyncClient {
     /**
      * Creates a new Azure Cognitive Search index.
      *
+     * <p><strong>Code Sample</strong></p>
+     *
+     * <p> Create search index named "searchIndex". </p>
+     *
+     * {@codesnippet com.azure.search.documents.indexes.SearchIndexAsyncClient.createIndex#SearchIndex}
+     *
      * @param index definition of the index to create.
      * @return the created Index.
      */
@@ -130,6 +136,12 @@ public final class SearchIndexAsyncClient {
 
     /**
      * Creates a new Azure Cognitive Search index.
+     *
+     * <p><strong>Code Sample</strong></p>
+     *
+     * <p> Create search index named "searchIndex" with response. </p>
+     *
+     * {@codesnippet com.azure.search.documents.indexes.SearchIndexAsyncClient.createIndexWithResponse#SearchIndex}
      *
      * @param index definition of the index to create
      * @return a response containing the created Index.
@@ -154,6 +166,12 @@ public final class SearchIndexAsyncClient {
     /**
      * Retrieves an index definition from the Azure Cognitive Search.
      *
+     * <p><strong>Code Sample</strong></p>
+     *
+     * <p> Get search index with name "searchIndex". </p>
+     *
+     * {@codesnippet com.azure.search.documents.indexes.SearchIndexAsyncClient.getIndex#String}
+     *
      * @param indexName The name of the index to retrieve
      * @return the Index.
      */
@@ -164,6 +182,12 @@ public final class SearchIndexAsyncClient {
 
     /**
      * Retrieves an index definition from the Azure Cognitive Search.
+     *
+     * <p><strong>Code Sample</strong></p>
+     *
+     * <p> Get search index response with "searchIndex. </p>
+     *
+     * {@codesnippet com.azure.search.documents.indexes.SearchIndexAsyncClient.getIndexWithResponse#String}
      *
      * @param indexName the name of the index to retrieve
      * @return a response containing the Index.
@@ -187,6 +211,12 @@ public final class SearchIndexAsyncClient {
     /**
      * Returns statistics for the given index, including a document count and storage usage.
      *
+     * <p><strong>Code Sample</strong></p>
+     *
+     * <p> Get search index "searchIndex" statistics. </p>
+     *
+     * {@codesnippet com.azure.search.documents.indexes.SearchIndexAsyncClient.getIndexStatistics#String}
+     *
      * @param indexName the name of the index for which to retrieve statistics
      * @return the index statistics result.
      */
@@ -197,6 +227,12 @@ public final class SearchIndexAsyncClient {
 
     /**
      * Returns statistics for the given index, including a document count and storage usage.
+     *
+     * <p><strong>Code Sample</strong></p>
+     *
+     * <p> Get search index "searchIndex" statistics with response. </p>
+     *
+     * {@codesnippet com.azure.search.documents.indexes.SearchIndexAsyncClient.getIndexStatisticsWithResponse#String}
      *
      * @param indexName the name of the index for which to retrieve statistics
      * @return a response containing the index statistics result.
@@ -221,6 +257,12 @@ public final class SearchIndexAsyncClient {
     /**
      * Lists all indexes available for an Azure Cognitive Search service.
      *
+     * <p><strong>Code Sample</strong></p>
+     *
+     * <p> List all search indexes. </p>
+     *
+     * {@codesnippet com.azure.search.documents.indexes.SearchIndexAsyncClient.listIndexes}
+     *
      * @return a reactive response emitting the list of indexes.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -243,6 +285,12 @@ public final class SearchIndexAsyncClient {
 
     /**
      * Lists all indexes names for an Azure Cognitive Search service.
+     *
+     * <p><strong>Code Sample</strong></p>
+     *
+     * <p> List all search indexes names. </p>
+     *
+     * {@codesnippet com.azure.search.documents.indexes.SearchIndexAsyncClient.listIndexNames}
      *
      * @return a reactive response emitting the list of index names.
      */
@@ -277,6 +325,12 @@ public final class SearchIndexAsyncClient {
     /**
      * Creates a new Azure Cognitive Search index or updates an index if it already exists.
      *
+     * <p><strong>Code Sample</strong></p>
+     *
+     * <p> Create or update search index named "searchIndex". </p>
+     *
+     * {@codesnippet com.azure.search.documents.indexes.SearchIndexAsyncClient.createOrUpdateIndex#SearchIndex}
+     *
      * @param index the definition of the {@link SearchIndex} to create or update.
      * @return the index that was created or updated.
      */
@@ -287,6 +341,12 @@ public final class SearchIndexAsyncClient {
 
     /**
      * Creates a new Azure Cognitive Search index or updates an index if it already exists.
+     *
+     * <p><strong>Code Sample</strong></p>
+     *
+     * <p> Create or update search index named "searchIndex" with response. </p>
+     *
+     * {@codesnippet com.azure.search.documents.indexes.SearchIndexClient.createOrUpdateIndexWithResponse#SearchIndex-boolean-boolean-Context}
      *
      * @param index the definition of the index to create or update
      * @param allowIndexDowntime allows new analyzers, tokenizers, token filters, or char filters to be added to an
@@ -323,6 +383,12 @@ public final class SearchIndexAsyncClient {
     /**
      * Deletes an Azure Cognitive Search index and all the documents it contains.
      *
+     * <p><strong>Code Sample</strong></p>
+     *
+     * <p> Delete search index with name "searchIndex". </p>
+     *
+     * {@codesnippet com.azure.search.documents.indexes.SearchIndexClient.deleteIndex#String}
+     *
      * @param indexName the name of the index to delete
      * @return a response signalling completion.
      */
@@ -333,6 +399,12 @@ public final class SearchIndexAsyncClient {
 
     /**
      * Deletes an Azure Cognitive Search index and all the documents it contains.
+     *
+     * <p><strong>Code Sample</strong></p>
+     *
+     * <p> Delete search index response with name "searchIndex". </p>
+     *
+     * {@codesnippet com.azure.search.documents.indexes.SearchIndexAsyncClient.deleteIndexWithResponse#SearchIndex-boolean}
      *
      * @param index the {@link SearchIndex} to delete.
      * @param onlyIfUnchanged {@code true} to delete if the {@code index} is the same as the current service value.
@@ -360,6 +432,12 @@ public final class SearchIndexAsyncClient {
 
     /**
      * Shows how an analyzer breaks text into tokens.
+     *
+     * <p><strong>Code Sample</strong></p>
+     *
+     * <p> Analyzer text with LexicalTokenizerName "Classic" in search index "searchIndex". </p>
+     *
+     * {@codesnippet com.azure.search.documents.indexes.SearchIndexAsyncClient.analyzeText#String-AnalyzeTextOptions}
      *
      * @param indexName the name of the index for which to test an analyzer
      * @param analyzeTextOptions the text and analyzer or analysis components to test
@@ -396,6 +474,12 @@ public final class SearchIndexAsyncClient {
     /**
      * Creates a new Azure Cognitive Search synonym map.
      *
+     * <p><strong>Code Sample</strong></p>
+     *
+     * <p> Create synonym map named "synonymMap". </p>
+     *
+     * {@codesnippet com.azure.search.documents.indexes.SearchIndexAsyncClient.createSynonymMap#SynonymMap}
+     *
      * @param synonymMap the definition of the synonym map to create
      * @return the created {@link SynonymMap}.
      */
@@ -406,6 +490,12 @@ public final class SearchIndexAsyncClient {
 
     /**
      * Creates a new Azure Cognitive Search synonym map.
+     *
+     * <p><strong>Code Sample</strong></p>
+     *
+     * <p> Create synonym map response named "synonymMap". </p>
+     *
+     * {@codesnippet com.azure.search.documents.indexes.SearchIndexAsyncClient.createSynonymMapWithResponse#SynonymMap}
      *
      * @param synonymMap the definition of the {@link SynonymMap} to create
      * @return a response containing the created SynonymMap.
@@ -432,6 +522,12 @@ public final class SearchIndexAsyncClient {
     /**
      * Retrieves a synonym map definition.
      *
+     * <p><strong>Code Sample</strong></p>
+     *
+     * <p> Get synonym map with name "synonymMap". </p>
+     *
+     * {@codesnippet com.azure.search.documents.indexes.SearchIndexAsyncClient.getSynonymMap#String}
+     *
      * @param synonymMapName name of the synonym map to retrieve
      * @return the {@link SynonymMap} definition
      */
@@ -442,6 +538,12 @@ public final class SearchIndexAsyncClient {
 
     /**
      * Retrieves a synonym map definition.
+     *
+     * <p><strong>Code Sample</strong></p>
+     *
+     * <p> Get synonym map response with name "synonymMap". </p>
+     *
+     * {@codesnippet com.azure.search.documents.indexes.SearchIndexAsyncClient.getSynonymMap#String}
      *
      * @param synonymMapName name of the synonym map to retrieve
      * @return a response containing the SynonymMap.
@@ -465,6 +567,12 @@ public final class SearchIndexAsyncClient {
 
     /**
      * Lists all synonym maps available for an Azure Cognitive Search service.
+     *
+     * <p><strong>Code Sample</strong></p>
+     *
+     * <p> List all synonym maps. </p>
+     *
+     * {@codesnippet com.azure.search.documents.indexes.SearchIndexAsyncClient.listSynonymMaps}
      *
      * @return a reactive response emitting the list of synonym maps.
      */
@@ -490,6 +598,12 @@ public final class SearchIndexAsyncClient {
 
     /**
      * Lists all synonym map names for an Azure Cognitive Search service.
+     *
+     * <p><strong>Code Sample</strong></p>
+     *
+     * <p> List all synonym map names. </p>
+     *
+     * {@codesnippet com.azure.search.documents.indexes.SearchIndexAsyncClient.listSynonymMapNames}
      *
      * @return a reactive response emitting the list of synonym map names.
      */
@@ -523,6 +637,12 @@ public final class SearchIndexAsyncClient {
     /**
      * Creates a new Azure Cognitive Search synonym map or updates a synonym map if it already exists.
      *
+     * <p><strong>Code Sample</strong></p>
+     *
+     * <p> Create or update synonym map named "synonymMap". </p>
+     *
+     * {@codesnippet com.azure.search.documents.indexes.SearchIndexAsyncClient.createOrUpdateSynonymMap#SynonymMap}
+     *
      * @param synonymMap the definition of the {@link SynonymMap} to create or update
      * @return the synonym map that was created or updated.
      */
@@ -533,6 +653,12 @@ public final class SearchIndexAsyncClient {
 
     /**
      * Creates a new Azure Cognitive Search synonym map or updates a synonym map if it already exists.
+     *
+     * <p><strong>Code Sample</strong></p>
+     *
+     * <p> Create or update synonym map response named "synonymMap". </p>
+     *
+     * {@codesnippet com.azure.search.documents.indexes.SearchIndexAsyncClient.createOrUpdateSynonymMapWithResponse#SynonymMap-boolean-Context}
      *
      * @param synonymMap the definition of the {@link SynonymMap} to create or update
      * @param onlyIfUnchanged {@code true} to update if the {@code synonymMap} is the same as the current service value.
@@ -566,6 +692,12 @@ public final class SearchIndexAsyncClient {
     /**
      * Deletes an Azure Cognitive Search synonym map.
      *
+     * <p><strong>Code Sample</strong></p>
+     *
+     * <p> Delete synonym map with name "synonymMap". </p>
+     *
+     * {@codesnippet com.azure.search.documents.indexes.SearchIndexAsyncClient.deleteSynonymMap#String}
+     *
      * @param synonymMapName the name of the {@link SynonymMap} to delete
      * @return a response signalling completion.
      */
@@ -577,6 +709,12 @@ public final class SearchIndexAsyncClient {
 
     /**
      * Deletes an Azure Cognitive Search synonym map.
+     *
+     * <p><strong>Code Sample</strong></p>
+     *
+     * <p> Delete synonym map response with name "synonymMap". </p>
+     *
+     * {@codesnippet com.azure.search.documents.indexes.SearchIndexAsyncClient.deleteSynonymMapWithResponse#SynonymMap-boolean}
      *
      * @param synonymMap the {@link SynonymMap} to delete.
      * @param onlyIfUnchanged {@code true} to delete if the {@code synonymMap} is the same as the current service value.
@@ -609,6 +747,12 @@ public final class SearchIndexAsyncClient {
      * <p>
      * Contains the tracking ID sent with the request to help with debugging
      *
+     * <p><strong>Code Sample</strong></p>
+     *
+     * <p> Get service statistics. </p>
+     *
+     * {@codesnippet com.azure.search.documents.indexes.SearchIndexAsyncClient.getServiceStatistics}
+     *
      * @return the search service statistics result.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -619,6 +763,12 @@ public final class SearchIndexAsyncClient {
 
     /**
      * Returns service level statistics for a search service, including service counters and limits.
+     *
+     * <p><strong>Code Sample</strong></p>
+     *
+     * <p> Get service statistics with response. </p>
+     *
+     * {@codesnippet com.azure.search.documents.indexes.SearchIndexAsyncClient.getServiceStatisticsWithResponse}
      *
      * @return the search service statistics result.
      */
