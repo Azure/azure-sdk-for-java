@@ -59,7 +59,6 @@ Version mapping between spring boot and spring-data-cosmosdb:
 ```java
 @Document(collection = "myCollection")
 class MyDocument {
-    @Autowired
     String id;
     String data;
     @Version

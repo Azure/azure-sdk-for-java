@@ -249,7 +249,7 @@ jobs:
   - template: ../../eng/pipelines/templates/jobs/archetype-sdk-tests.yml
     parameters:
         TestName: Integration_Test_Spring_Data_Cosmosdb
-        ServiceDirectory: cosmos/azure-spring-data-cosmosdb
+        ServiceDirectory: cosmos
         Artifacts:
             - name: spring-data-cosmosdb
               groupId: com.microsoft.azure
