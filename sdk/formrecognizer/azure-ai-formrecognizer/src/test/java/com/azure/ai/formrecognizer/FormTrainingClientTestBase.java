@@ -31,6 +31,7 @@ import org.junit.jupiter.api.Test;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.util.List;
 import java.util.function.BiConsumer;
@@ -41,6 +42,8 @@ import static com.azure.ai.formrecognizer.FormRecognizerClientBuilder.DEFAULT_DU
 import static com.azure.ai.formrecognizer.TestUtils.BLANK_PDF;
 import static com.azure.ai.formrecognizer.TestUtils.INVALID_KEY;
 import static com.azure.ai.formrecognizer.TestUtils.INVALID_RECEIPT_URL;
+import static com.azure.ai.formrecognizer.TestUtils.ONE_NANO_DURATION;
+import static com.azure.ai.formrecognizer.TestUtils.TEST_DATA_PNG;
 import static com.azure.ai.formrecognizer.TestUtils.getFileData;
 import static com.azure.ai.formrecognizer.TestUtils.getSerializerAdapter;
 import static com.azure.ai.formrecognizer.implementation.models.ModelStatus.READY;
@@ -71,7 +74,7 @@ public abstract class FormTrainingClientTestBase extends TestBase {
     static final String PREFIX_SUBFOLDER = "subfolder";
     static final String INVALID_PREFIX_FILE_NAME = "XXXXX";
 
-    static Duration durationTestMode;
+    Duration durationTestMode;
 
     /**
      * Use duration of nearly zero value for PLAYBACK test mode, otherwise, use default duration value for LIVE mode.
@@ -79,7 +82,7 @@ public abstract class FormTrainingClientTestBase extends TestBase {
     @Override
     protected void beforeTest() {
         if (interceptorManager.isPlaybackMode()) {
-            durationTestMode = Duration.ofNanos(1);
+            durationTestMode = ONE_NANO_DURATION;
         } else {
             durationTestMode = DEFAULT_DURATION;
         }
@@ -353,7 +356,7 @@ public abstract class FormTrainingClientTestBase extends TestBase {
 
     void blankPdfDataRunner(Consumer<InputStream> testRunner) {
         if (interceptorManager.isPlaybackMode()) {
-            testRunner.accept(new ByteArrayInputStream("testData.png".getBytes()));
+            testRunner.accept(new ByteArrayInputStream(TEST_DATA_PNG.getBytes(StandardCharsets.UTF_8)));
         } else {
             testRunner.accept(getFileData(getStorageTestingFileUrl(BLANK_PDF)));
         }

@@ -258,7 +258,13 @@ public class FormTrainingAsyncClientTest extends FormTrainingClientTestBase {
             CustomFormModel actualModel = syncPoller.getFinalResult();
 
             beginCopyRunner((resourceId, resourceRegion) -> {
-                CopyAuthorization target = client.getCopyAuthorization(resourceId, resourceRegion).block();
+                Mono<CopyAuthorization> targetMono = client.getCopyAuthorization(resourceId, resourceRegion);
+                CopyAuthorization target = targetMono.block();
+                if (actualModel == null) {
+                    assertTrue(false);
+                    return;
+                }
+
                 PollerFlux<OperationResult, CustomFormModelInfo> copyPoller =
                     client.beginCopyModel(actualModel.getModelId(), target);
                 CustomFormModelInfo copyModel = copyPoller.getSyncPoller().getFinalResult();
@@ -266,6 +272,7 @@ public class FormTrainingAsyncClientTest extends FormTrainingClientTestBase {
                 assertNotNull(actualModel.getTrainingStartedOn());
                 assertNotNull(actualModel.getTrainingCompletedOn());
                 assertEquals(CustomFormModelStatus.READY, copyModel.getStatus());
+
             });
         });
     }
@@ -284,9 +291,14 @@ public class FormTrainingAsyncClientTest extends FormTrainingClientTestBase {
             CustomFormModel actualModel = syncPoller.getFinalResult();
 
             beginCopyInvalidRegionRunner((resourceId, resourceRegion) -> {
-                Mono<CopyAuthorization> target = client.getCopyAuthorization(resourceId, resourceRegion);
-                PollerFlux<OperationResult,
-                    CustomFormModelInfo> copyPoller = client.beginCopyModel(actualModel.getModelId(), target.block());
+                Mono<CopyAuthorization> targetMono = client.getCopyAuthorization(resourceId, resourceRegion);
+                CopyAuthorization target = targetMono.block();
+                if (actualModel == null) {
+                    assertTrue(false);
+                    return;
+                }
+                PollerFlux<OperationResult, CustomFormModelInfo> copyPoller = client.beginCopyModel(
+                    actualModel.getModelId(), target);
 
                 Exception thrown = assertThrows(HttpResponseException.class,
                     () -> copyPoller.getSyncPoller().getFinalResult());
@@ -310,9 +322,14 @@ public class FormTrainingAsyncClientTest extends FormTrainingClientTestBase {
             CustomFormModel actualModel = syncPoller.getFinalResult();
 
             beginCopyIncorrectRegionRunner((resourceId, resourceRegion) -> {
-                Mono<CopyAuthorization> target = client.getCopyAuthorization(resourceId, resourceRegion);
+                Mono<CopyAuthorization> targetMono = client.getCopyAuthorization(resourceId, resourceRegion);
+                CopyAuthorization target = targetMono.block();
+                if (actualModel == null) {
+                    assertTrue(false);
+                    return;
+                }
                 FormRecognizerException formRecognizerException = assertThrows(FormRecognizerException.class,
-                    () -> client.beginCopyModel(actualModel.getModelId(), target.block())
+                    () -> client.beginCopyModel(actualModel.getModelId(), target)
                         .getSyncPoller().getFinalResult());
                 ErrorInformation errorInformation = formRecognizerException.getErrorInformation().get(0);
                 // TODO: Service bug https://github.com/Azure/azure-sdk-for-java/issues/12046

@@ -23,6 +23,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.nio.ByteBuffer;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -66,10 +67,14 @@ final class TestUtils {
     static final String DISPLAY_NAME_WITH_ARGUMENTS = "{displayName} with [{arguments}]";
     private static final String AZURE_FORM_RECOGNIZER_TEST_SERVICE_VERSIONS =
         "AZURE_FORM_RECOGNIZER_TEST_SERVICE_VERSIONS";
-    static final String INVOICE_1_PDF = "Invoice_1.pdf";
-    static final String FORM_JPG = "Form_1.jpg";
+
     static final String BLANK_PDF = "blank.pdf";
-    static final String ENCODED_BLANK_SPACE_URL = "https://fakeuri.com/blank%20space";
+    static final String FORM_JPG = "Form_1.jpg";
+    static final String INVOICE_1_PDF = "Invoice_1.pdf";
+    static final String TEST_DATA_PNG = "testData.png";
+
+    static final Duration ONE_NANO_DURATION = Duration.ofNanos(1);
+    static final Duration DEFAULT_DURATION = Duration.ofSeconds(5);
 
     private TestUtils() {
     }
@@ -78,7 +83,21 @@ final class TestUtils {
         final HttpClient httpClient = new NettyAsyncHttpClientBuilder().build();
         final HttpResponse httpResponse =
             httpClient.send(new HttpRequest(HttpMethod.GET, fileName)).block();
-        return new ByteArrayInputStream(httpResponse.getBodyAsByteArray().block());
+
+        if (httpResponse == null) {
+            return new ByteArrayInputStream(new byte[]{});
+        }
+
+        final Mono<byte[]> bodyAsByteArrayMono = httpResponse.getBodyAsByteArray();
+        if (bodyAsByteArrayMono == null) {
+            return new ByteArrayInputStream(new byte[]{});
+        }
+
+        final byte[] bodyAsByteArray = bodyAsByteArrayMono.block();
+        if (bodyAsByteArray == null) {
+            return new ByteArrayInputStream(new byte[]{});
+        }
+        return new ByteArrayInputStream(bodyAsByteArray);
     }
 
     static InputStream getContentDetectionFileData(String localFileUrl) {
