@@ -79,10 +79,9 @@ public final class ServiceBusManagementAsyncClient {
     private static final String SERVICE_BUS_TRACING_NAMESPACE_VALUE = "Microsoft.ServiceBus";
     private static final String CONTENT_TYPE = "application/xml";
 
-    // Name of the entity type when listing queues, topics, and subscriptions.
+    // Name of the entity type when listing queues and topics.
     private static final String QUEUES_ENTITY_TYPE = "queues";
     private static final String TOPICS_ENTITY_TYPE = "topics";
-    private static final String SUBSCRIPTIONS_PATH = "%s/Subscriptions";
 
     private static final int NUMBER_OF_ELEMENTS = 100;
 
@@ -1693,12 +1692,12 @@ public final class ServiceBusManagementAsyncClient {
      */
     private Mono<PagedResponse<SubscriptionDescription>> listSubscriptions(String topicName, int skip,
         Context context) {
-
-        final String entityPath = String.format(SUBSCRIPTIONS_PATH, topicName);
-        return managementClient.listEntitiesWithResponseAsync(entityPath, skip, NUMBER_OF_ELEMENTS, context)
+        return managementClient.listSubscriptionsWithResponseAsync(topicName, skip, NUMBER_OF_ELEMENTS, context)
             .onErrorMap(ServiceBusManagementAsyncClient::mapException)
             .flatMap(response -> {
-                final Response<SubscriptionDescriptionFeed> feedResponse = deserialize(response, SubscriptionDescriptionFeed.class);
+                final Response<SubscriptionDescriptionFeed> feedResponse = deserialize(response,
+                    SubscriptionDescriptionFeed.class);
+
                 final SubscriptionDescriptionFeed feed = feedResponse.getValue();
                 if (feed == null) {
                     logger.warning("Could not deserialize SubscriptionDescriptionFeed. skip {}, top: {}", skip, ServiceBusManagementAsyncClient.NUMBER_OF_ELEMENTS);
@@ -1709,10 +1708,12 @@ public final class ServiceBusManagementAsyncClient {
                     .filter(e -> e.getContent() != null && e.getContent().getSubscriptionDescription() != null)
                     .map(e -> {
                         final String subscriptionName = getTitleValue(e.getTitle());
-                        final SubscriptionDescription subscriptionDescription = e.getContent().getSubscriptionDescription();
-                        EntityHelper.setSubscriptionName(subscriptionDescription, subscriptionName);
+                        final SubscriptionDescription description = e.getContent().getSubscriptionDescription();
 
-                        return subscriptionDescription;
+                        EntityHelper.setTopicName(description, topicName);
+                        EntityHelper.setSubscriptionName(description, subscriptionName);
+
+                        return description;
                     })
                     .collect(Collectors.toList());
                 try {

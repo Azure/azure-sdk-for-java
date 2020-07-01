@@ -443,6 +443,26 @@ class ServiceBusManagementAsyncClientIntegrationTest extends TestBase {
 
     @ParameterizedTest
     @MethodSource("createHttpClients")
+    void listSubscriptions(HttpClient httpClient) {
+        // Arrange
+        final ServiceBusManagementAsyncClient client = createClient(httpClient);
+        final String topicName = interceptorManager.isPlaybackMode()
+            ? "topic"
+            : TestUtils.getTopicName();
+
+        // Act & Assert
+        StepVerifier.create(client.listSubscriptions(topicName))
+            .assertNext(subscription -> {
+                assertEquals(topicName, subscription.getTopicName());
+                assertNotNull(subscription.getSubscriptionName());
+            })
+            .expectNextCount(1)
+            .thenCancel()
+            .verify();
+    }
+
+    @ParameterizedTest
+    @MethodSource("createHttpClients")
     void listTopics(HttpClient httpClient) {
         // Arrange
         final ServiceBusManagementAsyncClient client = createClient(httpClient);
