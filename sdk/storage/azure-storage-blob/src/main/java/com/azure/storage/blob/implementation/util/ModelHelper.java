@@ -3,6 +3,7 @@
 
 package com.azure.storage.blob.implementation.util;
 
+import com.azure.core.http.RequestConditions;
 import com.azure.storage.blob.BlobAsyncClient;
 import com.azure.storage.blob.implementation.models.BlobDownloadHeaders;
 import com.azure.storage.blob.implementation.models.BlobItemInternal;
@@ -10,6 +11,7 @@ import com.azure.storage.blob.implementation.models.BlobItemPropertiesInternal;
 import com.azure.storage.blob.implementation.models.BlobTag;
 import com.azure.storage.blob.models.BlobItem;
 import com.azure.storage.blob.models.BlobItemProperties;
+import com.azure.storage.blob.models.BlobLeaseRequestConditions;
 import com.azure.storage.blob.models.ObjectReplicationPolicy;
 import com.azure.storage.blob.models.ObjectReplicationRule;
 import com.azure.storage.blob.models.ObjectReplicationStatus;
@@ -267,5 +269,24 @@ public class ModelHelper {
         }*/
 
         return blobItemProperties;
+    }
+
+    /**
+     * Transforms {@link RequestConditions} into a public {@link BlobLeaseRequestConditions}.
+     *
+     * @param requestConditions {@link RequestConditions}
+     * @return {@link BlobLeaseRequestConditions}
+     */
+    public static BlobLeaseRequestConditions populateBlobLeaseRequestConditions(RequestConditions requestConditions) {
+        if (requestConditions == null) {
+            return null;
+        }
+
+        return new BlobLeaseRequestConditions()
+            .setIfMatch(requestConditions.getIfMatch())
+            .setIfNoneMatch(requestConditions.getIfNoneMatch())
+            .setIfModifiedSince(requestConditions.getIfModifiedSince())
+            .setIfUnmodifiedSince(requestConditions.getIfUnmodifiedSince())
+            .setIfTags(null);
     }
 }
