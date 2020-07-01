@@ -525,7 +525,11 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
         for (int i = 0; i < actualFormPageList.size(); i++) {
             FormPage actualFormPage = actualFormPageList.get(i);
             ReadResult readResult = readResults.get(i);
-            assertEquals(readResult.getAngle(), actualFormPage.getTextAngle());
+            if (readResult.getAngle() > 180) {
+                assertEquals(readResult.getAngle() - 360, actualFormPage.getTextAngle());
+            } else {
+                assertEquals(readResult.getAngle(), actualFormPage.getTextAngle());
+            }
             assertEquals(readResult.getWidth(), actualFormPage.getWidth());
             assertEquals(readResult.getHeight(), actualFormPage.getHeight());
             assertEquals(readResult.getUnit().toString(), actualFormPage.getUnit().toString());

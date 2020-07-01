@@ -163,8 +163,8 @@ public abstract class FormTrainingClientTestBase extends TestBase {
         assertEquals(modelRawResponse.getModelInfo().getStatus().toString(),
             actualCustomModel.getModelStatus().toString());
         validateErrorData(modelRawResponse.getTrainResult().getErrors(), actualCustomModel.getModelError());
-        assertNotNull(actualCustomModel.getRequestedOn());
-        assertNotNull(actualCustomModel.getCompletedOn());
+        assertNotNull(actualCustomModel.getTrainingStartedOn());
+        assertNotNull(actualCustomModel.getTrainingCompletedOn());
         validateTrainingDocumentsData(modelRawResponse.getTrainResult().getTrainingDocuments(),
             actualCustomModel.getTrainingDocuments());
         final List<CustomFormSubmodel> subModelList =

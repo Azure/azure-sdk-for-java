@@ -238,7 +238,7 @@ public class ShareFileAsyncClient {
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/create-file">Azure Docs</a>.</p>
      *
-     * @param maxSize The maximum size in bytes for the file, up to 1 TiB.
+     * @param maxSize The maximum size in bytes for the file.
      * @return A response containing the file info and the status of creating the file.
      * @throws ShareStorageException If the file has already existed, the parent directory does not exist or fileName
      * is an invalid resource name.
@@ -264,7 +264,7 @@ public class ShareFileAsyncClient {
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/create-file">Azure Docs</a>.</p>
      *
-     * @param maxSize The maximum size in bytes for the file, up to 1 TiB.
+     * @param maxSize The maximum size in bytes for the file.
      * @param httpHeaders The user settable file http headers.
      * @param smbProperties The user settable file smb properties.
      * @param filePermission The file permission of the file.
@@ -294,7 +294,7 @@ public class ShareFileAsyncClient {
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/create-file">Azure Docs</a>.</p>
      *
-     * @param maxSize The maximum size in bytes for the file, up to 1 TiB.
+     * @param maxSize The maximum size in bytes for the file.
      * @param httpHeaders The user settable file http headers.
      * @param smbProperties The user settable file smb properties.
      * @param filePermission The file permission of the file.

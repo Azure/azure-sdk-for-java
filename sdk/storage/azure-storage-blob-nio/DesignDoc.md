@@ -52,7 +52,7 @@ The following options allow for configuring the underlying blob client. If they 
 - AzureStorageMaxRetryDelayInMs: Long
 - AzureStorageRetryPolicyType: com.azure.storage.common.policy.RetryPolicyType
 - AzureStorageSecondaryHost: String
-- AzureStorageUploadBlockSize: Integer
+- AzureStorageUploadBlockSize: Long
 - AzureStorageDownloadResumeRetries: Integer
 - AzureStorageUseHttps: Boolean
 

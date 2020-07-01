@@ -194,8 +194,8 @@ public class FormTrainingClientTest extends FormTrainingClientTestBase {
     public void listCustomModels(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
         client = getFormTrainingClient(httpClient, serviceVersion);
         for (CustomFormModelInfo modelInfo : client.listCustomModels()) {
-            assertTrue(modelInfo.getModelId() != null && modelInfo.getRequestedOn() != null
-                && modelInfo.getCompletedOn() != null && modelInfo.getStatus() != null);
+            assertTrue(modelInfo.getModelId() != null && modelInfo.getTrainingStartedOn() != null
+                && modelInfo.getTrainingCompletedOn() != null && modelInfo.getStatus() != null);
         }
     }
 
@@ -207,8 +207,8 @@ public class FormTrainingClientTest extends FormTrainingClientTestBase {
     public void listCustomModelsWithContext(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
         client = getFormTrainingClient(httpClient, serviceVersion);
         for (CustomFormModelInfo modelInfo : client.listCustomModels(Context.NONE)) {
-            assertTrue(modelInfo.getModelId() != null && modelInfo.getRequestedOn() != null
-                && modelInfo.getCompletedOn() != null && modelInfo.getStatus() != null);
+            assertTrue(modelInfo.getModelId() != null && modelInfo.getTrainingStartedOn() != null
+                && modelInfo.getTrainingCompletedOn() != null && modelInfo.getStatus() != null);
         }
     }
 
@@ -244,8 +244,8 @@ public class FormTrainingClientTest extends FormTrainingClientTestBase {
                     CustomFormModelInfo> copyPoller = client.beginCopyModel(actualModel.getModelId(), target);
                 CustomFormModelInfo copyModel = copyPoller.getFinalResult();
                 assertEquals(target.getModelId(), copyModel.getModelId());
-                assertNotNull(actualModel.getRequestedOn());
-                assertNotNull(actualModel.getCompletedOn());
+                assertNotNull(actualModel.getTrainingStartedOn());
+                assertNotNull(actualModel.getTrainingCompletedOn());
                 assertEquals(CustomFormModelStatus.READY, copyModel.getStatus());
             });
         });
