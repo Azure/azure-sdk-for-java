@@ -135,8 +135,7 @@ final class PartitionBasedLoadBalancer {
             .flatMap(this::loadBalance)
             .then()
             .repeat(() -> LoadBalancingStrategy.GREEDY == loadBalancingStrategy && morePartitionsToClaim.get())
-            .subscribe(ignored -> {
-                },
+            .subscribe(ignored -> { },
                 ex -> {
                     logger.warning(Messages.LOAD_BALANCING_FAILED, ex.getMessage(), ex);
                     ErrorContext errorContext = new ErrorContext(partitionAgnosticContext, ex);
