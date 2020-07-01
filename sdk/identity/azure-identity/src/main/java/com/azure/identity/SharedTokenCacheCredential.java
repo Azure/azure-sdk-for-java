@@ -65,6 +65,7 @@ public class SharedTokenCacheCredential implements TokenCredential {
                 .identityClientOptions(identityClientOptions)
                 .build();
         this.cachedToken = new AtomicReference<>();
+        LoggingUtil.logAvailableEnvironmentVariables(logger, configuration);
     }
 
     /**
@@ -85,7 +86,7 @@ public class SharedTokenCacheCredential implements TokenCredential {
                 cachedToken.set(msalToken);
                 return (AccessToken) msalToken;
             })
-            .doOnNext(token -> LoggingUtil.logTokenSuccess(logger, request))
+            .doOnSuccess(token -> LoggingUtil.logTokenSuccess(logger, request))
             .doOnError(error -> LoggingUtil.logTokenError(logger, request, error));
     }
 }

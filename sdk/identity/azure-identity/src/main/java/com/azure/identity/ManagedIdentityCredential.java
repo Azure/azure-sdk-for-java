@@ -42,6 +42,7 @@ public final class ManagedIdentityCredential implements TokenCredential {
             virtualMachineMSICredential = new VirtualMachineMsiCredential(clientId, identityClient);
             appServiceMSICredential = null;
         }
+        LoggingUtil.logAvailableEnvironmentVariables(logger, configuration);
     }
 
     /**
@@ -58,14 +59,14 @@ public final class ManagedIdentityCredential implements TokenCredential {
     public Mono<AccessToken> getToken(TokenRequestContext request) {
         Mono<AccessToken> accessTokenMono;
         if (appServiceMSICredential != null) {
-            accessTokenMono = appServiceMSICredential.authenticate(request);
-            logger.info("Azure Identity => Managed Identity environment: MSI_ENDPOINT");
+            accessTokenMono = appServiceMSICredential.authenticate(request)
+                .doOnSuccess((t -> logger.info("Azure Identity => Managed Identity environment: MSI_ENDPOINT")));
         } else {
-            accessTokenMono = virtualMachineMSICredential.authenticate(request);
-            logger.info("Azure Identity => Managed Identity environment: IMDS");
+            accessTokenMono = virtualMachineMSICredential.authenticate(request)
+                .doOnSuccess((t -> logger.info("Azure Identity => Managed Identity environment: IMDS")));
         }
         return accessTokenMono
-            .doOnNext(token -> LoggingUtil.logTokenSuccess(logger, request))
+            .doOnSuccess(token -> LoggingUtil.logTokenSuccess(logger, request))
             .doOnError(error -> LoggingUtil.logTokenError(logger, request, error));
     }
 }
