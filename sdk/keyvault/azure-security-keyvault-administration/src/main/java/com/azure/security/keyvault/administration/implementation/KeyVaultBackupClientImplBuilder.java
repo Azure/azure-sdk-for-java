@@ -11,9 +11,9 @@ import com.azure.core.http.policy.CookiePolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 
-/** A builder for creating a new instance of the KeyVaultAccessControlClient type. */
-@ServiceClientBuilder(serviceClients = {KeyVaultAccessControlClientImpl.class})
-public final class KeyVaultAccessControlClientImplBuilder {
+/** A builder for creating a new instance of the KeyVaultBackupClient type. */
+@ServiceClientBuilder(serviceClients = {KeyVaultBackupClientImpl.class})
+public final class KeyVaultBackupClientImplBuilder {
     /*
      * The HTTP pipeline to send requests through
      */
@@ -23,26 +23,26 @@ public final class KeyVaultAccessControlClientImplBuilder {
      * Sets The HTTP pipeline to send requests through.
      *
      * @param pipeline the pipeline value.
-     * @return the KeyVaultAccessControlClientImplBuilder.
+     * @return the KeyVaultBackupClientImplBuilder.
      */
-    public KeyVaultAccessControlClientImplBuilder pipeline(HttpPipeline pipeline) {
+    public KeyVaultBackupClientImplBuilder pipeline(HttpPipeline pipeline) {
         this.pipeline = pipeline;
         return this;
     }
 
     /**
-     * Builds an instance of KeyVaultAccessControlClientImpl with the provided parameters.
+     * Builds an instance of KeyVaultBackupClientImpl with the provided parameters.
      *
-     * @return an instance of KeyVaultAccessControlClientImpl.
+     * @return an instance of KeyVaultBackupClientImpl.
      */
-    public KeyVaultAccessControlClientImpl buildClient() {
+    public KeyVaultBackupClientImpl buildClient() {
         if (pipeline == null) {
             this.pipeline =
                     new HttpPipelineBuilder()
                             .policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy())
                             .build();
         }
-        KeyVaultAccessControlClientImpl client = new KeyVaultAccessControlClientImpl(pipeline);
+        KeyVaultBackupClientImpl client = new KeyVaultBackupClientImpl(pipeline);
         return client;
     }
 }

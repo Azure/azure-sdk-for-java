@@ -65,7 +65,7 @@ Here is an [Azure Cloud Shell](https://shell.azure.com/bash) snippet below to
     az keyvault show --name <your-key-vault-name>
     ```
 
-#### Create Access Control client
+#### Create Backup client
 
 ## Key concepts
 To be added.
