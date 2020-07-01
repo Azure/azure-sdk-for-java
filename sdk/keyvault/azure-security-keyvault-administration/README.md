@@ -1,4 +1,4 @@
-# Azure Key Vault Administration client library for Java
+# Azure Key Vault Administration library for Java
 
 ## Getting started
 ### Adding the package to your project

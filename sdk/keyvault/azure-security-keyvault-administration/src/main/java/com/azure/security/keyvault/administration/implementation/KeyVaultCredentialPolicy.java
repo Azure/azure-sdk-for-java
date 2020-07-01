@@ -1,5 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
+
 package com.azure.security.keyvault.administration.implementation;
 
 import com.azure.core.credential.TokenCredential;
@@ -49,7 +50,7 @@ public final class KeyVaultCredentialPolicy implements HttpPipelinePolicy {
      */
     @Override
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
-        if ("http".equals(context.getHttpRequest().getUrl().getProtocol())) {
+        if (context.getHttpRequest().getUrl().getProtocol().startsWith("http")) {
             return Mono.error(new RuntimeException("Token credentials require a URL using the HTTPS protocol scheme"));
         }
         return next.clone().process()
