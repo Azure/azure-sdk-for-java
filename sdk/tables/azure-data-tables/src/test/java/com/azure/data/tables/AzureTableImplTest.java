@@ -40,7 +40,7 @@ public class AzureTableImplTest extends TestBase {
     protected void beforeTest() {
         super.beforeTest();
         String connectionString = interceptorManager.isPlaybackMode()
-            ? "DefaultEndpointsProtocol=https;AccountName=dummyAccount;AccountKey=xyzDummy==;EndpointSuffix=core.windows.net"
+            ? "DefaultEndpointsProtocol=https;AccountName=dummyAccount;AccountKey=xyzDummy;EndpointSuffix=core.windows.net"
             : System.getenv("AZURE_TABLES_CONNECTION_STRING");
         StorageConnectionString storageConnectionString
             = StorageConnectionString.create(connectionString, new ClientLogger(AzureTableImplTest.class));
@@ -80,7 +80,7 @@ public class AzureTableImplTest extends TestBase {
         QueryOptions queryOptions = new QueryOptions()
             .setFormat(OdataMetadataFormat.APPLICATION_JSON_ODATA_MINIMALMETADATA);
 
-        Mono.when(azureTable.getTables().queryWithResponseAsync(UUID.randomUUID().toString(), null,
+        Mono.when(azureTable.getTables().queryWithResponseAsync(testResourceNamer.randomUuid(), null,
             queryOptions, Context.NONE).flatMapMany(tablesQueryResponse -> {
             return Flux.fromIterable(tablesQueryResponse.getValue().getValue()).flatMap(tableResponseProperty -> {
                 return azureTable.getTables().deleteWithResponseAsync(tableResponseProperty.getTableName(),
@@ -119,7 +119,7 @@ public class AzureTableImplTest extends TestBase {
     @Test
     void createTable() {
         // Arrange
-        String tableName = "tableA"; // randomCharOnlyName("test", 20);
+        String tableName = randomCharOnlyName("test", 20);
         TableProperties tableProperties = new TableProperties().setTableName(tableName);
         int expectedStatusCode = 201;
         String requestId = testResourceNamer.randomUuid();

@@ -50,14 +50,14 @@ Licensed under the MIT License.
     </dependency>
     <dependency>
       <groupId>org.junit.jupiter</groupId>
-      <artifactId>junit-jupiter</artifactId>  <!-- {x-version-update;org.junit.jupiter:junit-jupiter;external_dependency} -->
-      <version>RELEASE</version>
+      <artifactId>junit-jupiter</artifactId>
+      <version>RELEASE</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>io.projectreactor</groupId>
-      <artifactId>reactor-test</artifactId> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
-      <version>3.3.5.RELEASE</version>
+      <artifactId>reactor-test</artifactId>
+      <version>3.3.5.RELEASE</version>  <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
