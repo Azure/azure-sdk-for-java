@@ -12,7 +12,7 @@ import com.azure.core.annotation.Immutable;
 public abstract class FormContent {
 
     /*
-     * Text content of the extracted field.
+     * Text content of the extracted element.
      */
     private final String text;
 
@@ -29,8 +29,8 @@ public abstract class FormContent {
     /**
      * Creates raw OCR item.
      *
-     * @param text The text content of the field.
-     * @param boundingBox The BoundingBox specifying relative coordinates of the field.
+     * @param text The text content of the extracted element.
+     * @param boundingBox The BoundingBox specifying relative coordinates of the element.
      * @param pageNumber the 1 based page number.
      */
     FormContent(final String text, final BoundingBox boundingBox, final Integer pageNumber) {
@@ -49,9 +49,9 @@ public abstract class FormContent {
     }
 
     /**
-     * The text of the extracted item.
+     * The text content of the extracted element.
      *
-     * @return The text of the extracted item.
+     * @return The text content of the extracted element.
      */
     public String getText() {
         return text;

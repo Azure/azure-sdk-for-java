@@ -58,7 +58,8 @@ public final class FieldText extends FormContent {
     }
 
     /**
-     * Gets the list of reference text elements constituting this {@code FieldText}.
+     * When `includeTextContent` is set to true, gets a list of reference text elements constituting
+     * this {@code FieldText}.
      *
      * @return The unmodifiable list of reference elements constituting this {@code FieldText}.
      */
