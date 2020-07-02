@@ -101,6 +101,11 @@ stages:
             DisplayName: 'Emulator only Integration Tests'
             PROTOCOLS: '["Https"]'
             DESIRED_CONSISTENCIES: '["Strong", "Session"]'
+          Spring_Integration_Tests_Java8:
+            OSVmImage: 'windows-2019'
+            JavaTestVersion: '1.8'
+            ProfileFlag: '-P integration-test-emulator'
+            DisplayName: 'Spring Emulator only Integration Tests'
 
         TestStepMavenInputs:
           goals: 'verify'
