@@ -10,13 +10,14 @@ package com.microsoft.azure.cognitiveservices.language.luis.authoring.models;
 
 
 /**
- * The AddPermissionsOptionalParameter model.
+ * The ListUserLUISAccountsOptionalParameter model.
  */
-public class AddPermissionsOptionalParameter {
+public class ListUserLUISAccountsOptionalParameter {
     /**
-     * The email address of the user.
+     * The custom arm token header to use; containing the user's ARM token used
+     * to validate azure accounts information.
      */
-    private String email;
+    private String armToken;
 
     /**
      * Gets or sets the preferred language for the response.
@@ -24,22 +25,22 @@ public class AddPermissionsOptionalParameter {
     private String thisclientacceptLanguage;
 
     /**
-     * Get the email value.
+     * Get the armToken value.
      *
-     * @return the email value
+     * @return the armToken value
      */
-    public String email() {
-        return this.email;
+    public String armToken() {
+        return this.armToken;
     }
 
     /**
-     * Set the email value.
+     * Set the armToken value.
      *
-     * @param email the email value to set
-     * @return the AddPermissionsOptionalParameter object itself.
+     * @param armToken the armToken value to set
+     * @return the ListUserLUISAccountsOptionalParameter object itself.
      */
-    public AddPermissionsOptionalParameter withEmail(String email) {
-        this.email = email;
+    public ListUserLUISAccountsOptionalParameter withArmToken(String armToken) {
+        this.armToken = armToken;
         return this;
     }
 
@@ -56,9 +57,9 @@ public class AddPermissionsOptionalParameter {
      * Set the thisclientacceptLanguage value.
      *
      * @param thisclientacceptLanguage the thisclientacceptLanguage value to set
-     * @return the AddPermissionsOptionalParameter object itself.
+     * @return the ListUserLUISAccountsOptionalParameter object itself.
      */
-    public AddPermissionsOptionalParameter withThisclientacceptLanguage(String thisclientacceptLanguage) {
+    public ListUserLUISAccountsOptionalParameter withThisclientacceptLanguage(String thisclientacceptLanguage) {
         this.thisclientacceptLanguage = thisclientacceptLanguage;
         return this;
     }

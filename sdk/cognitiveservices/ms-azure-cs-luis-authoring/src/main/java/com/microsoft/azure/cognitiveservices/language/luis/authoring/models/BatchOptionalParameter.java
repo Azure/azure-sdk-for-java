@@ -10,15 +10,9 @@ package com.microsoft.azure.cognitiveservices.language.luis.authoring.models;
 
 
 /**
- * The ListIntentSuggestionsOptionalParameter model.
+ * The BatchOptionalParameter model.
  */
-public class ListIntentSuggestionsOptionalParameter {
-    /**
-     * The number of entries to return. Maximum page size is 500. Default is
-     * 100.
-     */
-    private Integer take;
-
+public class BatchOptionalParameter {
     /**
      * Toggles nested/flat format.
      */
@@ -28,26 +22,6 @@ public class ListIntentSuggestionsOptionalParameter {
      * Gets or sets the preferred language for the response.
      */
     private String thisclientacceptLanguage;
-
-    /**
-     * Get the take value.
-     *
-     * @return the take value
-     */
-    public Integer take() {
-        return this.take;
-    }
-
-    /**
-     * Set the take value.
-     *
-     * @param take the take value to set
-     * @return the ListIntentSuggestionsOptionalParameter object itself.
-     */
-    public ListIntentSuggestionsOptionalParameter withTake(Integer take) {
-        this.take = take;
-        return this;
-    }
 
     /**
      * Get the enableNestedChildren value.
@@ -62,9 +36,9 @@ public class ListIntentSuggestionsOptionalParameter {
      * Set the enableNestedChildren value.
      *
      * @param enableNestedChildren the enableNestedChildren value to set
-     * @return the ListIntentSuggestionsOptionalParameter object itself.
+     * @return the BatchOptionalParameter object itself.
      */
-    public ListIntentSuggestionsOptionalParameter withEnableNestedChildren(Boolean enableNestedChildren) {
+    public BatchOptionalParameter withEnableNestedChildren(Boolean enableNestedChildren) {
         this.enableNestedChildren = enableNestedChildren;
         return this;
     }
@@ -82,9 +56,9 @@ public class ListIntentSuggestionsOptionalParameter {
      * Set the thisclientacceptLanguage value.
      *
      * @param thisclientacceptLanguage the thisclientacceptLanguage value to set
-     * @return the ListIntentSuggestionsOptionalParameter object itself.
+     * @return the BatchOptionalParameter object itself.
      */
-    public ListIntentSuggestionsOptionalParameter withThisclientacceptLanguage(String thisclientacceptLanguage) {
+    public BatchOptionalParameter withThisclientacceptLanguage(String thisclientacceptLanguage) {
         this.thisclientacceptLanguage = thisclientacceptLanguage;
         return this;
     }
