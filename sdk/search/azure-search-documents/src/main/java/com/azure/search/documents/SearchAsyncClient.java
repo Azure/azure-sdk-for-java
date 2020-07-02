@@ -190,7 +190,7 @@ public final class SearchAsyncClient {
      *
      * <p><strong>Code Sample</strong></p>
      *
-     * <p> Upload dynamic SearchDocument with response. </p>
+     * <p> Upload dynamic SearchDocument. </p>
      *
      * {@codesnippet com.azure.search.documents.SearchAsyncClient.uploadDocumentsWithResponse#Iterable-IndexDocumentsOptions}
      *
@@ -260,7 +260,7 @@ public final class SearchAsyncClient {
      *
      * <p><strong>Code Sample</strong></p>
      *
-     * <p> Merge dynamic SearchDocument with response. </p>
+     * <p> Merge dynamic SearchDocument. </p>
      *
      * {@codesnippet com.azure.search.documents.SearchAsyncClient.mergeDocumentsWithResponse#Iterable-IndexDocumentsOptions}
      *
@@ -332,7 +332,7 @@ public final class SearchAsyncClient {
      *
      * <p><strong>Code Sample</strong></p>
      *
-     * <p> Merge or upload dynamic SearchDocument with response. </p>
+     * <p> Merge or upload dynamic SearchDocument. </p>
      *
      * {@codesnippet com.azure.search.documents.SearchAsyncClient.mergeOrUploadDocumentsWithResponse#Iterable-IndexDocumentsOptions}
      *
@@ -388,7 +388,7 @@ public final class SearchAsyncClient {
      *
      * <p><strong>Code Sample</strong></p>
      *
-     * <p> Delete dynamic SearchDocument with response. </p>
+     * <p> Delete dynamic SearchDocument. </p>
      *
      * {@codesnippet com.azure.search.documents.SearchAsyncClient.deleteDocumentsWithResponse#Iterable-IndexDocumentsOptions}
      *
@@ -444,7 +444,7 @@ public final class SearchAsyncClient {
      *
      * <p><strong>Code Sample</strong></p>
      *
-     * <p> Index batch operation on dynamic SearchDocument with response. </p>
+     * <p> Index batch operation on dynamic SearchDocument. </p>
      *
      * {@codesnippet com.azure.search.documents.SearchAsyncClient.indexDocumentsWithResponse#IndexDocumentsBatch-IndexDocumentsOptions}
      *
@@ -514,7 +514,7 @@ public final class SearchAsyncClient {
      *
      * <p><strong>Code Sample</strong></p>
      *
-     * <p> Get dynamic SearchDocument with response. </p>
+     * <p> Get dynamic SearchDocument. </p>
      *
      * {@codesnippet com.azure.search.documents.SearchAsyncClient.getDocumentWithResponse#String-Class-List}
      *
@@ -576,7 +576,7 @@ public final class SearchAsyncClient {
      *
      * <p><strong>Code Sample</strong></p>
      *
-     * <p> Get document count with response. </p>
+     * <p> Get document count. </p>
      *
      * {@codesnippet com.azure.search.documents.SearchAsyncClient.getDocumentCountWithResponse}
      *
