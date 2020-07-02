@@ -16,7 +16,6 @@ import com.azure.ai.formrecognizer.models.FormRecognizerError;
 import com.azure.ai.formrecognizer.models.TrainingDocumentInfo;
 import com.azure.ai.formrecognizer.models.TrainingStatus;
 import com.azure.core.util.CoreUtils;
-import com.azure.core.util.IterableStream;
 import com.azure.core.util.logging.ClientLogger;
 
 import java.time.Duration;
@@ -102,7 +101,7 @@ final class CustomModelTransforms {
             CustomFormModelStatus.fromString(modelInfo.getStatus().toString()),
             modelInfo.getCreatedDateTime(),
             modelInfo.getLastUpdatedDateTime(),
-            new IterableStream<>(subModelList),
+            subModelList,
             modelErrors,
             trainingDocumentInfoList);
     }

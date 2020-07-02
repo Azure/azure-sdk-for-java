@@ -29,8 +29,8 @@ import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.util.polling.AsyncPollResponse;
 import com.azure.core.util.polling.PollerFlux;
+import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.network.NetworkManagementClient;
 import com.azure.resourcemanager.network.fluent.inner.AuthorizationListResultInner;
 import com.azure.resourcemanager.network.fluent.inner.ExpressRouteCircuitAuthorizationInner;
@@ -206,7 +206,7 @@ public final class ExpressRouteCircuitAuthorizationsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -260,7 +260,7 @@ public final class ExpressRouteCircuitAuthorizationsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return service
             .delete(
                 this.client.getEndpoint(),
@@ -284,7 +284,7 @@ public final class ExpressRouteCircuitAuthorizationsClient {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<Void>, Void> beginDelete(
+    public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String circuitName, String authorizationName) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             deleteWithResponseAsync(resourceGroupName, circuitName, authorizationName);
@@ -304,7 +304,7 @@ public final class ExpressRouteCircuitAuthorizationsClient {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<Void>, Void> beginDelete(
+    public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String circuitName, String authorizationName, Context context) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             deleteWithResponseAsync(resourceGroupName, circuitName, authorizationName, context);
@@ -323,14 +323,45 @@ public final class ExpressRouteCircuitAuthorizationsClient {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<Void>, Void> beginDelete(
+        String resourceGroupName, String circuitName, String authorizationName) {
+        return beginDeleteAsync(resourceGroupName, circuitName, authorizationName).getSyncPoller();
+    }
+
+    /**
+     * Deletes the specified authorization from the specified express route circuit.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param circuitName The name of the express route circuit.
+     * @param authorizationName The name of the authorization.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<Void>, Void> beginDelete(
+        String resourceGroupName, String circuitName, String authorizationName, Context context) {
+        return beginDeleteAsync(resourceGroupName, circuitName, authorizationName, context).getSyncPoller();
+    }
+
+    /**
+     * Deletes the specified authorization from the specified express route circuit.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param circuitName The name of the express route circuit.
+     * @param authorizationName The name of the authorization.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String circuitName, String authorizationName) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, circuitName, authorizationName);
-        return this
-            .client
-            .<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class)
+        return beginDeleteAsync(resourceGroupName, circuitName, authorizationName)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -348,13 +379,9 @@ public final class ExpressRouteCircuitAuthorizationsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(
         String resourceGroupName, String circuitName, String authorizationName, Context context) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, circuitName, authorizationName, context);
-        return this
-            .client
-            .<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class)
+        return beginDeleteAsync(resourceGroupName, circuitName, authorizationName, context)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -425,7 +452,7 @@ public final class ExpressRouteCircuitAuthorizationsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -479,7 +506,7 @@ public final class ExpressRouteCircuitAuthorizationsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return service
             .get(
                 this.client.getEndpoint(),
@@ -625,7 +652,7 @@ public final class ExpressRouteCircuitAuthorizationsClient {
         } else {
             authorizationParameters.validate();
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -692,7 +719,7 @@ public final class ExpressRouteCircuitAuthorizationsClient {
         } else {
             authorizationParameters.validate();
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return service
             .createOrUpdate(
                 this.client.getEndpoint(),
@@ -719,7 +746,7 @@ public final class ExpressRouteCircuitAuthorizationsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<ExpressRouteCircuitAuthorizationInner>, ExpressRouteCircuitAuthorizationInner>
-        beginCreateOrUpdate(
+        beginCreateOrUpdateAsync(
             String resourceGroupName,
             String circuitName,
             String authorizationName,
@@ -750,7 +777,7 @@ public final class ExpressRouteCircuitAuthorizationsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<ExpressRouteCircuitAuthorizationInner>, ExpressRouteCircuitAuthorizationInner>
-        beginCreateOrUpdate(
+        beginCreateOrUpdateAsync(
             String resourceGroupName,
             String circuitName,
             String authorizationName,
@@ -781,22 +808,63 @@ public final class ExpressRouteCircuitAuthorizationsClient {
      * @return authorization in an ExpressRouteCircuit resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<ExpressRouteCircuitAuthorizationInner>, ExpressRouteCircuitAuthorizationInner>
+        beginCreateOrUpdate(
+            String resourceGroupName,
+            String circuitName,
+            String authorizationName,
+            ExpressRouteCircuitAuthorizationInner authorizationParameters) {
+        return beginCreateOrUpdateAsync(resourceGroupName, circuitName, authorizationName, authorizationParameters)
+            .getSyncPoller();
+    }
+
+    /**
+     * Creates or updates an authorization in the specified express route circuit.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param circuitName The name of the express route circuit.
+     * @param authorizationName The name of the authorization.
+     * @param authorizationParameters Authorization in an ExpressRouteCircuit resource.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return authorization in an ExpressRouteCircuit resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<ExpressRouteCircuitAuthorizationInner>, ExpressRouteCircuitAuthorizationInner>
+        beginCreateOrUpdate(
+            String resourceGroupName,
+            String circuitName,
+            String authorizationName,
+            ExpressRouteCircuitAuthorizationInner authorizationParameters,
+            Context context) {
+        return beginCreateOrUpdateAsync(
+                resourceGroupName, circuitName, authorizationName, authorizationParameters, context)
+            .getSyncPoller();
+    }
+
+    /**
+     * Creates or updates an authorization in the specified express route circuit.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param circuitName The name of the express route circuit.
+     * @param authorizationName The name of the authorization.
+     * @param authorizationParameters Authorization in an ExpressRouteCircuit resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return authorization in an ExpressRouteCircuit resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ExpressRouteCircuitAuthorizationInner> createOrUpdateAsync(
         String resourceGroupName,
         String circuitName,
         String authorizationName,
         ExpressRouteCircuitAuthorizationInner authorizationParameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, circuitName, authorizationName, authorizationParameters);
-        return this
-            .client
-            .<ExpressRouteCircuitAuthorizationInner, ExpressRouteCircuitAuthorizationInner>getLroResultAsync(
-                mono,
-                this.client.getHttpPipeline(),
-                ExpressRouteCircuitAuthorizationInner.class,
-                ExpressRouteCircuitAuthorizationInner.class)
+        return beginCreateOrUpdateAsync(resourceGroupName, circuitName, authorizationName, authorizationParameters)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -819,18 +887,10 @@ public final class ExpressRouteCircuitAuthorizationsClient {
         String authorizationName,
         ExpressRouteCircuitAuthorizationInner authorizationParameters,
         Context context) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(
-                resourceGroupName, circuitName, authorizationName, authorizationParameters, context);
-        return this
-            .client
-            .<ExpressRouteCircuitAuthorizationInner, ExpressRouteCircuitAuthorizationInner>getLroResultAsync(
-                mono,
-                this.client.getHttpPipeline(),
-                ExpressRouteCircuitAuthorizationInner.class,
-                ExpressRouteCircuitAuthorizationInner.class)
+        return beginCreateOrUpdateAsync(
+                resourceGroupName, circuitName, authorizationName, authorizationParameters, context)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -910,7 +970,7 @@ public final class ExpressRouteCircuitAuthorizationsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -967,7 +1027,7 @@ public final class ExpressRouteCircuitAuthorizationsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return service
             .list(
                 this.client.getEndpoint(),
@@ -1091,7 +1151,7 @@ public final class ExpressRouteCircuitAuthorizationsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -1145,7 +1205,7 @@ public final class ExpressRouteCircuitAuthorizationsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return service
             .beginDeleteWithoutPolling(
                 this.client.getEndpoint(),
@@ -1274,7 +1334,7 @@ public final class ExpressRouteCircuitAuthorizationsClient {
         } else {
             authorizationParameters.validate();
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -1341,7 +1401,7 @@ public final class ExpressRouteCircuitAuthorizationsClient {
         } else {
             authorizationParameters.validate();
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return service
             .beginCreateOrUpdateWithoutPolling(
                 this.client.getEndpoint(),

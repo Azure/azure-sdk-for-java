@@ -11,7 +11,13 @@ import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.polling.SyncPoller;
 
 /**
- * Sample to train a model with labeled data. See RecognizeCustomFormsAsync to recognize forms with your custom model.
+ * Sample to train a model with labeled data.
+ * For instructions on setting up forms for training in an Azure Storage Blob Container, see
+ * https://docs.microsoft.com/azure/cognitive-services/form-recognizer/build-training-data-set#upload-your-training-data
+ * For this sample, you can use the training forms found in
+ * https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/java/sample-forms/training to
+ * create your own custom models.
+ * Further, see RecognizeCustomForms.java to recognize forms with your custom built model.
  */
 public class TrainModelWithLabels {
 
@@ -29,16 +35,16 @@ public class TrainModelWithLabels {
             .buildClient();
 
         // Train custom model
-        String trainingSetSource = "{labeled_training_set_SAS_URL}";
-        SyncPoller<OperationResult, CustomFormModel> trainingPoller = client.beginTraining(trainingSetSource, true);
+        String trainingFilesUrl = "{CONTAINER_SAS_URL}"; // The shared access signature (SAS) Url of your Azure Blob Storage container with your forms.
+        SyncPoller<OperationResult, CustomFormModel> trainingPoller = client.beginTraining(trainingFilesUrl, true);
 
         CustomFormModel customFormModel = trainingPoller.getFinalResult();
 
         // Model Info
         System.out.printf("Model Id: %s%n", customFormModel.getModelId());
         System.out.printf("Model Status: %s%n", customFormModel.getModelStatus());
-        System.out.printf("Model requested on: %s%n", customFormModel.getRequestedOn());
-        System.out.printf("Model training completed on: %s%n%n", customFormModel.getCompletedOn());
+        System.out.printf("Training started on: %s%n", customFormModel.getTrainingStartedOn());
+        System.out.printf("Training completed on: %s%n%n", customFormModel.getTrainingCompletedOn());
 
         // looping through the sub-models, which contains the fields they were trained on
         // The labels are based on the ones you gave the training document.
@@ -46,7 +52,7 @@ public class TrainModelWithLabels {
         // Since the data is labeled, we are able to return the accuracy of the model
         customFormModel.getSubmodels().forEach(customFormSubmodel -> {
             System.out.printf("Sub-model accuracy: %.2f%n", customFormSubmodel.getAccuracy());
-            customFormSubmodel.getFieldMap().forEach((label, customFormModelField) ->
+            customFormSubmodel.getFields().forEach((label, customFormModelField) ->
                 System.out.printf("Field: %s Field Name: %s Field Accuracy: %.2f%n",
                     label, customFormModelField.getName(), customFormModelField.getAccuracy()));
         });

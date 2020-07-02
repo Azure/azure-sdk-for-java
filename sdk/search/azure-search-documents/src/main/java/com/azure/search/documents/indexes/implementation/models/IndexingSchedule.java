@@ -7,13 +7,12 @@
 package com.azure.search.documents.indexes.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 
-/**
- * Represents a schedule for indexer execution.
- */
+/** The IndexingSchedule model. */
 @Fluent
 public final class IndexingSchedule {
     /*
@@ -28,9 +27,14 @@ public final class IndexingSchedule {
     @JsonProperty(value = "startTime")
     private OffsetDateTime startTime;
 
+    /** Creates an instance of IndexingSchedule class. */
+    @JsonCreator
+    public IndexingSchedule(@JsonProperty(value = "interval") Duration interval) {
+        this.interval = interval;
+    }
+
     /**
-     * Get the interval property: The interval of time between indexer
-     * executions.
+     * Get the interval property: The interval of time between indexer executions.
      *
      * @return the interval value.
      */
@@ -39,20 +43,13 @@ public final class IndexingSchedule {
     }
 
     /**
-     * Set the interval property: The interval of time between indexer
-     * executions.
+     * Set the interval property: The interval of time between indexer executions.
      *
      * @param interval the interval value to set.
      * @return the IndexingSchedule object itself.
      */
-    public IndexingSchedule setInterval(Duration interval) {
-        this.interval = interval;
-        return this;
-    }
-
     /**
-     * Get the startTime property: The time when an indexer should start
-     * running.
+     * Get the startTime property: The time when an indexer should start running.
      *
      * @return the startTime value.
      */
@@ -61,8 +58,7 @@ public final class IndexingSchedule {
     }
 
     /**
-     * Set the startTime property: The time when an indexer should start
-     * running.
+     * Set the startTime property: The time when an indexer should start running.
      *
      * @param startTime the startTime value to set.
      * @return the IndexingSchedule object itself.
@@ -70,5 +66,16 @@ public final class IndexingSchedule {
     public IndexingSchedule setStartTime(OffsetDateTime startTime) {
         this.startTime = startTime;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (getInterval() == null) {
+            throw new IllegalArgumentException("Missing required property interval in model IndexingSchedule");
+        }
     }
 }

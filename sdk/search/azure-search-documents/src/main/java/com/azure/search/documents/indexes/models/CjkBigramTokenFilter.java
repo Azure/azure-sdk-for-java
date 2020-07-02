@@ -4,6 +4,7 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -29,6 +30,18 @@ public final class CjkBigramTokenFilter extends TokenFilter {
      */
     @JsonProperty(value = "outputUnigrams")
     private Boolean outputUnigrams;
+
+    /**
+     * Constructor of {@link CjkBigramTokenFilter}.
+     *
+     * @param name The name of the token filter. It must only contain letters, digits,
+     * spaces, dashes or underscores, can only start and end with alphanumeric
+     * characters, and is limited to 128 characters.
+     */
+    @JsonCreator
+    public CjkBigramTokenFilter(@JsonProperty(value = "name") String name) {
+        super(name);
+    }
 
     /**
      * Get the ignoreScripts property: The scripts to ignore.

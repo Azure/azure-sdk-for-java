@@ -118,7 +118,7 @@ public final class VirtualMachineRunCommandsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-03-01";
+        final String apiVersion = "2019-12-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -164,7 +164,7 @@ public final class VirtualMachineRunCommandsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-03-01";
+        final String apiVersion = "2019-12-01";
         return service
             .list(this.client.getEndpoint(), location, apiVersion, this.client.getSubscriptionId(), context)
             .map(
@@ -267,7 +267,7 @@ public final class VirtualMachineRunCommandsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-03-01";
+        final String apiVersion = "2019-12-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -314,7 +314,7 @@ public final class VirtualMachineRunCommandsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-03-01";
+        final String apiVersion = "2019-12-01";
         return service
             .get(this.client.getEndpoint(), location, commandId, apiVersion, this.client.getSubscriptionId(), context);
     }

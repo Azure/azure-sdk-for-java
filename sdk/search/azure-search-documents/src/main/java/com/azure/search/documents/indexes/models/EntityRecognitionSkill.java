@@ -49,6 +49,17 @@ public final class EntityRecognitionSkill extends SearchIndexerSkill {
     private Double minimumPrecision;
 
     /**
+     * Constructor of {@link SearchIndexerSkill}.
+     *
+     * @param inputs Inputs of the skills could be a column in the source data set, or the
+     * output of an upstream skill.
+     * @param outputs The output of a skill is either a field in a search index, or a value
+     */
+    public EntityRecognitionSkill(List<InputFieldMappingEntry> inputs, List<OutputFieldMappingEntry> outputs) {
+        super(inputs, outputs);
+    }
+
+    /**
      * Get the categories property: A list of entity categories that should be
      * extracted.
      *

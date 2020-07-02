@@ -25,8 +25,8 @@ import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.util.polling.AsyncPollResponse;
 import com.azure.core.util.polling.PollerFlux;
+import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.network.NetworkManagementClient;
 import com.azure.resourcemanager.network.fluent.inner.ExpressRouteGatewayInner;
 import com.azure.resourcemanager.network.fluent.inner.ExpressRouteGatewayListInner;
@@ -183,7 +183,7 @@ public final class ExpressRouteGatewaysClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -216,7 +216,7 @@ public final class ExpressRouteGatewaysClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return service
             .listBySubscription(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), context);
     }
@@ -316,7 +316,7 @@ public final class ExpressRouteGatewaysClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -359,7 +359,7 @@ public final class ExpressRouteGatewaysClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return service
             .listByResourceGroup(
                 this.client.getEndpoint(), resourceGroupName, apiVersion, this.client.getSubscriptionId(), context);
@@ -484,7 +484,7 @@ public final class ExpressRouteGatewaysClient
         } else {
             putExpressRouteGatewayParameters.validate();
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -547,7 +547,7 @@ public final class ExpressRouteGatewaysClient
         } else {
             putExpressRouteGatewayParameters.validate();
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return service
             .createOrUpdate(
                 this.client.getEndpoint(),
@@ -571,7 +571,7 @@ public final class ExpressRouteGatewaysClient
      * @return expressRoute gateway resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<ExpressRouteGatewayInner>, ExpressRouteGatewayInner> beginCreateOrUpdate(
+    public PollerFlux<PollResult<ExpressRouteGatewayInner>, ExpressRouteGatewayInner> beginCreateOrUpdateAsync(
         String resourceGroupName,
         String expressRouteGatewayName,
         ExpressRouteGatewayInner putExpressRouteGatewayParameters) {
@@ -597,7 +597,7 @@ public final class ExpressRouteGatewaysClient
      * @return expressRoute gateway resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<ExpressRouteGatewayInner>, ExpressRouteGatewayInner> beginCreateOrUpdate(
+    public PollerFlux<PollResult<ExpressRouteGatewayInner>, ExpressRouteGatewayInner> beginCreateOrUpdateAsync(
         String resourceGroupName,
         String expressRouteGatewayName,
         ExpressRouteGatewayInner putExpressRouteGatewayParameters,
@@ -623,19 +623,56 @@ public final class ExpressRouteGatewaysClient
      * @return expressRoute gateway resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<ExpressRouteGatewayInner>, ExpressRouteGatewayInner> beginCreateOrUpdate(
+        String resourceGroupName,
+        String expressRouteGatewayName,
+        ExpressRouteGatewayInner putExpressRouteGatewayParameters) {
+        return beginCreateOrUpdateAsync(resourceGroupName, expressRouteGatewayName, putExpressRouteGatewayParameters)
+            .getSyncPoller();
+    }
+
+    /**
+     * Creates or updates a ExpressRoute gateway in a specified resource group.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param expressRouteGatewayName The name of the ExpressRoute gateway.
+     * @param putExpressRouteGatewayParameters ExpressRoute gateway resource.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return expressRoute gateway resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<ExpressRouteGatewayInner>, ExpressRouteGatewayInner> beginCreateOrUpdate(
+        String resourceGroupName,
+        String expressRouteGatewayName,
+        ExpressRouteGatewayInner putExpressRouteGatewayParameters,
+        Context context) {
+        return beginCreateOrUpdateAsync(
+                resourceGroupName, expressRouteGatewayName, putExpressRouteGatewayParameters, context)
+            .getSyncPoller();
+    }
+
+    /**
+     * Creates or updates a ExpressRoute gateway in a specified resource group.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param expressRouteGatewayName The name of the ExpressRoute gateway.
+     * @param putExpressRouteGatewayParameters ExpressRoute gateway resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return expressRoute gateway resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ExpressRouteGatewayInner> createOrUpdateAsync(
         String resourceGroupName,
         String expressRouteGatewayName,
         ExpressRouteGatewayInner putExpressRouteGatewayParameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(
-                resourceGroupName, expressRouteGatewayName, putExpressRouteGatewayParameters);
-        return this
-            .client
-            .<ExpressRouteGatewayInner, ExpressRouteGatewayInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), ExpressRouteGatewayInner.class, ExpressRouteGatewayInner.class)
+        return beginCreateOrUpdateAsync(resourceGroupName, expressRouteGatewayName, putExpressRouteGatewayParameters)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -656,15 +693,10 @@ public final class ExpressRouteGatewaysClient
         String expressRouteGatewayName,
         ExpressRouteGatewayInner putExpressRouteGatewayParameters,
         Context context) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(
-                resourceGroupName, expressRouteGatewayName, putExpressRouteGatewayParameters, context);
-        return this
-            .client
-            .<ExpressRouteGatewayInner, ExpressRouteGatewayInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), ExpressRouteGatewayInner.class, ExpressRouteGatewayInner.class)
+        return beginCreateOrUpdateAsync(
+                resourceGroupName, expressRouteGatewayName, putExpressRouteGatewayParameters, context)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -744,7 +776,7 @@ public final class ExpressRouteGatewaysClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -794,7 +826,7 @@ public final class ExpressRouteGatewaysClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return service
             .getByResourceGroup(
                 this.client.getEndpoint(),
@@ -921,7 +953,7 @@ public final class ExpressRouteGatewaysClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -972,7 +1004,7 @@ public final class ExpressRouteGatewaysClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return service
             .delete(
                 this.client.getEndpoint(),
@@ -995,7 +1027,8 @@ public final class ExpressRouteGatewaysClient
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<Void>, Void> beginDelete(String resourceGroupName, String expressRouteGatewayName) {
+    public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
+        String resourceGroupName, String expressRouteGatewayName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, expressRouteGatewayName);
         return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
     }
@@ -1013,7 +1046,7 @@ public final class ExpressRouteGatewaysClient
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<Void>, Void> beginDelete(
+    public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String expressRouteGatewayName, Context context) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             deleteWithResponseAsync(resourceGroupName, expressRouteGatewayName, context);
@@ -1032,13 +1065,44 @@ public final class ExpressRouteGatewaysClient
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String expressRouteGatewayName) {
+        return beginDeleteAsync(resourceGroupName, expressRouteGatewayName).getSyncPoller();
+    }
+
+    /**
+     * Deletes the specified ExpressRoute gateway in a resource group. An ExpressRoute gateway resource can only be
+     * deleted when there are no connection subresources.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param expressRouteGatewayName The name of the ExpressRoute gateway.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<Void>, Void> beginDelete(
+        String resourceGroupName, String expressRouteGatewayName, Context context) {
+        return beginDeleteAsync(resourceGroupName, expressRouteGatewayName, context).getSyncPoller();
+    }
+
+    /**
+     * Deletes the specified ExpressRoute gateway in a resource group. An ExpressRoute gateway resource can only be
+     * deleted when there are no connection subresources.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param expressRouteGatewayName The name of the ExpressRoute gateway.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String expressRouteGatewayName) {
-        Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, expressRouteGatewayName);
-        return this
-            .client
-            .<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class)
+        return beginDeleteAsync(resourceGroupName, expressRouteGatewayName)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -1055,13 +1119,9 @@ public final class ExpressRouteGatewaysClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String expressRouteGatewayName, Context context) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, expressRouteGatewayName, context);
-        return this
-            .client
-            .<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class)
+        return beginDeleteAsync(resourceGroupName, expressRouteGatewayName, context)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -1140,7 +1200,7 @@ public final class ExpressRouteGatewaysClient
         } else {
             putExpressRouteGatewayParameters.validate();
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -1203,7 +1263,7 @@ public final class ExpressRouteGatewaysClient
         } else {
             putExpressRouteGatewayParameters.validate();
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return service
             .beginCreateOrUpdateWithoutPolling(
                 this.client.getEndpoint(),
@@ -1352,7 +1412,7 @@ public final class ExpressRouteGatewaysClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -1403,7 +1463,7 @@ public final class ExpressRouteGatewaysClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return service
             .beginDeleteWithoutPolling(
                 this.client.getEndpoint(),

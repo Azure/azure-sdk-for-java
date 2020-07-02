@@ -24,6 +24,12 @@ public class AppPatch {
     private Map<String, String> tags;
 
     /**
+     * A valid instance SKU.
+     */
+    @JsonProperty(value = "sku")
+    private AppSkuInfo sku;
+
+    /**
      * The ID of the application.
      */
     @JsonProperty(value = "properties.applicationId", access = JsonProperty.Access.WRITE_ONLY)
@@ -67,6 +73,26 @@ public class AppPatch {
      */
     public AppPatch withTags(Map<String, String> tags) {
         this.tags = tags;
+        return this;
+    }
+
+    /**
+     * Get a valid instance SKU.
+     *
+     * @return the sku value
+     */
+    public AppSkuInfo sku() {
+        return this.sku;
+    }
+
+    /**
+     * Set a valid instance SKU.
+     *
+     * @param sku the sku value to set
+     * @return the AppPatch object itself.
+     */
+    public AppPatch withSku(AppSkuInfo sku) {
+        this.sku = sku;
         return this;
     }
 

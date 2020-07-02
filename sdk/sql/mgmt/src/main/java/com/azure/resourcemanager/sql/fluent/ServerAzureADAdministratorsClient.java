@@ -30,7 +30,6 @@ import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.util.polling.AsyncPollResponse;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
 import com.azure.resourcemanager.sql.SqlManagementClient;
@@ -566,7 +565,7 @@ public final class ServerAzureADAdministratorsClient implements InnerSupportsDel
                 ServerAzureADAdministratorInner.class,
                 ServerAzureADAdministratorInner.class)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -595,7 +594,7 @@ public final class ServerAzureADAdministratorsClient implements InnerSupportsDel
                 ServerAzureADAdministratorInner.class,
                 ServerAzureADAdministratorInner.class)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -785,7 +784,7 @@ public final class ServerAzureADAdministratorsClient implements InnerSupportsDel
             .client
             .<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -807,7 +806,7 @@ public final class ServerAzureADAdministratorsClient implements InnerSupportsDel
             .client
             .<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -1192,7 +1191,7 @@ public final class ServerAzureADAdministratorsClient implements InnerSupportsDel
                 ServerAzureADAdministratorInner.class,
                 ServerAzureADAdministratorInner.class)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -1220,7 +1219,7 @@ public final class ServerAzureADAdministratorsClient implements InnerSupportsDel
                 ServerAzureADAdministratorInner.class,
                 ServerAzureADAdministratorInner.class)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**

@@ -29,8 +29,8 @@ import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.util.polling.AsyncPollResponse;
 import com.azure.core.util.polling.PollerFlux;
+import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.network.NetworkManagementClient;
 import com.azure.resourcemanager.network.fluent.inner.InboundNatRuleInner;
 import com.azure.resourcemanager.network.fluent.inner.InboundNatRuleListResultInner;
@@ -199,7 +199,7 @@ public final class InboundNatRulesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -257,7 +257,7 @@ public final class InboundNatRulesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return service
             .list(
                 this.client.getEndpoint(),
@@ -382,7 +382,7 @@ public final class InboundNatRulesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -437,7 +437,7 @@ public final class InboundNatRulesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return service
             .delete(
                 this.client.getEndpoint(),
@@ -461,7 +461,7 @@ public final class InboundNatRulesClient {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<Void>, Void> beginDelete(
+    public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String loadBalancerName, String inboundNatRuleName) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             deleteWithResponseAsync(resourceGroupName, loadBalancerName, inboundNatRuleName);
@@ -481,7 +481,7 @@ public final class InboundNatRulesClient {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<Void>, Void> beginDelete(
+    public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String loadBalancerName, String inboundNatRuleName, Context context) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             deleteWithResponseAsync(resourceGroupName, loadBalancerName, inboundNatRuleName, context);
@@ -500,14 +500,45 @@ public final class InboundNatRulesClient {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<Void>, Void> beginDelete(
+        String resourceGroupName, String loadBalancerName, String inboundNatRuleName) {
+        return beginDeleteAsync(resourceGroupName, loadBalancerName, inboundNatRuleName).getSyncPoller();
+    }
+
+    /**
+     * Deletes the specified load balancer inbound nat rule.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param loadBalancerName The name of the load balancer.
+     * @param inboundNatRuleName The name of the inbound nat rule.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<Void>, Void> beginDelete(
+        String resourceGroupName, String loadBalancerName, String inboundNatRuleName, Context context) {
+        return beginDeleteAsync(resourceGroupName, loadBalancerName, inboundNatRuleName, context).getSyncPoller();
+    }
+
+    /**
+     * Deletes the specified load balancer inbound nat rule.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param loadBalancerName The name of the load balancer.
+     * @param inboundNatRuleName The name of the inbound nat rule.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String loadBalancerName, String inboundNatRuleName) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, loadBalancerName, inboundNatRuleName);
-        return this
-            .client
-            .<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class)
+        return beginDeleteAsync(resourceGroupName, loadBalancerName, inboundNatRuleName)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -525,13 +556,9 @@ public final class InboundNatRulesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(
         String resourceGroupName, String loadBalancerName, String inboundNatRuleName, Context context) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, loadBalancerName, inboundNatRuleName, context);
-        return this
-            .client
-            .<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class)
+        return beginDeleteAsync(resourceGroupName, loadBalancerName, inboundNatRuleName, context)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -604,7 +631,7 @@ public final class InboundNatRulesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -661,7 +688,7 @@ public final class InboundNatRulesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return service
             .get(
                 this.client.getEndpoint(),
@@ -858,7 +885,7 @@ public final class InboundNatRulesClient {
         } else {
             inboundNatRuleParameters.validate();
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -926,7 +953,7 @@ public final class InboundNatRulesClient {
         } else {
             inboundNatRuleParameters.validate();
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return service
             .createOrUpdate(
                 this.client.getEndpoint(),
@@ -952,7 +979,7 @@ public final class InboundNatRulesClient {
      * @return inbound NAT rule of the load balancer.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<InboundNatRuleInner>, InboundNatRuleInner> beginCreateOrUpdate(
+    public PollerFlux<PollResult<InboundNatRuleInner>, InboundNatRuleInner> beginCreateOrUpdateAsync(
         String resourceGroupName,
         String loadBalancerName,
         String inboundNatRuleName,
@@ -980,7 +1007,7 @@ public final class InboundNatRulesClient {
      * @return inbound NAT rule of the load balancer.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<InboundNatRuleInner>, InboundNatRuleInner> beginCreateOrUpdate(
+    public PollerFlux<PollResult<InboundNatRuleInner>, InboundNatRuleInner> beginCreateOrUpdateAsync(
         String resourceGroupName,
         String loadBalancerName,
         String inboundNatRuleName,
@@ -1008,20 +1035,63 @@ public final class InboundNatRulesClient {
      * @return inbound NAT rule of the load balancer.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<InboundNatRuleInner>, InboundNatRuleInner> beginCreateOrUpdate(
+        String resourceGroupName,
+        String loadBalancerName,
+        String inboundNatRuleName,
+        InboundNatRuleInner inboundNatRuleParameters) {
+        return beginCreateOrUpdateAsync(
+                resourceGroupName, loadBalancerName, inboundNatRuleName, inboundNatRuleParameters)
+            .getSyncPoller();
+    }
+
+    /**
+     * Creates or updates a load balancer inbound nat rule.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param loadBalancerName The name of the load balancer.
+     * @param inboundNatRuleName The name of the inbound nat rule.
+     * @param inboundNatRuleParameters Inbound NAT rule of the load balancer.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return inbound NAT rule of the load balancer.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<InboundNatRuleInner>, InboundNatRuleInner> beginCreateOrUpdate(
+        String resourceGroupName,
+        String loadBalancerName,
+        String inboundNatRuleName,
+        InboundNatRuleInner inboundNatRuleParameters,
+        Context context) {
+        return beginCreateOrUpdateAsync(
+                resourceGroupName, loadBalancerName, inboundNatRuleName, inboundNatRuleParameters, context)
+            .getSyncPoller();
+    }
+
+    /**
+     * Creates or updates a load balancer inbound nat rule.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param loadBalancerName The name of the load balancer.
+     * @param inboundNatRuleName The name of the inbound nat rule.
+     * @param inboundNatRuleParameters Inbound NAT rule of the load balancer.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return inbound NAT rule of the load balancer.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<InboundNatRuleInner> createOrUpdateAsync(
         String resourceGroupName,
         String loadBalancerName,
         String inboundNatRuleName,
         InboundNatRuleInner inboundNatRuleParameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(
-                resourceGroupName, loadBalancerName, inboundNatRuleName, inboundNatRuleParameters);
-        return this
-            .client
-            .<InboundNatRuleInner, InboundNatRuleInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), InboundNatRuleInner.class, InboundNatRuleInner.class)
+        return beginCreateOrUpdateAsync(
+                resourceGroupName, loadBalancerName, inboundNatRuleName, inboundNatRuleParameters)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -1044,15 +1114,10 @@ public final class InboundNatRulesClient {
         String inboundNatRuleName,
         InboundNatRuleInner inboundNatRuleParameters,
         Context context) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(
-                resourceGroupName, loadBalancerName, inboundNatRuleName, inboundNatRuleParameters, context);
-        return this
-            .client
-            .<InboundNatRuleInner, InboundNatRuleInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), InboundNatRuleInner.class, InboundNatRuleInner.class)
+        return beginCreateOrUpdateAsync(
+                resourceGroupName, loadBalancerName, inboundNatRuleName, inboundNatRuleParameters, context)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -1140,7 +1205,7 @@ public final class InboundNatRulesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -1195,7 +1260,7 @@ public final class InboundNatRulesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return service
             .beginDeleteWithoutPolling(
                 this.client.getEndpoint(),
@@ -1327,7 +1392,7 @@ public final class InboundNatRulesClient {
         } else {
             inboundNatRuleParameters.validate();
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -1395,7 +1460,7 @@ public final class InboundNatRulesClient {
         } else {
             inboundNatRuleParameters.validate();
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return service
             .beginCreateOrUpdateWithoutPolling(
                 this.client.getEndpoint(),

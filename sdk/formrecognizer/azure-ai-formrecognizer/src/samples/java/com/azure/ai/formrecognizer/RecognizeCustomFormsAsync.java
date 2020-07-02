@@ -48,9 +48,8 @@ public class RecognizeCustomFormsAsync {
         String modelId = "{modelId}";
 
         PollerFlux<OperationResult, List<RecognizedForm>> recognizeFormPoller =
-            client.beginRecognizeCustomForms(toFluxByteBuffer(targetStream), modelId,
-                sourceFile.length(),
-                FormContentType.APPLICATION_PDF);
+            client.beginRecognizeCustomForms(toFluxByteBuffer(targetStream), sourceFile.length(), modelId,
+                    FormContentType.APPLICATION_PDF);
 
         Mono<List<RecognizedForm>> recognizeFormResult = recognizeFormPoller
             .last()
@@ -71,7 +70,7 @@ public class RecognizeCustomFormsAsync {
                 System.out.printf("Form type: %s%n", form.getFormType());
                 form.getFields().forEach((label, formField) -> {
                     System.out.printf("Field %s has value %s with confidence score of %.2f.%n", label,
-                        formField.getValueText().getText(),
+                        formField.getValueData().getText(),
                         formField.getConfidence());
                 });
                 System.out.print("-----------------------------------");

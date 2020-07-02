@@ -22,8 +22,7 @@ public class VirtualWanInner extends Resource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualWanInner.class);
 
     /*
-     * Gets a unique read-only string that changes whenever the resource is
-     * updated.
+     * A unique read-only string that changes whenever the resource is updated.
      */
     @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
@@ -47,12 +46,6 @@ public class VirtualWanInner extends Resource {
     private List<SubResource> vpnSites;
 
     /*
-     * The Security Provider name.
-     */
-    @JsonProperty(value = "properties.securityProviderName")
-    private String securityProviderName;
-
-    /*
      * True if branch to branch traffic is allowed.
      */
     @JsonProperty(value = "properties.allowBranchToBranchTraffic")
@@ -71,16 +64,16 @@ public class VirtualWanInner extends Resource {
     private OfficeTrafficCategory office365LocalBreakoutCategory;
 
     /*
-     * List of all P2SVpnServerConfigurations associated with the virtual wan.
-     */
-    @JsonProperty(value = "properties.p2SVpnServerConfigurations")
-    private List<P2SVpnServerConfigurationInner> p2SVpnServerConfigurations;
-
-    /*
-     * The provisioning state of the resource.
+     * The provisioning state of the virtual WAN resource.
      */
     @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
+
+    /*
+     * The type of the VirtualWAN.
+     */
+    @JsonProperty(value = "properties.type")
+    private String typePropertiesType;
 
     /*
      * Resource ID.
@@ -89,7 +82,7 @@ public class VirtualWanInner extends Resource {
     private String id;
 
     /**
-     * Get the etag property: Gets a unique read-only string that changes whenever the resource is updated.
+     * Get the etag property: A unique read-only string that changes whenever the resource is updated.
      *
      * @return the etag value.
      */
@@ -133,26 +126,6 @@ public class VirtualWanInner extends Resource {
      */
     public List<SubResource> vpnSites() {
         return this.vpnSites;
-    }
-
-    /**
-     * Get the securityProviderName property: The Security Provider name.
-     *
-     * @return the securityProviderName value.
-     */
-    public String securityProviderName() {
-        return this.securityProviderName;
-    }
-
-    /**
-     * Set the securityProviderName property: The Security Provider name.
-     *
-     * @param securityProviderName the securityProviderName value to set.
-     * @return the VirtualWanInner object itself.
-     */
-    public VirtualWanInner withSecurityProviderName(String securityProviderName) {
-        this.securityProviderName = securityProviderName;
-        return this;
     }
 
     /**
@@ -205,35 +178,32 @@ public class VirtualWanInner extends Resource {
     }
 
     /**
-     * Get the p2SVpnServerConfigurations property: List of all P2SVpnServerConfigurations associated with the virtual
-     * wan.
-     *
-     * @return the p2SVpnServerConfigurations value.
-     */
-    public List<P2SVpnServerConfigurationInner> p2SVpnServerConfigurations() {
-        return this.p2SVpnServerConfigurations;
-    }
-
-    /**
-     * Set the p2SVpnServerConfigurations property: List of all P2SVpnServerConfigurations associated with the virtual
-     * wan.
-     *
-     * @param p2SVpnServerConfigurations the p2SVpnServerConfigurations value to set.
-     * @return the VirtualWanInner object itself.
-     */
-    public VirtualWanInner withP2SVpnServerConfigurations(
-        List<P2SVpnServerConfigurationInner> p2SVpnServerConfigurations) {
-        this.p2SVpnServerConfigurations = p2SVpnServerConfigurations;
-        return this;
-    }
-
-    /**
-     * Get the provisioningState property: The provisioning state of the resource.
+     * Get the provisioningState property: The provisioning state of the virtual WAN resource.
      *
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
         return this.provisioningState;
+    }
+
+    /**
+     * Get the typePropertiesType property: The type of the VirtualWAN.
+     *
+     * @return the typePropertiesType value.
+     */
+    public String typePropertiesType() {
+        return this.typePropertiesType;
+    }
+
+    /**
+     * Set the typePropertiesType property: The type of the VirtualWAN.
+     *
+     * @param typePropertiesType the typePropertiesType value to set.
+     * @return the VirtualWanInner object itself.
+     */
+    public VirtualWanInner withTypePropertiesType(String typePropertiesType) {
+        this.typePropertiesType = typePropertiesType;
+        return this;
     }
 
     /**
@@ -262,8 +232,5 @@ public class VirtualWanInner extends Resource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (p2SVpnServerConfigurations() != null) {
-            p2SVpnServerConfigurations().forEach(e -> e.validate());
-        }
     }
 }

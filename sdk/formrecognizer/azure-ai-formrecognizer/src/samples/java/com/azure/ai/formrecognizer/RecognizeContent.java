@@ -38,7 +38,7 @@ public class RecognizeContent {
             .buildClient();
 
         File sourceFile = new File("../formrecognizer/azure-ai-formrecognizer/src/samples/java/sample-forms/"
-            + "forms/layout1.jpg");
+            + "forms/Form_1.jpg");
         byte[] fileContent = Files.readAllBytes(sourceFile.toPath());
         InputStream targetStream = new ByteArrayInputStream(fileContent);
 

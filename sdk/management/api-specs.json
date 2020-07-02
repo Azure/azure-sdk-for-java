@@ -76,7 +76,7 @@
     "dir": "../compute/mgmt",
     "source": "specification/compute/resource-manager/readme.md",
     "package": "com.azure.resourcemanager.compute",
-    "args": "--payload-flattening-threshold=1 --tag=package-2019-07-01"
+    "args": "--payload-flattening-threshold=1 --tag=package-2019-12-01"
   },
   "consumption": {
     "dir": "../consumption/mgmt",
@@ -212,7 +212,7 @@
     "dir": "../network/mgmt",
     "source": "specification/network/resource-manager/readme.md",
     "package": "com.azure.resourcemanager.network",
-    "args": "--payload-flattening-threshold=1 --tag=package-2019-06 --add-inner=ApplicationGatewayIpConfiguration,ApplicationGatewayPathRule,ApplicationGatewayProbe,ApplicationGatewayRedirectConfiguration,ApplicationGatewayRequestRoutingRule,ApplicationGatewaySslCertificate,ApplicationGatewayUrlPathMap,ApplicationGatewayAuthenticationCertificate,VirtualNetworkGatewayIpConfiguration,ConnectionMonitor,PacketCapture"
+    "args": "--payload-flattening-threshold=1 --tag=package-2019-11 --add-inner=ApplicationGatewayIpConfiguration,ApplicationGatewayPathRule,ApplicationGatewayProbe,ApplicationGatewayRedirectConfiguration,ApplicationGatewayRequestRoutingRule,ApplicationGatewaySslCertificate,ApplicationGatewayUrlPathMap,ApplicationGatewayAuthenticationCertificate,VirtualNetworkGatewayIpConfiguration,ConnectionMonitor,PacketCapture"
   },
   "notificationhubs": {
     "dir": "../notificationhubs/mgmt",

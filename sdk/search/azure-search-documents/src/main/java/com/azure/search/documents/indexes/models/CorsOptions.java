@@ -4,8 +4,9 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.Arrays;
+
 import java.util.List;
 
 /**
@@ -31,6 +32,19 @@ public final class CorsOptions {
     private Long maxAgeInSeconds;
 
     /**
+     * Constructor of {@link CorsOptions}.
+     *
+     * @param allowedOrigins The list of origins from which JavaScript code will be granted access to
+     * your index. Can contain a list of hosts of the form
+     * {protocol}://{fully-qualified-domain-name}[:{port#}], or a single '*' to
+     * allow all origins (not recommended).
+     */
+    @JsonCreator
+    public CorsOptions(@JsonProperty(value = "allowedOrigins") List<String> allowedOrigins) {
+        this.allowedOrigins = allowedOrigins;
+    }
+
+    /**
      * Get the allowedOrigins property: The list of origins from which
      * JavaScript code will be granted access to your index. Can contain a list
      * of hosts of the form
@@ -41,21 +55,6 @@ public final class CorsOptions {
      */
     public List<String> getAllowedOrigins() {
         return this.allowedOrigins;
-    }
-
-    /**
-     * Set the allowedOrigins property: The list of origins from which
-     * JavaScript code will be granted access to your index. Can contain a list
-     * of hosts of the form
-     * {protocol}://{fully-qualified-domain-name}[:{port#}], or a single '*' to
-     * allow all origins (not recommended).
-     *
-     * @param allowedOrigins the allowedOrigins value to set.
-     * @return the CorsOptions object itself.
-     */
-    public CorsOptions setAllowedOrigins(String... allowedOrigins) {
-        this.allowedOrigins = Arrays.asList(allowedOrigins);
-        return this;
     }
 
     /**

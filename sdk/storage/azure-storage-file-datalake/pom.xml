@@ -57,11 +57,6 @@
       <artifactId>azure-storage-blob</artifactId>
       <version>12.8.0-beta.1</version> <!-- {x-version-update;com.azure:azure-storage-blob;current} -->
     </dependency>
-    <dependency>
-      <groupId>com.azure</groupId>
-      <artifactId>azure-core</artifactId>
-      <version>1.5.1</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
-    </dependency>
 
     <!-- Added this dependency to include necessary annotations used by reactor core.
         Without this dependency, javadoc throws a warning as it cannot find enum When.MAYBE
@@ -86,6 +81,12 @@
       <scope>test</scope>
     </dependency>
     <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-identity</artifactId>
+      <version>1.0.7</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
+      <scope>test</scope>
+    </dependency>
+    <dependency>
       <groupId>io.projectreactor</groupId>
       <artifactId>reactor-test</artifactId>
       <version>3.3.5.RELEASE</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
@@ -98,9 +99,9 @@
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>com.azure</groupId>
-      <artifactId>azure-identity</artifactId>
-      <version>1.0.7</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
+      <groupId>cglib</groupId>
+      <artifactId>cglib-nodep</artifactId>
+      <version>3.2.7</version> <!-- {x-version-update;cglib:cglib-nodep;external_dependency} -->
       <scope>test</scope>
     </dependency>
   </dependencies>
@@ -167,10 +168,7 @@
                 </goals>
                 <configuration>
                   <compilerId>groovy-eclipse-compiler</compilerId>
-                  <compilerArgument>
-                    -Xlint:unchecked
-                    -warn:-unused
-                  </compilerArgument>
+                  <compilerArgs>-warn:-unused</compilerArgs>
                 </configuration>
               </execution>
             </executions>
@@ -222,10 +220,7 @@
                 </goals>
                 <configuration>
                   <compilerId>groovy-eclipse-compiler</compilerId>
-                  <compilerArgument>
-                    -Xlint:unchecked
-                    -warn:-unused
-                  </compilerArgument>
+                  <compilerArgs>-warn:-unused</compilerArgs>
                   <release>8</release>
                 </configuration>
               </execution>

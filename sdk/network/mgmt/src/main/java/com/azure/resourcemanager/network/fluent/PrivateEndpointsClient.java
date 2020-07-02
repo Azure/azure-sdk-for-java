@@ -28,8 +28,8 @@ import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.util.polling.AsyncPollResponse;
 import com.azure.core.util.polling.PollerFlux;
+import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.network.NetworkManagementClient;
 import com.azure.resourcemanager.network.fluent.inner.PrivateEndpointInner;
 import com.azure.resourcemanager.network.fluent.inner.PrivateEndpointListResultInner;
@@ -216,7 +216,7 @@ public final class PrivateEndpointsClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -265,7 +265,7 @@ public final class PrivateEndpointsClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return service
             .delete(
                 this.client.getEndpoint(),
@@ -287,7 +287,7 @@ public final class PrivateEndpointsClient
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<Void>, Void> beginDelete(String resourceGroupName, String privateEndpointName) {
+    public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String privateEndpointName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, privateEndpointName);
         return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
     }
@@ -304,7 +304,7 @@ public final class PrivateEndpointsClient
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<Void>, Void> beginDelete(
+    public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String privateEndpointName, Context context) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             deleteWithResponseAsync(resourceGroupName, privateEndpointName, context);
@@ -322,13 +322,42 @@ public final class PrivateEndpointsClient
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String privateEndpointName) {
+        return beginDeleteAsync(resourceGroupName, privateEndpointName).getSyncPoller();
+    }
+
+    /**
+     * Deletes the specified private endpoint.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param privateEndpointName The name of the private endpoint.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<Void>, Void> beginDelete(
+        String resourceGroupName, String privateEndpointName, Context context) {
+        return beginDeleteAsync(resourceGroupName, privateEndpointName, context).getSyncPoller();
+    }
+
+    /**
+     * Deletes the specified private endpoint.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param privateEndpointName The name of the private endpoint.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String privateEndpointName) {
-        Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, privateEndpointName);
-        return this
-            .client
-            .<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class)
+        return beginDeleteAsync(resourceGroupName, privateEndpointName)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -344,13 +373,9 @@ public final class PrivateEndpointsClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String privateEndpointName, Context context) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, privateEndpointName, context);
-        return this
-            .client
-            .<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class)
+        return beginDeleteAsync(resourceGroupName, privateEndpointName, context)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -416,7 +441,7 @@ public final class PrivateEndpointsClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -467,7 +492,7 @@ public final class PrivateEndpointsClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return service
             .getByResourceGroup(
                 this.client.getEndpoint(),
@@ -646,7 +671,7 @@ public final class PrivateEndpointsClient
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -702,7 +727,7 @@ public final class PrivateEndpointsClient
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return service
             .createOrUpdate(
                 this.client.getEndpoint(),
@@ -726,7 +751,7 @@ public final class PrivateEndpointsClient
      * @return private endpoint resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<PrivateEndpointInner>, PrivateEndpointInner> beginCreateOrUpdate(
+    public PollerFlux<PollResult<PrivateEndpointInner>, PrivateEndpointInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String privateEndpointName, PrivateEndpointInner parameters) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             createOrUpdateWithResponseAsync(resourceGroupName, privateEndpointName, parameters);
@@ -749,7 +774,7 @@ public final class PrivateEndpointsClient
      * @return private endpoint resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<PrivateEndpointInner>, PrivateEndpointInner> beginCreateOrUpdate(
+    public PollerFlux<PollResult<PrivateEndpointInner>, PrivateEndpointInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String privateEndpointName, PrivateEndpointInner parameters, Context context) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             createOrUpdateWithResponseAsync(resourceGroupName, privateEndpointName, parameters, context);
@@ -771,16 +796,46 @@ public final class PrivateEndpointsClient
      * @return private endpoint resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<PrivateEndpointInner>, PrivateEndpointInner> beginCreateOrUpdate(
+        String resourceGroupName, String privateEndpointName, PrivateEndpointInner parameters) {
+        return beginCreateOrUpdateAsync(resourceGroupName, privateEndpointName, parameters).getSyncPoller();
+    }
+
+    /**
+     * Creates or updates an private endpoint in the specified resource group.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param privateEndpointName The name of the private endpoint.
+     * @param parameters Private endpoint resource.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return private endpoint resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<PrivateEndpointInner>, PrivateEndpointInner> beginCreateOrUpdate(
+        String resourceGroupName, String privateEndpointName, PrivateEndpointInner parameters, Context context) {
+        return beginCreateOrUpdateAsync(resourceGroupName, privateEndpointName, parameters, context).getSyncPoller();
+    }
+
+    /**
+     * Creates or updates an private endpoint in the specified resource group.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param privateEndpointName The name of the private endpoint.
+     * @param parameters Private endpoint resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return private endpoint resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PrivateEndpointInner> createOrUpdateAsync(
         String resourceGroupName, String privateEndpointName, PrivateEndpointInner parameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, privateEndpointName, parameters);
-        return this
-            .client
-            .<PrivateEndpointInner, PrivateEndpointInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), PrivateEndpointInner.class, PrivateEndpointInner.class)
+        return beginCreateOrUpdateAsync(resourceGroupName, privateEndpointName, parameters)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -798,14 +853,9 @@ public final class PrivateEndpointsClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PrivateEndpointInner> createOrUpdateAsync(
         String resourceGroupName, String privateEndpointName, PrivateEndpointInner parameters, Context context) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, privateEndpointName, parameters, context);
-        return this
-            .client
-            .<PrivateEndpointInner, PrivateEndpointInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), PrivateEndpointInner.class, PrivateEndpointInner.class)
+        return beginCreateOrUpdateAsync(resourceGroupName, privateEndpointName, parameters, context)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -870,7 +920,7 @@ public final class PrivateEndpointsClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -922,7 +972,7 @@ public final class PrivateEndpointsClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return service
             .listByResourceGroup(
                 this.client.getEndpoint(), resourceGroupName, apiVersion, this.client.getSubscriptionId(), context)
@@ -1019,7 +1069,7 @@ public final class PrivateEndpointsClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -1059,7 +1109,7 @@ public final class PrivateEndpointsClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return service
             .list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), context)
             .map(
@@ -1160,7 +1210,7 @@ public final class PrivateEndpointsClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -1209,7 +1259,7 @@ public final class PrivateEndpointsClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return service
             .beginDeleteWithoutPolling(
                 this.client.getEndpoint(),
@@ -1322,7 +1372,7 @@ public final class PrivateEndpointsClient
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -1378,7 +1428,7 @@ public final class PrivateEndpointsClient
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return service
             .beginCreateOrUpdateWithoutPolling(
                 this.client.getEndpoint(),

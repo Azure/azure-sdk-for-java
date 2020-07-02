@@ -5,7 +5,7 @@
   <parent>
     <groupId>org.springframework.boot</groupId>
     <artifactId>spring-boot-starter-parent</artifactId>
-    <version>2.2.0.RELEASE</version> <!-- {x-version-update;org.springframework.boot:spring-boot-starter-parent;external_dependency} -->
+    <version>2.3.0.RELEASE</version> <!-- {x-version-update;org.springframework.boot:spring-boot-starter-parent;external_dependency} -->
     <relativePath/> <!-- lookup parent from repository -->
   </parent>
   <modelVersion>4.0.0</modelVersion>
@@ -19,33 +19,32 @@
     <java.version>1.8</java.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-    <fastjson.version>1.2.61</fastjson.version>
   </properties>
 
   <dependencies>
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-web</artifactId>
-      <version>2.2.0.RELEASE</version> <!-- {x-version-update;org.springframework.boot:spring-boot-starter-web;external_dependency} -->
+      <version>2.3.0.RELEASE</version> <!-- {x-version-update;org.springframework.boot:spring-boot-starter-web;external_dependency} -->
     </dependency>
 
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-test</artifactId>
-      <version>2.2.0.RELEASE</version> <!-- {x-version-update;org.springframework.boot:spring-boot-starter-test;external_dependency} -->
+      <version>2.3.0.RELEASE</version> <!-- {x-version-update;org.springframework.boot:spring-boot-starter-test;external_dependency} -->
       <scope>test</scope>
     </dependency>
 
     <dependency>
       <groupId>com.microsoft.azure</groupId>
       <artifactId>azure-keyvault-secrets-spring-boot-starter</artifactId>
-      <version>2.2.5-beta.1</version> <!-- {x-version-update;com.microsoft.azure:azure-keyvault-secrets-spring-boot-starter;current} -->
+      <version>2.3.3-beta.1</version> <!-- {x-version-update;com.microsoft.azure:azure-keyvault-secrets-spring-boot-starter;current} -->
     </dependency>
     <!-- util dependencies -->
     <dependency>
       <groupId>com.alibaba</groupId>
       <artifactId>fastjson</artifactId>
-      <version>${fastjson.version}</version> <!-- {x-version-update;com.alibaba:fastjson;external_dependency} -->
+      <version>1.2.61</version> <!-- {x-version-update;com.alibaba:fastjson;external_dependency} -->
     </dependency>
   </dependencies>
 

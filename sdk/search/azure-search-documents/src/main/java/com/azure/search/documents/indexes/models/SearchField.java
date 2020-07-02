@@ -4,6 +4,7 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -221,6 +222,22 @@ public final class SearchField {
     private Boolean hidden;
 
     /**
+     * Constructor of {@link SearchField}.
+     * @param name The name of the field, which must be unique within the fields collection
+     * of the index or parent field.
+     * @param type The data type of the field. Possible values include: 'String', 'Int32',
+     * 'Int64', 'Double', 'Boolean', 'DateTimeOffset', 'GeographyPoint',
+     * 'Complex'
+     */
+    @JsonCreator
+    public SearchField(
+        @JsonProperty(value = "name", required = true) String name,
+        @JsonProperty(value = "type", required = true) SearchFieldDataType type) {
+        this.name = name;
+        this.type = type;
+    }
+
+    /**
      * Get the name property: The name of the field, which must be unique
      * within the fields collection of the index or parent field.
      *
@@ -228,18 +245,6 @@ public final class SearchField {
      */
     public String getName() {
         return this.name;
-    }
-
-    /**
-     * Set the name property: The name of the field, which must be unique
-     * within the fields collection of the index or parent field.
-     *
-     * @param name the name value to set.
-     * @return the SearchField object itself.
-     */
-    public SearchField setName(String name) {
-        this.name = name;
-        return this;
     }
 
     /**
@@ -251,19 +256,6 @@ public final class SearchField {
      */
     public SearchFieldDataType getType() {
         return this.type;
-    }
-
-    /**
-     * Set the type property: The data type of the field. Possible values
-     * include: 'String', 'Int32', 'Int64', 'Double', 'Boolean',
-     * 'DateTimeOffset', 'GeographyPoint', 'Complex'.
-     *
-     * @param type the type value to set.
-     * @return the SearchField object itself.
-     */
-    public SearchField setType(SearchFieldDataType type) {
-        this.type = type;
-        return this;
     }
 
     /**

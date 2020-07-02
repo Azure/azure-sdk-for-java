@@ -30,8 +30,8 @@ import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.util.polling.AsyncPollResponse;
 import com.azure.core.util.polling.PollerFlux;
+import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.network.NetworkManagementClient;
 import com.azure.resourcemanager.network.fluent.inner.RouteTableInner;
 import com.azure.resourcemanager.network.fluent.inner.RouteTableListResultInner;
@@ -123,7 +123,7 @@ public final class RouteTablesClient
                 + "/{routeTableName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> updateTags(
+        Mono<Response<RouteTableInner>> updateTags(
             @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("routeTableName") String routeTableName,
@@ -185,21 +185,6 @@ public final class RouteTablesClient
             Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/routeTables"
-                + "/{routeTableName}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<RouteTableInner>> beginUpdateTagsWithoutPolling(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("routeTableName") String routeTableName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @BodyParam("application/json") TagsObject parameters,
-            Context context);
-
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -245,7 +230,7 @@ public final class RouteTablesClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -293,7 +278,7 @@ public final class RouteTablesClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return service
             .delete(
                 this.client.getEndpoint(),
@@ -315,7 +300,7 @@ public final class RouteTablesClient
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<Void>, Void> beginDelete(String resourceGroupName, String routeTableName) {
+    public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String routeTableName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, routeTableName);
         return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
     }
@@ -332,7 +317,7 @@ public final class RouteTablesClient
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<Void>, Void> beginDelete(
+    public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String routeTableName, Context context) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, routeTableName, context);
         return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
@@ -349,13 +334,40 @@ public final class RouteTablesClient
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String routeTableName) {
+        return beginDeleteAsync(resourceGroupName, routeTableName).getSyncPoller();
+    }
+
+    /**
+     * Deletes the specified route table.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param routeTableName The name of the route table.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<Void>, Void> beginDelete(
+        String resourceGroupName, String routeTableName, Context context) {
+        return beginDeleteAsync(resourceGroupName, routeTableName, context).getSyncPoller();
+    }
+
+    /**
+     * Deletes the specified route table.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param routeTableName The name of the route table.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String routeTableName) {
-        Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, routeTableName);
-        return this
-            .client
-            .<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class)
-            .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+        return beginDeleteAsync(resourceGroupName, routeTableName).last().flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -371,12 +383,9 @@ public final class RouteTablesClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String routeTableName, Context context) {
-        Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, routeTableName, context);
-        return this
-            .client
-            .<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class)
+        return beginDeleteAsync(resourceGroupName, routeTableName, context)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -441,7 +450,7 @@ public final class RouteTablesClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -491,7 +500,7 @@ public final class RouteTablesClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return service
             .getByResourceGroup(
                 this.client.getEndpoint(),
@@ -668,7 +677,7 @@ public final class RouteTablesClient
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -723,7 +732,7 @@ public final class RouteTablesClient
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return service
             .createOrUpdate(
                 this.client.getEndpoint(),
@@ -747,7 +756,7 @@ public final class RouteTablesClient
      * @return route table resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<RouteTableInner>, RouteTableInner> beginCreateOrUpdate(
+    public PollerFlux<PollResult<RouteTableInner>, RouteTableInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String routeTableName, RouteTableInner parameters) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             createOrUpdateWithResponseAsync(resourceGroupName, routeTableName, parameters);
@@ -770,7 +779,7 @@ public final class RouteTablesClient
      * @return route table resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<RouteTableInner>, RouteTableInner> beginCreateOrUpdate(
+    public PollerFlux<PollResult<RouteTableInner>, RouteTableInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String routeTableName, RouteTableInner parameters, Context context) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             createOrUpdateWithResponseAsync(resourceGroupName, routeTableName, parameters, context);
@@ -792,16 +801,46 @@ public final class RouteTablesClient
      * @return route table resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<RouteTableInner>, RouteTableInner> beginCreateOrUpdate(
+        String resourceGroupName, String routeTableName, RouteTableInner parameters) {
+        return beginCreateOrUpdateAsync(resourceGroupName, routeTableName, parameters).getSyncPoller();
+    }
+
+    /**
+     * Create or updates a route table in a specified resource group.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param routeTableName The name of the route table.
+     * @param parameters Route table resource.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return route table resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<RouteTableInner>, RouteTableInner> beginCreateOrUpdate(
+        String resourceGroupName, String routeTableName, RouteTableInner parameters, Context context) {
+        return beginCreateOrUpdateAsync(resourceGroupName, routeTableName, parameters, context).getSyncPoller();
+    }
+
+    /**
+     * Create or updates a route table in a specified resource group.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param routeTableName The name of the route table.
+     * @param parameters Route table resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return route table resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<RouteTableInner> createOrUpdateAsync(
         String resourceGroupName, String routeTableName, RouteTableInner parameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, routeTableName, parameters);
-        return this
-            .client
-            .<RouteTableInner, RouteTableInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), RouteTableInner.class, RouteTableInner.class)
+        return beginCreateOrUpdateAsync(resourceGroupName, routeTableName, parameters)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -819,14 +858,9 @@ public final class RouteTablesClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<RouteTableInner> createOrUpdateAsync(
         String resourceGroupName, String routeTableName, RouteTableInner parameters, Context context) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, routeTableName, parameters, context);
-        return this
-            .client
-            .<RouteTableInner, RouteTableInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), RouteTableInner.class, RouteTableInner.class)
+        return beginCreateOrUpdateAsync(resourceGroupName, routeTableName, parameters, context)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -875,7 +909,7 @@ public final class RouteTablesClient
      * @return route table resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> updateTagsWithResponseAsync(
+    public Mono<Response<RouteTableInner>> updateTagsWithResponseAsync(
         String resourceGroupName, String routeTableName, Map<String, String> tags) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -896,7 +930,7 @@ public final class RouteTablesClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         TagsObject parameters = new TagsObject();
         parameters.withTags(tags);
         return FluxUtil
@@ -927,7 +961,7 @@ public final class RouteTablesClient
      * @return route table resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> updateTagsWithResponseAsync(
+    public Mono<Response<RouteTableInner>> updateTagsWithResponseAsync(
         String resourceGroupName, String routeTableName, Map<String, String> tags, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -948,7 +982,7 @@ public final class RouteTablesClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         TagsObject parameters = new TagsObject();
         parameters.withTags(tags);
         return service
@@ -974,59 +1008,17 @@ public final class RouteTablesClient
      * @return route table resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<RouteTableInner>, RouteTableInner> beginUpdateTags(
-        String resourceGroupName, String routeTableName, Map<String, String> tags) {
-        Mono<Response<Flux<ByteBuffer>>> mono = updateTagsWithResponseAsync(resourceGroupName, routeTableName, tags);
-        return this
-            .client
-            .<RouteTableInner, RouteTableInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), RouteTableInner.class, RouteTableInner.class);
-    }
-
-    /**
-     * Updates a route table tags.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param routeTableName The name of the route table.
-     * @param tags Resource tags.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return route table resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<RouteTableInner>, RouteTableInner> beginUpdateTags(
-        String resourceGroupName, String routeTableName, Map<String, String> tags, Context context) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateTagsWithResponseAsync(resourceGroupName, routeTableName, tags, context);
-        return this
-            .client
-            .<RouteTableInner, RouteTableInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), RouteTableInner.class, RouteTableInner.class);
-    }
-
-    /**
-     * Updates a route table tags.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param routeTableName The name of the route table.
-     * @param tags Resource tags.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return route table resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<RouteTableInner> updateTagsAsync(
         String resourceGroupName, String routeTableName, Map<String, String> tags) {
-        Mono<Response<Flux<ByteBuffer>>> mono = updateTagsWithResponseAsync(resourceGroupName, routeTableName, tags);
-        return this
-            .client
-            .<RouteTableInner, RouteTableInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), RouteTableInner.class, RouteTableInner.class)
-            .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+        return updateTagsWithResponseAsync(resourceGroupName, routeTableName, tags)
+            .flatMap(
+                (Response<RouteTableInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
     }
 
     /**
@@ -1044,14 +1036,15 @@ public final class RouteTablesClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<RouteTableInner> updateTagsAsync(
         String resourceGroupName, String routeTableName, Map<String, String> tags, Context context) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateTagsWithResponseAsync(resourceGroupName, routeTableName, tags, context);
-        return this
-            .client
-            .<RouteTableInner, RouteTableInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), RouteTableInner.class, RouteTableInner.class)
-            .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+        return updateTagsWithResponseAsync(resourceGroupName, routeTableName, tags, context)
+            .flatMap(
+                (Response<RouteTableInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
     }
 
     /**
@@ -1115,7 +1108,7 @@ public final class RouteTablesClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -1167,7 +1160,7 @@ public final class RouteTablesClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return service
             .listByResourceGroup(
                 this.client.getEndpoint(), resourceGroupName, apiVersion, this.client.getSubscriptionId(), context)
@@ -1264,7 +1257,7 @@ public final class RouteTablesClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -1304,7 +1297,7 @@ public final class RouteTablesClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return service
             .list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), context)
             .map(
@@ -1402,7 +1395,7 @@ public final class RouteTablesClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -1450,7 +1443,7 @@ public final class RouteTablesClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return service
             .beginDeleteWithoutPolling(
                 this.client.getEndpoint(),
@@ -1561,7 +1554,7 @@ public final class RouteTablesClient
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -1616,7 +1609,7 @@ public final class RouteTablesClient
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return service
             .beginCreateOrUpdateWithoutPolling(
                 this.client.getEndpoint(),
@@ -1713,191 +1706,6 @@ public final class RouteTablesClient
     public RouteTableInner beginCreateOrUpdateWithoutPolling(
         String resourceGroupName, String routeTableName, RouteTableInner parameters, Context context) {
         return beginCreateOrUpdateWithoutPollingAsync(resourceGroupName, routeTableName, parameters, context).block();
-    }
-
-    /**
-     * Updates a route table tags.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param routeTableName The name of the route table.
-     * @param tags Resource tags.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return route table resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<RouteTableInner>> beginUpdateTagsWithoutPollingWithResponseAsync(
-        String resourceGroupName, String routeTableName, Map<String, String> tags) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (routeTableName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter routeTableName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2019-06-01";
-        TagsObject parameters = new TagsObject();
-        parameters.withTags(tags);
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .beginUpdateTagsWithoutPolling(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            routeTableName,
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            parameters,
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
-
-    /**
-     * Updates a route table tags.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param routeTableName The name of the route table.
-     * @param tags Resource tags.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return route table resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<RouteTableInner>> beginUpdateTagsWithoutPollingWithResponseAsync(
-        String resourceGroupName, String routeTableName, Map<String, String> tags, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (routeTableName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter routeTableName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2019-06-01";
-        TagsObject parameters = new TagsObject();
-        parameters.withTags(tags);
-        return service
-            .beginUpdateTagsWithoutPolling(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                routeTableName,
-                apiVersion,
-                this.client.getSubscriptionId(),
-                parameters,
-                context);
-    }
-
-    /**
-     * Updates a route table tags.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param routeTableName The name of the route table.
-     * @param tags Resource tags.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return route table resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<RouteTableInner> beginUpdateTagsWithoutPollingAsync(
-        String resourceGroupName, String routeTableName, Map<String, String> tags) {
-        return beginUpdateTagsWithoutPollingWithResponseAsync(resourceGroupName, routeTableName, tags)
-            .flatMap(
-                (Response<RouteTableInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Updates a route table tags.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param routeTableName The name of the route table.
-     * @param tags Resource tags.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return route table resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<RouteTableInner> beginUpdateTagsWithoutPollingAsync(
-        String resourceGroupName, String routeTableName, Map<String, String> tags, Context context) {
-        return beginUpdateTagsWithoutPollingWithResponseAsync(resourceGroupName, routeTableName, tags, context)
-            .flatMap(
-                (Response<RouteTableInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Updates a route table tags.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param routeTableName The name of the route table.
-     * @param tags Resource tags.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return route table resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public RouteTableInner beginUpdateTagsWithoutPolling(
-        String resourceGroupName, String routeTableName, Map<String, String> tags) {
-        return beginUpdateTagsWithoutPollingAsync(resourceGroupName, routeTableName, tags).block();
-    }
-
-    /**
-     * Updates a route table tags.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param routeTableName The name of the route table.
-     * @param tags Resource tags.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return route table resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public RouteTableInner beginUpdateTagsWithoutPolling(
-        String resourceGroupName, String routeTableName, Map<String, String> tags, Context context) {
-        return beginUpdateTagsWithoutPollingAsync(resourceGroupName, routeTableName, tags, context).block();
     }
 
     /**

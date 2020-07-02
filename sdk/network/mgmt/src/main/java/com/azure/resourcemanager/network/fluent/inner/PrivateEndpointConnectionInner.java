@@ -41,7 +41,7 @@ public class PrivateEndpointConnectionInner extends SubResource {
     /*
      * The resource of private end point.
      */
-    @JsonProperty(value = "properties.privateEndpoint")
+    @JsonProperty(value = "properties.privateEndpoint", access = JsonProperty.Access.WRITE_ONLY)
     private PrivateEndpointInner privateEndpoint;
 
     /*
@@ -52,10 +52,16 @@ public class PrivateEndpointConnectionInner extends SubResource {
     private PrivateLinkServiceConnectionState privateLinkServiceConnectionState;
 
     /*
-     * The provisioning state of the private endpoint connection.
+     * The provisioning state of the private endpoint connection resource.
      */
     @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
+
+    /*
+     * The consumer link id.
+     */
+    @JsonProperty(value = "properties.linkIdentifier", access = JsonProperty.Access.WRITE_ONLY)
+    private String linkIdentifier;
 
     /**
      * Get the name property: The name of the resource that is unique within a resource group. This name can be used to
@@ -107,17 +113,6 @@ public class PrivateEndpointConnectionInner extends SubResource {
     }
 
     /**
-     * Set the privateEndpoint property: The resource of private end point.
-     *
-     * @param privateEndpoint the privateEndpoint value to set.
-     * @return the PrivateEndpointConnectionInner object itself.
-     */
-    public PrivateEndpointConnectionInner withPrivateEndpoint(PrivateEndpointInner privateEndpoint) {
-        this.privateEndpoint = privateEndpoint;
-        return this;
-    }
-
-    /**
      * Get the privateLinkServiceConnectionState property: A collection of information about the state of the connection
      * between service consumer and provider.
      *
@@ -141,12 +136,21 @@ public class PrivateEndpointConnectionInner extends SubResource {
     }
 
     /**
-     * Get the provisioningState property: The provisioning state of the private endpoint connection.
+     * Get the provisioningState property: The provisioning state of the private endpoint connection resource.
      *
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
         return this.provisioningState;
+    }
+
+    /**
+     * Get the linkIdentifier property: The consumer link id.
+     *
+     * @return the linkIdentifier value.
+     */
+    public String linkIdentifier() {
+        return this.linkIdentifier;
     }
 
     /**

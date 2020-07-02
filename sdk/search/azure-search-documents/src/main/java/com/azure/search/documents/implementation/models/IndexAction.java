@@ -8,30 +8,48 @@ package com.azure.search.documents.implementation.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
+import com.fasterxml.jackson.annotation.JsonAnySetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.HashMap;
 import java.util.Map;
 
-/**
- * Represents an index action that operates on a document.
- */
+/** The IndexAction model. */
 @Fluent
 public final class IndexAction {
     /*
-     * Unmatched properties from the message are deserialized this collection
-     */
-    @JsonProperty(value = "")
-    private Map<String, Object> additionalProperties;
-
-    /*
-     * The operation to perform on a document in an indexing batch. Possible
-     * values include: 'Upload', 'Merge', 'MergeOrUpload', 'Delete'
+     * The operation to perform on a document in an indexing batch.
      */
     @JsonProperty(value = "@search.action")
     private IndexActionType actionType;
 
+    /*
+     * Represents an index action that operates on a document.
+     */
+    @JsonIgnore private Map<String, Object> additionalProperties;
+
     /**
-     * Get the additionalProperties property: Unmatched properties from the
-     * message are deserialized this collection.
+     * Get the actionType property: The operation to perform on a document in an indexing batch.
+     *
+     * @return the actionType value.
+     */
+    public IndexActionType getActionType() {
+        return this.actionType;
+    }
+
+    /**
+     * Set the actionType property: The operation to perform on a document in an indexing batch.
+     *
+     * @param actionType the actionType value to set.
+     * @return the IndexAction object itself.
+     */
+    public IndexAction setActionType(IndexActionType actionType) {
+        this.actionType = actionType;
+        return this;
+    }
+
+    /**
+     * Get the additionalProperties property: Represents an index action that operates on a document.
      *
      * @return the additionalProperties value.
      */
@@ -41,8 +59,7 @@ public final class IndexAction {
     }
 
     /**
-     * Set the additionalProperties property: Unmatched properties from the
-     * message are deserialized this collection.
+     * Set the additionalProperties property: Represents an index action that operates on a document.
      *
      * @param additionalProperties the additionalProperties value to set.
      * @return the IndexAction object itself.
@@ -52,27 +69,18 @@ public final class IndexAction {
         return this;
     }
 
-    /**
-     * Get the actionType property: The operation to perform on a document in
-     * an indexing batch. Possible values include: 'Upload', 'Merge',
-     * 'MergeOrUpload', 'Delete'.
-     *
-     * @return the actionType value.
-     */
-    public IndexActionType getActionType() {
-        return this.actionType;
+    @JsonAnySetter
+    void setAdditionalProperties(String key, Object value) {
+        if (additionalProperties == null) {
+            additionalProperties = new HashMap<>();
+        }
+        additionalProperties.put(key, value);
     }
 
     /**
-     * Set the actionType property: The operation to perform on a document in
-     * an indexing batch. Possible values include: 'Upload', 'Merge',
-     * 'MergeOrUpload', 'Delete'.
+     * Validates the instance.
      *
-     * @param actionType the actionType value to set.
-     * @return the IndexAction object itself.
+     * @throws IllegalArgumentException thrown if the instance is not valid.
      */
-    public IndexAction setActionType(IndexActionType actionType) {
-        this.actionType = actionType;
-        return this;
-    }
+    public void validate() {}
 }

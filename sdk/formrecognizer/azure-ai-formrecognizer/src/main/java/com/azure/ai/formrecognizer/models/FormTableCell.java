@@ -5,13 +5,14 @@ package com.azure.ai.formrecognizer.models;
 
 import com.azure.core.annotation.Immutable;
 
+import java.util.Collections;
 import java.util.List;
 
 /**
  * The FormTableCell model.
  */
 @Immutable
-public final class FormTableCell extends FormContent {
+public final class FormTableCell extends FormElement {
 
     /*
      * Row index of the cell.
@@ -39,10 +40,10 @@ public final class FormTableCell extends FormContent {
     private final float confidence;
 
     /*
-     * When includeTextContent is set to true, a list of references to the text
+     * When includeFieldElements is set to true, a list of references to the
      * elements constituting this table cell.
      */
-    private final List<FormContent> textContent;
+    private final List<FormElement> fieldElements;
 
     /*
      * Is the current cell a header cell?
@@ -67,12 +68,12 @@ public final class FormTableCell extends FormContent {
      * @param isHeader Is the current cell a header cell?
      * @param isFooter Is the current cell a footer cell?
      * @param pageNumber The 1 based page number of the cell
-     * @param textContent a list of references to the text elements constituting this table cell.
+     * @param fieldElements a list of references to the elements constituting this table cell.
      */
     public FormTableCell(final int rowIndex, final int columnIndex, final Integer rowSpan,
         final Integer columnSpan, final String text, final BoundingBox boundingBox,
         final float confidence, final boolean isHeader, final boolean isFooter, final int pageNumber,
-        final List<FormContent> textContent) {
+        final List<FormElement> fieldElements) {
         super(text, boundingBox, pageNumber);
         this.rowIndex = rowIndex;
         this.columnIndex = columnIndex;
@@ -81,7 +82,7 @@ public final class FormTableCell extends FormContent {
         this.confidence = confidence;
         this.isHeader = isHeader;
         this.isFooter = isFooter;
-        this.textContent = textContent;
+        this.fieldElements = fieldElements == null ? null : Collections.unmodifiableList(fieldElements);
     }
 
     /**
@@ -155,13 +156,13 @@ public final class FormTableCell extends FormContent {
     }
 
     /**
-     * Get the list of references to the text elements constituting this table cell
-     * When includeTextContent is set to true.
+     * When includeFieldElements is set to true, gets the list of references to the elements
+     * constituting this table cell.
      *
-     * @return the {@code textContent} value.
+     * @return the unmodifiable list of list of references to the text elements constituting this table cell.
      */
-    public List<FormContent> getTextContent() {
-        return this.textContent;
+    public List<FormElement> getFieldElements() {
+        return this.fieldElements;
     }
 
     /**

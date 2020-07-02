@@ -9,57 +9,41 @@ import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.deser.std.UntypedObjectDeserializer;
 
 import java.io.IOException;
-import java.time.OffsetDateTime;
-import java.time.format.DateTimeFormatter;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.stream.Collectors;
 
-/**
- * Custom deserializer to deserialize strings as instances of {@link OffsetDateTime}
- */
-final class Iso8601DateDeserializer extends UntypedObjectDeserializer {
+public class Iso8601DateDeserializer extends UntypedObjectDeserializer {
     private static final long serialVersionUID = 1L;
     private final UntypedObjectDeserializer defaultDeserializer;
+    private static final String ISO8601_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
 
-    /**
-     * Constructor
-     *
-     * @param defaultDeserializer the deserializer to use when an OffsetDateTime match is not found
-     */
-    Iso8601DateDeserializer(UntypedObjectDeserializer defaultDeserializer) {
+    protected Iso8601DateDeserializer(final UntypedObjectDeserializer defaultDeserializer) {
         super(null, null);
         this.defaultDeserializer = defaultDeserializer;
     }
 
     @Override
     public Object deserialize(JsonParser jp, DeserializationContext ctxt) throws IOException {
-        if (jp.getCurrentTokenId() == JsonTokenId.ID_STRING) {
-            String value = jp.getText();
-            return parseOffsetDateTime(value);
-        } else if (jp.getCurrentTokenId() == JsonTokenId.ID_START_ARRAY) {
-            List<?> list = (List) defaultDeserializer.deserialize(jp, ctxt);
+        Object obj = defaultDeserializer.deserialize(jp, ctxt);
+        if (jp.currentTokenId() == JsonTokenId.ID_START_OBJECT) {
+            return parseDateType(obj);
+        } else if (jp.currentTokenId() == JsonTokenId.ID_START_ARRAY) {
+            List<?> list = (List) obj;
             return list.stream()
-                .map(this::parseOffsetDateTime)
+                .map(this::parseDateType)
                 .collect(Collectors.toList());
         } else {
-            return defaultDeserializer.deserialize(jp, ctxt);
+            return obj;
         }
+
     }
 
-    /**
-     * Converts an object to an OffsetDateTime if it matches the ISO8601 format.
-     *
-     * @param obj the object to parse
-     * @return an instance of {@link OffsetDateTime} if valid ISO8601, otherwise obj.
-     */
-    private Object parseOffsetDateTime(Object obj) {
-        if (obj != null && obj.getClass() == String.class) {
-            try {
-                return OffsetDateTime.parse((String) obj, DateTimeFormatter.ISO_OFFSET_DATE_TIME);
-            } catch (Exception e) {
-                return obj;
-            }
-        } else {
+    private Object parseDateType(Object obj) {
+        try {
+            return new SimpleDateFormat(ISO8601_FORMAT).parse((String) obj);
+        } catch (ParseException e) {
             return obj;
         }
     }

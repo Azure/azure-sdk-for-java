@@ -25,16 +25,16 @@ import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
+import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.util.polling.AsyncPollResponse;
 import com.azure.core.util.polling.PollerFlux;
+import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.network.NetworkManagementClient;
 import com.azure.resourcemanager.network.fluent.inner.ListVirtualHubsResultInner;
 import com.azure.resourcemanager.network.fluent.inner.VirtualHubInner;
-import com.azure.resourcemanager.network.models.ErrorException;
 import com.azure.resourcemanager.network.models.TagsObject;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
@@ -78,7 +78,7 @@ public final class VirtualHubsClient
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualHubs"
                 + "/{virtualHubName}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ErrorException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<VirtualHubInner>> getByResourceGroup(
             @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
@@ -92,7 +92,7 @@ public final class VirtualHubsClient
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualHubs"
                 + "/{virtualHubName}")
         @ExpectedResponses({200, 201})
-        @UnexpectedResponseExceptionType(ErrorException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
             @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
@@ -106,9 +106,9 @@ public final class VirtualHubsClient
         @Patch(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualHubs"
                 + "/{virtualHubName}")
-        @ExpectedResponses({200, 201})
-        @UnexpectedResponseExceptionType(ErrorException.class)
-        Mono<Response<Flux<ByteBuffer>>> updateTags(
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<VirtualHubInner>> updateTags(
             @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -122,7 +122,7 @@ public final class VirtualHubsClient
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualHubs"
                 + "/{virtualHubName}")
         @ExpectedResponses({200, 202, 204})
-        @UnexpectedResponseExceptionType(ErrorException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(
             @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
@@ -136,7 +136,7 @@ public final class VirtualHubsClient
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
                 + "/virtualHubs")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ErrorException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ListVirtualHubsResultInner>> listByResourceGroup(
             @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
@@ -147,7 +147,7 @@ public final class VirtualHubsClient
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Network/virtualHubs")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ErrorException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ListVirtualHubsResultInner>> list(
             @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
@@ -159,7 +159,7 @@ public final class VirtualHubsClient
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualHubs"
                 + "/{virtualHubName}")
         @ExpectedResponses({200, 201})
-        @UnexpectedResponseExceptionType(ErrorException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<VirtualHubInner>> beginCreateOrUpdateWithoutPolling(
             @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
@@ -169,27 +169,12 @@ public final class VirtualHubsClient
             @BodyParam("application/json") VirtualHubInner virtualHubParameters,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualHubs"
-                + "/{virtualHubName}")
-        @ExpectedResponses({200, 201})
-        @UnexpectedResponseExceptionType(ErrorException.class)
-        Mono<Response<VirtualHubInner>> beginUpdateTagsWithoutPolling(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("virtualHubName") String virtualHubName,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") TagsObject virtualHubParameters,
-            Context context);
-
         @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
         @Delete(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualHubs"
                 + "/{virtualHubName}")
         @ExpectedResponses({200, 202, 204})
-        @UnexpectedResponseExceptionType(ErrorException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> beginDeleteWithoutPolling(
             @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
@@ -201,14 +186,14 @@ public final class VirtualHubsClient
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ErrorException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ListVirtualHubsResultInner>> listByResourceGroupNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ErrorException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ListVirtualHubsResultInner>> listNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
@@ -219,7 +204,7 @@ public final class VirtualHubsClient
      * @param resourceGroupName The resource group name of the VirtualHub.
      * @param virtualHubName The name of the VirtualHub.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return virtualHub Resource.
      */
@@ -245,7 +230,7 @@ public final class VirtualHubsClient
         if (virtualHubName == null) {
             return Mono.error(new IllegalArgumentException("Parameter virtualHubName is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -267,7 +252,7 @@ public final class VirtualHubsClient
      * @param virtualHubName The name of the VirtualHub.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return virtualHub Resource.
      */
@@ -293,7 +278,7 @@ public final class VirtualHubsClient
         if (virtualHubName == null) {
             return Mono.error(new IllegalArgumentException("Parameter virtualHubName is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return service
             .getByResourceGroup(
                 this.client.getEndpoint(),
@@ -310,7 +295,7 @@ public final class VirtualHubsClient
      * @param resourceGroupName The resource group name of the VirtualHub.
      * @param virtualHubName The name of the VirtualHub.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return virtualHub Resource.
      */
@@ -334,7 +319,7 @@ public final class VirtualHubsClient
      * @param virtualHubName The name of the VirtualHub.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return virtualHub Resource.
      */
@@ -358,7 +343,7 @@ public final class VirtualHubsClient
      * @param resourceGroupName The resource group name of the VirtualHub.
      * @param virtualHubName The name of the VirtualHub.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return virtualHub Resource.
      */
@@ -374,7 +359,7 @@ public final class VirtualHubsClient
      * @param virtualHubName The name of the VirtualHub.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return virtualHub Resource.
      */
@@ -390,7 +375,7 @@ public final class VirtualHubsClient
      * @param virtualHubName The name of the VirtualHub.
      * @param virtualHubParameters VirtualHub Resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return virtualHub Resource.
      */
@@ -422,7 +407,7 @@ public final class VirtualHubsClient
         } else {
             virtualHubParameters.validate();
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -446,7 +431,7 @@ public final class VirtualHubsClient
      * @param virtualHubParameters VirtualHub Resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return virtualHub Resource.
      */
@@ -478,7 +463,7 @@ public final class VirtualHubsClient
         } else {
             virtualHubParameters.validate();
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return service
             .createOrUpdate(
                 this.client.getEndpoint(),
@@ -497,12 +482,12 @@ public final class VirtualHubsClient
      * @param virtualHubName The name of the VirtualHub.
      * @param virtualHubParameters VirtualHub Resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return virtualHub Resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<VirtualHubInner>, VirtualHubInner> beginCreateOrUpdate(
+    public PollerFlux<PollResult<VirtualHubInner>, VirtualHubInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String virtualHubName, VirtualHubInner virtualHubParameters) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             createOrUpdateWithResponseAsync(resourceGroupName, virtualHubName, virtualHubParameters);
@@ -520,12 +505,12 @@ public final class VirtualHubsClient
      * @param virtualHubParameters VirtualHub Resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return virtualHub Resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<VirtualHubInner>, VirtualHubInner> beginCreateOrUpdate(
+    public PollerFlux<PollResult<VirtualHubInner>, VirtualHubInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String virtualHubName, VirtualHubInner virtualHubParameters, Context context) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             createOrUpdateWithResponseAsync(resourceGroupName, virtualHubName, virtualHubParameters, context);
@@ -542,21 +527,14 @@ public final class VirtualHubsClient
      * @param virtualHubName The name of the VirtualHub.
      * @param virtualHubParameters VirtualHub Resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return virtualHub Resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<VirtualHubInner> createOrUpdateAsync(
+    public SyncPoller<PollResult<VirtualHubInner>, VirtualHubInner> beginCreateOrUpdate(
         String resourceGroupName, String virtualHubName, VirtualHubInner virtualHubParameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, virtualHubName, virtualHubParameters);
-        return this
-            .client
-            .<VirtualHubInner, VirtualHubInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), VirtualHubInner.class, VirtualHubInner.class)
-            .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+        return beginCreateOrUpdateAsync(resourceGroupName, virtualHubName, virtualHubParameters).getSyncPoller();
     }
 
     /**
@@ -567,21 +545,15 @@ public final class VirtualHubsClient
      * @param virtualHubParameters VirtualHub Resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return virtualHub Resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<VirtualHubInner> createOrUpdateAsync(
+    public SyncPoller<PollResult<VirtualHubInner>, VirtualHubInner> beginCreateOrUpdate(
         String resourceGroupName, String virtualHubName, VirtualHubInner virtualHubParameters, Context context) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, virtualHubName, virtualHubParameters, context);
-        return this
-            .client
-            .<VirtualHubInner, VirtualHubInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), VirtualHubInner.class, VirtualHubInner.class)
-            .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+        return beginCreateOrUpdateAsync(resourceGroupName, virtualHubName, virtualHubParameters, context)
+            .getSyncPoller();
     }
 
     /**
@@ -591,7 +563,46 @@ public final class VirtualHubsClient
      * @param virtualHubName The name of the VirtualHub.
      * @param virtualHubParameters VirtualHub Resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return virtualHub Resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<VirtualHubInner> createOrUpdateAsync(
+        String resourceGroupName, String virtualHubName, VirtualHubInner virtualHubParameters) {
+        return beginCreateOrUpdateAsync(resourceGroupName, virtualHubName, virtualHubParameters)
+            .last()
+            .flatMap(client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Creates a VirtualHub resource if it doesn't exist else updates the existing VirtualHub.
+     *
+     * @param resourceGroupName The resource group name of the VirtualHub.
+     * @param virtualHubName The name of the VirtualHub.
+     * @param virtualHubParameters VirtualHub Resource.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return virtualHub Resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<VirtualHubInner> createOrUpdateAsync(
+        String resourceGroupName, String virtualHubName, VirtualHubInner virtualHubParameters, Context context) {
+        return beginCreateOrUpdateAsync(resourceGroupName, virtualHubName, virtualHubParameters, context)
+            .last()
+            .flatMap(client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Creates a VirtualHub resource if it doesn't exist else updates the existing VirtualHub.
+     *
+     * @param resourceGroupName The resource group name of the VirtualHub.
+     * @param virtualHubName The name of the VirtualHub.
+     * @param virtualHubParameters VirtualHub Resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return virtualHub Resource.
      */
@@ -609,7 +620,7 @@ public final class VirtualHubsClient
      * @param virtualHubParameters VirtualHub Resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return virtualHub Resource.
      */
@@ -626,12 +637,12 @@ public final class VirtualHubsClient
      * @param virtualHubName The name of the VirtualHub.
      * @param tags Resource tags.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return virtualHub Resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> updateTagsWithResponseAsync(
+    public Mono<Response<VirtualHubInner>> updateTagsWithResponseAsync(
         String resourceGroupName, String virtualHubName, Map<String, String> tags) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -652,7 +663,7 @@ public final class VirtualHubsClient
         if (virtualHubName == null) {
             return Mono.error(new IllegalArgumentException("Parameter virtualHubName is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         TagsObject virtualHubParameters = new TagsObject();
         virtualHubParameters.withTags(tags);
         return FluxUtil
@@ -678,12 +689,12 @@ public final class VirtualHubsClient
      * @param tags Resource tags.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return virtualHub Resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> updateTagsWithResponseAsync(
+    public Mono<Response<VirtualHubInner>> updateTagsWithResponseAsync(
         String resourceGroupName, String virtualHubName, Map<String, String> tags, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -704,7 +715,7 @@ public final class VirtualHubsClient
         if (virtualHubName == null) {
             return Mono.error(new IllegalArgumentException("Parameter virtualHubName is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         TagsObject virtualHubParameters = new TagsObject();
         virtualHubParameters.withTags(tags);
         return service
@@ -725,18 +736,22 @@ public final class VirtualHubsClient
      * @param virtualHubName The name of the VirtualHub.
      * @param tags Resource tags.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return virtualHub Resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<VirtualHubInner>, VirtualHubInner> beginUpdateTags(
+    public Mono<VirtualHubInner> updateTagsAsync(
         String resourceGroupName, String virtualHubName, Map<String, String> tags) {
-        Mono<Response<Flux<ByteBuffer>>> mono = updateTagsWithResponseAsync(resourceGroupName, virtualHubName, tags);
-        return this
-            .client
-            .<VirtualHubInner, VirtualHubInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), VirtualHubInner.class, VirtualHubInner.class);
+        return updateTagsWithResponseAsync(resourceGroupName, virtualHubName, tags)
+            .flatMap(
+                (Response<VirtualHubInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
     }
 
     /**
@@ -747,67 +762,22 @@ public final class VirtualHubsClient
      * @param tags Resource tags.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return virtualHub Resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<VirtualHubInner>, VirtualHubInner> beginUpdateTags(
-        String resourceGroupName, String virtualHubName, Map<String, String> tags, Context context) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateTagsWithResponseAsync(resourceGroupName, virtualHubName, tags, context);
-        return this
-            .client
-            .<VirtualHubInner, VirtualHubInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), VirtualHubInner.class, VirtualHubInner.class);
-    }
-
-    /**
-     * Updates VirtualHub tags.
-     *
-     * @param resourceGroupName The resource group name of the VirtualHub.
-     * @param virtualHubName The name of the VirtualHub.
-     * @param tags Resource tags.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return virtualHub Resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<VirtualHubInner> updateTagsAsync(
-        String resourceGroupName, String virtualHubName, Map<String, String> tags) {
-        Mono<Response<Flux<ByteBuffer>>> mono = updateTagsWithResponseAsync(resourceGroupName, virtualHubName, tags);
-        return this
-            .client
-            .<VirtualHubInner, VirtualHubInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), VirtualHubInner.class, VirtualHubInner.class)
-            .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
-    }
-
-    /**
-     * Updates VirtualHub tags.
-     *
-     * @param resourceGroupName The resource group name of the VirtualHub.
-     * @param virtualHubName The name of the VirtualHub.
-     * @param tags Resource tags.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return virtualHub Resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<VirtualHubInner> updateTagsAsync(
         String resourceGroupName, String virtualHubName, Map<String, String> tags, Context context) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateTagsWithResponseAsync(resourceGroupName, virtualHubName, tags, context);
-        return this
-            .client
-            .<VirtualHubInner, VirtualHubInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), VirtualHubInner.class, VirtualHubInner.class)
-            .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+        return updateTagsWithResponseAsync(resourceGroupName, virtualHubName, tags, context)
+            .flatMap(
+                (Response<VirtualHubInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
     }
 
     /**
@@ -817,7 +787,7 @@ public final class VirtualHubsClient
      * @param virtualHubName The name of the VirtualHub.
      * @param tags Resource tags.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return virtualHub Resource.
      */
@@ -834,7 +804,7 @@ public final class VirtualHubsClient
      * @param tags Resource tags.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return virtualHub Resource.
      */
@@ -850,7 +820,7 @@ public final class VirtualHubsClient
      * @param resourceGroupName The resource group name of the VirtualHub.
      * @param virtualHubName The name of the VirtualHub.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -875,7 +845,7 @@ public final class VirtualHubsClient
         if (virtualHubName == null) {
             return Mono.error(new IllegalArgumentException("Parameter virtualHubName is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -897,7 +867,7 @@ public final class VirtualHubsClient
      * @param virtualHubName The name of the VirtualHub.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -923,7 +893,7 @@ public final class VirtualHubsClient
         if (virtualHubName == null) {
             return Mono.error(new IllegalArgumentException("Parameter virtualHubName is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return service
             .delete(
                 this.client.getEndpoint(),
@@ -940,12 +910,12 @@ public final class VirtualHubsClient
      * @param resourceGroupName The resource group name of the VirtualHub.
      * @param virtualHubName The name of the VirtualHub.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<Void>, Void> beginDelete(String resourceGroupName, String virtualHubName) {
+    public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String virtualHubName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, virtualHubName);
         return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
     }
@@ -957,12 +927,12 @@ public final class VirtualHubsClient
      * @param virtualHubName The name of the VirtualHub.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<Void>, Void> beginDelete(
+    public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String virtualHubName, Context context) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, virtualHubName, context);
         return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
@@ -974,18 +944,13 @@ public final class VirtualHubsClient
      * @param resourceGroupName The resource group name of the VirtualHub.
      * @param virtualHubName The name of the VirtualHub.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deleteAsync(String resourceGroupName, String virtualHubName) {
-        Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, virtualHubName);
-        return this
-            .client
-            .<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class)
-            .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String virtualHubName) {
+        return beginDeleteAsync(resourceGroupName, virtualHubName).getSyncPoller();
     }
 
     /**
@@ -995,18 +960,14 @@ public final class VirtualHubsClient
      * @param virtualHubName The name of the VirtualHub.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deleteAsync(String resourceGroupName, String virtualHubName, Context context) {
-        Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, virtualHubName, context);
-        return this
-            .client
-            .<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class)
-            .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+    public SyncPoller<PollResult<Void>, Void> beginDelete(
+        String resourceGroupName, String virtualHubName, Context context) {
+        return beginDeleteAsync(resourceGroupName, virtualHubName, context).getSyncPoller();
     }
 
     /**
@@ -1015,7 +976,40 @@ public final class VirtualHubsClient
      * @param resourceGroupName The resource group name of the VirtualHub.
      * @param virtualHubName The name of the VirtualHub.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> deleteAsync(String resourceGroupName, String virtualHubName) {
+        return beginDeleteAsync(resourceGroupName, virtualHubName).last().flatMap(client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Deletes a VirtualHub.
+     *
+     * @param resourceGroupName The resource group name of the VirtualHub.
+     * @param virtualHubName The name of the VirtualHub.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> deleteAsync(String resourceGroupName, String virtualHubName, Context context) {
+        return beginDeleteAsync(resourceGroupName, virtualHubName, context)
+            .last()
+            .flatMap(client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Deletes a VirtualHub.
+     *
+     * @param resourceGroupName The resource group name of the VirtualHub.
+     * @param virtualHubName The name of the VirtualHub.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1030,7 +1024,7 @@ public final class VirtualHubsClient
      * @param virtualHubName The name of the VirtualHub.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1043,7 +1037,7 @@ public final class VirtualHubsClient
      *
      * @param resourceGroupName The resource group name of the VirtualHub.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the request to list VirtualHubs.
      */
@@ -1065,7 +1059,7 @@ public final class VirtualHubsClient
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -1094,7 +1088,7 @@ public final class VirtualHubsClient
      * @param resourceGroupName The resource group name of the VirtualHub.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the request to list VirtualHubs.
      */
@@ -1117,7 +1111,7 @@ public final class VirtualHubsClient
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return service
             .listByResourceGroup(
                 this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, apiVersion, context)
@@ -1137,7 +1131,7 @@ public final class VirtualHubsClient
      *
      * @param resourceGroupName The resource group name of the VirtualHub.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the request to list VirtualHubs.
      */
@@ -1154,7 +1148,7 @@ public final class VirtualHubsClient
      * @param resourceGroupName The resource group name of the VirtualHub.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the request to list VirtualHubs.
      */
@@ -1170,7 +1164,7 @@ public final class VirtualHubsClient
      *
      * @param resourceGroupName The resource group name of the VirtualHub.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the request to list VirtualHubs.
      */
@@ -1185,7 +1179,7 @@ public final class VirtualHubsClient
      * @param resourceGroupName The resource group name of the VirtualHub.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the request to list VirtualHubs.
      */
@@ -1197,7 +1191,7 @@ public final class VirtualHubsClient
     /**
      * Lists all the VirtualHubs in a subscription.
      *
-     * @throws ErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the request to list VirtualHubs.
      */
@@ -1215,7 +1209,7 @@ public final class VirtualHubsClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -1237,7 +1231,7 @@ public final class VirtualHubsClient
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the request to list VirtualHubs.
      */
@@ -1255,7 +1249,7 @@ public final class VirtualHubsClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return service
             .list(this.client.getEndpoint(), this.client.getSubscriptionId(), apiVersion, context)
             .map(
@@ -1272,7 +1266,7 @@ public final class VirtualHubsClient
     /**
      * Lists all the VirtualHubs in a subscription.
      *
-     * @throws ErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the request to list VirtualHubs.
      */
@@ -1286,7 +1280,7 @@ public final class VirtualHubsClient
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the request to list VirtualHubs.
      */
@@ -1298,7 +1292,7 @@ public final class VirtualHubsClient
     /**
      * Lists all the VirtualHubs in a subscription.
      *
-     * @throws ErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the request to list VirtualHubs.
      */
@@ -1312,7 +1306,7 @@ public final class VirtualHubsClient
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the request to list VirtualHubs.
      */
@@ -1328,7 +1322,7 @@ public final class VirtualHubsClient
      * @param virtualHubName The name of the VirtualHub.
      * @param virtualHubParameters VirtualHub Resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return virtualHub Resource.
      */
@@ -1360,7 +1354,7 @@ public final class VirtualHubsClient
         } else {
             virtualHubParameters.validate();
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -1384,7 +1378,7 @@ public final class VirtualHubsClient
      * @param virtualHubParameters VirtualHub Resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return virtualHub Resource.
      */
@@ -1416,7 +1410,7 @@ public final class VirtualHubsClient
         } else {
             virtualHubParameters.validate();
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return service
             .beginCreateOrUpdateWithoutPolling(
                 this.client.getEndpoint(),
@@ -1435,7 +1429,7 @@ public final class VirtualHubsClient
      * @param virtualHubName The name of the VirtualHub.
      * @param virtualHubParameters VirtualHub Resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return virtualHub Resource.
      */
@@ -1462,7 +1456,7 @@ public final class VirtualHubsClient
      * @param virtualHubParameters VirtualHub Resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return virtualHub Resource.
      */
@@ -1488,7 +1482,7 @@ public final class VirtualHubsClient
      * @param virtualHubName The name of the VirtualHub.
      * @param virtualHubParameters VirtualHub Resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return virtualHub Resource.
      */
@@ -1506,7 +1500,7 @@ public final class VirtualHubsClient
      * @param virtualHubParameters VirtualHub Resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return virtualHub Resource.
      */
@@ -1518,197 +1512,12 @@ public final class VirtualHubsClient
     }
 
     /**
-     * Updates VirtualHub tags.
-     *
-     * @param resourceGroupName The resource group name of the VirtualHub.
-     * @param virtualHubName The name of the VirtualHub.
-     * @param tags Resource tags.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return virtualHub Resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<VirtualHubInner>> beginUpdateTagsWithoutPollingWithResponseAsync(
-        String resourceGroupName, String virtualHubName, Map<String, String> tags) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (virtualHubName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter virtualHubName is required and cannot be null."));
-        }
-        final String apiVersion = "2019-06-01";
-        TagsObject virtualHubParameters = new TagsObject();
-        virtualHubParameters.withTags(tags);
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .beginUpdateTagsWithoutPolling(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            virtualHubName,
-                            apiVersion,
-                            virtualHubParameters,
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
-
-    /**
-     * Updates VirtualHub tags.
-     *
-     * @param resourceGroupName The resource group name of the VirtualHub.
-     * @param virtualHubName The name of the VirtualHub.
-     * @param tags Resource tags.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return virtualHub Resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<VirtualHubInner>> beginUpdateTagsWithoutPollingWithResponseAsync(
-        String resourceGroupName, String virtualHubName, Map<String, String> tags, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (virtualHubName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter virtualHubName is required and cannot be null."));
-        }
-        final String apiVersion = "2019-06-01";
-        TagsObject virtualHubParameters = new TagsObject();
-        virtualHubParameters.withTags(tags);
-        return service
-            .beginUpdateTagsWithoutPolling(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                virtualHubName,
-                apiVersion,
-                virtualHubParameters,
-                context);
-    }
-
-    /**
-     * Updates VirtualHub tags.
-     *
-     * @param resourceGroupName The resource group name of the VirtualHub.
-     * @param virtualHubName The name of the VirtualHub.
-     * @param tags Resource tags.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return virtualHub Resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<VirtualHubInner> beginUpdateTagsWithoutPollingAsync(
-        String resourceGroupName, String virtualHubName, Map<String, String> tags) {
-        return beginUpdateTagsWithoutPollingWithResponseAsync(resourceGroupName, virtualHubName, tags)
-            .flatMap(
-                (Response<VirtualHubInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Updates VirtualHub tags.
-     *
-     * @param resourceGroupName The resource group name of the VirtualHub.
-     * @param virtualHubName The name of the VirtualHub.
-     * @param tags Resource tags.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return virtualHub Resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<VirtualHubInner> beginUpdateTagsWithoutPollingAsync(
-        String resourceGroupName, String virtualHubName, Map<String, String> tags, Context context) {
-        return beginUpdateTagsWithoutPollingWithResponseAsync(resourceGroupName, virtualHubName, tags, context)
-            .flatMap(
-                (Response<VirtualHubInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Updates VirtualHub tags.
-     *
-     * @param resourceGroupName The resource group name of the VirtualHub.
-     * @param virtualHubName The name of the VirtualHub.
-     * @param tags Resource tags.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return virtualHub Resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public VirtualHubInner beginUpdateTagsWithoutPolling(
-        String resourceGroupName, String virtualHubName, Map<String, String> tags) {
-        return beginUpdateTagsWithoutPollingAsync(resourceGroupName, virtualHubName, tags).block();
-    }
-
-    /**
-     * Updates VirtualHub tags.
-     *
-     * @param resourceGroupName The resource group name of the VirtualHub.
-     * @param virtualHubName The name of the VirtualHub.
-     * @param tags Resource tags.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return virtualHub Resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public VirtualHubInner beginUpdateTagsWithoutPolling(
-        String resourceGroupName, String virtualHubName, Map<String, String> tags, Context context) {
-        return beginUpdateTagsWithoutPollingAsync(resourceGroupName, virtualHubName, tags, context).block();
-    }
-
-    /**
      * Deletes a VirtualHub.
      *
      * @param resourceGroupName The resource group name of the VirtualHub.
      * @param virtualHubName The name of the VirtualHub.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -1734,7 +1543,7 @@ public final class VirtualHubsClient
         if (virtualHubName == null) {
             return Mono.error(new IllegalArgumentException("Parameter virtualHubName is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -1756,7 +1565,7 @@ public final class VirtualHubsClient
      * @param virtualHubName The name of the VirtualHub.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -1782,7 +1591,7 @@ public final class VirtualHubsClient
         if (virtualHubName == null) {
             return Mono.error(new IllegalArgumentException("Parameter virtualHubName is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return service
             .beginDeleteWithoutPolling(
                 this.client.getEndpoint(),
@@ -1799,7 +1608,7 @@ public final class VirtualHubsClient
      * @param resourceGroupName The resource group name of the VirtualHub.
      * @param virtualHubName The name of the VirtualHub.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -1816,7 +1625,7 @@ public final class VirtualHubsClient
      * @param virtualHubName The name of the VirtualHub.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -1832,7 +1641,7 @@ public final class VirtualHubsClient
      * @param resourceGroupName The resource group name of the VirtualHub.
      * @param virtualHubName The name of the VirtualHub.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1847,7 +1656,7 @@ public final class VirtualHubsClient
      * @param virtualHubName The name of the VirtualHub.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1860,7 +1669,7 @@ public final class VirtualHubsClient
      *
      * @param nextLink The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the request to list VirtualHubs.
      */
@@ -1889,7 +1698,7 @@ public final class VirtualHubsClient
      * @param nextLink The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the request to list VirtualHubs.
      */
@@ -1917,7 +1726,7 @@ public final class VirtualHubsClient
      *
      * @param nextLink The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the request to list VirtualHubs.
      */
@@ -1946,7 +1755,7 @@ public final class VirtualHubsClient
      * @param nextLink The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the request to list VirtualHubs.
      */

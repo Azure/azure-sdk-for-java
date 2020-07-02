@@ -7,13 +7,10 @@
 package com.azure.search.documents.indexes.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * A customer-managed encryption key in Azure Key Vault. Keys that you create
- * and manage can be used to encrypt or decrypt data-at-rest in Azure Cognitive
- * Search, such as indexes and synonym maps.
- */
+/** The SearchResourceEncryptionKey model. */
 @Fluent
 public final class SearchResourceEncryptionKey {
     /*
@@ -45,9 +42,19 @@ public final class SearchResourceEncryptionKey {
     @JsonProperty(value = "accessCredentials")
     private AzureActiveDirectoryApplicationCredentials accessCredentials;
 
+    /** Creates an instance of SearchResourceEncryptionKey class. */
+    @JsonCreator
+    public SearchResourceEncryptionKey(
+            @JsonProperty(value = "keyVaultKeyName") String keyName,
+            @JsonProperty(value = "keyVaultKeyVersion") String keyVersion,
+            @JsonProperty(value = "keyVaultUri") String vaultUri) {
+        this.keyName = keyName;
+        this.keyVersion = keyVersion;
+        this.vaultUri = vaultUri;
+    }
+
     /**
-     * Get the keyName property: The name of your Azure Key Vault key to be
-     * used to encrypt your data at rest.
+     * Get the keyName property: The name of your Azure Key Vault key to be used to encrypt your data at rest.
      *
      * @return the keyName value.
      */
@@ -56,20 +63,13 @@ public final class SearchResourceEncryptionKey {
     }
 
     /**
-     * Set the keyName property: The name of your Azure Key Vault key to be
-     * used to encrypt your data at rest.
+     * Set the keyName property: The name of your Azure Key Vault key to be used to encrypt your data at rest.
      *
      * @param keyName the keyName value to set.
      * @return the SearchResourceEncryptionKey object itself.
      */
-    public SearchResourceEncryptionKey setKeyName(String keyName) {
-        this.keyName = keyName;
-        return this;
-    }
-
     /**
-     * Get the keyVersion property: The version of your Azure Key Vault key to
-     * be used to encrypt your data at rest.
+     * Get the keyVersion property: The version of your Azure Key Vault key to be used to encrypt your data at rest.
      *
      * @return the keyVersion value.
      */
@@ -78,22 +78,14 @@ public final class SearchResourceEncryptionKey {
     }
 
     /**
-     * Set the keyVersion property: The version of your Azure Key Vault key to
-     * be used to encrypt your data at rest.
+     * Set the keyVersion property: The version of your Azure Key Vault key to be used to encrypt your data at rest.
      *
      * @param keyVersion the keyVersion value to set.
      * @return the SearchResourceEncryptionKey object itself.
      */
-    public SearchResourceEncryptionKey setKeyVersion(String keyVersion) {
-        this.keyVersion = keyVersion;
-        return this;
-    }
-
     /**
-     * Get the vaultUri property: The URI of your Azure Key Vault, also
-     * referred to as DNS name, that contains the key to be used to encrypt
-     * your data at rest. An example URI might be
-     * https://my-keyvault-name.vault.azure.net.
+     * Get the vaultUri property: The URI of your Azure Key Vault, also referred to as DNS name, that contains the key
+     * to be used to encrypt your data at rest. An example URI might be https://my-keyvault-name.vault.azure.net.
      *
      * @return the vaultUri value.
      */
@@ -102,23 +94,15 @@ public final class SearchResourceEncryptionKey {
     }
 
     /**
-     * Set the vaultUri property: The URI of your Azure Key Vault, also
-     * referred to as DNS name, that contains the key to be used to encrypt
-     * your data at rest. An example URI might be
-     * https://my-keyvault-name.vault.azure.net.
+     * Set the vaultUri property: The URI of your Azure Key Vault, also referred to as DNS name, that contains the key
+     * to be used to encrypt your data at rest. An example URI might be https://my-keyvault-name.vault.azure.net.
      *
      * @param vaultUri the vaultUri value to set.
      * @return the SearchResourceEncryptionKey object itself.
      */
-    public SearchResourceEncryptionKey setVaultUri(String vaultUri) {
-        this.vaultUri = vaultUri;
-        return this;
-    }
-
     /**
-     * Get the accessCredentials property: Optional Azure Active Directory
-     * credentials used for accessing your Azure Key Vault. Not required if
-     * using managed identity instead.
+     * Get the accessCredentials property: Optional Azure Active Directory credentials used for accessing your Azure Key
+     * Vault. Not required if using managed identity instead.
      *
      * @return the accessCredentials value.
      */
@@ -127,15 +111,38 @@ public final class SearchResourceEncryptionKey {
     }
 
     /**
-     * Set the accessCredentials property: Optional Azure Active Directory
-     * credentials used for accessing your Azure Key Vault. Not required if
-     * using managed identity instead.
+     * Set the accessCredentials property: Optional Azure Active Directory credentials used for accessing your Azure Key
+     * Vault. Not required if using managed identity instead.
      *
      * @param accessCredentials the accessCredentials value to set.
      * @return the SearchResourceEncryptionKey object itself.
      */
-    public SearchResourceEncryptionKey setAccessCredentials(AzureActiveDirectoryApplicationCredentials accessCredentials) {
+    public SearchResourceEncryptionKey setAccessCredentials(
+            AzureActiveDirectoryApplicationCredentials accessCredentials) {
         this.accessCredentials = accessCredentials;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (getKeyName() == null) {
+            throw new IllegalArgumentException(
+                    "Missing required property keyName in model SearchResourceEncryptionKey");
+        }
+        if (getKeyVersion() == null) {
+            throw new IllegalArgumentException(
+                    "Missing required property keyVersion in model SearchResourceEncryptionKey");
+        }
+        if (getVaultUri() == null) {
+            throw new IllegalArgumentException(
+                    "Missing required property vaultUri in model SearchResourceEncryptionKey");
+        }
+        if (getAccessCredentials() != null) {
+            getAccessCredentials().validate();
+        }
     }
 }

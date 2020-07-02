@@ -24,14 +24,14 @@ public final class SearchIndexerLimits {
      * for indexing.
      */
     @JsonProperty(value = "maxDocumentExtractionSize", access = JsonProperty.Access.WRITE_ONLY)
-    private Double maxDocumentExtractionSize;
+    private Long maxDocumentExtractionSize;
 
     /*
      * The maximum number of characters that will be extracted from a document
      * picked up for indexing.
      */
     @JsonProperty(value = "maxDocumentContentCharactersToExtract", access = JsonProperty.Access.WRITE_ONLY)
-    private Double maxDocumentContentCharactersToExtract;
+    private Long maxDocumentContentCharactersToExtract;
 
     /**
      * Get the maxRunTime property: The maximum duration that the indexer is
@@ -49,7 +49,7 @@ public final class SearchIndexerLimits {
      *
      * @return the maxDocumentExtractionSize value.
      */
-    public Double getMaxDocumentExtractionSize() {
+    public Long getMaxDocumentExtractionSize() {
         return this.maxDocumentExtractionSize;
     }
 
@@ -60,7 +60,7 @@ public final class SearchIndexerLimits {
      *
      * @return the maxDocumentContentCharactersToExtract value.
      */
-    public Double getMaxDocumentContentCharactersToExtract() {
+    public Long getMaxDocumentContentCharactersToExtract() {
         return this.maxDocumentContentCharactersToExtract;
     }
 }

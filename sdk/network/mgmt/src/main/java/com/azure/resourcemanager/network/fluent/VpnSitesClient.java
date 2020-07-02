@@ -25,16 +25,16 @@ import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
+import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.util.polling.AsyncPollResponse;
 import com.azure.core.util.polling.PollerFlux;
+import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.network.NetworkManagementClient;
 import com.azure.resourcemanager.network.fluent.inner.ListVpnSitesResultInner;
 import com.azure.resourcemanager.network.fluent.inner.VpnSiteInner;
-import com.azure.resourcemanager.network.models.ErrorException;
 import com.azure.resourcemanager.network.models.TagsObject;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
@@ -77,7 +77,7 @@ public final class VpnSitesClient
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/vpnSites"
                 + "/{vpnSiteName}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ErrorException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<VpnSiteInner>> getByResourceGroup(
             @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
@@ -91,7 +91,7 @@ public final class VpnSitesClient
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/vpnSites"
                 + "/{vpnSiteName}")
         @ExpectedResponses({200, 201})
-        @UnexpectedResponseExceptionType(ErrorException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
             @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
@@ -105,9 +105,9 @@ public final class VpnSitesClient
         @Patch(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/vpnSites"
                 + "/{vpnSiteName}")
-        @ExpectedResponses({200, 201})
-        @UnexpectedResponseExceptionType(ErrorException.class)
-        Mono<Response<Flux<ByteBuffer>>> updateTags(
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<VpnSiteInner>> updateTags(
             @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -121,7 +121,7 @@ public final class VpnSitesClient
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/vpnSites"
                 + "/{vpnSiteName}")
         @ExpectedResponses({200, 202, 204})
-        @UnexpectedResponseExceptionType(ErrorException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(
             @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
@@ -133,7 +133,7 @@ public final class VpnSitesClient
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/vpnSites")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ErrorException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ListVpnSitesResultInner>> listByResourceGroup(
             @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
@@ -144,7 +144,7 @@ public final class VpnSitesClient
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Network/vpnSites")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ErrorException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ListVpnSitesResultInner>> list(
             @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
@@ -156,7 +156,7 @@ public final class VpnSitesClient
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/vpnSites"
                 + "/{vpnSiteName}")
         @ExpectedResponses({200, 201})
-        @UnexpectedResponseExceptionType(ErrorException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<VpnSiteInner>> beginCreateOrUpdateWithoutPolling(
             @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
@@ -166,27 +166,12 @@ public final class VpnSitesClient
             @BodyParam("application/json") VpnSiteInner vpnSiteParameters,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/vpnSites"
-                + "/{vpnSiteName}")
-        @ExpectedResponses({200, 201})
-        @UnexpectedResponseExceptionType(ErrorException.class)
-        Mono<Response<VpnSiteInner>> beginUpdateTagsWithoutPolling(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("vpnSiteName") String vpnSiteName,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") TagsObject vpnSiteParameters,
-            Context context);
-
         @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
         @Delete(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/vpnSites"
                 + "/{vpnSiteName}")
         @ExpectedResponses({200, 202, 204})
-        @UnexpectedResponseExceptionType(ErrorException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> beginDeleteWithoutPolling(
             @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
@@ -198,14 +183,14 @@ public final class VpnSitesClient
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ErrorException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ListVpnSitesResultInner>> listByResourceGroupNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ErrorException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ListVpnSitesResultInner>> listNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
@@ -216,7 +201,7 @@ public final class VpnSitesClient
      * @param resourceGroupName The resource group name of the VpnSite.
      * @param vpnSiteName The name of the VpnSite being retrieved.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return vpnSite Resource.
      */
@@ -242,7 +227,7 @@ public final class VpnSitesClient
         if (vpnSiteName == null) {
             return Mono.error(new IllegalArgumentException("Parameter vpnSiteName is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -264,7 +249,7 @@ public final class VpnSitesClient
      * @param vpnSiteName The name of the VpnSite being retrieved.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return vpnSite Resource.
      */
@@ -290,7 +275,7 @@ public final class VpnSitesClient
         if (vpnSiteName == null) {
             return Mono.error(new IllegalArgumentException("Parameter vpnSiteName is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return service
             .getByResourceGroup(
                 this.client.getEndpoint(),
@@ -307,7 +292,7 @@ public final class VpnSitesClient
      * @param resourceGroupName The resource group name of the VpnSite.
      * @param vpnSiteName The name of the VpnSite being retrieved.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return vpnSite Resource.
      */
@@ -331,7 +316,7 @@ public final class VpnSitesClient
      * @param vpnSiteName The name of the VpnSite being retrieved.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return vpnSite Resource.
      */
@@ -354,7 +339,7 @@ public final class VpnSitesClient
      * @param resourceGroupName The resource group name of the VpnSite.
      * @param vpnSiteName The name of the VpnSite being retrieved.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return vpnSite Resource.
      */
@@ -370,7 +355,7 @@ public final class VpnSitesClient
      * @param vpnSiteName The name of the VpnSite being retrieved.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return vpnSite Resource.
      */
@@ -386,7 +371,7 @@ public final class VpnSitesClient
      * @param vpnSiteName The name of the VpnSite being created or updated.
      * @param vpnSiteParameters VpnSite Resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return vpnSite Resource.
      */
@@ -418,7 +403,7 @@ public final class VpnSitesClient
         } else {
             vpnSiteParameters.validate();
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -442,7 +427,7 @@ public final class VpnSitesClient
      * @param vpnSiteParameters VpnSite Resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return vpnSite Resource.
      */
@@ -474,7 +459,7 @@ public final class VpnSitesClient
         } else {
             vpnSiteParameters.validate();
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return service
             .createOrUpdate(
                 this.client.getEndpoint(),
@@ -493,12 +478,12 @@ public final class VpnSitesClient
      * @param vpnSiteName The name of the VpnSite being created or updated.
      * @param vpnSiteParameters VpnSite Resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return vpnSite Resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<VpnSiteInner>, VpnSiteInner> beginCreateOrUpdate(
+    public PollerFlux<PollResult<VpnSiteInner>, VpnSiteInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String vpnSiteName, VpnSiteInner vpnSiteParameters) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             createOrUpdateWithResponseAsync(resourceGroupName, vpnSiteName, vpnSiteParameters);
@@ -516,12 +501,12 @@ public final class VpnSitesClient
      * @param vpnSiteParameters VpnSite Resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return vpnSite Resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<VpnSiteInner>, VpnSiteInner> beginCreateOrUpdate(
+    public PollerFlux<PollResult<VpnSiteInner>, VpnSiteInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String vpnSiteName, VpnSiteInner vpnSiteParameters, Context context) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             createOrUpdateWithResponseAsync(resourceGroupName, vpnSiteName, vpnSiteParameters, context);
@@ -538,21 +523,14 @@ public final class VpnSitesClient
      * @param vpnSiteName The name of the VpnSite being created or updated.
      * @param vpnSiteParameters VpnSite Resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return vpnSite Resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<VpnSiteInner> createOrUpdateAsync(
+    public SyncPoller<PollResult<VpnSiteInner>, VpnSiteInner> beginCreateOrUpdate(
         String resourceGroupName, String vpnSiteName, VpnSiteInner vpnSiteParameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, vpnSiteName, vpnSiteParameters);
-        return this
-            .client
-            .<VpnSiteInner, VpnSiteInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), VpnSiteInner.class, VpnSiteInner.class)
-            .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+        return beginCreateOrUpdateAsync(resourceGroupName, vpnSiteName, vpnSiteParameters).getSyncPoller();
     }
 
     /**
@@ -563,21 +541,14 @@ public final class VpnSitesClient
      * @param vpnSiteParameters VpnSite Resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return vpnSite Resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<VpnSiteInner> createOrUpdateAsync(
+    public SyncPoller<PollResult<VpnSiteInner>, VpnSiteInner> beginCreateOrUpdate(
         String resourceGroupName, String vpnSiteName, VpnSiteInner vpnSiteParameters, Context context) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, vpnSiteName, vpnSiteParameters, context);
-        return this
-            .client
-            .<VpnSiteInner, VpnSiteInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), VpnSiteInner.class, VpnSiteInner.class)
-            .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+        return beginCreateOrUpdateAsync(resourceGroupName, vpnSiteName, vpnSiteParameters, context).getSyncPoller();
     }
 
     /**
@@ -587,7 +558,46 @@ public final class VpnSitesClient
      * @param vpnSiteName The name of the VpnSite being created or updated.
      * @param vpnSiteParameters VpnSite Resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return vpnSite Resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<VpnSiteInner> createOrUpdateAsync(
+        String resourceGroupName, String vpnSiteName, VpnSiteInner vpnSiteParameters) {
+        return beginCreateOrUpdateAsync(resourceGroupName, vpnSiteName, vpnSiteParameters)
+            .last()
+            .flatMap(client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Creates a VpnSite resource if it doesn't exist else updates the existing VpnSite.
+     *
+     * @param resourceGroupName The resource group name of the VpnSite.
+     * @param vpnSiteName The name of the VpnSite being created or updated.
+     * @param vpnSiteParameters VpnSite Resource.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return vpnSite Resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<VpnSiteInner> createOrUpdateAsync(
+        String resourceGroupName, String vpnSiteName, VpnSiteInner vpnSiteParameters, Context context) {
+        return beginCreateOrUpdateAsync(resourceGroupName, vpnSiteName, vpnSiteParameters, context)
+            .last()
+            .flatMap(client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Creates a VpnSite resource if it doesn't exist else updates the existing VpnSite.
+     *
+     * @param resourceGroupName The resource group name of the VpnSite.
+     * @param vpnSiteName The name of the VpnSite being created or updated.
+     * @param vpnSiteParameters VpnSite Resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return vpnSite Resource.
      */
@@ -604,7 +614,7 @@ public final class VpnSitesClient
      * @param vpnSiteParameters VpnSite Resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return vpnSite Resource.
      */
@@ -621,12 +631,12 @@ public final class VpnSitesClient
      * @param vpnSiteName The name of the VpnSite being updated.
      * @param tags Resource tags.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return vpnSite Resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> updateTagsWithResponseAsync(
+    public Mono<Response<VpnSiteInner>> updateTagsWithResponseAsync(
         String resourceGroupName, String vpnSiteName, Map<String, String> tags) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -647,7 +657,7 @@ public final class VpnSitesClient
         if (vpnSiteName == null) {
             return Mono.error(new IllegalArgumentException("Parameter vpnSiteName is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         TagsObject vpnSiteParameters = new TagsObject();
         vpnSiteParameters.withTags(tags);
         return FluxUtil
@@ -673,12 +683,12 @@ public final class VpnSitesClient
      * @param tags Resource tags.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return vpnSite Resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> updateTagsWithResponseAsync(
+    public Mono<Response<VpnSiteInner>> updateTagsWithResponseAsync(
         String resourceGroupName, String vpnSiteName, Map<String, String> tags, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -699,7 +709,7 @@ public final class VpnSitesClient
         if (vpnSiteName == null) {
             return Mono.error(new IllegalArgumentException("Parameter vpnSiteName is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         TagsObject vpnSiteParameters = new TagsObject();
         vpnSiteParameters.withTags(tags);
         return service
@@ -720,63 +730,21 @@ public final class VpnSitesClient
      * @param vpnSiteName The name of the VpnSite being updated.
      * @param tags Resource tags.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return vpnSite Resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<VpnSiteInner>, VpnSiteInner> beginUpdateTags(
-        String resourceGroupName, String vpnSiteName, Map<String, String> tags) {
-        Mono<Response<Flux<ByteBuffer>>> mono = updateTagsWithResponseAsync(resourceGroupName, vpnSiteName, tags);
-        return this
-            .client
-            .<VpnSiteInner, VpnSiteInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), VpnSiteInner.class, VpnSiteInner.class);
-    }
-
-    /**
-     * Updates VpnSite tags.
-     *
-     * @param resourceGroupName The resource group name of the VpnSite.
-     * @param vpnSiteName The name of the VpnSite being updated.
-     * @param tags Resource tags.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return vpnSite Resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<VpnSiteInner>, VpnSiteInner> beginUpdateTags(
-        String resourceGroupName, String vpnSiteName, Map<String, String> tags, Context context) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateTagsWithResponseAsync(resourceGroupName, vpnSiteName, tags, context);
-        return this
-            .client
-            .<VpnSiteInner, VpnSiteInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), VpnSiteInner.class, VpnSiteInner.class);
-    }
-
-    /**
-     * Updates VpnSite tags.
-     *
-     * @param resourceGroupName The resource group name of the VpnSite.
-     * @param vpnSiteName The name of the VpnSite being updated.
-     * @param tags Resource tags.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return vpnSite Resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<VpnSiteInner> updateTagsAsync(String resourceGroupName, String vpnSiteName, Map<String, String> tags) {
-        Mono<Response<Flux<ByteBuffer>>> mono = updateTagsWithResponseAsync(resourceGroupName, vpnSiteName, tags);
-        return this
-            .client
-            .<VpnSiteInner, VpnSiteInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), VpnSiteInner.class, VpnSiteInner.class)
-            .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+        return updateTagsWithResponseAsync(resourceGroupName, vpnSiteName, tags)
+            .flatMap(
+                (Response<VpnSiteInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
     }
 
     /**
@@ -787,21 +755,22 @@ public final class VpnSitesClient
      * @param tags Resource tags.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return vpnSite Resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<VpnSiteInner> updateTagsAsync(
         String resourceGroupName, String vpnSiteName, Map<String, String> tags, Context context) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateTagsWithResponseAsync(resourceGroupName, vpnSiteName, tags, context);
-        return this
-            .client
-            .<VpnSiteInner, VpnSiteInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), VpnSiteInner.class, VpnSiteInner.class)
-            .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+        return updateTagsWithResponseAsync(resourceGroupName, vpnSiteName, tags, context)
+            .flatMap(
+                (Response<VpnSiteInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
     }
 
     /**
@@ -811,7 +780,7 @@ public final class VpnSitesClient
      * @param vpnSiteName The name of the VpnSite being updated.
      * @param tags Resource tags.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return vpnSite Resource.
      */
@@ -828,7 +797,7 @@ public final class VpnSitesClient
      * @param tags Resource tags.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return vpnSite Resource.
      */
@@ -844,7 +813,7 @@ public final class VpnSitesClient
      * @param resourceGroupName The resource group name of the VpnSite.
      * @param vpnSiteName The name of the VpnSite being deleted.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -869,7 +838,7 @@ public final class VpnSitesClient
         if (vpnSiteName == null) {
             return Mono.error(new IllegalArgumentException("Parameter vpnSiteName is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -891,7 +860,7 @@ public final class VpnSitesClient
      * @param vpnSiteName The name of the VpnSite being deleted.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -917,7 +886,7 @@ public final class VpnSitesClient
         if (vpnSiteName == null) {
             return Mono.error(new IllegalArgumentException("Parameter vpnSiteName is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return service
             .delete(
                 this.client.getEndpoint(),
@@ -934,12 +903,12 @@ public final class VpnSitesClient
      * @param resourceGroupName The resource group name of the VpnSite.
      * @param vpnSiteName The name of the VpnSite being deleted.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<Void>, Void> beginDelete(String resourceGroupName, String vpnSiteName) {
+    public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String vpnSiteName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, vpnSiteName);
         return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
     }
@@ -951,12 +920,12 @@ public final class VpnSitesClient
      * @param vpnSiteName The name of the VpnSite being deleted.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<Void>, Void> beginDelete(
+    public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String vpnSiteName, Context context) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, vpnSiteName, context);
         return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
@@ -968,18 +937,13 @@ public final class VpnSitesClient
      * @param resourceGroupName The resource group name of the VpnSite.
      * @param vpnSiteName The name of the VpnSite being deleted.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deleteAsync(String resourceGroupName, String vpnSiteName) {
-        Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, vpnSiteName);
-        return this
-            .client
-            .<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class)
-            .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String vpnSiteName) {
+        return beginDeleteAsync(resourceGroupName, vpnSiteName).getSyncPoller();
     }
 
     /**
@@ -989,18 +953,14 @@ public final class VpnSitesClient
      * @param vpnSiteName The name of the VpnSite being deleted.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deleteAsync(String resourceGroupName, String vpnSiteName, Context context) {
-        Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, vpnSiteName, context);
-        return this
-            .client
-            .<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class)
-            .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+    public SyncPoller<PollResult<Void>, Void> beginDelete(
+        String resourceGroupName, String vpnSiteName, Context context) {
+        return beginDeleteAsync(resourceGroupName, vpnSiteName, context).getSyncPoller();
     }
 
     /**
@@ -1009,7 +969,40 @@ public final class VpnSitesClient
      * @param resourceGroupName The resource group name of the VpnSite.
      * @param vpnSiteName The name of the VpnSite being deleted.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> deleteAsync(String resourceGroupName, String vpnSiteName) {
+        return beginDeleteAsync(resourceGroupName, vpnSiteName).last().flatMap(client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Deletes a VpnSite.
+     *
+     * @param resourceGroupName The resource group name of the VpnSite.
+     * @param vpnSiteName The name of the VpnSite being deleted.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> deleteAsync(String resourceGroupName, String vpnSiteName, Context context) {
+        return beginDeleteAsync(resourceGroupName, vpnSiteName, context)
+            .last()
+            .flatMap(client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Deletes a VpnSite.
+     *
+     * @param resourceGroupName The resource group name of the VpnSite.
+     * @param vpnSiteName The name of the VpnSite being deleted.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1024,7 +1017,7 @@ public final class VpnSitesClient
      * @param vpnSiteName The name of the VpnSite being deleted.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1037,7 +1030,7 @@ public final class VpnSitesClient
      *
      * @param resourceGroupName The resource group name of the VpnSite.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the request to list VpnSites.
      */
@@ -1059,7 +1052,7 @@ public final class VpnSitesClient
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -1088,7 +1081,7 @@ public final class VpnSitesClient
      * @param resourceGroupName The resource group name of the VpnSite.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the request to list VpnSites.
      */
@@ -1111,7 +1104,7 @@ public final class VpnSitesClient
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return service
             .listByResourceGroup(
                 this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, apiVersion, context)
@@ -1131,7 +1124,7 @@ public final class VpnSitesClient
      *
      * @param resourceGroupName The resource group name of the VpnSite.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the request to list VpnSites.
      */
@@ -1148,7 +1141,7 @@ public final class VpnSitesClient
      * @param resourceGroupName The resource group name of the VpnSite.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the request to list VpnSites.
      */
@@ -1164,7 +1157,7 @@ public final class VpnSitesClient
      *
      * @param resourceGroupName The resource group name of the VpnSite.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the request to list VpnSites.
      */
@@ -1179,7 +1172,7 @@ public final class VpnSitesClient
      * @param resourceGroupName The resource group name of the VpnSite.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the request to list VpnSites.
      */
@@ -1191,7 +1184,7 @@ public final class VpnSitesClient
     /**
      * Lists all the VpnSites in a subscription.
      *
-     * @throws ErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the request to list VpnSites.
      */
@@ -1209,7 +1202,7 @@ public final class VpnSitesClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -1231,7 +1224,7 @@ public final class VpnSitesClient
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the request to list VpnSites.
      */
@@ -1249,7 +1242,7 @@ public final class VpnSitesClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return service
             .list(this.client.getEndpoint(), this.client.getSubscriptionId(), apiVersion, context)
             .map(
@@ -1266,7 +1259,7 @@ public final class VpnSitesClient
     /**
      * Lists all the VpnSites in a subscription.
      *
-     * @throws ErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the request to list VpnSites.
      */
@@ -1280,7 +1273,7 @@ public final class VpnSitesClient
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the request to list VpnSites.
      */
@@ -1292,7 +1285,7 @@ public final class VpnSitesClient
     /**
      * Lists all the VpnSites in a subscription.
      *
-     * @throws ErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the request to list VpnSites.
      */
@@ -1306,7 +1299,7 @@ public final class VpnSitesClient
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the request to list VpnSites.
      */
@@ -1322,7 +1315,7 @@ public final class VpnSitesClient
      * @param vpnSiteName The name of the VpnSite being created or updated.
      * @param vpnSiteParameters VpnSite Resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return vpnSite Resource.
      */
@@ -1354,7 +1347,7 @@ public final class VpnSitesClient
         } else {
             vpnSiteParameters.validate();
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -1378,7 +1371,7 @@ public final class VpnSitesClient
      * @param vpnSiteParameters VpnSite Resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return vpnSite Resource.
      */
@@ -1410,7 +1403,7 @@ public final class VpnSitesClient
         } else {
             vpnSiteParameters.validate();
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return service
             .beginCreateOrUpdateWithoutPolling(
                 this.client.getEndpoint(),
@@ -1429,7 +1422,7 @@ public final class VpnSitesClient
      * @param vpnSiteName The name of the VpnSite being created or updated.
      * @param vpnSiteParameters VpnSite Resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return vpnSite Resource.
      */
@@ -1455,7 +1448,7 @@ public final class VpnSitesClient
      * @param vpnSiteParameters VpnSite Resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return vpnSite Resource.
      */
@@ -1481,7 +1474,7 @@ public final class VpnSitesClient
      * @param vpnSiteName The name of the VpnSite being created or updated.
      * @param vpnSiteParameters VpnSite Resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return vpnSite Resource.
      */
@@ -1499,7 +1492,7 @@ public final class VpnSitesClient
      * @param vpnSiteParameters VpnSite Resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return vpnSite Resource.
      */
@@ -1511,197 +1504,12 @@ public final class VpnSitesClient
     }
 
     /**
-     * Updates VpnSite tags.
-     *
-     * @param resourceGroupName The resource group name of the VpnSite.
-     * @param vpnSiteName The name of the VpnSite being updated.
-     * @param tags Resource tags.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return vpnSite Resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<VpnSiteInner>> beginUpdateTagsWithoutPollingWithResponseAsync(
-        String resourceGroupName, String vpnSiteName, Map<String, String> tags) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (vpnSiteName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter vpnSiteName is required and cannot be null."));
-        }
-        final String apiVersion = "2019-06-01";
-        TagsObject vpnSiteParameters = new TagsObject();
-        vpnSiteParameters.withTags(tags);
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .beginUpdateTagsWithoutPolling(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            vpnSiteName,
-                            apiVersion,
-                            vpnSiteParameters,
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
-
-    /**
-     * Updates VpnSite tags.
-     *
-     * @param resourceGroupName The resource group name of the VpnSite.
-     * @param vpnSiteName The name of the VpnSite being updated.
-     * @param tags Resource tags.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return vpnSite Resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<VpnSiteInner>> beginUpdateTagsWithoutPollingWithResponseAsync(
-        String resourceGroupName, String vpnSiteName, Map<String, String> tags, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (vpnSiteName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter vpnSiteName is required and cannot be null."));
-        }
-        final String apiVersion = "2019-06-01";
-        TagsObject vpnSiteParameters = new TagsObject();
-        vpnSiteParameters.withTags(tags);
-        return service
-            .beginUpdateTagsWithoutPolling(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                vpnSiteName,
-                apiVersion,
-                vpnSiteParameters,
-                context);
-    }
-
-    /**
-     * Updates VpnSite tags.
-     *
-     * @param resourceGroupName The resource group name of the VpnSite.
-     * @param vpnSiteName The name of the VpnSite being updated.
-     * @param tags Resource tags.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return vpnSite Resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<VpnSiteInner> beginUpdateTagsWithoutPollingAsync(
-        String resourceGroupName, String vpnSiteName, Map<String, String> tags) {
-        return beginUpdateTagsWithoutPollingWithResponseAsync(resourceGroupName, vpnSiteName, tags)
-            .flatMap(
-                (Response<VpnSiteInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Updates VpnSite tags.
-     *
-     * @param resourceGroupName The resource group name of the VpnSite.
-     * @param vpnSiteName The name of the VpnSite being updated.
-     * @param tags Resource tags.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return vpnSite Resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<VpnSiteInner> beginUpdateTagsWithoutPollingAsync(
-        String resourceGroupName, String vpnSiteName, Map<String, String> tags, Context context) {
-        return beginUpdateTagsWithoutPollingWithResponseAsync(resourceGroupName, vpnSiteName, tags, context)
-            .flatMap(
-                (Response<VpnSiteInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Updates VpnSite tags.
-     *
-     * @param resourceGroupName The resource group name of the VpnSite.
-     * @param vpnSiteName The name of the VpnSite being updated.
-     * @param tags Resource tags.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return vpnSite Resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public VpnSiteInner beginUpdateTagsWithoutPolling(
-        String resourceGroupName, String vpnSiteName, Map<String, String> tags) {
-        return beginUpdateTagsWithoutPollingAsync(resourceGroupName, vpnSiteName, tags).block();
-    }
-
-    /**
-     * Updates VpnSite tags.
-     *
-     * @param resourceGroupName The resource group name of the VpnSite.
-     * @param vpnSiteName The name of the VpnSite being updated.
-     * @param tags Resource tags.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return vpnSite Resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public VpnSiteInner beginUpdateTagsWithoutPolling(
-        String resourceGroupName, String vpnSiteName, Map<String, String> tags, Context context) {
-        return beginUpdateTagsWithoutPollingAsync(resourceGroupName, vpnSiteName, tags, context).block();
-    }
-
-    /**
      * Deletes a VpnSite.
      *
      * @param resourceGroupName The resource group name of the VpnSite.
      * @param vpnSiteName The name of the VpnSite being deleted.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -1727,7 +1535,7 @@ public final class VpnSitesClient
         if (vpnSiteName == null) {
             return Mono.error(new IllegalArgumentException("Parameter vpnSiteName is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -1749,7 +1557,7 @@ public final class VpnSitesClient
      * @param vpnSiteName The name of the VpnSite being deleted.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -1775,7 +1583,7 @@ public final class VpnSitesClient
         if (vpnSiteName == null) {
             return Mono.error(new IllegalArgumentException("Parameter vpnSiteName is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return service
             .beginDeleteWithoutPolling(
                 this.client.getEndpoint(),
@@ -1792,7 +1600,7 @@ public final class VpnSitesClient
      * @param resourceGroupName The resource group name of the VpnSite.
      * @param vpnSiteName The name of the VpnSite being deleted.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -1809,7 +1617,7 @@ public final class VpnSitesClient
      * @param vpnSiteName The name of the VpnSite being deleted.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -1825,7 +1633,7 @@ public final class VpnSitesClient
      * @param resourceGroupName The resource group name of the VpnSite.
      * @param vpnSiteName The name of the VpnSite being deleted.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1840,7 +1648,7 @@ public final class VpnSitesClient
      * @param vpnSiteName The name of the VpnSite being deleted.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1853,7 +1661,7 @@ public final class VpnSitesClient
      *
      * @param nextLink The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the request to list VpnSites.
      */
@@ -1882,7 +1690,7 @@ public final class VpnSitesClient
      * @param nextLink The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the request to list VpnSites.
      */
@@ -1909,7 +1717,7 @@ public final class VpnSitesClient
      *
      * @param nextLink The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the request to list VpnSites.
      */
@@ -1938,7 +1746,7 @@ public final class VpnSitesClient
      * @param nextLink The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the request to list VpnSites.
      */

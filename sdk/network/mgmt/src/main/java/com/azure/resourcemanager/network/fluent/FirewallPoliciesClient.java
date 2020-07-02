@@ -11,7 +11,6 @@ import com.azure.core.annotation.Get;
 import com.azure.core.annotation.Headers;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
-import com.azure.core.annotation.Patch;
 import com.azure.core.annotation.PathParam;
 import com.azure.core.annotation.Put;
 import com.azure.core.annotation.QueryParam;
@@ -30,18 +29,15 @@ import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.util.polling.AsyncPollResponse;
 import com.azure.core.util.polling.PollerFlux;
+import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.network.NetworkManagementClient;
 import com.azure.resourcemanager.network.fluent.inner.FirewallPolicyInner;
 import com.azure.resourcemanager.network.fluent.inner.FirewallPolicyListResultInner;
-import com.azure.resourcemanager.network.models.ErrorException;
-import com.azure.resourcemanager.network.models.TagsObject;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsListing;
 import java.nio.ByteBuffer;
-import java.util.Map;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -103,21 +99,6 @@ public final class FirewallPoliciesClient
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("$expand") String expand,
-            Context context);
-
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
-                + "/firewallPolicies/{firewallPolicyName}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ErrorException.class)
-        Mono<Response<FirewallPolicyInner>> updateTags(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("firewallPolicyName") String firewallPolicyName,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") TagsObject firewallPolicyParameters,
             Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
@@ -235,7 +216,7 @@ public final class FirewallPoliciesClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -284,7 +265,7 @@ public final class FirewallPoliciesClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return service
             .delete(
                 this.client.getEndpoint(),
@@ -306,7 +287,7 @@ public final class FirewallPoliciesClient
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<Void>, Void> beginDelete(String resourceGroupName, String firewallPolicyName) {
+    public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String firewallPolicyName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, firewallPolicyName);
         return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
     }
@@ -323,7 +304,7 @@ public final class FirewallPoliciesClient
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<Void>, Void> beginDelete(
+    public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String firewallPolicyName, Context context) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, firewallPolicyName, context);
         return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
@@ -340,13 +321,40 @@ public final class FirewallPoliciesClient
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String firewallPolicyName) {
+        return beginDeleteAsync(resourceGroupName, firewallPolicyName).getSyncPoller();
+    }
+
+    /**
+     * Deletes the specified Firewall Policy.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param firewallPolicyName The name of the Firewall Policy.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<Void>, Void> beginDelete(
+        String resourceGroupName, String firewallPolicyName, Context context) {
+        return beginDeleteAsync(resourceGroupName, firewallPolicyName, context).getSyncPoller();
+    }
+
+    /**
+     * Deletes the specified Firewall Policy.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param firewallPolicyName The name of the Firewall Policy.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String firewallPolicyName) {
-        Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, firewallPolicyName);
-        return this
-            .client
-            .<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class)
-            .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+        return beginDeleteAsync(resourceGroupName, firewallPolicyName).last().flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -362,12 +370,9 @@ public final class FirewallPoliciesClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String firewallPolicyName, Context context) {
-        Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, firewallPolicyName, context);
-        return this
-            .client
-            .<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class)
+        return beginDeleteAsync(resourceGroupName, firewallPolicyName, context)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -433,7 +438,7 @@ public final class FirewallPoliciesClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -484,7 +489,7 @@ public final class FirewallPoliciesClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return service
             .getByResourceGroup(
                 this.client.getEndpoint(),
@@ -624,193 +629,6 @@ public final class FirewallPoliciesClient
     }
 
     /**
-     * Updates a Firewall Policy Tags.
-     *
-     * @param resourceGroupName The resource group name of the Firewall Policy.
-     * @param firewallPolicyName The name of the Firewall Policy being updated.
-     * @param tags Resource tags.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return firewallPolicy Resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<FirewallPolicyInner>> updateTagsWithResponseAsync(
-        String resourceGroupName, String firewallPolicyName, Map<String, String> tags) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (firewallPolicyName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter firewallPolicyName is required and cannot be null."));
-        }
-        final String apiVersion = "2019-06-01";
-        TagsObject firewallPolicyParameters = new TagsObject();
-        firewallPolicyParameters.withTags(tags);
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .updateTags(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            firewallPolicyName,
-                            apiVersion,
-                            firewallPolicyParameters,
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
-
-    /**
-     * Updates a Firewall Policy Tags.
-     *
-     * @param resourceGroupName The resource group name of the Firewall Policy.
-     * @param firewallPolicyName The name of the Firewall Policy being updated.
-     * @param tags Resource tags.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return firewallPolicy Resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<FirewallPolicyInner>> updateTagsWithResponseAsync(
-        String resourceGroupName, String firewallPolicyName, Map<String, String> tags, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (firewallPolicyName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter firewallPolicyName is required and cannot be null."));
-        }
-        final String apiVersion = "2019-06-01";
-        TagsObject firewallPolicyParameters = new TagsObject();
-        firewallPolicyParameters.withTags(tags);
-        return service
-            .updateTags(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                firewallPolicyName,
-                apiVersion,
-                firewallPolicyParameters,
-                context);
-    }
-
-    /**
-     * Updates a Firewall Policy Tags.
-     *
-     * @param resourceGroupName The resource group name of the Firewall Policy.
-     * @param firewallPolicyName The name of the Firewall Policy being updated.
-     * @param tags Resource tags.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return firewallPolicy Resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<FirewallPolicyInner> updateTagsAsync(
-        String resourceGroupName, String firewallPolicyName, Map<String, String> tags) {
-        return updateTagsWithResponseAsync(resourceGroupName, firewallPolicyName, tags)
-            .flatMap(
-                (Response<FirewallPolicyInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Updates a Firewall Policy Tags.
-     *
-     * @param resourceGroupName The resource group name of the Firewall Policy.
-     * @param firewallPolicyName The name of the Firewall Policy being updated.
-     * @param tags Resource tags.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return firewallPolicy Resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<FirewallPolicyInner> updateTagsAsync(
-        String resourceGroupName, String firewallPolicyName, Map<String, String> tags, Context context) {
-        return updateTagsWithResponseAsync(resourceGroupName, firewallPolicyName, tags, context)
-            .flatMap(
-                (Response<FirewallPolicyInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Updates a Firewall Policy Tags.
-     *
-     * @param resourceGroupName The resource group name of the Firewall Policy.
-     * @param firewallPolicyName The name of the Firewall Policy being updated.
-     * @param tags Resource tags.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return firewallPolicy Resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public FirewallPolicyInner updateTags(
-        String resourceGroupName, String firewallPolicyName, Map<String, String> tags) {
-        return updateTagsAsync(resourceGroupName, firewallPolicyName, tags).block();
-    }
-
-    /**
-     * Updates a Firewall Policy Tags.
-     *
-     * @param resourceGroupName The resource group name of the Firewall Policy.
-     * @param firewallPolicyName The name of the Firewall Policy being updated.
-     * @param tags Resource tags.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return firewallPolicy Resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public FirewallPolicyInner updateTags(
-        String resourceGroupName, String firewallPolicyName, Map<String, String> tags, Context context) {
-        return updateTagsAsync(resourceGroupName, firewallPolicyName, tags, context).block();
-    }
-
-    /**
      * Creates or updates the specified Firewall Policy.
      *
      * @param resourceGroupName The name of the resource group.
@@ -849,7 +667,7 @@ public final class FirewallPoliciesClient
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -905,7 +723,7 @@ public final class FirewallPoliciesClient
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return service
             .createOrUpdate(
                 this.client.getEndpoint(),
@@ -929,7 +747,7 @@ public final class FirewallPoliciesClient
      * @return firewallPolicy Resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<FirewallPolicyInner>, FirewallPolicyInner> beginCreateOrUpdate(
+    public PollerFlux<PollResult<FirewallPolicyInner>, FirewallPolicyInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String firewallPolicyName, FirewallPolicyInner parameters) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             createOrUpdateWithResponseAsync(resourceGroupName, firewallPolicyName, parameters);
@@ -952,7 +770,7 @@ public final class FirewallPoliciesClient
      * @return firewallPolicy Resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<FirewallPolicyInner>, FirewallPolicyInner> beginCreateOrUpdate(
+    public PollerFlux<PollResult<FirewallPolicyInner>, FirewallPolicyInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String firewallPolicyName, FirewallPolicyInner parameters, Context context) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             createOrUpdateWithResponseAsync(resourceGroupName, firewallPolicyName, parameters, context);
@@ -974,16 +792,46 @@ public final class FirewallPoliciesClient
      * @return firewallPolicy Resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<FirewallPolicyInner>, FirewallPolicyInner> beginCreateOrUpdate(
+        String resourceGroupName, String firewallPolicyName, FirewallPolicyInner parameters) {
+        return beginCreateOrUpdateAsync(resourceGroupName, firewallPolicyName, parameters).getSyncPoller();
+    }
+
+    /**
+     * Creates or updates the specified Firewall Policy.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param firewallPolicyName The name of the Firewall Policy.
+     * @param parameters FirewallPolicy Resource.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return firewallPolicy Resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<FirewallPolicyInner>, FirewallPolicyInner> beginCreateOrUpdate(
+        String resourceGroupName, String firewallPolicyName, FirewallPolicyInner parameters, Context context) {
+        return beginCreateOrUpdateAsync(resourceGroupName, firewallPolicyName, parameters, context).getSyncPoller();
+    }
+
+    /**
+     * Creates or updates the specified Firewall Policy.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param firewallPolicyName The name of the Firewall Policy.
+     * @param parameters FirewallPolicy Resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return firewallPolicy Resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<FirewallPolicyInner> createOrUpdateAsync(
         String resourceGroupName, String firewallPolicyName, FirewallPolicyInner parameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, firewallPolicyName, parameters);
-        return this
-            .client
-            .<FirewallPolicyInner, FirewallPolicyInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), FirewallPolicyInner.class, FirewallPolicyInner.class)
+        return beginCreateOrUpdateAsync(resourceGroupName, firewallPolicyName, parameters)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -1001,14 +849,9 @@ public final class FirewallPoliciesClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<FirewallPolicyInner> createOrUpdateAsync(
         String resourceGroupName, String firewallPolicyName, FirewallPolicyInner parameters, Context context) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, firewallPolicyName, parameters, context);
-        return this
-            .client
-            .<FirewallPolicyInner, FirewallPolicyInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), FirewallPolicyInner.class, FirewallPolicyInner.class)
+        return beginCreateOrUpdateAsync(resourceGroupName, firewallPolicyName, parameters, context)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -1073,7 +916,7 @@ public final class FirewallPoliciesClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -1125,7 +968,7 @@ public final class FirewallPoliciesClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return service
             .listByResourceGroup(
                 this.client.getEndpoint(), resourceGroupName, apiVersion, this.client.getSubscriptionId(), context)
@@ -1222,7 +1065,7 @@ public final class FirewallPoliciesClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -1262,7 +1105,7 @@ public final class FirewallPoliciesClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return service
             .list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), context)
             .map(
@@ -1361,7 +1204,7 @@ public final class FirewallPoliciesClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -1410,7 +1253,7 @@ public final class FirewallPoliciesClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return service
             .beginDeleteWithoutPolling(
                 this.client.getEndpoint(),
@@ -1523,7 +1366,7 @@ public final class FirewallPoliciesClient
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -1579,7 +1422,7 @@ public final class FirewallPoliciesClient
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return service
             .beginCreateOrUpdateWithoutPolling(
                 this.client.getEndpoint(),
