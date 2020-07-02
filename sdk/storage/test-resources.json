@@ -17,7 +17,7 @@
         }
     },
     "variables": {
-        "storageApiVersion": "2019-04-01",
+        "storageApiVersion": "2019-06-01",
         "authorizationApiVersion": "2018-09-01-preview",
         "blobDataContributorRoleId": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/ba92f5b4-2d11-453d-a403-e96b0029c9fe')]",
         "contributorRoleId": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/b24988ac-6180-42a0-ab88-20f7382dd24c')]",
@@ -84,6 +84,17 @@
                 },
                 "accessTier": "Hot"
             }
+        },
+        {
+            "type": "Microsoft.Storage/storageAccounts/blobServices",
+            "apiVersion": "[variables('storageApiVersion')]",
+            "name": "[concat(variables('primaryAccountName'), '/default')]",
+            "properties": {
+                  "isVersioningEnabled": true
+            },
+            "dependsOn": [
+                  "[variables('primaryAccountName')]"
+            ]
         },
         {
             "type": "Microsoft.Storage/storageAccounts",
