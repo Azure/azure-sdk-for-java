@@ -124,13 +124,13 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
     public void recognizeReceiptDataTextDetails(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
         client = getFormRecognizerAsyncClient(httpClient, serviceVersion);
-        receiptDataRunnerTextDetails((data, includeTextContent) -> {
+        receiptDataRunnerTextDetails((data, includeFieldElements) -> {
             SyncPoller<OperationResult, List<RecognizedReceipt>> syncPoller = client.beginRecognizeReceipts(
                 new RecognizeOptions(toFluxByteBuffer(data), RECEIPT_FILE_LENGTH)
-                    .setFormContentType(FormContentType.IMAGE_JPEG).setIncludeTextContent(includeTextContent)
+                    .setFormContentType(FormContentType.IMAGE_JPEG).setIncludeFieldElements(includeFieldElements)
                     .setPollInterval(durationTestMode)).getSyncPoller();
             syncPoller.waitForCompletion();
-            validateReceiptResultData(syncPoller.getFinalResult(), includeTextContent);
+            validateReceiptResultData(syncPoller.getFinalResult(), includeFieldElements);
         });
     }
 
@@ -142,10 +142,10 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
     public void recognizeReceiptDataWithPngFile(HttpClient httpClient,
         FormRecognizerServiceVersion serviceVersion) {
         client = getFormRecognizerAsyncClient(httpClient, serviceVersion);
-        receiptPngDataRunnerTextDetails((data, includeTextContent) -> {
+        receiptPngDataRunnerTextDetails((data, includeFieldElements) -> {
             SyncPoller<OperationResult, List<RecognizedReceipt>> syncPoller =
                 client.beginRecognizeReceipts(new RecognizeOptions(toFluxByteBuffer(data), RECEIPT_PNG_FILE_LENGTH)
-                    .setFormContentType(FormContentType.IMAGE_PNG).setIncludeTextContent(includeTextContent)
+                    .setFormContentType(FormContentType.IMAGE_PNG).setIncludeFieldElements(includeFieldElements)
                     .setPollInterval(durationTestMode)).getSyncPoller();
             syncPoller.waitForCompletion();
             validateReceiptResultData(syncPoller.getFinalResult(), true);
@@ -219,7 +219,7 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
     }
 
     /**
-     * Verifies receipt data for a document using source as file url and include content when includeTextContent is
+     * Verifies receipt data for a document using source as file url and include content when includeFieldElements is
      * true.
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -227,17 +227,17 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
     public void recognizeReceiptFromUrlTextContent(HttpClient httpClient,
         FormRecognizerServiceVersion serviceVersion) {
         client = getFormRecognizerAsyncClient(httpClient, serviceVersion);
-        receiptSourceUrlRunnerTextDetails((sourceUrl, includeTextContent) -> {
+        receiptSourceUrlRunnerTextDetails((sourceUrl, includeFieldElements) -> {
             SyncPoller<OperationResult, List<RecognizedReceipt>> syncPoller = client.beginRecognizeReceiptsFromUrl(
-                new RecognizeOptions(sourceUrl).setIncludeTextContent(includeTextContent)
+                new RecognizeOptions(sourceUrl).setIncludeFieldElements(includeFieldElements)
                     .setPollInterval(durationTestMode)).getSyncPoller();
             syncPoller.waitForCompletion();
-            validateReceiptResultData(syncPoller.getFinalResult(), includeTextContent);
+            validateReceiptResultData(syncPoller.getFinalResult(), includeFieldElements);
         });
     }
 
     /**
-     * Verifies receipt data for a document using source as PNG file url and include content when includeTextContent is
+     * Verifies receipt data for a document using source as PNG file url and include content when includeFieldElements is
      * true.
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -245,13 +245,13 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
     public void recognizeReceiptSourceUrlWithPngFile(HttpClient httpClient,
         FormRecognizerServiceVersion serviceVersion) {
         client = getFormRecognizerAsyncClient(httpClient, serviceVersion);
-        receiptPngSourceUrlRunnerTextDetails((sourceUrl, includeTextContent) -> {
+        receiptPngSourceUrlRunnerTextDetails((sourceUrl, includeFieldElements) -> {
             SyncPoller<OperationResult, List<RecognizedReceipt>> syncPoller = client.beginRecognizeReceiptsFromUrl(
-                new RecognizeOptions(sourceUrl).setIncludeTextContent(includeTextContent)
+                new RecognizeOptions(sourceUrl).setIncludeFieldElements(includeFieldElements)
                     .setPollInterval(durationTestMode))
                 .getSyncPoller();
             syncPoller.waitForCompletion();
-            validateReceiptResultData(syncPoller.getFinalResult(), includeTextContent);
+            validateReceiptResultData(syncPoller.getFinalResult(), includeFieldElements);
         });
     }
 
@@ -427,7 +427,7 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
                 SyncPoller<OperationResult, List<RecognizedForm>> syncPoller =
                     client.beginRecognizeCustomForms(new RecognizeCustomFormsOptions(toFluxByteBuffer(data),
                         dataLength, trainingPoller.getFinalResult().getModelId())
-                        .setFormContentType(FormContentType.APPLICATION_PDF).setIncludeTextContent(true)
+                        .setFormContentType(FormContentType.APPLICATION_PDF).setIncludeFieldElements(true)
                         .setPollInterval(durationTestMode)).getSyncPoller();
                 syncPoller.waitForCompletion();
                 validateRecognizedResult(syncPoller.getFinalResult(), true, true);
@@ -525,7 +525,7 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
                 assertThrows(RuntimeException.class, () -> client.beginRecognizeCustomForms(
                     new RecognizeCustomFormsOptions((InputStream) null, dataLength,
                     syncPoller.getFinalResult().getModelId()).setFormContentType(FormContentType.APPLICATION_PDF)
-                    .setIncludeTextContent(true).setPollInterval(durationTestMode)).getSyncPoller());
+                    .setIncludeFieldElements(true).setPollInterval(durationTestMode)).getSyncPoller());
             }));
     }
 
@@ -540,7 +540,7 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
         customFormDataRunner((data, dataLength) -> {
             Exception ex = assertThrows(RuntimeException.class, () -> client.beginRecognizeCustomForms(
                 new RecognizeCustomFormsOptions(toFluxByteBuffer(data), dataLength,
-                    null).setFormContentType(FormContentType.APPLICATION_PDF).setIncludeTextContent(true)
+                    null).setFormContentType(FormContentType.APPLICATION_PDF).setIncludeFieldElements(true)
                     .setPollInterval(durationTestMode)).getSyncPoller());
             assertEquals(EXPECTED_MODEL_ID_IS_REQUIRED_EXCEPTION_MESSAGE, ex.getMessage());
         });
@@ -557,7 +557,7 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
         customFormDataRunner((data, dataLength) -> {
             Exception ex = assertThrows(RuntimeException.class, () -> client.beginRecognizeCustomForms(
                 new RecognizeCustomFormsOptions(toFluxByteBuffer(data), dataLength, "")
-                    .setFormContentType(FormContentType.APPLICATION_PDF).setIncludeTextContent(true)
+                    .setFormContentType(FormContentType.APPLICATION_PDF).setIncludeFieldElements(true)
                     .setPollInterval(durationTestMode)).getSyncPoller());
             assertEquals(EXPECTED_INVALID_UUID_EXCEPTION_MESSAGE, ex.getMessage());
         });
@@ -604,7 +604,7 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
                 SyncPoller<OperationResult, List<RecognizedForm>> syncPoller = client.beginRecognizeCustomForms(
                     new RecognizeCustomFormsOptions(getReplayableBufferData(FORM_LOCAL_URL), dataLength,
                         trainingPoller.getFinalResult().getModelId())
-                        .setIncludeTextContent(true).setPollInterval(durationTestMode)).getSyncPoller();
+                        .setIncludeFieldElements(true).setPollInterval(durationTestMode)).getSyncPoller();
                 syncPoller.waitForCompletion();
                 validateRecognizedResult(syncPoller.getFinalResult(), true, true);
             }));
@@ -680,7 +680,7 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
                     new RecognizeCustomFormsOptions(toFluxByteBuffer(data), dataLength,
                         trainingPoller.getFinalResult().getModelId())
                         .setFormContentType(FormContentType.APPLICATION_PDF)
-                        .setIncludeTextContent(true).setPollInterval(durationTestMode)).getSyncPoller();
+                        .setIncludeFieldElements(true).setPollInterval(durationTestMode)).getSyncPoller();
                 syncPoller.waitForCompletion();
                 validateRecognizedResult(syncPoller.getFinalResult(), true, false);
             })
@@ -805,7 +805,7 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
 
                 SyncPoller<OperationResult, List<RecognizedForm>> syncPoller = client.beginRecognizeCustomForms(
                     new RecognizeCustomFormsOptions(fileUrl, trainingPoller.getFinalResult().getModelId())
-                        .setIncludeTextContent(true).setPollInterval(durationTestMode)).getSyncPoller();
+                        .setIncludeFieldElements(true).setPollInterval(durationTestMode)).getSyncPoller();
                 syncPoller.waitForCompletion();
                 validateRecognizedResult(syncPoller.getFinalResult(), true, false);
             }), FORM_JPG);
@@ -926,7 +926,7 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
 
                 SyncPoller<OperationResult, List<RecognizedForm>> syncPoller = client.beginRecognizeCustomForms(
                     new RecognizeCustomFormsOptions(fileUrl, trainingPoller.getFinalResult().getModelId())
-                        .setIncludeTextContent(true).setPollInterval(durationTestMode)).getSyncPoller();
+                        .setIncludeFieldElements(true).setPollInterval(durationTestMode)).getSyncPoller();
                 syncPoller.waitForCompletion();
                 validateRecognizedResult(syncPoller.getFinalResult(), true, true);
             }), FORM_JPG);

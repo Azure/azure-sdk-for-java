@@ -38,7 +38,7 @@ public class GetBoundingBoxesAsync {
         String filePath = "{file_source_url}";
         PollerFlux<OperationResult, List<RecognizedForm>> recognizeFormPoller =
             client.beginRecognizeCustomFormsFromUrl(new RecognizeCustomFormsOptions(filePath, modelId)
-                .setIncludeTextContent(true));
+                .setIncludeFieldElements(true));
 
         Mono<List<RecognizedForm>> recognizeFormResult = recognizeFormPoller
             .last()
@@ -63,7 +63,7 @@ public class GetBoundingBoxesAsync {
                 recognizedForm.getFields().forEach((fieldText, fieldValue) -> {
                     System.out.printf("Field %s has value %s based on %s with a confidence score "
                             + "of %.2f.%n",
-                        fieldText, fieldValue.getFieldValue(), fieldValue.getValueText().getText(),
+                        fieldText, fieldValue.getFieldValue(), fieldValue.getValueData().getText(),
                         fieldValue.getConfidence());
                 });
 
@@ -82,11 +82,11 @@ public class GetBoundingBoxesAsync {
                         System.out.printf("Table %d%n", i2);
                         formTable.getCells().forEach(formTableCell -> {
                             System.out.printf("Cell text %s has following words: %n", formTableCell.getText());
-                            // textContent only exists if you set includeTextContent to True in your
+                            // textContent only exists if you set includeFieldElements to True in your
                             // call to beginRecognizeCustomFormsFromUrl
                             // It is also a list of FormWords and FormLines, but in this example, we only deal with
                             // FormWords
-                            formTableCell.getTextContent().forEach(formContent -> {
+                            formTableCell.getFieldElements().forEach(formContent -> {
                                 if (formContent instanceof FormWord) {
                                     FormWord formWordElement = (FormWord) (formContent);
                                     final StringBuilder boundingBoxStr = new StringBuilder();

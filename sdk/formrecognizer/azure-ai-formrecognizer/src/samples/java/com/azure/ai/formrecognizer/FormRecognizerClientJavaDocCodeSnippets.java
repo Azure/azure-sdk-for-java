@@ -112,14 +112,14 @@ public class FormRecognizerClientJavaDocCodeSnippets {
         // BEGIN: com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeCustomForms#recognizeCustomFormsOptions
         File form = new File("{local/file_path/fileName.jpg}");
         String modelId = "{custom_trained_model_id}";
-        boolean includeTextContent = true;
+        boolean includeFieldElements = true;
 
         byte[] fileContent = Files.readAllBytes(form.toPath());
         InputStream targetStream = new ByteArrayInputStream(fileContent);
 
         formRecognizerClient.beginRecognizeCustomForms(new RecognizeCustomFormsOptions(targetStream,
             form.length(), modelId).setFormContentType(FormContentType.IMAGE_JPEG)
-            .setIncludeTextContent(includeTextContent).setPollInterval(Duration.ofSeconds(5))).getFinalResult()
+            .setIncludeFieldElements(includeFieldElements).setPollInterval(Duration.ofSeconds(5))).getFinalResult()
             .forEach(recognizedForm -> recognizedForm.getFields().entrySet().forEach(entry -> {
                 String fieldText = entry.getKey();
                 FormField fieldValue = entry.getValue();
@@ -296,12 +296,12 @@ public class FormRecognizerClientJavaDocCodeSnippets {
     public void beginRecognizeReceiptsWithOptions() throws IOException {
         // BEGIN: com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeReceipts#recognizeOptions
         File receipt = new File("{local/file_path/fileName.jpg}");
-        boolean includeTextContent = true;
+        boolean includeFieldElements = true;
         byte[] fileContent = Files.readAllBytes(receipt.toPath());
         InputStream targetStream = new ByteArrayInputStream(fileContent);
         formRecognizerClient.beginRecognizeReceipts(new RecognizeOptions(targetStream, receipt.length())
             .setFormContentType(FormContentType.IMAGE_JPEG)
-            .setIncludeTextContent(includeTextContent)
+            .setIncludeFieldElements(includeFieldElements)
             .setPollInterval(Duration.ofSeconds(5))).getFinalResult()
             .forEach(recognizedReceipt -> {
                 Map<String, FormField> recognizedFields = recognizedReceipt.getRecognizedForm().getFields();

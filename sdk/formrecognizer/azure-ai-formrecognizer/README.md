@@ -210,7 +210,7 @@ for (int i = 0; i < recognizedForms.size(); i++) {
     System.out.printf("Form type: %s%n", form.getFormType());
     form.getFields().forEach((label, formField) -> {
         System.out.printf("Field %s has value %s with confidence score of %f.%n", label,
-            formField.getValueText().getText(),
+            formField.getValueData().getText(),
             formField.getConfidence());
     });
     System.out.print("-----------------------------------");
