@@ -101,7 +101,7 @@ public class TablesSharedKeyCredential {
                 Arrays.sort(queryParamValues);
 
                 String queryParamValuesStr = String.join(",", queryParamValues);
-                
+
                 if (queryParamName.equalsIgnoreCase("comp")) {
                     canonicalizedResource.append("?").append(queryParamName.toLowerCase(Locale.ROOT)).append("=")
                         .append(queryParamValuesStr);
