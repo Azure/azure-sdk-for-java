@@ -97,6 +97,20 @@
             ]
         },
         {
+            "type": "Microsoft.Storage/storageAccounts/fileServices",
+            "apiVersion": "[variables('storageApiVersion')]",
+            "name": "[concat(variables('primaryAccountName'), '/default')]",
+            "properties": {
+            "shareDeleteRetentionPolicy": {
+                "enabled": true,
+                "days": 1
+            }
+          },
+            "dependsOn": [
+                "[variables('primaryAccountName')]"
+            ]
+        },
+        {
             "type": "Microsoft.Storage/storageAccounts",
             "apiVersion": "[variables('storageApiVersion')]",
             "name": "[variables('secondaryAccountName')]",
