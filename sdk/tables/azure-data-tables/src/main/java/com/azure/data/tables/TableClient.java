@@ -3,11 +3,8 @@
 package com.azure.data.tables;
 
 import com.azure.core.annotation.ServiceClient;
-
-import com.azure.data.tables.implementation.TablesImpl;
 import java.util.List;
 import java.util.Map;
-import reactor.core.publisher.Mono;
 
 /**
  * sync client for table operations
@@ -39,35 +36,26 @@ public class TableClient {
      * @param tableEntityProperties a map of properties for the TableEntity
      * @return the created TableEntity
      */
-    public TableEntity createEntity(Map<String, Object> tableEntityProperties) throws Exception {
-        if (!tableEntityProperties.containsKey("PartitionKey")) {
-            throw new Exception("property map must contain PartitionKey as a key in key-value pair");
-        }
-        if (!tableEntityProperties.containsKey("RowKey")) {
-            throw new Exception("property map must contain RowKey as a key in key-value pair");
-        }
-
-        return new TableEntity();
-
-        //Questions: What spellings for those are accepted? What type of exception should be thrown?
+    public TableEntity createEntity(Map<String, Object> tableEntityProperties) {
+        return null;
     }
 
-    public void upsertEntity( UpdateMode updateMode, TableEntity tableEntity){
-        if (updateMode.equals(UpdateMode.Merge)){
-            //insert or merge if exists
-        }
-        if (updateMode.equals(UpdateMode.Replace)){
-            //insert or replace if exists
-        }
+    /**
+     * based on Mode it either inserts or merges if exists or inserts or merges if exists
+     *
+     * @param updateMode type of upsert
+     * @param tableEntity entity to upsert
+     */
+    public void upsertEntity(UpdateMode updateMode, TableEntity tableEntity) {
     }
 
-    public void updateEntity( UpdateMode updateMode, TableEntity tableEntity) {
-        if (updateMode.equals(UpdateMode.Merge)){
-            //update if exists, fails if entity does not exist
-        }
-        if (updateMode.equals(UpdateMode.Replace)){
-            //replaces if exists, fails if entity does not exist
-        }
+    /**
+     * based on Mode it either updates or fails if it does exists or replaces or fails if it does exists
+     *
+     * @param updateMode type of update
+     * @param tableEntity entity to update
+     */
+    public void updateEntity(UpdateMode updateMode, TableEntity tableEntity) {
     }
 
     /**
@@ -89,9 +77,10 @@ public class TableClient {
 
     /**
      * returns the table name associated with the client
+     *
      * @return table name
      */
-    public String getTableName(){
+    public String getTableName() {
         return this.tableName;
     }
 

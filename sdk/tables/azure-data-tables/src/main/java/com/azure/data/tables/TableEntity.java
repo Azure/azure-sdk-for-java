@@ -10,18 +10,12 @@ import java.util.Map;
 public class TableEntity {
     private Map<String, Object> properties;
 
-    TableEntity() {
-    }
-
     /**
      * creates a new TableEntity
      *
-     * @param rowKey rowKey
-     * @param partitionKey partitionKey
      * @param properties map of properties of the entity
      */
-    TableEntity(String rowKey, String partitionKey, Map<String, Object> properties) {
-        this.properties = properties;
+    public TableEntity(Map<String, Object> properties) {
     }
 
     /**
@@ -45,6 +39,7 @@ public class TableEntity {
 
     /**
      * set the properties
+     *
      * @param properties properties to set to this entity
      */
     public void setProperties(Map<String, Object> properties) {

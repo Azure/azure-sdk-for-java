@@ -5,7 +5,9 @@ package com.azure.data.tables;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.data.tables.implementation.models.TableServiceErrorException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * sync code snippets for the table service
@@ -54,11 +56,12 @@ public class TableServiceClientCodeSnippets {
         }
 
         //insert entity
-        String row = "crayola markers";
-        String partitionKey = "markers";
-        TableEntity tableEntity = new TableEntity(row, partitionKey, null);
+        Map<String, Object> properties = new HashMap<>();
+        properties.put("RowKey", "crayolaMarkers");
+        properties.put("PartitionKey", "markers");
+        TableEntity tableEntity = null;
         try {
-            tableEntity = tableClient.insertEntity(tableEntity);
+            tableEntity = tableClient.createEntity(properties);
         } catch (HttpResponseException e) {
             logger.error("Insert Entity Unsuccessful. Error: " + e);
         }
@@ -66,23 +69,15 @@ public class TableServiceClientCodeSnippets {
         //update entity
         tableEntity.addProperty("Seller", "Crayola");
         try {
-            tableClient.updateEntity(tableEntity);
+            tableClient.updateEntity(UpdateMode.Replace, tableEntity);
         } catch (HttpResponseException e) {
             logger.error("Update Entity Unsuccessful. Error: " + e);
         }
 
-        //upsert entity (where it is an insert or replace)
+        //upsert entity
         tableEntity.addProperty("Price", "5");
         try {
-            tableClient.insertOrReplaceEntity(tableEntity);
-        } catch (HttpResponseException e) {
-            logger.error("Upsert Entity Unsuccessful. Error: " + e);
-        }
-
-        //upsert entity (where it is an insert or merge)
-        tableEntity.addProperty("Price", "5");
-        try {
-            tableClient.insertOrMergeEntity(tableEntity);
+            tableClient.upsertEntity(UpdateMode.Replace, tableEntity);
         } catch (HttpResponseException e) {
             logger.error("Upsert Entity Unsuccessful. Error: " + e);
         }

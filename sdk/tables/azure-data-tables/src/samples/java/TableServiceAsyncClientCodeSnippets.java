@@ -3,6 +3,8 @@
 package com.azure.data.tables;
 
 import com.azure.core.util.logging.ClientLogger;
+import java.util.HashMap;
+import java.util.Map;
 import reactor.core.publisher.Mono;
 
 /**
@@ -58,10 +60,11 @@ public class TableServiceAsyncClientCodeSnippets {
             .buildAsyncClient();
 
         TableAsyncClient tableAsyncClient = tableServiceAsyncClient.getClient("OfficeSupplies");
-        String row = "crayolaMarkers";
-        String partitionKey = "markers";
+        Map<String, Object> properties = new HashMap<>();
+        properties.put("RowKey", "crayolaMarkers");
+        properties.put("PartitionKey", "markers");
 
-        tableAsyncClient.insertEntity(new TableEntity(row, partitionKey, null)).subscribe(tableEntity -> {
+        tableAsyncClient.createEntity(properties).subscribe(tableEntity -> {
             logger.info("Insert Entity Successful. Entity: " + tableEntity);
         }, error -> {
             logger.error("There was an error inserting the Entity. Error: " + error);
@@ -94,9 +97,9 @@ public class TableServiceAsyncClientCodeSnippets {
     }
 
     /**
-     * update entity code snippet
+     * upsert entity code snippet
      */
-    private void updateEntity() {
+    private void upsert() {
 
         // Build service client
         TableServiceAsyncClient tableServiceAsyncClient = new TableServiceClientBuilder()
@@ -110,7 +113,33 @@ public class TableServiceAsyncClientCodeSnippets {
         tableAsyncClient.queryEntity(queryOptions).flatMap(tableEntity -> {
             logger.info("Table Entity: " + tableEntity);
             tableEntity.addProperty("Price", "5");
-            Mono<Void> updateEntityMono = tableAsyncClient.updateEntity(tableEntity);
+            Mono<Void> updateEntityMono = tableAsyncClient.upsertEntity(UpdateMode.Merge, tableEntity);
+            return updateEntityMono;
+        }).subscribe(Void -> {
+            logger.info("Update Entity Successful.");
+        }, error -> {
+            logger.error("There was an error updating the Entity. Error: " + error);
+        });
+    }
+
+    /**
+     * update entity code snippet
+     */
+    private void update() {
+
+        // Build service client
+        TableServiceAsyncClient tableServiceAsyncClient = new TableServiceClientBuilder()
+            .connectionString("connectionString")
+            .buildAsyncClient();
+
+        TableAsyncClient tableAsyncClient = tableServiceAsyncClient.getClient("OfficeSupplies");
+        QueryOptions queryOptions = new QueryOptions();
+        queryOptions.setFilter("RowKey eq crayolaMarkers");
+
+        tableAsyncClient.queryEntity(queryOptions).flatMap(tableEntity -> {
+            logger.info("Table Entity: " + tableEntity);
+            tableEntity.addProperty("Price", "5");
+            Mono<Void> updateEntityMono = tableAsyncClient.upsertEntity(UpdateMode.Replace, tableEntity);
             return updateEntityMono;
         }).subscribe(Void -> {
             logger.info("Update Entity Successful.");

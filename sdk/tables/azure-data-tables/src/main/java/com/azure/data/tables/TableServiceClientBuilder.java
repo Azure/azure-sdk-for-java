@@ -52,7 +52,7 @@ public class TableServiceClientBuilder {
      * gets the connection string
      * @return the connection string
      */
-    public String getConnectionString(){
+    public String getConnectionString() {
         return this.connectionString;
     }
 
