@@ -7,28 +7,28 @@ package com.azure.resourcemanager.network.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for PublicIpPrefixSkuName. */
-public enum PublicIpPrefixSkuName {
+/** Defines values for AzureFirewallSkuTier. */
+public enum AzureFirewallSkuTier {
     /** Enum value Standard. */
     STANDARD("Standard");
 
-    /** The actual serialized value for a PublicIpPrefixSkuName instance. */
+    /** The actual serialized value for a AzureFirewallSkuTier instance. */
     private final String value;
 
-    PublicIpPrefixSkuName(String value) {
+    AzureFirewallSkuTier(String value) {
         this.value = value;
     }
 
     /**
-     * Parses a serialized value to a PublicIpPrefixSkuName instance.
+     * Parses a serialized value to a AzureFirewallSkuTier instance.
      *
      * @param value the serialized value to parse.
-     * @return the parsed PublicIpPrefixSkuName object, or null if unable to parse.
+     * @return the parsed AzureFirewallSkuTier object, or null if unable to parse.
      */
     @JsonCreator
-    public static PublicIpPrefixSkuName fromString(String value) {
-        PublicIpPrefixSkuName[] items = PublicIpPrefixSkuName.values();
-        for (PublicIpPrefixSkuName item : items) {
+    public static AzureFirewallSkuTier fromString(String value) {
+        AzureFirewallSkuTier[] items = AzureFirewallSkuTier.values();
+        for (AzureFirewallSkuTier item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
                 return item;
             }

@@ -139,35 +139,6 @@ public final class PrivateEndpointsClient
             @PathParam("subscriptionId") String subscriptionId,
             Context context);
 
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
-                + "/privateEndpoints/{privateEndpointName}")
-        @ExpectedResponses({200, 202, 204})
-        @UnexpectedResponseExceptionType(ErrorException.class)
-        Mono<Response<Void>> beginDeleteWithoutPolling(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("privateEndpointName") String privateEndpointName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            Context context);
-
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
-                + "/privateEndpoints/{privateEndpointName}")
-        @ExpectedResponses({200, 201})
-        @UnexpectedResponseExceptionType(ErrorException.class)
-        Mono<Response<PrivateEndpointInner>> beginCreateOrUpdateWithoutPolling(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("privateEndpointName") String privateEndpointName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @BodyParam("application/json") PrivateEndpointInner parameters,
-            Context context);
-
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
@@ -357,7 +328,7 @@ public final class PrivateEndpointsClient
     public Mono<Void> deleteAsync(String resourceGroupName, String privateEndpointName) {
         return beginDeleteAsync(resourceGroupName, privateEndpointName)
             .last()
-            .flatMap(client::getLroFinalResultOrError);
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -375,7 +346,7 @@ public final class PrivateEndpointsClient
     public Mono<Void> deleteAsync(String resourceGroupName, String privateEndpointName, Context context) {
         return beginDeleteAsync(resourceGroupName, privateEndpointName, context)
             .last()
-            .flatMap(client::getLroFinalResultOrError);
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -835,7 +806,7 @@ public final class PrivateEndpointsClient
         String resourceGroupName, String privateEndpointName, PrivateEndpointInner parameters) {
         return beginCreateOrUpdateAsync(resourceGroupName, privateEndpointName, parameters)
             .last()
-            .flatMap(client::getLroFinalResultOrError);
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -855,7 +826,7 @@ public final class PrivateEndpointsClient
         String resourceGroupName, String privateEndpointName, PrivateEndpointInner parameters, Context context) {
         return beginCreateOrUpdateAsync(resourceGroupName, privateEndpointName, parameters, context)
             .last()
-            .flatMap(client::getLroFinalResultOrError);
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -1175,357 +1146,6 @@ public final class PrivateEndpointsClient
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PrivateEndpointInner> list(Context context) {
         return new PagedIterable<>(listAsync(context));
-    }
-
-    /**
-     * Deletes the specified private endpoint.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param privateEndpointName The name of the private endpoint.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> beginDeleteWithoutPollingWithResponseAsync(
-        String resourceGroupName, String privateEndpointName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (privateEndpointName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter privateEndpointName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2019-11-01";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .beginDeleteWithoutPolling(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            privateEndpointName,
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
-
-    /**
-     * Deletes the specified private endpoint.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param privateEndpointName The name of the private endpoint.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> beginDeleteWithoutPollingWithResponseAsync(
-        String resourceGroupName, String privateEndpointName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (privateEndpointName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter privateEndpointName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2019-11-01";
-        return service
-            .beginDeleteWithoutPolling(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                privateEndpointName,
-                apiVersion,
-                this.client.getSubscriptionId(),
-                context);
-    }
-
-    /**
-     * Deletes the specified private endpoint.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param privateEndpointName The name of the private endpoint.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> beginDeleteWithoutPollingAsync(String resourceGroupName, String privateEndpointName) {
-        return beginDeleteWithoutPollingWithResponseAsync(resourceGroupName, privateEndpointName)
-            .flatMap((Response<Void> res) -> Mono.empty());
-    }
-
-    /**
-     * Deletes the specified private endpoint.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param privateEndpointName The name of the private endpoint.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> beginDeleteWithoutPollingAsync(
-        String resourceGroupName, String privateEndpointName, Context context) {
-        return beginDeleteWithoutPollingWithResponseAsync(resourceGroupName, privateEndpointName, context)
-            .flatMap((Response<Void> res) -> Mono.empty());
-    }
-
-    /**
-     * Deletes the specified private endpoint.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param privateEndpointName The name of the private endpoint.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void beginDeleteWithoutPolling(String resourceGroupName, String privateEndpointName) {
-        beginDeleteWithoutPollingAsync(resourceGroupName, privateEndpointName).block();
-    }
-
-    /**
-     * Deletes the specified private endpoint.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param privateEndpointName The name of the private endpoint.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void beginDeleteWithoutPolling(String resourceGroupName, String privateEndpointName, Context context) {
-        beginDeleteWithoutPollingAsync(resourceGroupName, privateEndpointName, context).block();
-    }
-
-    /**
-     * Creates or updates an private endpoint in the specified resource group.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param privateEndpointName The name of the private endpoint.
-     * @param parameters Private endpoint resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return private endpoint resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<PrivateEndpointInner>> beginCreateOrUpdateWithoutPollingWithResponseAsync(
-        String resourceGroupName, String privateEndpointName, PrivateEndpointInner parameters) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (privateEndpointName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter privateEndpointName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (parameters == null) {
-            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
-        } else {
-            parameters.validate();
-        }
-        final String apiVersion = "2019-11-01";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .beginCreateOrUpdateWithoutPolling(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            privateEndpointName,
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            parameters,
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
-
-    /**
-     * Creates or updates an private endpoint in the specified resource group.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param privateEndpointName The name of the private endpoint.
-     * @param parameters Private endpoint resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return private endpoint resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<PrivateEndpointInner>> beginCreateOrUpdateWithoutPollingWithResponseAsync(
-        String resourceGroupName, String privateEndpointName, PrivateEndpointInner parameters, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (privateEndpointName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter privateEndpointName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (parameters == null) {
-            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
-        } else {
-            parameters.validate();
-        }
-        final String apiVersion = "2019-11-01";
-        return service
-            .beginCreateOrUpdateWithoutPolling(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                privateEndpointName,
-                apiVersion,
-                this.client.getSubscriptionId(),
-                parameters,
-                context);
-    }
-
-    /**
-     * Creates or updates an private endpoint in the specified resource group.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param privateEndpointName The name of the private endpoint.
-     * @param parameters Private endpoint resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return private endpoint resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PrivateEndpointInner> beginCreateOrUpdateWithoutPollingAsync(
-        String resourceGroupName, String privateEndpointName, PrivateEndpointInner parameters) {
-        return beginCreateOrUpdateWithoutPollingWithResponseAsync(resourceGroupName, privateEndpointName, parameters)
-            .flatMap(
-                (Response<PrivateEndpointInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Creates or updates an private endpoint in the specified resource group.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param privateEndpointName The name of the private endpoint.
-     * @param parameters Private endpoint resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return private endpoint resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PrivateEndpointInner> beginCreateOrUpdateWithoutPollingAsync(
-        String resourceGroupName, String privateEndpointName, PrivateEndpointInner parameters, Context context) {
-        return beginCreateOrUpdateWithoutPollingWithResponseAsync(
-                resourceGroupName, privateEndpointName, parameters, context)
-            .flatMap(
-                (Response<PrivateEndpointInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Creates or updates an private endpoint in the specified resource group.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param privateEndpointName The name of the private endpoint.
-     * @param parameters Private endpoint resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return private endpoint resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PrivateEndpointInner beginCreateOrUpdateWithoutPolling(
-        String resourceGroupName, String privateEndpointName, PrivateEndpointInner parameters) {
-        return beginCreateOrUpdateWithoutPollingAsync(resourceGroupName, privateEndpointName, parameters).block();
-    }
-
-    /**
-     * Creates or updates an private endpoint in the specified resource group.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param privateEndpointName The name of the private endpoint.
-     * @param parameters Private endpoint resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return private endpoint resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PrivateEndpointInner beginCreateOrUpdateWithoutPolling(
-        String resourceGroupName, String privateEndpointName, PrivateEndpointInner parameters, Context context) {
-        return beginCreateOrUpdateWithoutPollingAsync(resourceGroupName, privateEndpointName, parameters, context)
-            .block();
     }
 
     /**
