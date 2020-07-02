@@ -135,32 +135,6 @@ public interface SpringService
             WithCreate withTracing(String appInsightInstrumentationKey);
         }
 
-        /** The stage of a spring service definition allowing to specify the server configuration. */
-        interface WithConfiguration {
-            /**
-             * Specifies the git repository for the spring service.
-             * @param uri the uri of the git repository
-             * @return the next stage of spring service definition
-             */
-            WithCreate withGitUri(String uri);
-
-            /**
-             * Specifies the git repository for the spring service.
-             * @param uri the uri of the git repository
-             * @param username the username of the private git repository
-             * @param password the password of the private git repository
-             * @return the next stage of spring service definition
-             */
-            WithCreate withGitUriAndCredential(String uri, String username, String password);
-
-            /**
-             * Specifies the git repository for the spring service.
-             * @param gitConfig the configuration of the git repository
-             * @return the next stage of spring service definition
-             */
-            WithCreate withGitConfig(ConfigServerGitProperty gitConfig);
-        }
-
         /**
          * The stage of the definition which contains all the minimum required inputs for the resource to be created,
          * but also allows for any other optional settings to be specified.
@@ -169,8 +143,7 @@ public interface SpringService
             extends Creatable<SpringService>,
                 Resource.DefinitionWithTags<WithCreate>,
                 WithSku,
-                WithTracing,
-                WithConfiguration {}
+                WithTracing {}
     }
 
     /** The template for an update operation, containing all the settings that can be modified. */

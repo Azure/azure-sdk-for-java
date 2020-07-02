@@ -8,6 +8,7 @@ import com.azure.resourcemanager.appplatform.models.SpringApp;
 import com.azure.resourcemanager.appplatform.models.SpringAppDeployment;
 import com.azure.resourcemanager.appplatform.models.SpringService;
 import com.azure.resourcemanager.resources.fluentcore.arm.Region;
+import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 import org.apache.commons.compress.utils.IOUtils;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -22,7 +23,7 @@ import java.net.URLConnection;
 public class SpringCloudTest extends AppPlatformTest {
 
     SpringCloudTest() {
-        super(RunCondition.LIVE_ONLY); // need storage data-plane
+        super(RunCondition.LIVE_ONLY); // need storage data-plane and url check
     }
 
     @Test
@@ -35,20 +36,21 @@ public class SpringCloudTest extends AppPlatformTest {
         SpringService service = appPlatformManager.springServices().define(serviceName)
             .withRegion(Region.US_EAST)
             .withNewResourceGroup(rgName)
-            .withSku("Basic")
-            .withGitUri("https://github.com/Azure-Samples/piggymetrics-config")
+            .withSku("B0")
             .create();
 
-        Assertions.assertEquals("Basic", service.sku().tier());
-        Assertions.assertEquals("https://github.com/Azure-Samples/piggymetrics-config", service.serverProperties().configServer().gitProperty().uri());
+        Assertions.assertEquals("B0", service.sku().name());
 
         service.update()
-            .withSku("Standard")
-            .withoutGitConfig()
+            .withSku("S0")
             .apply();
 
-        Assertions.assertEquals("Standard", service.sku().tier());
-        Assertions.assertNull(service.serverProperties().configServer().gitProperty());
+        Assertions.assertEquals("S0", service.sku().name());
+
+        service.update()
+            .withGitUri("https://github.com/Azure-Samples/piggymetrics-config")
+            .apply();
+        Assertions.assertEquals("https://github.com/Azure-Samples/piggymetrics-config", service.serverProperties().configServer().gitProperty().uri());
 
         File jarFile = new File("gateway.jar");
         if (!jarFile.exists()) {
@@ -64,21 +66,17 @@ public class SpringCloudTest extends AppPlatformTest {
         Assertions.assertNotNull(app.url());
         Assertions.assertNotNull(app.activeDeployment());
 
-        HttpURLConnection connection = ((HttpURLConnection) new URL(app.url()).openConnection());
-        connection.connect();
-        Assertions.assertEquals(200, connection.getResponseCode());
+        Assertions.assertTrue(requestSuccess(app.url()));
 
         app.update()
-            .deployJar(deploymentName, jarFile)
             .withoutDeployment(app.activeDeployment())
+            .deployJar(deploymentName, jarFile)
             .apply();
 
         Assertions.assertNotNull(app.url());
         Assertions.assertEquals(deploymentName, app.activeDeployment());
 
-        connection = ((HttpURLConnection) new URL(app.url()).openConnection());
-        connection.connect();
-        Assertions.assertEquals(200, connection.getResponseCode());
+        Assertions.assertTrue(requestSuccess(app.url()));
 
         SpringAppDeployment deployment = app.deploy().getByName(app.activeDeployment());
         deployment.update()
@@ -97,19 +95,31 @@ public class SpringCloudTest extends AppPlatformTest {
             .withSourceCodeFolder(new File(this.getClass().getResource("/piggymetrics").getFile()))
             .withTargetModule("gateway")
             .withCurrentActiveSetting()
+            .activate()
             .create();
         app.refresh();
 
         Assertions.assertEquals(deploymentName1, app.activeDeployment());
         Assertions.assertEquals(2, deployment.settings().cpu());
+        Assertions.assertNotNull(deployment.getLogFileUrl());
 
-        connection = ((HttpURLConnection) new URL(app.url()).openConnection());
-        connection.connect();
-        Assertions.assertEquals(200, connection.getResponseCode());
+        Assertions.assertTrue(requestSuccess(app.url()));
 
         app.update()
             .withoutPublicEndpoint()
             .apply();
         Assertions.assertFalse(app.isPublic());
+    }
+
+    private boolean requestSuccess(String url) throws IOException {
+        for (int i = 0; i < 60; ++i) {
+            HttpURLConnection connection = (HttpURLConnection) new URL(url).openConnection();
+            connection.connect();
+            if (connection.getResponseCode() == 200) {
+                return true;
+            }
+            SdkContext.sleep(5000);
+        }
+        return false;
     }
 }

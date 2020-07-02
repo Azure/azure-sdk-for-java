@@ -11,6 +11,7 @@ import com.azure.resourcemanager.resources.fluentcore.model.Appliable;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
 import com.azure.resourcemanager.resources.fluentcore.model.Updatable;
+import reactor.core.publisher.Mono;
 
 import java.io.File;
 import java.time.OffsetDateTime;
@@ -40,6 +41,12 @@ public interface SpringAppDeployment
 
     /** @return all the instances of the deployment */
     List<DeploymentInstance> instances();
+
+    /** @return the log file url of the deployment */
+    String getLogFileUrl();
+
+    /** @return the log file url of the deployment */
+    Mono<String> getLogFileUrlAsync();
 
     /** Container interface for all the definitions that need to be implemented. */
     interface Definition

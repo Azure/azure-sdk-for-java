@@ -87,20 +87,12 @@ public class SpringServiceImpl
 
     @Override
     public SpringServiceImpl withSku(String skuName) {
-        if (inner().sku() == null) {
-            inner().withSku(new Sku());
-        }
-        inner().sku().withName(skuName);
-        return this;
+        return withSku(new Sku().withName(skuName));
     }
 
     @Override
     public SpringServiceImpl withSku(String skuName, int capacity) {
-        if (inner().sku() == null) {
-            inner().withSku(new Sku());
-        }
-        inner().sku().withName(skuName).withCapacity(capacity);
-        return this;
+        return withSku(new Sku().withName(skuName).withCapacity(capacity));
     }
 
     @Override
@@ -174,7 +166,13 @@ public class SpringServiceImpl
 
     @Override
     public Mono<SpringService> createResourceAsync() {
-        return manager().inner().getServices().createOrUpdateAsync(resourceGroupName(), name(), inner())
+        Mono<ServiceResourceInner> createOrUpdate;
+        if (isInCreateMode()) {
+            createOrUpdate = manager().inner().getServices().createOrUpdateAsync(resourceGroupName(), name(), inner());
+        } else {
+            createOrUpdate = manager().inner().getServices().updateAsync(resourceGroupName(), name(), inner());
+        }
+        return createOrUpdate
             .map(inner -> {
                 this.setInner(inner);
                 return this;

@@ -5,6 +5,7 @@ package com.azure.resourcemanager.appplatform.implementation;
 
 import com.azure.resourcemanager.appplatform.AppPlatformManager;
 import com.azure.resourcemanager.appplatform.fluent.inner.DeploymentResourceInner;
+import com.azure.resourcemanager.appplatform.fluent.inner.LogFileUrlResponseInner;
 import com.azure.resourcemanager.appplatform.fluent.inner.ResourceUploadDefinitionInner;
 import com.azure.resourcemanager.appplatform.models.DeploymentInstance;
 import com.azure.resourcemanager.appplatform.models.DeploymentResourceProperties;
@@ -99,6 +100,19 @@ public class SpringAppDeploymentImpl
             return null;
         }
         return inner().properties().instances();
+    }
+
+    @Override
+    public String getLogFileUrl() {
+        return getLogFileUrlAsync().block();
+    }
+
+    @Override
+    public Mono<String> getLogFileUrlAsync() {
+        return manager().inner().getDeployments().getLogFileUrlAsync(
+            parent().parent().resourceGroupName(), parent().parent().name(), parent().name(), name()
+        )
+            .map(LogFileUrlResponseInner::url);
     }
 
     private void ensureDeploySettings() {
@@ -385,7 +399,18 @@ public class SpringAppDeploymentImpl
 
     @Override
     public Mono<SpringAppDeployment> updateResourceAsync() {
-        return createResourceAsync();
+        if (originalDeployment != null) {
+            ensureDeploySettings();
+            inner().properties().withDeploymentSettings(originalDeployment.settings());
+        }
+        return manager().inner().getDeployments().updateAsync(
+            parent().parent().resourceGroupName(), parent().parent().name(), parent().name(), name(), inner().properties()
+        )
+            .map(inner -> {
+                originalDeployment = null;
+                setInner(inner);
+                return this;
+            });
     }
 
     @Override
