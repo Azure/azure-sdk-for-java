@@ -92,13 +92,17 @@ public class TablesSharedKeyCredential {
         if (requestUrl.getQuery() != null) {
             Map<String, String[]> queryParams = StorageImplUtils.parseQueryStringSplitValues(requestUrl.getQuery());
             ArrayList<String> queryParamNames = new ArrayList<>(queryParams.keySet());
+
             Collections.sort(queryParamNames);
 
             for (String queryParamName : queryParamNames) {
                 String[] queryParamValues = queryParams.get(queryParamName);
+
                 Arrays.sort(queryParamValues);
+
                 String queryParamValuesStr = String.join(",", queryParamValues);
-                if (queryParamName.equals("comp")) {
+                
+                if (queryParamName.equalsIgnoreCase("comp")) {
                     canonicalizedResource.append("?").append(queryParamName.toLowerCase(Locale.ROOT)).append("=")
                         .append(queryParamValuesStr);
                 }

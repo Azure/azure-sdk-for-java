@@ -35,7 +35,6 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
-
 /**
  * This class tests the Autorest code for the Tables track 2 SDK
  */
