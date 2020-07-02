@@ -152,35 +152,6 @@ public final class VpnSitesClient
             Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/vpnSites"
-                + "/{vpnSiteName}")
-        @ExpectedResponses({200, 201})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<VpnSiteInner>> beginCreateOrUpdateWithoutPolling(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("vpnSiteName") String vpnSiteName,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") VpnSiteInner vpnSiteParameters,
-            Context context);
-
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/vpnSites"
-                + "/{vpnSiteName}")
-        @ExpectedResponses({200, 202, 204})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> beginDeleteWithoutPolling(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("vpnSiteName") String vpnSiteName,
-            @QueryParam("api-version") String apiVersion,
-            Context context);
-
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -567,7 +538,7 @@ public final class VpnSitesClient
         String resourceGroupName, String vpnSiteName, VpnSiteInner vpnSiteParameters) {
         return beginCreateOrUpdateAsync(resourceGroupName, vpnSiteName, vpnSiteParameters)
             .last()
-            .flatMap(client::getLroFinalResultOrError);
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -587,7 +558,7 @@ public final class VpnSitesClient
         String resourceGroupName, String vpnSiteName, VpnSiteInner vpnSiteParameters, Context context) {
         return beginCreateOrUpdateAsync(resourceGroupName, vpnSiteName, vpnSiteParameters, context)
             .last()
-            .flatMap(client::getLroFinalResultOrError);
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -975,7 +946,7 @@ public final class VpnSitesClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String vpnSiteName) {
-        return beginDeleteAsync(resourceGroupName, vpnSiteName).last().flatMap(client::getLroFinalResultOrError);
+        return beginDeleteAsync(resourceGroupName, vpnSiteName).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -993,7 +964,7 @@ public final class VpnSitesClient
     public Mono<Void> deleteAsync(String resourceGroupName, String vpnSiteName, Context context) {
         return beginDeleteAsync(resourceGroupName, vpnSiteName, context)
             .last()
-            .flatMap(client::getLroFinalResultOrError);
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -1306,354 +1277,6 @@ public final class VpnSitesClient
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<VpnSiteInner> list(Context context) {
         return new PagedIterable<>(listAsync(context));
-    }
-
-    /**
-     * Creates a VpnSite resource if it doesn't exist else updates the existing VpnSite.
-     *
-     * @param resourceGroupName The resource group name of the VpnSite.
-     * @param vpnSiteName The name of the VpnSite being created or updated.
-     * @param vpnSiteParameters VpnSite Resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return vpnSite Resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<VpnSiteInner>> beginCreateOrUpdateWithoutPollingWithResponseAsync(
-        String resourceGroupName, String vpnSiteName, VpnSiteInner vpnSiteParameters) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (vpnSiteName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter vpnSiteName is required and cannot be null."));
-        }
-        if (vpnSiteParameters == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter vpnSiteParameters is required and cannot be null."));
-        } else {
-            vpnSiteParameters.validate();
-        }
-        final String apiVersion = "2019-11-01";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .beginCreateOrUpdateWithoutPolling(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            vpnSiteName,
-                            apiVersion,
-                            vpnSiteParameters,
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
-
-    /**
-     * Creates a VpnSite resource if it doesn't exist else updates the existing VpnSite.
-     *
-     * @param resourceGroupName The resource group name of the VpnSite.
-     * @param vpnSiteName The name of the VpnSite being created or updated.
-     * @param vpnSiteParameters VpnSite Resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return vpnSite Resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<VpnSiteInner>> beginCreateOrUpdateWithoutPollingWithResponseAsync(
-        String resourceGroupName, String vpnSiteName, VpnSiteInner vpnSiteParameters, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (vpnSiteName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter vpnSiteName is required and cannot be null."));
-        }
-        if (vpnSiteParameters == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter vpnSiteParameters is required and cannot be null."));
-        } else {
-            vpnSiteParameters.validate();
-        }
-        final String apiVersion = "2019-11-01";
-        return service
-            .beginCreateOrUpdateWithoutPolling(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                vpnSiteName,
-                apiVersion,
-                vpnSiteParameters,
-                context);
-    }
-
-    /**
-     * Creates a VpnSite resource if it doesn't exist else updates the existing VpnSite.
-     *
-     * @param resourceGroupName The resource group name of the VpnSite.
-     * @param vpnSiteName The name of the VpnSite being created or updated.
-     * @param vpnSiteParameters VpnSite Resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return vpnSite Resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<VpnSiteInner> beginCreateOrUpdateWithoutPollingAsync(
-        String resourceGroupName, String vpnSiteName, VpnSiteInner vpnSiteParameters) {
-        return beginCreateOrUpdateWithoutPollingWithResponseAsync(resourceGroupName, vpnSiteName, vpnSiteParameters)
-            .flatMap(
-                (Response<VpnSiteInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Creates a VpnSite resource if it doesn't exist else updates the existing VpnSite.
-     *
-     * @param resourceGroupName The resource group name of the VpnSite.
-     * @param vpnSiteName The name of the VpnSite being created or updated.
-     * @param vpnSiteParameters VpnSite Resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return vpnSite Resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<VpnSiteInner> beginCreateOrUpdateWithoutPollingAsync(
-        String resourceGroupName, String vpnSiteName, VpnSiteInner vpnSiteParameters, Context context) {
-        return beginCreateOrUpdateWithoutPollingWithResponseAsync(
-                resourceGroupName, vpnSiteName, vpnSiteParameters, context)
-            .flatMap(
-                (Response<VpnSiteInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Creates a VpnSite resource if it doesn't exist else updates the existing VpnSite.
-     *
-     * @param resourceGroupName The resource group name of the VpnSite.
-     * @param vpnSiteName The name of the VpnSite being created or updated.
-     * @param vpnSiteParameters VpnSite Resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return vpnSite Resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public VpnSiteInner beginCreateOrUpdateWithoutPolling(
-        String resourceGroupName, String vpnSiteName, VpnSiteInner vpnSiteParameters) {
-        return beginCreateOrUpdateWithoutPollingAsync(resourceGroupName, vpnSiteName, vpnSiteParameters).block();
-    }
-
-    /**
-     * Creates a VpnSite resource if it doesn't exist else updates the existing VpnSite.
-     *
-     * @param resourceGroupName The resource group name of the VpnSite.
-     * @param vpnSiteName The name of the VpnSite being created or updated.
-     * @param vpnSiteParameters VpnSite Resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return vpnSite Resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public VpnSiteInner beginCreateOrUpdateWithoutPolling(
-        String resourceGroupName, String vpnSiteName, VpnSiteInner vpnSiteParameters, Context context) {
-        return beginCreateOrUpdateWithoutPollingAsync(resourceGroupName, vpnSiteName, vpnSiteParameters, context)
-            .block();
-    }
-
-    /**
-     * Deletes a VpnSite.
-     *
-     * @param resourceGroupName The resource group name of the VpnSite.
-     * @param vpnSiteName The name of the VpnSite being deleted.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> beginDeleteWithoutPollingWithResponseAsync(
-        String resourceGroupName, String vpnSiteName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (vpnSiteName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter vpnSiteName is required and cannot be null."));
-        }
-        final String apiVersion = "2019-11-01";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .beginDeleteWithoutPolling(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            vpnSiteName,
-                            apiVersion,
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
-
-    /**
-     * Deletes a VpnSite.
-     *
-     * @param resourceGroupName The resource group name of the VpnSite.
-     * @param vpnSiteName The name of the VpnSite being deleted.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> beginDeleteWithoutPollingWithResponseAsync(
-        String resourceGroupName, String vpnSiteName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (vpnSiteName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter vpnSiteName is required and cannot be null."));
-        }
-        final String apiVersion = "2019-11-01";
-        return service
-            .beginDeleteWithoutPolling(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                vpnSiteName,
-                apiVersion,
-                context);
-    }
-
-    /**
-     * Deletes a VpnSite.
-     *
-     * @param resourceGroupName The resource group name of the VpnSite.
-     * @param vpnSiteName The name of the VpnSite being deleted.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> beginDeleteWithoutPollingAsync(String resourceGroupName, String vpnSiteName) {
-        return beginDeleteWithoutPollingWithResponseAsync(resourceGroupName, vpnSiteName)
-            .flatMap((Response<Void> res) -> Mono.empty());
-    }
-
-    /**
-     * Deletes a VpnSite.
-     *
-     * @param resourceGroupName The resource group name of the VpnSite.
-     * @param vpnSiteName The name of the VpnSite being deleted.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> beginDeleteWithoutPollingAsync(String resourceGroupName, String vpnSiteName, Context context) {
-        return beginDeleteWithoutPollingWithResponseAsync(resourceGroupName, vpnSiteName, context)
-            .flatMap((Response<Void> res) -> Mono.empty());
-    }
-
-    /**
-     * Deletes a VpnSite.
-     *
-     * @param resourceGroupName The resource group name of the VpnSite.
-     * @param vpnSiteName The name of the VpnSite being deleted.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void beginDeleteWithoutPolling(String resourceGroupName, String vpnSiteName) {
-        beginDeleteWithoutPollingAsync(resourceGroupName, vpnSiteName).block();
-    }
-
-    /**
-     * Deletes a VpnSite.
-     *
-     * @param resourceGroupName The resource group name of the VpnSite.
-     * @param vpnSiteName The name of the VpnSite being deleted.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void beginDeleteWithoutPolling(String resourceGroupName, String vpnSiteName, Context context) {
-        beginDeleteWithoutPollingAsync(resourceGroupName, vpnSiteName, context).block();
     }
 
     /**

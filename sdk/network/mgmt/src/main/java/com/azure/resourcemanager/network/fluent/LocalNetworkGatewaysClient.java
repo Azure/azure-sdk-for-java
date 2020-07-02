@@ -145,35 +145,6 @@ public final class LocalNetworkGatewaysClient
             Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
-                + "/localNetworkGateways/{localNetworkGatewayName}")
-        @ExpectedResponses({200, 201})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<LocalNetworkGatewayInner>> beginCreateOrUpdateWithoutPolling(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("localNetworkGatewayName") String localNetworkGatewayName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @BodyParam("application/json") LocalNetworkGatewayInner parameters,
-            Context context);
-
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
-                + "/localNetworkGateways/{localNetworkGatewayName}")
-        @ExpectedResponses({200, 202, 204})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> beginDeleteWithoutPolling(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("localNetworkGatewayName") String localNetworkGatewayName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            Context context);
-
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -396,7 +367,7 @@ public final class LocalNetworkGatewaysClient
         String resourceGroupName, String localNetworkGatewayName, LocalNetworkGatewayInner parameters) {
         return beginCreateOrUpdateAsync(resourceGroupName, localNetworkGatewayName, parameters)
             .last()
-            .flatMap(client::getLroFinalResultOrError);
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -419,7 +390,7 @@ public final class LocalNetworkGatewaysClient
         Context context) {
         return beginCreateOrUpdateAsync(resourceGroupName, localNetworkGatewayName, parameters, context)
             .last()
-            .flatMap(client::getLroFinalResultOrError);
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -813,7 +784,7 @@ public final class LocalNetworkGatewaysClient
     public Mono<Void> deleteAsync(String resourceGroupName, String localNetworkGatewayName) {
         return beginDeleteAsync(resourceGroupName, localNetworkGatewayName)
             .last()
-            .flatMap(client::getLroFinalResultOrError);
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -831,7 +802,7 @@ public final class LocalNetworkGatewaysClient
     public Mono<Void> deleteAsync(String resourceGroupName, String localNetworkGatewayName, Context context) {
         return beginDeleteAsync(resourceGroupName, localNetworkGatewayName, context)
             .last()
-            .flatMap(client::getLroFinalResultOrError);
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -1205,371 +1176,6 @@ public final class LocalNetworkGatewaysClient
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<LocalNetworkGatewayInner> listByResourceGroup(String resourceGroupName, Context context) {
         return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName, context));
-    }
-
-    /**
-     * Creates or updates a local network gateway in the specified resource group.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param localNetworkGatewayName The name of the local network gateway.
-     * @param parameters A common class for general resource information.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a common class for general resource information.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<LocalNetworkGatewayInner>> beginCreateOrUpdateWithoutPollingWithResponseAsync(
-        String resourceGroupName, String localNetworkGatewayName, LocalNetworkGatewayInner parameters) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (localNetworkGatewayName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter localNetworkGatewayName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (parameters == null) {
-            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
-        } else {
-            parameters.validate();
-        }
-        final String apiVersion = "2019-11-01";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .beginCreateOrUpdateWithoutPolling(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            localNetworkGatewayName,
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            parameters,
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
-
-    /**
-     * Creates or updates a local network gateway in the specified resource group.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param localNetworkGatewayName The name of the local network gateway.
-     * @param parameters A common class for general resource information.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a common class for general resource information.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<LocalNetworkGatewayInner>> beginCreateOrUpdateWithoutPollingWithResponseAsync(
-        String resourceGroupName,
-        String localNetworkGatewayName,
-        LocalNetworkGatewayInner parameters,
-        Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (localNetworkGatewayName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter localNetworkGatewayName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (parameters == null) {
-            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
-        } else {
-            parameters.validate();
-        }
-        final String apiVersion = "2019-11-01";
-        return service
-            .beginCreateOrUpdateWithoutPolling(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                localNetworkGatewayName,
-                apiVersion,
-                this.client.getSubscriptionId(),
-                parameters,
-                context);
-    }
-
-    /**
-     * Creates or updates a local network gateway in the specified resource group.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param localNetworkGatewayName The name of the local network gateway.
-     * @param parameters A common class for general resource information.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a common class for general resource information.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<LocalNetworkGatewayInner> beginCreateOrUpdateWithoutPollingAsync(
-        String resourceGroupName, String localNetworkGatewayName, LocalNetworkGatewayInner parameters) {
-        return beginCreateOrUpdateWithoutPollingWithResponseAsync(
-                resourceGroupName, localNetworkGatewayName, parameters)
-            .flatMap(
-                (Response<LocalNetworkGatewayInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Creates or updates a local network gateway in the specified resource group.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param localNetworkGatewayName The name of the local network gateway.
-     * @param parameters A common class for general resource information.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a common class for general resource information.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<LocalNetworkGatewayInner> beginCreateOrUpdateWithoutPollingAsync(
-        String resourceGroupName,
-        String localNetworkGatewayName,
-        LocalNetworkGatewayInner parameters,
-        Context context) {
-        return beginCreateOrUpdateWithoutPollingWithResponseAsync(
-                resourceGroupName, localNetworkGatewayName, parameters, context)
-            .flatMap(
-                (Response<LocalNetworkGatewayInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Creates or updates a local network gateway in the specified resource group.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param localNetworkGatewayName The name of the local network gateway.
-     * @param parameters A common class for general resource information.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a common class for general resource information.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public LocalNetworkGatewayInner beginCreateOrUpdateWithoutPolling(
-        String resourceGroupName, String localNetworkGatewayName, LocalNetworkGatewayInner parameters) {
-        return beginCreateOrUpdateWithoutPollingAsync(resourceGroupName, localNetworkGatewayName, parameters).block();
-    }
-
-    /**
-     * Creates or updates a local network gateway in the specified resource group.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param localNetworkGatewayName The name of the local network gateway.
-     * @param parameters A common class for general resource information.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a common class for general resource information.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public LocalNetworkGatewayInner beginCreateOrUpdateWithoutPolling(
-        String resourceGroupName,
-        String localNetworkGatewayName,
-        LocalNetworkGatewayInner parameters,
-        Context context) {
-        return beginCreateOrUpdateWithoutPollingAsync(resourceGroupName, localNetworkGatewayName, parameters, context)
-            .block();
-    }
-
-    /**
-     * Deletes the specified local network gateway.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param localNetworkGatewayName The name of the local network gateway.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> beginDeleteWithoutPollingWithResponseAsync(
-        String resourceGroupName, String localNetworkGatewayName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (localNetworkGatewayName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter localNetworkGatewayName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2019-11-01";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .beginDeleteWithoutPolling(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            localNetworkGatewayName,
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
-
-    /**
-     * Deletes the specified local network gateway.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param localNetworkGatewayName The name of the local network gateway.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> beginDeleteWithoutPollingWithResponseAsync(
-        String resourceGroupName, String localNetworkGatewayName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (localNetworkGatewayName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter localNetworkGatewayName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2019-11-01";
-        return service
-            .beginDeleteWithoutPolling(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                localNetworkGatewayName,
-                apiVersion,
-                this.client.getSubscriptionId(),
-                context);
-    }
-
-    /**
-     * Deletes the specified local network gateway.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param localNetworkGatewayName The name of the local network gateway.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> beginDeleteWithoutPollingAsync(String resourceGroupName, String localNetworkGatewayName) {
-        return beginDeleteWithoutPollingWithResponseAsync(resourceGroupName, localNetworkGatewayName)
-            .flatMap((Response<Void> res) -> Mono.empty());
-    }
-
-    /**
-     * Deletes the specified local network gateway.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param localNetworkGatewayName The name of the local network gateway.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> beginDeleteWithoutPollingAsync(
-        String resourceGroupName, String localNetworkGatewayName, Context context) {
-        return beginDeleteWithoutPollingWithResponseAsync(resourceGroupName, localNetworkGatewayName, context)
-            .flatMap((Response<Void> res) -> Mono.empty());
-    }
-
-    /**
-     * Deletes the specified local network gateway.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param localNetworkGatewayName The name of the local network gateway.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void beginDeleteWithoutPolling(String resourceGroupName, String localNetworkGatewayName) {
-        beginDeleteWithoutPollingAsync(resourceGroupName, localNetworkGatewayName).block();
-    }
-
-    /**
-     * Deletes the specified local network gateway.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param localNetworkGatewayName The name of the local network gateway.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void beginDeleteWithoutPolling(String resourceGroupName, String localNetworkGatewayName, Context context) {
-        beginDeleteWithoutPollingAsync(resourceGroupName, localNetworkGatewayName, context).block();
     }
 
     /**

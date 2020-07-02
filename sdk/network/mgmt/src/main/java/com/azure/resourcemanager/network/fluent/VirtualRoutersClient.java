@@ -139,35 +139,6 @@ public final class VirtualRoutersClient
             @PathParam("subscriptionId") String subscriptionId,
             Context context);
 
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
-                + "/virtualRouters/{virtualRouterName}")
-        @ExpectedResponses({200, 202, 204})
-        @UnexpectedResponseExceptionType(ErrorException.class)
-        Mono<Response<Void>> beginDeleteWithoutPolling(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("virtualRouterName") String virtualRouterName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            Context context);
-
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
-                + "/virtualRouters/{virtualRouterName}")
-        @ExpectedResponses({200, 201})
-        @UnexpectedResponseExceptionType(ErrorException.class)
-        Mono<Response<VirtualRouterInner>> beginCreateOrUpdateWithoutPolling(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("virtualRouterName") String virtualRouterName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @BodyParam("application/json") VirtualRouterInner parameters,
-            Context context);
-
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
@@ -354,7 +325,9 @@ public final class VirtualRoutersClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String virtualRouterName) {
-        return beginDeleteAsync(resourceGroupName, virtualRouterName).last().flatMap(client::getLroFinalResultOrError);
+        return beginDeleteAsync(resourceGroupName, virtualRouterName)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -372,7 +345,7 @@ public final class VirtualRoutersClient
     public Mono<Void> deleteAsync(String resourceGroupName, String virtualRouterName, Context context) {
         return beginDeleteAsync(resourceGroupName, virtualRouterName, context)
             .last()
-            .flatMap(client::getLroFinalResultOrError);
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -831,7 +804,7 @@ public final class VirtualRoutersClient
         String resourceGroupName, String virtualRouterName, VirtualRouterInner parameters) {
         return beginCreateOrUpdateAsync(resourceGroupName, virtualRouterName, parameters)
             .last()
-            .flatMap(client::getLroFinalResultOrError);
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -851,7 +824,7 @@ public final class VirtualRoutersClient
         String resourceGroupName, String virtualRouterName, VirtualRouterInner parameters, Context context) {
         return beginCreateOrUpdateAsync(resourceGroupName, virtualRouterName, parameters, context)
             .last()
-            .flatMap(client::getLroFinalResultOrError);
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -1170,357 +1143,6 @@ public final class VirtualRoutersClient
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<VirtualRouterInner> list(Context context) {
         return new PagedIterable<>(listAsync(context));
-    }
-
-    /**
-     * Deletes the specified Virtual Router.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param virtualRouterName The name of the Virtual Router.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> beginDeleteWithoutPollingWithResponseAsync(
-        String resourceGroupName, String virtualRouterName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (virtualRouterName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter virtualRouterName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2019-11-01";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .beginDeleteWithoutPolling(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            virtualRouterName,
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
-
-    /**
-     * Deletes the specified Virtual Router.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param virtualRouterName The name of the Virtual Router.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> beginDeleteWithoutPollingWithResponseAsync(
-        String resourceGroupName, String virtualRouterName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (virtualRouterName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter virtualRouterName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2019-11-01";
-        return service
-            .beginDeleteWithoutPolling(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                virtualRouterName,
-                apiVersion,
-                this.client.getSubscriptionId(),
-                context);
-    }
-
-    /**
-     * Deletes the specified Virtual Router.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param virtualRouterName The name of the Virtual Router.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> beginDeleteWithoutPollingAsync(String resourceGroupName, String virtualRouterName) {
-        return beginDeleteWithoutPollingWithResponseAsync(resourceGroupName, virtualRouterName)
-            .flatMap((Response<Void> res) -> Mono.empty());
-    }
-
-    /**
-     * Deletes the specified Virtual Router.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param virtualRouterName The name of the Virtual Router.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> beginDeleteWithoutPollingAsync(
-        String resourceGroupName, String virtualRouterName, Context context) {
-        return beginDeleteWithoutPollingWithResponseAsync(resourceGroupName, virtualRouterName, context)
-            .flatMap((Response<Void> res) -> Mono.empty());
-    }
-
-    /**
-     * Deletes the specified Virtual Router.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param virtualRouterName The name of the Virtual Router.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void beginDeleteWithoutPolling(String resourceGroupName, String virtualRouterName) {
-        beginDeleteWithoutPollingAsync(resourceGroupName, virtualRouterName).block();
-    }
-
-    /**
-     * Deletes the specified Virtual Router.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param virtualRouterName The name of the Virtual Router.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void beginDeleteWithoutPolling(String resourceGroupName, String virtualRouterName, Context context) {
-        beginDeleteWithoutPollingAsync(resourceGroupName, virtualRouterName, context).block();
-    }
-
-    /**
-     * Creates or updates the specified Virtual Router.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param virtualRouterName The name of the Virtual Router.
-     * @param parameters VirtualRouter Resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return virtualRouter Resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<VirtualRouterInner>> beginCreateOrUpdateWithoutPollingWithResponseAsync(
-        String resourceGroupName, String virtualRouterName, VirtualRouterInner parameters) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (virtualRouterName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter virtualRouterName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (parameters == null) {
-            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
-        } else {
-            parameters.validate();
-        }
-        final String apiVersion = "2019-11-01";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .beginCreateOrUpdateWithoutPolling(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            virtualRouterName,
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            parameters,
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
-
-    /**
-     * Creates or updates the specified Virtual Router.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param virtualRouterName The name of the Virtual Router.
-     * @param parameters VirtualRouter Resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return virtualRouter Resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<VirtualRouterInner>> beginCreateOrUpdateWithoutPollingWithResponseAsync(
-        String resourceGroupName, String virtualRouterName, VirtualRouterInner parameters, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (virtualRouterName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter virtualRouterName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (parameters == null) {
-            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
-        } else {
-            parameters.validate();
-        }
-        final String apiVersion = "2019-11-01";
-        return service
-            .beginCreateOrUpdateWithoutPolling(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                virtualRouterName,
-                apiVersion,
-                this.client.getSubscriptionId(),
-                parameters,
-                context);
-    }
-
-    /**
-     * Creates or updates the specified Virtual Router.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param virtualRouterName The name of the Virtual Router.
-     * @param parameters VirtualRouter Resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return virtualRouter Resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<VirtualRouterInner> beginCreateOrUpdateWithoutPollingAsync(
-        String resourceGroupName, String virtualRouterName, VirtualRouterInner parameters) {
-        return beginCreateOrUpdateWithoutPollingWithResponseAsync(resourceGroupName, virtualRouterName, parameters)
-            .flatMap(
-                (Response<VirtualRouterInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Creates or updates the specified Virtual Router.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param virtualRouterName The name of the Virtual Router.
-     * @param parameters VirtualRouter Resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return virtualRouter Resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<VirtualRouterInner> beginCreateOrUpdateWithoutPollingAsync(
-        String resourceGroupName, String virtualRouterName, VirtualRouterInner parameters, Context context) {
-        return beginCreateOrUpdateWithoutPollingWithResponseAsync(
-                resourceGroupName, virtualRouterName, parameters, context)
-            .flatMap(
-                (Response<VirtualRouterInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Creates or updates the specified Virtual Router.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param virtualRouterName The name of the Virtual Router.
-     * @param parameters VirtualRouter Resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return virtualRouter Resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public VirtualRouterInner beginCreateOrUpdateWithoutPolling(
-        String resourceGroupName, String virtualRouterName, VirtualRouterInner parameters) {
-        return beginCreateOrUpdateWithoutPollingAsync(resourceGroupName, virtualRouterName, parameters).block();
-    }
-
-    /**
-     * Creates or updates the specified Virtual Router.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param virtualRouterName The name of the Virtual Router.
-     * @param parameters VirtualRouter Resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return virtualRouter Resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public VirtualRouterInner beginCreateOrUpdateWithoutPolling(
-        String resourceGroupName, String virtualRouterName, VirtualRouterInner parameters, Context context) {
-        return beginCreateOrUpdateWithoutPollingAsync(resourceGroupName, virtualRouterName, parameters, context)
-            .block();
     }
 
     /**

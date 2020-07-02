@@ -24,7 +24,7 @@ public final class AzureFirewallSku {
      * Tier of an Azure Firewall.
      */
     @JsonProperty(value = "tier")
-    private NatGatewaySkuName tier;
+    private AzureFirewallSkuTier tier;
 
     /**
      * Get the name property: Name of an Azure Firewall SKU.
@@ -51,7 +51,7 @@ public final class AzureFirewallSku {
      *
      * @return the tier value.
      */
-    public NatGatewaySkuName tier() {
+    public AzureFirewallSkuTier tier() {
         return this.tier;
     }
 
@@ -61,7 +61,7 @@ public final class AzureFirewallSku {
      * @param tier the tier value to set.
      * @return the AzureFirewallSku object itself.
      */
-    public AzureFirewallSku withTier(NatGatewaySkuName tier) {
+    public AzureFirewallSku withTier(AzureFirewallSkuTier tier) {
         this.tier = tier;
         return this;
     }
