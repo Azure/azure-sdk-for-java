@@ -24,7 +24,7 @@ public final class FormField {
      * @param labelData The text, bounding box, and field elements for the field label.
      * @param name The name the field or label.
      * @param fieldValue The value of the recognized field.
-     * @param valueData The the text, bounding box, and field elements for the field value.
+     * @param valueData The text, bounding box, and field elements for the field value.
      */
     public FormField(final float confidence, final FieldData labelData, final String name, final FieldValue fieldValue,
         final FieldData valueData) {

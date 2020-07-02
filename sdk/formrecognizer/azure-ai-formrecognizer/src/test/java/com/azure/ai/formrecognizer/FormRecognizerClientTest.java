@@ -100,18 +100,18 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
 
     /**
      * Verifies receipt data for a document using source as as input stream data and text content when
-     * includeTextContent is true.
+     * includeFieldElements is true.
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
      public void recognizeReceiptDataTextDetails(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
         client = getFormRecognizerClient(httpClient, serviceVersion);
-        receiptDataRunnerTextDetails((data, includeTextContent) -> {
+        receiptDataRunnerTextDetails((data, includeFieldElements) -> {
             SyncPoller<OperationResult, List<RecognizedReceipt>> syncPoller = client.beginRecognizeReceipts(
                 new RecognizeOptions(data, RECEIPT_FILE_LENGTH).setFormContentType(FormContentType.IMAGE_JPEG)
-                    .setIncludeFieldElements(includeTextContent).setPollInterval(durationTestMode));
+                    .setIncludeFieldElements(includeFieldElements).setPollInterval(durationTestMode));
             syncPoller.waitForCompletion();
-            validateReceiptResultData(syncPoller.getFinalResult(), includeTextContent);
+            validateReceiptResultData(syncPoller.getFinalResult(), includeFieldElements);
         });
     }
 
@@ -123,13 +123,13 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
     public void recognizeReceiptDataWithPngFile(HttpClient httpClient,
         FormRecognizerServiceVersion serviceVersion) {
         client = getFormRecognizerClient(httpClient, serviceVersion);
-        receiptPngDataRunnerTextDetails((data, includeTextContent) -> {
+        receiptPngDataRunnerTextDetails((data, includeFieldElements) -> {
             SyncPoller<OperationResult, List<RecognizedReceipt>> syncPoller =
                 client.beginRecognizeReceipts(new RecognizeOptions(data, RECEIPT_PNG_FILE_LENGTH).setFormContentType(
-                    FormContentType.IMAGE_PNG).setIncludeFieldElements(includeTextContent)
+                    FormContentType.IMAGE_PNG).setIncludeFieldElements(includeFieldElements)
                     .setPollInterval(durationTestMode));
             syncPoller.waitForCompletion();
-            validateReceiptResultData(syncPoller.getFinalResult(), includeTextContent);
+            validateReceiptResultData(syncPoller.getFinalResult(), includeFieldElements);
         });
     }
 
@@ -193,7 +193,7 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
     }
 
     /**
-     * Verifies receipt data for a document using source as file url and include content when includeTextContent is
+     * Verifies receipt data for a document using source as file url and include content when includeFieldElements is
      * true.
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -201,17 +201,17 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
     public void recognizeReceiptFromUrlTextContent(HttpClient httpClient,
         FormRecognizerServiceVersion serviceVersion) {
         client = getFormRecognizerClient(httpClient, serviceVersion);
-        receiptSourceUrlRunnerTextDetails((sourceUrl, includeTextContent) -> {
+        receiptSourceUrlRunnerTextDetails((sourceUrl, includeFieldElements) -> {
             SyncPoller<OperationResult, List<RecognizedReceipt>> syncPoller = client.beginRecognizeReceipts(
-                new RecognizeOptions(sourceUrl).setIncludeFieldElements(includeTextContent)
+                new RecognizeOptions(sourceUrl).setIncludeFieldElements(includeFieldElements)
                     .setPollInterval(durationTestMode));
             syncPoller.waitForCompletion();
-            validateReceiptResultData(syncPoller.getFinalResult(), includeTextContent);
+            validateReceiptResultData(syncPoller.getFinalResult(), includeFieldElements);
         });
     }
 
     /**
-     * Verifies receipt data for a document using source as PNG file url and include content when includeTextContent is
+     * Verifies receipt data for a document using source as PNG file url and include content when includeFieldElements is
      * true.
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -219,12 +219,12 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
     public void recognizeReceiptSourceUrlWithPngFile(HttpClient httpClient,
         FormRecognizerServiceVersion serviceVersion) {
         client = getFormRecognizerClient(httpClient, serviceVersion);
-        receiptPngSourceUrlRunnerTextDetails((sourceUrl, includeTextContent) -> {
+        receiptPngSourceUrlRunnerTextDetails((sourceUrl, includeFieldElements) -> {
             SyncPoller<OperationResult, List<RecognizedReceipt>> syncPoller = client.beginRecognizeReceipts(
-                new RecognizeOptions(sourceUrl).setIncludeFieldElements(includeTextContent)
+                new RecognizeOptions(sourceUrl).setIncludeFieldElements(includeFieldElements)
                     .setPollInterval(durationTestMode));
             syncPoller.waitForCompletion();
-            validateReceiptResultData(syncPoller.getFinalResult(), includeTextContent);
+            validateReceiptResultData(syncPoller.getFinalResult(), includeFieldElements);
         });
     }
 

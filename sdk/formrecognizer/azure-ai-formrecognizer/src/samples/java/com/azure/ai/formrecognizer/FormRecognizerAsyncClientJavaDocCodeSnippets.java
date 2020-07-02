@@ -120,14 +120,14 @@ public class FormRecognizerAsyncClientJavaDocCodeSnippets {
         // BEGIN: com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeCustomForms#recognizeCustomFormsOptions
         File form = new File("{local/file_path/fileName.jpg}");
         String modelId = "{custom_trained_model_id}";
-        boolean includeTextContent = true;
+        boolean includeFieldElements = true;
         // Utility method to convert input stream to Byte buffer
         Flux<ByteBuffer> buffer = toFluxByteBuffer(new ByteArrayInputStream(Files.readAllBytes(form.toPath())));
 
         formRecognizerAsyncClient.beginRecognizeCustomForms(
             new RecognizeCustomFormsOptions(buffer, form.length(), modelId)
                 .setFormContentType(FormContentType.IMAGE_JPEG)
-                .setIncludeFieldElements(includeTextContent)
+                .setIncludeFieldElements(includeFieldElements)
                 .setPollInterval(Duration.ofSeconds(5)))
             .subscribe(recognizePollingOperation ->
                 // if training polling operation completed, retrieve the final result.
@@ -329,11 +329,11 @@ public class FormRecognizerAsyncClientJavaDocCodeSnippets {
     public void beginRecognizeReceiptsWithOptions() throws IOException {
         // BEGIN: com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeReceipts#recognizeOptions
         File receipt = new File("{local/file_path/fileName.jpg}");
-        boolean includeTextContent = true;
+        boolean includeFieldElements = true;
         // Utility method to convert input stream to Byte buffer
         Flux<ByteBuffer> buffer = toFluxByteBuffer(new ByteArrayInputStream(Files.readAllBytes(receipt.toPath())));
         formRecognizerAsyncClient.beginRecognizeReceipts(new RecognizeOptions(buffer, receipt.length())
-            .setFormContentType(FormContentType.IMAGE_JPEG).setIncludeFieldElements(includeTextContent)
+            .setFormContentType(FormContentType.IMAGE_JPEG).setIncludeFieldElements(includeFieldElements)
             .setPollInterval(Duration.ofSeconds(5))).subscribe(recognizePollingOperation -> {
                 // if training polling operation completed, retrieve the final result.
                 recognizePollingOperation.getFinalResult().subscribe(recognizedReceipts -> {
