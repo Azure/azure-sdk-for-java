@@ -255,7 +255,7 @@ public class SearchIndexerAsyncClient {
      *
      * <p><strong>Code Sample</strong></p>
      *
-     * <p> List all search indexer data source connection. </p>
+     * <p> List all search indexer data source connections. </p>
      *
      * {@codesnippet com.azure.search.documents.indexes.SearchIndexerAsyncClient.listDataSourceConnections}
      *
