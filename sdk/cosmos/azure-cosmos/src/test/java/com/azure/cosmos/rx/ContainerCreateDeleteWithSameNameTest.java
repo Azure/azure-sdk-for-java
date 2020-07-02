@@ -132,7 +132,7 @@ public class ContainerCreateDeleteWithSameNameTest extends TestSuiteBase {
             // Validate result
             CosmosItemResponseValidator validator =
                 new CosmosItemResponseValidator.Builder<CosmosItemResponse<TestObject>>()
-                    .withProperty("prop", String.valueOf(docDefinition.getProp()))
+                    .withProperty("prop", docDefinition.getProp())
                     .build();
 
             this.validateItemSuccess(readObservable, validator);
