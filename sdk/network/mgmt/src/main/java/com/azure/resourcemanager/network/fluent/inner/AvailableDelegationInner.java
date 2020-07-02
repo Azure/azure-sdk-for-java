@@ -40,7 +40,7 @@ public final class AvailableDelegationInner {
     private String serviceName;
 
     /*
-     * Describes the actions permitted to the service upon delegation.
+     * The actions permitted to the service upon delegation.
      */
     @JsonProperty(value = "actions")
     private List<String> actions;
@@ -126,7 +126,7 @@ public final class AvailableDelegationInner {
     }
 
     /**
-     * Get the actions property: Describes the actions permitted to the service upon delegation.
+     * Get the actions property: The actions permitted to the service upon delegation.
      *
      * @return the actions value.
      */
@@ -135,7 +135,7 @@ public final class AvailableDelegationInner {
     }
 
     /**
-     * Set the actions property: Describes the actions permitted to the service upon delegation.
+     * Set the actions property: The actions permitted to the service upon delegation.
      *
      * @param actions the actions value to set.
      * @return the AvailableDelegationInner object itself.

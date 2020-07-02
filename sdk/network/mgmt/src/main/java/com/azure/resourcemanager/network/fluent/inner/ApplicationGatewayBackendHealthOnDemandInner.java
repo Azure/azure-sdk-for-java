@@ -18,7 +18,7 @@ public final class ApplicationGatewayBackendHealthOnDemandInner {
     private final ClientLogger logger = new ClientLogger(ApplicationGatewayBackendHealthOnDemandInner.class);
 
     /*
-     * Reference of an ApplicationGatewayBackendAddressPool resource.
+     * Reference to an ApplicationGatewayBackendAddressPool resource.
      */
     @JsonProperty(value = "backendAddressPool")
     private ApplicationGatewayBackendAddressPool backendAddressPool;
@@ -30,7 +30,7 @@ public final class ApplicationGatewayBackendHealthOnDemandInner {
     private ApplicationGatewayBackendHealthHttpSettings backendHealthHttpSettings;
 
     /**
-     * Get the backendAddressPool property: Reference of an ApplicationGatewayBackendAddressPool resource.
+     * Get the backendAddressPool property: Reference to an ApplicationGatewayBackendAddressPool resource.
      *
      * @return the backendAddressPool value.
      */
@@ -39,7 +39,7 @@ public final class ApplicationGatewayBackendHealthOnDemandInner {
     }
 
     /**
-     * Set the backendAddressPool property: Reference of an ApplicationGatewayBackendAddressPool resource.
+     * Set the backendAddressPool property: Reference to an ApplicationGatewayBackendAddressPool resource.
      *
      * @param backendAddressPool the backendAddressPool value to set.
      * @return the ApplicationGatewayBackendHealthOnDemandInner object itself.

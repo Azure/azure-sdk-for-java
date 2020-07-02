@@ -68,8 +68,8 @@ public class RecognizeCustomFormsOptions extends RecognizeOptions {
     }
 
     @Override
-    public RecognizeCustomFormsOptions setIncludeTextContent(boolean includeTextContent) {
-        super.setIncludeTextContent(includeTextContent);
+    public RecognizeCustomFormsOptions setIncludeFieldElements(boolean includeFieldElements) {
+        super.setIncludeFieldElements(includeFieldElements);
         return this;
     }
 

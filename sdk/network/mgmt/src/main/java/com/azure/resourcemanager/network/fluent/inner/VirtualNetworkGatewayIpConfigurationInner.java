@@ -9,6 +9,7 @@ import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.IpAllocationMethod;
+import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -28,7 +29,7 @@ public class VirtualNetworkGatewayIpConfigurationInner extends SubResource {
     /*
      * A unique read-only string that changes whenever the resource is updated.
      */
-    @JsonProperty(value = "etag")
+    @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
 
     /*
@@ -38,23 +39,23 @@ public class VirtualNetworkGatewayIpConfigurationInner extends SubResource {
     private IpAllocationMethod privateIpAllocationMethod;
 
     /*
-     * The reference of the subnet resource.
+     * The reference to the subnet resource.
      */
     @JsonProperty(value = "properties.subnet")
     private SubResource subnet;
 
     /*
-     * The reference of the public IP resource.
+     * The reference to the public IP resource.
      */
     @JsonProperty(value = "properties.publicIPAddress")
     private SubResource publicIpAddress;
 
     /*
-     * The provisioning state of the public IP resource. Possible values are:
-     * 'Updating', 'Deleting', and 'Failed'.
+     * The provisioning state of the virtual network gateway IP configuration
+     * resource.
      */
     @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private String provisioningState;
+    private ProvisioningState provisioningState;
 
     /**
      * Get the name property: The name of the resource that is unique within a resource group. This name can be used to
@@ -88,17 +89,6 @@ public class VirtualNetworkGatewayIpConfigurationInner extends SubResource {
     }
 
     /**
-     * Set the etag property: A unique read-only string that changes whenever the resource is updated.
-     *
-     * @param etag the etag value to set.
-     * @return the VirtualNetworkGatewayIpConfigurationInner object itself.
-     */
-    public VirtualNetworkGatewayIpConfigurationInner withEtag(String etag) {
-        this.etag = etag;
-        return this;
-    }
-
-    /**
      * Get the privateIpAllocationMethod property: The private IP address allocation method.
      *
      * @return the privateIpAllocationMethod value.
@@ -120,7 +110,7 @@ public class VirtualNetworkGatewayIpConfigurationInner extends SubResource {
     }
 
     /**
-     * Get the subnet property: The reference of the subnet resource.
+     * Get the subnet property: The reference to the subnet resource.
      *
      * @return the subnet value.
      */
@@ -129,7 +119,7 @@ public class VirtualNetworkGatewayIpConfigurationInner extends SubResource {
     }
 
     /**
-     * Set the subnet property: The reference of the subnet resource.
+     * Set the subnet property: The reference to the subnet resource.
      *
      * @param subnet the subnet value to set.
      * @return the VirtualNetworkGatewayIpConfigurationInner object itself.
@@ -140,7 +130,7 @@ public class VirtualNetworkGatewayIpConfigurationInner extends SubResource {
     }
 
     /**
-     * Get the publicIpAddress property: The reference of the public IP resource.
+     * Get the publicIpAddress property: The reference to the public IP resource.
      *
      * @return the publicIpAddress value.
      */
@@ -149,7 +139,7 @@ public class VirtualNetworkGatewayIpConfigurationInner extends SubResource {
     }
 
     /**
-     * Set the publicIpAddress property: The reference of the public IP resource.
+     * Set the publicIpAddress property: The reference to the public IP resource.
      *
      * @param publicIpAddress the publicIpAddress value to set.
      * @return the VirtualNetworkGatewayIpConfigurationInner object itself.
@@ -160,12 +150,12 @@ public class VirtualNetworkGatewayIpConfigurationInner extends SubResource {
     }
 
     /**
-     * Get the provisioningState property: The provisioning state of the public IP resource. Possible values are:
-     * 'Updating', 'Deleting', and 'Failed'.
+     * Get the provisioningState property: The provisioning state of the virtual network gateway IP configuration
+     * resource.
      *
      * @return the provisioningState value.
      */
-    public String provisioningState() {
+    public ProvisioningState provisioningState() {
         return this.provisioningState;
     }
 

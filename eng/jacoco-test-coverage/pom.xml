@@ -78,6 +78,21 @@
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
+      <artifactId>azure-core-management</artifactId>
+      <version>1.0.0-beta.2</version> <!-- {x-version-update;com.azure:azure-core-management;current} -->
+    </dependency>
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-core-serializer-avro-apache</artifactId>
+      <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core-serializer-avro-apache;current} -->
+    </dependency>
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-core-serializer-avro-jackson</artifactId>
+      <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core-serializer-avro-jackson;current} -->
+    </dependency>
+    <dependency>
+      <groupId>com.azure</groupId>
       <artifactId>azure-core-serializer-json-gson</artifactId>
       <version>1.0.0-beta.2</version> <!-- {x-version-update;com.azure:azure-core-serializer-json-gson;current} -->
     </dependency>
@@ -173,6 +188,11 @@
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
+      <artifactId>azure-storage-blob-changefeed</artifactId>
+      <version>12.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-storage-blob-changefeed;current} -->
+    </dependency>
+    <dependency>
+      <groupId>com.azure</groupId>
       <artifactId>azure-storage-blob-cryptography</artifactId>
       <version>12.8.0-beta.1</version> <!-- {x-version-update;com.azure:azure-storage-blob-cryptography;current} -->
     </dependency>
@@ -191,6 +211,11 @@
       <groupId>com.azure</groupId>
       <artifactId>azure-storage-file-datalake</artifactId>
       <version>12.2.0-beta.1</version> <!-- {x-version-update;com.azure:azure-storage-file-datalake;current} -->
+    </dependency>
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-storage-internal-avro</artifactId>
+      <version>12.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-storage-internal-avro;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
