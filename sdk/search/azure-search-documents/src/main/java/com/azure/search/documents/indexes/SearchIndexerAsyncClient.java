@@ -341,7 +341,7 @@ public class SearchIndexerAsyncClient {
      *
      * <p><strong>Code Sample</strong></p>
      *
-     * <p> Delete all search indexer data source connection named "dataSource" with response. </p>
+     * <p> Delete the search indexer data source connection named "dataSource". </p>
      *
      * {@codesnippet com.azure.search.documents.indexes.SearchIndexerAsyncClient.deleteDataSourceConnectionWithResponse#SearchIndexerDataSourceConnection-boolean}
      *
