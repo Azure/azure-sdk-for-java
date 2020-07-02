@@ -4,6 +4,7 @@
 package com.azure.cosmos.implementation.directconnectivity;
 
 import com.azure.cosmos.BridgeInternal;
+import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.ConnectionPolicy;
 import com.azure.cosmos.implementation.GoneException;
@@ -40,12 +41,15 @@ import java.time.Duration;
 import java.time.Instant;
 import java.util.Iterator;
 import java.util.Locale;
+import java.util.concurrent.CompletionException;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicLong;
 
+import static com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdReporter.reportIssue;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkArgument;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkState;
+import static com.azure.cosmos.implementation.guava27.Strings.lenientFormat;
 
 @JsonSerialize(using = RntbdTransportClient.JsonSerializer.class)
 public final class RntbdTransportClient extends TransportClient {
@@ -139,13 +143,13 @@ public final class RntbdTransportClient extends TransportClient {
         checkNotNull(request, "expected non-null request");
         this.throwIfClosed();
 
-        URI address = addressUri.getURI();
+        final URI address = addressUri.getURI();
 
         final RntbdRequestArgs requestArgs = new RntbdRequestArgs(request, address);
         final RntbdEndpoint endpoint = this.endpointProvider.get(address);
         final RntbdRequestRecord record = endpoint.request(requestArgs);
 
-        this.connectionStateListener.updateConnectionState(endpoint, new RntbdAddressCacheToken(
+        this.connectionStateListener.updateConnectionState(new RntbdAddressCacheToken(
             request.getPartitionKeyRangeIdentity(),
             endpoint));
 
@@ -158,21 +162,37 @@ public final class RntbdTransportClient extends TransportClient {
             }
 
             if (response != null) {
-
                 RequestTimeline timeline = record.takeTimelineSnapshot();
                 response.setRequestTimeline(timeline);
-
-            } else if (this.connectionStateListener != null) {
-
-                if (throwable instanceof GoneException && throwable.getCause() instanceof IOException) {
-                    this.connectionStateListener.onConnectionEvent(
-                        RntbdConnectionEvent.READ_FAILURE,
-                        Instant.now(),
-                        endpoint);
-                }
             }
-        })).doOnCancel(() -> {
-            logger.debug("REQUEST CANCELLED: {}", record);
+
+        })).doOnCancel(() -> logger.debug("REQUEST CANCELLED: {}", record)).onErrorMap(throwable -> {
+
+            Throwable error = throwable instanceof CompletionException ? throwable.getCause() : throwable;
+
+            if (!(error instanceof CosmosException)) {
+
+                String unexpectedError = RntbdObjectMapper.toJson(error);
+
+                reportIssue(logger, endpoint,
+                    "request completed with an unexpected {}: \\{\"request\":{},\"error\":{}}",
+                    error.getClass(),
+                    request,
+                    unexpectedError);
+
+                error = new GoneException(
+                    lenientFormat("an unexpected %s occurred: %s", unexpectedError),
+                    address.toString());
+            }
+
+            if (error instanceof GoneException && throwable.getCause() instanceof IOException) {
+                this.connectionStateListener.onConnectionEvent(
+                    RntbdConnectionEvent.READ_FAILURE,
+                    Instant.now(),
+                    endpoint);
+            }
+
+            return error;
         });
     }
 

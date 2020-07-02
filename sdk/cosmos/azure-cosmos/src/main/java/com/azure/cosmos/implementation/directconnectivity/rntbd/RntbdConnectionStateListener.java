@@ -11,10 +11,8 @@ import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 
 import java.net.SocketAddress;
-import java.net.URI;
 import java.time.Instant;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -55,22 +53,9 @@ public class RntbdConnectionStateListener {
         }
     }
 
-    public void updateConnectionState(RntbdEndpoint endpoint, RntbdAddressCacheToken addressCacheToken) {
+    public void updateConnectionState(RntbdAddressCacheToken addressCacheToken) {
         if (addressCacheToken != null) {
-            this.updatePartitionAddressCache(endpoint, addressCacheToken);
-        }
-    }
-
-    public void updateConnectionState(
-        final List<RntbdEndpoint> endpoints,
-        final RntbdAddressCacheToken addressCacheToken) {
-
-        checkNotNull(endpoints, "expected non-null endpoints");
-
-        if (addressCacheToken != null) {
-            for (RntbdEndpoint endpoint : endpoints) {
-                this.updatePartitionAddressCache(endpoint, addressCacheToken);
-            }
+            this.updatePartitionAddressCache(addressCacheToken);
         }
     }
 
@@ -90,13 +75,11 @@ public class RntbdConnectionStateListener {
             : this.addressResolver.updateAsync(new UnmodifiableList<>(new ArrayList<>(tokens)));
     }
 
-    private void updatePartitionAddressCache(RntbdEndpoint endpoint, RntbdAddressCacheToken addressCacheToken) {
+    private void updatePartitionAddressCache(RntbdAddressCacheToken addressCacheToken) {
 
-        logger.debug("Adding addressCacheToken {} for endpoint at {} to partitionAddressCache",
-            endpoint,
-            addressCacheToken);
+        logger.debug("Adding addressCacheToken {} to partitionAddressCache", addressCacheToken);
 
-        this.partitionAddressCache.compute(endpoint.remoteAddress(), (address, tokens) -> {
+        this.partitionAddressCache.compute(addressCacheToken.getRemoteAddress(), (address, tokens) -> {
             if (tokens == null) {
                 tokens = ConcurrentHashMap.newKeySet();
             }

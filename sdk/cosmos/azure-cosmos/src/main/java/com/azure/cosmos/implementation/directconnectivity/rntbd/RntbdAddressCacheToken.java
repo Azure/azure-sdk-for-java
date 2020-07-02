@@ -9,6 +9,9 @@ import com.azure.cosmos.implementation.routing.PartitionKeyRangeIdentity;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.net.SocketAddress;
+import java.util.Objects;
+
+import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
 /**
  * Models the address cache token used to clear Cosmos client's address cache when the {@link RntbdTransportClient}
@@ -16,37 +19,53 @@ import java.net.SocketAddress;
  */
 public final class RntbdAddressCacheToken {
 
-    private final PartitionKeyRangeIdentity partitionKeyRangeIdentity;
     private final RntbdEndpoint endpoint;
+    private final PartitionKeyRangeIdentity partitionKeyRangeIdentity;
 
-    public RntbdAddressCacheToken(PartitionKeyRangeIdentity partitionKeyRangeIdentity, RntbdEndpoint endpoint) {
+    public RntbdAddressCacheToken(
+        final PartitionKeyRangeIdentity partitionKeyRangeIdentity,
+        final RntbdEndpoint endpoint) {
+
+        this.endpoint = checkNotNull(endpoint, "expected non-null endpoint");
         this.partitionKeyRangeIdentity = partitionKeyRangeIdentity;
-        this.endpoint = endpoint;
     }
 
     @JsonProperty
     public PartitionKeyRangeIdentity getPartitionKeyRangeIdentity() {
-        return partitionKeyRangeIdentity;
+        return this.partitionKeyRangeIdentity;
     }
 
     @JsonProperty
-    public SocketAddress remoteAddress() {
+    public SocketAddress getRemoteAddress() {
         return this.endpoint.remoteAddress();
     }
 
     @Override
-    public boolean equals(Object other) {
-        return this.equals(other instanceof RntbdAddressCacheToken ? (RntbdAddressCacheToken) other : null);
+    public boolean equals(final Object other) {
+
+        if (this == other) {
+            return true;
+        }
+
+        if (other == null || this.getClass() != other.getClass()) {
+            return false;
+        }
+
+        final RntbdAddressCacheToken that = (RntbdAddressCacheToken) other;
+
+        return this.endpoint.equals(that.endpoint)
+            && Objects.equals(this.partitionKeyRangeIdentity, that.partitionKeyRangeIdentity);
     }
 
-    public boolean equals(RntbdAddressCacheToken other) {
-        return other != null && this.partitionKeyRangeIdentity.equals(other.partitionKeyRangeIdentity) &&
-            this.endpoint.equals(other.endpoint);
+    public boolean equals(final RntbdAddressCacheToken other) {
+        return other != null
+            && this.endpoint.equals(other.endpoint)
+            && Objects.equals(this.partitionKeyRangeIdentity, other.partitionKeyRangeIdentity);
     }
 
     @Override
     public int hashCode() {
-        return this.partitionKeyRangeIdentity.hashCode() ^ this.remoteAddress().hashCode();
+        return Objects.hash(this.partitionKeyRangeIdentity, this.endpoint);
     }
 
     @Override
