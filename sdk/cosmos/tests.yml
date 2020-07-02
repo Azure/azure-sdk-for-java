@@ -254,7 +254,17 @@ jobs:
             - name: spring-data-cosmosdb
               groupId: com.microsoft.azure
               safeName: springdatacosmosdb
-        TimeoutInMinutes: 120
+        TimeoutInMinutes: 90
+        Matrix:
+          Session_Integration:
+            ArmTemplateParameters: "@{ enableMultipleWriteLocations = $false; defaultConsistencyLevel = 'Session' }"
+            DisplayName: Session Integration
+            OSVmImage: 'ubuntu-18.04'
+          Strong_Integration:
+            ArmTemplateParameters: "@{ enableMultipleWriteLocations = $false; defaultConsistencyLevel = 'Strong' }"
+            DisplayName: Strong Integration
+            OSVmImage: 'ubuntu-18.04'
+
         EnvVars:
             AZURE_TEST_MODE: LIVE
         PreRunSteps:
