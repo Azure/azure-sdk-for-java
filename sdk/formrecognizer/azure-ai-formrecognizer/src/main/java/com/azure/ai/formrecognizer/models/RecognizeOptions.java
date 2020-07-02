@@ -19,7 +19,7 @@ public class RecognizeOptions {
     private final long length;
     private final String formUrl;
     private FormContentType formContentType;
-    private boolean includeTextContent;
+    private boolean includeFieldElements;
     private Duration pollInterval = DEFAULT_POLL_INTERVAL;
     private static final Duration DEFAULT_POLL_INTERVAL = Duration.ofSeconds(5);
 
@@ -71,12 +71,12 @@ public class RecognizeOptions {
     }
 
     /**
-     * Get the boolean which specifies if to include text lines and element references in the result.
+     * Get the boolean which specifies if to include form element references in the result.
      *
-     * @return the {@code isIncludeTextContent} value.
+     * @return the {@code includeFieldElements} value.
      */
-    public boolean isIncludeTextContent() {
-        return includeTextContent;
+    public boolean isIncludeFieldElements() {
+        return includeFieldElements;
     }
 
     /**
@@ -125,7 +125,6 @@ public class RecognizeOptions {
         return formData;
     }
 
-
     /**
      * Set the type of the form. Supported Media types including .pdf, .jpg, .png or .tiff type file stream.
      *
@@ -139,14 +138,14 @@ public class RecognizeOptions {
     }
 
     /**
-     * Set the boolean which specifies if to include text lines and element references in the result.
+     * Set the boolean which specifies if to include form element references in the result.
      *
-     * @param includeTextContent the boolean to specify if to include text and line references in the result.
+     * @param includeFieldElements the boolean to specify if to include form element references in the result.
      *
      * @return the updated {@code RecognizeOptions} value.
      */
-    public RecognizeOptions setIncludeTextContent(final boolean includeTextContent) {
-        this.includeTextContent = includeTextContent;
+    public RecognizeOptions setIncludeFieldElements(final boolean includeFieldElements) {
+        this.includeFieldElements = includeFieldElements;
         return this;
     }
 
