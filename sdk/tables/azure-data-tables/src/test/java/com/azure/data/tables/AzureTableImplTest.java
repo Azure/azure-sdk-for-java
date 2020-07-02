@@ -47,7 +47,6 @@ public class AzureTableImplTest extends TestBase {
 
     @Override
     protected void beforeTest() {
-        super.beforeTest();
         String connectionString = interceptorManager.isPlaybackMode()
             ? "DefaultEndpointsProtocol=https;AccountName=dummyAccount;AccountKey=xyzDummy;EndpointSuffix=core.windows.net"
             : System.getenv("AZURE_TABLES_CONNECTION_STRING");
@@ -58,14 +57,14 @@ public class AzureTableImplTest extends TestBase {
         TablesSharedKeyCredential sharedKeyCredential = new TablesSharedKeyCredential(authSettings.getAccount().getName(),
             authSettings.getAccount().getAccessKey());
 
-        final List<HttpPipelinePolicy> policies = new ArrayList<>();
+        List<HttpPipelinePolicy> policies = new ArrayList<>();
         policies.add(new AddDatePolicy());
         policies.add(new AddHeadersPolicy(new HttpHeaders().put("Accept",
             OdataMetadataFormat.APPLICATION_JSON_ODATA_MINIMALMETADATA.toString())));
         policies.add(new TablesSharedKeyCredentialPolicy(sharedKeyCredential));
         policies.add(new HttpLoggingPolicy(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS)));
 
-        final HttpClient httpClientToUse;
+        HttpClient httpClientToUse;
         if (interceptorManager.isPlaybackMode()) {
             httpClientToUse = interceptorManager.getPlaybackClient();
         } else {
@@ -73,7 +72,7 @@ public class AzureTableImplTest extends TestBase {
             policies.add(interceptorManager.getRecordPolicy());
             policies.add(new RetryPolicy());
         }
-        final HttpPipeline pipeline = new HttpPipelineBuilder()
+        HttpPipeline pipeline = new HttpPipelineBuilder()
             .httpClient(httpClientToUse)
             .policies(policies.toArray(new HttpPipelinePolicy[0]))
             .build();

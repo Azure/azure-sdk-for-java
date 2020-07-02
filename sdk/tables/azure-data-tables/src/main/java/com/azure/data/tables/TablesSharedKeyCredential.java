@@ -29,38 +29,37 @@ public class TablesSharedKeyCredential {
      * @param accountKey key to the storage account
      */
     public TablesSharedKeyCredential(String accountName, String accountKey) {
-        Objects.requireNonNull(accountName, "'accountName' cannot be null.");
-        Objects.requireNonNull(accountKey, "'accountKey' cannot be null.");
-        this.accountName = accountName;
-        this.accountKey = accountKey;
+        this.accountName = Objects.requireNonNull(accountName, "'accountName' cannot be null.");
+        this.accountKey = Objects.requireNonNull(accountKey, "'accountKey' cannot be null.");
     }
 
     /**
      * Generates the Auth Headers
      *
-     * @param requestURL the URL which the request is going to
+     * @param requestUrl the URL which the request is going to
      * @param headers the headers of the request
      * @return the auth header
      */
-    public String generateAuthorizationHeader(URL requestURL, Map<String, String> headers) {
-        String signature = StorageImplUtils.computeHMac256(this.accountKey, this.buildStringToSign(requestURL,
+    public String generateAuthorizationHeader(URL requestUrl, Map<String, String> headers) {
+        String signature = StorageImplUtils.computeHMac256(accountKey, buildStringToSign(requestUrl,
             headers));
-        return String.format(AUTHORIZATION_HEADER_FORMAT, this.accountName, signature);
+        return String.format(AUTHORIZATION_HEADER_FORMAT, accountName, signature);
     }
 
     /**
      * creates the String to Sign
      *
-     * @param requestURL the URL which the request is going to
+     * @param requestUrl the Url which the request is going to
      * @param headers the headers of the request
      * @return a string to sign for the request
      */
-    private String buildStringToSign(URL requestURL, Map<String, String> headers) {
-        String dateHeader = headers.containsKey("x-ms-date") ? "" : this.getStandardHeaderValue(headers,
-            "Date");
+    private String buildStringToSign(URL requestUrl, Map<String, String> headers) {
+        String dateHeader = headers.containsKey("x-ms-date")
+            ? ""
+            : this.getStandardHeaderValue(headers, "Date");
         return String.join("\n",
             dateHeader,  //date
-            this.getCanonicalizedResource(requestURL)); //Canonicalized resource
+            getCanonicalizedResource(requestUrl)); //Canonicalized resource
     }
 
     /**
@@ -79,20 +78,19 @@ public class TablesSharedKeyCredential {
     /**
      * returns the canonicalized resource needed for a request
      *
-     * @param requestURL the url of the request
+     * @param requestUrl the url of the request
      * @return the string that is the canonicalized resource
      */
-    private String getCanonicalizedResource(URL requestURL) {
-        StringBuilder canonicalizedResource = new StringBuilder("/");
-        canonicalizedResource.append(this.accountName);
-        if (requestURL.getPath().length() > 0) {
-            canonicalizedResource.append(requestURL.getPath());
+    private String getCanonicalizedResource(URL requestUrl) {
+        StringBuilder canonicalizedResource = new StringBuilder("/").append(accountName);
+        if (requestUrl.getPath().length() > 0) {
+            canonicalizedResource.append(requestUrl.getPath());
         } else {
             canonicalizedResource.append('/');
         }
 
-        if (requestURL.getQuery() != null) {
-            Map<String, String[]> queryParams = StorageImplUtils.parseQueryStringSplitValues(requestURL.getQuery());
+        if (requestUrl.getQuery() != null) {
+            Map<String, String[]> queryParams = StorageImplUtils.parseQueryStringSplitValues(requestUrl.getQuery());
             ArrayList<String> queryParamNames = new ArrayList<>(queryParams.keySet());
             Collections.sort(queryParamNames);
 

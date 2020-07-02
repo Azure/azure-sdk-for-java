@@ -3,7 +3,6 @@
 
 package com.azure.data.tables;
 
-
 import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpResponse;
@@ -34,7 +33,7 @@ public final class TablesSharedKeyCredentialPolicy implements HttpPipelinePolicy
      * @return an Http response
      */
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
-        String authorizationValue = this.credential.generateAuthorizationHeader(context.getHttpRequest().getUrl(),
+        String authorizationValue = credential.generateAuthorizationHeader(context.getHttpRequest().getUrl(),
             context.getHttpRequest().getHeaders().toMap());
         context.getHttpRequest().setHeader("Authorization", authorizationValue);
         return next.process();
