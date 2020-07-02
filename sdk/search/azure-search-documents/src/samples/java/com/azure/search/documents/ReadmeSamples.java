@@ -14,15 +14,15 @@ import com.azure.search.documents.indexes.SearchIndexClientBuilder;
 import com.azure.search.documents.indexes.SearchIndexerAsyncClient;
 import com.azure.search.documents.indexes.SearchIndexerClient;
 import com.azure.search.documents.indexes.SearchIndexerClientBuilder;
-import com.azure.search.documents.indexes.models.ComplexFieldBuilder;
+import com.azure.search.documents.indexes.models.ComplexField;
 import com.azure.search.documents.indexes.models.IndexDocumentsBatch;
 import com.azure.search.documents.indexes.models.LexicalAnalyzerName;
 import com.azure.search.documents.indexes.models.SearchField;
 import com.azure.search.documents.indexes.models.SearchFieldDataType;
 import com.azure.search.documents.indexes.models.SearchIndex;
 import com.azure.search.documents.indexes.models.SearchSuggester;
-import com.azure.search.documents.indexes.models.SearchableFieldBuilder;
-import com.azure.search.documents.indexes.models.SimpleFieldBuilder;
+import com.azure.search.documents.indexes.models.SearchableField;
+import com.azure.search.documents.indexes.models.SimpleField;
 import com.azure.search.documents.models.SearchOptions;
 import com.azure.search.documents.models.SearchResult;
 import com.azure.search.documents.util.SearchPagedIterable;
@@ -223,42 +223,42 @@ public class ReadmeSamples {
     public void createIndex() {
         // Prepare SearchFields with SimpleFieldBuilder, SearchableFieldBuilder and ComplexFieldBuilder.
         List<SearchField> searchFieldList = new ArrayList<>();
-        searchFieldList.add(new SimpleFieldBuilder("hotelId", SearchFieldDataType.STRING, false)
+        searchFieldList.add(new SimpleField("hotelId", SearchFieldDataType.STRING, false)
             .setKey(true)
             .setFilterable(true)
             .setSortable(true)
             .build());
-        searchFieldList.add(new SearchableFieldBuilder("hotelName", false)
+        searchFieldList.add(new SearchableField("hotelName", false)
             .setFilterable(true)
             .setSortable(true)
             .build());
-        searchFieldList.add(new SearchableFieldBuilder("description", false)
+        searchFieldList.add(new SearchableField("description", false)
             .setAnalyzerName(LexicalAnalyzerName.EU_LUCENE)
             .build());
-        searchFieldList.add(new SearchableFieldBuilder("tags", true)
+        searchFieldList.add(new SearchableField("tags", true)
             .setKey(true)
             .setFilterable(true)
             .setFacetable(true)
             .build());
-        searchFieldList.add(new ComplexFieldBuilder("address", false)
+        searchFieldList.add(new ComplexField("address", false)
             .setFields(Arrays.asList(
-                new SearchableFieldBuilder("streetAddress", false).build(),
-                new SearchableFieldBuilder("city", false)
+                new SearchableField("streetAddress", false).build(),
+                new SearchableField("city", false)
                     .setFilterable(true)
                     .setFacetable(true)
                     .setSortable(true)
                     .build(),
-                new SearchableFieldBuilder("stateProvince", false)
+                new SearchableField("stateProvince", false)
                     .setFilterable(true)
                     .setFacetable(true)
                     .setSortable(true)
                     .build(),
-                new SearchableFieldBuilder("country", false)
+                new SearchableField("country", false)
                     .setFilterable(true)
                     .setFacetable(true)
                     .setSortable(true)
                     .build(),
-                new SearchableFieldBuilder("postalCode", false)
+                new SearchableField("postalCode", false)
                     .setFilterable(true)
                     .setFacetable(true)
                     .setSortable(true)

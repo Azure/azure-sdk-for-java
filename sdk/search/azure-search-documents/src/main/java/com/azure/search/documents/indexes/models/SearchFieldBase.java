@@ -46,4 +46,6 @@ public abstract class SearchFieldBase {
     public SearchFieldDataType getDataType() {
         return dataType;
     }
+
+    public abstract SearchField toSearchField();
 }

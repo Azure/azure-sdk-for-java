@@ -336,42 +336,42 @@ classes. Indexes can also define suggesters, lexical analyzers, and more.
 
 <!-- embedme ./src/samples/java/com/azure/search/documents/ReadmeSamples.java#L226-L276 -->
 ```Java
-        searchFieldList.add(new SimpleFieldBuilder("hotelId", SearchFieldDataType.STRING, false)
+        searchFieldList.add(new SimpleField("hotelId", SearchFieldDataType.STRING, false)
             .setKey(true)
             .setFilterable(true)
             .setSortable(true)
             .build());
-        searchFieldList.add(new SearchableFieldBuilder("hotelName", false)
+        searchFieldList.add(new SearchableField("hotelName", false)
             .setFilterable(true)
             .setSortable(true)
             .build());
-        searchFieldList.add(new SearchableFieldBuilder("description", false)
+        searchFieldList.add(new SearchableField("description", false)
             .setAnalyzerName(LexicalAnalyzerName.EU_LUCENE)
             .build());
-        searchFieldList.add(new SearchableFieldBuilder("tags", true)
+        searchFieldList.add(new SearchableField("tags", true)
             .setKey(true)
             .setFilterable(true)
             .setFacetable(true)
             .build());
-        searchFieldList.add(new ComplexFieldBuilder("address", false)
+        searchFieldList.add(new ComplexField("address", false)
             .setFields(Arrays.asList(
-                new SearchableFieldBuilder("streetAddress", false).build(),
-                new SearchableFieldBuilder("city", false)
+                new SearchableField("streetAddress", false).build(),
+                new SearchableField("city", false)
                     .setFilterable(true)
                     .setFacetable(true)
                     .setSortable(true)
                     .build(),
-                new SearchableFieldBuilder("stateProvince", false)
+                new SearchableField("stateProvince", false)
                     .setFilterable(true)
                     .setFacetable(true)
                     .setSortable(true)
                     .build(),
-                new SearchableFieldBuilder("country", false)
+                new SearchableField("country", false)
                     .setFilterable(true)
                     .setFacetable(true)
                     .setSortable(true)
                     .build(),
-                new SearchableFieldBuilder("postalCode", false)
+                new SearchableField("postalCode", false)
                     .setFilterable(true)
                     .setFacetable(true)
                     .setSortable(true)
