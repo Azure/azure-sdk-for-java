@@ -116,7 +116,7 @@ public class ContainerQueryTest extends TestSuiteBase {
         CosmosContainerProperties containerProperties = getCollectionDefinition(testCollectionId);
         CosmosQueryRequestOptions requestOptions = new CosmosQueryRequestOptions();
         String query = "SELECT * FROM r";
-        CosmosAsyncDatabase database = this.getSharedCosmosDatabase(client);
+        CosmosAsyncDatabase database = getSharedCosmosDatabase(client);
 
         // step1: create container and do query
         database.createContainer(containerProperties).block();
