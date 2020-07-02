@@ -119,7 +119,7 @@ public class ContainerCreateDeleteWithSameNameTest extends TestSuiteBase{
 
 
     @Test(groups = { "emulator" }, timeOut = TIMEOUT)
-    public <T> void replaceItem() throws Exception {
+    public <T> void upsertItem() throws Exception {
 
         Consumer<CosmosAsyncContainer> func = (container) -> {
             InternalObjectNode docDefinition = getDocumentDefinition();
@@ -255,7 +255,6 @@ public class ContainerCreateDeleteWithSameNameTest extends TestSuiteBase{
             String leaseContainerId = UUID.randomUUID().toString();
             CosmosContainerProperties leaseContainerProperties = getCollectionDefinition(leaseContainerId);
             leaseContainer = createLeaseContainer(leaseContainerProperties.getId());
-
 
             // Step2: execute func
             validateFunc.accept(feedContainer, leaseContainer);
