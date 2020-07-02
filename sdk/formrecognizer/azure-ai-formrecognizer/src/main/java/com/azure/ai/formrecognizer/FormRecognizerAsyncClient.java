@@ -485,8 +485,8 @@ public final class FormRecognizerAsyncClient {
                         .onErrorMap(throwable -> throwable);
                 } else {
                     return detectContentType(form)
-                        .flatMap(contentType ->
-                            service.analyzeReceiptAsyncWithResponseAsync(contentType, form, length,
+                        .flatMap(detectedContentType ->
+                            service.analyzeReceiptAsyncWithResponseAsync(detectedContentType, form, length,
                                 includeFieldElements)
                                 .map(response -> new OperationResult(
                                     parseModelId(response.getDeserializedHeaders().getOperationLocation()))))
@@ -559,8 +559,8 @@ public final class FormRecognizerAsyncClient {
                         .onErrorMap(Utility::mapToHttpResponseExceptionIfExist);
                 } else {
                     return detectContentType(form)
-                        .flatMap(contentType ->
-                            service.analyzeLayoutAsyncWithResponseAsync(contentType, form, length)
+                        .flatMap(detectedContentType ->
+                            service.analyzeLayoutAsyncWithResponseAsync(detectedContentType, form, length)
                                 .map(response -> new OperationResult(
                                     parseModelId(response.getDeserializedHeaders().getOperationLocation()))))
                         .onErrorMap(Utility::mapToHttpResponseExceptionIfExist);
@@ -692,9 +692,9 @@ public final class FormRecognizerAsyncClient {
                         .onErrorMap(Utility::mapToHttpResponseExceptionIfExist);
                 } else {
                     return detectContentType(form)
-                        .flatMap(contentType ->
-                            service.analyzeWithCustomModelWithResponseAsync(UUID.fromString(modelId), contentType, form,
-                                length, includeFieldElements)
+                        .flatMap(detectedContentType ->
+                            service.analyzeWithCustomModelWithResponseAsync(UUID.fromString(modelId),
+                                detectedContentType, form, length, includeFieldElements)
                                 .map(response -> new OperationResult(
                                     parseModelId(response.getDeserializedHeaders().getOperationLocation()))))
                         .onErrorMap(Utility::mapToHttpResponseExceptionIfExist);
