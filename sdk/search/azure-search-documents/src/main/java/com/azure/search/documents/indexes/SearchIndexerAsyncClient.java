@@ -719,7 +719,7 @@ public class SearchIndexerAsyncClient {
      *
      * <p><strong>Code Sample</strong></p>
      *
-     * <p> Run search indexer response named "searchIndexer".  </p>
+     * <p> Run search indexer named "searchIndexer".  </p>
      *
      * {@codesnippet com.azure.search.documents.indexes.SearchIndexerAsyncClient.runIndexerWithResponse#String}
      *
