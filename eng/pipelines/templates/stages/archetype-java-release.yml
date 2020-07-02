@@ -76,6 +76,7 @@ stages:
                 displayName: "Verify no unreleased dependencies"
 
               - template: /eng/common/pipelines/templates/steps/verify-changelog.yml
+                condition: and(succeeded(), ne('${{ parameters.SDKType }}', 'data'))
                 parameters:
                   PackageName: ${{artifact.name}}
                   ServiceName: ${{parameters.ServiceDirectory}}
@@ -181,8 +182,8 @@ stages:
                           PRBranchName: 'smoke-test-rdme'
                           ArtifactName: ${{parameters.ArtifactName}}
                           Language: 'java'
-                          DocRepoDestinationPath: 'docs-ref-services/' 
-                          
+                          DocRepoDestinationPath: 'docs-ref-services/'
+
           - ${{if ne(artifact.options.skipPublishDocs, 'true')}}:
             - deployment: PublishDocs
               displayName: Publish Docs to GitHubIO Blob Storage
