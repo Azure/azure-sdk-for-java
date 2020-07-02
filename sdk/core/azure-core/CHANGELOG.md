@@ -1,7 +1,9 @@
 # Release History
 
-## 1.6.0-beta.1 (Unreleased)
+## 1.6.0 (2020-07-02)
 
+- Added utility class `UserAgentUtil` which constructs `User-Agent` headers following SDK guidelines.
+- Modified Azure Context to Reactor Context to remove intermediate Map container.
 
 ## 1.5.1 (2020-06-08)
 
