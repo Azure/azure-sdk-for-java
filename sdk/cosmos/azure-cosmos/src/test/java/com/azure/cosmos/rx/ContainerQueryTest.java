@@ -112,8 +112,8 @@ public class ContainerQueryTest extends TestSuiteBase {
 
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
     public void queryByRecreatContainerWithSameId() throws Exception {
-        String testCollectionId = UUID.randomUUID().toString();
-        CosmosContainerProperties containerProperties = getCollectionDefinition(testCollectionId);
+        String testContainerId = UUID.randomUUID().toString();
+        CosmosContainerProperties containerProperties = getCollectionDefinition(testContainerId);
         CosmosQueryRequestOptions requestOptions = new CosmosQueryRequestOptions();
         String query = "SELECT * FROM r";
         CosmosAsyncDatabase database = getSharedCosmosDatabase(client);

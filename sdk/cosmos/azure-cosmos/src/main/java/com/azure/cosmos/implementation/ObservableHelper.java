@@ -53,7 +53,7 @@ public class ObservableHelper {
                 try {
                     return function.call();
                 } catch (Exception e) {
-                    return Mono.error(e);
+                    return Flux.error(e);
                 }
             });
 
