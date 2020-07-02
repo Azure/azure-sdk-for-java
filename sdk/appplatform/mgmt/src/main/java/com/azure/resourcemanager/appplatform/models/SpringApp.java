@@ -6,7 +6,6 @@ package com.azure.resourcemanager.appplatform.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.implementation.annotation.Beta;
 import com.azure.resourcemanager.appplatform.fluent.inner.AppResourceInner;
-import com.azure.resourcemanager.appplatform.fluent.inner.ResourceUploadDefinitionInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.ExternalChildResource;
 import com.azure.resourcemanager.resources.fluentcore.model.Appliable;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
@@ -52,10 +51,10 @@ public interface SpringApp
     SpringAppDeployments deploy();
 
     /** @return the blob url to upload deployment */
-    Mono<ResourceUploadDefinitionInner> getResourceUploadUrlAsync();
+    Mono<ResourceUploadDefinition> getResourceUploadUrlAsync();
 
     /** @return the blob url to upload deployment */
-    ResourceUploadDefinitionInner getResourceUploadUrl();
+    ResourceUploadDefinition getResourceUploadUrl();
 
     /** Container interface for all the definitions that need to be implemented. */
     interface Definition

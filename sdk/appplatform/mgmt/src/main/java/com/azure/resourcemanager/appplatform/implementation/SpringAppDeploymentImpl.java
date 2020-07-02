@@ -6,11 +6,11 @@ package com.azure.resourcemanager.appplatform.implementation;
 import com.azure.resourcemanager.appplatform.AppPlatformManager;
 import com.azure.resourcemanager.appplatform.fluent.inner.DeploymentResourceInner;
 import com.azure.resourcemanager.appplatform.fluent.inner.LogFileUrlResponseInner;
-import com.azure.resourcemanager.appplatform.fluent.inner.ResourceUploadDefinitionInner;
 import com.azure.resourcemanager.appplatform.models.DeploymentInstance;
 import com.azure.resourcemanager.appplatform.models.DeploymentResourceProperties;
 import com.azure.resourcemanager.appplatform.models.DeploymentResourceStatus;
 import com.azure.resourcemanager.appplatform.models.DeploymentSettings;
+import com.azure.resourcemanager.appplatform.models.ResourceUploadDefinition;
 import com.azure.resourcemanager.appplatform.models.RuntimeVersion;
 import com.azure.resourcemanager.appplatform.models.SpringApp;
 import com.azure.resourcemanager.appplatform.models.SpringAppDeployment;
@@ -157,7 +157,7 @@ public class SpringAppDeploymentImpl
         }
     }
 
-    private Mono<ShareFileAsyncClient> createShareFileAsyncClient(ResourceUploadDefinitionInner option, long maxSize) {
+    private Mono<ShareFileAsyncClient> createShareFileAsyncClient(ResourceUploadDefinition option, long maxSize) {
         ShareFileAsyncClient shareFileAsyncClient = new ShareFileClientBuilder()
             .endpoint(option.uploadUrl())
             .httpClient(manager().httpPipeline().getHttpClient())
@@ -167,7 +167,7 @@ public class SpringAppDeploymentImpl
             .then(Mono.just(shareFileAsyncClient));
     }
 
-    private Mono<ShareFileAsyncClient> uploadToStorage(byte[] bytes, ResourceUploadDefinitionInner option) {
+    private Mono<ShareFileAsyncClient> uploadToStorage(byte[] bytes, ResourceUploadDefinition option) {
         inner().properties().source().withRelativePath(option.relativePath());
         return createShareFileAsyncClient(option, bytes.length)
                 .flatMap(shareFileAsyncClient -> {
@@ -185,7 +185,7 @@ public class SpringAppDeploymentImpl
                 });
     }
 
-    private Mono<ShareFileAsyncClient> uploadToStorage(File source, ResourceUploadDefinitionInner option) {
+    private Mono<ShareFileAsyncClient> uploadToStorage(File source, ResourceUploadDefinition option) {
         inner().properties().source().withRelativePath(option.relativePath());
         try {
             return createShareFileAsyncClient(option, source.length())

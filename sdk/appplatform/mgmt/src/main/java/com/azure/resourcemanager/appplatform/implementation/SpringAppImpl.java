@@ -5,10 +5,10 @@ package com.azure.resourcemanager.appplatform.implementation;
 
 import com.azure.resourcemanager.appplatform.AppPlatformManager;
 import com.azure.resourcemanager.appplatform.fluent.inner.AppResourceInner;
-import com.azure.resourcemanager.appplatform.fluent.inner.ResourceUploadDefinitionInner;
 import com.azure.resourcemanager.appplatform.models.AppResourceProperties;
 import com.azure.resourcemanager.appplatform.models.ManagedIdentityProperties;
 import com.azure.resourcemanager.appplatform.models.PersistentDisk;
+import com.azure.resourcemanager.appplatform.models.ResourceUploadDefinition;
 import com.azure.resourcemanager.appplatform.models.SpringApp;
 import com.azure.resourcemanager.appplatform.models.SpringAppDeployment;
 import com.azure.resourcemanager.appplatform.models.SpringAppDeployments;
@@ -98,13 +98,13 @@ public class SpringAppImpl
     }
 
     @Override
-    public Mono<ResourceUploadDefinitionInner> getResourceUploadUrlAsync() {
+    public Mono<ResourceUploadDefinition> getResourceUploadUrlAsync() {
         return manager().inner().getApps().getResourceUploadUrlAsync(
             parent().resourceGroupName(), parent().name(), name());
     }
 
     @Override
-    public ResourceUploadDefinitionInner getResourceUploadUrl() {
+    public ResourceUploadDefinition getResourceUploadUrl() {
         return getResourceUploadUrlAsync().block();
     }
 
