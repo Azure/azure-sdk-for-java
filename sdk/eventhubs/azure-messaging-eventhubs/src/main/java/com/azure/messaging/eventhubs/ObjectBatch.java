@@ -46,20 +46,16 @@ public final class ObjectBatch<T> extends Batch {
      * @throws AmqpException if serialized object as {@link EventData} is larger than the maximum size
      *      of the {@link EventDataBatch}.
      */
-    public boolean tryAdd(final T object) {
+    public Boolean tryAdd(final T object) {
         if (object == null) {
             throw logger.logExceptionAsWarning(new IllegalArgumentException("object cannot be null"));
         }
 
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        serializer.serialize(outputStream, object).block();
-        EventData eventData = new EventData(outputStream.toByteArray());
-        EventData event = tracerProvider.isEnabled() ? traceMessageSpan(eventData) : eventData;
-
-        return tryAdd(event);
-    }
-
-    <S extends OutputStream> Mono<S> serialize(S stream, Object value) {
-        return null;
+        return serializer.serialize(outputStream, object).map(s -> {
+            EventData eventData = new EventData(s.toByteArray());
+            EventData event = tracerProvider.isEnabled() ? traceMessageSpan(eventData) : eventData;
+            return tryAdd(event);
+        }).block();
     }
 }

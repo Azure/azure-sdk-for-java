@@ -20,12 +20,11 @@ import com.azure.core.amqp.implementation.TracerProvider;
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.exception.AzureException;
+import com.azure.core.experimental.serializer.ObjectSerializer;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.tracing.Tracer;
-import com.azure.data.schemaregistry.SchemaRegistryDataSerializer;
-import com.azure.data.schemaregistry.SchemaRegistryDataDeserializer;
 import com.azure.messaging.eventhubs.implementation.ClientConstants;
 import com.azure.messaging.eventhubs.implementation.EventHubAmqpConnection;
 import com.azure.messaging.eventhubs.implementation.EventHubConnectionProcessor;
@@ -95,7 +94,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  */
 @ServiceClientBuilder(serviceClients = {EventHubProducerAsyncClient.class, EventHubProducerClient.class,
     EventHubConsumerAsyncClient.class, EventHubConsumerClient.class})
-public class EventHubClientBuilder<T> {
+public class EventHubClientBuilder {
 
     // Default number of events to fetch when creating the consumer.
     static final int DEFAULT_PREFETCH_COUNT = 500;
@@ -137,8 +136,7 @@ public class EventHubClientBuilder<T> {
     private String consumerGroup;
     private EventHubConnectionProcessor eventHubConnectionProcessor;
     private int prefetchCount;
-    private SchemaRegistryDataSerializer registrySerializer;
-    private SchemaRegistryDataDeserializer registryDeserializer;
+    private ObjectSerializer objectSerializer;
 
     /**
      * Keeps track of the open clients that were created from this builder when there is a shared connection.
@@ -367,11 +365,11 @@ public class EventHubClientBuilder<T> {
 
     /**
      * Set registry serializer
-     * @param serializer serializer
-     * @return update builder instance
+     * @param objectSerializer serializer
+     * @return updated builder instance
      */
-    public EventHubClientBuilder registrySerializer(SchemaRegistryDataSerializer serializer) {
-        this.registrySerializer = registrySerializer;
+    public EventHubClientBuilder objectSerializer(ObjectSerializer objectSerializer) {
+        this.objectSerializer = objectSerializer;
         return this;
     }
 
@@ -499,8 +497,8 @@ public class EventHubClientBuilder<T> {
 
         final TracerProvider tracerProvider = new TracerProvider(ServiceLoader.load(Tracer.class));
 
-        return new EventHubAsyncClient(processor, tracerProvider, messageSerializer, scheduler,
-            isSharedConnection.get(), this::onClientClose, registrySerializer);
+        return new EventHubAsyncClient(processor, tracerProvider, messageSerializer, objectSerializer, scheduler,
+            isSharedConnection.get(), this::onClientClose);
     }
 
     /**

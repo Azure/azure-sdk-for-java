@@ -4,7 +4,6 @@
 package com.azure.messaging.eventhubs;
 
 import com.azure.core.util.Context;
-import com.azure.data.schemaregistry.SchemaRegistryDataSerializer;
 
 import java.nio.ByteBuffer;
 import java.time.Instant;

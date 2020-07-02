@@ -15,6 +15,7 @@ import com.azure.core.amqp.implementation.TracerProvider;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
+import com.azure.core.experimental.serializer.ObjectSerializer;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
@@ -124,7 +125,7 @@ public class EventHubProducerAsyncClient implements Closeable {
      */
     EventHubProducerAsyncClient(String fullyQualifiedNamespace, String eventHubName,
                                 EventHubConnectionProcessor connectionProcessor, AmqpRetryOptions retryOptions, TracerProvider tracerProvider,
-                                MessageSerializer messageSerializer, Scheduler scheduler, boolean isSharedConnection, Runnable onClientClose, ObjectSerializer serializer) {
+                                MessageSerializer messageSerializer, ObjectSerializer serializer, Scheduler scheduler, boolean isSharedConnection, Runnable onClientClose) {
         this.fullyQualifiedNamespace = Objects.requireNonNull(fullyQualifiedNamespace,
             "'fullyQualifiedNamespace' cannot be null.");
         this.eventHubName = Objects.requireNonNull(eventHubName, "'eventHubName' cannot be null.");
@@ -257,6 +258,8 @@ public class EventHubProducerAsyncClient implements Closeable {
 
     /**
      * Creates an {@link ObjectBatch} that can fit as many serialized objects as events as the transport allows.
+     * @param objectType type of object in the batch
+     * @param <T> object type
      *
      * @return A new {@link ObjectBatch} that can fit as many serialized objects as events as the transport allows.
      */
@@ -267,6 +270,8 @@ public class EventHubProducerAsyncClient implements Closeable {
     /**
      * Creates an {@link ObjectBatch} configured with the options specified.
      *
+     * @param objectType type of object in the batch
+     * @param <T> object type
      * @param options A set of options used to configure the {@link ObjectBatch}.
      * @return A new {@link ObjectBatch} that can fit as many events as the transport allows.
      * @throws NullPointerException if {@code options} is null.
