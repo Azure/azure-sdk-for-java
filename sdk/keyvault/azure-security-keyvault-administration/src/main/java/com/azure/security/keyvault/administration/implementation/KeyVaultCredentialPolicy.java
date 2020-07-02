@@ -19,8 +19,8 @@ import java.util.Map;
 import java.util.Objects;
 
 /**
- * A policy that authenticates requests with Azure Key Vault service. The content added by this policy
- * is leveraged in {@link TokenCredential} to get and set the correct "Authorization" header value.
+ * A policy that authenticates requests with Azure Key Vault service. The content added by this policy is leveraged
+ * in {@link TokenCredential} to get and set the correct "Authorization" header value.
  *
  * @see TokenCredential
  */
@@ -38,21 +38,24 @@ public final class KeyVaultCredentialPolicy implements HttpPipelinePolicy {
      */
     public KeyVaultCredentialPolicy(TokenCredential credential) {
         Objects.requireNonNull(credential);
-        this.cache = new ScopeTokenCache((request) -> credential.getToken(request));
+
+        this.cache = new ScopeTokenCache(credential::getToken);
     }
 
     /**
      * Adds the required header to authenticate a request to Azure Key Vault service.
      *
-     * @param context The request context
-     * @param next The next HTTP pipeline policy to process the {@code context's} request after this policy completes.
-     * @return A {@link Mono} representing the HTTP response that will arrive asynchronously.
+     * @param context The request {@link HttpPipelineCallContext context}.
+     * @param next    The next HTTP pipeline policy to process the {@link HttpPipelineCallContext context's} request
+     *                after this policy completes.
+     * @return A {@link Mono} representing the {@link HttpResponse HTTP response} that will arrive asynchronously.
      */
     @Override
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
         if (context.getHttpRequest().getUrl().getProtocol().startsWith("http")) {
             return Mono.error(new RuntimeException("Token credentials require a URL using the HTTPS protocol scheme"));
         }
+
         return next.clone().process()
             .doOnNext(httpResponse -> {
                 // KV follows challenge based auth. Currently every service
@@ -85,30 +88,33 @@ public final class KeyVaultCredentialPolicy implements HttpPipelinePolicy {
     /**
      * Extracts the challenge off the authentication header.
      *
-     * @param authenticateHeader The authentication header containing all the challenges.
+     * @param authenticateHeader  The authentication header containing all the challenges.
      * @param authChallengePrefix The authentication challenge name.
-     * @return a challenge map.
+     * @return A challenge map.
      */
     private static Map<String, String> extractChallenge(String authenticateHeader, String authChallengePrefix) {
         if (!isValidChallenge(authenticateHeader, authChallengePrefix)) {
             return null;
         }
+
         authenticateHeader =
             authenticateHeader.toLowerCase(Locale.ROOT).replace(authChallengePrefix.toLowerCase(Locale.ROOT), "");
 
         String[] challenges = authenticateHeader.split(", ");
         Map<String, String> challengeMap = new HashMap<>();
+
         for (String pair : challenges) {
             String[] keyValue = pair.split("=");
             challengeMap.put(keyValue[0].replaceAll("\"", ""), keyValue[1].replaceAll("\"", ""));
         }
+
         return challengeMap;
     }
 
     /**
      * Verifies whether a challenge is bearer or not.
      *
-     * @param authenticateHeader The authentication header containing all the challenges.
+     * @param authenticateHeader  The authentication header containing all the challenges.
      * @param authChallengePrefix The authentication challenge name.
      * @return A boolean indicating tha challenge is valid or not.
      */
