@@ -31,12 +31,12 @@ import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.util.polling.AsyncPollResponse;
 import com.azure.core.util.polling.PollerFlux;
+import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.appplatform.AppPlatformManagementClient;
 import com.azure.resourcemanager.appplatform.fluent.inner.AppResourceCollectionInner;
 import com.azure.resourcemanager.appplatform.fluent.inner.AppResourceInner;
-import com.azure.resourcemanager.appplatform.fluent.inner.ResourceUploadDefinitionInner;
+import com.azure.resourcemanager.appplatform.models.ResourceUploadDefinition;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -151,45 +151,13 @@ public final class AppsClient {
                 + "/{serviceName}/apps/{appName}/getResourceUploadUrl")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ResourceUploadDefinitionInner>> getResourceUploadUrl(
+        Mono<Response<ResourceUploadDefinition>> getResourceUploadUrl(
             @HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("serviceName") String serviceName,
             @PathParam("appName") String appName,
-            Context context);
-
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring"
-                + "/{serviceName}/apps/{appName}")
-        @ExpectedResponses({200, 201})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<AppResourceInner>> beginCreateOrUpdateWithoutPolling(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serviceName") String serviceName,
-            @PathParam("appName") String appName,
-            @BodyParam("application/json") AppResourceInner appResource,
-            Context context);
-
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring"
-                + "/{serviceName}/apps/{appName}")
-        @ExpectedResponses({200, 202})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<AppResourceInner>> beginUpdateWithoutPolling(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serviceName") String serviceName,
-            @PathParam("appName") String appName,
-            @BodyParam("application/json") AppResourceInner appResource,
             Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
@@ -573,7 +541,7 @@ public final class AppsClient {
      * @return app resource payload.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<AppResourceInner>, AppResourceInner> beginCreateOrUpdate(
+    public PollerFlux<PollResult<AppResourceInner>, AppResourceInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String serviceName, String appName, AppResourceInner appResource) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             createOrUpdateWithResponseAsync(resourceGroupName, serviceName, appName, appResource);
@@ -598,7 +566,7 @@ public final class AppsClient {
      * @return app resource payload.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<AppResourceInner>, AppResourceInner> beginCreateOrUpdate(
+    public PollerFlux<PollResult<AppResourceInner>, AppResourceInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String serviceName, String appName, AppResourceInner appResource, Context context) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             createOrUpdateWithResponseAsync(resourceGroupName, serviceName, appName, appResource, context);
@@ -622,16 +590,50 @@ public final class AppsClient {
      * @return app resource payload.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<AppResourceInner>, AppResourceInner> beginCreateOrUpdate(
+        String resourceGroupName, String serviceName, String appName, AppResourceInner appResource) {
+        return beginCreateOrUpdateAsync(resourceGroupName, serviceName, appName, appResource).getSyncPoller();
+    }
+
+    /**
+     * Create a new App or update an exiting App.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param appName The name of the App resource.
+     * @param appResource App resource payload.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return app resource payload.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<AppResourceInner>, AppResourceInner> beginCreateOrUpdate(
+        String resourceGroupName, String serviceName, String appName, AppResourceInner appResource, Context context) {
+        return beginCreateOrUpdateAsync(resourceGroupName, serviceName, appName, appResource, context).getSyncPoller();
+    }
+
+    /**
+     * Create a new App or update an exiting App.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param appName The name of the App resource.
+     * @param appResource App resource payload.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return app resource payload.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AppResourceInner> createOrUpdateAsync(
         String resourceGroupName, String serviceName, String appName, AppResourceInner appResource) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, serviceName, appName, appResource);
-        return this
-            .client
-            .<AppResourceInner, AppResourceInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), AppResourceInner.class, AppResourceInner.class)
+        return beginCreateOrUpdateAsync(resourceGroupName, serviceName, appName, appResource)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -651,14 +653,9 @@ public final class AppsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AppResourceInner> createOrUpdateAsync(
         String resourceGroupName, String serviceName, String appName, AppResourceInner appResource, Context context) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, serviceName, appName, appResource, context);
-        return this
-            .client
-            .<AppResourceInner, AppResourceInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), AppResourceInner.class, AppResourceInner.class)
+        return beginCreateOrUpdateAsync(resourceGroupName, serviceName, appName, appResource, context)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -999,7 +996,7 @@ public final class AppsClient {
      * @return app resource payload.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<AppResourceInner>, AppResourceInner> beginUpdate(
+    public PollerFlux<PollResult<AppResourceInner>, AppResourceInner> beginUpdateAsync(
         String resourceGroupName, String serviceName, String appName, AppResourceInner appResource) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             updateWithResponseAsync(resourceGroupName, serviceName, appName, appResource);
@@ -1024,7 +1021,7 @@ public final class AppsClient {
      * @return app resource payload.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<AppResourceInner>, AppResourceInner> beginUpdate(
+    public PollerFlux<PollResult<AppResourceInner>, AppResourceInner> beginUpdateAsync(
         String resourceGroupName, String serviceName, String appName, AppResourceInner appResource, Context context) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             updateWithResponseAsync(resourceGroupName, serviceName, appName, appResource, context);
@@ -1048,16 +1045,50 @@ public final class AppsClient {
      * @return app resource payload.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<AppResourceInner>, AppResourceInner> beginUpdate(
+        String resourceGroupName, String serviceName, String appName, AppResourceInner appResource) {
+        return beginUpdateAsync(resourceGroupName, serviceName, appName, appResource).getSyncPoller();
+    }
+
+    /**
+     * Operation to update an exiting App.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param appName The name of the App resource.
+     * @param appResource App resource payload.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return app resource payload.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<AppResourceInner>, AppResourceInner> beginUpdate(
+        String resourceGroupName, String serviceName, String appName, AppResourceInner appResource, Context context) {
+        return beginUpdateAsync(resourceGroupName, serviceName, appName, appResource, context).getSyncPoller();
+    }
+
+    /**
+     * Operation to update an exiting App.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param appName The name of the App resource.
+     * @param appResource App resource payload.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return app resource payload.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AppResourceInner> updateAsync(
         String resourceGroupName, String serviceName, String appName, AppResourceInner appResource) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateWithResponseAsync(resourceGroupName, serviceName, appName, appResource);
-        return this
-            .client
-            .<AppResourceInner, AppResourceInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), AppResourceInner.class, AppResourceInner.class)
+        return beginUpdateAsync(resourceGroupName, serviceName, appName, appResource)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -1077,14 +1108,9 @@ public final class AppsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AppResourceInner> updateAsync(
         String resourceGroupName, String serviceName, String appName, AppResourceInner appResource, Context context) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateWithResponseAsync(resourceGroupName, serviceName, appName, appResource, context);
-        return this
-            .client
-            .<AppResourceInner, AppResourceInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), AppResourceInner.class, AppResourceInner.class)
+        return beginUpdateAsync(resourceGroupName, serviceName, appName, appResource, context)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -1316,7 +1342,7 @@ public final class AppsClient {
      * @return an resource upload URL for an App, which may be artifacts or source archive.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ResourceUploadDefinitionInner>> getResourceUploadUrlWithResponseAsync(
+    public Mono<Response<ResourceUploadDefinition>> getResourceUploadUrlWithResponseAsync(
         String resourceGroupName, String serviceName, String appName) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -1369,7 +1395,7 @@ public final class AppsClient {
      * @return an resource upload URL for an App, which may be artifacts or source archive.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ResourceUploadDefinitionInner>> getResourceUploadUrlWithResponseAsync(
+    public Mono<Response<ResourceUploadDefinition>> getResourceUploadUrlWithResponseAsync(
         String resourceGroupName, String serviceName, String appName, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -1417,11 +1443,11 @@ public final class AppsClient {
      * @return an resource upload URL for an App, which may be artifacts or source archive.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ResourceUploadDefinitionInner> getResourceUploadUrlAsync(
+    public Mono<ResourceUploadDefinition> getResourceUploadUrlAsync(
         String resourceGroupName, String serviceName, String appName) {
         return getResourceUploadUrlWithResponseAsync(resourceGroupName, serviceName, appName)
             .flatMap(
-                (Response<ResourceUploadDefinitionInner> res) -> {
+                (Response<ResourceUploadDefinition> res) -> {
                     if (res.getValue() != null) {
                         return Mono.just(res.getValue());
                     } else {
@@ -1444,11 +1470,11 @@ public final class AppsClient {
      * @return an resource upload URL for an App, which may be artifacts or source archive.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ResourceUploadDefinitionInner> getResourceUploadUrlAsync(
+    public Mono<ResourceUploadDefinition> getResourceUploadUrlAsync(
         String resourceGroupName, String serviceName, String appName, Context context) {
         return getResourceUploadUrlWithResponseAsync(resourceGroupName, serviceName, appName, context)
             .flatMap(
-                (Response<ResourceUploadDefinitionInner> res) -> {
+                (Response<ResourceUploadDefinition> res) -> {
                     if (res.getValue() != null) {
                         return Mono.just(res.getValue());
                     } else {
@@ -1470,8 +1496,7 @@ public final class AppsClient {
      * @return an resource upload URL for an App, which may be artifacts or source archive.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ResourceUploadDefinitionInner getResourceUploadUrl(
-        String resourceGroupName, String serviceName, String appName) {
+    public ResourceUploadDefinition getResourceUploadUrl(String resourceGroupName, String serviceName, String appName) {
         return getResourceUploadUrlAsync(resourceGroupName, serviceName, appName).block();
     }
 
@@ -1489,429 +1514,9 @@ public final class AppsClient {
      * @return an resource upload URL for an App, which may be artifacts or source archive.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ResourceUploadDefinitionInner getResourceUploadUrl(
+    public ResourceUploadDefinition getResourceUploadUrl(
         String resourceGroupName, String serviceName, String appName, Context context) {
         return getResourceUploadUrlAsync(resourceGroupName, serviceName, appName, context).block();
-    }
-
-    /**
-     * Create a new App or update an exiting App.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serviceName The name of the Service resource.
-     * @param appName The name of the App resource.
-     * @param appResource App resource payload.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return app resource payload.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<AppResourceInner>> beginCreateOrUpdateWithoutPollingWithResponseAsync(
-        String resourceGroupName, String serviceName, String appName, AppResourceInner appResource) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (serviceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter serviceName is required and cannot be null."));
-        }
-        if (appName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter appName is required and cannot be null."));
-        }
-        if (appResource == null) {
-            return Mono.error(new IllegalArgumentException("Parameter appResource is required and cannot be null."));
-        } else {
-            appResource.validate();
-        }
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .beginCreateOrUpdateWithoutPolling(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            serviceName,
-                            appName,
-                            appResource,
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
-
-    /**
-     * Create a new App or update an exiting App.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serviceName The name of the Service resource.
-     * @param appName The name of the App resource.
-     * @param appResource App resource payload.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return app resource payload.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<AppResourceInner>> beginCreateOrUpdateWithoutPollingWithResponseAsync(
-        String resourceGroupName, String serviceName, String appName, AppResourceInner appResource, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (serviceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter serviceName is required and cannot be null."));
-        }
-        if (appName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter appName is required and cannot be null."));
-        }
-        if (appResource == null) {
-            return Mono.error(new IllegalArgumentException("Parameter appResource is required and cannot be null."));
-        } else {
-            appResource.validate();
-        }
-        return service
-            .beginCreateOrUpdateWithoutPolling(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                serviceName,
-                appName,
-                appResource,
-                context);
-    }
-
-    /**
-     * Create a new App or update an exiting App.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serviceName The name of the Service resource.
-     * @param appName The name of the App resource.
-     * @param appResource App resource payload.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return app resource payload.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AppResourceInner> beginCreateOrUpdateWithoutPollingAsync(
-        String resourceGroupName, String serviceName, String appName, AppResourceInner appResource) {
-        return beginCreateOrUpdateWithoutPollingWithResponseAsync(resourceGroupName, serviceName, appName, appResource)
-            .flatMap(
-                (Response<AppResourceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Create a new App or update an exiting App.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serviceName The name of the Service resource.
-     * @param appName The name of the App resource.
-     * @param appResource App resource payload.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return app resource payload.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AppResourceInner> beginCreateOrUpdateWithoutPollingAsync(
-        String resourceGroupName, String serviceName, String appName, AppResourceInner appResource, Context context) {
-        return beginCreateOrUpdateWithoutPollingWithResponseAsync(
-                resourceGroupName, serviceName, appName, appResource, context)
-            .flatMap(
-                (Response<AppResourceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Create a new App or update an exiting App.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serviceName The name of the Service resource.
-     * @param appName The name of the App resource.
-     * @param appResource App resource payload.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return app resource payload.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public AppResourceInner beginCreateOrUpdateWithoutPolling(
-        String resourceGroupName, String serviceName, String appName, AppResourceInner appResource) {
-        return beginCreateOrUpdateWithoutPollingAsync(resourceGroupName, serviceName, appName, appResource).block();
-    }
-
-    /**
-     * Create a new App or update an exiting App.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serviceName The name of the Service resource.
-     * @param appName The name of the App resource.
-     * @param appResource App resource payload.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return app resource payload.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public AppResourceInner beginCreateOrUpdateWithoutPolling(
-        String resourceGroupName, String serviceName, String appName, AppResourceInner appResource, Context context) {
-        return beginCreateOrUpdateWithoutPollingAsync(resourceGroupName, serviceName, appName, appResource, context)
-            .block();
-    }
-
-    /**
-     * Operation to update an exiting App.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serviceName The name of the Service resource.
-     * @param appName The name of the App resource.
-     * @param appResource App resource payload.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return app resource payload.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<AppResourceInner>> beginUpdateWithoutPollingWithResponseAsync(
-        String resourceGroupName, String serviceName, String appName, AppResourceInner appResource) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (serviceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter serviceName is required and cannot be null."));
-        }
-        if (appName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter appName is required and cannot be null."));
-        }
-        if (appResource == null) {
-            return Mono.error(new IllegalArgumentException("Parameter appResource is required and cannot be null."));
-        } else {
-            appResource.validate();
-        }
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .beginUpdateWithoutPolling(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            serviceName,
-                            appName,
-                            appResource,
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
-
-    /**
-     * Operation to update an exiting App.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serviceName The name of the Service resource.
-     * @param appName The name of the App resource.
-     * @param appResource App resource payload.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return app resource payload.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<AppResourceInner>> beginUpdateWithoutPollingWithResponseAsync(
-        String resourceGroupName, String serviceName, String appName, AppResourceInner appResource, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (serviceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter serviceName is required and cannot be null."));
-        }
-        if (appName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter appName is required and cannot be null."));
-        }
-        if (appResource == null) {
-            return Mono.error(new IllegalArgumentException("Parameter appResource is required and cannot be null."));
-        } else {
-            appResource.validate();
-        }
-        return service
-            .beginUpdateWithoutPolling(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                serviceName,
-                appName,
-                appResource,
-                context);
-    }
-
-    /**
-     * Operation to update an exiting App.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serviceName The name of the Service resource.
-     * @param appName The name of the App resource.
-     * @param appResource App resource payload.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return app resource payload.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AppResourceInner> beginUpdateWithoutPollingAsync(
-        String resourceGroupName, String serviceName, String appName, AppResourceInner appResource) {
-        return beginUpdateWithoutPollingWithResponseAsync(resourceGroupName, serviceName, appName, appResource)
-            .flatMap(
-                (Response<AppResourceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Operation to update an exiting App.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serviceName The name of the Service resource.
-     * @param appName The name of the App resource.
-     * @param appResource App resource payload.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return app resource payload.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AppResourceInner> beginUpdateWithoutPollingAsync(
-        String resourceGroupName, String serviceName, String appName, AppResourceInner appResource, Context context) {
-        return beginUpdateWithoutPollingWithResponseAsync(resourceGroupName, serviceName, appName, appResource, context)
-            .flatMap(
-                (Response<AppResourceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Operation to update an exiting App.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serviceName The name of the Service resource.
-     * @param appName The name of the App resource.
-     * @param appResource App resource payload.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return app resource payload.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public AppResourceInner beginUpdateWithoutPolling(
-        String resourceGroupName, String serviceName, String appName, AppResourceInner appResource) {
-        return beginUpdateWithoutPollingAsync(resourceGroupName, serviceName, appName, appResource).block();
-    }
-
-    /**
-     * Operation to update an exiting App.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serviceName The name of the Service resource.
-     * @param appName The name of the App resource.
-     * @param appResource App resource payload.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return app resource payload.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public AppResourceInner beginUpdateWithoutPolling(
-        String resourceGroupName, String serviceName, String appName, AppResourceInner appResource, Context context) {
-        return beginUpdateWithoutPollingAsync(resourceGroupName, serviceName, appName, appResource, context).block();
     }
 
     /**
