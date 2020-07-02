@@ -9,12 +9,13 @@ import reactor.core.publisher.Mono;
 
 import java.io.ByteArrayOutputStream;
 import java.io.OutputStream;
+import java.util.Objects;
 
 public final class ObjectBatch<T> extends Batch {
     private final ClientLogger logger = new ClientLogger(ObjectBatch.class);
     private final Object lock = new Object();
     private final Class<T> batchType;
-    private final ObjectSerializer serializer;
+    private final ObjectSerializer objectSerializer;
 
     /**
      *
@@ -24,16 +25,16 @@ public final class ObjectBatch<T> extends Batch {
      * @param batchType
      * @param contextProvider
      * @param tracerProvider
-     * @param serializer
+     * @param objectSerializer
      * @param entityPath
      * @param hostname
      */
     ObjectBatch(int maxMessageSize, String partitionId, String partitionKey, Class<T> batchType,
                     ErrorContextProvider contextProvider, TracerProvider tracerProvider,
-                ObjectSerializer serializer, String entityPath, String hostname) {
+                ObjectSerializer objectSerializer, String entityPath, String hostname) {
         super(maxMessageSize, partitionId, partitionKey, contextProvider, tracerProvider, entityPath, hostname);
-        this.batchType = batchType;
-        this.serializer = serializer;
+        this.batchType = Objects.requireNonNull(batchType, "'batchType' cannot be null.");
+        this.objectSerializer = Objects.requireNonNull(objectSerializer, "'objectSerializer' cannot be null.");
     }
 
     /**
@@ -52,7 +53,7 @@ public final class ObjectBatch<T> extends Batch {
         }
 
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        return serializer.serialize(outputStream, object).map(s -> {
+        return objectSerializer.serialize(outputStream, object).map(s -> {
             EventData eventData = new EventData(s.toByteArray());
             EventData event = tracerProvider.isEnabled() ? traceMessageSpan(eventData) : eventData;
             return tryAdd(event);
