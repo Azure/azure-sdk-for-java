@@ -8,14 +8,11 @@
 
 package com.microsoft.azure.management.synapse.v2019_06_01_preview.implementation;
 
+import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
-import com.microsoft.azure.management.synapse.v2019_06_01_preview.ManagedIntegrationRuntime;
-import com.microsoft.azure.management.synapse.v2019_06_01_preview.SelfHostedIntegrationRuntime;
-
-import java.util.Map;
+import com.fasterxml.jackson.annotation.JsonSubTypes;
 
 /**
  * Azure Synapse nested object which serves as a compute resource for
