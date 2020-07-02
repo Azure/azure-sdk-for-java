@@ -11,40 +11,27 @@ import java.time.Duration;
 public class TokenRefreshOptions {
     private static final Duration DEFAULT_OFFSET = Duration.ofMinutes(2);
 
-    private Duration offset = DEFAULT_OFFSET;
-
     /**
      * Returns a Duration value representing the amount of time to subtract from the token expiry time, whereupon
      * attempts will be made to refresh the token. By default this will occur two minutes prior to the expiry of the
      * token.
      *
-     * @return the duration value representing the amount of time to subtract from the token expiry time
-     */
-    public Duration getOffset() {
-        return offset;
-    }
-
-    /**
-     * Specifies the Duration value representing the amount of time to subtract from the token expiry time, whereupon
-     * attempts will be made to refresh the token. By default this will occur two minutes prior to the expiry of the
-     * token.
-     *
      * This is used in {@link SimpleTokenCache} and {@link com.azure.core.http.policy.BearerTokenAuthenticationPolicy}
-     * to proactively retrieve a more up-to-date token before the cached token gets too close to its expiry. Extending
-     * this offset is recommended if it takes > 2 minutes to reach the service (application is running on high load),
-     * or you would like to simply keep a more up-to-date token in the cache (more robust against token refresh API
-     * down times). The user is responsible for specifying a valid offset.
+     * to proactively retrieve a more up-to-date token before the cached token gets too close to its expiry. You can
+     * configure this from the {@code .tokenRefreshOffset(Duration)} method from any credential builder in the
+     * azure-identity library.
+     *
+     * Extending this offset is recommended if it takes > 2 minutes to reach the service (application is running on
+     * high load), or you would like to simply keep a more up-to-date token in the cache (more robust against token
+     * refresh API down times). The user is responsible for specifying a valid offset.
      *
      * When a proactive token refresh fails but the previously cached token is still valid,
      * {@link com.azure.core.http.policy.BearerTokenAuthenticationPolicy} will NOT fail but return the previous valid
      * token. Another proactive refresh will be attempted in 30 seconds.
      *
-     * @param offset the duration representing the amount of time to subtract from the token expiry time, must be a
-     *               positive Duration but smaller than the token valid time
-     * @return the updated TokenRefreshOptions object
+     * @return the duration value representing the amount of time to subtract from the token expiry time
      */
-    public TokenRefreshOptions setOffset(Duration offset) {
-        this.offset = offset;
-        return this;
+    public Duration getOffset() {
+        return DEFAULT_OFFSET;
     }
 }
