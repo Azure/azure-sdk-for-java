@@ -250,6 +250,13 @@ public interface SpringApp
              * @return the next stage of spring app update
              */
             Update withActiveDeployment(String name);
+
+            /**
+             * Removes a deployment for the spring app.
+             * @param name the name of the deployment
+             * @return the next stage of spring app update
+             */
+            Update withoutDeployment(String name);
         }
     }
 }

@@ -29,7 +29,7 @@ public class AppPlatformTest extends TestBase {
     @Override
     protected void cleanUpResources() {
         try {
-            appPlatformManager.resourceManager().resourceGroups().beginDeleteByName(rgName);
+//            appPlatformManager.resourceManager().resourceGroups().beginDeleteByName(rgName);
         } catch (Exception e) {}
     }
 }

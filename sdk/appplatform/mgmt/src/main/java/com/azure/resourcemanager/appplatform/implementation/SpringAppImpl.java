@@ -192,6 +192,15 @@ public class SpringAppImpl
     }
 
     @Override
+    public SpringAppImpl withoutDeployment(String name) {
+        this.addPostRunDependent(
+            context -> deploy().deleteByNameAsync(name)
+                .then(context.voidMono())
+        );
+        return this;
+    }
+
+    @Override
     public SpringAppImpl deployJar(String name, File jarFile) {
         ensureProperty();
         inner().properties().withActiveDeploymentName(name);
