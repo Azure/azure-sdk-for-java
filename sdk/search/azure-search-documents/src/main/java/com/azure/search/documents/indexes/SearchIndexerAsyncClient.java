@@ -224,7 +224,7 @@ public class SearchIndexerAsyncClient {
      *
      * <p><strong>Code Sample</strong></p>
      *
-     * <p> Get search indexer data source connection response named "dataSource". </p>
+     * <p> Get search indexer data source connection named "dataSource". </p>
      *
      * {@codesnippet com.azure.search.documents.indexes.SearchIndexerAsyncClient.getDataSourceConnectionWithResponse#String}
      *
