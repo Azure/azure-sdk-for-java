@@ -1029,7 +1029,7 @@ public class SearchIndexerAsyncClient {
      *
      * <p><strong>Code Sample</strong></p>
      *
-     * <p> Delete search indexer skillset "searchIndexerSkillset" with response. </p>
+     * <p> Delete search indexer skillset "searchIndexerSkillset". </p>
      *
      * {@codesnippet com.azure.search.documents.indexes.SearchIndexerAsyncClient.deleteSkillsetWithResponse#SearchIndexerSkillset-boolean}
      *
