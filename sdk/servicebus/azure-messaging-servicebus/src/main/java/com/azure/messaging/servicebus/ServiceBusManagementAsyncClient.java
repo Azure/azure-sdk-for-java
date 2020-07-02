@@ -990,7 +990,7 @@ public final class ServiceBusManagementAsyncClient {
     Mono<Response<SubscriptionDescription>> createSubscriptionWithResponse(SubscriptionDescription subscription,
         Context context) {
         if (subscription == null) {
-            return monoError(logger, new NullPointerException("'subscription' cannot be null"));
+            return monoError(logger, new NullPointerException("'subscription' cannot be null."));
         }
 
         final CreateSubscriptionBodyContent content = new CreateSubscriptionBodyContent()
@@ -1021,8 +1021,6 @@ public final class ServiceBusManagementAsyncClient {
     Mono<Response<TopicDescription>> createTopicWithResponse(TopicDescription topic, Context context) {
         if (topic == null) {
             return monoError(logger, new NullPointerException("'topic' cannot be null"));
-        } else if (topic.getName() == null || topic.getName().isEmpty()) {
-            return monoError(logger, new IllegalArgumentException("'topic.getName' cannot be null or empty."));
         } else if (context == null) {
             return monoError(logger, new NullPointerException("'context' cannot be null."));
         }
@@ -1056,7 +1054,7 @@ public final class ServiceBusManagementAsyncClient {
         if (queueName == null) {
             return monoError(logger, new NullPointerException("'queueName' cannot be null"));
         } else if (queueName.isEmpty()) {
-            return monoError(logger, new IllegalArgumentException("'queueName' cannot be empty."));
+            return monoError(logger, new IllegalArgumentException("'queueName' cannot be an empty string."));
         } else if (context == null) {
             return monoError(logger, new NullPointerException("'context' cannot be null."));
         }
@@ -1088,7 +1086,7 @@ public final class ServiceBusManagementAsyncClient {
         if (subscriptionName == null) {
             return monoError(logger, new NullPointerException("'subscriptionName' cannot be null"));
         } else if (subscriptionName.isEmpty()) {
-            return monoError(logger, new IllegalArgumentException("'subscriptionName' cannot be empty."));
+            return monoError(logger, new IllegalArgumentException("'subscriptionName' cannot be an empty string."));
         } else if (topicName == null) {
             return monoError(logger, new NullPointerException("'topicName' cannot be null"));
         } else if (topicName.isEmpty()) {
@@ -1122,7 +1120,7 @@ public final class ServiceBusManagementAsyncClient {
         if (topicName == null) {
             return monoError(logger, new NullPointerException("'topicName' cannot be null"));
         } else if (topicName.isEmpty()) {
-            return monoError(logger, new IllegalArgumentException("'topicName' cannot be empty."));
+            return monoError(logger, new IllegalArgumentException("'topicName' cannot be an empty string."));
         } else if (context == null) {
             return monoError(logger, new NullPointerException("'context' cannot be null."));
         }
@@ -1189,11 +1187,14 @@ public final class ServiceBusManagementAsyncClient {
      */
     <T> Mono<Response<T>> getSubscriptionWithResponse(String topicName, String subscriptionName, Context context,
         Function<SubscriptionDescription, T> mapper) {
-        if (topicName == null || topicName.isEmpty()) {
-            return monoError(logger, new IllegalArgumentException("'topicName' cannot be null or an empty string."));
-        } else if (subscriptionName == null || subscriptionName.isEmpty()) {
-            return monoError(logger,
-                new IllegalArgumentException("'subscriptionName' cannot be null or an empty string."));
+        if (topicName == null) {
+            return monoError(logger, new NullPointerException("'topicName' cannot be null."));
+        } else if (topicName.isEmpty()) {
+            return monoError(logger, new IllegalArgumentException("'topicName' cannot be an empty string."));
+        } else if (subscriptionName == null) {
+            return monoError(logger, new NullPointerException("'subscriptionName' cannot be null."));
+        }  else if (subscriptionName.isEmpty()) {
+            return monoError(logger, new IllegalArgumentException("'subscriptionName' cannot be an empty string."));
         } else if (context == null) {
             return monoError(logger, new NullPointerException("'context' cannot be null."));
         }
@@ -1392,8 +1393,6 @@ public final class ServiceBusManagementAsyncClient {
     Mono<Response<QueueDescription>> updateQueueWithResponse(QueueDescription queue, Context context) {
         if (queue == null) {
             return monoError(logger, new NullPointerException("'queue' cannot be null"));
-        } else if (queue.getName() == null || queue.getName().isEmpty()) {
-            return monoError(logger, new IllegalArgumentException("'queue.getName' cannot be null or empty."));
         } else if (context == null) {
             return monoError(logger, new NullPointerException("'context' cannot be null."));
         }
@@ -1428,18 +1427,12 @@ public final class ServiceBusManagementAsyncClient {
         Context context) {
         if (subscription == null) {
             return monoError(logger, new NullPointerException("'subscription' cannot be null"));
-        }
-
-        final String topicName = subscription.getTopicName();
-        final String subscriptionName = subscription.getSubscriptionName();
-        if (topicName == null || topicName.isEmpty()) {
-            return monoError(logger, new IllegalArgumentException("'getTopicName' cannot be null or empty."));
-        } else if (subscriptionName == null || subscriptionName.isEmpty()) {
-            return monoError(logger, new IllegalArgumentException("'getSubscriptionName' cannot be null or empty."));
         } else if (context == null) {
             return monoError(logger, new NullPointerException("'context' cannot be null."));
         }
 
+        final String topicName = subscription.getTopicName();
+        final String subscriptionName = subscription.getSubscriptionName();
         final CreateSubscriptionBodyContent content = new CreateSubscriptionBodyContent()
             .setType(CONTENT_TYPE)
             .setSubscriptionDescription(subscription);
@@ -1470,8 +1463,6 @@ public final class ServiceBusManagementAsyncClient {
     Mono<Response<TopicDescription>> updateTopicWithResponse(TopicDescription topic, Context context) {
         if (topic == null) {
             return monoError(logger, new NullPointerException("'topic' cannot be null"));
-        } else if (topic.getName() == null || topic.getName().isEmpty()) {
-            return monoError(logger, new IllegalArgumentException("'topic.getName' cannot be null or empty."));
         } else if (context == null) {
             return monoError(logger, new NullPointerException("'context' cannot be null."));
         }

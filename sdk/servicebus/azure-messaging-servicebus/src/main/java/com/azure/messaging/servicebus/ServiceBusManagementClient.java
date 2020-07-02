@@ -533,6 +533,7 @@ public final class ServiceBusManagementClient {
      * Gets information about the topic along with its HTTP response.
      *
      * @param topicName Name of topic to get information about.
+     * @param context Additional context that is passed through the HTTP pipeline during the service call.
      *
      * @return Information about the topic and the associated HTTP response.
      * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
