@@ -20,22 +20,22 @@ public final class KeyType extends ExpandableStringEnum<KeyType> {
     public static final KeyType EC = fromString("EC");
 
     /**
-     * Static value Decrypt for KeyType.
+     * Static value EC-HSM for KeyType.
      */
     public static final KeyType EC_HSM = fromString("EC-HSM");
 
     /**
-     * Static value Sign for KeyType.
+     * Static value RSA for KeyType.
      */
     public static final KeyType RSA = fromString("RSA");
 
     /**
-     * Static value Verify for KeyType.
+     * Static value RSA-HSM for KeyType.
      */
     public static final KeyType RSA_HSM = fromString("RSA-HSM");
 
     /**
-     * Static value Wrap Key for KeyType.
+     * Static value oct for KeyType.
      */
     public static final KeyType OCT = fromString("oct");
 
