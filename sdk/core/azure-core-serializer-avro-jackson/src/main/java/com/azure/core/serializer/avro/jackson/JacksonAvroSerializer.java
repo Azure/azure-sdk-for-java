@@ -39,7 +39,7 @@ public final class JacksonAvroSerializer implements ObjectSerializer {
     }
 
     @Override
-    public Mono<OutputStream> serialize(OutputStream stream, Object value) {
+    public <S extends OutputStream> Mono<S> serialize(S stream, Object value) {
         return Mono.fromCallable(() -> {
             avroMapper.writer().with(avroSchema).writeValue(stream, value);
 

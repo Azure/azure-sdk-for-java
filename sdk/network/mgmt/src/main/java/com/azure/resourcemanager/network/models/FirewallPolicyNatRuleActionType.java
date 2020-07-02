@@ -4,31 +4,41 @@
 
 package com.azure.resourcemanager.network.models;
 
-import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import java.util.Collection;
+import com.fasterxml.jackson.annotation.JsonValue;
 
 /** Defines values for FirewallPolicyNatRuleActionType. */
-public final class FirewallPolicyNatRuleActionType extends ExpandableStringEnum<FirewallPolicyNatRuleActionType> {
-    /** Static value DNAT for FirewallPolicyNatRuleActionType. */
-    public static final FirewallPolicyNatRuleActionType DNAT = fromString("DNAT");
+public enum FirewallPolicyNatRuleActionType {
+    /** Enum value DNAT. */
+    DNAT("DNAT");
 
-    /** Static value SNAT for FirewallPolicyNatRuleActionType. */
-    public static final FirewallPolicyNatRuleActionType SNAT = fromString("SNAT");
+    /** The actual serialized value for a FirewallPolicyNatRuleActionType instance. */
+    private final String value;
 
-    /**
-     * Creates or finds a FirewallPolicyNatRuleActionType from its string representation.
-     *
-     * @param name a name to look for.
-     * @return the corresponding FirewallPolicyNatRuleActionType.
-     */
-    @JsonCreator
-    public static FirewallPolicyNatRuleActionType fromString(String name) {
-        return fromString(name, FirewallPolicyNatRuleActionType.class);
+    FirewallPolicyNatRuleActionType(String value) {
+        this.value = value;
     }
 
-    /** @return known FirewallPolicyNatRuleActionType values. */
-    public static Collection<FirewallPolicyNatRuleActionType> values() {
-        return values(FirewallPolicyNatRuleActionType.class);
+    /**
+     * Parses a serialized value to a FirewallPolicyNatRuleActionType instance.
+     *
+     * @param value the serialized value to parse.
+     * @return the parsed FirewallPolicyNatRuleActionType object, or null if unable to parse.
+     */
+    @JsonCreator
+    public static FirewallPolicyNatRuleActionType fromString(String value) {
+        FirewallPolicyNatRuleActionType[] items = FirewallPolicyNatRuleActionType.values();
+        for (FirewallPolicyNatRuleActionType item : items) {
+            if (item.toString().equalsIgnoreCase(value)) {
+                return item;
+            }
+        }
+        return null;
+    }
+
+    @JsonValue
+    @Override
+    public String toString() {
+        return this.value;
     }
 }

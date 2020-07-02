@@ -46,14 +46,15 @@ public final class FormRecognizerClient {
     }
 
     /**
-     * Recognizes receipt data from documents using optical character recognition (OCR) and a custom trained model.
+     * Recognizes form data from documents using optical character recognition (OCR) and a custom trained
+     * model with or without labels.
      * <p>The service does not support cancellation of the long running operation and returns with an error message
      * indicating absence of cancellation support</p>
      *
      * <p><strong>Code sample</strong></p>
      * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeCustomFormsFromUrl#string-string}
      *
-     * @param formUrl The source URL to the input form.
+     * @param formUrl The URL of the form to analyze.
      * @param modelId The UUID string format custom trained model Id to be used.
      *
      * @return A {@link SyncPoller} to poll the progress of the recognize custom form operation until it has completed,
@@ -71,7 +72,7 @@ public final class FormRecognizerClient {
 
     /**
      * Recognizes form data from documents using optical character recognition (OCR) and a custom trained
-     * model.
+     * model with or without labels.
      * <p>The service does not support cancellation of the long running operation and returns with an
      * error message indicating absence of cancellation support.</p>
      *
@@ -79,10 +80,10 @@ public final class FormRecognizerClient {
      * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeCustomForms#InputStream-long-string-FormContentType}
      *
      * @param form The data of the form to recognize form information from.
-     * @param length The exact length of the data. Size of the file must be less than 50 MB.
+     * @param length The exact length of the data.
      * @param modelId The UUID string format custom trained model Id to be used.
-     * @param formContentType The type of the provided form. Supported Media types including .pdf, .jpg, .png or
-     * .tiff type file stream.
+     * @param formContentType The media type of the provided form. Supported Media types including .pdf, .jpg, .png or
+     * .tiff type file stream. Content-type is auto-detected and could be {@code null}.
      *
      * @return A {@link SyncPoller} that polls the recognize custom form operation until it has completed,
      * has failed, or has been cancelled. The completed operation returns a List of {@link RecognizedForm}.
@@ -121,17 +122,16 @@ public final class FormRecognizerClient {
     }
 
     /**
-     * Recognizes layout data from documents using optical character recognition (OCR) and a custom trained
-     * model.
+     * Recognizes content/layout data from documents using optical character recognition (OCR).
      * <p>The service does not support cancellation of the long running operation and returns with an
      * error message indicating absence of cancellation support.</p>
      *
      * <p><strong>Code sample</strong></p>
      * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeContentFromUrl#string}
      *
-     * @param formUrl The source URL to the input form.
+     * @param formUrl The URL of the form to analyze.
      *
-     * @return A {@link SyncPoller} that polls the recognize layout form operation until it has completed, has failed,
+     * @return A {@link SyncPoller} that polls the recognize content form operation until it has completed, has failed,
      * or has been cancelled. The completed operation returns a List of {@link FormPage}.
      * @throws FormRecognizerException If recognize operation fails and the {@link AnalyzeOperationResult} returned with
      * an {@link OperationStatus#FAILED}.
@@ -143,7 +143,7 @@ public final class FormRecognizerClient {
     }
 
     /**
-     * Recognizes layout data using optical character recognition (OCR) and a custom trained model.
+     * Recognizes content/layout data using optical character recognition (OCR).
      * <p>The service does not support cancellation of the long running operation and returns with an
      * error message indicating absence of cancellation support.</p>
      *
@@ -151,11 +151,12 @@ public final class FormRecognizerClient {
      * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeContent#InputStream-long-FormContentType}
      *
      * @param form The data of the form to recognize content information from.
-     * @param length The exact length of the data. Size of the file must be less than 50 MB.
-     * @param formContentType Supported Media types including .pdf, .jpg, .png or .tiff type file stream.
+     * @param length The exact length of the data.
+     * @param formContentType The media type of the provided form. Supported Media types including .pdf, .jpg,
+     * .png or .tiff type file stream. Content-type is auto-detected and could be {@code null}.
      *
-     * @return A {@link SyncPoller} that polls the recognize layout operation until it has completed, has failed, or has
-     * been cancelled. The completed operation returns a List of {@link FormPage}.
+     * @return A {@link SyncPoller} that polls the recognize content operation until it has completed, has failed,
+     * or has been cancelled. The completed operation returns a List of {@link FormPage}.
      * @throws FormRecognizerException If recognize operation fails and the {@link AnalyzeOperationResult} returned with
      * an {@link OperationStatus#FAILED}.
      * @throws NullPointerException If {@code form} is {@code null}.
@@ -167,8 +168,7 @@ public final class FormRecognizerClient {
     }
 
     /**
-     * Recognizes layout data from the provided document data using optical character recognition (OCR)
-     * and a prebuilt trained receipt model.
+     * Recognizes content/layout data from the provided document data using optical character recognition (OCR).
      * <p>The service does not support cancellation of the long running operation and returns with an
      * error message indicating absence of cancellation support</p>
      *
@@ -178,7 +178,7 @@ public final class FormRecognizerClient {
      * @param recognizeOptions The configurable {@code RecognizeOptions options} that may be passed when recognizing
      * content on a form.
      *
-     * @return A {@link SyncPoller} that polls the recognize layout operation until it has completed,
+     * @return A {@link SyncPoller} that polls the recognize content operation until it has completed,
      * has failed, or has been cancelled. The completed operation returns a List of {@link FormPage}.
      * @throws FormRecognizerException If recognize operation fails and the {@link AnalyzeOperationResult} returned with
      * an {@link OperationStatus#FAILED}.
@@ -194,11 +194,12 @@ public final class FormRecognizerClient {
      * model.
      * <p>The service does not support cancellation of the long running operation and returns with an
      * error message indicating absence of cancellation support</p>
+     * See <a href="https://aka.ms/azsdk/python/formrecognizer/receiptfields">here</a> for fields found on a receipt.
      *
      * <p><strong>Code sample</strong></p>
      * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeReceiptsFromUrl#string}
      *
-     * @param receiptUrl The source URL to the input receipt.
+     * @param receiptUrl The URL of the receipt to analyze.
      *
      * @return A {@link SyncPoller} to poll the progress of the recognize receipt operation until it has completed,
      * has failed, or has been cancelled. The completed operation returns a List of {@link RecognizedReceipt}.
@@ -216,13 +217,15 @@ public final class FormRecognizerClient {
      * and a prebuilt trained receipt model.
      * <p>The service does not support cancellation of the long running operation and returns with an
      * error message indicating absence of cancellation support</p>
+     * See <a href="https://aka.ms/azsdk/python/formrecognizer/receiptfields">here</a> for fields found on a receipt.
      *
      * <p><strong>Code sample</strong></p>
      * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeReceipts#InputStream-long-FormContentType}
      *
-     * @param receipt The data of the receipt to recognize receipt information from.
-     * @param length The exact length of the data. Size of the file must be less than 50 MB.
-     * @param formContentType Supported Media types including .pdf, .jpg, .png or .tiff type file stream.
+     * @param receipt The data/stream of the receipt to recognize receipt information from.
+     * @param length The exact length of the data.
+     * @param formContentType The media type of the provided form. Supported Media types including .pdf, .jpg, .png
+     * or .tiff type file stream. Content-type is auto-detected and could be {@code null}.
      *
      * @return A {@link SyncPoller} that polls the recognize receipt operation until it has completed,
      * has failed, or has been cancelled. The completed operation returns a List of {@link RecognizedReceipt}.
@@ -242,6 +245,7 @@ public final class FormRecognizerClient {
      * trained receipt model.
      * <p>The service does not support cancellation of the long running operation and returns with an
      * error message indicating absence of cancellation support</p>
+     * See <a href="https://aka.ms/azsdk/python/formrecognizer/receiptfields">here</a> for fields found on a receipt.
      *
      * <p><strong>Code sample</strong></p>
      * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeReceipts#recognizeOptions}
