@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.search.documents.test.environment.models;
 
-import com.azure.core.models.spatial.PointGeometry;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -42,9 +41,9 @@ public class LoudHotel {
     @JsonProperty(value = "Rating")
     private Integer RATING;
 
-    @JsonProperty(value = "Location")
-    @JsonInclude(JsonInclude.Include.ALWAYS)
-    private PointGeometry LOCATION;
+//    @JsonProperty(value = "Location")
+//    @JsonInclude(JsonInclude.Include.ALWAYS)
+//    private PointGeometry LOCATION;
 
     @JsonProperty(value = "Address")
     private HotelAddress ADDRESS;
@@ -148,14 +147,14 @@ public class LoudHotel {
         return this;
     }
 
-    public PointGeometry LOCATION() {
-        return this.LOCATION;
-    }
-
-    public LoudHotel LOCATION(PointGeometry location) {
-        this.LOCATION = location;
-        return this;
-    }
+//    public PointGeometry LOCATION() {
+//        return this.LOCATION;
+//    }
+//
+//    public LoudHotel LOCATION(PointGeometry location) {
+//        this.LOCATION = location;
+//        return this;
+//    }
 
     public HotelAddress ADDRESS() {
         return this.ADDRESS;
