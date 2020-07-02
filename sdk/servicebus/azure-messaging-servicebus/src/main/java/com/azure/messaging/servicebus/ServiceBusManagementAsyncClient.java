@@ -137,8 +137,6 @@ public final class ServiceBusManagementAsyncClient {
      *     namespace.
      * @throws HttpResponseException If the request body was invalid, the queue quota is exceeded, or an error
      *     occurred processing the request.
-     * @throws IllegalArgumentException if {@link QueueDescription#getName() queue.getName()} is null or an empty
-     *     string.
      * @throws NullPointerException if {@code queue} is null.
      * @throws ResourceExistsException if a queue exists with the same {@link QueueDescription#getName()
      *     queueName}.
@@ -159,8 +157,6 @@ public final class ServiceBusManagementAsyncClient {
      *     namespace.
      * @throws HttpResponseException If the request body was invalid, the queue quota is exceeded, or an error
      *     occurred processing the request.
-     * @throws IllegalArgumentException if {@link QueueDescription#getName() queue.getName()} is null or an empty
-     *     string.
      * @throws NullPointerException if {@code queue} is null.
      * @throws ResourceExistsException if a queue exists with the same {@link QueueDescription#getName()
      *     queueName}.
@@ -182,7 +178,8 @@ public final class ServiceBusManagementAsyncClient {
      *     namespace.
      * @throws HttpResponseException If the request body was invalid, the quota is exceeded, or an error occurred
      *     processing the request.
-     * @throws IllegalArgumentException if {@code topicName} or {@code subscriptionName} are null or are empty strings.
+     * @throws NullPointerException if {@code topicName} or {@code subscriptionName} are are empty strings.
+     * @throws IllegalArgumentException if {@code topicName} or {@code subscriptionName} are are null.
      * @throws ResourceExistsException if a subscription exists with the same topic and subscription name.
      * @see <a href="https://docs.microsoft.com/rest/api/servicebus/update-entity">Create or Update Entity</a>
      */
@@ -244,7 +241,8 @@ public final class ServiceBusManagementAsyncClient {
      *     namespace.
      * @throws HttpResponseException If the request body was invalid, the topic quota is exceeded, or an error
      *     occurred processing the request.
-     * @throws IllegalArgumentException if {@code topicName} is null or an empty string.
+     * @throws NullPointerException if {@code topicName} is null.
+     * @throws IllegalArgumentException if {@code topicName} is an empty string.
      * @throws ResourceExistsException if a topic exists with the same {@code topicName}.
      * @see <a href="https://docs.microsoft.com/rest/api/servicebus/update-entity">Create or Update Entity</a>
      */
@@ -310,8 +308,8 @@ public final class ServiceBusManagementAsyncClient {
      * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
      *     namespace.
      * @throws HttpResponseException If error occurred processing the request.
-     * @throws IllegalArgumentException if {@code queueName} is an empty string.
      * @throws NullPointerException if {@code queueName} is null.
+     * @throws IllegalArgumentException if {@code queueName} is an empty string.
      * @throws ResourceNotFoundException if the {@code queueName} does not exist.
      * @see <a href="https://docs.microsoft.com/rest/api/servicebus/delete-queue">Delete Queue</a>
      */
@@ -329,8 +327,8 @@ public final class ServiceBusManagementAsyncClient {
      * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
      *     namespace.
      * @throws HttpResponseException If error occurred processing the request.
-     * @throws IllegalArgumentException if {@code queueName} is an empty string.
      * @throws NullPointerException if {@code queueName} is null.
+     * @throws IllegalArgumentException if {@code queueName} is an empty string.
      * @throws ResourceNotFoundException if the {@code queueName} does not exist.
      * @see <a href="https://docs.microsoft.com/rest/api/servicebus/delete-queue">Delete Queue</a>
      */
@@ -503,7 +501,8 @@ public final class ServiceBusManagementAsyncClient {
      * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
      *     namespace.
      * @throws HttpResponseException If error occurred processing the request.
-     * @throws IllegalArgumentException if {@code topicName} or {@code subscriptionName} are null or empty strings.
+     * @throws IllegalArgumentException if {@code topicName} or {@code subscriptionName} are empty strings.
+     * @throws NullPointerException if {@code topicName} or {@code subscriptionName} are null.
      * @throws ResourceNotFoundException if the {@code subscriptionName} does not exist in the {@code topicName}.
      * @see <a href="https://docs.microsoft.com/rest/api/servicebus/get-entity">Get Entity</a>
      */
@@ -522,7 +521,8 @@ public final class ServiceBusManagementAsyncClient {
      * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
      *     namespace.
      * @throws HttpResponseException If error occurred processing the request.
-     * @throws IllegalArgumentException if {@code topicName} or {@code subscriptionName} are null or empty strings.
+     * @throws IllegalArgumentException if {@code topicName} or {@code subscriptionName} are empty strings.
+     * @throws NullPointerException if {@code topicName} or {@code subscriptionName} are null.
      * @throws ResourceNotFoundException if the {@code subscriptionName} does not exist.
      * @see <a href="https://docs.microsoft.com/rest/api/servicebus/get-entity">Get Entity</a>
      */
@@ -534,17 +534,17 @@ public final class ServiceBusManagementAsyncClient {
     }
 
     /**
-     * Gets runtime information about the queue.
+     * Gets runtime information about the subscription.
      *
      * @param topicName Name of topic associated with subscription.
      * @param subscriptionName Name of subscription to get information about.
      *
-     * @return A Mono that completes with runtime information about the queue.
+     * @return A Mono that completes with runtime information about the subscription.
      * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
      *     namespace.
      * @throws HttpResponseException If error occurred processing the request.
-     * @throws IllegalArgumentException if {@code subscriptionName} is an empty string.
-     * @throws NullPointerException if {@code subscriptionName} is null.
+     * @throws IllegalArgumentException if {@code topicName} or {@code subscriptionName} are empty strings.
+     * @throws NullPointerException if {@code topicName} or {@code subscriptionName} are null.
      * @throws ResourceNotFoundException if the {@code subscriptionName} does not exist.
      * @see <a href="https://docs.microsoft.com/rest/api/servicebus/get-entity">Get Entity</a>
      */
@@ -555,12 +555,12 @@ public final class ServiceBusManagementAsyncClient {
     }
 
     /**
-     * Gets runtime information about the queue.
+     * Gets runtime information about the subscription.
      *
      * @param topicName Name of topic associated with subscription.
      * @param subscriptionName Name of subscription to get information about.
      *
-     * @return A Mono that completes with runtime information about the queue.
+     * @return A Mono that completes with runtime information about the subscription.
      * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
      *     namespace.
      * @throws HttpResponseException If error occurred processing the request.
@@ -723,7 +723,7 @@ public final class ServiceBusManagementAsyncClient {
      * </ol>
      *
      * <p>
-     * There are a subset of properties that can be updated. They are:
+     * There are a subset of properties that can be updated. More information can be found in the links below. They are:
      * <ul>
      * <li>{@link QueueDescription#setDefaultMessageTimeToLive(Duration) DefaultMessageTimeToLive}</li>
      * <li>{@link QueueDescription#setLockDuration(Duration) LockDuration}</li>
@@ -740,8 +740,6 @@ public final class ServiceBusManagementAsyncClient {
      *     namespace.
      * @throws HttpResponseException If the request body was invalid, the queue quota is exceeded, or an error
      *     occurred processing the request.
-     * @throws IllegalArgumentException if {@link QueueDescription#getName() queue.getName()} is null or an empty
-     *     string.
      * @throws NullPointerException if {@code queue} is null.
      * @see <a href="https://docs.microsoft.com/rest/api/servicebus/update-entity">Create or Update Entity</a>
      * @see <a href="https://docs.microsoft.com/rest/api/servicebus/update-queue">Update Queue</a>
@@ -763,7 +761,7 @@ public final class ServiceBusManagementAsyncClient {
      * </ol>
      *
      * <p>
-     * There are a subset of properties that can be updated. They are:
+     * There are a subset of properties that can be updated. More information can be found in the links below. They are:
      * <ul>
      * <li>{@link QueueDescription#setDefaultMessageTimeToLive(Duration) DefaultMessageTimeToLive}</li>
      * <li>{@link QueueDescription#setLockDuration(Duration) LockDuration}</li>
@@ -780,8 +778,6 @@ public final class ServiceBusManagementAsyncClient {
      *     namespace.
      * @throws HttpResponseException If the request body was invalid, the queue quota is exceeded, or an error
      *     occurred processing the request.
-     * @throws IllegalArgumentException if {@link QueueDescription#getName() queue.getName()} is null or an empty
-     *     string.
      * @throws NullPointerException if {@code queue} is null.
      * @see <a href="https://docs.microsoft.com/rest/api/servicebus/update-entity">Create or Update Entity</a>
      * @see <a href="https://docs.microsoft.com/rest/api/servicebus/update-queue">Update Queue</a>
@@ -804,7 +800,7 @@ public final class ServiceBusManagementAsyncClient {
      * </ol>
      *
      * <p>
-     * There are a subset of properties that can be updated. They are:
+     * There are a subset of properties that can be updated. More information can be found in the links below. They are:
      * <ul>
      * <li>{@link SubscriptionDescription#setDefaultMessageTimeToLive(Duration) DefaultMessageTimeToLive}</li>
      * <li>{@link SubscriptionDescription#setLockDuration(Duration) LockDuration}</li>
@@ -842,7 +838,7 @@ public final class ServiceBusManagementAsyncClient {
      * </ol>
      *
      * <p>
-     * There are a subset of properties that can be updated. They are:
+     * There are a subset of properties that can be updated. More information can be found in the links below. They are:
      * <ul>
      * <li>{@link SubscriptionDescription#setDefaultMessageTimeToLive(Duration) DefaultMessageTimeToLive}</li>
      * <li>{@link SubscriptionDescription#setLockDuration(Duration) LockDuration}</li>
@@ -881,7 +877,7 @@ public final class ServiceBusManagementAsyncClient {
      * </ol>
      *
      * <p>
-     * There are a subset of properties that can be updated. They are:
+     * There are a subset of properties that can be updated. More information can be found in the links below. They are:
      * <ul>
      * <li>{@link TopicDescription#setDefaultMessageTimeToLive(Duration) DefaultMessageTimeToLive}</li>
      * <li>{@link TopicDescription#setDuplicateDetectionHistoryTimeWindow(Duration) DuplicateDetectionHistoryTimeWindow}
@@ -919,7 +915,7 @@ public final class ServiceBusManagementAsyncClient {
      * </ol>
      *
      * <p>
-     * There are a subset of properties that can be updated. They are:
+     * There are a subset of properties that can be updated. More information can be found in the links below. They are:
      * <ul>
      * <li>{@link TopicDescription#setDefaultMessageTimeToLive(Duration) DefaultMessageTimeToLive}</li>
      * <li>{@link TopicDescription#setDuplicateDetectionHistoryTimeWindow(Duration) DuplicateDetectionHistoryTimeWindow}
@@ -956,8 +952,6 @@ public final class ServiceBusManagementAsyncClient {
     Mono<Response<QueueDescription>> createQueueWithResponse(QueueDescription queue, Context context) {
         if (queue == null) {
             return monoError(logger, new NullPointerException("'queue' cannot be null"));
-        } else if (queue.getName() == null || queue.getName().isEmpty()) {
-            return monoError(logger, new IllegalArgumentException("'queue.getName' cannot be null or empty."));
         } else if (context == null) {
             return monoError(logger, new NullPointerException("'context' cannot be null."));
         }
@@ -1090,7 +1084,7 @@ public final class ServiceBusManagementAsyncClient {
         } else if (topicName == null) {
             return monoError(logger, new NullPointerException("'topicName' cannot be null"));
         } else if (topicName.isEmpty()) {
-            return monoError(logger, new IllegalArgumentException("'topicName' cannot be empty."));
+            return monoError(logger, new IllegalArgumentException("'topicName' cannot be an empty string."));
         } else if (context == null) {
             return monoError(logger, new NullPointerException("'context' cannot be null."));
         }
@@ -1193,7 +1187,7 @@ public final class ServiceBusManagementAsyncClient {
             return monoError(logger, new IllegalArgumentException("'topicName' cannot be an empty string."));
         } else if (subscriptionName == null) {
             return monoError(logger, new NullPointerException("'subscriptionName' cannot be null."));
-        }  else if (subscriptionName.isEmpty()) {
+        } else if (subscriptionName.isEmpty()) {
             return monoError(logger, new IllegalArgumentException("'subscriptionName' cannot be an empty string."));
         } else if (context == null) {
             return monoError(logger, new NullPointerException("'context' cannot be null."));
@@ -1645,13 +1639,14 @@ public final class ServiceBusManagementAsyncClient {
      * @return A Mono that completes with a paged response of queues.
      */
     private Mono<PagedResponse<QueueDescription>> listQueues(int skip, Context context) {
-        return managementClient.listEntitiesWithResponseAsync(QUEUES_ENTITY_TYPE, skip, ServiceBusManagementAsyncClient.NUMBER_OF_ELEMENTS, context)
+        return managementClient.listEntitiesWithResponseAsync(QUEUES_ENTITY_TYPE, skip, NUMBER_OF_ELEMENTS, context)
             .onErrorMap(ServiceBusManagementAsyncClient::mapException)
             .flatMap(response -> {
                 final Response<QueueDescriptionFeed> feedResponse = deserialize(response, QueueDescriptionFeed.class);
                 final QueueDescriptionFeed feed = feedResponse.getValue();
                 if (feed == null) {
-                    logger.warning("Could not deserialize QueueDescriptionFeed. skip {}, top: {}", skip, ServiceBusManagementAsyncClient.NUMBER_OF_ELEMENTS);
+                    logger.warning("Could not deserialize QueueDescriptionFeed. skip {}, top: {}", skip,
+                        NUMBER_OF_ELEMENTS);
                     return Mono.empty();
                 }
 
@@ -1692,7 +1687,8 @@ public final class ServiceBusManagementAsyncClient {
 
                 final SubscriptionDescriptionFeed feed = feedResponse.getValue();
                 if (feed == null) {
-                    logger.warning("Could not deserialize SubscriptionDescriptionFeed. skip {}, top: {}", skip, ServiceBusManagementAsyncClient.NUMBER_OF_ELEMENTS);
+                    logger.warning("Could not deserialize SubscriptionDescriptionFeed. skip {}, top: {}", skip,
+                        NUMBER_OF_ELEMENTS);
                     return Mono.empty();
                 }
 
@@ -1711,8 +1707,8 @@ public final class ServiceBusManagementAsyncClient {
                 try {
                     return Mono.just(extractPage(feedResponse, entities, feed.getLink()));
                 } catch (MalformedURLException | UnsupportedEncodingException error) {
-                    return Mono.error(new RuntimeException("Could not parse response into FeedPage<SubscriptionDescription>",
-                        error));
+                    return Mono.error(new RuntimeException(
+                        "Could not parse response into FeedPage<SubscriptionDescription>", error));
                 }
             });
     }
@@ -1726,13 +1722,14 @@ public final class ServiceBusManagementAsyncClient {
      * @return A Mono that completes with a paged response of topics.
      */
     private Mono<PagedResponse<TopicDescription>> listTopics(int skip, Context context) {
-        return managementClient.listEntitiesWithResponseAsync(TOPICS_ENTITY_TYPE, skip, ServiceBusManagementAsyncClient.NUMBER_OF_ELEMENTS, context)
+        return managementClient.listEntitiesWithResponseAsync(TOPICS_ENTITY_TYPE, skip, NUMBER_OF_ELEMENTS, context)
             .onErrorMap(ServiceBusManagementAsyncClient::mapException)
             .flatMap(response -> {
                 final Response<TopicDescriptionFeed> feedResponse = deserialize(response, TopicDescriptionFeed.class);
                 final TopicDescriptionFeed feed = feedResponse.getValue();
                 if (feed == null) {
-                    logger.warning("Could not deserialize TopicDescriptionFeed. skip {}, top: {}", skip, ServiceBusManagementAsyncClient.NUMBER_OF_ELEMENTS);
+                    logger.warning("Could not deserialize TopicDescriptionFeed. skip {}, top: {}", skip,
+                        NUMBER_OF_ELEMENTS);
                     return Mono.empty();
                 }
 

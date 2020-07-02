@@ -73,8 +73,6 @@ public final class ServiceBusManagementClient {
      *     namespace.
      * @throws HttpResponseException If the request body was invalid, the queue quota is exceeded, or an error
      *     occurred processing the request.
-     * @throws IllegalArgumentException if {@link QueueDescription#getName() queue.getName()} is null or an empty
-     *     string.
      * @throws NullPointerException if {@code queue} is null.
      * @throws ResourceExistsException if a queue exists with the same {@link QueueDescription#getName()
      *     queueName}.
@@ -96,8 +94,6 @@ public final class ServiceBusManagementClient {
      *     namespace.
      * @throws HttpResponseException If the request body was invalid, the queue quota is exceeded, or an error
      *     occurred processing the request.
-     * @throws IllegalArgumentException if {@link QueueDescription#getName() queue.getName()} is null or an empty
-     *     string.
      * @throws NullPointerException if {@code queue} is null.
      * @throws ResourceExistsException if a queue exists with the same {@link QueueDescription#getName()
      *     queueName}.
@@ -105,7 +101,7 @@ public final class ServiceBusManagementClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<QueueDescription> createQueueWithResponse(QueueDescription queue, Context context) {
-        return asyncClient.createQueueWithResponse(queue, context).block();
+        return asyncClient.createQueueWithResponse(queue, context != null ? context : Context.NONE).block();
     }
 
     /**
@@ -119,7 +115,8 @@ public final class ServiceBusManagementClient {
      *     namespace.
      * @throws HttpResponseException If the request body was invalid, the quota is exceeded, or an error occurred
      *     processing the request.
-     * @throws IllegalArgumentException if {@code topicName} or {@code subscriptionName} are null or are empty strings.
+     * @throws NullPointerException if {@code topicName} or {@code subscriptionName} are are empty strings.
+     * @throws IllegalArgumentException if {@code topicName} or {@code subscriptionName} are are null.
      * @throws ResourceExistsException if a subscription exists with the same topic and subscription name.
      * @see <a href="https://docs.microsoft.com/rest/api/servicebus/update-entity">Create or Update Entity</a>
      */
@@ -165,7 +162,8 @@ public final class ServiceBusManagementClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SubscriptionDescription> createSubscriptionWithResponse(SubscriptionDescription subscription,
         Context context) {
-        return asyncClient.createSubscriptionWithResponse(subscription, context).block();
+        return asyncClient.createSubscriptionWithResponse(subscription, context != null ? context : Context.NONE)
+            .block();
     }
 
     /**
@@ -178,7 +176,8 @@ public final class ServiceBusManagementClient {
      *     namespace.
      * @throws HttpResponseException If the request body was invalid, the topic quota is exceeded, or an error
      *     occurred processing the request.
-     * @throws IllegalArgumentException if {@code topicName} is null or an empty string.
+     * @throws NullPointerException if {@code topicName} is null.
+     * @throws IllegalArgumentException if {@code topicName} is an empty string.
      * @throws ResourceExistsException if a topic exists with the same {@code topicName}.
      * @see <a href="https://docs.microsoft.com/rest/api/servicebus/update-entity">Create or Update Entity</a>
      */
@@ -197,8 +196,6 @@ public final class ServiceBusManagementClient {
      *     namespace.
      * @throws HttpResponseException If the request body was invalid, the topic quota is exceeded, or an error
      *     occurred processing the request.
-     * @throws IllegalArgumentException if {@link TopicDescription#getName() topic.getName()} is null or an empty
-     *     string.
      * @throws NullPointerException if {@code topic} is null.
      * @throws ResourceExistsException if a topic exists with the same {@link TopicDescription#getName()
      *     topicName}.
@@ -229,7 +226,7 @@ public final class ServiceBusManagementClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<TopicDescription> createTopicWithResponse(TopicDescription topic, Context context) {
-        return asyncClient.createTopicWithResponse(topic, context).block();
+        return asyncClient.createTopicWithResponse(topic, context != null ? context : Context.NONE).block();
     }
 
     /**
@@ -267,7 +264,7 @@ public final class ServiceBusManagementClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteQueueWithResponse(String queueName, Context context) {
-        return asyncClient.deleteQueueWithResponse(queueName, context).block();
+        return asyncClient.deleteQueueWithResponse(queueName, context != null ? context : Context.NONE).block();
     }
 
     /**
@@ -307,7 +304,8 @@ public final class ServiceBusManagementClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteSubscriptionWithResponse(String topicName, String subscriptionName, Context context) {
-        return asyncClient.deleteSubscriptionWithResponse(topicName, subscriptionName, context).block();
+        return asyncClient.deleteSubscriptionWithResponse(topicName, subscriptionName,
+            context != null ? context : Context.NONE).block();
     }
 
     /**
@@ -345,7 +343,7 @@ public final class ServiceBusManagementClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteTopicWithResponse(String topicName, Context context) {
-        return asyncClient.deleteTopicWithResponse(topicName, context).block();
+        return asyncClient.deleteTopicWithResponse(topicName, context != null ? context : Context.NONE).block();
     }
 
     /**
@@ -436,7 +434,8 @@ public final class ServiceBusManagementClient {
      * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
      *     namespace.
      * @throws HttpResponseException If error occurred processing the request.
-     * @throws IllegalArgumentException if {@code topicName} or {@code subscriptionName} are null or empty strings.
+     * @throws IllegalArgumentException if {@code topicName} or {@code subscriptionName} are empty strings.
+     * @throws NullPointerException if {@code topicName} or {@code subscriptionName} are null.
      * @throws ResourceNotFoundException if the {@code subscriptionName} does not exist in the {@code topicName}.
      * @see <a href="https://docs.microsoft.com/rest/api/servicebus/get-entity">Get Entity</a>
      */
@@ -456,7 +455,8 @@ public final class ServiceBusManagementClient {
      * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
      *     namespace.
      * @throws HttpResponseException If error occurred processing the request.
-     * @throws IllegalArgumentException if {@code topicName} or {@code subscriptionName} are null or empty strings.
+     * @throws IllegalArgumentException if {@code topicName} or {@code subscriptionName} are empty strings.
+     * @throws NullPointerException if {@code topicName} or {@code subscriptionName} are null.
      * @throws ResourceNotFoundException if the {@code subscriptionName} does not exist.
      * @see <a href="https://docs.microsoft.com/rest/api/servicebus/get-entity">Get Entity</a>
      */
@@ -468,12 +468,12 @@ public final class ServiceBusManagementClient {
     }
 
     /**
-     * Gets runtime information about the queue.
+     * Gets runtime information about the subscription.
      *
      * @param topicName Name of topic associated with subscription.
      * @param subscriptionName Name of subscription to get information about.
      *
-     * @return Runtime information about the queue.
+     * @return Runtime information about the subscription.
      * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
      *     namespace.
      * @throws HttpResponseException If error occurred processing the request.
@@ -488,13 +488,13 @@ public final class ServiceBusManagementClient {
     }
 
     /**
-     * Gets runtime information about the queue.
+     * Gets runtime information about the subscription.
      *
      * @param topicName Name of topic associated with subscription.
      * @param subscriptionName Name of subscription to get information about.
      * @param context Additional context that is passed through the HTTP pipeline during the service call.
      *
-     * @return Runtime information about the queue.
+     * @return Runtime information about the subscription.
      * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
      *     namespace.
      * @throws HttpResponseException If error occurred processing the request.
@@ -617,7 +617,8 @@ public final class ServiceBusManagementClient {
     public PagedIterable<QueueDescription> listQueues(Context context) {
         final PagedFlux<QueueDescription> pagedFlux = new PagedFlux<>(
             () -> asyncClient.listQueuesFirstPage(context),
-            continuationToken -> asyncClient.listQueuesNextPage(continuationToken, context));
+            continuationToken -> asyncClient.listQueuesNextPage(continuationToken,
+                context != null ? context : Context.NONE));
 
         return new PagedIterable<>(pagedFlux);
     }
@@ -657,8 +658,9 @@ public final class ServiceBusManagementClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SubscriptionDescription> listSubscriptions(String topicName, Context context) {
         final PagedFlux<SubscriptionDescription> pagedFlux = new PagedFlux<>(
-            () -> asyncClient.listSubscriptionsFirstPage(topicName, context),
-            continuationToken -> asyncClient.listSubscriptionsNextPage(topicName, continuationToken, context));
+            () -> asyncClient.listSubscriptionsFirstPage(topicName, context != null ? context : Context.NONE),
+            continuationToken -> asyncClient.listSubscriptionsNextPage(topicName, continuationToken,
+                context != null ? context : Context.NONE));
 
         return new PagedIterable<>(pagedFlux);
     }
@@ -692,7 +694,8 @@ public final class ServiceBusManagementClient {
     public PagedIterable<TopicDescription> listTopics(Context context) {
         final PagedFlux<TopicDescription> pagedFlux = new PagedFlux<>(
             () -> asyncClient.listTopicsFirstPage(context),
-            continuationToken -> asyncClient.listTopicsNextPage(continuationToken, context));
+            continuationToken -> asyncClient.listTopicsNextPage(continuationToken,
+                context != null ? context : Context.NONE));
 
         return new PagedIterable<>(pagedFlux);
     }
@@ -709,7 +712,7 @@ public final class ServiceBusManagementClient {
      * </ol>
      *
      * <p>
-     * There are a subset of properties that can be updated. They are:
+     * There are a subset of properties that can be updated. More information can be found in the links below. They are:
      * <ul>
      * <li>{@link QueueDescription#setDefaultMessageTimeToLive(Duration) DefaultMessageTimeToLive}</li>
      * <li>{@link QueueDescription#setLockDuration(Duration) LockDuration}</li>
@@ -726,8 +729,6 @@ public final class ServiceBusManagementClient {
      *     namespace.
      * @throws HttpResponseException If the request body was invalid, the queue quota is exceeded, or an error
      *     occurred processing the request.
-     * @throws IllegalArgumentException if {@link QueueDescription#getName() queue.getName()} is null or an empty
-     *     string.
      * @throws NullPointerException if {@code queue} is null.
      * @see <a href="https://docs.microsoft.com/rest/api/servicebus/update-entity">Create or Update Entity</a>
      * @see <a href="https://docs.microsoft.com/rest/api/servicebus/update-queue">Update Queue</a>
@@ -749,7 +750,7 @@ public final class ServiceBusManagementClient {
      * </ol>
      *
      * <p>
-     * There are a subset of properties that can be updated. They are:
+     * There are a subset of properties that can be updated. More information can be found in the links below. They are:
      * <ul>
      * <li>{@link QueueDescription#setDefaultMessageTimeToLive(Duration) DefaultMessageTimeToLive}</li>
      * <li>{@link QueueDescription#setLockDuration(Duration) LockDuration}</li>
@@ -767,15 +768,13 @@ public final class ServiceBusManagementClient {
      *     namespace.
      * @throws HttpResponseException If the request body was invalid, the queue quota is exceeded, or an error
      *     occurred processing the request.
-     * @throws IllegalArgumentException if {@link QueueDescription#getName() queue.getName()} is null or an empty
-     *     string.
      * @throws NullPointerException if {@code queue} is null.
      * @see <a href="https://docs.microsoft.com/rest/api/servicebus/update-entity">Create or Update Entity</a>
      * @see <a href="https://docs.microsoft.com/rest/api/servicebus/update-queue">Update Queue</a>
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<QueueDescription> updateQueueWithResponse(QueueDescription queue, Context context) {
-        return asyncClient.updateQueueWithResponse(queue, context).block();
+        return asyncClient.updateQueueWithResponse(queue, context != null ? context : Context.NONE).block();
     }
 
     /**
@@ -791,7 +790,7 @@ public final class ServiceBusManagementClient {
      * </ol>
      *
      * <p>
-     * There are a subset of properties that can be updated. They are:
+     * There are a subset of properties that can be updated. More information can be found in the links below. They are:
      * <ul>
      * <li>{@link SubscriptionDescription#setDefaultMessageTimeToLive(Duration) DefaultMessageTimeToLive}</li>
      * <li>{@link SubscriptionDescription#setLockDuration(Duration) LockDuration}</li>
@@ -829,7 +828,7 @@ public final class ServiceBusManagementClient {
      * </ol>
      *
      * <p>
-     * There are a subset of properties that can be updated. They are:
+     * There are a subset of properties that can be updated. More information can be found in the links below. They are:
      * <ul>
      * <li>{@link SubscriptionDescription#setDefaultMessageTimeToLive(Duration) DefaultMessageTimeToLive}</li>
      * <li>{@link SubscriptionDescription#setLockDuration(Duration) LockDuration}</li>
@@ -853,7 +852,8 @@ public final class ServiceBusManagementClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SubscriptionDescription> updateSubscriptionWithResponse(
         SubscriptionDescription subscription, Context context) {
-        return asyncClient.updateSubscriptionWithResponse(subscription, context).block();
+        return asyncClient.updateSubscriptionWithResponse(subscription, context != null ? context : Context.NONE)
+            .block();
     }
 
     /**
@@ -868,7 +868,7 @@ public final class ServiceBusManagementClient {
      * </ol>
      *
      * <p>
-     * There are a subset of properties that can be updated. They are:
+     * There are a subset of properties that can be updated. More information can be found in the links below. They are:
      * <ul>
      * <li>{@link TopicDescription#setDefaultMessageTimeToLive(Duration) DefaultMessageTimeToLive}</li>
      * <li>{@link TopicDescription#setDuplicateDetectionHistoryTimeWindow(Duration) DuplicateDetectionHistoryTimeWindow}
@@ -906,7 +906,7 @@ public final class ServiceBusManagementClient {
      * </ol>
      *
      * <p>
-     * There are a subset of properties that can be updated. They are:
+     * There are a subset of properties that can be updated. More information can be found in the links below. They are:
      * <ul>
      * <li>{@link TopicDescription#setDefaultMessageTimeToLive(Duration) DefaultMessageTimeToLive}</li>
      * <li>{@link TopicDescription#setDuplicateDetectionHistoryTimeWindow(Duration) DuplicateDetectionHistoryTimeWindow}
@@ -930,6 +930,6 @@ public final class ServiceBusManagementClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<TopicDescription> updateTopicWithResponse(TopicDescription topic, Context context) {
-        return asyncClient.updateTopicWithResponse(topic, context).block();
+        return asyncClient.updateTopicWithResponse(topic, context != null ? context : Context.NONE).block();
     }
 }
