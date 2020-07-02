@@ -384,7 +384,8 @@ public final class ServiceBusManagementClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<QueueDescription> getQueueWithResponse(String queueName, Context context) {
-        return asyncClient.getQueueWithResponse(queueName, context, Function.identity()).block();
+        return asyncClient.getQueueWithResponse(queueName, context != null ? context : Context.NONE,
+            Function.identity()).block();
     }
 
     /**
@@ -423,7 +424,8 @@ public final class ServiceBusManagementClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<QueueRuntimeInfo> getQueueRuntimeInfoWithResponse(String queueName, Context context) {
-        return asyncClient.getQueueWithResponse(queueName, context, QueueRuntimeInfo::new).block();
+        return asyncClient.getQueueWithResponse(queueName, context != null ? context : Context.NONE,
+            QueueRuntimeInfo::new).block();
     }
 
     /**
@@ -440,6 +442,8 @@ public final class ServiceBusManagementClient {
 
     /**
      * Gets information about the Service Bus namespace along with its HTTP response.
+     *
+     * @param context Additional context that is passed through the HTTP pipeline during the service call.
      *
      * @return A Mono that completes with information about the namespace and the associated HTTP response.
      * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
@@ -490,8 +494,8 @@ public final class ServiceBusManagementClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SubscriptionDescription> getSubscriptionWithResponse(String topicName,
         String subscriptionName, Context context) {
-        return asyncClient.getSubscriptionWithResponse(topicName, subscriptionName, context,
-            Function.identity()).block();
+        return asyncClient.getSubscriptionWithResponse(topicName, subscriptionName,
+            context != null ? context : Context.NONE, Function.identity()).block();
     }
 
     /**
@@ -533,8 +537,8 @@ public final class ServiceBusManagementClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SubscriptionRuntimeInfo> getSubscriptionRuntimeInfoWithResponse(String topicName,
         String subscriptionName, Context context) {
-        return asyncClient.getSubscriptionWithResponse(topicName, subscriptionName, context,
-            SubscriptionRuntimeInfo::new).block();
+        return asyncClient.getSubscriptionWithResponse(topicName, subscriptionName,
+            context != null ? context : Context.NONE, SubscriptionRuntimeInfo::new).block();
     }
 
     /**
@@ -573,7 +577,8 @@ public final class ServiceBusManagementClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<TopicDescription> getTopicWithResponse(String topicName, Context context) {
-        return asyncClient.getTopicWithResponse(topicName, context, Function.identity()).block();
+        return asyncClient.getTopicWithResponse(topicName, context != null ? context : Context.NONE,
+            Function.identity()).block();
     }
 
     /**
@@ -612,7 +617,8 @@ public final class ServiceBusManagementClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<TopicRuntimeInfo> getTopicRuntimeInfoWithResponse(String topicName, Context context) {
-        return asyncClient.getTopicWithResponse(topicName, context, TopicRuntimeInfo::new).block();
+        return asyncClient.getTopicWithResponse(topicName, context != null ? context : Context.NONE,
+            TopicRuntimeInfo::new).block();
     }
 
     /**
@@ -761,7 +767,7 @@ public final class ServiceBusManagementClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Boolean> queueExistsWithResponse(String queueName, Context context) {
         final Mono<Response<QueueDescription>> queueWithResponse =
-            asyncClient.getQueueWithResponse(queueName, context, Function.identity());
+            asyncClient.getQueueWithResponse(queueName, context != null ? context : Context.NONE, Function.identity());
         return asyncClient.entityExistsWithResponse(queueWithResponse).block();
     }
 
@@ -802,7 +808,8 @@ public final class ServiceBusManagementClient {
     public Response<Boolean> subscriptionExistsWithResponse(String topicName, String subscriptionName,
         Context context) {
         final Mono<Response<SubscriptionDescription>> subscriptionWithResponse =
-            asyncClient.getSubscriptionWithResponse(topicName, subscriptionName, context, Function.identity());
+            asyncClient.getSubscriptionWithResponse(topicName, subscriptionName,
+                context != null ? context : Context.NONE, Function.identity());
         return asyncClient.entityExistsWithResponse(subscriptionWithResponse).block();
     }
 
@@ -840,7 +847,7 @@ public final class ServiceBusManagementClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Boolean> topicExistsWithResponse(String topicName, Context context) {
         final Mono<Response<TopicDescription>> topicWithResponse =
-            asyncClient.getTopicWithResponse(topicName, context, Function.identity());
+            asyncClient.getTopicWithResponse(topicName, context != null ? context : Context.NONE, Function.identity());
         return asyncClient.entityExistsWithResponse(topicWithResponse).block();
     }
 
