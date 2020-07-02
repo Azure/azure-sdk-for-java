@@ -36,6 +36,8 @@ jobs:
           groupId: com.azure
           safeName: azurestoragequeue
       TimeoutInMinutes: 120
+      Location: canadacentral
+      SubscriptionConfiguration: $(sub-config-azure-cloud-test-resources-preview)
       EnvVars:
         AZURE_TEST_MODE: LIVE
         AZURE_TENANT_ID: $(aad-azure-sdk-test-tenant-id)
