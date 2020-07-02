@@ -461,6 +461,40 @@ public final class ServiceBusManagementAsyncClient {
     }
 
     /**
+     * Gets whether or not a queue with {@code queueName} exists in the Service Bus namespace.
+     *
+     * @param queueName Name of the queue.
+     *
+     * @return A Mono that completes indicating whether or not the queue exists.
+     * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
+     *     namespace.
+     * @throws HttpResponseException If error occurred processing the request.
+     * @throws IllegalArgumentException if {@code queueName} is an empty string.
+     * @throws NullPointerException if {@code queueName} is null.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Boolean> getQueueExists(String queueName) {
+        return getQueueExistsWithResponse(queueName).map(Response::getValue);
+    }
+
+    /**
+     * Gets whether or not a queue with {@code queueName} exists in the Service Bus namespace.
+     *
+     * @param queueName Name of the queue.
+     *
+     * @return A Mono that completes indicating whether or not the queue exists along with its HTTP response.
+     * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
+     *     namespace.
+     * @throws HttpResponseException If error occurred processing the request.
+     * @throws IllegalArgumentException if {@code queueName} is an empty string.
+     * @throws NullPointerException if {@code queueName} is null.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Boolean>> getQueueExistsWithResponse(String queueName) {
+        return entityExistsWithResponse(getQueueWithResponse(queueName));
+    }
+
+    /**
      * Gets runtime information about the queue.
      *
      * @param queueName Name of queue to get information about.
@@ -566,6 +600,42 @@ public final class ServiceBusManagementAsyncClient {
     }
 
     /**
+     * Gets whether or not a subscription within a topic exists.
+     *
+     * @param topicName Name of topic associated with subscription.
+     * @param subscriptionName Name of the subscription.
+     *
+     * @return A Mono that completes indicating whether or not the subscription exists.
+     * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
+     *     namespace.
+     * @throws HttpResponseException If error occurred processing the request.
+     * @throws IllegalArgumentException if {@code subscriptionName} is an empty string.
+     * @throws NullPointerException if {@code subscriptionName} is null.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Boolean> getSubscriptionExists(String topicName, String subscriptionName) {
+        return getSubscriptionExistsWithResponse(topicName, subscriptionName).map(Response::getValue);
+    }
+
+    /**
+     * Gets whether or not a subscription within a topic exists.
+     *
+     * @param topicName Name of topic associated with subscription.
+     * @param subscriptionName Name of the subscription.
+     *
+     * @return A Mono that completes indicating whether or not the subscription exists along with its HTTP response.
+     * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
+     *     namespace.
+     * @throws HttpResponseException If error occurred processing the request.
+     * @throws IllegalArgumentException if {@code subscriptionName} is an empty string.
+     * @throws NullPointerException if {@code subscriptionName} is null.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Boolean>> getSubscriptionExistsWithResponse(String topicName, String subscriptionName) {
+        return entityExistsWithResponse(getSubscriptionWithResponse(topicName, subscriptionName));
+    }
+
+    /**
      * Gets runtime information about the subscription.
      *
      * @param topicName Name of topic associated with subscription.
@@ -645,6 +715,40 @@ public final class ServiceBusManagementAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<TopicDescription>> getTopicWithResponse(String topicName) {
         return withContext(context -> getTopicWithResponse(topicName, context, Function.identity()));
+    }
+
+    /**
+     * Gets whether or not a topic with {@code topicName} exists in the Service Bus namespace.
+     *
+     * @param topicName Name of the topic.
+     *
+     * @return A Mono that completes indicating whether or not the topic exists.
+     * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
+     *     namespace.
+     * @throws HttpResponseException If error occurred processing the request.
+     * @throws IllegalArgumentException if {@code topicName} is an empty string.
+     * @throws NullPointerException if {@code topicName} is null.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Boolean> getTopicExists(String topicName) {
+        return getTopicExistsWithResponse(topicName).map(Response::getValue);
+    }
+
+    /**
+     * Gets whether or not a topic with {@code topicName} exists in the Service Bus namespace.
+     *
+     * @param topicName Name of the topic.
+     *
+     * @return A Mono that completes indicating whether or not the topic exists along with its HTTP response.
+     * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
+     *     namespace.
+     * @throws HttpResponseException If error occurred processing the request.
+     * @throws IllegalArgumentException if {@code topicName} is an empty string.
+     * @throws NullPointerException if {@code topicName} is null.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Boolean>> getTopicExistsWithResponse(String topicName) {
+        return entityExistsWithResponse(getTopicWithResponse(topicName));
     }
 
     /**
@@ -741,110 +845,6 @@ public final class ServiceBusManagementAsyncClient {
         return new PagedFlux<>(
             () -> withContext(context -> listTopicsFirstPage(context)),
             token -> withContext(context -> listTopicsNextPage(token, context)));
-    }
-
-    /**
-     * Gets whether or not a queue with {@code queueName} exists in the Service Bus namespace.
-     *
-     * @param queueName Name of the queue.
-     *
-     * @return A Mono that completes indicating whether or not the queue exists.
-     * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
-     *     namespace.
-     * @throws HttpResponseException If error occurred processing the request.
-     * @throws IllegalArgumentException if {@code queueName} is an empty string.
-     * @throws NullPointerException if {@code queueName} is null.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Boolean> queueExists(String queueName) {
-        return queueExistsWithResponse(queueName).map(Response::getValue);
-    }
-
-    /**
-     * Gets whether or not a queue with {@code queueName} exists in the Service Bus namespace.
-     *
-     * @param queueName Name of the queue.
-     *
-     * @return A Mono that completes indicating whether or not the queue exists along with its HTTP response.
-     * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
-     *     namespace.
-     * @throws HttpResponseException If error occurred processing the request.
-     * @throws IllegalArgumentException if {@code queueName} is an empty string.
-     * @throws NullPointerException if {@code queueName} is null.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Boolean>> queueExistsWithResponse(String queueName) {
-        return entityExistsWithResponse(getQueueWithResponse(queueName));
-    }
-
-    /**
-     * Gets whether or not a subscription within a topic exists.
-     *
-     * @param topicName Name of topic associated with subscription.
-     * @param subscriptionName Name of the subscription.
-     *
-     * @return A Mono that completes indicating whether or not the subscription exists.
-     * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
-     *     namespace.
-     * @throws HttpResponseException If error occurred processing the request.
-     * @throws IllegalArgumentException if {@code subscriptionName} is an empty string.
-     * @throws NullPointerException if {@code subscriptionName} is null.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Boolean> subscriptionExists(String topicName, String subscriptionName) {
-        return subscriptionExistsWithResponse(topicName, subscriptionName).map(Response::getValue);
-    }
-
-    /**
-     * Gets whether or not a subscription within a topic exists.
-     *
-     * @param topicName Name of topic associated with subscription.
-     * @param subscriptionName Name of the subscription.
-     *
-     * @return A Mono that completes indicating whether or not the subscription exists along with its HTTP response.
-     * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
-     *     namespace.
-     * @throws HttpResponseException If error occurred processing the request.
-     * @throws IllegalArgumentException if {@code subscriptionName} is an empty string.
-     * @throws NullPointerException if {@code subscriptionName} is null.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Boolean>> subscriptionExistsWithResponse(String topicName, String subscriptionName) {
-        return entityExistsWithResponse(getSubscriptionWithResponse(topicName, subscriptionName));
-    }
-
-    /**
-     * Gets whether or not a topic with {@code topicName} exists in the Service Bus namespace.
-     *
-     * @param topicName Name of the topic.
-     *
-     * @return A Mono that completes indicating whether or not the topic exists.
-     * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
-     *     namespace.
-     * @throws HttpResponseException If error occurred processing the request.
-     * @throws IllegalArgumentException if {@code topicName} is an empty string.
-     * @throws NullPointerException if {@code topicName} is null.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Boolean> topicExists(String topicName) {
-        return topicExistsWithResponse(topicName).map(Response::getValue);
-    }
-
-    /**
-     * Gets whether or not a topic with {@code topicName} exists in the Service Bus namespace.
-     *
-     * @param topicName Name of the topic.
-     *
-     * @return A Mono that completes indicating whether or not the topic exists along with its HTTP response.
-     * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
-     *     namespace.
-     * @throws HttpResponseException If error occurred processing the request.
-     * @throws IllegalArgumentException if {@code topicName} is an empty string.
-     * @throws NullPointerException if {@code topicName} is null.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Boolean>> topicExistsWithResponse(String topicName) {
-        return entityExistsWithResponse(getTopicWithResponse(topicName));
     }
 
     /**

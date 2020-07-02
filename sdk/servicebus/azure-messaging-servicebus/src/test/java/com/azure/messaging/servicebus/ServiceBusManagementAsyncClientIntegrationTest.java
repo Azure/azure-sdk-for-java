@@ -526,7 +526,7 @@ class ServiceBusManagementAsyncClientIntegrationTest extends TestBase {
             : TestUtils.getEntityName(TestUtils.getQueueBaseName(), 5);
 
         // Act & Assert
-        StepVerifier.create(client.queueExists(queueName))
+        StepVerifier.create(client.getQueueExists(queueName))
             .expectNext(true)
             .verifyComplete();
     }
@@ -539,7 +539,7 @@ class ServiceBusManagementAsyncClientIntegrationTest extends TestBase {
         final String queueName = testResourceNamer.randomName("exists", 10);
 
         // Act & Assert
-        StepVerifier.create(client.queueExists(queueName))
+        StepVerifier.create(client.getQueueExists(queueName))
             .expectNext(false)
             .verifyComplete();
     }
@@ -556,7 +556,7 @@ class ServiceBusManagementAsyncClientIntegrationTest extends TestBase {
         final OffsetDateTime nowUtc = OffsetDateTime.now(Clock.systemUTC());
 
         // Act & Assert
-        StepVerifier.create(client.subscriptionExists(topicName, subscriptionName))
+        StepVerifier.create(client.getSubscriptionExists(topicName, subscriptionName))
             .expectNext(true)
             .verifyComplete();
     }
@@ -570,7 +570,7 @@ class ServiceBusManagementAsyncClientIntegrationTest extends TestBase {
         final String subscriptionName = "subscription-session-not-exist";
 
         // Act & Assert
-        StepVerifier.create(client.subscriptionExists(topicName, subscriptionName))
+        StepVerifier.create(client.getSubscriptionExists(topicName, subscriptionName))
             .expectNext(false)
             .verifyComplete();
     }
