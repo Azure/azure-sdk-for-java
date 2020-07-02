@@ -13,7 +13,6 @@ import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.Random;
 import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 
@@ -57,7 +56,7 @@ public class TokenCacheTests {
         SimpleTokenCache cache = new SimpleTokenCache(() -> {
             refreshes.incrementAndGet();
             return remoteGetTokenThatExpiresSoonAsync(1000, 0);
-        }, new TokenRefreshOptions().setRetryTimeout(Duration.ZERO));
+        });
 
         CountDownLatch latch = new CountDownLatch(1);
 
@@ -74,7 +73,7 @@ public class TokenCacheTests {
             .subscribe();
 
         latch.await();
-        Assertions.assertTrue(refreshes.get() <= 11);
+        Assertions.assertEquals(2, refreshes.get());
     }
 
     @Test
@@ -82,13 +81,13 @@ public class TokenCacheTests {
         AtomicInteger latency = new AtomicInteger(1);
         SimpleTokenCache cache = new SimpleTokenCache(
             () -> remoteGetTokenThatExpiresSoonAsync(1000 * latency.getAndIncrement(), 60 * 1000),
-            new TokenRefreshOptions().setOffset(Duration.ofSeconds(58)).setRetryTimeout(Duration.ofSeconds(1)));
+            new TestTokenRefreshOptions(Duration.ofSeconds(28))); // refresh at second 32, just past REFRESH_TIMEOUT
 
         CountDownLatch latch = new CountDownLatch(1);
         AtomicLong maxMillis = new AtomicLong(0);
 
-        Flux.interval(Duration.ofSeconds(1))
-            .take(5)
+        Flux.interval(Duration.ofSeconds(2))
+            .take(20) // 38 seconds after first token, making sure of a refresh
             .flatMap(i -> {
                 OffsetDateTime start = OffsetDateTime.now();
                 return cache.getToken()
@@ -110,14 +109,14 @@ public class TokenCacheTests {
     public void testRefreshAfterExpiry() throws Exception {
         AtomicInteger latency = new AtomicInteger(1);
         SimpleTokenCache cache = new SimpleTokenCache(
-            () -> remoteGetTokenThatExpiresSoonAsync(1000 * latency.getAndIncrement(), 1000),
-            new TokenRefreshOptions().setOffset(Duration.ofSeconds(1)).setRetryTimeout(Duration.ofSeconds(5)));
+            () -> remoteGetTokenThatExpiresSoonAsync(1000 * latency.getAndIncrement(), 15 * 1000),
+            new TestTokenRefreshOptions(Duration.ZERO)); // refresh at second 30 because of REFRESH_TIMEOUT
 
         CountDownLatch latch = new CountDownLatch(1);
         AtomicLong maxMillis = new AtomicLong(0);
 
-        Flux.interval(Duration.ofSeconds(1))
-            .take(4)
+        Flux.interval(Duration.ofSeconds(2))
+            .take(10) // 38 seconds after first token, making sure of a refresh
             .flatMap(i -> {
                 OffsetDateTime start = OffsetDateTime.now();
                 return cache.getToken()
@@ -131,8 +130,7 @@ public class TokenCacheTests {
             .subscribe();
 
         latch.await();
-        System.out.println("MaxMillis:" + maxMillis.get());
-        Assertions.assertTrue(maxMillis.get() >= 5000);
+        Assertions.assertTrue(maxMillis.get() >= 15000);
     }
 
     @Test
@@ -140,15 +138,15 @@ public class TokenCacheTests {
         AtomicInteger latency = new AtomicInteger(1);
         AtomicInteger tryCount = new AtomicInteger(0);
         SimpleTokenCache cache = new SimpleTokenCache(
-            () -> remoteGetTokenWithPersistentError(1000 * latency.getAndIncrement(), 3 * 1000, 2, tryCount),
-            new TokenRefreshOptions().setOffset(Duration.ofSeconds(2)).setRetryTimeout(Duration.ofSeconds(1)));
+            () -> remoteGetTokenWithPersistentError(1000 * latency.getAndIncrement(), 60 * 1000, 2, tryCount),
+            new TestTokenRefreshOptions(Duration.ofSeconds(28))); // refresh at second 32, just past REFRESH_TIMEOUT
 
         CountDownLatch latch = new CountDownLatch(1);
         AtomicLong maxMillis = new AtomicLong(0);
         AtomicInteger errorCount = new AtomicInteger(0);
 
-        Flux.interval(Duration.ofSeconds(1))
-            .take(6)
+        Flux.interval(Duration.ofSeconds(2))
+            .take(32) // 64 seconds after first token, making sure of a refresh
             .flatMap(i -> {
                 OffsetDateTime start = OffsetDateTime.now();
                 return cache.getToken()
@@ -173,15 +171,15 @@ public class TokenCacheTests {
         AtomicInteger latency = new AtomicInteger(1);
         AtomicInteger tryCount = new AtomicInteger(0);
         SimpleTokenCache cache = new SimpleTokenCache(
-            () -> remoteGetTokenWithTemporaryError(1000 * latency.getAndIncrement(), 4 * 1000, 2, tryCount),
-            new TokenRefreshOptions().setOffset(Duration.ofSeconds(2)).setRetryTimeout(Duration.ofSeconds(1)));
+            () -> remoteGetTokenWithTemporaryError(1000 * latency.getAndIncrement(), 60 * 1000, 2, tryCount),
+            new TestTokenRefreshOptions(Duration.ofSeconds(28))); // refresh at second 32, just past REFRESH_TIMEOUT
 
         CountDownLatch latch = new CountDownLatch(1);
         AtomicLong maxMillis = new AtomicLong(0);
         AtomicInteger errorCount = new AtomicInteger(0);
 
-        Flux.interval(Duration.ofSeconds(1))
-            .take(8)
+        Flux.interval(Duration.ofSeconds(2))
+            .take(32) // 64 seconds after first token, making sure of a refresh
             .flatMap(i -> {
                 OffsetDateTime start = OffsetDateTime.now();
                 return cache.getToken()
@@ -198,36 +196,6 @@ public class TokenCacheTests {
         latch.await();
         Assertions.assertTrue(maxMillis.get() >= 3000);
         Assertions.assertEquals(0, errorCount.get()); // Only the error after expiresAt will be propagated
-    }
-
-    @Test
-    public void testMultipleThreadsAfterExpiry() throws Exception {
-        AtomicLong refreshes = new AtomicLong(0);
-
-        // token expires on creation. Run this 100 times to simulate running the application a long time
-        SimpleTokenCache cache = new SimpleTokenCache(() -> {
-            refreshes.incrementAndGet();
-            return remoteGetTokenThatExpiresSoonAsync(1000, 3 * 1000);
-        }, new TokenRefreshOptions().setOffset(Duration.ZERO).setRetryTimeout(Duration.ZERO));
-
-        CountDownLatch latch = new CountDownLatch(100);
-
-        cache.getToken().then(Mono.delay(Duration.ofSeconds(5))).block();
-
-        Flux.range(1, 100)
-            .flatMap(i -> Mono.just(OffsetDateTime.now())
-                .subscribeOn(Schedulers.newParallel("pool", 100))
-                .flatMap(start -> cache.getToken()
-                    .doOnNext(t -> {
-                        if (!t.isExpired()) {
-                            latch.countDown();
-                        }
-                    }))) // expect all getToken() calls to return a token
-            .subscribe();
-
-        latch.await(20, TimeUnit.SECONDS);
-        Assertions.assertEquals(2, refreshes.get());
-        Assertions.assertEquals(0, latch.getCount());
     }
 
     private Mono<AccessToken> remoteGetTokenAsync(long delayInMillis) {
@@ -291,6 +259,19 @@ public class TokenCacheTests {
         @Override
         public boolean isExpired() {
             return OffsetDateTime.now().isAfter(expiry);
+        }
+    }
+
+    private static class TestTokenRefreshOptions extends TokenRefreshOptions {
+        private final Duration offset;
+
+        private TestTokenRefreshOptions(Duration offset) {
+            this.offset = offset;
+        }
+
+        @Override
+        public Duration getOffset() {
+            return offset;
         }
     }
 }

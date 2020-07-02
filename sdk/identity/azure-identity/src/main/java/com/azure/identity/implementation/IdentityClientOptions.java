@@ -47,7 +47,7 @@ public final class IdentityClientOptions {
     private ProxyOptions proxyOptions;
     private HttpPipeline httpPipeline;
     private ExecutorService executorService;
-    private TokenRefreshOptions tokenRefreshOptions = new TokenRefreshOptions();
+    private IdentityTokenRefreshOptions tokenRefreshOptions = new IdentityTokenRefreshOptions();
     private HttpClient httpClient;
     private boolean allowUnencryptedCache;
     private boolean sharedTokenCacheEnabled;
@@ -208,20 +208,6 @@ public final class IdentityClientOptions {
     public IdentityClientOptions setTokenRefreshOffset(Duration tokenRefreshOffset) {
         Objects.requireNonNull(tokenRefreshOffset, "The token refresh offset cannot be null.");
         this.tokenRefreshOptions.setOffset(tokenRefreshOffset);
-        return this;
-    }
-
-    /**
-     * Specifies a Duration value representing the amount of time to wait before retrying a token refresh. This is to
-     * prevent sending too many requests to the authentication service.
-     *
-     * @param tokenRefreshRetryTimeout the amount of time to wait before retrying a token refresh
-     * @return IdentityClientOptions
-     * @throws NullPointerException If {@code tokenRefreshRetryTimeout} is null.
-     */
-    public IdentityClientOptions setTokenRefreshRetryTimeout(Duration tokenRefreshRetryTimeout) {
-        Objects.requireNonNull(tokenRefreshRetryTimeout, "The token refresh retry timeout cannot be null.");
-        this.tokenRefreshOptions.setRetryTimeout(tokenRefreshRetryTimeout);
         return this;
     }
 
