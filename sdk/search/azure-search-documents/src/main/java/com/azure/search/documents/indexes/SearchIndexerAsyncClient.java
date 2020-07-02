@@ -528,7 +528,7 @@ public class SearchIndexerAsyncClient {
      *
      * <p><strong>Code Sample</strong></p>
      *
-     * <p> List all search indexer. </p>
+     * <p> List all search indexers. </p>
      *
      * {@codesnippet com.azure.search.documents.indexes.SearchIndexerAsyncClient.listIndexers}
      *
