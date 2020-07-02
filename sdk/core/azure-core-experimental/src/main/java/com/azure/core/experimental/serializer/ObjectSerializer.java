@@ -27,7 +27,8 @@ public interface ObjectSerializer {
      *
      * @param stream {@link OutputStream} where the object will be written.
      * @param value The object.
+     * @param <S> Type of the output stream
      * @return The stream where the object was written.
      */
-    Mono<OutputStream> serialize(OutputStream stream, Object value);
+    <S extends OutputStream> Mono<S> serialize(S stream, Object value);
 }

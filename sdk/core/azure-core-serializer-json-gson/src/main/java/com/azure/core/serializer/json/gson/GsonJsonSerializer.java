@@ -42,7 +42,7 @@ public final class GsonJsonSerializer implements JsonSerializer {
     }
 
     @Override
-    public Mono<OutputStream> serialize(OutputStream stream, Object value) {
+    public <S extends OutputStream> Mono<S> serialize(S stream, Object value) {
         return Mono.fromCallable(() -> {
             Writer writer = new OutputStreamWriter(stream, StandardCharsets.UTF_8);
             gson.toJson(value, writer);
