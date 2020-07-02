@@ -387,7 +387,7 @@ public final class SearchIndexAsyncClient {
      *
      * <p> Delete search index with name "searchIndex". </p>
      *
-     * {@codesnippet com.azure.search.documents.indexes.SearchIndexClient.deleteIndex#String}
+     * {@codesnippet com.azure.search.documents.indexes.SearchIndexAsyncClient.deleteIndex#String}
      *
      * @param indexName the name of the index to delete
      * @return a response signalling completion.

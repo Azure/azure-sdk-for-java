@@ -1286,7 +1286,7 @@ public class SearchJavaDocCodeSnippets {
             .subscribe(index ->
                 System.out.printf("The index name is %s. The etag of index is %s.%n", index.getName(),
                     index.getETag()));
-        // END: com.azure.search.documents.indexes.SearchIndexClient.listIndexes
+        // END: com.azure.search.documents.indexes.SearchIndexAsyncClient.listIndexes
     }
 
     /**
@@ -1320,7 +1320,7 @@ public class SearchJavaDocCodeSnippets {
      * Code snippet for {@link SearchIndexAsyncClient#createIndexWithResponse(SearchIndex)}
      */
     public void createOrUpdateIndexWithResponseAsync() {
-        // BEGIN: com.azure.search.documents.indexes.SearchIndexClient.createOrUpdateIndexWithResponse#SearchIndex-boolean-boolean-Context
+        // BEGIN: com.azure.search.documents.indexes.SearchIndexAsyncClient.createOrUpdateIndexWithResponse#SearchIndex-boolean-boolean-Context
         searchIndexAsyncClient.getIndex("searchIndex")
             .doOnNext(indexFromService -> indexFromService.setSuggesters(Collections.singletonList(
                 new SearchSuggester("sg", Collections.singletonList("hotelName")))))
@@ -1336,7 +1336,7 @@ public class SearchJavaDocCodeSnippets {
      * Code snippet for {@link SearchIndexAsyncClient#deleteIndex(String)}
      */
     public void deleteSearchIndexAsync() {
-        // BEGIN: com.azure.search.documents.indexes.SearchIndexClient.deleteIndex#String
+        // BEGIN: com.azure.search.documents.indexes.SearchIndexAsyncClient.deleteIndex#String
         searchIndexAsyncClient.deleteIndex("searchIndex")
             .subscribe();
         // END: com.azure.search.documents.indexes.SearchIndexAsyncClient.deleteIndex#String
@@ -1377,7 +1377,6 @@ public class SearchJavaDocCodeSnippets {
             .subscribe(synonymMapFromService ->
                 System.out.printf("The synonym map name is %s. The etag of synonym map is %s.%n",
                 synonymMapFromService.getName(), synonymMapFromService.getETag()));
-        ;
         // END: com.azure.search.documents.indexes.SearchIndexAsyncClient.createSynonymMap#SynonymMap
     }
 
