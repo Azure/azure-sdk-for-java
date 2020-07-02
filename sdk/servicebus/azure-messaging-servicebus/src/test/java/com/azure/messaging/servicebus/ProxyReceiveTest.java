@@ -105,11 +105,11 @@ public class ProxyReceiveTest extends IntegrationTestBase {
                         Assertions.assertTrue(batch.tryAdd(messages.get(i)), "Unable to add message: " + i);
                     }
 
-                    return sender.send(batch);
+                    return sender.sendMessages(batch);
                 }))
                 .verifyComplete();
 
-            StepVerifier.create(receiver.receive().take(NUMBER_OF_EVENTS))
+            StepVerifier.create(receiver.receiveMessages().take(NUMBER_OF_EVENTS))
                 .expectNextCount(NUMBER_OF_EVENTS)
                 .expectComplete()
                 .verify(TIMEOUT);

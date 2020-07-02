@@ -2,6 +2,6 @@
 // Licensed under the MIT License.
 
 /**
- * Package containing the classes which serve as options to APIs.
+ * Package containing options model classes used by Azure Storage Blobs.
  */
 package com.azure.storage.blob.options;

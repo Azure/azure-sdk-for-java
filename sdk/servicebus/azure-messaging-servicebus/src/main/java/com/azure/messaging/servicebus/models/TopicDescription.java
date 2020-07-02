@@ -5,6 +5,8 @@
 package com.azure.messaging.servicebus.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.messaging.servicebus.implementation.EntityHelper;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
@@ -13,6 +15,8 @@ import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.MAX_DURATION;
 
 /** The TopicDescription model. */
 @JacksonXmlRootElement(
@@ -219,6 +223,82 @@ public final class TopicDescription {
             namespace = "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect")
     private String userMetadata;
 
+    private String topicName;
+
+    static {
+        // This is used by classes in different packages to get access to private and package-private methods.
+        EntityHelper.setTopicAccessor((topicDescription, name) -> topicDescription.setName(name));
+    }
+
+    /**
+     * Json deserialization constructor.
+     */
+    @JsonCreator
+    TopicDescription() {
+    }
+
+    /**
+     * Creates an instance with the name of the topic. Default values for the topic are populated. The properties
+     * populated with defaults are:
+     *
+     * <ul>
+     *     <li>{@link #setAutoDeleteOnIdle(Duration)} is max duration value.</li>
+     *     <li>{@link #setDefaultMessageTimeToLive(Duration)} is max duration value.</li>
+     *     <li>{@link #setDuplicateDetectionHistoryTimeWindow(Duration)} is max duration value, but duplication
+     *     detection is disabled.</li>
+     *     <li>{@link #setEnableBatchedOperations(Boolean)} is true.</li>
+     *     <li>{@link #setEnablePartitioning(Boolean)} is false.</li>
+     *     <li>{@link #setMaxSizeInMegabytes(Long)} is 1024MB.</li>
+     *     <li>{@link #setRequiresDuplicateDetection(Boolean)} is false.</li>
+     *     <li>{@link #setSupportOrdering(Boolean)} is false.</li>
+     * </ul>
+     *
+     * @param topicName Name of the topic.
+     * @throws NullPointerException if {@code topicName} is null.
+     * @throws IllegalArgumentException if {@code topicName} is an empty string.
+     */
+    public TopicDescription(String topicName) {
+        final ClientLogger logger = new ClientLogger(TopicDescription.class);
+        if (topicName == null) {
+            throw logger.logExceptionAsError(new NullPointerException("'topicName' cannot be null."));
+        } else if (topicName.isEmpty()) {
+            throw logger.logExceptionAsError(new IllegalArgumentException("'topicName' cannot be an empty string."));
+        }
+
+        this.topicName = topicName;
+
+        this.autoDeleteOnIdle = MAX_DURATION;
+        this.defaultMessageTimeToLive = MAX_DURATION;
+        this.requiresDuplicateDetection = false;
+        this.enablePartitioning = false;
+        this.enableBatchedOperations = true;
+        this.duplicateDetectionHistoryTimeWindow = Duration.ofSeconds(60);
+        this.maxSizeInMegabytes = 1024L;
+        this.supportOrdering = false;
+
+        this.authorizationRules = new AuthorizationRulesWrapper(new ArrayList<>());
+    }
+
+    /**
+     * Gets the name of the topic.
+     *
+     * @return The name of the topic;
+     */
+    public String getName() {
+        return topicName;
+    }
+
+    /**
+     * Sets the topic name.
+     *
+     * @param topicName Name of the topic.
+     * @return the TopicDescription object itself.
+     */
+    TopicDescription setName(String topicName) {
+        this.topicName = topicName;
+        return this;
+    }
+
     /**
      * Get the defaultMessageTimeToLive property: ISO 8601 default message timespan to live value. This is the duration
      * after which the message expires, starting from when the message is sent to Service Bus. This is the default value
@@ -270,7 +350,7 @@ public final class TopicDescription {
      *
      * @return the requiresDuplicateDetection value.
      */
-    public Boolean isRequiresDuplicateDetection() {
+    public Boolean requiresDuplicateDetection() {
         return this.requiresDuplicateDetection;
     }
 
@@ -313,7 +393,7 @@ public final class TopicDescription {
      *
      * @return the enableBatchedOperations value.
      */
-    public Boolean isEnableBatchedOperations() {
+    public Boolean enableBatchedOperations() {
         return this.enableBatchedOperations;
     }
 
@@ -334,7 +414,7 @@ public final class TopicDescription {
      *
      * @return the sizeInBytes value.
      */
-    public Integer getSizeInBytes() {
+    Integer getSizeInBytes() {
         return this.sizeInBytes;
     }
 
@@ -344,7 +424,7 @@ public final class TopicDescription {
      * @param sizeInBytes the sizeInBytes value to set.
      * @return the TopicDescription object itself.
      */
-    public TopicDescription setSizeInBytes(Integer sizeInBytes) {
+    TopicDescription setSizeInBytes(Integer sizeInBytes) {
         this.sizeInBytes = sizeInBytes;
         return this;
     }
@@ -354,7 +434,7 @@ public final class TopicDescription {
      *
      * @return the filteringMessagesBeforePublishing value.
      */
-    public Boolean isFilteringMessagesBeforePublishing() {
+    Boolean isFilteringMessagesBeforePublishing() {
         return this.filteringMessagesBeforePublishing;
     }
 
@@ -364,7 +444,7 @@ public final class TopicDescription {
      * @param filteringMessagesBeforePublishing the filteringMessagesBeforePublishing value to set.
      * @return the TopicDescription object itself.
      */
-    public TopicDescription setFilteringMessagesBeforePublishing(Boolean filteringMessagesBeforePublishing) {
+    TopicDescription setFilteringMessagesBeforePublishing(Boolean filteringMessagesBeforePublishing) {
         this.filteringMessagesBeforePublishing = filteringMessagesBeforePublishing;
         return this;
     }
@@ -374,7 +454,7 @@ public final class TopicDescription {
      *
      * @return the isAnonymousAccessible value.
      */
-    public Boolean isAnonymousAccessible() {
+    Boolean isAnonymousAccessible() {
         return this.isAnonymousAccessible;
     }
 
@@ -384,7 +464,7 @@ public final class TopicDescription {
      * @param isAnonymousAccessible the isAnonymousAccessible value to set.
      * @return the TopicDescription object itself.
      */
-    public TopicDescription setIsAnonymousAccessible(Boolean isAnonymousAccessible) {
+    TopicDescription setIsAnonymousAccessible(Boolean isAnonymousAccessible) {
         this.isAnonymousAccessible = isAnonymousAccessible;
         return this;
     }
@@ -407,7 +487,7 @@ public final class TopicDescription {
      * @param authorizationRules the authorizationRules value to set.
      * @return the TopicDescription object itself.
      */
-    public TopicDescription setAuthorizationRules(List<AuthorizationRule> authorizationRules) {
+    TopicDescription setAuthorizationRules(List<AuthorizationRule> authorizationRules) {
         this.authorizationRules = new AuthorizationRulesWrapper(authorizationRules);
         return this;
     }
@@ -427,7 +507,7 @@ public final class TopicDescription {
      * @param status the status value to set.
      * @return the TopicDescription object itself.
      */
-    public TopicDescription setStatus(EntityStatus status) {
+    TopicDescription setStatus(EntityStatus status) {
         this.status = status;
         return this;
     }
@@ -437,7 +517,7 @@ public final class TopicDescription {
      *
      * @return the createdAt value.
      */
-    public OffsetDateTime getCreatedAt() {
+    OffsetDateTime getCreatedAt() {
         return this.createdAt;
     }
 
@@ -447,7 +527,7 @@ public final class TopicDescription {
      * @param createdAt the createdAt value to set.
      * @return the TopicDescription object itself.
      */
-    public TopicDescription setCreatedAt(OffsetDateTime createdAt) {
+    TopicDescription setCreatedAt(OffsetDateTime createdAt) {
         this.createdAt = createdAt;
         return this;
     }
@@ -457,7 +537,7 @@ public final class TopicDescription {
      *
      * @return the updatedAt value.
      */
-    public OffsetDateTime getUpdatedAt() {
+    OffsetDateTime getUpdatedAt() {
         return this.updatedAt;
     }
 
@@ -467,7 +547,7 @@ public final class TopicDescription {
      * @param updatedAt the updatedAt value to set.
      * @return the TopicDescription object itself.
      */
-    public TopicDescription setUpdatedAt(OffsetDateTime updatedAt) {
+    TopicDescription setUpdatedAt(OffsetDateTime updatedAt) {
         this.updatedAt = updatedAt;
         return this;
     }
@@ -478,7 +558,7 @@ public final class TopicDescription {
      *
      * @return the accessedAt value.
      */
-    public OffsetDateTime getAccessedAt() {
+    OffsetDateTime getAccessedAt() {
         return this.accessedAt;
     }
 
@@ -489,7 +569,7 @@ public final class TopicDescription {
      * @param accessedAt the accessedAt value to set.
      * @return the TopicDescription object itself.
      */
-    public TopicDescription setAccessedAt(OffsetDateTime accessedAt) {
+    TopicDescription setAccessedAt(OffsetDateTime accessedAt) {
         this.accessedAt = accessedAt;
         return this;
     }
@@ -499,7 +579,7 @@ public final class TopicDescription {
      *
      * @return the supportOrdering value.
      */
-    public Boolean isSupportOrdering() {
+    public Boolean supportOrdering() {
         return this.supportOrdering;
     }
 
@@ -519,7 +599,7 @@ public final class TopicDescription {
      *
      * @return the messageCountDetails value.
      */
-    public MessageCountDetails getMessageCountDetails() {
+    MessageCountDetails getMessageCountDetails() {
         return this.messageCountDetails;
     }
 
@@ -529,7 +609,7 @@ public final class TopicDescription {
      * @param messageCountDetails the messageCountDetails value to set.
      * @return the TopicDescription object itself.
      */
-    public TopicDescription setMessageCountDetails(MessageCountDetails messageCountDetails) {
+    TopicDescription setMessageCountDetails(MessageCountDetails messageCountDetails) {
         this.messageCountDetails = messageCountDetails;
         return this;
     }
@@ -539,7 +619,7 @@ public final class TopicDescription {
      *
      * @return the subscriptionCount value.
      */
-    public Integer getSubscriptionCount() {
+    Integer getSubscriptionCount() {
         return this.subscriptionCount;
     }
 
@@ -549,7 +629,7 @@ public final class TopicDescription {
      * @param subscriptionCount the subscriptionCount value to set.
      * @return the TopicDescription object itself.
      */
-    public TopicDescription setSubscriptionCount(Integer subscriptionCount) {
+    TopicDescription setSubscriptionCount(Integer subscriptionCount) {
         this.subscriptionCount = subscriptionCount;
         return this;
     }
@@ -582,7 +662,7 @@ public final class TopicDescription {
      *
      * @return the enablePartitioning value.
      */
-    public Boolean isEnablePartitioning() {
+    public Boolean enablePartitioning() {
         return this.enablePartitioning;
     }
 
@@ -603,7 +683,7 @@ public final class TopicDescription {
      *
      * @return the entityAvailabilityStatus value.
      */
-    public EntityAvailabilityStatus getEntityAvailabilityStatus() {
+    EntityAvailabilityStatus getEntityAvailabilityStatus() {
         return this.entityAvailabilityStatus;
     }
 
@@ -613,7 +693,7 @@ public final class TopicDescription {
      * @param entityAvailabilityStatus the entityAvailabilityStatus value to set.
      * @return the TopicDescription object itself.
      */
-    public TopicDescription setEntityAvailabilityStatus(EntityAvailabilityStatus entityAvailabilityStatus) {
+    TopicDescription setEntityAvailabilityStatus(EntityAvailabilityStatus entityAvailabilityStatus) {
         this.entityAvailabilityStatus = entityAvailabilityStatus;
         return this;
     }
@@ -624,7 +704,7 @@ public final class TopicDescription {
      *
      * @return the enableSubscriptionPartitioning value.
      */
-    public Boolean isEnableSubscriptionPartitioning() {
+    Boolean isEnableSubscriptionPartitioning() {
         return this.enableSubscriptionPartitioning;
     }
 
@@ -635,7 +715,7 @@ public final class TopicDescription {
      * @param enableSubscriptionPartitioning the enableSubscriptionPartitioning value to set.
      * @return the TopicDescription object itself.
      */
-    public TopicDescription setEnableSubscriptionPartitioning(Boolean enableSubscriptionPartitioning) {
+    TopicDescription setEnableSubscriptionPartitioning(Boolean enableSubscriptionPartitioning) {
         this.enableSubscriptionPartitioning = enableSubscriptionPartitioning;
         return this;
     }
@@ -646,7 +726,7 @@ public final class TopicDescription {
      *
      * @return the enableExpress value.
      */
-    public Boolean isEnableExpress() {
+    Boolean isEnableExpress() {
         return this.enableExpress;
     }
 
@@ -657,7 +737,7 @@ public final class TopicDescription {
      * @param enableExpress the enableExpress value to set.
      * @return the TopicDescription object itself.
      */
-    public TopicDescription setEnableExpress(Boolean enableExpress) {
+    TopicDescription setEnableExpress(Boolean enableExpress) {
         this.enableExpress = enableExpress;
         return this;
     }

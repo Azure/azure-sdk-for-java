@@ -92,7 +92,40 @@ public class AcceptedImpl<InnerT, T> implements Accepted<T> {
     @Override
     public SyncPoller<Void, T> getSyncPoller() {
         if (syncPoller == null) {
-            syncPoller = new SyncPollerImpl<InnerT, T>(this.getPollerFlux().getSyncPoller(), wrapOperation);
+            // refer to AzureServiceClient.getLroFinalResultOrError
+            Function<PollResponse<PollResult<InnerT>>, ManagementException> errorOperation = response -> {
+                String errorMessage;
+                ManagementError managementError = null;
+                if (response.getValue().getError() != null) {
+                    errorMessage = response.getValue().getError().getMessage();
+                    String errorBody = response.getValue().getError().getResponseBody();
+                    if (errorBody != null) {
+                        // try to deserialize error body to ManagementError
+                        try {
+                            managementError = serializerAdapter.deserialize(
+                                errorBody,
+                                ManagementError.class,
+                                SerializerEncoding.JSON);
+                            if (managementError.getCode() == null || managementError.getMessage() == null) {
+                                managementError = null;
+                            }
+                        } catch (IOException ioe) {
+                            logger.logThrowableAsWarning(ioe);
+                        }
+                    }
+                } else {
+                    // fallback to default error message
+                    errorMessage = "Long running operation failed.";
+                }
+                if (managementError == null) {
+                    // fallback to default ManagementError
+                    managementError = new ManagementError(response.getStatus().toString(), errorMessage);
+                }
+                return new ManagementException(errorMessage, null, managementError);
+            };
+
+            syncPoller = new SyncPollerImpl<InnerT, T>(this.getPollerFlux().getSyncPoller(),
+                wrapOperation, errorOperation);
         }
         return syncPoller;
     }
@@ -131,12 +164,15 @@ public class AcceptedImpl<InnerT, T> implements Accepted<T> {
 
         private final SyncPoller<PollResult<InnerT>, InnerT> syncPoller;
         private final Function<InnerT, T> wrapOperation;
+        private final Function<PollResponse<PollResult<InnerT>>, ManagementException> errorOperation;
         private T finalResult;
         private ManagementException exception;
 
-        SyncPollerImpl(SyncPoller<PollResult<InnerT>, InnerT> syncPoller, Function<InnerT, T> wrapOperation) {
+        SyncPollerImpl(SyncPoller<PollResult<InnerT>, InnerT> syncPoller, Function<InnerT, T> wrapOperation,
+                       Function<PollResponse<PollResult<InnerT>>, ManagementException> errorOperation) {
             this.syncPoller = syncPoller;
             this.wrapOperation = wrapOperation;
+            this.errorOperation = errorOperation;
         }
 
         @Override
@@ -170,19 +206,17 @@ public class AcceptedImpl<InnerT, T> implements Accepted<T> {
                 throw exception;
             }
             if (finalResult == null) {
-                finalResult = wrapOperation.apply(syncPoller.getFinalResult());
-                if (finalResult == null) {
-                    PollResponse<PollResult<InnerT>> pollResponse = syncPoller.poll();
-                    if (pollResponse.getStatus() == LongRunningOperationStatus.FAILED
-                        || pollResponse.getStatus() == LongRunningOperationStatus.USER_CANCELLED) {
-                        String errorMessage = pollResponse.getValue().getError() != null
-                            ? pollResponse.getValue().getError().getMessage()
-                            : "Unknown error";
-                        exception = new ManagementException(errorMessage, null,
-                            new ManagementError(pollResponse.getStatus().toString(), errorMessage));
+                final InnerT innerFinalResult = syncPoller.getFinalResult();
+                if (innerFinalResult == null) {
+                    // possible failure
+                    PollResponse<PollResult<InnerT>> response = syncPoller.poll();
+                    if (response.getStatus() == LongRunningOperationStatus.FAILED
+                        || response.getStatus() == LongRunningOperationStatus.USER_CANCELLED) {
+                        exception = errorOperation.apply(response);
                         throw exception;
                     }
                 }
+                finalResult = wrapOperation.apply(innerFinalResult);
             }
             return finalResult;
         }

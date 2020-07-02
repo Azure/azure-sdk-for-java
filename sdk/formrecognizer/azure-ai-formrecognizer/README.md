@@ -81,16 +81,24 @@ resource, or by running the following Azure CLI command to get the key from the 
 az cognitiveservices account keys list --resource-group <your-resource-group-name> --name <your-resource-name>
 ```
 Use the API key as the credential parameter to authenticate the client:
-<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L43-L46 -->
+<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L49-L52 -->
 ```java
 FormRecognizerClient formRecognizerClient = new FormRecognizerClientBuilder()
     .credential(new AzureKeyCredential("{key}"))
     .endpoint("{endpoint}")
     .buildClient();
 ```
+<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L59-L62 -->
+```java
+FormTrainingClient formTrainingClient = new FormTrainingClientBuilder()
+    .credential(new AzureKeyCredential("{key}"))
+    .endpoint("{endpoint}")
+    .buildClient();
+```
+
 The Azure Form Recognizer client library provides a way to **rotate the existing key**.
 
-<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L64-L70 -->
+<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L69-L75 -->
 ```java
 AzureKeyCredential credential = new AzureKeyCredential("{key}");
 FormRecognizerClient formRecognizerClient = new FormRecognizerClientBuilder()
@@ -129,7 +137,7 @@ Authorization is easiest using [DefaultAzureCredential][wiki_identity]. It finds
 running environment. For more information about using Azure Active Directory authorization with Form Recognizer, please
 refer to [the associated documentation][aad_authorization].
 
-<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L53-L57 -->
+<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L82-L86 -->
 ```java
 TokenCredential credential = new DefaultAzureCredentialBuilder().build();
 FormRecognizerClient formRecognizerClient = new FormRecognizerClientBuilder()
@@ -143,22 +151,22 @@ FormRecognizerClient formRecognizerClient = new FormRecognizerClientBuilder()
 The [FormRecognizerClient][form_recognizer_sync_client] and [FormRecognizerAsyncClient][form_recognizer_async_client]
 provide both synchronous and asynchronous operations
  - Recognizing form fields and content using custom models trained to recognize your custom forms.
- These values are returned in a collection of `RecognizedForm` objects.
+ These values are returned in a collection of `RecognizedForm` objects. See example [Recognize Custom Forms](#recognize-forms-using-a-custom-model).
  - Recognizing form content, including tables, lines and words, without the need to train a model.
- Form content is returned in a collection of `FormPage` objects.
+ Form content is returned in a collection of `FormPage` objects. See example [Recognize Content](#recognize-content).
  - Recognizing common fields from US receipts, using a pre-trained receipt model on the Form Recognizer service.
- These fields and meta-data are returned in a collection of `USReceipt` objects.
+ These fields and meta-data are returned in a collection of `RecognizedForm` objects. See example [Recognize Receipts](#recognize-receipts).
 
 ### FormTrainingClient
 The [FormTrainingClient][form_training_sync_client] and
 [FormTrainingAsyncClient][form_training_async_client] provide both synchronous and asynchronous operations
-- Training custom models to recognize all fields and values found in your custom forms.
+- Training custom models to recognize all fields and values found in your custom forms. See example [Train a model](#train-a-model).
  A `CustomFormModel` is returned indicating the form types the model will recognize, and the fields it will extract for
   each form type. See the [service's documents][fr_train_without_labels] for a more detailed explanation.
 - Training custom models to recognize specific fields and values you specify by labeling your custom forms.
 A `CustomFormModel` is returned indicating the fields the model will extract, as well as the estimated accuracy for
 each field. See the [service's documents][fr_train_with_labels] for a more detailed explanation.
-- Managing models created in your account.
+- Managing models created in your account. See example [Manage models](#manage-your-models).
 - Copying a custom model from one Form Recognizer resource to another.
 
 Please note that models can also be trained using a graphical user interface such as the [Form Recognizer Labeling Tool][fr_labeling_tool].
@@ -187,9 +195,9 @@ The following section provides several code snippets covering some of the most c
 ### Recognize Forms Using a Custom Model
 Recognize name/value pairs and table data from forms. These models are trained with your own data,
 so they're tailored to your forms. You should only recognize forms of the same form type that the custom model was trained on.
-<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L74-L91 -->
+<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L90-L107 -->
 ```java
-String formUrl = "{file_url}";
+String formUrl = "{form_url}";
 String modelId = "{custom_trained_model_id}";
 SyncPoller<OperationResult, List<RecognizedForm>> recognizeFormPoller =
     formRecognizerClient.beginRecognizeCustomFormsFromUrl(formUrl, modelId);
@@ -202,7 +210,7 @@ for (int i = 0; i < recognizedForms.size(); i++) {
     System.out.printf("Form type: %s%n", form.getFormType());
     form.getFields().forEach((label, formField) -> {
         System.out.printf("Field %s has value %s with confidence score of %f.%n", label,
-            formField.getValueText().getText(),
+            formField.getValueData().getText(),
             formField.getConfidence());
     });
     System.out.print("-----------------------------------");
@@ -211,11 +219,15 @@ for (int i = 0; i < recognizedForms.size(); i++) {
 
 ### Recognize Content
 Recognize text and table structures, along with their bounding box coordinates, from documents.
-<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L95-L116 -->
+<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L116-L141 -->
 ```java
-String contentFileUrl = "{file_url}";
+// recognize form content using file input stream
+File sourceFile = new File("local/file_path/filename.png");
+byte[] fileContent = Files.readAllBytes(sourceFile.toPath());
+InputStream inputStream = new ByteArrayInputStream(fileContent);
+
 SyncPoller<OperationResult, List<FormPage>> recognizeContentPoller =
-    formRecognizerClient.beginRecognizeContentFromUrl(contentFileUrl);
+    formRecognizerClient.beginRecognizeContent(inputStream, sourceFile.length(), FormContentType.IMAGE_PNG);
 
 List<FormPage> contentPageResults = recognizeContentPoller.getFinalResult();
 
@@ -240,7 +252,7 @@ for (int i = 0; i < contentPageResults.size(); i++) {
 ### Recognize receipts
 Recognize data from a USA sales receipts using a prebuilt model. [Here][service_recognize_receipt] are the fields the
 service returns for a recognized receipt.
-<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L120-L166-->
+<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L145-L191-->
 ```java
 String receiptUrl = "https://docs.microsoft.com/en-us/azure/cognitive-services/form-recognizer/media"
     + "/contoso-allinone.jpg";
@@ -295,9 +307,9 @@ for (int i = 0; i < receiptPageResults.size(); i++) {
 Train a machine-learned model on your own form type. The resulting model will be able to recognize values from the types of forms it was trained on.
 Provide a container SAS url to your Azure Storage Blob container where you're storing the training documents. See details on setting this up
 in the [service quickstart documentation][quickstart_training].
-<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L170-L190 -->
+<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L195-L215 -->
 ```java
-String trainingFilesUrl = "{training_set_SAS_URL}";
+String trainingFilesUrl = "{SAS-URL-of-your-container-in-blob-storage}";
 SyncPoller<OperationResult, CustomFormModel> trainingPoller =
     formTrainingClient.beginTraining(trainingFilesUrl, false);
 
@@ -322,7 +334,7 @@ customFormModel.getSubmodels().forEach(customFormSubmodel -> {
 
 ### Manage your models
 Manage the custom models attached to your account.
-<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L194-L223 -->
+<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L219-L248 -->
 ```java
 AtomicReference<String> modelId = new AtomicReference<>();
 // First, we see how many custom models we have, and what our limit is
@@ -364,7 +376,7 @@ to provide an invalid file source URL an `HttpResponseException` would be raised
 In the following code snippet, the error is handled
 gracefully by catching the exception and display the additional information about the error.
 
-<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L230-L234 -->
+<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L255-L259 -->
 ```java
 try {
     formRecognizerClient.beginRecognizeContentFromUrl("invalidSourceUrl");
@@ -389,16 +401,35 @@ The following section provides several code snippets illustrating common pattern
 ### More sample code
 
 These code samples show common scenario operations with the Azure Form Recognizer client library.
-The async versions of the samples show asynchronous operations with Form Recognizer.
 
-* Recognize receipts: [RecognizeReceipts][recognize_receipts] ([async][recognize_receipts_async])
-* Recognize receipts from a URL: [RecognizeReceiptsFromUrl][recognize_receipts_from_url] ([async][recognize_receipts_from_url_async])
-* Recognize content: [RecognizeContent][recognize_content] ([async][recognize_content_async])
-* Recognize custom forms: [RecognizeCustomForms][recognize_custom_forms] ([async][recognize_custom_forms_async])
-* Train a model without labels: [TrainModelWithoutLabels][train_unlabeled_model] ([async][train_unlabeled_model_async])
-* Train a model with labels: [TrainModelWithLabels][train_labeled_model] ([async][train_labeled_model_async])
-* Manage custom models: [ManageCustomModels][manage_custom_models] ([async][manage_custom_models_async])
-* Copy a model between Form Recognizer resources: [CopyModel][copy_model] ([async][copy_model_async])
+* Recognize receipts: [RecognizeReceipts][recognize_receipts]
+* Recognize receipts from a URL: [RecognizeReceiptsFromUrl][recognize_receipts_from_url]
+* Recognize content: [RecognizeContent][recognize_content]
+* Recognize custom forms: [RecognizeCustomForms][recognize_custom_forms]
+* Train a model without labels: [TrainModelWithoutLabels][train_unlabeled_model]
+* Train a model with labels: [TrainModelWithLabels][train_labeled_model]
+* Manage custom models: [ManageCustomModels][manage_custom_models]
+* Copy a model between Form Recognizer resources: [CopyModel][copy_model]
+
+#### Async APIs
+All the examples shown so far have been using synchronous APIs, but we provide full support for async APIs as well.
+You'll need to use `FormRecognizerAsyncClient`
+<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L266-L269 -->
+```java
+FormRecognizerAsyncClient formRecognizerAsyncClient = new FormRecognizerClientBuilder()
+    .credential(new AzureKeyCredential("{key}"))
+    .endpoint("{endpoint}")
+    .buildAsyncClient();
+```
+
+* Recognize receipts : [RecognizeReceiptsAsync][recognize_receipts_async]
+* Recognize receipts from a URL: [RecognizeReceiptsFromUrlAsync][recognize_receipts_from_url_async]
+* Recognize content: [RecognizeContentAsync][recognize_content_async]
+* Recognize custom forms: [RecognizeCustomFormsAsync][recognize_custom_forms_async]
+* Train a model without labels: [TrainModelWithoutLabelsAsync][train_unlabeled_model_async]
+* Train a model with labels: [TrainModelWithLabelsAsync][train_labeled_model_async]
+* Manage custom models: [ManageCustomModelsAsync][manage_custom_models_async]
+* Copy a model between Form Recognizer resources: [CopyModelAsync][copy_model_async]
 
 ### Additional documentation
 

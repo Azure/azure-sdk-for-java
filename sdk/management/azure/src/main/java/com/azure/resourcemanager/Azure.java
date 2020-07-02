@@ -67,6 +67,7 @@ import com.azure.resourcemanager.network.models.NetworkUsages;
 import com.azure.resourcemanager.network.models.NetworkWatchers;
 import com.azure.resourcemanager.network.models.Networks;
 import com.azure.resourcemanager.network.models.PublicIpAddresses;
+import com.azure.resourcemanager.network.models.PublicIpPrefixes;
 import com.azure.resourcemanager.network.models.RouteFilters;
 import com.azure.resourcemanager.network.models.RouteTables;
 import com.azure.resourcemanager.network.models.VirtualNetworkGateways;
@@ -568,12 +569,10 @@ public final class Azure {
         return this.networkManager.publicIpAddresses();
     }
 
-    //    /**
-    //     * @return entry point to managing public IP prefixes
-    //     */
-    //    public PublicIPPrefixes publicIPPrefixes() {
-    //        return this.networkManager.publicIPPrefixes();
-    //    }
+    /** @return entry point to managing public IP prefixes */
+    public PublicIpPrefixes publicIpPrefixes() {
+        return this.networkManager.publicIpPrefixes();
+    }
 
     /** @return entry point to managing network interfaces */
     public NetworkInterfaces networkInterfaces() {

@@ -86,7 +86,7 @@
     "source": "specification/cost-management/resource-manager/readme.md",
     "args": "--multiapi=true --fluent=true"
   },
-  "cosmosdb/resource-manager": {
+  "cosmos/resource-manager": {
     "source": "specification/cosmos-db/resource-manager/readme.md",
     "args": "--multiapi=true --fluent=true"
   },

@@ -16,7 +16,7 @@ public final class PrivateLinkServiceListResultInner {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(PrivateLinkServiceListResultInner.class);
 
     /*
-     * Gets a list of PrivateLinkService resources in a resource group.
+     * A list of PrivateLinkService resources in a resource group.
      */
     @JsonProperty(value = "value")
     private List<PrivateLinkServiceInner> value;
@@ -28,7 +28,7 @@ public final class PrivateLinkServiceListResultInner {
     private String nextLink;
 
     /**
-     * Get the value property: Gets a list of PrivateLinkService resources in a resource group.
+     * Get the value property: A list of PrivateLinkService resources in a resource group.
      *
      * @return the value value.
      */
@@ -37,7 +37,7 @@ public final class PrivateLinkServiceListResultInner {
     }
 
     /**
-     * Set the value property: Gets a list of PrivateLinkService resources in a resource group.
+     * Set the value property: A list of PrivateLinkService resources in a resource group.
      *
      * @param value the value value to set.
      * @return the PrivateLinkServiceListResultInner object itself.
