@@ -28,9 +28,7 @@
   "variables": {
     "apiVersion": "2020-04-01",
     "accountName": "[toLower(parameters('baseName'))]",
-    "accountName_spring_cosmos": "[concat(toLower(parameters('baseName')),'-spring-cosmos')]",
     "resourceId": "[resourceId('Microsoft.DocumentDB/databaseAccounts', variables('accountName'))]",
-    "resourceId_spring_cosmos": "[resourceId('Microsoft.DocumentDB/databaseAccounts', variables('accountName_spring_cosmos'))]",
     "singleRegionConfiguration": [
       {
         "locationName": "East US 2",
@@ -81,19 +79,6 @@
         "capabilities": [],
         "ipRules": []
       }
-    },
-    {
-      "type": "Microsoft.DocumentDB/databaseAccounts",
-      "apiVersion": "[variables('apiVersion')]",
-      "name": "[variables('accountName_spring_cosmos')]",
-      "kind": "GlobalDocumentDB",
-      "location": "[resourceGroup().location]",
-      "properties": {
-        "databaseAccountOfferType": "Standard",
-        "consistencyPolicy": {
-          "defaultConsistencyLevel": "Session"
-        }
-      }
     }
   ],
   "outputs": {
@@ -108,18 +93,6 @@
     "SECONDARY_ACCOUNT_KEY": {
       "type": "string",
       "value": "[listKeys(variables('resourceId'), variables('apiVersion')).secondaryMasterKey]"
-    },
-    "DOCUMENTDB_KEY": {
-      "type": "string",
-      "value": "[listKeys(variables('resourceId_spring_cosmos'), variables('apiVersion')).primaryMasterKey]"
-    },
-    "COSMOSDB_SECONDARY_KEY": {
-      "type": "string",
-      "value": "[listKeys(variables('resourceId_spring_cosmos'), variables('apiVersion')).secondaryMasterKey]"
-    },
-    "DOCUMENTDB_URI": {
-      "type": "string",
-      "value": "[reference(variables('resourceId_spring_cosmos'), variables('apiVersion')).documentEndpoint]"
     }
   }
 }

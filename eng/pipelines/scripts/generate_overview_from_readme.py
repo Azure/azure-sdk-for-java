@@ -41,7 +41,6 @@ def generate_overview(readme_file, version):
         # extras being passed into the markdown call is necessary to deal with the embedded
         # code blocks within the readme so they'll displaye correctly in the html
         html_readme_content = markdown2.markdown(readme_content, extras=["fenced-code-blocks"])
-        html_readme_content = html_readme_content.replace("@", "{@literal @}")
 
         # Due to javadoc's iFrames the links need to target new tabs otherwise hilarity ensues
         soup = BeautifulSoup(html_readme_content, "html.parser")
