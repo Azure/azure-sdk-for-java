@@ -21,7 +21,7 @@ public class TokenRefreshOptions {
      * configure this from the {@code .tokenRefreshOffset(Duration)} method from any credential builder in the
      * azure-identity library.
      *
-     * Extending this offset is recommended if it takes > 2 minutes to reach the service (application is running on
+     * Extending this offset is recommended if it takes &gt; 2 minutes to reach the service (application is running on
      * high load), or you would like to simply keep a more up-to-date token in the cache (more robust against token
      * refresh API down times). The user is responsible for specifying a valid offset.
      *
