@@ -153,7 +153,7 @@ public class FormRecognizerAsyncClientJavaDocCodeSnippets {
 
         formRecognizerAsyncClient.beginRecognizeCustomForms(buffer, form.length(), modelId,
             new RecognizeOptions()
-                .setFormContentType(FormContentType.IMAGE_JPEG)
+                .setContentType(FormContentType.IMAGE_JPEG)
                 .setIncludeFieldElements(includeFieldElements)
                 .setPollInterval(Duration.ofSeconds(5)))
             .flatMap(recognizePollingOperation ->
@@ -258,7 +258,7 @@ public class FormRecognizerAsyncClientJavaDocCodeSnippets {
         Flux<ByteBuffer> buffer = toFluxByteBuffer(new ByteArrayInputStream(Files.readAllBytes(form.toPath())));
         formRecognizerAsyncClient.beginRecognizeContent(buffer, form.length(),
             new RecognizeOptions()
-                .setFormContentType(FormContentType.APPLICATION_PDF)
+                .setContentType(FormContentType.APPLICATION_PDF)
                 .setPollInterval(Duration.ofSeconds(5)))
             .flatMap(recognizePollingOperation ->
                 // if training polling operation completed, retrieve the final result.
@@ -445,7 +445,7 @@ public class FormRecognizerAsyncClientJavaDocCodeSnippets {
         Flux<ByteBuffer> buffer = toFluxByteBuffer(new ByteArrayInputStream(Files.readAllBytes(receipt.toPath())));
         formRecognizerAsyncClient.beginRecognizeReceipts(buffer, receipt.length(),
             new RecognizeOptions()
-                .setFormContentType(FormContentType.IMAGE_JPEG)
+                .setContentType(FormContentType.IMAGE_JPEG)
                 .setIncludeFieldElements(includeFieldElements)
                 .setPollInterval(Duration.ofSeconds(5)))
             .flatMap(recognizePollingOperation ->

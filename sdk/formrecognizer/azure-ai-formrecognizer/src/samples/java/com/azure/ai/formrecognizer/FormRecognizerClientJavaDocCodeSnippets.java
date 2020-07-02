@@ -88,7 +88,7 @@ public class FormRecognizerClientJavaDocCodeSnippets {
 
         formRecognizerClient.beginRecognizeCustomFormsFromUrl(analyzeFilePath, modelId,
             new RecognizeOptions()
-                .setFormContentType(FormContentType.IMAGE_JPEG)
+                .setContentType(FormContentType.IMAGE_JPEG)
                 .setIncludeFieldElements(includeFieldElements)
                 .setPollInterval(Duration.ofSeconds(10)))
             .getFinalResult()
@@ -139,7 +139,7 @@ public class FormRecognizerClientJavaDocCodeSnippets {
 
         formRecognizerClient.beginRecognizeCustomForms(targetStream, form.length(), modelId,
             new RecognizeOptions()
-                .setFormContentType(FormContentType.IMAGE_JPEG)
+                .setContentType(FormContentType.IMAGE_JPEG)
                 .setIncludeFieldElements(includeFieldElements)
                 .setPollInterval(Duration.ofSeconds(10)))
             .getFinalResult()
@@ -388,7 +388,7 @@ public class FormRecognizerClientJavaDocCodeSnippets {
         InputStream targetStream = new ByteArrayInputStream(fileContent);
         formRecognizerClient.beginRecognizeReceipts(targetStream, receipt.length(),
             new RecognizeOptions()
-                .setFormContentType(FormContentType.IMAGE_JPEG)
+                .setContentType(FormContentType.IMAGE_JPEG)
                 .setIncludeFieldElements(includeFieldElements)
                 .setPollInterval(Duration.ofSeconds(5)))
             .getFinalResult().forEach(recognizedReceipt -> {

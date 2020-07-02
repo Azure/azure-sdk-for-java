@@ -11,7 +11,7 @@ import java.time.Duration;
  */
 @Fluent
 public class RecognizeOptions {
-    private FormContentType formContentType;
+    private FormContentType contentType;
     private boolean includeFieldElements;
     private Duration pollInterval = DEFAULT_POLL_INTERVAL;
     private static final Duration DEFAULT_POLL_INTERVAL = Duration.ofSeconds(5);
@@ -19,10 +19,10 @@ public class RecognizeOptions {
     /**
      * Get the type of the form. Supported Media types including .pdf, .jpg, .png or .tiff type file stream.
      *
-     * @return the {@code formContentType} value.
+     * @return the {@code contentType} value.
      */
-    public FormContentType getFormContentType() {
-        return formContentType;
+    public FormContentType getContentType() {
+        return contentType;
     }
 
     /**
@@ -47,12 +47,12 @@ public class RecognizeOptions {
     /**
      * Set the type of the form. Supported Media types including .pdf, .jpg, .png or .tiff type file stream.
      *
-     * @param formContentType the provided form content type.
+     * @param contentType the provided form content type.
      *
      * @return the updated {@code RecognizeOptions} value.
      */
-    public RecognizeOptions setFormContentType(final FormContentType formContentType) {
-        this.formContentType = formContentType;
+    public RecognizeOptions setContentType(final FormContentType contentType) {
+        this.contentType = contentType;
         return this;
     }
 
