@@ -29,7 +29,7 @@ public final class VirtualNetworkGatewaySku {
     /*
      * The capacity.
      */
-    @JsonProperty(value = "capacity")
+    @JsonProperty(value = "capacity", access = JsonProperty.Access.WRITE_ONLY)
     private Integer capacity;
 
     /**
@@ -79,17 +79,6 @@ public final class VirtualNetworkGatewaySku {
      */
     public Integer capacity() {
         return this.capacity;
-    }
-
-    /**
-     * Set the capacity property: The capacity.
-     *
-     * @param capacity the capacity value to set.
-     * @return the VirtualNetworkGatewaySku object itself.
-     */
-    public VirtualNetworkGatewaySku withCapacity(Integer capacity) {
-        this.capacity = capacity;
-        return this;
     }
 
     /**

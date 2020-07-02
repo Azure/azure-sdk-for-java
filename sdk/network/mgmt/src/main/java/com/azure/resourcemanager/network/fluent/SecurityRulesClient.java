@@ -30,6 +30,7 @@ import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
+import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.network.NetworkManagementClient;
 import com.azure.resourcemanager.network.fluent.inner.SecurityRuleInner;
 import com.azure.resourcemanager.network.fluent.inner.SecurityRuleListResultInner;
@@ -203,7 +204,7 @@ public final class SecurityRulesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -259,7 +260,7 @@ public final class SecurityRulesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return service
             .delete(
                 this.client.getEndpoint(),
@@ -283,7 +284,7 @@ public final class SecurityRulesClient {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<Void>, Void> beginDelete(
+    public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String networkSecurityGroupName, String securityRuleName) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             deleteWithResponseAsync(resourceGroupName, networkSecurityGroupName, securityRuleName);
@@ -303,7 +304,7 @@ public final class SecurityRulesClient {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<Void>, Void> beginDelete(
+    public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String networkSecurityGroupName, String securityRuleName, Context context) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             deleteWithResponseAsync(resourceGroupName, networkSecurityGroupName, securityRuleName, context);
@@ -322,12 +323,43 @@ public final class SecurityRulesClient {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<Void>, Void> beginDelete(
+        String resourceGroupName, String networkSecurityGroupName, String securityRuleName) {
+        return beginDeleteAsync(resourceGroupName, networkSecurityGroupName, securityRuleName).getSyncPoller();
+    }
+
+    /**
+     * Deletes the specified network security rule.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param networkSecurityGroupName The name of the network security group.
+     * @param securityRuleName The name of the security rule.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<Void>, Void> beginDelete(
+        String resourceGroupName, String networkSecurityGroupName, String securityRuleName, Context context) {
+        return beginDeleteAsync(resourceGroupName, networkSecurityGroupName, securityRuleName, context).getSyncPoller();
+    }
+
+    /**
+     * Deletes the specified network security rule.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param networkSecurityGroupName The name of the network security group.
+     * @param securityRuleName The name of the security rule.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String networkSecurityGroupName, String securityRuleName) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, networkSecurityGroupName, securityRuleName);
-        return this
-            .client
-            .<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class)
+        return beginDeleteAsync(resourceGroupName, networkSecurityGroupName, securityRuleName)
             .last()
             .flatMap(client::getLroFinalResultOrError);
     }
@@ -347,11 +379,7 @@ public final class SecurityRulesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(
         String resourceGroupName, String networkSecurityGroupName, String securityRuleName, Context context) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, networkSecurityGroupName, securityRuleName, context);
-        return this
-            .client
-            .<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class)
+        return beginDeleteAsync(resourceGroupName, networkSecurityGroupName, securityRuleName, context)
             .last()
             .flatMap(client::getLroFinalResultOrError);
     }
@@ -427,7 +455,7 @@ public final class SecurityRulesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -483,7 +511,7 @@ public final class SecurityRulesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return service
             .get(
                 this.client.getEndpoint(),
@@ -630,7 +658,7 @@ public final class SecurityRulesClient {
         } else {
             securityRuleParameters.validate();
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -699,7 +727,7 @@ public final class SecurityRulesClient {
         } else {
             securityRuleParameters.validate();
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return service
             .createOrUpdate(
                 this.client.getEndpoint(),
@@ -725,7 +753,7 @@ public final class SecurityRulesClient {
      * @return network security rule.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<SecurityRuleInner>, SecurityRuleInner> beginCreateOrUpdate(
+    public PollerFlux<PollResult<SecurityRuleInner>, SecurityRuleInner> beginCreateOrUpdateAsync(
         String resourceGroupName,
         String networkSecurityGroupName,
         String securityRuleName,
@@ -753,7 +781,7 @@ public final class SecurityRulesClient {
      * @return network security rule.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<SecurityRuleInner>, SecurityRuleInner> beginCreateOrUpdate(
+    public PollerFlux<PollResult<SecurityRuleInner>, SecurityRuleInner> beginCreateOrUpdateAsync(
         String resourceGroupName,
         String networkSecurityGroupName,
         String securityRuleName,
@@ -781,18 +809,61 @@ public final class SecurityRulesClient {
      * @return network security rule.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<SecurityRuleInner>, SecurityRuleInner> beginCreateOrUpdate(
+        String resourceGroupName,
+        String networkSecurityGroupName,
+        String securityRuleName,
+        SecurityRuleInner securityRuleParameters) {
+        return beginCreateOrUpdateAsync(
+                resourceGroupName, networkSecurityGroupName, securityRuleName, securityRuleParameters)
+            .getSyncPoller();
+    }
+
+    /**
+     * Creates or updates a security rule in the specified network security group.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param networkSecurityGroupName The name of the network security group.
+     * @param securityRuleName The name of the security rule.
+     * @param securityRuleParameters Network security rule.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return network security rule.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<SecurityRuleInner>, SecurityRuleInner> beginCreateOrUpdate(
+        String resourceGroupName,
+        String networkSecurityGroupName,
+        String securityRuleName,
+        SecurityRuleInner securityRuleParameters,
+        Context context) {
+        return beginCreateOrUpdateAsync(
+                resourceGroupName, networkSecurityGroupName, securityRuleName, securityRuleParameters, context)
+            .getSyncPoller();
+    }
+
+    /**
+     * Creates or updates a security rule in the specified network security group.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param networkSecurityGroupName The name of the network security group.
+     * @param securityRuleName The name of the security rule.
+     * @param securityRuleParameters Network security rule.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return network security rule.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SecurityRuleInner> createOrUpdateAsync(
         String resourceGroupName,
         String networkSecurityGroupName,
         String securityRuleName,
         SecurityRuleInner securityRuleParameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(
-                resourceGroupName, networkSecurityGroupName, securityRuleName, securityRuleParameters);
-        return this
-            .client
-            .<SecurityRuleInner, SecurityRuleInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), SecurityRuleInner.class, SecurityRuleInner.class)
+        return beginCreateOrUpdateAsync(
+                resourceGroupName, networkSecurityGroupName, securityRuleName, securityRuleParameters)
             .last()
             .flatMap(client::getLroFinalResultOrError);
     }
@@ -817,13 +888,8 @@ public final class SecurityRulesClient {
         String securityRuleName,
         SecurityRuleInner securityRuleParameters,
         Context context) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(
-                resourceGroupName, networkSecurityGroupName, securityRuleName, securityRuleParameters, context);
-        return this
-            .client
-            .<SecurityRuleInner, SecurityRuleInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), SecurityRuleInner.class, SecurityRuleInner.class)
+        return beginCreateOrUpdateAsync(
+                resourceGroupName, networkSecurityGroupName, securityRuleName, securityRuleParameters, context)
             .last()
             .flatMap(client::getLroFinalResultOrError);
     }
@@ -910,7 +976,7 @@ public final class SecurityRulesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -969,7 +1035,7 @@ public final class SecurityRulesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return service
             .list(
                 this.client.getEndpoint(),
@@ -1096,7 +1162,7 @@ public final class SecurityRulesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -1152,7 +1218,7 @@ public final class SecurityRulesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return service
             .beginDeleteWithoutPolling(
                 this.client.getEndpoint(),
@@ -1285,7 +1351,7 @@ public final class SecurityRulesClient {
         } else {
             securityRuleParameters.validate();
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -1354,7 +1420,7 @@ public final class SecurityRulesClient {
         } else {
             securityRuleParameters.validate();
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return service
             .beginCreateOrUpdateWithoutPolling(
                 this.client.getEndpoint(),

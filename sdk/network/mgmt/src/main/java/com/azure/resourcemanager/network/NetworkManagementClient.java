@@ -4,12 +4,14 @@
 
 package com.azure.resourcemanager.network;
 
+import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
 import com.azure.core.annotation.Headers;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
 import com.azure.core.annotation.PathParam;
+import com.azure.core.annotation.Post;
 import com.azure.core.annotation.QueryParam;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
@@ -17,13 +19,20 @@ import com.azure.core.annotation.ServiceInterface;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.annotation.UnexpectedResponseExceptionType;
 import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.rest.PagedFlux;
+import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.http.rest.PagedResponse;
+import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.exception.ManagementException;
+import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.polling.PollerFlux;
+import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.AzureServiceClient;
 import com.azure.resourcemanager.network.fluent.ApplicationGatewaysClient;
 import com.azure.resourcemanager.network.fluent.ApplicationSecurityGroupsClient;
@@ -31,6 +40,7 @@ import com.azure.resourcemanager.network.fluent.AvailableDelegationsClient;
 import com.azure.resourcemanager.network.fluent.AvailableEndpointServicesClient;
 import com.azure.resourcemanager.network.fluent.AvailablePrivateEndpointTypesClient;
 import com.azure.resourcemanager.network.fluent.AvailableResourceGroupDelegationsClient;
+import com.azure.resourcemanager.network.fluent.AvailableServiceAliasesClient;
 import com.azure.resourcemanager.network.fluent.AzureFirewallFqdnTagsClient;
 import com.azure.resourcemanager.network.fluent.AzureFirewallsClient;
 import com.azure.resourcemanager.network.fluent.BastionHostsClient;
@@ -53,8 +63,10 @@ import com.azure.resourcemanager.network.fluent.ExpressRoutePortsLocationsClient
 import com.azure.resourcemanager.network.fluent.ExpressRouteServiceProvidersClient;
 import com.azure.resourcemanager.network.fluent.FirewallPoliciesClient;
 import com.azure.resourcemanager.network.fluent.FirewallPolicyRuleGroupsClient;
+import com.azure.resourcemanager.network.fluent.FlowLogsClient;
 import com.azure.resourcemanager.network.fluent.HubVirtualNetworkConnectionsClient;
 import com.azure.resourcemanager.network.fluent.InboundNatRulesClient;
+import com.azure.resourcemanager.network.fluent.IpGroupsClient;
 import com.azure.resourcemanager.network.fluent.LoadBalancerBackendAddressPoolsClient;
 import com.azure.resourcemanager.network.fluent.LoadBalancerFrontendIpConfigurationsClient;
 import com.azure.resourcemanager.network.fluent.LoadBalancerLoadBalancingRulesClient;
@@ -73,7 +85,6 @@ import com.azure.resourcemanager.network.fluent.NetworkSecurityGroupsClient;
 import com.azure.resourcemanager.network.fluent.NetworkWatchersClient;
 import com.azure.resourcemanager.network.fluent.OperationsClient;
 import com.azure.resourcemanager.network.fluent.P2SVpnGatewaysClient;
-import com.azure.resourcemanager.network.fluent.P2SVpnServerConfigurationsClient;
 import com.azure.resourcemanager.network.fluent.PacketCapturesClient;
 import com.azure.resourcemanager.network.fluent.PeerExpressRouteCircuitConnectionsClient;
 import com.azure.resourcemanager.network.fluent.PrivateEndpointsClient;
@@ -92,24 +103,40 @@ import com.azure.resourcemanager.network.fluent.ServiceEndpointPolicyDefinitions
 import com.azure.resourcemanager.network.fluent.ServiceTagsClient;
 import com.azure.resourcemanager.network.fluent.SubnetsClient;
 import com.azure.resourcemanager.network.fluent.UsagesClient;
+import com.azure.resourcemanager.network.fluent.VirtualHubRouteTableV2SClient;
 import com.azure.resourcemanager.network.fluent.VirtualHubsClient;
 import com.azure.resourcemanager.network.fluent.VirtualNetworkGatewayConnectionsClient;
 import com.azure.resourcemanager.network.fluent.VirtualNetworkGatewaysClient;
 import com.azure.resourcemanager.network.fluent.VirtualNetworkPeeringsClient;
 import com.azure.resourcemanager.network.fluent.VirtualNetworkTapsClient;
 import com.azure.resourcemanager.network.fluent.VirtualNetworksClient;
+import com.azure.resourcemanager.network.fluent.VirtualRouterPeeringsClient;
+import com.azure.resourcemanager.network.fluent.VirtualRoutersClient;
 import com.azure.resourcemanager.network.fluent.VirtualWansClient;
 import com.azure.resourcemanager.network.fluent.VpnConnectionsClient;
 import com.azure.resourcemanager.network.fluent.VpnGatewaysClient;
 import com.azure.resourcemanager.network.fluent.VpnLinkConnectionsClient;
+import com.azure.resourcemanager.network.fluent.VpnServerConfigurationsAssociatedWithVirtualWansClient;
+import com.azure.resourcemanager.network.fluent.VpnServerConfigurationsClient;
 import com.azure.resourcemanager.network.fluent.VpnSiteLinkConnectionsClient;
 import com.azure.resourcemanager.network.fluent.VpnSiteLinksClient;
 import com.azure.resourcemanager.network.fluent.VpnSitesClient;
 import com.azure.resourcemanager.network.fluent.VpnSitesConfigurationsClient;
 import com.azure.resourcemanager.network.fluent.WebApplicationFirewallPoliciesClient;
+import com.azure.resourcemanager.network.fluent.inner.BastionActiveSessionListResultInner;
+import com.azure.resourcemanager.network.fluent.inner.BastionSessionDeleteResultInner;
+import com.azure.resourcemanager.network.fluent.inner.BastionSessionStateInner;
+import com.azure.resourcemanager.network.fluent.inner.BastionShareableLinkInner;
+import com.azure.resourcemanager.network.fluent.inner.BastionShareableLinkListResultInner;
 import com.azure.resourcemanager.network.fluent.inner.DnsNameAvailabilityResultInner;
 import com.azure.resourcemanager.network.fluent.inner.VirtualWanSecurityProvidersInner;
-import com.azure.resourcemanager.network.models.ErrorException;
+import com.azure.resourcemanager.network.fluent.inner.VpnProfileResponseInner;
+import com.azure.resourcemanager.network.models.BastionShareableLinkListRequest;
+import com.azure.resourcemanager.network.models.SessionIds;
+import com.azure.resourcemanager.network.models.VirtualWanVpnProfileParameters;
+import java.nio.ByteBuffer;
+import java.util.List;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 /** Initializes a new instance of the NetworkManagementClient type. */
@@ -206,6 +233,18 @@ public final class NetworkManagementClient extends AzureServiceClient {
      */
     public AvailableResourceGroupDelegationsClient getAvailableResourceGroupDelegations() {
         return this.availableResourceGroupDelegations;
+    }
+
+    /** The AvailableServiceAliasesClient object to access its operations. */
+    private final AvailableServiceAliasesClient availableServiceAliases;
+
+    /**
+     * Gets the AvailableServiceAliasesClient object to access its operations.
+     *
+     * @return the AvailableServiceAliasesClient object.
+     */
+    public AvailableServiceAliasesClient getAvailableServiceAliases() {
+        return this.availableServiceAliases;
     }
 
     /** The AzureFirewallsClient object to access its operations. */
@@ -460,6 +499,18 @@ public final class NetworkManagementClient extends AzureServiceClient {
         return this.firewallPolicyRuleGroups;
     }
 
+    /** The IpGroupsClient object to access its operations. */
+    private final IpGroupsClient ipGroups;
+
+    /**
+     * Gets the IpGroupsClient object to access its operations.
+     *
+     * @return the IpGroupsClient object.
+     */
+    public IpGroupsClient getIpGroups() {
+        return this.ipGroups;
+    }
+
     /** The LoadBalancersClient object to access its operations. */
     private final LoadBalancersClient loadBalancers;
 
@@ -698,6 +749,18 @@ public final class NetworkManagementClient extends AzureServiceClient {
      */
     public ConnectionMonitorsClient getConnectionMonitors() {
         return this.connectionMonitors;
+    }
+
+    /** The FlowLogsClient object to access its operations. */
+    private final FlowLogsClient flowLogs;
+
+    /**
+     * Gets the FlowLogsClient object to access its operations.
+     *
+     * @return the FlowLogsClient object.
+     */
+    public FlowLogsClient getFlowLogs() {
+        return this.flowLogs;
     }
 
     /** The OperationsClient object to access its operations. */
@@ -988,6 +1051,30 @@ public final class NetworkManagementClient extends AzureServiceClient {
         return this.virtualNetworkTaps;
     }
 
+    /** The VirtualRoutersClient object to access its operations. */
+    private final VirtualRoutersClient virtualRouters;
+
+    /**
+     * Gets the VirtualRoutersClient object to access its operations.
+     *
+     * @return the VirtualRoutersClient object.
+     */
+    public VirtualRoutersClient getVirtualRouters() {
+        return this.virtualRouters;
+    }
+
+    /** The VirtualRouterPeeringsClient object to access its operations. */
+    private final VirtualRouterPeeringsClient virtualRouterPeerings;
+
+    /**
+     * Gets the VirtualRouterPeeringsClient object to access its operations.
+     *
+     * @return the VirtualRouterPeeringsClient object.
+     */
+    public VirtualRouterPeeringsClient getVirtualRouterPeerings() {
+        return this.virtualRouterPeerings;
+    }
+
     /** The VirtualWansClient object to access its operations. */
     private final VirtualWansClient virtualWans;
 
@@ -1034,6 +1121,18 @@ public final class NetworkManagementClient extends AzureServiceClient {
      */
     public VpnSitesConfigurationsClient getVpnSitesConfigurations() {
         return this.vpnSitesConfigurations;
+    }
+
+    /** The VpnServerConfigurationsClient object to access its operations. */
+    private final VpnServerConfigurationsClient vpnServerConfigurations;
+
+    /**
+     * Gets the VpnServerConfigurationsClient object to access its operations.
+     *
+     * @return the VpnServerConfigurationsClient object.
+     */
+    public VpnServerConfigurationsClient getVpnServerConfigurations() {
+        return this.vpnServerConfigurations;
     }
 
     /** The VirtualHubsClient object to access its operations. */
@@ -1108,18 +1207,6 @@ public final class NetworkManagementClient extends AzureServiceClient {
         return this.vpnLinkConnections;
     }
 
-    /** The P2SVpnServerConfigurationsClient object to access its operations. */
-    private final P2SVpnServerConfigurationsClient p2SVpnServerConfigurations;
-
-    /**
-     * Gets the P2SVpnServerConfigurationsClient object to access its operations.
-     *
-     * @return the P2SVpnServerConfigurationsClient object.
-     */
-    public P2SVpnServerConfigurationsClient getP2SVpnServerConfigurations() {
-        return this.p2SVpnServerConfigurations;
-    }
-
     /** The P2SVpnGatewaysClient object to access its operations. */
     private final P2SVpnGatewaysClient p2SVpnGateways;
 
@@ -1130,6 +1217,32 @@ public final class NetworkManagementClient extends AzureServiceClient {
      */
     public P2SVpnGatewaysClient getP2SVpnGateways() {
         return this.p2SVpnGateways;
+    }
+
+    /** The VpnServerConfigurationsAssociatedWithVirtualWansClient object to access its operations. */
+    private final VpnServerConfigurationsAssociatedWithVirtualWansClient
+        vpnServerConfigurationsAssociatedWithVirtualWans;
+
+    /**
+     * Gets the VpnServerConfigurationsAssociatedWithVirtualWansClient object to access its operations.
+     *
+     * @return the VpnServerConfigurationsAssociatedWithVirtualWansClient object.
+     */
+    public VpnServerConfigurationsAssociatedWithVirtualWansClient
+        getVpnServerConfigurationsAssociatedWithVirtualWans() {
+        return this.vpnServerConfigurationsAssociatedWithVirtualWans;
+    }
+
+    /** The VirtualHubRouteTableV2SClient object to access its operations. */
+    private final VirtualHubRouteTableV2SClient virtualHubRouteTableV2S;
+
+    /**
+     * Gets the VirtualHubRouteTableV2SClient object to access its operations.
+     *
+     * @return the VirtualHubRouteTableV2SClient object.
+     */
+    public VirtualHubRouteTableV2SClient getVirtualHubRouteTableV2S() {
+        return this.virtualHubRouteTableV2S;
     }
 
     /** The WebApplicationFirewallPoliciesClient object to access its operations. */
@@ -1160,6 +1273,7 @@ public final class NetworkManagementClient extends AzureServiceClient {
         this.applicationSecurityGroups = new ApplicationSecurityGroupsClient(this);
         this.availableDelegations = new AvailableDelegationsClient(this);
         this.availableResourceGroupDelegations = new AvailableResourceGroupDelegationsClient(this);
+        this.availableServiceAliases = new AvailableServiceAliasesClient(this);
         this.azureFirewalls = new AzureFirewallsClient(this);
         this.azureFirewallFqdnTags = new AzureFirewallFqdnTagsClient(this);
         this.bastionHosts = new BastionHostsClient(this);
@@ -1181,6 +1295,7 @@ public final class NetworkManagementClient extends AzureServiceClient {
         this.expressRouteLinks = new ExpressRouteLinksClient(this);
         this.firewallPolicies = new FirewallPoliciesClient(this);
         this.firewallPolicyRuleGroups = new FirewallPolicyRuleGroupsClient(this);
+        this.ipGroups = new IpGroupsClient(this);
         this.loadBalancers = new LoadBalancersClient(this);
         this.loadBalancerBackendAddressPools = new LoadBalancerBackendAddressPoolsClient(this);
         this.loadBalancerFrontendIpConfigurations = new LoadBalancerFrontendIpConfigurationsClient(this);
@@ -1201,6 +1316,7 @@ public final class NetworkManagementClient extends AzureServiceClient {
         this.networkWatchers = new NetworkWatchersClient(this);
         this.packetCaptures = new PacketCapturesClient(this);
         this.connectionMonitors = new ConnectionMonitorsClient(this);
+        this.flowLogs = new FlowLogsClient(this);
         this.operations = new OperationsClient(this);
         this.privateEndpoints = new PrivateEndpointsClient(this);
         this.availablePrivateEndpointTypes = new AvailablePrivateEndpointTypesClient(this);
@@ -1225,18 +1341,23 @@ public final class NetworkManagementClient extends AzureServiceClient {
         this.virtualNetworkGatewayConnections = new VirtualNetworkGatewayConnectionsClient(this);
         this.localNetworkGateways = new LocalNetworkGatewaysClient(this);
         this.virtualNetworkTaps = new VirtualNetworkTapsClient(this);
+        this.virtualRouters = new VirtualRoutersClient(this);
+        this.virtualRouterPeerings = new VirtualRouterPeeringsClient(this);
         this.virtualWans = new VirtualWansClient(this);
         this.vpnSites = new VpnSitesClient(this);
         this.vpnSiteLinks = new VpnSiteLinksClient(this);
         this.vpnSitesConfigurations = new VpnSitesConfigurationsClient(this);
+        this.vpnServerConfigurations = new VpnServerConfigurationsClient(this);
         this.virtualHubs = new VirtualHubsClient(this);
         this.hubVirtualNetworkConnections = new HubVirtualNetworkConnectionsClient(this);
         this.vpnGateways = new VpnGatewaysClient(this);
         this.vpnConnections = new VpnConnectionsClient(this);
         this.vpnSiteLinkConnections = new VpnSiteLinkConnectionsClient(this);
         this.vpnLinkConnections = new VpnLinkConnectionsClient(this);
-        this.p2SVpnServerConfigurations = new P2SVpnServerConfigurationsClient(this);
         this.p2SVpnGateways = new P2SVpnGatewaysClient(this);
+        this.vpnServerConfigurationsAssociatedWithVirtualWans =
+            new VpnServerConfigurationsAssociatedWithVirtualWansClient(this);
+        this.virtualHubRouteTableV2S = new VirtualHubRouteTableV2SClient(this);
         this.webApplicationFirewallPolicies = new WebApplicationFirewallPoliciesClient(this);
         this.service =
             RestProxy.create(NetworkManagementClientService.class, this.httpPipeline, this.getSerializerAdapter());
@@ -1249,6 +1370,80 @@ public final class NetworkManagementClient extends AzureServiceClient {
     @Host("{$host}")
     @ServiceInterface(name = "NetworkManagementCli")
     private interface NetworkManagementClientService {
+        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Post(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
+                + "/bastionHosts/{bastionHostName}/createShareableLinks")
+        @ExpectedResponses({200, 202})
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> putBastionShareableLink(
+            @HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("bastionHostName") String bastionHostname,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @BodyParam("application/json") BastionShareableLinkListRequest bslRequest,
+            Context context);
+
+        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
+        @Post(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
+                + "/bastionHosts/{bastionHostName}/deleteShareableLinks")
+        @ExpectedResponses({200, 202})
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> deleteBastionShareableLink(
+            @HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("bastionHostName") String bastionHostname,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @BodyParam("application/json") BastionShareableLinkListRequest bslRequest,
+            Context context);
+
+        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Post(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
+                + "/bastionHosts/{bastionHostName}/getShareableLinks")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<BastionShareableLinkListResultInner>> getBastionShareableLink(
+            @HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("bastionHostName") String bastionHostname,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @BodyParam("application/json") BastionShareableLinkListRequest bslRequest,
+            Context context);
+
+        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Post(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
+                + "/bastionHosts/{bastionHostName}/getActiveSessions")
+        @ExpectedResponses({200, 202})
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> getActiveSessions(
+            @HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("bastionHostName") String bastionHostname,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            Context context);
+
+        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Post(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
+                + "/bastionHosts/{bastionHostName}/disconnectActiveSessions")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<BastionSessionDeleteResultInner>> disconnectActiveSessions(
+            @HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("bastionHostName") String bastionHostname,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @BodyParam("application/json") SessionIds sessionIds,
+            Context context);
+
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/providers/Microsoft.Network/locations/{location}/CheckDnsNameAvailability")
@@ -1267,7 +1462,7 @@ public final class NetworkManagementClient extends AzureServiceClient {
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualWans"
                 + "/{virtualWANName}/supportedSecurityProviders")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ErrorException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<VirtualWanSecurityProvidersInner>> supportedSecurityProviders(
             @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
@@ -1275,6 +1470,1218 @@ public final class NetworkManagementClient extends AzureServiceClient {
             @PathParam("virtualWANName") String virtualWanName,
             @QueryParam("api-version") String apiVersion,
             Context context);
+
+        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Post(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualWans"
+                + "/{virtualWANName}/GenerateVpnProfile")
+        @ExpectedResponses({200, 202})
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> generatevirtualwanvpnserverconfigurationvpnprofile(
+            @HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("virtualWANName") String virtualWanName,
+            @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") VirtualWanVpnProfileParameters vpnClientParams,
+            Context context);
+
+        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Post(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
+                + "/bastionHosts/{bastionHostName}/createShareableLinks")
+        @ExpectedResponses({200, 202})
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<BastionShareableLinkListResultInner>> beginPutBastionShareableLinkWithoutPolling(
+            @HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("bastionHostName") String bastionHostname,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @BodyParam("application/json") BastionShareableLinkListRequest bslRequest,
+            Context context);
+
+        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
+        @Post(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
+                + "/bastionHosts/{bastionHostName}/deleteShareableLinks")
+        @ExpectedResponses({200, 202})
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Void>> beginDeleteBastionShareableLinkWithoutPolling(
+            @HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("bastionHostName") String bastionHostname,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @BodyParam("application/json") BastionShareableLinkListRequest bslRequest,
+            Context context);
+
+        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Post(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
+                + "/bastionHosts/{bastionHostName}/getActiveSessions")
+        @ExpectedResponses({200, 202})
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<BastionActiveSessionListResultInner>> beginGetActiveSessionsWithoutPolling(
+            @HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("bastionHostName") String bastionHostname,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            Context context);
+
+        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Post(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualWans"
+                + "/{virtualWANName}/GenerateVpnProfile")
+        @ExpectedResponses({200, 202})
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<VpnProfileResponseInner>> beginGeneratevirtualwanvpnserverconfigurationvpnprofileWithoutPolling(
+            @HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("virtualWANName") String virtualWanName,
+            @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") VirtualWanVpnProfileParameters vpnClientParams,
+            Context context);
+
+        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Get("{nextLink}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<BastionShareableLinkListResultInner>> getBastionShareableLinkNext(
+            @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
+
+        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Get("{nextLink}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<BastionSessionDeleteResultInner>> disconnectActiveSessionsNext(
+            @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
+    }
+
+    /**
+     * Creates a Bastion Shareable Links for all the VMs specified in the request.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param bastionHostname The name of the Bastion Host.
+     * @param vms List of VM references.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response for all the Bastion Shareable Link endpoints.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Flux<ByteBuffer>>> putBastionShareableLinkWithResponseAsync(
+        String resourceGroupName, String bastionHostname, List<BastionShareableLinkInner> vms) {
+        if (this.getEndpoint() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (bastionHostname == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter bastionHostname is required and cannot be null."));
+        }
+        if (this.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException("Parameter this.getSubscriptionId() is required and cannot be null."));
+        }
+        if (vms != null) {
+            vms.forEach(e -> e.validate());
+        }
+        final String apiVersion = "2019-11-01";
+        BastionShareableLinkListRequest bslRequest = new BastionShareableLinkListRequest();
+        bslRequest.withVms(vms);
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .putBastionShareableLink(
+                            this.getEndpoint(),
+                            resourceGroupName,
+                            bastionHostname,
+                            apiVersion,
+                            this.getSubscriptionId(),
+                            bslRequest,
+                            context))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.getContext())));
+    }
+
+    /**
+     * Creates a Bastion Shareable Links for all the VMs specified in the request.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param bastionHostname The name of the Bastion Host.
+     * @param vms List of VM references.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response for all the Bastion Shareable Link endpoints.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Flux<ByteBuffer>>> putBastionShareableLinkWithResponseAsync(
+        String resourceGroupName, String bastionHostname, List<BastionShareableLinkInner> vms, Context context) {
+        if (this.getEndpoint() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (bastionHostname == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter bastionHostname is required and cannot be null."));
+        }
+        if (this.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException("Parameter this.getSubscriptionId() is required and cannot be null."));
+        }
+        if (vms != null) {
+            vms.forEach(e -> e.validate());
+        }
+        final String apiVersion = "2019-11-01";
+        BastionShareableLinkListRequest bslRequest = new BastionShareableLinkListRequest();
+        bslRequest.withVms(vms);
+        return service
+            .putBastionShareableLink(
+                this.getEndpoint(),
+                resourceGroupName,
+                bastionHostname,
+                apiVersion,
+                this.getSubscriptionId(),
+                bslRequest,
+                context);
+    }
+
+    /**
+     * Creates a Bastion Shareable Links for all the VMs specified in the request.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param bastionHostname The name of the Bastion Host.
+     * @param vms List of VM references.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response for all the Bastion Shareable Link endpoints.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PollerFlux<PollResult<BastionShareableLinkListResultInner>, BastionShareableLinkListResultInner>
+        beginPutBastionShareableLinkAsync(
+            String resourceGroupName, String bastionHostname, List<BastionShareableLinkInner> vms) {
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            putBastionShareableLinkWithResponseAsync(resourceGroupName, bastionHostname, vms);
+        return this
+            .<BastionShareableLinkListResultInner, BastionShareableLinkListResultInner>getLroResultAsync(
+                mono,
+                this.getHttpPipeline(),
+                BastionShareableLinkListResultInner.class,
+                BastionShareableLinkListResultInner.class);
+    }
+
+    /**
+     * Creates a Bastion Shareable Links for all the VMs specified in the request.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param bastionHostname The name of the Bastion Host.
+     * @param vms List of VM references.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response for all the Bastion Shareable Link endpoints.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PollerFlux<PollResult<BastionShareableLinkListResultInner>, BastionShareableLinkListResultInner>
+        beginPutBastionShareableLinkAsync(
+            String resourceGroupName, String bastionHostname, List<BastionShareableLinkInner> vms, Context context) {
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            putBastionShareableLinkWithResponseAsync(resourceGroupName, bastionHostname, vms, context);
+        return this
+            .<BastionShareableLinkListResultInner, BastionShareableLinkListResultInner>getLroResultAsync(
+                mono,
+                this.getHttpPipeline(),
+                BastionShareableLinkListResultInner.class,
+                BastionShareableLinkListResultInner.class);
+    }
+
+    /**
+     * Creates a Bastion Shareable Links for all the VMs specified in the request.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param bastionHostname The name of the Bastion Host.
+     * @param vms List of VM references.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response for all the Bastion Shareable Link endpoints.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<BastionShareableLinkListResultInner>, BastionShareableLinkListResultInner>
+        beginPutBastionShareableLink(
+            String resourceGroupName, String bastionHostname, List<BastionShareableLinkInner> vms) {
+        return beginPutBastionShareableLinkAsync(resourceGroupName, bastionHostname, vms).getSyncPoller();
+    }
+
+    /**
+     * Creates a Bastion Shareable Links for all the VMs specified in the request.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param bastionHostname The name of the Bastion Host.
+     * @param vms List of VM references.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response for all the Bastion Shareable Link endpoints.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<BastionShareableLinkListResultInner>, BastionShareableLinkListResultInner>
+        beginPutBastionShareableLink(
+            String resourceGroupName, String bastionHostname, List<BastionShareableLinkInner> vms, Context context) {
+        return beginPutBastionShareableLinkAsync(resourceGroupName, bastionHostname, vms, context).getSyncPoller();
+    }
+
+    /**
+     * Creates a Bastion Shareable Links for all the VMs specified in the request.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param bastionHostname The name of the Bastion Host.
+     * @param vms List of VM references.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response for all the Bastion Shareable Link endpoints.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<BastionShareableLinkListResultInner> putBastionShareableLinkAsync(
+        String resourceGroupName, String bastionHostname, List<BastionShareableLinkInner> vms) {
+        return beginPutBastionShareableLinkAsync(resourceGroupName, bastionHostname, vms)
+            .last()
+            .flatMap(this::getLroFinalResultOrError);
+    }
+
+    /**
+     * Creates a Bastion Shareable Links for all the VMs specified in the request.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param bastionHostname The name of the Bastion Host.
+     * @param vms List of VM references.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response for all the Bastion Shareable Link endpoints.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<BastionShareableLinkListResultInner> putBastionShareableLinkAsync(
+        String resourceGroupName, String bastionHostname, List<BastionShareableLinkInner> vms, Context context) {
+        return beginPutBastionShareableLinkAsync(resourceGroupName, bastionHostname, vms, context)
+            .last()
+            .flatMap(this::getLroFinalResultOrError);
+    }
+
+    /**
+     * Creates a Bastion Shareable Links for all the VMs specified in the request.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param bastionHostname The name of the Bastion Host.
+     * @param vms List of VM references.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response for all the Bastion Shareable Link endpoints.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public BastionShareableLinkListResultInner putBastionShareableLink(
+        String resourceGroupName, String bastionHostname, List<BastionShareableLinkInner> vms) {
+        return putBastionShareableLinkAsync(resourceGroupName, bastionHostname, vms).block();
+    }
+
+    /**
+     * Creates a Bastion Shareable Links for all the VMs specified in the request.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param bastionHostname The name of the Bastion Host.
+     * @param vms List of VM references.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response for all the Bastion Shareable Link endpoints.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public BastionShareableLinkListResultInner putBastionShareableLink(
+        String resourceGroupName, String bastionHostname, List<BastionShareableLinkInner> vms, Context context) {
+        return putBastionShareableLinkAsync(resourceGroupName, bastionHostname, vms, context).block();
+    }
+
+    /**
+     * Deletes the Bastion Shareable Links for all the VMs specified in the request.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param bastionHostname The name of the Bastion Host.
+     * @param vms List of VM references.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Flux<ByteBuffer>>> deleteBastionShareableLinkWithResponseAsync(
+        String resourceGroupName, String bastionHostname, List<BastionShareableLinkInner> vms) {
+        if (this.getEndpoint() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (bastionHostname == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter bastionHostname is required and cannot be null."));
+        }
+        if (this.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException("Parameter this.getSubscriptionId() is required and cannot be null."));
+        }
+        if (vms != null) {
+            vms.forEach(e -> e.validate());
+        }
+        final String apiVersion = "2019-11-01";
+        BastionShareableLinkListRequest bslRequest = new BastionShareableLinkListRequest();
+        bslRequest.withVms(vms);
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .deleteBastionShareableLink(
+                            this.getEndpoint(),
+                            resourceGroupName,
+                            bastionHostname,
+                            apiVersion,
+                            this.getSubscriptionId(),
+                            bslRequest,
+                            context))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.getContext())));
+    }
+
+    /**
+     * Deletes the Bastion Shareable Links for all the VMs specified in the request.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param bastionHostname The name of the Bastion Host.
+     * @param vms List of VM references.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Flux<ByteBuffer>>> deleteBastionShareableLinkWithResponseAsync(
+        String resourceGroupName, String bastionHostname, List<BastionShareableLinkInner> vms, Context context) {
+        if (this.getEndpoint() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (bastionHostname == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter bastionHostname is required and cannot be null."));
+        }
+        if (this.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException("Parameter this.getSubscriptionId() is required and cannot be null."));
+        }
+        if (vms != null) {
+            vms.forEach(e -> e.validate());
+        }
+        final String apiVersion = "2019-11-01";
+        BastionShareableLinkListRequest bslRequest = new BastionShareableLinkListRequest();
+        bslRequest.withVms(vms);
+        return service
+            .deleteBastionShareableLink(
+                this.getEndpoint(),
+                resourceGroupName,
+                bastionHostname,
+                apiVersion,
+                this.getSubscriptionId(),
+                bslRequest,
+                context);
+    }
+
+    /**
+     * Deletes the Bastion Shareable Links for all the VMs specified in the request.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param bastionHostname The name of the Bastion Host.
+     * @param vms List of VM references.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PollerFlux<PollResult<Void>, Void> beginDeleteBastionShareableLinkAsync(
+        String resourceGroupName, String bastionHostname, List<BastionShareableLinkInner> vms) {
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            deleteBastionShareableLinkWithResponseAsync(resourceGroupName, bastionHostname, vms);
+        return this.<Void, Void>getLroResultAsync(mono, this.getHttpPipeline(), Void.class, Void.class);
+    }
+
+    /**
+     * Deletes the Bastion Shareable Links for all the VMs specified in the request.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param bastionHostname The name of the Bastion Host.
+     * @param vms List of VM references.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PollerFlux<PollResult<Void>, Void> beginDeleteBastionShareableLinkAsync(
+        String resourceGroupName, String bastionHostname, List<BastionShareableLinkInner> vms, Context context) {
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            deleteBastionShareableLinkWithResponseAsync(resourceGroupName, bastionHostname, vms, context);
+        return this.<Void, Void>getLroResultAsync(mono, this.getHttpPipeline(), Void.class, Void.class);
+    }
+
+    /**
+     * Deletes the Bastion Shareable Links for all the VMs specified in the request.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param bastionHostname The name of the Bastion Host.
+     * @param vms List of VM references.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<Void>, Void> beginDeleteBastionShareableLink(
+        String resourceGroupName, String bastionHostname, List<BastionShareableLinkInner> vms) {
+        return beginDeleteBastionShareableLinkAsync(resourceGroupName, bastionHostname, vms).getSyncPoller();
+    }
+
+    /**
+     * Deletes the Bastion Shareable Links for all the VMs specified in the request.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param bastionHostname The name of the Bastion Host.
+     * @param vms List of VM references.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<Void>, Void> beginDeleteBastionShareableLink(
+        String resourceGroupName, String bastionHostname, List<BastionShareableLinkInner> vms, Context context) {
+        return beginDeleteBastionShareableLinkAsync(resourceGroupName, bastionHostname, vms, context).getSyncPoller();
+    }
+
+    /**
+     * Deletes the Bastion Shareable Links for all the VMs specified in the request.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param bastionHostname The name of the Bastion Host.
+     * @param vms List of VM references.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> deleteBastionShareableLinkAsync(
+        String resourceGroupName, String bastionHostname, List<BastionShareableLinkInner> vms) {
+        return beginDeleteBastionShareableLinkAsync(resourceGroupName, bastionHostname, vms)
+            .last()
+            .flatMap(this::getLroFinalResultOrError);
+    }
+
+    /**
+     * Deletes the Bastion Shareable Links for all the VMs specified in the request.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param bastionHostname The name of the Bastion Host.
+     * @param vms List of VM references.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> deleteBastionShareableLinkAsync(
+        String resourceGroupName, String bastionHostname, List<BastionShareableLinkInner> vms, Context context) {
+        return beginDeleteBastionShareableLinkAsync(resourceGroupName, bastionHostname, vms, context)
+            .last()
+            .flatMap(this::getLroFinalResultOrError);
+    }
+
+    /**
+     * Deletes the Bastion Shareable Links for all the VMs specified in the request.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param bastionHostname The name of the Bastion Host.
+     * @param vms List of VM references.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void deleteBastionShareableLink(
+        String resourceGroupName, String bastionHostname, List<BastionShareableLinkInner> vms) {
+        deleteBastionShareableLinkAsync(resourceGroupName, bastionHostname, vms).block();
+    }
+
+    /**
+     * Deletes the Bastion Shareable Links for all the VMs specified in the request.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param bastionHostname The name of the Bastion Host.
+     * @param vms List of VM references.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void deleteBastionShareableLink(
+        String resourceGroupName, String bastionHostname, List<BastionShareableLinkInner> vms, Context context) {
+        deleteBastionShareableLinkAsync(resourceGroupName, bastionHostname, vms, context).block();
+    }
+
+    /**
+     * Return the Bastion Shareable Links for all the VMs specified in the request.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param bastionHostname The name of the Bastion Host.
+     * @param vms List of VM references.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response for all the Bastion Shareable Link endpoints.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PagedResponse<BastionShareableLinkInner>> getBastionShareableLinkSinglePageAsync(
+        String resourceGroupName, String bastionHostname, List<BastionShareableLinkInner> vms) {
+        if (this.getEndpoint() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (bastionHostname == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter bastionHostname is required and cannot be null."));
+        }
+        if (this.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException("Parameter this.getSubscriptionId() is required and cannot be null."));
+        }
+        if (vms != null) {
+            vms.forEach(e -> e.validate());
+        }
+        final String apiVersion = "2019-11-01";
+        BastionShareableLinkListRequest bslRequest = new BastionShareableLinkListRequest();
+        bslRequest.withVms(vms);
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .getBastionShareableLink(
+                            this.getEndpoint(),
+                            resourceGroupName,
+                            bastionHostname,
+                            apiVersion,
+                            this.getSubscriptionId(),
+                            bslRequest,
+                            context))
+            .<PagedResponse<BastionShareableLinkInner>>map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.getContext())));
+    }
+
+    /**
+     * Return the Bastion Shareable Links for all the VMs specified in the request.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param bastionHostname The name of the Bastion Host.
+     * @param vms List of VM references.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response for all the Bastion Shareable Link endpoints.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PagedResponse<BastionShareableLinkInner>> getBastionShareableLinkSinglePageAsync(
+        String resourceGroupName, String bastionHostname, List<BastionShareableLinkInner> vms, Context context) {
+        if (this.getEndpoint() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (bastionHostname == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter bastionHostname is required and cannot be null."));
+        }
+        if (this.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException("Parameter this.getSubscriptionId() is required and cannot be null."));
+        }
+        if (vms != null) {
+            vms.forEach(e -> e.validate());
+        }
+        final String apiVersion = "2019-11-01";
+        BastionShareableLinkListRequest bslRequest = new BastionShareableLinkListRequest();
+        bslRequest.withVms(vms);
+        return service
+            .getBastionShareableLink(
+                this.getEndpoint(),
+                resourceGroupName,
+                bastionHostname,
+                apiVersion,
+                this.getSubscriptionId(),
+                bslRequest,
+                context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null));
+    }
+
+    /**
+     * Return the Bastion Shareable Links for all the VMs specified in the request.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param bastionHostname The name of the Bastion Host.
+     * @param vms List of VM references.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response for all the Bastion Shareable Link endpoints.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<BastionShareableLinkInner> getBastionShareableLinkAsync(
+        String resourceGroupName, String bastionHostname, List<BastionShareableLinkInner> vms) {
+        return new PagedFlux<>(
+            () -> getBastionShareableLinkSinglePageAsync(resourceGroupName, bastionHostname, vms),
+            nextLink -> getBastionShareableLinkNextSinglePageAsync(nextLink));
+    }
+
+    /**
+     * Return the Bastion Shareable Links for all the VMs specified in the request.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param bastionHostname The name of the Bastion Host.
+     * @param vms List of VM references.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response for all the Bastion Shareable Link endpoints.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<BastionShareableLinkInner> getBastionShareableLinkAsync(
+        String resourceGroupName, String bastionHostname, List<BastionShareableLinkInner> vms, Context context) {
+        return new PagedFlux<>(
+            () -> getBastionShareableLinkSinglePageAsync(resourceGroupName, bastionHostname, vms, context),
+            nextLink -> getBastionShareableLinkNextSinglePageAsync(nextLink));
+    }
+
+    /**
+     * Return the Bastion Shareable Links for all the VMs specified in the request.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param bastionHostname The name of the Bastion Host.
+     * @param vms List of VM references.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response for all the Bastion Shareable Link endpoints.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<BastionShareableLinkInner> getBastionShareableLink(
+        String resourceGroupName, String bastionHostname, List<BastionShareableLinkInner> vms) {
+        return new PagedIterable<>(getBastionShareableLinkAsync(resourceGroupName, bastionHostname, vms));
+    }
+
+    /**
+     * Return the Bastion Shareable Links for all the VMs specified in the request.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param bastionHostname The name of the Bastion Host.
+     * @param vms List of VM references.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response for all the Bastion Shareable Link endpoints.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<BastionShareableLinkInner> getBastionShareableLink(
+        String resourceGroupName, String bastionHostname, List<BastionShareableLinkInner> vms, Context context) {
+        return new PagedIterable<>(getBastionShareableLinkAsync(resourceGroupName, bastionHostname, vms, context));
+    }
+
+    /**
+     * Returns the list of currently active sessions on the Bastion.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param bastionHostname The name of the Bastion Host.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response for GetActiveSessions.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Flux<ByteBuffer>>> getActiveSessionsWithResponseAsync(
+        String resourceGroupName, String bastionHostname) {
+        if (this.getEndpoint() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (bastionHostname == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter bastionHostname is required and cannot be null."));
+        }
+        if (this.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException("Parameter this.getSubscriptionId() is required and cannot be null."));
+        }
+        final String apiVersion = "2019-11-01";
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .getActiveSessions(
+                            this.getEndpoint(),
+                            resourceGroupName,
+                            bastionHostname,
+                            apiVersion,
+                            this.getSubscriptionId(),
+                            context))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.getContext())));
+    }
+
+    /**
+     * Returns the list of currently active sessions on the Bastion.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param bastionHostname The name of the Bastion Host.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response for GetActiveSessions.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Flux<ByteBuffer>>> getActiveSessionsWithResponseAsync(
+        String resourceGroupName, String bastionHostname, Context context) {
+        if (this.getEndpoint() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (bastionHostname == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter bastionHostname is required and cannot be null."));
+        }
+        if (this.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException("Parameter this.getSubscriptionId() is required and cannot be null."));
+        }
+        final String apiVersion = "2019-11-01";
+        return service
+            .getActiveSessions(
+                this.getEndpoint(), resourceGroupName, bastionHostname, apiVersion, this.getSubscriptionId(), context);
+    }
+
+    /**
+     * Returns the list of currently active sessions on the Bastion.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param bastionHostname The name of the Bastion Host.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response for GetActiveSessions.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PollerFlux<PollResult<BastionActiveSessionListResultInner>, BastionActiveSessionListResultInner>
+        beginGetActiveSessionsAsync(String resourceGroupName, String bastionHostname) {
+        Mono<Response<Flux<ByteBuffer>>> mono = getActiveSessionsWithResponseAsync(resourceGroupName, bastionHostname);
+        return this
+            .<BastionActiveSessionListResultInner, BastionActiveSessionListResultInner>getLroResultAsync(
+                mono,
+                this.getHttpPipeline(),
+                BastionActiveSessionListResultInner.class,
+                BastionActiveSessionListResultInner.class);
+    }
+
+    /**
+     * Returns the list of currently active sessions on the Bastion.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param bastionHostname The name of the Bastion Host.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response for GetActiveSessions.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PollerFlux<PollResult<BastionActiveSessionListResultInner>, BastionActiveSessionListResultInner>
+        beginGetActiveSessionsAsync(String resourceGroupName, String bastionHostname, Context context) {
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            getActiveSessionsWithResponseAsync(resourceGroupName, bastionHostname, context);
+        return this
+            .<BastionActiveSessionListResultInner, BastionActiveSessionListResultInner>getLroResultAsync(
+                mono,
+                this.getHttpPipeline(),
+                BastionActiveSessionListResultInner.class,
+                BastionActiveSessionListResultInner.class);
+    }
+
+    /**
+     * Returns the list of currently active sessions on the Bastion.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param bastionHostname The name of the Bastion Host.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response for GetActiveSessions.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<BastionActiveSessionListResultInner>, BastionActiveSessionListResultInner>
+        beginGetActiveSessions(String resourceGroupName, String bastionHostname) {
+        return beginGetActiveSessionsAsync(resourceGroupName, bastionHostname).getSyncPoller();
+    }
+
+    /**
+     * Returns the list of currently active sessions on the Bastion.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param bastionHostname The name of the Bastion Host.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response for GetActiveSessions.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<BastionActiveSessionListResultInner>, BastionActiveSessionListResultInner>
+        beginGetActiveSessions(String resourceGroupName, String bastionHostname, Context context) {
+        return beginGetActiveSessionsAsync(resourceGroupName, bastionHostname, context).getSyncPoller();
+    }
+
+    /**
+     * Returns the list of currently active sessions on the Bastion.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param bastionHostname The name of the Bastion Host.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response for GetActiveSessions.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<BastionActiveSessionListResultInner> getActiveSessionsAsync(
+        String resourceGroupName, String bastionHostname) {
+        return beginGetActiveSessionsAsync(resourceGroupName, bastionHostname)
+            .last()
+            .flatMap(this::getLroFinalResultOrError);
+    }
+
+    /**
+     * Returns the list of currently active sessions on the Bastion.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param bastionHostname The name of the Bastion Host.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response for GetActiveSessions.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<BastionActiveSessionListResultInner> getActiveSessionsAsync(
+        String resourceGroupName, String bastionHostname, Context context) {
+        return beginGetActiveSessionsAsync(resourceGroupName, bastionHostname, context)
+            .last()
+            .flatMap(this::getLroFinalResultOrError);
+    }
+
+    /**
+     * Returns the list of currently active sessions on the Bastion.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param bastionHostname The name of the Bastion Host.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response for GetActiveSessions.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public BastionActiveSessionListResultInner getActiveSessions(String resourceGroupName, String bastionHostname) {
+        return getActiveSessionsAsync(resourceGroupName, bastionHostname).block();
+    }
+
+    /**
+     * Returns the list of currently active sessions on the Bastion.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param bastionHostname The name of the Bastion Host.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response for GetActiveSessions.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public BastionActiveSessionListResultInner getActiveSessions(
+        String resourceGroupName, String bastionHostname, Context context) {
+        return getActiveSessionsAsync(resourceGroupName, bastionHostname, context).block();
+    }
+
+    /**
+     * Returns the list of currently active sessions on the Bastion.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param bastionHostname The name of the Bastion Host.
+     * @param sessionIdsSessionIds List of session IDs.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response for DisconnectActiveSessions.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PagedResponse<BastionSessionStateInner>> disconnectActiveSessionsSinglePageAsync(
+        String resourceGroupName, String bastionHostname, List<String> sessionIdsSessionIds) {
+        if (this.getEndpoint() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (bastionHostname == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter bastionHostname is required and cannot be null."));
+        }
+        if (this.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException("Parameter this.getSubscriptionId() is required and cannot be null."));
+        }
+        final String apiVersion = "2019-11-01";
+        SessionIds sessionIds = new SessionIds();
+        sessionIds.withSessionIds(sessionIdsSessionIds);
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .disconnectActiveSessions(
+                            this.getEndpoint(),
+                            resourceGroupName,
+                            bastionHostname,
+                            apiVersion,
+                            this.getSubscriptionId(),
+                            sessionIds,
+                            context))
+            .<PagedResponse<BastionSessionStateInner>>map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.getContext())));
+    }
+
+    /**
+     * Returns the list of currently active sessions on the Bastion.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param bastionHostname The name of the Bastion Host.
+     * @param sessionIdsSessionIds List of session IDs.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response for DisconnectActiveSessions.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PagedResponse<BastionSessionStateInner>> disconnectActiveSessionsSinglePageAsync(
+        String resourceGroupName, String bastionHostname, List<String> sessionIdsSessionIds, Context context) {
+        if (this.getEndpoint() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (bastionHostname == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter bastionHostname is required and cannot be null."));
+        }
+        if (this.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException("Parameter this.getSubscriptionId() is required and cannot be null."));
+        }
+        final String apiVersion = "2019-11-01";
+        SessionIds sessionIds = new SessionIds();
+        sessionIds.withSessionIds(sessionIdsSessionIds);
+        return service
+            .disconnectActiveSessions(
+                this.getEndpoint(),
+                resourceGroupName,
+                bastionHostname,
+                apiVersion,
+                this.getSubscriptionId(),
+                sessionIds,
+                context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null));
+    }
+
+    /**
+     * Returns the list of currently active sessions on the Bastion.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param bastionHostname The name of the Bastion Host.
+     * @param sessionIdsSessionIds List of session IDs.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response for DisconnectActiveSessions.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<BastionSessionStateInner> disconnectActiveSessionsAsync(
+        String resourceGroupName, String bastionHostname, List<String> sessionIdsSessionIds) {
+        return new PagedFlux<>(
+            () -> disconnectActiveSessionsSinglePageAsync(resourceGroupName, bastionHostname, sessionIdsSessionIds),
+            nextLink -> disconnectActiveSessionsNextSinglePageAsync(nextLink));
+    }
+
+    /**
+     * Returns the list of currently active sessions on the Bastion.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param bastionHostname The name of the Bastion Host.
+     * @param sessionIdsSessionIds List of session IDs.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response for DisconnectActiveSessions.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<BastionSessionStateInner> disconnectActiveSessionsAsync(
+        String resourceGroupName, String bastionHostname, List<String> sessionIdsSessionIds, Context context) {
+        return new PagedFlux<>(
+            () ->
+                disconnectActiveSessionsSinglePageAsync(
+                    resourceGroupName, bastionHostname, sessionIdsSessionIds, context),
+            nextLink -> disconnectActiveSessionsNextSinglePageAsync(nextLink));
+    }
+
+    /**
+     * Returns the list of currently active sessions on the Bastion.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param bastionHostname The name of the Bastion Host.
+     * @param sessionIdsSessionIds List of session IDs.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response for DisconnectActiveSessions.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<BastionSessionStateInner> disconnectActiveSessions(
+        String resourceGroupName, String bastionHostname, List<String> sessionIdsSessionIds) {
+        return new PagedIterable<>(
+            disconnectActiveSessionsAsync(resourceGroupName, bastionHostname, sessionIdsSessionIds));
+    }
+
+    /**
+     * Returns the list of currently active sessions on the Bastion.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param bastionHostname The name of the Bastion Host.
+     * @param sessionIdsSessionIds List of session IDs.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response for DisconnectActiveSessions.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<BastionSessionStateInner> disconnectActiveSessions(
+        String resourceGroupName, String bastionHostname, List<String> sessionIdsSessionIds, Context context) {
+        return new PagedIterable<>(
+            disconnectActiveSessionsAsync(resourceGroupName, bastionHostname, sessionIdsSessionIds, context));
     }
 
     /**
@@ -1307,7 +2714,7 @@ public final class NetworkManagementClient extends AzureServiceClient {
                 .error(
                     new IllegalArgumentException("Parameter this.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -1353,7 +2760,7 @@ public final class NetworkManagementClient extends AzureServiceClient {
                 .error(
                     new IllegalArgumentException("Parameter this.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return service
             .checkDnsNameAvailability(
                 this.getEndpoint(), location, domainNameLabel, apiVersion, this.getSubscriptionId(), context);
@@ -1449,7 +2856,7 @@ public final class NetworkManagementClient extends AzureServiceClient {
      * @param resourceGroupName The resource group name.
      * @param virtualWanName The name of the VirtualWAN for which supported security providers are needed.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of SecurityProviders.
      */
@@ -1472,7 +2879,7 @@ public final class NetworkManagementClient extends AzureServiceClient {
         if (virtualWanName == null) {
             return Mono.error(new IllegalArgumentException("Parameter virtualWanName is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -1494,7 +2901,7 @@ public final class NetworkManagementClient extends AzureServiceClient {
      * @param virtualWanName The name of the VirtualWAN for which supported security providers are needed.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of SecurityProviders.
      */
@@ -1517,7 +2924,7 @@ public final class NetworkManagementClient extends AzureServiceClient {
         if (virtualWanName == null) {
             return Mono.error(new IllegalArgumentException("Parameter virtualWanName is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return service
             .supportedSecurityProviders(
                 this.getEndpoint(), this.getSubscriptionId(), resourceGroupName, virtualWanName, apiVersion, context);
@@ -1529,7 +2936,7 @@ public final class NetworkManagementClient extends AzureServiceClient {
      * @param resourceGroupName The resource group name.
      * @param virtualWanName The name of the VirtualWAN for which supported security providers are needed.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of SecurityProviders.
      */
@@ -1554,7 +2961,7 @@ public final class NetworkManagementClient extends AzureServiceClient {
      * @param virtualWanName The name of the VirtualWAN for which supported security providers are needed.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of SecurityProviders.
      */
@@ -1578,7 +2985,7 @@ public final class NetworkManagementClient extends AzureServiceClient {
      * @param resourceGroupName The resource group name.
      * @param virtualWanName The name of the VirtualWAN for which supported security providers are needed.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of SecurityProviders.
      */
@@ -1595,7 +3002,7 @@ public final class NetworkManagementClient extends AzureServiceClient {
      * @param virtualWanName The name of the VirtualWAN for which supported security providers are needed.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of SecurityProviders.
      */
@@ -1603,5 +3010,1150 @@ public final class NetworkManagementClient extends AzureServiceClient {
     public VirtualWanSecurityProvidersInner supportedSecurityProviders(
         String resourceGroupName, String virtualWanName, Context context) {
         return supportedSecurityProvidersAsync(resourceGroupName, virtualWanName, context).block();
+    }
+
+    /**
+     * Generates a unique VPN profile for P2S clients for VirtualWan and associated VpnServerConfiguration combination
+     * in the specified resource group.
+     *
+     * @param resourceGroupName The resource group name.
+     * @param virtualWanName The name of the VirtualWAN whose associated VpnServerConfigurations is needed.
+     * @param vpnClientParams Virtual Wan Vpn profile parameters Vpn profile generation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return vpn Profile Response for package generation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Flux<ByteBuffer>>> generatevirtualwanvpnserverconfigurationvpnprofileWithResponseAsync(
+        String resourceGroupName, String virtualWanName, VirtualWanVpnProfileParameters vpnClientParams) {
+        if (this.getEndpoint() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.getEndpoint() is required and cannot be null."));
+        }
+        if (this.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException("Parameter this.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (virtualWanName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter virtualWanName is required and cannot be null."));
+        }
+        if (vpnClientParams == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter vpnClientParams is required and cannot be null."));
+        } else {
+            vpnClientParams.validate();
+        }
+        final String apiVersion = "2019-11-01";
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .generatevirtualwanvpnserverconfigurationvpnprofile(
+                            this.getEndpoint(),
+                            this.getSubscriptionId(),
+                            resourceGroupName,
+                            virtualWanName,
+                            apiVersion,
+                            vpnClientParams,
+                            context))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.getContext())));
+    }
+
+    /**
+     * Generates a unique VPN profile for P2S clients for VirtualWan and associated VpnServerConfiguration combination
+     * in the specified resource group.
+     *
+     * @param resourceGroupName The resource group name.
+     * @param virtualWanName The name of the VirtualWAN whose associated VpnServerConfigurations is needed.
+     * @param vpnClientParams Virtual Wan Vpn profile parameters Vpn profile generation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return vpn Profile Response for package generation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Flux<ByteBuffer>>> generatevirtualwanvpnserverconfigurationvpnprofileWithResponseAsync(
+        String resourceGroupName,
+        String virtualWanName,
+        VirtualWanVpnProfileParameters vpnClientParams,
+        Context context) {
+        if (this.getEndpoint() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.getEndpoint() is required and cannot be null."));
+        }
+        if (this.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException("Parameter this.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (virtualWanName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter virtualWanName is required and cannot be null."));
+        }
+        if (vpnClientParams == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter vpnClientParams is required and cannot be null."));
+        } else {
+            vpnClientParams.validate();
+        }
+        final String apiVersion = "2019-11-01";
+        return service
+            .generatevirtualwanvpnserverconfigurationvpnprofile(
+                this.getEndpoint(),
+                this.getSubscriptionId(),
+                resourceGroupName,
+                virtualWanName,
+                apiVersion,
+                vpnClientParams,
+                context);
+    }
+
+    /**
+     * Generates a unique VPN profile for P2S clients for VirtualWan and associated VpnServerConfiguration combination
+     * in the specified resource group.
+     *
+     * @param resourceGroupName The resource group name.
+     * @param virtualWanName The name of the VirtualWAN whose associated VpnServerConfigurations is needed.
+     * @param vpnClientParams Virtual Wan Vpn profile parameters Vpn profile generation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return vpn Profile Response for package generation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PollerFlux<PollResult<VpnProfileResponseInner>, VpnProfileResponseInner>
+        beginGeneratevirtualwanvpnserverconfigurationvpnprofileAsync(
+            String resourceGroupName, String virtualWanName, VirtualWanVpnProfileParameters vpnClientParams) {
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            generatevirtualwanvpnserverconfigurationvpnprofileWithResponseAsync(
+                resourceGroupName, virtualWanName, vpnClientParams);
+        return this
+            .<VpnProfileResponseInner, VpnProfileResponseInner>getLroResultAsync(
+                mono, this.getHttpPipeline(), VpnProfileResponseInner.class, VpnProfileResponseInner.class);
+    }
+
+    /**
+     * Generates a unique VPN profile for P2S clients for VirtualWan and associated VpnServerConfiguration combination
+     * in the specified resource group.
+     *
+     * @param resourceGroupName The resource group name.
+     * @param virtualWanName The name of the VirtualWAN whose associated VpnServerConfigurations is needed.
+     * @param vpnClientParams Virtual Wan Vpn profile parameters Vpn profile generation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return vpn Profile Response for package generation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PollerFlux<PollResult<VpnProfileResponseInner>, VpnProfileResponseInner>
+        beginGeneratevirtualwanvpnserverconfigurationvpnprofileAsync(
+            String resourceGroupName,
+            String virtualWanName,
+            VirtualWanVpnProfileParameters vpnClientParams,
+            Context context) {
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            generatevirtualwanvpnserverconfigurationvpnprofileWithResponseAsync(
+                resourceGroupName, virtualWanName, vpnClientParams, context);
+        return this
+            .<VpnProfileResponseInner, VpnProfileResponseInner>getLroResultAsync(
+                mono, this.getHttpPipeline(), VpnProfileResponseInner.class, VpnProfileResponseInner.class);
+    }
+
+    /**
+     * Generates a unique VPN profile for P2S clients for VirtualWan and associated VpnServerConfiguration combination
+     * in the specified resource group.
+     *
+     * @param resourceGroupName The resource group name.
+     * @param virtualWanName The name of the VirtualWAN whose associated VpnServerConfigurations is needed.
+     * @param vpnClientParams Virtual Wan Vpn profile parameters Vpn profile generation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return vpn Profile Response for package generation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<VpnProfileResponseInner>, VpnProfileResponseInner>
+        beginGeneratevirtualwanvpnserverconfigurationvpnprofile(
+            String resourceGroupName, String virtualWanName, VirtualWanVpnProfileParameters vpnClientParams) {
+        return beginGeneratevirtualwanvpnserverconfigurationvpnprofileAsync(
+                resourceGroupName, virtualWanName, vpnClientParams)
+            .getSyncPoller();
+    }
+
+    /**
+     * Generates a unique VPN profile for P2S clients for VirtualWan and associated VpnServerConfiguration combination
+     * in the specified resource group.
+     *
+     * @param resourceGroupName The resource group name.
+     * @param virtualWanName The name of the VirtualWAN whose associated VpnServerConfigurations is needed.
+     * @param vpnClientParams Virtual Wan Vpn profile parameters Vpn profile generation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return vpn Profile Response for package generation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<VpnProfileResponseInner>, VpnProfileResponseInner>
+        beginGeneratevirtualwanvpnserverconfigurationvpnprofile(
+            String resourceGroupName,
+            String virtualWanName,
+            VirtualWanVpnProfileParameters vpnClientParams,
+            Context context) {
+        return beginGeneratevirtualwanvpnserverconfigurationvpnprofileAsync(
+                resourceGroupName, virtualWanName, vpnClientParams, context)
+            .getSyncPoller();
+    }
+
+    /**
+     * Generates a unique VPN profile for P2S clients for VirtualWan and associated VpnServerConfiguration combination
+     * in the specified resource group.
+     *
+     * @param resourceGroupName The resource group name.
+     * @param virtualWanName The name of the VirtualWAN whose associated VpnServerConfigurations is needed.
+     * @param vpnClientParams Virtual Wan Vpn profile parameters Vpn profile generation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return vpn Profile Response for package generation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<VpnProfileResponseInner> generatevirtualwanvpnserverconfigurationvpnprofileAsync(
+        String resourceGroupName, String virtualWanName, VirtualWanVpnProfileParameters vpnClientParams) {
+        return beginGeneratevirtualwanvpnserverconfigurationvpnprofileAsync(
+                resourceGroupName, virtualWanName, vpnClientParams)
+            .last()
+            .flatMap(this::getLroFinalResultOrError);
+    }
+
+    /**
+     * Generates a unique VPN profile for P2S clients for VirtualWan and associated VpnServerConfiguration combination
+     * in the specified resource group.
+     *
+     * @param resourceGroupName The resource group name.
+     * @param virtualWanName The name of the VirtualWAN whose associated VpnServerConfigurations is needed.
+     * @param vpnClientParams Virtual Wan Vpn profile parameters Vpn profile generation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return vpn Profile Response for package generation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<VpnProfileResponseInner> generatevirtualwanvpnserverconfigurationvpnprofileAsync(
+        String resourceGroupName,
+        String virtualWanName,
+        VirtualWanVpnProfileParameters vpnClientParams,
+        Context context) {
+        return beginGeneratevirtualwanvpnserverconfigurationvpnprofileAsync(
+                resourceGroupName, virtualWanName, vpnClientParams, context)
+            .last()
+            .flatMap(this::getLroFinalResultOrError);
+    }
+
+    /**
+     * Generates a unique VPN profile for P2S clients for VirtualWan and associated VpnServerConfiguration combination
+     * in the specified resource group.
+     *
+     * @param resourceGroupName The resource group name.
+     * @param virtualWanName The name of the VirtualWAN whose associated VpnServerConfigurations is needed.
+     * @param vpnClientParams Virtual Wan Vpn profile parameters Vpn profile generation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return vpn Profile Response for package generation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public VpnProfileResponseInner generatevirtualwanvpnserverconfigurationvpnprofile(
+        String resourceGroupName, String virtualWanName, VirtualWanVpnProfileParameters vpnClientParams) {
+        return generatevirtualwanvpnserverconfigurationvpnprofileAsync(
+                resourceGroupName, virtualWanName, vpnClientParams)
+            .block();
+    }
+
+    /**
+     * Generates a unique VPN profile for P2S clients for VirtualWan and associated VpnServerConfiguration combination
+     * in the specified resource group.
+     *
+     * @param resourceGroupName The resource group name.
+     * @param virtualWanName The name of the VirtualWAN whose associated VpnServerConfigurations is needed.
+     * @param vpnClientParams Virtual Wan Vpn profile parameters Vpn profile generation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return vpn Profile Response for package generation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public VpnProfileResponseInner generatevirtualwanvpnserverconfigurationvpnprofile(
+        String resourceGroupName,
+        String virtualWanName,
+        VirtualWanVpnProfileParameters vpnClientParams,
+        Context context) {
+        return generatevirtualwanvpnserverconfigurationvpnprofileAsync(
+                resourceGroupName, virtualWanName, vpnClientParams, context)
+            .block();
+    }
+
+    /**
+     * Creates a Bastion Shareable Links for all the VMs specified in the request.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param bastionHostname The name of the Bastion Host.
+     * @param vms List of VM references.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response for all the Bastion Shareable Link endpoints.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BastionShareableLinkListResultInner>>
+        beginPutBastionShareableLinkWithoutPollingWithResponseAsync(
+            String resourceGroupName, String bastionHostname, List<BastionShareableLinkInner> vms) {
+        if (this.getEndpoint() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (bastionHostname == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter bastionHostname is required and cannot be null."));
+        }
+        if (this.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException("Parameter this.getSubscriptionId() is required and cannot be null."));
+        }
+        if (vms != null) {
+            vms.forEach(e -> e.validate());
+        }
+        final String apiVersion = "2019-11-01";
+        BastionShareableLinkListRequest bslRequest = new BastionShareableLinkListRequest();
+        bslRequest.withVms(vms);
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .beginPutBastionShareableLinkWithoutPolling(
+                            this.getEndpoint(),
+                            resourceGroupName,
+                            bastionHostname,
+                            apiVersion,
+                            this.getSubscriptionId(),
+                            bslRequest,
+                            context))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.getContext())));
+    }
+
+    /**
+     * Creates a Bastion Shareable Links for all the VMs specified in the request.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param bastionHostname The name of the Bastion Host.
+     * @param vms List of VM references.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response for all the Bastion Shareable Link endpoints.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BastionShareableLinkListResultInner>>
+        beginPutBastionShareableLinkWithoutPollingWithResponseAsync(
+            String resourceGroupName, String bastionHostname, List<BastionShareableLinkInner> vms, Context context) {
+        if (this.getEndpoint() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (bastionHostname == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter bastionHostname is required and cannot be null."));
+        }
+        if (this.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException("Parameter this.getSubscriptionId() is required and cannot be null."));
+        }
+        if (vms != null) {
+            vms.forEach(e -> e.validate());
+        }
+        final String apiVersion = "2019-11-01";
+        BastionShareableLinkListRequest bslRequest = new BastionShareableLinkListRequest();
+        bslRequest.withVms(vms);
+        return service
+            .beginPutBastionShareableLinkWithoutPolling(
+                this.getEndpoint(),
+                resourceGroupName,
+                bastionHostname,
+                apiVersion,
+                this.getSubscriptionId(),
+                bslRequest,
+                context);
+    }
+
+    /**
+     * Creates a Bastion Shareable Links for all the VMs specified in the request.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param bastionHostname The name of the Bastion Host.
+     * @param vms List of VM references.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response for all the Bastion Shareable Link endpoints.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<BastionShareableLinkListResultInner> beginPutBastionShareableLinkWithoutPollingAsync(
+        String resourceGroupName, String bastionHostname, List<BastionShareableLinkInner> vms) {
+        return beginPutBastionShareableLinkWithoutPollingWithResponseAsync(resourceGroupName, bastionHostname, vms)
+            .flatMap(
+                (Response<BastionShareableLinkListResultInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
+    }
+
+    /**
+     * Creates a Bastion Shareable Links for all the VMs specified in the request.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param bastionHostname The name of the Bastion Host.
+     * @param vms List of VM references.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response for all the Bastion Shareable Link endpoints.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<BastionShareableLinkListResultInner> beginPutBastionShareableLinkWithoutPollingAsync(
+        String resourceGroupName, String bastionHostname, List<BastionShareableLinkInner> vms, Context context) {
+        return beginPutBastionShareableLinkWithoutPollingWithResponseAsync(
+                resourceGroupName, bastionHostname, vms, context)
+            .flatMap(
+                (Response<BastionShareableLinkListResultInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
+    }
+
+    /**
+     * Creates a Bastion Shareable Links for all the VMs specified in the request.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param bastionHostname The name of the Bastion Host.
+     * @param vms List of VM references.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response for all the Bastion Shareable Link endpoints.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public BastionShareableLinkListResultInner beginPutBastionShareableLinkWithoutPolling(
+        String resourceGroupName, String bastionHostname, List<BastionShareableLinkInner> vms) {
+        return beginPutBastionShareableLinkWithoutPollingAsync(resourceGroupName, bastionHostname, vms).block();
+    }
+
+    /**
+     * Creates a Bastion Shareable Links for all the VMs specified in the request.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param bastionHostname The name of the Bastion Host.
+     * @param vms List of VM references.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response for all the Bastion Shareable Link endpoints.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public BastionShareableLinkListResultInner beginPutBastionShareableLinkWithoutPolling(
+        String resourceGroupName, String bastionHostname, List<BastionShareableLinkInner> vms, Context context) {
+        return beginPutBastionShareableLinkWithoutPollingAsync(resourceGroupName, bastionHostname, vms, context)
+            .block();
+    }
+
+    /**
+     * Deletes the Bastion Shareable Links for all the VMs specified in the request.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param bastionHostname The name of the Bastion Host.
+     * @param vms List of VM references.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> beginDeleteBastionShareableLinkWithoutPollingWithResponseAsync(
+        String resourceGroupName, String bastionHostname, List<BastionShareableLinkInner> vms) {
+        if (this.getEndpoint() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (bastionHostname == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter bastionHostname is required and cannot be null."));
+        }
+        if (this.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException("Parameter this.getSubscriptionId() is required and cannot be null."));
+        }
+        if (vms != null) {
+            vms.forEach(e -> e.validate());
+        }
+        final String apiVersion = "2019-11-01";
+        BastionShareableLinkListRequest bslRequest = new BastionShareableLinkListRequest();
+        bslRequest.withVms(vms);
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .beginDeleteBastionShareableLinkWithoutPolling(
+                            this.getEndpoint(),
+                            resourceGroupName,
+                            bastionHostname,
+                            apiVersion,
+                            this.getSubscriptionId(),
+                            bslRequest,
+                            context))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.getContext())));
+    }
+
+    /**
+     * Deletes the Bastion Shareable Links for all the VMs specified in the request.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param bastionHostname The name of the Bastion Host.
+     * @param vms List of VM references.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> beginDeleteBastionShareableLinkWithoutPollingWithResponseAsync(
+        String resourceGroupName, String bastionHostname, List<BastionShareableLinkInner> vms, Context context) {
+        if (this.getEndpoint() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (bastionHostname == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter bastionHostname is required and cannot be null."));
+        }
+        if (this.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException("Parameter this.getSubscriptionId() is required and cannot be null."));
+        }
+        if (vms != null) {
+            vms.forEach(e -> e.validate());
+        }
+        final String apiVersion = "2019-11-01";
+        BastionShareableLinkListRequest bslRequest = new BastionShareableLinkListRequest();
+        bslRequest.withVms(vms);
+        return service
+            .beginDeleteBastionShareableLinkWithoutPolling(
+                this.getEndpoint(),
+                resourceGroupName,
+                bastionHostname,
+                apiVersion,
+                this.getSubscriptionId(),
+                bslRequest,
+                context);
+    }
+
+    /**
+     * Deletes the Bastion Shareable Links for all the VMs specified in the request.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param bastionHostname The name of the Bastion Host.
+     * @param vms List of VM references.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> beginDeleteBastionShareableLinkWithoutPollingAsync(
+        String resourceGroupName, String bastionHostname, List<BastionShareableLinkInner> vms) {
+        return beginDeleteBastionShareableLinkWithoutPollingWithResponseAsync(resourceGroupName, bastionHostname, vms)
+            .flatMap((Response<Void> res) -> Mono.empty());
+    }
+
+    /**
+     * Deletes the Bastion Shareable Links for all the VMs specified in the request.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param bastionHostname The name of the Bastion Host.
+     * @param vms List of VM references.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> beginDeleteBastionShareableLinkWithoutPollingAsync(
+        String resourceGroupName, String bastionHostname, List<BastionShareableLinkInner> vms, Context context) {
+        return beginDeleteBastionShareableLinkWithoutPollingWithResponseAsync(
+                resourceGroupName, bastionHostname, vms, context)
+            .flatMap((Response<Void> res) -> Mono.empty());
+    }
+
+    /**
+     * Deletes the Bastion Shareable Links for all the VMs specified in the request.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param bastionHostname The name of the Bastion Host.
+     * @param vms List of VM references.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void beginDeleteBastionShareableLinkWithoutPolling(
+        String resourceGroupName, String bastionHostname, List<BastionShareableLinkInner> vms) {
+        beginDeleteBastionShareableLinkWithoutPollingAsync(resourceGroupName, bastionHostname, vms).block();
+    }
+
+    /**
+     * Deletes the Bastion Shareable Links for all the VMs specified in the request.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param bastionHostname The name of the Bastion Host.
+     * @param vms List of VM references.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void beginDeleteBastionShareableLinkWithoutPolling(
+        String resourceGroupName, String bastionHostname, List<BastionShareableLinkInner> vms, Context context) {
+        beginDeleteBastionShareableLinkWithoutPollingAsync(resourceGroupName, bastionHostname, vms, context).block();
+    }
+
+    /**
+     * Returns the list of currently active sessions on the Bastion.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param bastionHostname The name of the Bastion Host.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response for GetActiveSessions.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BastionActiveSessionListResultInner>> beginGetActiveSessionsWithoutPollingWithResponseAsync(
+        String resourceGroupName, String bastionHostname) {
+        if (this.getEndpoint() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (bastionHostname == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter bastionHostname is required and cannot be null."));
+        }
+        if (this.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException("Parameter this.getSubscriptionId() is required and cannot be null."));
+        }
+        final String apiVersion = "2019-11-01";
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .beginGetActiveSessionsWithoutPolling(
+                            this.getEndpoint(),
+                            resourceGroupName,
+                            bastionHostname,
+                            apiVersion,
+                            this.getSubscriptionId(),
+                            context))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.getContext())));
+    }
+
+    /**
+     * Returns the list of currently active sessions on the Bastion.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param bastionHostname The name of the Bastion Host.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response for GetActiveSessions.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BastionActiveSessionListResultInner>> beginGetActiveSessionsWithoutPollingWithResponseAsync(
+        String resourceGroupName, String bastionHostname, Context context) {
+        if (this.getEndpoint() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (bastionHostname == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter bastionHostname is required and cannot be null."));
+        }
+        if (this.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException("Parameter this.getSubscriptionId() is required and cannot be null."));
+        }
+        final String apiVersion = "2019-11-01";
+        return service
+            .beginGetActiveSessionsWithoutPolling(
+                this.getEndpoint(), resourceGroupName, bastionHostname, apiVersion, this.getSubscriptionId(), context);
+    }
+
+    /**
+     * Returns the list of currently active sessions on the Bastion.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param bastionHostname The name of the Bastion Host.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response for GetActiveSessions.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<BastionActiveSessionListResultInner> beginGetActiveSessionsWithoutPollingAsync(
+        String resourceGroupName, String bastionHostname) {
+        return beginGetActiveSessionsWithoutPollingWithResponseAsync(resourceGroupName, bastionHostname)
+            .flatMap(
+                (Response<BastionActiveSessionListResultInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
+    }
+
+    /**
+     * Returns the list of currently active sessions on the Bastion.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param bastionHostname The name of the Bastion Host.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response for GetActiveSessions.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<BastionActiveSessionListResultInner> beginGetActiveSessionsWithoutPollingAsync(
+        String resourceGroupName, String bastionHostname, Context context) {
+        return beginGetActiveSessionsWithoutPollingWithResponseAsync(resourceGroupName, bastionHostname, context)
+            .flatMap(
+                (Response<BastionActiveSessionListResultInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
+    }
+
+    /**
+     * Returns the list of currently active sessions on the Bastion.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param bastionHostname The name of the Bastion Host.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response for GetActiveSessions.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public BastionActiveSessionListResultInner beginGetActiveSessionsWithoutPolling(
+        String resourceGroupName, String bastionHostname) {
+        return beginGetActiveSessionsWithoutPollingAsync(resourceGroupName, bastionHostname).block();
+    }
+
+    /**
+     * Returns the list of currently active sessions on the Bastion.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param bastionHostname The name of the Bastion Host.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response for GetActiveSessions.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public BastionActiveSessionListResultInner beginGetActiveSessionsWithoutPolling(
+        String resourceGroupName, String bastionHostname, Context context) {
+        return beginGetActiveSessionsWithoutPollingAsync(resourceGroupName, bastionHostname, context).block();
+    }
+
+    /**
+     * Generates a unique VPN profile for P2S clients for VirtualWan and associated VpnServerConfiguration combination
+     * in the specified resource group.
+     *
+     * @param resourceGroupName The resource group name.
+     * @param virtualWanName The name of the VirtualWAN whose associated VpnServerConfigurations is needed.
+     * @param vpnClientParams Virtual Wan Vpn profile parameters Vpn profile generation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return vpn Profile Response for package generation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<VpnProfileResponseInner>>
+        beginGeneratevirtualwanvpnserverconfigurationvpnprofileWithoutPollingWithResponseAsync(
+            String resourceGroupName, String virtualWanName, VirtualWanVpnProfileParameters vpnClientParams) {
+        if (this.getEndpoint() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.getEndpoint() is required and cannot be null."));
+        }
+        if (this.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException("Parameter this.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (virtualWanName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter virtualWanName is required and cannot be null."));
+        }
+        if (vpnClientParams == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter vpnClientParams is required and cannot be null."));
+        } else {
+            vpnClientParams.validate();
+        }
+        final String apiVersion = "2019-11-01";
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .beginGeneratevirtualwanvpnserverconfigurationvpnprofileWithoutPolling(
+                            this.getEndpoint(),
+                            this.getSubscriptionId(),
+                            resourceGroupName,
+                            virtualWanName,
+                            apiVersion,
+                            vpnClientParams,
+                            context))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.getContext())));
+    }
+
+    /**
+     * Generates a unique VPN profile for P2S clients for VirtualWan and associated VpnServerConfiguration combination
+     * in the specified resource group.
+     *
+     * @param resourceGroupName The resource group name.
+     * @param virtualWanName The name of the VirtualWAN whose associated VpnServerConfigurations is needed.
+     * @param vpnClientParams Virtual Wan Vpn profile parameters Vpn profile generation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return vpn Profile Response for package generation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<VpnProfileResponseInner>>
+        beginGeneratevirtualwanvpnserverconfigurationvpnprofileWithoutPollingWithResponseAsync(
+            String resourceGroupName,
+            String virtualWanName,
+            VirtualWanVpnProfileParameters vpnClientParams,
+            Context context) {
+        if (this.getEndpoint() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.getEndpoint() is required and cannot be null."));
+        }
+        if (this.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException("Parameter this.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (virtualWanName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter virtualWanName is required and cannot be null."));
+        }
+        if (vpnClientParams == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter vpnClientParams is required and cannot be null."));
+        } else {
+            vpnClientParams.validate();
+        }
+        final String apiVersion = "2019-11-01";
+        return service
+            .beginGeneratevirtualwanvpnserverconfigurationvpnprofileWithoutPolling(
+                this.getEndpoint(),
+                this.getSubscriptionId(),
+                resourceGroupName,
+                virtualWanName,
+                apiVersion,
+                vpnClientParams,
+                context);
+    }
+
+    /**
+     * Generates a unique VPN profile for P2S clients for VirtualWan and associated VpnServerConfiguration combination
+     * in the specified resource group.
+     *
+     * @param resourceGroupName The resource group name.
+     * @param virtualWanName The name of the VirtualWAN whose associated VpnServerConfigurations is needed.
+     * @param vpnClientParams Virtual Wan Vpn profile parameters Vpn profile generation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return vpn Profile Response for package generation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<VpnProfileResponseInner> beginGeneratevirtualwanvpnserverconfigurationvpnprofileWithoutPollingAsync(
+        String resourceGroupName, String virtualWanName, VirtualWanVpnProfileParameters vpnClientParams) {
+        return beginGeneratevirtualwanvpnserverconfigurationvpnprofileWithoutPollingWithResponseAsync(
+                resourceGroupName, virtualWanName, vpnClientParams)
+            .flatMap(
+                (Response<VpnProfileResponseInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
+    }
+
+    /**
+     * Generates a unique VPN profile for P2S clients for VirtualWan and associated VpnServerConfiguration combination
+     * in the specified resource group.
+     *
+     * @param resourceGroupName The resource group name.
+     * @param virtualWanName The name of the VirtualWAN whose associated VpnServerConfigurations is needed.
+     * @param vpnClientParams Virtual Wan Vpn profile parameters Vpn profile generation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return vpn Profile Response for package generation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<VpnProfileResponseInner> beginGeneratevirtualwanvpnserverconfigurationvpnprofileWithoutPollingAsync(
+        String resourceGroupName,
+        String virtualWanName,
+        VirtualWanVpnProfileParameters vpnClientParams,
+        Context context) {
+        return beginGeneratevirtualwanvpnserverconfigurationvpnprofileWithoutPollingWithResponseAsync(
+                resourceGroupName, virtualWanName, vpnClientParams, context)
+            .flatMap(
+                (Response<VpnProfileResponseInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
+    }
+
+    /**
+     * Generates a unique VPN profile for P2S clients for VirtualWan and associated VpnServerConfiguration combination
+     * in the specified resource group.
+     *
+     * @param resourceGroupName The resource group name.
+     * @param virtualWanName The name of the VirtualWAN whose associated VpnServerConfigurations is needed.
+     * @param vpnClientParams Virtual Wan Vpn profile parameters Vpn profile generation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return vpn Profile Response for package generation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public VpnProfileResponseInner beginGeneratevirtualwanvpnserverconfigurationvpnprofileWithoutPolling(
+        String resourceGroupName, String virtualWanName, VirtualWanVpnProfileParameters vpnClientParams) {
+        return beginGeneratevirtualwanvpnserverconfigurationvpnprofileWithoutPollingAsync(
+                resourceGroupName, virtualWanName, vpnClientParams)
+            .block();
+    }
+
+    /**
+     * Generates a unique VPN profile for P2S clients for VirtualWan and associated VpnServerConfiguration combination
+     * in the specified resource group.
+     *
+     * @param resourceGroupName The resource group name.
+     * @param virtualWanName The name of the VirtualWAN whose associated VpnServerConfigurations is needed.
+     * @param vpnClientParams Virtual Wan Vpn profile parameters Vpn profile generation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return vpn Profile Response for package generation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public VpnProfileResponseInner beginGeneratevirtualwanvpnserverconfigurationvpnprofileWithoutPolling(
+        String resourceGroupName,
+        String virtualWanName,
+        VirtualWanVpnProfileParameters vpnClientParams,
+        Context context) {
+        return beginGeneratevirtualwanvpnserverconfigurationvpnprofileWithoutPollingAsync(
+                resourceGroupName, virtualWanName, vpnClientParams, context)
+            .block();
+    }
+
+    /**
+     * Get the next page of items.
+     *
+     * @param nextLink The nextLink parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response for all the Bastion Shareable Link endpoints.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PagedResponse<BastionShareableLinkInner>> getBastionShareableLinkNextSinglePageAsync(String nextLink) {
+        if (nextLink == null) {
+            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        return FluxUtil
+            .withContext(context -> service.getBastionShareableLinkNext(nextLink, context))
+            .<PagedResponse<BastionShareableLinkInner>>map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.getContext())));
+    }
+
+    /**
+     * Get the next page of items.
+     *
+     * @param nextLink The nextLink parameter.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response for all the Bastion Shareable Link endpoints.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PagedResponse<BastionShareableLinkInner>> getBastionShareableLinkNextSinglePageAsync(
+        String nextLink, Context context) {
+        if (nextLink == null) {
+            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        return service
+            .getBastionShareableLinkNext(nextLink, context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null));
+    }
+
+    /**
+     * Get the next page of items.
+     *
+     * @param nextLink The nextLink parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response for DisconnectActiveSessions.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PagedResponse<BastionSessionStateInner>> disconnectActiveSessionsNextSinglePageAsync(String nextLink) {
+        if (nextLink == null) {
+            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        return FluxUtil
+            .withContext(context -> service.disconnectActiveSessionsNext(nextLink, context))
+            .<PagedResponse<BastionSessionStateInner>>map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.getContext())));
+    }
+
+    /**
+     * Get the next page of items.
+     *
+     * @param nextLink The nextLink parameter.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response for DisconnectActiveSessions.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PagedResponse<BastionSessionStateInner>> disconnectActiveSessionsNextSinglePageAsync(
+        String nextLink, Context context) {
+        if (nextLink == null) {
+            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        return service
+            .disconnectActiveSessionsNext(nextLink, context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null));
     }
 }

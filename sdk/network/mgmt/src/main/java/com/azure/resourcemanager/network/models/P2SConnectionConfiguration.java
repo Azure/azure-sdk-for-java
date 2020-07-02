@@ -11,12 +11,11 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The P2SVpnServerConfigRadiusClientRootCertificate model. */
+/** The P2SConnectionConfiguration model. */
 @JsonFlatten
 @Fluent
-public class P2SVpnServerConfigRadiusClientRootCertificate extends SubResource {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(P2SVpnServerConfigRadiusClientRootCertificate.class);
+public class P2SConnectionConfiguration extends SubResource {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(P2SConnectionConfiguration.class);
 
     /*
      * The name of the resource that is unique within a resource group. This
@@ -28,21 +27,21 @@ public class P2SVpnServerConfigRadiusClientRootCertificate extends SubResource {
     /*
      * A unique read-only string that changes whenever the resource is updated.
      */
-    @JsonProperty(value = "etag")
+    @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
 
     /*
-     * The Radius client root certificate thumbprint.
+     * The reference to the address space resource which represents Address
+     * space for P2S VpnClient.
      */
-    @JsonProperty(value = "properties.thumbprint")
-    private String thumbprint;
+    @JsonProperty(value = "properties.vpnClientAddressPool")
+    private AddressSpace vpnClientAddressPool;
 
     /*
-     * The provisioning state of the Radius client root certificate resource.
-     * Possible values are: 'Updating', 'Deleting', and 'Failed'.
+     * The provisioning state of the P2SConnectionConfiguration resource.
      */
     @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private String provisioningState;
+    private ProvisioningState provisioningState;
 
     /**
      * Get the name property: The name of the resource that is unique within a resource group. This name can be used to
@@ -59,9 +58,9 @@ public class P2SVpnServerConfigRadiusClientRootCertificate extends SubResource {
      * access the resource.
      *
      * @param name the name value to set.
-     * @return the P2SVpnServerConfigRadiusClientRootCertificate object itself.
+     * @return the P2SConnectionConfiguration object itself.
      */
-    public P2SVpnServerConfigRadiusClientRootCertificate withName(String name) {
+    public P2SConnectionConfiguration withName(String name) {
         this.name = name;
         return this;
     }
@@ -76,43 +75,33 @@ public class P2SVpnServerConfigRadiusClientRootCertificate extends SubResource {
     }
 
     /**
-     * Set the etag property: A unique read-only string that changes whenever the resource is updated.
+     * Get the vpnClientAddressPool property: The reference to the address space resource which represents Address space
+     * for P2S VpnClient.
      *
-     * @param etag the etag value to set.
-     * @return the P2SVpnServerConfigRadiusClientRootCertificate object itself.
+     * @return the vpnClientAddressPool value.
      */
-    public P2SVpnServerConfigRadiusClientRootCertificate withEtag(String etag) {
-        this.etag = etag;
+    public AddressSpace vpnClientAddressPool() {
+        return this.vpnClientAddressPool;
+    }
+
+    /**
+     * Set the vpnClientAddressPool property: The reference to the address space resource which represents Address space
+     * for P2S VpnClient.
+     *
+     * @param vpnClientAddressPool the vpnClientAddressPool value to set.
+     * @return the P2SConnectionConfiguration object itself.
+     */
+    public P2SConnectionConfiguration withVpnClientAddressPool(AddressSpace vpnClientAddressPool) {
+        this.vpnClientAddressPool = vpnClientAddressPool;
         return this;
     }
 
     /**
-     * Get the thumbprint property: The Radius client root certificate thumbprint.
-     *
-     * @return the thumbprint value.
-     */
-    public String thumbprint() {
-        return this.thumbprint;
-    }
-
-    /**
-     * Set the thumbprint property: The Radius client root certificate thumbprint.
-     *
-     * @param thumbprint the thumbprint value to set.
-     * @return the P2SVpnServerConfigRadiusClientRootCertificate object itself.
-     */
-    public P2SVpnServerConfigRadiusClientRootCertificate withThumbprint(String thumbprint) {
-        this.thumbprint = thumbprint;
-        return this;
-    }
-
-    /**
-     * Get the provisioningState property: The provisioning state of the Radius client root certificate resource.
-     * Possible values are: 'Updating', 'Deleting', and 'Failed'.
+     * Get the provisioningState property: The provisioning state of the P2SConnectionConfiguration resource.
      *
      * @return the provisioningState value.
      */
-    public String provisioningState() {
+    public ProvisioningState provisioningState() {
         return this.provisioningState;
     }
 
@@ -122,5 +111,8 @@ public class P2SVpnServerConfigRadiusClientRootCertificate extends SubResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (vpnClientAddressPool() != null) {
+            vpnClientAddressPool().validate();
+        }
     }
 }

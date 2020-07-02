@@ -32,6 +32,7 @@ import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
+import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.network.NetworkManagementClient;
 import com.azure.resourcemanager.network.fluent.inner.ApplicationGatewayAvailableSslOptionsInner;
 import com.azure.resourcemanager.network.fluent.inner.ApplicationGatewayAvailableSslPredefinedPoliciesInner;
@@ -133,7 +134,7 @@ public final class ApplicationGatewaysClient
                 + "/applicationGateways/{applicationGatewayName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> updateTags(
+        Mono<Response<ApplicationGatewayInner>> updateTags(
             @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("applicationGatewayName") String applicationGatewayName,
@@ -329,21 +330,6 @@ public final class ApplicationGatewaysClient
             @BodyParam("application/json") ApplicationGatewayInner parameters,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
-                + "/applicationGateways/{applicationGatewayName}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ApplicationGatewayInner>> beginUpdateTagsWithoutPolling(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("applicationGatewayName") String applicationGatewayName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @BodyParam("application/json") TagsObject parameters,
-            Context context);
-
         @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
         @Post(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
@@ -459,7 +445,7 @@ public final class ApplicationGatewaysClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -509,7 +495,7 @@ public final class ApplicationGatewaysClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return service
             .delete(
                 this.client.getEndpoint(),
@@ -531,7 +517,8 @@ public final class ApplicationGatewaysClient
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<Void>, Void> beginDelete(String resourceGroupName, String applicationGatewayName) {
+    public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
+        String resourceGroupName, String applicationGatewayName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, applicationGatewayName);
         return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
     }
@@ -548,7 +535,7 @@ public final class ApplicationGatewaysClient
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<Void>, Void> beginDelete(
+    public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String applicationGatewayName, Context context) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             deleteWithResponseAsync(resourceGroupName, applicationGatewayName, context);
@@ -566,11 +553,40 @@ public final class ApplicationGatewaysClient
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String applicationGatewayName) {
+        return beginDeleteAsync(resourceGroupName, applicationGatewayName).getSyncPoller();
+    }
+
+    /**
+     * Deletes the specified application gateway.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param applicationGatewayName The name of the application gateway.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<Void>, Void> beginDelete(
+        String resourceGroupName, String applicationGatewayName, Context context) {
+        return beginDeleteAsync(resourceGroupName, applicationGatewayName, context).getSyncPoller();
+    }
+
+    /**
+     * Deletes the specified application gateway.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param applicationGatewayName The name of the application gateway.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String applicationGatewayName) {
-        Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, applicationGatewayName);
-        return this
-            .client
-            .<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class)
+        return beginDeleteAsync(resourceGroupName, applicationGatewayName)
             .last()
             .flatMap(client::getLroFinalResultOrError);
     }
@@ -588,11 +604,7 @@ public final class ApplicationGatewaysClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String applicationGatewayName, Context context) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, applicationGatewayName, context);
-        return this
-            .client
-            .<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class)
+        return beginDeleteAsync(resourceGroupName, applicationGatewayName, context)
             .last()
             .flatMap(client::getLroFinalResultOrError);
     }
@@ -660,7 +672,7 @@ public final class ApplicationGatewaysClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -710,7 +722,7 @@ public final class ApplicationGatewaysClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return service
             .getByResourceGroup(
                 this.client.getEndpoint(),
@@ -842,7 +854,7 @@ public final class ApplicationGatewaysClient
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -899,7 +911,7 @@ public final class ApplicationGatewaysClient
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return service
             .createOrUpdate(
                 this.client.getEndpoint(),
@@ -923,7 +935,7 @@ public final class ApplicationGatewaysClient
      * @return application gateway resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<ApplicationGatewayInner>, ApplicationGatewayInner> beginCreateOrUpdate(
+    public PollerFlux<PollResult<ApplicationGatewayInner>, ApplicationGatewayInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String applicationGatewayName, ApplicationGatewayInner parameters) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             createOrUpdateWithResponseAsync(resourceGroupName, applicationGatewayName, parameters);
@@ -946,7 +958,7 @@ public final class ApplicationGatewaysClient
      * @return application gateway resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<ApplicationGatewayInner>, ApplicationGatewayInner> beginCreateOrUpdate(
+    public PollerFlux<PollResult<ApplicationGatewayInner>, ApplicationGatewayInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String applicationGatewayName, ApplicationGatewayInner parameters, Context context) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             createOrUpdateWithResponseAsync(resourceGroupName, applicationGatewayName, parameters, context);
@@ -968,14 +980,44 @@ public final class ApplicationGatewaysClient
      * @return application gateway resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<ApplicationGatewayInner>, ApplicationGatewayInner> beginCreateOrUpdate(
+        String resourceGroupName, String applicationGatewayName, ApplicationGatewayInner parameters) {
+        return beginCreateOrUpdateAsync(resourceGroupName, applicationGatewayName, parameters).getSyncPoller();
+    }
+
+    /**
+     * Creates or updates the specified application gateway.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param applicationGatewayName The name of the application gateway.
+     * @param parameters Application gateway resource.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return application gateway resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<ApplicationGatewayInner>, ApplicationGatewayInner> beginCreateOrUpdate(
+        String resourceGroupName, String applicationGatewayName, ApplicationGatewayInner parameters, Context context) {
+        return beginCreateOrUpdateAsync(resourceGroupName, applicationGatewayName, parameters, context).getSyncPoller();
+    }
+
+    /**
+     * Creates or updates the specified application gateway.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param applicationGatewayName The name of the application gateway.
+     * @param parameters Application gateway resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return application gateway resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ApplicationGatewayInner> createOrUpdateAsync(
         String resourceGroupName, String applicationGatewayName, ApplicationGatewayInner parameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, applicationGatewayName, parameters);
-        return this
-            .client
-            .<ApplicationGatewayInner, ApplicationGatewayInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), ApplicationGatewayInner.class, ApplicationGatewayInner.class)
+        return beginCreateOrUpdateAsync(resourceGroupName, applicationGatewayName, parameters)
             .last()
             .flatMap(client::getLroFinalResultOrError);
     }
@@ -995,12 +1037,7 @@ public final class ApplicationGatewaysClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ApplicationGatewayInner> createOrUpdateAsync(
         String resourceGroupName, String applicationGatewayName, ApplicationGatewayInner parameters, Context context) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, applicationGatewayName, parameters, context);
-        return this
-            .client
-            .<ApplicationGatewayInner, ApplicationGatewayInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), ApplicationGatewayInner.class, ApplicationGatewayInner.class)
+        return beginCreateOrUpdateAsync(resourceGroupName, applicationGatewayName, parameters, context)
             .last()
             .flatMap(client::getLroFinalResultOrError);
     }
@@ -1052,7 +1089,7 @@ public final class ApplicationGatewaysClient
      * @return application gateway resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> updateTagsWithResponseAsync(
+    public Mono<Response<ApplicationGatewayInner>> updateTagsWithResponseAsync(
         String resourceGroupName, String applicationGatewayName, Map<String, String> tags) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -1075,7 +1112,7 @@ public final class ApplicationGatewaysClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         TagsObject parameters = new TagsObject();
         parameters.withTags(tags);
         return FluxUtil
@@ -1106,7 +1143,7 @@ public final class ApplicationGatewaysClient
      * @return application gateway resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> updateTagsWithResponseAsync(
+    public Mono<Response<ApplicationGatewayInner>> updateTagsWithResponseAsync(
         String resourceGroupName, String applicationGatewayName, Map<String, String> tags, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -1129,7 +1166,7 @@ public final class ApplicationGatewaysClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         TagsObject parameters = new TagsObject();
         parameters.withTags(tags);
         return service
@@ -1155,61 +1192,17 @@ public final class ApplicationGatewaysClient
      * @return application gateway resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<ApplicationGatewayInner>, ApplicationGatewayInner> beginUpdateTags(
-        String resourceGroupName, String applicationGatewayName, Map<String, String> tags) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateTagsWithResponseAsync(resourceGroupName, applicationGatewayName, tags);
-        return this
-            .client
-            .<ApplicationGatewayInner, ApplicationGatewayInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), ApplicationGatewayInner.class, ApplicationGatewayInner.class);
-    }
-
-    /**
-     * Updates the specified application gateway tags.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param applicationGatewayName The name of the application gateway.
-     * @param tags Resource tags.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return application gateway resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<ApplicationGatewayInner>, ApplicationGatewayInner> beginUpdateTags(
-        String resourceGroupName, String applicationGatewayName, Map<String, String> tags, Context context) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateTagsWithResponseAsync(resourceGroupName, applicationGatewayName, tags, context);
-        return this
-            .client
-            .<ApplicationGatewayInner, ApplicationGatewayInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), ApplicationGatewayInner.class, ApplicationGatewayInner.class);
-    }
-
-    /**
-     * Updates the specified application gateway tags.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param applicationGatewayName The name of the application gateway.
-     * @param tags Resource tags.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return application gateway resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ApplicationGatewayInner> updateTagsAsync(
         String resourceGroupName, String applicationGatewayName, Map<String, String> tags) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateTagsWithResponseAsync(resourceGroupName, applicationGatewayName, tags);
-        return this
-            .client
-            .<ApplicationGatewayInner, ApplicationGatewayInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), ApplicationGatewayInner.class, ApplicationGatewayInner.class)
-            .last()
-            .flatMap(client::getLroFinalResultOrError);
+        return updateTagsWithResponseAsync(resourceGroupName, applicationGatewayName, tags)
+            .flatMap(
+                (Response<ApplicationGatewayInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
     }
 
     /**
@@ -1227,14 +1220,15 @@ public final class ApplicationGatewaysClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ApplicationGatewayInner> updateTagsAsync(
         String resourceGroupName, String applicationGatewayName, Map<String, String> tags, Context context) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateTagsWithResponseAsync(resourceGroupName, applicationGatewayName, tags, context);
-        return this
-            .client
-            .<ApplicationGatewayInner, ApplicationGatewayInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), ApplicationGatewayInner.class, ApplicationGatewayInner.class)
-            .last()
-            .flatMap(client::getLroFinalResultOrError);
+        return updateTagsWithResponseAsync(resourceGroupName, applicationGatewayName, tags, context)
+            .flatMap(
+                (Response<ApplicationGatewayInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
     }
 
     /**
@@ -1299,7 +1293,7 @@ public final class ApplicationGatewaysClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -1351,7 +1345,7 @@ public final class ApplicationGatewaysClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return service
             .listByResourceGroup(
                 this.client.getEndpoint(), resourceGroupName, apiVersion, this.client.getSubscriptionId(), context)
@@ -1448,7 +1442,7 @@ public final class ApplicationGatewaysClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -1488,7 +1482,7 @@ public final class ApplicationGatewaysClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return service
             .list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), context)
             .map(
@@ -1588,7 +1582,7 @@ public final class ApplicationGatewaysClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -1638,7 +1632,7 @@ public final class ApplicationGatewaysClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return service
             .start(
                 this.client.getEndpoint(),
@@ -1660,7 +1654,7 @@ public final class ApplicationGatewaysClient
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<Void>, Void> beginStart(String resourceGroupName, String applicationGatewayName) {
+    public PollerFlux<PollResult<Void>, Void> beginStartAsync(String resourceGroupName, String applicationGatewayName) {
         Mono<Response<Flux<ByteBuffer>>> mono = startWithResponseAsync(resourceGroupName, applicationGatewayName);
         return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
     }
@@ -1677,7 +1671,7 @@ public final class ApplicationGatewaysClient
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<Void>, Void> beginStart(
+    public PollerFlux<PollResult<Void>, Void> beginStartAsync(
         String resourceGroupName, String applicationGatewayName, Context context) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             startWithResponseAsync(resourceGroupName, applicationGatewayName, context);
@@ -1695,11 +1689,40 @@ public final class ApplicationGatewaysClient
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<Void>, Void> beginStart(String resourceGroupName, String applicationGatewayName) {
+        return beginStartAsync(resourceGroupName, applicationGatewayName).getSyncPoller();
+    }
+
+    /**
+     * Starts the specified application gateway.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param applicationGatewayName The name of the application gateway.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<Void>, Void> beginStart(
+        String resourceGroupName, String applicationGatewayName, Context context) {
+        return beginStartAsync(resourceGroupName, applicationGatewayName, context).getSyncPoller();
+    }
+
+    /**
+     * Starts the specified application gateway.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param applicationGatewayName The name of the application gateway.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> startAsync(String resourceGroupName, String applicationGatewayName) {
-        Mono<Response<Flux<ByteBuffer>>> mono = startWithResponseAsync(resourceGroupName, applicationGatewayName);
-        return this
-            .client
-            .<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class)
+        return beginStartAsync(resourceGroupName, applicationGatewayName)
             .last()
             .flatMap(client::getLroFinalResultOrError);
     }
@@ -1717,11 +1740,7 @@ public final class ApplicationGatewaysClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> startAsync(String resourceGroupName, String applicationGatewayName, Context context) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            startWithResponseAsync(resourceGroupName, applicationGatewayName, context);
-        return this
-            .client
-            .<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class)
+        return beginStartAsync(resourceGroupName, applicationGatewayName, context)
             .last()
             .flatMap(client::getLroFinalResultOrError);
     }
@@ -1789,7 +1808,7 @@ public final class ApplicationGatewaysClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -1839,7 +1858,7 @@ public final class ApplicationGatewaysClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return service
             .stop(
                 this.client.getEndpoint(),
@@ -1861,7 +1880,7 @@ public final class ApplicationGatewaysClient
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<Void>, Void> beginStop(String resourceGroupName, String applicationGatewayName) {
+    public PollerFlux<PollResult<Void>, Void> beginStopAsync(String resourceGroupName, String applicationGatewayName) {
         Mono<Response<Flux<ByteBuffer>>> mono = stopWithResponseAsync(resourceGroupName, applicationGatewayName);
         return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
     }
@@ -1878,7 +1897,7 @@ public final class ApplicationGatewaysClient
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<Void>, Void> beginStop(
+    public PollerFlux<PollResult<Void>, Void> beginStopAsync(
         String resourceGroupName, String applicationGatewayName, Context context) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             stopWithResponseAsync(resourceGroupName, applicationGatewayName, context);
@@ -1896,11 +1915,40 @@ public final class ApplicationGatewaysClient
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<Void>, Void> beginStop(String resourceGroupName, String applicationGatewayName) {
+        return beginStopAsync(resourceGroupName, applicationGatewayName).getSyncPoller();
+    }
+
+    /**
+     * Stops the specified application gateway in a resource group.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param applicationGatewayName The name of the application gateway.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<Void>, Void> beginStop(
+        String resourceGroupName, String applicationGatewayName, Context context) {
+        return beginStopAsync(resourceGroupName, applicationGatewayName, context).getSyncPoller();
+    }
+
+    /**
+     * Stops the specified application gateway in a resource group.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param applicationGatewayName The name of the application gateway.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> stopAsync(String resourceGroupName, String applicationGatewayName) {
-        Mono<Response<Flux<ByteBuffer>>> mono = stopWithResponseAsync(resourceGroupName, applicationGatewayName);
-        return this
-            .client
-            .<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class)
+        return beginStopAsync(resourceGroupName, applicationGatewayName)
             .last()
             .flatMap(client::getLroFinalResultOrError);
     }
@@ -1918,11 +1966,7 @@ public final class ApplicationGatewaysClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> stopAsync(String resourceGroupName, String applicationGatewayName, Context context) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            stopWithResponseAsync(resourceGroupName, applicationGatewayName, context);
-        return this
-            .client
-            .<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class)
+        return beginStopAsync(resourceGroupName, applicationGatewayName, context)
             .last()
             .flatMap(client::getLroFinalResultOrError);
     }
@@ -1991,7 +2035,7 @@ public final class ApplicationGatewaysClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -2043,7 +2087,7 @@ public final class ApplicationGatewaysClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return service
             .backendHealth(
                 this.client.getEndpoint(),
@@ -2068,7 +2112,7 @@ public final class ApplicationGatewaysClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<ApplicationGatewayBackendHealthInner>, ApplicationGatewayBackendHealthInner>
-        beginBackendHealth(String resourceGroupName, String applicationGatewayName, String expand) {
+        beginBackendHealthAsync(String resourceGroupName, String applicationGatewayName, String expand) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             backendHealthWithResponseAsync(resourceGroupName, applicationGatewayName, expand);
         return this
@@ -2094,7 +2138,8 @@ public final class ApplicationGatewaysClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<ApplicationGatewayBackendHealthInner>, ApplicationGatewayBackendHealthInner>
-        beginBackendHealth(String resourceGroupName, String applicationGatewayName, String expand, Context context) {
+        beginBackendHealthAsync(
+            String resourceGroupName, String applicationGatewayName, String expand, Context context) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             backendHealthWithResponseAsync(resourceGroupName, applicationGatewayName, expand, context);
         return this
@@ -2118,17 +2163,44 @@ public final class ApplicationGatewaysClient
      * @return the backend health of the specified application gateway in a resource group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<ApplicationGatewayBackendHealthInner>, ApplicationGatewayBackendHealthInner>
+        beginBackendHealth(String resourceGroupName, String applicationGatewayName, String expand) {
+        return beginBackendHealthAsync(resourceGroupName, applicationGatewayName, expand).getSyncPoller();
+    }
+
+    /**
+     * Gets the backend health of the specified application gateway in a resource group.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param applicationGatewayName The name of the application gateway.
+     * @param expand Expands BackendAddressPool and BackendHttpSettings referenced in backend health.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the backend health of the specified application gateway in a resource group.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<ApplicationGatewayBackendHealthInner>, ApplicationGatewayBackendHealthInner>
+        beginBackendHealth(String resourceGroupName, String applicationGatewayName, String expand, Context context) {
+        return beginBackendHealthAsync(resourceGroupName, applicationGatewayName, expand, context).getSyncPoller();
+    }
+
+    /**
+     * Gets the backend health of the specified application gateway in a resource group.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param applicationGatewayName The name of the application gateway.
+     * @param expand Expands BackendAddressPool and BackendHttpSettings referenced in backend health.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the backend health of the specified application gateway in a resource group.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ApplicationGatewayBackendHealthInner> backendHealthAsync(
         String resourceGroupName, String applicationGatewayName, String expand) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            backendHealthWithResponseAsync(resourceGroupName, applicationGatewayName, expand);
-        return this
-            .client
-            .<ApplicationGatewayBackendHealthInner, ApplicationGatewayBackendHealthInner>getLroResultAsync(
-                mono,
-                this.client.getHttpPipeline(),
-                ApplicationGatewayBackendHealthInner.class,
-                ApplicationGatewayBackendHealthInner.class)
+        return beginBackendHealthAsync(resourceGroupName, applicationGatewayName, expand)
             .last()
             .flatMap(client::getLroFinalResultOrError);
     }
@@ -2148,15 +2220,7 @@ public final class ApplicationGatewaysClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ApplicationGatewayBackendHealthInner> backendHealthAsync(
         String resourceGroupName, String applicationGatewayName, String expand, Context context) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            backendHealthWithResponseAsync(resourceGroupName, applicationGatewayName, expand, context);
-        return this
-            .client
-            .<ApplicationGatewayBackendHealthInner, ApplicationGatewayBackendHealthInner>getLroResultAsync(
-                mono,
-                this.client.getHttpPipeline(),
-                ApplicationGatewayBackendHealthInner.class,
-                ApplicationGatewayBackendHealthInner.class)
+        return beginBackendHealthAsync(resourceGroupName, applicationGatewayName, expand, context)
             .last()
             .flatMap(client::getLroFinalResultOrError);
     }
@@ -2176,15 +2240,7 @@ public final class ApplicationGatewaysClient
         String resourceGroupName, String applicationGatewayName) {
         final String expand = null;
         final Context context = null;
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            backendHealthWithResponseAsync(resourceGroupName, applicationGatewayName, expand);
-        return this
-            .client
-            .<ApplicationGatewayBackendHealthInner, ApplicationGatewayBackendHealthInner>getLroResultAsync(
-                mono,
-                this.client.getHttpPipeline(),
-                ApplicationGatewayBackendHealthInner.class,
-                ApplicationGatewayBackendHealthInner.class)
+        return beginBackendHealthAsync(resourceGroupName, applicationGatewayName, expand)
             .last()
             .flatMap(client::getLroFinalResultOrError);
     }
@@ -2287,7 +2343,7 @@ public final class ApplicationGatewaysClient
         } else {
             probeRequest.validate();
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -2352,7 +2408,7 @@ public final class ApplicationGatewaysClient
         } else {
             probeRequest.validate();
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return service
             .backendHealthOnDemand(
                 this.client.getEndpoint(),
@@ -2382,7 +2438,7 @@ public final class ApplicationGatewaysClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<
             PollResult<ApplicationGatewayBackendHealthOnDemandInner>, ApplicationGatewayBackendHealthOnDemandInner>
-        beginBackendHealthOnDemand(
+        beginBackendHealthOnDemandAsync(
             String resourceGroupName,
             String applicationGatewayName,
             ApplicationGatewayOnDemandProbe probeRequest,
@@ -2417,7 +2473,7 @@ public final class ApplicationGatewaysClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<
             PollResult<ApplicationGatewayBackendHealthOnDemandInner>, ApplicationGatewayBackendHealthOnDemandInner>
-        beginBackendHealthOnDemand(
+        beginBackendHealthOnDemandAsync(
             String resourceGroupName,
             String applicationGatewayName,
             ApplicationGatewayOnDemandProbe probeRequest,
@@ -2451,21 +2507,66 @@ public final class ApplicationGatewaysClient
      *     gateway in a resource group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<
+            PollResult<ApplicationGatewayBackendHealthOnDemandInner>, ApplicationGatewayBackendHealthOnDemandInner>
+        beginBackendHealthOnDemand(
+            String resourceGroupName,
+            String applicationGatewayName,
+            ApplicationGatewayOnDemandProbe probeRequest,
+            String expand) {
+        return beginBackendHealthOnDemandAsync(resourceGroupName, applicationGatewayName, probeRequest, expand)
+            .getSyncPoller();
+    }
+
+    /**
+     * Gets the backend health for given combination of backend pool and http setting of the specified application
+     * gateway in a resource group.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param applicationGatewayName The name of the application gateway.
+     * @param probeRequest Details of on demand test probe request.
+     * @param expand Expands BackendAddressPool and BackendHttpSettings referenced in backend health.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the backend health for given combination of backend pool and http setting of the specified application
+     *     gateway in a resource group.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<
+            PollResult<ApplicationGatewayBackendHealthOnDemandInner>, ApplicationGatewayBackendHealthOnDemandInner>
+        beginBackendHealthOnDemand(
+            String resourceGroupName,
+            String applicationGatewayName,
+            ApplicationGatewayOnDemandProbe probeRequest,
+            String expand,
+            Context context) {
+        return beginBackendHealthOnDemandAsync(resourceGroupName, applicationGatewayName, probeRequest, expand, context)
+            .getSyncPoller();
+    }
+
+    /**
+     * Gets the backend health for given combination of backend pool and http setting of the specified application
+     * gateway in a resource group.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param applicationGatewayName The name of the application gateway.
+     * @param probeRequest Details of on demand test probe request.
+     * @param expand Expands BackendAddressPool and BackendHttpSettings referenced in backend health.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the backend health for given combination of backend pool and http setting of the specified application
+     *     gateway in a resource group.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ApplicationGatewayBackendHealthOnDemandInner> backendHealthOnDemandAsync(
         String resourceGroupName,
         String applicationGatewayName,
         ApplicationGatewayOnDemandProbe probeRequest,
         String expand) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            backendHealthOnDemandWithResponseAsync(resourceGroupName, applicationGatewayName, probeRequest, expand);
-        return this
-            .client
-            .<ApplicationGatewayBackendHealthOnDemandInner, ApplicationGatewayBackendHealthOnDemandInner>
-                getLroResultAsync(
-                    mono,
-                    this.client.getHttpPipeline(),
-                    ApplicationGatewayBackendHealthOnDemandInner.class,
-                    ApplicationGatewayBackendHealthOnDemandInner.class)
+        return beginBackendHealthOnDemandAsync(resourceGroupName, applicationGatewayName, probeRequest, expand)
             .last()
             .flatMap(client::getLroFinalResultOrError);
     }
@@ -2492,17 +2593,7 @@ public final class ApplicationGatewaysClient
         ApplicationGatewayOnDemandProbe probeRequest,
         String expand,
         Context context) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            backendHealthOnDemandWithResponseAsync(
-                resourceGroupName, applicationGatewayName, probeRequest, expand, context);
-        return this
-            .client
-            .<ApplicationGatewayBackendHealthOnDemandInner, ApplicationGatewayBackendHealthOnDemandInner>
-                getLroResultAsync(
-                    mono,
-                    this.client.getHttpPipeline(),
-                    ApplicationGatewayBackendHealthOnDemandInner.class,
-                    ApplicationGatewayBackendHealthOnDemandInner.class)
+        return beginBackendHealthOnDemandAsync(resourceGroupName, applicationGatewayName, probeRequest, expand, context)
             .last()
             .flatMap(client::getLroFinalResultOrError);
     }
@@ -2525,16 +2616,7 @@ public final class ApplicationGatewaysClient
         String resourceGroupName, String applicationGatewayName, ApplicationGatewayOnDemandProbe probeRequest) {
         final String expand = null;
         final Context context = null;
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            backendHealthOnDemandWithResponseAsync(resourceGroupName, applicationGatewayName, probeRequest, expand);
-        return this
-            .client
-            .<ApplicationGatewayBackendHealthOnDemandInner, ApplicationGatewayBackendHealthOnDemandInner>
-                getLroResultAsync(
-                    mono,
-                    this.client.getHttpPipeline(),
-                    ApplicationGatewayBackendHealthOnDemandInner.class,
-                    ApplicationGatewayBackendHealthOnDemandInner.class)
+        return beginBackendHealthOnDemandAsync(resourceGroupName, applicationGatewayName, probeRequest, expand)
             .last()
             .flatMap(client::getLroFinalResultOrError);
     }
@@ -2630,7 +2712,7 @@ public final class ApplicationGatewaysClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -2663,7 +2745,7 @@ public final class ApplicationGatewaysClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return service
             .listAvailableServerVariables(
                 this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), context);
@@ -2758,7 +2840,7 @@ public final class ApplicationGatewaysClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -2791,7 +2873,7 @@ public final class ApplicationGatewaysClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return service
             .listAvailableRequestHeaders(
                 this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), context);
@@ -2886,7 +2968,7 @@ public final class ApplicationGatewaysClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -2919,7 +3001,7 @@ public final class ApplicationGatewaysClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return service
             .listAvailableResponseHeaders(
                 this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), context);
@@ -3015,7 +3097,7 @@ public final class ApplicationGatewaysClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -3049,7 +3131,7 @@ public final class ApplicationGatewaysClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return service
             .listAvailableWafRuleSets(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), context);
     }
@@ -3143,7 +3225,7 @@ public final class ApplicationGatewaysClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -3177,7 +3259,7 @@ public final class ApplicationGatewaysClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return service
             .listAvailableSslOptions(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), context);
     }
@@ -3272,7 +3354,7 @@ public final class ApplicationGatewaysClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -3315,7 +3397,7 @@ public final class ApplicationGatewaysClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return service
             .listAvailableSslPredefinedPolicies(
                 this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), context)
@@ -3416,7 +3498,7 @@ public final class ApplicationGatewaysClient
             return Mono
                 .error(new IllegalArgumentException("Parameter predefinedPolicyName is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -3459,7 +3541,7 @@ public final class ApplicationGatewaysClient
             return Mono
                 .error(new IllegalArgumentException("Parameter predefinedPolicyName is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return service
             .getSslPredefinedPolicy(
                 this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), predefinedPolicyName, context);
@@ -3575,7 +3657,7 @@ public final class ApplicationGatewaysClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -3625,7 +3707,7 @@ public final class ApplicationGatewaysClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return service
             .beginDeleteWithoutPolling(
                 this.client.getEndpoint(),
@@ -3739,7 +3821,7 @@ public final class ApplicationGatewaysClient
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -3796,7 +3878,7 @@ public final class ApplicationGatewaysClient
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return service
             .beginCreateOrUpdateWithoutPolling(
                 this.client.getEndpoint(),
@@ -3897,195 +3979,6 @@ public final class ApplicationGatewaysClient
     }
 
     /**
-     * Updates the specified application gateway tags.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param applicationGatewayName The name of the application gateway.
-     * @param tags Resource tags.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return application gateway resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ApplicationGatewayInner>> beginUpdateTagsWithoutPollingWithResponseAsync(
-        String resourceGroupName, String applicationGatewayName, Map<String, String> tags) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (applicationGatewayName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter applicationGatewayName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2019-06-01";
-        TagsObject parameters = new TagsObject();
-        parameters.withTags(tags);
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .beginUpdateTagsWithoutPolling(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            applicationGatewayName,
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            parameters,
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
-
-    /**
-     * Updates the specified application gateway tags.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param applicationGatewayName The name of the application gateway.
-     * @param tags Resource tags.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return application gateway resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ApplicationGatewayInner>> beginUpdateTagsWithoutPollingWithResponseAsync(
-        String resourceGroupName, String applicationGatewayName, Map<String, String> tags, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (applicationGatewayName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter applicationGatewayName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2019-06-01";
-        TagsObject parameters = new TagsObject();
-        parameters.withTags(tags);
-        return service
-            .beginUpdateTagsWithoutPolling(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                applicationGatewayName,
-                apiVersion,
-                this.client.getSubscriptionId(),
-                parameters,
-                context);
-    }
-
-    /**
-     * Updates the specified application gateway tags.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param applicationGatewayName The name of the application gateway.
-     * @param tags Resource tags.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return application gateway resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ApplicationGatewayInner> beginUpdateTagsWithoutPollingAsync(
-        String resourceGroupName, String applicationGatewayName, Map<String, String> tags) {
-        return beginUpdateTagsWithoutPollingWithResponseAsync(resourceGroupName, applicationGatewayName, tags)
-            .flatMap(
-                (Response<ApplicationGatewayInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Updates the specified application gateway tags.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param applicationGatewayName The name of the application gateway.
-     * @param tags Resource tags.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return application gateway resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ApplicationGatewayInner> beginUpdateTagsWithoutPollingAsync(
-        String resourceGroupName, String applicationGatewayName, Map<String, String> tags, Context context) {
-        return beginUpdateTagsWithoutPollingWithResponseAsync(resourceGroupName, applicationGatewayName, tags, context)
-            .flatMap(
-                (Response<ApplicationGatewayInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Updates the specified application gateway tags.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param applicationGatewayName The name of the application gateway.
-     * @param tags Resource tags.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return application gateway resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ApplicationGatewayInner beginUpdateTagsWithoutPolling(
-        String resourceGroupName, String applicationGatewayName, Map<String, String> tags) {
-        return beginUpdateTagsWithoutPollingAsync(resourceGroupName, applicationGatewayName, tags).block();
-    }
-
-    /**
-     * Updates the specified application gateway tags.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param applicationGatewayName The name of the application gateway.
-     * @param tags Resource tags.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return application gateway resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ApplicationGatewayInner beginUpdateTagsWithoutPolling(
-        String resourceGroupName, String applicationGatewayName, Map<String, String> tags, Context context) {
-        return beginUpdateTagsWithoutPollingAsync(resourceGroupName, applicationGatewayName, tags, context).block();
-    }
-
-    /**
      * Starts the specified application gateway.
      *
      * @param resourceGroupName The name of the resource group.
@@ -4119,7 +4012,7 @@ public final class ApplicationGatewaysClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -4169,7 +4062,7 @@ public final class ApplicationGatewaysClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return service
             .beginStartWithoutPolling(
                 this.client.getEndpoint(),
@@ -4277,7 +4170,7 @@ public final class ApplicationGatewaysClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -4327,7 +4220,7 @@ public final class ApplicationGatewaysClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return service
             .beginStopWithoutPolling(
                 this.client.getEndpoint(),
@@ -4436,7 +4329,7 @@ public final class ApplicationGatewaysClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -4488,7 +4381,7 @@ public final class ApplicationGatewaysClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return service
             .beginBackendHealthWithoutPolling(
                 this.client.getEndpoint(),
@@ -4679,7 +4572,7 @@ public final class ApplicationGatewaysClient
         } else {
             probeRequest.validate();
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -4745,7 +4638,7 @@ public final class ApplicationGatewaysClient
         } else {
             probeRequest.validate();
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return service
             .beginBackendHealthOnDemandWithoutPolling(
                 this.client.getEndpoint(),

@@ -27,6 +27,7 @@ import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
+import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.network.NetworkManagementClient;
 import com.azure.resourcemanager.network.fluent.inner.DdosCustomPolicyInner;
 import com.azure.resourcemanager.network.models.TagsObject;
@@ -115,7 +116,7 @@ public final class DdosCustomPoliciesClient
                 + "/ddosCustomPolicies/{ddosCustomPolicyName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> updateTags(
+        Mono<Response<DdosCustomPolicyInner>> updateTags(
             @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("ddosCustomPolicyName") String ddosCustomPolicyName,
@@ -152,21 +153,6 @@ public final class DdosCustomPoliciesClient
             @PathParam("subscriptionId") String subscriptionId,
             @BodyParam("application/json") DdosCustomPolicyInner parameters,
             Context context);
-
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
-                + "/ddosCustomPolicies/{ddosCustomPolicyName}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<DdosCustomPolicyInner>> beginUpdateTagsWithoutPolling(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("ddosCustomPolicyName") String ddosCustomPolicyName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @BodyParam("application/json") TagsObject parameters,
-            Context context);
     }
 
     /**
@@ -202,7 +188,7 @@ public final class DdosCustomPoliciesClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -251,7 +237,7 @@ public final class DdosCustomPoliciesClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return service
             .delete(
                 this.client.getEndpoint(),
@@ -273,7 +259,7 @@ public final class DdosCustomPoliciesClient
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<Void>, Void> beginDelete(String resourceGroupName, String ddosCustomPolicyName) {
+    public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String ddosCustomPolicyName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, ddosCustomPolicyName);
         return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
     }
@@ -290,7 +276,7 @@ public final class DdosCustomPoliciesClient
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<Void>, Void> beginDelete(
+    public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String ddosCustomPolicyName, Context context) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             deleteWithResponseAsync(resourceGroupName, ddosCustomPolicyName, context);
@@ -308,11 +294,40 @@ public final class DdosCustomPoliciesClient
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String ddosCustomPolicyName) {
+        return beginDeleteAsync(resourceGroupName, ddosCustomPolicyName).getSyncPoller();
+    }
+
+    /**
+     * Deletes the specified DDoS custom policy.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param ddosCustomPolicyName The name of the DDoS custom policy.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<Void>, Void> beginDelete(
+        String resourceGroupName, String ddosCustomPolicyName, Context context) {
+        return beginDeleteAsync(resourceGroupName, ddosCustomPolicyName, context).getSyncPoller();
+    }
+
+    /**
+     * Deletes the specified DDoS custom policy.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param ddosCustomPolicyName The name of the DDoS custom policy.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String ddosCustomPolicyName) {
-        Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, ddosCustomPolicyName);
-        return this
-            .client
-            .<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class)
+        return beginDeleteAsync(resourceGroupName, ddosCustomPolicyName)
             .last()
             .flatMap(client::getLroFinalResultOrError);
     }
@@ -330,11 +345,7 @@ public final class DdosCustomPoliciesClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String ddosCustomPolicyName, Context context) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, ddosCustomPolicyName, context);
-        return this
-            .client
-            .<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class)
+        return beginDeleteAsync(resourceGroupName, ddosCustomPolicyName, context)
             .last()
             .flatMap(client::getLroFinalResultOrError);
     }
@@ -401,7 +412,7 @@ public final class DdosCustomPoliciesClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -450,7 +461,7 @@ public final class DdosCustomPoliciesClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return service
             .getByResourceGroup(
                 this.client.getEndpoint(),
@@ -580,7 +591,7 @@ public final class DdosCustomPoliciesClient
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -636,7 +647,7 @@ public final class DdosCustomPoliciesClient
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return service
             .createOrUpdate(
                 this.client.getEndpoint(),
@@ -660,7 +671,7 @@ public final class DdosCustomPoliciesClient
      * @return a DDoS custom policy in a resource group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<DdosCustomPolicyInner>, DdosCustomPolicyInner> beginCreateOrUpdate(
+    public PollerFlux<PollResult<DdosCustomPolicyInner>, DdosCustomPolicyInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String ddosCustomPolicyName, DdosCustomPolicyInner parameters) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             createOrUpdateWithResponseAsync(resourceGroupName, ddosCustomPolicyName, parameters);
@@ -683,7 +694,7 @@ public final class DdosCustomPoliciesClient
      * @return a DDoS custom policy in a resource group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<DdosCustomPolicyInner>, DdosCustomPolicyInner> beginCreateOrUpdate(
+    public PollerFlux<PollResult<DdosCustomPolicyInner>, DdosCustomPolicyInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String ddosCustomPolicyName, DdosCustomPolicyInner parameters, Context context) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             createOrUpdateWithResponseAsync(resourceGroupName, ddosCustomPolicyName, parameters, context);
@@ -705,14 +716,44 @@ public final class DdosCustomPoliciesClient
      * @return a DDoS custom policy in a resource group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<DdosCustomPolicyInner>, DdosCustomPolicyInner> beginCreateOrUpdate(
+        String resourceGroupName, String ddosCustomPolicyName, DdosCustomPolicyInner parameters) {
+        return beginCreateOrUpdateAsync(resourceGroupName, ddosCustomPolicyName, parameters).getSyncPoller();
+    }
+
+    /**
+     * Creates or updates a DDoS custom policy.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param ddosCustomPolicyName The name of the DDoS custom policy.
+     * @param parameters A DDoS custom policy in a resource group.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a DDoS custom policy in a resource group.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<DdosCustomPolicyInner>, DdosCustomPolicyInner> beginCreateOrUpdate(
+        String resourceGroupName, String ddosCustomPolicyName, DdosCustomPolicyInner parameters, Context context) {
+        return beginCreateOrUpdateAsync(resourceGroupName, ddosCustomPolicyName, parameters, context).getSyncPoller();
+    }
+
+    /**
+     * Creates or updates a DDoS custom policy.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param ddosCustomPolicyName The name of the DDoS custom policy.
+     * @param parameters A DDoS custom policy in a resource group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a DDoS custom policy in a resource group.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DdosCustomPolicyInner> createOrUpdateAsync(
         String resourceGroupName, String ddosCustomPolicyName, DdosCustomPolicyInner parameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, ddosCustomPolicyName, parameters);
-        return this
-            .client
-            .<DdosCustomPolicyInner, DdosCustomPolicyInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), DdosCustomPolicyInner.class, DdosCustomPolicyInner.class)
+        return beginCreateOrUpdateAsync(resourceGroupName, ddosCustomPolicyName, parameters)
             .last()
             .flatMap(client::getLroFinalResultOrError);
     }
@@ -732,12 +773,7 @@ public final class DdosCustomPoliciesClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DdosCustomPolicyInner> createOrUpdateAsync(
         String resourceGroupName, String ddosCustomPolicyName, DdosCustomPolicyInner parameters, Context context) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, ddosCustomPolicyName, parameters, context);
-        return this
-            .client
-            .<DdosCustomPolicyInner, DdosCustomPolicyInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), DdosCustomPolicyInner.class, DdosCustomPolicyInner.class)
+        return beginCreateOrUpdateAsync(resourceGroupName, ddosCustomPolicyName, parameters, context)
             .last()
             .flatMap(client::getLroFinalResultOrError);
     }
@@ -789,7 +825,7 @@ public final class DdosCustomPoliciesClient
      * @return a DDoS custom policy in a resource group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> updateTagsWithResponseAsync(
+    public Mono<Response<DdosCustomPolicyInner>> updateTagsWithResponseAsync(
         String resourceGroupName, String ddosCustomPolicyName, Map<String, String> tags) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -811,7 +847,7 @@ public final class DdosCustomPoliciesClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         TagsObject parameters = new TagsObject();
         parameters.withTags(tags);
         return FluxUtil
@@ -842,7 +878,7 @@ public final class DdosCustomPoliciesClient
      * @return a DDoS custom policy in a resource group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> updateTagsWithResponseAsync(
+    public Mono<Response<DdosCustomPolicyInner>> updateTagsWithResponseAsync(
         String resourceGroupName, String ddosCustomPolicyName, Map<String, String> tags, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -864,7 +900,7 @@ public final class DdosCustomPoliciesClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         TagsObject parameters = new TagsObject();
         parameters.withTags(tags);
         return service
@@ -890,61 +926,17 @@ public final class DdosCustomPoliciesClient
      * @return a DDoS custom policy in a resource group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<DdosCustomPolicyInner>, DdosCustomPolicyInner> beginUpdateTags(
-        String resourceGroupName, String ddosCustomPolicyName, Map<String, String> tags) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateTagsWithResponseAsync(resourceGroupName, ddosCustomPolicyName, tags);
-        return this
-            .client
-            .<DdosCustomPolicyInner, DdosCustomPolicyInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), DdosCustomPolicyInner.class, DdosCustomPolicyInner.class);
-    }
-
-    /**
-     * Update a DDoS custom policy tags.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param ddosCustomPolicyName The name of the DDoS custom policy.
-     * @param tags Resource tags.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a DDoS custom policy in a resource group.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<DdosCustomPolicyInner>, DdosCustomPolicyInner> beginUpdateTags(
-        String resourceGroupName, String ddosCustomPolicyName, Map<String, String> tags, Context context) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateTagsWithResponseAsync(resourceGroupName, ddosCustomPolicyName, tags, context);
-        return this
-            .client
-            .<DdosCustomPolicyInner, DdosCustomPolicyInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), DdosCustomPolicyInner.class, DdosCustomPolicyInner.class);
-    }
-
-    /**
-     * Update a DDoS custom policy tags.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param ddosCustomPolicyName The name of the DDoS custom policy.
-     * @param tags Resource tags.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a DDoS custom policy in a resource group.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DdosCustomPolicyInner> updateTagsAsync(
         String resourceGroupName, String ddosCustomPolicyName, Map<String, String> tags) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateTagsWithResponseAsync(resourceGroupName, ddosCustomPolicyName, tags);
-        return this
-            .client
-            .<DdosCustomPolicyInner, DdosCustomPolicyInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), DdosCustomPolicyInner.class, DdosCustomPolicyInner.class)
-            .last()
-            .flatMap(client::getLroFinalResultOrError);
+        return updateTagsWithResponseAsync(resourceGroupName, ddosCustomPolicyName, tags)
+            .flatMap(
+                (Response<DdosCustomPolicyInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
     }
 
     /**
@@ -962,14 +954,15 @@ public final class DdosCustomPoliciesClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DdosCustomPolicyInner> updateTagsAsync(
         String resourceGroupName, String ddosCustomPolicyName, Map<String, String> tags, Context context) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateTagsWithResponseAsync(resourceGroupName, ddosCustomPolicyName, tags, context);
-        return this
-            .client
-            .<DdosCustomPolicyInner, DdosCustomPolicyInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), DdosCustomPolicyInner.class, DdosCustomPolicyInner.class)
-            .last()
-            .flatMap(client::getLroFinalResultOrError);
+        return updateTagsWithResponseAsync(resourceGroupName, ddosCustomPolicyName, tags, context)
+            .flatMap(
+                (Response<DdosCustomPolicyInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
     }
 
     /**
@@ -1040,7 +1033,7 @@ public final class DdosCustomPoliciesClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -1089,7 +1082,7 @@ public final class DdosCustomPoliciesClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return service
             .beginDeleteWithoutPolling(
                 this.client.getEndpoint(),
@@ -1202,7 +1195,7 @@ public final class DdosCustomPoliciesClient
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -1258,7 +1251,7 @@ public final class DdosCustomPoliciesClient
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return service
             .beginCreateOrUpdateWithoutPolling(
                 this.client.getEndpoint(),
@@ -1356,192 +1349,5 @@ public final class DdosCustomPoliciesClient
         String resourceGroupName, String ddosCustomPolicyName, DdosCustomPolicyInner parameters, Context context) {
         return beginCreateOrUpdateWithoutPollingAsync(resourceGroupName, ddosCustomPolicyName, parameters, context)
             .block();
-    }
-
-    /**
-     * Update a DDoS custom policy tags.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param ddosCustomPolicyName The name of the DDoS custom policy.
-     * @param tags Resource tags.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a DDoS custom policy in a resource group.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<DdosCustomPolicyInner>> beginUpdateTagsWithoutPollingWithResponseAsync(
-        String resourceGroupName, String ddosCustomPolicyName, Map<String, String> tags) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (ddosCustomPolicyName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter ddosCustomPolicyName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2019-06-01";
-        TagsObject parameters = new TagsObject();
-        parameters.withTags(tags);
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .beginUpdateTagsWithoutPolling(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            ddosCustomPolicyName,
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            parameters,
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
-
-    /**
-     * Update a DDoS custom policy tags.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param ddosCustomPolicyName The name of the DDoS custom policy.
-     * @param tags Resource tags.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a DDoS custom policy in a resource group.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<DdosCustomPolicyInner>> beginUpdateTagsWithoutPollingWithResponseAsync(
-        String resourceGroupName, String ddosCustomPolicyName, Map<String, String> tags, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (ddosCustomPolicyName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter ddosCustomPolicyName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2019-06-01";
-        TagsObject parameters = new TagsObject();
-        parameters.withTags(tags);
-        return service
-            .beginUpdateTagsWithoutPolling(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                ddosCustomPolicyName,
-                apiVersion,
-                this.client.getSubscriptionId(),
-                parameters,
-                context);
-    }
-
-    /**
-     * Update a DDoS custom policy tags.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param ddosCustomPolicyName The name of the DDoS custom policy.
-     * @param tags Resource tags.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a DDoS custom policy in a resource group.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DdosCustomPolicyInner> beginUpdateTagsWithoutPollingAsync(
-        String resourceGroupName, String ddosCustomPolicyName, Map<String, String> tags) {
-        return beginUpdateTagsWithoutPollingWithResponseAsync(resourceGroupName, ddosCustomPolicyName, tags)
-            .flatMap(
-                (Response<DdosCustomPolicyInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Update a DDoS custom policy tags.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param ddosCustomPolicyName The name of the DDoS custom policy.
-     * @param tags Resource tags.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a DDoS custom policy in a resource group.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DdosCustomPolicyInner> beginUpdateTagsWithoutPollingAsync(
-        String resourceGroupName, String ddosCustomPolicyName, Map<String, String> tags, Context context) {
-        return beginUpdateTagsWithoutPollingWithResponseAsync(resourceGroupName, ddosCustomPolicyName, tags, context)
-            .flatMap(
-                (Response<DdosCustomPolicyInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Update a DDoS custom policy tags.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param ddosCustomPolicyName The name of the DDoS custom policy.
-     * @param tags Resource tags.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a DDoS custom policy in a resource group.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public DdosCustomPolicyInner beginUpdateTagsWithoutPolling(
-        String resourceGroupName, String ddosCustomPolicyName, Map<String, String> tags) {
-        return beginUpdateTagsWithoutPollingAsync(resourceGroupName, ddosCustomPolicyName, tags).block();
-    }
-
-    /**
-     * Update a DDoS custom policy tags.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param ddosCustomPolicyName The name of the DDoS custom policy.
-     * @param tags Resource tags.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a DDoS custom policy in a resource group.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public DdosCustomPolicyInner beginUpdateTagsWithoutPolling(
-        String resourceGroupName, String ddosCustomPolicyName, Map<String, String> tags, Context context) {
-        return beginUpdateTagsWithoutPollingAsync(resourceGroupName, ddosCustomPolicyName, tags, context).block();
     }
 }

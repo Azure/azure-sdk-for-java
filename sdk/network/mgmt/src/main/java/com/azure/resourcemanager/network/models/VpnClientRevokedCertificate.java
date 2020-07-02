@@ -27,7 +27,7 @@ public class VpnClientRevokedCertificate extends SubResource {
     /*
      * A unique read-only string that changes whenever the resource is updated.
      */
-    @JsonProperty(value = "etag")
+    @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
 
     /*
@@ -38,10 +38,9 @@ public class VpnClientRevokedCertificate extends SubResource {
 
     /*
      * The provisioning state of the VPN client revoked certificate resource.
-     * Possible values are: 'Updating', 'Deleting', and 'Failed'.
      */
     @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private String provisioningState;
+    private ProvisioningState provisioningState;
 
     /**
      * Get the name property: The name of the resource that is unique within a resource group. This name can be used to
@@ -75,17 +74,6 @@ public class VpnClientRevokedCertificate extends SubResource {
     }
 
     /**
-     * Set the etag property: A unique read-only string that changes whenever the resource is updated.
-     *
-     * @param etag the etag value to set.
-     * @return the VpnClientRevokedCertificate object itself.
-     */
-    public VpnClientRevokedCertificate withEtag(String etag) {
-        this.etag = etag;
-        return this;
-    }
-
-    /**
      * Get the thumbprint property: The revoked VPN client certificate thumbprint.
      *
      * @return the thumbprint value.
@@ -107,11 +95,10 @@ public class VpnClientRevokedCertificate extends SubResource {
 
     /**
      * Get the provisioningState property: The provisioning state of the VPN client revoked certificate resource.
-     * Possible values are: 'Updating', 'Deleting', and 'Failed'.
      *
      * @return the provisioningState value.
      */
-    public String provisioningState() {
+    public ProvisioningState provisioningState() {
         return this.provisioningState;
     }
 

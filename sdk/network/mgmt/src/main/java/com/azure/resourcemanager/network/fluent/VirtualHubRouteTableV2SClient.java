@@ -24,162 +24,163 @@ import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
+import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
+import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.network.NetworkManagementClient;
-import com.azure.resourcemanager.network.fluent.inner.ListP2SVpnServerConfigurationsResultInner;
-import com.azure.resourcemanager.network.fluent.inner.P2SVpnServerConfigurationInner;
+import com.azure.resourcemanager.network.fluent.inner.ListVirtualHubRouteTableV2SResultInner;
+import com.azure.resourcemanager.network.fluent.inner.VirtualHubRouteTableV2Inner;
 import com.azure.resourcemanager.network.models.ErrorException;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in P2SVpnServerConfigurations. */
-public final class P2SVpnServerConfigurationsClient {
-    private final ClientLogger logger = new ClientLogger(P2SVpnServerConfigurationsClient.class);
+/** An instance of this class provides access to all the operations defined in VirtualHubRouteTableV2S. */
+public final class VirtualHubRouteTableV2SClient {
+    private final ClientLogger logger = new ClientLogger(VirtualHubRouteTableV2SClient.class);
 
     /** The proxy service used to perform REST calls. */
-    private final P2SVpnServerConfigurationsService service;
+    private final VirtualHubRouteTableV2SsService service;
 
     /** The service client containing this operation class. */
     private final NetworkManagementClient client;
 
     /**
-     * Initializes an instance of P2SVpnServerConfigurationsClient.
+     * Initializes an instance of VirtualHubRouteTableV2SClient.
      *
      * @param client the instance of the service client containing this operation class.
      */
-    public P2SVpnServerConfigurationsClient(NetworkManagementClient client) {
+    public VirtualHubRouteTableV2SClient(NetworkManagementClient client) {
         this.service =
             RestProxy
-                .create(
-                    P2SVpnServerConfigurationsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+                .create(VirtualHubRouteTableV2SsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for NetworkManagementClientP2SVpnServerConfigurations to be used by the
+     * The interface defining all the services for NetworkManagementClientVirtualHubRouteTableV2S to be used by the
      * proxy service to perform REST calls.
      */
     @Host("{$host}")
     @ServiceInterface(name = "NetworkManagementCli")
-    private interface P2SVpnServerConfigurationsService {
+    private interface VirtualHubRouteTableV2SsService {
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualWans"
-                + "/{virtualWanName}/p2sVpnServerConfigurations/{p2SVpnServerConfigurationName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualHubs"
+                + "/{virtualHubName}/routeTables/{routeTableName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorException.class)
-        Mono<Response<P2SVpnServerConfigurationInner>> get(
+        Mono<Response<VirtualHubRouteTableV2Inner>> get(
             @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("virtualWanName") String virtualWanName,
-            @PathParam("p2SVpnServerConfigurationName") String p2SVpnServerConfigurationName,
+            @PathParam("virtualHubName") String virtualHubName,
+            @PathParam("routeTableName") String routeTableName,
             @QueryParam("api-version") String apiVersion,
             Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualWans"
-                + "/{virtualWanName}/p2sVpnServerConfigurations/{p2SVpnServerConfigurationName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualHubs"
+                + "/{virtualHubName}/routeTables/{routeTableName}")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(ErrorException.class)
         Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
             @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("virtualWanName") String virtualWanName,
-            @PathParam("p2SVpnServerConfigurationName") String p2SVpnServerConfigurationName,
+            @PathParam("virtualHubName") String virtualHubName,
+            @PathParam("routeTableName") String routeTableName,
             @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") P2SVpnServerConfigurationInner p2SVpnServerConfigurationParameters,
+            @BodyParam("application/json") VirtualHubRouteTableV2Inner virtualHubRouteTableV2Parameters,
             Context context);
 
         @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualWans"
-                + "/{virtualWanName}/p2sVpnServerConfigurations/{p2SVpnServerConfigurationName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualHubs"
+                + "/{virtualHubName}/routeTables/{routeTableName}")
         @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(ErrorException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(
             @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("virtualWanName") String virtualWanName,
-            @PathParam("p2SVpnServerConfigurationName") String p2SVpnServerConfigurationName,
+            @PathParam("virtualHubName") String virtualHubName,
+            @PathParam("routeTableName") String routeTableName,
             @QueryParam("api-version") String apiVersion,
             Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualWans"
-                + "/{virtualWanName}/p2sVpnServerConfigurations")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualHubs"
+                + "/{virtualHubName}/routeTables")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ErrorException.class)
-        Mono<Response<ListP2SVpnServerConfigurationsResultInner>> listByVirtualWan(
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<ListVirtualHubRouteTableV2SResultInner>> list(
             @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("virtualWanName") String virtualWanName,
+            @PathParam("virtualHubName") String virtualHubName,
             @QueryParam("api-version") String apiVersion,
             Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualWans"
-                + "/{virtualWanName}/p2sVpnServerConfigurations/{p2SVpnServerConfigurationName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualHubs"
+                + "/{virtualHubName}/routeTables/{routeTableName}")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(ErrorException.class)
-        Mono<Response<P2SVpnServerConfigurationInner>> beginCreateOrUpdateWithoutPolling(
+        Mono<Response<VirtualHubRouteTableV2Inner>> beginCreateOrUpdateWithoutPolling(
             @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("virtualWanName") String virtualWanName,
-            @PathParam("p2SVpnServerConfigurationName") String p2SVpnServerConfigurationName,
+            @PathParam("virtualHubName") String virtualHubName,
+            @PathParam("routeTableName") String routeTableName,
             @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") P2SVpnServerConfigurationInner p2SVpnServerConfigurationParameters,
+            @BodyParam("application/json") VirtualHubRouteTableV2Inner virtualHubRouteTableV2Parameters,
             Context context);
 
         @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualWans"
-                + "/{virtualWanName}/p2sVpnServerConfigurations/{p2SVpnServerConfigurationName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualHubs"
+                + "/{virtualHubName}/routeTables/{routeTableName}")
         @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(ErrorException.class)
         Mono<Response<Void>> beginDeleteWithoutPolling(
             @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("virtualWanName") String virtualWanName,
-            @PathParam("p2SVpnServerConfigurationName") String p2SVpnServerConfigurationName,
+            @PathParam("virtualHubName") String virtualHubName,
+            @PathParam("routeTableName") String routeTableName,
             @QueryParam("api-version") String apiVersion,
             Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ErrorException.class)
-        Mono<Response<ListP2SVpnServerConfigurationsResultInner>> listByVirtualWanNext(
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<ListVirtualHubRouteTableV2SResultInner>> listNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
 
     /**
-     * Retrieves the details of a P2SVpnServerConfiguration.
+     * Retrieves the details of a VirtualHubRouteTableV2.
      *
-     * @param resourceGroupName The resource group name of the P2SVpnServerConfiguration.
-     * @param virtualWanName The name of the VirtualWan.
-     * @param p2SVpnServerConfigurationName The name of the P2SVpnServerConfiguration.
+     * @param resourceGroupName The resource group name of the VirtualHubRouteTableV2.
+     * @param virtualHubName The name of the VirtualHub.
+     * @param routeTableName The name of the VirtualHubRouteTableV2.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return p2SVpnServerConfiguration Resource.
+     * @return virtualHubRouteTableV2 Resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<P2SVpnServerConfigurationInner>> getWithResponseAsync(
-        String resourceGroupName, String virtualWanName, String p2SVpnServerConfigurationName) {
+    public Mono<Response<VirtualHubRouteTableV2Inner>> getWithResponseAsync(
+        String resourceGroupName, String virtualHubName, String routeTableName) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -196,16 +197,13 @@ public final class P2SVpnServerConfigurationsClient {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        if (virtualWanName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter virtualWanName is required and cannot be null."));
+        if (virtualHubName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter virtualHubName is required and cannot be null."));
         }
-        if (p2SVpnServerConfigurationName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter p2SVpnServerConfigurationName is required and cannot be null."));
+        if (routeTableName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter routeTableName is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -214,28 +212,28 @@ public final class P2SVpnServerConfigurationsClient {
                             this.client.getEndpoint(),
                             this.client.getSubscriptionId(),
                             resourceGroupName,
-                            virtualWanName,
-                            p2SVpnServerConfigurationName,
+                            virtualHubName,
+                            routeTableName,
                             apiVersion,
                             context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
-     * Retrieves the details of a P2SVpnServerConfiguration.
+     * Retrieves the details of a VirtualHubRouteTableV2.
      *
-     * @param resourceGroupName The resource group name of the P2SVpnServerConfiguration.
-     * @param virtualWanName The name of the VirtualWan.
-     * @param p2SVpnServerConfigurationName The name of the P2SVpnServerConfiguration.
+     * @param resourceGroupName The resource group name of the VirtualHubRouteTableV2.
+     * @param virtualHubName The name of the VirtualHub.
+     * @param routeTableName The name of the VirtualHubRouteTableV2.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return p2SVpnServerConfiguration Resource.
+     * @return virtualHubRouteTableV2 Resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<P2SVpnServerConfigurationInner>> getWithResponseAsync(
-        String resourceGroupName, String virtualWanName, String p2SVpnServerConfigurationName, Context context) {
+    public Mono<Response<VirtualHubRouteTableV2Inner>> getWithResponseAsync(
+        String resourceGroupName, String virtualHubName, String routeTableName, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -252,44 +250,41 @@ public final class P2SVpnServerConfigurationsClient {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        if (virtualWanName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter virtualWanName is required and cannot be null."));
+        if (virtualHubName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter virtualHubName is required and cannot be null."));
         }
-        if (p2SVpnServerConfigurationName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter p2SVpnServerConfigurationName is required and cannot be null."));
+        if (routeTableName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter routeTableName is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return service
             .get(
                 this.client.getEndpoint(),
                 this.client.getSubscriptionId(),
                 resourceGroupName,
-                virtualWanName,
-                p2SVpnServerConfigurationName,
+                virtualHubName,
+                routeTableName,
                 apiVersion,
                 context);
     }
 
     /**
-     * Retrieves the details of a P2SVpnServerConfiguration.
+     * Retrieves the details of a VirtualHubRouteTableV2.
      *
-     * @param resourceGroupName The resource group name of the P2SVpnServerConfiguration.
-     * @param virtualWanName The name of the VirtualWan.
-     * @param p2SVpnServerConfigurationName The name of the P2SVpnServerConfiguration.
+     * @param resourceGroupName The resource group name of the VirtualHubRouteTableV2.
+     * @param virtualHubName The name of the VirtualHub.
+     * @param routeTableName The name of the VirtualHubRouteTableV2.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return p2SVpnServerConfiguration Resource.
+     * @return virtualHubRouteTableV2 Resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<P2SVpnServerConfigurationInner> getAsync(
-        String resourceGroupName, String virtualWanName, String p2SVpnServerConfigurationName) {
-        return getWithResponseAsync(resourceGroupName, virtualWanName, p2SVpnServerConfigurationName)
+    public Mono<VirtualHubRouteTableV2Inner> getAsync(
+        String resourceGroupName, String virtualHubName, String routeTableName) {
+        return getWithResponseAsync(resourceGroupName, virtualHubName, routeTableName)
             .flatMap(
-                (Response<P2SVpnServerConfigurationInner> res) -> {
+                (Response<VirtualHubRouteTableV2Inner> res) -> {
                     if (res.getValue() != null) {
                         return Mono.just(res.getValue());
                     } else {
@@ -299,23 +294,23 @@ public final class P2SVpnServerConfigurationsClient {
     }
 
     /**
-     * Retrieves the details of a P2SVpnServerConfiguration.
+     * Retrieves the details of a VirtualHubRouteTableV2.
      *
-     * @param resourceGroupName The resource group name of the P2SVpnServerConfiguration.
-     * @param virtualWanName The name of the VirtualWan.
-     * @param p2SVpnServerConfigurationName The name of the P2SVpnServerConfiguration.
+     * @param resourceGroupName The resource group name of the VirtualHubRouteTableV2.
+     * @param virtualHubName The name of the VirtualHub.
+     * @param routeTableName The name of the VirtualHubRouteTableV2.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return p2SVpnServerConfiguration Resource.
+     * @return virtualHubRouteTableV2 Resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<P2SVpnServerConfigurationInner> getAsync(
-        String resourceGroupName, String virtualWanName, String p2SVpnServerConfigurationName, Context context) {
-        return getWithResponseAsync(resourceGroupName, virtualWanName, p2SVpnServerConfigurationName, context)
+    public Mono<VirtualHubRouteTableV2Inner> getAsync(
+        String resourceGroupName, String virtualHubName, String routeTableName, Context context) {
+        return getWithResponseAsync(resourceGroupName, virtualHubName, routeTableName, context)
             .flatMap(
-                (Response<P2SVpnServerConfigurationInner> res) -> {
+                (Response<VirtualHubRouteTableV2Inner> res) -> {
                     if (res.getValue() != null) {
                         return Mono.just(res.getValue());
                     } else {
@@ -325,59 +320,57 @@ public final class P2SVpnServerConfigurationsClient {
     }
 
     /**
-     * Retrieves the details of a P2SVpnServerConfiguration.
+     * Retrieves the details of a VirtualHubRouteTableV2.
      *
-     * @param resourceGroupName The resource group name of the P2SVpnServerConfiguration.
-     * @param virtualWanName The name of the VirtualWan.
-     * @param p2SVpnServerConfigurationName The name of the P2SVpnServerConfiguration.
+     * @param resourceGroupName The resource group name of the VirtualHubRouteTableV2.
+     * @param virtualHubName The name of the VirtualHub.
+     * @param routeTableName The name of the VirtualHubRouteTableV2.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return p2SVpnServerConfiguration Resource.
+     * @return virtualHubRouteTableV2 Resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public P2SVpnServerConfigurationInner get(
-        String resourceGroupName, String virtualWanName, String p2SVpnServerConfigurationName) {
-        return getAsync(resourceGroupName, virtualWanName, p2SVpnServerConfigurationName).block();
+    public VirtualHubRouteTableV2Inner get(String resourceGroupName, String virtualHubName, String routeTableName) {
+        return getAsync(resourceGroupName, virtualHubName, routeTableName).block();
     }
 
     /**
-     * Retrieves the details of a P2SVpnServerConfiguration.
+     * Retrieves the details of a VirtualHubRouteTableV2.
      *
-     * @param resourceGroupName The resource group name of the P2SVpnServerConfiguration.
-     * @param virtualWanName The name of the VirtualWan.
-     * @param p2SVpnServerConfigurationName The name of the P2SVpnServerConfiguration.
+     * @param resourceGroupName The resource group name of the VirtualHubRouteTableV2.
+     * @param virtualHubName The name of the VirtualHub.
+     * @param routeTableName The name of the VirtualHubRouteTableV2.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return p2SVpnServerConfiguration Resource.
+     * @return virtualHubRouteTableV2 Resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public P2SVpnServerConfigurationInner get(
-        String resourceGroupName, String virtualWanName, String p2SVpnServerConfigurationName, Context context) {
-        return getAsync(resourceGroupName, virtualWanName, p2SVpnServerConfigurationName, context).block();
+    public VirtualHubRouteTableV2Inner get(
+        String resourceGroupName, String virtualHubName, String routeTableName, Context context) {
+        return getAsync(resourceGroupName, virtualHubName, routeTableName, context).block();
     }
 
     /**
-     * Creates a P2SVpnServerConfiguration to associate with a VirtualWan if it doesn't exist else updates the existing
-     * P2SVpnServerConfiguration.
+     * Creates a VirtualHubRouteTableV2 resource if it doesn't exist else updates the existing VirtualHubRouteTableV2.
      *
-     * @param resourceGroupName The resource group name of the VirtualWan.
-     * @param virtualWanName The name of the VirtualWan.
-     * @param p2SVpnServerConfigurationName The name of the P2SVpnServerConfiguration.
-     * @param p2SVpnServerConfigurationParameters P2SVpnServerConfiguration Resource.
+     * @param resourceGroupName The resource group name of the VirtualHub.
+     * @param virtualHubName The name of the VirtualHub.
+     * @param routeTableName The name of the VirtualHubRouteTableV2.
+     * @param virtualHubRouteTableV2Parameters VirtualHubRouteTableV2 Resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return p2SVpnServerConfiguration Resource.
+     * @return virtualHubRouteTableV2 Resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
         String resourceGroupName,
-        String virtualWanName,
-        String p2SVpnServerConfigurationName,
-        P2SVpnServerConfigurationInner p2SVpnServerConfigurationParameters) {
+        String virtualHubName,
+        String routeTableName,
+        VirtualHubRouteTableV2Inner virtualHubRouteTableV2Parameters) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -394,24 +387,21 @@ public final class P2SVpnServerConfigurationsClient {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        if (virtualWanName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter virtualWanName is required and cannot be null."));
+        if (virtualHubName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter virtualHubName is required and cannot be null."));
         }
-        if (p2SVpnServerConfigurationName == null) {
+        if (routeTableName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter routeTableName is required and cannot be null."));
+        }
+        if (virtualHubRouteTableV2Parameters == null) {
             return Mono
                 .error(
                     new IllegalArgumentException(
-                        "Parameter p2SVpnServerConfigurationName is required and cannot be null."));
-        }
-        if (p2SVpnServerConfigurationParameters == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter p2SVpnServerConfigurationParameters is required and cannot be null."));
+                        "Parameter virtualHubRouteTableV2Parameters is required and cannot be null."));
         } else {
-            p2SVpnServerConfigurationParameters.validate();
+            virtualHubRouteTableV2Parameters.validate();
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -420,34 +410,33 @@ public final class P2SVpnServerConfigurationsClient {
                             this.client.getEndpoint(),
                             this.client.getSubscriptionId(),
                             resourceGroupName,
-                            virtualWanName,
-                            p2SVpnServerConfigurationName,
+                            virtualHubName,
+                            routeTableName,
                             apiVersion,
-                            p2SVpnServerConfigurationParameters,
+                            virtualHubRouteTableV2Parameters,
                             context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
-     * Creates a P2SVpnServerConfiguration to associate with a VirtualWan if it doesn't exist else updates the existing
-     * P2SVpnServerConfiguration.
+     * Creates a VirtualHubRouteTableV2 resource if it doesn't exist else updates the existing VirtualHubRouteTableV2.
      *
-     * @param resourceGroupName The resource group name of the VirtualWan.
-     * @param virtualWanName The name of the VirtualWan.
-     * @param p2SVpnServerConfigurationName The name of the P2SVpnServerConfiguration.
-     * @param p2SVpnServerConfigurationParameters P2SVpnServerConfiguration Resource.
+     * @param resourceGroupName The resource group name of the VirtualHub.
+     * @param virtualHubName The name of the VirtualHub.
+     * @param routeTableName The name of the VirtualHubRouteTableV2.
+     * @param virtualHubRouteTableV2Parameters VirtualHubRouteTableV2 Resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return p2SVpnServerConfiguration Resource.
+     * @return virtualHubRouteTableV2 Resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
         String resourceGroupName,
-        String virtualWanName,
-        String p2SVpnServerConfigurationName,
-        P2SVpnServerConfigurationInner p2SVpnServerConfigurationParameters,
+        String virtualHubName,
+        String routeTableName,
+        VirtualHubRouteTableV2Inner virtualHubRouteTableV2Parameters,
         Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -465,236 +454,246 @@ public final class P2SVpnServerConfigurationsClient {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        if (virtualWanName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter virtualWanName is required and cannot be null."));
+        if (virtualHubName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter virtualHubName is required and cannot be null."));
         }
-        if (p2SVpnServerConfigurationName == null) {
+        if (routeTableName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter routeTableName is required and cannot be null."));
+        }
+        if (virtualHubRouteTableV2Parameters == null) {
             return Mono
                 .error(
                     new IllegalArgumentException(
-                        "Parameter p2SVpnServerConfigurationName is required and cannot be null."));
-        }
-        if (p2SVpnServerConfigurationParameters == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter p2SVpnServerConfigurationParameters is required and cannot be null."));
+                        "Parameter virtualHubRouteTableV2Parameters is required and cannot be null."));
         } else {
-            p2SVpnServerConfigurationParameters.validate();
+            virtualHubRouteTableV2Parameters.validate();
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return service
             .createOrUpdate(
                 this.client.getEndpoint(),
                 this.client.getSubscriptionId(),
                 resourceGroupName,
-                virtualWanName,
-                p2SVpnServerConfigurationName,
+                virtualHubName,
+                routeTableName,
                 apiVersion,
-                p2SVpnServerConfigurationParameters,
+                virtualHubRouteTableV2Parameters,
                 context);
     }
 
     /**
-     * Creates a P2SVpnServerConfiguration to associate with a VirtualWan if it doesn't exist else updates the existing
-     * P2SVpnServerConfiguration.
+     * Creates a VirtualHubRouteTableV2 resource if it doesn't exist else updates the existing VirtualHubRouteTableV2.
      *
-     * @param resourceGroupName The resource group name of the VirtualWan.
-     * @param virtualWanName The name of the VirtualWan.
-     * @param p2SVpnServerConfigurationName The name of the P2SVpnServerConfiguration.
-     * @param p2SVpnServerConfigurationParameters P2SVpnServerConfiguration Resource.
+     * @param resourceGroupName The resource group name of the VirtualHub.
+     * @param virtualHubName The name of the VirtualHub.
+     * @param routeTableName The name of the VirtualHubRouteTableV2.
+     * @param virtualHubRouteTableV2Parameters VirtualHubRouteTableV2 Resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return p2SVpnServerConfiguration Resource.
+     * @return virtualHubRouteTableV2 Resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<P2SVpnServerConfigurationInner>, P2SVpnServerConfigurationInner> beginCreateOrUpdate(
+    public PollerFlux<PollResult<VirtualHubRouteTableV2Inner>, VirtualHubRouteTableV2Inner> beginCreateOrUpdateAsync(
         String resourceGroupName,
-        String virtualWanName,
-        String p2SVpnServerConfigurationName,
-        P2SVpnServerConfigurationInner p2SVpnServerConfigurationParameters) {
+        String virtualHubName,
+        String routeTableName,
+        VirtualHubRouteTableV2Inner virtualHubRouteTableV2Parameters) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             createOrUpdateWithResponseAsync(
-                resourceGroupName, virtualWanName, p2SVpnServerConfigurationName, p2SVpnServerConfigurationParameters);
+                resourceGroupName, virtualHubName, routeTableName, virtualHubRouteTableV2Parameters);
         return this
             .client
-            .<P2SVpnServerConfigurationInner, P2SVpnServerConfigurationInner>getLroResultAsync(
+            .<VirtualHubRouteTableV2Inner, VirtualHubRouteTableV2Inner>getLroResultAsync(
                 mono,
                 this.client.getHttpPipeline(),
-                P2SVpnServerConfigurationInner.class,
-                P2SVpnServerConfigurationInner.class);
+                VirtualHubRouteTableV2Inner.class,
+                VirtualHubRouteTableV2Inner.class);
     }
 
     /**
-     * Creates a P2SVpnServerConfiguration to associate with a VirtualWan if it doesn't exist else updates the existing
-     * P2SVpnServerConfiguration.
+     * Creates a VirtualHubRouteTableV2 resource if it doesn't exist else updates the existing VirtualHubRouteTableV2.
      *
-     * @param resourceGroupName The resource group name of the VirtualWan.
-     * @param virtualWanName The name of the VirtualWan.
-     * @param p2SVpnServerConfigurationName The name of the P2SVpnServerConfiguration.
-     * @param p2SVpnServerConfigurationParameters P2SVpnServerConfiguration Resource.
+     * @param resourceGroupName The resource group name of the VirtualHub.
+     * @param virtualHubName The name of the VirtualHub.
+     * @param routeTableName The name of the VirtualHubRouteTableV2.
+     * @param virtualHubRouteTableV2Parameters VirtualHubRouteTableV2 Resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return p2SVpnServerConfiguration Resource.
+     * @return virtualHubRouteTableV2 Resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<P2SVpnServerConfigurationInner>, P2SVpnServerConfigurationInner> beginCreateOrUpdate(
+    public PollerFlux<PollResult<VirtualHubRouteTableV2Inner>, VirtualHubRouteTableV2Inner> beginCreateOrUpdateAsync(
         String resourceGroupName,
-        String virtualWanName,
-        String p2SVpnServerConfigurationName,
-        P2SVpnServerConfigurationInner p2SVpnServerConfigurationParameters,
+        String virtualHubName,
+        String routeTableName,
+        VirtualHubRouteTableV2Inner virtualHubRouteTableV2Parameters,
         Context context) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             createOrUpdateWithResponseAsync(
-                resourceGroupName,
-                virtualWanName,
-                p2SVpnServerConfigurationName,
-                p2SVpnServerConfigurationParameters,
-                context);
+                resourceGroupName, virtualHubName, routeTableName, virtualHubRouteTableV2Parameters, context);
         return this
             .client
-            .<P2SVpnServerConfigurationInner, P2SVpnServerConfigurationInner>getLroResultAsync(
+            .<VirtualHubRouteTableV2Inner, VirtualHubRouteTableV2Inner>getLroResultAsync(
                 mono,
                 this.client.getHttpPipeline(),
-                P2SVpnServerConfigurationInner.class,
-                P2SVpnServerConfigurationInner.class);
+                VirtualHubRouteTableV2Inner.class,
+                VirtualHubRouteTableV2Inner.class);
     }
 
     /**
-     * Creates a P2SVpnServerConfiguration to associate with a VirtualWan if it doesn't exist else updates the existing
-     * P2SVpnServerConfiguration.
+     * Creates a VirtualHubRouteTableV2 resource if it doesn't exist else updates the existing VirtualHubRouteTableV2.
      *
-     * @param resourceGroupName The resource group name of the VirtualWan.
-     * @param virtualWanName The name of the VirtualWan.
-     * @param p2SVpnServerConfigurationName The name of the P2SVpnServerConfiguration.
-     * @param p2SVpnServerConfigurationParameters P2SVpnServerConfiguration Resource.
+     * @param resourceGroupName The resource group name of the VirtualHub.
+     * @param virtualHubName The name of the VirtualHub.
+     * @param routeTableName The name of the VirtualHubRouteTableV2.
+     * @param virtualHubRouteTableV2Parameters VirtualHubRouteTableV2 Resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return p2SVpnServerConfiguration Resource.
+     * @return virtualHubRouteTableV2 Resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<P2SVpnServerConfigurationInner> createOrUpdateAsync(
+    public SyncPoller<PollResult<VirtualHubRouteTableV2Inner>, VirtualHubRouteTableV2Inner> beginCreateOrUpdate(
         String resourceGroupName,
-        String virtualWanName,
-        String p2SVpnServerConfigurationName,
-        P2SVpnServerConfigurationInner p2SVpnServerConfigurationParameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(
-                resourceGroupName, virtualWanName, p2SVpnServerConfigurationName, p2SVpnServerConfigurationParameters);
-        return this
-            .client
-            .<P2SVpnServerConfigurationInner, P2SVpnServerConfigurationInner>getLroResultAsync(
-                mono,
-                this.client.getHttpPipeline(),
-                P2SVpnServerConfigurationInner.class,
-                P2SVpnServerConfigurationInner.class)
+        String virtualHubName,
+        String routeTableName,
+        VirtualHubRouteTableV2Inner virtualHubRouteTableV2Parameters) {
+        return beginCreateOrUpdateAsync(
+                resourceGroupName, virtualHubName, routeTableName, virtualHubRouteTableV2Parameters)
+            .getSyncPoller();
+    }
+
+    /**
+     * Creates a VirtualHubRouteTableV2 resource if it doesn't exist else updates the existing VirtualHubRouteTableV2.
+     *
+     * @param resourceGroupName The resource group name of the VirtualHub.
+     * @param virtualHubName The name of the VirtualHub.
+     * @param routeTableName The name of the VirtualHubRouteTableV2.
+     * @param virtualHubRouteTableV2Parameters VirtualHubRouteTableV2 Resource.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return virtualHubRouteTableV2 Resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<VirtualHubRouteTableV2Inner>, VirtualHubRouteTableV2Inner> beginCreateOrUpdate(
+        String resourceGroupName,
+        String virtualHubName,
+        String routeTableName,
+        VirtualHubRouteTableV2Inner virtualHubRouteTableV2Parameters,
+        Context context) {
+        return beginCreateOrUpdateAsync(
+                resourceGroupName, virtualHubName, routeTableName, virtualHubRouteTableV2Parameters, context)
+            .getSyncPoller();
+    }
+
+    /**
+     * Creates a VirtualHubRouteTableV2 resource if it doesn't exist else updates the existing VirtualHubRouteTableV2.
+     *
+     * @param resourceGroupName The resource group name of the VirtualHub.
+     * @param virtualHubName The name of the VirtualHub.
+     * @param routeTableName The name of the VirtualHubRouteTableV2.
+     * @param virtualHubRouteTableV2Parameters VirtualHubRouteTableV2 Resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return virtualHubRouteTableV2 Resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<VirtualHubRouteTableV2Inner> createOrUpdateAsync(
+        String resourceGroupName,
+        String virtualHubName,
+        String routeTableName,
+        VirtualHubRouteTableV2Inner virtualHubRouteTableV2Parameters) {
+        return beginCreateOrUpdateAsync(
+                resourceGroupName, virtualHubName, routeTableName, virtualHubRouteTableV2Parameters)
             .last()
             .flatMap(client::getLroFinalResultOrError);
     }
 
     /**
-     * Creates a P2SVpnServerConfiguration to associate with a VirtualWan if it doesn't exist else updates the existing
-     * P2SVpnServerConfiguration.
+     * Creates a VirtualHubRouteTableV2 resource if it doesn't exist else updates the existing VirtualHubRouteTableV2.
      *
-     * @param resourceGroupName The resource group name of the VirtualWan.
-     * @param virtualWanName The name of the VirtualWan.
-     * @param p2SVpnServerConfigurationName The name of the P2SVpnServerConfiguration.
-     * @param p2SVpnServerConfigurationParameters P2SVpnServerConfiguration Resource.
+     * @param resourceGroupName The resource group name of the VirtualHub.
+     * @param virtualHubName The name of the VirtualHub.
+     * @param routeTableName The name of the VirtualHubRouteTableV2.
+     * @param virtualHubRouteTableV2Parameters VirtualHubRouteTableV2 Resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return p2SVpnServerConfiguration Resource.
+     * @return virtualHubRouteTableV2 Resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<P2SVpnServerConfigurationInner> createOrUpdateAsync(
+    public Mono<VirtualHubRouteTableV2Inner> createOrUpdateAsync(
         String resourceGroupName,
-        String virtualWanName,
-        String p2SVpnServerConfigurationName,
-        P2SVpnServerConfigurationInner p2SVpnServerConfigurationParameters,
+        String virtualHubName,
+        String routeTableName,
+        VirtualHubRouteTableV2Inner virtualHubRouteTableV2Parameters,
         Context context) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(
-                resourceGroupName,
-                virtualWanName,
-                p2SVpnServerConfigurationName,
-                p2SVpnServerConfigurationParameters,
-                context);
-        return this
-            .client
-            .<P2SVpnServerConfigurationInner, P2SVpnServerConfigurationInner>getLroResultAsync(
-                mono,
-                this.client.getHttpPipeline(),
-                P2SVpnServerConfigurationInner.class,
-                P2SVpnServerConfigurationInner.class)
+        return beginCreateOrUpdateAsync(
+                resourceGroupName, virtualHubName, routeTableName, virtualHubRouteTableV2Parameters, context)
             .last()
             .flatMap(client::getLroFinalResultOrError);
     }
 
     /**
-     * Creates a P2SVpnServerConfiguration to associate with a VirtualWan if it doesn't exist else updates the existing
-     * P2SVpnServerConfiguration.
+     * Creates a VirtualHubRouteTableV2 resource if it doesn't exist else updates the existing VirtualHubRouteTableV2.
      *
-     * @param resourceGroupName The resource group name of the VirtualWan.
-     * @param virtualWanName The name of the VirtualWan.
-     * @param p2SVpnServerConfigurationName The name of the P2SVpnServerConfiguration.
-     * @param p2SVpnServerConfigurationParameters P2SVpnServerConfiguration Resource.
+     * @param resourceGroupName The resource group name of the VirtualHub.
+     * @param virtualHubName The name of the VirtualHub.
+     * @param routeTableName The name of the VirtualHubRouteTableV2.
+     * @param virtualHubRouteTableV2Parameters VirtualHubRouteTableV2 Resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return p2SVpnServerConfiguration Resource.
+     * @return virtualHubRouteTableV2 Resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public P2SVpnServerConfigurationInner createOrUpdate(
+    public VirtualHubRouteTableV2Inner createOrUpdate(
         String resourceGroupName,
-        String virtualWanName,
-        String p2SVpnServerConfigurationName,
-        P2SVpnServerConfigurationInner p2SVpnServerConfigurationParameters) {
-        return createOrUpdateAsync(
-                resourceGroupName, virtualWanName, p2SVpnServerConfigurationName, p2SVpnServerConfigurationParameters)
+        String virtualHubName,
+        String routeTableName,
+        VirtualHubRouteTableV2Inner virtualHubRouteTableV2Parameters) {
+        return createOrUpdateAsync(resourceGroupName, virtualHubName, routeTableName, virtualHubRouteTableV2Parameters)
             .block();
     }
 
     /**
-     * Creates a P2SVpnServerConfiguration to associate with a VirtualWan if it doesn't exist else updates the existing
-     * P2SVpnServerConfiguration.
+     * Creates a VirtualHubRouteTableV2 resource if it doesn't exist else updates the existing VirtualHubRouteTableV2.
      *
-     * @param resourceGroupName The resource group name of the VirtualWan.
-     * @param virtualWanName The name of the VirtualWan.
-     * @param p2SVpnServerConfigurationName The name of the P2SVpnServerConfiguration.
-     * @param p2SVpnServerConfigurationParameters P2SVpnServerConfiguration Resource.
+     * @param resourceGroupName The resource group name of the VirtualHub.
+     * @param virtualHubName The name of the VirtualHub.
+     * @param routeTableName The name of the VirtualHubRouteTableV2.
+     * @param virtualHubRouteTableV2Parameters VirtualHubRouteTableV2 Resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return p2SVpnServerConfiguration Resource.
+     * @return virtualHubRouteTableV2 Resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public P2SVpnServerConfigurationInner createOrUpdate(
+    public VirtualHubRouteTableV2Inner createOrUpdate(
         String resourceGroupName,
-        String virtualWanName,
-        String p2SVpnServerConfigurationName,
-        P2SVpnServerConfigurationInner p2SVpnServerConfigurationParameters,
+        String virtualHubName,
+        String routeTableName,
+        VirtualHubRouteTableV2Inner virtualHubRouteTableV2Parameters,
         Context context) {
         return createOrUpdateAsync(
-                resourceGroupName,
-                virtualWanName,
-                p2SVpnServerConfigurationName,
-                p2SVpnServerConfigurationParameters,
-                context)
+                resourceGroupName, virtualHubName, routeTableName, virtualHubRouteTableV2Parameters, context)
             .block();
     }
 
     /**
-     * Deletes a P2SVpnServerConfiguration.
+     * Deletes a VirtualHubRouteTableV2.
      *
-     * @param resourceGroupName The resource group name of the P2SVpnServerConfiguration.
-     * @param virtualWanName The name of the VirtualWan.
-     * @param p2SVpnServerConfigurationName The name of the P2SVpnServerConfiguration.
+     * @param resourceGroupName The resource group name of the VirtualHubRouteTableV2.
+     * @param virtualHubName The name of the VirtualHub.
+     * @param routeTableName The name of the VirtualHubRouteTableV2.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -702,7 +701,7 @@ public final class P2SVpnServerConfigurationsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String virtualWanName, String p2SVpnServerConfigurationName) {
+        String resourceGroupName, String virtualHubName, String routeTableName) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -719,16 +718,13 @@ public final class P2SVpnServerConfigurationsClient {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        if (virtualWanName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter virtualWanName is required and cannot be null."));
+        if (virtualHubName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter virtualHubName is required and cannot be null."));
         }
-        if (p2SVpnServerConfigurationName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter p2SVpnServerConfigurationName is required and cannot be null."));
+        if (routeTableName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter routeTableName is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -737,19 +733,19 @@ public final class P2SVpnServerConfigurationsClient {
                             this.client.getEndpoint(),
                             this.client.getSubscriptionId(),
                             resourceGroupName,
-                            virtualWanName,
-                            p2SVpnServerConfigurationName,
+                            virtualHubName,
+                            routeTableName,
                             apiVersion,
                             context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
-     * Deletes a P2SVpnServerConfiguration.
+     * Deletes a VirtualHubRouteTableV2.
      *
-     * @param resourceGroupName The resource group name of the P2SVpnServerConfiguration.
-     * @param virtualWanName The name of the VirtualWan.
-     * @param p2SVpnServerConfigurationName The name of the P2SVpnServerConfiguration.
+     * @param resourceGroupName The resource group name of the VirtualHubRouteTableV2.
+     * @param virtualHubName The name of the VirtualHub.
+     * @param routeTableName The name of the VirtualHubRouteTableV2.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
@@ -758,7 +754,7 @@ public final class P2SVpnServerConfigurationsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String virtualWanName, String p2SVpnServerConfigurationName, Context context) {
+        String resourceGroupName, String virtualHubName, String routeTableName, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -775,52 +771,49 @@ public final class P2SVpnServerConfigurationsClient {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        if (virtualWanName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter virtualWanName is required and cannot be null."));
+        if (virtualHubName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter virtualHubName is required and cannot be null."));
         }
-        if (p2SVpnServerConfigurationName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter p2SVpnServerConfigurationName is required and cannot be null."));
+        if (routeTableName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter routeTableName is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return service
             .delete(
                 this.client.getEndpoint(),
                 this.client.getSubscriptionId(),
                 resourceGroupName,
-                virtualWanName,
-                p2SVpnServerConfigurationName,
+                virtualHubName,
+                routeTableName,
                 apiVersion,
                 context);
     }
 
     /**
-     * Deletes a P2SVpnServerConfiguration.
+     * Deletes a VirtualHubRouteTableV2.
      *
-     * @param resourceGroupName The resource group name of the P2SVpnServerConfiguration.
-     * @param virtualWanName The name of the VirtualWan.
-     * @param p2SVpnServerConfigurationName The name of the P2SVpnServerConfiguration.
+     * @param resourceGroupName The resource group name of the VirtualHubRouteTableV2.
+     * @param virtualHubName The name of the VirtualHub.
+     * @param routeTableName The name of the VirtualHubRouteTableV2.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String virtualWanName, String p2SVpnServerConfigurationName) {
+    public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
+        String resourceGroupName, String virtualHubName, String routeTableName) {
         Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, virtualWanName, p2SVpnServerConfigurationName);
+            deleteWithResponseAsync(resourceGroupName, virtualHubName, routeTableName);
         return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
     }
 
     /**
-     * Deletes a P2SVpnServerConfiguration.
+     * Deletes a VirtualHubRouteTableV2.
      *
-     * @param resourceGroupName The resource group name of the P2SVpnServerConfiguration.
-     * @param virtualWanName The name of the VirtualWan.
-     * @param p2SVpnServerConfigurationName The name of the P2SVpnServerConfiguration.
+     * @param resourceGroupName The resource group name of the VirtualHubRouteTableV2.
+     * @param virtualHubName The name of the VirtualHub.
+     * @param routeTableName The name of the VirtualHubRouteTableV2.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
@@ -828,19 +821,73 @@ public final class P2SVpnServerConfigurationsClient {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String virtualWanName, String p2SVpnServerConfigurationName, Context context) {
+    public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
+        String resourceGroupName, String virtualHubName, String routeTableName, Context context) {
         Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, virtualWanName, p2SVpnServerConfigurationName, context);
+            deleteWithResponseAsync(resourceGroupName, virtualHubName, routeTableName, context);
         return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
     }
 
     /**
-     * Deletes a P2SVpnServerConfiguration.
+     * Deletes a VirtualHubRouteTableV2.
      *
-     * @param resourceGroupName The resource group name of the P2SVpnServerConfiguration.
-     * @param virtualWanName The name of the VirtualWan.
-     * @param p2SVpnServerConfigurationName The name of the P2SVpnServerConfiguration.
+     * @param resourceGroupName The resource group name of the VirtualHubRouteTableV2.
+     * @param virtualHubName The name of the VirtualHub.
+     * @param routeTableName The name of the VirtualHubRouteTableV2.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<Void>, Void> beginDelete(
+        String resourceGroupName, String virtualHubName, String routeTableName) {
+        return beginDeleteAsync(resourceGroupName, virtualHubName, routeTableName).getSyncPoller();
+    }
+
+    /**
+     * Deletes a VirtualHubRouteTableV2.
+     *
+     * @param resourceGroupName The resource group name of the VirtualHubRouteTableV2.
+     * @param virtualHubName The name of the VirtualHub.
+     * @param routeTableName The name of the VirtualHubRouteTableV2.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<Void>, Void> beginDelete(
+        String resourceGroupName, String virtualHubName, String routeTableName, Context context) {
+        return beginDeleteAsync(resourceGroupName, virtualHubName, routeTableName, context).getSyncPoller();
+    }
+
+    /**
+     * Deletes a VirtualHubRouteTableV2.
+     *
+     * @param resourceGroupName The resource group name of the VirtualHubRouteTableV2.
+     * @param virtualHubName The name of the VirtualHub.
+     * @param routeTableName The name of the VirtualHubRouteTableV2.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> deleteAsync(String resourceGroupName, String virtualHubName, String routeTableName) {
+        return beginDeleteAsync(resourceGroupName, virtualHubName, routeTableName)
+            .last()
+            .flatMap(client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Deletes a VirtualHubRouteTableV2.
+     *
+     * @param resourceGroupName The resource group name of the VirtualHubRouteTableV2.
+     * @param virtualHubName The name of the VirtualHub.
+     * @param routeTableName The name of the VirtualHubRouteTableV2.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -848,85 +895,56 @@ public final class P2SVpnServerConfigurationsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(
-        String resourceGroupName, String virtualWanName, String p2SVpnServerConfigurationName) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, virtualWanName, p2SVpnServerConfigurationName);
-        return this
-            .client
-            .<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class)
+        String resourceGroupName, String virtualHubName, String routeTableName, Context context) {
+        return beginDeleteAsync(resourceGroupName, virtualHubName, routeTableName, context)
             .last()
             .flatMap(client::getLroFinalResultOrError);
     }
 
     /**
-     * Deletes a P2SVpnServerConfiguration.
+     * Deletes a VirtualHubRouteTableV2.
      *
-     * @param resourceGroupName The resource group name of the P2SVpnServerConfiguration.
-     * @param virtualWanName The name of the VirtualWan.
-     * @param p2SVpnServerConfigurationName The name of the P2SVpnServerConfiguration.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deleteAsync(
-        String resourceGroupName, String virtualWanName, String p2SVpnServerConfigurationName, Context context) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, virtualWanName, p2SVpnServerConfigurationName, context);
-        return this
-            .client
-            .<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class)
-            .last()
-            .flatMap(client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Deletes a P2SVpnServerConfiguration.
-     *
-     * @param resourceGroupName The resource group name of the P2SVpnServerConfiguration.
-     * @param virtualWanName The name of the VirtualWan.
-     * @param p2SVpnServerConfigurationName The name of the P2SVpnServerConfiguration.
+     * @param resourceGroupName The resource group name of the VirtualHubRouteTableV2.
+     * @param virtualHubName The name of the VirtualHub.
+     * @param routeTableName The name of the VirtualHubRouteTableV2.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String resourceGroupName, String virtualWanName, String p2SVpnServerConfigurationName) {
-        deleteAsync(resourceGroupName, virtualWanName, p2SVpnServerConfigurationName).block();
+    public void delete(String resourceGroupName, String virtualHubName, String routeTableName) {
+        deleteAsync(resourceGroupName, virtualHubName, routeTableName).block();
     }
 
     /**
-     * Deletes a P2SVpnServerConfiguration.
+     * Deletes a VirtualHubRouteTableV2.
      *
-     * @param resourceGroupName The resource group name of the P2SVpnServerConfiguration.
-     * @param virtualWanName The name of the VirtualWan.
-     * @param p2SVpnServerConfigurationName The name of the P2SVpnServerConfiguration.
+     * @param resourceGroupName The resource group name of the VirtualHubRouteTableV2.
+     * @param virtualHubName The name of the VirtualHub.
+     * @param routeTableName The name of the VirtualHubRouteTableV2.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(
-        String resourceGroupName, String virtualWanName, String p2SVpnServerConfigurationName, Context context) {
-        deleteAsync(resourceGroupName, virtualWanName, p2SVpnServerConfigurationName, context).block();
+    public void delete(String resourceGroupName, String virtualHubName, String routeTableName, Context context) {
+        deleteAsync(resourceGroupName, virtualHubName, routeTableName, context).block();
     }
 
     /**
-     * Retrieves all P2SVpnServerConfigurations for a particular VirtualWan.
+     * Retrieves the details of all VirtualHubRouteTableV2s.
      *
-     * @param resourceGroupName The resource group name of the VirtualWan.
-     * @param virtualWanName The name of the VirtualWan.
+     * @param resourceGroupName The resource group name of the VirtualHub.
+     * @param virtualHubName The name of the VirtualHub.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list all P2SVpnServerConfigurations associated to a VirtualWan.
+     * @return list of VirtualHubRouteTableV2s and a URL nextLink to get the next set of results.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<P2SVpnServerConfigurationInner>> listByVirtualWanSinglePageAsync(
-        String resourceGroupName, String virtualWanName) {
+    public Mono<PagedResponse<VirtualHubRouteTableV2Inner>> listSinglePageAsync(
+        String resourceGroupName, String virtualHubName) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -943,22 +961,22 @@ public final class P2SVpnServerConfigurationsClient {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        if (virtualWanName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter virtualWanName is required and cannot be null."));
+        if (virtualHubName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter virtualHubName is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return FluxUtil
             .withContext(
                 context ->
                     service
-                        .listByVirtualWan(
+                        .list(
                             this.client.getEndpoint(),
                             this.client.getSubscriptionId(),
                             resourceGroupName,
-                            virtualWanName,
+                            virtualHubName,
                             apiVersion,
                             context))
-            .<PagedResponse<P2SVpnServerConfigurationInner>>map(
+            .<PagedResponse<VirtualHubRouteTableV2Inner>>map(
                 res ->
                     new PagedResponseBase<>(
                         res.getRequest(),
@@ -971,19 +989,19 @@ public final class P2SVpnServerConfigurationsClient {
     }
 
     /**
-     * Retrieves all P2SVpnServerConfigurations for a particular VirtualWan.
+     * Retrieves the details of all VirtualHubRouteTableV2s.
      *
-     * @param resourceGroupName The resource group name of the VirtualWan.
-     * @param virtualWanName The name of the VirtualWan.
+     * @param resourceGroupName The resource group name of the VirtualHub.
+     * @param virtualHubName The name of the VirtualHub.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list all P2SVpnServerConfigurations associated to a VirtualWan.
+     * @return list of VirtualHubRouteTableV2s and a URL nextLink to get the next set of results.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<P2SVpnServerConfigurationInner>> listByVirtualWanSinglePageAsync(
-        String resourceGroupName, String virtualWanName, Context context) {
+    public Mono<PagedResponse<VirtualHubRouteTableV2Inner>> listSinglePageAsync(
+        String resourceGroupName, String virtualHubName, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -1000,16 +1018,16 @@ public final class P2SVpnServerConfigurationsClient {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        if (virtualWanName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter virtualWanName is required and cannot be null."));
+        if (virtualHubName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter virtualHubName is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return service
-            .listByVirtualWan(
+            .list(
                 this.client.getEndpoint(),
                 this.client.getSubscriptionId(),
                 resourceGroupName,
-                virtualWanName,
+                virtualHubName,
                 apiVersion,
                 context)
             .map(
@@ -1024,94 +1042,91 @@ public final class P2SVpnServerConfigurationsClient {
     }
 
     /**
-     * Retrieves all P2SVpnServerConfigurations for a particular VirtualWan.
+     * Retrieves the details of all VirtualHubRouteTableV2s.
      *
-     * @param resourceGroupName The resource group name of the VirtualWan.
-     * @param virtualWanName The name of the VirtualWan.
+     * @param resourceGroupName The resource group name of the VirtualHub.
+     * @param virtualHubName The name of the VirtualHub.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list all P2SVpnServerConfigurations associated to a VirtualWan.
+     * @return list of VirtualHubRouteTableV2s and a URL nextLink to get the next set of results.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<P2SVpnServerConfigurationInner> listByVirtualWanAsync(
-        String resourceGroupName, String virtualWanName) {
+    public PagedFlux<VirtualHubRouteTableV2Inner> listAsync(String resourceGroupName, String virtualHubName) {
         return new PagedFlux<>(
-            () -> listByVirtualWanSinglePageAsync(resourceGroupName, virtualWanName),
-            nextLink -> listByVirtualWanNextSinglePageAsync(nextLink));
+            () -> listSinglePageAsync(resourceGroupName, virtualHubName),
+            nextLink -> listNextSinglePageAsync(nextLink));
     }
 
     /**
-     * Retrieves all P2SVpnServerConfigurations for a particular VirtualWan.
+     * Retrieves the details of all VirtualHubRouteTableV2s.
      *
-     * @param resourceGroupName The resource group name of the VirtualWan.
-     * @param virtualWanName The name of the VirtualWan.
+     * @param resourceGroupName The resource group name of the VirtualHub.
+     * @param virtualHubName The name of the VirtualHub.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list all P2SVpnServerConfigurations associated to a VirtualWan.
+     * @return list of VirtualHubRouteTableV2s and a URL nextLink to get the next set of results.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<P2SVpnServerConfigurationInner> listByVirtualWanAsync(
-        String resourceGroupName, String virtualWanName, Context context) {
+    public PagedFlux<VirtualHubRouteTableV2Inner> listAsync(
+        String resourceGroupName, String virtualHubName, Context context) {
         return new PagedFlux<>(
-            () -> listByVirtualWanSinglePageAsync(resourceGroupName, virtualWanName, context),
-            nextLink -> listByVirtualWanNextSinglePageAsync(nextLink));
+            () -> listSinglePageAsync(resourceGroupName, virtualHubName, context),
+            nextLink -> listNextSinglePageAsync(nextLink));
     }
 
     /**
-     * Retrieves all P2SVpnServerConfigurations for a particular VirtualWan.
+     * Retrieves the details of all VirtualHubRouteTableV2s.
      *
-     * @param resourceGroupName The resource group name of the VirtualWan.
-     * @param virtualWanName The name of the VirtualWan.
+     * @param resourceGroupName The resource group name of the VirtualHub.
+     * @param virtualHubName The name of the VirtualHub.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list all P2SVpnServerConfigurations associated to a VirtualWan.
+     * @return list of VirtualHubRouteTableV2s and a URL nextLink to get the next set of results.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<P2SVpnServerConfigurationInner> listByVirtualWan(
-        String resourceGroupName, String virtualWanName) {
-        return new PagedIterable<>(listByVirtualWanAsync(resourceGroupName, virtualWanName));
+    public PagedIterable<VirtualHubRouteTableV2Inner> list(String resourceGroupName, String virtualHubName) {
+        return new PagedIterable<>(listAsync(resourceGroupName, virtualHubName));
     }
 
     /**
-     * Retrieves all P2SVpnServerConfigurations for a particular VirtualWan.
+     * Retrieves the details of all VirtualHubRouteTableV2s.
      *
-     * @param resourceGroupName The resource group name of the VirtualWan.
-     * @param virtualWanName The name of the VirtualWan.
+     * @param resourceGroupName The resource group name of the VirtualHub.
+     * @param virtualHubName The name of the VirtualHub.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list all P2SVpnServerConfigurations associated to a VirtualWan.
+     * @return list of VirtualHubRouteTableV2s and a URL nextLink to get the next set of results.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<P2SVpnServerConfigurationInner> listByVirtualWan(
-        String resourceGroupName, String virtualWanName, Context context) {
-        return new PagedIterable<>(listByVirtualWanAsync(resourceGroupName, virtualWanName, context));
+    public PagedIterable<VirtualHubRouteTableV2Inner> list(
+        String resourceGroupName, String virtualHubName, Context context) {
+        return new PagedIterable<>(listAsync(resourceGroupName, virtualHubName, context));
     }
 
     /**
-     * Creates a P2SVpnServerConfiguration to associate with a VirtualWan if it doesn't exist else updates the existing
-     * P2SVpnServerConfiguration.
+     * Creates a VirtualHubRouteTableV2 resource if it doesn't exist else updates the existing VirtualHubRouteTableV2.
      *
-     * @param resourceGroupName The resource group name of the VirtualWan.
-     * @param virtualWanName The name of the VirtualWan.
-     * @param p2SVpnServerConfigurationName The name of the P2SVpnServerConfiguration.
-     * @param p2SVpnServerConfigurationParameters P2SVpnServerConfiguration Resource.
+     * @param resourceGroupName The resource group name of the VirtualHub.
+     * @param virtualHubName The name of the VirtualHub.
+     * @param routeTableName The name of the VirtualHubRouteTableV2.
+     * @param virtualHubRouteTableV2Parameters VirtualHubRouteTableV2 Resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return p2SVpnServerConfiguration Resource.
+     * @return virtualHubRouteTableV2 Resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<P2SVpnServerConfigurationInner>> beginCreateOrUpdateWithoutPollingWithResponseAsync(
+    public Mono<Response<VirtualHubRouteTableV2Inner>> beginCreateOrUpdateWithoutPollingWithResponseAsync(
         String resourceGroupName,
-        String virtualWanName,
-        String p2SVpnServerConfigurationName,
-        P2SVpnServerConfigurationInner p2SVpnServerConfigurationParameters) {
+        String virtualHubName,
+        String routeTableName,
+        VirtualHubRouteTableV2Inner virtualHubRouteTableV2Parameters) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -1128,24 +1143,21 @@ public final class P2SVpnServerConfigurationsClient {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        if (virtualWanName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter virtualWanName is required and cannot be null."));
+        if (virtualHubName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter virtualHubName is required and cannot be null."));
         }
-        if (p2SVpnServerConfigurationName == null) {
+        if (routeTableName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter routeTableName is required and cannot be null."));
+        }
+        if (virtualHubRouteTableV2Parameters == null) {
             return Mono
                 .error(
                     new IllegalArgumentException(
-                        "Parameter p2SVpnServerConfigurationName is required and cannot be null."));
-        }
-        if (p2SVpnServerConfigurationParameters == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter p2SVpnServerConfigurationParameters is required and cannot be null."));
+                        "Parameter virtualHubRouteTableV2Parameters is required and cannot be null."));
         } else {
-            p2SVpnServerConfigurationParameters.validate();
+            virtualHubRouteTableV2Parameters.validate();
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -1154,34 +1166,33 @@ public final class P2SVpnServerConfigurationsClient {
                             this.client.getEndpoint(),
                             this.client.getSubscriptionId(),
                             resourceGroupName,
-                            virtualWanName,
-                            p2SVpnServerConfigurationName,
+                            virtualHubName,
+                            routeTableName,
                             apiVersion,
-                            p2SVpnServerConfigurationParameters,
+                            virtualHubRouteTableV2Parameters,
                             context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
-     * Creates a P2SVpnServerConfiguration to associate with a VirtualWan if it doesn't exist else updates the existing
-     * P2SVpnServerConfiguration.
+     * Creates a VirtualHubRouteTableV2 resource if it doesn't exist else updates the existing VirtualHubRouteTableV2.
      *
-     * @param resourceGroupName The resource group name of the VirtualWan.
-     * @param virtualWanName The name of the VirtualWan.
-     * @param p2SVpnServerConfigurationName The name of the P2SVpnServerConfiguration.
-     * @param p2SVpnServerConfigurationParameters P2SVpnServerConfiguration Resource.
+     * @param resourceGroupName The resource group name of the VirtualHub.
+     * @param virtualHubName The name of the VirtualHub.
+     * @param routeTableName The name of the VirtualHubRouteTableV2.
+     * @param virtualHubRouteTableV2Parameters VirtualHubRouteTableV2 Resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return p2SVpnServerConfiguration Resource.
+     * @return virtualHubRouteTableV2 Resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<P2SVpnServerConfigurationInner>> beginCreateOrUpdateWithoutPollingWithResponseAsync(
+    public Mono<Response<VirtualHubRouteTableV2Inner>> beginCreateOrUpdateWithoutPollingWithResponseAsync(
         String resourceGroupName,
-        String virtualWanName,
-        String p2SVpnServerConfigurationName,
-        P2SVpnServerConfigurationInner p2SVpnServerConfigurationParameters,
+        String virtualHubName,
+        String routeTableName,
+        VirtualHubRouteTableV2Inner virtualHubRouteTableV2Parameters,
         Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -1199,59 +1210,55 @@ public final class P2SVpnServerConfigurationsClient {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        if (virtualWanName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter virtualWanName is required and cannot be null."));
+        if (virtualHubName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter virtualHubName is required and cannot be null."));
         }
-        if (p2SVpnServerConfigurationName == null) {
+        if (routeTableName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter routeTableName is required and cannot be null."));
+        }
+        if (virtualHubRouteTableV2Parameters == null) {
             return Mono
                 .error(
                     new IllegalArgumentException(
-                        "Parameter p2SVpnServerConfigurationName is required and cannot be null."));
-        }
-        if (p2SVpnServerConfigurationParameters == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter p2SVpnServerConfigurationParameters is required and cannot be null."));
+                        "Parameter virtualHubRouteTableV2Parameters is required and cannot be null."));
         } else {
-            p2SVpnServerConfigurationParameters.validate();
+            virtualHubRouteTableV2Parameters.validate();
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return service
             .beginCreateOrUpdateWithoutPolling(
                 this.client.getEndpoint(),
                 this.client.getSubscriptionId(),
                 resourceGroupName,
-                virtualWanName,
-                p2SVpnServerConfigurationName,
+                virtualHubName,
+                routeTableName,
                 apiVersion,
-                p2SVpnServerConfigurationParameters,
+                virtualHubRouteTableV2Parameters,
                 context);
     }
 
     /**
-     * Creates a P2SVpnServerConfiguration to associate with a VirtualWan if it doesn't exist else updates the existing
-     * P2SVpnServerConfiguration.
+     * Creates a VirtualHubRouteTableV2 resource if it doesn't exist else updates the existing VirtualHubRouteTableV2.
      *
-     * @param resourceGroupName The resource group name of the VirtualWan.
-     * @param virtualWanName The name of the VirtualWan.
-     * @param p2SVpnServerConfigurationName The name of the P2SVpnServerConfiguration.
-     * @param p2SVpnServerConfigurationParameters P2SVpnServerConfiguration Resource.
+     * @param resourceGroupName The resource group name of the VirtualHub.
+     * @param virtualHubName The name of the VirtualHub.
+     * @param routeTableName The name of the VirtualHubRouteTableV2.
+     * @param virtualHubRouteTableV2Parameters VirtualHubRouteTableV2 Resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return p2SVpnServerConfiguration Resource.
+     * @return virtualHubRouteTableV2 Resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<P2SVpnServerConfigurationInner> beginCreateOrUpdateWithoutPollingAsync(
+    public Mono<VirtualHubRouteTableV2Inner> beginCreateOrUpdateWithoutPollingAsync(
         String resourceGroupName,
-        String virtualWanName,
-        String p2SVpnServerConfigurationName,
-        P2SVpnServerConfigurationInner p2SVpnServerConfigurationParameters) {
+        String virtualHubName,
+        String routeTableName,
+        VirtualHubRouteTableV2Inner virtualHubRouteTableV2Parameters) {
         return beginCreateOrUpdateWithoutPollingWithResponseAsync(
-                resourceGroupName, virtualWanName, p2SVpnServerConfigurationName, p2SVpnServerConfigurationParameters)
+                resourceGroupName, virtualHubName, routeTableName, virtualHubRouteTableV2Parameters)
             .flatMap(
-                (Response<P2SVpnServerConfigurationInner> res) -> {
+                (Response<VirtualHubRouteTableV2Inner> res) -> {
                     if (res.getValue() != null) {
                         return Mono.just(res.getValue());
                     } else {
@@ -1261,34 +1268,29 @@ public final class P2SVpnServerConfigurationsClient {
     }
 
     /**
-     * Creates a P2SVpnServerConfiguration to associate with a VirtualWan if it doesn't exist else updates the existing
-     * P2SVpnServerConfiguration.
+     * Creates a VirtualHubRouteTableV2 resource if it doesn't exist else updates the existing VirtualHubRouteTableV2.
      *
-     * @param resourceGroupName The resource group name of the VirtualWan.
-     * @param virtualWanName The name of the VirtualWan.
-     * @param p2SVpnServerConfigurationName The name of the P2SVpnServerConfiguration.
-     * @param p2SVpnServerConfigurationParameters P2SVpnServerConfiguration Resource.
+     * @param resourceGroupName The resource group name of the VirtualHub.
+     * @param virtualHubName The name of the VirtualHub.
+     * @param routeTableName The name of the VirtualHubRouteTableV2.
+     * @param virtualHubRouteTableV2Parameters VirtualHubRouteTableV2 Resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return p2SVpnServerConfiguration Resource.
+     * @return virtualHubRouteTableV2 Resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<P2SVpnServerConfigurationInner> beginCreateOrUpdateWithoutPollingAsync(
+    public Mono<VirtualHubRouteTableV2Inner> beginCreateOrUpdateWithoutPollingAsync(
         String resourceGroupName,
-        String virtualWanName,
-        String p2SVpnServerConfigurationName,
-        P2SVpnServerConfigurationInner p2SVpnServerConfigurationParameters,
+        String virtualHubName,
+        String routeTableName,
+        VirtualHubRouteTableV2Inner virtualHubRouteTableV2Parameters,
         Context context) {
         return beginCreateOrUpdateWithoutPollingWithResponseAsync(
-                resourceGroupName,
-                virtualWanName,
-                p2SVpnServerConfigurationName,
-                p2SVpnServerConfigurationParameters,
-                context)
+                resourceGroupName, virtualHubName, routeTableName, virtualHubRouteTableV2Parameters, context)
             .flatMap(
-                (Response<P2SVpnServerConfigurationInner> res) -> {
+                (Response<VirtualHubRouteTableV2Inner> res) -> {
                     if (res.getValue() != null) {
                         return Mono.just(res.getValue());
                     } else {
@@ -1298,65 +1300,59 @@ public final class P2SVpnServerConfigurationsClient {
     }
 
     /**
-     * Creates a P2SVpnServerConfiguration to associate with a VirtualWan if it doesn't exist else updates the existing
-     * P2SVpnServerConfiguration.
+     * Creates a VirtualHubRouteTableV2 resource if it doesn't exist else updates the existing VirtualHubRouteTableV2.
      *
-     * @param resourceGroupName The resource group name of the VirtualWan.
-     * @param virtualWanName The name of the VirtualWan.
-     * @param p2SVpnServerConfigurationName The name of the P2SVpnServerConfiguration.
-     * @param p2SVpnServerConfigurationParameters P2SVpnServerConfiguration Resource.
+     * @param resourceGroupName The resource group name of the VirtualHub.
+     * @param virtualHubName The name of the VirtualHub.
+     * @param routeTableName The name of the VirtualHubRouteTableV2.
+     * @param virtualHubRouteTableV2Parameters VirtualHubRouteTableV2 Resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return p2SVpnServerConfiguration Resource.
+     * @return virtualHubRouteTableV2 Resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public P2SVpnServerConfigurationInner beginCreateOrUpdateWithoutPolling(
+    public VirtualHubRouteTableV2Inner beginCreateOrUpdateWithoutPolling(
         String resourceGroupName,
-        String virtualWanName,
-        String p2SVpnServerConfigurationName,
-        P2SVpnServerConfigurationInner p2SVpnServerConfigurationParameters) {
+        String virtualHubName,
+        String routeTableName,
+        VirtualHubRouteTableV2Inner virtualHubRouteTableV2Parameters) {
         return beginCreateOrUpdateWithoutPollingAsync(
-                resourceGroupName, virtualWanName, p2SVpnServerConfigurationName, p2SVpnServerConfigurationParameters)
+                resourceGroupName, virtualHubName, routeTableName, virtualHubRouteTableV2Parameters)
             .block();
     }
 
     /**
-     * Creates a P2SVpnServerConfiguration to associate with a VirtualWan if it doesn't exist else updates the existing
-     * P2SVpnServerConfiguration.
+     * Creates a VirtualHubRouteTableV2 resource if it doesn't exist else updates the existing VirtualHubRouteTableV2.
      *
-     * @param resourceGroupName The resource group name of the VirtualWan.
-     * @param virtualWanName The name of the VirtualWan.
-     * @param p2SVpnServerConfigurationName The name of the P2SVpnServerConfiguration.
-     * @param p2SVpnServerConfigurationParameters P2SVpnServerConfiguration Resource.
+     * @param resourceGroupName The resource group name of the VirtualHub.
+     * @param virtualHubName The name of the VirtualHub.
+     * @param routeTableName The name of the VirtualHubRouteTableV2.
+     * @param virtualHubRouteTableV2Parameters VirtualHubRouteTableV2 Resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return p2SVpnServerConfiguration Resource.
+     * @return virtualHubRouteTableV2 Resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public P2SVpnServerConfigurationInner beginCreateOrUpdateWithoutPolling(
+    public VirtualHubRouteTableV2Inner beginCreateOrUpdateWithoutPolling(
         String resourceGroupName,
-        String virtualWanName,
-        String p2SVpnServerConfigurationName,
-        P2SVpnServerConfigurationInner p2SVpnServerConfigurationParameters,
+        String virtualHubName,
+        String routeTableName,
+        VirtualHubRouteTableV2Inner virtualHubRouteTableV2Parameters,
         Context context) {
         return beginCreateOrUpdateWithoutPollingAsync(
-                resourceGroupName,
-                virtualWanName,
-                p2SVpnServerConfigurationName,
-                p2SVpnServerConfigurationParameters,
-                context)
+                resourceGroupName, virtualHubName, routeTableName, virtualHubRouteTableV2Parameters, context)
             .block();
     }
 
     /**
-     * Deletes a P2SVpnServerConfiguration.
+     * Deletes a VirtualHubRouteTableV2.
      *
-     * @param resourceGroupName The resource group name of the P2SVpnServerConfiguration.
-     * @param virtualWanName The name of the VirtualWan.
-     * @param p2SVpnServerConfigurationName The name of the P2SVpnServerConfiguration.
+     * @param resourceGroupName The resource group name of the VirtualHubRouteTableV2.
+     * @param virtualHubName The name of the VirtualHub.
+     * @param routeTableName The name of the VirtualHubRouteTableV2.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1364,7 +1360,7 @@ public final class P2SVpnServerConfigurationsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> beginDeleteWithoutPollingWithResponseAsync(
-        String resourceGroupName, String virtualWanName, String p2SVpnServerConfigurationName) {
+        String resourceGroupName, String virtualHubName, String routeTableName) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -1381,16 +1377,13 @@ public final class P2SVpnServerConfigurationsClient {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        if (virtualWanName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter virtualWanName is required and cannot be null."));
+        if (virtualHubName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter virtualHubName is required and cannot be null."));
         }
-        if (p2SVpnServerConfigurationName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter p2SVpnServerConfigurationName is required and cannot be null."));
+        if (routeTableName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter routeTableName is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -1399,19 +1392,19 @@ public final class P2SVpnServerConfigurationsClient {
                             this.client.getEndpoint(),
                             this.client.getSubscriptionId(),
                             resourceGroupName,
-                            virtualWanName,
-                            p2SVpnServerConfigurationName,
+                            virtualHubName,
+                            routeTableName,
                             apiVersion,
                             context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
-     * Deletes a P2SVpnServerConfiguration.
+     * Deletes a VirtualHubRouteTableV2.
      *
-     * @param resourceGroupName The resource group name of the P2SVpnServerConfiguration.
-     * @param virtualWanName The name of the VirtualWan.
-     * @param p2SVpnServerConfigurationName The name of the P2SVpnServerConfiguration.
+     * @param resourceGroupName The resource group name of the VirtualHubRouteTableV2.
+     * @param virtualHubName The name of the VirtualHub.
+     * @param routeTableName The name of the VirtualHubRouteTableV2.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
@@ -1420,7 +1413,7 @@ public final class P2SVpnServerConfigurationsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> beginDeleteWithoutPollingWithResponseAsync(
-        String resourceGroupName, String virtualWanName, String p2SVpnServerConfigurationName, Context context) {
+        String resourceGroupName, String virtualHubName, String routeTableName, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -1437,33 +1430,30 @@ public final class P2SVpnServerConfigurationsClient {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        if (virtualWanName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter virtualWanName is required and cannot be null."));
+        if (virtualHubName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter virtualHubName is required and cannot be null."));
         }
-        if (p2SVpnServerConfigurationName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter p2SVpnServerConfigurationName is required and cannot be null."));
+        if (routeTableName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter routeTableName is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return service
             .beginDeleteWithoutPolling(
                 this.client.getEndpoint(),
                 this.client.getSubscriptionId(),
                 resourceGroupName,
-                virtualWanName,
-                p2SVpnServerConfigurationName,
+                virtualHubName,
+                routeTableName,
                 apiVersion,
                 context);
     }
 
     /**
-     * Deletes a P2SVpnServerConfiguration.
+     * Deletes a VirtualHubRouteTableV2.
      *
-     * @param resourceGroupName The resource group name of the P2SVpnServerConfiguration.
-     * @param virtualWanName The name of the VirtualWan.
-     * @param p2SVpnServerConfigurationName The name of the P2SVpnServerConfiguration.
+     * @param resourceGroupName The resource group name of the VirtualHubRouteTableV2.
+     * @param virtualHubName The name of the VirtualHub.
+     * @param routeTableName The name of the VirtualHubRouteTableV2.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1471,18 +1461,17 @@ public final class P2SVpnServerConfigurationsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> beginDeleteWithoutPollingAsync(
-        String resourceGroupName, String virtualWanName, String p2SVpnServerConfigurationName) {
-        return beginDeleteWithoutPollingWithResponseAsync(
-                resourceGroupName, virtualWanName, p2SVpnServerConfigurationName)
+        String resourceGroupName, String virtualHubName, String routeTableName) {
+        return beginDeleteWithoutPollingWithResponseAsync(resourceGroupName, virtualHubName, routeTableName)
             .flatMap((Response<Void> res) -> Mono.empty());
     }
 
     /**
-     * Deletes a P2SVpnServerConfiguration.
+     * Deletes a VirtualHubRouteTableV2.
      *
-     * @param resourceGroupName The resource group name of the P2SVpnServerConfiguration.
-     * @param virtualWanName The name of the VirtualWan.
-     * @param p2SVpnServerConfigurationName The name of the P2SVpnServerConfiguration.
+     * @param resourceGroupName The resource group name of the VirtualHubRouteTableV2.
+     * @param virtualHubName The name of the VirtualHub.
+     * @param routeTableName The name of the VirtualHubRouteTableV2.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
@@ -1491,34 +1480,32 @@ public final class P2SVpnServerConfigurationsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> beginDeleteWithoutPollingAsync(
-        String resourceGroupName, String virtualWanName, String p2SVpnServerConfigurationName, Context context) {
-        return beginDeleteWithoutPollingWithResponseAsync(
-                resourceGroupName, virtualWanName, p2SVpnServerConfigurationName, context)
+        String resourceGroupName, String virtualHubName, String routeTableName, Context context) {
+        return beginDeleteWithoutPollingWithResponseAsync(resourceGroupName, virtualHubName, routeTableName, context)
             .flatMap((Response<Void> res) -> Mono.empty());
     }
 
     /**
-     * Deletes a P2SVpnServerConfiguration.
+     * Deletes a VirtualHubRouteTableV2.
      *
-     * @param resourceGroupName The resource group name of the P2SVpnServerConfiguration.
-     * @param virtualWanName The name of the VirtualWan.
-     * @param p2SVpnServerConfigurationName The name of the P2SVpnServerConfiguration.
+     * @param resourceGroupName The resource group name of the VirtualHubRouteTableV2.
+     * @param virtualHubName The name of the VirtualHub.
+     * @param routeTableName The name of the VirtualHubRouteTableV2.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void beginDeleteWithoutPolling(
-        String resourceGroupName, String virtualWanName, String p2SVpnServerConfigurationName) {
-        beginDeleteWithoutPollingAsync(resourceGroupName, virtualWanName, p2SVpnServerConfigurationName).block();
+    public void beginDeleteWithoutPolling(String resourceGroupName, String virtualHubName, String routeTableName) {
+        beginDeleteWithoutPollingAsync(resourceGroupName, virtualHubName, routeTableName).block();
     }
 
     /**
-     * Deletes a P2SVpnServerConfiguration.
+     * Deletes a VirtualHubRouteTableV2.
      *
-     * @param resourceGroupName The resource group name of the P2SVpnServerConfiguration.
-     * @param virtualWanName The name of the VirtualWan.
-     * @param p2SVpnServerConfigurationName The name of the P2SVpnServerConfiguration.
+     * @param resourceGroupName The resource group name of the VirtualHubRouteTableV2.
+     * @param virtualHubName The name of the VirtualHub.
+     * @param routeTableName The name of the VirtualHubRouteTableV2.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
@@ -1526,9 +1513,8 @@ public final class P2SVpnServerConfigurationsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void beginDeleteWithoutPolling(
-        String resourceGroupName, String virtualWanName, String p2SVpnServerConfigurationName, Context context) {
-        beginDeleteWithoutPollingAsync(resourceGroupName, virtualWanName, p2SVpnServerConfigurationName, context)
-            .block();
+        String resourceGroupName, String virtualHubName, String routeTableName, Context context) {
+        beginDeleteWithoutPollingAsync(resourceGroupName, virtualHubName, routeTableName, context).block();
     }
 
     /**
@@ -1536,18 +1522,18 @@ public final class P2SVpnServerConfigurationsClient {
      *
      * @param nextLink The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list all P2SVpnServerConfigurations associated to a VirtualWan.
+     * @return list of VirtualHubRouteTableV2s and a URL nextLink to get the next set of results.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<P2SVpnServerConfigurationInner>> listByVirtualWanNextSinglePageAsync(String nextLink) {
+    public Mono<PagedResponse<VirtualHubRouteTableV2Inner>> listNextSinglePageAsync(String nextLink) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         return FluxUtil
-            .withContext(context -> service.listByVirtualWanNext(nextLink, context))
-            .<PagedResponse<P2SVpnServerConfigurationInner>>map(
+            .withContext(context -> service.listNext(nextLink, context))
+            .<PagedResponse<VirtualHubRouteTableV2Inner>>map(
                 res ->
                     new PagedResponseBase<>(
                         res.getRequest(),
@@ -1565,18 +1551,17 @@ public final class P2SVpnServerConfigurationsClient {
      * @param nextLink The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list all P2SVpnServerConfigurations associated to a VirtualWan.
+     * @return list of VirtualHubRouteTableV2s and a URL nextLink to get the next set of results.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<P2SVpnServerConfigurationInner>> listByVirtualWanNextSinglePageAsync(
-        String nextLink, Context context) {
+    public Mono<PagedResponse<VirtualHubRouteTableV2Inner>> listNextSinglePageAsync(String nextLink, Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         return service
-            .listByVirtualWanNext(nextLink, context)
+            .listNext(nextLink, context)
             .map(
                 res ->
                     new PagedResponseBase<>(
