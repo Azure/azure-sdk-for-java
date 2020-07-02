@@ -29,11 +29,9 @@ public final class AnalyzeRequestConverter {
         if (obj.getTokenizer() != null) {
             LexicalTokenizerName tokenizer = LexicalTokenizerNameConverter.map(obj.getTokenizer());
             analyzeTextOptions = new AnalyzeTextOptions(obj.getText(), tokenizer);
-            analyzeTextOptions.setTokenizerName(tokenizer);
         } else {
             LexicalAnalyzerName analyzer = LexicalAnalyzerNameConverter.map(obj.getAnalyzer());
             analyzeTextOptions = new AnalyzeTextOptions(obj.getText(), analyzer);
-            analyzeTextOptions.setAnalyzerName(analyzer);
         }
 
         if (obj.getCharFilters() != null) {
