@@ -521,7 +521,7 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
 
     static protected CosmosContainerProperties getCollectionDefinition(String collectionId) {
         PartitionKeyDefinition partitionKeyDef = new PartitionKeyDefinition();
-        ArrayList<String> paths = new ArrayList<String>();
+        ArrayList<String> paths = new ArrayList<>();
         paths.add("/mypk");
         partitionKeyDef.setPaths(paths);
 

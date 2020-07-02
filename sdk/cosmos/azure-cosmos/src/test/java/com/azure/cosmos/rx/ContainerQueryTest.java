@@ -7,15 +7,13 @@ import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.implementation.InternalObjectNode;
-import com.azure.cosmos.implementation.RxDocumentClientImpl;
 import com.azure.cosmos.models.CosmosContainerProperties;
+import com.azure.cosmos.models.PartitionKeyDefinition;
 import com.azure.cosmos.util.CosmosPagedFlux;
 import com.azure.cosmos.CosmosDatabaseForTest;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
-import com.azure.cosmos.models.PartitionKeyDefinition;
 import com.azure.cosmos.implementation.FeedResponseListValidator;
 import com.azure.cosmos.implementation.FeedResponseValidator;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.apache.commons.lang3.StringUtils;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
@@ -29,39 +27,39 @@ import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class CollectionQueryTest extends TestSuiteBase {
-    private final static int TIMEOUT = 300000;
+public class ContainerQueryTest extends TestSuiteBase {
+    private final static int TIMEOUT = 30000;
     private final String databaseId = CosmosDatabaseForTest.generateId();
-    private List<CosmosAsyncContainer> createdCollections = new ArrayList<>();
+    private List<CosmosAsyncContainer> createdContainers = new ArrayList<>();
     private CosmosAsyncClient client;
     private CosmosAsyncDatabase createdDatabase;
 
    @Factory(dataProvider = "clientBuilders")
-    public CollectionQueryTest(CosmosClientBuilder clientBuilder) {
+    public ContainerQueryTest(CosmosClientBuilder clientBuilder) {
         super(clientBuilder);
         this.subscriberValidationTimeout = TIMEOUT;
     }
 
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
-    public void queryCollectionsWithFilter() throws Exception {
+    public void queryContainersWithFilter() throws Exception {
 
-        String filterCollectionId = createdCollections.get(0).getId();
-        String query = String.format("SELECT * from c where c.id = '%s'", filterCollectionId);
+        String filterContainerId = createdContainers.get(0).getId();
+        String query = String.format("SELECT * from c where c.id = '%s'", filterContainerId);
 
         CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
         int maxItemCount = 2;
         CosmosPagedFlux<CosmosContainerProperties> queryObservable = createdDatabase.queryContainers(query, options);
 
-        List<CosmosAsyncContainer> expectedCollections = createdCollections.stream()
-                .filter(c -> StringUtils.equals(filterCollectionId, c.getId()) ).collect(Collectors.toList());
+        List<CosmosAsyncContainer> expectedContainers = createdContainers.stream()
+                .filter(c -> StringUtils.equals(filterContainerId, c.getId()) ).collect(Collectors.toList());
 
-        assertThat(expectedCollections).isNotEmpty();
+        assertThat(expectedContainers).isNotEmpty();
 
-        int expectedPageSize = (expectedCollections.size() + maxItemCount - 1) / maxItemCount;
+        int expectedPageSize = (expectedContainers.size() + maxItemCount - 1) / maxItemCount;
 
         FeedResponseListValidator<CosmosContainerProperties> validator = new FeedResponseListValidator.Builder<CosmosContainerProperties>()
-                .totalSize(expectedCollections.size())
-                .exactlyContainsInAnyOrder(expectedCollections.stream().map(d -> d.read().block().getProperties().getResourceId()).collect(Collectors.toList()))
+                .totalSize(expectedContainers.size())
+                .exactlyContainsInAnyOrder(expectedContainers.stream().map(d -> d.read().block().getProperties().getResourceId()).collect(Collectors.toList()))
                 .numberOfPages(expectedPageSize)
                 .pageSatisfy(0, new FeedResponseValidator.Builder<CosmosContainerProperties>()
                         .requestChargeGreaterThanOrEqualTo(1.0).build())
@@ -71,7 +69,7 @@ public class CollectionQueryTest extends TestSuiteBase {
     }
 
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
-    public void queryAllCollections() throws Exception {
+    public void queryAllContainers() throws Exception {
 
         String query = "SELECT * from c";
 
@@ -79,15 +77,15 @@ public class CollectionQueryTest extends TestSuiteBase {
         int maxItemCount = 2;
         CosmosPagedFlux<CosmosContainerProperties> queryObservable = createdDatabase.queryContainers(query, options);
 
-        List<CosmosAsyncContainer> expectedCollections = createdCollections;
+        List<CosmosAsyncContainer> expectedContainers = createdContainers;
 
-        assertThat(expectedCollections).isNotEmpty();
+        assertThat(expectedContainers).isNotEmpty();
 
-        int expectedPageSize = (expectedCollections.size() + maxItemCount - 1) / maxItemCount;
+        int expectedPageSize = (expectedContainers.size() + maxItemCount - 1) / maxItemCount;
 
         FeedResponseListValidator<CosmosContainerProperties> validator = new FeedResponseListValidator.Builder<CosmosContainerProperties>()
-                .totalSize(expectedCollections.size())
-                .exactlyContainsInAnyOrder(expectedCollections.stream().map(d -> d.read().block().getProperties().getResourceId()).collect(Collectors.toList()))
+                .totalSize(expectedContainers.size())
+                .exactlyContainsInAnyOrder(expectedContainers.stream().map(d -> d.read().block().getProperties().getResourceId()).collect(Collectors.toList()))
                 .numberOfPages(expectedPageSize)
                 .pageSatisfy(0, new FeedResponseValidator.Builder<CosmosContainerProperties>()
                         .requestChargeGreaterThanOrEqualTo(1.0).build())
@@ -97,7 +95,7 @@ public class CollectionQueryTest extends TestSuiteBase {
     }
 
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
-    public void queryCollections_NoResults() throws Exception {
+    public void queryContainers_NoResults() throws Exception {
 
         String query = "SELECT * from root r where r.id = '2'";
         CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
@@ -113,25 +111,27 @@ public class CollectionQueryTest extends TestSuiteBase {
     }
 
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
-    public void queryByRecreatCollectionWithSameName() throws Exception {
+    public void queryByRecreatContainerWithSameId() throws Exception {
         String testCollectionId = UUID.randomUUID().toString();
-        CosmosContainerProperties collectionDefinition = getCollectionDefinition(testCollectionId);
+        CosmosContainerProperties containerProperties = getCollectionDefinition(testCollectionId);
         CosmosQueryRequestOptions requestOptions = new CosmosQueryRequestOptions();
         String query = "SELECT * FROM r";
+        CosmosAsyncDatabase database = this.getSharedCosmosDatabase(client);
 
         // step1: create container and do query
-        this.createdDatabase.createContainer(collectionDefinition).block();
-        CosmosAsyncContainer container = this.createdDatabase.getContainer(collectionDefinition.getId());
+        database.createContainer(containerProperties).block();
+        CosmosAsyncContainer container = database.getContainer(containerProperties.getId());
         InternalObjectNode document1 = getDocumentDefinition();
         container.createItem(document1).block();
-        container.queryItems(query, requestOptions, InternalObjectNode.class);
+        container.queryItems(query, requestOptions, InternalObjectNode.class).blockFirst();
 
         // step2: delete the container created on step 1
         safeDeleteCollection(container);
 
-        // step3: create a new collection with the same id as step 1 and do query
-        this.createdDatabase.createContainer(collectionDefinition).block();
-        container = this.createdDatabase.getContainer(collectionDefinition.getId());
+        // step3: create a new container with the same id as step 1 and do query
+        // This step is to check the collection cache will get refreshed
+        database.createContainer(containerProperties).block();
+        container = database.getContainer(containerProperties.getId());
         container.createItem(document1).block();
         CosmosPagedFlux<InternalObjectNode> queryFlux = container.queryItems(query, requestOptions, InternalObjectNode.class);
         FeedResponseListValidator<InternalObjectNode> queryValidator = new FeedResponseListValidator.Builder<InternalObjectNode>()
@@ -143,9 +143,8 @@ public class CollectionQueryTest extends TestSuiteBase {
         safeDeleteCollection(container);
     }
 
-
     @BeforeClass(groups = { "simple" }, timeOut = SETUP_TIMEOUT)
-    public void before_CollectionQueryTest() throws Exception {
+    public void before_ContainerQueryTest() throws Exception {
         client = getClientBuilder().buildAsyncClient();
         createdDatabase = createDatabase(client, databaseId);
 
@@ -154,8 +153,8 @@ public class CollectionQueryTest extends TestSuiteBase {
         paths.add("/mypk");
         partitionKeyDef.setPaths(paths);
 
-        CosmosContainerProperties collection = new CosmosContainerProperties(UUID.randomUUID().toString(), partitionKeyDef);
-        createdCollections.add(createCollection(client, databaseId, collection));
+        CosmosContainerProperties container = new CosmosContainerProperties(UUID.randomUUID().toString(), partitionKeyDef);
+        createdContainers.add(createCollection(client, databaseId, container));
     }
 
     @AfterClass(groups = { "simple" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
