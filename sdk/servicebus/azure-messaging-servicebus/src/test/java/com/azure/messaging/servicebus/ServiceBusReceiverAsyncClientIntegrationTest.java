@@ -641,7 +641,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
     @ParameterizedTest
     void receiveAndRenewLock(MessagingEntityType entityType) {
         // Arrange
-        setSenderAndReceiver(entityType, TestUtils.USE_CASE_RECEIVE_RENEW_LOCK, false);
+        setSenderAndReceiver(entityType, 0, false);
 
         final String messageId = UUID.randomUUID().toString();
         final ServiceBusMessage message = getMessage(messageId, false);
@@ -667,8 +667,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
                     assertTrue(lockedUntil.isAfter(initialLock),
                         String.format("Updated lock is not after the initial Lock. updated: [%s]. initial:[%s]",
                             lockedUntil, initialLock));
-
-                    assertEquals(receivedMessage.getLockedUntil(), lockedUntil);
+                    
                 })
                 .verifyComplete();
         } finally {
