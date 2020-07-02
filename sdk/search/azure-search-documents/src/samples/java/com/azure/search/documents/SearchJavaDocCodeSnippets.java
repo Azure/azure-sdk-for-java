@@ -1642,7 +1642,6 @@ public class SearchJavaDocCodeSnippets {
         // END: com.azure.search.documents.indexes.SearchIndexerClient.listIndexerNames#Context
     }
 
-
     /**
      * Code snippet for {@link SearchIndexerClient#createOrUpdateIndexer(SearchIndexer)}
      */
@@ -1651,11 +1650,9 @@ public class SearchJavaDocCodeSnippets {
         SearchIndexer searchIndexerFromService = searchIndexerClient.getIndexer("searchIndexer");
         searchIndexerFromService.setFieldMappings(Collections.singletonList(
             new FieldMapping("hotelName").setTargetFieldName("HotelName")));
-        SearchIndexer searchIndexer = new SearchIndexer("searchIndexer", "dataSource",
-            "searchIndex");
-        SearchIndexer indexerFromService = searchIndexerClient.createOrUpdateIndexer(searchIndexer);
+        SearchIndexer updateIndexer = searchIndexerClient.createOrUpdateIndexer(searchIndexerFromService);
         System.out.printf("The indexer name is %s. The target field name of indexer is %s.%n",
-            indexerFromService.getName(), indexerFromService.getFieldMappings().get(0).getTargetFieldName());
+            updateIndexer.getName(), updateIndexer.getFieldMappings().get(0).getTargetFieldName());
         // END: com.azure.search.documents.indexes.SearchIndexerClient.createOrUpdateIndexer#SearchIndexer
     }
 
@@ -1667,10 +1664,8 @@ public class SearchJavaDocCodeSnippets {
         SearchIndexer searchIndexerFromService = searchIndexerClient.getIndexer("searchIndexer");
         searchIndexerFromService.setFieldMappings(Collections.singletonList(
             new FieldMapping("hotelName").setTargetFieldName("HotelName")));
-        SearchIndexer searchIndexer = new SearchIndexer("searchIndexer", "dataSource",
-            "searchIndex");
         Response<SearchIndexer> indexerFromService = searchIndexerClient.createOrUpdateIndexerWithResponse(
-            searchIndexer, true, new Context(key1, value1));
+            searchIndexerFromService, true, new Context(key1, value1));
         System.out.printf("The status code of the response is %s.%nThe indexer name is %s. "
             + "The target field name of indexer is %s.%n", indexerFromService.getStatusCode(),
             indexerFromService.getValue().getName(),
@@ -1874,7 +1869,6 @@ public class SearchJavaDocCodeSnippets {
         }
         // END: com.azure.search.documents.indexes.SearchIndexerClient.listDataSourceConnectionNamesWithContext#Context
     }
-
 
     /**
      * Code snippet for {@link SearchIndexerClient#createOrUpdateDataSourceConnection(SearchIndexerDataSourceConnection)}
@@ -2130,5 +2124,497 @@ public class SearchJavaDocCodeSnippets {
             .endpoint("{endpoint}")
             .buildAsyncClient();
         // END: com.azure.search.documents.indexes.SearchIndexerAsyncClient.instantiation
+    }
+
+    /**
+     * Code snippet for creating {@link SearchIndexerAsyncClient#createIndexer(SearchIndexer)}.
+     */
+    public void createSearchIndexerAsync() {
+        // BEGIN: com.azure.search.documents.indexes.SearchIndexerAsyncClient.createIndexer#SearchIndexer
+        SearchIndexer searchIndexer = new SearchIndexer("searchIndexer", "dataSource",
+            "searchIndex");
+        searchIndexerAsyncClient.createIndexer(searchIndexer)
+            .subscribe(indexerFromService ->
+                System.out.printf("The indexer name is %s. The etag of indexer is %s.%n", indexerFromService.getName(),
+                indexerFromService.getETag()));
+        // END: com.azure.search.documents.indexes.SearchIndexerAsyncClient.createIndexer#SearchIndexer
+    }
+
+    /**
+     * Code snippet for {@link SearchIndexerAsyncClient#createIndexerWithResponse(SearchIndexer)}.
+     */
+    public void createSearchIndexerWithResponseAsync() {
+        // BEGIN: com.azure.search.documents.indexes.SearchIndexerAsyncClient.createIndexerWithResponse#SearchIndexer
+        SearchIndexer searchIndexer = new SearchIndexer("searchIndexer", "dataSource",
+            "searchIndex");
+        searchIndexerAsyncClient.createIndexerWithResponse(searchIndexer)
+            .subscribe(indexerFromServiceResponse ->
+                System.out.printf("The status code of the response is %s. The indexer name is %s.%n",
+                    indexerFromServiceResponse.getStatusCode(), indexerFromServiceResponse.getValue().getName()));
+        // END: com.azure.search.documents.indexes.SearchIndexerAsyncClient.createIndexerWithResponse#SearchIndexer
+    }
+
+    /**
+     * Code snippet for {@link SearchIndexerAsyncClient#getIndexer(String)}
+     */
+    public void getSearchIndexerAsync() {
+        // BEGIN: com.azure.search.documents.indexes.SearchIndexerAsyncClient.getIndexer#String
+        searchIndexerAsyncClient.getIndexer("searchIndexer")
+            .subscribe(indexerFromService ->
+                System.out.printf("The indexer name is %s. The etag of indexer is %s.%n", indexerFromService.getName(),
+                    indexerFromService.getETag()));
+        // END: com.azure.search.documents.indexes.SearchIndexerAsyncClient.getIndexer#String
+    }
+
+    /**
+     * Code snippet for {@link SearchIndexerAsyncClient#getIndexerWithResponse(String)}}
+     */
+    public void getSearchIndexerWithResponseAsync() {
+        // BEGIN: com.azure.search.documents.indexes.SearchIndexerAsyncClient.getIndexerWithResponse#String
+        searchIndexerAsyncClient.getIndexerWithResponse("searchIndexer")
+            .subscribe(indexerFromServiceResponse ->
+                System.out.printf("The status code of the response is %s. The indexer name is %s.%n",
+                indexerFromServiceResponse.getStatusCode(), indexerFromServiceResponse.getValue().getName()));
+        // END: com.azure.search.documents.indexes.SearchIndexerAsyncClient.getIndexerWithResponse#String
+    }
+
+
+    /**
+     * Code snippet for {@link SearchIndexerAsyncClient#listIndexers()}
+     */
+    public void listIndexersAsync() {
+        // BEGIN: com.azure.search.documents.indexes.SearchIndexerAsyncClient.listIndexers
+        searchIndexerAsyncClient.listIndexers()
+            .subscribe(indexer ->
+                System.out.printf("The indexer name is %s. The etag of indexer is %s.%n", indexer.getName(),
+                indexer.getETag()));
+        // END: com.azure.search.documents.indexes.SearchIndexerAsyncClient.listIndexers
+    }
+
+    /**
+     * Code snippet for {@link SearchIndexerAsyncClient#listIndexerNames()}
+     */
+    public void listIndexerNamesAsync() {
+        // BEGIN: com.azure.search.documents.indexes.SearchIndexerAsyncClient.listIndexerNames
+        searchIndexerAsyncClient.listIndexerNames()
+            .subscribe(indexerName -> System.out.printf("The indexer name is %s.%n", indexerName));
+        // END: com.azure.search.documents.indexes.SearchIndexerAsyncClient.listIndexerNames
+    }
+
+    /**
+     * Code snippet for {@link SearchIndexerAsyncClient#createOrUpdateIndexer(SearchIndexer)}
+     */
+    public void createOrUpdateIndexerAsync() {
+        // BEGIN: com.azure.search.documents.indexes.SearchIndexerAsyncClient.createOrUpdateIndexer#SearchIndexer
+        searchIndexerAsyncClient.getIndexer("searchIndexer")
+            .flatMap(searchIndexerFromService -> {
+                searchIndexerFromService.setFieldMappings(Collections.singletonList(
+                    new FieldMapping("hotelName").setTargetFieldName("HotelName")));
+                return searchIndexerAsyncClient.createOrUpdateIndexer(searchIndexerFromService);
+            })
+            .subscribe(updatedIndexer ->
+                System.out.printf("The indexer name is %s. The target field name of indexer is %s.%n",
+                updatedIndexer.getName(), updatedIndexer.getFieldMappings().get(0).getTargetFieldName()));
+        // END: com.azure.search.documents.indexes.SearchIndexerAsyncClient.createOrUpdateIndexer#SearchIndexer
+    }
+
+    /**
+     * Code snippet for {@link SearchIndexerAsyncClient#createOrUpdateIndexer(SearchIndexer)}
+     */
+    public void createOrUpdateIndexerWithResponseAsync() {
+        // BEGIN: com.azure.search.documents.indexes.SearchIndexerAsyncClient.createOrUpdateIndexerWithResponse#SearchIndexer-boolean
+        searchIndexerAsyncClient.getIndexer("searchIndexer")
+            .flatMap(searchIndexerFromService -> {
+                searchIndexerFromService.setFieldMappings(Collections.singletonList(
+                    new FieldMapping("hotelName").setTargetFieldName("HotelName")));
+                return searchIndexerAsyncClient.createOrUpdateIndexerWithResponse(searchIndexerFromService, true);
+            })
+            .subscribe(indexerFromService ->
+                System.out.printf("The status code of the response is %s.%nThe indexer name is %s. "
+                    + "The target field name of indexer is %s.%n", indexerFromService.getStatusCode(),
+                indexerFromService.getValue().getName(),
+                indexerFromService.getValue().getFieldMappings().get(0).getTargetFieldName()));
+        // END: com.azure.search.documents.indexes.SearchIndexerAsyncClient.createOrUpdateIndexerWithResponse#SearchIndexer-boolean
+    }
+
+    /**
+     * Code snippet for {@link SearchIndexerAsyncClient#deleteIndexer(String)}
+     */
+    public void deleteSearchIndexerAsync() {
+        // BEGIN: com.azure.search.documents.indexes.SearchIndexerAsyncClient.deleteIndexer#String
+        searchIndexerAsyncClient.deleteIndexer("searchIndexer")
+            .subscribe();
+        // END: com.azure.search.documents.indexes.SearchIndexerAsyncClient.deleteIndexer#String
+    }
+
+    /**
+     * Code snippet for {@link SearchIndexerAsyncClient#deleteIndexerWithResponse(SearchIndexer, boolean)}
+     */
+    public void deleteSearchIndexerWithResponseAsync() {
+        // BEGIN: com.azure.search.documents.indexes.SearchIndexerAsyncClient.deleteIndexerWithResponse#SearchIndexer-boolean
+        searchIndexerAsyncClient.getIndexer("searchIndexer")
+            .flatMap(searchIndexer ->
+                searchIndexerAsyncClient.deleteIndexerWithResponse(searchIndexer, true))
+            .subscribe(deleteResponse ->
+                System.out.printf("The status code of the response is %d.%n", deleteResponse.getStatusCode()));
+        // END: com.azure.search.documents.indexes.SearchIndexerAsyncClient.deleteIndexerWithResponse#SearchIndexer-boolean
+    }
+
+    /**
+     * Code snippet for {@link SearchIndexerAsyncClient#resetIndexer(String)}
+     */
+    public void resetIndexerAsync() {
+        // BEGIN: com.azure.search.documents.indexes.SearchIndexerAsyncClient.resetIndexer#String
+        searchIndexerAsyncClient.resetIndexer("searchIndexer")
+            .subscribe();
+        // END: com.azure.search.documents.indexes.SearchIndexerAsyncClient.resetIndexer#String
+    }
+
+    /**
+     * Code snippet for {@link SearchIndexerAsyncClient#resetIndexerWithResponse(String)}
+     */
+    public void resetIndexerWithResponseAsync() {
+        // BEGIN: com.azure.search.documents.indexes.SearchIndexerAsyncClient.resetIndexerWithResponse#String
+        searchIndexerAsyncClient.resetIndexerWithResponse("searchIndexer")
+            .subscribe(response ->
+                System.out.println("The status code of the response is " + response.getStatusCode()));
+        // END: com.azure.search.documents.indexes.SearchIndexerAsyncClient.resetIndexerWithResponse#String
+    }
+
+    /**
+     * Code snippet for {@link SearchIndexerAsyncClient#runIndexer(String)}
+     */
+    public void runIndexerAsync() {
+        // BEGIN: com.azure.search.documents.indexes.SearchIndexerAsyncClient.runIndexer#String
+        searchIndexerAsyncClient.runIndexer("searchIndexer")
+            .subscribe();
+        // END: com.azure.search.documents.indexes.SearchIndexerAsyncClient.runIndexer#String
+    }
+
+    /**
+     * Code snippet for {@link SearchIndexerAsyncClient#runIndexerWithResponse(String)}
+     */
+    public void runIndexerWithResponseAsync() {
+        // BEGIN: com.azure.search.documents.indexes.SearchIndexerAsyncClient.runIndexerWithResponse#String
+        searchIndexerAsyncClient.runIndexerWithResponse("searchIndexer")
+            .subscribe(response ->
+                System.out.println("The status code of the response is " + response.getStatusCode()));
+        // END: com.azure.search.documents.indexes.SearchIndexerAsyncClient.runIndexerWithResponse#String
+    }
+
+    /**
+     * Code snippet for {@link SearchIndexerAsyncClient#getIndexerStatus(String)}
+     */
+    public void getIndexerStatusAsync() {
+        // BEGIN: com.azure.search.documents.indexes.SearchIndexerAsyncClient.getIndexerStatus#String
+        searchIndexerAsyncClient.getIndexerStatus("searchIndexer")
+            .subscribe(indexerStatus ->
+                System.out.printf("The indexer status is %s.%n", indexerStatus.getStatus()));
+        // END: com.azure.search.documents.indexes.SearchIndexerAsyncClient.getIndexerStatus#String
+    }
+
+    /**
+     * Code snippet for {@link SearchIndexerAsyncClient#getIndexerStatusWithResponse(String)}
+     */
+    public void getIndexerStatusWithResponseAsync() {
+        // BEGIN: com.azure.search.documents.indexes.SearchIndexerAsyncClient.getIndexerStatusWithResponse#String
+        searchIndexerAsyncClient.getIndexerStatusWithResponse("searchIndexer")
+            .subscribe(response ->
+                System.out.printf("The status code of the response is %s.%nThe indexer status is %s.%n",
+                response.getStatusCode(), response.getValue().getStatus()));
+        // END: com.azure.search.documents.indexes.SearchIndexerAsyncClient.getIndexerStatusWithResponse#String
+    }
+
+    /**
+     * Code snippet for creating {@link SearchIndexerAsyncClient#createDataSourceConnection(SearchIndexerDataSourceConnection)}.
+     */
+    public void createDataSourceAsync() {
+        // BEGIN: com.azure.search.documents.indexes.SearchIndexerAsyncClient.createDataSourceConnection#SearchIndexerDataSourceConnection
+        SearchIndexerDataSourceConnection dataSource = new SearchIndexerDataSourceConnection("dataSource",
+            com.azure.search.documents.indexes.models.SearchIndexerDataSourceType.AZURE_BLOB, "{connectionString}",
+            new com.azure.search.documents.indexes.models.SearchIndexerDataContainer("container"));
+        searchIndexerAsyncClient.createDataSourceConnection(dataSource)
+            .subscribe(dataSourceFromService ->
+                System.out.printf("The data source name is %s. The etag of data source is %s.%n",
+                    dataSourceFromService.getName(), dataSourceFromService.getETag()));
+        // END: com.azure.search.documents.indexes.SearchIndexerAsyncClient.createDataSourceConnection#SearchIndexerDataSourceConnection
+    }
+
+    /**
+     * Code snippet for {@link SearchIndexerAsyncClient#createDataSourceConnectionWithResponse(SearchIndexerDataSourceConnection)}.
+     */
+    public void createDataSourceWithResponseAsync() {
+        // BEGIN: com.azure.search.documents.indexes.SearchIndexerAsyncClient.createDataSourceConnectionWithResponse#SearchIndexerDataSourceConnection
+        SearchIndexerDataSourceConnection dataSource = new SearchIndexerDataSourceConnection("dataSource",
+            SearchIndexerDataSourceType.AZURE_BLOB, "{connectionString}",
+            new SearchIndexerDataContainer("container"));
+        searchIndexerAsyncClient.createDataSourceConnectionWithResponse(dataSource)
+            .subscribe(dataSourceFromService ->
+                System.out.printf("The status code of the response is %s. The data source name is %s.%n",
+                dataSourceFromService.getStatusCode(), dataSourceFromService.getValue().getName()));
+        // END: com.azure.search.documents.indexes.SearchIndexerAsyncClient.createDataSourceConnectionWithResponse#SearchIndexerDataSourceConnection
+    }
+
+    /**
+     * Code snippet for {@link SearchIndexerAsyncClient#getDataSourceConnection(String)}
+     */
+    public void getDataSourceAsync() {
+        // BEGIN: com.azure.search.documents.indexes.SearchIndexerAsyncClient.getDataSourceConnection#String
+        searchIndexerAsyncClient.getDataSourceConnection("dataSource")
+            .subscribe(dataSource ->
+                System.out.printf("The dataSource name is %s. The etag of dataSource is %s.%n", dataSource.getName(),
+                dataSource.getETag()));
+        // END: com.azure.search.documents.indexes.SearchIndexerAsyncClient.getDataSourceConnection#String
+    }
+
+    /**
+     * Code snippet for {@link SearchIndexerAsyncClient#getDataSourceConnectionWithResponse(String)}
+     */
+    public void getDataSourceWithResponseAsync() {
+        // BEGIN: com.azure.search.documents.indexes.SearchIndexerAsyncClient.getDataSourceConnectionWithResponse#String
+        searchIndexerAsyncClient.getDataSourceConnectionWithResponse("dataSource")
+            .subscribe(dataSource ->
+                System.out.printf("The status code of the response is %s. The data source name is %s.%n",
+                dataSource.getStatusCode(), dataSource.getValue().getName()));
+        // END: com.azure.search.documents.indexes.SearchIndexerAsyncClient.getDataSourceConnectionWithResponse#String
+    }
+
+
+    /**
+     * Code snippet for {@link SearchIndexerAsyncClient#listDataSourceConnections()}
+     */
+    public void listDataSourcesAsync() {
+        // BEGIN: com.azure.search.documents.indexes.SearchIndexerAsyncClient.listDataSourceConnections
+        searchIndexerAsyncClient.listDataSourceConnections()
+            .subscribe(dataSource ->
+                System.out.printf("The dataSource name is %s. The etag of dataSource is %s.%n",
+                    dataSource.getName(), dataSource.getETag())
+            );
+        // END: com.azure.search.documents.indexes.SearchIndexerAsyncClient.listDataSourceConnections
+    }
+
+    /**
+     * Code snippet for {@link SearchIndexerAsyncClient#listDataSourceConnectionNames()}
+     */
+    public void listDataSourceNamesAsync() {
+        // BEGIN: com.azure.search.documents.indexes.SearchIndexerAsyncClient.listDataSourceConnectionNames
+        searchIndexerAsyncClient.listDataSourceConnectionNames()
+            .subscribe(dataSourceName -> System.out.printf("The dataSource name is %s.%n", dataSourceName));
+        // END: com.azure.search.documents.indexes.SearchIndexerAsyncClient.listDataSourceConnectionNames
+    }
+
+    /**
+     * Code snippet for {@link SearchIndexerAsyncClient#createOrUpdateDataSourceConnection(SearchIndexerDataSourceConnection)}
+     */
+    public void createOrUpdateDataSourceAsync() {
+        // BEGIN: com.azure.search.documents.indexes.SearchIndexerAsyncClient.createOrUpdateDataSourceConnection#SearchIndexerDataSourceConnection
+        SearchIndexerDataSourceConnection dataSource = searchIndexerClient.getDataSourceConnection("dataSource");
+        dataSource.setContainer(new SearchIndexerDataContainer("updatecontainer"));
+
+        SearchIndexerDataSourceConnection updateDataSource = searchIndexerClient.createOrUpdateDataSourceConnection(dataSource);
+        System.out.printf("The dataSource name is %s. The container name of dataSource is %s.%n",
+            updateDataSource.getName(), updateDataSource.getContainer().getName());
+        // END: com.azure.search.documents.indexes.SearchIndexerAsyncClient.createOrUpdateDataSourceConnection#SearchIndexerDataSourceConnection
+    }
+
+    /**
+     * Code snippet for {@link SearchIndexerAsyncClient#createIndexerWithResponse(SearchIndexer)}
+     */
+    public void createOrUpdateDataSourceWithResponseAsync() {
+        // BEGIN: com.azure.search.documents.indexes.SearchIndexerAsyncClient.createOrUpdateDataSourceConnectionWithResponse#SearchIndexerDataSourceConnection-boolean
+        searchIndexerAsyncClient.getDataSourceConnection("dataSource")
+            .flatMap(dataSource -> {
+                dataSource.setContainer(new SearchIndexerDataContainer("updatecontainer"));
+                return searchIndexerAsyncClient.createOrUpdateDataSourceConnectionWithResponse(dataSource, true);
+            })
+            .subscribe(updateDataSource ->
+                System.out.printf("The status code of the response is %s.%nThe dataSource name is %s. "
+                    + "The container name of dataSource is %s.%n", updateDataSource.getStatusCode(),
+                updateDataSource.getValue().getName(), updateDataSource.getValue().getContainer().getName()));
+        // END: com.azure.search.documents.indexes.SearchIndexerAsyncClient.createOrUpdateDataSourceConnectionWithResponse#SearchIndexerDataSourceConnection-boolean
+    }
+
+    /**
+     * Code snippet for {@link SearchIndexerAsyncClient#deleteDataSourceConnection(String)}
+     */
+    public void deleteDataSourceAsync() {
+        // BEGIN: com.azure.search.documents.indexes.SearchIndexerAsyncClient.deleteDataSourceConnection#String
+        searchIndexerAsyncClient.deleteDataSourceConnection("dataSource")
+            .subscribe();
+        // END: com.azure.search.documents.indexes.SearchIndexerAsyncClient.deleteDataSourceConnection#String
+    }
+
+    /**
+     * Code snippet for {@link SearchIndexerAsyncClient#deleteDataSourceConnectionWithResponse(SearchIndexerDataSourceConnection, boolean)}
+     */
+    public void deleteDataSourceWithResponseAsync() {
+        // BEGIN: com.azure.search.documents.indexes.SearchIndexerAsyncClient.deleteDataSourceConnectionWithResponse#SearchIndexerDataSourceConnection-boolean
+        searchIndexerAsyncClient.getDataSourceConnection("dataSource")
+            .flatMap(dataSource -> searchIndexerAsyncClient.deleteDataSourceConnectionWithResponse(dataSource, true))
+            .subscribe(deleteResponse ->
+                System.out.printf("The status code of the response is %d.%n", deleteResponse.getStatusCode()));
+        // END: com.azure.search.documents.indexes.SearchIndexerAsyncClient.deleteDataSourceConnectionWithResponse#SearchIndexerDataSourceConnection-boolean
+    }
+
+    /**
+     * Code snippet for {@link SearchIndexerAsyncClient#createSkillset(SearchIndexerSkillset)}
+     */
+    public void createSearchIndexerSkillsetAsync() {
+        // BEGIN: com.azure.search.documents.indexes.SearchIndexerAsyncClient.createSkillset#SearchIndexerSkillset
+        List<InputFieldMappingEntry> inputs = Collections.singletonList(
+            new InputFieldMappingEntry("image")
+                .setSource("/document/normalized_images/*")
+        );
+
+        List<OutputFieldMappingEntry> outputs = Arrays.asList(
+            new OutputFieldMappingEntry("text")
+                .setTargetName("mytext"),
+            new OutputFieldMappingEntry("layoutText")
+                .setTargetName("myLayoutText")
+        );
+        SearchIndexerSkillset searchIndexerSkillset = new SearchIndexerSkillset("searchIndexerSkillset",
+            Collections.singletonList(new OcrSkill(inputs, outputs)
+                .setShouldDetectOrientation(true)
+                .setDefaultLanguageCode(null)
+                .setName("myocr")
+                .setDescription("Extracts text (plain and structured) from image.")
+                .setContext("/document/normalized_images/*")));
+        searchIndexerAsyncClient.createSkillset(searchIndexerSkillset)
+            .subscribe(skillset ->
+                System.out.printf("The indexer skillset name is %s. The etag of indexer skillset is %s.%n",
+                skillset.getName(), skillset.getETag()));
+        // END: com.azure.search.documents.indexes.SearchIndexerAsyncClient.createSkillset#SearchIndexerSkillset
+    }
+
+    /**
+     * Code snippet for {@link SearchIndexerAsyncClient#createSkillsetWithResponse(SearchIndexerSkillset)}.
+     */
+    public void createSearchIndexerSkillsetWithResponseAsync() {
+        // BEGIN: com.azure.search.documents.indexes.SearchIndexerAsyncClient.createSkillsetWithResponse#SearchIndexerSkillset
+        List<InputFieldMappingEntry> inputs = Collections.singletonList(
+            new InputFieldMappingEntry("image")
+                .setSource("/document/normalized_images/*")
+        );
+
+        List<OutputFieldMappingEntry> outputs = Arrays.asList(
+            new OutputFieldMappingEntry("text")
+                .setTargetName("mytext"),
+            new OutputFieldMappingEntry("layoutText")
+                .setTargetName("myLayoutText")
+        );
+        SearchIndexerSkillset searchIndexerSkillset = new SearchIndexerSkillset("searchIndexerSkillset",
+            Collections.singletonList(new OcrSkill(inputs, outputs)
+                .setShouldDetectOrientation(true)
+                .setDefaultLanguageCode(null)
+                .setName("myocr")
+                .setDescription("Extracts text (plain and structured) from image.")
+                .setContext("/document/normalized_images/*")));
+        searchIndexerAsyncClient.createSkillsetWithResponse(searchIndexerSkillset)
+            .subscribe(skillsetWithResponse ->
+                System.out.printf("The status code of the response is %s. The indexer skillset name is %s.%n",
+                skillsetWithResponse.getStatusCode(), skillsetWithResponse.getValue().getName()));
+        // END: com.azure.search.documents.indexes.SearchIndexerAsyncClient.createSkillsetWithResponse#SearchIndexerSkillset
+    }
+
+    /**
+     * Code snippet for {@link SearchIndexerAsyncClient#getSkillset(String)}
+     */
+    public void getSearchIndexerSkillsetAsync() {
+        // BEGIN: com.azure.search.documents.indexes.SearchIndexerAsyncClient.getSearchIndexerSkillset#String
+        searchIndexerAsyncClient.getSkillset("searchIndexerSkillset")
+            .subscribe(indexerSkillset ->
+                System.out.printf("The indexer skillset name is %s. The etag of indexer skillset is %s.%n",
+                indexerSkillset.getName(), indexerSkillset.getETag()));
+        // END: com.azure.search.documents.indexes.SearchIndexerAsyncClient.getSearchIndexerSkillset#String
+    }
+
+    /**
+     * Code snippet for {@link SearchIndexerAsyncClient#getSkillsetWithResponse(String)}
+     */
+    public void getSearchIndexerSkillsetWithResponseAsync() {
+        // BEGIN: com.azure.search.documents.indexes.SearchIndexerAsyncClient.getSkillsetWithResponse#String
+        searchIndexerAsyncClient.getSkillsetWithResponse("searchIndexerSkillset")
+            .subscribe(skillsetWithResponse ->
+                System.out.printf("The status code of the response is %s. The indexer skillset name is %s.%n",
+                skillsetWithResponse.getStatusCode(), skillsetWithResponse.getValue().getName()));
+        // END: com.azure.search.documents.indexes.SearchIndexerAsyncClient.getSkillsetWithResponse#String
+    }
+
+    /**
+     * Code snippet for {@link SearchIndexerAsyncClient#listSkillsets()}
+     */
+    public void listIndexerSkillsetAsync() {
+        // BEGIN: com.azure.search.documents.indexes.SearchIndexerAsyncClient.listSkillsets
+        searchIndexerAsyncClient.listSkillsets()
+            .subscribe(skillset ->
+                System.out.printf("The skillset name is %s. The etag of skillset is %s.%n", skillset.getName(),
+                skillset.getETag()));
+        // END: com.azure.search.documents.indexes.SearchIndexerAsyncClient.listSkillsets
+    }
+
+    /**
+     * Code snippet for {@link SearchIndexerAsyncClient#listSkillsetNames()}
+     */
+    public void listIndexerSkillsetNamesAsync() {
+        // BEGIN: com.azure.search.documents.indexes.SearchIndexerAsyncClient.listSkillsetNames
+        searchIndexerAsyncClient.listSkillsetNames()
+            .subscribe(skillsetName -> System.out.printf("The indexer skillset name is %s.%n", skillsetName));
+        // END: com.azure.search.documents.indexes.SearchIndexerAsyncClient.listSkillsetNames
+    }
+
+    /**
+     * Code snippet for {@link SearchIndexerAsyncClient#createOrUpdateSkillset(SearchIndexerSkillset)}
+     */
+    public void createOrUpdateIndexerSkillsetAsync() {
+        // BEGIN: com.azure.search.documents.indexes.SearchIndexerAsyncClient.createOrUpdateIndexerSkillset#SearchIndexerSkillset
+        searchIndexerAsyncClient.getSkillset("searchIndexerSkilset")
+            .flatMap(indexerSkillset -> {
+                indexerSkillset.setDescription("This is new description!");
+                return searchIndexerAsyncClient.createOrUpdateSkillset(indexerSkillset);
+            }).subscribe(updateSkillset ->
+                System.out.printf("The indexer skillset name is %s. The description of indexer skillset is %s.%n",
+                updateSkillset.getName(), updateSkillset.getDescription()));
+        // END: com.azure.search.documents.indexes.SearchIndexerAsyncClient.createOrUpdateIndexerSkillset#SearchIndexerSkillset
+    }
+
+    /**
+     * Code snippet for {@link SearchIndexerAsyncClient#createOrUpdateSkillsetWithResponse(SearchIndexerSkillset, boolean)}
+     */
+    public void createOrUpdateIndexerSkillsetWithResponseAsync() {
+        // BEGIN: com.azure.search.documents.indexes.SearchIndexerAsyncClient.createOrUpdateSkillsetWithResponse#SearchIndexerSkillset-boolean
+        searchIndexerAsyncClient.getSkillset("searchIndexerSkilset")
+            .flatMap(indexerSkillset -> {
+                indexerSkillset.setDescription("This is new description!");
+                return searchIndexerAsyncClient.createOrUpdateSkillsetWithResponse(indexerSkillset, true);
+            })
+            .subscribe(updateSkillsetResponse ->
+                System.out.printf("The status code of the response is %s.%nThe indexer skillset name is %s. "
+                    + "The description of indexer skilset is %s.%n", updateSkillsetResponse.getStatusCode(),
+                updateSkillsetResponse.getValue().getName(),
+                updateSkillsetResponse.getValue().getDescription()));
+        // END: com.azure.search.documents.indexes.SearchIndexerAsyncClient.createOrUpdateSkillsetWithResponse#SearchIndexerSkillset-boolean
+    }
+
+    /**
+     * Code snippet for {@link SearchIndexerAsyncClient#deleteSkillset(String)}
+     */
+    public void deleteSearchIndexerSkillsetAsync() {
+        // BEGIN: com.azure.search.documents.indexes.SearchIndexerAsyncClient.deleteSkillset#String
+        searchIndexerAsyncClient.deleteSkillset("searchIndexerSkillset")
+            .subscribe();
+        // END: com.azure.search.documents.indexes.SearchIndexerAsyncClient.deleteSkillset#String
+    }
+
+    /**
+     * Code snippet for {@link SearchIndexerAsyncClient#deleteSkillsetWithResponse(SearchIndexerSkillset, boolean)}
+     */
+    public void deleteSearchIndexerSkillsetWithResponseAsync() {
+        // BEGIN: com.azure.search.documents.indexes.SearchIndexerAsyncClient.deleteSkillsetWithResponse#SearchIndexerSkillset-boolean
+        searchIndexerAsyncClient.getSkillset("searchIndexerSkilset")
+            .flatMap(searchIndexerSkilset ->
+                searchIndexerAsyncClient.deleteSkillsetWithResponse(searchIndexerSkilset, true))
+            .subscribe(deleteResponse ->
+                System.out.printf("The status code of the response is %d.%n", deleteResponse.getStatusCode()));
+        // END: com.azure.search.documents.indexes.SearchIndexerAsyncClient.deleteSkillsetWithResponse#SearchIndexerSkillset-boolean
     }
 }
