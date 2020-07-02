@@ -764,7 +764,7 @@ public class SearchIndexerAsyncClient {
      *
      * <p><strong>Code Sample</strong></p>
      *
-     * <p> Run search indexer status with response.  </p>
+     * <p> Get search indexer status.  </p>
      *
      * {@codesnippet com.azure.search.documents.indexes.SearchIndexerAsyncClient.getIndexerStatusWithResponse#String}
      *
