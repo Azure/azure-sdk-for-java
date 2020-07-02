@@ -859,7 +859,7 @@ public class SearchIndexerAsyncClient {
      *
      * <p><strong>Code Sample</strong></p>
      *
-     * <p> Get search indexer skillset "searchIndexerSkillset" with response. </p>
+     * <p> Get search indexer skillset "searchIndexerSkillset". </p>
      *
      * {@codesnippet com.azure.search.documents.indexes.SearchIndexerAsyncClient.getSkillsetWithResponse#String}
      *
