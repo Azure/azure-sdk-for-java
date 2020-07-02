@@ -3,7 +3,6 @@
 
 package com.azure.cosmos.rx;
 
-import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ChangeFeedProcessor;
 import com.azure.cosmos.ChangeFeedProcessorBuilder;
 import com.azure.cosmos.CosmosAsyncClient;
@@ -11,17 +10,18 @@ import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.implementation.FeedResponseListValidator;
-import com.azure.cosmos.implementation.InternalObjectNode;
+import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.models.ChangeFeedProcessorOptions;
 import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.CosmosContainerRequestOptions;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
-import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.util.CosmosPagedFlux;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
@@ -34,6 +34,7 @@ import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.BiConsumer;
@@ -41,28 +42,28 @@ import java.util.function.Consumer;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class ContainerCreateDeleteWithSameNameTest extends TestSuiteBase{
+public class ContainerCreateDeleteWithSameNameTest extends TestSuiteBase {
     private final static int TIMEOUT = 300000;
     private CosmosAsyncClient client;
     private CosmosAsyncDatabase createdDatabase;
 
-    @Factory(dataProvider = "clientBuilders")
+    @Factory(dataProvider = "clientBuildersWithSessionConsistency")
     public ContainerCreateDeleteWithSameNameTest(CosmosClientBuilder clientBuilder) {
         super(clientBuilder);
         this.subscriberValidationTimeout = TIMEOUT;
     }
 
-    @Test(groups = { "emulator" }, timeOut = TIMEOUT)
+    @Test(groups = {"emulator"}, timeOut = TIMEOUT)
     public <T> void query() throws Exception {
         String query = "SELECT * FROM r";
 
         Consumer<CosmosAsyncContainer> func = (container) -> {
-            InternalObjectNode docDefinition = getDocumentDefinition();
+            TestObject docDefinition = getDocumentDefinition();
             container.createItem(docDefinition).block();
 
             CosmosQueryRequestOptions requestOptions = new CosmosQueryRequestOptions();
-            CosmosPagedFlux<InternalObjectNode> queryFlux = container.queryItems(query, requestOptions, InternalObjectNode.class);
-            FeedResponseListValidator<InternalObjectNode> queryValidator = new FeedResponseListValidator.Builder<InternalObjectNode>()
+            CosmosPagedFlux<TestObject> queryFlux = container.queryItems(query, requestOptions, TestObject.class);
+            FeedResponseListValidator<TestObject> queryValidator = new FeedResponseListValidator.Builder<TestObject>()
                 .totalSize(1)
                 .numberOfPages(1)
                 .build();
@@ -72,20 +73,20 @@ public class ContainerCreateDeleteWithSameNameTest extends TestSuiteBase{
         createDeleteContainerWithSameName(func);
     }
 
-    @Test(groups = { "emulator" }, timeOut = TIMEOUT)
+    @Test(groups = {"emulator"}, timeOut = TIMEOUT)
     public <T> void readItem() throws Exception {
 
         Consumer<CosmosAsyncContainer> func = (container) -> {
-            InternalObjectNode docDefinition = getDocumentDefinition();
+            TestObject docDefinition = getDocumentDefinition();
             container.createItem(docDefinition).block();
 
-            Mono<CosmosItemResponse<InternalObjectNode>> responseMono = container.readItem(docDefinition.getId(),
-                new PartitionKey(ModelBridgeInternal.getObjectFromJsonSerializable(docDefinition, "mypk")),
+            Mono<CosmosItemResponse<TestObject>> responseMono = container.readItem(docDefinition.getId(),
+                new PartitionKey(docDefinition.getMypk()),
                 new CosmosItemRequestOptions(),
-                InternalObjectNode.class);
+                TestObject.class);
 
             CosmosItemResponseValidator validator =
-                new CosmosItemResponseValidator.Builder<CosmosItemResponse<InternalObjectNode>>()
+                new CosmosItemResponseValidator.Builder<CosmosItemResponse<TestObject>>()
                     .withId(docDefinition.getId())
                     .build();
 
@@ -95,20 +96,20 @@ public class ContainerCreateDeleteWithSameNameTest extends TestSuiteBase{
         createDeleteContainerWithSameName(func);
     }
 
-    @Test(groups = { "emulator" }, timeOut = TIMEOUT)
+    @Test(groups = {"emulator"}, timeOut = TIMEOUT)
     public <T> void deleteItem() throws Exception {
 
         Consumer<CosmosAsyncContainer> func = (container) -> {
-            InternalObjectNode docDefinition = getDocumentDefinition();
+            TestObject docDefinition = getDocumentDefinition();
             container.createItem(docDefinition).block();
 
             Mono<CosmosItemResponse<Object>> deleteObservable = container.deleteItem(
                 docDefinition.getId(),
-                new PartitionKey(ModelBridgeInternal.getObjectFromJsonSerializable(docDefinition, "mypk")),
+                new PartitionKey(docDefinition.getMypk()),
                 new CosmosItemRequestOptions());
 
             CosmosItemResponseValidator validator =
-                new CosmosItemResponseValidator.Builder<CosmosItemResponse<InternalObjectNode>>()
+                new CosmosItemResponseValidator.Builder<CosmosItemResponse<TestObject>>()
                     .nullResource()
                     .build();
             this.validateItemSuccess(deleteObservable, validator);
@@ -117,23 +118,21 @@ public class ContainerCreateDeleteWithSameNameTest extends TestSuiteBase{
         createDeleteContainerWithSameName(func);
     }
 
-
-    @Test(groups = { "emulator" }, timeOut = TIMEOUT)
+    @Test(groups = {"emulator"}, timeOut = TIMEOUT)
     public <T> void upsertItem() throws Exception {
 
         Consumer<CosmosAsyncContainer> func = (container) -> {
-            InternalObjectNode docDefinition = getDocumentDefinition();
+            TestObject docDefinition = getDocumentDefinition();
             docDefinition = container.createItem(docDefinition).block().getItem();
 
-            String newPropValue = UUID.randomUUID().toString();
-            BridgeInternal.setProperty(docDefinition, "newProp", newPropValue);
+            docDefinition.setProp(UUID.randomUUID().toString());
 
-            Mono<CosmosItemResponse<InternalObjectNode>> readObservable = container.upsertItem(docDefinition, new CosmosItemRequestOptions());
+            Mono<CosmosItemResponse<TestObject>> readObservable = container.upsertItem(docDefinition, new CosmosItemRequestOptions());
 
             // Validate result
             CosmosItemResponseValidator validator =
-                new CosmosItemResponseValidator.Builder<CosmosItemResponse<InternalObjectNode>>()
-                    .withProperty("newProp", newPropValue)
+                new CosmosItemResponseValidator.Builder<CosmosItemResponse<TestObject>>()
+                    .withProperty("prop", String.valueOf(docDefinition.getProp()))
                     .build();
 
             this.validateItemSuccess(readObservable, validator);
@@ -142,15 +141,16 @@ public class ContainerCreateDeleteWithSameNameTest extends TestSuiteBase{
         createDeleteContainerWithSameName(func);
     }
 
-    @Test(groups = { "emulator" }, timeOut = TIMEOUT)
+    @Test(groups = {"emulator"}, timeOut = TIMEOUT)
     public <T> void changeFeed() throws Exception {
 
+        ObjectMapper objectMapper = Utils.getSimpleObjectMapper();
         BiConsumer<CosmosAsyncContainer, CosmosAsyncContainer> func = (feedContainer, leaseContainer) -> {
             String hostName = RandomStringUtils.randomAlphabetic(6);
             int CHANGE_FEED_PROCESSOR_TIMEOUT = 5000;
             final int FEED_COUNT = 10;
-            List<InternalObjectNode> createdDocuments = new ArrayList<>();
-            Map<String, JsonNode> receivedDocuments = new ConcurrentHashMap<>();
+            List<TestObject> createdDocuments = new ArrayList<>();
+            Map<String, TestObject> receivedDocuments = new ConcurrentHashMap<>();
 
             setupReadFeedDocuments(createdDocuments, feedContainer, FEED_COUNT);
 
@@ -158,7 +158,12 @@ public class ContainerCreateDeleteWithSameNameTest extends TestSuiteBase{
                 .hostName(hostName)
                 .handleChanges((docs) -> {
                     for (JsonNode item : docs) {
-                        receivedDocuments.put(item.get("id").asText(), item);
+                        try {
+                            TestObject obj = objectMapper.treeToValue(item, TestObject.class);
+                            receivedDocuments.put(obj.getId(), obj);
+                        } catch (JsonProcessingException e) {
+                            e.printStackTrace();
+                        }
                     }
                 })
                 .feedContainer(feedContainer)
@@ -190,7 +195,7 @@ public class ContainerCreateDeleteWithSameNameTest extends TestSuiteBase{
 
                 changeFeedProcessor.stop().subscribeOn(Schedulers.elastic()).timeout(Duration.ofMillis(CHANGE_FEED_PROCESSOR_TIMEOUT)).subscribe();
 
-                for (InternalObjectNode item : createdDocuments) {
+                for (TestObject item : createdDocuments) {
                     assertThat(receivedDocuments.containsKey(item.getId())).as("Document with getId: " + item.getId()).isTrue();
                 }
 
@@ -205,20 +210,20 @@ public class ContainerCreateDeleteWithSameNameTest extends TestSuiteBase{
         changeFeedCreateDeleteContainerWithSameName(func);
     }
 
-    @BeforeClass(groups = { "emulator" }, timeOut = SETUP_TIMEOUT)
+    @BeforeClass(groups = {"emulator"}, timeOut = SETUP_TIMEOUT)
     public void before_ContainerCreateDeleteWithSameNameTest() throws Exception {
         client = getClientBuilder().buildAsyncClient();
         createdDatabase = getSharedCosmosDatabase(client);
     }
 
-    @AfterClass(groups = { "emulator" }, timeOut = SETUP_TIMEOUT)
+    @AfterClass(groups = {"emulator"}, timeOut = SETUP_TIMEOUT)
     public void after_ContainerCreateDeleteWithSameNameTest() throws Exception {
         safeDeleteAllCollections(createdDatabase);
     }
 
-    private <T> void createDeleteContainerWithSameName(Consumer<CosmosAsyncContainer> validateFunc) {
+    private <T> void createDeleteContainerWithSameName(Consumer<CosmosAsyncContainer> validateFunc) throws InterruptedException {
         CosmosAsyncContainer container = null;
-        try{
+        try {
             // step1: create container
             String testContainerId = UUID.randomUUID().toString();
             CosmosContainerProperties containerProperties = getCollectionDefinition(testContainerId);
@@ -229,6 +234,7 @@ public class ContainerCreateDeleteWithSameNameTest extends TestSuiteBase{
 
             // step3: delete the container
             safeDeleteCollection(container);
+            Thread.sleep(2000);
 
             // step4: recreate the container with same id as step1
             container = createCollection(this.createdDatabase, containerProperties, new CosmosContainerRequestOptions());
@@ -236,13 +242,12 @@ public class ContainerCreateDeleteWithSameNameTest extends TestSuiteBase{
             // step5: same as step2.
             // This part will confirm the cache refreshed correctly
             validateFunc.accept(container);
-        }
-        finally {
+        } finally {
             safeDeleteCollection(container);
         }
     }
 
-    private <T> void changeFeedCreateDeleteContainerWithSameName(BiConsumer<CosmosAsyncContainer, CosmosAsyncContainer> validateFunc) {
+    private <T> void changeFeedCreateDeleteContainerWithSameName(BiConsumer<CosmosAsyncContainer, CosmosAsyncContainer> validateFunc) throws InterruptedException {
         CosmosAsyncContainer feedContainer = null;
         CosmosAsyncContainer leaseContainer = null;
 
@@ -250,7 +255,7 @@ public class ContainerCreateDeleteWithSameNameTest extends TestSuiteBase{
             // step1: create feed container and lease container
             String feedContainerId = UUID.randomUUID().toString();
             CosmosContainerProperties feedContainerProperties = getCollectionDefinition(feedContainerId);
-            feedContainer = createCollection(this.createdDatabase,feedContainerProperties, new CosmosContainerRequestOptions());
+            feedContainer = createCollection(this.createdDatabase, feedContainerProperties, new CosmosContainerRequestOptions());
 
             String leaseContainerId = UUID.randomUUID().toString();
             CosmosContainerProperties leaseContainerProperties = getCollectionDefinition(leaseContainerId);
@@ -259,42 +264,39 @@ public class ContainerCreateDeleteWithSameNameTest extends TestSuiteBase{
             // Step2: execute func
             validateFunc.accept(feedContainer, leaseContainer);
 
-            // step3: delete the containers
-            safeDeleteCollection(feedContainer);
+            // step3: delete the lease container
             safeDeleteCollection(leaseContainer);
+            Thread.sleep(2000);
 
-            // step4: recreate the feed container and lease container with same ids as step1
-            feedContainer = createCollection(this.createdDatabase, feedContainerProperties, new CosmosContainerRequestOptions());
+            // step4: recreate the lease container and lease container with same ids as step1
             leaseContainer = createLeaseContainer(leaseContainerProperties.getId());
 
             // step5: same as step2.
             // This part will confirm the cache refreshed correctly
             validateFunc.accept(feedContainer, leaseContainer);
-        }
-        finally {
+        } finally {
             safeDeleteCollection(feedContainer);
             safeDeleteCollection(leaseContainer);
         }
     }
 
-    private static InternalObjectNode getDocumentDefinition() {
-        String uuid = UUID.randomUUID().toString();
-        InternalObjectNode doc = new InternalObjectNode(String.format("{ "
-                + "\"id\": \"%s\", "
-                + "\"mypk\": \"%s\", "
-                + "}"
-            , uuid, uuid));
-        return doc;
+    private static TestObject getDocumentDefinition() {
+        Random random = new Random();
+        return new TestObject(
+            UUID.randomUUID().toString(),
+            UUID.randomUUID().toString(),
+            UUID.randomUUID().toString()
+        );
     }
 
-    private void setupReadFeedDocuments(List<InternalObjectNode> createdDocuments, CosmosAsyncContainer feedCollection, long count) {
-        List<InternalObjectNode> docDefList = new ArrayList<>();
+    private void setupReadFeedDocuments(List<TestObject> createdDocuments, CosmosAsyncContainer feedContainer, long count) {
+        List<TestObject> docDefList = new ArrayList<>();
 
-        for(int i = 0; i < count; i++) {
+        for (int i = 0; i < count; i++) {
             docDefList.add(getDocumentDefinition());
         }
 
-        createdDocuments.addAll(bulkInsertBlocking(feedCollection, docDefList));
+        createdDocuments.addAll(bulkInsertBlocking(feedContainer, docDefList));
         waitIfNeededForReplicasToCatchUp(getClientBuilder());
     }
 
@@ -302,5 +304,44 @@ public class ContainerCreateDeleteWithSameNameTest extends TestSuiteBase{
         CosmosContainerRequestOptions options = new CosmosContainerRequestOptions();
         CosmosContainerProperties collectionDefinition = new CosmosContainerProperties(conatinerId, "/id");
         return createCollection(createdDatabase, collectionDefinition, options);
+    }
+
+    static class TestObject {
+        String id;
+        String mypk;
+        String prop;
+
+        public TestObject() {
+        }
+
+        public TestObject(String id, String mypk, String prop) {
+            this.id = id;
+            this.mypk = mypk;
+            this.prop = prop;
+        }
+
+        public String getId() {
+            return id;
+        }
+
+        public void setId(String id) {
+            this.id = id;
+        }
+
+        public String getMypk() {
+            return mypk;
+        }
+
+        public void setMypk(String mypk) {
+            this.mypk = mypk;
+        }
+
+        public String getProp() {
+            return prop;
+        }
+
+        public void setProp(String prop) {
+            this.prop = prop;
+        }
     }
 }
