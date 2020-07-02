@@ -245,8 +245,8 @@ public class JacksonAvroSerializerTests {
     public void simpleSerialization(String schema, Object value, byte[] expected) {
         StepVerifier.create(getSerializer(schema).serialize(new ByteArrayOutputStream(), value))
             .assertNext(actual -> {
-                assertTrue(actual instanceof ByteArrayOutputStream);
-                assertArrayEquals(expected, ((ByteArrayOutputStream) actual).toByteArray());
+                assertTrue(actual != null);
+                assertArrayEquals(expected, actual.toByteArray());
             })
             .verifyComplete();
     }
@@ -277,8 +277,8 @@ public class JacksonAvroSerializerTests {
         StepVerifier.create(getSerializer(PlayingCardSuit.getClassSchema().toString())
             .serialize(new ByteArrayOutputStream(), playingCardSuit))
             .assertNext(actual -> {
-                assertTrue(actual instanceof ByteArrayOutputStream);
-                assertArrayEquals(expected, ((ByteArrayOutputStream) actual).toByteArray());
+                assertTrue(actual != null);
+                assertArrayEquals(expected, actual.toByteArray());
             })
             .verifyComplete();
     }
@@ -297,8 +297,8 @@ public class JacksonAvroSerializerTests {
     public void serializeListAndMap(Object obj, String schema, byte[] expected) {
         StepVerifier.create(getSerializer(schema).serialize(new ByteArrayOutputStream(), obj))
             .assertNext(actual -> {
-                assertTrue(actual instanceof ByteArrayOutputStream);
-                assertArrayEquals(expected, ((ByteArrayOutputStream) actual).toByteArray());
+                assertTrue(actual != null);
+                assertArrayEquals(expected, actual.toByteArray());
             })
             .verifyComplete();
     }
@@ -328,8 +328,8 @@ public class JacksonAvroSerializerTests {
     public void serializeRecord(Object obj, String schema, byte[] expected) {
         StepVerifier.create(getSerializer(schema).serialize(new ByteArrayOutputStream(), obj))
             .assertNext(actual -> {
-                assertTrue(actual instanceof ByteArrayOutputStream);
-                assertArrayEquals(expected, ((ByteArrayOutputStream) actual).toByteArray());
+                assertTrue(actual != null);
+                assertArrayEquals(expected, actual.toByteArray());
             })
             .verifyComplete();
     }

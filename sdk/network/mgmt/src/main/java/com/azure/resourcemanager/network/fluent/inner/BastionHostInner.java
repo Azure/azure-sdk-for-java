@@ -21,8 +21,7 @@ public class BastionHostInner extends Resource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(BastionHostInner.class);
 
     /*
-     * Gets a unique read-only string that changes whenever the resource is
-     * updated.
+     * A unique read-only string that changes whenever the resource is updated.
      */
     @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
@@ -40,7 +39,7 @@ public class BastionHostInner extends Resource {
     private String dnsName;
 
     /*
-     * The provisioning state of the resource.
+     * The provisioning state of the bastion host resource.
      */
     @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
@@ -52,7 +51,7 @@ public class BastionHostInner extends Resource {
     private String id;
 
     /**
-     * Get the etag property: Gets a unique read-only string that changes whenever the resource is updated.
+     * Get the etag property: A unique read-only string that changes whenever the resource is updated.
      *
      * @return the etag value.
      */
@@ -101,7 +100,7 @@ public class BastionHostInner extends Resource {
     }
 
     /**
-     * Get the provisioningState property: The provisioning state of the resource.
+     * Get the provisioningState property: The provisioning state of the bastion host resource.
      *
      * @return the provisioningState value.
      */

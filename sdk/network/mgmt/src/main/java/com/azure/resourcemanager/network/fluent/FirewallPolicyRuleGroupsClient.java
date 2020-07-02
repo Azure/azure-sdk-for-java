@@ -30,6 +30,7 @@ import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
+import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.network.NetworkManagementClient;
 import com.azure.resourcemanager.network.fluent.inner.FirewallPolicyRuleGroupInner;
 import com.azure.resourcemanager.network.fluent.inner.FirewallPolicyRuleGroupListResultInner;
@@ -202,7 +203,7 @@ public final class FirewallPolicyRuleGroupsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -256,7 +257,7 @@ public final class FirewallPolicyRuleGroupsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return service
             .delete(
                 this.client.getEndpoint(),
@@ -280,7 +281,7 @@ public final class FirewallPolicyRuleGroupsClient {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<Void>, Void> beginDelete(
+    public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String firewallPolicyName, String ruleGroupName) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             deleteWithResponseAsync(resourceGroupName, firewallPolicyName, ruleGroupName);
@@ -300,7 +301,7 @@ public final class FirewallPolicyRuleGroupsClient {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<Void>, Void> beginDelete(
+    public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String firewallPolicyName, String ruleGroupName, Context context) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             deleteWithResponseAsync(resourceGroupName, firewallPolicyName, ruleGroupName, context);
@@ -319,12 +320,43 @@ public final class FirewallPolicyRuleGroupsClient {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<Void>, Void> beginDelete(
+        String resourceGroupName, String firewallPolicyName, String ruleGroupName) {
+        return beginDeleteAsync(resourceGroupName, firewallPolicyName, ruleGroupName).getSyncPoller();
+    }
+
+    /**
+     * Deletes the specified FirewallPolicyRuleGroup.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param firewallPolicyName The name of the Firewall Policy.
+     * @param ruleGroupName The name of the FirewallPolicyRuleGroup.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<Void>, Void> beginDelete(
+        String resourceGroupName, String firewallPolicyName, String ruleGroupName, Context context) {
+        return beginDeleteAsync(resourceGroupName, firewallPolicyName, ruleGroupName, context).getSyncPoller();
+    }
+
+    /**
+     * Deletes the specified FirewallPolicyRuleGroup.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param firewallPolicyName The name of the Firewall Policy.
+     * @param ruleGroupName The name of the FirewallPolicyRuleGroup.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String firewallPolicyName, String ruleGroupName) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, firewallPolicyName, ruleGroupName);
-        return this
-            .client
-            .<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class)
+        return beginDeleteAsync(resourceGroupName, firewallPolicyName, ruleGroupName)
             .last()
             .flatMap(client::getLroFinalResultOrError);
     }
@@ -344,11 +376,7 @@ public final class FirewallPolicyRuleGroupsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(
         String resourceGroupName, String firewallPolicyName, String ruleGroupName, Context context) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, firewallPolicyName, ruleGroupName, context);
-        return this
-            .client
-            .<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class)
+        return beginDeleteAsync(resourceGroupName, firewallPolicyName, ruleGroupName, context)
             .last()
             .flatMap(client::getLroFinalResultOrError);
     }
@@ -421,7 +449,7 @@ public final class FirewallPolicyRuleGroupsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -475,7 +503,7 @@ public final class FirewallPolicyRuleGroupsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return service
             .get(
                 this.client.getEndpoint(),
@@ -618,7 +646,7 @@ public final class FirewallPolicyRuleGroupsClient {
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -683,7 +711,7 @@ public final class FirewallPolicyRuleGroupsClient {
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return service
             .createOrUpdate(
                 this.client.getEndpoint(),
@@ -709,7 +737,7 @@ public final class FirewallPolicyRuleGroupsClient {
      * @return rule Group resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<FirewallPolicyRuleGroupInner>, FirewallPolicyRuleGroupInner> beginCreateOrUpdate(
+    public PollerFlux<PollResult<FirewallPolicyRuleGroupInner>, FirewallPolicyRuleGroupInner> beginCreateOrUpdateAsync(
         String resourceGroupName,
         String firewallPolicyName,
         String ruleGroupName,
@@ -739,7 +767,7 @@ public final class FirewallPolicyRuleGroupsClient {
      * @return rule Group resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<FirewallPolicyRuleGroupInner>, FirewallPolicyRuleGroupInner> beginCreateOrUpdate(
+    public PollerFlux<PollResult<FirewallPolicyRuleGroupInner>, FirewallPolicyRuleGroupInner> beginCreateOrUpdateAsync(
         String resourceGroupName,
         String firewallPolicyName,
         String ruleGroupName,
@@ -769,20 +797,58 @@ public final class FirewallPolicyRuleGroupsClient {
      * @return rule Group resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<FirewallPolicyRuleGroupInner>, FirewallPolicyRuleGroupInner> beginCreateOrUpdate(
+        String resourceGroupName,
+        String firewallPolicyName,
+        String ruleGroupName,
+        FirewallPolicyRuleGroupInner parameters) {
+        return beginCreateOrUpdateAsync(resourceGroupName, firewallPolicyName, ruleGroupName, parameters)
+            .getSyncPoller();
+    }
+
+    /**
+     * Creates or updates the specified FirewallPolicyRuleGroup.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param firewallPolicyName The name of the Firewall Policy.
+     * @param ruleGroupName The name of the FirewallPolicyRuleGroup.
+     * @param parameters Rule Group resource.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return rule Group resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<FirewallPolicyRuleGroupInner>, FirewallPolicyRuleGroupInner> beginCreateOrUpdate(
+        String resourceGroupName,
+        String firewallPolicyName,
+        String ruleGroupName,
+        FirewallPolicyRuleGroupInner parameters,
+        Context context) {
+        return beginCreateOrUpdateAsync(resourceGroupName, firewallPolicyName, ruleGroupName, parameters, context)
+            .getSyncPoller();
+    }
+
+    /**
+     * Creates or updates the specified FirewallPolicyRuleGroup.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param firewallPolicyName The name of the Firewall Policy.
+     * @param ruleGroupName The name of the FirewallPolicyRuleGroup.
+     * @param parameters Rule Group resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return rule Group resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<FirewallPolicyRuleGroupInner> createOrUpdateAsync(
         String resourceGroupName,
         String firewallPolicyName,
         String ruleGroupName,
         FirewallPolicyRuleGroupInner parameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, firewallPolicyName, ruleGroupName, parameters);
-        return this
-            .client
-            .<FirewallPolicyRuleGroupInner, FirewallPolicyRuleGroupInner>getLroResultAsync(
-                mono,
-                this.client.getHttpPipeline(),
-                FirewallPolicyRuleGroupInner.class,
-                FirewallPolicyRuleGroupInner.class)
+        return beginCreateOrUpdateAsync(resourceGroupName, firewallPolicyName, ruleGroupName, parameters)
             .last()
             .flatMap(client::getLroFinalResultOrError);
     }
@@ -807,15 +873,7 @@ public final class FirewallPolicyRuleGroupsClient {
         String ruleGroupName,
         FirewallPolicyRuleGroupInner parameters,
         Context context) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, firewallPolicyName, ruleGroupName, parameters, context);
-        return this
-            .client
-            .<FirewallPolicyRuleGroupInner, FirewallPolicyRuleGroupInner>getLroResultAsync(
-                mono,
-                this.client.getHttpPipeline(),
-                FirewallPolicyRuleGroupInner.class,
-                FirewallPolicyRuleGroupInner.class)
+        return beginCreateOrUpdateAsync(resourceGroupName, firewallPolicyName, ruleGroupName, parameters, context)
             .last()
             .flatMap(client::getLroFinalResultOrError);
     }
@@ -897,7 +955,7 @@ public final class FirewallPolicyRuleGroupsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -955,7 +1013,7 @@ public final class FirewallPolicyRuleGroupsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return service
             .list(
                 this.client.getEndpoint(),
@@ -1080,7 +1138,7 @@ public final class FirewallPolicyRuleGroupsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -1134,7 +1192,7 @@ public final class FirewallPolicyRuleGroupsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return service
             .beginDeleteWithoutPolling(
                 this.client.getEndpoint(),
@@ -1261,7 +1319,7 @@ public final class FirewallPolicyRuleGroupsClient {
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -1326,7 +1384,7 @@ public final class FirewallPolicyRuleGroupsClient {
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return service
             .beginCreateOrUpdateWithoutPolling(
                 this.client.getEndpoint(),

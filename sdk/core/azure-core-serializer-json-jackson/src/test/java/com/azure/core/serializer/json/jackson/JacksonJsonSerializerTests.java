@@ -87,8 +87,8 @@ public class JacksonJsonSerializerTests {
 
         StepVerifier.create(DEFAULT_SERIALIZER.serialize(new ByteArrayOutputStream(), person))
             .assertNext(actual -> {
-                assertTrue(actual instanceof ByteArrayOutputStream);
-                assertArrayEquals(expected, ((ByteArrayOutputStream) actual).toByteArray());
+                assertTrue(actual != null);
+                assertArrayEquals(expected, actual.toByteArray());
             }).verifyComplete();
     }
 
@@ -99,8 +99,8 @@ public class JacksonJsonSerializerTests {
 
         StepVerifier.create(CUSTOM_SERIALIZER.serialize(new ByteArrayOutputStream(), person))
             .assertNext(actual -> {
-                assertTrue(actual instanceof ByteArrayOutputStream);
-                assertArrayEquals(expected, ((ByteArrayOutputStream) actual).toByteArray());
+                assertTrue(actual != null);
+                assertArrayEquals(expected, actual.toByteArray());
             }).verifyComplete();
     }
 
