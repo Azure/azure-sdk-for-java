@@ -615,7 +615,7 @@ public class SearchIndexerAsyncClient {
      *
      * <p><strong>Code Sample</strong></p>
      *
-     * <p> Delete search indexer response named "searchIndexer".  </p>
+     * <p> Delete search indexer named "searchIndexer".  </p>
      *
      * {@codesnippet com.azure.search.documents.indexes.SearchIndexerAsyncClient.deleteIndexerWithResponse#SearchIndexer-boolean}
      *
