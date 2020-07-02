@@ -15,7 +15,7 @@ import java.util.Collection;
 public final class KeyType extends ExpandableStringEnum<KeyType> {
 
     /**
-     * Static value Encrypt for KeyType.
+     * Static value EC for KeyType.
      */
     public static final KeyType EC = fromString("EC");
 
