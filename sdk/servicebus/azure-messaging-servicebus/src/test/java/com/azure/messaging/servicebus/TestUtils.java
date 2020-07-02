@@ -53,6 +53,7 @@ public class TestUtils {
     static final int USE_CASE_SINGLE_SESSION = 12;
     static final int USE_CASE_SEND_VIA_1 = 13;
     static final int USE_CASE_SEND_VIA_2 = 14;
+    static final int USE_CASE_RECEIVE_RENEW_LOCK = 15;
 
     // An application property key to identify where in the stream this message was created.
     static final String MESSAGE_POSITION_ID = "message-position";
