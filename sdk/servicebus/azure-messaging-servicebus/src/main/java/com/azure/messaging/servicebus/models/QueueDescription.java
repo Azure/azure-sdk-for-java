@@ -282,16 +282,16 @@ public final class QueueDescription {
      * populated with defaults are:
      *
      * <ul>
-     *     <li>{@link #setAutoDeleteOnIdle(Duration)}</li>
-     *     <li>{@link #setDeadLetteringOnMessageExpiration(Boolean)}</li>
-     *     <li>{@link #setDefaultMessageTimeToLive(Duration)}</li>
-     *     <li>{@link #setRequiresDuplicateDetection(Boolean)}</li>
-     *     <li>{@link #setDuplicateDetectionHistoryTimeWindow(Duration)}</li>
-     *     <li>{@link #setEnableBatchedOperations(Boolean)}</li>
-     *     <li>{@link #setLockDuration(Duration)}</li>
-     *     <li>{@link #setMaxDeliveryCount(Integer)}</li>
-     *     <li>{@link #setMaxSizeInMegabytes(Integer)}</li>
-     *     <li>{@link #setRequiresSession(Boolean)}</li>
+     *     <li>{@link #setAutoDeleteOnIdle(Duration)} is max duration value.</li>
+     *     <li>{@link #setDefaultMessageTimeToLive(Duration)} is max duration value.</li>
+     *     <li>{@link #setDuplicateDetectionHistoryTimeWindow(Duration)} is max duration value, but duplication
+     *     detection is disabled.</li>
+     *     <li>{@link #setRequiresDuplicateDetection(Boolean)} is false.</li>
+     *     <li>{@link #setEnableBatchedOperations(Boolean)} is true.</li>
+     *     <li>{@link #setLockDuration(Duration)} is 1 minute.</li>
+     *     <li>{@link #setMaxDeliveryCount(Integer)} is 10.</li>
+     *     <li>{@link #setMaxSizeInMegabytes(Integer)} is 1024MB.</li>
+     *     <li>{@link #setRequiresSession(Boolean)} is false.</li>
      * </ul>
      *
      * @param queueName Name of the queue.

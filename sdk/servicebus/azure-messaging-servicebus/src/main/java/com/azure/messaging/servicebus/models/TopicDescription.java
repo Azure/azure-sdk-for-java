@@ -242,14 +242,15 @@ public final class TopicDescription {
      * populated with defaults are:
      *
      * <ul>
-     *     <li>{@link #setAutoDeleteOnIdle(Duration)}</li>
-     *     <li>{@link #setDefaultMessageTimeToLive(Duration)}</li>
-     *     <li>{@link #setDuplicateDetectionHistoryTimeWindow(Duration)}</li>
-     *     <li>{@link #setEnableBatchedOperations(Boolean)}</li>
-     *     <li>{@link #setEnablePartitioning(Boolean)}</li>
-     *     <li>{@link #setMaxSizeInMegabytes(Long)}</li>
-     *     <li>{@link #setRequiresDuplicateDetection(Boolean)}</li>
-     *     <li>{@link #setSupportOrdering(Boolean)}</li>
+     *     <li>{@link #setAutoDeleteOnIdle(Duration)} is max duration value.</li>
+     *     <li>{@link #setDefaultMessageTimeToLive(Duration)} is max duration value.</li>
+     *     <li>{@link #setDuplicateDetectionHistoryTimeWindow(Duration)} is max duration value, but duplication
+     *     detection is disabled.</li>
+     *     <li>{@link #setEnableBatchedOperations(Boolean)} is true.</li>
+     *     <li>{@link #setEnablePartitioning(Boolean)} is false.</li>
+     *     <li>{@link #setMaxSizeInMegabytes(Long)} is 1024MB.</li>
+     *     <li>{@link #setRequiresDuplicateDetection(Boolean)} is false.</li>
+     *     <li>{@link #setSupportOrdering(Boolean)} is false.</li>
      * </ul>
      *
      * @param topicName Name of the topic.
