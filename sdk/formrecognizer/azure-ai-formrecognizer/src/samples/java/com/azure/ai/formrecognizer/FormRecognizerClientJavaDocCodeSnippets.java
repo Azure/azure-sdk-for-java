@@ -84,7 +84,7 @@ public class FormRecognizerClientJavaDocCodeSnippets {
         // BEGIN: com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeCustomFormsFromUrl#string-string-recognizeOptions
         String analyzeFilePath = "{file_source_url}";
         String modelId = "{model_id}";
-        boolean includeTextContent = true;
+        boolean includeFieldElements = true;
 
         formRecognizerClient.beginRecognizeCustomFormsFromUrl(analyzeFilePath, modelId,
             new RecognizeOptions()

@@ -445,7 +445,7 @@ public final class FormRecognizerAsyncClient {
             recognizeOptions = getRecognizeOptionsProperties(recognizeOptions);
             return new PollerFlux<>(
                 recognizeOptions.getPollInterval(),
-                receiptStreamActivationOperation(buffer, recognizeOptions.getLength(),
+                receiptStreamActivationOperation(receipt, length,
                     recognizeOptions.getFormContentType(), recognizeOptions.isIncludeFieldElements()),
                 extractReceiptPollOperation(),
                 (activationResponse, context) -> monoError(logger,

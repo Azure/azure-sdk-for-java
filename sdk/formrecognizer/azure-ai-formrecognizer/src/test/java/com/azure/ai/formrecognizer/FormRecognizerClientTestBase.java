@@ -170,14 +170,14 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
                         FormLine actualFormLine = (FormLine) actualFormElementList.get(i);
                         validateFormWordData(expectedTextLine.getWords(), actualFormLine.getFormWords());
                     }
-                    FormWord actualFormContent = (FormWord) actualFormElementList.get(i);
-                    assertEquals(expectedTextWord.getText(), actualFormContent.getText());
+                    FormWord actualFormWord = (FormWord) actualFormElementList.get(i);
+                    assertEquals(expectedTextWord.getText(), actualFormWord.getText());
                     if (expectedTextWord.getConfidence() != null) {
-                        assertEquals(expectedTextWord.getConfidence(), actualFormContent.getConfidence());
+                        assertEquals(expectedTextWord.getConfidence(), actualFormWord.getConfidence());
                     } else {
-                        assertEquals(1.0f, actualFormContent.getConfidence());
+                        assertEquals(1.0f, actualFormWord.getConfidence());
                     }
-                    validateBoundingBoxData(expectedTextWord.getBoundingBox(), actualFormContent.getBoundingBox());
+                    validateBoundingBoxData(expectedTextWord.getBoundingBox(), actualFormWord.getBoundingBox());
                 }
             }
         }
@@ -323,7 +323,7 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
         FormRecognizerServiceVersion serviceVersion);
 
     @Test
-    abstract void recognizeReceiptDataTextDetails(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion);
+    abstract void recognizeReceiptDataIncludeFieldElements(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion);
 
     @Test
     abstract void recognizeReceiptDataWithPngFile(HttpClient httpClient,
@@ -345,7 +345,7 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
     abstract void recognizeReceiptInvalidSourceUrl(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion);
 
     @Test
-    abstract void recognizeReceiptFromUrlTextContent(HttpClient httpClient,
+    abstract void recognizeReceiptFromUrlIncludeFieldElements(HttpClient httpClient,
         FormRecognizerServiceVersion serviceVersion);
 
     @Test
@@ -407,7 +407,7 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
         FormRecognizerServiceVersion serviceVersion);
 
     @Test
-    abstract void recognizeCustomFormLabeledDataExcludeTextContent(HttpClient httpClient,
+    abstract void recognizeCustomFormLabeledDataExcludeFieldElements(HttpClient httpClient,
         FormRecognizerServiceVersion serviceVersion);
 
     @Test
@@ -438,7 +438,7 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
     abstract void recognizeCustomFormUnlabeledData(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion);
 
     @Test
-    abstract void recognizeCustomFormUnlabeledDataIncludeTextContent(HttpClient httpClient,
+    abstract void recognizeCustomFormUnlabeledDataIncludeFieldElements(HttpClient httpClient,
         FormRecognizerServiceVersion serviceVersion);
 
     @Test
@@ -459,7 +459,7 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
     abstract void recognizeCustomFormUrlUnlabeledData(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion);
 
     @Test
-    abstract void recognizeCustomFormUrlUnlabeledDataIncludeTextContent(HttpClient httpClient,
+    abstract void recognizeCustomFormUrlUnlabeledDataIncludeFieldElements(HttpClient httpClient,
         FormRecognizerServiceVersion serviceVersion);
 
     @Test
@@ -484,7 +484,7 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
     abstract void recognizeCustomFormUrlLabeledData(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion);
 
     @Test
-    abstract void recognizeCustomFormUrlLabeledDataIncludeTextContent(HttpClient httpClient,
+    abstract void recognizeCustomFormUrlLabeledDataIncludeFieldElements(HttpClient httpClient,
         FormRecognizerServiceVersion serviceVersion);
 
     @Test
@@ -584,11 +584,11 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
         testRunner.accept(getStorageTestingFileUrl(RECEIPT_CONTOSO_JPG));
     }
 
-    void receiptSourceUrlRunnerTextDetails(BiConsumer<String, Boolean> testRunner) {
+    void receiptSourceUrlRunnerFieldElements(BiConsumer<String, Boolean> testRunner) {
         testRunner.accept(getStorageTestingFileUrl(RECEIPT_CONTOSO_JPG), true);
     }
 
-    void receiptPngSourceUrlRunnerTextDetails(BiConsumer<String, Boolean> testRunner) {
+    void receiptPngSourceUrlRunnerFieldElements(BiConsumer<String, Boolean> testRunner) {
         testRunner.accept(getStorageTestingFileUrl(RECEIPT_CONTOSO_PNG), true);
     }
 
@@ -600,7 +600,7 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
         }
     }
 
-    void receiptDataRunnerTextDetails(BiConsumer<InputStream, Boolean> testRunner) {
+    void receiptDataRunnerFieldElements(BiConsumer<InputStream, Boolean> testRunner) {
         if (interceptorManager.isPlaybackMode()) {
             testRunner.accept(new ByteArrayInputStream(IS_PLAYBACK_MODE.getBytes(StandardCharsets.UTF_8)), true);
         } else {
@@ -608,7 +608,7 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
         }
     }
 
-    void receiptPngDataRunnerTextDetails(BiConsumer<InputStream, Boolean> testRunner) {
+    void receiptPngDataRunnerFieldElements(BiConsumer<InputStream, Boolean> testRunner) {
         if (interceptorManager.isPlaybackMode()) {
             testRunner.accept(new ByteArrayInputStream(IS_PLAYBACK_MODE.getBytes(StandardCharsets.UTF_8)), true);
         } else {

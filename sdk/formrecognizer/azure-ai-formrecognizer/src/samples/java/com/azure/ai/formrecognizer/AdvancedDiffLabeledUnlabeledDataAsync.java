@@ -66,7 +66,7 @@ public class AdvancedDiffLabeledUnlabeledDataAsync {
                 analyzeFile.length(), "{unlabeled_model_Id}",
                 new RecognizeOptions()
                     .setFormContentType(FormContentType.APPLICATION_PDF)
-                    .setIncludeTextContent(true)
+                    .setIncludeFieldElements(true)
                     .setPollInterval(Duration.ofSeconds(5)));
 
         Mono<List<RecognizedForm>> labeledDataResult = labeledCustomFormPoller

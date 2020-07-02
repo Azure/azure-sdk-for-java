@@ -104,9 +104,9 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
-     public void recognizeReceiptDataTextDetails(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
+     public void recognizeReceiptDataIncludeFieldElements(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
         client = getFormRecognizerClient(httpClient, serviceVersion);
-        receiptDataRunnerTextDetails((data, includeFieldElements) -> {
+        receiptDataRunnerFieldElements((data, includeFieldElements) -> {
             SyncPoller<OperationResult, List<RecognizedReceipt>> syncPoller = client.beginRecognizeReceipts(
                 data, RECEIPT_FILE_LENGTH,  new RecognizeOptions().setFormContentType(FormContentType.IMAGE_JPEG)
                     .setIncludeFieldElements(includeFieldElements).setPollInterval(durationTestMode));
@@ -123,7 +123,7 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
     public void recognizeReceiptDataWithPngFile(HttpClient httpClient,
         FormRecognizerServiceVersion serviceVersion) {
         client = getFormRecognizerClient(httpClient, serviceVersion);
-        receiptPngDataRunnerTextDetails((data, includeFieldElements) -> {
+        receiptPngDataRunnerFieldElements((data, includeFieldElements) -> {
             SyncPoller<OperationResult, List<RecognizedReceipt>> syncPoller =
                 client.beginRecognizeReceipts(data, RECEIPT_PNG_FILE_LENGTH, new RecognizeOptions().setFormContentType(
                     FormContentType.IMAGE_PNG).setIncludeFieldElements(includeFieldElements)
@@ -193,15 +193,15 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
     }
 
     /**
-     * Verifies receipt data for a document using source as file url and include content when includeFieldElements is
-     * true.
+     * Verifies receipt data for a document using source as file url and include form element references
+     * when includeFieldElements is true.
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
-    public void recognizeReceiptFromUrlTextContent(HttpClient httpClient,
+    public void recognizeReceiptFromUrlIncludeFieldElements(HttpClient httpClient,
         FormRecognizerServiceVersion serviceVersion) {
         client = getFormRecognizerClient(httpClient, serviceVersion);
-        receiptSourceUrlRunnerTextDetails((sourceUrl, includeFieldElements) -> {
+        receiptSourceUrlRunnerFieldElements((sourceUrl, includeFieldElements) -> {
             SyncPoller<OperationResult, List<RecognizedReceipt>> syncPoller = client.beginRecognizeReceiptsFromUrl(
                 sourceUrl, new RecognizeOptions().setIncludeFieldElements(includeFieldElements)
                     .setPollInterval(durationTestMode));
@@ -211,15 +211,15 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
     }
 
     /**
-     * Verifies receipt data for a document using source as PNG file url and include content when includeFieldElements is
-     * true.
+     * Verifies receipt data for a document using source as PNG file url and include form element references
+     * when includeFieldElements is true.
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
     public void recognizeReceiptSourceUrlWithPngFile(HttpClient httpClient,
         FormRecognizerServiceVersion serviceVersion) {
         client = getFormRecognizerClient(httpClient, serviceVersion);
-        receiptPngSourceUrlRunnerTextDetails((sourceUrl, includeFieldElements) -> {
+        receiptPngSourceUrlRunnerFieldElements((sourceUrl, includeFieldElements) -> {
             SyncPoller<OperationResult, List<RecognizedReceipt>> syncPoller = client.beginRecognizeReceiptsFromUrl(
                 sourceUrl,
                 new RecognizeOptions().setIncludeFieldElements(includeFieldElements)
@@ -348,7 +348,7 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
     }
 
     /**
-     * Verifies that an exception is thrown for invalid source url for recognizing content information.
+     * Verifies that an exception is thrown for invalid source url for recognizing content/layout information.
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
@@ -392,7 +392,7 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
 
                 SyncPoller<OperationResult, List<RecognizedForm>> syncPoller = client.beginRecognizeCustomForms(
                     data, dataLength, trainingPoller.getFinalResult().getModelId(), new RecognizeOptions()
-                        .setFormContentType(FormContentType.APPLICATION_PDF).setincludeFieldElements(true)
+                        .setFormContentType(FormContentType.APPLICATION_PDF).setIncludeFieldElements(true)
                         .setPollInterval(durationTestMode));
                 syncPoller.waitForCompletion();
                 validateRecognizedResult(syncPoller.getFinalResult(), true, true);
@@ -446,11 +446,11 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
 
     /**
      * Verifies custom form data for a document using source as input stream data and valid labeled model Id,
-     * excluding text content.
+     * excluding field elements.
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
-    public void recognizeCustomFormLabeledDataExcludeTextContent(HttpClient httpClient,
+    public void recognizeCustomFormLabeledDataExcludeFieldElements(HttpClient httpClient,
         FormRecognizerServiceVersion serviceVersion) {
         client = getFormRecognizerClient(httpClient, serviceVersion);
         customFormDataRunner((data, dataLength) -> beginTrainingLabeledRunner((trainingFilesUrl, useTrainingLabels) -> {
@@ -484,7 +484,7 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
 
                 assertThrows(RuntimeException.class, () -> client.beginRecognizeCustomForms(
                     (InputStream) null, dataLength, syncPoller.getFinalResult().getModelId(), new RecognizeOptions()
-                        .setFormContentType(FormContentType.APPLICATION_PDF).setincludeFieldElements(true)
+                        .setFormContentType(FormContentType.APPLICATION_PDF).setIncludeFieldElements(true)
                         .setPollInterval(durationTestMode)));
             })
         );
@@ -501,7 +501,7 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
         customFormDataRunner((data, dataLength) -> {
             Exception ex = assertThrows(RuntimeException.class, () -> client.beginRecognizeCustomForms(
                 data, dataLength, null, new RecognizeOptions()
-                    .setFormContentType(FormContentType.APPLICATION_PDF).setincludeFieldElements(true)
+                    .setFormContentType(FormContentType.APPLICATION_PDF).setIncludeFieldElements(true)
                     .setPollInterval(durationTestMode)));
             assertEquals(EXPECTED_MODEL_ID_IS_REQUIRED_EXCEPTION_MESSAGE, ex.getMessage());
         });
@@ -519,7 +519,7 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
         customFormDataRunner((data, dataLength) -> {
             Exception ex = assertThrows(RuntimeException.class, () -> client.beginRecognizeCustomForms(
                 data, dataLength, "", new RecognizeOptions()
-                    .setFormContentType(FormContentType.APPLICATION_PDF).setincludeFieldElements(true)
+                    .setFormContentType(FormContentType.APPLICATION_PDF).setIncludeFieldElements(true)
                     .setPollInterval(durationTestMode)));
             assertEquals(EXPECTED_INVALID_UUID_EXCEPTION_MESSAGE, ex.getMessage());
         });
@@ -565,7 +565,7 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
             SyncPoller<OperationResult, List<RecognizedForm>> syncPoller = client.beginRecognizeCustomForms(
                 getContentDetectionFileData(FORM_LOCAL_URL),
                     CUSTOM_FORM_FILE_LENGTH, trainingPoller.getFinalResult().getModelId(), new RecognizeOptions()
-                    .setincludeFieldElements(true).setPollInterval(durationTestMode));
+                    .setIncludeFieldElements(true).setPollInterval(durationTestMode));
             syncPoller.waitForCompletion();
             validateRecognizedResult(syncPoller.getFinalResult(), true, true);
         });
@@ -615,11 +615,11 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
     }
 
     /**
-     * Verifies custom form data for a document using source as input stream data and valid include text content
+     * Verifies custom form data for a document using source as input stream data and valid include element references
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
-    public void recognizeCustomFormUnlabeledDataincludeFieldElements(HttpClient httpClient,
+    public void recognizeCustomFormUnlabeledDataIncludeFieldElements(HttpClient httpClient,
         FormRecognizerServiceVersion serviceVersion) {
         client = getFormRecognizerClient(httpClient, serviceVersion);
 
@@ -631,7 +631,7 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
 
             SyncPoller<OperationResult, List<RecognizedForm>> syncPoller = client.beginRecognizeCustomForms(
                     data, dataLength, trainingPoller.getFinalResult().getModelId(), new RecognizeOptions()
-                        .setFormContentType(FormContentType.APPLICATION_PDF).setincludeFieldElements(true)
+                        .setFormContentType(FormContentType.APPLICATION_PDF).setIncludeFieldElements(true)
                         .setPollInterval(durationTestMode));
             syncPoller.waitForCompletion();
             validateRecognizedResult(syncPoller.getFinalResult(), true, false);
@@ -727,11 +727,11 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
     }
 
     /**
-     * Verifies custom form data for an URL document data without labeled data and include text content
+     * Verifies custom form data for an URL document data without labeled data and include element references
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
-    public void recognizeCustomFormUrlUnlabeledDataincludeFieldElements(HttpClient httpClient,
+    public void recognizeCustomFormUrlUnlabeledDataIncludeFieldElements(HttpClient httpClient,
         FormRecognizerServiceVersion serviceVersion) {
         client = getFormRecognizerClient(httpClient, serviceVersion);
         urlRunner(fileUrl -> beginTrainingUnlabeledRunner((trainingFilesUrl, useTrainingLabels) -> {
@@ -742,7 +742,7 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
 
             SyncPoller<OperationResult, List<RecognizedForm>> syncPoller = client.beginRecognizeCustomFormsFromUrl(
                 fileUrl, trainingPoller.getFinalResult().getModelId(), new RecognizeOptions()
-                    .setincludeFieldElements(true).setPollInterval(durationTestMode));
+                    .setIncludeFieldElements(true).setPollInterval(durationTestMode));
             syncPoller.waitForCompletion();
             validateRecognizedResult(syncPoller.getFinalResult(), true, false);
         }), FORM_JPG);
@@ -822,6 +822,29 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
     }
 
     /**
+     * Verifies custom form data for an URL document data with labeled data and include element references
+     */
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
+    public void recognizeCustomFormUrlLabeledDataIncludeFieldElements(HttpClient httpClient,
+        FormRecognizerServiceVersion serviceVersion) {
+        client = getFormRecognizerClient(httpClient, serviceVersion);
+
+        urlRunner(fileUrl -> beginTrainingLabeledRunner((trainingFilesUrl, useTrainingLabels) -> {
+            SyncPoller<OperationResult, CustomFormModel> trainingPoller =
+                getFormTrainingClient(httpClient, serviceVersion).beginTraining(trainingFilesUrl,
+                    useTrainingLabels, null, durationTestMode);
+            trainingPoller.waitForCompletion();
+
+            SyncPoller<OperationResult, List<RecognizedForm>> syncPoller = client.beginRecognizeCustomFormsFromUrl(
+                fileUrl, trainingPoller.getFinalResult().getModelId(), new RecognizeOptions()
+                    .setIncludeFieldElements(true).setPollInterval(durationTestMode));
+            syncPoller.waitForCompletion();
+            validateRecognizedResult(syncPoller.getFinalResult(), true, true);
+        }), FORM_JPG);
+    }
+
+    /**
      * Verifies custom form data for an URL document data with labeled data
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -840,29 +863,6 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
                     .setPollInterval(durationTestMode));
             syncPoller.waitForCompletion();
             validateRecognizedResult(syncPoller.getFinalResult(), false, true);
-        }), FORM_JPG);
-    }
-
-    /**
-     * Verifies custom form data for an URL document data with labeled data and include text content
-     */
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
-    public void recognizeCustomFormUrlLabeledDataincludeFieldElements(HttpClient httpClient,
-        FormRecognizerServiceVersion serviceVersion) {
-        client = getFormRecognizerClient(httpClient, serviceVersion);
-
-        urlRunner(fileUrl -> beginTrainingLabeledRunner((trainingFilesUrl, useTrainingLabels) -> {
-            SyncPoller<OperationResult, CustomFormModel> trainingPoller =
-                getFormTrainingClient(httpClient, serviceVersion).beginTraining(trainingFilesUrl,
-                    useTrainingLabels, null, durationTestMode);
-            trainingPoller.waitForCompletion();
-
-            SyncPoller<OperationResult, List<RecognizedForm>> syncPoller = client.beginRecognizeCustomFormsFromUrl(
-                fileUrl, trainingPoller.getFinalResult().getModelId(), new RecognizeOptions()
-                    .setincludeFieldElements(true).setPollInterval(durationTestMode));
-            syncPoller.waitForCompletion();
-            validateRecognizedResult(syncPoller.getFinalResult(), true, true);
         }), FORM_JPG);
     }
 

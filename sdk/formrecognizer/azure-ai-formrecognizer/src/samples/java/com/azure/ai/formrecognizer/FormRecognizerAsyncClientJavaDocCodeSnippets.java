@@ -79,8 +79,7 @@ public class FormRecognizerAsyncClientJavaDocCodeSnippets {
                             System.out.printf("Field value: %s%n", fieldValue.getFieldValue());
                             System.out.printf("Confidence score: %.2f%n", fieldValue.getConfidence());
                         });
-                    })
-                );
+                    }));
         // END: com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeCustomFormsFromUrl#string-string
     }
 
@@ -96,7 +95,7 @@ public class FormRecognizerAsyncClientJavaDocCodeSnippets {
 
         formRecognizerAsyncClient.beginRecognizeCustomFormsFromUrl(formUrl, modelId,
             new RecognizeOptions()
-                .setIncludeTextContent(includeTextContent)
+                .setIncludeFieldElements(includeTextContent)
                 .setPollInterval(Duration.ofSeconds(10)))
             .flatMap(recognizePollingOperation ->
                 // if training polling operation completed, retrieve the final result.
@@ -107,8 +106,7 @@ public class FormRecognizerAsyncClientJavaDocCodeSnippets {
                             System.out.printf("Field value: %s%n", fieldValue.getFieldValue());
                             System.out.printf("Confidence score: %.2f%n", fieldValue.getConfidence());
                         });
-                    })
-                );
+                    }));
         // END: com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeCustomFormsFromUrl#string-string-recognizeOptions
     }
 
@@ -134,8 +132,7 @@ public class FormRecognizerAsyncClientJavaDocCodeSnippets {
                             System.out.printf("Field value: %s%n", fieldValue.getFieldValue());
                             System.out.printf("Confidence score: %.2f%n", fieldValue.getConfidence());
                         });
-                    })
-                );
+                    }));
         // END: com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeCustomForms#Flux-long-string
     }
 
@@ -168,8 +165,7 @@ public class FormRecognizerAsyncClientJavaDocCodeSnippets {
                             System.out.printf("Field value: %s%n", fieldValue.getFieldValue());
                             System.out.printf("Confidence score: %.2f%n", fieldValue.getConfidence());
                         });
-                    })
-                );
+                    }));
         // END: com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeCustomForms#Flux-long-string-recognizeOptions
     }
 
@@ -192,8 +188,7 @@ public class FormRecognizerAsyncClientJavaDocCodeSnippets {
                         recognizedForm.getTables().forEach(formTable ->
                             formTable.getCells().forEach(recognizedTableCell ->
                                 System.out.printf("%s ", recognizedTableCell.getText())));
-                    })
-                );
+                    }));
         // END: com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeContentFromUrl#string
     }
 
@@ -340,7 +335,7 @@ public class FormRecognizerAsyncClientJavaDocCodeSnippets {
         boolean includeTextContent = true;
         formRecognizerAsyncClient.beginRecognizeReceiptsFromUrl(receiptUrl,
             new RecognizeOptions()
-                .setIncludeTextContent(includeTextContent)
+                .setIncludeFieldElements(includeTextContent)
                 .setPollInterval(Duration.ofSeconds(5)))
             .flatMap(recognizePollingOperation ->
                 // if training polling operation completed, retrieve the final result.
