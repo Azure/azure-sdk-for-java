@@ -697,12 +697,20 @@ public interface VirtualMachineScaleSet
             WithWindowsAdminUsernameManagedOrUnmanaged withSpecificWindowsImageVersion(ImageReference imageReference);
 
             /**
-             * Specifies the ID of a Windows custom image to be used.
+             * Specifies the ID of a generalized Windows custom image to be used.
              *
              * @param customImageId the resource ID of the custom image
              * @return the next stage of the definition
              */
-            WithWindowsAdminUsernameManaged withWindowsCustomImage(String customImageId);
+            WithWindowsAdminUsernameManaged withGeneralizedWindowsCustomImage(String customImageId);
+
+            /**
+             * Specifies the ID of a specialized Windows custom image to be used.
+             *
+             * @param customImageId the resource ID of the custom image
+             * @return the next stage of the definition
+             */
+            WithWindowsCreateManaged withSpecializedWindowsCustomImage(String customImageId);
 
             /**
              * Specifies the user (custom) Windows image to be used as the operating system for the virtual machines in
@@ -740,12 +748,20 @@ public interface VirtualMachineScaleSet
             WithLinuxRootUsernameManagedOrUnmanaged withSpecificLinuxImageVersion(ImageReference imageReference);
 
             /**
-             * Specifies the ID of a Linux custom image to be used.
+             * Specifies the ID of a generalized Linux custom image to be used.
              *
              * @param customImageId the resource ID of the custom image
              * @return the next stage of the definition
              */
-            WithLinuxRootUsernameManaged withLinuxCustomImage(String customImageId);
+            WithLinuxRootUsernameManaged withGeneralizedLinuxCustomImage(String customImageId);
+
+            /**
+             * Specifies the ID of a specialized Linux custom image to be used.
+             *
+             * @param customImageId the resource ID of the custom image
+             * @return the next stage of the definition
+             */
+            WithLinuxCreateManaged withSpecializedLinuxCustomImage(String customImageId);
 
             /**
              * Specifies the user (custom) Linux image used as the virtual machine's operating system.
@@ -870,7 +886,7 @@ public interface VirtualMachineScaleSet
              *
              * @param adminUserName the Windows administrator user name. This must follow the required naming convention
              *     for Windows user name.
-             * @return the stage representing creatable Linux VM definition
+             * @return the next stage of the definition
              */
             WithWindowsAdminPasswordManagedOrUnmanaged withAdminUsername(String adminUserName);
         }
@@ -884,7 +900,7 @@ public interface VirtualMachineScaleSet
              *
              * @param adminUserName the Windows administrator user name. This must follow the required naming convention
              *     for Windows user name.
-             * @return the stage representing creatable Linux VM definition
+             * @return the next stage of the definition
              */
             WithWindowsAdminPasswordManaged withAdminUsername(String adminUserName);
         }
@@ -898,7 +914,7 @@ public interface VirtualMachineScaleSet
              *
              * @param adminUserName the Windows administrator user name. This must follow the required naming convention
              *     for Windows user name.
-             * @return the stage representing creatable Linux VM definition
+             * @return the next stage of the definition
              */
             WithWindowsAdminPasswordUnmanaged withAdminUsername(String adminUserName);
         }
@@ -1534,6 +1550,21 @@ public interface VirtualMachineScaleSet
              * @return the next stage of the definition
              */
             WithCreate withLowPriorityVirtualMachine(VirtualMachineEvictionPolicyTypes policy);
+
+            /**
+             * Specify that virtual machines in the scale set should be spot priority VMs.
+             *
+             * @return the next stage of the definition
+             */
+            WithCreate withSpotPriorityVirtualMachine();
+
+            /**
+             * Specify that virtual machines in the scale set should be spot priority VMs with provided eviction policy.
+             *
+             * @param policy eviction policy for the virtual machines in the scale set.
+             * @return the next stage of the definition
+             */
+            WithCreate withSpotPriorityVirtualMachine(VirtualMachineEvictionPolicyTypes policy);
         }
 
         /** The stage of the virtual machine scale set definition allowing to enable public ip for vm instances. */

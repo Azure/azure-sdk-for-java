@@ -49,6 +49,14 @@ public class VirtualMachineScaleSetPublicIpAddressConfiguration {
     @JsonProperty(value = "properties.publicIPPrefix")
     private SubResource publicIpPrefix;
 
+    /*
+     * Available from Api-Version 2019-07-01 onwards, it represents whether the
+     * specific ipconfiguration is IPv4 or IPv6. Default is taken as IPv4.
+     * Possible values are: 'IPv4' and 'IPv6'.
+     */
+    @JsonProperty(value = "properties.publicIPAddressVersion")
+    private IpVersion publicIpAddressVersion;
+
     /**
      * Get the name property: The publicIP address configuration name.
      *
@@ -147,6 +155,29 @@ public class VirtualMachineScaleSetPublicIpAddressConfiguration {
      */
     public VirtualMachineScaleSetPublicIpAddressConfiguration withPublicIpPrefix(SubResource publicIpPrefix) {
         this.publicIpPrefix = publicIpPrefix;
+        return this;
+    }
+
+    /**
+     * Get the publicIpAddressVersion property: Available from Api-Version 2019-07-01 onwards, it represents whether the
+     * specific ipconfiguration is IPv4 or IPv6. Default is taken as IPv4. Possible values are: 'IPv4' and 'IPv6'.
+     *
+     * @return the publicIpAddressVersion value.
+     */
+    public IpVersion publicIpAddressVersion() {
+        return this.publicIpAddressVersion;
+    }
+
+    /**
+     * Set the publicIpAddressVersion property: Available from Api-Version 2019-07-01 onwards, it represents whether the
+     * specific ipconfiguration is IPv4 or IPv6. Default is taken as IPv4. Possible values are: 'IPv4' and 'IPv6'.
+     *
+     * @param publicIpAddressVersion the publicIpAddressVersion value to set.
+     * @return the VirtualMachineScaleSetPublicIpAddressConfiguration object itself.
+     */
+    public VirtualMachineScaleSetPublicIpAddressConfiguration withPublicIpAddressVersion(
+        IpVersion publicIpAddressVersion) {
+        this.publicIpAddressVersion = publicIpAddressVersion;
         return this;
     }
 

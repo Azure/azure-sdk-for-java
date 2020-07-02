@@ -3,6 +3,7 @@
 
 package com.azure.resourcemanager.compute.implementation;
 
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.compute.ComputeManager;
 import com.azure.resourcemanager.compute.models.AccessLevel;
 import com.azure.resourcemanager.compute.models.CreationData;
@@ -18,13 +19,18 @@ import com.azure.resourcemanager.compute.models.SnapshotSku;
 import com.azure.resourcemanager.compute.models.SnapshotSkuType;
 import com.azure.resourcemanager.compute.models.SnapshotStorageAccountTypes;
 import com.azure.resourcemanager.compute.fluent.inner.SnapshotInner;
+import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
 import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
 import reactor.core.publisher.Mono;
 
+import java.security.InvalidParameterException;
+
 /** The implementation for Snapshot and its create and update interfaces. */
 class SnapshotImpl extends GroupableResourceImpl<Snapshot, SnapshotInner, SnapshotImpl, ComputeManager>
     implements Snapshot, Snapshot.Definition, Snapshot.Update {
+
+    private final ClientLogger logger = new ClientLogger(SnapshotImpl.class);
 
     SnapshotImpl(String name, SnapshotInner innerModel, final ComputeManager computeManager) {
         super(name, innerModel, computeManager);
@@ -103,13 +109,19 @@ class SnapshotImpl extends GroupableResourceImpl<Snapshot, SnapshotInner, Snapsh
 
     @Override
     public SnapshotImpl withLinuxFromVhd(String vhdUrl) {
+        return withLinuxFromVhd(vhdUrl, constructStorageAccountId(vhdUrl));
+    }
+
+    @Override
+    public SnapshotImpl withLinuxFromVhd(String vhdUrl, String storageAccountId) {
         this
             .inner()
             .withOsType(OperatingSystemTypes.LINUX)
             .withCreationData(new CreationData())
             .creationData()
             .withCreateOption(DiskCreateOption.IMPORT)
-            .withSourceUri(vhdUrl);
+            .withSourceUri(vhdUrl)
+            .withStorageAccountId(storageAccountId);
         return this;
     }
 
@@ -159,13 +171,19 @@ class SnapshotImpl extends GroupableResourceImpl<Snapshot, SnapshotInner, Snapsh
 
     @Override
     public SnapshotImpl withWindowsFromVhd(String vhdUrl) {
+        return withWindowsFromVhd(vhdUrl, constructStorageAccountId(vhdUrl));
+    }
+
+    @Override
+    public SnapshotImpl withWindowsFromVhd(String vhdUrl, String storageAccountId) {
         this
             .inner()
             .withOsType(OperatingSystemTypes.WINDOWS)
             .withCreationData(new CreationData())
             .creationData()
             .withCreateOption(DiskCreateOption.IMPORT)
-            .withSourceUri(vhdUrl);
+            .withSourceUri(vhdUrl)
+            .withStorageAccountId(storageAccountId);
         return this;
     }
 
@@ -215,12 +233,18 @@ class SnapshotImpl extends GroupableResourceImpl<Snapshot, SnapshotInner, Snapsh
 
     @Override
     public SnapshotImpl withDataFromVhd(String vhdUrl) {
+        return withDataFromVhd(vhdUrl, constructStorageAccountId(vhdUrl));
+    }
+
+    @Override
+    public SnapshotImpl withDataFromVhd(String vhdUrl, String storageAccountId) {
         this
             .inner()
             .withCreationData(new CreationData())
             .creationData()
             .withCreateOption(DiskCreateOption.IMPORT)
-            .withSourceUri(vhdUrl);
+            .withSourceUri(vhdUrl)
+            .withStorageAccountId(storageAccountId);
         return this;
     }
 
@@ -301,5 +325,19 @@ class SnapshotImpl extends GroupableResourceImpl<Snapshot, SnapshotInner, Snapsh
     @Override
     protected Mono<SnapshotInner> getInnerAsync() {
         return this.manager().inner().getSnapshots().getByResourceGroupAsync(this.resourceGroupName(), this.name());
+    }
+
+    private String constructStorageAccountId(String vhdUrl) {
+        try {
+            return ResourceUtils.constructResourceId(this.manager().subscriptionId(),
+                resourceGroupName(),
+                "Microsoft.Storage",
+                "storageAccounts",
+                vhdUrl.split("\\.")[0].replace("https://", ""),
+                "");
+        } catch (RuntimeException ex) {
+            throw logger.logExceptionAsError(
+                new InvalidParameterException(String.format("%s is not valid URI of a blob to import.", vhdUrl)));
+        }
     }
 }

@@ -17,10 +17,7 @@ public final class FieldMappingConverter {
         if (obj == null) {
             return null;
         }
-        FieldMapping fieldMapping = new FieldMapping();
-
-        String sourceFieldName = obj.getSourceFieldName();
-        fieldMapping.setSourceFieldName(sourceFieldName);
+        FieldMapping fieldMapping = new FieldMapping(obj.getSourceFieldName());
 
         String targetFieldName = obj.getTargetFieldName();
         fieldMapping.setTargetFieldName(targetFieldName);

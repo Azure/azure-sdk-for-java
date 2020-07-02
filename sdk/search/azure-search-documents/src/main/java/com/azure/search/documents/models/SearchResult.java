@@ -7,6 +7,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.search.documents.SearchDocument;
 import com.azure.search.documents.implementation.SerializationUtil;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -47,6 +48,18 @@ public final class SearchResult {
     @JsonProperty(value = "@search.highlights", access = JsonProperty.Access.WRITE_ONLY)
     private Map<String, List<String>> highlights;
 
+    /**
+     * Constructor of {@link SearchResult}.
+     *
+     * @param score The relevance score of the document compared to other documents returned
+     * by the query.
+     */
+    @JsonCreator
+    public SearchResult(
+        @JsonProperty(value = "@search.score", required = true, access = JsonProperty.Access.WRITE_ONLY)
+            double score) {
+        this.score = score;
+    }
     /**
      * Get the additionalProperties property: Unmatched properties from the
      * message are deserialized this collection.

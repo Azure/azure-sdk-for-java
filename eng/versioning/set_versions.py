@@ -184,6 +184,10 @@ def update_versions_file_for_nightly_devops(build_type, build_qualifier, artifac
                     else:
                         module.dependency += '-' + unreleased_build_qualifier
 
+                    # The final unreleased dependency version needs to be of the form
+                    # [1.0.0-dev.YYYYMMDD.,] <-- note the ., this is the version range for Maven
+                    module.dependency = '[{},]'.format(module.dependency)
+
                     print(f'updating unreleased/beta dependency {module.name} to use dependency version range: "{module.dependency}"')
 
                 version_map[module.name] = module

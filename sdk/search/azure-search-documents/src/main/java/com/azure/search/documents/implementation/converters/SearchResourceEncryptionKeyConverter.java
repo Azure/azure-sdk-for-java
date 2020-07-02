@@ -19,19 +19,12 @@ public final class SearchResourceEncryptionKeyConverter {
         if (obj == null) {
             return null;
         }
-        SearchResourceEncryptionKey searchResourceEncryptionKey = new SearchResourceEncryptionKey();
-
-        String keyVersion = obj.getKeyVersion();
-        searchResourceEncryptionKey.setKeyVersion(keyVersion);
+        SearchResourceEncryptionKey searchResourceEncryptionKey = new SearchResourceEncryptionKey(obj.getKeyName(),
+            obj.getKeyVersion(), obj.getVaultUri());
 
         searchResourceEncryptionKey.setApplicationId(obj.getAccessCredentials().getApplicationId());
         searchResourceEncryptionKey.setApplicationSecret(obj.getAccessCredentials().getApplicationSecret());
 
-        String keyName = obj.getKeyName();
-        searchResourceEncryptionKey.setKeyName(keyName);
-
-        String vaultUri = obj.getVaultUri();
-        searchResourceEncryptionKey.setVaultUrl(vaultUri);
         return searchResourceEncryptionKey;
     }
 

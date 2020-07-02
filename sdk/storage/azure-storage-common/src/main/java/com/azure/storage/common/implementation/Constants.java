@@ -189,7 +189,7 @@ public final class Constants {
         /**
          * The current storage version header value.
          */
-        public static final String TARGET_STORAGE_VERSION = "2019-07-07";
+        public static final String TARGET_STORAGE_VERSION = "2019-12-12";
 
         /**
          * Error code returned from the service.
@@ -231,6 +231,11 @@ public final class Constants {
          * The snapshot parameters.
          */
         public static final String SNAPSHOT_QUERY_PARAMETER = "snapshot";
+
+        /**
+         * The versionId parameters.
+         */
+        public static final String VERSIONID_QUERY_PARAMETER = "versionid";
 
         /**
          * The SAS service version parameter.

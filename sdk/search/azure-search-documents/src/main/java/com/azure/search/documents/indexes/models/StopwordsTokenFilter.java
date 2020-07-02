@@ -51,6 +51,17 @@ public final class StopwordsTokenFilter extends TokenFilter {
     private Boolean trailingStopWordsRemoved;
 
     /**
+     * Constructor of {@link StopwordsTokenFilter}.
+     *
+     * @param name The name of the token filter. It must only contain letters, digits,
+     * spaces, dashes or underscores, can only start and end with alphanumeric
+     * characters, and is limited to 128 characters.
+     */
+    public StopwordsTokenFilter(String name) {
+        super(name);
+    }
+
+    /**
      * Get the stopwords property: The list of stopwords. This property and the
      * stopwords list property cannot both be set.
      *

@@ -19,10 +19,7 @@ public final class PhoneticTokenFilterConverter {
         if (obj == null) {
             return null;
         }
-        PhoneticTokenFilter phoneticTokenFilter = new PhoneticTokenFilter();
-
-        String name = obj.getName();
-        phoneticTokenFilter.setName(name);
+        PhoneticTokenFilter phoneticTokenFilter = new PhoneticTokenFilter(obj.getName());
 
         Boolean replaceOriginalTokens = obj.isReplaceOriginalTokens();
         phoneticTokenFilter.setOriginalTokensReplaced(replaceOriginalTokens);

@@ -18,10 +18,7 @@ public final class AsciiFoldingTokenFilterConverter {
         if (obj == null) {
             return null;
         }
-        AsciiFoldingTokenFilter asciiFoldingTokenFilter = new AsciiFoldingTokenFilter();
-
-        String name = obj.getName();
-        asciiFoldingTokenFilter.setName(name);
+        AsciiFoldingTokenFilter asciiFoldingTokenFilter = new AsciiFoldingTokenFilter(obj.getName());
 
         Boolean preserveOriginal = obj.isPreserveOriginal();
         asciiFoldingTokenFilter.setPreserveOriginal(preserveOriginal);

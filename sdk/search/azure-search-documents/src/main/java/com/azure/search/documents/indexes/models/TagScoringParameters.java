@@ -4,6 +4,7 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -19,6 +20,16 @@ public final class TagScoringParameters {
     private String tagsParameter;
 
     /**
+     * Constructor of {@link TagScoringParameters}
+     * @param tagsParameter The name of the parameter passed in search queries to specify the list
+     * of tags to compare against the target field.
+     */
+    @JsonCreator
+    public TagScoringParameters(@JsonProperty(value = "tagsParameter", required = true) String tagsParameter) {
+        this.tagsParameter = tagsParameter;
+    }
+
+    /**
      * Get the tagsParameter property: The name of the parameter passed in
      * search queries to specify the list of tags to compare against the target
      * field.
@@ -29,16 +40,4 @@ public final class TagScoringParameters {
         return this.tagsParameter;
     }
 
-    /**
-     * Set the tagsParameter property: The name of the parameter passed in
-     * search queries to specify the list of tags to compare against the target
-     * field.
-     *
-     * @param tagsParameter the tagsParameter value to set.
-     * @return the TagScoringParameters object itself.
-     */
-    public TagScoringParameters setTagsParameter(String tagsParameter) {
-        this.tagsParameter = tagsParameter;
-        return this;
-    }
 }

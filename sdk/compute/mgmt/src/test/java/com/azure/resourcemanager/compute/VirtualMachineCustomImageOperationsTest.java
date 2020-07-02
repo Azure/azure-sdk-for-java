@@ -110,7 +110,7 @@ public class VirtualMachineCustomImageOperationsTest extends ComputeManagementTe
                 .withNewPrimaryNetwork("10.0.0.0/28")
                 .withPrimaryPrivateIPAddressDynamic()
                 .withoutPrimaryPublicIPAddress()
-                .withLinuxCustomImage(image.id())
+                .withGeneralizedLinuxCustomImage(image.id())
                 .withRootUsername("javauser")
                 .withRootPassword("12NewPA$$w0rd!")
                 .withSize(VirtualMachineSizeTypes.STANDARD_D5_V2)

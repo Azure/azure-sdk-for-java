@@ -62,6 +62,7 @@ The following sections provide several code snippets covering some of the most c
 -   [List indexers](java/com/azure/search/documents/ListIndexersExample.java)
 -   [Add Synonym and custom skillset](java/com/azure/search/documents/RefineSearchCapabilitiesExample.java)
 -   [Execute a search solution - run indexer and issue search queries](java/com/azure/search/documents/RunningSearchSolutionExample.java)
+-   [Setting customer x-ms-client-request-id per API call](java/com/azure/search/documents/PerCallRequestIdExample.java)
 
 ## Troubleshooting
 Troubleshooting steps can be found [here][SDK_README_TROUBLESHOOTING].

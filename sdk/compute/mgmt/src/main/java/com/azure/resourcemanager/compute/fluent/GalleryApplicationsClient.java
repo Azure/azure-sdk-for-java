@@ -29,8 +29,8 @@ import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.util.polling.AsyncPollResponse;
 import com.azure.core.util.polling.PollerFlux;
+import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.compute.ComputeManagementClient;
 import com.azure.resourcemanager.compute.fluent.inner.GalleryApplicationInner;
 import com.azure.resourcemanager.compute.fluent.inner.GalleryApplicationListInner;
@@ -251,7 +251,7 @@ public final class GalleryApplicationsClient {
         } else {
             galleryApplication.validate();
         }
-        final String apiVersion = "2019-07-01";
+        final String apiVersion = "2019-12-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -322,7 +322,7 @@ public final class GalleryApplicationsClient {
         } else {
             galleryApplication.validate();
         }
-        final String apiVersion = "2019-07-01";
+        final String apiVersion = "2019-12-01";
         return service
             .createOrUpdate(
                 this.client.getEndpoint(),
@@ -352,7 +352,7 @@ public final class GalleryApplicationsClient {
      * @return specifies information about the gallery Application Definition that you want to create or update.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<GalleryApplicationInner>, GalleryApplicationInner> beginCreateOrUpdate(
+    public PollerFlux<PollResult<GalleryApplicationInner>, GalleryApplicationInner> beginCreateOrUpdateAsync(
         String resourceGroupName,
         String galleryName,
         String galleryApplicationName,
@@ -383,7 +383,7 @@ public final class GalleryApplicationsClient {
      * @return specifies information about the gallery Application Definition that you want to create or update.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<GalleryApplicationInner>, GalleryApplicationInner> beginCreateOrUpdate(
+    public PollerFlux<PollResult<GalleryApplicationInner>, GalleryApplicationInner> beginCreateOrUpdateAsync(
         String resourceGroupName,
         String galleryName,
         String galleryApplicationName,
@@ -415,19 +415,69 @@ public final class GalleryApplicationsClient {
      * @return specifies information about the gallery Application Definition that you want to create or update.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<GalleryApplicationInner>, GalleryApplicationInner> beginCreateOrUpdate(
+        String resourceGroupName,
+        String galleryName,
+        String galleryApplicationName,
+        GalleryApplicationInner galleryApplication) {
+        return beginCreateOrUpdateAsync(resourceGroupName, galleryName, galleryApplicationName, galleryApplication)
+            .getSyncPoller();
+    }
+
+    /**
+     * Create or update a gallery Application Definition.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param galleryName The name of the Shared Application Gallery in which the Application Definition is to be
+     *     created.
+     * @param galleryApplicationName The name of the gallery Application Definition to be created or updated. The
+     *     allowed characters are alphabets and numbers with dots, dashes, and periods allowed in the middle. The
+     *     maximum length is 80 characters.
+     * @param galleryApplication Specifies information about the gallery Application Definition that you want to create
+     *     or update.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return specifies information about the gallery Application Definition that you want to create or update.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<GalleryApplicationInner>, GalleryApplicationInner> beginCreateOrUpdate(
+        String resourceGroupName,
+        String galleryName,
+        String galleryApplicationName,
+        GalleryApplicationInner galleryApplication,
+        Context context) {
+        return beginCreateOrUpdateAsync(
+                resourceGroupName, galleryName, galleryApplicationName, galleryApplication, context)
+            .getSyncPoller();
+    }
+
+    /**
+     * Create or update a gallery Application Definition.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param galleryName The name of the Shared Application Gallery in which the Application Definition is to be
+     *     created.
+     * @param galleryApplicationName The name of the gallery Application Definition to be created or updated. The
+     *     allowed characters are alphabets and numbers with dots, dashes, and periods allowed in the middle. The
+     *     maximum length is 80 characters.
+     * @param galleryApplication Specifies information about the gallery Application Definition that you want to create
+     *     or update.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return specifies information about the gallery Application Definition that you want to create or update.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<GalleryApplicationInner> createOrUpdateAsync(
         String resourceGroupName,
         String galleryName,
         String galleryApplicationName,
         GalleryApplicationInner galleryApplication) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, galleryName, galleryApplicationName, galleryApplication);
-        return this
-            .client
-            .<GalleryApplicationInner, GalleryApplicationInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), GalleryApplicationInner.class, GalleryApplicationInner.class)
+        return beginCreateOrUpdateAsync(resourceGroupName, galleryName, galleryApplicationName, galleryApplication)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -454,15 +504,10 @@ public final class GalleryApplicationsClient {
         String galleryApplicationName,
         GalleryApplicationInner galleryApplication,
         Context context) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(
-                resourceGroupName, galleryName, galleryApplicationName, galleryApplication, context);
-        return this
-            .client
-            .<GalleryApplicationInner, GalleryApplicationInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), GalleryApplicationInner.class, GalleryApplicationInner.class)
+        return beginCreateOrUpdateAsync(
+                resourceGroupName, galleryName, galleryApplicationName, galleryApplication, context)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -569,7 +614,7 @@ public final class GalleryApplicationsClient {
         } else {
             galleryApplication.validate();
         }
-        final String apiVersion = "2019-07-01";
+        final String apiVersion = "2019-12-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -639,7 +684,7 @@ public final class GalleryApplicationsClient {
         } else {
             galleryApplication.validate();
         }
-        final String apiVersion = "2019-07-01";
+        final String apiVersion = "2019-12-01";
         return service
             .update(
                 this.client.getEndpoint(),
@@ -668,7 +713,7 @@ public final class GalleryApplicationsClient {
      * @return specifies information about the gallery Application Definition that you want to create or update.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<GalleryApplicationInner>, GalleryApplicationInner> beginUpdate(
+    public PollerFlux<PollResult<GalleryApplicationInner>, GalleryApplicationInner> beginUpdateAsync(
         String resourceGroupName,
         String galleryName,
         String galleryApplicationName,
@@ -698,7 +743,7 @@ public final class GalleryApplicationsClient {
      * @return specifies information about the gallery Application Definition that you want to create or update.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<GalleryApplicationInner>, GalleryApplicationInner> beginUpdate(
+    public PollerFlux<PollResult<GalleryApplicationInner>, GalleryApplicationInner> beginUpdateAsync(
         String resourceGroupName,
         String galleryName,
         String galleryApplicationName,
@@ -729,19 +774,66 @@ public final class GalleryApplicationsClient {
      * @return specifies information about the gallery Application Definition that you want to create or update.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<GalleryApplicationInner>, GalleryApplicationInner> beginUpdate(
+        String resourceGroupName,
+        String galleryName,
+        String galleryApplicationName,
+        GalleryApplicationUpdate galleryApplication) {
+        return beginUpdateAsync(resourceGroupName, galleryName, galleryApplicationName, galleryApplication)
+            .getSyncPoller();
+    }
+
+    /**
+     * Update a gallery Application Definition.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param galleryName The name of the Shared Application Gallery in which the Application Definition is to be
+     *     updated.
+     * @param galleryApplicationName The name of the gallery Application Definition to be updated. The allowed
+     *     characters are alphabets and numbers with dots, dashes, and periods allowed in the middle. The maximum length
+     *     is 80 characters.
+     * @param galleryApplication Specifies information about the gallery Application Definition that you want to update.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return specifies information about the gallery Application Definition that you want to create or update.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<GalleryApplicationInner>, GalleryApplicationInner> beginUpdate(
+        String resourceGroupName,
+        String galleryName,
+        String galleryApplicationName,
+        GalleryApplicationUpdate galleryApplication,
+        Context context) {
+        return beginUpdateAsync(resourceGroupName, galleryName, galleryApplicationName, galleryApplication, context)
+            .getSyncPoller();
+    }
+
+    /**
+     * Update a gallery Application Definition.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param galleryName The name of the Shared Application Gallery in which the Application Definition is to be
+     *     updated.
+     * @param galleryApplicationName The name of the gallery Application Definition to be updated. The allowed
+     *     characters are alphabets and numbers with dots, dashes, and periods allowed in the middle. The maximum length
+     *     is 80 characters.
+     * @param galleryApplication Specifies information about the gallery Application Definition that you want to update.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return specifies information about the gallery Application Definition that you want to create or update.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<GalleryApplicationInner> updateAsync(
         String resourceGroupName,
         String galleryName,
         String galleryApplicationName,
         GalleryApplicationUpdate galleryApplication) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateWithResponseAsync(resourceGroupName, galleryName, galleryApplicationName, galleryApplication);
-        return this
-            .client
-            .<GalleryApplicationInner, GalleryApplicationInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), GalleryApplicationInner.class, GalleryApplicationInner.class)
+        return beginUpdateAsync(resourceGroupName, galleryName, galleryApplicationName, galleryApplication)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -767,15 +859,9 @@ public final class GalleryApplicationsClient {
         String galleryApplicationName,
         GalleryApplicationUpdate galleryApplication,
         Context context) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateWithResponseAsync(
-                resourceGroupName, galleryName, galleryApplicationName, galleryApplication, context);
-        return this
-            .client
-            .<GalleryApplicationInner, GalleryApplicationInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), GalleryApplicationInner.class, GalleryApplicationInner.class)
+        return beginUpdateAsync(resourceGroupName, galleryName, galleryApplicationName, galleryApplication, context)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -867,7 +953,7 @@ public final class GalleryApplicationsClient {
                 .error(
                     new IllegalArgumentException("Parameter galleryApplicationName is required and cannot be null."));
         }
-        final String apiVersion = "2019-07-01";
+        final String apiVersion = "2019-12-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -923,7 +1009,7 @@ public final class GalleryApplicationsClient {
                 .error(
                     new IllegalArgumentException("Parameter galleryApplicationName is required and cannot be null."));
         }
-        final String apiVersion = "2019-07-01";
+        final String apiVersion = "2019-12-01";
         return service
             .get(
                 this.client.getEndpoint(),
@@ -1063,7 +1149,7 @@ public final class GalleryApplicationsClient {
                 .error(
                     new IllegalArgumentException("Parameter galleryApplicationName is required and cannot be null."));
         }
-        final String apiVersion = "2019-07-01";
+        final String apiVersion = "2019-12-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -1119,7 +1205,7 @@ public final class GalleryApplicationsClient {
                 .error(
                     new IllegalArgumentException("Parameter galleryApplicationName is required and cannot be null."));
         }
-        final String apiVersion = "2019-07-01";
+        final String apiVersion = "2019-12-01";
         return service
             .delete(
                 this.client.getEndpoint(),
@@ -1144,7 +1230,7 @@ public final class GalleryApplicationsClient {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<Void>, Void> beginDelete(
+    public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String galleryName, String galleryApplicationName) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             deleteWithResponseAsync(resourceGroupName, galleryName, galleryApplicationName);
@@ -1165,7 +1251,7 @@ public final class GalleryApplicationsClient {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<Void>, Void> beginDelete(
+    public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String galleryName, String galleryApplicationName, Context context) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             deleteWithResponseAsync(resourceGroupName, galleryName, galleryApplicationName, context);
@@ -1185,14 +1271,47 @@ public final class GalleryApplicationsClient {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<Void>, Void> beginDelete(
+        String resourceGroupName, String galleryName, String galleryApplicationName) {
+        return beginDeleteAsync(resourceGroupName, galleryName, galleryApplicationName).getSyncPoller();
+    }
+
+    /**
+     * Delete a gallery Application.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param galleryName The name of the Shared Application Gallery in which the Application Definition is to be
+     *     deleted.
+     * @param galleryApplicationName The name of the gallery Application Definition to be deleted.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<Void>, Void> beginDelete(
+        String resourceGroupName, String galleryName, String galleryApplicationName, Context context) {
+        return beginDeleteAsync(resourceGroupName, galleryName, galleryApplicationName, context).getSyncPoller();
+    }
+
+    /**
+     * Delete a gallery Application.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param galleryName The name of the Shared Application Gallery in which the Application Definition is to be
+     *     deleted.
+     * @param galleryApplicationName The name of the gallery Application Definition to be deleted.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String galleryName, String galleryApplicationName) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, galleryName, galleryApplicationName);
-        return this
-            .client
-            .<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class)
+        return beginDeleteAsync(resourceGroupName, galleryName, galleryApplicationName)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -1211,13 +1330,9 @@ public final class GalleryApplicationsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(
         String resourceGroupName, String galleryName, String galleryApplicationName, Context context) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, galleryName, galleryApplicationName, context);
-        return this
-            .client
-            .<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class)
+        return beginDeleteAsync(resourceGroupName, galleryName, galleryApplicationName, context)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -1286,7 +1401,7 @@ public final class GalleryApplicationsClient {
         if (galleryName == null) {
             return Mono.error(new IllegalArgumentException("Parameter galleryName is required and cannot be null."));
         }
-        final String apiVersion = "2019-07-01";
+        final String apiVersion = "2019-12-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -1344,7 +1459,7 @@ public final class GalleryApplicationsClient {
         if (galleryName == null) {
             return Mono.error(new IllegalArgumentException("Parameter galleryName is required and cannot be null."));
         }
-        final String apiVersion = "2019-07-01";
+        final String apiVersion = "2019-12-01";
         return service
             .listByGallery(
                 this.client.getEndpoint(),
@@ -1488,7 +1603,7 @@ public final class GalleryApplicationsClient {
         } else {
             galleryApplication.validate();
         }
-        final String apiVersion = "2019-07-01";
+        final String apiVersion = "2019-12-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -1559,7 +1674,7 @@ public final class GalleryApplicationsClient {
         } else {
             galleryApplication.validate();
         }
-        final String apiVersion = "2019-07-01";
+        final String apiVersion = "2019-12-01";
         return service
             .beginCreateOrUpdateWithoutPolling(
                 this.client.getEndpoint(),
@@ -1749,7 +1864,7 @@ public final class GalleryApplicationsClient {
         } else {
             galleryApplication.validate();
         }
-        final String apiVersion = "2019-07-01";
+        final String apiVersion = "2019-12-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -1819,7 +1934,7 @@ public final class GalleryApplicationsClient {
         } else {
             galleryApplication.validate();
         }
-        final String apiVersion = "2019-07-01";
+        final String apiVersion = "2019-12-01";
         return service
             .beginUpdateWithoutPolling(
                 this.client.getEndpoint(),
@@ -1993,7 +2108,7 @@ public final class GalleryApplicationsClient {
                 .error(
                     new IllegalArgumentException("Parameter galleryApplicationName is required and cannot be null."));
         }
-        final String apiVersion = "2019-07-01";
+        final String apiVersion = "2019-12-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -2049,7 +2164,7 @@ public final class GalleryApplicationsClient {
                 .error(
                     new IllegalArgumentException("Parameter galleryApplicationName is required and cannot be null."));
         }
-        final String apiVersion = "2019-07-01";
+        final String apiVersion = "2019-12-01";
         return service
             .beginDeleteWithoutPolling(
                 this.client.getEndpoint(),

@@ -21,10 +21,7 @@ public final class NGramTokenizerConverter {
         if (obj == null) {
             return null;
         }
-        NGramTokenizer nGramTokenizer = new NGramTokenizer();
-
-        String name = obj.getName();
-        nGramTokenizer.setName(name);
+        NGramTokenizer nGramTokenizer = new NGramTokenizer(obj.getName());
 
         Integer maxGram = obj.getMaxGram();
         nGramTokenizer.setMaxGram(maxGram);

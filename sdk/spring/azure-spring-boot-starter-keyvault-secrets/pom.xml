@@ -35,6 +35,11 @@
       <artifactId>azure-spring-boot</artifactId>
       <version>2.3.3-beta.1</version> <!-- {x-version-update;com.microsoft.azure:azure-spring-boot;current} -->
     </dependency>
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-security-keyvault-secrets</artifactId>
+      <version>4.1.4</version> <!-- {x-version-update;com.azure:azure-security-keyvault-secrets;dependency} -->
+    </dependency>
   </dependencies>
   <build>
     <plugins>
@@ -47,6 +52,7 @@
             <bannedDependencies>
               <includes>
                 <include>com.microsoft.azure:azure-spring-boot:[2.3.3-beta.1]</include> <!-- {x-include-update;com.microsoft.azure:azure-spring-boot;current} -->
+                <include>com.azure:azure-security-keyvault-secrets:[4.1.4]</include> <!-- {x-include-update;com.azure:azure-security-keyvault-secrets;dependency} -->
                 <include>org.springframework.boot:spring-boot-starter:[2.3.0.RELEASE]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-starter;external_dependency} -->
                 <include>org.springframework.boot:spring-boot-starter-validation:[2.3.0.RELEASE]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-starter-validation;external_dependency} -->
               </includes>

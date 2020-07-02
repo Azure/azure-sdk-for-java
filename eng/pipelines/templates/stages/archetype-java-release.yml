@@ -75,6 +75,12 @@ stages:
                   $(Build.SourcesDirectory)/eng/versioning/scan_for_unreleased_dependencies.ps1 ${{artifact.groupId}} ${{artifact.name}} $(Build.SourcesDirectory)/sdk/${{parameters.ServiceDirectory}}
                 displayName: "Verify no unreleased dependencies"
 
+              - template: /eng/common/pipelines/templates/steps/verify-changelog.yml
+                parameters:
+                  PackageName: ${{artifact.name}}
+                  ServiceName: ${{parameters.ServiceDirectory}}
+                  ForRelease: true
+
 
           - deployment: TagRepository
             displayName: "Create release tag"

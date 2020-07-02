@@ -8,6 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -27,13 +28,13 @@ public class ApplicationGatewayPathRuleInner extends SubResource {
     /*
      * A unique read-only string that changes whenever the resource is updated.
      */
-    @JsonProperty(value = "etag")
+    @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
 
     /*
      * Type of the resource.
      */
-    @JsonProperty(value = "type")
+    @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
     /*
@@ -67,11 +68,16 @@ public class ApplicationGatewayPathRuleInner extends SubResource {
     private SubResource rewriteRuleSet;
 
     /*
-     * Path rule of URL path map resource. Possible values are: 'Updating',
-     * 'Deleting', and 'Failed'.
+     * The provisioning state of the path rule resource.
      */
-    @JsonProperty(value = "properties.provisioningState")
-    private String provisioningState;
+    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
+    private ProvisioningState provisioningState;
+
+    /*
+     * Reference to the FirewallPolicy resource.
+     */
+    @JsonProperty(value = "properties.firewallPolicy")
+    private SubResource firewallPolicy;
 
     /**
      * Get the name property: Name of the path rule that is unique within an Application Gateway.
@@ -103,34 +109,12 @@ public class ApplicationGatewayPathRuleInner extends SubResource {
     }
 
     /**
-     * Set the etag property: A unique read-only string that changes whenever the resource is updated.
-     *
-     * @param etag the etag value to set.
-     * @return the ApplicationGatewayPathRuleInner object itself.
-     */
-    public ApplicationGatewayPathRuleInner withEtag(String etag) {
-        this.etag = etag;
-        return this;
-    }
-
-    /**
      * Get the type property: Type of the resource.
      *
      * @return the type value.
      */
     public String type() {
         return this.type;
-    }
-
-    /**
-     * Set the type property: Type of the resource.
-     *
-     * @param type the type value to set.
-     * @return the ApplicationGatewayPathRuleInner object itself.
-     */
-    public ApplicationGatewayPathRuleInner withType(String type) {
-        this.type = type;
-        return this;
     }
 
     /**
@@ -234,24 +218,31 @@ public class ApplicationGatewayPathRuleInner extends SubResource {
     }
 
     /**
-     * Get the provisioningState property: Path rule of URL path map resource. Possible values are: 'Updating',
-     * 'Deleting', and 'Failed'.
+     * Get the provisioningState property: The provisioning state of the path rule resource.
      *
      * @return the provisioningState value.
      */
-    public String provisioningState() {
+    public ProvisioningState provisioningState() {
         return this.provisioningState;
     }
 
     /**
-     * Set the provisioningState property: Path rule of URL path map resource. Possible values are: 'Updating',
-     * 'Deleting', and 'Failed'.
+     * Get the firewallPolicy property: Reference to the FirewallPolicy resource.
      *
-     * @param provisioningState the provisioningState value to set.
+     * @return the firewallPolicy value.
+     */
+    public SubResource firewallPolicy() {
+        return this.firewallPolicy;
+    }
+
+    /**
+     * Set the firewallPolicy property: Reference to the FirewallPolicy resource.
+     *
+     * @param firewallPolicy the firewallPolicy value to set.
      * @return the ApplicationGatewayPathRuleInner object itself.
      */
-    public ApplicationGatewayPathRuleInner withProvisioningState(String provisioningState) {
-        this.provisioningState = provisioningState;
+    public ApplicationGatewayPathRuleInner withFirewallPolicy(SubResource firewallPolicy) {
+        this.firewallPolicy = firewallPolicy;
         return this;
     }
 

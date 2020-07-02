@@ -23,7 +23,8 @@ public final class SearchIndexerConverter {
         if (obj == null) {
             return null;
         }
-        SearchIndexer searchIndexer = new SearchIndexer();
+        SearchIndexer searchIndexer = new SearchIndexer(obj.getName(), obj.getDataSourceName(),
+            obj.getTargetIndexName());
 
         if (obj.getSchedule() != null) {
             IndexingSchedule schedule = IndexingScheduleConverter.map(obj.getSchedule());
@@ -33,17 +34,11 @@ public final class SearchIndexerConverter {
         String skillsetName = obj.getSkillsetName();
         searchIndexer.setSkillsetName(skillsetName);
 
-        String name = obj.getName();
-        searchIndexer.setName(name);
-
         String description = obj.getDescription();
         searchIndexer.setDescription(description);
 
         String eTag = obj.getETag();
         searchIndexer.setETag(eTag);
-
-        String targetIndexName = obj.getTargetIndexName();
-        searchIndexer.setTargetIndexName(targetIndexName);
 
         if (obj.getFieldMappings() != null) {
             List<FieldMapping> fieldMappings =
@@ -58,9 +53,6 @@ public final class SearchIndexerConverter {
             IndexingParameters parameters = IndexingParametersConverter.map(obj.getParameters());
             searchIndexer.setParameters(parameters);
         }
-
-        String dataSourceName = obj.getDataSourceName();
-        searchIndexer.setDataSourceName(dataSourceName);
 
         if (obj.getOutputFieldMappings() != null) {
             List<FieldMapping> outputFieldMappings =
