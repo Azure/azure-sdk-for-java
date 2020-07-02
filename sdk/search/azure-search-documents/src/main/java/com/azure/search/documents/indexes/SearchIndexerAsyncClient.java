@@ -499,7 +499,7 @@ public class SearchIndexerAsyncClient {
      *
      * <p><strong>Code Sample</strong></p>
      *
-     * <p> Get search indexer response with name "searchIndexer". </p>
+     * <p> Get search indexer with name "searchIndexer". </p>
      *
      * {@codesnippet com.azure.search.documents.indexes.SearchIndexerAsyncClient.getIndexerWithResponse#String}
      *
