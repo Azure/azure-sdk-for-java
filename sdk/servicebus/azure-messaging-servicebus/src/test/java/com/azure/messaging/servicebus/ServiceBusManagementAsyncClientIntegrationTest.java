@@ -6,6 +6,7 @@ package com.azure.messaging.servicebus;
 import com.azure.core.exception.ResourceExistsException;
 import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.HttpClient;
+import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.RetryPolicy;
@@ -270,6 +271,19 @@ class ServiceBusManagementAsyncClientIntegrationTest extends TestBase {
 
     @ParameterizedTest
     @MethodSource("createHttpClients")
+    void getQueueDoesNotExist(HttpClient httpClient) {
+        // Arrange
+        final ServiceBusManagementAsyncClient client = createClient(httpClient);
+        final String queueName = testResourceNamer.randomName("exist", 10);
+
+        // Act & Assert
+        StepVerifier.create(client.getQueue(queueName))
+            .expectError(ResourceNotFoundException.class)
+            .verify();
+    }
+
+    @ParameterizedTest
+    @MethodSource("createHttpClients")
     void getQueueRuntimeInfo(HttpClient httpClient) {
         // Arrange
         final ServiceBusManagementAsyncClient client = createClient(httpClient);
@@ -391,6 +405,29 @@ class ServiceBusManagementAsyncClientIntegrationTest extends TestBase {
                 assertNotNull(runtimeInfo.getAccessedAt());
             })
             .verifyComplete();
+    }
+
+    @ParameterizedTest
+    @MethodSource("createHttpClients")
+    void getTopicDoesNotExist(HttpClient httpClient) {
+        // Arrange
+        final ServiceBusManagementAsyncClient client = createClient(httpClient);
+        final String topicName = testResourceNamer.randomName("exists", 10);
+
+        // Act & Assert
+        StepVerifier.create(client.getTopic(topicName))
+            .consumeErrorWith(error -> {
+                assertTrue(error instanceof ResourceNotFoundException);
+
+                final ResourceNotFoundException notFoundError = (ResourceNotFoundException) error;
+                final HttpResponse response = notFoundError.getResponse();
+
+                assertNotNull(response);
+                assertEquals(200, response.getStatusCode());
+                StepVerifier.create(response.getBody())
+                    .verifyComplete();
+            })
+            .verify();
     }
 
     @ParameterizedTest

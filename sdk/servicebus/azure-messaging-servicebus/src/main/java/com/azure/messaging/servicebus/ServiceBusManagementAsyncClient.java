@@ -13,6 +13,7 @@ import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpRequest;
+import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
@@ -45,6 +46,7 @@ import com.azure.messaging.servicebus.models.SubscriptionDescription;
 import com.azure.messaging.servicebus.models.SubscriptionRuntimeInfo;
 import com.azure.messaging.servicebus.models.TopicDescription;
 import com.azure.messaging.servicebus.models.TopicRuntimeInfo;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.io.IOException;
@@ -52,6 +54,8 @@ import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLDecoder;
+import java.nio.ByteBuffer;
+import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.util.Arrays;
@@ -1154,16 +1158,19 @@ public final class ServiceBusManagementAsyncClient {
         try {
             return entityClient.getWithResponseAsync(queueName, true, withTracing)
                 .onErrorMap(ServiceBusManagementAsyncClient::mapException)
-                .map(response -> {
+                .handle((response, sink) -> {
                     final Response<QueueDescription> deserialize = deserializeQueue(response);
 
-                    // In the case this is a 204, do not try to map it.
-                    final T mapped = deserialize.getValue() != null
-                        ? mapper.apply(deserialize.getValue())
-                        : null;
-
-                    return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
-                        mapped);
+                    // if this is null, then the queue could not be found.
+                    if (deserialize.getValue() == null) {
+                        final HttpResponse notFoundResponse = new EntityNotFoundHttpResponse<>(deserialize);
+                        sink.error(new ResourceNotFoundException(String.format("Queue '%s' does not exist.", queueName),
+                            notFoundResponse));
+                    } else {
+                        final T mapped = mapper.apply(deserialize.getValue());
+                        sink.next(new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
+                            response.getHeaders(), mapped));
+                    }
                 });
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -1199,16 +1206,20 @@ public final class ServiceBusManagementAsyncClient {
             return managementClient.getSubscriptions().getWithResponseAsync(topicName, subscriptionName, true,
                 withTracing)
                 .onErrorMap(ServiceBusManagementAsyncClient::mapException)
-                .map(response -> {
+                .handle((response, sink) -> {
                     final Response<SubscriptionDescription> deserialize = deserializeSubscription(topicName, response);
 
-                    // In the case this is a 204, do not try to map it.
-                    final T mapped = deserialize.getValue() != null
-                        ? mapper.apply(deserialize.getValue())
-                        : null;
-
-                    return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
-                        mapped);
+                    // if this is null, then the queue could not be found.
+                    if (deserialize.getValue() == null) {
+                        final HttpResponse notFoundResponse = new EntityNotFoundHttpResponse<>(deserialize);
+                        sink.error(new ResourceNotFoundException(String.format(
+                            "Subscription '%s' in topic '%s' does not exist.", topicName, subscriptionName),
+                            notFoundResponse));
+                    } else {
+                        final T mapped = mapper.apply(deserialize.getValue());
+                        sink.next(new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
+                            response.getHeaders(), mapped));
+                    }
                 });
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -1238,16 +1249,19 @@ public final class ServiceBusManagementAsyncClient {
         try {
             return entityClient.getWithResponseAsync(topicName, true, withTracing)
                 .onErrorMap(ServiceBusManagementAsyncClient::mapException)
-                .map(response -> {
+                .handle((response, sink) -> {
                     final Response<TopicDescription> deserialize = deserializeTopic(response);
 
-                    // In the case this is a 204, do not try to map it.
-                    final T mapped = deserialize.getValue() != null
-                        ? mapper.apply(deserialize.getValue())
-                        : null;
-
-                    return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
-                        mapped);
+                    // if this is null, then the queue could not be found.
+                    if (deserialize.getValue() == null) {
+                        final HttpResponse notFoundResponse = new EntityNotFoundHttpResponse<>(deserialize);
+                        sink.error(new ResourceNotFoundException(String.format("Topic '%s' does not exist.", topicName),
+                            notFoundResponse));
+                    } else {
+                        final T mapped = mapper.apply(deserialize.getValue());
+                        sink.next(new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
+                            response.getHeaders(), mapped));
+                    }
                 });
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -1527,7 +1541,7 @@ public final class ServiceBusManagementAsyncClient {
         if (entry == null) {
             return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), null);
         } else if (entry.getContent() == null) {
-            logger.warning("entry.getContent() is null. There should have been content returned. Entry: {}", entry);
+            logger.info("entry.getContent() is null. There should have been content returned. Entry: {}", entry);
             return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), null);
         }
 
@@ -1873,6 +1887,52 @@ public final class ServiceBusManagementAsyncClient {
 
         @Override
         public void close() {
+        }
+    }
+
+    private static final class EntityNotFoundHttpResponse<T> extends HttpResponse {
+        private final int statusCode;
+        private final HttpHeaders headers;
+
+        private EntityNotFoundHttpResponse(Response<T> response) {
+            super(response.getRequest());
+            this.headers = response.getHeaders();
+            this.statusCode = response.getStatusCode();
+        }
+
+        @Override
+        public int getStatusCode() {
+            return statusCode;
+        }
+
+        @Override
+        public String getHeaderValue(String name) {
+            return headers.getValue(name);
+        }
+
+        @Override
+        public HttpHeaders getHeaders() {
+            return headers;
+        }
+
+        @Override
+        public Flux<ByteBuffer> getBody() {
+            return Flux.empty();
+        }
+
+        @Override
+        public Mono<byte[]> getBodyAsByteArray() {
+            return Mono.empty();
+        }
+
+        @Override
+        public Mono<String> getBodyAsString() {
+            return Mono.empty();
+        }
+
+        @Override
+        public Mono<String> getBodyAsString(Charset charset) {
+            return Mono.empty();
         }
     }
 }
