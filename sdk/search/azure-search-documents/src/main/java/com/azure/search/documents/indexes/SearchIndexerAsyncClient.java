@@ -811,7 +811,7 @@ public class SearchIndexerAsyncClient {
      *
      * <p><strong>Code Sample</strong></p>
      *
-     * <p> Create search indexer skillset "searchIndexerSkillset" with response. </p>
+     * <p> Create search indexer skillset "searchIndexerSkillset". </p>
      *
      * {@codesnippet com.azure.search.documents.indexes.SearchIndexerAsyncClient.createSkillsetWithResponse#SearchIndexerSkillset}
      *
