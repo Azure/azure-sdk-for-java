@@ -4,6 +4,7 @@ package com.azure.data.tables;
 
 import com.azure.core.annotation.ServiceClient;
 
+import com.azure.data.tables.implementation.TablesImpl;
 import java.util.List;
 import java.util.Map;
 import reactor.core.publisher.Mono;
@@ -30,26 +31,43 @@ public class TableClient {
         return null;
     }
 
+
     /**
-     * insert a TableEntity with the given properties and return that TableEntity
+     * insert a TableEntity with the given properties and return that TableEntity. Property map must include
+     * rowKey and partitionKey
      *
-     * @param row the RowKey
-     * @param partition the PartitionKey
      * @param tableEntityProperties a map of properties for the TableEntity
      * @return the created TableEntity
      */
-    public TableEntity insertEntity(String row, String partition, Map<String, Object> tableEntityProperties) {
+    public TableEntity createEntity(Map<String, Object> tableEntityProperties) throws Exception {
+        if (!tableEntityProperties.containsKey("PartitionKey")) {
+            throw new Exception("property map must contain PartitionKey as a key in key-value pair");
+        }
+        if (!tableEntityProperties.containsKey("RowKey")) {
+            throw new Exception("property map must contain RowKey as a key in key-value pair");
+        }
+
         return new TableEntity();
+
+        //Questions: What spellings for those are accepted? What type of exception should be thrown?
     }
 
-    /**
-     * insert a new entity into the Table attached to this client
-     *
-     * @param tableEntity the entity in which to insert
-     * @return the inserted TableEntity
-     */
-    public TableEntity insertEntity(TableEntity tableEntity) {
-        return tableEntity;
+    public void upsertEntity( UpdateMode updateMode, TableEntity tableEntity){
+        if (updateMode.equals(UpdateMode.Merge)){
+            //insert or merge if exists
+        }
+        if (updateMode.equals(UpdateMode.Replace)){
+            //insert or replace if exists
+        }
+    }
+
+    public void updateEntity( UpdateMode updateMode, TableEntity tableEntity) {
+        if (updateMode.equals(UpdateMode.Merge)){
+            //update if exists, fails if entity does not exist
+        }
+        if (updateMode.equals(UpdateMode.Replace)){
+            //replaces if exists, fails if entity does not exist
+        }
     }
 
     /**
@@ -69,39 +87,6 @@ public class TableClient {
     public void deleteEntity(String partitionKey, String rowKey) {
     }
 
-
-    /**
-     * merges the given entity with the entity which exists on the storage account
-     *
-     * @param tableEntity the entity with which to merge
-     */
-    public void mergeEntity(TableEntity tableEntity) {
-    }
-
-    /**
-     * updates the provided TableEntity
-     *
-     * @param tableEntity the TableEntity to update
-     */
-    public void updateEntity(TableEntity tableEntity) {
-    }
-
-    /**
-     * inserts the TableEntity if it doesn't exist or replace it if it does
-     *
-     * @param tableEntity the TableEntity to insert or replace
-     */
-    public void insertOrReplaceEntity(TableEntity tableEntity) {
-    }
-
-    /**
-     * inserts the TableEntity if it doesn't exist or merges it with the existing entity if it does
-     *
-     * @param tableEntity the TableEntity to insert or merge
-     */
-    public void insertOrMergeEntity(TableEntity tableEntity) {
-    }
-
     /**
      * returns the table name associated with the client
      * @return table name
@@ -109,4 +94,6 @@ public class TableClient {
     public String getTableName(){
         return this.tableName;
     }
+
+
 }
