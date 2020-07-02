@@ -11,6 +11,7 @@ import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.test.TestBase;
+import com.azure.messaging.servicebus.models.NamespaceType;
 import com.azure.messaging.servicebus.models.QueueDescription;
 import com.azure.messaging.servicebus.models.QueueRuntimeInfo;
 import com.azure.messaging.servicebus.models.SubscriptionDescription;
@@ -19,6 +20,7 @@ import com.azure.messaging.servicebus.models.TopicDescription;
 import com.azure.messaging.servicebus.models.TopicRuntimeInfo;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -37,6 +39,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 /**
  * Tests {@link ServiceBusManagementAsyncClient}.
  */
+@Tag("integration")
 class ServiceBusManagementAsyncClientIntegrationTest extends TestBase {
     private static final Duration TIMEOUT = Duration.ofSeconds(20);
 
@@ -271,6 +274,28 @@ class ServiceBusManagementAsyncClientIntegrationTest extends TestBase {
 
     @ParameterizedTest
     @MethodSource("createHttpClients")
+    void getNamespace(HttpClient httpClient) {
+        // Arrange
+        final ServiceBusManagementAsyncClient client = createClient(httpClient);
+        final String expectedName;
+        if (interceptorManager.isPlaybackMode()) {
+            expectedName = "ShivangiServiceBus";
+        } else {
+            final String[] split = TestUtils.getFullyQualifiedDomainName().split("\\.", 2);
+            expectedName = split[0];
+        }
+
+        // Act & Assert
+        StepVerifier.create(client.getNamespaceProperties())
+            .assertNext(properties -> {
+                assertEquals(NamespaceType.MESSAGING, properties.getNamespaceType());
+                assertEquals(expectedName, properties.getName());
+            })
+            .verifyComplete();
+    }
+
+    @ParameterizedTest
+    @MethodSource("createHttpClients")
     void getQueueDoesNotExist(HttpClient httpClient) {
         // Arrange
         final ServiceBusManagementAsyncClient client = createClient(httpClient);
@@ -280,6 +305,34 @@ class ServiceBusManagementAsyncClientIntegrationTest extends TestBase {
         StepVerifier.create(client.getQueue(queueName))
             .expectError(ResourceNotFoundException.class)
             .verify();
+    }
+
+    @ParameterizedTest
+    @MethodSource("createHttpClients")
+    void getQueueExists(HttpClient httpClient) {
+        // Arrange
+        final ServiceBusManagementAsyncClient client = createClient(httpClient);
+        final String queueName = interceptorManager.isPlaybackMode()
+            ? "queue-5"
+            : TestUtils.getEntityName(TestUtils.getQueueBaseName(), 2);
+
+        // Act & Assert
+        StepVerifier.create(client.getQueueExists(queueName))
+            .expectNext(true)
+            .verifyComplete();
+    }
+
+    @ParameterizedTest
+    @MethodSource("createHttpClients")
+    void getQueueExistsFalse(HttpClient httpClient) {
+        // Arrange
+        final ServiceBusManagementAsyncClient client = createClient(httpClient);
+        final String queueName = testResourceNamer.randomName("exist", 10);
+
+        // Act & Assert
+        StepVerifier.create(client.getQueueExists(queueName))
+            .expectNext(false)
+            .verifyComplete();
     }
 
     @ParameterizedTest
@@ -344,6 +397,36 @@ class ServiceBusManagementAsyncClientIntegrationTest extends TestBase {
         StepVerifier.create(client.getSubscription(topicName, subscriptionName))
             .expectError(ResourceNotFoundException.class)
             .verify();
+    }
+
+    @ParameterizedTest
+    @MethodSource("createHttpClients")
+    void getSubscriptionExists(HttpClient httpClient) {
+        // Arrange
+        final ServiceBusManagementAsyncClient client = createClient(httpClient);
+        final String topicName = interceptorManager.isPlaybackMode() ? "topic" : TestUtils.getTopicName();
+        final String subscriptionName = interceptorManager.isPlaybackMode()
+            ? "subscription-session-1"
+            : TestUtils.getEntityName(TestUtils.getSessionSubscriptionBaseName(), 1);
+
+        // Act & Assert
+        StepVerifier.create(client.getSubscriptionExists(topicName, subscriptionName))
+            .expectNext(true)
+            .verifyComplete();
+    }
+
+    @ParameterizedTest
+    @MethodSource("createHttpClients")
+    void getSubscriptionExistsFalse(HttpClient httpClient) {
+        // Arrange
+        final ServiceBusManagementAsyncClient client = createClient(httpClient);
+        final String topicName = interceptorManager.isPlaybackMode() ? "topic" : TestUtils.getTopicName();
+        final String subscriptionName = "subscription-session-not-exist";
+
+        // Act & Assert
+        StepVerifier.create(client.getSubscriptionExists(topicName, subscriptionName))
+            .expectNext(false)
+            .verifyComplete();
     }
 
     @ParameterizedTest
@@ -432,6 +515,34 @@ class ServiceBusManagementAsyncClientIntegrationTest extends TestBase {
 
     @ParameterizedTest
     @MethodSource("createHttpClients")
+    void getTopicExists(HttpClient httpClient) {
+        // Arrange
+        final ServiceBusManagementAsyncClient client = createClient(httpClient);
+        final String topicName = interceptorManager.isPlaybackMode()
+            ? "topic"
+            : TestUtils.getTopicName();
+
+        // Act & Assert
+        StepVerifier.create(client.getTopicExists(topicName))
+            .expectNext(true)
+            .verifyComplete();
+    }
+
+    @ParameterizedTest
+    @MethodSource("createHttpClients")
+    void getTopicExistsFalse(HttpClient httpClient) {
+        // Arrange
+        final ServiceBusManagementAsyncClient client = createClient(httpClient);
+        final String topicName = testResourceNamer.randomName("exists", 10);
+
+        // Act & Assert
+        StepVerifier.create(client.getTopicExists(topicName))
+            .expectNext(false)
+            .verifyComplete();
+    }
+
+    @ParameterizedTest
+    @MethodSource("createHttpClients")
     void getTopicRuntimeInfo(HttpClient httpClient) {
         // Arrange
         final ServiceBusManagementAsyncClient client = createClient(httpClient);
@@ -514,65 +625,6 @@ class ServiceBusManagementAsyncClientIntegrationTest extends TestBase {
             .expectNextCount(2)
             .thenCancel()
             .verify();
-    }
-
-    @ParameterizedTest
-    @MethodSource("createHttpClients")
-    void queueExists(HttpClient httpClient) {
-        // Arrange
-        final ServiceBusManagementAsyncClient client = createClient(httpClient);
-        final String queueName = interceptorManager.isPlaybackMode()
-            ? "queue-5"
-            : TestUtils.getEntityName(TestUtils.getQueueBaseName(), 5);
-
-        // Act & Assert
-        StepVerifier.create(client.getQueueExists(queueName))
-            .expectNext(true)
-            .verifyComplete();
-    }
-
-    @ParameterizedTest
-    @MethodSource("createHttpClients")
-    void queueExistsNotFound(HttpClient httpClient) {
-        // Arrange
-        final ServiceBusManagementAsyncClient client = createClient(httpClient);
-        final String queueName = testResourceNamer.randomName("exists", 10);
-
-        // Act & Assert
-        StepVerifier.create(client.getQueueExists(queueName))
-            .expectNext(false)
-            .verifyComplete();
-    }
-
-    @ParameterizedTest
-    @MethodSource("createHttpClients")
-    void subscriptionExists(HttpClient httpClient) {
-        // Arrange
-        final ServiceBusManagementAsyncClient client = createClient(httpClient);
-        final String topicName = interceptorManager.isPlaybackMode() ? "topic" : TestUtils.getTopicName();
-        final String subscriptionName = interceptorManager.isPlaybackMode()
-            ? "subscription-1"
-            : TestUtils.getEntityName(TestUtils.getSubscriptionBaseName(), 1);
-        final OffsetDateTime nowUtc = OffsetDateTime.now(Clock.systemUTC());
-
-        // Act & Assert
-        StepVerifier.create(client.getSubscriptionExists(topicName, subscriptionName))
-            .expectNext(true)
-            .verifyComplete();
-    }
-
-    @ParameterizedTest
-    @MethodSource("createHttpClients")
-    void subscriptionExistsNotFound(HttpClient httpClient) {
-        // Arrange
-        final ServiceBusManagementAsyncClient client = createClient(httpClient);
-        final String topicName = interceptorManager.isPlaybackMode() ? "topic" : TestUtils.getTopicName();
-        final String subscriptionName = "subscription-session-not-exist";
-
-        // Act & Assert
-        StepVerifier.create(client.getSubscriptionExists(topicName, subscriptionName))
-            .expectNext(false)
-            .verifyComplete();
     }
 
     private ServiceBusManagementAsyncClient createClient(HttpClient httpClient) {
