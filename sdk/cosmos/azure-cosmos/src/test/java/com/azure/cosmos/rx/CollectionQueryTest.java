@@ -6,6 +6,8 @@ import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.CosmosClientBuilder;
+import com.azure.cosmos.implementation.InternalObjectNode;
+import com.azure.cosmos.implementation.RxDocumentClientImpl;
 import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.util.CosmosPagedFlux;
 import com.azure.cosmos.CosmosDatabaseForTest;
@@ -13,6 +15,7 @@ import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.PartitionKeyDefinition;
 import com.azure.cosmos.implementation.FeedResponseListValidator;
 import com.azure.cosmos.implementation.FeedResponseValidator;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.apache.commons.lang3.StringUtils;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
@@ -27,7 +30,7 @@ import java.util.stream.Collectors;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class CollectionQueryTest extends TestSuiteBase {
-    private final static int TIMEOUT = 30000;
+    private final static int TIMEOUT = 300000;
     private final String databaseId = CosmosDatabaseForTest.generateId();
     private List<CosmosAsyncContainer> createdCollections = new ArrayList<>();
     private CosmosAsyncClient client;
@@ -109,6 +112,38 @@ public class CollectionQueryTest extends TestSuiteBase {
         validateQuerySuccess(queryObservable.byPage(), validator);
     }
 
+    @Test(groups = { "simple" }, timeOut = TIMEOUT)
+    public void queryByRecreatCollectionWithSameName() throws Exception {
+        String testCollectionId = UUID.randomUUID().toString();
+        CosmosContainerProperties collectionDefinition = getCollectionDefinition(testCollectionId);
+        CosmosQueryRequestOptions requestOptions = new CosmosQueryRequestOptions();
+        String query = "SELECT * FROM r";
+
+        // step1: create container and do query
+        this.createdDatabase.createContainer(collectionDefinition).block();
+        CosmosAsyncContainer container = this.createdDatabase.getContainer(collectionDefinition.getId());
+        InternalObjectNode document1 = getDocumentDefinition();
+        container.createItem(document1).block();
+        container.queryItems(query, requestOptions, InternalObjectNode.class);
+
+        // step2: delete the container created on step 1
+        safeDeleteCollection(container);
+
+        // step3: create a new collection with the same id as step 1 and do query
+        this.createdDatabase.createContainer(collectionDefinition).block();
+        container = this.createdDatabase.getContainer(collectionDefinition.getId());
+        container.createItem(document1).block();
+        CosmosPagedFlux<InternalObjectNode> queryFlux = container.queryItems(query, requestOptions, InternalObjectNode.class);
+        FeedResponseListValidator<InternalObjectNode> queryValidator = new FeedResponseListValidator.Builder<InternalObjectNode>()
+            .totalSize(1)
+            .numberOfPages(1)
+            .build();
+        validateQuerySuccess(queryFlux.byPage(10), queryValidator);
+
+        safeDeleteCollection(container);
+    }
+
+
     @BeforeClass(groups = { "simple" }, timeOut = SETUP_TIMEOUT)
     public void before_CollectionQueryTest() throws Exception {
         client = getClientBuilder().buildAsyncClient();
@@ -127,5 +162,15 @@ public class CollectionQueryTest extends TestSuiteBase {
     public void afterClass() {
         safeDeleteDatabase(createdDatabase);
         safeClose(client);
+    }
+
+    private static InternalObjectNode getDocumentDefinition() {
+        String uuid = UUID.randomUUID().toString();
+        InternalObjectNode doc = new InternalObjectNode(String.format("{ "
+                + "\"id\": \"%s\", "
+                + "\"mypk\": \"%s\", "
+                + "}"
+            , uuid, uuid));
+        return doc;
     }
 }

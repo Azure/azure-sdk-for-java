@@ -65,17 +65,6 @@ public class AzureKeyCredentialTest extends TestSuiteBase {
         };
     }
 
-    private CosmosContainerProperties getCollectionDefinition(String collectionName) {
-        PartitionKeyDefinition partitionKeyDef = new PartitionKeyDefinition();
-        ArrayList<String> paths = new ArrayList<>();
-        paths.add("/mypk");
-        partitionKeyDef.setPaths(paths);
-
-        return new CosmosContainerProperties(
-            collectionName,
-            partitionKeyDef);
-    }
-
     private InternalObjectNode getDocumentDefinition(String documentId) {
         final String uuid = UUID.randomUUID().toString();
         return new InternalObjectNode(String.format("{ "

@@ -102,17 +102,6 @@ public class CosmosContainerContentResponseOnWriteTest extends TestSuiteBase {
 
     }
 
-    private CosmosContainerProperties getCollectionDefinition(String collectionName) {
-        PartitionKeyDefinition partitionKeyDef = new PartitionKeyDefinition();
-        ArrayList<String> paths = new ArrayList<String>();
-        paths.add("/mypk");
-        partitionKeyDef.setPaths(paths);
-
-        return new CosmosContainerProperties(
-            collectionName,
-            partitionKeyDef);
-    }
-
     private void validateContainerResponse(CosmosContainerProperties containerProperties,
                                            CosmosContainerResponse createResponse) {
         // Basic validation

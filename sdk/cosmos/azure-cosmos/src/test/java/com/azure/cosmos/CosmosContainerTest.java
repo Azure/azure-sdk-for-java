@@ -53,19 +53,6 @@ public class CosmosContainerTest extends TestSuiteBase {
         safeCloseSyncClient(client);
     }
 
-    private CosmosContainerProperties getCollectionDefinition(String collectionName) {
-        PartitionKeyDefinition partitionKeyDef = new PartitionKeyDefinition();
-        ArrayList<String> paths = new ArrayList<String>();
-        paths.add("/mypk");
-        partitionKeyDef.setPaths(paths);
-
-        CosmosContainerProperties collectionDefinition = new CosmosContainerProperties(
-            collectionName,
-            partitionKeyDef);
-
-        return collectionDefinition;
-    }
-
     @Test(groups = { "emulator" }, timeOut = TIMEOUT)
     public void createContainer_withProperties() throws Exception {
         String collectionName = UUID.randomUUID().toString();
