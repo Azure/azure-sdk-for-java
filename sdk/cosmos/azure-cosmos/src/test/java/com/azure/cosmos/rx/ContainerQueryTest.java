@@ -110,39 +110,6 @@ public class ContainerQueryTest extends TestSuiteBase {
         validateQuerySuccess(queryObservable.byPage(), validator);
     }
 
-    @Test(groups = { "simple" }, timeOut = TIMEOUT)
-    public void queryByRecreatContainerWithSameId() throws Exception {
-        String testContainerId = UUID.randomUUID().toString();
-        CosmosContainerProperties containerProperties = getCollectionDefinition(testContainerId);
-        CosmosQueryRequestOptions requestOptions = new CosmosQueryRequestOptions();
-        String query = "SELECT * FROM r";
-        CosmosAsyncDatabase database = getSharedCosmosDatabase(client);
-
-        // step1: create container and do query
-        database.createContainer(containerProperties).block();
-        CosmosAsyncContainer container = database.getContainer(containerProperties.getId());
-        InternalObjectNode document1 = getDocumentDefinition();
-        container.createItem(document1).block();
-        container.queryItems(query, requestOptions, InternalObjectNode.class).blockFirst();
-
-        // step2: delete the container created on step 1
-        safeDeleteCollection(container);
-
-        // step3: create a new container with the same id as step 1 and do query
-        // This step is to check the collection cache will get refreshed
-        database.createContainer(containerProperties).block();
-        container = database.getContainer(containerProperties.getId());
-        container.createItem(document1).block();
-        CosmosPagedFlux<InternalObjectNode> queryFlux = container.queryItems(query, requestOptions, InternalObjectNode.class);
-        FeedResponseListValidator<InternalObjectNode> queryValidator = new FeedResponseListValidator.Builder<InternalObjectNode>()
-            .totalSize(1)
-            .numberOfPages(1)
-            .build();
-        validateQuerySuccess(queryFlux.byPage(10), queryValidator);
-
-        safeDeleteCollection(container);
-    }
-
     @BeforeClass(groups = { "simple" }, timeOut = SETUP_TIMEOUT)
     public void before_ContainerQueryTest() throws Exception {
         client = getClientBuilder().buildAsyncClient();
