@@ -14,6 +14,7 @@ import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
+import com.azure.messaging.servicebus.models.NamespaceProperties;
 import com.azure.messaging.servicebus.models.QueueDescription;
 import com.azure.messaging.servicebus.models.QueueRuntimeInfo;
 import com.azure.messaging.servicebus.models.SubscriptionDescription;
@@ -423,6 +424,31 @@ public final class ServiceBusManagementClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<QueueRuntimeInfo> getQueueRuntimeInfoWithResponse(String queueName, Context context) {
         return asyncClient.getQueueWithResponse(queueName, context, QueueRuntimeInfo::new).block();
+    }
+
+    /**
+     * Gets information about the Service Bus namespace.
+     *
+     * @return A Mono that completes with information about the Service Bus namespace.
+     * @throws ClientAuthenticationException if the client's credentials do not have access to the namespace.
+     * @throws HttpResponseException If error occurred processing the request.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public NamespaceProperties getNamespaceProperties() {
+        return asyncClient.getNamespaceProperties().block();
+    }
+
+    /**
+     * Gets information about the Service Bus namespace along with its HTTP response.
+     *
+     * @return A Mono that completes with information about the namespace and the associated HTTP response.
+     * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
+     *     namespace.
+     * @throws HttpResponseException If error occurred processing the request.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<NamespaceProperties> getNamespacePropertiesWithResponse(Context context) {
+        return asyncClient.getNamespacePropertiesWithResponse(context).block();
     }
 
     /**

@@ -6,6 +6,7 @@ package com.azure.messaging.servicebus;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
+import com.azure.core.exception.AzureException;
 import com.azure.core.exception.ClientAuthenticationException;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ResourceExistsException;
@@ -31,6 +32,7 @@ import com.azure.messaging.servicebus.implementation.models.CreateSubscriptionBo
 import com.azure.messaging.servicebus.implementation.models.CreateSubscriptionBodyContent;
 import com.azure.messaging.servicebus.implementation.models.CreateTopicBody;
 import com.azure.messaging.servicebus.implementation.models.CreateTopicBodyContent;
+import com.azure.messaging.servicebus.implementation.models.NamespacePropertiesEntry;
 import com.azure.messaging.servicebus.implementation.models.QueueDescriptionEntry;
 import com.azure.messaging.servicebus.implementation.models.QueueDescriptionFeed;
 import com.azure.messaging.servicebus.implementation.models.ResponseLink;
@@ -40,6 +42,7 @@ import com.azure.messaging.servicebus.implementation.models.SubscriptionDescript
 import com.azure.messaging.servicebus.implementation.models.SubscriptionDescriptionFeed;
 import com.azure.messaging.servicebus.implementation.models.TopicDescriptionEntry;
 import com.azure.messaging.servicebus.implementation.models.TopicDescriptionFeed;
+import com.azure.messaging.servicebus.models.NamespaceProperties;
 import com.azure.messaging.servicebus.models.QueueDescription;
 import com.azure.messaging.servicebus.models.QueueRuntimeInfo;
 import com.azure.messaging.servicebus.models.SubscriptionDescription;
@@ -493,6 +496,31 @@ public final class ServiceBusManagementAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<QueueRuntimeInfo>> getQueueRuntimeInfoWithResponse(String queueName) {
         return withContext(context -> getQueueWithResponse(queueName, context, QueueRuntimeInfo::new));
+    }
+
+    /**
+     * Gets information about the Service Bus namespace.
+     *
+     * @return A Mono that completes with information about the Service Bus namespace.
+     * @throws ClientAuthenticationException if the client's credentials do not have access to the namespace.
+     * @throws HttpResponseException If error occurred processing the request.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<NamespaceProperties> getNamespaceProperties() {
+        return getNamespacePropertiesWithResponse().map(Response::getValue);
+    }
+
+    /**
+     * Gets information about the Service Bus namespace along with its HTTP response.
+     *
+     * @return A Mono that completes with information about the namespace and the associated HTTP response.
+     * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
+     *     namespace.
+     * @throws HttpResponseException If error occurred processing the request.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<NamespaceProperties>> getNamespacePropertiesWithResponse() {
+        return withContext(this::getNamespacePropertiesWithResponse);
     }
 
     /**
@@ -1353,6 +1381,30 @@ public final class ServiceBusManagementAsyncClient {
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
+    }
+
+    /**
+     * Gets the namespace properties with its context.
+     *
+     * @param context Context to pass into request.
+     *
+     * @return A Mono that completes with the {@link NamespaceProperties}.
+     */
+    Mono<Response<NamespaceProperties>> getNamespacePropertiesWithResponse(Context context) {
+        return managementClient.getNamespaces().getWithResponseAsync(context).handle((response, sink) -> {
+            final NamespacePropertiesEntry entry = response.getValue();
+            if (entry == null || entry.getContent() == null) {
+                sink.error(new AzureException(
+                    "There was no content inside namespace response. Entry: " + response));
+                return;
+            }
+
+            final NamespaceProperties namespaceProperties = entry.getContent().getNamespaceProperties();
+            final Response<NamespaceProperties> result = new SimpleResponse<>(response.getRequest(),
+                response.getStatusCode(), response.getHeaders(), namespaceProperties);
+
+            sink.next(result);
+        });
     }
 
     /**
