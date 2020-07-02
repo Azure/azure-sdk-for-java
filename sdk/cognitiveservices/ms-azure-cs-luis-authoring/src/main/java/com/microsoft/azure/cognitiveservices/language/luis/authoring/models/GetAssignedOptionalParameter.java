@@ -8,16 +8,16 @@
 
 package com.microsoft.azure.cognitiveservices.language.luis.authoring.models;
 
-import java.util.List;
 
 /**
- * The UpdatePermissionsOptionalParameter model.
+ * The GetAssignedOptionalParameter model.
  */
-public class UpdatePermissionsOptionalParameter {
+public class GetAssignedOptionalParameter {
     /**
-     * The email address of the users.
+     * The custom arm token header to use; containing the user's ARM token used
+     * to validate azure accounts information.
      */
-    private List<String> emails;
+    private String armToken;
 
     /**
      * Gets or sets the preferred language for the response.
@@ -25,22 +25,22 @@ public class UpdatePermissionsOptionalParameter {
     private String thisclientacceptLanguage;
 
     /**
-     * Get the emails value.
+     * Get the armToken value.
      *
-     * @return the emails value
+     * @return the armToken value
      */
-    public List<String> emails() {
-        return this.emails;
+    public String armToken() {
+        return this.armToken;
     }
 
     /**
-     * Set the emails value.
+     * Set the armToken value.
      *
-     * @param emails the emails value to set
-     * @return the UpdatePermissionsOptionalParameter object itself.
+     * @param armToken the armToken value to set
+     * @return the GetAssignedOptionalParameter object itself.
      */
-    public UpdatePermissionsOptionalParameter withEmails(List<String> emails) {
-        this.emails = emails;
+    public GetAssignedOptionalParameter withArmToken(String armToken) {
+        this.armToken = armToken;
         return this;
     }
 
@@ -57,9 +57,9 @@ public class UpdatePermissionsOptionalParameter {
      * Set the thisclientacceptLanguage value.
      *
      * @param thisclientacceptLanguage the thisclientacceptLanguage value to set
-     * @return the UpdatePermissionsOptionalParameter object itself.
+     * @return the GetAssignedOptionalParameter object itself.
      */
-    public UpdatePermissionsOptionalParameter withThisclientacceptLanguage(String thisclientacceptLanguage) {
+    public GetAssignedOptionalParameter withThisclientacceptLanguage(String thisclientacceptLanguage) {
         this.thisclientacceptLanguage = thisclientacceptLanguage;
         return this;
     }
