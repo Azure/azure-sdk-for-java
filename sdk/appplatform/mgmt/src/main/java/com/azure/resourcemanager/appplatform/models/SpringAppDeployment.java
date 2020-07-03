@@ -68,14 +68,7 @@ public interface SpringAppDeployment
              * @param jar the file of the jar
              * @return the next stage of deployment definition
              */
-            WithPredefinedSettings withJarPath(File jar);
-
-            /**
-             * Specifies the jar package for the deployment.
-             * @param jar the content of the jar
-             * @return the next stage of deployment definition
-             */
-            WithPredefinedSettings withJarFile(byte[] jar);
+            WithPredefinedSettings withJarFile(File jar);
 
             /**
              * Specifies the source code for the deployment.

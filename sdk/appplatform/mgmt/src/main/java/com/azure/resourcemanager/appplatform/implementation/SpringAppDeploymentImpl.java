@@ -23,7 +23,6 @@ import com.azure.storage.file.share.ShareFileClientBuilder;
 import org.apache.commons.compress.archivers.tar.TarArchiveEntry;
 import org.apache.commons.compress.archivers.tar.TarArchiveOutputStream;
 import org.apache.commons.compress.utils.IOUtils;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.io.File;
@@ -31,11 +30,9 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.ByteBuffer;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.OffsetDateTime;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -164,25 +161,6 @@ public class SpringAppDeploymentImpl
             .buildFileAsyncClient();
     }
 
-    private Mono<Void> uploadToStorage(byte[] bytes, ResourceUploadDefinition option) {
-        inner().properties().source().withRelativePath(option.relativePath());
-        ShareFileAsyncClient shareFileAsyncClient = createShareFileAsyncClient(option);
-        return shareFileAsyncClient.create(bytes.length)
-                .flatMap(fileInfo -> {
-                    List<Integer> blockList = new ArrayList<>();
-                    for (int start = 0; start < bytes.length; start += BLOCK_SIZE) {
-                        blockList.add(start);
-                    }
-                    return Flux.fromIterable(blockList)
-                        .flatMap(start -> {
-                            int length = Math.min(bytes.length - start, BLOCK_SIZE);
-                            return shareFileAsyncClient.uploadWithResponse(
-                                Flux.just(ByteBuffer.wrap(bytes, start, length)), length, (long) start);
-                        })
-                        .then(Mono.empty());
-                });
-    }
-
     private Mono<Void> uploadToStorage(File source, ResourceUploadDefinition option) {
         inner().properties().source().withRelativePath(option.relativePath());
         try {
@@ -196,19 +174,7 @@ public class SpringAppDeploymentImpl
     }
 
     @Override
-    public SpringAppDeploymentImpl withJarPath(File jar) {
-        ensureSource();
-        inner().properties().source().withType(UserSourceType.JAR);
-        this.addDependency(
-            context -> parent().getResourceUploadUrlAsync()
-                .flatMap(option -> uploadToStorage(jar, option)
-                    .then(context.voidMono()))
-        );
-        return this;
-    }
-
-    @Override
-    public SpringAppDeploymentImpl withJarFile(byte[] jar) {
+    public SpringAppDeploymentImpl withJarFile(File jar) {
         ensureSource();
         inner().properties().source().withType(UserSourceType.JAR);
         this.addDependency(
