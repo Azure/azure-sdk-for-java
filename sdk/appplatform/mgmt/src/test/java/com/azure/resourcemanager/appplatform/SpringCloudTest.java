@@ -80,6 +80,7 @@ public class SpringCloudTest extends AppPlatformTest {
 
         Assertions.assertNotNull(app.url());
         Assertions.assertEquals(deploymentName, app.activeDeployment());
+        Assertions.assertEquals(1, app.deployments().list().stream().count());
 
         Assertions.assertTrue(requestSuccess(app.url()));
 
