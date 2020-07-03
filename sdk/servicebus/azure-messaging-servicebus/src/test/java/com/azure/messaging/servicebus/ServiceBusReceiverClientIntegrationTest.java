@@ -114,7 +114,6 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
         final int maxMessages = 2;
         final int totalReceive = 2;
         final Duration shortTimeOut = Duration.ofSeconds(7);
-        final Duration longTimeOut = Duration.ofSeconds(10);
 
         final String messageId = UUID.randomUUID().toString();
         List<ServiceBusMessage> messageList = new ArrayList<>();
@@ -122,17 +121,12 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
             messageList.add(getMessage(messageId, isSessionEnabled));
         }
 
-        Mono.just(true)
-            .delayElement(longTimeOut)
-            .map(aBoolean -> {
-                sendMessages(messageList);
-                return aBoolean;
-            })
-            .subscribe();
         // Act & Assert
         IterableStream<ServiceBusReceivedMessageContext> messages = receiver.receiveMessages(maxMessages, shortTimeOut);
         long received = messages.stream().count();
         assertEquals(0, received);
+
+        sendMessages(messageList);
 
         int receivedMessageCount;
         int totalReceivedCount = 0;
