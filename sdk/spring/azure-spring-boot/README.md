@@ -26,7 +26,7 @@ dependency to your project and the Spring Boot auto-configuration will kick-in:
 
 Note that there is no need to add a `version` as those are managed already by the project.
 
-Alternatively you may want to use the [starters](../azure-spring-boot-starters)
+Alternatively you may want to use the [starters](https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-boot-starter)
 
 [//]: # ({x-version-update-start;com.microsoft.azure:azure-keyvault-secrets-spring-boot-starter;current})
 ```xml
