@@ -281,6 +281,21 @@
         <test.on.azure>false</test.on.azure>
         <test.on.emulator>true</test.on.emulator>
       </properties>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-failsafe-plugin</artifactId>
+            <version>2.22.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-failsafe-plugin;external_dependency} -->
+            <configuration>
+              <excludes>
+                <!--Excluding PageablePersonRepositoryIT test class, as it creates large documents which are not suitable for emulator-->
+                <exclude>**/PageablePersonRepositoryIT.java</exclude>
+              </excludes>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
     </profile>
   </profiles>
 
