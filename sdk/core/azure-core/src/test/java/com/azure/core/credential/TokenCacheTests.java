@@ -87,7 +87,7 @@ public class TokenCacheTests {
         AtomicLong maxMillis = new AtomicLong(0);
 
         Flux.interval(Duration.ofSeconds(2))
-            .take(20) // 38 seconds after first token, making sure of a refresh
+            .take(25) // 48 seconds after first token, making sure of a refresh
             .flatMap(i -> {
                 OffsetDateTime start = OffsetDateTime.now();
                 return cache.getToken()
@@ -262,7 +262,7 @@ public class TokenCacheTests {
         }
     }
 
-    private static class TestTokenRefreshOptions extends TokenRefreshOptions {
+    private static final class TestTokenRefreshOptions extends TokenRefreshOptions {
         private final Duration offset;
 
         private TestTokenRefreshOptions(Duration offset) {
