@@ -220,8 +220,8 @@ public class SearchJavaDocCodeSnippets {
         searchDocument2.put("hotelId", "2");
         searchDocument2.put("hotelName", "test2");
         IndexDocumentsBatch<SearchDocument> indexDocumentsBatch = new IndexDocumentsBatch<>();
-        indexDocumentsBatch.addUploadActions(searchDocument1);
-        indexDocumentsBatch.addDeleteActions(searchDocument2);
+        indexDocumentsBatch.addUploadActions(Collections.singletonList(searchDocument1));
+        indexDocumentsBatch.addDeleteActions(Collections.singletonList(searchDocument2));
         IndexDocumentsResult result = searchClient.indexDocuments(indexDocumentsBatch);
         for (IndexingResult indexingResult : result.getResults()) {
             System.out.printf("Does document with key %s finish successfully? %b%n", indexingResult.getKey(),
@@ -242,8 +242,8 @@ public class SearchJavaDocCodeSnippets {
         searchDocument2.put("hotelId", "2");
         searchDocument2.put("hotelName", "test2");
         IndexDocumentsBatch<SearchDocument> indexDocumentsBatch = new IndexDocumentsBatch<>();
-        indexDocumentsBatch.addUploadActions(searchDocument1);
-        indexDocumentsBatch.addDeleteActions(searchDocument2);
+        indexDocumentsBatch.addUploadActions(Collections.singletonList(searchDocument1));
+        indexDocumentsBatch.addDeleteActions(Collections.singletonList(searchDocument2));
         Response<IndexDocumentsResult> resultResponse = searchClient.indexDocumentsWithResponse(indexDocumentsBatch,
             null, new Context(key1, value1));
         System.out.println("The status code of the response is " + resultResponse.getStatusCode());
@@ -561,8 +561,8 @@ public class SearchJavaDocCodeSnippets {
         searchDocument2.put("hotelId", "2");
         searchDocument2.put("hotelName", "test2");
         IndexDocumentsBatch<SearchDocument> indexDocumentsBatch = new IndexDocumentsBatch<>();
-        indexDocumentsBatch.addUploadActions(searchDocument1);
-        indexDocumentsBatch.addDeleteActions(searchDocument2);
+        indexDocumentsBatch.addUploadActions(Collections.singletonList(searchDocument1));
+        indexDocumentsBatch.addDeleteActions(Collections.singletonList(searchDocument2));
         searchAsyncClient.indexDocuments(indexDocumentsBatch)
             .subscribe(result -> {
                 for (IndexingResult indexingResult : result.getResults()) {
@@ -585,8 +585,8 @@ public class SearchJavaDocCodeSnippets {
         searchDocument2.put("hotelId", "2");
         searchDocument2.put("hotelName", "test2");
         IndexDocumentsBatch<SearchDocument> indexDocumentsBatch = new IndexDocumentsBatch<>();
-        indexDocumentsBatch.addUploadActions(searchDocument1);
-        indexDocumentsBatch.addDeleteActions(searchDocument2);
+        indexDocumentsBatch.addUploadActions(Collections.singletonList(searchDocument1));
+        indexDocumentsBatch.addDeleteActions(Collections.singletonList(searchDocument2));
         searchAsyncClient.indexDocumentsWithResponse(indexDocumentsBatch, null)
             .subscribe(resultResponse -> {
                 System.out.println("The status code of the response is " + resultResponse.getStatusCode());
