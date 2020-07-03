@@ -205,7 +205,7 @@ public class SpringAppImpl
         ensureProperty();
         inner().properties().withActiveDeploymentName(name);
         springAppDeploymentToCreate = deployments().define(name)
-                .withJarPath(jarFile)
+                .withJarFile(jarFile)
                 .withCustomSetting();
         return this;
     }
