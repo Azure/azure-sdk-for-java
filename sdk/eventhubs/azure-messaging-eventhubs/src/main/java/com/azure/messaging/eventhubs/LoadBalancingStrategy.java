@@ -20,7 +20,7 @@ public enum LoadBalancingStrategy {
     BALANCED,
 
     /**
-     * The event processor will attempt to claim it's fair share of partition ownership greedily. This enables event
+     * The event processor will attempt to claim its fair share of partition ownership greedily. This enables event
      * processing of all partitions to start/resume quickly when there is an imbalance detected by the processor.
      * This may result in ownership of partitions frequently changing when multiple instances are starting up
      * but will eventually converge to a stable state.
