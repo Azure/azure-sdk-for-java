@@ -15,6 +15,8 @@ import com.azure.resourcemanager.storage.models.ManagementPolicyFilter;
 import com.azure.resourcemanager.storage.models.ManagementPolicyRule;
 import com.azure.resourcemanager.storage.models.ManagementPolicySnapShot;
 import com.azure.resourcemanager.storage.models.PolicyRule;
+import com.azure.resourcemanager.storage.models.RuleType;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -31,6 +33,7 @@ class PolicyRuleImpl implements PolicyRule, PolicyRule.Definition, PolicyRule.Up
         this.inner.definition().withActions(new ManagementPolicyAction());
         this.managementPolicyImpl = managementPolicyImpl;
         this.inner.withName(name);
+        this.inner.withType(RuleType.LIFECYCLE);
     }
 
     PolicyRuleImpl(String name) {
@@ -39,6 +42,7 @@ class PolicyRuleImpl implements PolicyRule, PolicyRule.Definition, PolicyRule.Up
         this.inner.definition().withFilters(new ManagementPolicyFilter());
         this.inner.definition().withActions(new ManagementPolicyAction());
         this.inner.withName(name);
+        this.inner.withType(RuleType.LIFECYCLE);
     }
 
     PolicyRuleImpl(ManagementPolicyRule managementPolicyRule, ManagementPolicyImpl managementPolicyImpl) {
