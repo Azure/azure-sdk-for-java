@@ -211,11 +211,11 @@ public class SpringAppImpl
     }
 
     @Override
-    public SpringAppImpl deploySource(String name, File sourceCode, String targetModule) {
+    public SpringAppImpl deploySource(String name, File sourceCodeFolder, String targetModule) {
         ensureProperty();
         inner().properties().withActiveDeploymentName(name);
         springAppDeploymentToCreate = deployments().define(name)
-                .withSourceCodeFolder(sourceCode)
+                .withSourceCodeFolder(sourceCodeFolder)
                 .withTargetModule(targetModule)
                 .withCustomSetting();
         return this;

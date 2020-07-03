@@ -122,11 +122,11 @@ public interface SpringApp
             /**
              * Deploys the source code for the spring app with default scale.
              * @param name the name of the deployment
-             * @param sourceCode the source code folder
+             * @param sourceCodeFolder the source code folder
              * @param targetModule the target module of the source code
              * @return the next stage of spring app definition
              */
-            WithCreate deploySource(String name, File sourceCode, String targetModule);
+            WithCreate deploySource(String name, File sourceCodeFolder, String targetModule);
         }
 
         /**
@@ -237,11 +237,11 @@ public interface SpringApp
             /**
              * Deploys the source code for the spring app with default scale.
              * @param name the name of the deployment
-             * @param sourceCode the source code folder
+             * @param sourceCodeFolder the source code folder
              * @param targetModule the target module of the source code
              * @return the next stage of spring app update
              */
-            Update deploySource(String name, File sourceCode, String targetModule);
+            Update deploySource(String name, File sourceCodeFolder, String targetModule);
 
             /**
              * Specifies active deployment for the spring app.
