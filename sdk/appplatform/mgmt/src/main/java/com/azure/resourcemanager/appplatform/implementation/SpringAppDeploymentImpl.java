@@ -272,7 +272,7 @@ public class SpringAppDeploymentImpl
     }
 
     @Override
-    public SpringAppDeploymentImpl withCurrentActiveSetting() {
+    public SpringAppDeploymentImpl withSettingsFromActiveDeployment() {
         this.addDependency(
             context -> client.getByNameAsync(parent().activeDeployment())
                 .map(deployment -> {

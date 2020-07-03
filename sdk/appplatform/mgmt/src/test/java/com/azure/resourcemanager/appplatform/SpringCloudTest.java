@@ -94,7 +94,7 @@ public class SpringCloudTest extends AppPlatformTest {
         deployment = app.deployments().define(deploymentName1)
             .withSourceCodeFolder(new File(this.getClass().getResource("/piggymetrics").getFile()))
             .withTargetModule("gateway")
-            .withCurrentActiveSetting()
+            .withSettingsFromActiveDeployment()
             .activate()
             .create();
         app.refresh();

@@ -119,10 +119,10 @@ public interface SpringAppDeployment
         /** The stage of a deployment definition allowing to specify predefined settings. */
         interface WithPredefinedSettings {
             /**
-             * Specifies the current settings of the app active deployment.
+             * Specifies the settings from the app active deployment.
              * @return the next stage of deployment definition
              */
-            WithCreate withCurrentActiveSetting();
+            WithCreate withSettingsFromActiveDeployment();
 
             /**
              * Specifies the settings from another deployment.
