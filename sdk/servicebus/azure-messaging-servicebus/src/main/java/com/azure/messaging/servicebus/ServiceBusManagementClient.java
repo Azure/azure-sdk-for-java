@@ -423,7 +423,7 @@ public final class ServiceBusManagementClient {
     public Response<Boolean> getQueueExistsWithResponse(String queueName, Context context) {
         final Mono<Response<QueueDescription>> queueWithResponse =
             asyncClient.getQueueWithResponse(queueName, context != null ? context : Context.NONE, Function.identity());
-        return asyncClient.entityExistsWithResponse(queueWithResponse).block();
+        return asyncClient.getEntityExistsWithResponse(queueWithResponse).block();
     }
 
     /**
@@ -575,7 +575,7 @@ public final class ServiceBusManagementClient {
         final Mono<Response<SubscriptionDescription>> subscriptionWithResponse =
             asyncClient.getSubscriptionWithResponse(topicName, subscriptionName,
                 context != null ? context : Context.NONE, Function.identity());
-        return asyncClient.entityExistsWithResponse(subscriptionWithResponse).block();
+        return asyncClient.getEntityExistsWithResponse(subscriptionWithResponse).block();
     }
 
     /**
@@ -696,7 +696,7 @@ public final class ServiceBusManagementClient {
     public Response<Boolean> getTopicExistsWithResponse(String topicName, Context context) {
         final Mono<Response<TopicDescription>> topicWithResponse =
             asyncClient.getTopicWithResponse(topicName, context != null ? context : Context.NONE, Function.identity());
-        return asyncClient.entityExistsWithResponse(topicWithResponse).block();
+        return asyncClient.getEntityExistsWithResponse(topicWithResponse).block();
     }
 
     /**

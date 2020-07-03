@@ -236,7 +236,7 @@ class ServiceBusManagementSerializerTest {
     void deserializeNamespace() throws IOException {
         // Arrange
         final String contents = getContents("NamespaceEntry.xml");
-        final String name ="ShivangiServiceBus";
+        final String name = "ShivangiServiceBus";
         final String alias = "MyServiceBusFallback";
         final OffsetDateTime createdTime = OffsetDateTime.parse("2020-04-09T08:38:55.807Z");
         final OffsetDateTime modifiedTime = OffsetDateTime.parse("2020-06-12T06:34:38.383Z");

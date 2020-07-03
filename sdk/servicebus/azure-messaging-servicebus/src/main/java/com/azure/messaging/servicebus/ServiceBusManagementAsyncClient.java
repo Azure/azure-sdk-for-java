@@ -491,7 +491,7 @@ public final class ServiceBusManagementAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Boolean>> getQueueExistsWithResponse(String queueName) {
-        return entityExistsWithResponse(getQueueWithResponse(queueName));
+        return getEntityExistsWithResponse(getQueueWithResponse(queueName));
     }
 
     /**
@@ -632,7 +632,7 @@ public final class ServiceBusManagementAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Boolean>> getSubscriptionExistsWithResponse(String topicName, String subscriptionName) {
-        return entityExistsWithResponse(getSubscriptionWithResponse(topicName, subscriptionName));
+        return getEntityExistsWithResponse(getSubscriptionWithResponse(topicName, subscriptionName));
     }
 
     /**
@@ -748,7 +748,7 @@ public final class ServiceBusManagementAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Boolean>> getTopicExistsWithResponse(String topicName) {
-        return entityExistsWithResponse(getTopicWithResponse(topicName));
+        return getEntityExistsWithResponse(getTopicWithResponse(topicName));
     }
 
     /**
@@ -1276,7 +1276,7 @@ public final class ServiceBusManagementAsyncClient {
      *
      * @return True if the entity exists, false otherwise.
      */
-    <T> Mono<Response<Boolean>> entityExistsWithResponse(Mono<Response<T>> getEntityOperation) {
+    <T> Mono<Response<Boolean>> getEntityExistsWithResponse(Mono<Response<T>> getEntityOperation) {
         return getEntityOperation.map(response -> {
             // When an entity does not exist, it does not have any description object in it.
             final boolean exists = response.getValue() != null;
