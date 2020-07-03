@@ -1173,7 +1173,8 @@ class BlockBlobAPITest extends APISpec {
         dataSize           | bufferSize        | numBuffs || blockCount
         35 * Constants.MB  | 5 * Constants.MB  | 2        || 7 // Requires cycling through the same buffers multiple times.
         35 * Constants.MB  | 5 * Constants.MB  | 5        || 7 // Most buffers may only be used once.
-        100 * Constants.MB | 10 * Constants.MB | 2        || 10 // Larger data set.
+        /* @Ignore("Java 8 Live Test stuck") */
+//        100 * Constants.MB | 10 * Constants.MB | 2        || 10 // Larger data set.
         100 * Constants.MB | 10 * Constants.MB | 5        || 10 // Larger number of Buffs.
         10 * Constants.MB  | 1 * Constants.MB  | 10       || 10 // Exactly enough buffer space to hold all the data.
         50 * Constants.MB  | 10 * Constants.MB | 2        || 5 // Larger data.
@@ -1302,7 +1303,8 @@ class BlockBlobAPITest extends APISpec {
         [4 * Constants.MB + 1, 10]           | 2
         [4 * Constants.MB]                   | 0
         [10, 100, 1000, 10000]               | 0
-        [4 * Constants.MB, 4 * Constants.MB] | 2
+        /* @Ignore("Java 8 Live Test stuck") */
+//        [4 * Constants.MB, 4 * Constants.MB] | 2
     }
 
     @Unroll
