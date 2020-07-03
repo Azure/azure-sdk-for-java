@@ -14,15 +14,12 @@ import com.azure.search.documents.indexes.SearchIndexClientBuilder;
 import com.azure.search.documents.indexes.SearchIndexerAsyncClient;
 import com.azure.search.documents.indexes.SearchIndexerClient;
 import com.azure.search.documents.indexes.SearchIndexerClientBuilder;
-import com.azure.search.documents.indexes.models.ComplexFieldBuilder;
 import com.azure.search.documents.indexes.models.IndexDocumentsBatch;
 import com.azure.search.documents.indexes.models.LexicalAnalyzerName;
 import com.azure.search.documents.indexes.models.SearchField;
 import com.azure.search.documents.indexes.models.SearchFieldDataType;
 import com.azure.search.documents.indexes.models.SearchIndex;
 import com.azure.search.documents.indexes.models.SearchSuggester;
-import com.azure.search.documents.indexes.models.SearchableFieldBuilder;
-import com.azure.search.documents.indexes.models.SimpleFieldBuilder;
 import com.azure.search.documents.models.SearchOptions;
 import com.azure.search.documents.models.SearchResult;
 import com.azure.search.documents.util.SearchPagedIterable;
@@ -221,50 +218,45 @@ public class ReadmeSamples {
     }
 
     public void createIndex() {
-        // Prepare SearchFields with SimpleFieldBuilder, SearchableFieldBuilder and ComplexFieldBuilder.
         List<SearchField> searchFieldList = new ArrayList<>();
-        searchFieldList.add(new SimpleFieldBuilder("hotelId", SearchFieldDataType.STRING, false)
+        searchFieldList.add(new SearchField("hotelId", SearchFieldDataType.STRING)
             .setKey(true)
             .setFilterable(true)
-            .setSortable(true)
-            .build());
-        searchFieldList.add(new SearchableFieldBuilder("hotelName", false)
+            .setSortable(true));
+
+        searchFieldList.add(new SearchField("hotelName", SearchFieldDataType.STRING)
             .setFilterable(true)
-            .setSortable(true)
-            .build());
-        searchFieldList.add(new SearchableFieldBuilder("description", false)
-            .setAnalyzerName(LexicalAnalyzerName.EU_LUCENE)
-            .build());
-        searchFieldList.add(new SearchableFieldBuilder("tags", true)
+            .setSortable(true));
+
+        searchFieldList.add(new SearchField("description", SearchFieldDataType.STRING)
+            .setAnalyzerName(LexicalAnalyzerName.EU_LUCENE));
+
+        searchFieldList.add(new SearchField("tags", SearchFieldDataType.collection(SearchFieldDataType.STRING))
             .setKey(true)
             .setFilterable(true)
-            .setFacetable(true)
-            .build());
-        searchFieldList.add(new ComplexFieldBuilder("address", false)
+            .setFacetable(true));
+
+        searchFieldList.add(new SearchField("address", SearchFieldDataType.COMPLEX)
             .setFields(Arrays.asList(
-                new SearchableFieldBuilder("streetAddress", false).build(),
-                new SearchableFieldBuilder("city", false)
+                new SearchField("streetAddress", SearchFieldDataType.STRING),
+                new SearchField("city", SearchFieldDataType.STRING)
+                    .setFilterable(true)
+                    .setFacetable(true)
+                    .setSortable(true),
+                new SearchField("stateProvince", SearchFieldDataType.STRING)
+                    .setFilterable(true)
+                    .setFacetable(true)
+                    .setSortable(true),
+                new SearchField("country", SearchFieldDataType.STRING)
+                    .setFilterable(true)
+                    .setFacetable(true)
+                    .setSortable(true),
+                new SearchField("postalCode", SearchFieldDataType.STRING)
                     .setFilterable(true)
                     .setFacetable(true)
                     .setSortable(true)
-                    .build(),
-                new SearchableFieldBuilder("stateProvince", false)
-                    .setFilterable(true)
-                    .setFacetable(true)
-                    .setSortable(true)
-                    .build(),
-                new SearchableFieldBuilder("country", false)
-                    .setFilterable(true)
-                    .setFacetable(true)
-                    .setSortable(true)
-                    .build(),
-                new SearchableFieldBuilder("postalCode", false)
-                    .setFilterable(true)
-                    .setFacetable(true)
-                    .setSortable(true)
-                    .build()
-            ))
-            .build());
+            )));
+
         // Prepare suggester.
         SearchSuggester suggester = new SearchSuggester("sg", Collections.singletonList("hotelName"));
         // Prepare SearchIndex with index name and search fields.

@@ -102,7 +102,7 @@ The SDK provides three clients.
 To create a `SearchIndexClient/SearchIndexAsyncClient`, you will need the values of the Azure Cognitive Search service 
 URL endpoint and admin key.
 
-<!-- embedme ./src/samples/java/com/azure/search/documents/ReadmeSamples.java#L69-L72 -->
+<!-- embedme ./src/samples/java/com/azure/search/documents/ReadmeSamples.java#L66-L69 -->
 ```Java
 SearchIndexClient searchIndexClient = new SearchIndexClientBuilder()
     .endpoint(endpoint)
@@ -112,7 +112,7 @@ SearchIndexClient searchIndexClient = new SearchIndexClientBuilder()
 
 or
 
-<!-- embedme ./src/samples/java/com/azure/search/documents/ReadmeSamples.java#L76-L79 -->
+<!-- embedme ./src/samples/java/com/azure/search/documents/ReadmeSamples.java#L73-L76 -->
 ```Java
 SearchIndexAsyncClient searchIndexAsyncClient = new SearchIndexClientBuilder()
     .endpoint(endpoint)
@@ -125,7 +125,7 @@ SearchIndexAsyncClient searchIndexAsyncClient = new SearchIndexClientBuilder()
 To create a `SearchIndexerClient/SearchIndexerAsyncClient`, you will need the values of the Azure Cognitive Search service 
 URL endpoint and admin key.
 
-<!-- embedme ./src/samples/java/com/azure/search/documents/ReadmeSamples.java#L83-L86 -->
+<!-- embedme ./src/samples/java/com/azure/search/documents/ReadmeSamples.java#L80-L83 -->
 ```Java
 SearchIndexerClient searchIndexerClient = new SearchIndexerClientBuilder()
     .endpoint(endpoint)
@@ -135,7 +135,7 @@ SearchIndexerClient searchIndexerClient = new SearchIndexerClientBuilder()
 
 or
 
-<!-- embedme ./src/samples/java/com/azure/search/documents/ReadmeSamples.java#L90-L93 -->
+<!-- embedme ./src/samples/java/com/azure/search/documents/ReadmeSamples.java#L87-L90 -->
 ```Java
 SearchIndexerAsyncClient searchIndexerAsyncClient = new SearchIndexerClientBuilder()
     .endpoint(endpoint)
@@ -148,7 +148,7 @@ SearchIndexerAsyncClient searchIndexerAsyncClient = new SearchIndexerClientBuild
 Once you have the values of the Azure Cognitive Search service URL endpoint and 
 admin key, you can create the `SearchClient/SearchAsyncClient` with an existing index name:
 
-<!-- embedme ./src/samples/java/com/azure/search/documents/ReadmeSamples.java#L53-L57 -->
+<!-- embedme ./src/samples/java/com/azure/search/documents/ReadmeSamples.java#L50-L54 -->
 ```Java
 SearchClient searchClient = new SearchClientBuilder()
     .endpoint(endpoint)
@@ -159,7 +159,7 @@ SearchClient searchClient = new SearchClientBuilder()
 
 or
 
-<!-- embedme ./src/samples/java/com/azure/search/documents/ReadmeSamples.java#L61-L65 -->
+<!-- embedme ./src/samples/java/com/azure/search/documents/ReadmeSamples.java#L58-L62 -->
 ```Java
 SearchAsyncClient searchAsyncClient = new SearchClientBuilder()
     .endpoint(endpoint)
@@ -174,7 +174,7 @@ To get running immediately, we're going to connect to a well-known sandbox
 Search service provided by Microsoft. This means you do not need an Azure
 subscription or Azure Cognitive Search service to try out this query.
 
-<!-- embedme ./src/samples/java/com/azure/search/documents/ReadmeSamples.java#L122-L147 -->
+<!-- embedme ./src/samples/java/com/azure/search/documents/ReadmeSamples.java#L119-L144 -->
 ```Java
 // We'll connect to the Azure Cognitive Search public sandbox and send a
 // query to its "nycjobs" index built from a public dataset of available jobs
@@ -258,7 +258,7 @@ Let's explore them with a search for a "luxury" hotel.
 provide your own.  Here we perform the search, enumerate over the results, and
 extract data using `SearchDocument`'s dictionary indexer.
 
-<!-- embedme ./src/samples/java/com/azure/search/documents/ReadmeSamples.java#L151-L157 -->
+<!-- embedme ./src/samples/java/com/azure/search/documents/ReadmeSamples.java#L148-L154 -->
 ```Java
 SearchPagedIterable searchResultsIterable = searchClient.search("luxury");
 for (SearchResult searchResult: searchResultsIterable) {
@@ -271,7 +271,7 @@ for (SearchResult searchResult: searchResultsIterable) {
 
 #### Use Java model class for search results
 Define a `Hotel` class.
-<!-- embedme ./src/samples/java/com/azure/search/documents/ReadmeSamples.java#L160-L181 -->
+<!-- embedme ./src/samples/java/com/azure/search/documents/ReadmeSamples.java#L157-L178 -->
 ```Java
 public class Hotel {
     private String id;
@@ -298,7 +298,7 @@ public class Hotel {
 ```
 
 And use them in place of `SearchDocument` when querying.
-<!-- embedme ./src/samples/java/com/azure/search/documents/ReadmeSamples.java#L184-L190 -->
+<!-- embedme ./src/samples/java/com/azure/search/documents/ReadmeSamples.java#L181-L187 -->
 ```Java
 SearchPagedIterable searchResultsIterable = searchClient.search("luxury");
 for (SearchResult searchResult: searchResultsIterable) {
@@ -317,7 +317,7 @@ is recommended.
 The `SearchOptions` provide powerful control over the behavior of our queries.
 Let's search for the top 5 luxury hotels with a good rating.
 
-<!-- embedme ./src/samples/java/com/azure/search/documents/ReadmeSamples.java#L194-L200 -->
+<!-- embedme ./src/samples/java/com/azure/search/documents/ReadmeSamples.java#L191-L197 -->
 ```Java 
 int stars = 4;
 SearchOptions options = new SearchOptions()
@@ -334,58 +334,54 @@ You can use the [`SearchIndexClient`](#Create-a-SearchIndexClient) to create a s
 defined using convenient `SimpleField`, `SearchableField`, or `ComplexField`
 classes. Indexes can also define suggesters, lexical analyzers, and more.
 
-<!-- embedme ./src/samples/java/com/azure/search/documents/ReadmeSamples.java#L226-L276 -->
+<!-- embedme ./src/samples/java/com/azure/search/documents/ReadmeSamples.java#L221-L267 -->
 ```Java
-        searchFieldList.add(new SimpleFieldBuilder("hotelId", SearchFieldDataType.STRING, false)
-            .setKey(true)
-            .setFilterable(true)
-            .setSortable(true)
-            .build());
-        searchFieldList.add(new SearchableFieldBuilder("hotelName", false)
-            .setFilterable(true)
-            .setSortable(true)
-            .build());
-        searchFieldList.add(new SearchableFieldBuilder("description", false)
-            .setAnalyzerName(LexicalAnalyzerName.EU_LUCENE)
-            .build());
-        searchFieldList.add(new SearchableFieldBuilder("tags", true)
-            .setKey(true)
-            .setFilterable(true)
-            .setFacetable(true)
-            .build());
-        searchFieldList.add(new ComplexFieldBuilder("address", false)
-            .setFields(Arrays.asList(
-                new SearchableFieldBuilder("streetAddress", false).build(),
-                new SearchableFieldBuilder("city", false)
-                    .setFilterable(true)
-                    .setFacetable(true)
-                    .setSortable(true)
-                    .build(),
-                new SearchableFieldBuilder("stateProvince", false)
-                    .setFilterable(true)
-                    .setFacetable(true)
-                    .setSortable(true)
-                    .build(),
-                new SearchableFieldBuilder("country", false)
-                    .setFilterable(true)
-                    .setFacetable(true)
-                    .setSortable(true)
-                    .build(),
-                new SearchableFieldBuilder("postalCode", false)
-                    .setFilterable(true)
-                    .setFacetable(true)
-                    .setSortable(true)
-                    .build()
-            ))
-            .build());
-        // Prepare suggester.
-        SearchSuggester suggester = new SearchSuggester("sg", Collections.singletonList("hotelName"));
-        // Prepare SearchIndex with index name and search fields.
-        SearchIndex index = new SearchIndex("hotels").setFields(searchFieldList).setSuggesters(
-            Collections.singletonList(suggester));
-        // Create an index
-        searchIndexClient.createIndex(index);
-    }
+    List<SearchField> searchFieldList = new ArrayList<>();
+    searchFieldList.add(new SearchField("hotelId", SearchFieldDataType.STRING)
+        .setKey(true)
+        .setFilterable(true)
+        .setSortable(true));
+
+    searchFieldList.add(new SearchField("hotelName", SearchFieldDataType.STRING)
+        .setFilterable(true)
+        .setSortable(true));
+
+    searchFieldList.add(new SearchField("description", SearchFieldDataType.STRING)
+        .setAnalyzerName(LexicalAnalyzerName.EU_LUCENE));
+
+    searchFieldList.add(new SearchField("tags", SearchFieldDataType.collection(SearchFieldDataType.STRING))
+        .setKey(true)
+        .setFilterable(true)
+        .setFacetable(true));
+
+    searchFieldList.add(new SearchField("address", SearchFieldDataType.COMPLEX)
+        .setFields(Arrays.asList(
+            new SearchField("streetAddress", SearchFieldDataType.STRING),
+            new SearchField("city", SearchFieldDataType.STRING)
+                .setFilterable(true)
+                .setFacetable(true)
+                .setSortable(true),
+            new SearchField("stateProvince", SearchFieldDataType.STRING)
+                .setFilterable(true)
+                .setFacetable(true)
+                .setSortable(true),
+            new SearchField("country", SearchFieldDataType.STRING)
+                .setFilterable(true)
+                .setFacetable(true)
+                .setSortable(true),
+            new SearchField("postalCode", SearchFieldDataType.STRING)
+                .setFilterable(true)
+                .setFacetable(true)
+                .setSortable(true)
+        )));
+
+    // Prepare suggester.
+    SearchSuggester suggester = new SearchSuggester("sg", Collections.singletonList("hotelName"));
+    // Prepare SearchIndex with index name and search fields.
+    SearchIndex index = new SearchIndex("hotels").setFields(searchFieldList).setSuggesters(
+        Collections.singletonList(suggester));
+    // Create an index
+    searchIndexClient.createIndex(index);
 }
 ```
 
@@ -396,7 +392,7 @@ you can retrieve a specific document from your index if you already know the
 key. You could get the key from a query, for example, and want to show more
 information about it or navigate your customer to that document.
 
-<!-- embedme ./src/samples/java/com/azure/search/documents/ReadmeSamples.java#L212-L213 -->
+<!-- embedme ./src/samples/java/com/azure/search/documents/ReadmeSamples.java#L209-L210 -->
 ```Java 
 Hotel hotel = searchClient.getDocument("1", Hotel.class);
 System.out.printf("This is hotelId %s, and this is hotel name %s.%n", hotel.getId(), hotel.getName());
@@ -409,7 +405,7 @@ an index in a single batched request.  There are
 [a few special rules for merging](https://docs.microsoft.com/rest/api/searchservice/addupdate-or-delete-documents#document-actions)
 to be aware of.
 
-<!-- embedme ./src/samples/java/com/azure/search/documents/ReadmeSamples.java#L217-L220 -->
+<!-- embedme ./src/samples/java/com/azure/search/documents/ReadmeSamples.java#L214-L217 -->
 ```Java
 IndexDocumentsBatch<Hotel> batch = new IndexDocumentsBatch<Hotel>();
 batch.addUploadActions(new Hotel().setId("783").setName("Upload Inn"));
@@ -428,7 +424,7 @@ with an `IndexDocumentsResult` for inspection.
 All of the examples so far have been using synchronous APIs, but we provide full
 support for async APIs as well. You'll need to use [SearchAsyncClient](#Create-a-SearchClient)
 
-<!-- embedme ./src/samples/java/com/azure/search/documents/ReadmeSamples.java#L204-L209 -->
+<!-- embedme ./src/samples/java/com/azure/search/documents/ReadmeSamples.java#L201-L206 -->
 ```Java
     searchAsyncClient.search("luxury")
         .subscribe(result -> {
@@ -452,7 +448,7 @@ Any Search API operation that fails will throw a
 [`HttpResponseException`][HttpResponseException] with
 helpful [`Status codes`][status_codes].  Many of these errors are recoverable.
 
-<!-- embedme ./src/samples/java/com/azure/search/documents/ReadmeSamples.java#L110-L118 -->
+<!-- embedme ./src/samples/java/com/azure/search/documents/ReadmeSamples.java#L107-L115 -->
 ```Java
 try {
     Iterable<SearchResult> results = searchClient.search("hotel");
