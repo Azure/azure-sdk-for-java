@@ -393,7 +393,7 @@ Guidelines](./../../../CONTRIBUTING.md) for more information.
 [api_documentation]: https://aka.ms/java-docs
 [dead-letter-queue]: https://docs.microsoft.com/azure/service-bus-messaging/service-bus-dead-letter-queues
 [deadletterqueue_docs]: https://docs.microsoft.com/azure/service-bus-messaging/service-bus-dead-letter-queues
-[java_development_kit]: https://docs.microsoft.com/en-us/java/azure/jdk/?view=azure-java-stable
+[java_development_kit]: https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable
 [java_8_sdk_javadocs]: https://docs.oracle.com/javase/8/docs/api/java/util/logging/package-summary.html
 [logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-with-Azure-SDK
 [maven]: https://maven.apache.org/
