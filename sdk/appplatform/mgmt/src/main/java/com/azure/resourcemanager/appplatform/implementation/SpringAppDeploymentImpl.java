@@ -132,6 +132,7 @@ public class SpringAppDeploymentImpl
 
     private File compressSource(File sourceFolder) throws IOException {
         File compressFile = File.createTempFile("java_package", "tar.gz");
+        compressFile.deleteOnExit();
         try (TarArchiveOutputStream tarArchiveOutputStream = new TarArchiveOutputStream(
                  new GZIPOutputStream(new FileOutputStream(compressFile)))) {
             tarArchiveOutputStream.setLongFileMode(TarArchiveOutputStream.LONGFILE_GNU);
