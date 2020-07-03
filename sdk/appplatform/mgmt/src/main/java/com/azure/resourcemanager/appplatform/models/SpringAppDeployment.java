@@ -205,7 +205,6 @@ public interface SpringAppDeployment
              */
             WithCreate withVersionName(String versionName);
 
-
             /**
              * Activates of the deployment after definition.
              * @return the next stage of deployment definition
@@ -232,6 +231,8 @@ public interface SpringAppDeployment
     /** The template for an update operation, containing all the settings that can be modified. */
     interface Update
         extends Appliable<SpringAppDeployment>,
+            UpdateStages.WithSource,
+            UpdateStages.WithModule,
             UpdateStages.WithSettings { }
 
     /** Grouping of deployment update stages. */
@@ -287,6 +288,67 @@ public interface SpringAppDeployment
              * @return the next stage of deployment update
              */
             Update withoutEnvironment(String key);
+            
+            /**
+             * Specifies the version of the deployment.
+             * @param versionName the version name of the deployment
+             * @return the next stage of deployment update
+             */
+            Update withVersionName(String versionName);
+
+            /**
+             * Activates of the deployment after update.
+             * @return the next stage of deployment update
+             */
+            Update activate();
+        }
+
+        /** The stage of a deployment update allowing to specify the source code or package. */
+        interface WithSource {
+            /**
+             * Specifies the jar package for the deployment.
+             * @param jar the file of the jar
+             * @return the next stage of deployment update
+             */
+            Update withJarFile(File jar);
+
+            /**
+             * Specifies the source code for the deployment.
+             * @param sourceCodeFolder the folder of the source code
+             * @return the next stage of deployment update
+             */
+            WithModule withSourceCodeFolder(File sourceCodeFolder);
+
+            /**
+             * Specifies the source code for the deployment.
+             * @param sourceCodeTarGz a tar.gz file of the source code
+             * @return the next stage of deployment update
+             */
+            WithModule withSourceCodeTarGzFile(File sourceCodeTarGz);
+
+            /**
+             * Specifies the a existing source in the cloud storage.
+             * @param type the source type in previous upload
+             * @param relativePath the relative path gotten from getResourceUploadUrl
+             * @return the next stage of deployment update
+             */
+            Update withExistingSource(UserSourceType type, String relativePath);
+        }
+
+        /** The stage of a deployment update allowing to specify the module of the source code. */
+        interface WithModule {
+            /**
+             * Specifies the module of the source code.
+             * @param moduleName the target module of the multi-module source code
+             * @return the next stage of deployment update
+             */
+            Update withTargetModule(String moduleName);
+
+            /**
+             * Specifies the only module of the source code.
+             * @return the next stage of deployment update
+             */
+            Update withSingleModule();
         }
     }
 }
