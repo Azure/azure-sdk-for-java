@@ -312,7 +312,7 @@ class ServiceBusManagementAsyncClientIntegrationTest extends TestBase {
         // Arrange
         final ServiceBusManagementAsyncClient client = createClient(httpClient);
         final String queueName = interceptorManager.isPlaybackMode()
-            ? "queue-5"
+            ? "queue-2"
             : getEntityName(TestUtils.getQueueBaseName(), 2);
 
         // Act & Assert
@@ -437,7 +437,7 @@ class ServiceBusManagementAsyncClientIntegrationTest extends TestBase {
         final ServiceBusManagementAsyncClient client = createClient(httpClient);
         final String topicName = interceptorManager.isPlaybackMode() ? "topic-1" : getEntityName(getTopicBaseName(), 1);
         final String subscriptionName = interceptorManager.isPlaybackMode()
-            ? "subscription-1"
+            ? "subscription-session"
             : getSessionSubscriptionBaseName();
         final OffsetDateTime nowUtc = OffsetDateTime.now(Clock.systemUTC());
 
@@ -558,7 +558,7 @@ class ServiceBusManagementAsyncClientIntegrationTest extends TestBase {
                 assertEquals(topicName, runtimeInfo.getName());
 
                 if (interceptorManager.isPlaybackMode()) {
-                    assertEquals(22, runtimeInfo.getSubscriptionCount());
+                    assertEquals(3, runtimeInfo.getSubscriptionCount());
                 } else {
                     assertTrue(runtimeInfo.getSubscriptionCount() > 1);
                 }
