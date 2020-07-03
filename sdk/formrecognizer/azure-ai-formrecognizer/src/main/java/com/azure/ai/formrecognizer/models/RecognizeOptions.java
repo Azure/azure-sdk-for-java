@@ -3,10 +3,7 @@
 package com.azure.ai.formrecognizer.models;
 
 import com.azure.core.annotation.Fluent;
-import reactor.core.publisher.Flux;
 
-import java.io.InputStream;
-import java.nio.ByteBuffer;
 import java.time.Duration;
 
 /**
@@ -14,60 +11,18 @@ import java.time.Duration;
  */
 @Fluent
 public class RecognizeOptions {
-    private final InputStream form;
-    private final Flux<ByteBuffer> formData;
-    private final long length;
-    private final String formUrl;
-    private FormContentType formContentType;
+    private FormContentType contentType;
     private boolean includeFieldElements;
     private Duration pollInterval = DEFAULT_POLL_INTERVAL;
     private static final Duration DEFAULT_POLL_INTERVAL = Duration.ofSeconds(5);
 
     /**
-     * Create a {@code RecognizeOptions option} object.
-     *
-     * @param form The {@code InputStream data} of the form to recognize form information from.
-     * @param length the exact length of the provided form data.
-     */
-    public RecognizeOptions(final InputStream form, final long length) {
-        this.form = form;
-        this.length = length;
-        this.formData = null;
-        this.formUrl = null;
-    }
-
-    /**
-     * Create a {@code RecognizeOptions option} object.
-     *
-     * @param formData The {@code ByteBuffer data} of the form to recognize form information from.
-     * @param length the exact length of the provided form data.
-     */
-    public RecognizeOptions(final Flux<ByteBuffer> formData, final long length) {
-        this.formData = formData;
-        this.length = length;
-        this.form = null;
-        this.formUrl = null;
-    }
-
-    /**
-     * Create a {@code RecognizeOptions option} object.
-     *
-     * @param formUrl The source URL to the input form.
-     */
-    public RecognizeOptions(final String formUrl) {
-        this.formUrl = formUrl;
-        this.form = null;
-        this.formData = null;
-        this.length = 0;
-    }
-
-    /**
      * Get the type of the form. Supported Media types including .pdf, .jpg, .png or .tiff type file stream.
      *
-     * @return the {@code formContentType} value.
+     * @return the {@code contentType} value.
      */
-    public FormContentType getFormContentType() {
-        return formContentType;
+    public FormContentType getContentType() {
+        return contentType;
     }
 
     /**
@@ -90,50 +45,14 @@ public class RecognizeOptions {
     }
 
     /**
-     * Get the {@code InputStream data} of the form to recognize form information from.
-     *
-     * @return the {@code form} value.
-     */
-    public InputStream getForm() {
-        return form;
-    }
-
-    /**
-     * Get the the source URL to the input form.
-     *
-     * @return the {@code formUrl} value.
-     */
-    public String getFormUrl() {
-        return formUrl;
-    }
-
-    /**
-     * Get the exact length of the provided form data. Size of the file must be less than 50 MB.
-     *
-     * @return the {@code length} value.
-     */
-    public long getLength() {
-        return length;
-    }
-
-    /**
-     * Get the {@code ByteBuffer data} of the form to recognize form information from.
-     *
-     * @return the {@code formData} value.
-     */
-    public Flux<ByteBuffer> getFormData() {
-        return formData;
-    }
-
-    /**
      * Set the type of the form. Supported Media types including .pdf, .jpg, .png or .tiff type file stream.
      *
-     * @param formContentType the provided form content type.
+     * @param contentType the provided form content type.
      *
      * @return the updated {@code RecognizeOptions} value.
      */
-    public RecognizeOptions setFormContentType(final FormContentType formContentType) {
-        this.formContentType = formContentType;
+    public RecognizeOptions setContentType(final FormContentType contentType) {
+        this.contentType = contentType;
         return this;
     }
 

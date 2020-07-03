@@ -10,13 +10,15 @@ package com.microsoft.azure.cognitiveservices.language.luis.authoring.models;
 
 
 /**
- * The DeletePermissionsOptionalParameter model.
+ * The ImportV2AppAppsOptionalParameter model.
  */
-public class DeletePermissionsOptionalParameter {
+public class ImportV2AppAppsOptionalParameter {
     /**
-     * The email address of the user.
+     * The application name to create. If not specified, the application name
+     * will be read from the imported object. If the application name already
+     * exists, an error is returned.
      */
-    private String email;
+    private String appName;
 
     /**
      * Gets or sets the preferred language for the response.
@@ -24,22 +26,22 @@ public class DeletePermissionsOptionalParameter {
     private String thisclientacceptLanguage;
 
     /**
-     * Get the email value.
+     * Get the appName value.
      *
-     * @return the email value
+     * @return the appName value
      */
-    public String email() {
-        return this.email;
+    public String appName() {
+        return this.appName;
     }
 
     /**
-     * Set the email value.
+     * Set the appName value.
      *
-     * @param email the email value to set
-     * @return the DeletePermissionsOptionalParameter object itself.
+     * @param appName the appName value to set
+     * @return the ImportV2AppAppsOptionalParameter object itself.
      */
-    public DeletePermissionsOptionalParameter withEmail(String email) {
-        this.email = email;
+    public ImportV2AppAppsOptionalParameter withAppName(String appName) {
+        this.appName = appName;
         return this;
     }
 
@@ -56,9 +58,9 @@ public class DeletePermissionsOptionalParameter {
      * Set the thisclientacceptLanguage value.
      *
      * @param thisclientacceptLanguage the thisclientacceptLanguage value to set
-     * @return the DeletePermissionsOptionalParameter object itself.
+     * @return the ImportV2AppAppsOptionalParameter object itself.
      */
-    public DeletePermissionsOptionalParameter withThisclientacceptLanguage(String thisclientacceptLanguage) {
+    public ImportV2AppAppsOptionalParameter withThisclientacceptLanguage(String thisclientacceptLanguage) {
         this.thisclientacceptLanguage = thisclientacceptLanguage;
         return this;
     }

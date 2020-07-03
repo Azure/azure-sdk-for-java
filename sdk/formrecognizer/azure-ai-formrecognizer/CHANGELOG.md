@@ -9,7 +9,7 @@
 - Throw `HttpResponseException` instead of `ErrorResponseException` to model service side exceptions
 `CustomFormModel` and `CustomFormModelInfo`.
 - Changed `CopyAuthorization.getExpiresOn()` to return a `OffsetDateTime` instead of a `long` value
-- Added `RecognizeOptions` and `RecognizeCustomFormOptions` to pass configurable options when using recognize APIs on FormRecognizerClient.
+- Added `RecognizeOptions` to pass configurable options when using recognize APIs on FormRecognizerClient.
 - Changed `submodels` property on `CustomFormModel` to return a `List` instead of `IterableStream`
 - Renamed `fieldMap` property to `fields` on `CustomFormSubmodel` model
 - Renamed `elements` property on model `FormTableCell` to `textContent`

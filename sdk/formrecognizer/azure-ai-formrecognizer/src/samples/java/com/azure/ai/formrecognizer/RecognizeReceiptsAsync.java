@@ -4,7 +4,6 @@
 package com.azure.ai.formrecognizer;
 
 import com.azure.ai.formrecognizer.models.FieldValueType;
-import com.azure.ai.formrecognizer.models.FormContentType;
 import com.azure.ai.formrecognizer.models.FormField;
 import com.azure.ai.formrecognizer.models.OperationResult;
 import com.azure.ai.formrecognizer.models.RecognizedReceipt;
@@ -48,7 +47,7 @@ public class RecognizeReceiptsAsync {
 
         PollerFlux<OperationResult, List<RecognizedReceipt>> analyzeReceiptPoller =
             client.beginRecognizeReceipts(toFluxByteBuffer(targetStream),
-                sourceFile.length(), FormContentType.IMAGE_JPEG);
+                sourceFile.length());
 
         Mono<List<RecognizedReceipt>> receiptPageResultsMono = analyzeReceiptPoller
             .last()

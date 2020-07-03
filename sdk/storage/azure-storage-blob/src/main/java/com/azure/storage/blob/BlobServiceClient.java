@@ -151,7 +151,7 @@ public final class BlobServiceClient {
      * @return A response containing status code and HTTP headers
      */
     public Response<Void> deleteBlobContainerWithResponse(String containerName, Context context) {
-        return blobServiceAsyncClient.deleteBlobContainerWithResponse(containerName).block();
+        return blobServiceAsyncClient.deleteBlobContainerWithResponse(containerName, context).block();
     }
 
     /**

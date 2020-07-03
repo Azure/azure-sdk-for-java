@@ -12,12 +12,16 @@ import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.Clon
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.ListVersionsOptionalParameter;
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.UpdateVersionsOptionalParameter;
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.ImportMethodVersionsOptionalParameter;
+import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.ImportV2AppVersionsOptionalParameter;
+import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.ImportLuFormatVersionsOptionalParameter;
 import retrofit2.Retrofit;
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.Versions;
 import com.google.common.base.Joiner;
 import com.google.common.reflect.TypeToken;
+import com.microsoft.azure.CloudException;
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.ErrorResponseException;
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.LuisApp;
+import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.LuisAppV2;
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.OperationStatus;
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.TaskUpdateObject;
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.VersionInfo;
@@ -25,6 +29,7 @@ import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.Validator;
+import java.io.InputStream;
 import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
@@ -38,6 +43,7 @@ import retrofit2.http.Path;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Query;
+import retrofit2.http.Streaming;
 import retrofit2.Response;
 import rx.functions.Func1;
 import rx.Observable;
@@ -99,6 +105,19 @@ public class VersionsImpl implements Versions {
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Versions deleteUnlabelledUtterance" })
         @HTTP(path = "apps/{appId}/versions/{versionId}/suggest", method = "DELETE", hasBody = true)
         Observable<Response<ResponseBody>> deleteUnlabelledUtterance(@Path("appId") UUID appId, @Path("versionId") String versionId, @Body String utterance, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Versions importV2App" })
+        @POST("apps/{appId}/versions/import")
+        Observable<Response<ResponseBody>> importV2App(@Path("appId") UUID appId, @Query("versionId") String versionId, @Body LuisAppV2 luisAppV2, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: text/plain", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Versions importLuFormat" })
+        @POST("apps/{appId}/versions/import")
+        Observable<Response<ResponseBody>> importLuFormat(@Path("appId") UUID appId, @Query("versionId") String versionId, @Body String luisAppLu, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Versions exportLuFormat" })
+        @GET("apps/{appId}/versions/{versionId}/export")
+        @Streaming
+        Observable<Response<ResponseBody>> exportLuFormat(@Path("appId") UUID appId, @Path("versionId") String versionId, @Query("format") String format, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
     }
 
@@ -1115,6 +1134,431 @@ public class VersionsImpl implements Versions {
         return this.client.restClient().responseBuilderFactory().<OperationStatus, ErrorResponseException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<OperationStatus>() { }.getType())
                 .registerError(ErrorResponseException.class)
+                .build(response);
+    }
+
+
+    /**
+     * Imports a new version into a LUIS application.
+     *
+     * @param appId The application ID.
+     * @param luisAppV2 A LUIS application structure.
+     * @param importV2AppOptionalParameter the object representing the optional parameters to be set before calling this API
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws ErrorResponseException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the String object if successful.
+     */
+    public String importV2App(UUID appId, LuisAppV2 luisAppV2, ImportV2AppVersionsOptionalParameter importV2AppOptionalParameter) {
+        return importV2AppWithServiceResponseAsync(appId, luisAppV2, importV2AppOptionalParameter).toBlocking().single().body();
+    }
+
+    /**
+     * Imports a new version into a LUIS application.
+     *
+     * @param appId The application ID.
+     * @param luisAppV2 A LUIS application structure.
+     * @param importV2AppOptionalParameter the object representing the optional parameters to be set before calling this API
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<String> importV2AppAsync(UUID appId, LuisAppV2 luisAppV2, ImportV2AppVersionsOptionalParameter importV2AppOptionalParameter, final ServiceCallback<String> serviceCallback) {
+        return ServiceFuture.fromResponse(importV2AppWithServiceResponseAsync(appId, luisAppV2, importV2AppOptionalParameter), serviceCallback);
+    }
+
+    /**
+     * Imports a new version into a LUIS application.
+     *
+     * @param appId The application ID.
+     * @param luisAppV2 A LUIS application structure.
+     * @param importV2AppOptionalParameter the object representing the optional parameters to be set before calling this API
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the String object
+     */
+    public Observable<String> importV2AppAsync(UUID appId, LuisAppV2 luisAppV2, ImportV2AppVersionsOptionalParameter importV2AppOptionalParameter) {
+        return importV2AppWithServiceResponseAsync(appId, luisAppV2, importV2AppOptionalParameter).map(new Func1<ServiceResponse<String>, String>() {
+            @Override
+            public String call(ServiceResponse<String> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Imports a new version into a LUIS application.
+     *
+     * @param appId The application ID.
+     * @param luisAppV2 A LUIS application structure.
+     * @param importV2AppOptionalParameter the object representing the optional parameters to be set before calling this API
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the String object
+     */
+    public Observable<ServiceResponse<String>> importV2AppWithServiceResponseAsync(UUID appId, LuisAppV2 luisAppV2, ImportV2AppVersionsOptionalParameter importV2AppOptionalParameter) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
+        if (appId == null) {
+            throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
+        }
+        if (luisAppV2 == null) {
+            throw new IllegalArgumentException("Parameter luisAppV2 is required and cannot be null.");
+        }
+        Validator.validate(luisAppV2);
+        final String versionId = importV2AppOptionalParameter != null ? importV2AppOptionalParameter.versionId() : null;
+
+        return importV2AppWithServiceResponseAsync(appId, luisAppV2, versionId);
+    }
+
+    /**
+     * Imports a new version into a LUIS application.
+     *
+     * @param appId The application ID.
+     * @param luisAppV2 A LUIS application structure.
+     * @param versionId The new versionId to import. If not specified, the versionId will be read from the imported object.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the String object
+     */
+    public Observable<ServiceResponse<String>> importV2AppWithServiceResponseAsync(UUID appId, LuisAppV2 luisAppV2, String versionId) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
+        if (appId == null) {
+            throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
+        }
+        if (luisAppV2 == null) {
+            throw new IllegalArgumentException("Parameter luisAppV2 is required and cannot be null.");
+        }
+        Validator.validate(luisAppV2);
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
+        return service.importV2App(appId, versionId, luisAppV2, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<String>>>() {
+                @Override
+                public Observable<ServiceResponse<String>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<String> clientResponse = importV2AppDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<String> importV2AppDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<String, ErrorResponseException>newInstance(this.client.serializerAdapter())
+                .register(201, new TypeToken<String>() { }.getType())
+                .registerError(ErrorResponseException.class)
+                .build(response);
+    }
+
+    @Override
+    public VersionsImportV2AppParameters importV2App() {
+        return new VersionsImportV2AppParameters(this);
+    }
+
+    /**
+     * Internal class implementing VersionsImportV2AppDefinition.
+     */
+    class VersionsImportV2AppParameters implements VersionsImportV2AppDefinition {
+        private VersionsImpl parent;
+        private UUID appId;
+        private LuisAppV2 luisAppV2;
+        private String versionId;
+
+        /**
+         * Constructor.
+         * @param parent the parent object.
+         */
+        VersionsImportV2AppParameters(VersionsImpl parent) {
+            this.parent = parent;
+        }
+
+        @Override
+        public VersionsImportV2AppParameters withAppId(UUID appId) {
+            this.appId = appId;
+            return this;
+        }
+
+        @Override
+        public VersionsImportV2AppParameters withLuisAppV2(LuisAppV2 luisAppV2) {
+            this.luisAppV2 = luisAppV2;
+            return this;
+        }
+
+        @Override
+        public VersionsImportV2AppParameters withVersionId(String versionId) {
+            this.versionId = versionId;
+            return this;
+        }
+
+        @Override
+        public String execute() {
+        return importV2AppWithServiceResponseAsync(appId, luisAppV2, versionId).toBlocking().single().body();
+    }
+
+        @Override
+        public Observable<String> executeAsync() {
+            return importV2AppWithServiceResponseAsync(appId, luisAppV2, versionId).map(new Func1<ServiceResponse<String>, String>() {
+                @Override
+                public String call(ServiceResponse<String> response) {
+                    return response.body();
+                }
+            });
+        }
+    }
+
+
+    /**
+     * Imports a new version into a LUIS application.
+     *
+     * @param appId The application ID.
+     * @param luisAppLu An LU representing the LUIS application structure.
+     * @param importLuFormatOptionalParameter the object representing the optional parameters to be set before calling this API
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws ErrorResponseException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the String object if successful.
+     */
+    public String importLuFormat(UUID appId, String luisAppLu, ImportLuFormatVersionsOptionalParameter importLuFormatOptionalParameter) {
+        return importLuFormatWithServiceResponseAsync(appId, luisAppLu, importLuFormatOptionalParameter).toBlocking().single().body();
+    }
+
+    /**
+     * Imports a new version into a LUIS application.
+     *
+     * @param appId The application ID.
+     * @param luisAppLu An LU representing the LUIS application structure.
+     * @param importLuFormatOptionalParameter the object representing the optional parameters to be set before calling this API
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<String> importLuFormatAsync(UUID appId, String luisAppLu, ImportLuFormatVersionsOptionalParameter importLuFormatOptionalParameter, final ServiceCallback<String> serviceCallback) {
+        return ServiceFuture.fromResponse(importLuFormatWithServiceResponseAsync(appId, luisAppLu, importLuFormatOptionalParameter), serviceCallback);
+    }
+
+    /**
+     * Imports a new version into a LUIS application.
+     *
+     * @param appId The application ID.
+     * @param luisAppLu An LU representing the LUIS application structure.
+     * @param importLuFormatOptionalParameter the object representing the optional parameters to be set before calling this API
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the String object
+     */
+    public Observable<String> importLuFormatAsync(UUID appId, String luisAppLu, ImportLuFormatVersionsOptionalParameter importLuFormatOptionalParameter) {
+        return importLuFormatWithServiceResponseAsync(appId, luisAppLu, importLuFormatOptionalParameter).map(new Func1<ServiceResponse<String>, String>() {
+            @Override
+            public String call(ServiceResponse<String> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Imports a new version into a LUIS application.
+     *
+     * @param appId The application ID.
+     * @param luisAppLu An LU representing the LUIS application structure.
+     * @param importLuFormatOptionalParameter the object representing the optional parameters to be set before calling this API
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the String object
+     */
+    public Observable<ServiceResponse<String>> importLuFormatWithServiceResponseAsync(UUID appId, String luisAppLu, ImportLuFormatVersionsOptionalParameter importLuFormatOptionalParameter) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
+        if (appId == null) {
+            throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
+        }
+        if (luisAppLu == null) {
+            throw new IllegalArgumentException("Parameter luisAppLu is required and cannot be null.");
+        }
+        final String versionId = importLuFormatOptionalParameter != null ? importLuFormatOptionalParameter.versionId() : null;
+
+        return importLuFormatWithServiceResponseAsync(appId, luisAppLu, versionId);
+    }
+
+    /**
+     * Imports a new version into a LUIS application.
+     *
+     * @param appId The application ID.
+     * @param luisAppLu An LU representing the LUIS application structure.
+     * @param versionId The new versionId to import. If not specified, the versionId will be read from the imported object.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the String object
+     */
+    public Observable<ServiceResponse<String>> importLuFormatWithServiceResponseAsync(UUID appId, String luisAppLu, String versionId) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
+        if (appId == null) {
+            throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
+        }
+        if (luisAppLu == null) {
+            throw new IllegalArgumentException("Parameter luisAppLu is required and cannot be null.");
+        }
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
+        return service.importLuFormat(appId, versionId, luisAppLu, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<String>>>() {
+                @Override
+                public Observable<ServiceResponse<String>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<String> clientResponse = importLuFormatDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<String> importLuFormatDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<String, ErrorResponseException>newInstance(this.client.serializerAdapter())
+                .register(201, new TypeToken<String>() { }.getType())
+                .registerError(ErrorResponseException.class)
+                .build(response);
+    }
+
+    @Override
+    public VersionsImportLuFormatParameters importLuFormat() {
+        return new VersionsImportLuFormatParameters(this);
+    }
+
+    /**
+     * Internal class implementing VersionsImportLuFormatDefinition.
+     */
+    class VersionsImportLuFormatParameters implements VersionsImportLuFormatDefinition {
+        private VersionsImpl parent;
+        private UUID appId;
+        private String luisAppLu;
+        private String versionId;
+
+        /**
+         * Constructor.
+         * @param parent the parent object.
+         */
+        VersionsImportLuFormatParameters(VersionsImpl parent) {
+            this.parent = parent;
+        }
+
+        @Override
+        public VersionsImportLuFormatParameters withAppId(UUID appId) {
+            this.appId = appId;
+            return this;
+        }
+
+        @Override
+        public VersionsImportLuFormatParameters withLuisAppLu(String luisAppLu) {
+            this.luisAppLu = luisAppLu;
+            return this;
+        }
+
+        @Override
+        public VersionsImportLuFormatParameters withVersionId(String versionId) {
+            this.versionId = versionId;
+            return this;
+        }
+
+        @Override
+        public String execute() {
+        return importLuFormatWithServiceResponseAsync(appId, luisAppLu, versionId).toBlocking().single().body();
+    }
+
+        @Override
+        public Observable<String> executeAsync() {
+            return importLuFormatWithServiceResponseAsync(appId, luisAppLu, versionId).map(new Func1<ServiceResponse<String>, String>() {
+                @Override
+                public String call(ServiceResponse<String> response) {
+                    return response.body();
+                }
+            });
+        }
+    }
+
+    /**
+     * Exports a LUIS application to text format.
+     *
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the InputStream object if successful.
+     */
+    public InputStream exportLuFormat(UUID appId, String versionId) {
+        return exportLuFormatWithServiceResponseAsync(appId, versionId).toBlocking().single().body();
+    }
+
+    /**
+     * Exports a LUIS application to text format.
+     *
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<InputStream> exportLuFormatAsync(UUID appId, String versionId, final ServiceCallback<InputStream> serviceCallback) {
+        return ServiceFuture.fromResponse(exportLuFormatWithServiceResponseAsync(appId, versionId), serviceCallback);
+    }
+
+    /**
+     * Exports a LUIS application to text format.
+     *
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the InputStream object
+     */
+    public Observable<InputStream> exportLuFormatAsync(UUID appId, String versionId) {
+        return exportLuFormatWithServiceResponseAsync(appId, versionId).map(new Func1<ServiceResponse<InputStream>, InputStream>() {
+            @Override
+            public InputStream call(ServiceResponse<InputStream> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Exports a LUIS application to text format.
+     *
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the InputStream object
+     */
+    public Observable<ServiceResponse<InputStream>> exportLuFormatWithServiceResponseAsync(UUID appId, String versionId) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
+        if (appId == null) {
+            throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
+        }
+        if (versionId == null) {
+            throw new IllegalArgumentException("Parameter versionId is required and cannot be null.");
+        }
+        final String format = "lu";
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
+        return service.exportLuFormat(appId, versionId, format, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<InputStream>>>() {
+                @Override
+                public Observable<ServiceResponse<InputStream>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<InputStream> clientResponse = exportLuFormatDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<InputStream> exportLuFormatDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<InputStream, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<InputStream>() { }.getType())
+                .registerError(CloudException.class)
                 .build(response);
     }
 
