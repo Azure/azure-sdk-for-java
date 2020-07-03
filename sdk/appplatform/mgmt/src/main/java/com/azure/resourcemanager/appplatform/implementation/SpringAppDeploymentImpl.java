@@ -43,7 +43,7 @@ public class SpringAppDeploymentImpl
     implements SpringAppDeployment, SpringAppDeployment.Definition, SpringAppDeployment.Update {
     private static final int BLOCK_SIZE = 4 * 1024 * 1024; // 4MB
     private final SpringAppDeploymentsImpl client;
-    private SpringAppDeployment originalDeployment;
+    private DeploymentSettings originalDeploymentSettings;
 
     SpringAppDeploymentImpl(String name, SpringAppImpl parent,
                             DeploymentResourceInner innerObject, SpringAppDeploymentsImpl client) {
@@ -242,7 +242,7 @@ public class SpringAppDeploymentImpl
         this.addDependency(
             context -> client.getByNameAsync(parent().activeDeployment())
                 .map(deployment -> {
-                    originalDeployment = deployment;
+                    originalDeploymentSettings = deployment.settings();
                     return (Indexable) deployment;
                 })
         );
@@ -251,7 +251,7 @@ public class SpringAppDeploymentImpl
 
     @Override
     public SpringAppDeploymentImpl withSettingsFromDeployment(SpringAppDeployment deployment) {
-        originalDeployment = deployment;
+        originalDeploymentSettings = deployment.settings();
         return this;
     }
 
@@ -260,7 +260,7 @@ public class SpringAppDeploymentImpl
         this.addDependency(
             context -> client.getByNameAsync(deploymentName)
                 .map(deployment -> {
-                    originalDeployment = deployment;
+                    originalDeploymentSettings = deployment.settings();
                     return (Indexable) deployment;
                 })
         );
@@ -348,16 +348,16 @@ public class SpringAppDeploymentImpl
 
     @Override
     public Mono<SpringAppDeployment> createResourceAsync() {
-        if (originalDeployment != null) {
+        if (originalDeploymentSettings != null) {
             ensureDeploySettings();
-            inner().properties().withDeploymentSettings(originalDeployment.settings());
+            inner().properties().withDeploymentSettings(originalDeploymentSettings);
         }
         return manager().inner().getDeployments().createOrUpdateAsync(
             parent().parent().resourceGroupName(), parent().parent().name(),
             parent().name(), name(), inner().properties()
         )
             .map(inner -> {
-                originalDeployment = null;
+                originalDeploymentSettings = null;
                 setInner(inner);
                 return this;
             });
@@ -365,16 +365,16 @@ public class SpringAppDeploymentImpl
 
     @Override
     public Mono<SpringAppDeployment> updateResourceAsync() {
-        if (originalDeployment != null) {
+        if (originalDeploymentSettings != null) {
             ensureDeploySettings();
-            inner().properties().withDeploymentSettings(originalDeployment.settings());
+            inner().properties().withDeploymentSettings(originalDeploymentSettings);
         }
         return manager().inner().getDeployments().updateAsync(
             parent().parent().resourceGroupName(), parent().parent().name(),
             parent().name(), name(), inner().properties()
         )
             .map(inner -> {
-                originalDeployment = null;
+                originalDeploymentSettings = null;
                 setInner(inner);
                 return this;
             });
