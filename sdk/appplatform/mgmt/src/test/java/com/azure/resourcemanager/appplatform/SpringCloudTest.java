@@ -78,7 +78,7 @@ public class SpringCloudTest extends AppPlatformTest {
 
         Assertions.assertTrue(requestSuccess(app.url()));
 
-        SpringAppDeployment deployment = app.deploy().getByName(app.activeDeployment());
+        SpringAppDeployment deployment = app.deployments().getByName(app.activeDeployment());
         deployment.update()
             .withCpu(2)
             .withMemory(4)
@@ -91,7 +91,7 @@ public class SpringCloudTest extends AppPlatformTest {
         Assertions.assertEquals(RuntimeVersion.JAVA_11, deployment.settings().runtimeVersion());
         Assertions.assertEquals(2, deployment.instances().size());
 
-        deployment = app.deploy().define(deploymentName1)
+        deployment = app.deployments().define(deploymentName1)
             .withSourceCodeFolder(new File(this.getClass().getResource("/piggymetrics").getFile()))
             .withTargetModule("gateway")
             .withCurrentActiveSetting()

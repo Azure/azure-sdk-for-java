@@ -48,7 +48,7 @@ public interface SpringApp
     String activeDeployment();
 
     /** @return the entry point of the spring app deployment */
-    SpringAppDeployments deploy();
+    SpringAppDeployments deployments();
 
     /** @return the blob url to upload deployment */
     Mono<ResourceUploadDefinition> getResourceUploadUrlAsync();

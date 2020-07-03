@@ -93,7 +93,7 @@ public class SpringAppImpl
     }
 
     @Override
-    public SpringAppDeployments deploy() {
+    public SpringAppDeployments deployments() {
         return new SpringAppDeploymentsImpl(this);
     }
 
@@ -194,7 +194,7 @@ public class SpringAppImpl
     @Override
     public SpringAppImpl withoutDeployment(String name) {
         this.addPostRunDependent(
-            context -> deploy().deleteByNameAsync(name)
+            context -> deployments().deleteByNameAsync(name)
                 .then(context.voidMono())
         );
         return this;
@@ -204,7 +204,7 @@ public class SpringAppImpl
     public SpringAppImpl deployJar(String name, File jarFile) {
         ensureProperty();
         inner().properties().withActiveDeploymentName(name);
-        springAppDeploymentToCreate = deploy().define(name)
+        springAppDeploymentToCreate = deployments().define(name)
                 .withJarPath(jarFile)
                 .withCustomSetting();
         return this;
@@ -214,7 +214,7 @@ public class SpringAppImpl
     public SpringAppImpl deploySource(String name, File sourceCode, String targetModule) {
         ensureProperty();
         inner().properties().withActiveDeploymentName(name);
-        springAppDeploymentToCreate = deploy().define(name)
+        springAppDeploymentToCreate = deployments().define(name)
                 .withSourceCodeFolder(sourceCode)
                 .withTargetModule(targetModule)
                 .withCustomSetting();
@@ -226,7 +226,7 @@ public class SpringAppImpl
         if (springAppDeploymentToCreate == null) {
             String defaultDeploymentName = "default";
             withActiveDeployment(defaultDeploymentName);
-            springAppDeploymentToCreate = deploy().define(defaultDeploymentName)
+            springAppDeploymentToCreate = deployments().define(defaultDeploymentName)
                 .withExistingSource(UserSourceType.JAR, String.format("<%s>", defaultDeploymentName))
                 .withCustomSetting();
         }
