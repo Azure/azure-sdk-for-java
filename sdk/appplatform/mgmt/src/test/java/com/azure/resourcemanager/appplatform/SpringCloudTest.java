@@ -16,9 +16,10 @@ import org.junit.jupiter.api.Test;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.net.URLConnection;
 
 public class SpringCloudTest extends AppPlatformTest {
 
@@ -54,9 +55,13 @@ public class SpringCloudTest extends AppPlatformTest {
 
         File jarFile = new File("gateway.jar");
         if (!jarFile.exists()) {
-            URLConnection connection = new URL("https://github.com/weidongxu-microsoft/azure-sdk-for-java-management-tests/raw/master/spring-cloud/gateway.jar").openConnection();
+            HttpURLConnection connection = (HttpURLConnection) new URL("https://github.com/weidongxu-microsoft/azure-sdk-for-java-management-tests/raw/master/spring-cloud/gateway.jar").openConnection();
             connection.connect();
-            IOUtils.copy(connection.getInputStream(), new FileOutputStream(jarFile));
+            try (InputStream inputStream = connection.getInputStream();
+                 OutputStream outputStream = new FileOutputStream(jarFile)) {
+                IOUtils.copy(inputStream, outputStream);
+            }
+            connection.disconnect();
         }
 
         SpringApp app = service.apps().define(appName)
@@ -114,11 +119,17 @@ public class SpringCloudTest extends AppPlatformTest {
     private boolean requestSuccess(String url) throws IOException {
         for (int i = 0; i < 60; ++i) {
             HttpURLConnection connection = (HttpURLConnection) new URL(url).openConnection();
-            connection.connect();
-            if (connection.getResponseCode() == 200) {
-                return true;
+            try {
+                connection.connect();
+                if (connection.getResponseCode() == 200) {
+                    return true;
+                }
+                System.out.printf("Do request to %s with response code %d%n", url, connection.getResponseCode());
+            } finally {
+                connection.getInputStream().close();
+                connection.disconnect();
+                SdkContext.sleep(5000);
             }
-            SdkContext.sleep(5000);
         }
         return false;
     }
