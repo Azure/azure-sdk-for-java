@@ -26,9 +26,9 @@ import org.apache.commons.compress.utils.IOUtils;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.ByteBuffer;
@@ -133,9 +133,10 @@ public class SpringAppDeploymentImpl
         }
     }
 
-    private byte[] compressSource(File sourceFolder) throws IOException {
-        try (ByteArrayOutputStream buffer = new ByteArrayOutputStream();
-             TarArchiveOutputStream tarArchiveOutputStream = new TarArchiveOutputStream(new GZIPOutputStream(buffer))) {
+    private File compressSource(File sourceFolder) throws IOException {
+        File compressFile = File.createTempFile("java_package", "tar.gz");
+        try (TarArchiveOutputStream tarArchiveOutputStream = new TarArchiveOutputStream(
+                 new GZIPOutputStream(new FileOutputStream(compressFile)))) {
             tarArchiveOutputStream.setLongFileMode(TarArchiveOutputStream.LONGFILE_GNU);
 
             for (Path sourceFile : Files.walk(sourceFolder.toPath()).collect(Collectors.toList())) {
@@ -152,9 +153,8 @@ public class SpringAppDeploymentImpl
                     tarArchiveOutputStream.closeArchiveEntry();
                 }
             }
-            tarArchiveOutputStream.close();
-            return buffer.toByteArray();
         }
+        return compressFile;
     }
 
     private Mono<ShareFileAsyncClient> createShareFileAsyncClient(ResourceUploadDefinition option, long maxSize) {
