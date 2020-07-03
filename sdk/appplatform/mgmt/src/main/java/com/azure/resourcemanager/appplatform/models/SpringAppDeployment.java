@@ -79,10 +79,10 @@ public interface SpringAppDeployment
 
             /**
              * Specifies the source code for the deployment.
-             * @param sourceCode the folder of the source code
+             * @param sourceCodeFolder the folder of the source code
              * @return the next stage of deployment definition
              */
-            WithModule withSourceCodeFolder(File sourceCode);
+            WithModule withSourceCodeFolder(File sourceCodeFolder);
 
             /**
              * Specifies the source code for the deployment.

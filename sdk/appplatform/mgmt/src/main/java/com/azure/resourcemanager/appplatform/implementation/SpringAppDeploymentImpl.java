@@ -220,14 +220,14 @@ public class SpringAppDeploymentImpl
     }
 
     @Override
-    public SpringAppDeploymentImpl withSourceCodeFolder(File sourceCode) {
+    public SpringAppDeploymentImpl withSourceCodeFolder(File sourceCodeFolder) {
         ensureSource();
         inner().properties().source().withType(UserSourceType.SOURCE);
         this.addDependency(
             context -> parent().getResourceUploadUrlAsync()
                 .flatMap(option -> {
                     try {
-                        return uploadToStorage(compressSource(sourceCode), option);
+                        return uploadToStorage(compressSource(sourceCodeFolder), option);
                     } catch (Exception e) {
                         return Mono.error(e);
                     }
