@@ -15,37 +15,20 @@ have to be online at the same time.
 [Source code][source_code] | [API reference documentation][api_documentation]
 | [Product documentation][product_docs]| [Samples][sample_examples]
 
-## Table of contents
-
-- [Azure Service Bus client library for Java](#azure-service-bus-client-library-for-java)
-  - [Table of contents](#table-of-contents)
-  - [Getting started](#getting-started)
-    - [Prerequisites](#prerequisites)
-    - [Include the package](#include-the-package)
-    - [Authenticate the client](#authenticate-the-client)
-  - [Key concepts](#key-concepts)
-  - [Examples](#examples)
-    - [Send messages](#send-messages)
-    - [Receive messages](#receive-messages)
-    - [Settle messages](#settle-messages)
-    - [Send and receive from session enabled queues or topics](#send-and-receive-from-session-enabled-queues-or-topics)
-  - [Troubleshooting](#troubleshooting)
-    - [Enable client logging](#enable-client-logging)
-    - [Enable AMQP transport logging](#enable-amqp-transport-logging)
-    - [Common exceptions](#common-exceptions)
-  - [Next steps](#next-steps)
-  - [Contributing](#contributing)
-
 ## Getting started
 
 ### Prerequisites
 
-- Java Development Kit (JDK) with version 8 or above
+- [Java Development Kit (JDK)][java_development_kit] with version 8 or above
 - [Maven][maven]
 - Microsoft Azure subscription
   - You can create a free account at: https://azure.microsoft.com
 - Azure Service Bus instance
   - Step-by-step guide for [creating a Service Bus instance using Azure Portal][service_bus_create]
+
+To quickly create the needed Service Bus resources in Azure and to receive a connection string for them, you can deploy our sample template by clicking:
+
+[![](http://azuredeploy.net/deploybutton.png)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FAzure%2Fazure-sdk-for-net%2Fmaster%2Fsdk%2Fservicebus%2FAzure.Messaging.ServiceBus%2Fassets%2Fsamples-azure-deploy.json)
 
 ### Include the package
 
@@ -143,7 +126,11 @@ on which actual message transmission takes place. The namespace often serves as 
   receives a copy of the message sent to the topic.
 
 ## Examples
-
+ - [Send messages](#send-messages)
+ - [Receive messages](#receive-messages)
+ - [Settle messages](#settle-messages)
+ - [Send and receive from session enabled queues or topics](#send-and-receive-from-session-enabled-queues-or-topics) 
+ - [Create a dead-letter queue Receiver](#create-a-dead-letter-queue-receiver)
 ### Send messages
 
 You'll need to create an asynchronous [`ServiceBusSenderAsyncClient`][ServiceBusSenderAsyncClient] or a synchronous
@@ -321,6 +308,22 @@ ServiceBusReceiverAsyncClient receiver = new ServiceBusClientBuilder()
     .buildAsyncClient();
 ```
 
+### Create a dead-letter queue Receiver
+
+Azure Service Bus queues and topic subscriptions provide a secondary sub-queue, called a dead-letter queue (DLQ).
+The dead-letter queue doesn't need to be explicitly created and can't be deleted or otherwise managed independent 
+of the main entity. Learn more about dead-letter queue [here][dead-letter-queue].
+
+<!-- embedme ./src/samples/java/com/azure/messaging/servicebus/ReadmeSamples.java#L200-L205 -->
+```java
+ServiceBusReceiverClient receiver = new ServiceBusClientBuilder()
+    .connectionString("<< CONNECTION STRING FOR THE SERVICE BUS NAMESPACE >>")
+    .deadLetterReceiver()
+    .topicName("<< TOPIC NAME >>")
+    .subscriptionName("<< SUBSCRIPTION NAME >>")
+    .buildClient();
+```
+
 ## Troubleshooting
 
 ### Enable client logging
@@ -359,7 +362,9 @@ java.util.logging.SimpleFormatter.format=[%1$tF %1$tr] %3$s %4$s: %5$s %n
 
 This is a general exception for AMQP related failures, which includes the AMQP errors as `ErrorCondition` and the
 context that caused this exception as `AmqpErrorContext`. `isTransient` is a boolean indicating if the exception is a
-transient error or not. If true, then the request can be retried; otherwise not.
+transient error or not. If a transient AMQP exception occurs, the client library retries the operation as many times 
+as the [AmqpRetryOptons][AmqpRetryOptons] allows. Afterwords, the operation fails and an exception is propagated back 
+to the user.
 
 [`AmqpErrorCondition`][AmqpErrorCondition] contains error conditions common to the AMQP protocol and used by Azure
 services. When an AMQP exception is thrown, examining the error condition field can inform developers as to why the AMQP
@@ -373,7 +378,7 @@ The recommended way to solve the specific exception the AMQP exception represent
 
 Beyond those discussed, the Azure Service Bus client library offers support for many additional scenarios to help take
 advantage of the full feature set of the Azure Service Bus service. In order to help explore some of these scenarios,
-check out the [samples README][samples_readme].
+the following set of sample is available [here][samples_readme].
 
 ## Contributing
 
@@ -384,8 +389,11 @@ Guidelines](./../../../CONTRIBUTING.md) for more information.
 [aad_authorization]: https://docs.microsoft.com/azure/service-bus-messaging/authenticate-application
 [amqp_transport_error]: https://docs.oasis-open.org/amqp/core/v1.0/os/amqp-core-transport-v1.0-os.html#type-amqp-error
 [AmqpErrorCondition]: ../../core/azure-core-amqp/src/main/java/com/azure/core/amqp/exception/AmqpErrorCondition.java
+[AmqpRetryOptons]: ../../core/azure-core-amqp/src/main/java/com/azure/core/amqp/AmqpRetryOptions.java
 [api_documentation]: https://aka.ms/java-docs
+[dead-letter-queue]: https://docs.microsoft.com/azure/service-bus-messaging/service-bus-dead-letter-queues
 [deadletterqueue_docs]: https://docs.microsoft.com/azure/service-bus-messaging/service-bus-dead-letter-queues
+[java_development_kit]: https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable
 [java_8_sdk_javadocs]: https://docs.oracle.com/javase/8/docs/api/java/util/logging/package-summary.html
 [logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-with-Azure-SDK
 [maven]: https://maven.apache.org/
@@ -398,7 +406,7 @@ Guidelines](./../../../CONTRIBUTING.md) for more information.
 [ReceiveMode]: ./src/main/java/com/azure/messaging/servicebus/models/ReceiveMode.java
 [RetryOptions]: ../../core/azure-core-amqp/src/main/java/com/azure/core/amqp/AmqpRetryOptions.java
 [sample_examples]: ./src/samples/java/com/azure/messaging/servicebus/
-[samples_readme]: ./src/samples/README.md
+[samples_readme]: ./src/samples/java/com/azure/messaging/servicebus
 [service_bus_connection_string]: https://docs.microsoft.com/azure/service-bus-messaging/service-bus-create-namespace-portal#get-the-connection-string
 [servicebus_create]: https://docs.microsoft.com/azure/service-bus-messaging/service-bus-create-namespace-portal
 [servicebus_messaging_exceptions]: https://docs.microsoft.com/azure/service-bus-messaging/service-bus-messaging-exceptions
@@ -407,6 +415,7 @@ Guidelines](./../../../CONTRIBUTING.md) for more information.
 [ServiceBusReceiverClient]: ./src/main/java/com/azure/messaging/servicebus/ServiceBusReceiverClient.java
 [ServiceBusSenderAsyncClient]: ./src/main/java/com/azure/messaging/servicebus/ServiceBusSenderAsyncClient.java
 [ServiceBusSenderClient]: ./src/main/java/com/azure/messaging/servicebus/ServiceBusSenderClient.java
+[service_bus_create]: https://docs.microsoft.com/azure/service-bus-messaging/service-bus-create-namespace-portal
 [source_code]: ./
 [subscription_concept]: https://docs.microsoft.com/azure/service-bus-messaging/service-bus-queues-topics-subscriptions#topics-and-subscriptions
 [topic_concept]: https://docs.microsoft.com/azure/service-bus-messaging/service-bus-messaging-overview#topics
