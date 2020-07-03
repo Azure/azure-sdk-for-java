@@ -154,7 +154,7 @@ class ServiceBusManagementAsyncClientIntegrationTest extends TestBase {
             : getEntityName(getTopicBaseName(), 1);
         final String subscriptionName = interceptorManager.isPlaybackMode()
             ? "subscription-session"
-            : getEntityName(TestUtils.getSessionSubscriptionBaseName(), 1);
+            : getSessionSubscriptionBaseName();
         final ServiceBusManagementAsyncClient client = createClient(httpClient);
 
         // Act & Assert
