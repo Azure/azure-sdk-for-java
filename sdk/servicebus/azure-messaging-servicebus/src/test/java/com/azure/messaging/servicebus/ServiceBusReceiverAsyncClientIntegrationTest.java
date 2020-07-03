@@ -668,7 +668,6 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
                         String.format("Updated lock is not after the initial Lock. updated: [%s]. initial:[%s]",
                             lockedUntil, initialLock));
 
-                    assertEquals(receivedMessage.getLockedUntil(), lockedUntil);
                 })
                 .verifyComplete();
         } finally {
