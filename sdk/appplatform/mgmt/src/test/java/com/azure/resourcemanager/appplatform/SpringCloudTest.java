@@ -9,6 +9,9 @@ import com.azure.resourcemanager.appplatform.models.SpringAppDeployment;
 import com.azure.resourcemanager.appplatform.models.SpringService;
 import com.azure.resourcemanager.resources.fluentcore.arm.Region;
 import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
+import org.apache.commons.compress.archivers.tar.TarArchiveEntry;
+import org.apache.commons.compress.archivers.tar.TarArchiveInputStream;
+import org.apache.commons.compress.compressors.gzip.GzipCompressorInputStream;
 import org.apache.commons.compress.utils.IOUtils;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -97,8 +100,16 @@ public class SpringCloudTest extends AppPlatformTest {
         Assertions.assertEquals(RuntimeVersion.JAVA_11, deployment.settings().runtimeVersion());
         Assertions.assertEquals(2, deployment.instances().size());
 
+        File sourceCodeFolder = new File("piggymetrics");
+        if (!sourceCodeFolder.exists() || sourceCodeFolder.isFile()) {
+            if (sourceCodeFolder.isFile()) {
+                sourceCodeFolder.delete();
+            }
+            extraTarGzSource(sourceCodeFolder);
+        }
+
         deployment = app.deployments().define(deploymentName1)
-            .withSourceCodeFolder(new File(this.getClass().getResource("/piggymetrics").getFile()))
+            .withSourceCodeFolder(sourceCodeFolder)
             .withTargetModule("gateway")
             .withSettingsFromActiveDeployment()
             .activate()
@@ -123,15 +134,37 @@ public class SpringCloudTest extends AppPlatformTest {
             try {
                 connection.connect();
                 if (connection.getResponseCode() == 200) {
+                    connection.getInputStream().close();
                     return true;
                 }
                 System.out.printf("Do request to %s with response code %d%n", url, connection.getResponseCode());
             } finally {
-                connection.getInputStream().close();
                 connection.disconnect();
                 SdkContext.sleep(5000);
             }
         }
         return false;
+    }
+
+    private void extraTarGzSource(File folder) throws IOException {
+        HttpURLConnection connection = (HttpURLConnection) new URL("https://github.com/weidongxu-microsoft/azure-sdk-for-java-management-tests/raw/master/spring-cloud/piggymetrics.tar.gz").openConnection();
+        connection.connect();
+        try (TarArchiveInputStream inputStream = new TarArchiveInputStream(new GzipCompressorInputStream(connection.getInputStream()))) {
+            TarArchiveEntry entry;
+            while ((entry = inputStream.getNextTarEntry()) != null) {
+                if (entry.isDirectory()) {
+                    continue;
+                }
+                File file = new File(folder, entry.getName());
+                File parent = file.getParentFile();
+                if (!parent.exists()) {
+                    parent.mkdirs();
+                }
+                try (OutputStream outputStream = new FileOutputStream(file)) {
+                    IOUtils.copy(inputStream, outputStream);
+                }
+            }
+        }
+        connection.disconnect();
     }
 }
