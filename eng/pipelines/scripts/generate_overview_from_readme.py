@@ -1,10 +1,10 @@
 # Copyright (c) Microsoft Corporation. All rights reserved.
 # Licensed under the MIT License.
 
-# Use case: Given a README.md file, generate a readme_overview.html file and place it next
+# Use case: Given a README.md file, generate a readme_overview.html file and place it next 
 # to the README.md. This will allow the javadocs jar step to append the contents of the
 # readme onto the landing page.
-#
+# 
 # This script is necessary, instead of just invoking python markdown2 directly from the
 # command line because the generated overview.html file needs to be enclosed inside of <body>
 # tags. When the attach-javadocs runs with the overview option it will append it the contents
