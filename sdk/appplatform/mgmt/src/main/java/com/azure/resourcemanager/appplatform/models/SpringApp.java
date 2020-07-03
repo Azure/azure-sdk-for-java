@@ -58,12 +58,12 @@ public interface SpringApp
 
     /** Container interface for all the definitions that need to be implemented. */
     interface Definition
-        extends DefinitionStages.Blank {}
+        extends DefinitionStages.Blank { }
 
     /** Grouping of all the spring app definition stages. */
     interface DefinitionStages {
         /** The first stage of the spring app definition. */
-        interface Blank extends WithCreate {}
+        interface Blank extends WithCreate { }
 
         /** The stage of a spring app definition allowing to specify the public endpoint. */
         interface WithPublicEndpoint {
@@ -137,7 +137,7 @@ public interface SpringApp
             extends Creatable<SpringApp>,
                 DefinitionStages.WithPublicEndpoint,
                 DefinitionStages.WithDisk,
-                DefinitionStages.WithDeployment {}
+                DefinitionStages.WithDeployment { }
     }
 
     /** The template for an update operation, containing all the settings that can be modified. */
@@ -145,7 +145,7 @@ public interface SpringApp
         extends Appliable<SpringApp>,
         UpdateStages.WithPublicEndpoint,
         UpdateStages.WithDisk,
-        UpdateStages.WithDeployment {}
+        UpdateStages.WithDeployment { }
 
     /** Grouping of spring app update stages. */
     interface UpdateStages {

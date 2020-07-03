@@ -68,6 +68,7 @@ public interface SpringService
 
     /**
      * Disables the test endpoint for the service.
+     * @return null
      */
     Mono<Void> disableTestEndpointAsync();
 
@@ -87,15 +88,15 @@ public interface SpringService
     interface Definition
         extends DefinitionStages.Blank,
             DefinitionStages.WithGroup,
-            DefinitionStages.WithCreate {}
+            DefinitionStages.WithCreate { }
 
     /** Grouping of all the spring service definition stages. */
     interface DefinitionStages {
         /** The first stage of the spring service definition. */
-        interface Blank extends GroupableResource.DefinitionWithRegion<WithGroup> {}
+        interface Blank extends GroupableResource.DefinitionWithRegion<WithGroup> { }
 
         /** The stage of a spring service definition allowing to specify the resource group. */
-        interface WithGroup extends GroupableResource.DefinitionStages.WithGroup<WithCreate> {}
+        interface WithGroup extends GroupableResource.DefinitionStages.WithGroup<WithCreate> { }
 
         /**
          * The stage of a spring service definition allowing to specify sku.
@@ -143,7 +144,7 @@ public interface SpringService
             extends Creatable<SpringService>,
                 Resource.DefinitionWithTags<WithCreate>,
                 WithSku,
-                WithTracing {}
+                WithTracing { }
     }
 
     /** The template for an update operation, containing all the settings that can be modified. */
@@ -152,7 +153,7 @@ public interface SpringService
         Resource.UpdateWithTags<Update>,
         UpdateStages.WithSku,
         UpdateStages.WithTracing,
-        UpdateStages.WithConfiguration {}
+        UpdateStages.WithConfiguration { }
 
     /** Grouping of spring service update stages. */
     interface UpdateStages {

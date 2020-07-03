@@ -16,7 +16,8 @@ import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementat
 import reactor.core.publisher.Mono;
 
 public class SpringAppsImpl
-    extends ExternalChildResourcesNonCachedImpl<SpringAppImpl, SpringApp, AppResourceInner, SpringServiceImpl, SpringService>
+    extends ExternalChildResourcesNonCachedImpl<
+        SpringAppImpl, SpringApp, AppResourceInner, SpringServiceImpl, SpringService>
     implements SpringApps {
 
     SpringAppsImpl(SpringServiceImpl parent) {

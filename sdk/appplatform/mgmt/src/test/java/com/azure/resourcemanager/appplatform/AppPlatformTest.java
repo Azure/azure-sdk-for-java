@@ -30,6 +30,6 @@ public class AppPlatformTest extends TestBase {
     protected void cleanUpResources() {
         try {
             appPlatformManager.resourceManager().resourceGroups().beginDeleteByName(rgName);
-        } catch (Exception e) {}
+        } catch (Exception e) { }
     }
 }

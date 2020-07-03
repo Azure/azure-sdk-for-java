@@ -388,7 +388,8 @@ public class SpringAppDeploymentImpl
             inner().properties().withDeploymentSettings(originalDeployment.settings());
         }
         return manager().inner().getDeployments().createOrUpdateAsync(
-            parent().parent().resourceGroupName(), parent().parent().name(), parent().name(), name(), inner().properties()
+            parent().parent().resourceGroupName(), parent().parent().name(),
+            parent().name(), name(), inner().properties()
         )
             .map(inner -> {
                 originalDeployment = null;
@@ -404,7 +405,8 @@ public class SpringAppDeploymentImpl
             inner().properties().withDeploymentSettings(originalDeployment.settings());
         }
         return manager().inner().getDeployments().updateAsync(
-            parent().parent().resourceGroupName(), parent().parent().name(), parent().name(), name(), inner().properties()
+            parent().parent().resourceGroupName(), parent().parent().name(),
+            parent().name(), name(), inner().properties()
         )
             .map(inner -> {
                 originalDeployment = null;

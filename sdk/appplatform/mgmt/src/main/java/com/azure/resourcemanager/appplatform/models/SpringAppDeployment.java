@@ -54,12 +54,12 @@ public interface SpringAppDeployment
             DefinitionStages.WithSource,
             DefinitionStages.WithModule,
             DefinitionStages.WithPredefinedSettings,
-            DefinitionStages.WithSettingsAndCreate {}
+            DefinitionStages.WithSettingsAndCreate { }
 
     /** Grouping of all the deployment definition stages. */
     interface DefinitionStages {
         /** The first stage of the deployment definition. */
-        interface Blank extends WithSource {}
+        interface Blank extends WithSource { }
 
         /** The stage of a deployment definition allowing to specify the source code or package. */
         interface WithSource {
@@ -225,7 +225,7 @@ public interface SpringAppDeployment
          */
         interface WithCreate
             extends Creatable<SpringAppDeployment>,
-                WithBaseSettings {}
+                WithBaseSettings { }
 
         /**
          * The stage of the definition which contains all the minimum required inputs for the resource to be created,
@@ -233,13 +233,13 @@ public interface SpringAppDeployment
          */
         interface WithSettingsAndCreate
             extends WithCreate,
-                WithSettings {}
+                WithSettings { }
     }
 
     /** The template for an update operation, containing all the settings that can be modified. */
     interface Update
         extends Appliable<SpringAppDeployment>,
-            UpdateStages.WithSettings {}
+            UpdateStages.WithSettings { }
 
     /** Grouping of deployment update stages. */
     interface UpdateStages {
