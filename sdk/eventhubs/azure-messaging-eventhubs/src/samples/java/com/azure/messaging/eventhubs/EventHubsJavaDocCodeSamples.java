@@ -282,8 +282,7 @@ public class EventHubsJavaDocCodeSamples {
             batch.tryAdd(new EventData("test-event-1"));
             batch.tryAdd(new EventData("test-event-2"));
             return producer.send(batch);
-        }).subscribe(unused -> {
-            },
+        }).subscribe(unused -> { },
             error -> System.err.println("Error occurred while sending batch:" + error),
             () -> System.out.println("Send complete."));
         // END: com.azure.messaging.eventhubs.eventhubasyncproducerclient.createBatch
@@ -304,8 +303,7 @@ public class EventHubsJavaDocCodeSamples {
             batch.tryAdd(new EventData("test-event-1"));
             batch.tryAdd(new EventData("test-event-2"));
             return producer.send(batch);
-        }).subscribe(unused -> {
-            },
+        }).subscribe(unused -> { },
             error -> System.err.println("Error occurred while sending batch:" + error),
             () -> System.out.println("Send complete."));
         // END: com.azure.messaging.eventhubs.eventhubasyncproducerclient.createBatch#CreateBatchOptions-partitionId
@@ -327,8 +325,7 @@ public class EventHubsJavaDocCodeSamples {
             batch.tryAdd(new EventData("sourdough"));
             batch.tryAdd(new EventData("rye"));
             return producer.send(batch);
-        }).subscribe(unused -> {
-            },
+        }).subscribe(unused -> { },
             error -> System.err.println("Error occurred while sending batch:" + error),
             () -> System.out.println("Send complete."));
         // END: com.azure.messaging.eventhubs.eventhubasyncproducerclient.createBatch#CreateBatchOptions-partitionKey
