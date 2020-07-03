@@ -225,33 +225,37 @@ public class ReadmeSamples {
             .setSortable(true));
 
         searchFieldList.add(new SearchField("hotelName", SearchFieldDataType.STRING)
+            .setSearchable(true)
             .setFilterable(true)
             .setSortable(true));
-
         searchFieldList.add(new SearchField("description", SearchFieldDataType.STRING)
+            .setSearchable(true)
             .setAnalyzerName(LexicalAnalyzerName.EU_LUCENE));
-
         searchFieldList.add(new SearchField("tags", SearchFieldDataType.collection(SearchFieldDataType.STRING))
+            .setSearchable(true)
             .setKey(true)
             .setFilterable(true)
             .setFacetable(true));
-
         searchFieldList.add(new SearchField("address", SearchFieldDataType.COMPLEX)
             .setFields(Arrays.asList(
-                new SearchField("streetAddress", SearchFieldDataType.STRING),
+                new SearchField("streetAddress", SearchFieldDataType.STRING).setSearchable(true),
                 new SearchField("city", SearchFieldDataType.STRING)
+                    .setSearchable(true)
                     .setFilterable(true)
                     .setFacetable(true)
                     .setSortable(true),
                 new SearchField("stateProvince", SearchFieldDataType.STRING)
+                    .setSearchable(true)
                     .setFilterable(true)
                     .setFacetable(true)
                     .setSortable(true),
                 new SearchField("country", SearchFieldDataType.STRING)
+                    .setSearchable(true)
                     .setFilterable(true)
                     .setFacetable(true)
                     .setSortable(true),
                 new SearchField("postalCode", SearchFieldDataType.STRING)
+                    .setSearchable(true)
                     .setFilterable(true)
                     .setFacetable(true)
                     .setSortable(true)

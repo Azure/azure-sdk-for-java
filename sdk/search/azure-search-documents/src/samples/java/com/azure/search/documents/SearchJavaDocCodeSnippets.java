@@ -788,7 +788,7 @@ public class SearchJavaDocCodeSnippets {
         // BEGIN: com.azure.search.documents.indexes.SearchIndexClient.createIndex#SearchIndex
         List<SearchField> searchFields = Arrays.asList(
             new SearchField("hotelId", SearchFieldDataType.STRING).setKey(true),
-            new SearchField("hotelName", SearchFieldDataType.STRING)
+            new SearchField("hotelName", SearchFieldDataType.STRING).setSearchable(true)
         );
         SearchIndex searchIndex = new SearchIndex("searchIndex", searchFields);
         SearchIndex indexFromService = searchIndexClient.createIndex(searchIndex);
@@ -804,7 +804,7 @@ public class SearchJavaDocCodeSnippets {
         // BEGIN: com.azure.search.documents.indexes.SearchIndexClient.createIndexWithResponse#SearchIndex-Context
         List<SearchField> searchFields = Arrays.asList(
             new SearchField("hotelId", SearchFieldDataType.STRING).setKey(true),
-            new SearchField("hotelName", SearchFieldDataType.STRING)
+            new SearchField("hotelName", SearchFieldDataType.STRING).setSearchable(true)
         );
         SearchIndex searchIndex = new SearchIndex("searchIndex", searchFields);
 
@@ -1198,7 +1198,7 @@ public class SearchJavaDocCodeSnippets {
         // BEGIN: com.azure.search.documents.indexes.SearchIndexAsyncClient.createIndex#SearchIndex
         List<SearchField> searchFields = Arrays.asList(
             new SearchField("hotelId", SearchFieldDataType.STRING).setKey(true),
-            new SearchField("hotelName", SearchFieldDataType.STRING)
+            new SearchField("hotelName", SearchFieldDataType.STRING).setSearchable(true)
         );
         SearchIndex searchIndex = new SearchIndex("searchIndex", searchFields);
         searchIndexAsyncClient.createIndex(searchIndex)
@@ -1215,7 +1215,7 @@ public class SearchJavaDocCodeSnippets {
         // BEGIN: com.azure.search.documents.indexes.SearchIndexAsyncClient.createIndexWithResponse#SearchIndex
         List<SearchField> searchFields = Arrays.asList(
             new SearchField("hotelId", SearchFieldDataType.STRING).setKey(true),
-            new SearchField("hotelName", SearchFieldDataType.STRING)
+            new SearchField("hotelName", SearchFieldDataType.STRING).setSearchable(true)
         );
         SearchIndex searchIndex = new SearchIndex("searchIndex", searchFields);
 

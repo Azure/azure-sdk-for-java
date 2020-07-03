@@ -334,7 +334,7 @@ You can use the [`SearchIndexClient`](#Create-a-SearchIndexClient) to create a s
 defined using convenient `SimpleField`, `SearchableField`, or `ComplexField`
 classes. Indexes can also define suggesters, lexical analyzers, and more.
 
-<!-- embedme ./src/samples/java/com/azure/search/documents/ReadmeSamples.java#L221-L267 -->
+<!-- embedme ./src/samples/java/com/azure/search/documents/ReadmeSamples.java#L221-L271 -->
 ```Java
     List<SearchField> searchFieldList = new ArrayList<>();
     searchFieldList.add(new SearchField("hotelId", SearchFieldDataType.STRING)
@@ -343,33 +343,37 @@ classes. Indexes can also define suggesters, lexical analyzers, and more.
         .setSortable(true));
 
     searchFieldList.add(new SearchField("hotelName", SearchFieldDataType.STRING)
+        .setSearchable(true)
         .setFilterable(true)
         .setSortable(true));
-
     searchFieldList.add(new SearchField("description", SearchFieldDataType.STRING)
+        .setSearchable(true)
         .setAnalyzerName(LexicalAnalyzerName.EU_LUCENE));
-
     searchFieldList.add(new SearchField("tags", SearchFieldDataType.collection(SearchFieldDataType.STRING))
+        .setSearchable(true)
         .setKey(true)
         .setFilterable(true)
         .setFacetable(true));
-
     searchFieldList.add(new SearchField("address", SearchFieldDataType.COMPLEX)
         .setFields(Arrays.asList(
-            new SearchField("streetAddress", SearchFieldDataType.STRING),
+            new SearchField("streetAddress", SearchFieldDataType.STRING).setSearchable(true),
             new SearchField("city", SearchFieldDataType.STRING)
+                .setSearchable(true)
                 .setFilterable(true)
                 .setFacetable(true)
                 .setSortable(true),
             new SearchField("stateProvince", SearchFieldDataType.STRING)
+                .setSearchable(true)
                 .setFilterable(true)
                 .setFacetable(true)
                 .setSortable(true),
             new SearchField("country", SearchFieldDataType.STRING)
+                .setSearchable(true)
                 .setFilterable(true)
                 .setFacetable(true)
                 .setSortable(true),
             new SearchField("postalCode", SearchFieldDataType.STRING)
+                .setSearchable(true)
                 .setFilterable(true)
                 .setFacetable(true)
                 .setSortable(true)
