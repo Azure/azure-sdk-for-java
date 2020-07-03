@@ -65,8 +65,8 @@ public interface SpringApp
         /** The first stage of the spring app definition. */
         interface Blank extends WithCreate { }
 
-        /** The stage of a spring app definition allowing to specify the public endpoint. */
-        interface WithPublicEndpoint {
+        /** The stage of a spring app definition allowing to specify the endpoint. */
+        interface WithEndpoint {
             /**
              * Enables the public endpoint for the spring app.
              * @return the next stage of spring app definition
@@ -108,7 +108,7 @@ public interface SpringApp
 
         /**
          * The stage of a spring app definition allowing to specify an simple active deployment.
-         * for more operations, use {@link #deploy()}
+         * for more operations, use {@link #deployments()}
          */
         interface WithDeployment {
             /**
@@ -135,7 +135,7 @@ public interface SpringApp
          */
         interface WithCreate
             extends Creatable<SpringApp>,
-                DefinitionStages.WithPublicEndpoint,
+                DefinitionStages.WithEndpoint,
                 DefinitionStages.WithDisk,
                 DefinitionStages.WithDeployment { }
     }
@@ -143,14 +143,14 @@ public interface SpringApp
     /** The template for an update operation, containing all the settings that can be modified. */
     interface Update
         extends Appliable<SpringApp>,
-        UpdateStages.WithPublicEndpoint,
+        UpdateStages.WithEndpoint,
         UpdateStages.WithDisk,
         UpdateStages.WithDeployment { }
 
     /** Grouping of spring app update stages. */
     interface UpdateStages {
-        /** The stage of a spring app update allowing to specify the public endpoint. */
-        interface WithPublicEndpoint {
+        /** The stage of a spring app update allowing to specify the endpoint. */
+        interface WithEndpoint {
             /**
              * Enables the public endpoint for the spring app.
              * @return the next stage of spring app update
@@ -223,7 +223,7 @@ public interface SpringApp
 
         /**
          * The stage of a spring app update allowing to specify an simple active deployment.
-         * for more operations, use {@link #deploy()}
+         * for more operations, use {@link #deployments()}
          */
         interface WithDeployment {
             /**
