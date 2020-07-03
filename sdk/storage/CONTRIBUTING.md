@@ -79,7 +79,7 @@ mvn -f sdk/{root-projectForlderDir}/{specific-projectForlderDir}/pom.xml -Dgpg.s
 
 ## Versions and versioning
 
-Tooling has been introduced to centralize versioning and help ease the pain of updating artifact versions in POM and README files. Under the eng\versioning directory there exists version text files, one for client ([version_client.txt](./eng/versioning/version_client.txt)) and one for data ([version_data.txt](./eng/versioning/version_data.txt)). The format of the version files is as follows:
+Tooling has been introduced to centralize versioning and help ease the pain of updating artifact versions in POM and README files. Under the eng\versioning directory there exists version text files, one for client ([version_client.txt](https://github.com/Azure/azure-sdk-for-java/blob/master/eng/versioning/version_client.txt)) and one for data ([version_data.txt](https://github.com/Azure/azure-sdk-for-java/blob/master/eng/versioning/version_data.txt)). The format of the version files is as follows:
 
 `groupId:artifactId;dependency-version;current-version`
 
