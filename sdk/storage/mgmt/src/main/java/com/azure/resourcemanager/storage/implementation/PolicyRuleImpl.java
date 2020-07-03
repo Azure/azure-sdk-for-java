@@ -33,7 +33,6 @@ class PolicyRuleImpl implements PolicyRule, PolicyRule.Definition, PolicyRule.Up
         this.inner.definition().withActions(new ManagementPolicyAction());
         this.managementPolicyImpl = managementPolicyImpl;
         this.inner.withName(name);
-        this.inner.withType(RuleType.LIFECYCLE);
     }
 
     PolicyRuleImpl(String name) {
@@ -42,7 +41,6 @@ class PolicyRuleImpl implements PolicyRule, PolicyRule.Definition, PolicyRule.Up
         this.inner.definition().withFilters(new ManagementPolicyFilter());
         this.inner.definition().withActions(new ManagementPolicyAction());
         this.inner.withName(name);
-        this.inner.withType(RuleType.LIFECYCLE);
     }
 
     PolicyRuleImpl(ManagementPolicyRule managementPolicyRule, ManagementPolicyImpl managementPolicyImpl) {
@@ -56,7 +54,7 @@ class PolicyRuleImpl implements PolicyRule, PolicyRule.Definition, PolicyRule.Up
     }
 
     @Override
-    public String type() {
+    public RuleType type() {
         return this.inner.type();
     }
 
@@ -159,7 +157,7 @@ class PolicyRuleImpl implements PolicyRule, PolicyRule.Definition, PolicyRule.Up
 
     @Override
     public PolicyRuleImpl withLifecycleRuleType() {
-        this.inner.withType("Lifecycle");
+        this.inner.withType(RuleType.LIFECYCLE);
         return this;
     }
 

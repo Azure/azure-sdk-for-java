@@ -16,7 +16,7 @@ public interface PolicyRule extends HasInner<ManagementPolicyRule> {
     String name();
 
     /** @return the type of the rule */
-    String type();
+    RuleType type();
 
     /** @return an unmodifiable list of the blob types this rule will apply for */
     List<BlobTypes> blobTypesToFilterFor();
