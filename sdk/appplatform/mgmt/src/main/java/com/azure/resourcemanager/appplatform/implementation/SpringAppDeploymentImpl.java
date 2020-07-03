@@ -157,20 +157,18 @@ public class SpringAppDeploymentImpl
         return compressFile;
     }
 
-    private Mono<ShareFileAsyncClient> createShareFileAsyncClient(ResourceUploadDefinition option, long maxSize) {
-        ShareFileAsyncClient shareFileAsyncClient = new ShareFileClientBuilder()
+    private ShareFileAsyncClient createShareFileAsyncClient(ResourceUploadDefinition option) {
+        return new ShareFileClientBuilder()
             .endpoint(option.uploadUrl())
             .httpClient(manager().httpPipeline().getHttpClient())
             .buildFileAsyncClient();
-
-        return shareFileAsyncClient.create(maxSize)
-            .then(Mono.just(shareFileAsyncClient));
     }
 
-    private Mono<ShareFileAsyncClient> uploadToStorage(byte[] bytes, ResourceUploadDefinition option) {
+    private Mono<Void> uploadToStorage(byte[] bytes, ResourceUploadDefinition option) {
         inner().properties().source().withRelativePath(option.relativePath());
-        return createShareFileAsyncClient(option, bytes.length)
-                .flatMap(shareFileAsyncClient -> {
+        ShareFileAsyncClient shareFileAsyncClient = createShareFileAsyncClient(option);
+        return shareFileAsyncClient.create(bytes.length)
+                .flatMap(fileInfo -> {
                     List<Integer> blockList = new ArrayList<>();
                     for (int start = 0; start < bytes.length; start += BLOCK_SIZE) {
                         blockList.add(start);
@@ -181,16 +179,17 @@ public class SpringAppDeploymentImpl
                             return shareFileAsyncClient.uploadWithResponse(
                                 Flux.just(ByteBuffer.wrap(bytes, start, length)), length, (long) start);
                         })
-                        .then(Mono.just(shareFileAsyncClient));
+                        .then(Mono.empty());
                 });
     }
 
-    private Mono<ShareFileAsyncClient> uploadToStorage(File source, ResourceUploadDefinition option) {
+    private Mono<Void> uploadToStorage(File source, ResourceUploadDefinition option) {
         inner().properties().source().withRelativePath(option.relativePath());
         try {
-            return createShareFileAsyncClient(option, source.length())
-                .flatMap(shareFileAsyncClient -> shareFileAsyncClient.uploadFromFile(source.getAbsolutePath())
-                    .then(Mono.just(shareFileAsyncClient)));
+            ShareFileAsyncClient shareFileAsyncClient = createShareFileAsyncClient(option);
+            return shareFileAsyncClient.create(source.length())
+                .flatMap(fileInfo -> shareFileAsyncClient.uploadFromFile(source.getAbsolutePath()))
+                    .then(Mono.empty());
         } catch (Exception e) {
             return Mono.error(e);
         }
