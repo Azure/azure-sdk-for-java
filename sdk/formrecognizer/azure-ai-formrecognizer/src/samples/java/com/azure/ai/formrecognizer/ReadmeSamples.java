@@ -7,7 +7,6 @@ import com.azure.ai.formrecognizer.models.AccountProperties;
 import com.azure.ai.formrecognizer.models.CustomFormModel;
 import com.azure.ai.formrecognizer.models.CustomFormModelInfo;
 import com.azure.ai.formrecognizer.models.FieldValueType;
-import com.azure.ai.formrecognizer.models.FormContentType;
 import com.azure.ai.formrecognizer.models.FormField;
 import com.azure.ai.formrecognizer.models.FormPage;
 import com.azure.ai.formrecognizer.models.OperationResult;
@@ -114,12 +113,12 @@ public class ReadmeSamples {
      */
     public void recognizeContent() throws IOException {
         // recognize form content using file input stream
-        File sourceFile = new File("local/file_path/filename.png");
-        byte[] fileContent = Files.readAllBytes(sourceFile.toPath());
+        File form = new File("local/file_path/filename.png");
+        byte[] fileContent = Files.readAllBytes(form.toPath());
         InputStream inputStream = new ByteArrayInputStream(fileContent);
 
         SyncPoller<OperationResult, List<FormPage>> recognizeContentPoller =
-            formRecognizerClient.beginRecognizeContent(inputStream, sourceFile.length(), FormContentType.IMAGE_PNG);
+            formRecognizerClient.beginRecognizeContent(inputStream, form.length());
 
         List<FormPage> contentPageResults = recognizeContentPoller.getFinalResult();
 

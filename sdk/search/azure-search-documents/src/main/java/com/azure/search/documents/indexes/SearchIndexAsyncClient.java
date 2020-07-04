@@ -139,7 +139,7 @@ public final class SearchIndexAsyncClient {
      *
      * <p><strong>Code Sample</strong></p>
      *
-     * <p> Create search index named "searchIndex" with response. </p>
+     * <p> Create search index named "searchIndex". </p>
      *
      * {@codesnippet com.azure.search.documents.indexes.SearchIndexAsyncClient.createIndexWithResponse#SearchIndex}
      *
@@ -185,7 +185,7 @@ public final class SearchIndexAsyncClient {
      *
      * <p><strong>Code Sample</strong></p>
      *
-     * <p> Get search index response with "searchIndex. </p>
+     * <p> Get search index with "searchIndex. </p>
      *
      * {@codesnippet com.azure.search.documents.indexes.SearchIndexAsyncClient.getIndexWithResponse#String}
      *
@@ -230,7 +230,7 @@ public final class SearchIndexAsyncClient {
      *
      * <p><strong>Code Sample</strong></p>
      *
-     * <p> Get search index "searchIndex" statistics with response. </p>
+     * <p> Get search index "searchIndex" statistics. </p>
      *
      * {@codesnippet com.azure.search.documents.indexes.SearchIndexAsyncClient.getIndexStatisticsWithResponse#String}
      *
@@ -344,7 +344,7 @@ public final class SearchIndexAsyncClient {
      *
      * <p><strong>Code Sample</strong></p>
      *
-     * <p> Create or update search index named "searchIndex" with response. </p>
+     * <p> Create or update search index named "searchIndex". </p>
      *
      * {@codesnippet com.azure.search.documents.indexes.SearchIndexClient.createOrUpdateIndexWithResponse#SearchIndex-boolean-boolean-Context}
      *
@@ -402,7 +402,7 @@ public final class SearchIndexAsyncClient {
      *
      * <p><strong>Code Sample</strong></p>
      *
-     * <p> Delete search index response with name "searchIndex". </p>
+     * <p> Delete search index with name "searchIndex". </p>
      *
      * {@codesnippet com.azure.search.documents.indexes.SearchIndexAsyncClient.deleteIndexWithResponse#SearchIndex-boolean}
      *
@@ -493,7 +493,7 @@ public final class SearchIndexAsyncClient {
      *
      * <p><strong>Code Sample</strong></p>
      *
-     * <p> Create synonym map response named "synonymMap". </p>
+     * <p> Create synonym map named "synonymMap". </p>
      *
      * {@codesnippet com.azure.search.documents.indexes.SearchIndexAsyncClient.createSynonymMapWithResponse#SynonymMap}
      *
@@ -541,7 +541,7 @@ public final class SearchIndexAsyncClient {
      *
      * <p><strong>Code Sample</strong></p>
      *
-     * <p> Get synonym map response with name "synonymMap". </p>
+     * <p> Get synonym map with name "synonymMap". </p>
      *
      * {@codesnippet com.azure.search.documents.indexes.SearchIndexAsyncClient.getSynonymMap#String}
      *
@@ -656,7 +656,7 @@ public final class SearchIndexAsyncClient {
      *
      * <p><strong>Code Sample</strong></p>
      *
-     * <p> Create or update synonym map response named "synonymMap". </p>
+     * <p> Create or update synonym map named "synonymMap". </p>
      *
      * {@codesnippet com.azure.search.documents.indexes.SearchIndexAsyncClient.createOrUpdateSynonymMapWithResponse#SynonymMap-boolean-Context}
      *
@@ -712,7 +712,7 @@ public final class SearchIndexAsyncClient {
      *
      * <p><strong>Code Sample</strong></p>
      *
-     * <p> Delete synonym map response with name "synonymMap". </p>
+     * <p> Delete synonym map with name "synonymMap". </p>
      *
      * {@codesnippet com.azure.search.documents.indexes.SearchIndexAsyncClient.deleteSynonymMapWithResponse#SynonymMap-boolean}
      *
@@ -766,7 +766,7 @@ public final class SearchIndexAsyncClient {
      *
      * <p><strong>Code Sample</strong></p>
      *
-     * <p> Get service statistics with response. </p>
+     * <p> Get service statistics. </p>
      *
      * {@codesnippet com.azure.search.documents.indexes.SearchIndexAsyncClient.getServiceStatisticsWithResponse}
      *

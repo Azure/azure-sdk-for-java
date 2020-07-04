@@ -1,7 +1,12 @@
 # Release History
 
-## 1.3.0-beta.1 (Unreleased)
+## 1.4.0-beta.1 (Unreleased)
 
+
+## 1.3.0 (2020-07-02)
+
+- Added `createProducer` constructor which takes an additional parameter for link properties.
+- Fixes `User-Agent` string to follow guidelines.
 
 ## 1.2.0 (2020-06-08)
 - Fixes bug where receiver would not recover after network connection loss.

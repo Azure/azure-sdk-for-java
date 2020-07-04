@@ -71,9 +71,10 @@ public class FormTrainingAsyncClientTest extends FormTrainingClientTestBase {
             .getFormRecognizerAsyncClient();
         blankPdfDataRunner(data -> {
             SyncPoller<OperationResult, List<RecognizedReceipt>> syncPoller =
-                formRecognizerClient.beginRecognizeReceipts(
-                    new RecognizeOptions(toFluxByteBuffer(data), BLANK_FORM_FILE_LENGTH)
-                        .setFormContentType(FormContentType.APPLICATION_PDF).setPollInterval(durationTestMode))
+                formRecognizerClient.beginRecognizeReceipts(toFluxByteBuffer(data), BLANK_FORM_FILE_LENGTH,
+                    new RecognizeOptions()
+                        .setContentType(FormContentType.APPLICATION_PDF)
+                        .setPollInterval(durationTestMode))
                     .getSyncPoller();
             syncPoller.waitForCompletion();
             validateBlankPdfResultData(syncPoller.getFinalResult());

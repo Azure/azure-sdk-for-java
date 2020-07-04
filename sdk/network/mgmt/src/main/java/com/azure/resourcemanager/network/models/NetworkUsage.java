@@ -10,7 +10,7 @@ import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
 @Fluent
 public interface NetworkUsage extends HasInner<UsageInner> {
     /** @return the unit of measurement. */
-    NetworkUsageUnit unit();
+    UsageUnit unit();
 
     /** @return the current count of the allocated resources in the subscription */
     long currentValue();
