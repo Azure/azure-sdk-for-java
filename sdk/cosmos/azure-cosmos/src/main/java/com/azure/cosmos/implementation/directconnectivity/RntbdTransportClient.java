@@ -302,7 +302,7 @@ public final class RntbdTransportClient extends TransportClient {
             this.connectionAcquisitionTimeout = Duration.ZERO;
             this.connectTimeout = connectionPolicy.getConnectTimeout();
             this.idleChannelTimeout = connectionPolicy.getIdleConnectionTimeout();
-            this.idleEndpointTimeout = Duration.ofSeconds(70L);
+            this.idleEndpointTimeout = connectionPolicy.getIdleEndpointTimeout();
             this.maxBufferCapacity = 8192 << 10;
             this.maxChannelsPerEndpoint = connectionPolicy.getMaxConnectionsPerEndpoint();
             this.maxRequestsPerChannel = connectionPolicy.getMaxRequestsPerConnection();
@@ -428,7 +428,7 @@ public final class RntbdTransportClient extends TransportClient {
          *   "maxRequestsPerChannel": 30,
          *   "receiveHangDetectionTime": "PT1M5S",
          *   "requestExpiryInterval": "PT5S",
-         *   "requestTimeout": "PT1M",
+         *   "requestTimeout": "PT5S",
          *   "requestTimerResolution": "PT0.5S",
          *   "sendHangDetectionTime": "PT10S",
          *   "shutdownTimeout": "PT15S",
