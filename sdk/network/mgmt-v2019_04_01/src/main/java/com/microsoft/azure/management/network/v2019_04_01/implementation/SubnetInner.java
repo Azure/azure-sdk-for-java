@@ -115,6 +115,18 @@ public class SubnetInner extends SubResource {
     private String provisioningState;
 
     /**
+     * Enable or Disable private end point on the subnet.
+     */
+    @JsonProperty(value = "properties.privateEndpointNetworkPolicies")
+    private String privateEndpointNetworkPolicies;
+
+    /**
+     * Enable or Disable private link service on the subnet.
+     */
+    @JsonProperty(value = "properties.privateLinkServiceNetworkPolicies")
+    private String privateLinkServiceNetworkPolicies;
+
+    /**
      * The name of the resource that is unique within a resource group. This
      * name can be used to access the resource.
      */
@@ -380,6 +392,46 @@ public class SubnetInner extends SubResource {
      */
     public SubnetInner withProvisioningState(String provisioningState) {
         this.provisioningState = provisioningState;
+        return this;
+    }
+
+    /**
+     * Get enable or Disable private end point on the subnet.
+     *
+     * @return the privateEndpointNetworkPolicies value
+     */
+    public String privateEndpointNetworkPolicies() {
+        return this.privateEndpointNetworkPolicies;
+    }
+
+    /**
+     * Set enable or Disable private end point on the subnet.
+     *
+     * @param privateEndpointNetworkPolicies the privateEndpointNetworkPolicies value to set
+     * @return the SubnetInner object itself.
+     */
+    public SubnetInner withPrivateEndpointNetworkPolicies(String privateEndpointNetworkPolicies) {
+        this.privateEndpointNetworkPolicies = privateEndpointNetworkPolicies;
+        return this;
+    }
+
+    /**
+     * Get enable or Disable private link service on the subnet.
+     *
+     * @return the privateLinkServiceNetworkPolicies value
+     */
+    public String privateLinkServiceNetworkPolicies() {
+        return this.privateLinkServiceNetworkPolicies;
+    }
+
+    /**
+     * Set enable or Disable private link service on the subnet.
+     *
+     * @param privateLinkServiceNetworkPolicies the privateLinkServiceNetworkPolicies value to set
+     * @return the SubnetInner object itself.
+     */
+    public SubnetInner withPrivateLinkServiceNetworkPolicies(String privateLinkServiceNetworkPolicies) {
+        this.privateLinkServiceNetworkPolicies = privateLinkServiceNetworkPolicies;
         return this;
     }
 
