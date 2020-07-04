@@ -29,6 +29,7 @@ import io.netty.handler.ssl.SslContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Mono;
+import reactor.core.publisher.SignalType;
 
 import java.io.File;
 import java.io.IOException;
@@ -140,7 +141,7 @@ public final class RntbdTransportClient extends TransportClient {
                 response.setRequestTimeline(timeline);
             }
 
-        })).doOnCancel(() -> logger.debug("REQUEST CANCELLED: {}", record)).onErrorMap(throwable -> {
+        })).onErrorMap(throwable -> {
 
             Throwable error = throwable instanceof CompletionException ? throwable.getCause() : throwable;
 
@@ -160,6 +161,30 @@ public final class RntbdTransportClient extends TransportClient {
             }
 
             return error;
+
+        }).doFinally(signalType -> {
+
+            if (signalType == SignalType.CANCEL) {
+
+                // One might think to cancel the request record upon receipt of SignalType.CANCEL but cancelling the
+                // record causes an onErrorDropped error. Instead we complete the request record with a null value.
+                // This ensures that the default onErrorDropped method will not complain when the consistency layer
+                // cancels an operation before a request completes. This may happen, for example, when a CosmosClient
+                // closes, a channel closes due to inactivity, or a partition split occurs.
+
+                // TODO (DANOBLE) what happens during a peer reset when--it appears--netty alerts us by way of a call to
+                //  RntbdRequestManager.channelUnregistered without a prior call to RntbdRequestManager.close.
+                //  NOTE TO READERS: the behavior described in this TODO is to be confirmed.
+
+                boolean completed = record.complete(null);
+
+                if (logger.isDebugEnabled()) {
+                    logger.debug("doFinally(signalType={}):{\"completed\":{},\"record\":{}}",
+                        signalType,
+                        completed,
+                        RntbdObjectMapper.toJson(record));
+                }
+            }
         });
     }
 
