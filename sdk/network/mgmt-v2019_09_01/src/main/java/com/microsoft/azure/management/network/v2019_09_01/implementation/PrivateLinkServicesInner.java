@@ -40,6 +40,8 @@ import retrofit2.http.Url;
 import retrofit2.Response;
 import rx.functions.Func1;
 import rx.Observable;
+import com.microsoft.azure.LongRunningFinalState;
+import com.microsoft.azure.LongRunningOperationOptions;
 
 /**
  * An instance of this class provides access to all the operations defined
@@ -119,9 +121,17 @@ public class PrivateLinkServicesInner implements InnerSupportsGet<PrivateLinkSer
         @POST("subscriptions/{subscriptionId}/providers/Microsoft.Network/locations/{location}/checkPrivateLinkServiceVisibility")
         Observable<Response<ResponseBody>> checkPrivateLinkServiceVisibility(@Path("location") String location, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body CheckPrivateLinkServiceVisibilityRequest parameters, @Header("User-Agent") String userAgent);
 
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.network.v2019_09_01.PrivateLinkServices beginCheckPrivateLinkServiceVisibility" })
+        @POST("subscriptions/{subscriptionId}/providers/Microsoft.Network/locations/{location}/checkPrivateLinkServiceVisibility")
+        Observable<Response<ResponseBody>> beginCheckPrivateLinkServiceVisibility(@Path("location") String location, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body CheckPrivateLinkServiceVisibilityRequest parameters, @Header("User-Agent") String userAgent);
+
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.network.v2019_09_01.PrivateLinkServices checkPrivateLinkServiceVisibilityByResourceGroup" })
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/locations/{location}/checkPrivateLinkServiceVisibility")
         Observable<Response<ResponseBody>> checkPrivateLinkServiceVisibilityByResourceGroup(@Path("location") String location, @Path("resourceGroupName") String resourceGroupName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body CheckPrivateLinkServiceVisibilityRequest parameters, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.network.v2019_09_01.PrivateLinkServices beginCheckPrivateLinkServiceVisibilityByResourceGroup" })
+        @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/locations/{location}/checkPrivateLinkServiceVisibility")
+        Observable<Response<ResponseBody>> beginCheckPrivateLinkServiceVisibilityByResourceGroup(@Path("location") String location, @Path("resourceGroupName") String resourceGroupName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body CheckPrivateLinkServiceVisibilityRequest parameters, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.network.v2019_09_01.PrivateLinkServices listAutoApprovedPrivateLinkServices" })
         @GET("subscriptions/{subscriptionId}/providers/Microsoft.Network/locations/{location}/autoApprovedPrivateLinkServices")
@@ -1431,7 +1441,7 @@ public class PrivateLinkServicesInner implements InnerSupportsGet<PrivateLinkSer
      * @return the PrivateLinkServiceVisibilityInner object if successful.
      */
     public PrivateLinkServiceVisibilityInner checkPrivateLinkServiceVisibility(String location) {
-        return checkPrivateLinkServiceVisibilityWithServiceResponseAsync(location).toBlocking().single().body();
+        return checkPrivateLinkServiceVisibilityWithServiceResponseAsync(location).toBlocking().last().body();
     }
 
     /**
@@ -1451,7 +1461,7 @@ public class PrivateLinkServicesInner implements InnerSupportsGet<PrivateLinkSer
      *
      * @param location The location of the domain name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the PrivateLinkServiceVisibilityInner object
+     * @return the observable for the request
      */
     public Observable<PrivateLinkServiceVisibilityInner> checkPrivateLinkServiceVisibilityAsync(String location) {
         return checkPrivateLinkServiceVisibilityWithServiceResponseAsync(location).map(new Func1<ServiceResponse<PrivateLinkServiceVisibilityInner>, PrivateLinkServiceVisibilityInner>() {
@@ -1467,7 +1477,7 @@ public class PrivateLinkServicesInner implements InnerSupportsGet<PrivateLinkSer
      *
      * @param location The location of the domain name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the PrivateLinkServiceVisibilityInner object
+     * @return the observable for the request
      */
     public Observable<ServiceResponse<PrivateLinkServiceVisibilityInner>> checkPrivateLinkServiceVisibilityWithServiceResponseAsync(String location) {
         if (location == null) {
@@ -1480,20 +1490,9 @@ public class PrivateLinkServicesInner implements InnerSupportsGet<PrivateLinkSer
         final String privateLinkServiceAlias = null;
         CheckPrivateLinkServiceVisibilityRequest parameters = new CheckPrivateLinkServiceVisibilityRequest();
         parameters.withPrivateLinkServiceAlias(null);
-        return service.checkPrivateLinkServiceVisibility(location, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), parameters, this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<PrivateLinkServiceVisibilityInner>>>() {
-                @Override
-                public Observable<ServiceResponse<PrivateLinkServiceVisibilityInner>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<PrivateLinkServiceVisibilityInner> clientResponse = checkPrivateLinkServiceVisibilityDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
+        Observable<Response<ResponseBody>> observable = service.checkPrivateLinkServiceVisibility(location, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), parameters, this.client.userAgent());
+        return client.getAzureClient().getPostOrDeleteResultAsync(observable, new LongRunningOperationOptions().withFinalStateVia(LongRunningFinalState.LOCATION), new TypeToken<PrivateLinkServiceVisibilityInner>() { }.getType());
     }
-
     /**
      * Checks whether the subscription is visible to private link service.
      *
@@ -1505,7 +1504,7 @@ public class PrivateLinkServicesInner implements InnerSupportsGet<PrivateLinkSer
      * @return the PrivateLinkServiceVisibilityInner object if successful.
      */
     public PrivateLinkServiceVisibilityInner checkPrivateLinkServiceVisibility(String location, String privateLinkServiceAlias) {
-        return checkPrivateLinkServiceVisibilityWithServiceResponseAsync(location, privateLinkServiceAlias).toBlocking().single().body();
+        return checkPrivateLinkServiceVisibilityWithServiceResponseAsync(location, privateLinkServiceAlias).toBlocking().last().body();
     }
 
     /**
@@ -1527,7 +1526,7 @@ public class PrivateLinkServicesInner implements InnerSupportsGet<PrivateLinkSer
      * @param location The location of the domain name.
      * @param privateLinkServiceAlias The alias of the private link service.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the PrivateLinkServiceVisibilityInner object
+     * @return the observable for the request
      */
     public Observable<PrivateLinkServiceVisibilityInner> checkPrivateLinkServiceVisibilityAsync(String location, String privateLinkServiceAlias) {
         return checkPrivateLinkServiceVisibilityWithServiceResponseAsync(location, privateLinkServiceAlias).map(new Func1<ServiceResponse<PrivateLinkServiceVisibilityInner>, PrivateLinkServiceVisibilityInner>() {
@@ -1544,7 +1543,7 @@ public class PrivateLinkServicesInner implements InnerSupportsGet<PrivateLinkSer
      * @param location The location of the domain name.
      * @param privateLinkServiceAlias The alias of the private link service.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the PrivateLinkServiceVisibilityInner object
+     * @return the observable for the request
      */
     public Observable<ServiceResponse<PrivateLinkServiceVisibilityInner>> checkPrivateLinkServiceVisibilityWithServiceResponseAsync(String location, String privateLinkServiceAlias) {
         if (location == null) {
@@ -1556,12 +1555,75 @@ public class PrivateLinkServicesInner implements InnerSupportsGet<PrivateLinkSer
         final String apiVersion = "2019-09-01";
         CheckPrivateLinkServiceVisibilityRequest parameters = new CheckPrivateLinkServiceVisibilityRequest();
         parameters.withPrivateLinkServiceAlias(privateLinkServiceAlias);
-        return service.checkPrivateLinkServiceVisibility(location, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), parameters, this.client.userAgent())
+        Observable<Response<ResponseBody>> observable = service.checkPrivateLinkServiceVisibility(location, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), parameters, this.client.userAgent());
+        return client.getAzureClient().getPostOrDeleteResultAsync(observable, new LongRunningOperationOptions().withFinalStateVia(LongRunningFinalState.LOCATION), new TypeToken<PrivateLinkServiceVisibilityInner>() { }.getType());
+    }
+
+    /**
+     * Checks whether the subscription is visible to private link service.
+     *
+     * @param location The location of the domain name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the PrivateLinkServiceVisibilityInner object if successful.
+     */
+    public PrivateLinkServiceVisibilityInner beginCheckPrivateLinkServiceVisibility(String location) {
+        return beginCheckPrivateLinkServiceVisibilityWithServiceResponseAsync(location).toBlocking().single().body();
+    }
+
+    /**
+     * Checks whether the subscription is visible to private link service.
+     *
+     * @param location The location of the domain name.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<PrivateLinkServiceVisibilityInner> beginCheckPrivateLinkServiceVisibilityAsync(String location, final ServiceCallback<PrivateLinkServiceVisibilityInner> serviceCallback) {
+        return ServiceFuture.fromResponse(beginCheckPrivateLinkServiceVisibilityWithServiceResponseAsync(location), serviceCallback);
+    }
+
+    /**
+     * Checks whether the subscription is visible to private link service.
+     *
+     * @param location The location of the domain name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PrivateLinkServiceVisibilityInner object
+     */
+    public Observable<PrivateLinkServiceVisibilityInner> beginCheckPrivateLinkServiceVisibilityAsync(String location) {
+        return beginCheckPrivateLinkServiceVisibilityWithServiceResponseAsync(location).map(new Func1<ServiceResponse<PrivateLinkServiceVisibilityInner>, PrivateLinkServiceVisibilityInner>() {
+            @Override
+            public PrivateLinkServiceVisibilityInner call(ServiceResponse<PrivateLinkServiceVisibilityInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Checks whether the subscription is visible to private link service.
+     *
+     * @param location The location of the domain name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PrivateLinkServiceVisibilityInner object
+     */
+    public Observable<ServiceResponse<PrivateLinkServiceVisibilityInner>> beginCheckPrivateLinkServiceVisibilityWithServiceResponseAsync(String location) {
+        if (location == null) {
+            throw new IllegalArgumentException("Parameter location is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        final String apiVersion = "2019-09-01";
+        final String privateLinkServiceAlias = null;
+        CheckPrivateLinkServiceVisibilityRequest parameters = new CheckPrivateLinkServiceVisibilityRequest();
+        parameters.withPrivateLinkServiceAlias(null);
+        return service.beginCheckPrivateLinkServiceVisibility(location, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), parameters, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<PrivateLinkServiceVisibilityInner>>>() {
                 @Override
                 public Observable<ServiceResponse<PrivateLinkServiceVisibilityInner>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<PrivateLinkServiceVisibilityInner> clientResponse = checkPrivateLinkServiceVisibilityDelegate(response);
+                        ServiceResponse<PrivateLinkServiceVisibilityInner> clientResponse = beginCheckPrivateLinkServiceVisibilityDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -1570,9 +1632,86 @@ public class PrivateLinkServicesInner implements InnerSupportsGet<PrivateLinkSer
             });
     }
 
-    private ServiceResponse<PrivateLinkServiceVisibilityInner> checkPrivateLinkServiceVisibilityDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+    /**
+     * Checks whether the subscription is visible to private link service.
+     *
+     * @param location The location of the domain name.
+     * @param privateLinkServiceAlias The alias of the private link service.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the PrivateLinkServiceVisibilityInner object if successful.
+     */
+    public PrivateLinkServiceVisibilityInner beginCheckPrivateLinkServiceVisibility(String location, String privateLinkServiceAlias) {
+        return beginCheckPrivateLinkServiceVisibilityWithServiceResponseAsync(location, privateLinkServiceAlias).toBlocking().single().body();
+    }
+
+    /**
+     * Checks whether the subscription is visible to private link service.
+     *
+     * @param location The location of the domain name.
+     * @param privateLinkServiceAlias The alias of the private link service.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<PrivateLinkServiceVisibilityInner> beginCheckPrivateLinkServiceVisibilityAsync(String location, String privateLinkServiceAlias, final ServiceCallback<PrivateLinkServiceVisibilityInner> serviceCallback) {
+        return ServiceFuture.fromResponse(beginCheckPrivateLinkServiceVisibilityWithServiceResponseAsync(location, privateLinkServiceAlias), serviceCallback);
+    }
+
+    /**
+     * Checks whether the subscription is visible to private link service.
+     *
+     * @param location The location of the domain name.
+     * @param privateLinkServiceAlias The alias of the private link service.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PrivateLinkServiceVisibilityInner object
+     */
+    public Observable<PrivateLinkServiceVisibilityInner> beginCheckPrivateLinkServiceVisibilityAsync(String location, String privateLinkServiceAlias) {
+        return beginCheckPrivateLinkServiceVisibilityWithServiceResponseAsync(location, privateLinkServiceAlias).map(new Func1<ServiceResponse<PrivateLinkServiceVisibilityInner>, PrivateLinkServiceVisibilityInner>() {
+            @Override
+            public PrivateLinkServiceVisibilityInner call(ServiceResponse<PrivateLinkServiceVisibilityInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Checks whether the subscription is visible to private link service.
+     *
+     * @param location The location of the domain name.
+     * @param privateLinkServiceAlias The alias of the private link service.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PrivateLinkServiceVisibilityInner object
+     */
+    public Observable<ServiceResponse<PrivateLinkServiceVisibilityInner>> beginCheckPrivateLinkServiceVisibilityWithServiceResponseAsync(String location, String privateLinkServiceAlias) {
+        if (location == null) {
+            throw new IllegalArgumentException("Parameter location is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        final String apiVersion = "2019-09-01";
+        CheckPrivateLinkServiceVisibilityRequest parameters = new CheckPrivateLinkServiceVisibilityRequest();
+        parameters.withPrivateLinkServiceAlias(privateLinkServiceAlias);
+        return service.beginCheckPrivateLinkServiceVisibility(location, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), parameters, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<PrivateLinkServiceVisibilityInner>>>() {
+                @Override
+                public Observable<ServiceResponse<PrivateLinkServiceVisibilityInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PrivateLinkServiceVisibilityInner> clientResponse = beginCheckPrivateLinkServiceVisibilityDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<PrivateLinkServiceVisibilityInner> beginCheckPrivateLinkServiceVisibilityDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<PrivateLinkServiceVisibilityInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PrivateLinkServiceVisibilityInner>() { }.getType())
+                .register(202, new TypeToken<Void>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
@@ -1588,7 +1727,7 @@ public class PrivateLinkServicesInner implements InnerSupportsGet<PrivateLinkSer
      * @return the PrivateLinkServiceVisibilityInner object if successful.
      */
     public PrivateLinkServiceVisibilityInner checkPrivateLinkServiceVisibilityByResourceGroup(String location, String resourceGroupName) {
-        return checkPrivateLinkServiceVisibilityByResourceGroupWithServiceResponseAsync(location, resourceGroupName).toBlocking().single().body();
+        return checkPrivateLinkServiceVisibilityByResourceGroupWithServiceResponseAsync(location, resourceGroupName).toBlocking().last().body();
     }
 
     /**
@@ -1610,7 +1749,7 @@ public class PrivateLinkServicesInner implements InnerSupportsGet<PrivateLinkSer
      * @param location The location of the domain name.
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the PrivateLinkServiceVisibilityInner object
+     * @return the observable for the request
      */
     public Observable<PrivateLinkServiceVisibilityInner> checkPrivateLinkServiceVisibilityByResourceGroupAsync(String location, String resourceGroupName) {
         return checkPrivateLinkServiceVisibilityByResourceGroupWithServiceResponseAsync(location, resourceGroupName).map(new Func1<ServiceResponse<PrivateLinkServiceVisibilityInner>, PrivateLinkServiceVisibilityInner>() {
@@ -1627,7 +1766,7 @@ public class PrivateLinkServicesInner implements InnerSupportsGet<PrivateLinkSer
      * @param location The location of the domain name.
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the PrivateLinkServiceVisibilityInner object
+     * @return the observable for the request
      */
     public Observable<ServiceResponse<PrivateLinkServiceVisibilityInner>> checkPrivateLinkServiceVisibilityByResourceGroupWithServiceResponseAsync(String location, String resourceGroupName) {
         if (location == null) {
@@ -1643,20 +1782,9 @@ public class PrivateLinkServicesInner implements InnerSupportsGet<PrivateLinkSer
         final String privateLinkServiceAlias = null;
         CheckPrivateLinkServiceVisibilityRequest parameters = new CheckPrivateLinkServiceVisibilityRequest();
         parameters.withPrivateLinkServiceAlias(null);
-        return service.checkPrivateLinkServiceVisibilityByResourceGroup(location, resourceGroupName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), parameters, this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<PrivateLinkServiceVisibilityInner>>>() {
-                @Override
-                public Observable<ServiceResponse<PrivateLinkServiceVisibilityInner>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<PrivateLinkServiceVisibilityInner> clientResponse = checkPrivateLinkServiceVisibilityByResourceGroupDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
+        Observable<Response<ResponseBody>> observable = service.checkPrivateLinkServiceVisibilityByResourceGroup(location, resourceGroupName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), parameters, this.client.userAgent());
+        return client.getAzureClient().getPostOrDeleteResultAsync(observable, new LongRunningOperationOptions().withFinalStateVia(LongRunningFinalState.LOCATION), new TypeToken<PrivateLinkServiceVisibilityInner>() { }.getType());
     }
-
     /**
      * Checks whether the subscription is visible to private link service in the specified resource group.
      *
@@ -1669,7 +1797,7 @@ public class PrivateLinkServicesInner implements InnerSupportsGet<PrivateLinkSer
      * @return the PrivateLinkServiceVisibilityInner object if successful.
      */
     public PrivateLinkServiceVisibilityInner checkPrivateLinkServiceVisibilityByResourceGroup(String location, String resourceGroupName, String privateLinkServiceAlias) {
-        return checkPrivateLinkServiceVisibilityByResourceGroupWithServiceResponseAsync(location, resourceGroupName, privateLinkServiceAlias).toBlocking().single().body();
+        return checkPrivateLinkServiceVisibilityByResourceGroupWithServiceResponseAsync(location, resourceGroupName, privateLinkServiceAlias).toBlocking().last().body();
     }
 
     /**
@@ -1693,7 +1821,7 @@ public class PrivateLinkServicesInner implements InnerSupportsGet<PrivateLinkSer
      * @param resourceGroupName The name of the resource group.
      * @param privateLinkServiceAlias The alias of the private link service.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the PrivateLinkServiceVisibilityInner object
+     * @return the observable for the request
      */
     public Observable<PrivateLinkServiceVisibilityInner> checkPrivateLinkServiceVisibilityByResourceGroupAsync(String location, String resourceGroupName, String privateLinkServiceAlias) {
         return checkPrivateLinkServiceVisibilityByResourceGroupWithServiceResponseAsync(location, resourceGroupName, privateLinkServiceAlias).map(new Func1<ServiceResponse<PrivateLinkServiceVisibilityInner>, PrivateLinkServiceVisibilityInner>() {
@@ -1711,7 +1839,7 @@ public class PrivateLinkServicesInner implements InnerSupportsGet<PrivateLinkSer
      * @param resourceGroupName The name of the resource group.
      * @param privateLinkServiceAlias The alias of the private link service.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the PrivateLinkServiceVisibilityInner object
+     * @return the observable for the request
      */
     public Observable<ServiceResponse<PrivateLinkServiceVisibilityInner>> checkPrivateLinkServiceVisibilityByResourceGroupWithServiceResponseAsync(String location, String resourceGroupName, String privateLinkServiceAlias) {
         if (location == null) {
@@ -1726,12 +1854,82 @@ public class PrivateLinkServicesInner implements InnerSupportsGet<PrivateLinkSer
         final String apiVersion = "2019-09-01";
         CheckPrivateLinkServiceVisibilityRequest parameters = new CheckPrivateLinkServiceVisibilityRequest();
         parameters.withPrivateLinkServiceAlias(privateLinkServiceAlias);
-        return service.checkPrivateLinkServiceVisibilityByResourceGroup(location, resourceGroupName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), parameters, this.client.userAgent())
+        Observable<Response<ResponseBody>> observable = service.checkPrivateLinkServiceVisibilityByResourceGroup(location, resourceGroupName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), parameters, this.client.userAgent());
+        return client.getAzureClient().getPostOrDeleteResultAsync(observable, new LongRunningOperationOptions().withFinalStateVia(LongRunningFinalState.LOCATION), new TypeToken<PrivateLinkServiceVisibilityInner>() { }.getType());
+    }
+
+    /**
+     * Checks whether the subscription is visible to private link service in the specified resource group.
+     *
+     * @param location The location of the domain name.
+     * @param resourceGroupName The name of the resource group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the PrivateLinkServiceVisibilityInner object if successful.
+     */
+    public PrivateLinkServiceVisibilityInner beginCheckPrivateLinkServiceVisibilityByResourceGroup(String location, String resourceGroupName) {
+        return beginCheckPrivateLinkServiceVisibilityByResourceGroupWithServiceResponseAsync(location, resourceGroupName).toBlocking().single().body();
+    }
+
+    /**
+     * Checks whether the subscription is visible to private link service in the specified resource group.
+     *
+     * @param location The location of the domain name.
+     * @param resourceGroupName The name of the resource group.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<PrivateLinkServiceVisibilityInner> beginCheckPrivateLinkServiceVisibilityByResourceGroupAsync(String location, String resourceGroupName, final ServiceCallback<PrivateLinkServiceVisibilityInner> serviceCallback) {
+        return ServiceFuture.fromResponse(beginCheckPrivateLinkServiceVisibilityByResourceGroupWithServiceResponseAsync(location, resourceGroupName), serviceCallback);
+    }
+
+    /**
+     * Checks whether the subscription is visible to private link service in the specified resource group.
+     *
+     * @param location The location of the domain name.
+     * @param resourceGroupName The name of the resource group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PrivateLinkServiceVisibilityInner object
+     */
+    public Observable<PrivateLinkServiceVisibilityInner> beginCheckPrivateLinkServiceVisibilityByResourceGroupAsync(String location, String resourceGroupName) {
+        return beginCheckPrivateLinkServiceVisibilityByResourceGroupWithServiceResponseAsync(location, resourceGroupName).map(new Func1<ServiceResponse<PrivateLinkServiceVisibilityInner>, PrivateLinkServiceVisibilityInner>() {
+            @Override
+            public PrivateLinkServiceVisibilityInner call(ServiceResponse<PrivateLinkServiceVisibilityInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Checks whether the subscription is visible to private link service in the specified resource group.
+     *
+     * @param location The location of the domain name.
+     * @param resourceGroupName The name of the resource group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PrivateLinkServiceVisibilityInner object
+     */
+    public Observable<ServiceResponse<PrivateLinkServiceVisibilityInner>> beginCheckPrivateLinkServiceVisibilityByResourceGroupWithServiceResponseAsync(String location, String resourceGroupName) {
+        if (location == null) {
+            throw new IllegalArgumentException("Parameter location is required and cannot be null.");
+        }
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        final String apiVersion = "2019-09-01";
+        final String privateLinkServiceAlias = null;
+        CheckPrivateLinkServiceVisibilityRequest parameters = new CheckPrivateLinkServiceVisibilityRequest();
+        parameters.withPrivateLinkServiceAlias(null);
+        return service.beginCheckPrivateLinkServiceVisibilityByResourceGroup(location, resourceGroupName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), parameters, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<PrivateLinkServiceVisibilityInner>>>() {
                 @Override
                 public Observable<ServiceResponse<PrivateLinkServiceVisibilityInner>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<PrivateLinkServiceVisibilityInner> clientResponse = checkPrivateLinkServiceVisibilityByResourceGroupDelegate(response);
+                        ServiceResponse<PrivateLinkServiceVisibilityInner> clientResponse = beginCheckPrivateLinkServiceVisibilityByResourceGroupDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -1740,9 +1938,93 @@ public class PrivateLinkServicesInner implements InnerSupportsGet<PrivateLinkSer
             });
     }
 
-    private ServiceResponse<PrivateLinkServiceVisibilityInner> checkPrivateLinkServiceVisibilityByResourceGroupDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+    /**
+     * Checks whether the subscription is visible to private link service in the specified resource group.
+     *
+     * @param location The location of the domain name.
+     * @param resourceGroupName The name of the resource group.
+     * @param privateLinkServiceAlias The alias of the private link service.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the PrivateLinkServiceVisibilityInner object if successful.
+     */
+    public PrivateLinkServiceVisibilityInner beginCheckPrivateLinkServiceVisibilityByResourceGroup(String location, String resourceGroupName, String privateLinkServiceAlias) {
+        return beginCheckPrivateLinkServiceVisibilityByResourceGroupWithServiceResponseAsync(location, resourceGroupName, privateLinkServiceAlias).toBlocking().single().body();
+    }
+
+    /**
+     * Checks whether the subscription is visible to private link service in the specified resource group.
+     *
+     * @param location The location of the domain name.
+     * @param resourceGroupName The name of the resource group.
+     * @param privateLinkServiceAlias The alias of the private link service.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<PrivateLinkServiceVisibilityInner> beginCheckPrivateLinkServiceVisibilityByResourceGroupAsync(String location, String resourceGroupName, String privateLinkServiceAlias, final ServiceCallback<PrivateLinkServiceVisibilityInner> serviceCallback) {
+        return ServiceFuture.fromResponse(beginCheckPrivateLinkServiceVisibilityByResourceGroupWithServiceResponseAsync(location, resourceGroupName, privateLinkServiceAlias), serviceCallback);
+    }
+
+    /**
+     * Checks whether the subscription is visible to private link service in the specified resource group.
+     *
+     * @param location The location of the domain name.
+     * @param resourceGroupName The name of the resource group.
+     * @param privateLinkServiceAlias The alias of the private link service.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PrivateLinkServiceVisibilityInner object
+     */
+    public Observable<PrivateLinkServiceVisibilityInner> beginCheckPrivateLinkServiceVisibilityByResourceGroupAsync(String location, String resourceGroupName, String privateLinkServiceAlias) {
+        return beginCheckPrivateLinkServiceVisibilityByResourceGroupWithServiceResponseAsync(location, resourceGroupName, privateLinkServiceAlias).map(new Func1<ServiceResponse<PrivateLinkServiceVisibilityInner>, PrivateLinkServiceVisibilityInner>() {
+            @Override
+            public PrivateLinkServiceVisibilityInner call(ServiceResponse<PrivateLinkServiceVisibilityInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Checks whether the subscription is visible to private link service in the specified resource group.
+     *
+     * @param location The location of the domain name.
+     * @param resourceGroupName The name of the resource group.
+     * @param privateLinkServiceAlias The alias of the private link service.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PrivateLinkServiceVisibilityInner object
+     */
+    public Observable<ServiceResponse<PrivateLinkServiceVisibilityInner>> beginCheckPrivateLinkServiceVisibilityByResourceGroupWithServiceResponseAsync(String location, String resourceGroupName, String privateLinkServiceAlias) {
+        if (location == null) {
+            throw new IllegalArgumentException("Parameter location is required and cannot be null.");
+        }
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        final String apiVersion = "2019-09-01";
+        CheckPrivateLinkServiceVisibilityRequest parameters = new CheckPrivateLinkServiceVisibilityRequest();
+        parameters.withPrivateLinkServiceAlias(privateLinkServiceAlias);
+        return service.beginCheckPrivateLinkServiceVisibilityByResourceGroup(location, resourceGroupName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), parameters, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<PrivateLinkServiceVisibilityInner>>>() {
+                @Override
+                public Observable<ServiceResponse<PrivateLinkServiceVisibilityInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PrivateLinkServiceVisibilityInner> clientResponse = beginCheckPrivateLinkServiceVisibilityByResourceGroupDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<PrivateLinkServiceVisibilityInner> beginCheckPrivateLinkServiceVisibilityByResourceGroupDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<PrivateLinkServiceVisibilityInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PrivateLinkServiceVisibilityInner>() { }.getType())
+                .register(202, new TypeToken<Void>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
