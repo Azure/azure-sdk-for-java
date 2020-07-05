@@ -169,22 +169,23 @@ public final class RntbdTransportClient extends TransportClient {
             if (signalType == SignalType.CANCEL) {
 
                 // Ensure that a pending Direct TCP request in a reactive stream dropped by an end user or the HA layer
-                // completes without bubbling up to reactor.core.publisher.Hooks#onErrorDropped as CompletionExceptions.
-                // Pending requests may be left outstanding when, for example, an end user calls CosmosAsyncClient#close
-                // or the HA layer detects that a partition split has occurred. This code ensures that each
-                // Mono<StoreResponse> in the stream will run to completion with a new subscriber that guarantees the
-                // default Hooks#onErrorDropped method is not called thus preventing distracting error messages in the
-                // logs.
+                // completes without bubbling up to reactor.core.publisher.Hooks#onErrorDropped as CompletionException
+                // errors. Pending requests may be left outstanding when, for example, an end user calls
+                // CosmosAsyncClient#close or the HA layer detects that a partition split has occurred. This code
+                // ensures that each Mono<StoreResponse> in the stream will run to completion with a new subscriber that
+                // guarantees the default Hooks#onErrorDropped method is not called thus preventing distracting error
+                // messages in the logs.
                 //
-                // One might be tempted to complete the pending request here, but testing shows that this does not
-                // prevent errors from bubbling up to reactor.core.publisher.Hooks#onErrorDropped and--worse--may
-                // cause failures in the HA layer.
+                // One might be tempted to complete a pending request here, but that is ill advised. Testing and
+                // inspection of the reactor code shows that this does not prevent errors from bubbling up to
+                // reactor.core.publisher.Hooks#onErrorDropped. Worse than this it has been seen to cause failures in
+                // the HA layer:
                 //
                 // * Calling record.cancel or record.completeExceptionally causes failures in cloud environments
                 //   and all errors bubble up to reactor.core.publisher.Hooks#onErrorDropped.
                 //
-                // * Calling record.complete with a value of null causes failures in all environments and this seems
-                //   to depend on the operation being performed by the HA layer.
+                // * Calling record.complete with a null value causes failures in all environments, depending on the
+                //   operation being performed.
 
                 result.subscribe(
                     response -> {
