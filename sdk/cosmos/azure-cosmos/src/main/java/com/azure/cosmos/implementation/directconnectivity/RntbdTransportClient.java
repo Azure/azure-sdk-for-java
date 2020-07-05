@@ -128,7 +128,7 @@ public final class RntbdTransportClient extends TransportClient {
         final RntbdEndpoint endpoint = this.endpointProvider.get(address);
         final RntbdRequestRecord record = endpoint.request(requestArgs);
 
-        return Mono.fromFuture(record.whenComplete((response, throwable) -> {
+        Mono<StoreResponse> result = Mono.fromFuture(record.whenComplete((response, throwable) -> {
 
             record.stage(RntbdRequestRecord.Stage.COMPLETED);
 
@@ -162,29 +162,51 @@ public final class RntbdTransportClient extends TransportClient {
 
             return error;
 
-        }).doFinally(signalType -> {
+        });
+
+        return result.doFinally(signalType -> {
 
             if (signalType == SignalType.CANCEL) {
 
-                // One might think to cancel the request record upon receipt of SignalType.CANCEL but cancelling the
-                // record causes an onErrorDropped error. Instead we complete the request record with a null value.
-                // This ensures that the default onErrorDropped method will not complain when the consistency layer
-                // cancels an operation before a request completes. This may happen, for example, when a CosmosClient
-                // closes, a channel closes due to inactivity, or a partition split occurs.
+                // Ensure that a pending Direct TCP request in a reactive stream dropped by an end user or the HA layer
+                // completes without bubbling up to reactor.core.publisher.Hooks#onErrorDropped. Pending requests may
+                // be left outstanding when, for example, an end user calls CosmosAsyncClient#close or a partition split
+                // occurs. This code ensure that each Mono<StoreResponse> in the stream will run to completion with a
+                // new subscriber that guarantees the default Hooks#onErrorDropped method is not called thus preventing
+                // distracting error messages in the logs.
+                //
+                // One might be tempted to complete the pending request here, but testing shows that this does not
+                // prevent errors from bubbling up to reactor.core.publisher.Hooks#onErrorDropped and--worse--may
+                // cause failures in the HA layer.
+                //
+                // * Calling record.cancel or record.completeExceptionally causes failures in cloud environments
+                //   and all errors bubble up to reactor.core.publisher.Hooks#onErrorDropped.
+                //
+                // * Calling record.complete with a value of null causes failures in all environments and this seems
+                //   to depend on the operation being performed by the HA layer.
 
-                // TODO (DANOBLE) what happens during a peer reset when--it appears--netty alerts us by way of a call to
-                //  RntbdRequestManager.channelUnregistered without a prior call to RntbdRequestManager.close.
-                //  NOTE TO READERS: the behavior described in this TODO is to be confirmed.
-
-                boolean cancelled = record.cancel(true);
-
-                if (logger.isDebugEnabled()) {
-                    logger.debug("doFinally(signalType={}):{\"cancelled\":{},\"record\":{}}",
-                        signalType,
-                        cancelled,
-                        RntbdObjectMapper.toJson(record));
-                }
-            }
+                result.subscribe(
+                    response -> {
+                        if (logger.isDebugEnabled()) {
+                            logger.debug(
+                                "received response to cancelled request: {\"request\":{},\"response\":{\"type\":{},"
+                                    + "\"value\":{}}}}",
+                                RntbdObjectMapper.toJson(request),
+                                response.getClass().getSimpleName(),
+                                RntbdObjectMapper.toJson(response));
+                        }
+                    },
+                    throwable -> {
+                        if (logger.isDebugEnabled()) {
+                            logger.debug(
+                                "received response to cancelled request: {\"request\":{},\"response\":{\"type\":{},"
+                                    + "\"value\":{}}}",
+                                RntbdObjectMapper.toJson(request),
+                                throwable.getClass().getSimpleName(),
+                                RntbdObjectMapper.toJson(throwable));
+                        }
+                    });
+            };
         });
     }
 
@@ -206,7 +228,9 @@ public final class RntbdTransportClient extends TransportClient {
     // region Privates
 
     private void throwIfClosed() {
-        checkState(!this.closed.get(), "%s is closed", this);
+        if (this.closed.get()) {
+            throw new TransportException(lenientFormat("%s is closed", this), null);
+        }
     }
 
     // endregion
