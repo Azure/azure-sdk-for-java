@@ -176,12 +176,12 @@ public final class RntbdTransportClient extends TransportClient {
                 //  RntbdRequestManager.channelUnregistered without a prior call to RntbdRequestManager.close.
                 //  NOTE TO READERS: the behavior described in this TODO is to be confirmed.
 
-                boolean completed = record.complete(null);
+                boolean cancelled = record.cancel(true);
 
                 if (logger.isDebugEnabled()) {
-                    logger.debug("doFinally(signalType={}):{\"completed\":{},\"record\":{}}",
+                    logger.debug("doFinally(signalType={}):{\"cancelled\":{},\"record\":{}}",
                         signalType,
-                        completed,
+                        cancelled,
                         RntbdObjectMapper.toJson(record));
                 }
             }
