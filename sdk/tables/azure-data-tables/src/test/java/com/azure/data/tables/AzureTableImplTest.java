@@ -54,6 +54,8 @@ public class AzureTableImplTest extends TestBase {
         StorageConnectionString storageConnectionString
             = StorageConnectionString.create(connectionString, new ClientLogger(AzureTableImplTest.class));
 
+        Assertions.assertNotNull(connectionString, "Cannot continue test if connectionString is not set.");
+
         StorageAuthenticationSettings authSettings = storageConnectionString.getStorageAuthSettings();
         TablesSharedKeyCredential sharedKeyCredential = new TablesSharedKeyCredential(authSettings.getAccount().getName(),
             authSettings.getAccount().getAccessKey());
