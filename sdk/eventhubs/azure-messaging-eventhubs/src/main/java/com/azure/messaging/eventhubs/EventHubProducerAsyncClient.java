@@ -216,6 +216,11 @@ public class EventHubProducerAsyncClient implements Closeable {
             return monoError(logger, new NullPointerException("'options' cannot be null."));
         }
 
+        Mono<EventDataBatch> optionsError = validateBatchOptions(options);
+        if (optionsError != null) {
+            return optionsError;
+        }
+
         final String partitionKey = options.getPartitionKey();
         final String partitionId = options.getPartitionId();
         final int batchMaxSize = options.getMaximumSizeInBytes();
@@ -282,11 +287,6 @@ public class EventHubProducerAsyncClient implements Closeable {
         }
         if (options == null) {
             return monoError(logger, new NullPointerException("'options' cannot be null."));
-        }
-
-        Mono<ObjectBatch<T>> sendModeError = verifySendMode(SendMode.OBJECT);
-        if (sendModeError != null) {
-            return sendModeError;
         }
 
         Mono<ObjectBatch<T>> optionsError = validateBatchOptions(options);
@@ -582,25 +582,6 @@ public class EventHubProducerAsyncClient implements Closeable {
 
         return connectionProcessor
             .flatMap(connection -> connection.createSendLink(linkName, entityPath, retryOptions));
-    }
-
-    private <T> Mono<T> verifySendMode(SendMode mode) {
-        switch (mode) {
-            case EVENT_DATA:
-                if (serializer != null) {
-                    return monoError(logger, new IllegalStateException());
-                }
-                break;
-            case OBJECT:
-                if (serializer == null) {
-                    return monoError(logger, new IllegalStateException());
-                }
-                break;
-            default:
-                break;
-        }
-
-        return null;
     }
 
     private <T> Mono<T> validateBatchOptions(CreateBatchOptions options) {
