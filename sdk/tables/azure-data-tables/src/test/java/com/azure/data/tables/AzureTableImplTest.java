@@ -23,6 +23,7 @@ import com.azure.data.tables.implementation.models.OdataMetadataFormat;
 import com.azure.data.tables.implementation.models.QueryOptions;
 import com.azure.data.tables.implementation.models.ResponseFormat;
 import com.azure.data.tables.implementation.models.TableProperties;
+import com.azure.data.tables.implementation.models.TableServiceErrorException;
 import com.azure.storage.common.implementation.connectionstring.StorageAuthenticationSettings;
 import com.azure.storage.common.implementation.connectionstring.StorageConnectionString;
 import java.util.ArrayList;
@@ -102,8 +103,6 @@ public class AzureTableImplTest extends TestBase {
 
         azureTable.getTables().createWithResponseAsync(tableProperties, requestId,
             ResponseFormat.RETURN_CONTENT, null, Context.NONE).block();
-
-
     }
 
     void insertNoETag(String tableName, Map<String, Object> properties) {
@@ -142,7 +141,7 @@ public class AzureTableImplTest extends TestBase {
         // Act & Assert
         StepVerifier.create(azureTable.getTables().createWithResponseAsync(tableProperties,
             requestId, ResponseFormat.RETURN_CONTENT, null, Context.NONE))
-            .expectError(com.azure.data.tables.implementation.models.TableServiceErrorException.class)
+            .expectError(TableServiceErrorException.class)
             .verify();
     }
 
@@ -194,6 +193,12 @@ public class AzureTableImplTest extends TestBase {
             queryOptions, Context.NONE))
             .assertNext(response -> {
                 Assertions.assertEquals(expectedStatusCode, response.getStatusCode());
+                Assertions.assertNotNull(response.getValue(), "Expected there to be a result.");
+
+                var results = response.getValue().getValue();
+
+                Assertions.assertNotNull(results, "Expected there to be a set of items.");
+                Assertions.assertEquals(2, results.size());
                 Assertions.assertEquals(response.getValue().getValue().get(0).getTableName(), tableA);
                 Assertions.assertEquals(response.getValue().getValue().get(1).getTableName(), tableB);
             })
