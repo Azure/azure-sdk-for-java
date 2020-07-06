@@ -7,7 +7,6 @@ import com.azure.ai.formrecognizer.models.AccountProperties;
 import com.azure.ai.formrecognizer.models.CustomFormModel;
 import com.azure.ai.formrecognizer.models.CustomFormModelInfo;
 import com.azure.ai.formrecognizer.models.FieldValueType;
-import com.azure.ai.formrecognizer.models.FormContentType;
 import com.azure.ai.formrecognizer.models.FormField;
 import com.azure.ai.formrecognizer.models.FormPage;
 import com.azure.ai.formrecognizer.models.OperationResult;
@@ -96,14 +95,13 @@ public class ReadmeSamples {
 
         for (int i = 0; i < recognizedForms.size(); i++) {
             RecognizedForm form = recognizedForms.get(i);
-            System.out.printf("----------- Recognized Form %d-----------%n", i);
+            System.out.printf("----------- Recognized Form %d -----------%n", i);
             System.out.printf("Form type: %s%n", form.getFormType());
             form.getFields().forEach((label, formField) ->
                 System.out.printf("Field %s has value %s with confidence score of %f.%n", label,
                     formField.getValueData().getText(),
                     formField.getConfidence())
             );
-            System.out.print("-----------------------------------");
         }
     }
 
@@ -125,7 +123,7 @@ public class ReadmeSamples {
 
         for (int i = 0; i < contentPageResults.size(); i++) {
             FormPage formPage = contentPageResults.get(i);
-            System.out.printf("----Recognizing content for page %d----%n", i);
+            System.out.printf("----Recognizing content for page %d ----%n", i);
             // Table information
             System.out.printf("Has width: %f and height: %f, measured with unit: %s.%n", formPage.getWidth(),
                 formPage.getHeight(),

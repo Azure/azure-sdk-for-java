@@ -81,14 +81,14 @@ resource, or by running the following Azure CLI command to get the key from the 
 az cognitiveservices account keys list --resource-group <your-resource-group-name> --name <your-resource-name>
 ```
 Use the API key as the credential parameter to authenticate the client:
-<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L49-L52 -->
+<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L48-L51 -->
 ```java
 FormRecognizerClient formRecognizerClient = new FormRecognizerClientBuilder()
     .credential(new AzureKeyCredential("{key}"))
     .endpoint("{endpoint}")
     .buildClient();
 ```
-<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L59-L62 -->
+<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L58-L61 -->
 ```java
 FormTrainingClient formTrainingClient = new FormTrainingClientBuilder()
     .credential(new AzureKeyCredential("{key}"))
@@ -98,7 +98,7 @@ FormTrainingClient formTrainingClient = new FormTrainingClientBuilder()
 
 The Azure Form Recognizer client library provides a way to **rotate the existing key**.
 
-<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L69-L75 -->
+<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L68-L74 -->
 ```java
 AzureKeyCredential credential = new AzureKeyCredential("{key}");
 FormRecognizerClient formRecognizerClient = new FormRecognizerClientBuilder()
@@ -137,7 +137,7 @@ Authorization is easiest using [DefaultAzureCredential][wiki_identity]. It finds
 running environment. For more information about using Azure Active Directory authorization with Form Recognizer, please
 refer to [the associated documentation][aad_authorization].
 
-<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L82-L86 -->
+<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L81-L85 -->
 ```java
 TokenCredential credential = new DefaultAzureCredentialBuilder().build();
 FormRecognizerClient formRecognizerClient = new FormRecognizerClientBuilder()
@@ -177,7 +177,7 @@ followed by polling the service at intervals to determine whether the operation 
 succeeded, to get the result.
 
 Methods that train models or recognize values from forms are modeled as long-running operations. The client exposes
-a `begin<method-name>` method that returns a `SyncPoller` or `PollerFlux` instance.
+a `begin<MethodName>` method that returns a `SyncPoller` or `PollerFlux` instance.
 Callers should wait for the operation to completed by calling `getFinalResult()` on the returned operation from the
 `begin<method-name>` method. Sample code snippets are provided to illustrate using long-running operations
 [below](#Examples).
@@ -195,7 +195,7 @@ The following section provides several code snippets covering some of the most c
 ### Recognize Forms Using a Custom Model
 Recognize name/value pairs and table data from forms. These models are trained with your own data,
 so they're tailored to your forms. You should only recognize forms of the same form type that the custom model was trained on.
-<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L90-L105 -->
+<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L89-L105 -->
 ```java
 String formUrl = "{form_url}";
 String modelId = "{custom_trained_model_id}";
@@ -206,14 +206,13 @@ List<RecognizedForm> recognizedForms = recognizeFormPoller.getFinalResult();
 
 for (int i = 0; i < recognizedForms.size(); i++) {
     RecognizedForm form = recognizedForms.get(i);
-    System.out.printf("----------- Recognized Form %d-----------%n", i);
+    System.out.printf("----------- Recognized Form %d -----------%n", i);
     System.out.printf("Form type: %s%n", form.getFormType());
     form.getFields().forEach((label, formField) ->
         System.out.printf("Field %s has value %s with confidence score of %f.%n", label,
             formField.getValueData().getText(),
-            formField.getConfidence());
-    });
-    System.out.print("-----------------------------------");
+            formField.getConfidence())
+    );
 }
 ```
 
@@ -233,7 +232,7 @@ List<FormPage> contentPageResults = recognizeContentPoller.getFinalResult();
 
 for (int i = 0; i < contentPageResults.size(); i++) {
     FormPage formPage = contentPageResults.get(i);
-    System.out.printf("----Recognizing content for page %d----%n", i);
+    System.out.printf("----Recognizing content for page %d ----%n", i);
     // Table information
     System.out.printf("Has width: %f and height: %f, measured with unit: %s.%n", formPage.getWidth(),
         formPage.getHeight(),
@@ -260,8 +259,8 @@ SyncPoller<OperationResult, List<RecognizedForm>> syncPoller =
 List<RecognizedForm> receiptPageResults = syncPoller.getFinalResult();
 
 for (int i = 0; i < receiptPageResults.size(); i++) {
-    RecognizedForm recognizedReceipt = receiptPageResults.get(i);
-    Map<String, FormField<?>> recognizedFields = recognizedReceipt.getFields();
+    RecognizedForm recognizedForm = receiptPageResults.get(i);
+    Map<String, FormField<?>> recognizedFields = recognizedForm.getFields();
     System.out.printf("----------- Recognized Receipt page %d -----------%n", i);
     FormField<?> merchantNameField = recognizedFields.get("MerchantName");
     if (merchantNameField != null) {
@@ -300,8 +299,8 @@ for (int i = 0; i < receiptPageResults.size(); i++) {
                     Map<String, FormField<?>> formFieldMap = FieldValueType.MAP.cast(receiptItem);
                     formFieldMap.forEach((key, formField) -> {
                         if ("Quantity".equals(key)) {
-                            if (FieldValueType.FLOAT.equals(formField.getValueType())) {
-                                Float quantity = FieldValueType.FLOAT.cast(formField);
+                            if (FieldValueType.DOUBLE.equals(formField.getValueType())) {
+                                Float quantity = FieldValueType.DOUBLE.cast(formField);
                                 System.out.printf("Quantity: %f, confidence: %.2f%n",
                                     quantity, formField.getConfidence());
                             }
@@ -387,7 +386,7 @@ to provide an invalid file source URL an `HttpResponseException` would be raised
 In the following code snippet, the error is handled
 gracefully by catching the exception and display the additional information about the error.
 
-<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L63-L267 -->
+<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L263-L267 -->
 ```java
 try {
     formRecognizerClient.beginRecognizeContentFromUrl("invalidSourceUrl");
