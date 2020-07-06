@@ -7,7 +7,7 @@ import com.azure.ai.formrecognizer.models.FormPage;
 import com.azure.ai.formrecognizer.models.FormTable;
 import com.azure.ai.formrecognizer.models.FormWord;
 import com.azure.ai.formrecognizer.models.OperationResult;
-import com.azure.ai.formrecognizer.models.RecognizeCustomFormsOptions;
+import com.azure.ai.formrecognizer.models.RecognizeOptions;
 import com.azure.ai.formrecognizer.models.RecognizedForm;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.polling.SyncPoller;
@@ -33,10 +33,10 @@ public class GetBoundingBoxes {
             .buildClient();
 
         String modelId = "{model_Id}";
-        String filePath = "{analyze_file_path}";
+        String formUrl = "{form_url}";
         SyncPoller<OperationResult, List<RecognizedForm>> recognizeFormPoller =
-            client.beginRecognizeCustomForms(new RecognizeCustomFormsOptions(filePath, modelId)
-                .setIncludeTextContent(true));
+            client.beginRecognizeCustomFormsFromUrl(formUrl, modelId, new RecognizeOptions()
+                .setIncludeFieldElements(true));
 
         List<RecognizedForm> recognizedForms = recognizeFormPoller.getFinalResult();
 
@@ -50,7 +50,7 @@ public class GetBoundingBoxes {
             recognizedForm.getFields().forEach((fieldText, fieldValue) -> System.out.printf("Field %s has value %s "
                     + "based on %s with a confidence score "
                     + "of %.2f.%n",
-                fieldText, fieldValue.getFieldValue(), fieldValue.getValueText().getText(),
+                fieldText, fieldValue.getFieldValue(), fieldValue.getValueData().getText(),
                 fieldValue.getConfidence()));
 
             // Page Information
@@ -68,11 +68,11 @@ public class GetBoundingBoxes {
                     System.out.printf("Table %d%n", i2);
                     formTable.getCells().forEach(formTableCell -> {
                         System.out.printf("Cell text %s has following words: %n", formTableCell.getText());
-                        // textContent only exists if you set includeTextContent to True in your
+                        // textContent only exists if you set includeFieldElements to True in your
                         // call to beginRecognizeCustomFormsFromUrl
                         // It is also a list of FormWords and FormLines, but in this example, we only deal with
                         // FormWords
-                        formTableCell.getTextContent().forEach(formContent -> {
+                        formTableCell.getFieldElements().forEach(formContent -> {
                             if (formContent instanceof FormWord) {
                                 FormWord formWordElement = (FormWord) (formContent);
                                 StringBuilder boundingBoxStr = new StringBuilder();

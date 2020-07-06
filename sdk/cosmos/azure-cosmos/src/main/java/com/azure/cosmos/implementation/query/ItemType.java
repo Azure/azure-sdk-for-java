@@ -4,7 +4,7 @@
 package com.azure.cosmos.implementation.query;
 
 public enum ItemType {
-    NoValue(0x0), Null(0x1), Boolean(0x2), Number(0x4), String(0x5);
+    NoValue(0x0), Null(0x1), Boolean(0x2), Number(0x4), String(0x5), ArrayNode(0x6), ObjectNode(0x7);
 
     private final int val;
 

@@ -15,7 +15,7 @@ autorest --use=@microsoft.azure/autorest.java@3.0.4 --use=jianghaolu/autorest.mo
 
 ### Code generation settings
 ``` yaml
-input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/storage-dataplane-preview/specification/storage/data-plane/Microsoft.BlobStorage/preview/2019-07-07/blob.json
+input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/storage-dataplane-preview/specification/storage/data-plane/Microsoft.BlobStorage/preview/2019-12-12/blob.json
 java: true
 output-folder: ../
 namespace: com.azure.storage.blob
@@ -25,7 +25,7 @@ sync-methods: none
 license-header: MICROSOFT_MIT_SMALL
 add-context-parameter: true
 models-subpackage: implementation.models
-custom-types: BlobAccessPolicy,AccessTier,AccountKind,ArchiveStatus,BlobDownloadHeaders,BlobHttpHeaders,BlobContainerItem,BlobItem,BlobContainerItemProperties,BlobContainerEncryptionScope,BlobItemProperties,BlobServiceProperties,BlobType,Block,BlockList,BlockListType,BlockLookupList,BlobPrefix,ClearRange,CopyStatusType,BlobCorsRule,CpkInfo,CustomerProvidedKeyInfo,DeleteSnapshotsOptionType,EncryptionAlgorithmType,FilterBlobsItem,GeoReplication,GeoReplicationStatusType,KeyInfo,LeaseDurationType,LeaseStateType,LeaseStatusType,ListBlobContainersIncludeType,ListBlobsIncludeItem,BlobAnalyticsLogging,BlobMetrics,PageList,PageRange,PathRenameMode,PublicAccessType,RehydratePriority,BlobRetentionPolicy,SequenceNumberActionType,BlobSignedIdentifier,SkuName,StaticWebsite,BlobErrorCode,BlobServiceStatistics,SyncCopyStatusType,UserDelegationKey
+custom-types: BlobAccessPolicy,AccessTier,AccountKind,ArchiveStatus,BlobHttpHeaders,BlobContainerItem,FilterBlobItem,BlobContainerItemProperties,BlobContainerEncryptionScope,BlobServiceProperties,BlobType,Block,BlockList,BlockListType,BlockLookupList,BlobPrefix,ClearRange,CopyStatusType,BlobCorsRule,CpkInfo,CustomerProvidedKeyInfo,DeleteSnapshotsOptionType,EncryptionAlgorithmType,FilterBlobsItem,GeoReplication,GeoReplicationStatusType,KeyInfo,LeaseDurationType,LeaseStateType,LeaseStatusType,ListBlobContainersIncludeType,ListBlobsIncludeItem,BlobAnalyticsLogging,BlobMetrics,PageList,PageRange,PathRenameMode,PublicAccessType,RehydratePriority,BlobRetentionPolicy,SequenceNumberActionType,BlobSignedIdentifier,SkuName,StaticWebsite,BlobErrorCode,BlobServiceStatistics,SyncCopyStatusType,UserDelegationKey,BlobQueryHeaders
 custom-types-subpackage: models
 ```
 
@@ -159,6 +159,19 @@ directive:
     if (!param["$ref"].endsWith("ContainerName")) {
         const path = param["$ref"].replace(/[#].*$/, "#/parameters/ContainerName");
         $.get.parameters.splice(0, 0, { "$ref": path });
+    }
+```
+
+### /{containerName}?restype=container&comp=undelete
+``` yaml
+directive:
+- from: swagger-document
+  where: $["x-ms-paths"]["/{containerName}?restype=container&comp=undelete"]
+  transform: >
+    let param = $.put.parameters[0];
+    if (!param["$ref"].endsWith("ContainerName")) {
+        const path = param["$ref"].replace(/[#].*$/, "#/parameters/ContainerName");
+        $.put.parameters.splice(0, 0, { "$ref": path });
     }
 ```
 
@@ -654,11 +667,11 @@ directive:
     }
 ```
 
-### BlobItem
+### BlobItemInternal
 ``` yaml
 directive:
 - from: swagger-document
-  where: $.definitions.BlobItem
+  where: $.definitions.BlobItemInternal
   transform: >
     if (!$.required.includes("VersionId")) {
       $.required.push("VersionId");
@@ -670,7 +683,7 @@ directive:
     $.properties.IsPrefix = { "type": "boolean" };
 ```
 
-### BlobItemProperties and ContainerItemProperties
+### BlobItemPropertiesInternal and ContainerItemProperties
 ``` yaml
 directive:
 - from: swagger-document
@@ -693,21 +706,20 @@ directive:
         $.BlobContainerItem.properties.Properties.$ref = path;
         delete $.ContainerItem;
     }
-    if (!$.BlobItemProperties) {
-        $.BlobItemProperties = $.BlobProperties;
-        delete $.BlobProperties;
-        $.BlobItemProperties.properties.CustomerProvidedKeySha256 = { "type": "string" }
-        $.BlobItemProperties.properties["Content-MD5"]["x-ms-client-name"] = "contentMd5";
-        //
-        const etag = $.BlobItemProperties.properties.Etag;
+    if (!$.BlobItemPropertiesInternal) {
+        $.BlobItemPropertiesInternal = $.BlobPropertiesInternal;
+        delete $.BlobPropertiesInternal;
+        $.BlobItemPropertiesInternal.properties.CustomerProvidedKeySha256 = { "type": "string" }
+        $.BlobItemPropertiesInternal.properties["Content-MD5"]["x-ms-client-name"] = "contentMd5";
+        const etag = $.BlobItemPropertiesInternal.properties.Etag;
         if (etag && !etag["x-ms-client-name"]) {
             etag["x-ms-client-name"] = "eTag";
-            $.BlobItemProperties.properties.Etag = etag;
+            $.BlobItemPropertiesInternal.properties.Etag = etag;
         }
     }
-    if ($.BlobItem) {
-        const path = $.BlobItem.properties.Properties.$ref.replace(/[#].*$/, "#/definitions/BlobItemProperties");
-        $.BlobItem.properties.Properties.$ref = path;
+    if ($.BlobItemInternal) {
+        const path = $.BlobItemInternal.properties.Properties.$ref.replace(/[#].*$/, "#/definitions/BlobItemPropertiesInternal");
+        $.BlobItemInternal.properties.Properties.$ref = path;
     }
 ```
 
@@ -939,7 +951,8 @@ directive:
 - from: swagger-document
   where: $.parameters.ListContainersInclude
   transform: >
-    $["x-ms-enum"].name = "ListBlobContainersIncludeType";
+    $["x-ms-client-name"] = "ListBlobContainersIncludeType";
+    $["items"]["x-ms-enum"].name = "ListBlobContainersIncludeType";
 ```
 
 ### /?comp=list
@@ -1306,6 +1319,65 @@ directive:
     return $.replace('private Boolean encryptionScopeOverridePrevented;', 'private boolean encryptionScopeOverridePrevented;').
       replace('public Boolean isEncryptionScopeOverridePrevented() {', 'public boolean isEncryptionScopeOverridePrevented() {').
       replace('public BlobContainerItemProperties setEncryptionScopeOverridePrevented(Boolean encryptionScopeOverridePrevented) {', 'public BlobContainerItemProperties setEncryptionScopeOverridePrevented(boolean encryptionScopeOverridePrevented) {');
+```
+
+### Block size int to long transition
+``` yaml
+directive:
+- from: swagger-document
+  where: $.definitions.Block
+  transform: >
+    $.properties.Size["x-ms-client-name"] = "sizeLong";
+    $.properties.Size["format"] = "int64";
+    $.properties.SizeInt = { "type" : "integer" };
+    $.required.push("SizeInt");
+```
+
+``` yaml
+directive:
+- from: Block.java
+  where: $
+  transform: >
+    return $.replace('return this.sizeInt;', 'return (int) this.sizeLong;').
+      replace('this.sizeInt = sizeInt;', 'this.sizeLong = size;').
+      replace('public int getSizeInt() {', '@Deprecated  public int getSize() {').
+      replace('public Block setSizeInt(int sizeInt) {', '@Deprecated public Block setSize(int size) {').
+      replace('@JsonProperty(value = "SizeInt", required = true)', '').
+      replace('private int sizeInt;', '').
+      replace('@return the sizeInt value.', '@return the size value.\n     * @deprecated Use {@link #getSizeLong()}').
+      replace('@param sizeInt the sizeInt value to set.', '@param size the size value to set.\n     * @deprecated Use {@link #setSizeLong(long)}').
+      replace('sizeInt', 'size').replace('sizeInt', 'size').replace('sizeInt', 'size').replace('sizeInt', 'size').
+      replace('sizeInt', 'size').replace('sizeInt', 'size').replace('sizeInt', 'size').replace('sizeInt', 'size').
+      replace(/\/\*\s+\*\s+The size property.\s+\*\/\s+\/\*/gm, '/*')
+```
+
+### /{containerName}/{blob}?comp=query
+``` yaml
+directive:
+- from: swagger-document
+  where: $["x-ms-paths"]["/{containerName}/{blob}?comp=query"]
+  transform: >
+    let param = $.post.parameters[0];
+    if (!param["$ref"].endsWith("ContainerName")) {
+      const path = param["$ref"].replace(/[#].*$/, "#/parameters/");
+      $.post.parameters.splice(0, 0, { "$ref": path + "ContainerName" });
+      $.post.parameters.splice(1, 0, { "$ref": path + "Blob" });
+    }
+    $.post.responses["200"].headers["Content-MD5"]["x-ms-client-name"] = "contentMd5";
+    $.post.responses["206"].headers["Content-MD5"]["x-ms-client-name"] = "contentMd5";
+    $.post.responses["200"].headers["x-ms-blob-content-md5"]["x-ms-client-name"] = "blobContentMd5";
+    $.post.responses["206"].headers["x-ms-blob-content-md5"]["x-ms-client-name"] = "blobContentMd5";
+    $.post.responses["200"].headers["x-ms-server-encrypted"]["x-ms-client-name"] = "serverEncrypted";
+    $.post.responses["206"].headers["x-ms-server-encrypted"]["x-ms-client-name"] = "serverEncrypted";
+```
+
+### Hide TagValue in FilterBlobItem
+``` yaml
+directive:
+- from: swagger-document
+  where: $.definitions
+  transform: >
+    delete $.FilterBlobItem.properties.TagValue;
 ```
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fstorage%2Fazure-storage-blob%2Fswagger%2FREADME.png)
