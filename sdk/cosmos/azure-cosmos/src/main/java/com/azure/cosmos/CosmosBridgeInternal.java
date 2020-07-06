@@ -96,6 +96,7 @@ public final class CosmosBridgeInternal {
         return copy;
     }
 
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static CosmosClientBuilder setDateKeyProvider(CosmosClientBuilder cosmosClientBuilder,
                                                          DataEncryptionKeyProvider dataEncryptionKeyProvider) {
         cosmosClientBuilder.dataEncryptionKeyProvider(dataEncryptionKeyProvider);

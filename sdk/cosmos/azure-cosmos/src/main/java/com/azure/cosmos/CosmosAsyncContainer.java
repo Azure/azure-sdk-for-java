@@ -460,7 +460,7 @@ public class CosmosAsyncContainer {
 
         return this.getDatabase().getDocClientWrapper()
                    .readDocument(getItemLink(itemId), requestOptions)
-            // TODO: add a deserializer and pass down?
+                   // TODO: add a deserializer and pass down?
                    .map(response -> ModelBridgeInternal.createCosmosAsyncItemResponse(response, itemType, this.getItemDeserializer()))
                    .single();
     }
