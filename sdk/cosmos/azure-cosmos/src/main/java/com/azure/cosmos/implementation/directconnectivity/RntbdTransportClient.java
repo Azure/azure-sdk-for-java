@@ -128,7 +128,7 @@ public final class RntbdTransportClient extends TransportClient {
         final RntbdEndpoint endpoint = this.endpointProvider.get(address);
         final RntbdRequestRecord record = endpoint.request(requestArgs);
 
-        Mono<StoreResponse> result = Mono.fromFuture(record.whenComplete((response, throwable) -> {
+        final Mono<StoreResponse> result = Mono.fromFuture(record.whenComplete((response, throwable) -> {
 
             record.stage(RntbdRequestRecord.Stage.COMPLETED);
 
@@ -181,11 +181,18 @@ public final class RntbdTransportClient extends TransportClient {
                 // reactor.core.publisher.Hooks#onErrorDropped. Worse than this it has been seen to cause failures in
                 // the HA layer:
                 //
-                // * Calling record.cancel or record.completeExceptionally causes failures in cloud environments
-                //   and all errors bubble up to reactor.core.publisher.Hooks#onErrorDropped.
+                // * Calling record.cancel or record.completeExceptionally causes failures in (low-latency) cloud
+                //   environments and all errors bubble up Hooks#onErrorDropped.
                 //
                 // * Calling record.complete with a null value causes failures in all environments, depending on the
-                //   operation being performed.
+                //   operation being performed. In short: many of our tests fail.
+                //
+                // TODO (DANOBLE) verify the correctness of this statement: This code does not prevent requests that
+                //  have already completed exceptionally from bubbling up to up to Hooks#onErrorDropped as
+                //  CompletionException errors. Fact: We still see some of these errors. Does reactor provide a
+                //  convenient mechanism--not Hooks#onErrorDropped(Consumer<? super Throwable> consumer)--for doing
+                //  this per Mono or must we, for example, rely on something like this?
+                //  https://www.codota.com/code/java/classes/reactor.core.publisher.Hooks
 
                 result.subscribe(
                     response -> {
@@ -193,7 +200,7 @@ public final class RntbdTransportClient extends TransportClient {
                             logger.debug(
                                 "received response to cancelled request: {\"request\":{},\"response\":{\"type\":{},"
                                     + "\"value\":{}}}}",
-                                RntbdObjectMapper.toJson(request),
+                                RntbdObjectMapper.toJson(record),
                                 response.getClass().getSimpleName(),
                                 RntbdObjectMapper.toJson(response));
                         }
@@ -203,12 +210,12 @@ public final class RntbdTransportClient extends TransportClient {
                             logger.debug(
                                 "received response to cancelled request: {\"request\":{},\"response\":{\"type\":{},"
                                     + "\"value\":{}}}",
-                                RntbdObjectMapper.toJson(request),
+                                RntbdObjectMapper.toJson(record),
                                 throwable.getClass().getSimpleName(),
                                 RntbdObjectMapper.toJson(throwable));
                         }
                     });
-            };
+            }
         });
     }
 
