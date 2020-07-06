@@ -4,19 +4,29 @@
 package com.azure.resourcemanager.resources.fluentcore.utils;
 
 import com.azure.core.annotation.Get;
+import com.azure.core.annotation.Host;
+import com.azure.core.annotation.HostParam;
 import com.azure.core.annotation.PathParam;
+import com.azure.core.annotation.ServiceInterface;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.RestProxy;
+import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.management.AzureEnvironment;
+import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceId;
 import com.azure.resourcemanager.resources.fluentcore.model.Indexable;
 import com.azure.resourcemanager.resources.models.Subscription;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.nio.ByteBuffer;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -115,20 +125,67 @@ public final class Utils {
      * Download a file asynchronously.
      *
      * @param url the URL pointing to the file
-     * @param retrofit the retrofit client
+     * @param httpPipeline the http pipeline
      * @return an Observable pointing to the content of the file
      */
+    public static Mono<byte[]> downloadFileAsync(String url, HttpPipeline httpPipeline) {
+        FileService service = RestProxy.create(FileService.class, httpPipeline);
+        try {
+            return stringResponse(service.download(getHost(url), getPathAndQuery(url)))
+                .map(simpleResponse -> simpleResponse.getValue().getBytes(Charset.defaultCharset()));
+        } catch (MalformedURLException ex) {
+            return Mono.empty();
+        }
+    }
+
     /**
-     * Download a file asynchronously.
+     * Convert the simple response.
      *
-     * @param url the URL pointing to the file
-     * @param retrofit the retrofit client
-     * @return an Observable pointing to the content of the file
+     * @param responseMono the response with flux of byte buffer
+     * @return a response with string
      */
-    public static Mono<byte[]> downloadFileAsync(String url, HttpPipeline retrofit) {
-        FileService service = RestProxy.create(FileService.class, retrofit);
-        Mono<HttpResponse> response = service.download(url);
-        return response.flatMap(httpResponse -> httpResponse.getBodyAsByteArray());
+    public static Mono<SimpleResponse<String>> stringResponse(Mono<SimpleResponse<Flux<ByteBuffer>>> responseMono) {
+        return responseMono
+            .flatMap(
+                response ->
+                    FluxUtil
+                        .collectBytesInByteBufferStream(response.getValue())
+                        .map(bytes -> new String(bytes, StandardCharsets.UTF_8))
+                        .map(
+                            str ->
+                                new SimpleResponse<>(
+                                    response.getRequest(), response.getStatusCode(), response.getHeaders(), str)));
+    }
+
+    /**
+     * Get host from url.
+     *
+     * @param urlString the url string
+     * @return the host
+     * @throws MalformedURLException when url is invalid format
+     */
+    public static String getHost(String urlString) throws MalformedURLException {
+        URL url = new URL(urlString);
+        String protocol = url.getProtocol();
+        String host = url.getAuthority();
+        return protocol + "://" + host;
+    }
+
+    /**
+     * Get path from url.
+     *
+     * @param urlString the url string
+     * @return the path
+     * @throws MalformedURLException when the url is invalid format
+     */
+    public static String getPathAndQuery(String urlString) throws MalformedURLException {
+        URL url = new URL(urlString);
+        String path = url.getPath();
+        String query = url.getQuery();
+        if (query != null && !query.isEmpty()) {
+            path = path + "?" + query;
+        }
+        return path;
     }
 
     /**
@@ -185,9 +242,12 @@ public final class Utils {
     /**
      * A Retrofit service used to download a file.
      */
+    @Host("{$host}")
+    @ServiceInterface(name = "FileService")
     private interface FileService {
-        @Get("{url}")
-        Mono<HttpResponse> download(@PathParam("url") String url);
+        @Get("{path}")
+        Mono<SimpleResponse<Flux<ByteBuffer>>> download(
+            @HostParam("$host") String host, @PathParam(value = "path", encoded = true) String path);
     }
 
     /**
