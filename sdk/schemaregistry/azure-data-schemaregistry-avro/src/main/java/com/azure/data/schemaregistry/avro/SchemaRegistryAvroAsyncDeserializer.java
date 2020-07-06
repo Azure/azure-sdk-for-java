@@ -3,7 +3,6 @@
 
 package com.azure.data.schemaregistry.avro;
 
-import com.azure.data.schemaregistry.SchemaRegistryDataDeserializer;
 import com.azure.data.schemaregistry.SerializationException;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Scheduler;
@@ -14,7 +13,7 @@ import java.util.concurrent.Executors;
 /**
  * Asynchronous registry-based deserializer implementation.
  */
-public class SchemaRegistryAvroAsyncDeserializer implements SchemaRegistryDataDeserializer {
+public class SchemaRegistryAvroAsyncDeserializer {
     private static final int DEFAULT_THREAD_POOL_SIZE = 8;
 
     private final SchemaRegistryAvroDeserializer deserializer;
