@@ -22,6 +22,7 @@ import com.azure.cosmos.util.CosmosPagedFlux;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import jdk.jfr.Timespan;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
@@ -44,6 +45,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class ContainerCreateDeleteWithSameNameTest extends TestSuiteBase {
     private final static int TIMEOUT = 300000;
+    // Delete collections in emulator usually takes a long time,
+    // so to avoid get 500 back, we are adding delay for creating the collection with same name, since in this case we want to test 410/1000
+    private final static int COLLECTION_RECREATION_TIME_DELAY = 2000;
     private CosmosAsyncClient client;
     private CosmosAsyncDatabase createdDatabase;
 
@@ -147,8 +151,8 @@ public class ContainerCreateDeleteWithSameNameTest extends TestSuiteBase {
         ObjectMapper objectMapper = Utils.getSimpleObjectMapper();
         BiConsumer<CosmosAsyncContainer, CosmosAsyncContainer> func = (feedContainer, leaseContainer) -> {
             String hostName = RandomStringUtils.randomAlphabetic(6);
-            int CHANGE_FEED_PROCESSOR_TIMEOUT = 5000;
-            final int FEED_COUNT = 10;
+            int CHANGE_FEED_PROCESSOR_TIMEOUT = 10000;
+            final int FEED_COUNT = 5;
             List<TestObject> createdDocuments = new ArrayList<>();
             Map<String, TestObject> receivedDocuments = new ConcurrentHashMap<>();
 
@@ -234,7 +238,7 @@ public class ContainerCreateDeleteWithSameNameTest extends TestSuiteBase {
 
             // step3: delete the container
             safeDeleteCollection(container);
-            Thread.sleep(2000);
+            Thread.sleep(COLLECTION_RECREATION_TIME_DELAY);
 
             // step4: recreate the container with same id as step1
             container = createCollection(this.createdDatabase, containerProperties, new CosmosContainerRequestOptions());
@@ -266,7 +270,7 @@ public class ContainerCreateDeleteWithSameNameTest extends TestSuiteBase {
 
             // step3: delete the lease container
             safeDeleteCollection(leaseContainer);
-            Thread.sleep(2000);
+            Thread.sleep(COLLECTION_RECREATION_TIME_DELAY);
 
             // step4: recreate the lease container and lease container with same ids as step1
             leaseContainer = createLeaseContainer(leaseContainerProperties.getId());
