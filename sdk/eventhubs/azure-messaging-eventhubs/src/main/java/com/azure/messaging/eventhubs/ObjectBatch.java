@@ -33,7 +33,7 @@ public final class ObjectBatch<T> extends EventDataBatchBase {
      * Tries to asynchronously serialize an object into an EventData payload and add the EventData to the batch.
      *
      * @param object The object to add to the batch.
-     * @return Mono<Boolean> {@code true} if the object could be added to the batch; {@code false} if the serialized
+     * @return {@code true} if the object could be added to the batch; {@code false} if the serialized
      * object was too large to fit in the batch.
      * @throws IllegalArgumentException if object is {@code null}.
      * @throws AmqpException if serialized object as {@link EventData} is larger than the maximum size
