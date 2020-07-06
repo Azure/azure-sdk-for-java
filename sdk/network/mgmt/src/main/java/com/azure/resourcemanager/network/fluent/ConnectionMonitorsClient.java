@@ -31,8 +31,8 @@ import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.util.polling.AsyncPollResponse;
 import com.azure.core.util.polling.PollerFlux;
+import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.network.NetworkManagementClient;
 import com.azure.resourcemanager.network.fluent.inner.ConnectionMonitorInner;
 import com.azure.resourcemanager.network.fluent.inner.ConnectionMonitorListResultInner;
@@ -192,82 +192,6 @@ public final class ConnectionMonitorsClient {
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
             Context context);
-
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
-                + "/networkWatchers/{networkWatcherName}/connectionMonitors/{connectionMonitorName}")
-        @ExpectedResponses({200, 201})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ConnectionMonitorResultInner>> beginCreateOrUpdateWithoutPolling(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("networkWatcherName") String networkWatcherName,
-            @PathParam("connectionMonitorName") String connectionMonitorName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @BodyParam("application/json") ConnectionMonitorInner parameters,
-            Context context);
-
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
-                + "/networkWatchers/{networkWatcherName}/connectionMonitors/{connectionMonitorName}")
-        @ExpectedResponses({202, 204})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> beginDeleteWithoutPolling(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("networkWatcherName") String networkWatcherName,
-            @PathParam("connectionMonitorName") String connectionMonitorName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            Context context);
-
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
-                + "/networkWatchers/{networkWatcherName}/connectionMonitors/{connectionMonitorName}/stop")
-        @ExpectedResponses({200, 202})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> beginStopWithoutPolling(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("networkWatcherName") String networkWatcherName,
-            @PathParam("connectionMonitorName") String connectionMonitorName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            Context context);
-
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
-                + "/networkWatchers/{networkWatcherName}/connectionMonitors/{connectionMonitorName}/start")
-        @ExpectedResponses({200, 202})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> beginStartWithoutPolling(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("networkWatcherName") String networkWatcherName,
-            @PathParam("connectionMonitorName") String connectionMonitorName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            Context context);
-
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
-                + "/networkWatchers/{networkWatcherName}/connectionMonitors/{connectionMonitorName}/query")
-        @ExpectedResponses({200, 202})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ConnectionMonitorQueryResultInner>> beginQueryWithoutPolling(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("networkWatcherName") String networkWatcherName,
-            @PathParam("connectionMonitorName") String connectionMonitorName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            Context context);
     }
 
     /**
@@ -317,7 +241,7 @@ public final class ConnectionMonitorsClient {
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -383,7 +307,7 @@ public final class ConnectionMonitorsClient {
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return service
             .createOrUpdate(
                 this.client.getEndpoint(),
@@ -409,7 +333,7 @@ public final class ConnectionMonitorsClient {
      * @return information about the connection monitor.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<ConnectionMonitorResultInner>, ConnectionMonitorResultInner> beginCreateOrUpdate(
+    public PollerFlux<PollResult<ConnectionMonitorResultInner>, ConnectionMonitorResultInner> beginCreateOrUpdateAsync(
         String resourceGroupName,
         String networkWatcherName,
         String connectionMonitorName,
@@ -439,7 +363,7 @@ public final class ConnectionMonitorsClient {
      * @return information about the connection monitor.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<ConnectionMonitorResultInner>, ConnectionMonitorResultInner> beginCreateOrUpdate(
+    public PollerFlux<PollResult<ConnectionMonitorResultInner>, ConnectionMonitorResultInner> beginCreateOrUpdateAsync(
         String resourceGroupName,
         String networkWatcherName,
         String connectionMonitorName,
@@ -470,22 +394,61 @@ public final class ConnectionMonitorsClient {
      * @return information about the connection monitor.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<ConnectionMonitorResultInner>, ConnectionMonitorResultInner> beginCreateOrUpdate(
+        String resourceGroupName,
+        String networkWatcherName,
+        String connectionMonitorName,
+        ConnectionMonitorInner parameters) {
+        return beginCreateOrUpdateAsync(resourceGroupName, networkWatcherName, connectionMonitorName, parameters)
+            .getSyncPoller();
+    }
+
+    /**
+     * Create or update a connection monitor.
+     *
+     * @param resourceGroupName The name of the resource group containing Network Watcher.
+     * @param networkWatcherName The name of the Network Watcher resource.
+     * @param connectionMonitorName The name of the connection monitor.
+     * @param parameters Parameters that define the operation to create a connection monitor.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information about the connection monitor.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<ConnectionMonitorResultInner>, ConnectionMonitorResultInner> beginCreateOrUpdate(
+        String resourceGroupName,
+        String networkWatcherName,
+        String connectionMonitorName,
+        ConnectionMonitorInner parameters,
+        Context context) {
+        return beginCreateOrUpdateAsync(
+                resourceGroupName, networkWatcherName, connectionMonitorName, parameters, context)
+            .getSyncPoller();
+    }
+
+    /**
+     * Create or update a connection monitor.
+     *
+     * @param resourceGroupName The name of the resource group containing Network Watcher.
+     * @param networkWatcherName The name of the Network Watcher resource.
+     * @param connectionMonitorName The name of the connection monitor.
+     * @param parameters Parameters that define the operation to create a connection monitor.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information about the connection monitor.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ConnectionMonitorResultInner> createOrUpdateAsync(
         String resourceGroupName,
         String networkWatcherName,
         String connectionMonitorName,
         ConnectionMonitorInner parameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, networkWatcherName, connectionMonitorName, parameters);
-        return this
-            .client
-            .<ConnectionMonitorResultInner, ConnectionMonitorResultInner>getLroResultAsync(
-                mono,
-                this.client.getHttpPipeline(),
-                ConnectionMonitorResultInner.class,
-                ConnectionMonitorResultInner.class)
+        return beginCreateOrUpdateAsync(resourceGroupName, networkWatcherName, connectionMonitorName, parameters)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -508,18 +471,10 @@ public final class ConnectionMonitorsClient {
         String connectionMonitorName,
         ConnectionMonitorInner parameters,
         Context context) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(
-                resourceGroupName, networkWatcherName, connectionMonitorName, parameters, context);
-        return this
-            .client
-            .<ConnectionMonitorResultInner, ConnectionMonitorResultInner>getLroResultAsync(
-                mono,
-                this.client.getHttpPipeline(),
-                ConnectionMonitorResultInner.class,
-                ConnectionMonitorResultInner.class)
+        return beginCreateOrUpdateAsync(
+                resourceGroupName, networkWatcherName, connectionMonitorName, parameters, context)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -605,7 +560,7 @@ public final class ConnectionMonitorsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -660,7 +615,7 @@ public final class ConnectionMonitorsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return service
             .get(
                 this.client.getEndpoint(),
@@ -796,7 +751,7 @@ public final class ConnectionMonitorsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -851,7 +806,7 @@ public final class ConnectionMonitorsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return service
             .delete(
                 this.client.getEndpoint(),
@@ -875,7 +830,7 @@ public final class ConnectionMonitorsClient {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<Void>, Void> beginDelete(
+    public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String networkWatcherName, String connectionMonitorName) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             deleteWithResponseAsync(resourceGroupName, networkWatcherName, connectionMonitorName);
@@ -895,7 +850,7 @@ public final class ConnectionMonitorsClient {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<Void>, Void> beginDelete(
+    public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String networkWatcherName, String connectionMonitorName, Context context) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             deleteWithResponseAsync(resourceGroupName, networkWatcherName, connectionMonitorName, context);
@@ -914,14 +869,45 @@ public final class ConnectionMonitorsClient {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<Void>, Void> beginDelete(
+        String resourceGroupName, String networkWatcherName, String connectionMonitorName) {
+        return beginDeleteAsync(resourceGroupName, networkWatcherName, connectionMonitorName).getSyncPoller();
+    }
+
+    /**
+     * Deletes the specified connection monitor.
+     *
+     * @param resourceGroupName The name of the resource group containing Network Watcher.
+     * @param networkWatcherName The name of the Network Watcher resource.
+     * @param connectionMonitorName The name of the connection monitor.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<Void>, Void> beginDelete(
+        String resourceGroupName, String networkWatcherName, String connectionMonitorName, Context context) {
+        return beginDeleteAsync(resourceGroupName, networkWatcherName, connectionMonitorName, context).getSyncPoller();
+    }
+
+    /**
+     * Deletes the specified connection monitor.
+     *
+     * @param resourceGroupName The name of the resource group containing Network Watcher.
+     * @param networkWatcherName The name of the Network Watcher resource.
+     * @param connectionMonitorName The name of the connection monitor.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String networkWatcherName, String connectionMonitorName) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, networkWatcherName, connectionMonitorName);
-        return this
-            .client
-            .<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class)
+        return beginDeleteAsync(resourceGroupName, networkWatcherName, connectionMonitorName)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -939,13 +925,9 @@ public final class ConnectionMonitorsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(
         String resourceGroupName, String networkWatcherName, String connectionMonitorName, Context context) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, networkWatcherName, connectionMonitorName, context);
-        return this
-            .client
-            .<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class)
+        return beginDeleteAsync(resourceGroupName, networkWatcherName, connectionMonitorName, context)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -1019,7 +1001,7 @@ public final class ConnectionMonitorsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         TagsObject parameters = new TagsObject();
         parameters.withTags(tags);
         return FluxUtil
@@ -1082,7 +1064,7 @@ public final class ConnectionMonitorsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         TagsObject parameters = new TagsObject();
         parameters.withTags(tags);
         return service
@@ -1233,7 +1215,7 @@ public final class ConnectionMonitorsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -1288,7 +1270,7 @@ public final class ConnectionMonitorsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return service
             .stop(
                 this.client.getEndpoint(),
@@ -1312,7 +1294,7 @@ public final class ConnectionMonitorsClient {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<Void>, Void> beginStop(
+    public PollerFlux<PollResult<Void>, Void> beginStopAsync(
         String resourceGroupName, String networkWatcherName, String connectionMonitorName) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             stopWithResponseAsync(resourceGroupName, networkWatcherName, connectionMonitorName);
@@ -1332,7 +1314,7 @@ public final class ConnectionMonitorsClient {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<Void>, Void> beginStop(
+    public PollerFlux<PollResult<Void>, Void> beginStopAsync(
         String resourceGroupName, String networkWatcherName, String connectionMonitorName, Context context) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             stopWithResponseAsync(resourceGroupName, networkWatcherName, connectionMonitorName, context);
@@ -1351,14 +1333,45 @@ public final class ConnectionMonitorsClient {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<Void>, Void> beginStop(
+        String resourceGroupName, String networkWatcherName, String connectionMonitorName) {
+        return beginStopAsync(resourceGroupName, networkWatcherName, connectionMonitorName).getSyncPoller();
+    }
+
+    /**
+     * Stops the specified connection monitor.
+     *
+     * @param resourceGroupName The name of the resource group containing Network Watcher.
+     * @param networkWatcherName The name of the Network Watcher resource.
+     * @param connectionMonitorName The name of the connection monitor.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<Void>, Void> beginStop(
+        String resourceGroupName, String networkWatcherName, String connectionMonitorName, Context context) {
+        return beginStopAsync(resourceGroupName, networkWatcherName, connectionMonitorName, context).getSyncPoller();
+    }
+
+    /**
+     * Stops the specified connection monitor.
+     *
+     * @param resourceGroupName The name of the resource group containing Network Watcher.
+     * @param networkWatcherName The name of the Network Watcher resource.
+     * @param connectionMonitorName The name of the connection monitor.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> stopAsync(String resourceGroupName, String networkWatcherName, String connectionMonitorName) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            stopWithResponseAsync(resourceGroupName, networkWatcherName, connectionMonitorName);
-        return this
-            .client
-            .<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class)
+        return beginStopAsync(resourceGroupName, networkWatcherName, connectionMonitorName)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -1376,13 +1389,9 @@ public final class ConnectionMonitorsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> stopAsync(
         String resourceGroupName, String networkWatcherName, String connectionMonitorName, Context context) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            stopWithResponseAsync(resourceGroupName, networkWatcherName, connectionMonitorName, context);
-        return this
-            .client
-            .<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class)
+        return beginStopAsync(resourceGroupName, networkWatcherName, connectionMonitorName, context)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -1455,7 +1464,7 @@ public final class ConnectionMonitorsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -1510,7 +1519,7 @@ public final class ConnectionMonitorsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return service
             .start(
                 this.client.getEndpoint(),
@@ -1534,7 +1543,7 @@ public final class ConnectionMonitorsClient {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<Void>, Void> beginStart(
+    public PollerFlux<PollResult<Void>, Void> beginStartAsync(
         String resourceGroupName, String networkWatcherName, String connectionMonitorName) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             startWithResponseAsync(resourceGroupName, networkWatcherName, connectionMonitorName);
@@ -1554,7 +1563,7 @@ public final class ConnectionMonitorsClient {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<Void>, Void> beginStart(
+    public PollerFlux<PollResult<Void>, Void> beginStartAsync(
         String resourceGroupName, String networkWatcherName, String connectionMonitorName, Context context) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             startWithResponseAsync(resourceGroupName, networkWatcherName, connectionMonitorName, context);
@@ -1573,14 +1582,45 @@ public final class ConnectionMonitorsClient {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<Void>, Void> beginStart(
+        String resourceGroupName, String networkWatcherName, String connectionMonitorName) {
+        return beginStartAsync(resourceGroupName, networkWatcherName, connectionMonitorName).getSyncPoller();
+    }
+
+    /**
+     * Starts the specified connection monitor.
+     *
+     * @param resourceGroupName The name of the resource group containing Network Watcher.
+     * @param networkWatcherName The name of the Network Watcher resource.
+     * @param connectionMonitorName The name of the connection monitor.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<Void>, Void> beginStart(
+        String resourceGroupName, String networkWatcherName, String connectionMonitorName, Context context) {
+        return beginStartAsync(resourceGroupName, networkWatcherName, connectionMonitorName, context).getSyncPoller();
+    }
+
+    /**
+     * Starts the specified connection monitor.
+     *
+     * @param resourceGroupName The name of the resource group containing Network Watcher.
+     * @param networkWatcherName The name of the Network Watcher resource.
+     * @param connectionMonitorName The name of the connection monitor.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> startAsync(String resourceGroupName, String networkWatcherName, String connectionMonitorName) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            startWithResponseAsync(resourceGroupName, networkWatcherName, connectionMonitorName);
-        return this
-            .client
-            .<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class)
+        return beginStartAsync(resourceGroupName, networkWatcherName, connectionMonitorName)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -1598,13 +1638,9 @@ public final class ConnectionMonitorsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> startAsync(
         String resourceGroupName, String networkWatcherName, String connectionMonitorName, Context context) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            startWithResponseAsync(resourceGroupName, networkWatcherName, connectionMonitorName, context);
-        return this
-            .client
-            .<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class)
+        return beginStartAsync(resourceGroupName, networkWatcherName, connectionMonitorName, context)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -1677,7 +1713,7 @@ public final class ConnectionMonitorsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -1732,7 +1768,7 @@ public final class ConnectionMonitorsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return service
             .query(
                 this.client.getEndpoint(),
@@ -1756,7 +1792,7 @@ public final class ConnectionMonitorsClient {
      * @return list of connection states snapshots.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<ConnectionMonitorQueryResultInner>, ConnectionMonitorQueryResultInner> beginQuery(
+    public PollerFlux<PollResult<ConnectionMonitorQueryResultInner>, ConnectionMonitorQueryResultInner> beginQueryAsync(
         String resourceGroupName, String networkWatcherName, String connectionMonitorName) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             queryWithResponseAsync(resourceGroupName, networkWatcherName, connectionMonitorName);
@@ -1782,7 +1818,7 @@ public final class ConnectionMonitorsClient {
      * @return list of connection states snapshots.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<ConnectionMonitorQueryResultInner>, ConnectionMonitorQueryResultInner> beginQuery(
+    public PollerFlux<PollResult<ConnectionMonitorQueryResultInner>, ConnectionMonitorQueryResultInner> beginQueryAsync(
         String resourceGroupName, String networkWatcherName, String connectionMonitorName, Context context) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             queryWithResponseAsync(resourceGroupName, networkWatcherName, connectionMonitorName, context);
@@ -1807,19 +1843,46 @@ public final class ConnectionMonitorsClient {
      * @return list of connection states snapshots.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<ConnectionMonitorQueryResultInner>, ConnectionMonitorQueryResultInner> beginQuery(
+        String resourceGroupName, String networkWatcherName, String connectionMonitorName) {
+        return beginQueryAsync(resourceGroupName, networkWatcherName, connectionMonitorName).getSyncPoller();
+    }
+
+    /**
+     * Query a snapshot of the most recent connection states.
+     *
+     * @param resourceGroupName The name of the resource group containing Network Watcher.
+     * @param networkWatcherName The name of the Network Watcher resource.
+     * @param connectionMonitorName The name given to the connection monitor.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of connection states snapshots.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<ConnectionMonitorQueryResultInner>, ConnectionMonitorQueryResultInner> beginQuery(
+        String resourceGroupName, String networkWatcherName, String connectionMonitorName, Context context) {
+        return beginQueryAsync(resourceGroupName, networkWatcherName, connectionMonitorName, context).getSyncPoller();
+    }
+
+    /**
+     * Query a snapshot of the most recent connection states.
+     *
+     * @param resourceGroupName The name of the resource group containing Network Watcher.
+     * @param networkWatcherName The name of the Network Watcher resource.
+     * @param connectionMonitorName The name given to the connection monitor.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of connection states snapshots.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ConnectionMonitorQueryResultInner> queryAsync(
         String resourceGroupName, String networkWatcherName, String connectionMonitorName) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            queryWithResponseAsync(resourceGroupName, networkWatcherName, connectionMonitorName);
-        return this
-            .client
-            .<ConnectionMonitorQueryResultInner, ConnectionMonitorQueryResultInner>getLroResultAsync(
-                mono,
-                this.client.getHttpPipeline(),
-                ConnectionMonitorQueryResultInner.class,
-                ConnectionMonitorQueryResultInner.class)
+        return beginQueryAsync(resourceGroupName, networkWatcherName, connectionMonitorName)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -1837,17 +1900,9 @@ public final class ConnectionMonitorsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ConnectionMonitorQueryResultInner> queryAsync(
         String resourceGroupName, String networkWatcherName, String connectionMonitorName, Context context) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            queryWithResponseAsync(resourceGroupName, networkWatcherName, connectionMonitorName, context);
-        return this
-            .client
-            .<ConnectionMonitorQueryResultInner, ConnectionMonitorQueryResultInner>getLroResultAsync(
-                mono,
-                this.client.getHttpPipeline(),
-                ConnectionMonitorQueryResultInner.class,
-                ConnectionMonitorQueryResultInner.class)
+        return beginQueryAsync(resourceGroupName, networkWatcherName, connectionMonitorName, context)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -1918,7 +1973,7 @@ public final class ConnectionMonitorsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -1971,7 +2026,7 @@ public final class ConnectionMonitorsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return service
             .list(
                 this.client.getEndpoint(),
@@ -2048,962 +2103,5 @@ public final class ConnectionMonitorsClient {
     public PagedIterable<ConnectionMonitorResultInner> list(
         String resourceGroupName, String networkWatcherName, Context context) {
         return new PagedIterable<>(listAsync(resourceGroupName, networkWatcherName, context));
-    }
-
-    /**
-     * Create or update a connection monitor.
-     *
-     * @param resourceGroupName The name of the resource group containing Network Watcher.
-     * @param networkWatcherName The name of the Network Watcher resource.
-     * @param connectionMonitorName The name of the connection monitor.
-     * @param parameters Parameters that define the operation to create a connection monitor.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about the connection monitor.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ConnectionMonitorResultInner>> beginCreateOrUpdateWithoutPollingWithResponseAsync(
-        String resourceGroupName,
-        String networkWatcherName,
-        String connectionMonitorName,
-        ConnectionMonitorInner parameters) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (networkWatcherName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter networkWatcherName is required and cannot be null."));
-        }
-        if (connectionMonitorName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter connectionMonitorName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (parameters == null) {
-            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
-        } else {
-            parameters.validate();
-        }
-        final String apiVersion = "2019-06-01";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .beginCreateOrUpdateWithoutPolling(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            networkWatcherName,
-                            connectionMonitorName,
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            parameters,
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
-
-    /**
-     * Create or update a connection monitor.
-     *
-     * @param resourceGroupName The name of the resource group containing Network Watcher.
-     * @param networkWatcherName The name of the Network Watcher resource.
-     * @param connectionMonitorName The name of the connection monitor.
-     * @param parameters Parameters that define the operation to create a connection monitor.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about the connection monitor.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ConnectionMonitorResultInner>> beginCreateOrUpdateWithoutPollingWithResponseAsync(
-        String resourceGroupName,
-        String networkWatcherName,
-        String connectionMonitorName,
-        ConnectionMonitorInner parameters,
-        Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (networkWatcherName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter networkWatcherName is required and cannot be null."));
-        }
-        if (connectionMonitorName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter connectionMonitorName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (parameters == null) {
-            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
-        } else {
-            parameters.validate();
-        }
-        final String apiVersion = "2019-06-01";
-        return service
-            .beginCreateOrUpdateWithoutPolling(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                networkWatcherName,
-                connectionMonitorName,
-                apiVersion,
-                this.client.getSubscriptionId(),
-                parameters,
-                context);
-    }
-
-    /**
-     * Create or update a connection monitor.
-     *
-     * @param resourceGroupName The name of the resource group containing Network Watcher.
-     * @param networkWatcherName The name of the Network Watcher resource.
-     * @param connectionMonitorName The name of the connection monitor.
-     * @param parameters Parameters that define the operation to create a connection monitor.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about the connection monitor.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ConnectionMonitorResultInner> beginCreateOrUpdateWithoutPollingAsync(
-        String resourceGroupName,
-        String networkWatcherName,
-        String connectionMonitorName,
-        ConnectionMonitorInner parameters) {
-        return beginCreateOrUpdateWithoutPollingWithResponseAsync(
-                resourceGroupName, networkWatcherName, connectionMonitorName, parameters)
-            .flatMap(
-                (Response<ConnectionMonitorResultInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Create or update a connection monitor.
-     *
-     * @param resourceGroupName The name of the resource group containing Network Watcher.
-     * @param networkWatcherName The name of the Network Watcher resource.
-     * @param connectionMonitorName The name of the connection monitor.
-     * @param parameters Parameters that define the operation to create a connection monitor.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about the connection monitor.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ConnectionMonitorResultInner> beginCreateOrUpdateWithoutPollingAsync(
-        String resourceGroupName,
-        String networkWatcherName,
-        String connectionMonitorName,
-        ConnectionMonitorInner parameters,
-        Context context) {
-        return beginCreateOrUpdateWithoutPollingWithResponseAsync(
-                resourceGroupName, networkWatcherName, connectionMonitorName, parameters, context)
-            .flatMap(
-                (Response<ConnectionMonitorResultInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Create or update a connection monitor.
-     *
-     * @param resourceGroupName The name of the resource group containing Network Watcher.
-     * @param networkWatcherName The name of the Network Watcher resource.
-     * @param connectionMonitorName The name of the connection monitor.
-     * @param parameters Parameters that define the operation to create a connection monitor.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about the connection monitor.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ConnectionMonitorResultInner beginCreateOrUpdateWithoutPolling(
-        String resourceGroupName,
-        String networkWatcherName,
-        String connectionMonitorName,
-        ConnectionMonitorInner parameters) {
-        return beginCreateOrUpdateWithoutPollingAsync(
-                resourceGroupName, networkWatcherName, connectionMonitorName, parameters)
-            .block();
-    }
-
-    /**
-     * Create or update a connection monitor.
-     *
-     * @param resourceGroupName The name of the resource group containing Network Watcher.
-     * @param networkWatcherName The name of the Network Watcher resource.
-     * @param connectionMonitorName The name of the connection monitor.
-     * @param parameters Parameters that define the operation to create a connection monitor.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about the connection monitor.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ConnectionMonitorResultInner beginCreateOrUpdateWithoutPolling(
-        String resourceGroupName,
-        String networkWatcherName,
-        String connectionMonitorName,
-        ConnectionMonitorInner parameters,
-        Context context) {
-        return beginCreateOrUpdateWithoutPollingAsync(
-                resourceGroupName, networkWatcherName, connectionMonitorName, parameters, context)
-            .block();
-    }
-
-    /**
-     * Deletes the specified connection monitor.
-     *
-     * @param resourceGroupName The name of the resource group containing Network Watcher.
-     * @param networkWatcherName The name of the Network Watcher resource.
-     * @param connectionMonitorName The name of the connection monitor.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> beginDeleteWithoutPollingWithResponseAsync(
-        String resourceGroupName, String networkWatcherName, String connectionMonitorName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (networkWatcherName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter networkWatcherName is required and cannot be null."));
-        }
-        if (connectionMonitorName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter connectionMonitorName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2019-06-01";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .beginDeleteWithoutPolling(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            networkWatcherName,
-                            connectionMonitorName,
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
-
-    /**
-     * Deletes the specified connection monitor.
-     *
-     * @param resourceGroupName The name of the resource group containing Network Watcher.
-     * @param networkWatcherName The name of the Network Watcher resource.
-     * @param connectionMonitorName The name of the connection monitor.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> beginDeleteWithoutPollingWithResponseAsync(
-        String resourceGroupName, String networkWatcherName, String connectionMonitorName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (networkWatcherName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter networkWatcherName is required and cannot be null."));
-        }
-        if (connectionMonitorName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter connectionMonitorName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2019-06-01";
-        return service
-            .beginDeleteWithoutPolling(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                networkWatcherName,
-                connectionMonitorName,
-                apiVersion,
-                this.client.getSubscriptionId(),
-                context);
-    }
-
-    /**
-     * Deletes the specified connection monitor.
-     *
-     * @param resourceGroupName The name of the resource group containing Network Watcher.
-     * @param networkWatcherName The name of the Network Watcher resource.
-     * @param connectionMonitorName The name of the connection monitor.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> beginDeleteWithoutPollingAsync(
-        String resourceGroupName, String networkWatcherName, String connectionMonitorName) {
-        return beginDeleteWithoutPollingWithResponseAsync(resourceGroupName, networkWatcherName, connectionMonitorName)
-            .flatMap((Response<Void> res) -> Mono.empty());
-    }
-
-    /**
-     * Deletes the specified connection monitor.
-     *
-     * @param resourceGroupName The name of the resource group containing Network Watcher.
-     * @param networkWatcherName The name of the Network Watcher resource.
-     * @param connectionMonitorName The name of the connection monitor.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> beginDeleteWithoutPollingAsync(
-        String resourceGroupName, String networkWatcherName, String connectionMonitorName, Context context) {
-        return beginDeleteWithoutPollingWithResponseAsync(
-                resourceGroupName, networkWatcherName, connectionMonitorName, context)
-            .flatMap((Response<Void> res) -> Mono.empty());
-    }
-
-    /**
-     * Deletes the specified connection monitor.
-     *
-     * @param resourceGroupName The name of the resource group containing Network Watcher.
-     * @param networkWatcherName The name of the Network Watcher resource.
-     * @param connectionMonitorName The name of the connection monitor.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void beginDeleteWithoutPolling(
-        String resourceGroupName, String networkWatcherName, String connectionMonitorName) {
-        beginDeleteWithoutPollingAsync(resourceGroupName, networkWatcherName, connectionMonitorName).block();
-    }
-
-    /**
-     * Deletes the specified connection monitor.
-     *
-     * @param resourceGroupName The name of the resource group containing Network Watcher.
-     * @param networkWatcherName The name of the Network Watcher resource.
-     * @param connectionMonitorName The name of the connection monitor.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void beginDeleteWithoutPolling(
-        String resourceGroupName, String networkWatcherName, String connectionMonitorName, Context context) {
-        beginDeleteWithoutPollingAsync(resourceGroupName, networkWatcherName, connectionMonitorName, context).block();
-    }
-
-    /**
-     * Stops the specified connection monitor.
-     *
-     * @param resourceGroupName The name of the resource group containing Network Watcher.
-     * @param networkWatcherName The name of the Network Watcher resource.
-     * @param connectionMonitorName The name of the connection monitor.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> beginStopWithoutPollingWithResponseAsync(
-        String resourceGroupName, String networkWatcherName, String connectionMonitorName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (networkWatcherName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter networkWatcherName is required and cannot be null."));
-        }
-        if (connectionMonitorName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter connectionMonitorName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2019-06-01";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .beginStopWithoutPolling(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            networkWatcherName,
-                            connectionMonitorName,
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
-
-    /**
-     * Stops the specified connection monitor.
-     *
-     * @param resourceGroupName The name of the resource group containing Network Watcher.
-     * @param networkWatcherName The name of the Network Watcher resource.
-     * @param connectionMonitorName The name of the connection monitor.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> beginStopWithoutPollingWithResponseAsync(
-        String resourceGroupName, String networkWatcherName, String connectionMonitorName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (networkWatcherName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter networkWatcherName is required and cannot be null."));
-        }
-        if (connectionMonitorName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter connectionMonitorName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2019-06-01";
-        return service
-            .beginStopWithoutPolling(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                networkWatcherName,
-                connectionMonitorName,
-                apiVersion,
-                this.client.getSubscriptionId(),
-                context);
-    }
-
-    /**
-     * Stops the specified connection monitor.
-     *
-     * @param resourceGroupName The name of the resource group containing Network Watcher.
-     * @param networkWatcherName The name of the Network Watcher resource.
-     * @param connectionMonitorName The name of the connection monitor.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> beginStopWithoutPollingAsync(
-        String resourceGroupName, String networkWatcherName, String connectionMonitorName) {
-        return beginStopWithoutPollingWithResponseAsync(resourceGroupName, networkWatcherName, connectionMonitorName)
-            .flatMap((Response<Void> res) -> Mono.empty());
-    }
-
-    /**
-     * Stops the specified connection monitor.
-     *
-     * @param resourceGroupName The name of the resource group containing Network Watcher.
-     * @param networkWatcherName The name of the Network Watcher resource.
-     * @param connectionMonitorName The name of the connection monitor.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> beginStopWithoutPollingAsync(
-        String resourceGroupName, String networkWatcherName, String connectionMonitorName, Context context) {
-        return beginStopWithoutPollingWithResponseAsync(
-                resourceGroupName, networkWatcherName, connectionMonitorName, context)
-            .flatMap((Response<Void> res) -> Mono.empty());
-    }
-
-    /**
-     * Stops the specified connection monitor.
-     *
-     * @param resourceGroupName The name of the resource group containing Network Watcher.
-     * @param networkWatcherName The name of the Network Watcher resource.
-     * @param connectionMonitorName The name of the connection monitor.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void beginStopWithoutPolling(
-        String resourceGroupName, String networkWatcherName, String connectionMonitorName) {
-        beginStopWithoutPollingAsync(resourceGroupName, networkWatcherName, connectionMonitorName).block();
-    }
-
-    /**
-     * Stops the specified connection monitor.
-     *
-     * @param resourceGroupName The name of the resource group containing Network Watcher.
-     * @param networkWatcherName The name of the Network Watcher resource.
-     * @param connectionMonitorName The name of the connection monitor.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void beginStopWithoutPolling(
-        String resourceGroupName, String networkWatcherName, String connectionMonitorName, Context context) {
-        beginStopWithoutPollingAsync(resourceGroupName, networkWatcherName, connectionMonitorName, context).block();
-    }
-
-    /**
-     * Starts the specified connection monitor.
-     *
-     * @param resourceGroupName The name of the resource group containing Network Watcher.
-     * @param networkWatcherName The name of the Network Watcher resource.
-     * @param connectionMonitorName The name of the connection monitor.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> beginStartWithoutPollingWithResponseAsync(
-        String resourceGroupName, String networkWatcherName, String connectionMonitorName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (networkWatcherName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter networkWatcherName is required and cannot be null."));
-        }
-        if (connectionMonitorName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter connectionMonitorName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2019-06-01";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .beginStartWithoutPolling(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            networkWatcherName,
-                            connectionMonitorName,
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
-
-    /**
-     * Starts the specified connection monitor.
-     *
-     * @param resourceGroupName The name of the resource group containing Network Watcher.
-     * @param networkWatcherName The name of the Network Watcher resource.
-     * @param connectionMonitorName The name of the connection monitor.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> beginStartWithoutPollingWithResponseAsync(
-        String resourceGroupName, String networkWatcherName, String connectionMonitorName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (networkWatcherName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter networkWatcherName is required and cannot be null."));
-        }
-        if (connectionMonitorName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter connectionMonitorName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2019-06-01";
-        return service
-            .beginStartWithoutPolling(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                networkWatcherName,
-                connectionMonitorName,
-                apiVersion,
-                this.client.getSubscriptionId(),
-                context);
-    }
-
-    /**
-     * Starts the specified connection monitor.
-     *
-     * @param resourceGroupName The name of the resource group containing Network Watcher.
-     * @param networkWatcherName The name of the Network Watcher resource.
-     * @param connectionMonitorName The name of the connection monitor.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> beginStartWithoutPollingAsync(
-        String resourceGroupName, String networkWatcherName, String connectionMonitorName) {
-        return beginStartWithoutPollingWithResponseAsync(resourceGroupName, networkWatcherName, connectionMonitorName)
-            .flatMap((Response<Void> res) -> Mono.empty());
-    }
-
-    /**
-     * Starts the specified connection monitor.
-     *
-     * @param resourceGroupName The name of the resource group containing Network Watcher.
-     * @param networkWatcherName The name of the Network Watcher resource.
-     * @param connectionMonitorName The name of the connection monitor.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> beginStartWithoutPollingAsync(
-        String resourceGroupName, String networkWatcherName, String connectionMonitorName, Context context) {
-        return beginStartWithoutPollingWithResponseAsync(
-                resourceGroupName, networkWatcherName, connectionMonitorName, context)
-            .flatMap((Response<Void> res) -> Mono.empty());
-    }
-
-    /**
-     * Starts the specified connection monitor.
-     *
-     * @param resourceGroupName The name of the resource group containing Network Watcher.
-     * @param networkWatcherName The name of the Network Watcher resource.
-     * @param connectionMonitorName The name of the connection monitor.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void beginStartWithoutPolling(
-        String resourceGroupName, String networkWatcherName, String connectionMonitorName) {
-        beginStartWithoutPollingAsync(resourceGroupName, networkWatcherName, connectionMonitorName).block();
-    }
-
-    /**
-     * Starts the specified connection monitor.
-     *
-     * @param resourceGroupName The name of the resource group containing Network Watcher.
-     * @param networkWatcherName The name of the Network Watcher resource.
-     * @param connectionMonitorName The name of the connection monitor.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void beginStartWithoutPolling(
-        String resourceGroupName, String networkWatcherName, String connectionMonitorName, Context context) {
-        beginStartWithoutPollingAsync(resourceGroupName, networkWatcherName, connectionMonitorName, context).block();
-    }
-
-    /**
-     * Query a snapshot of the most recent connection states.
-     *
-     * @param resourceGroupName The name of the resource group containing Network Watcher.
-     * @param networkWatcherName The name of the Network Watcher resource.
-     * @param connectionMonitorName The name given to the connection monitor.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of connection states snapshots.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ConnectionMonitorQueryResultInner>> beginQueryWithoutPollingWithResponseAsync(
-        String resourceGroupName, String networkWatcherName, String connectionMonitorName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (networkWatcherName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter networkWatcherName is required and cannot be null."));
-        }
-        if (connectionMonitorName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter connectionMonitorName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2019-06-01";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .beginQueryWithoutPolling(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            networkWatcherName,
-                            connectionMonitorName,
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
-
-    /**
-     * Query a snapshot of the most recent connection states.
-     *
-     * @param resourceGroupName The name of the resource group containing Network Watcher.
-     * @param networkWatcherName The name of the Network Watcher resource.
-     * @param connectionMonitorName The name given to the connection monitor.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of connection states snapshots.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ConnectionMonitorQueryResultInner>> beginQueryWithoutPollingWithResponseAsync(
-        String resourceGroupName, String networkWatcherName, String connectionMonitorName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (networkWatcherName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter networkWatcherName is required and cannot be null."));
-        }
-        if (connectionMonitorName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter connectionMonitorName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2019-06-01";
-        return service
-            .beginQueryWithoutPolling(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                networkWatcherName,
-                connectionMonitorName,
-                apiVersion,
-                this.client.getSubscriptionId(),
-                context);
-    }
-
-    /**
-     * Query a snapshot of the most recent connection states.
-     *
-     * @param resourceGroupName The name of the resource group containing Network Watcher.
-     * @param networkWatcherName The name of the Network Watcher resource.
-     * @param connectionMonitorName The name given to the connection monitor.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of connection states snapshots.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ConnectionMonitorQueryResultInner> beginQueryWithoutPollingAsync(
-        String resourceGroupName, String networkWatcherName, String connectionMonitorName) {
-        return beginQueryWithoutPollingWithResponseAsync(resourceGroupName, networkWatcherName, connectionMonitorName)
-            .flatMap(
-                (Response<ConnectionMonitorQueryResultInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Query a snapshot of the most recent connection states.
-     *
-     * @param resourceGroupName The name of the resource group containing Network Watcher.
-     * @param networkWatcherName The name of the Network Watcher resource.
-     * @param connectionMonitorName The name given to the connection monitor.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of connection states snapshots.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ConnectionMonitorQueryResultInner> beginQueryWithoutPollingAsync(
-        String resourceGroupName, String networkWatcherName, String connectionMonitorName, Context context) {
-        return beginQueryWithoutPollingWithResponseAsync(
-                resourceGroupName, networkWatcherName, connectionMonitorName, context)
-            .flatMap(
-                (Response<ConnectionMonitorQueryResultInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Query a snapshot of the most recent connection states.
-     *
-     * @param resourceGroupName The name of the resource group containing Network Watcher.
-     * @param networkWatcherName The name of the Network Watcher resource.
-     * @param connectionMonitorName The name given to the connection monitor.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of connection states snapshots.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ConnectionMonitorQueryResultInner beginQueryWithoutPolling(
-        String resourceGroupName, String networkWatcherName, String connectionMonitorName) {
-        return beginQueryWithoutPollingAsync(resourceGroupName, networkWatcherName, connectionMonitorName).block();
-    }
-
-    /**
-     * Query a snapshot of the most recent connection states.
-     *
-     * @param resourceGroupName The name of the resource group containing Network Watcher.
-     * @param networkWatcherName The name of the Network Watcher resource.
-     * @param connectionMonitorName The name given to the connection monitor.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of connection states snapshots.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ConnectionMonitorQueryResultInner beginQueryWithoutPolling(
-        String resourceGroupName, String networkWatcherName, String connectionMonitorName, Context context) {
-        return beginQueryWithoutPollingAsync(resourceGroupName, networkWatcherName, connectionMonitorName, context)
-            .block();
     }
 }

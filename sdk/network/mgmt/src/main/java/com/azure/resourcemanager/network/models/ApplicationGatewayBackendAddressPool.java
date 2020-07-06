@@ -29,19 +29,19 @@ public class ApplicationGatewayBackendAddressPool extends SubResource {
     /*
      * A unique read-only string that changes whenever the resource is updated.
      */
-    @JsonProperty(value = "etag")
+    @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
 
     /*
      * Type of the resource.
      */
-    @JsonProperty(value = "type")
+    @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
     /*
      * Collection of references to IPs defined in network interfaces.
      */
-    @JsonProperty(value = "properties.backendIPConfigurations")
+    @JsonProperty(value = "properties.backendIPConfigurations", access = JsonProperty.Access.WRITE_ONLY)
     private List<NetworkInterfaceIpConfigurationInner> backendIpConfigurations;
 
     /*
@@ -51,11 +51,10 @@ public class ApplicationGatewayBackendAddressPool extends SubResource {
     private List<ApplicationGatewayBackendAddress> backendAddresses;
 
     /*
-     * Provisioning state of the backend address pool resource. Possible values
-     * are: 'Updating', 'Deleting', and 'Failed'.
+     * The provisioning state of the backend address pool resource.
      */
-    @JsonProperty(value = "properties.provisioningState")
-    private String provisioningState;
+    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
+    private ProvisioningState provisioningState;
 
     /**
      * Get the name property: Name of the backend address pool that is unique within an Application Gateway.
@@ -87,17 +86,6 @@ public class ApplicationGatewayBackendAddressPool extends SubResource {
     }
 
     /**
-     * Set the etag property: A unique read-only string that changes whenever the resource is updated.
-     *
-     * @param etag the etag value to set.
-     * @return the ApplicationGatewayBackendAddressPool object itself.
-     */
-    public ApplicationGatewayBackendAddressPool withEtag(String etag) {
-        this.etag = etag;
-        return this;
-    }
-
-    /**
      * Get the type property: Type of the resource.
      *
      * @return the type value.
@@ -107,35 +95,12 @@ public class ApplicationGatewayBackendAddressPool extends SubResource {
     }
 
     /**
-     * Set the type property: Type of the resource.
-     *
-     * @param type the type value to set.
-     * @return the ApplicationGatewayBackendAddressPool object itself.
-     */
-    public ApplicationGatewayBackendAddressPool withType(String type) {
-        this.type = type;
-        return this;
-    }
-
-    /**
      * Get the backendIpConfigurations property: Collection of references to IPs defined in network interfaces.
      *
      * @return the backendIpConfigurations value.
      */
     public List<NetworkInterfaceIpConfigurationInner> backendIpConfigurations() {
         return this.backendIpConfigurations;
-    }
-
-    /**
-     * Set the backendIpConfigurations property: Collection of references to IPs defined in network interfaces.
-     *
-     * @param backendIpConfigurations the backendIpConfigurations value to set.
-     * @return the ApplicationGatewayBackendAddressPool object itself.
-     */
-    public ApplicationGatewayBackendAddressPool withBackendIpConfigurations(
-        List<NetworkInterfaceIpConfigurationInner> backendIpConfigurations) {
-        this.backendIpConfigurations = backendIpConfigurations;
-        return this;
     }
 
     /**
@@ -160,25 +125,12 @@ public class ApplicationGatewayBackendAddressPool extends SubResource {
     }
 
     /**
-     * Get the provisioningState property: Provisioning state of the backend address pool resource. Possible values are:
-     * 'Updating', 'Deleting', and 'Failed'.
+     * Get the provisioningState property: The provisioning state of the backend address pool resource.
      *
      * @return the provisioningState value.
      */
-    public String provisioningState() {
+    public ProvisioningState provisioningState() {
         return this.provisioningState;
-    }
-
-    /**
-     * Set the provisioningState property: Provisioning state of the backend address pool resource. Possible values are:
-     * 'Updating', 'Deleting', and 'Failed'.
-     *
-     * @param provisioningState the provisioningState value to set.
-     * @return the ApplicationGatewayBackendAddressPool object itself.
-     */
-    public ApplicationGatewayBackendAddressPool withProvisioningState(String provisioningState) {
-        this.provisioningState = provisioningState;
-        return this;
     }
 
     /**

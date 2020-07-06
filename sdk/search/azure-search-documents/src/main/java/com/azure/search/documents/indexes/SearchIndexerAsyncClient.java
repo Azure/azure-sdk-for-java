@@ -96,6 +96,12 @@ public class SearchIndexerAsyncClient {
     /**
      * Creates a new Azure Cognitive Search data source or updates a data source if it already exists.
      *
+     * <p><strong>Code Sample</strong></p>
+     *
+     * <p> Create or update search indexer data source connection named "dataSource".  </p>
+     *
+     * {@codesnippet com.azure.search.documents.indexes.SearchIndexerAsyncClient.createOrUpdateDataSourceConnection#SearchIndexerDataSourceConnection}
+     *
      * @param dataSource The definition of the {@link SearchIndexerDataSourceConnection} to create or update.
      * @return the data source that was created or updated.
      */
@@ -107,6 +113,12 @@ public class SearchIndexerAsyncClient {
 
     /**
      * Creates a new Azure Cognitive Search data source or updates a data source if it already exists.
+     *
+     * <p><strong>Code Sample</strong></p>
+     *
+     * <p> Create or update search indexer data source connection named "dataSource". </p>
+     *
+     * {@codesnippet com.azure.search.documents.indexes.SearchIndexerAsyncClient.createOrUpdateDataSourceConnectionWithResponse#SearchIndexerDataSourceConnection-boolean}
      *
      * @param dataSource The definition of the {@link SearchIndexerDataSourceConnection} to create or update.
      * @param onlyIfUnchanged {@code true} to update if the {@code dataSource} is the same as the current service value.
@@ -144,6 +156,12 @@ public class SearchIndexerAsyncClient {
     /**
      * Creates a new Azure Cognitive Search data source
      *
+     * <p><strong>Code Sample</strong></p>
+     *
+     * <p> Create search indexer data source connection named "dataSource".  </p>
+     *
+     * {@codesnippet com.azure.search.documents.indexes.SearchIndexerAsyncClient.createOrUpdateDataSourceConnection#SearchIndexerDataSourceConnection}
+     *
      * @param dataSource The definition of the dataSource to create.
      * @return a Mono which performs the network request upon subscription.
      */
@@ -155,6 +173,12 @@ public class SearchIndexerAsyncClient {
 
     /**
      * Creates a new Azure Cognitive Search data source
+     *
+     * <p><strong>Code Sample</strong></p>
+     *
+     * <p> Create search indexer data source connection named "dataSource". </p>
+     *
+     * {@codesnippet com.azure.search.documents.indexes.SearchIndexerAsyncClient.createDataSourceConnectionWithResponse#SearchIndexerDataSourceConnection}
      *
      * @param dataSource The definition of the {@link SearchIndexerDataSourceConnection} to create.
      * @return a Mono which performs the network request upon subscription.
@@ -181,6 +205,12 @@ public class SearchIndexerAsyncClient {
     /**
      * Retrieves a DataSource from an Azure Cognitive Search service.
      *
+     * <p><strong>Code Sample</strong></p>
+     *
+     * <p> Get search indexer data source connection named "dataSource". </p>
+     *
+     * {@codesnippet com.azure.search.documents.indexes.SearchIndexerAsyncClient.getDataSourceConnection#String}
+     *
      * @param dataSourceName the name of the {@link SearchIndexerDataSourceConnection} to retrieve.
      * @return the DataSource.
      */
@@ -191,6 +221,12 @@ public class SearchIndexerAsyncClient {
 
     /**
      * Retrieves a DataSource from an Azure Cognitive Search service.
+     *
+     * <p><strong>Code Sample</strong></p>
+     *
+     * <p> Get search indexer data source connection named "dataSource". </p>
+     *
+     * {@codesnippet com.azure.search.documents.indexes.SearchIndexerAsyncClient.getDataSourceConnectionWithResponse#String}
      *
      * @param dataSourceName the name of the {@link SearchIndexerDataSourceConnection} to retrieve.
      * @return a response containing the DataSource.
@@ -217,6 +253,12 @@ public class SearchIndexerAsyncClient {
     /**
      * List all DataSources from an Azure Cognitive Search service.
      *
+     * <p><strong>Code Sample</strong></p>
+     *
+     * <p> List all search indexer data source connections. </p>
+     *
+     * {@codesnippet com.azure.search.documents.indexes.SearchIndexerAsyncClient.listDataSourceConnections}
+     *
      * @return a list of DataSources
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -241,6 +283,12 @@ public class SearchIndexerAsyncClient {
 
     /**
      * List all DataSource names from an Azure Cognitive Search service.
+     *
+     * <p><strong>Code Sample</strong></p>
+     *
+     * <p> List all search indexer data source connection names. </p>
+     *
+     * {@codesnippet com.azure.search.documents.indexes.SearchIndexerAsyncClient.listDataSourceConnectionNames}
      *
      * @return a list of DataSource names
      */
@@ -273,6 +321,12 @@ public class SearchIndexerAsyncClient {
     /**
      * Delete a DataSource
      *
+     * <p><strong>Code Sample</strong></p>
+     *
+     * <p> Delete the search indexer data source connection named "dataSource". </p>
+     *
+     * {@codesnippet com.azure.search.documents.indexes.SearchIndexerAsyncClient.deleteDataSourceConnection#String}
+     *
      * @param dataSourceName the name of the {@link SearchIndexerDataSourceConnection} for deletion
      * @return a void Mono
      */
@@ -284,6 +338,12 @@ public class SearchIndexerAsyncClient {
 
     /**
      * Deletes an Azure Cognitive Search data source.
+     *
+     * <p><strong>Code Sample</strong></p>
+     *
+     * <p> Delete the search indexer data source connection named "dataSource". </p>
+     *
+     * {@codesnippet com.azure.search.documents.indexes.SearchIndexerAsyncClient.deleteDataSourceConnectionWithResponse#SearchIndexerDataSourceConnection-boolean}
      *
      * @param dataSource The {@link SearchIndexerDataSourceConnection} to delete.
      * @param onlyIfUnchanged {@code true} to delete if the {@code dataSource} is the same as the current service value.
@@ -318,6 +378,12 @@ public class SearchIndexerAsyncClient {
     /**
      * Creates a new Azure Cognitive Search indexer.
      *
+     * <p><strong>Code Sample</strong></p>
+     *
+     * <p> Create search indexer named "searchIndexer". </p>
+     *
+     * {@codesnippet com.azure.search.documents.indexes.SearchIndexerAsyncClient.createIndexer#SearchIndexer}
+     *
      * @param indexer definition of the indexer to create.
      * @return the created Indexer.
      */
@@ -328,6 +394,12 @@ public class SearchIndexerAsyncClient {
 
     /**
      * Creates a new Azure Cognitive Search indexer.
+     *
+     * <p><strong>Code Sample</strong></p>
+     *
+     * <p> Create search indexer named "searchIndexer". </p>
+     *
+     * {@codesnippet com.azure.search.documents.indexes.SearchIndexerAsyncClient.createIndexerWithResponse#SearchIndexer}
      *
      * @param indexer definition of the indexer to create
      * @return a response containing the created Indexer.
@@ -353,6 +425,12 @@ public class SearchIndexerAsyncClient {
     /**
      * Creates a new Azure Cognitive Search indexer or updates an indexer if it already exists.
      *
+     * <p><strong>Code Sample</strong></p>
+     *
+     * <p> Create or update search indexer named "searchIndexer". </p>
+     *
+     * {@codesnippet com.azure.search.documents.indexes.SearchIndexerAsyncClient.createOrUpdateIndexer#SearchIndexer}
+     *
      * @param indexer The definition of the indexer to create or update.
      * @return a response containing the created Indexer.
      */
@@ -363,6 +441,12 @@ public class SearchIndexerAsyncClient {
 
     /**
      * Creates a new Azure Cognitive Search indexer or updates an indexer if it already exists.
+     *
+     * <p><strong>Code Sample</strong></p>
+     *
+     * <p> Create or update search indexer named "searchIndexer". </p>
+     *
+     * {@codesnippet com.azure.search.documents.indexes.SearchIndexerAsyncClient.createOrUpdateIndexerWithResponse#SearchIndexer-boolean}
      *
      * @param indexer the definition of the {@link SearchIndexer} to create or update
      * @param onlyIfUnchanged {@code true} to update if the {@code indexer} is the same as the current service value.
@@ -396,6 +480,12 @@ public class SearchIndexerAsyncClient {
     /**
      * Retrieves an indexer definition.
      *
+     * <p><strong>Code Sample</strong></p>
+     *
+     * <p> Get search indexer with name "searchIndexer". </p>
+     *
+     * {@codesnippet com.azure.search.documents.indexes.SearchIndexerAsyncClient.getIndexer#String}
+     *
      * @param indexerName the name of the indexer to retrieve
      * @return the indexer.
      */
@@ -406,6 +496,12 @@ public class SearchIndexerAsyncClient {
 
     /**
      * Retrieves an indexer definition.
+     *
+     * <p><strong>Code Sample</strong></p>
+     *
+     * <p> Get search indexer with name "searchIndexer". </p>
+     *
+     * {@codesnippet com.azure.search.documents.indexes.SearchIndexerAsyncClient.getIndexerWithResponse#String}
      *
      * @param indexerName the name of the indexer to retrieve
      * @return a response containing the indexer.
@@ -429,6 +525,12 @@ public class SearchIndexerAsyncClient {
 
     /**
      * Lists all indexers available for an Azure Cognitive Search service.
+     *
+     * <p><strong>Code Sample</strong></p>
+     *
+     * <p> List all search indexers. </p>
+     *
+     * {@codesnippet com.azure.search.documents.indexes.SearchIndexerAsyncClient.listIndexers}
      *
      * @return a response containing all Indexers from the Search service.
      */
@@ -454,6 +556,12 @@ public class SearchIndexerAsyncClient {
 
     /**
      * Lists all indexers available for an Azure Cognitive Search service.
+     *
+     * <p><strong>Code Sample</strong></p>
+     *
+     * <p> List all search indexer names. </p>
+     *
+     * {@codesnippet com.azure.search.documents.indexes.SearchIndexerAsyncClient.listIndexerNames}
      *
      * @return a response containing all Indexers from the Search service.
      */
@@ -487,6 +595,12 @@ public class SearchIndexerAsyncClient {
     /**
      * Deletes an Azure Cognitive Search indexer.
      *
+     * <p><strong>Code Sample</strong></p>
+     *
+     * <p> Delete search indexer named "searchIndexer". </p>
+     *
+     * {@codesnippet com.azure.search.documents.indexes.SearchIndexerAsyncClient.deleteIndexer#String}
+     *
      * @param indexerName the name of the indexer to delete
      * @return a response signalling completion.
      */
@@ -498,6 +612,12 @@ public class SearchIndexerAsyncClient {
 
     /**
      * Deletes an Azure Cognitive Search indexer.
+     *
+     * <p><strong>Code Sample</strong></p>
+     *
+     * <p> Delete search indexer named "searchIndexer".  </p>
+     *
+     * {@codesnippet com.azure.search.documents.indexes.SearchIndexerAsyncClient.deleteIndexerWithResponse#SearchIndexer-boolean}
      *
      * @param indexer the {@link SearchIndexer} to delete
      * @param onlyIfUnchanged {@code true} to delete if the {@code indexer} is the same as the current service value.
@@ -535,6 +655,12 @@ public class SearchIndexerAsyncClient {
     /**
      * Resets the change tracking state associated with an indexer.
      *
+     * <p><strong>Code Sample</strong></p>
+     *
+     * <p> Reset search indexer named "searchIndexer".  </p>
+     *
+     * {@codesnippet com.azure.search.documents.indexes.SearchIndexerAsyncClient.resetIndexer#String}
+     *
      * @param indexerName the name of the indexer to reset
      * @return a response signalling completion.
      */
@@ -545,6 +671,12 @@ public class SearchIndexerAsyncClient {
 
     /**
      * Resets the change tracking state associated with an indexer.
+     *
+     * <p><strong>Code Sample</strong></p>
+     *
+     * <p> Reset search indexer named "searchIndexer".  </p>
+     *
+     * {@codesnippet com.azure.search.documents.indexes.SearchIndexerAsyncClient.resetIndexerWithResponse#String}
      *
      * @param indexerName the name of the indexer to reset
      * @return a response signalling completion.
@@ -568,6 +700,12 @@ public class SearchIndexerAsyncClient {
     /**
      * Runs an indexer on-demand.
      *
+     * <p><strong>Code Sample</strong></p>
+     *
+     * <p> Run search indexer named "searchIndexer".  </p>
+     *
+     * {@codesnippet com.azure.search.documents.indexes.SearchIndexerAsyncClient.runIndexer#String}
+     *
      * @param indexerName the name of the indexer to run
      * @return a response signalling completion.
      */
@@ -578,6 +716,12 @@ public class SearchIndexerAsyncClient {
 
     /**
      * Runs an indexer on-demand.
+     *
+     * <p><strong>Code Sample</strong></p>
+     *
+     * <p> Run search indexer named "searchIndexer".  </p>
+     *
+     * {@codesnippet com.azure.search.documents.indexes.SearchIndexerAsyncClient.runIndexerWithResponse#String}
      *
      * @param indexerName the name of the indexer to run
      * @return a response signalling completion.
@@ -601,6 +745,12 @@ public class SearchIndexerAsyncClient {
     /**
      * Returns the current status and execution history of an indexer.
      *
+     * <p><strong>Code Sample</strong></p>
+     *
+     * <p> Get status for search indexer "searchIndexer".  </p>
+     *
+     * {@codesnippet com.azure.search.documents.indexes.SearchIndexerAsyncClient.getIndexerStatus#String}
+     *
      * @param indexerName the name of the indexer for which to retrieve status
      * @return the indexer execution info.
      */
@@ -611,6 +761,12 @@ public class SearchIndexerAsyncClient {
 
     /**
      * Returns the current status and execution history of an indexer.
+     *
+     * <p><strong>Code Sample</strong></p>
+     *
+     * <p> Get search indexer status.  </p>
+     *
+     * {@codesnippet com.azure.search.documents.indexes.SearchIndexerAsyncClient.getIndexerStatusWithResponse#String}
      *
      * @param indexerName the name of the indexer for which to retrieve status
      * @return a response with the indexer execution info.
@@ -636,6 +792,12 @@ public class SearchIndexerAsyncClient {
     /**
      * Creates a new skillset in an Azure Cognitive Search service.
      *
+     * <p><strong>Code Sample</strong></p>
+     *
+     * <p> Create search indexer skillset "searchIndexerSkillset". </p>
+     *
+     * {@codesnippet com.azure.search.documents.indexes.SearchIndexerAsyncClient.createSkillset#SearchIndexerSkillset}
+     *
      * @param skillset definition of the skillset containing one or more cognitive skills
      * @return the created Skillset.
      */
@@ -646,6 +808,12 @@ public class SearchIndexerAsyncClient {
 
     /**
      * Creates a new skillset in an Azure Cognitive Search service.
+     *
+     * <p><strong>Code Sample</strong></p>
+     *
+     * <p> Create search indexer skillset "searchIndexerSkillset". </p>
+     *
+     * {@codesnippet com.azure.search.documents.indexes.SearchIndexerAsyncClient.createSkillsetWithResponse#SearchIndexerSkillset}
      *
      * @param skillset definition of the skillset containing one or more cognitive skills
      * @return a response containing the created Skillset.
@@ -672,6 +840,12 @@ public class SearchIndexerAsyncClient {
     /**
      * Retrieves a skillset definition.
      *
+     * <p><strong>Code Sample</strong></p>
+     *
+     * <p> Get search indexer skillset "searchIndexerSkillset". </p>
+     *
+     * {@codesnippet com.azure.search.documents.indexes.SearchIndexerAsyncClient.getSearchIndexerSkillset#String}
+     *
      * @param skillsetName the name of the skillset to retrieve
      * @return the Skillset.
      */
@@ -682,6 +856,12 @@ public class SearchIndexerAsyncClient {
 
     /**
      * Retrieves a skillset definition.
+     *
+     * <p><strong>Code Sample</strong></p>
+     *
+     * <p> Get search indexer skillset "searchIndexerSkillset". </p>
+     *
+     * {@codesnippet com.azure.search.documents.indexes.SearchIndexerAsyncClient.getSkillsetWithResponse#String}
      *
      * @param skillsetName the name of the skillset to retrieve
      * @return a response containing the Skillset.
@@ -705,6 +885,12 @@ public class SearchIndexerAsyncClient {
 
     /**
      * Lists all skillsets available for an Azure Cognitive Search service.
+     *
+     * <p><strong>Code Sample</strong></p>
+     *
+     * <p> List all search indexer skillsets. </p>
+     *
+     * {@codesnippet com.azure.search.documents.indexes.SearchIndexerAsyncClient.listSkillsets}
      *
      * @return a reactive response emitting the list of skillsets.
      */
@@ -730,6 +916,12 @@ public class SearchIndexerAsyncClient {
 
     /**
      * Lists all skillset names for an Azure Cognitive Search service.
+     *
+     * <p><strong>Code Sample</strong></p>
+     *
+     * <p> List all search indexer skillset names. </p>
+     *
+     * {@codesnippet com.azure.search.documents.indexes.SearchIndexerAsyncClient.listSkillsetNames}
      *
      * @return a reactive response emitting the list of skillset names.
      */
@@ -762,6 +954,12 @@ public class SearchIndexerAsyncClient {
     /**
      * Creates a new Azure Cognitive Search skillset or updates a skillset if it already exists.
      *
+     * <p><strong>Code Sample</strong></p>
+     *
+     * <p> Create or update search indexer skillset "searchIndexerSkillset". </p>
+     *
+     * {@codesnippet com.azure.search.documents.indexes.SearchIndexerAsyncClient.createOrUpdateIndexerSkillset#SearchIndexerSkillset}
+     *
      * @param skillset the definition of the skillset to create or update
      * @return the skillset that was created or updated.
      */
@@ -772,6 +970,12 @@ public class SearchIndexerAsyncClient {
 
     /**
      * Creates a new Azure Cognitive Search skillset or updates a skillset if it already exists.
+     *
+     * <p><strong>Code Sample</strong></p>
+     *
+     * <p> Create or update search indexer skillset "searchIndexerSkillset". </p>
+     *
+     * {@codesnippet com.azure.search.documents.indexes.SearchIndexerAsyncClient.createOrUpdateSkillsetWithResponse#SearchIndexerSkillset-boolean}
      *
      * @param skillset the definition of the skillset to create or update
      * @param onlyIfUnchanged {@code true} to update if the {@code skillset} is the same as the current service value.
@@ -805,6 +1009,12 @@ public class SearchIndexerAsyncClient {
     /**
      * Deletes a cognitive skillset in an Azure Cognitive Search service.
      *
+     * <p><strong>Code Sample</strong></p>
+     *
+     * <p> Delete search indexer skillset "searchIndexerSkillset". </p>
+     *
+     * {@codesnippet com.azure.search.documents.indexes.SearchIndexerAsyncClient.deleteSkillset#String}
+     *
      * @param skillsetName the name of the skillset to delete
      * @return a response signalling completion.
      */
@@ -816,6 +1026,12 @@ public class SearchIndexerAsyncClient {
 
     /**
      * Deletes a cognitive skillset in an Azure Cognitive Search service.
+     *
+     * <p><strong>Code Sample</strong></p>
+     *
+     * <p> Delete search indexer skillset "searchIndexerSkillset". </p>
+     *
+     * {@codesnippet com.azure.search.documents.indexes.SearchIndexerAsyncClient.deleteSkillsetWithResponse#SearchIndexerSkillset-boolean}
      *
      * @param skillset the {@link SearchIndexerSkillset} to delete.
      * @param onlyIfUnchanged {@code true} to delete if the {@code skillset} is the same as the current service value.

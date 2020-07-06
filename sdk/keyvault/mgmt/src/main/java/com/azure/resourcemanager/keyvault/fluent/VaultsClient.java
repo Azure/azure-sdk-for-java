@@ -32,8 +32,8 @@ import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.util.polling.AsyncPollResponse;
 import com.azure.core.util.polling.PollerFlux;
+import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.keyvault.KeyVaultManagementClient;
 import com.azure.resourcemanager.keyvault.fluent.inner.CheckNameAvailabilityResultInner;
 import com.azure.resourcemanager.keyvault.fluent.inner.DeletedVaultInner;
@@ -239,35 +239,6 @@ public final class VaultsClient implements InnerSupportsGet<VaultInner>, InnerSu
             Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.KeyVault/vaults"
-                + "/{vaultName}")
-        @ExpectedResponses({200, 201})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<VaultInner>> beginCreateOrUpdateWithoutPolling(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("vaultName") String vaultName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @BodyParam("application/json") VaultCreateOrUpdateParameters parameters,
-            Context context);
-
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.KeyVault/locations/{location}/deletedVaults"
-                + "/{vaultName}/purge")
-        @ExpectedResponses({200, 202})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> beginPurgeDeletedWithoutPolling(
-            @HostParam("$host") String endpoint,
-            @PathParam("vaultName") String vaultName,
-            @PathParam("location") String location,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            Context context);
-
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -411,7 +382,7 @@ public final class VaultsClient implements InnerSupportsGet<VaultInner>, InnerSu
      * @return resource information with extended details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<VaultInner>, VaultInner> beginCreateOrUpdate(
+    public PollerFlux<PollResult<VaultInner>, VaultInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String vaultName, VaultCreateOrUpdateParameters parameters) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             createOrUpdateWithResponseAsync(resourceGroupName, vaultName, parameters);
@@ -434,7 +405,7 @@ public final class VaultsClient implements InnerSupportsGet<VaultInner>, InnerSu
      * @return resource information with extended details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<VaultInner>, VaultInner> beginCreateOrUpdate(
+    public PollerFlux<PollResult<VaultInner>, VaultInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String vaultName, VaultCreateOrUpdateParameters parameters, Context context) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             createOrUpdateWithResponseAsync(resourceGroupName, vaultName, parameters, context);
@@ -456,16 +427,46 @@ public final class VaultsClient implements InnerSupportsGet<VaultInner>, InnerSu
      * @return resource information with extended details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<VaultInner>, VaultInner> beginCreateOrUpdate(
+        String resourceGroupName, String vaultName, VaultCreateOrUpdateParameters parameters) {
+        return beginCreateOrUpdateAsync(resourceGroupName, vaultName, parameters).getSyncPoller();
+    }
+
+    /**
+     * Create or update a key vault in the specified subscription.
+     *
+     * @param resourceGroupName The name of the Resource Group to which the server belongs.
+     * @param vaultName Name of the vault.
+     * @param parameters Parameters for creating or updating a vault.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return resource information with extended details.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<VaultInner>, VaultInner> beginCreateOrUpdate(
+        String resourceGroupName, String vaultName, VaultCreateOrUpdateParameters parameters, Context context) {
+        return beginCreateOrUpdateAsync(resourceGroupName, vaultName, parameters, context).getSyncPoller();
+    }
+
+    /**
+     * Create or update a key vault in the specified subscription.
+     *
+     * @param resourceGroupName The name of the Resource Group to which the server belongs.
+     * @param vaultName Name of the vault.
+     * @param parameters Parameters for creating or updating a vault.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return resource information with extended details.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<VaultInner> createOrUpdateAsync(
         String resourceGroupName, String vaultName, VaultCreateOrUpdateParameters parameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, vaultName, parameters);
-        return this
-            .client
-            .<VaultInner, VaultInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), VaultInner.class, VaultInner.class)
+        return beginCreateOrUpdateAsync(resourceGroupName, vaultName, parameters)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -483,14 +484,9 @@ public final class VaultsClient implements InnerSupportsGet<VaultInner>, InnerSu
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<VaultInner> createOrUpdateAsync(
         String resourceGroupName, String vaultName, VaultCreateOrUpdateParameters parameters, Context context) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, vaultName, parameters, context);
-        return this
-            .client
-            .<VaultInner, VaultInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), VaultInner.class, VaultInner.class)
+        return beginCreateOrUpdateAsync(resourceGroupName, vaultName, parameters, context)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -2032,7 +2028,7 @@ public final class VaultsClient implements InnerSupportsGet<VaultInner>, InnerSu
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<Void>, Void> beginPurgeDeleted(String vaultName, String location) {
+    public PollerFlux<PollResult<Void>, Void> beginPurgeDeletedAsync(String vaultName, String location) {
         Mono<Response<Flux<ByteBuffer>>> mono = purgeDeletedWithResponseAsync(vaultName, location);
         return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
     }
@@ -2049,7 +2045,8 @@ public final class VaultsClient implements InnerSupportsGet<VaultInner>, InnerSu
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<Void>, Void> beginPurgeDeleted(String vaultName, String location, Context context) {
+    public PollerFlux<PollResult<Void>, Void> beginPurgeDeletedAsync(
+        String vaultName, String location, Context context) {
         Mono<Response<Flux<ByteBuffer>>> mono = purgeDeletedWithResponseAsync(vaultName, location, context);
         return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
     }
@@ -2065,13 +2062,39 @@ public final class VaultsClient implements InnerSupportsGet<VaultInner>, InnerSu
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<Void>, Void> beginPurgeDeleted(String vaultName, String location) {
+        return beginPurgeDeletedAsync(vaultName, location).getSyncPoller();
+    }
+
+    /**
+     * Permanently deletes the specified vault. aka Purges the deleted Azure key vault.
+     *
+     * @param vaultName The name of the soft-deleted vault.
+     * @param location The location of the soft-deleted vault.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<Void>, Void> beginPurgeDeleted(String vaultName, String location, Context context) {
+        return beginPurgeDeletedAsync(vaultName, location, context).getSyncPoller();
+    }
+
+    /**
+     * Permanently deletes the specified vault. aka Purges the deleted Azure key vault.
+     *
+     * @param vaultName The name of the soft-deleted vault.
+     * @param location The location of the soft-deleted vault.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> purgeDeletedAsync(String vaultName, String location) {
-        Mono<Response<Flux<ByteBuffer>>> mono = purgeDeletedWithResponseAsync(vaultName, location);
-        return this
-            .client
-            .<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class)
-            .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+        return beginPurgeDeletedAsync(vaultName, location).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -2087,12 +2110,9 @@ public final class VaultsClient implements InnerSupportsGet<VaultInner>, InnerSu
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> purgeDeletedAsync(String vaultName, String location, Context context) {
-        Mono<Response<Flux<ByteBuffer>>> mono = purgeDeletedWithResponseAsync(vaultName, location, context);
-        return this
-            .client
-            .<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class)
+        return beginPurgeDeletedAsync(vaultName, location, context)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -2453,343 +2473,6 @@ public final class VaultsClient implements InnerSupportsGet<VaultInner>, InnerSu
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CheckNameAvailabilityResultInner checkNameAvailability(String name, Context context) {
         return checkNameAvailabilityAsync(name, context).block();
-    }
-
-    /**
-     * Create or update a key vault in the specified subscription.
-     *
-     * @param resourceGroupName The name of the Resource Group to which the server belongs.
-     * @param vaultName Name of the vault.
-     * @param parameters Parameters for creating or updating a vault.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return resource information with extended details.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<VaultInner>> beginCreateOrUpdateWithoutPollingWithResponseAsync(
-        String resourceGroupName, String vaultName, VaultCreateOrUpdateParameters parameters) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (vaultName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter vaultName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (parameters == null) {
-            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
-        } else {
-            parameters.validate();
-        }
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .beginCreateOrUpdateWithoutPolling(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            vaultName,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            parameters,
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
-
-    /**
-     * Create or update a key vault in the specified subscription.
-     *
-     * @param resourceGroupName The name of the Resource Group to which the server belongs.
-     * @param vaultName Name of the vault.
-     * @param parameters Parameters for creating or updating a vault.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return resource information with extended details.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<VaultInner>> beginCreateOrUpdateWithoutPollingWithResponseAsync(
-        String resourceGroupName, String vaultName, VaultCreateOrUpdateParameters parameters, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (vaultName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter vaultName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (parameters == null) {
-            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
-        } else {
-            parameters.validate();
-        }
-        return service
-            .beginCreateOrUpdateWithoutPolling(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                vaultName,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                parameters,
-                context);
-    }
-
-    /**
-     * Create or update a key vault in the specified subscription.
-     *
-     * @param resourceGroupName The name of the Resource Group to which the server belongs.
-     * @param vaultName Name of the vault.
-     * @param parameters Parameters for creating or updating a vault.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return resource information with extended details.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<VaultInner> beginCreateOrUpdateWithoutPollingAsync(
-        String resourceGroupName, String vaultName, VaultCreateOrUpdateParameters parameters) {
-        return beginCreateOrUpdateWithoutPollingWithResponseAsync(resourceGroupName, vaultName, parameters)
-            .flatMap(
-                (Response<VaultInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Create or update a key vault in the specified subscription.
-     *
-     * @param resourceGroupName The name of the Resource Group to which the server belongs.
-     * @param vaultName Name of the vault.
-     * @param parameters Parameters for creating or updating a vault.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return resource information with extended details.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<VaultInner> beginCreateOrUpdateWithoutPollingAsync(
-        String resourceGroupName, String vaultName, VaultCreateOrUpdateParameters parameters, Context context) {
-        return beginCreateOrUpdateWithoutPollingWithResponseAsync(resourceGroupName, vaultName, parameters, context)
-            .flatMap(
-                (Response<VaultInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Create or update a key vault in the specified subscription.
-     *
-     * @param resourceGroupName The name of the Resource Group to which the server belongs.
-     * @param vaultName Name of the vault.
-     * @param parameters Parameters for creating or updating a vault.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return resource information with extended details.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public VaultInner beginCreateOrUpdateWithoutPolling(
-        String resourceGroupName, String vaultName, VaultCreateOrUpdateParameters parameters) {
-        return beginCreateOrUpdateWithoutPollingAsync(resourceGroupName, vaultName, parameters).block();
-    }
-
-    /**
-     * Create or update a key vault in the specified subscription.
-     *
-     * @param resourceGroupName The name of the Resource Group to which the server belongs.
-     * @param vaultName Name of the vault.
-     * @param parameters Parameters for creating or updating a vault.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return resource information with extended details.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public VaultInner beginCreateOrUpdateWithoutPolling(
-        String resourceGroupName, String vaultName, VaultCreateOrUpdateParameters parameters, Context context) {
-        return beginCreateOrUpdateWithoutPollingAsync(resourceGroupName, vaultName, parameters, context).block();
-    }
-
-    /**
-     * Permanently deletes the specified vault. aka Purges the deleted Azure key vault.
-     *
-     * @param vaultName The name of the soft-deleted vault.
-     * @param location The location of the soft-deleted vault.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> beginPurgeDeletedWithoutPollingWithResponseAsync(String vaultName, String location) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (vaultName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter vaultName is required and cannot be null."));
-        }
-        if (location == null) {
-            return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .beginPurgeDeletedWithoutPolling(
-                            this.client.getEndpoint(),
-                            vaultName,
-                            location,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
-
-    /**
-     * Permanently deletes the specified vault. aka Purges the deleted Azure key vault.
-     *
-     * @param vaultName The name of the soft-deleted vault.
-     * @param location The location of the soft-deleted vault.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> beginPurgeDeletedWithoutPollingWithResponseAsync(
-        String vaultName, String location, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (vaultName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter vaultName is required and cannot be null."));
-        }
-        if (location == null) {
-            return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        return service
-            .beginPurgeDeletedWithoutPolling(
-                this.client.getEndpoint(),
-                vaultName,
-                location,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                context);
-    }
-
-    /**
-     * Permanently deletes the specified vault. aka Purges the deleted Azure key vault.
-     *
-     * @param vaultName The name of the soft-deleted vault.
-     * @param location The location of the soft-deleted vault.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> beginPurgeDeletedWithoutPollingAsync(String vaultName, String location) {
-        return beginPurgeDeletedWithoutPollingWithResponseAsync(vaultName, location)
-            .flatMap((Response<Void> res) -> Mono.empty());
-    }
-
-    /**
-     * Permanently deletes the specified vault. aka Purges the deleted Azure key vault.
-     *
-     * @param vaultName The name of the soft-deleted vault.
-     * @param location The location of the soft-deleted vault.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> beginPurgeDeletedWithoutPollingAsync(String vaultName, String location, Context context) {
-        return beginPurgeDeletedWithoutPollingWithResponseAsync(vaultName, location, context)
-            .flatMap((Response<Void> res) -> Mono.empty());
-    }
-
-    /**
-     * Permanently deletes the specified vault. aka Purges the deleted Azure key vault.
-     *
-     * @param vaultName The name of the soft-deleted vault.
-     * @param location The location of the soft-deleted vault.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void beginPurgeDeletedWithoutPolling(String vaultName, String location) {
-        beginPurgeDeletedWithoutPollingAsync(vaultName, location).block();
-    }
-
-    /**
-     * Permanently deletes the specified vault. aka Purges the deleted Azure key vault.
-     *
-     * @param vaultName The name of the soft-deleted vault.
-     * @param location The location of the soft-deleted vault.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void beginPurgeDeletedWithoutPolling(String vaultName, String location, Context context) {
-        beginPurgeDeletedWithoutPollingAsync(vaultName, location, context).block();
     }
 
     /**

@@ -21,6 +21,11 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Files;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicReference;
@@ -47,13 +52,12 @@ public class ReadmeSamples {
     }
 
     /**
-     * Code snippet for getting async client using AAD authentication.
+     * Code snippet for getting sync FormTraining client using the AzureKeyCredential authentication.
      */
-    public void useAadAsyncClient() {
-        TokenCredential credential = new DefaultAzureCredentialBuilder().build();
-        FormRecognizerClient formRecognizerClient = new FormRecognizerClientBuilder()
+    public void useAzureKeyCredentialFormTrainingClient() {
+        FormTrainingClient formTrainingClient = new FormTrainingClientBuilder()
+            .credential(new AzureKeyCredential("{key}"))
             .endpoint("{endpoint}")
-            .credential(credential)
             .buildClient();
     }
 
@@ -70,8 +74,19 @@ public class ReadmeSamples {
         credential.update("{new_key}");
     }
 
+    /**
+     * Code snippet for getting async client using AAD authentication.
+     */
+    public void useAadAsyncClient() {
+        TokenCredential credential = new DefaultAzureCredentialBuilder().build();
+        FormRecognizerClient formRecognizerClient = new FormRecognizerClientBuilder()
+            .endpoint("{endpoint}")
+            .credential(credential)
+            .buildClient();
+    }
+
     public void recognizeCustomForm() {
-        String formUrl = "{file_url}";
+        String formUrl = "{form_url}";
         String modelId = "{custom_trained_model_id}";
         SyncPoller<OperationResult, List<RecognizedForm>> recognizeFormPoller =
             formRecognizerClient.beginRecognizeCustomFormsFromUrl(formUrl, modelId);
@@ -84,17 +99,26 @@ public class ReadmeSamples {
             System.out.printf("Form type: %s%n", form.getFormType());
             form.getFields().forEach((label, formField) -> {
                 System.out.printf("Field %s has value %s with confidence score of %f.%n", label,
-                    formField.getValueText().getText(),
+                    formField.getValueData().getText(),
                     formField.getConfidence());
             });
             System.out.print("-----------------------------------");
         }
     }
 
-    public void recognizeContent() {
-        String contentFileUrl = "{file_url}";
+    /**
+     * Recognize content/layout data for provided form.
+     *
+     * @throws IOException Exception thrown when there is an error in reading all the bytes from the File.
+     */
+    public void recognizeContent() throws IOException {
+        // recognize form content using file input stream
+        File form = new File("local/file_path/filename.png");
+        byte[] fileContent = Files.readAllBytes(form.toPath());
+        InputStream inputStream = new ByteArrayInputStream(fileContent);
+
         SyncPoller<OperationResult, List<FormPage>> recognizeContentPoller =
-            formRecognizerClient.beginRecognizeContentFromUrl(contentFileUrl);
+            formRecognizerClient.beginRecognizeContent(inputStream, form.length());
 
         List<FormPage> contentPageResults = recognizeContentPoller.getFinalResult();
 
@@ -167,7 +191,7 @@ public class ReadmeSamples {
     }
 
     public void trainModel() {
-        String trainingFilesUrl = "{training_set_SAS_URL}";
+        String trainingFilesUrl = "{SAS-URL-of-your-container-in-blob-storage}";
         SyncPoller<OperationResult, CustomFormModel> trainingPoller =
             formTrainingClient.beginTraining(trainingFilesUrl, false);
 
@@ -176,8 +200,8 @@ public class ReadmeSamples {
         // Model Info
         System.out.printf("Model Id: %s%n", customFormModel.getModelId());
         System.out.printf("Model Status: %s%n", customFormModel.getModelStatus());
-        System.out.printf("Model requested on: %s%n", customFormModel.getRequestedOn());
-        System.out.printf("Model training completed on: %s%n%n", customFormModel.getCompletedOn());
+        System.out.printf("Training started on: %s%n", customFormModel.getTrainingStartedOn());
+        System.out.printf("Training completed on: %s%n%n", customFormModel.getTrainingCompletedOn());
 
         System.out.println("Recognized Fields:");
         // looping through the sub-models, which contains the fields they were trained on
@@ -206,8 +230,8 @@ public class ReadmeSamples {
             modelId.set(customFormModelInfo.getModelId());
             CustomFormModel customModel = formTrainingClient.getCustomModel(customFormModelInfo.getModelId());
             System.out.printf("Model Status: %s%n", customModel.getModelStatus());
-            System.out.printf("Created on: %s%n", customModel.getRequestedOn());
-            System.out.printf("Updated on: %s%n", customModel.getCompletedOn());
+            System.out.printf("Training started on: %s%n", customModel.getTrainingStartedOn());
+            System.out.printf("Training completed on: %s%n", customModel.getTrainingCompletedOn());
             customModel.getSubmodels().forEach(customFormSubmodel -> {
                 System.out.printf("Custom Model Form type: %s%n", customFormSubmodel.getFormType());
                 System.out.printf("Custom Model Accuracy: %f%n", customFormSubmodel.getAccuracy());
@@ -232,5 +256,15 @@ public class ReadmeSamples {
         } catch (HttpResponseException e) {
             System.out.println(e.getMessage());
         }
+    }
+
+    /**
+     * Code snippet for getting async client using the AzureKeyCredential authentication.
+     */
+    public void useAzureKeyCredentialAsyncClient() {
+        FormRecognizerAsyncClient formRecognizerAsyncClient = new FormRecognizerClientBuilder()
+            .credential(new AzureKeyCredential("{key}"))
+            .endpoint("{endpoint}")
+            .buildAsyncClient();
     }
 }

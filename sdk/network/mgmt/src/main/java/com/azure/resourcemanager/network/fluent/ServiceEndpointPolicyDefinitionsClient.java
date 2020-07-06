@@ -29,8 +29,8 @@ import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.util.polling.AsyncPollResponse;
 import com.azure.core.util.polling.PollerFlux;
+import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.network.NetworkManagementClient;
 import com.azure.resourcemanager.network.fluent.inner.ServiceEndpointPolicyDefinitionInner;
 import com.azure.resourcemanager.network.fluent.inner.ServiceEndpointPolicyDefinitionListResultInner;
@@ -133,39 +133,6 @@ public final class ServiceEndpointPolicyDefinitionsClient {
             @PathParam("subscriptionId") String subscriptionId,
             Context context);
 
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
-                + "/serviceEndpointPolicies/{serviceEndpointPolicyName}/serviceEndpointPolicyDefinitions"
-                + "/{serviceEndpointPolicyDefinitionName}")
-        @ExpectedResponses({200, 202, 204})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> beginDeleteWithoutPolling(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serviceEndpointPolicyName") String serviceEndpointPolicyName,
-            @PathParam("serviceEndpointPolicyDefinitionName") String serviceEndpointPolicyDefinitionName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            Context context);
-
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
-                + "/serviceEndpointPolicies/{serviceEndpointPolicyName}/serviceEndpointPolicyDefinitions"
-                + "/{serviceEndpointPolicyDefinitionName}")
-        @ExpectedResponses({200, 201})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ServiceEndpointPolicyDefinitionInner>> beginCreateOrUpdateWithoutPolling(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serviceEndpointPolicyName") String serviceEndpointPolicyName,
-            @PathParam("serviceEndpointPolicyDefinitionName") String serviceEndpointPolicyDefinitionName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @BodyParam("application/json") ServiceEndpointPolicyDefinitionInner serviceEndpointPolicyDefinitions,
-            Context context);
-
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
@@ -216,7 +183,7 @@ public final class ServiceEndpointPolicyDefinitionsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -278,7 +245,7 @@ public final class ServiceEndpointPolicyDefinitionsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return service
             .delete(
                 this.client.getEndpoint(),
@@ -302,7 +269,7 @@ public final class ServiceEndpointPolicyDefinitionsClient {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<Void>, Void> beginDelete(
+    public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String serviceEndpointPolicyName, String serviceEndpointPolicyDefinitionName) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             deleteWithResponseAsync(resourceGroupName, serviceEndpointPolicyName, serviceEndpointPolicyDefinitionName);
@@ -322,7 +289,7 @@ public final class ServiceEndpointPolicyDefinitionsClient {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<Void>, Void> beginDelete(
+    public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName,
         String serviceEndpointPolicyName,
         String serviceEndpointPolicyDefinitionName,
@@ -345,15 +312,52 @@ public final class ServiceEndpointPolicyDefinitionsClient {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<Void>, Void> beginDelete(
+        String resourceGroupName, String serviceEndpointPolicyName, String serviceEndpointPolicyDefinitionName) {
+        return beginDeleteAsync(resourceGroupName, serviceEndpointPolicyName, serviceEndpointPolicyDefinitionName)
+            .getSyncPoller();
+    }
+
+    /**
+     * Deletes the specified ServiceEndpoint policy definitions.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param serviceEndpointPolicyName The name of the Service Endpoint Policy.
+     * @param serviceEndpointPolicyDefinitionName The name of the service endpoint policy definition.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<Void>, Void> beginDelete(
+        String resourceGroupName,
+        String serviceEndpointPolicyName,
+        String serviceEndpointPolicyDefinitionName,
+        Context context) {
+        return beginDeleteAsync(
+                resourceGroupName, serviceEndpointPolicyName, serviceEndpointPolicyDefinitionName, context)
+            .getSyncPoller();
+    }
+
+    /**
+     * Deletes the specified ServiceEndpoint policy definitions.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param serviceEndpointPolicyName The name of the Service Endpoint Policy.
+     * @param serviceEndpointPolicyDefinitionName The name of the service endpoint policy definition.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(
         String resourceGroupName, String serviceEndpointPolicyName, String serviceEndpointPolicyDefinitionName) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, serviceEndpointPolicyName, serviceEndpointPolicyDefinitionName);
-        return this
-            .client
-            .<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class)
+        return beginDeleteAsync(resourceGroupName, serviceEndpointPolicyName, serviceEndpointPolicyDefinitionName)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -374,14 +378,10 @@ public final class ServiceEndpointPolicyDefinitionsClient {
         String serviceEndpointPolicyName,
         String serviceEndpointPolicyDefinitionName,
         Context context) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(
-                resourceGroupName, serviceEndpointPolicyName, serviceEndpointPolicyDefinitionName, context);
-        return this
-            .client
-            .<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class)
+        return beginDeleteAsync(
+                resourceGroupName, serviceEndpointPolicyName, serviceEndpointPolicyDefinitionName, context)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -462,7 +462,7 @@ public final class ServiceEndpointPolicyDefinitionsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -524,7 +524,7 @@ public final class ServiceEndpointPolicyDefinitionsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return service
             .get(
                 this.client.getEndpoint(),
@@ -684,7 +684,7 @@ public final class ServiceEndpointPolicyDefinitionsClient {
         } else {
             serviceEndpointPolicyDefinitions.validate();
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -757,7 +757,7 @@ public final class ServiceEndpointPolicyDefinitionsClient {
         } else {
             serviceEndpointPolicyDefinitions.validate();
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return service
             .createOrUpdate(
                 this.client.getEndpoint(),
@@ -784,7 +784,7 @@ public final class ServiceEndpointPolicyDefinitionsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<ServiceEndpointPolicyDefinitionInner>, ServiceEndpointPolicyDefinitionInner>
-        beginCreateOrUpdate(
+        beginCreateOrUpdateAsync(
             String resourceGroupName,
             String serviceEndpointPolicyName,
             String serviceEndpointPolicyDefinitionName,
@@ -819,7 +819,7 @@ public final class ServiceEndpointPolicyDefinitionsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<ServiceEndpointPolicyDefinitionInner>, ServiceEndpointPolicyDefinitionInner>
-        beginCreateOrUpdate(
+        beginCreateOrUpdateAsync(
             String resourceGroupName,
             String serviceEndpointPolicyName,
             String serviceEndpointPolicyDefinitionName,
@@ -854,26 +854,75 @@ public final class ServiceEndpointPolicyDefinitionsClient {
      * @return service Endpoint policy definitions.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<ServiceEndpointPolicyDefinitionInner>, ServiceEndpointPolicyDefinitionInner>
+        beginCreateOrUpdate(
+            String resourceGroupName,
+            String serviceEndpointPolicyName,
+            String serviceEndpointPolicyDefinitionName,
+            ServiceEndpointPolicyDefinitionInner serviceEndpointPolicyDefinitions) {
+        return beginCreateOrUpdateAsync(
+                resourceGroupName,
+                serviceEndpointPolicyName,
+                serviceEndpointPolicyDefinitionName,
+                serviceEndpointPolicyDefinitions)
+            .getSyncPoller();
+    }
+
+    /**
+     * Creates or updates a service endpoint policy definition in the specified service endpoint policy.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param serviceEndpointPolicyName The name of the service endpoint policy.
+     * @param serviceEndpointPolicyDefinitionName The name of the service endpoint policy definition name.
+     * @param serviceEndpointPolicyDefinitions Service Endpoint policy definitions.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return service Endpoint policy definitions.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<ServiceEndpointPolicyDefinitionInner>, ServiceEndpointPolicyDefinitionInner>
+        beginCreateOrUpdate(
+            String resourceGroupName,
+            String serviceEndpointPolicyName,
+            String serviceEndpointPolicyDefinitionName,
+            ServiceEndpointPolicyDefinitionInner serviceEndpointPolicyDefinitions,
+            Context context) {
+        return beginCreateOrUpdateAsync(
+                resourceGroupName,
+                serviceEndpointPolicyName,
+                serviceEndpointPolicyDefinitionName,
+                serviceEndpointPolicyDefinitions,
+                context)
+            .getSyncPoller();
+    }
+
+    /**
+     * Creates or updates a service endpoint policy definition in the specified service endpoint policy.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param serviceEndpointPolicyName The name of the service endpoint policy.
+     * @param serviceEndpointPolicyDefinitionName The name of the service endpoint policy definition name.
+     * @param serviceEndpointPolicyDefinitions Service Endpoint policy definitions.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return service Endpoint policy definitions.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ServiceEndpointPolicyDefinitionInner> createOrUpdateAsync(
         String resourceGroupName,
         String serviceEndpointPolicyName,
         String serviceEndpointPolicyDefinitionName,
         ServiceEndpointPolicyDefinitionInner serviceEndpointPolicyDefinitions) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(
+        return beginCreateOrUpdateAsync(
                 resourceGroupName,
                 serviceEndpointPolicyName,
                 serviceEndpointPolicyDefinitionName,
-                serviceEndpointPolicyDefinitions);
-        return this
-            .client
-            .<ServiceEndpointPolicyDefinitionInner, ServiceEndpointPolicyDefinitionInner>getLroResultAsync(
-                mono,
-                this.client.getHttpPipeline(),
-                ServiceEndpointPolicyDefinitionInner.class,
-                ServiceEndpointPolicyDefinitionInner.class)
+                serviceEndpointPolicyDefinitions)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -896,22 +945,14 @@ public final class ServiceEndpointPolicyDefinitionsClient {
         String serviceEndpointPolicyDefinitionName,
         ServiceEndpointPolicyDefinitionInner serviceEndpointPolicyDefinitions,
         Context context) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(
+        return beginCreateOrUpdateAsync(
                 resourceGroupName,
                 serviceEndpointPolicyName,
                 serviceEndpointPolicyDefinitionName,
                 serviceEndpointPolicyDefinitions,
-                context);
-        return this
-            .client
-            .<ServiceEndpointPolicyDefinitionInner, ServiceEndpointPolicyDefinitionInner>getLroResultAsync(
-                mono,
-                this.client.getHttpPipeline(),
-                ServiceEndpointPolicyDefinitionInner.class,
-                ServiceEndpointPolicyDefinitionInner.class)
+                context)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -1004,7 +1045,7 @@ public final class ServiceEndpointPolicyDefinitionsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -1064,7 +1105,7 @@ public final class ServiceEndpointPolicyDefinitionsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return service
             .listByResourceGroup(
                 this.client.getEndpoint(),
@@ -1152,468 +1193,6 @@ public final class ServiceEndpointPolicyDefinitionsClient {
     public PagedIterable<ServiceEndpointPolicyDefinitionInner> listByResourceGroup(
         String resourceGroupName, String serviceEndpointPolicyName, Context context) {
         return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName, serviceEndpointPolicyName, context));
-    }
-
-    /**
-     * Deletes the specified ServiceEndpoint policy definitions.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param serviceEndpointPolicyName The name of the Service Endpoint Policy.
-     * @param serviceEndpointPolicyDefinitionName The name of the service endpoint policy definition.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> beginDeleteWithoutPollingWithResponseAsync(
-        String resourceGroupName, String serviceEndpointPolicyName, String serviceEndpointPolicyDefinitionName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (serviceEndpointPolicyName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter serviceEndpointPolicyName is required and cannot be null."));
-        }
-        if (serviceEndpointPolicyDefinitionName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter serviceEndpointPolicyDefinitionName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2019-06-01";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .beginDeleteWithoutPolling(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            serviceEndpointPolicyName,
-                            serviceEndpointPolicyDefinitionName,
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
-
-    /**
-     * Deletes the specified ServiceEndpoint policy definitions.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param serviceEndpointPolicyName The name of the Service Endpoint Policy.
-     * @param serviceEndpointPolicyDefinitionName The name of the service endpoint policy definition.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> beginDeleteWithoutPollingWithResponseAsync(
-        String resourceGroupName,
-        String serviceEndpointPolicyName,
-        String serviceEndpointPolicyDefinitionName,
-        Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (serviceEndpointPolicyName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter serviceEndpointPolicyName is required and cannot be null."));
-        }
-        if (serviceEndpointPolicyDefinitionName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter serviceEndpointPolicyDefinitionName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2019-06-01";
-        return service
-            .beginDeleteWithoutPolling(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                serviceEndpointPolicyName,
-                serviceEndpointPolicyDefinitionName,
-                apiVersion,
-                this.client.getSubscriptionId(),
-                context);
-    }
-
-    /**
-     * Deletes the specified ServiceEndpoint policy definitions.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param serviceEndpointPolicyName The name of the Service Endpoint Policy.
-     * @param serviceEndpointPolicyDefinitionName The name of the service endpoint policy definition.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> beginDeleteWithoutPollingAsync(
-        String resourceGroupName, String serviceEndpointPolicyName, String serviceEndpointPolicyDefinitionName) {
-        return beginDeleteWithoutPollingWithResponseAsync(
-                resourceGroupName, serviceEndpointPolicyName, serviceEndpointPolicyDefinitionName)
-            .flatMap((Response<Void> res) -> Mono.empty());
-    }
-
-    /**
-     * Deletes the specified ServiceEndpoint policy definitions.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param serviceEndpointPolicyName The name of the Service Endpoint Policy.
-     * @param serviceEndpointPolicyDefinitionName The name of the service endpoint policy definition.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> beginDeleteWithoutPollingAsync(
-        String resourceGroupName,
-        String serviceEndpointPolicyName,
-        String serviceEndpointPolicyDefinitionName,
-        Context context) {
-        return beginDeleteWithoutPollingWithResponseAsync(
-                resourceGroupName, serviceEndpointPolicyName, serviceEndpointPolicyDefinitionName, context)
-            .flatMap((Response<Void> res) -> Mono.empty());
-    }
-
-    /**
-     * Deletes the specified ServiceEndpoint policy definitions.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param serviceEndpointPolicyName The name of the Service Endpoint Policy.
-     * @param serviceEndpointPolicyDefinitionName The name of the service endpoint policy definition.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void beginDeleteWithoutPolling(
-        String resourceGroupName, String serviceEndpointPolicyName, String serviceEndpointPolicyDefinitionName) {
-        beginDeleteWithoutPollingAsync(
-                resourceGroupName, serviceEndpointPolicyName, serviceEndpointPolicyDefinitionName)
-            .block();
-    }
-
-    /**
-     * Deletes the specified ServiceEndpoint policy definitions.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param serviceEndpointPolicyName The name of the Service Endpoint Policy.
-     * @param serviceEndpointPolicyDefinitionName The name of the service endpoint policy definition.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void beginDeleteWithoutPolling(
-        String resourceGroupName,
-        String serviceEndpointPolicyName,
-        String serviceEndpointPolicyDefinitionName,
-        Context context) {
-        beginDeleteWithoutPollingAsync(
-                resourceGroupName, serviceEndpointPolicyName, serviceEndpointPolicyDefinitionName, context)
-            .block();
-    }
-
-    /**
-     * Creates or updates a service endpoint policy definition in the specified service endpoint policy.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param serviceEndpointPolicyName The name of the service endpoint policy.
-     * @param serviceEndpointPolicyDefinitionName The name of the service endpoint policy definition name.
-     * @param serviceEndpointPolicyDefinitions Service Endpoint policy definitions.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return service Endpoint policy definitions.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ServiceEndpointPolicyDefinitionInner>> beginCreateOrUpdateWithoutPollingWithResponseAsync(
-        String resourceGroupName,
-        String serviceEndpointPolicyName,
-        String serviceEndpointPolicyDefinitionName,
-        ServiceEndpointPolicyDefinitionInner serviceEndpointPolicyDefinitions) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (serviceEndpointPolicyName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter serviceEndpointPolicyName is required and cannot be null."));
-        }
-        if (serviceEndpointPolicyDefinitionName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter serviceEndpointPolicyDefinitionName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (serviceEndpointPolicyDefinitions == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter serviceEndpointPolicyDefinitions is required and cannot be null."));
-        } else {
-            serviceEndpointPolicyDefinitions.validate();
-        }
-        final String apiVersion = "2019-06-01";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .beginCreateOrUpdateWithoutPolling(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            serviceEndpointPolicyName,
-                            serviceEndpointPolicyDefinitionName,
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            serviceEndpointPolicyDefinitions,
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
-
-    /**
-     * Creates or updates a service endpoint policy definition in the specified service endpoint policy.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param serviceEndpointPolicyName The name of the service endpoint policy.
-     * @param serviceEndpointPolicyDefinitionName The name of the service endpoint policy definition name.
-     * @param serviceEndpointPolicyDefinitions Service Endpoint policy definitions.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return service Endpoint policy definitions.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ServiceEndpointPolicyDefinitionInner>> beginCreateOrUpdateWithoutPollingWithResponseAsync(
-        String resourceGroupName,
-        String serviceEndpointPolicyName,
-        String serviceEndpointPolicyDefinitionName,
-        ServiceEndpointPolicyDefinitionInner serviceEndpointPolicyDefinitions,
-        Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (serviceEndpointPolicyName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter serviceEndpointPolicyName is required and cannot be null."));
-        }
-        if (serviceEndpointPolicyDefinitionName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter serviceEndpointPolicyDefinitionName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (serviceEndpointPolicyDefinitions == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter serviceEndpointPolicyDefinitions is required and cannot be null."));
-        } else {
-            serviceEndpointPolicyDefinitions.validate();
-        }
-        final String apiVersion = "2019-06-01";
-        return service
-            .beginCreateOrUpdateWithoutPolling(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                serviceEndpointPolicyName,
-                serviceEndpointPolicyDefinitionName,
-                apiVersion,
-                this.client.getSubscriptionId(),
-                serviceEndpointPolicyDefinitions,
-                context);
-    }
-
-    /**
-     * Creates or updates a service endpoint policy definition in the specified service endpoint policy.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param serviceEndpointPolicyName The name of the service endpoint policy.
-     * @param serviceEndpointPolicyDefinitionName The name of the service endpoint policy definition name.
-     * @param serviceEndpointPolicyDefinitions Service Endpoint policy definitions.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return service Endpoint policy definitions.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ServiceEndpointPolicyDefinitionInner> beginCreateOrUpdateWithoutPollingAsync(
-        String resourceGroupName,
-        String serviceEndpointPolicyName,
-        String serviceEndpointPolicyDefinitionName,
-        ServiceEndpointPolicyDefinitionInner serviceEndpointPolicyDefinitions) {
-        return beginCreateOrUpdateWithoutPollingWithResponseAsync(
-                resourceGroupName,
-                serviceEndpointPolicyName,
-                serviceEndpointPolicyDefinitionName,
-                serviceEndpointPolicyDefinitions)
-            .flatMap(
-                (Response<ServiceEndpointPolicyDefinitionInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Creates or updates a service endpoint policy definition in the specified service endpoint policy.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param serviceEndpointPolicyName The name of the service endpoint policy.
-     * @param serviceEndpointPolicyDefinitionName The name of the service endpoint policy definition name.
-     * @param serviceEndpointPolicyDefinitions Service Endpoint policy definitions.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return service Endpoint policy definitions.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ServiceEndpointPolicyDefinitionInner> beginCreateOrUpdateWithoutPollingAsync(
-        String resourceGroupName,
-        String serviceEndpointPolicyName,
-        String serviceEndpointPolicyDefinitionName,
-        ServiceEndpointPolicyDefinitionInner serviceEndpointPolicyDefinitions,
-        Context context) {
-        return beginCreateOrUpdateWithoutPollingWithResponseAsync(
-                resourceGroupName,
-                serviceEndpointPolicyName,
-                serviceEndpointPolicyDefinitionName,
-                serviceEndpointPolicyDefinitions,
-                context)
-            .flatMap(
-                (Response<ServiceEndpointPolicyDefinitionInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Creates or updates a service endpoint policy definition in the specified service endpoint policy.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param serviceEndpointPolicyName The name of the service endpoint policy.
-     * @param serviceEndpointPolicyDefinitionName The name of the service endpoint policy definition name.
-     * @param serviceEndpointPolicyDefinitions Service Endpoint policy definitions.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return service Endpoint policy definitions.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ServiceEndpointPolicyDefinitionInner beginCreateOrUpdateWithoutPolling(
-        String resourceGroupName,
-        String serviceEndpointPolicyName,
-        String serviceEndpointPolicyDefinitionName,
-        ServiceEndpointPolicyDefinitionInner serviceEndpointPolicyDefinitions) {
-        return beginCreateOrUpdateWithoutPollingAsync(
-                resourceGroupName,
-                serviceEndpointPolicyName,
-                serviceEndpointPolicyDefinitionName,
-                serviceEndpointPolicyDefinitions)
-            .block();
-    }
-
-    /**
-     * Creates or updates a service endpoint policy definition in the specified service endpoint policy.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param serviceEndpointPolicyName The name of the service endpoint policy.
-     * @param serviceEndpointPolicyDefinitionName The name of the service endpoint policy definition name.
-     * @param serviceEndpointPolicyDefinitions Service Endpoint policy definitions.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return service Endpoint policy definitions.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ServiceEndpointPolicyDefinitionInner beginCreateOrUpdateWithoutPolling(
-        String resourceGroupName,
-        String serviceEndpointPolicyName,
-        String serviceEndpointPolicyDefinitionName,
-        ServiceEndpointPolicyDefinitionInner serviceEndpointPolicyDefinitions,
-        Context context) {
-        return beginCreateOrUpdateWithoutPollingAsync(
-                resourceGroupName,
-                serviceEndpointPolicyName,
-                serviceEndpointPolicyDefinitionName,
-                serviceEndpointPolicyDefinitions,
-                context)
-            .block();
     }
 
     /**

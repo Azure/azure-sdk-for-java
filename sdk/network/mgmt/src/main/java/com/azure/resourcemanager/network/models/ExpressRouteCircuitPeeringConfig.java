@@ -16,7 +16,7 @@ public final class ExpressRouteCircuitPeeringConfig {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ExpressRouteCircuitPeeringConfig.class);
 
     /*
-     * The reference of AdvertisedPublicPrefixes.
+     * The reference to AdvertisedPublicPrefixes.
      */
     @JsonProperty(value = "advertisedPublicPrefixes")
     private List<String> advertisedPublicPrefixes;
@@ -30,7 +30,7 @@ public final class ExpressRouteCircuitPeeringConfig {
     /*
      * The advertised public prefix state of the Peering resource.
      */
-    @JsonProperty(value = "advertisedPublicPrefixesState")
+    @JsonProperty(value = "advertisedPublicPrefixesState", access = JsonProperty.Access.WRITE_ONLY)
     private ExpressRouteCircuitPeeringAdvertisedPublicPrefixState advertisedPublicPrefixesState;
 
     /*
@@ -52,7 +52,7 @@ public final class ExpressRouteCircuitPeeringConfig {
     private String routingRegistryName;
 
     /**
-     * Get the advertisedPublicPrefixes property: The reference of AdvertisedPublicPrefixes.
+     * Get the advertisedPublicPrefixes property: The reference to AdvertisedPublicPrefixes.
      *
      * @return the advertisedPublicPrefixes value.
      */
@@ -61,7 +61,7 @@ public final class ExpressRouteCircuitPeeringConfig {
     }
 
     /**
-     * Set the advertisedPublicPrefixes property: The reference of AdvertisedPublicPrefixes.
+     * Set the advertisedPublicPrefixes property: The reference to AdvertisedPublicPrefixes.
      *
      * @param advertisedPublicPrefixes the advertisedPublicPrefixes value to set.
      * @return the ExpressRouteCircuitPeeringConfig object itself.
@@ -98,18 +98,6 @@ public final class ExpressRouteCircuitPeeringConfig {
      */
     public ExpressRouteCircuitPeeringAdvertisedPublicPrefixState advertisedPublicPrefixesState() {
         return this.advertisedPublicPrefixesState;
-    }
-
-    /**
-     * Set the advertisedPublicPrefixesState property: The advertised public prefix state of the Peering resource.
-     *
-     * @param advertisedPublicPrefixesState the advertisedPublicPrefixesState value to set.
-     * @return the ExpressRouteCircuitPeeringConfig object itself.
-     */
-    public ExpressRouteCircuitPeeringConfig withAdvertisedPublicPrefixesState(
-        ExpressRouteCircuitPeeringAdvertisedPublicPrefixState advertisedPublicPrefixesState) {
-        this.advertisedPublicPrefixesState = advertisedPublicPrefixesState;
-        return this;
     }
 
     /**

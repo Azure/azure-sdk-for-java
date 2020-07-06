@@ -71,7 +71,7 @@ public class ReadmeSamples {
             new ServiceBusMessage("Hello world").setMessageId("1"),
             new ServiceBusMessage("Bonjour").setMessageId("2"));
 
-        sender.send(messages);
+        sender.sendMessages(messages);
 
         // When you are done using the sender, dispose of it.
         sender.close();
@@ -90,7 +90,7 @@ public class ReadmeSamples {
 
         // Receives a batch of messages when 10 messages are received or until 30 seconds have elapsed, whichever
         // happens first.
-        IterableStream<ServiceBusReceivedMessageContext> messages = receiver.receive(10, Duration.ofSeconds(30));
+        IterableStream<ServiceBusReceivedMessageContext> messages = receiver.receiveMessages(10, Duration.ofSeconds(30));
         messages.forEach(context -> {
             ServiceBusReceivedMessage message = context.getMessage();
             System.out.printf("Id: %s. Contents: %s%n", message.getMessageId(),
@@ -113,7 +113,7 @@ public class ReadmeSamples {
 
         // receive() operation continuously fetches messages until the subscription is disposed.
         // The stream is infinite, and completes when the subscription or receiver is closed.
-        Disposable subscription = receiver.receive().subscribe(context -> {
+        Disposable subscription = receiver.receiveMessages().subscribe(context -> {
             ServiceBusReceivedMessage message = context.getMessage();
             System.out.printf("Id: %s%n", message.getMessageId());
             System.out.printf("Contents: %s%n", new String(message.getBody(), StandardCharsets.UTF_8));
@@ -143,11 +143,11 @@ public class ReadmeSamples {
             .buildClient();
 
         // This fetches a batch of 10 messages or until the default operation timeout has elapsed.
-        receiver.receive(10).forEach(context -> {
+        receiver.receiveMessages(10).forEach(context -> {
             ServiceBusReceivedMessage message = context.getMessage();
 
             // Process message and then complete it.
-            receiver.complete(message);
+            receiver.complete(message.getLockToken());
         });
     }
 
@@ -165,7 +165,7 @@ public class ReadmeSamples {
         ServiceBusMessage message = new ServiceBusMessage("Hello world")
             .setSessionId("greetings");
 
-        sender.send(message);
+        sender.sendMessage(message);
     }
 
     /**
@@ -191,5 +191,17 @@ public class ReadmeSamples {
             .sessionReceiver()
             .queueName("<< QUEUE NAME >>")
             .buildAsyncClient();
+    }
+
+    /**
+     * Code sample for creating an synchronous Service Bus receiver to read message from dead-letter queue.
+     */
+    public void createSynchronousServiceBusDeadLetterQueueReceiver() {
+        ServiceBusReceiverClient receiver = new ServiceBusClientBuilder()
+            .connectionString("<< CONNECTION STRING FOR THE SERVICE BUS NAMESPACE >>")
+            .deadLetterReceiver()
+            .topicName("<< TOPIC NAME >>")
+            .subscriptionName("<< SUBSCRIPTION NAME >>")
+            .buildClient();
     }
 }

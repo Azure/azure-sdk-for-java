@@ -31,6 +31,7 @@ public interface Accepted<T> {
      * Gets the final result of LRO.
      *
      * @return the final result.
+     * @throws com.azure.core.management.exception.ManagementException If polling fails.
      */
     T getFinalResult();
 }

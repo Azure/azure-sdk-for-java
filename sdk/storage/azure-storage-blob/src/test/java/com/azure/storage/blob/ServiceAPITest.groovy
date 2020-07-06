@@ -3,14 +3,34 @@
 
 package com.azure.storage.blob
 
+import com.azure.core.util.paging.ContinuablePage
+import com.azure.core.util.Context
 import com.azure.identity.DefaultAzureCredentialBuilder
-import com.azure.storage.blob.models.*
+import com.azure.storage.blob.models.BlobAnalyticsLogging
+import com.azure.storage.blob.models.BlobContainerItem
+import com.azure.storage.blob.models.BlobContainerListDetails
+import com.azure.storage.blob.models.BlobCorsRule
+import com.azure.storage.blob.models.BlobMetrics
+import com.azure.storage.blob.options.BlobParallelUploadOptions
+import com.azure.storage.blob.models.BlobRetentionPolicy
+import com.azure.storage.blob.models.BlobServiceProperties
+import com.azure.storage.blob.models.CustomerProvidedKey
+import com.azure.storage.blob.options.FindBlobsOptions
+import com.azure.storage.blob.models.ListBlobContainersOptions
+import com.azure.storage.blob.models.ParallelTransferOptions
+import com.azure.storage.blob.models.StaticWebsite
+
+import com.azure.storage.blob.models.BlobStorageException
+import com.azure.storage.blob.options.UndeleteBlobContainerOptions
 import com.azure.storage.common.policy.RequestRetryOptions
 import com.azure.storage.common.policy.RequestRetryPolicy
 import com.azure.storage.common.sas.AccountSasPermission
 import com.azure.storage.common.sas.AccountSasResourceType
 import com.azure.storage.common.sas.AccountSasService
 import com.azure.storage.common.sas.AccountSasSignatureValues
+import spock.lang.Ignore
+import reactor.core.publisher.Mono
+import reactor.test.StepVerifier
 import spock.lang.Unroll
 
 import java.time.Duration
@@ -73,6 +93,7 @@ class ServiceAPITest extends APISpec {
             !c.getProperties().isHasImmutabilityPolicy()
             !c.getProperties().isEncryptionScopeOverridePrevented()
             c.getProperties().getDefaultEncryptionScope()
+//            !c.isDeleted() // Container soft delete
         }
     }
 
@@ -90,12 +111,16 @@ class ServiceAPITest extends APISpec {
             primaryBlobServiceClient.createBlobContainer(generateContainerName())
         }
 
-        def listResponse = primaryBlobServiceClient.listBlobContainers().iterator()
-        def firstContainerName = listResponse.next().getName()
+        def options = new ListBlobContainersOptions().setMaxResultsPerPage(5)
+        def firstPage = primaryBlobServiceClient.listBlobContainers(options, null).iterableByPage().iterator().next()
+        def marker = firstPage.getContinuationToken()
+        def firstContainerName = firstPage.getValue().first().getName()
+
+        def secondPage = primaryBlobServiceClient.listBlobContainers().iterableByPage(marker).iterator().next()
 
         expect:
         // Assert that the second segment is indeed after the first alphabetically
-        firstContainerName < listResponse.next().getName()
+        firstContainerName < secondPage.getValue().first().getName()
     }
 
     def "List containers details"() {
@@ -136,6 +161,62 @@ class ServiceAPITest extends APISpec {
         containers.each { container -> container.delete() }
     }
 
+    @Ignore // Container soft delete
+    def "List deleted"() {
+        given:
+        def NUM_CONTAINERS = 5
+        def containerName = generateContainerName()
+        def containerPrefix = containerName.substring(0, Math.min(60, containerName.length()))
+
+        def containers = [] as Collection<BlobContainerClient>
+        for (i in (1..NUM_CONTAINERS)) {
+            containers << primaryBlobServiceClient.createBlobContainer(containerPrefix + i)
+        }
+        containers.each { container -> container.delete() }
+
+        when:
+        def listResult = primaryBlobServiceClient.listBlobContainers(
+            new ListBlobContainersOptions()
+            .setPrefix(containerPrefix)
+            .setDetails(new BlobContainerListDetails().setRetrieveDeleted(true)),
+            null)
+
+        then:
+        for (BlobContainerItem item : listResult) {
+            item.isDeleted()
+        }
+        listResult.size() == NUM_CONTAINERS
+    }
+
+    @Ignore // Container soft delete
+    def "List with all details"() {
+        given:
+        def NUM_CONTAINERS = 5
+        def containerName = generateContainerName()
+        def containerPrefix = containerName.substring(0, Math.min(60, containerName.length()))
+
+        def containers = [] as Collection<BlobContainerClient>
+        for (i in (1..NUM_CONTAINERS)) {
+            containers << primaryBlobServiceClient.createBlobContainer(containerPrefix + i)
+        }
+        containers.each { container -> container.delete() }
+
+        when:
+        def listResult = primaryBlobServiceClient.listBlobContainers(
+            new ListBlobContainersOptions()
+                .setPrefix(containerPrefix)
+                .setDetails(new BlobContainerListDetails()
+                    .setRetrieveDeleted(true)
+                    .setRetrieveMetadata(true)),
+            null)
+
+        then:
+        for (BlobContainerItem item : listResult) {
+            item.isDeleted()
+        }
+        listResult.size() == NUM_CONTAINERS
+    }
+
     def "List containers error"() {
         when:
         primaryBlobServiceClient.listBlobContainers().streamByPage("garbage continuation token").count()
@@ -170,6 +251,128 @@ class ServiceAPITest extends APISpec {
 
         cleanup:
         containers.each { container -> container.delete() }
+    }
+
+    def "Find blobs min"() {
+        when:
+        primaryBlobServiceClient.findBlobsByTags("\"key\"='value'").iterator().hasNext()
+
+        then:
+        notThrown(BlobStorageException)
+    }
+
+    def "Find blobs query"() {
+        setup:
+        def containerClient = primaryBlobServiceClient.createBlobContainer(generateContainerName())
+        def blobClient = containerClient.getBlobClient(generateBlobName())
+        blobClient.uploadWithResponse(new BlobParallelUploadOptions(defaultInputStream.get(), defaultDataSize)
+            .setTags(Collections.singletonMap("key", "value")), null, null)
+        blobClient = containerClient.getBlobClient(generateBlobName())
+        blobClient.uploadWithResponse(new BlobParallelUploadOptions(defaultInputStream.get(), defaultDataSize)
+            .setTags(Collections.singletonMap("bar", "foo")), null, null)
+        blobClient = containerClient.getBlobClient(generateBlobName())
+        blobClient.upload(defaultInputStream.get(), defaultDataSize)
+
+        when:
+        def results = primaryBlobServiceClient.findBlobsByTags("\"bar\"='foo'")
+
+        then:
+        results.size() == 1
+
+        cleanup:
+        containerClient.delete()
+    }
+
+    def "Find blobs marker"() {
+        setup:
+        def cc = primaryBlobServiceClient.createBlobContainer(generateContainerName())
+        def tags = Collections.singletonMap("tag", "value")
+        for (int i = 0; i < 10; i++) {
+            cc.getBlobClient(generateBlobName()).uploadWithResponse(
+                new BlobParallelUploadOptions(defaultInputStream.get(), defaultDataSize).setTags(tags), null, null)
+        }
+
+        def firstPage = primaryBlobServiceClient.findBlobsByTags(new FindBlobsOptions("\"tag\"='value'")
+            .setMaxResultsPerPage(5), null, Context.NONE)
+            .iterableByPage().iterator().next()
+        def marker = firstPage.getContinuationToken()
+        def firstBlobName = firstPage.getValue().first().getName()
+
+        def secondPage = primaryBlobServiceClient.findBlobsByTags(
+            new FindBlobsOptions("\"tag\"='value'").setMaxResultsPerPage(5), null, Context.NONE)
+            .iterableByPage(marker).iterator().next()
+
+        expect:
+        // Assert that the second segment is indeed after the first alphabetically
+        firstBlobName < secondPage.getValue().first().getName()
+
+        cleanup:
+        cc.delete()
+    }
+
+    def "Find blobs maxResults"() {
+        setup:
+        def NUM_BLOBS = 7
+        def PAGE_RESULTS = 3
+        def cc = primaryBlobServiceClient.createBlobContainer(generateContainerName())
+        def tags = Collections.singletonMap("tag", "value")
+
+        for (i in (1..NUM_BLOBS)) {
+            cc.getBlobClient(generateBlobName()).uploadWithResponse(
+                new BlobParallelUploadOptions(defaultInputStream.get(), defaultDataSize).setTags(tags), null, null)
+        }
+
+        expect:
+        for (ContinuablePage page :
+            primaryBlobServiceClient.findBlobsByTags(
+                new FindBlobsOptions("\"tag\"='value'").setMaxResultsPerPage(PAGE_RESULTS), null, Context.NONE)
+                .iterableByPage()) {
+            assert page.iterator().size() <= PAGE_RESULTS
+        }
+
+        cleanup:
+        cc.delete()
+    }
+
+    def "Find blobs error"() {
+        when:
+        primaryBlobServiceClient.findBlobsByTags("garbageTag").streamByPage().count()
+
+        then:
+        thrown(BlobStorageException)
+    }
+
+    def "Find blobs anonymous"() {
+        when:
+        // Invalid query, but the anonymous check will fail before hitting the wire
+        anonymousClient.findBlobsByTags("foo=bar").iterator().next()
+
+        then:
+        thrown(IllegalStateException)
+    }
+
+    def "Find blobs with timeout still backed by PagedFlux"() {
+        setup:
+        def NUM_BLOBS = 5
+        def PAGE_RESULTS = 3
+        def cc = primaryBlobServiceClient.createBlobContainer(generateContainerName())
+        def tags = Collections.singletonMap("tag", "value")
+
+        for (i in (1..NUM_BLOBS)) {
+            cc.getBlobClient(generateBlobName()).uploadWithResponse(
+                new BlobParallelUploadOptions(defaultInputStream.get(), defaultDataSize).setTags(tags), null, null)
+        }
+
+        when: "Consume results by page"
+        primaryBlobServiceClient.findBlobsByTags(new FindBlobsOptions("\"tag\"='value'")
+            .setMaxResultsPerPage(PAGE_RESULTS), Duration.ofSeconds(10), Context.NONE)
+            .streamByPage().count()
+
+        then: "Still have paging functionality"
+        notThrown(Exception)
+
+        cleanup:
+        cc.delete()
     }
 
     def validatePropsSet(BlobServiceProperties sent, BlobServiceProperties received) {
@@ -507,6 +710,195 @@ class ServiceAPITest extends APISpec {
         thrown(IllegalArgumentException)
     }
 
+    @Ignore // Container soft delete
+    def "Restore Container"() {
+        given:
+        def cc1 = primaryBlobServiceClient.getBlobContainerClient(generateContainerName())
+        cc1.create()
+        def blobName = generateBlobName()
+        cc1.getBlobClient(blobName).upload(defaultInputStream.get(), 7)
+        cc1.delete()
+        def blobContainerItem = primaryBlobServiceClient.listBlobContainers(
+            new ListBlobContainersOptions()
+                .setPrefix(cc1.getBlobContainerName())
+                .setDetails(new BlobContainerListDetails().setRetrieveDeleted(true)),
+            null).first()
+
+        if (!playbackMode()) {
+            Thread.sleep(30000)
+        }
+
+        when:
+        def restoredContainerClient = primaryBlobServiceClient
+            .undeleteBlobContainer(blobContainerItem.getName(), blobContainerItem.getVersion())
+
+        then:
+        restoredContainerClient.listBlobs().size() == 1
+        restoredContainerClient.listBlobs().first().getName() == blobName
+    }
+
+    @Ignore // Container soft delete
+    def "Restore Container into other container"() {
+        given:
+        def cc1 = primaryBlobServiceClient.getBlobContainerClient(generateContainerName())
+        cc1.create()
+        def blobName = generateBlobName()
+        cc1.getBlobClient(blobName).upload(defaultInputStream.get(), 7)
+        cc1.delete()
+        def blobContainerItem = primaryBlobServiceClient.listBlobContainers(
+            new ListBlobContainersOptions()
+                .setPrefix(cc1.getBlobContainerName())
+                .setDetails(new BlobContainerListDetails().setRetrieveDeleted(true)),
+            null).first()
+
+        if (!playbackMode()) {
+            Thread.sleep(30000)
+        }
+
+        when:
+        def restoredContainerClient = primaryBlobServiceClient.undeleteBlobContainerWithResponse(
+            new UndeleteBlobContainerOptions(blobContainerItem.getName(), blobContainerItem.getVersion())
+                .setDestinationContainerName(generateContainerName()), null, Context.NONE)
+            .getValue()
+
+        then:
+        restoredContainerClient.listBlobs().size() == 1
+        restoredContainerClient.listBlobs().first().getName() == blobName
+    }
+
+    @Ignore // Container soft delete
+    def "Restore Container with response"() {
+        given:
+        def cc1 = primaryBlobServiceClient.getBlobContainerClient(generateContainerName())
+        cc1.create()
+        def blobName = generateBlobName()
+        cc1.getBlobClient(blobName).upload(defaultInputStream.get(), 7)
+        cc1.delete()
+        def blobContainerItem = primaryBlobServiceClient.listBlobContainers(
+            new ListBlobContainersOptions()
+                .setPrefix(cc1.getBlobContainerName())
+                .setDetails(new BlobContainerListDetails().setRetrieveDeleted(true)),
+            null).first()
+
+        if (!playbackMode()) {
+            Thread.sleep(30000)
+        }
+
+        when:
+        def response = primaryBlobServiceClient.undeleteBlobContainerWithResponse(
+            new UndeleteBlobContainerOptions(blobContainerItem.getName(), blobContainerItem.getVersion()),
+            Duration.ofMinutes(1), Context.NONE)
+        def restoredContainerClient = response.getValue()
+
+        then:
+        response != null
+        response.getStatusCode() == 201
+        restoredContainerClient.listBlobs().size() == 1
+        restoredContainerClient.listBlobs().first().getName() == blobName
+    }
+
+    @Ignore // Container soft delete
+    def "Restore Container async"() {
+        given:
+        def cc1 = primaryBlobServiceAsyncClient.getBlobContainerAsyncClient(generateContainerName())
+        def blobName = generateBlobName()
+        def delay = playbackMode() ? 0L : 30000L
+
+        def blobContainerItemMono = cc1.create()
+        .then(cc1.getBlobAsyncClient(blobName).upload(defaultFlux, new ParallelTransferOptions()))
+        .then(cc1.delete())
+        .then(Mono.delay(Duration.ofMillis(delay)))
+        .then(primaryBlobServiceAsyncClient.listBlobContainers(
+            new ListBlobContainersOptions()
+                .setPrefix(cc1.getBlobContainerName())
+                .setDetails(new BlobContainerListDetails().setRetrieveDeleted(true))
+        ).next())
+
+        when:
+        def restoredContainerClientMono = blobContainerItemMono.flatMap {
+            blobContainerItem -> primaryBlobServiceAsyncClient.undeleteBlobContainer(blobContainerItem.getName(), blobContainerItem.getVersion())
+        }
+
+        then:
+        StepVerifier.create(restoredContainerClientMono.flatMap {restoredContainerClient -> restoredContainerClient.listBlobs().collectList() })
+        .assertNext( {
+            assert it.size() == 1
+            assert it.first().getName() == blobName
+        })
+        .verifyComplete()
+    }
+
+    @Ignore // Container soft delete
+    def "Restore Container async with response"() {
+        given:
+        def cc1 = primaryBlobServiceAsyncClient.getBlobContainerAsyncClient(generateContainerName())
+        def blobName = generateBlobName()
+        def delay = playbackMode() ? 0L : 30000L
+
+        def blobContainerItemMono = cc1.create()
+            .then(cc1.getBlobAsyncClient(blobName).upload(defaultFlux, new ParallelTransferOptions()))
+            .then(cc1.delete())
+            .then(Mono.delay(Duration.ofMillis(delay)))
+            .then(primaryBlobServiceAsyncClient.listBlobContainers(
+                new ListBlobContainersOptions()
+                    .setPrefix(cc1.getBlobContainerName())
+                    .setDetails(new BlobContainerListDetails().setRetrieveDeleted(true))
+            ).next())
+
+        when:
+        def responseMono = blobContainerItemMono.flatMap {
+            blobContainerItem -> primaryBlobServiceAsyncClient.undeleteBlobContainerWithResponse(
+                new UndeleteBlobContainerOptions(blobContainerItem.getName(), blobContainerItem.getVersion()))
+        }
+
+        then:
+        StepVerifier.create(responseMono)
+        .assertNext({
+            assert it != null
+            assert it.getStatusCode() == 201
+            assert it.getValue() != null
+            assert it.getValue().getBlobContainerName() == cc1.getBlobContainerName()
+        })
+        .verifyComplete()
+    }
+
+    @Ignore // Container soft delete
+    def "Restore Container error"() {
+        when:
+        primaryBlobServiceClient.undeleteBlobContainer(generateContainerName(), "01D60F8BB59A4652")
+
+        then:
+        thrown(BlobStorageException.class)
+    }
+
+    @Ignore // Container soft delete
+    def "Restore Container into existing container error"() {
+        given:
+        def cc1 = primaryBlobServiceClient.getBlobContainerClient(generateContainerName())
+        cc1.create()
+        def blobName = generateBlobName()
+        cc1.getBlobClient(blobName).upload(defaultInputStream.get(), 7)
+        cc1.delete()
+        def blobContainerItem = primaryBlobServiceClient.listBlobContainers(
+            new ListBlobContainersOptions()
+                .setPrefix(cc1.getBlobContainerName())
+                .setDetails(new BlobContainerListDetails().setRetrieveDeleted(true)),
+            null).first()
+
+        if (!playbackMode()) {
+            Thread.sleep(30000)
+        }
+
+        when:
+        def cc2 = primaryBlobServiceClient.createBlobContainer(generateContainerName())
+        primaryBlobServiceClient.undeleteBlobContainerWithResponse(
+            new UndeleteBlobContainerOptions(blobContainerItem.getName(), blobContainerItem.getVersion())
+                .setDestinationContainerName(cc2.getBlobContainerName()), null, Context.NONE)
+
+        then:
+        thrown(BlobStorageException.class)
+    }
+
     def "OAuth on secondary"() {
         setup:
         def secondaryEndpoint = String.format(defaultEndpointTemplate,
@@ -530,7 +922,7 @@ class ServiceAPITest extends APISpec {
         BlobServiceClient client = new BlobServiceClientBuilder()
             .endpoint(service)
             .sasToken(mockSas)
-            .buildClient();
+            .buildClient()
         client.getBlobContainerClient(container)
             .getBlobClient("blobname")
 

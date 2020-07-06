@@ -82,7 +82,7 @@ final class LocationData {
             if (locationUrl != null) {
                 this.pollUrl = locationUrl;
             }
-        } else if (pollResponseStatusCode == 200 || pollResponseStatusCode == 201) {
+        } else if (pollResponseStatusCode == 200 || pollResponseStatusCode == 201 || pollResponseStatusCode == 204) {
             this.provisioningState = ProvisioningState.SUCCEEDED;
             if (pollResponseBody != null) {
                 this.finalResult = new FinalResult(null, pollResponseBody);

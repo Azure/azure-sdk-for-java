@@ -3,6 +3,7 @@
 com.fasterxml.jackson.core:jackson-annotations;2.10.1
 com.fasterxml.jackson.core:jackson-core;2.10.1
 com.fasterxml.jackson.core:jackson-databind;2.10.1
+com.fasterxml.jackson.dataformat:jackson-dataformat-avro;2.10.1
 com.fasterxml.jackson.dataformat:jackson-dataformat-xml;2.10.1
 com.fasterxml.jackson.datatype:jackson-datatype-jdk8;2.10.0
 com.fasterxml.jackson.datatype:jackson-datatype-jsr310;2.10.1
@@ -39,6 +40,7 @@ io.netty:netty-tcnative;2.0.29.Final
 io.netty:netty-tcnative-boringssl-static;2.0.29.Final
 io.netty:netty-transport-native-epoll;4.1.49.Final
 io.netty:netty-transport-native-unix-common;4.1.49.Final
+io.netty:netty-transport-native-kqueue;4.1.49.Final
 io.projectreactor.netty:reactor-netty;0.9.7.RELEASE
 io.projectreactor:reactor-core;3.3.5.RELEASE
 io.reactivex:rxjava;1.2.4
@@ -48,6 +50,7 @@ javax.validation:validation-api;2.0.1.Final
 net.minidev:json-smart;2.3
 org.apache.ant:ant;1.9.4
 org.apache.avro:avro;1.9.2
+org.apache.avro:avro-maven-plugin;1.9.2
 org.apache.commons:commons-lang3;3.8.1
 org.apache.httpcomponents:httpclient;4.3.6
 org.apache.logging.log4j:log4j-api;2.11.1
@@ -231,6 +234,10 @@ cosmos_io.dropwizard.metrics:metrics-core;4.1.0
 cosmos_io.dropwizard.metrics:metrics-graphite;4.1.0
 cosmos_io.dropwizard.metrics:metrics-jvm;4.1.0
 cosmos_org.mockito:mockito-core;1.10.19
+
+# sdk\core\azure-core-serializer-avro-jackson\pom.xml
+# This dependency is needed since Jackson Avro uses an older dependency on Apache Avro which is another library.
+jacksonavro_org.apache.avro:avro-maven-plugin;1.8.2
 
 # sdk\eventgrid\microsoft-azure-eventgrid\pom.xml
 eventgrid_commons-io:commons-io;2.6
