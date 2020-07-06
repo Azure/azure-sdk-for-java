@@ -64,10 +64,14 @@ class ServerKeysImpl extends WrapperImpl<ServerKeysInner> implements ServerKeys 
     public Observable<ServerKey> getAsync(String resourceGroupName, String serverName, String keyName) {
         ServerKeysInner client = this.inner();
         return client.getAsync(resourceGroupName, serverName, keyName)
-        .map(new Func1<ServerKeyInner, ServerKey>() {
+        .flatMap(new Func1<ServerKeyInner, Observable<ServerKey>>() {
             @Override
-            public ServerKey call(ServerKeyInner inner) {
-                return wrapModel(inner);
+            public Observable<ServerKey> call(ServerKeyInner inner) {
+                if (inner == null) {
+                    return Observable.empty();
+                } else {
+                    return Observable.just((ServerKey)wrapModel(inner));
+                }
             }
        });
     }

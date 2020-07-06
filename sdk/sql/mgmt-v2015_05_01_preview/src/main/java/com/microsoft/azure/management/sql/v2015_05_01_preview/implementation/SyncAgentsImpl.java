@@ -78,10 +78,14 @@ class SyncAgentsImpl extends WrapperImpl<SyncAgentsInner> implements SyncAgents 
     public Observable<SyncAgent> getAsync(String resourceGroupName, String serverName, String syncAgentName) {
         SyncAgentsInner client = this.inner();
         return client.getAsync(resourceGroupName, serverName, syncAgentName)
-        .map(new Func1<SyncAgentInner, SyncAgent>() {
+        .flatMap(new Func1<SyncAgentInner, Observable<SyncAgent>>() {
             @Override
-            public SyncAgent call(SyncAgentInner inner) {
-                return wrapModel(inner);
+            public Observable<SyncAgent> call(SyncAgentInner inner) {
+                if (inner == null) {
+                    return Observable.empty();
+                } else {
+                    return Observable.just((SyncAgent)wrapModel(inner));
+                }
             }
        });
     }
