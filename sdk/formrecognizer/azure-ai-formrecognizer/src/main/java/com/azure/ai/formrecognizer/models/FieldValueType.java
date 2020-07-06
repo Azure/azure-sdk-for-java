@@ -21,7 +21,7 @@ public enum FieldValueType {
     STRING {
         @Override
         public <T> T cast(FormField<?> formField) {
-            if (getDefaultOrNull(formField)) {
+            if (isFieldValueNull(formField)) {
                 return null;
             }
             return (T) String.valueOf(formField.getValue());
@@ -34,7 +34,7 @@ public enum FieldValueType {
     DATE {
         @Override
         public <T> T cast(FormField<?> formField) {
-            if (getDefaultOrNull(formField)) {
+            if (isFieldValueNull(formField)) {
                 return null;
             }
             if (this == formField.getValueType()) {
@@ -54,7 +54,7 @@ public enum FieldValueType {
     TIME {
         @Override
         public <T> T cast(FormField<?> formField) {
-            if (getDefaultOrNull(formField)) {
+            if (isFieldValueNull(formField)) {
                 return null;
             }
             if (this == formField.getValueType()) {
@@ -74,13 +74,13 @@ public enum FieldValueType {
     PHONE_NUMBER {
         @Override
         public <T> T cast(FormField<?> formField) {
-            if (getDefaultOrNull(formField)) {
+            if (isFieldValueNull(formField)) {
                 return null;
             }
             if (this == formField.getValueType()) {
                 return (T) formField.getValue();
             } else if (STRING == formField.getValueType()) {
-                return (T) formField.getValue().toString();
+                return (T) formField.getValue();
             } else {
                 throw LOGGER.logExceptionAsError(new UnsupportedOperationException(String.format("Cannot cast from "
                     + "field value of type %s to type %s", formField.getValueType(), PHONE_NUMBER)));
@@ -94,7 +94,7 @@ public enum FieldValueType {
     DOUBLE {
         @Override
         public <T> T cast(FormField<?> formField) {
-            if (getDefaultOrNull(formField)) {
+            if (isFieldValueNull(formField)) {
                 return null;
             }
             if (this == formField.getValueType()) {
@@ -114,7 +114,7 @@ public enum FieldValueType {
     LONG {
         @Override
         public <T> T cast(FormField<?> formField) {
-            if (getDefaultOrNull(formField)) {
+            if (isFieldValueNull(formField)) {
                 return null;
             }
             if (this == formField.getValueType()) {
@@ -148,16 +148,13 @@ public enum FieldValueType {
         }
     };
 
-    static boolean getDefaultOrNull(FormField<?> formField) {
+    static boolean isFieldValueNull(FormField<?> formField) {
         Objects.requireNonNull(formField, "'formField' cannot be null");
-        if (formField.getValue() == null) {
-            return true;
-        }
-        return false;
+        return formField.getValue() == null;
     }
 
     <T> T getCollectionTypeCast(FormField<?> formField) {
-        if (getDefaultOrNull(formField)) {
+        if (isFieldValueNull(formField)) {
             return null;
         }
         if (this == formField.getValueType()) {

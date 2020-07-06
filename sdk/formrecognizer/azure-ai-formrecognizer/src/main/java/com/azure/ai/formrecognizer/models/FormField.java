@@ -75,10 +75,9 @@ public final class FormField<T> {
     }
 
     /**
-     * Get the text, bounding box, and field elements for the field value.
      * The type of the value of the recognized field.
      * Possible types include: 'String',
-     * 'LocalDate', 'LocalTime', 'Integer', 'Float', 'Map', or 'List'.
+     * 'LocalDate', 'LocalTime', 'Long', 'Double', 'Map', or 'List'.
      *
      * @return the type of the value of the field.
      */
