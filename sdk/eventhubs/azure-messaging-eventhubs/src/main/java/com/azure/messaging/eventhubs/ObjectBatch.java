@@ -18,7 +18,6 @@ import java.util.Objects;
  */
 public final class ObjectBatch<T> extends EventDataBatchBase {
     private final ClientLogger logger = new ClientLogger(ObjectBatch.class);
-    private final Object lock = new Object();
     private final Class<T> batchType;
     private final ObjectSerializer objectSerializer;
 
@@ -31,11 +30,11 @@ public final class ObjectBatch<T> extends EventDataBatchBase {
     }
 
     /**
-     * Tries to add an object to the batch.
+     * Tries to asynchronously serialize an object into an EventData payload and add the EventData to the batch.
      *
      * @param object The object to add to the batch.
-     * @return {@code true} if the object could be added to the batch; {@code false} if the serialized object
-     *      was too large to fit in the batch.
+     * @return Mono<Boolean> {@code true} if the object could be added to the batch; {@code false} if the serialized
+     * object was too large to fit in the batch.
      * @throws IllegalArgumentException if object is {@code null}.
      * @throws AmqpException if serialized object as {@link EventData} is larger than the maximum size
      *      of the {@link EventDataBatch}.
@@ -46,10 +45,6 @@ public final class ObjectBatch<T> extends EventDataBatchBase {
         }
 
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        return objectSerializer.serialize(outputStream, object).map(s -> {
-            EventData eventData = new EventData(s.toByteArray());
-            EventData event = tracerProvider.isEnabled() ? traceMessageSpan(eventData) : eventData;
-            return tryAdd(event);
-        });
+        return objectSerializer.serialize(outputStream, object).map(s -> tryAdd(new EventData(s.toByteArray())));
     }
 }
