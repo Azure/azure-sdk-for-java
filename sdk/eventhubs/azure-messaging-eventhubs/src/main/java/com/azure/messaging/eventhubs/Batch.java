@@ -19,7 +19,12 @@ import org.apache.qpid.proton.message.Message;
 import reactor.core.publisher.Signal;
 
 import java.nio.BufferOverflowException;
-import java.util.*;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Locale;
+import java.util.Objects;
+import java.util.Optional;
 
 import static com.azure.core.util.tracing.Tracer.*;
 import static com.azure.messaging.eventhubs.implementation.ClientConstants.AZ_NAMESPACE_VALUE;
