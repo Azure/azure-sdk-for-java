@@ -6,6 +6,7 @@ package com.azure.messaging.eventhubs.models;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.experimental.serializer.ObjectSerializer;
 import com.azure.messaging.eventhubs.EventData;
+import reactor.core.publisher.Mono;
 
 import java.io.ByteArrayInputStream;
 import java.util.Objects;
@@ -67,18 +68,18 @@ public class PartitionEvent {
         return lastEnqueuedEventProperties;
     }
 
-    public <T> T getDeserializedObject(Class<T> objectType) {
+    public <T> Mono<T> getDeserializedObject(Class<T> objectType) {
         Objects.requireNonNull(objectSerializer, "No serializer set for deserializing event data payload.");
+        Objects.requireNonNull(objectType, "objectType cannot be null.");
 
         if (deserialized != null) {
             if (objectType.isInstance(deserialized)) {
-                return objectType.cast(deserialized);
+                return Mono.just(objectType.cast(deserialized));
             };
         }
 
-        T typedDeserializedObject =
-            objectSerializer.deserialize(new ByteArrayInputStream(eventData.getBody()), objectType).block();
-        deserialized = typedDeserializedObject;
-        return typedDeserializedObject;
+        Mono<T> objectMono =  objectSerializer.deserialize(new ByteArrayInputStream(eventData.getBody()), objectType);
+        objectMono.subscribe(o -> deserialized = o);
+        return objectMono;
     }
 }
