@@ -139,7 +139,7 @@ public class TableServiceAsyncClientCodeSnippets {
         tableAsyncClient.queryEntity(queryOptions).flatMap(tableEntity -> {
             logger.info("Table Entity: " + tableEntity);
             tableEntity.addProperty("Price", "5");
-            Mono<Void> updateEntityMono = tableAsyncClient.upsertEntity(UpdateMode.Replace, tableEntity);
+            Mono<Void> updateEntityMono = tableAsyncClient.updateEntity(UpdateMode.Replace, tableEntity);
             return updateEntityMono;
         }).subscribe(Void -> {
             logger.info("Update Entity Successful.");
