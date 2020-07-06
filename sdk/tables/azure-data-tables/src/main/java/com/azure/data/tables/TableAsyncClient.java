@@ -4,6 +4,7 @@ package com.azure.data.tables;
 
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.http.rest.PagedFlux;
+import java.util.List;
 import java.util.Map;
 import reactor.core.publisher.Mono;
 
@@ -27,6 +28,17 @@ public class TableAsyncClient {
      * @return a paged flux of all the entity which fit this criteria
      */
     public PagedFlux<TableEntity> queryEntity(QueryOptions queryOptions) {
+        return null;
+    }
+
+    /**
+     * Queries and returns entities in the given table with the given rowKey and ParitionKey
+     *
+     * @param rowKey the given row key
+     * @param partitionKey the given partition key
+     * @return a list of the tables that fit the row and partition key
+     */
+    public PagedFlux<TableEntity> queryEntitiesWithPartitionAndRowKey(String rowKey, String partitionKey) {
         return null;
     }
 

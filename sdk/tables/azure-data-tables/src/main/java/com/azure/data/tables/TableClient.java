@@ -28,6 +28,17 @@ public class TableClient {
         return null;
     }
 
+    /**
+     * Queries and returns entities in the given table with the given rowKey and ParitionKey
+     *
+     * @param rowKey the given row key
+     * @param partitionKey the given partition key
+     * @return a list of the tables that fit the row and partition key
+     */
+    public List<TableEntity> queryEntitiesWithPartitionAndRowKey(String rowKey, String partitionKey) {
+        return null;
+    }
+
 
     /**
      * insert a TableEntity with the given properties and return that TableEntity. Property map must include

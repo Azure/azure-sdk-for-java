@@ -14,34 +14,45 @@ public class TableServiceAsyncClientCodeSnippets {
     final ClientLogger logger = new ClientLogger("TableServiceAsyncClientCodeSnippets");
 
     /**
-     * all methods on tables in the Tables SDK (Add, Delete, Query)
+     * create table code snippet
      */
-    public void TableLevelMethods() {
-
-        // Build service client
+    public void createTable() {
         TableServiceAsyncClient tableServiceAsyncClient = new TableServiceClientBuilder()
             .connectionString("connectionString")
             .buildAsyncClient();
 
-        // Add a table
         tableServiceAsyncClient.createTable("OfficeSupplies").subscribe(Void -> {
             logger.info("Table creation successful.");
         }, error -> {
             logger.error("There was an error creating the table. Error: " + error);
         });
+    }
 
+    /**
+     * delete table code snippet
+     */
+    public void deleteTable() {
+        TableServiceAsyncClient tableServiceAsyncClient = new TableServiceClientBuilder()
+            .connectionString("connectionString")
+            .buildAsyncClient();
 
-        // Delete a table
         tableServiceAsyncClient.deleteTable("OfficeSupplies").subscribe(Void -> {
             logger.info("Table deletion successful");
         }, error -> {
             logger.error("There was an error deleting the table. Error: " + error);
         });
+    }
 
-
-        // Query tables
+    /**
+     * query tables code snippet
+     */
+    public void queryTable() {
+        TableServiceAsyncClient tableServiceAsyncClient = new TableServiceClientBuilder()
+            .connectionString("connectionString")
+            .buildAsyncClient();
         QueryOptions queryOptions = new QueryOptions();
         queryOptions.setFilter("TableName eq OfficeSupplies");
+
         tableServiceAsyncClient.queryTables(queryOptions).subscribe(azureTable -> {
             logger.info(azureTable.getName());
         }, error -> {
@@ -59,7 +70,7 @@ public class TableServiceAsyncClientCodeSnippets {
             .connectionString("connectionString")
             .buildAsyncClient();
 
-        TableAsyncClient tableAsyncClient = tableServiceAsyncClient.getClient("OfficeSupplies");
+        TableAsyncClient tableAsyncClient = tableServiceAsyncClient.getTableAsyncClient("OfficeSupplies");
         Map<String, Object> properties = new HashMap<>();
         properties.put("RowKey", "crayolaMarkers");
         properties.put("PartitionKey", "markers");
@@ -81,7 +92,7 @@ public class TableServiceAsyncClientCodeSnippets {
             .connectionString("connectionString")
             .buildAsyncClient();
 
-        TableAsyncClient tableAsyncClient = tableServiceAsyncClient.getClient("OfficeSupplies");
+        TableAsyncClient tableAsyncClient = tableServiceAsyncClient.getTableAsyncClient("OfficeSupplies");
         QueryOptions queryOptions = new QueryOptions();
         queryOptions.setFilter("RowKey eq crayolaMarkers");
 
@@ -106,7 +117,7 @@ public class TableServiceAsyncClientCodeSnippets {
             .connectionString("connectionString")
             .buildAsyncClient();
 
-        TableAsyncClient tableAsyncClient = tableServiceAsyncClient.getClient("OfficeSupplies");
+        TableAsyncClient tableAsyncClient = tableServiceAsyncClient.getTableAsyncClient("OfficeSupplies");
         QueryOptions queryOptions = new QueryOptions();
         queryOptions.setFilter("RowKey eq crayolaMarkers");
 
@@ -132,7 +143,7 @@ public class TableServiceAsyncClientCodeSnippets {
             .connectionString("connectionString")
             .buildAsyncClient();
 
-        TableAsyncClient tableAsyncClient = tableServiceAsyncClient.getClient("OfficeSupplies");
+        TableAsyncClient tableAsyncClient = tableServiceAsyncClient.getTableAsyncClient("OfficeSupplies");
         QueryOptions queryOptions = new QueryOptions();
         queryOptions.setFilter("RowKey eq crayolaMarkers");
 
@@ -158,13 +169,33 @@ public class TableServiceAsyncClientCodeSnippets {
             .connectionString("connectionString")
             .buildAsyncClient();
 
-        TableAsyncClient tableAsyncClient = tableServiceAsyncClient.getClient("OfficeSupplies");
+        TableAsyncClient tableAsyncClient = tableServiceAsyncClient.getTableAsyncClient("OfficeSupplies");
         QueryOptions queryOptions = new QueryOptions();
         queryOptions.setFilter("Product eq markers");
         queryOptions.setSelect("Seller, Price");
 
         tableAsyncClient.queryEntity(queryOptions).subscribe(tableEntity -> {
             logger.info("Table Entity: " + tableEntity);
+        }, error -> {
+            logger.error("There was an error querying the table. Error: " + error);
+        });
+    }
+
+    /**
+     * checks to see if an entity exists code snippet
+     */
+    private void existsEntity() {
+
+        // Build service client
+        TableServiceAsyncClient tableServiceAsyncClient = new TableServiceClientBuilder()
+            .connectionString("connectionString")
+            .buildAsyncClient();
+
+        TableAsyncClient tableAsyncClient = tableServiceAsyncClient.getTableAsyncClient("OfficeSupplies");
+
+        tableAsyncClient.queryEntitiesWithPartitionAndRowKey("crayolaMarkers", "markers")
+            .subscribe(tableEntity -> {
+            logger.info("Table Entity exists: " + tableEntity);
         }, error -> {
             logger.error("There was an error querying the table. Error: " + error);
         });

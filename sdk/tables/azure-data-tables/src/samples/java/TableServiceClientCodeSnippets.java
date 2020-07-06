@@ -13,39 +13,46 @@ import java.util.Map;
  * sync code snippets for the table service
  */
 public class TableServiceClientCodeSnippets {
+    private final ClientLogger logger = new ClientLogger("TableServiceClientCodeSnippets");
 
     /**
-     * all the functionality of the Tables SDK written sync
+     * create table code snippet
      */
-    public static void methods() {
-        ClientLogger logger = new ClientLogger("TableServiceClientCodeSnippets");
-
-        //create a tableServiceClient
+    public void createTable() {
         TableServiceClient tableServiceClient = new TableServiceClientBuilder()
             .connectionString("connectionString")
             .buildClient();
 
-        //create TableClient
-        TableClient tableClient = new TableClientBuilder()
-            .connectionString("connectionString")
-            .tableName("OfficeSupplies")
-            .buildClient();
-
-        //create a table
         try {
             AzureTable officeSuppliesTable = tableServiceClient.createTable("OfficeSupplies");
         } catch (TableServiceErrorException e) {
             logger.error("Create Table Unsuccessful. Error: " + e);
         }
+    }
 
-        //delete  table
+    /**
+     * delete table code snippet
+     */
+    public void deleteTable() {
+        TableServiceClient tableServiceClient = new TableServiceClientBuilder()
+            .connectionString("connectionString")
+            .buildClient();
+
         try {
             tableServiceClient.deleteTable("OfficeSupplies");
         } catch (TableServiceErrorException e) {
             logger.error("Delete Table Unsuccessful. Error: " + e);
         }
+    }
 
-        //query tables
+    /**
+     * query table code snippet
+     */
+    public void queryTables() {
+        TableServiceClient tableServiceClient = new TableServiceClientBuilder()
+            .connectionString("connectionString")
+            .buildClient();
+
         QueryOptions queryOptions = new QueryOptions();
         queryOptions.setFilter("TableName eq OfficeSupplies");
 
@@ -54,49 +61,149 @@ public class TableServiceClientCodeSnippets {
         } catch (HttpResponseException e) {
             logger.error("Table Query Unsuccessful. Error: " + e);
         }
+    }
 
-        //insert entity
+    /**
+     * insert entity code snippet
+     */
+    private void insertEntity() {
+        TableClient tableClient = new TableClientBuilder()
+            .connectionString("connectionString")
+            .tableName("OfficeSupplies")
+            .buildClient();
+
         Map<String, Object> properties = new HashMap<>();
         properties.put("RowKey", "crayolaMarkers");
         properties.put("PartitionKey", "markers");
-        TableEntity tableEntity = null;
         try {
-            tableEntity = tableClient.createEntity(properties);
+            TableEntity tableEntity = tableClient.createEntity(properties);
         } catch (HttpResponseException e) {
             logger.error("Insert Entity Unsuccessful. Error: " + e);
         }
+    }
 
-        //update entity
-        tableEntity.addProperty("Seller", "Crayola");
+    /**
+     * update entity code snippet
+     */
+    private void updateEntity() {
+        TableClient tableClient = new TableClientBuilder()
+            .connectionString("connectionString")
+            .tableName("OfficeSupplies")
+            .buildClient();
+
+        QueryOptions queryOptions = new QueryOptions();
+        queryOptions.setFilter("RowKey eq crayolaMarkers");
+        List<TableEntity> tableEntities = null;
         try {
-            tableClient.updateEntity(UpdateMode.Replace, tableEntity);
+            tableEntities = tableClient.queryEntity(queryOptions);
         } catch (HttpResponseException e) {
-            logger.error("Update Entity Unsuccessful. Error: " + e);
+            logger.error("Query Table Entities Unsuccessful. Error: " + e);
         }
+        if (tableEntities != null) {
+            TableEntity tableEntity = tableEntities.get(0);
+            tableEntity.addProperty("Seller", "Crayola");
+            try {
+                tableClient.updateEntity(UpdateMode.Replace, tableEntity);
+            } catch (HttpResponseException e) {
+                logger.error("Update Entity Unsuccessful. Error: " + e);
+            }
+        }
+    }
 
-        //upsert entity
-        tableEntity.addProperty("Price", "5");
+    /**
+     * upsert entity code snippet
+     */
+    private void upsertEntity() {
+        TableClient tableClient = new TableClientBuilder()
+            .connectionString("connectionString")
+            .tableName("OfficeSupplies")
+            .buildClient();
+
+        QueryOptions queryOptions = new QueryOptions();
+        queryOptions.setFilter("RowKey eq crayolaMarkers");
+        List<TableEntity> tableEntities = null;
         try {
-            tableClient.upsertEntity(UpdateMode.Replace, tableEntity);
+            tableEntities = tableClient.queryEntity(queryOptions);
         } catch (HttpResponseException e) {
-            logger.error("Upsert Entity Unsuccessful. Error: " + e);
+            logger.error("Query Table Entities Unsuccessful. Error: " + e);
         }
+        if (tableEntities != null) {
+            TableEntity tableEntity = tableEntities.get(0);
+            tableEntity.addProperty("Price", "5");
+            try {
+                tableClient.upsertEntity(UpdateMode.Replace, tableEntity);
+            } catch (HttpResponseException e) {
+                logger.error("Upsert Entity Unsuccessful. Error: " + e);
+            }
+        }
+    }
 
-        //delete entity
+    /**
+     * delete entity code snippet
+     */
+    private void deleteEntity() {
+        TableClient tableClient = new TableClientBuilder()
+            .connectionString("connectionString")
+            .tableName("OfficeSupplies")
+            .buildClient();
+
+        QueryOptions queryOptions = new QueryOptions();
+        queryOptions.setFilter("RowKey eq crayolaMarkers");
+        List<TableEntity> tableEntities = null;
         try {
-            tableClient.deleteEntity(tableEntity);
+            tableEntities = tableClient.queryEntity(queryOptions);
         } catch (HttpResponseException e) {
-            logger.error("Delete Entity Unsuccessful. Error: " + e);
+            logger.error("Query Table Entities Unsuccessful. Error: " + e);
         }
+        if (tableEntities != null) {
+            TableEntity tableEntity = tableEntities.get(0);
+            try {
+                tableClient.deleteEntity(tableEntity);
+            } catch (HttpResponseException e) {
+                logger.error("Delete Entity Unsuccessful. Error: " + e);
+            }
+        }
+    }
 
-        //query a table
+    /**
+     * query entity code snippet
+     */
+    private void queryEntity() {
+        TableClient tableClient = new TableClientBuilder()
+            .connectionString("connectionString")
+            .tableName("OfficeSupplies")
+            .buildClient();
+
+        QueryOptions queryOptions = new QueryOptions();
         queryOptions.setFilter("Product eq markers");
         queryOptions.setSelect("Seller, Price");
         try {
-            List<TableEntity> list = tableClient.queryEntity(queryOptions);
+            List<TableEntity> tableEntities = tableClient.queryEntity(queryOptions);
         } catch (HttpResponseException e) {
             logger.error("Query Table Entities Unsuccessful. Error: " + e);
         }
     }
 
+    /**
+     * check to see if a table entity exists
+     */
+    public void entityExists() {
+        TableClient tableClient = new TableClientBuilder()
+            .connectionString("connectionString")
+            .tableName("OfficeSupplies")
+            .buildClient();
+
+        QueryOptions queryOptions = new QueryOptions();
+        queryOptions.setFilter("TableName eq OfficeSupplies");
+        try {
+            List<TableEntity> responseTables =
+                tableClient.queryEntitiesWithPartitionAndRowKey("crayolaMarkers", "markers");
+            if (responseTables != null && responseTables.get(0) != null) {
+                logger.info("Entity with the rowKey = crayolaMarkers and partitionKey = markers exists.");
+            }
+        } catch (HttpResponseException e) {
+            logger.error("Table Query Unsuccessful. Error: " + e);
+        }
+
+    }
 }

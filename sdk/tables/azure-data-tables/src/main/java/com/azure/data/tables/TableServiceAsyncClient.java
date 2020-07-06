@@ -48,12 +48,12 @@ public class TableServiceAsyncClient {
     }
 
     /**
-     * retrieves the table client for the provided table or creates one if it doesn't exist
+     * retrieves the async table client for the provided table or creates one if it doesn't exist
      *
      * @param name the name of the table
-     * @return associated TableClient
+     * @return associated TableAsyncClient
      */
-    public Mono<TableClient> getTableClient(String name) {
+    public TableAsyncClient getTableAsyncClient(String name) {
         return null;
     }
 
@@ -67,14 +67,4 @@ public class TableServiceAsyncClient {
         return null;
     }
 
-
-    /**
-     * gets the client for this table
-     *
-     * @param tableName the table to get the client from
-     * @return the table client
-     */
-    public TableAsyncClient getClient(String tableName) {
-        return null;
-    }
 }

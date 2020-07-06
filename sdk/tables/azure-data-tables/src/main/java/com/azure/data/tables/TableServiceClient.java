@@ -53,6 +53,15 @@ public class TableServiceClient {
     }
 
     /**
+     * gets the Table Client for the given table
+     * @param name the name of the table
+     * @return the Table Client for the table
+     */
+    public TableClient getTableClient(String name) {
+        return null;
+    }
+
+    /**
      * query all the tables under the storage account and return them
      *
      * @param queryOptions the odata query object

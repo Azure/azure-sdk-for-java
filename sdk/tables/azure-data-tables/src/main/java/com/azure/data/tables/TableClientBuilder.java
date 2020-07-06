@@ -52,7 +52,10 @@ public class TableClientBuilder {
         return new TableAsyncClient(tableName);
     }
 
-    TableClientBuilder() {
+    /**
+     * table client builder constructor
+     */
+    public TableClientBuilder() {
     }
 
     /**
