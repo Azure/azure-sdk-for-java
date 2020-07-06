@@ -9,12 +9,14 @@ import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.TokenRefreshOptions;
 import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.util.CoreUtils;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.identity.implementation.IdentityClient;
 import com.azure.identity.implementation.IdentityClientBuilder;
 import com.azure.identity.implementation.IdentityClientOptions;
 import com.azure.identity.implementation.IntelliJAuthMethodDetails;
 import com.azure.identity.implementation.IntelliJCacheAccessor;
 import com.azure.identity.implementation.MsalToken;
+import com.azure.identity.implementation.util.LoggingUtil;
 import reactor.core.publisher.Mono;
 
 import java.util.concurrent.atomic.AtomicReference;
@@ -31,6 +33,7 @@ public class IntelliJCredential implements TokenCredential {
     private final IdentityClient identityClient;
     private final IdentityClientOptions identityClientOptions;
     private final AtomicReference<MsalToken> cachedToken;
+    private final ClientLogger logger = new ClientLogger(IntelliJCredential.class);
 
     /**
      * Creates an {@link IntelliJCredential} with default identity client options.
@@ -87,8 +90,10 @@ public class IntelliJCredential implements TokenCredential {
             Mono.defer(() -> identityClient.authenticateWithIntelliJ(request)))
                    .map(msalToken -> {
                        cachedToken.set(msalToken);
-                       return msalToken;
-                   });
+                       return (AccessToken) msalToken;
+                   })
+            .doOnNext(token -> LoggingUtil.logTokenSuccess(logger, request))
+            .doOnError(error -> LoggingUtil.logTokenError(logger, request, error));
     }
 
     @Override

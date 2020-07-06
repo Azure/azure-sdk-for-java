@@ -8,10 +8,12 @@ import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.TokenRefreshOptions;
 import com.azure.core.credential.TokenRequestContext;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.identity.implementation.IdentityClient;
 import com.azure.identity.implementation.IdentityClientBuilder;
 import com.azure.identity.implementation.IdentityClientOptions;
 import com.azure.identity.implementation.MsalAuthenticationAccount;
+import com.azure.identity.implementation.util.LoggingUtil;
 import reactor.core.publisher.Mono;
 
 import java.net.URI;
@@ -28,6 +30,7 @@ public class AuthorizationCodeCredential implements TokenCredential {
     private final IdentityClient identityClient;
     private final IdentityClientOptions identityClientOptions;
     private final AtomicReference<MsalAuthenticationAccount> cachedToken;
+    private final ClientLogger logger = new ClientLogger(AuthorizationCodeCredential.class);
 
     /**
      * Creates an AuthorizationCodeCredential with the given identity client options.
@@ -66,8 +69,10 @@ public class AuthorizationCodeCredential implements TokenCredential {
                    cachedToken.set(new MsalAuthenticationAccount(
                                 new AuthenticationRecord(msalToken.getAuthenticationResult(),
                                         identityClient.getTenantId())));
-                   return  msalToken;
-               });
+                   return (AccessToken) msalToken;
+               })
+            .doOnNext(token -> LoggingUtil.logTokenSuccess(logger, request))
+            .doOnError(error -> LoggingUtil.logTokenError(logger, request, error));
     }
 
     @Override

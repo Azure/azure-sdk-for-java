@@ -9,9 +9,11 @@ import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.TokenRefreshOptions;
 import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.util.Configuration;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.identity.implementation.IdentityClient;
 import com.azure.identity.implementation.IdentityClientBuilder;
 import com.azure.identity.implementation.IdentityClientOptions;
+import com.azure.identity.implementation.util.LoggingUtil;
 import reactor.core.publisher.Mono;
 
 /**
@@ -22,6 +24,7 @@ public final class ManagedIdentityCredential implements TokenCredential {
     private final AppServiceMsiCredential appServiceMSICredential;
     private final VirtualMachineMsiCredential virtualMachineMSICredential;
     private final IdentityClientOptions identityClientOptions;
+    private final ClientLogger logger = new ClientLogger(ManagedIdentityCredential.class);
 
     /**
      * Creates an instance of the ManagedIdentityCredential.
@@ -42,6 +45,7 @@ public final class ManagedIdentityCredential implements TokenCredential {
             appServiceMSICredential = null;
         }
         this.identityClientOptions = identityClientOptions;
+        LoggingUtil.logAvailableEnvironmentVariables(logger, configuration);
     }
 
     /**
@@ -56,9 +60,17 @@ public final class ManagedIdentityCredential implements TokenCredential {
 
     @Override
     public Mono<AccessToken> getToken(TokenRequestContext request) {
-        return (appServiceMSICredential != null
-            ? appServiceMSICredential.authenticate(request)
-            : virtualMachineMSICredential.authenticate(request));
+        Mono<AccessToken> accessTokenMono;
+        if (appServiceMSICredential != null) {
+            accessTokenMono = appServiceMSICredential.authenticate(request)
+                .doOnSuccess((t -> logger.info("Azure Identity => Managed Identity environment: MSI_ENDPOINT")));
+        } else {
+            accessTokenMono = virtualMachineMSICredential.authenticate(request)
+                .doOnSuccess((t -> logger.info("Azure Identity => Managed Identity environment: IMDS")));
+        }
+        return accessTokenMono
+            .doOnNext(token -> LoggingUtil.logTokenSuccess(logger, request))
+            .doOnError(error -> LoggingUtil.logTokenError(logger, request, error));
     }
 
     @Override

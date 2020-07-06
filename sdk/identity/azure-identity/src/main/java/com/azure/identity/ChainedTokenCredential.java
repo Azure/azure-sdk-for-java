@@ -9,7 +9,7 @@ import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.TokenRefreshOptions;
 import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.exception.ClientAuthenticationException;
-
+import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -27,6 +27,7 @@ import java.util.List;
 @Immutable
 public class ChainedTokenCredential implements TokenCredential {
     private volatile TokenRefreshOptions tokenRefreshOptions;
+    private final ClientLogger logger = new ClientLogger(getClass());
     private final List<TokenCredential> credentials;
     private final String unavailableError = this.getClass().getSimpleName() + " authentication failed. ---> ";
 
@@ -42,27 +43,32 @@ public class ChainedTokenCredential implements TokenCredential {
     public Mono<AccessToken> getToken(TokenRequestContext request) {
         List<CredentialUnavailableException> exceptions = new ArrayList<>(4);
         return Flux.fromIterable(credentials)
-               .flatMap(p -> p.getToken(request).onErrorResume(Exception.class, t -> {
-                   if (!t.getClass().getSimpleName().equals("CredentialUnavailableException")) {
-                       return Mono.error(new ClientAuthenticationException(
-                        unavailableError + p.getClass().getSimpleName()
-                        + " authentication failed. Error Details: " + t.getMessage(),
-                        null, t));
-                   }
-                   exceptions.add((CredentialUnavailableException) t);
-                   return Mono.empty();
-               }).doOnNext(t -> tokenRefreshOptions = p.getTokenRefreshOptions()), 1)
-               .next()
-               .switchIfEmpty(Mono.defer(() -> {
-                   // Chain Exceptions.
-                   CredentialUnavailableException last = exceptions.get(exceptions.size() - 1);
-                   for (int z = exceptions.size() - 2; z >= 0; z--) {
-                       CredentialUnavailableException current = exceptions.get(z);
-                       last = new CredentialUnavailableException(current.getMessage() + "\r\n" + last.getMessage(),
-                            last.getCause());
-                   }
-                   return Mono.error(last);
-               }));
+            .flatMap(p -> p.getToken(request)
+                .doOnNext(t -> logger.info("Azure Identity => Attempted credential {} returns a token",
+                    p.getClass().getSimpleName()))
+                .onErrorResume(Exception.class, t -> {
+                    if (!t.getClass().getSimpleName().equals("CredentialUnavailableException")) {
+                        return Mono.error(new ClientAuthenticationException(
+                            unavailableError + p.getClass().getSimpleName()
+                                + " authentication failed. Error Details: " + t.getMessage(),
+                            null, t));
+                    }
+                    exceptions.add((CredentialUnavailableException) t);
+                    logger.info("Azure Identity => Attempted credential {} is unavailable.",
+                        p.getClass().getSimpleName());
+                    return Mono.empty();
+                }).doOnNext(t -> tokenRefreshOptions = p.getTokenRefreshOptions()), 1)
+            .next()
+            .switchIfEmpty(Mono.defer(() -> {
+                // Chain Exceptions.
+                CredentialUnavailableException last = exceptions.get(exceptions.size() - 1);
+                for (int z = exceptions.size() - 2; z >= 0; z--) {
+                    CredentialUnavailableException current = exceptions.get(z);
+                    last = new CredentialUnavailableException(current.getMessage() + "\r\n" + last.getMessage(),
+                        last.getCause());
+                }
+                return Mono.error(last);
+            }));
     }
 
     @Override

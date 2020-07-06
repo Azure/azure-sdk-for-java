@@ -1,0 +1,33 @@
+<entry xmlns="http://www.w3.org/2005/Atom">
+  <id>sb://sb-java-conniey-5.servicebus.windows.net/my-topic/Subscriptions/subscription-session-9?api-version=2017-04&amp;enrich=false</id>
+  <title type="text">subscription-session-9</title>
+  <published>2020-06-22T23:47:54Z</published>
+  <updated>2020-06-22T23:47:54Z</updated>
+  <link rel="self" href="sb://sb-java-conniey-5.servicebus.windows.net/my-topic/Subscriptions/subscription-session-9?api-version=2017-04&amp;enrich=false"/>
+  <content type="application/xml">
+    <SubscriptionDescription xmlns="http://schemas.microsoft.com/netservices/2010/10/servicebus/connect"
+    >
+      <LockDuration>PT15S</LockDuration>
+      <RequiresSession>true</RequiresSession>
+      <DefaultMessageTimeToLive>P10675199DT2H48M5.4775807S</DefaultMessageTimeToLive>
+      <DeadLetteringOnMessageExpiration>false</DeadLetteringOnMessageExpiration>
+      <DeadLetteringOnFilterEvaluationExceptions>true</DeadLetteringOnFilterEvaluationExceptions>
+      <MessageCount>13</MessageCount>
+      <MaxDeliveryCount>5</MaxDeliveryCount>
+      <EnableBatchedOperations>true</EnableBatchedOperations>
+      <Status>Active</Status>
+      <CreatedAt>2020-06-22T23:47:54.0131447Z</CreatedAt>
+      <UpdatedAt>2020-06-22T23:47:20.0131447Z</UpdatedAt>
+      <AccessedAt>2020-06-22T23:47:54.013Z</AccessedAt>
+      <CountDetails xmlns:d3p1="http://schemas.microsoft.com/netservices/2011/06/servicebus">
+        <d3p1:ActiveMessageCount>10</d3p1:ActiveMessageCount>
+        <d3p1:DeadLetterMessageCount>50</d3p1:DeadLetterMessageCount>
+        <d3p1:ScheduledMessageCount>34</d3p1:ScheduledMessageCount>
+        <d3p1:TransferMessageCount>11</d3p1:TransferMessageCount>
+        <d3p1:TransferDeadLetterMessageCount>2</d3p1:TransferDeadLetterMessageCount>
+      </CountDetails>
+      <AutoDeleteOnIdle>PT1H48M</AutoDeleteOnIdle>
+      <EntityAvailabilityStatus>Available</EntityAvailabilityStatus>
+    </SubscriptionDescription>
+  </content>
+</entry>

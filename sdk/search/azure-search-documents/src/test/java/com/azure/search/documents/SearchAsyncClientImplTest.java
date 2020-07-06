@@ -21,7 +21,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import static com.azure.search.documents.TestHelpers.assertHttpResponseExceptionAsync;
 import static com.azure.search.documents.TestHelpers.assertMapEquals;
-import static com.azure.search.documents.TestHelpers.createPointGeometry;
 import static com.azure.search.documents.TestHelpers.uploadDocument;
 import static com.azure.search.documents.TestHelpers.uploadDocuments;
 import static com.azure.search.documents.TestHelpers.waitForIndexing;
@@ -111,7 +110,7 @@ public class SearchAsyncClientImplTest extends SearchTestBase {
         expectedDoc.put("Rating", 3);
         expectedDoc.put("Address", addressDoc);
         expectedDoc.put("Rooms", rooms);
-        expectedDoc.put("Location", createPointGeometry(40.760586, -73.975403));
+//        expectedDoc.put("Location", createPointGeometryString(40.760586, -73.975403));
 
         uploadDocument(asyncClient, expectedDoc);
 

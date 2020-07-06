@@ -7,6 +7,10 @@ import com.azure.core.annotation.Immutable;
 import com.azure.core.util.CoreUtils;
 
 import java.time.OffsetDateTime;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -42,9 +46,15 @@ public final class BlobProperties {
     private final Boolean isAccessTierInferred;
     private final ArchiveStatus archiveStatus;
     private final String encryptionKeySha256;
+    private final String encryptionScope;
     private final OffsetDateTime accessTierChangeTime;
     private final Map<String, String> metadata;
     private final Integer committedBlockCount;
+    private final Long tagCount;
+    private final String versionId;
+    private final Boolean isCurrentVersion;
+    private final List<ObjectReplicationPolicy> objectReplicationSourcePolicies;
+    private final String objectReplicationDestinationPolicyId;
 
     /**
      * Constructs a {@link BlobProperties}.
@@ -95,6 +105,69 @@ public final class BlobProperties {
         final Boolean isAccessTierInferred, final ArchiveStatus archiveStatus, final String encryptionKeySha256,
         final OffsetDateTime accessTierChangeTime, final Map<String, String> metadata,
         final Integer committedBlockCount) {
+        this(creationTime, lastModified, eTag, blobSize, contentType, contentMd5, contentEncoding, contentDisposition,
+            contentLanguage, cacheControl, blobSequenceNumber, blobType, leaseStatus, leaseState, leaseDuration,
+            copyId, copyStatus, copySource, copyProgress, copyCompletionTime, copyStatusDescription, isServerEncrypted,
+            isIncrementalCopy, copyDestinationSnapshot, accessTier, isAccessTierInferred, archiveStatus,
+            encryptionKeySha256, null, accessTierChangeTime, metadata, committedBlockCount, null, null,
+            null, null, null);
+    }
+
+    /**
+     * Constructs a {@link BlobProperties}.
+     *
+     * @param creationTime Creation time of the blob.
+     * @param lastModified Datetime when the blob was last modified.
+     * @param eTag ETag of the blob.
+     * @param blobSize Size of the blob.
+     * @param contentType Content type specified for the blob.
+     * @param contentMd5 Content MD5 specified for the blob.
+     * @param contentEncoding Content encoding specified for the blob.
+     * @param contentDisposition Content disposition specified for the blob.
+     * @param contentLanguage Content language specified for the blob.
+     * @param cacheControl Cache control specified for the blob.
+     * @param blobSequenceNumber The current sequence number for a page blob, if the blob is an append or block blob
+     * pass {@code null}.
+     * @param blobType Type of the blob.
+     * @param leaseStatus Status of the lease on the blob.
+     * @param leaseState State of the lease on the blob.
+     * @param leaseDuration Type of lease on the blob.
+     * @param copyId Identifier of the last copy operation performed on the blob.
+     * @param copyStatus Status of the last copy operation performed on the blob.
+     * @param copySource Source of the last copy operation performed on the blob.
+     * @param copyProgress Progress of the last copy operation performed on the blob.
+     * @param copyCompletionTime Datetime when the last copy operation on the blob completed.
+     * @param copyStatusDescription Description of the last copy operation on the blob.
+     * @param isServerEncrypted Flag indicating if the blob's content is encrypted on the server.
+     * @param isIncrementalCopy Flag indicating if the blob was incrementally copied.
+     * @param copyDestinationSnapshot Snapshot identifier of the last incremental copy snapshot for the blob.
+     * @param accessTier Access tier of the blob.
+     * @param isAccessTierInferred Flag indicating if the access tier of the blob was inferred from properties of the
+     * blob.
+     * @param archiveStatus Archive status of the blob.
+     * @param encryptionKeySha256 SHA256 of the customer provided encryption key used to encrypt the blob on the server.
+     * @param encryptionScope The name of the encryption scope under which the blob is encrypted.
+     * @param accessTierChangeTime Datetime when the access tier of the blob last changed.
+     * @param metadata Metadata associated with the blob.
+     * @param committedBlockCount Number of blocks committed to an append blob, if the blob is a block or page blob
+     * pass {@code null}.
+     * @param versionId The version identifier of the blob.
+     * @param isCurrentVersion Flag indicating if version identifier points to current version of the blob.
+     * @param tagCount Number of tags associated with the blob.
+     * @param objectReplicationStatus The object replication status map to parse.
+     */
+    public BlobProperties(final OffsetDateTime creationTime, final OffsetDateTime lastModified, final String eTag,
+        final long blobSize, final String contentType, final byte[] contentMd5, final String contentEncoding,
+        final String contentDisposition, final String contentLanguage, final String cacheControl,
+        final Long blobSequenceNumber, final BlobType blobType, final LeaseStatusType leaseStatus,
+        final LeaseStateType leaseState, final LeaseDurationType leaseDuration, final String copyId,
+        final CopyStatusType copyStatus, final String copySource, final String copyProgress,
+        final OffsetDateTime copyCompletionTime, final String copyStatusDescription, final Boolean isServerEncrypted,
+        final Boolean isIncrementalCopy, final String copyDestinationSnapshot, final AccessTier accessTier,
+        final Boolean isAccessTierInferred, final ArchiveStatus archiveStatus, final String encryptionKeySha256,
+        final String encryptionScope, final OffsetDateTime accessTierChangeTime, final Map<String, String> metadata,
+        final Integer committedBlockCount, final String versionId, final Boolean isCurrentVersion,
+        final Long tagCount, Map<String, String> objectReplicationStatus) {
         this.creationTime = creationTime;
         this.lastModified = lastModified;
         this.eTag = eTag;
@@ -123,9 +196,132 @@ public final class BlobProperties {
         this.isAccessTierInferred = isAccessTierInferred;
         this.archiveStatus = archiveStatus;
         this.encryptionKeySha256 = encryptionKeySha256;
+        this.encryptionScope = encryptionScope;
         this.accessTierChangeTime = accessTierChangeTime;
         this.metadata = metadata;
         this.committedBlockCount = committedBlockCount;
+        this.tagCount = tagCount;
+        this.versionId = versionId;
+        this.isCurrentVersion = isCurrentVersion;
+
+        Map<String, List<ObjectReplicationRule>> internalSourcePolicies = new HashMap<>();
+        objectReplicationStatus = objectReplicationStatus == null ? new HashMap<>() : objectReplicationStatus;
+        this.objectReplicationDestinationPolicyId = objectReplicationStatus.getOrDefault("policy-id", null);
+        if (this.objectReplicationDestinationPolicyId == null) {
+            for (Map.Entry<String, String> entry : objectReplicationStatus.entrySet()) {
+                String[] split = entry.getKey().split("_");
+                String policyId = split[0];
+                String ruleId = split[1];
+                ObjectReplicationRule rule = new ObjectReplicationRule(ruleId,
+                    ObjectReplicationStatus.fromString(entry.getValue()));
+                if (!internalSourcePolicies.containsKey(policyId)) {
+                    internalSourcePolicies.put(policyId, new ArrayList<>());
+                }
+                internalSourcePolicies.get(policyId).add(rule);
+            }
+        }
+        this.objectReplicationSourcePolicies = new ArrayList<>();
+        for (Map.Entry<String, List<ObjectReplicationRule>> entry : internalSourcePolicies.entrySet()) {
+            this.objectReplicationSourcePolicies.add(new ObjectReplicationPolicy(entry.getKey(), entry.getValue()));
+        }
+    }
+
+
+    /**
+     * Constructs a {@link BlobProperties}.
+     *
+     * @param creationTime Creation time of the blob.
+     * @param lastModified Datetime when the blob was last modified.
+     * @param eTag ETag of the blob.
+     * @param blobSize Size of the blob.
+     * @param contentType Content type specified for the blob.
+     * @param contentMd5 Content MD5 specified for the blob.
+     * @param contentEncoding Content encoding specified for the blob.
+     * @param contentDisposition Content disposition specified for the blob.
+     * @param contentLanguage Content language specified for the blob.
+     * @param cacheControl Cache control specified for the blob.
+     * @param blobSequenceNumber The current sequence number for a page blob, if the blob is an append or block blob
+     * pass {@code null}.
+     * @param blobType Type of the blob.
+     * @param leaseStatus Status of the lease on the blob.
+     * @param leaseState State of the lease on the blob.
+     * @param leaseDuration Type of lease on the blob.
+     * @param copyId Identifier of the last copy operation performed on the blob.
+     * @param copyStatus Status of the last copy operation performed on the blob.
+     * @param copySource Source of the last copy operation performed on the blob.
+     * @param copyProgress Progress of the last copy operation performed on the blob.
+     * @param copyCompletionTime Datetime when the last copy operation on the blob completed.
+     * @param copyStatusDescription Description of the last copy operation on the blob.
+     * @param isServerEncrypted Flag indicating if the blob's content is encrypted on the server.
+     * @param isIncrementalCopy Flag indicating if the blob was incrementally copied.
+     * @param copyDestinationSnapshot Snapshot identifier of the last incremental copy snapshot for the blob.
+     * @param accessTier Access tier of the blob.
+     * @param isAccessTierInferred Flag indicating if the access tier of the blob was inferred from properties of the
+     * blob.
+     * @param archiveStatus Archive status of the blob.
+     * @param encryptionKeySha256 SHA256 of the customer provided encryption key used to encrypt the blob on the server.
+     * @param encryptionScope The name of the encryption scope under which the blob is encrypted.
+     * @param accessTierChangeTime Datetime when the access tier of the blob last changed.
+     * @param metadata Metadata associated with the blob.
+     * @param committedBlockCount Number of blocks committed to an append blob, if the blob is a block or page blob
+     * pass {@code null}.
+     * @param versionId The version identifier of the blob.
+     * @param isCurrentVersion Flag indicating if version identifier points to current version of the blob.
+     * @param tagCount Number of tags associated with the blob.
+     * @param objectReplicationSourcePolicies The already parsed object replication policies.
+     * @param objectReplicationDestinationPolicyId The policy id on the destination blob.
+     */
+    public BlobProperties(final OffsetDateTime creationTime, final OffsetDateTime lastModified, final String eTag,
+        final long blobSize, final String contentType, final byte[] contentMd5, final String contentEncoding,
+        final String contentDisposition, final String contentLanguage, final String cacheControl,
+        final Long blobSequenceNumber, final BlobType blobType, final LeaseStatusType leaseStatus,
+        final LeaseStateType leaseState, final LeaseDurationType leaseDuration, final String copyId,
+        final CopyStatusType copyStatus, final String copySource, final String copyProgress,
+        final OffsetDateTime copyCompletionTime, final String copyStatusDescription, final Boolean isServerEncrypted,
+        final Boolean isIncrementalCopy, final String copyDestinationSnapshot, final AccessTier accessTier,
+        final Boolean isAccessTierInferred, final ArchiveStatus archiveStatus, final String encryptionKeySha256,
+        String encryptionScope, final OffsetDateTime accessTierChangeTime, final Map<String, String> metadata,
+        final Integer committedBlockCount, final Long tagCount, final String versionId,
+        final Boolean isCurrentVersion, List<ObjectReplicationPolicy> objectReplicationSourcePolicies,
+        String objectReplicationDestinationPolicyId) {
+
+        this.creationTime = creationTime;
+        this.lastModified = lastModified;
+        this.eTag = eTag;
+        this.blobSize = blobSize;
+        this.contentType = contentType;
+        this.contentMd5 = CoreUtils.clone(contentMd5);
+        this.contentEncoding = contentEncoding;
+        this.contentDisposition = contentDisposition;
+        this.contentLanguage = contentLanguage;
+        this.cacheControl = cacheControl;
+        this.blobSequenceNumber = blobSequenceNumber;
+        this.blobType = blobType;
+        this.leaseStatus = leaseStatus;
+        this.leaseState = leaseState;
+        this.leaseDuration = leaseDuration;
+        this.copyId = copyId;
+        this.copyStatus = copyStatus;
+        this.copySource = copySource;
+        this.copyProgress = copyProgress;
+        this.copyCompletionTime = copyCompletionTime;
+        this.copyStatusDescription = copyStatusDescription;
+        this.isServerEncrypted = isServerEncrypted;
+        this.isIncrementalCopy = isIncrementalCopy;
+        this.copyDestinationSnapshot = copyDestinationSnapshot;
+        this.accessTier = accessTier;
+        this.isAccessTierInferred = isAccessTierInferred;
+        this.archiveStatus = archiveStatus;
+        this.encryptionKeySha256 = encryptionKeySha256;
+        this.encryptionScope = encryptionScope;
+        this.accessTierChangeTime = accessTierChangeTime;
+        this.metadata = metadata;
+        this.committedBlockCount = committedBlockCount;
+        this.tagCount = tagCount;
+        this.versionId = versionId;
+        this.isCurrentVersion = isCurrentVersion;
+        this.objectReplicationSourcePolicies = objectReplicationSourcePolicies;
+        this.objectReplicationDestinationPolicyId = objectReplicationDestinationPolicyId;
     }
 
     /**
@@ -336,6 +532,13 @@ public final class BlobProperties {
     }
 
     /**
+     * @return The name of the encryption scope under which the blob is encrypted.
+     */
+    public String getEncryptionScope() {
+        return encryptionScope;
+    }
+
+    /**
      * @return the time when the access tier for the blob was last changed
      */
     public OffsetDateTime getAccessTierChangeTime() {
@@ -354,5 +557,43 @@ public final class BlobProperties {
      */
     public Integer getCommittedBlockCount() {
         return committedBlockCount;
+    }
+
+    /**
+     * @return The number of tags associated with the blob.
+     */
+    public Long getTagCount() {
+        return tagCount;
+    }
+
+    /**
+     * @return the version identifier the blob.
+     */
+    public String getVersionId() {
+        return versionId;
+    }
+
+    /**
+     * @return the flag indicating whether version identifier points to current version of the blob.
+     */
+    public Boolean isCurrentVersion() {
+        return isCurrentVersion;
+    }
+
+    /**
+     * @return a {@link List} that contains information on the object replication policies associated with this blob
+     * and the status of the replication for each policy. Only available when the blob is the source of object
+     * replication.
+     */
+    public List<ObjectReplicationPolicy> getObjectReplicationSourcePolicies() {
+        return Collections.unmodifiableList(this.objectReplicationSourcePolicies);
+    }
+
+    /**
+     * @return a {@code String} that identifies the Object Replication Policy which made this blob the destination of a
+     * copy.
+     */
+    public String getObjectReplicationDestinationPolicyId() {
+        return this.objectReplicationDestinationPolicyId;
     }
 }

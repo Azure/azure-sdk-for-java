@@ -8,9 +8,11 @@ import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.TokenRefreshOptions;
 import com.azure.core.credential.TokenRequestContext;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.identity.implementation.IdentityClient;
 import com.azure.identity.implementation.IdentityClientBuilder;
 import com.azure.identity.implementation.IdentityClientOptions;
+import com.azure.identity.implementation.util.LoggingUtil;
 import reactor.core.publisher.Mono;
 
 import java.util.Objects;
@@ -28,6 +30,7 @@ import java.util.Objects;
 public class ClientCertificateCredential implements TokenCredential {
     private final IdentityClient identityClient;
     private final IdentityClientOptions identityClientOptions;
+    private final ClientLogger logger = new ClientLogger(ClientCertificateCredential.class);
 
     /**
      * Creates a ClientSecretCredential with default identity client options.
@@ -54,7 +57,9 @@ public class ClientCertificateCredential implements TokenCredential {
     public Mono<AccessToken> getToken(TokenRequestContext request) {
         return identityClient.authenticateWithConfidentialClientCache(request)
             .onErrorResume(t -> Mono.empty())
-            .switchIfEmpty(Mono.defer(() -> identityClient.authenticateWithConfidentialClient(request)));
+            .switchIfEmpty(Mono.defer(() -> identityClient.authenticateWithConfidentialClient(request)))
+            .doOnNext(token -> LoggingUtil.logTokenSuccess(logger, request))
+            .doOnError(error -> LoggingUtil.logTokenError(logger, request, error));
     }
 
     @Override

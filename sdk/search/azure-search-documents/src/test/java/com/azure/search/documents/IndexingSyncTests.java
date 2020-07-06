@@ -41,11 +41,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.TimeZone;
 import java.util.function.Supplier;
+
 import static com.azure.search.documents.TestHelpers.ISO8601_FORMAT;
 import static com.azure.search.documents.TestHelpers.assertHttpResponseException;
 import static com.azure.search.documents.TestHelpers.assertMapEquals;
 import static com.azure.search.documents.TestHelpers.assertObjectEquals;
-import static com.azure.search.documents.TestHelpers.createPointGeometry;
 import static com.azure.search.documents.TestHelpers.waitForIndexing;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -458,7 +458,7 @@ public class IndexingSyncTests extends SearchTestBase {
             .smokingAllowed(true)
             .lastRenovationDate(dateFormat.parse("2010-06-27T00:00:00Z"))
             .rating(4)
-            .location(createPointGeometry(40.760586, -73.975403))
+//            .location(createPointGeometryString(40.760586, -73.975403))
             .address(new HotelAddress()
                 .streetAddress("677 5th Ave")
                 .city("New York")
@@ -496,7 +496,7 @@ public class IndexingSyncTests extends SearchTestBase {
             .parkingIncluded(true)
             .lastRenovationDate(null)
             .rating(3)
-            .location(null)
+//            .location(null)
             .address(new HotelAddress())
             .rooms(Collections.singletonList(
                 new HotelRoom()
@@ -520,7 +520,7 @@ public class IndexingSyncTests extends SearchTestBase {
             .smokingAllowed(true)
             .lastRenovationDate(dateFormat.parse("2010-06-27T00:00:00Z"))
             .rating(3)
-            .location(createPointGeometry(40.760586, -73.975403))
+//            .location(createPointGeometryString(40.760586, -73.975403))
             .address(new HotelAddress()
                 .streetAddress("677 5th Ave")
                 .city("New York")
@@ -586,7 +586,7 @@ public class IndexingSyncTests extends SearchTestBase {
             .SMOKINGALLOWED(false)
             .LASTRENOVATIONDATE(dateFormat.parse("1970-01-18T05:00:00Z"))
             .RATING(4)
-            .LOCATION(createPointGeometry(40.760586, -73.975403))
+//            .LOCATION(createPointGeometryString(40.760586, -73.975403))
             .ADDRESS(new HotelAddress()
                 .streetAddress("677 5th Ave")
                 .city("New York")
@@ -622,7 +622,7 @@ public class IndexingSyncTests extends SearchTestBase {
             .PARKINGINCLUDED(true)
             .LASTRENOVATIONDATE(dateFormat.parse("1970-01-18T05:00:00Z"))
             .RATING(3)
-            .LOCATION(null)     // This property has JsonInclude.Include.ALWAYS, so this will null out the field.
+//            .LOCATION(null)     // This property has JsonInclude.Include.ALWAYS, so this will null out the field.
             .ADDRESS(new HotelAddress())
             .ROOMS(Collections.singletonList(
                 new HotelRoom()
@@ -644,7 +644,7 @@ public class IndexingSyncTests extends SearchTestBase {
             .SMOKINGALLOWED(false)
             .LASTRENOVATIONDATE(dateFormat.parse("1970-01-18T05:00:00Z"))
             .RATING(3)
-            .LOCATION(null)
+//            .LOCATION(null)
             .ADDRESS(new HotelAddress()
                 .streetAddress("677 5th Ave")
                 .city("New York")
@@ -700,7 +700,7 @@ public class IndexingSyncTests extends SearchTestBase {
         originalDoc.put("SmokingAllowed", true);
         originalDoc.put("LastRenovationDate", OffsetDateTime.parse("2010-06-27T00:00:00Z"));
         originalDoc.put("Rating", 4);
-        originalDoc.put("Location", createPointGeometry(40.760586, -73.965403));
+//        originalDoc.put("Location", createPointGeometry(40.760586, -73.965403));
 
         SearchDocument originalAddress = new SearchDocument();
         originalAddress.put("StreetAddress", "677 5th Ave");
@@ -909,7 +909,7 @@ public class IndexingSyncTests extends SearchTestBase {
             .smokingAllowed(false)
             .lastRenovationDate(dateFormat.parse("2010-06-27T00:00:00Z"))
             .rating(5)
-            .location(createPointGeometry(47.678581, -122.131577))
+//            .location(createPointGeometryString(47.678581, -122.131577))
             .address(
                 new HotelAddress()
                     .streetAddress("1 Microsoft Way")
@@ -1005,7 +1005,7 @@ public class IndexingSyncTests extends SearchTestBase {
                 .category("")
                 .lastRenovationDate(new Date(minEpoch.getYear(), minEpoch.getMonth(), minEpoch.getDate(), minEpoch.getHours(),
                     minEpoch.getMinutes(), minEpoch.getSeconds()))
-                .location(createPointGeometry(-90.0, -180.0))   // South pole, date line from the west
+//                .location(createPointGeometryString(-90.0, -180.0))   // South pole, date line from the west
                 .parkingIncluded(false)
                 .rating(Integer.MIN_VALUE)
                 .tags(Collections.emptyList())
@@ -1020,7 +1020,7 @@ public class IndexingSyncTests extends SearchTestBase {
                 .category("test")   // No meaningful string max since there is no length limit (other than payload size or term length).
                 .lastRenovationDate(new Date(maxEpoch.getYear(), maxEpoch.getMonth(), maxEpoch.getDate(), maxEpoch.getHours(),
                     maxEpoch.getMinutes(), maxEpoch.getSeconds()))
-                .location(createPointGeometry(90.0, 180.0))     // North pole, date line from the east
+//                .location(createPointGeometryString(90.0, 180.0))     // North pole, date line from the east
                 .parkingIncluded(true)
                 .rating(Integer.MAX_VALUE)
                 .tags(Collections.singletonList("test"))    // No meaningful string max; see above.
@@ -1035,7 +1035,7 @@ public class IndexingSyncTests extends SearchTestBase {
                 .hotelId("3")
                 .category(null)
                 .lastRenovationDate(null)
-                .location(createPointGeometry(0.0, 0.0))     // Equator, meridian
+//                .location(createPointGeometryString(0.0, 0.0))     // Equator, meridian
                 .parkingIncluded(null)
                 .rating(null)
                 .tags(Collections.emptyList())
@@ -1048,7 +1048,7 @@ public class IndexingSyncTests extends SearchTestBase {
             // Other boundary values #2
             new Hotel()
                 .hotelId("4")
-                .location(null)
+//                .location(null)
                 .tags(Collections.emptyList())
                 .rooms(Collections.singletonList(
                     new HotelRoom()

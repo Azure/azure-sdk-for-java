@@ -3,7 +3,6 @@
 
 package com.azure.ai.formrecognizer;
 
-import com.azure.ai.formrecognizer.models.FormContentType;
 import com.azure.ai.formrecognizer.models.OperationResult;
 import com.azure.ai.formrecognizer.models.RecognizedForm;
 import com.azure.core.credential.AzureKeyCredential;
@@ -48,8 +47,7 @@ public class RecognizeCustomFormsAsync {
         String modelId = "{modelId}";
 
         PollerFlux<OperationResult, List<RecognizedForm>> recognizeFormPoller =
-            client.beginRecognizeCustomForms(toFluxByteBuffer(targetStream), sourceFile.length(), modelId,
-                    FormContentType.APPLICATION_PDF);
+            client.beginRecognizeCustomForms(toFluxByteBuffer(targetStream), sourceFile.length(), modelId);
 
         Mono<List<RecognizedForm>> recognizeFormResult = recognizeFormPoller
             .last()
@@ -70,7 +68,7 @@ public class RecognizeCustomFormsAsync {
                 System.out.printf("Form type: %s%n", form.getFormType());
                 form.getFields().forEach((label, formField) -> {
                     System.out.printf("Field %s has value %s with confidence score of %.2f.%n", label,
-                        formField.getValueText().getText(),
+                        formField.getValueData().getText(),
                         formField.getConfidence());
                 });
                 System.out.print("-----------------------------------");

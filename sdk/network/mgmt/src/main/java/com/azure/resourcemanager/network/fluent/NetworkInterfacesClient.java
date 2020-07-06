@@ -32,6 +32,7 @@ import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
+import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.network.NetworkManagementClient;
 import com.azure.resourcemanager.network.fluent.inner.EffectiveNetworkSecurityGroupListResultInner;
 import com.azure.resourcemanager.network.fluent.inner.EffectiveRouteListResultInner;
@@ -129,7 +130,7 @@ public final class NetworkInterfacesClient
                 + "/networkInterfaces/{networkInterfaceName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> updateTags(
+        Mono<Response<NetworkInterfaceInner>> updateTags(
             @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("networkInterfaceName") String networkInterfaceName,
@@ -274,79 +275,6 @@ public final class NetworkInterfacesClient
             @QueryParam("$expand") String expand,
             Context context);
 
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
-                + "/networkInterfaces/{networkInterfaceName}")
-        @ExpectedResponses({200, 202, 204})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> beginDeleteWithoutPolling(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("networkInterfaceName") String networkInterfaceName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            Context context);
-
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
-                + "/networkInterfaces/{networkInterfaceName}")
-        @ExpectedResponses({200, 201})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<NetworkInterfaceInner>> beginCreateOrUpdateWithoutPolling(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("networkInterfaceName") String networkInterfaceName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @BodyParam("application/json") NetworkInterfaceInner parameters,
-            Context context);
-
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
-                + "/networkInterfaces/{networkInterfaceName}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<NetworkInterfaceInner>> beginUpdateTagsWithoutPolling(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("networkInterfaceName") String networkInterfaceName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @BodyParam("application/json") TagsObject parameters,
-            Context context);
-
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
-                + "/networkInterfaces/{networkInterfaceName}/effectiveRouteTable")
-        @ExpectedResponses({200, 202})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<EffectiveRouteListResultInner>> beginGetEffectiveRouteTableWithoutPolling(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("networkInterfaceName") String networkInterfaceName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            Context context);
-
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
-                + "/networkInterfaces/{networkInterfaceName}/effectiveNetworkSecurityGroups")
-        @ExpectedResponses({200, 202})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<EffectiveNetworkSecurityGroupListResultInner>>
-            beginListEffectiveNetworkSecurityGroupsWithoutPolling(
-                @HostParam("$host") String endpoint,
-                @PathParam("resourceGroupName") String resourceGroupName,
-                @PathParam("networkInterfaceName") String networkInterfaceName,
-                @QueryParam("api-version") String apiVersion,
-                @PathParam("subscriptionId") String subscriptionId,
-                Context context);
-
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
@@ -416,7 +344,7 @@ public final class NetworkInterfacesClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -465,7 +393,7 @@ public final class NetworkInterfacesClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return service
             .delete(
                 this.client.getEndpoint(),
@@ -487,7 +415,7 @@ public final class NetworkInterfacesClient
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<Void>, Void> beginDelete(String resourceGroupName, String networkInterfaceName) {
+    public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String networkInterfaceName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, networkInterfaceName);
         return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
     }
@@ -504,7 +432,7 @@ public final class NetworkInterfacesClient
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<Void>, Void> beginDelete(
+    public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String networkInterfaceName, Context context) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             deleteWithResponseAsync(resourceGroupName, networkInterfaceName, context);
@@ -522,13 +450,42 @@ public final class NetworkInterfacesClient
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String networkInterfaceName) {
+        return beginDeleteAsync(resourceGroupName, networkInterfaceName).getSyncPoller();
+    }
+
+    /**
+     * Deletes the specified network interface.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param networkInterfaceName The name of the network interface.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<Void>, Void> beginDelete(
+        String resourceGroupName, String networkInterfaceName, Context context) {
+        return beginDeleteAsync(resourceGroupName, networkInterfaceName, context).getSyncPoller();
+    }
+
+    /**
+     * Deletes the specified network interface.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param networkInterfaceName The name of the network interface.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String networkInterfaceName) {
-        Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, networkInterfaceName);
-        return this
-            .client
-            .<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class)
+        return beginDeleteAsync(resourceGroupName, networkInterfaceName)
             .last()
-            .flatMap(client::getLroFinalResultOrError);
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -544,13 +501,9 @@ public final class NetworkInterfacesClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String networkInterfaceName, Context context) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, networkInterfaceName, context);
-        return this
-            .client
-            .<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class)
+        return beginDeleteAsync(resourceGroupName, networkInterfaceName, context)
             .last()
-            .flatMap(client::getLroFinalResultOrError);
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -616,7 +569,7 @@ public final class NetworkInterfacesClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -667,7 +620,7 @@ public final class NetworkInterfacesClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return service
             .getByResourceGroup(
                 this.client.getEndpoint(),
@@ -846,7 +799,7 @@ public final class NetworkInterfacesClient
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -902,7 +855,7 @@ public final class NetworkInterfacesClient
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return service
             .createOrUpdate(
                 this.client.getEndpoint(),
@@ -926,7 +879,7 @@ public final class NetworkInterfacesClient
      * @return a network interface in a resource group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<NetworkInterfaceInner>, NetworkInterfaceInner> beginCreateOrUpdate(
+    public PollerFlux<PollResult<NetworkInterfaceInner>, NetworkInterfaceInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String networkInterfaceName, NetworkInterfaceInner parameters) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             createOrUpdateWithResponseAsync(resourceGroupName, networkInterfaceName, parameters);
@@ -949,7 +902,7 @@ public final class NetworkInterfacesClient
      * @return a network interface in a resource group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<NetworkInterfaceInner>, NetworkInterfaceInner> beginCreateOrUpdate(
+    public PollerFlux<PollResult<NetworkInterfaceInner>, NetworkInterfaceInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String networkInterfaceName, NetworkInterfaceInner parameters, Context context) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             createOrUpdateWithResponseAsync(resourceGroupName, networkInterfaceName, parameters, context);
@@ -971,16 +924,46 @@ public final class NetworkInterfacesClient
      * @return a network interface in a resource group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<NetworkInterfaceInner>, NetworkInterfaceInner> beginCreateOrUpdate(
+        String resourceGroupName, String networkInterfaceName, NetworkInterfaceInner parameters) {
+        return beginCreateOrUpdateAsync(resourceGroupName, networkInterfaceName, parameters).getSyncPoller();
+    }
+
+    /**
+     * Creates or updates a network interface.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param networkInterfaceName The name of the network interface.
+     * @param parameters A network interface in a resource group.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a network interface in a resource group.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<NetworkInterfaceInner>, NetworkInterfaceInner> beginCreateOrUpdate(
+        String resourceGroupName, String networkInterfaceName, NetworkInterfaceInner parameters, Context context) {
+        return beginCreateOrUpdateAsync(resourceGroupName, networkInterfaceName, parameters, context).getSyncPoller();
+    }
+
+    /**
+     * Creates or updates a network interface.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param networkInterfaceName The name of the network interface.
+     * @param parameters A network interface in a resource group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a network interface in a resource group.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<NetworkInterfaceInner> createOrUpdateAsync(
         String resourceGroupName, String networkInterfaceName, NetworkInterfaceInner parameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, networkInterfaceName, parameters);
-        return this
-            .client
-            .<NetworkInterfaceInner, NetworkInterfaceInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), NetworkInterfaceInner.class, NetworkInterfaceInner.class)
+        return beginCreateOrUpdateAsync(resourceGroupName, networkInterfaceName, parameters)
             .last()
-            .flatMap(client::getLroFinalResultOrError);
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -998,14 +981,9 @@ public final class NetworkInterfacesClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<NetworkInterfaceInner> createOrUpdateAsync(
         String resourceGroupName, String networkInterfaceName, NetworkInterfaceInner parameters, Context context) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, networkInterfaceName, parameters, context);
-        return this
-            .client
-            .<NetworkInterfaceInner, NetworkInterfaceInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), NetworkInterfaceInner.class, NetworkInterfaceInner.class)
+        return beginCreateOrUpdateAsync(resourceGroupName, networkInterfaceName, parameters, context)
             .last()
-            .flatMap(client::getLroFinalResultOrError);
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -1055,7 +1033,7 @@ public final class NetworkInterfacesClient
      * @return a network interface in a resource group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> updateTagsWithResponseAsync(
+    public Mono<Response<NetworkInterfaceInner>> updateTagsWithResponseAsync(
         String resourceGroupName, String networkInterfaceName, Map<String, String> tags) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -1077,7 +1055,7 @@ public final class NetworkInterfacesClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         TagsObject parameters = new TagsObject();
         parameters.withTags(tags);
         return FluxUtil
@@ -1108,7 +1086,7 @@ public final class NetworkInterfacesClient
      * @return a network interface in a resource group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> updateTagsWithResponseAsync(
+    public Mono<Response<NetworkInterfaceInner>> updateTagsWithResponseAsync(
         String resourceGroupName, String networkInterfaceName, Map<String, String> tags, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -1130,7 +1108,7 @@ public final class NetworkInterfacesClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         TagsObject parameters = new TagsObject();
         parameters.withTags(tags);
         return service
@@ -1156,61 +1134,17 @@ public final class NetworkInterfacesClient
      * @return a network interface in a resource group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<NetworkInterfaceInner>, NetworkInterfaceInner> beginUpdateTags(
-        String resourceGroupName, String networkInterfaceName, Map<String, String> tags) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateTagsWithResponseAsync(resourceGroupName, networkInterfaceName, tags);
-        return this
-            .client
-            .<NetworkInterfaceInner, NetworkInterfaceInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), NetworkInterfaceInner.class, NetworkInterfaceInner.class);
-    }
-
-    /**
-     * Updates a network interface tags.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param networkInterfaceName The name of the network interface.
-     * @param tags Resource tags.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a network interface in a resource group.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<NetworkInterfaceInner>, NetworkInterfaceInner> beginUpdateTags(
-        String resourceGroupName, String networkInterfaceName, Map<String, String> tags, Context context) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateTagsWithResponseAsync(resourceGroupName, networkInterfaceName, tags, context);
-        return this
-            .client
-            .<NetworkInterfaceInner, NetworkInterfaceInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), NetworkInterfaceInner.class, NetworkInterfaceInner.class);
-    }
-
-    /**
-     * Updates a network interface tags.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param networkInterfaceName The name of the network interface.
-     * @param tags Resource tags.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a network interface in a resource group.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<NetworkInterfaceInner> updateTagsAsync(
         String resourceGroupName, String networkInterfaceName, Map<String, String> tags) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateTagsWithResponseAsync(resourceGroupName, networkInterfaceName, tags);
-        return this
-            .client
-            .<NetworkInterfaceInner, NetworkInterfaceInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), NetworkInterfaceInner.class, NetworkInterfaceInner.class)
-            .last()
-            .flatMap(client::getLroFinalResultOrError);
+        return updateTagsWithResponseAsync(resourceGroupName, networkInterfaceName, tags)
+            .flatMap(
+                (Response<NetworkInterfaceInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
     }
 
     /**
@@ -1228,14 +1162,15 @@ public final class NetworkInterfacesClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<NetworkInterfaceInner> updateTagsAsync(
         String resourceGroupName, String networkInterfaceName, Map<String, String> tags, Context context) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateTagsWithResponseAsync(resourceGroupName, networkInterfaceName, tags, context);
-        return this
-            .client
-            .<NetworkInterfaceInner, NetworkInterfaceInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), NetworkInterfaceInner.class, NetworkInterfaceInner.class)
-            .last()
-            .flatMap(client::getLroFinalResultOrError);
+        return updateTagsWithResponseAsync(resourceGroupName, networkInterfaceName, tags, context)
+            .flatMap(
+                (Response<NetworkInterfaceInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
     }
 
     /**
@@ -1294,7 +1229,7 @@ public final class NetworkInterfacesClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -1334,7 +1269,7 @@ public final class NetworkInterfacesClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return service
             .list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), context)
             .map(
@@ -1427,7 +1362,7 @@ public final class NetworkInterfacesClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -1479,7 +1414,7 @@ public final class NetworkInterfacesClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return service
             .listByResourceGroup(
                 this.client.getEndpoint(), resourceGroupName, apiVersion, this.client.getSubscriptionId(), context)
@@ -1588,7 +1523,7 @@ public final class NetworkInterfacesClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -1637,7 +1572,7 @@ public final class NetworkInterfacesClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return service
             .getEffectiveRouteTable(
                 this.client.getEndpoint(),
@@ -1660,7 +1595,7 @@ public final class NetworkInterfacesClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<EffectiveRouteListResultInner>, EffectiveRouteListResultInner>
-        beginGetEffectiveRouteTable(String resourceGroupName, String networkInterfaceName) {
+        beginGetEffectiveRouteTableAsync(String resourceGroupName, String networkInterfaceName) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             getEffectiveRouteTableWithResponseAsync(resourceGroupName, networkInterfaceName);
         return this
@@ -1685,7 +1620,7 @@ public final class NetworkInterfacesClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<EffectiveRouteListResultInner>, EffectiveRouteListResultInner>
-        beginGetEffectiveRouteTable(String resourceGroupName, String networkInterfaceName, Context context) {
+        beginGetEffectiveRouteTableAsync(String resourceGroupName, String networkInterfaceName, Context context) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             getEffectiveRouteTableWithResponseAsync(resourceGroupName, networkInterfaceName, context);
         return this
@@ -1708,19 +1643,44 @@ public final class NetworkInterfacesClient
      * @return all route tables applied to a network interface.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<EffectiveRouteListResultInner>, EffectiveRouteListResultInner>
+        beginGetEffectiveRouteTable(String resourceGroupName, String networkInterfaceName) {
+        return beginGetEffectiveRouteTableAsync(resourceGroupName, networkInterfaceName).getSyncPoller();
+    }
+
+    /**
+     * Gets all route tables applied to a network interface.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param networkInterfaceName The name of the network interface.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all route tables applied to a network interface.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<EffectiveRouteListResultInner>, EffectiveRouteListResultInner>
+        beginGetEffectiveRouteTable(String resourceGroupName, String networkInterfaceName, Context context) {
+        return beginGetEffectiveRouteTableAsync(resourceGroupName, networkInterfaceName, context).getSyncPoller();
+    }
+
+    /**
+     * Gets all route tables applied to a network interface.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param networkInterfaceName The name of the network interface.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all route tables applied to a network interface.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<EffectiveRouteListResultInner> getEffectiveRouteTableAsync(
         String resourceGroupName, String networkInterfaceName) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            getEffectiveRouteTableWithResponseAsync(resourceGroupName, networkInterfaceName);
-        return this
-            .client
-            .<EffectiveRouteListResultInner, EffectiveRouteListResultInner>getLroResultAsync(
-                mono,
-                this.client.getHttpPipeline(),
-                EffectiveRouteListResultInner.class,
-                EffectiveRouteListResultInner.class)
+        return beginGetEffectiveRouteTableAsync(resourceGroupName, networkInterfaceName)
             .last()
-            .flatMap(client::getLroFinalResultOrError);
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -1737,17 +1697,9 @@ public final class NetworkInterfacesClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<EffectiveRouteListResultInner> getEffectiveRouteTableAsync(
         String resourceGroupName, String networkInterfaceName, Context context) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            getEffectiveRouteTableWithResponseAsync(resourceGroupName, networkInterfaceName, context);
-        return this
-            .client
-            .<EffectiveRouteListResultInner, EffectiveRouteListResultInner>getLroResultAsync(
-                mono,
-                this.client.getHttpPipeline(),
-                EffectiveRouteListResultInner.class,
-                EffectiveRouteListResultInner.class)
+        return beginGetEffectiveRouteTableAsync(resourceGroupName, networkInterfaceName, context)
             .last()
-            .flatMap(client::getLroFinalResultOrError);
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -1815,7 +1767,7 @@ public final class NetworkInterfacesClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -1864,7 +1816,7 @@ public final class NetworkInterfacesClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return service
             .listEffectiveNetworkSecurityGroups(
                 this.client.getEndpoint(),
@@ -1888,7 +1840,7 @@ public final class NetworkInterfacesClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<
             PollResult<EffectiveNetworkSecurityGroupListResultInner>, EffectiveNetworkSecurityGroupListResultInner>
-        beginListEffectiveNetworkSecurityGroups(String resourceGroupName, String networkInterfaceName) {
+        beginListEffectiveNetworkSecurityGroupsAsync(String resourceGroupName, String networkInterfaceName) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             listEffectiveNetworkSecurityGroupsWithResponseAsync(resourceGroupName, networkInterfaceName);
         return this
@@ -1915,7 +1867,7 @@ public final class NetworkInterfacesClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<
             PollResult<EffectiveNetworkSecurityGroupListResultInner>, EffectiveNetworkSecurityGroupListResultInner>
-        beginListEffectiveNetworkSecurityGroups(
+        beginListEffectiveNetworkSecurityGroupsAsync(
             String resourceGroupName, String networkInterfaceName, Context context) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             listEffectiveNetworkSecurityGroupsWithResponseAsync(resourceGroupName, networkInterfaceName, context);
@@ -1940,20 +1892,48 @@ public final class NetworkInterfacesClient
      * @return all network security groups applied to a network interface.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<
+            PollResult<EffectiveNetworkSecurityGroupListResultInner>, EffectiveNetworkSecurityGroupListResultInner>
+        beginListEffectiveNetworkSecurityGroups(String resourceGroupName, String networkInterfaceName) {
+        return beginListEffectiveNetworkSecurityGroupsAsync(resourceGroupName, networkInterfaceName).getSyncPoller();
+    }
+
+    /**
+     * Gets all network security groups applied to a network interface.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param networkInterfaceName The name of the network interface.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all network security groups applied to a network interface.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<
+            PollResult<EffectiveNetworkSecurityGroupListResultInner>, EffectiveNetworkSecurityGroupListResultInner>
+        beginListEffectiveNetworkSecurityGroups(
+            String resourceGroupName, String networkInterfaceName, Context context) {
+        return beginListEffectiveNetworkSecurityGroupsAsync(resourceGroupName, networkInterfaceName, context)
+            .getSyncPoller();
+    }
+
+    /**
+     * Gets all network security groups applied to a network interface.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param networkInterfaceName The name of the network interface.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all network security groups applied to a network interface.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<EffectiveNetworkSecurityGroupListResultInner> listEffectiveNetworkSecurityGroupsAsync(
         String resourceGroupName, String networkInterfaceName) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            listEffectiveNetworkSecurityGroupsWithResponseAsync(resourceGroupName, networkInterfaceName);
-        return this
-            .client
-            .<EffectiveNetworkSecurityGroupListResultInner, EffectiveNetworkSecurityGroupListResultInner>
-                getLroResultAsync(
-                    mono,
-                    this.client.getHttpPipeline(),
-                    EffectiveNetworkSecurityGroupListResultInner.class,
-                    EffectiveNetworkSecurityGroupListResultInner.class)
+        return beginListEffectiveNetworkSecurityGroupsAsync(resourceGroupName, networkInterfaceName)
             .last()
-            .flatMap(client::getLroFinalResultOrError);
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -1970,18 +1950,9 @@ public final class NetworkInterfacesClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<EffectiveNetworkSecurityGroupListResultInner> listEffectiveNetworkSecurityGroupsAsync(
         String resourceGroupName, String networkInterfaceName, Context context) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            listEffectiveNetworkSecurityGroupsWithResponseAsync(resourceGroupName, networkInterfaceName, context);
-        return this
-            .client
-            .<EffectiveNetworkSecurityGroupListResultInner, EffectiveNetworkSecurityGroupListResultInner>
-                getLroResultAsync(
-                    mono,
-                    this.client.getHttpPipeline(),
-                    EffectiveNetworkSecurityGroupListResultInner.class,
-                    EffectiveNetworkSecurityGroupListResultInner.class)
+        return beginListEffectiveNetworkSecurityGroupsAsync(resourceGroupName, networkInterfaceName, context)
             .last()
-            .flatMap(client::getLroFinalResultOrError);
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -2057,7 +2028,7 @@ public final class NetworkInterfacesClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2017-03-30";
+        final String apiVersion = "2018-10-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -2123,7 +2094,7 @@ public final class NetworkInterfacesClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2017-03-30";
+        final String apiVersion = "2018-10-01";
         return service
             .listVirtualMachineScaleSetVMNetworkInterfaces(
                 this.client.getEndpoint(),
@@ -2261,7 +2232,7 @@ public final class NetworkInterfacesClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2017-03-30";
+        final String apiVersion = "2018-10-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -2321,7 +2292,7 @@ public final class NetworkInterfacesClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2017-03-30";
+        final String apiVersion = "2018-10-01";
         return service
             .listVirtualMachineScaleSetNetworkInterfaces(
                 this.client.getEndpoint(),
@@ -2467,7 +2438,7 @@ public final class NetworkInterfacesClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2017-03-30";
+        final String apiVersion = "2018-10-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -2537,7 +2508,7 @@ public final class NetworkInterfacesClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2017-03-30";
+        final String apiVersion = "2018-10-01";
         return service
             .getVirtualMachineScaleSetNetworkInterface(
                 this.client.getEndpoint(),
@@ -2787,7 +2758,7 @@ public final class NetworkInterfacesClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2017-03-30";
+        final String apiVersion = "2018-10-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -2867,7 +2838,7 @@ public final class NetworkInterfacesClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2017-03-30";
+        final String apiVersion = "2018-10-01";
         return service
             .listVirtualMachineScaleSetIpConfigurations(
                 this.client.getEndpoint(),
@@ -3117,7 +3088,7 @@ public final class NetworkInterfacesClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2017-03-30";
+        final String apiVersion = "2018-10-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -3195,7 +3166,7 @@ public final class NetworkInterfacesClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2017-03-30";
+        final String apiVersion = "2018-10-01";
         return service
             .getVirtualMachineScaleSetIpConfiguration(
                 this.client.getEndpoint(),
@@ -3426,904 +3397,6 @@ public final class NetworkInterfacesClient
                 networkInterfaceName,
                 ipConfigurationName,
                 expand)
-            .block();
-    }
-
-    /**
-     * Deletes the specified network interface.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param networkInterfaceName The name of the network interface.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> beginDeleteWithoutPollingWithResponseAsync(
-        String resourceGroupName, String networkInterfaceName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (networkInterfaceName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter networkInterfaceName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2019-06-01";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .beginDeleteWithoutPolling(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            networkInterfaceName,
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
-
-    /**
-     * Deletes the specified network interface.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param networkInterfaceName The name of the network interface.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> beginDeleteWithoutPollingWithResponseAsync(
-        String resourceGroupName, String networkInterfaceName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (networkInterfaceName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter networkInterfaceName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2019-06-01";
-        return service
-            .beginDeleteWithoutPolling(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                networkInterfaceName,
-                apiVersion,
-                this.client.getSubscriptionId(),
-                context);
-    }
-
-    /**
-     * Deletes the specified network interface.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param networkInterfaceName The name of the network interface.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> beginDeleteWithoutPollingAsync(String resourceGroupName, String networkInterfaceName) {
-        return beginDeleteWithoutPollingWithResponseAsync(resourceGroupName, networkInterfaceName)
-            .flatMap((Response<Void> res) -> Mono.empty());
-    }
-
-    /**
-     * Deletes the specified network interface.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param networkInterfaceName The name of the network interface.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> beginDeleteWithoutPollingAsync(
-        String resourceGroupName, String networkInterfaceName, Context context) {
-        return beginDeleteWithoutPollingWithResponseAsync(resourceGroupName, networkInterfaceName, context)
-            .flatMap((Response<Void> res) -> Mono.empty());
-    }
-
-    /**
-     * Deletes the specified network interface.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param networkInterfaceName The name of the network interface.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void beginDeleteWithoutPolling(String resourceGroupName, String networkInterfaceName) {
-        beginDeleteWithoutPollingAsync(resourceGroupName, networkInterfaceName).block();
-    }
-
-    /**
-     * Deletes the specified network interface.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param networkInterfaceName The name of the network interface.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void beginDeleteWithoutPolling(String resourceGroupName, String networkInterfaceName, Context context) {
-        beginDeleteWithoutPollingAsync(resourceGroupName, networkInterfaceName, context).block();
-    }
-
-    /**
-     * Creates or updates a network interface.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param networkInterfaceName The name of the network interface.
-     * @param parameters A network interface in a resource group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a network interface in a resource group.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<NetworkInterfaceInner>> beginCreateOrUpdateWithoutPollingWithResponseAsync(
-        String resourceGroupName, String networkInterfaceName, NetworkInterfaceInner parameters) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (networkInterfaceName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter networkInterfaceName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (parameters == null) {
-            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
-        } else {
-            parameters.validate();
-        }
-        final String apiVersion = "2019-06-01";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .beginCreateOrUpdateWithoutPolling(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            networkInterfaceName,
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            parameters,
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
-
-    /**
-     * Creates or updates a network interface.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param networkInterfaceName The name of the network interface.
-     * @param parameters A network interface in a resource group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a network interface in a resource group.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<NetworkInterfaceInner>> beginCreateOrUpdateWithoutPollingWithResponseAsync(
-        String resourceGroupName, String networkInterfaceName, NetworkInterfaceInner parameters, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (networkInterfaceName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter networkInterfaceName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (parameters == null) {
-            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
-        } else {
-            parameters.validate();
-        }
-        final String apiVersion = "2019-06-01";
-        return service
-            .beginCreateOrUpdateWithoutPolling(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                networkInterfaceName,
-                apiVersion,
-                this.client.getSubscriptionId(),
-                parameters,
-                context);
-    }
-
-    /**
-     * Creates or updates a network interface.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param networkInterfaceName The name of the network interface.
-     * @param parameters A network interface in a resource group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a network interface in a resource group.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<NetworkInterfaceInner> beginCreateOrUpdateWithoutPollingAsync(
-        String resourceGroupName, String networkInterfaceName, NetworkInterfaceInner parameters) {
-        return beginCreateOrUpdateWithoutPollingWithResponseAsync(resourceGroupName, networkInterfaceName, parameters)
-            .flatMap(
-                (Response<NetworkInterfaceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Creates or updates a network interface.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param networkInterfaceName The name of the network interface.
-     * @param parameters A network interface in a resource group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a network interface in a resource group.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<NetworkInterfaceInner> beginCreateOrUpdateWithoutPollingAsync(
-        String resourceGroupName, String networkInterfaceName, NetworkInterfaceInner parameters, Context context) {
-        return beginCreateOrUpdateWithoutPollingWithResponseAsync(
-                resourceGroupName, networkInterfaceName, parameters, context)
-            .flatMap(
-                (Response<NetworkInterfaceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Creates or updates a network interface.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param networkInterfaceName The name of the network interface.
-     * @param parameters A network interface in a resource group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a network interface in a resource group.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public NetworkInterfaceInner beginCreateOrUpdateWithoutPolling(
-        String resourceGroupName, String networkInterfaceName, NetworkInterfaceInner parameters) {
-        return beginCreateOrUpdateWithoutPollingAsync(resourceGroupName, networkInterfaceName, parameters).block();
-    }
-
-    /**
-     * Creates or updates a network interface.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param networkInterfaceName The name of the network interface.
-     * @param parameters A network interface in a resource group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a network interface in a resource group.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public NetworkInterfaceInner beginCreateOrUpdateWithoutPolling(
-        String resourceGroupName, String networkInterfaceName, NetworkInterfaceInner parameters, Context context) {
-        return beginCreateOrUpdateWithoutPollingAsync(resourceGroupName, networkInterfaceName, parameters, context)
-            .block();
-    }
-
-    /**
-     * Updates a network interface tags.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param networkInterfaceName The name of the network interface.
-     * @param tags Resource tags.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a network interface in a resource group.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<NetworkInterfaceInner>> beginUpdateTagsWithoutPollingWithResponseAsync(
-        String resourceGroupName, String networkInterfaceName, Map<String, String> tags) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (networkInterfaceName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter networkInterfaceName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2019-06-01";
-        TagsObject parameters = new TagsObject();
-        parameters.withTags(tags);
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .beginUpdateTagsWithoutPolling(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            networkInterfaceName,
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            parameters,
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
-
-    /**
-     * Updates a network interface tags.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param networkInterfaceName The name of the network interface.
-     * @param tags Resource tags.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a network interface in a resource group.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<NetworkInterfaceInner>> beginUpdateTagsWithoutPollingWithResponseAsync(
-        String resourceGroupName, String networkInterfaceName, Map<String, String> tags, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (networkInterfaceName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter networkInterfaceName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2019-06-01";
-        TagsObject parameters = new TagsObject();
-        parameters.withTags(tags);
-        return service
-            .beginUpdateTagsWithoutPolling(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                networkInterfaceName,
-                apiVersion,
-                this.client.getSubscriptionId(),
-                parameters,
-                context);
-    }
-
-    /**
-     * Updates a network interface tags.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param networkInterfaceName The name of the network interface.
-     * @param tags Resource tags.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a network interface in a resource group.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<NetworkInterfaceInner> beginUpdateTagsWithoutPollingAsync(
-        String resourceGroupName, String networkInterfaceName, Map<String, String> tags) {
-        return beginUpdateTagsWithoutPollingWithResponseAsync(resourceGroupName, networkInterfaceName, tags)
-            .flatMap(
-                (Response<NetworkInterfaceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Updates a network interface tags.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param networkInterfaceName The name of the network interface.
-     * @param tags Resource tags.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a network interface in a resource group.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<NetworkInterfaceInner> beginUpdateTagsWithoutPollingAsync(
-        String resourceGroupName, String networkInterfaceName, Map<String, String> tags, Context context) {
-        return beginUpdateTagsWithoutPollingWithResponseAsync(resourceGroupName, networkInterfaceName, tags, context)
-            .flatMap(
-                (Response<NetworkInterfaceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Updates a network interface tags.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param networkInterfaceName The name of the network interface.
-     * @param tags Resource tags.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a network interface in a resource group.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public NetworkInterfaceInner beginUpdateTagsWithoutPolling(
-        String resourceGroupName, String networkInterfaceName, Map<String, String> tags) {
-        return beginUpdateTagsWithoutPollingAsync(resourceGroupName, networkInterfaceName, tags).block();
-    }
-
-    /**
-     * Updates a network interface tags.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param networkInterfaceName The name of the network interface.
-     * @param tags Resource tags.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a network interface in a resource group.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public NetworkInterfaceInner beginUpdateTagsWithoutPolling(
-        String resourceGroupName, String networkInterfaceName, Map<String, String> tags, Context context) {
-        return beginUpdateTagsWithoutPollingAsync(resourceGroupName, networkInterfaceName, tags, context).block();
-    }
-
-    /**
-     * Gets all route tables applied to a network interface.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param networkInterfaceName The name of the network interface.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all route tables applied to a network interface.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<EffectiveRouteListResultInner>> beginGetEffectiveRouteTableWithoutPollingWithResponseAsync(
-        String resourceGroupName, String networkInterfaceName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (networkInterfaceName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter networkInterfaceName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2019-06-01";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .beginGetEffectiveRouteTableWithoutPolling(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            networkInterfaceName,
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
-
-    /**
-     * Gets all route tables applied to a network interface.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param networkInterfaceName The name of the network interface.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all route tables applied to a network interface.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<EffectiveRouteListResultInner>> beginGetEffectiveRouteTableWithoutPollingWithResponseAsync(
-        String resourceGroupName, String networkInterfaceName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (networkInterfaceName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter networkInterfaceName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2019-06-01";
-        return service
-            .beginGetEffectiveRouteTableWithoutPolling(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                networkInterfaceName,
-                apiVersion,
-                this.client.getSubscriptionId(),
-                context);
-    }
-
-    /**
-     * Gets all route tables applied to a network interface.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param networkInterfaceName The name of the network interface.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all route tables applied to a network interface.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<EffectiveRouteListResultInner> beginGetEffectiveRouteTableWithoutPollingAsync(
-        String resourceGroupName, String networkInterfaceName) {
-        return beginGetEffectiveRouteTableWithoutPollingWithResponseAsync(resourceGroupName, networkInterfaceName)
-            .flatMap(
-                (Response<EffectiveRouteListResultInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Gets all route tables applied to a network interface.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param networkInterfaceName The name of the network interface.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all route tables applied to a network interface.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<EffectiveRouteListResultInner> beginGetEffectiveRouteTableWithoutPollingAsync(
-        String resourceGroupName, String networkInterfaceName, Context context) {
-        return beginGetEffectiveRouteTableWithoutPollingWithResponseAsync(
-                resourceGroupName, networkInterfaceName, context)
-            .flatMap(
-                (Response<EffectiveRouteListResultInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Gets all route tables applied to a network interface.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param networkInterfaceName The name of the network interface.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all route tables applied to a network interface.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public EffectiveRouteListResultInner beginGetEffectiveRouteTableWithoutPolling(
-        String resourceGroupName, String networkInterfaceName) {
-        return beginGetEffectiveRouteTableWithoutPollingAsync(resourceGroupName, networkInterfaceName).block();
-    }
-
-    /**
-     * Gets all route tables applied to a network interface.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param networkInterfaceName The name of the network interface.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all route tables applied to a network interface.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public EffectiveRouteListResultInner beginGetEffectiveRouteTableWithoutPolling(
-        String resourceGroupName, String networkInterfaceName, Context context) {
-        return beginGetEffectiveRouteTableWithoutPollingAsync(resourceGroupName, networkInterfaceName, context).block();
-    }
-
-    /**
-     * Gets all network security groups applied to a network interface.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param networkInterfaceName The name of the network interface.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all network security groups applied to a network interface.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<EffectiveNetworkSecurityGroupListResultInner>>
-        beginListEffectiveNetworkSecurityGroupsWithoutPollingWithResponseAsync(
-            String resourceGroupName, String networkInterfaceName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (networkInterfaceName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter networkInterfaceName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2019-06-01";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .beginListEffectiveNetworkSecurityGroupsWithoutPolling(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            networkInterfaceName,
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
-
-    /**
-     * Gets all network security groups applied to a network interface.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param networkInterfaceName The name of the network interface.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all network security groups applied to a network interface.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<EffectiveNetworkSecurityGroupListResultInner>>
-        beginListEffectiveNetworkSecurityGroupsWithoutPollingWithResponseAsync(
-            String resourceGroupName, String networkInterfaceName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (networkInterfaceName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter networkInterfaceName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2019-06-01";
-        return service
-            .beginListEffectiveNetworkSecurityGroupsWithoutPolling(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                networkInterfaceName,
-                apiVersion,
-                this.client.getSubscriptionId(),
-                context);
-    }
-
-    /**
-     * Gets all network security groups applied to a network interface.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param networkInterfaceName The name of the network interface.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all network security groups applied to a network interface.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<EffectiveNetworkSecurityGroupListResultInner>
-        beginListEffectiveNetworkSecurityGroupsWithoutPollingAsync(
-            String resourceGroupName, String networkInterfaceName) {
-        return beginListEffectiveNetworkSecurityGroupsWithoutPollingWithResponseAsync(
-                resourceGroupName, networkInterfaceName)
-            .flatMap(
-                (Response<EffectiveNetworkSecurityGroupListResultInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Gets all network security groups applied to a network interface.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param networkInterfaceName The name of the network interface.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all network security groups applied to a network interface.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<EffectiveNetworkSecurityGroupListResultInner>
-        beginListEffectiveNetworkSecurityGroupsWithoutPollingAsync(
-            String resourceGroupName, String networkInterfaceName, Context context) {
-        return beginListEffectiveNetworkSecurityGroupsWithoutPollingWithResponseAsync(
-                resourceGroupName, networkInterfaceName, context)
-            .flatMap(
-                (Response<EffectiveNetworkSecurityGroupListResultInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Gets all network security groups applied to a network interface.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param networkInterfaceName The name of the network interface.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all network security groups applied to a network interface.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public EffectiveNetworkSecurityGroupListResultInner beginListEffectiveNetworkSecurityGroupsWithoutPolling(
-        String resourceGroupName, String networkInterfaceName) {
-        return beginListEffectiveNetworkSecurityGroupsWithoutPollingAsync(resourceGroupName, networkInterfaceName)
-            .block();
-    }
-
-    /**
-     * Gets all network security groups applied to a network interface.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param networkInterfaceName The name of the network interface.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all network security groups applied to a network interface.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public EffectiveNetworkSecurityGroupListResultInner beginListEffectiveNetworkSecurityGroupsWithoutPolling(
-        String resourceGroupName, String networkInterfaceName, Context context) {
-        return beginListEffectiveNetworkSecurityGroupsWithoutPollingAsync(
-                resourceGroupName, networkInterfaceName, context)
             .block();
     }
 
