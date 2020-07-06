@@ -1150,6 +1150,7 @@ class BlockBlobAPITest extends APISpec {
     // Only run these tests in live mode as they use variables that can't be captured.
     @Unroll
     @Requires({ liveMode() })
+    @Ignore("Java 8 Live Test stuck")
     def "Async buffered upload"() {
         when:
         def data = getRandomData(dataSize)
@@ -1173,8 +1174,7 @@ class BlockBlobAPITest extends APISpec {
         dataSize           | bufferSize        | numBuffs || blockCount
         35 * Constants.MB  | 5 * Constants.MB  | 2        || 7 // Requires cycling through the same buffers multiple times.
         35 * Constants.MB  | 5 * Constants.MB  | 5        || 7 // Most buffers may only be used once.
-        /* @Ignore("Java 8 Live Test stuck") */
-//        100 * Constants.MB | 10 * Constants.MB | 2        || 10 // Larger data set.
+        100 * Constants.MB | 10 * Constants.MB | 2        || 10 // Larger data set.
         100 * Constants.MB | 10 * Constants.MB | 5        || 10 // Larger number of Buffs.
         10 * Constants.MB  | 1 * Constants.MB  | 10       || 10 // Exactly enough buffer space to hold all the data.
         50 * Constants.MB  | 10 * Constants.MB | 2        || 5 // Larger data.
@@ -1251,6 +1251,7 @@ class BlockBlobAPITest extends APISpec {
     // Only run these tests in live mode as they use variables that can't be captured.
     @Unroll
     @Requires({ liveMode() })
+    @Ignore("Java 8 Live Test stuck")
     def "Buffered upload chunked source"() {
         /*
         This test should validate that the upload should work regardless of what format the passed data is in because
@@ -1276,13 +1277,13 @@ class BlockBlobAPITest extends APISpec {
         [7, 7]                | 10         | 2          || 2 // First item fits entirely in the buffer, next item spans two buffers
         [3, 3, 3, 3, 3, 3, 3] | 10         | 2          || 3 // Multiple items fit non-exactly in one buffer.
         [10, 10]              | 10         | 2          || 2 // Data fits exactly and does not need chunking.
-        /* @Ignore("Java 8 Live Test stuck") */
-//        [50, 51, 49]          | 10         | 2          || 15 // Data needs chunking and does not fit neatly in buffers. Requires waiting for buffers to be released.
+        [50, 51, 49]          | 10         | 2          || 15 // Data needs chunking and does not fit neatly in buffers. Requires waiting for buffers to be released.
         // The case of one large buffer needing to be broken up is tested in the previous test.
     }
 
     @Unroll
     @Requires({ liveMode() })
+    @Ignore("Java 8 Live Test stuck")
     def "Buffered upload handle pathing"() {
         setup:
         def dataList = [] as List<ByteBuffer>
@@ -1303,8 +1304,7 @@ class BlockBlobAPITest extends APISpec {
         [4 * Constants.MB + 1, 10]           | 2
         [4 * Constants.MB]                   | 0
         [10, 100, 1000, 10000]               | 0
-        /* @Ignore("Java 8 Live Test stuck") */
-//        [4 * Constants.MB, 4 * Constants.MB] | 2
+        [4 * Constants.MB, 4 * Constants.MB] | 2
     }
 
     @Unroll
