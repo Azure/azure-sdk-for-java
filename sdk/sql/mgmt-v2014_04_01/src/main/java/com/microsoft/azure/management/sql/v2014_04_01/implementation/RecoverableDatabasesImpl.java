@@ -54,10 +54,14 @@ class RecoverableDatabasesImpl extends WrapperImpl<RecoverableDatabasesInner> im
     public Observable<RecoverableDatabase> getAsync(String resourceGroupName, String serverName, String databaseName) {
         RecoverableDatabasesInner client = this.inner();
         return client.getAsync(resourceGroupName, serverName, databaseName)
-        .map(new Func1<RecoverableDatabaseInner, RecoverableDatabase>() {
+        .flatMap(new Func1<RecoverableDatabaseInner, Observable<RecoverableDatabase>>() {
             @Override
-            public RecoverableDatabase call(RecoverableDatabaseInner inner) {
-                return wrapModel(inner);
+            public Observable<RecoverableDatabase> call(RecoverableDatabaseInner inner) {
+                if (inner == null) {
+                    return Observable.empty();
+                } else {
+                    return Observable.just((RecoverableDatabase)wrapModel(inner));
+                }
             }
        });
     }
