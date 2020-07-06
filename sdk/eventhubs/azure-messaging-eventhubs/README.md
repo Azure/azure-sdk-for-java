@@ -52,14 +52,14 @@ documentation][event_hubs_product_docs] | [Samples][sample_examples]
 - Azure Event Hubs instance
   - Step-by-step guide for [creating an Event Hub using the Azure Portal][event_hubs_create]
 
-### Including the package
+### Include the package
 
 [//]: # ({x-version-update-start;com.azure:azure-messaging-eventhubs;current})
 ```xml
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-messaging-eventhubs</artifactId>
-    <version>5.1.0</version>
+    <version>5.1.1</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})

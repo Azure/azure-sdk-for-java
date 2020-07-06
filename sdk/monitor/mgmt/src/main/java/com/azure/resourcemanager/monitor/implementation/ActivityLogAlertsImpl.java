@@ -3,20 +3,21 @@
 
 package com.azure.resourcemanager.monitor.implementation;
 
-import com.azure.resourcemanager.monitor.ActivityLogAlert;
-import com.azure.resourcemanager.monitor.ActivityLogAlerts;
-import com.azure.resourcemanager.monitor.models.ActivityLogAlertResourceInner;
-import com.azure.resourcemanager.monitor.models.ActivityLogAlertsInner;
+import com.azure.resourcemanager.monitor.MonitorManager;
+import com.azure.resourcemanager.monitor.models.ActivityLogAlert;
+import com.azure.resourcemanager.monitor.models.ActivityLogAlerts;
+import com.azure.resourcemanager.monitor.fluent.inner.ActivityLogAlertResourceInner;
+import com.azure.resourcemanager.monitor.fluent.ActivityLogAlertsClient;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.TopLevelModifiableResourcesImpl;
 
 /** Implementation for {@link ActivityLogAlerts}. */
 class ActivityLogAlertsImpl
     extends TopLevelModifiableResourcesImpl<
-        ActivityLogAlert, ActivityLogAlertImpl, ActivityLogAlertResourceInner, ActivityLogAlertsInner, MonitorManager>
+        ActivityLogAlert, ActivityLogAlertImpl, ActivityLogAlertResourceInner, ActivityLogAlertsClient, MonitorManager>
     implements ActivityLogAlerts {
 
     ActivityLogAlertsImpl(final MonitorManager monitorManager) {
-        super(monitorManager.inner().activityLogAlerts(), monitorManager);
+        super(monitorManager.inner().getActivityLogAlerts(), monitorManager);
     }
 
     @Override

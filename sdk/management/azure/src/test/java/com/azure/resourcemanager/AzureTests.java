@@ -15,27 +15,28 @@ import com.azure.resourcemanager.compute.models.VirtualMachinePublisher;
 import com.azure.resourcemanager.compute.models.VirtualMachineSizeTypes;
 import com.azure.resourcemanager.compute.models.VirtualMachineSku;
 import com.azure.resourcemanager.msi.MSIManager;
-import com.azure.resourcemanager.network.Access;
-import com.azure.resourcemanager.network.ConnectionMonitor;
-import com.azure.resourcemanager.network.ConnectionMonitorQueryResult;
-import com.azure.resourcemanager.network.ConnectivityCheck;
-import com.azure.resourcemanager.network.Direction;
-import com.azure.resourcemanager.network.FlowLogSettings;
-import com.azure.resourcemanager.network.IpFlowProtocol;
-import com.azure.resourcemanager.network.NetworkSecurityGroup;
-import com.azure.resourcemanager.network.NetworkWatcher;
-import com.azure.resourcemanager.network.NextHop;
-import com.azure.resourcemanager.network.NextHopType;
-import com.azure.resourcemanager.network.PacketCapture;
-import com.azure.resourcemanager.network.PcProtocol;
-import com.azure.resourcemanager.network.PcStatus;
-import com.azure.resourcemanager.network.SecurityGroupView;
-import com.azure.resourcemanager.network.Topology;
-import com.azure.resourcemanager.network.VerificationIPFlow;
+import com.azure.resourcemanager.network.models.Access;
+import com.azure.resourcemanager.network.models.ConnectionMonitor;
+import com.azure.resourcemanager.network.models.ConnectionMonitorQueryResult;
+import com.azure.resourcemanager.network.models.ConnectivityCheck;
+import com.azure.resourcemanager.network.models.Direction;
+import com.azure.resourcemanager.network.models.FlowLogSettings;
+import com.azure.resourcemanager.network.models.IpFlowProtocol;
+import com.azure.resourcemanager.network.models.NetworkSecurityGroup;
+import com.azure.resourcemanager.network.models.NetworkWatcher;
+import com.azure.resourcemanager.network.models.NextHop;
+import com.azure.resourcemanager.network.models.NextHopType;
+import com.azure.resourcemanager.network.models.PacketCapture;
+import com.azure.resourcemanager.network.models.PcProtocol;
+import com.azure.resourcemanager.network.models.PcStatus;
+import com.azure.resourcemanager.network.models.SecurityGroupView;
+import com.azure.resourcemanager.network.models.Topology;
+import com.azure.resourcemanager.network.models.VerificationIPFlow;
 import com.azure.resourcemanager.resources.models.Deployment;
 import com.azure.resourcemanager.resources.models.DeploymentMode;
 import com.azure.resourcemanager.resources.models.GenericResource;
 import com.azure.resourcemanager.resources.models.Location;
+import com.azure.resourcemanager.resources.models.RegionType;
 import com.azure.resourcemanager.resources.models.Subscription;
 import com.azure.resourcemanager.resources.core.TestBase;
 import com.azure.resourcemanager.resources.core.TestUtilities;
@@ -596,16 +597,16 @@ public class AzureTests extends TestBase {
     public void testPublicIPAddresses() throws Exception {
         new TestPublicIPAddress().runTest(azure.publicIpAddresses(), azure.resourceGroups());
     }
-    //
-    //    /**
-    //     * Tests the public IP prefix implementation.
-    //     *
-    //     * @throws Exception
-    //     */
-    //    @Test
-    //    public void testPublicIPPrefixes() throws Exception {
-    //        new TestPublicIPPrefix().runTest(azure.publicIPPrefixes(), azure.resourceGroups());
-    //    }
+
+    /**
+     * Tests the public IP address implementation.
+     *
+     * @throws Exception
+     */
+    @Test
+    public void testPublicIPPrefixes() throws Exception {
+        new TestPublicIPPrefix().runTest(azure.publicIpPrefixes(), azure.resourceGroups());
+    }
 
     /**
      * Tests the availability set implementation.
@@ -1258,17 +1259,19 @@ public class AzureTests extends TestBase {
                 .getCurrentSubscription()
                 .listLocations(); // note the region is not complete since it depends on current subscription
         for (Location location : locations) {
-            Region region = Region.findByLabelOrName(location.name());
-            if (region == null) {
-                sb
-                    .append("\n")
-                    .append(
-                        MessageFormat
-                            .format(
-                                "public static final Region {0} = new Region(\"{1}\", \"{2}\");",
-                                location.displayName().toUpperCase().replace(" ", "_"),
-                                location.name(),
-                                location.displayName()));
+            if (location.regionType() == RegionType.PHYSICAL) {
+                Region region = Region.findByLabelOrName(location.name());
+                if (region == null) {
+                    sb
+                        .append("\n")
+                        .append(
+                            MessageFormat
+                                .format(
+                                    "public static final Region {0} = new Region(\"{1}\", \"{2}\");",
+                                    location.displayName().toUpperCase().replace(" ", "_"),
+                                    location.name(),
+                                    location.displayName()));
+                }
             }
         }
 

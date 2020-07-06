@@ -10,6 +10,7 @@ import com.azure.resourcemanager.storage.fluent.ManagementPoliciesClient;
 import com.azure.resourcemanager.storage.models.BlobTypes;
 import com.azure.resourcemanager.storage.models.ManagementPolicy;
 import com.azure.resourcemanager.storage.models.ManagementPolicyBaseBlob;
+import com.azure.resourcemanager.storage.models.ManagementPolicyName;
 import com.azure.resourcemanager.storage.models.ManagementPolicyRule;
 import com.azure.resourcemanager.storage.models.ManagementPolicySchema;
 import com.azure.resourcemanager.storage.models.ManagementPolicySnapShot;
@@ -62,7 +63,7 @@ class ManagementPolicyImpl extends CreatableUpdatableImpl<ManagementPolicy, Mana
     public Mono<ManagementPolicy> createResourceAsync() {
         ManagementPoliciesClient client = this.manager().inner().getManagementPolicies();
         return client
-            .createOrUpdateAsync(this.resourceGroupName, this.accountName, cpolicy)
+            .createOrUpdateAsync(this.resourceGroupName, this.accountName, ManagementPolicyName.DEFAULT, cpolicy)
             .map(
                 resource -> {
                     resetCreateUpdateParameters();
@@ -75,7 +76,7 @@ class ManagementPolicyImpl extends CreatableUpdatableImpl<ManagementPolicy, Mana
     public Mono<ManagementPolicy> updateResourceAsync() {
         ManagementPoliciesClient client = this.manager().inner().getManagementPolicies();
         return client
-            .createOrUpdateAsync(this.resourceGroupName, this.accountName, upolicy)
+            .createOrUpdateAsync(this.resourceGroupName, this.accountName, ManagementPolicyName.DEFAULT, upolicy)
             .map(
                 resource -> {
                     resetCreateUpdateParameters();
@@ -87,7 +88,7 @@ class ManagementPolicyImpl extends CreatableUpdatableImpl<ManagementPolicy, Mana
     @Override
     protected Mono<ManagementPolicyInner> getInnerAsync() {
         ManagementPoliciesClient client = this.manager().inner().getManagementPolicies();
-        return client.getAsync(this.resourceGroupName, this.accountName);
+        return client.getAsync(this.resourceGroupName, this.accountName, ManagementPolicyName.DEFAULT);
     }
 
     @Override

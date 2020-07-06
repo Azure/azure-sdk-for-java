@@ -5,8 +5,6 @@ package com.azure.search.documents.implementation.converters;
 
 import com.azure.search.documents.indexes.models.FreshnessScoringParameters;
 
-import java.time.Duration;
-
 /**
  * A converter between {@link com.azure.search.documents.indexes.implementation.models.FreshnessScoringParameters} and
  * {@link FreshnessScoringParameters}.
@@ -20,11 +18,7 @@ public final class FreshnessScoringParametersConverter {
         if (obj == null) {
             return null;
         }
-        FreshnessScoringParameters freshnessScoringParameters = new FreshnessScoringParameters();
-
-        Duration boostingDuration = obj.getBoostingDuration();
-        freshnessScoringParameters.setBoostingDuration(boostingDuration);
-        return freshnessScoringParameters;
+        return new FreshnessScoringParameters(obj.getBoostingDuration());
     }
 
     /**
@@ -36,10 +30,8 @@ public final class FreshnessScoringParametersConverter {
             return null;
         }
         com.azure.search.documents.indexes.implementation.models.FreshnessScoringParameters freshnessScoringParameters =
-            new com.azure.search.documents.indexes.implementation.models.FreshnessScoringParameters();
-
-        Duration boostingDuration = obj.getBoostingDuration();
-        freshnessScoringParameters.setBoostingDuration(boostingDuration);
+            new com.azure.search.documents.indexes.implementation.models.FreshnessScoringParameters(obj.getBoostingDuration());
+        freshnessScoringParameters.validate();
         return freshnessScoringParameters;
     }
 

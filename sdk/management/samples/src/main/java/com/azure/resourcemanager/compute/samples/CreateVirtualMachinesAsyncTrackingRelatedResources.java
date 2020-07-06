@@ -13,9 +13,9 @@ import com.azure.resourcemanager.compute.models.AvailabilitySet;
 import com.azure.resourcemanager.compute.models.KnownLinuxVirtualMachineImage;
 import com.azure.resourcemanager.compute.models.VirtualMachine;
 import com.azure.resourcemanager.compute.models.VirtualMachineSizeTypes;
-import com.azure.resourcemanager.network.Network;
-import com.azure.resourcemanager.network.NetworkInterface;
-import com.azure.resourcemanager.network.PublicIpAddress;
+import com.azure.resourcemanager.network.models.Network;
+import com.azure.resourcemanager.network.models.NetworkInterface;
+import com.azure.resourcemanager.network.models.PublicIpAddress;
 import com.azure.resourcemanager.resources.models.ResourceGroup;
 import com.azure.resourcemanager.resources.fluentcore.arm.Region;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
@@ -142,8 +142,7 @@ public final class CreateVirtualMachinesAsyncTrackingRelatedResources {
                         .withNewPrimaryNetworkInterface(nicDefinition)
                         .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
                         .withRootUsername(userName)
-                        // [SuppressMessage("Microsoft.Security", "CS002:SecretInNextLine", Justification="Serves as an example, not for deployment. Please change when using this in your code.")]
-                        .withRootPassword("Abcdef.123456!")
+                        .withRootPassword(Utils.password())
                         .withSize(VirtualMachineSizeTypes.STANDARD_DS1_V2)
                         .withNewAvailabilitySet(availabilitySetDefinition);
 

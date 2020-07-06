@@ -11,8 +11,8 @@ import com.azure.resourcemanager.Azure;
 import com.azure.resourcemanager.compute.models.KnownWindowsVirtualMachineImage;
 import com.azure.resourcemanager.compute.models.VirtualMachine;
 import com.azure.resourcemanager.compute.models.VirtualMachineSizeTypes;
-import com.azure.resourcemanager.network.NetworkInterface;
-import com.azure.resourcemanager.network.PublicIpAddress;
+import com.azure.resourcemanager.network.models.NetworkInterface;
+import com.azure.resourcemanager.network.models.PublicIpAddress;
 import com.azure.resourcemanager.resources.fluentcore.arm.Region;
 import com.azure.resourcemanager.resources.fluentcore.profile.AzureProfile;
 import com.azure.resourcemanager.samples.Utils;
@@ -43,8 +43,7 @@ public final class ManageIPAddress {
         final String vmName = azure.sdkContext().randomResourceName("vm", 8);
         final String rgName = azure.sdkContext().randomResourceName("rgNEMP", 24);
         final String userName = "tirekicker";
-        // [SuppressMessage("Microsoft.Security", "CS002:SecretInNextLine", Justification="Serves as an example, not for deployment. Please change when using this in your code.")]
-        final String password = "12NewPA$$w0rd!";
+        final String password = Utils.password();
 
         try {
 

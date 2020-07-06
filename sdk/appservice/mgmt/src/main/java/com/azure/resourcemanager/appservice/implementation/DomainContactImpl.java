@@ -2,10 +2,10 @@
 // Licensed under the MIT License.
 package com.azure.resourcemanager.appservice.implementation;
 
-import com.azure.resourcemanager.appservice.Address;
-import com.azure.resourcemanager.appservice.AppServiceDomain;
-import com.azure.resourcemanager.appservice.Contact;
-import com.azure.resourcemanager.appservice.DomainContact;
+import com.azure.resourcemanager.appservice.models.Address;
+import com.azure.resourcemanager.appservice.models.AppServiceDomain;
+import com.azure.resourcemanager.appservice.models.Contact;
+import com.azure.resourcemanager.appservice.models.DomainContact;
 import com.azure.resourcemanager.resources.fluentcore.arm.CountryIsoCode;
 import com.azure.resourcemanager.resources.fluentcore.arm.CountryPhoneCode;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.ChildResourceImpl;

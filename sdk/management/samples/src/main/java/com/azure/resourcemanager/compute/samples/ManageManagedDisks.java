@@ -8,6 +8,7 @@ import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.resourcemanager.resources.fluentcore.profile.AzureProfile;
+import com.azure.resourcemanager.samples.Utils;
 import com.jcraft.jsch.JSchException;
 import com.azure.resourcemanager.Azure;
 import com.azure.resourcemanager.compute.models.CachingTypes;
@@ -22,10 +23,10 @@ import com.azure.resourcemanager.compute.models.VirtualMachineDataDisk;
 import com.azure.resourcemanager.compute.models.VirtualMachineScaleSet;
 import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetSkuTypes;
 import com.azure.resourcemanager.compute.models.VirtualMachineSizeTypes;
-import com.azure.resourcemanager.network.LoadBalancer;
-import com.azure.resourcemanager.network.Network;
-import com.azure.resourcemanager.network.PublicIpAddress;
-import com.azure.resourcemanager.network.TransportProtocol;
+import com.azure.resourcemanager.network.models.LoadBalancer;
+import com.azure.resourcemanager.network.models.Network;
+import com.azure.resourcemanager.network.models.PublicIpAddress;
+import com.azure.resourcemanager.network.models.TransportProtocol;
 import com.azure.resourcemanager.resources.fluentcore.arm.Region;
 import com.azure.resourcemanager.samples.SSHShell;
 
@@ -180,7 +181,7 @@ public final class ManageManagedDisks {
                     .withNewPrimaryNetwork("10.0.0.0/28")
                     .withPrimaryPrivateIPAddressDynamic()
                     .withoutPrimaryPublicIPAddress()
-                    .withLinuxCustomImage(virtualMachineCustomImage.id())
+                    .withGeneralizedLinuxCustomImage(virtualMachineCustomImage.id())
                     .withRootUsername(userName)
                     .withSsh(sshkey)
                     .withSize(VirtualMachineSizeTypes.STANDARD_D3_V2)
@@ -382,8 +383,7 @@ public final class ManageManagedDisks {
 
     private static VirtualMachine prepareSpecializedUnmanagedVirtualMachine(Azure azure, Region region, String rgName) {
         final String userName = "tirekicker";
-        // [SuppressMessage("Microsoft.Security", "CS002:SecretInNextLine", Justification="Serves as an example, not for deployment. Please change when using this in your code.")]
-        final String password = "12NewPA$$w0rd!";
+        final String password = Utils.password();
         final String linuxVMName1 = azure.sdkContext().randomResourceName("vm" + "-", 10);
         final String publicIpDnsLabel = azure.sdkContext().randomResourceName("pip" + "-", 20);
 
@@ -421,8 +421,7 @@ public final class ManageManagedDisks {
 
     private static VirtualMachine prepareSpecializedManagedVirtualMachine(Azure azure, Region region, String rgName) {
         final String userName = "tirekicker";
-        // [SuppressMessage("Microsoft.Security", "CS002:SecretInNextLine", Justification="Serves as an example, not for deployment. Please change when using this in your code.")]
-        final String password = "12NewPA$$w0rd!";
+        final String password = Utils.password();
         final String linuxVMName1 = azure.sdkContext().randomResourceName("vm" + "-", 10);
         final String publicIPDnsLabel = azure.sdkContext().randomResourceName("pip" + "-", 20);
 

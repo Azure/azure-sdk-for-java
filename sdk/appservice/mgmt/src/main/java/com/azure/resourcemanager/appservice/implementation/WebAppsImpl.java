@@ -4,24 +4,26 @@
 package com.azure.resourcemanager.appservice.implementation;
 
 import com.azure.core.http.rest.PagedFlux;
-import com.azure.resourcemanager.appservice.WebApp;
-import com.azure.resourcemanager.appservice.WebApps;
-import com.azure.resourcemanager.appservice.models.SiteConfigResourceInner;
-import com.azure.resourcemanager.appservice.models.SiteInner;
-import com.azure.resourcemanager.appservice.models.SiteLogsConfigInner;
-import com.azure.resourcemanager.appservice.models.WebAppsInner;
+import com.azure.resourcemanager.appservice.AppServiceManager;
+import com.azure.resourcemanager.appservice.fluent.WebAppsClient;
+import com.azure.resourcemanager.appservice.fluent.inner.SiteConfigResourceInner;
+import com.azure.resourcemanager.appservice.fluent.inner.SiteInner;
+import com.azure.resourcemanager.appservice.fluent.inner.SiteLogsConfigInner;
+import com.azure.resourcemanager.appservice.models.WebApp;
+import com.azure.resourcemanager.appservice.models.WebApps;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.TopLevelModifiableResourcesImpl;
 import com.azure.resourcemanager.resources.fluentcore.utils.PagedConverter;
-import java.util.Arrays;
 import reactor.core.publisher.Mono;
 
+import java.util.Arrays;
+
 /** The implementation for WebApps. */
-class WebAppsImpl
-    extends TopLevelModifiableResourcesImpl<WebApp, WebAppImpl, SiteInner, WebAppsInner, AppServiceManager>
+public class WebAppsImpl
+    extends TopLevelModifiableResourcesImpl<WebApp, WebAppImpl, SiteInner, WebAppsClient, AppServiceManager>
     implements WebApps {
 
-    WebAppsImpl(final AppServiceManager manager) {
-        super(manager.inner().webApps(), manager);
+    public WebAppsImpl(final AppServiceManager manager) {
+        super(manager.inner().getWebApps(), manager);
     }
 
     @Override

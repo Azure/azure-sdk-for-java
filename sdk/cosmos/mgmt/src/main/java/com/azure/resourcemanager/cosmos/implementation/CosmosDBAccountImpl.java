@@ -3,7 +3,7 @@
 package com.azure.resourcemanager.cosmos.implementation;
 
 import com.azure.core.http.rest.PagedFlux;
-import com.azure.resourcemanager.cosmos.CosmosDBManager;
+import com.azure.resourcemanager.cosmos.CosmosManager;
 import com.azure.resourcemanager.cosmos.fluent.inner.DatabaseAccountGetResultsInner;
 import com.azure.resourcemanager.cosmos.models.Capability;
 import com.azure.resourcemanager.cosmos.models.ConnectorOffer;
@@ -43,7 +43,7 @@ import java.util.stream.Collectors;
 
 /** The implementation for CosmosDBAccount. */
 class CosmosDBAccountImpl
-    extends GroupableResourceImpl<CosmosDBAccount, DatabaseAccountGetResultsInner, CosmosDBAccountImpl, CosmosDBManager>
+    extends GroupableResourceImpl<CosmosDBAccount, DatabaseAccountGetResultsInner, CosmosDBAccountImpl, CosmosManager>
     implements CosmosDBAccount, CosmosDBAccount.Definition, CosmosDBAccount.Update {
     private List<FailoverPolicy> failoverPolicies;
     private boolean hasFailoverPolicyChanges;
@@ -51,7 +51,7 @@ class CosmosDBAccountImpl
     private Map<String, VirtualNetworkRule> virtualNetworkRulesMap;
     private PrivateEndpointConnectionsImpl privateEndpointConnections;
 
-    CosmosDBAccountImpl(String name, DatabaseAccountGetResultsInner innerObject, CosmosDBManager manager) {
+    CosmosDBAccountImpl(String name, DatabaseAccountGetResultsInner innerObject, CosmosManager manager) {
         super(fixDBName(name), innerObject, manager);
         this.failoverPolicies = new ArrayList<>();
         this.privateEndpointConnections =

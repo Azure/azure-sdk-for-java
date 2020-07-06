@@ -3,17 +3,17 @@
 
 package com.azure.resourcemanager.network.implementation;
 
-import com.azure.resourcemanager.network.IpAllocationMethod;
-import com.azure.resourcemanager.network.LoadBalancer;
-import com.azure.resourcemanager.network.Network;
-import com.azure.resourcemanager.network.NetworkInterface;
-import com.azure.resourcemanager.network.NetworkSecurityGroup;
-import com.azure.resourcemanager.network.NicIpConfiguration;
-import com.azure.resourcemanager.network.PublicIpAddress;
-import com.azure.resourcemanager.network.models.GroupableParentResourceWithTagsImpl;
-import com.azure.resourcemanager.network.models.NetworkInterfaceIpConfigurationInner;
-import com.azure.resourcemanager.network.models.NetworkInterfaceInner;
-import com.azure.resourcemanager.network.models.NetworkSecurityGroupInner;
+import com.azure.resourcemanager.network.NetworkManager;
+import com.azure.resourcemanager.network.models.IpAllocationMethod;
+import com.azure.resourcemanager.network.models.LoadBalancer;
+import com.azure.resourcemanager.network.models.Network;
+import com.azure.resourcemanager.network.models.NetworkInterface;
+import com.azure.resourcemanager.network.models.NetworkSecurityGroup;
+import com.azure.resourcemanager.network.models.NicIpConfiguration;
+import com.azure.resourcemanager.network.models.PublicIpAddress;
+import com.azure.resourcemanager.network.fluent.inner.NetworkInterfaceIpConfigurationInner;
+import com.azure.resourcemanager.network.fluent.inner.NetworkInterfaceInner;
+import com.azure.resourcemanager.network.fluent.inner.NetworkSecurityGroupInner;
 import com.azure.resourcemanager.resources.models.ResourceGroup;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.Resource;
@@ -72,7 +72,7 @@ class NetworkInterfaceImpl
         return this
             .manager()
             .inner()
-            .networkInterfaces()
+            .getNetworkInterfaces()
             .getByResourceGroupAsync(this.resourceGroupName(), this.name());
     }
 
@@ -81,7 +81,7 @@ class NetworkInterfaceImpl
         return this
             .manager()
             .inner()
-            .networkInterfaces()
+            .getNetworkInterfaces()
             .updateTagsAsync(resourceGroupName(), name(), inner().tags());
     }
 
@@ -454,7 +454,7 @@ class NetworkInterfaceImpl
         return this
             .manager()
             .inner()
-            .networkInterfaces()
+            .getNetworkInterfaces()
             .createOrUpdateAsync(this.resourceGroupName(), this.name(), this.inner());
     }
 

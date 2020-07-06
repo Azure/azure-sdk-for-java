@@ -37,7 +37,7 @@ class ServiceBusAsyncConsumer implements AutoCloseable {
     ServiceBusAsyncConsumer(String linkName, ServiceBusReceiveLinkProcessor linkProcessor,
         MessageSerializer messageSerializer, boolean isAutoComplete, boolean autoLockRenewal,
         Duration maxAutoLockRenewDuration, AmqpRetryOptions retryOptions,
-        BiFunction<MessageLockToken, String, Mono<Instant>> renewMessageLock) {
+        BiFunction<String, String, Mono<Instant>> renewMessageLock) {
         this.linkName = linkName;
         this.linkProcessor = linkProcessor;
         this.messageSerializer = messageSerializer;
@@ -95,10 +95,10 @@ class ServiceBusAsyncConsumer implements AutoCloseable {
 
     private static final class MessageManagement implements MessageManagementOperations {
         private final ServiceBusReceiveLinkProcessor link;
-        private final BiFunction<MessageLockToken, String, Mono<Instant>> renewMessageLock;
+        private final BiFunction<String, String, Mono<Instant>> renewMessageLock;
 
         private MessageManagement(ServiceBusReceiveLinkProcessor link,
-            BiFunction<MessageLockToken, String, Mono<Instant>> renewMessageLock) {
+            BiFunction<String, String, Mono<Instant>> renewMessageLock) {
             this.link = link;
             this.renewMessageLock = renewMessageLock;
         }
@@ -110,7 +110,7 @@ class ServiceBusAsyncConsumer implements AutoCloseable {
 
         @Override
         public Mono<Instant> renewMessageLock(String lockToken, String associatedLinkName) {
-            return renewMessageLock.apply(MessageLockToken.fromString(lockToken), associatedLinkName);
+            return renewMessageLock.apply(lockToken, associatedLinkName);
         }
     }
 }

@@ -23,6 +23,17 @@ public final class TruncateTokenFilter extends TokenFilter {
     private Integer length;
 
     /**
+     * Constructor of {@link TruncateTokenFilter}.
+     *
+     * @param name The name of the token filter. It must only contain letters, digits,
+     * spaces, dashes or underscores, can only start and end with alphanumeric
+     * characters, and is limited to 128 characters.
+     */
+    public TruncateTokenFilter(String name) {
+        super(name);
+    }
+
+    /**
      * Get the length property: The length at which terms will be truncated.
      * Default and maximum is 300.
      *

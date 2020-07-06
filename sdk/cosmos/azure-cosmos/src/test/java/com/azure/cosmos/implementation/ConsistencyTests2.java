@@ -203,7 +203,7 @@ public class ConsistencyTests2 extends ConsistencyTestsBase {
     // Note that we need multiple CONSISTENCY_TEST_TIMEOUT
     // SEE: https://msdata.visualstudio.com/CosmosDB/_workitems/edit/367028https://msdata.visualstudio.com/CosmosDB/_workitems/edit/367028
 
-    @Test(groups = {"direct"}, timeOut = 4 * CONSISTENCY_TEST_TIMEOUT)
+    @Test(groups = {"direct"}, timeOut = 8 * CONSISTENCY_TEST_TIMEOUT)
     public void validateSessionTokenAsync() {
         // Validate that document query never fails
         // with NotFoundException
@@ -243,7 +243,6 @@ public class ConsistencyTests2 extends ConsistencyTestsBase {
                     long lsn = Long.valueOf(lsnHeaderValue);
                     String sessionTokenHeaderValue = queryResponse.getResponseHeaders().get(HttpConstants.HttpHeaders.SESSION_TOKEN);
                     ISessionToken sessionToken = SessionTokenHelper.parse(sessionTokenHeaderValue);
-                    logger.info("SESSION Token = {}, LSN = {}", sessionToken.convertToString(), lsn);
                     assertThat(lsn).isEqualTo(sessionToken.getLSN());
                 } catch (Exception ex) {
                     CosmosException clientException = (CosmosException) ex.getCause();
@@ -255,8 +254,6 @@ public class ConsistencyTests2 extends ConsistencyTestsBase {
                             long lsn = Long.valueOf(lsnHeaderValue);
                             String sessionTokenHeaderValue = clientException.getResponseHeaders().get(HttpConstants.HttpHeaders.SESSION_TOKEN);
                             ISessionToken sessionToken = SessionTokenHelper.parse(sessionTokenHeaderValue);
-
-                            logger.info("SESSION Token = {}, LSN = {}", sessionToken.convertToString(), lsn);
                             assertThat(lsn).isEqualTo(sessionToken.getLSN());
                         } else {
                             throw ex;

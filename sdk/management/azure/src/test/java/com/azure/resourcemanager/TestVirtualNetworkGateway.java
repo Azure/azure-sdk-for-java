@@ -3,14 +3,14 @@
 package com.azure.resourcemanager;
 
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.resourcemanager.network.LocalNetworkGateway;
-import com.azure.resourcemanager.network.Network;
-import com.azure.resourcemanager.network.Subnet;
-import com.azure.resourcemanager.network.VirtualNetworkGateway;
-import com.azure.resourcemanager.network.VirtualNetworkGatewayConnection;
-import com.azure.resourcemanager.network.VirtualNetworkGatewaySkuName;
-import com.azure.resourcemanager.network.VirtualNetworkGateways;
-import com.azure.resourcemanager.network.implementation.NetworkManager;
+import com.azure.resourcemanager.network.models.LocalNetworkGateway;
+import com.azure.resourcemanager.network.models.Network;
+import com.azure.resourcemanager.network.models.Subnet;
+import com.azure.resourcemanager.network.models.VirtualNetworkGateway;
+import com.azure.resourcemanager.network.models.VirtualNetworkGatewayConnection;
+import com.azure.resourcemanager.network.models.VirtualNetworkGatewaySkuName;
+import com.azure.resourcemanager.network.models.VirtualNetworkGateways;
+import com.azure.resourcemanager.network.NetworkManager;
 import com.azure.resourcemanager.resources.core.TestUtilities;
 import com.azure.resourcemanager.resources.fluentcore.arm.Region;
 import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;

@@ -7,6 +7,17 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.resourcemanager.compute.models.KnownLinuxVirtualMachineImage;
 import com.azure.resourcemanager.compute.models.VirtualMachine;
+import com.azure.resourcemanager.monitor.models.ActionGroup;
+import com.azure.resourcemanager.monitor.models.ActivityLogAlert;
+import com.azure.resourcemanager.monitor.models.DynamicThresholdFailingPeriods;
+import com.azure.resourcemanager.monitor.models.DynamicThresholdOperator;
+import com.azure.resourcemanager.monitor.models.DynamicThresholdSensitivity;
+import com.azure.resourcemanager.monitor.models.MetricAlert;
+import com.azure.resourcemanager.monitor.models.MetricAlertCondition;
+import com.azure.resourcemanager.monitor.models.MetricAlertRuleCondition;
+import com.azure.resourcemanager.monitor.models.MetricAlertRuleTimeAggregation;
+import com.azure.resourcemanager.monitor.models.MetricDimension;
+import com.azure.resourcemanager.monitor.models.MetricDynamicAlertCondition;
 import com.azure.resourcemanager.resources.core.TestUtilities;
 import com.azure.resourcemanager.resources.fluentcore.arm.Region;
 import com.azure.resourcemanager.resources.fluentcore.profile.AzureProfile;
@@ -322,7 +333,7 @@ public class AlertsTests extends MonitorManagementTest {
     public void canCRUDMultipleResourceMetricAlerts() throws Exception {
         try {
             final String userName = "tirekicker";
-            final String password = "12NewPA$$w0rd!";
+            final String password = password();
 
             String alertName = generateRandomResourceName("jMonitorMA", 18);
             String vmName1 = generateRandomResourceName("jMonitorVM1", 18);

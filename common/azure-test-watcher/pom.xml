@@ -44,6 +44,25 @@
           </rules>
         </configuration>
       </plugin>
+
+      <!-- Run the JAR goal for azure-test-watcher during the test phase to guarantee its existence when tests are running -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <version>3.1.2</version> <!-- {x-version-update;org.apache.maven.plugins:maven-jar-plugin;external_dependency} -->
+        <configuration>
+          <outputDirectory>${packageOutputDirectory}</outputDirectory>
+        </configuration>
+        <executions>
+          <execution>
+            <id>default-jar</id>
+            <phase>test</phase>
+            <goals>
+              <goal>jar</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
     </plugins>
   </build>
 

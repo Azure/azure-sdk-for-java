@@ -3,20 +3,21 @@
 
 package com.azure.resourcemanager.monitor.implementation;
 
-import com.azure.resourcemanager.monitor.MetricAlert;
-import com.azure.resourcemanager.monitor.MetricAlerts;
-import com.azure.resourcemanager.monitor.models.MetricAlertResourceInner;
-import com.azure.resourcemanager.monitor.models.MetricAlertsInner;
+import com.azure.resourcemanager.monitor.MonitorManager;
+import com.azure.resourcemanager.monitor.models.MetricAlert;
+import com.azure.resourcemanager.monitor.models.MetricAlerts;
+import com.azure.resourcemanager.monitor.fluent.inner.MetricAlertResourceInner;
+import com.azure.resourcemanager.monitor.fluent.MetricAlertsClient;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.TopLevelModifiableResourcesImpl;
 
 /** Implementation for {@link MetricAlerts}. */
 class MetricAlertsImpl
     extends TopLevelModifiableResourcesImpl<
-        MetricAlert, MetricAlertImpl, MetricAlertResourceInner, MetricAlertsInner, MonitorManager>
+        MetricAlert, MetricAlertImpl, MetricAlertResourceInner, MetricAlertsClient, MonitorManager>
     implements MetricAlerts {
 
     MetricAlertsImpl(final MonitorManager monitorManager) {
-        super(monitorManager.inner().metricAlerts(), monitorManager);
+        super(monitorManager.inner().getMetricAlerts(), monitorManager);
     }
 
     @Override

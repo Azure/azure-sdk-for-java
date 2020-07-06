@@ -7,12 +7,12 @@ import com.azure.core.credential.TokenCredential;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.resourcemanager.Azure;
-import com.azure.resourcemanager.appservice.AppServiceDomain;
-import com.azure.resourcemanager.appservice.AppServicePlan;
-import com.azure.resourcemanager.appservice.CustomHostnameDnsRecordType;
-import com.azure.resourcemanager.appservice.PricingTier;
-import com.azure.resourcemanager.appservice.RuntimeStack;
-import com.azure.resourcemanager.appservice.WebApp;
+import com.azure.resourcemanager.appservice.models.AppServiceDomain;
+import com.azure.resourcemanager.appservice.models.AppServicePlan;
+import com.azure.resourcemanager.appservice.models.CustomHostnameDnsRecordType;
+import com.azure.resourcemanager.appservice.models.PricingTier;
+import com.azure.resourcemanager.appservice.models.RuntimeStack;
+import com.azure.resourcemanager.appservice.models.WebApp;
 import com.azure.resourcemanager.resources.fluentcore.arm.CountryIsoCode;
 import com.azure.resourcemanager.resources.fluentcore.arm.CountryPhoneCode;
 import com.azure.resourcemanager.resources.fluentcore.arm.Region;
@@ -47,8 +47,7 @@ public final class ManageLinuxWebAppWithDomainSsl {
         final String app2Name       = azure.sdkContext().randomResourceName("webapp2-", 20);
         final String rgName         = azure.sdkContext().randomResourceName("rgNEMV_", 24);
         final String domainName     = azure.sdkContext().randomResourceName("jsdkdemo-", 20) + ".com";
-        // [SuppressMessage("Microsoft.Security", "CS002:SecretInNextLine", Justification="Serves as an example, not for deployment. Please change when using this in your code.")]
-        final String certPassword   = "StrongPass!12";
+        final String certPassword   = Utils.password();
 
         try {
             //============================================================

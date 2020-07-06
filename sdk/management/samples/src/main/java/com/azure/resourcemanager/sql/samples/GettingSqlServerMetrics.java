@@ -9,12 +9,12 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.resourcemanager.Azure;
-import com.azure.resourcemanager.monitor.Metric;
-import com.azure.resourcemanager.monitor.MetricCollection;
-import com.azure.resourcemanager.monitor.MetricDefinition;
-import com.azure.resourcemanager.monitor.MetricValue;
-import com.azure.resourcemanager.monitor.TimeSeriesElement;
-import com.azure.resourcemanager.monitor.models.MetadataValueInner;
+import com.azure.resourcemanager.monitor.models.Metric;
+import com.azure.resourcemanager.monitor.models.MetricCollection;
+import com.azure.resourcemanager.monitor.models.MetricDefinition;
+import com.azure.resourcemanager.monitor.models.MetricValue;
+import com.azure.resourcemanager.monitor.models.TimeSeriesElement;
+import com.azure.resourcemanager.monitor.fluent.inner.MetadataValueInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.Region;
 import com.azure.resourcemanager.resources.fluentcore.profile.AzureProfile;
 import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
@@ -57,8 +57,7 @@ public class GettingSqlServerMetrics {
         final String epName = "epSample";
         final String rgName = azure.sdkContext().randomResourceName("rgsql", 20);
         final String administratorLogin = "sqladmin3423";
-        // [SuppressMessage("Microsoft.Security", "CS002:SecretInNextLine", Justification="Serves as an example, not for deployment. Please change when using this in your code.")]
-        final String administratorPassword = "myS3curePwd";
+        final String administratorPassword = Utils.password();
         OffsetDateTime startTime = OffsetDateTime.now().minusDays(1);
 
         try {

@@ -4,12 +4,13 @@ package com.azure.resourcemanager.network.implementation;
 
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.resourcemanager.network.ExpressRouteCircuit;
-import com.azure.resourcemanager.network.ExpressRouteCircuitPeering;
-import com.azure.resourcemanager.network.ExpressRouteCircuitPeerings;
-import com.azure.resourcemanager.network.ExpressRoutePeeringType;
-import com.azure.resourcemanager.network.models.ExpressRouteCircuitPeeringInner;
-import com.azure.resourcemanager.network.models.ExpressRouteCircuitPeeringsInner;
+import com.azure.resourcemanager.network.NetworkManager;
+import com.azure.resourcemanager.network.fluent.ExpressRouteCircuitPeeringsClient;
+import com.azure.resourcemanager.network.fluent.inner.ExpressRouteCircuitPeeringInner;
+import com.azure.resourcemanager.network.models.ExpressRouteCircuit;
+import com.azure.resourcemanager.network.models.ExpressRouteCircuitPeering;
+import com.azure.resourcemanager.network.models.ExpressRouteCircuitPeerings;
+import com.azure.resourcemanager.network.models.ExpressRoutePeeringType;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.IndependentChildrenImpl;
 import reactor.core.publisher.Mono;
 
@@ -19,8 +20,8 @@ class ExpressRouteCircuitPeeringsImpl
         ExpressRouteCircuitPeering,
         ExpressRouteCircuitPeeringImpl,
         ExpressRouteCircuitPeeringInner,
-        ExpressRouteCircuitPeeringsInner,
-        NetworkManager,
+        ExpressRouteCircuitPeeringsClient,
+    NetworkManager,
         ExpressRouteCircuit>
     implements ExpressRouteCircuitPeerings {
     private final ExpressRouteCircuitImpl parent;
@@ -31,7 +32,7 @@ class ExpressRouteCircuitPeeringsImpl
      * @param parent the Express Route Circuit associated with ExpressRouteCircuitPeering
      */
     ExpressRouteCircuitPeeringsImpl(ExpressRouteCircuitImpl parent) {
-        super(parent.manager().inner().expressRouteCircuitPeerings(), parent.manager());
+        super(parent.manager().inner().getExpressRouteCircuitPeerings(), parent.manager());
         this.parent = parent;
     }
 

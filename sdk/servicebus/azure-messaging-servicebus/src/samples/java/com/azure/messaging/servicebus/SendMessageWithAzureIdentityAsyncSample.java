@@ -47,7 +47,7 @@ public class SendMessageWithAzureIdentityAsyncSample {
             .queueName("<<queue-name>>")
             .buildAsyncClient();
 
-        sender.send(guestCheckInEvent)
+        sender.sendMessage(guestCheckInEvent)
             .subscribe(
                 unused -> System.out.println("Sent."),
                 error -> System.err.println("Error occurred while publishing message: " + error),

@@ -7,8 +7,8 @@ import com.azure.resourcemanager.Azure;
 import com.azure.resourcemanager.compute.models.KnownLinuxVirtualMachineImage;
 import com.azure.resourcemanager.compute.models.VirtualMachine;
 import com.azure.resourcemanager.compute.models.VirtualMachineSizeTypes;
-import com.azure.resourcemanager.network.NicIpConfiguration;
-import com.azure.resourcemanager.network.PublicIpAddress;
+import com.azure.resourcemanager.network.models.NicIpConfiguration;
+import com.azure.resourcemanager.network.models.PublicIpAddress;
 import com.azure.resourcemanager.resources.fluentcore.arm.Region;
 import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 import com.github.dockerjava.api.DockerClient;
@@ -192,8 +192,7 @@ public class DockerUtils {
         final String dockerVMName = azure.sdkContext().randomResourceName("dockervm", 15);
         final String publicIPDnsLabel = azure.sdkContext().randomResourceName("pip", 10);
         final String vmUserName = "dockerUser";
-        // [SuppressMessage("Microsoft.Security", "CS002:SecretInNextLine", Justification="Serves as an example, not for deployment. Please change when using this in your code.")]
-        final String vmPassword = "12NewPA!!w0rd!";
+        final String vmPassword = Utils.password();
 
         // Could not find a Docker environment; presume that there is no local Docker engine running and
         //    attempt to configure a Docker engine running inside a new    Azure virtual machine

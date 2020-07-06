@@ -13,12 +13,12 @@ import java.io.InputStream;
 
 /** The base for storage manager tests. */
 public abstract class GraphRbacManagementTest extends TestBase {
-    protected GraphRbacManager graphRbacManager;
+    protected AuthorizationManager authorizationManager;
     protected ResourceManager resourceManager;
 
     @Override
     protected void initializeClients(HttpPipeline httpPipeline, AzureProfile profile) {
-        graphRbacManager = GraphRbacManager.authenticate(httpPipeline, profile, sdkContext);
+        authorizationManager = AuthorizationManager.authenticate(httpPipeline, profile, sdkContext);
         resourceManager =
             ResourceManager.authenticate(httpPipeline, profile).withSdkContext(sdkContext).withDefaultSubscription();
     }

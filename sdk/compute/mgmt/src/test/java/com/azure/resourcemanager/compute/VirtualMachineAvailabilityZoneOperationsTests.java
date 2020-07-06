@@ -11,16 +11,16 @@ import com.azure.resourcemanager.compute.models.ProximityPlacementGroupType;
 import com.azure.resourcemanager.compute.models.VirtualMachine;
 import com.azure.resourcemanager.compute.models.VirtualMachineDataDisk;
 import com.azure.resourcemanager.compute.models.VirtualMachineSizeTypes;
-import com.azure.resourcemanager.network.LoadBalancer;
-import com.azure.resourcemanager.network.LoadBalancerFrontend;
-import com.azure.resourcemanager.network.LoadBalancerPublicFrontend;
-import com.azure.resourcemanager.network.LoadBalancerSkuType;
-import com.azure.resourcemanager.network.LoadBalancingRule;
-import com.azure.resourcemanager.network.Network;
-import com.azure.resourcemanager.network.PublicIpAddress;
-import com.azure.resourcemanager.network.PublicIPSkuType;
-import com.azure.resourcemanager.network.Subnet;
-import com.azure.resourcemanager.network.TransportProtocol;
+import com.azure.resourcemanager.network.models.LoadBalancer;
+import com.azure.resourcemanager.network.models.LoadBalancerFrontend;
+import com.azure.resourcemanager.network.models.LoadBalancerPublicFrontend;
+import com.azure.resourcemanager.network.models.LoadBalancerSkuType;
+import com.azure.resourcemanager.network.models.LoadBalancingRule;
+import com.azure.resourcemanager.network.models.Network;
+import com.azure.resourcemanager.network.models.PublicIpAddress;
+import com.azure.resourcemanager.network.models.PublicIPSkuType;
+import com.azure.resourcemanager.network.models.Subnet;
+import com.azure.resourcemanager.network.models.TransportProtocol;
 import com.azure.resourcemanager.resources.models.ResourceGroup;
 import com.azure.resourcemanager.resources.fluentcore.arm.AvailabilityZoneId;
 import com.azure.resourcemanager.resources.fluentcore.arm.Region;
@@ -68,7 +68,7 @@ public class VirtualMachineAvailabilityZoneOperationsTests extends ComputeManage
                 .withNewProximityPlacementGroup(proxyGroupName, ProximityPlacementGroupType.STANDARD)
                 .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
                 .withRootUsername("Foo12")
-                .withRootPassword("abc!@#F0orL")
+                .withRootPassword(password())
                 // Optionals
                 .withAvailabilityZone(AvailabilityZoneId.ZONE_1)
                 .withSize(VirtualMachineSizeTypes.STANDARD_D3_V2)
@@ -165,7 +165,7 @@ public class VirtualMachineAvailabilityZoneOperationsTests extends ComputeManage
                 .withExistingPrimaryPublicIPAddress(publicIPAddress)
                 .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
                 .withRootUsername("Foo12")
-                .withRootPassword("abc!@#F0orL")
+                .withRootPassword(password())
                 // Optionals
                 .withAvailabilityZone(AvailabilityZoneId.ZONE_1)
                 .withExistingDataDisk(dataDisk)
@@ -244,7 +244,7 @@ public class VirtualMachineAvailabilityZoneOperationsTests extends ComputeManage
                 .withExistingPrimaryPublicIPAddress(publicIPAddress)
                 .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
                 .withRootUsername("Foo12")
-                .withRootPassword("abc!@#F0orL")
+                .withRootPassword(password())
                 // Optionals
                 .withAvailabilityZone(AvailabilityZoneId.ZONE_1)
                 .withSize(VirtualMachineSizeTypes.STANDARD_D3_V2)
@@ -301,7 +301,7 @@ public class VirtualMachineAvailabilityZoneOperationsTests extends ComputeManage
                 .withoutPrimaryPublicIPAddress()
                 .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
                 .withRootUsername("Foo12")
-                .withRootPassword("abc!@#F0orL")
+                .withRootPassword(password())
                 // Optionals
                 .withSize(VirtualMachineSizeTypes.STANDARD_D3_V2);
 
@@ -319,7 +319,7 @@ public class VirtualMachineAvailabilityZoneOperationsTests extends ComputeManage
                 .withoutPrimaryPublicIPAddress()
                 .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
                 .withRootUsername("Foo12")
-                .withRootPassword("abc!@#F0orL")
+                .withRootPassword(password())
                 // Optionals
                 .withSize(VirtualMachineSizeTypes.STANDARD_D3_V2);
 
@@ -454,7 +454,7 @@ public class VirtualMachineAvailabilityZoneOperationsTests extends ComputeManage
                 .withoutPrimaryPublicIPAddress()
                 .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
                 .withRootUsername("Foo12")
-                .withRootPassword("abc!@#F0orL")
+                .withRootPassword(password())
                 .withAvailabilityZone(AvailabilityZoneId.ZONE_1)
                 // Optionals
                 .withSize(VirtualMachineSizeTypes.STANDARD_D3_V2);
@@ -473,7 +473,7 @@ public class VirtualMachineAvailabilityZoneOperationsTests extends ComputeManage
                 .withoutPrimaryPublicIPAddress()
                 .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
                 .withRootUsername("Foo12")
-                .withRootPassword("abc!@#F0orL")
+                .withRootPassword(password())
                 .withAvailabilityZone(AvailabilityZoneId.ZONE_1)
                 // Optionals
                 .withSize(VirtualMachineSizeTypes.STANDARD_D3_V2);

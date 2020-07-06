@@ -7,13 +7,13 @@ import com.azure.resourcemanager.compute.models.KnownLinuxVirtualMachineImage;
 import com.azure.resourcemanager.compute.models.VirtualMachine;
 import com.azure.resourcemanager.compute.models.VirtualMachineSizeTypes;
 import com.azure.resourcemanager.compute.models.VirtualMachines;
-import com.azure.resourcemanager.network.Network;
-import com.azure.resourcemanager.network.NetworkInterface;
-import com.azure.resourcemanager.network.NetworkInterfaces;
-import com.azure.resourcemanager.network.NetworkSecurityGroup;
-import com.azure.resourcemanager.network.NetworkWatcher;
-import com.azure.resourcemanager.network.NetworkWatchers;
-import com.azure.resourcemanager.network.Networks;
+import com.azure.resourcemanager.network.models.Network;
+import com.azure.resourcemanager.network.models.NetworkInterface;
+import com.azure.resourcemanager.network.models.NetworkInterfaces;
+import com.azure.resourcemanager.network.models.NetworkSecurityGroup;
+import com.azure.resourcemanager.network.models.NetworkWatcher;
+import com.azure.resourcemanager.network.models.NetworkWatchers;
+import com.azure.resourcemanager.network.models.Networks;
 import com.azure.resourcemanager.resources.fluentcore.arm.Region;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import com.azure.resourcemanager.resources.fluentcore.model.CreatedResources;
@@ -117,7 +117,7 @@ public class TestNetworkWatcher extends TestTemplate<NetworkWatcher, NetworkWatc
                 .withRegion(REGION)
                 .withExistingResourceGroup(groupName)
                 .withExistingPrimaryNetworkInterface(nic)
-                .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_14_04_LTS)
+                .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_18_04_LTS)
                 .withRootUsername(userName)
                 .withRootPassword("Abcdef.123456")
                 .withSize(VirtualMachineSizeTypes.STANDARD_A1)
@@ -139,7 +139,7 @@ public class TestNetworkWatcher extends TestTemplate<NetworkWatcher, NetworkWatc
                 .withSubnet(network.subnets().values().iterator().next().name())
                 .withPrimaryPrivateIPAddressDynamic()
                 .withoutPrimaryPublicIPAddress()
-                .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_14_04_LTS)
+                .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_18_04_LTS)
                 .withRootUsername(userName)
                 .withRootPassword("Abcdef.123456")
                 .withSize(VirtualMachineSizeTypes.STANDARD_A1);

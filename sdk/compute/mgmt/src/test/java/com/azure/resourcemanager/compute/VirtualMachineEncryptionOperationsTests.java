@@ -45,7 +45,7 @@ public class VirtualMachineEncryptionOperationsTests extends ComputeManagementTe
         final String vmName1 = "myvm1";
         final String publicIpDnsLabel = generateRandomResourceName("pip", 20);
         final String uname = "juser";
-        final String password = "123tEst!@|ac";
+        final String password = password();
         VirtualMachine virtualMachine =
             computeManager
                 .virtualMachines()

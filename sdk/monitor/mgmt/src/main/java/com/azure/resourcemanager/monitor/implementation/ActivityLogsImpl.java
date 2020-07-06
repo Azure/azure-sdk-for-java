@@ -5,11 +5,12 @@ package com.azure.resourcemanager.monitor.implementation;
 
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.resourcemanager.monitor.ActivityLogs;
-import com.azure.resourcemanager.monitor.EventData;
-import com.azure.resourcemanager.monitor.EventDataPropertyName;
-import com.azure.resourcemanager.monitor.LocalizableString;
-import com.azure.resourcemanager.monitor.models.ActivityLogsInner;
+import com.azure.resourcemanager.monitor.MonitorManager;
+import com.azure.resourcemanager.monitor.models.ActivityLogs;
+import com.azure.resourcemanager.monitor.models.EventData;
+import com.azure.resourcemanager.monitor.models.EventDataPropertyName;
+import com.azure.resourcemanager.monitor.models.LocalizableString;
+import com.azure.resourcemanager.monitor.fluent.ActivityLogsClient;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
@@ -18,7 +19,7 @@ import java.util.TreeSet;
 import java.util.stream.Collectors;
 
 /** Implementation for {@link ActivityLogs}. */
-class ActivityLogsImpl implements ActivityLogs, ActivityLogs.ActivityLogsQueryDefinition {
+public class ActivityLogsImpl implements ActivityLogs, ActivityLogs.ActivityLogsQueryDefinition {
 
     private final MonitorManager myManager;
     private OffsetDateTime queryStartTime = null;
@@ -27,7 +28,7 @@ class ActivityLogsImpl implements ActivityLogs, ActivityLogs.ActivityLogsQueryDe
     private String filterString;
     private boolean filterForTenant;
 
-    ActivityLogsImpl(final MonitorManager monitorManager) {
+    public ActivityLogsImpl(final MonitorManager monitorManager) {
         this.myManager = monitorManager;
         this.responsePropertySelector = new TreeSet<>();
         this.filterString = "";
@@ -40,18 +41,18 @@ class ActivityLogsImpl implements ActivityLogs, ActivityLogs.ActivityLogsQueryDe
     }
 
     @Override
-    public ActivityLogsInner inner() {
-        return this.myManager.inner().activityLogs();
+    public ActivityLogsClient inner() {
+        return this.myManager.inner().getActivityLogs();
     }
 
     @Override
     public PagedIterable<LocalizableString> listEventCategories() {
-        return this.manager().inner().eventCategories().list().mapPage(LocalizableStringImpl::new);
+        return this.manager().inner().getEventCategories().list().mapPage(LocalizableStringImpl::new);
     }
 
     @Override
     public PagedFlux<LocalizableString> listEventCategoriesAsync() {
-        return this.manager().inner().eventCategories().listAsync().mapPage(LocalizableStringImpl::new);
+        return this.manager().inner().getEventCategories().listAsync().mapPage(LocalizableStringImpl::new);
     }
 
     @Override
@@ -155,7 +156,7 @@ class ActivityLogsImpl implements ActivityLogs, ActivityLogs.ActivityLogsQueryDe
         return this
             .manager()
             .inner()
-            .tenantActivityLogs()
+            .getTenantActivityLogs()
             .list(filter, createPropertyFilter())
             .mapPage(EventDataImpl::new);
     }
@@ -168,7 +169,7 @@ class ActivityLogsImpl implements ActivityLogs, ActivityLogs.ActivityLogsQueryDe
         return this
             .manager()
             .inner()
-            .tenantActivityLogs()
+            .getTenantActivityLogs()
             .listAsync(filter, createPropertyFilter())
             .mapPage(EventDataImpl::new);
     }

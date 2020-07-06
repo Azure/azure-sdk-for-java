@@ -11,9 +11,9 @@ import com.azure.resourcemanager.Azure;
 import com.azure.resourcemanager.compute.models.KnownLinuxVirtualMachineImage;
 import com.azure.resourcemanager.compute.models.VirtualMachine;
 import com.azure.resourcemanager.compute.models.VirtualMachineSizeTypes;
-import com.azure.resourcemanager.network.Network;
-import com.azure.resourcemanager.network.NetworkSecurityGroup;
-import com.azure.resourcemanager.network.SecurityRuleProtocol;
+import com.azure.resourcemanager.network.models.Network;
+import com.azure.resourcemanager.network.models.NetworkSecurityGroup;
+import com.azure.resourcemanager.network.models.SecurityRuleProtocol;
 import com.azure.resourcemanager.resources.models.ResourceGroup;
 import com.azure.resourcemanager.resources.fluentcore.arm.Region;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
@@ -50,8 +50,7 @@ public final class ManageVirtualMachinesInParallelWithNetwork {
         final String networkName = azure.sdkContext().randomResourceName("vnetCOMV", 24);
         final String storageAccountName = azure.sdkContext().randomResourceName("stgCOMV", 20);
         final String userName = "tirekicker";
-        // [SuppressMessage("Microsoft.Security", "CS002:SecretInNextLine", Justification="Serves as an example, not for deployment. Please change when using this in your code.")]
-        final String password = "12NewPA$$w0rd!";
+        final String password = Utils.password();
         final Region region = Region.US_SOUTH_CENTRAL;
         try {
             // Create a resource group [Where all resources gets created]
