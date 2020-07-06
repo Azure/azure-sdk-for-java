@@ -22,7 +22,7 @@ Typically, you won't need to install or depend on Azure Core, instead it will be
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-core</artifactId>
-  <version>1.6.0</version>
+  <version>1.7.0-beta.1</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
