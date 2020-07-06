@@ -364,8 +364,10 @@ public class EventHubClientBuilder {
     }
 
     /**
-     * Set registry serializer
+     * Set ObjectSerializer implementation to be used for creating ObjectBatch.
+     *
      * @param serializer ObjectSerializer implementation
+     *
      * @return updated builder instance
      */
     public EventHubClientBuilder serializer(ObjectSerializer serializer) {
