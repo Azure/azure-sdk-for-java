@@ -78,7 +78,7 @@ public class AdvancedDiffLabeledUnlabeledData {
             }
             System.out.printf("Field %s has value %s based on %s within bounding box %s with a confidence score "
                     + "of %.2f.%n",
-                label, formField.getFieldValue(), formField.getValueData().getText(), boundingBoxStr,
+                label, formField.getValue(), formField.getValueData().getText(), boundingBoxStr,
                 formField.getConfidence());
 
             // Find the value of a specific labeled field.
@@ -120,7 +120,7 @@ public class AdvancedDiffLabeledUnlabeledData {
 
             System.out.printf("Field %s has value %s based on %s within bounding box %s with a confidence score "
                     + "of %.2f.%n",
-                label, formField.getFieldValue(), formField.getValueData().getText(), boundingBoxStr,
+                label, formField.getValue(), formField.getValueData().getText(), boundingBoxStr,
                 formField.getConfidence());
 
             // Find the value of a specific unlabeled field. The specific key "Vendor Name:" provided in the example

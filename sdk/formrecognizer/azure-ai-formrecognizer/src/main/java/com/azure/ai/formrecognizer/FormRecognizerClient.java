@@ -11,7 +11,6 @@ import com.azure.ai.formrecognizer.models.FormRecognizerException;
 import com.azure.ai.formrecognizer.models.OperationResult;
 import com.azure.ai.formrecognizer.models.RecognizeOptions;
 import com.azure.ai.formrecognizer.models.RecognizedForm;
-import com.azure.ai.formrecognizer.models.RecognizedReceipt;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
@@ -257,13 +256,13 @@ public final class FormRecognizerClient {
      * @param receiptUrl The URL of the receipt to analyze.
      *
      * @return A {@link SyncPoller} to poll the progress of the recognize receipt operation until it has completed,
-     * has failed, or has been cancelled. The completed operation returns a List of {@link RecognizedReceipt}.
+     * has failed, or has been cancelled. The completed operation returns a List of {@link RecognizedForm}.
      * @throws FormRecognizerException If recognize operation fails and the {@link AnalyzeOperationResult} returned with
      * an {@link OperationStatus#FAILED}.
      * @throws NullPointerException If {@code receiptUrl} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public SyncPoller<OperationResult, List<RecognizedReceipt>> beginRecognizeReceiptsFromUrl(String receiptUrl) {
+    public SyncPoller<OperationResult, List<RecognizedForm>> beginRecognizeReceiptsFromUrl(String receiptUrl) {
         return beginRecognizeReceiptsFromUrl(receiptUrl, null);
     }
 
@@ -281,13 +280,13 @@ public final class FormRecognizerClient {
      * analyzing a receipt. Include text lines and element references in the result.
      *
      * @return A {@link SyncPoller} to poll the progress of the recognize receipt operation until it has completed,
-     * has failed, or has been cancelled. The completed operation returns a List of {@link RecognizedReceipt}.
+     * has failed, or has been cancelled. The completed operation returns a List of {@link RecognizedForm}.
      * @throws FormRecognizerException If recognize operation fails and the {@link AnalyzeOperationResult} returned with
      * an {@link OperationStatus#FAILED}.
      * @throws NullPointerException If {@code receiptUrl} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public SyncPoller<OperationResult, List<RecognizedReceipt>>
+    public SyncPoller<OperationResult, List<RecognizedForm>>
         beginRecognizeReceiptsFromUrl(String receiptUrl, RecognizeOptions recognizeOptions) {
         return client.beginRecognizeReceiptsFromUrl(receiptUrl, recognizeOptions).getSyncPoller();
     }
@@ -306,13 +305,13 @@ public final class FormRecognizerClient {
      * @param length The exact length of the data.
      *
      * @return A {@link SyncPoller} that polls the recognize receipt operation until it has completed,
-     * has failed, or has been cancelled. The completed operation returns a List of {@link RecognizedReceipt}.
+     * has failed, or has been cancelled. The completed operation returns a List of {@link RecognizedForm}.
      * @throws FormRecognizerException If recognize operation fails and the {@link AnalyzeOperationResult} returned with
      * an {@link OperationStatus#FAILED}.
      * @throws NullPointerException If {@code receipt} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public SyncPoller<OperationResult, List<RecognizedReceipt>>
+    public SyncPoller<OperationResult, List<RecognizedForm>>
         beginRecognizeReceipts(InputStream receipt, long length) {
         return beginRecognizeReceipts(receipt, length, null);
     }
@@ -333,13 +332,13 @@ public final class FormRecognizerClient {
      * analyzing a receipt.
      *
      * @return A {@link SyncPoller} that polls the recognize receipt operation until it has completed, has failed,
-     * or has been cancelled. The completed operation returns a List of {@link RecognizedReceipt}.
+     * or has been cancelled. The completed operation returns a List of {@link RecognizedForm}.
      * @throws FormRecognizerException If recognize operation fails and the {@link AnalyzeOperationResult} returned with
      * an {@link OperationStatus#FAILED}.
      * @throws NullPointerException If {@code recognizeOptions} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public SyncPoller<OperationResult, List<RecognizedReceipt>>
+    public SyncPoller<OperationResult, List<RecognizedForm>>
         beginRecognizeReceipts(InputStream receipt, long length, RecognizeOptions recognizeOptions) {
         Flux<ByteBuffer> buffer = Utility.toFluxByteBuffer(receipt);
         return client.beginRecognizeReceipts(buffer, length, recognizeOptions).getSyncPoller();
