@@ -56,10 +56,6 @@ import static com.azure.messaging.servicebus.implementation.Messages.INVALID_OPE
  * other terminal scenarios. See {@link #receiveMessages()} for more information.</p>
  * {@codesnippet com.azure.messaging.servicebus.servicebusasyncreceiverclient.receive#all}
  *
- * <p><strong>Receive a maximum number of messages or until max a Duration</strong></p>
- * <p>This receives at most 15 messages, or until a duration of 30 seconds elapses. Whichever occurs first.</p>
- * {@codesnippet com.azure.messaging.servicebus.servicebusasyncreceiverclient.receive#int-duration}
- *
  * <p><strong>Receive messages in {@link ReceiveMode#RECEIVE_AND_DELETE} mode from Service Bus resource</strong></p>
  * {@codesnippet com.azure.messaging.servicebus.servicebusasyncreceiverclient.receiveWithReceiveAndDeleteMode}
  *
@@ -884,30 +880,6 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
         } else {
             return getOrCreateConsumer().receive().map(ServiceBusReceivedMessageContext::new);
         }
-    }
-
-    /**
-     * Receives a bounded stream of {@link ServiceBusReceivedMessage messages} from the Service Bus entity. This stream
-     * receives either {@code maxNumberOfMessages} are received or the {@code maxWaitTime} has elapsed.
-     *
-     * @param maxNumberOfMessages Maximum number of messages to receive.
-     * @param maxWaitTime Maximum time to wait.
-     *
-     * @return A bounded {@link Flux} of messages.
-     * @throws NullPointerException if {@code maxWaitTime} is null.
-     * @throws IllegalArgumentException if {@code maxNumberOfMessages} is less than 1. {@code maxWaitTime} is zero
-     *     or a negative duration.
-     */
-    public Flux<ServiceBusReceivedMessageContext> receiveMessages(int maxNumberOfMessages, Duration maxWaitTime) {
-        if (maxNumberOfMessages < 1) {
-            return fluxError(logger, new IllegalArgumentException("'maxNumberOfMessages' cannot be less than 1."));
-        } else if (maxWaitTime == null) {
-            return fluxError(logger, new NullPointerException("'maxWaitTime' cannot be null."));
-        } else if (maxWaitTime.isNegative() || maxWaitTime.isZero()) {
-            return fluxError(logger, new NullPointerException("'maxWaitTime' cannot be negative or zero."));
-        }
-
-        return receiveMessages().take(maxNumberOfMessages).take(maxWaitTime);
     }
 
     /**
