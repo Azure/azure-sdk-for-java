@@ -123,12 +123,6 @@ final class PartitionBasedLoadBalancer {
         final Mono<List<String>> partitionsMono = eventHubAsyncClient
             .getPartitionIds()
             .timeout(Duration.ofMinutes(1))
-            .onErrorResume(TimeoutException.class, error -> {
-                // In the subsequent step where it tries to balance the load, it'll propagate an error to the user.
-                // So it is okay to return an empty Flux.
-                logger.warning("Unable to get partitionIds from eventHubAsyncClient.");
-                return Flux.empty();
-            })
             .collectList();
 
         Mono.zip(partitionOwnershipMono, partitionsMono)
