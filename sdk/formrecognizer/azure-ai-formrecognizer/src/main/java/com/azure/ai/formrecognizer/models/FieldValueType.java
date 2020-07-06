@@ -3,70 +3,175 @@
 
 package com.azure.ai.formrecognizer.models;
 
-import com.azure.core.util.ExpandableStringEnum;
 import com.azure.core.util.logging.ClientLogger;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 
 /**
  * Define enum values for FieldValue types.
  */
-public final class FieldValueType extends ExpandableStringEnum<com.azure.ai.formrecognizer.models.FieldValueType> {
-    private final ClientLogger logger = new ClientLogger(FieldValueType.class);
-
+@SuppressWarnings("unchecked")
+public enum FieldValueType {
     /**
      * Static value string for FieldValueType.
      */
-    public static final FieldValueType STRING = fromString("string");
+    STRING {
+        @Override
+        public <T> T cast(FormField<?> formField) {
+            if (getDefaultOrNull(formField)) {
+                return null;
+            }
+            return (T) String.valueOf(formField.getValue());
+        }
+    },
 
     /**
      * Static value date for FieldValueType.
      */
-    public static final FieldValueType DATE = fromString("date");
+    DATE {
+        @Override
+        public <T> T cast(FormField<?> formField) {
+            if (getDefaultOrNull(formField)) {
+                return null;
+            }
+            if (this == formField.getValueType()) {
+                return (T) formField.getValue();
+            } else if (STRING == formField.getValueType()) {
+                return (T) LocalDate.parse(formField.getValue().toString(), DateTimeFormatter.ofPattern("yyyy/MM/dd"));
+            } else {
+                throw LOGGER.logExceptionAsError(new UnsupportedOperationException(String.format("Cannot cast from "
+                    + "field value of type %s to type %s", formField.getValueType(), DATE)));
+            }
+        }
+    },
 
     /**
      * Static value time for FieldValueType.
      */
-    public static final FieldValueType TIME = fromString("time");
+    TIME {
+        @Override
+        public <T> T cast(FormField<?> formField) {
+            if (getDefaultOrNull(formField)) {
+                return null;
+            }
+            if (this == formField.getValueType()) {
+                return (T) formField.getValue();
+            } else if (STRING == formField.getValueType()) {
+                return (T) LocalTime.parse(formField.getValue().toString(), DateTimeFormatter.ofPattern("HH:mm:ss"));
+            } else {
+                throw LOGGER.logExceptionAsError(new UnsupportedOperationException(String.format("Cannot cast from "
+                    + "field value of type %s to type %s", formField.getValueType(), TIME)));
+            }
+        }
+    },
 
     /**
      * Static value phone number for FieldValueType.
      */
-    public static final FieldValueType PHONE_NUMBER = fromString("phoneNumber");
+    PHONE_NUMBER {
+        @Override
+        public <T> T cast(FormField<?> formField) {
+            if (getDefaultOrNull(formField)) {
+                return null;
+            }
+            if (this == formField.getValueType()) {
+                return (T) formField.getValue();
+            } else if (STRING == formField.getValueType()) {
+                return (T) formField.getValue().toString();
+            } else {
+                throw LOGGER.logExceptionAsError(new UnsupportedOperationException(String.format("Cannot cast from "
+                    + "field value of type %s to type %s", formField.getValueType(), PHONE_NUMBER)));
+            }
+        }
+    },
 
     /**
-     * Static value float for FieldValueType.
+     * Static value double for FieldValueType.
      */
-    public static final FieldValueType FLOAT = fromString("number");
+    DOUBLE {
+        @Override
+        public <T> T cast(FormField<?> formField) {
+            if (getDefaultOrNull(formField)) {
+                return null;
+            }
+            if (this == formField.getValueType()) {
+                return (T) formField.getValue();
+            } else if (STRING == formField.getValueType()) {
+                return (T) Double.valueOf(formField.getValue().toString());
+            } else {
+                throw LOGGER.logExceptionAsError(new UnsupportedOperationException(String.format("Cannot cast from "
+                    + "field value of type %s to type %s", formField.getValueType(), DOUBLE)));
+            }
+        }
+    },
 
     /**
-     * Static value integer for FieldValueType.
+     * Static value long for FieldValueType.
      */
-    public static final FieldValueType INTEGER = fromString("integer");
+    LONG {
+        @Override
+        public <T> T cast(FormField<?> formField) {
+            if (getDefaultOrNull(formField)) {
+                return null;
+            }
+            if (this == formField.getValueType()) {
+                return (T) formField.getValue();
+            } else if (STRING == formField.getValueType()) {
+                return (T) Long.valueOf(formField.getValue().toString());
+            } else {
+                throw LOGGER.logExceptionAsError(new UnsupportedOperationException(String.format("Cannot cast from "
+                    + "field value of type %s to type %s", formField.getValueType(), LONG)));
+            }
+        }
+    },
 
     /**
      * Static value list for FieldValueType.
      */
-    public static final FieldValueType LIST = fromString("array");
+    LIST {
+        @Override
+        public <T> T cast(FormField<?> formField) {
+            return getCollectionTypeCast(formField);
+        }
+    },
 
     /**
      * Static value map for FieldValueType.
      */
-    public static final FieldValueType MAP = fromString("object");
+    MAP {
+        @Override
+        public <T> T cast(FormField<?> formField) {
+            return getCollectionTypeCast(formField);
+        }
+    };
 
-    /**
-     * Parses a serialized value to a {@link FieldValueType} instance.
-     *
-     * @param value the serialized value to parse.
-     *
-     * @return the parsed FieldValueType object, or null if unable to parse.
-     */
-    public static FieldValueType fromString(String value) {
-        return fromString(value, FieldValueType.class);
+    static boolean getDefaultOrNull(FormField<?> formField) {
+        Objects.requireNonNull(formField, "'formField' cannot be null");
+        if (formField.getValue() == null) {
+            return true;
+        }
+        return false;
     }
 
+    <T> T getCollectionTypeCast(FormField<?> formField) {
+        if (getDefaultOrNull(formField)) {
+            return null;
+        }
+        if (this == formField.getValueType()) {
+            return (T) formField.getValue();
+        } else {
+            throw LOGGER.logExceptionAsError(new UnsupportedOperationException(String.format("Cannot cast from "
+                + "field value of type %s to type %s", formField.getValueType(), this)));
+        }
+    }
+
+    private static final ClientLogger LOGGER = new ClientLogger(FieldValueType.class);
+
     /**
-     * Converts the form field value to a specific expandable string enum type.
+     * Converts the form field value to a specific enum type.
      *
      * @param formField The recognized field value that needs to be converted.
      * @param <T> the class of the field.
@@ -75,73 +180,5 @@ public final class FieldValueType extends ExpandableStringEnum<com.azure.ai.form
      * @throws UnsupportedOperationException if the {@code formField} type does not match the casting value type.
      * @throws NullPointerException if {@code formField} is {@code null}
      */
-    @SuppressWarnings({"unchecked"})
-    public <T> T cast(FormField<?> formField) {
-        Objects.requireNonNull(formField, "'formField' cannot be null");
-        if (DATE.equals(this)) {
-            if (DATE == formField.getValueType()) {
-                return (T) formField.getValue();
-            } else {
-                logger.logExceptionAsError(new UnsupportedOperationException(String.format("Unsupported cast operation "
-                    + "or field value of type: %s", formField.getValueType())));
-            }
-        }
-        if (TIME.equals(this)) {
-            if (TIME == formField.getValueType()) {
-                return (T) formField.getValue();
-            } else {
-                logger.logExceptionAsError(new UnsupportedOperationException(String.format("Unsupported cast operation "
-                    + "or field value of type: %s", formField.getValueType())));
-            }
-        }
-        if (PHONE_NUMBER.equals(this)) {
-            if (PHONE_NUMBER == formField.getValueType()) {
-                return (T) formField.getValue();
-            } else {
-                throw logger.logExceptionAsError(new UnsupportedOperationException(String.format("Unsupported cast "
-                    + "operation for field value of type: %s", formField.getValueType())));
-            }
-        }
-        if (LIST.equals(this)) {
-            if (LIST == formField.getValueType()) {
-                return (T) formField.getValue();
-            } else {
-                throw logger.logExceptionAsError(new UnsupportedOperationException(String.format("Unsupported cast "
-                    + "operation or field value of type: %s", formField.getValueType())));
-            }
-        }
-        if (MAP.equals(this)) {
-            if (MAP == formField.getValueType()) {
-                return (T) formField.getValue();
-            } else {
-                throw logger.logExceptionAsError(new UnsupportedOperationException(String.format("Unsupported cast "
-                    + "operation or field value of type: %s", formField.getValueType())));
-            }
-        }
-        if (FLOAT.equals(this)) {
-            if (FLOAT == formField.getValueType()) {
-                return (T) formField.getValue();
-            } else {
-                throw logger.logExceptionAsError(new UnsupportedOperationException(String.format("Unsupported cast "
-                    + "operation or field value of type: %s", formField.getValueType())));
-            }
-        }
-        if (INTEGER.equals(this)) {
-            if (INTEGER == formField.getValueType()) {
-                return (T) formField.getValue();
-            } else {
-                throw logger.logExceptionAsError(new UnsupportedOperationException(String.format("Unsupported cast "
-                    + "operation or field value of type: %s", formField.getValueType())));
-            }
-        }
-        if (STRING.equals(this)) {
-            if (STRING == formField.getValueType()) {
-                return (T) formField.getValue();
-            } else {
-                throw logger.logExceptionAsError(new UnsupportedOperationException(String.format("Unsupported cast "
-                    + "operation or field value of type: %s", formField.getValueType())));
-            }
-        }
-        return (T) formField.getValue();
-    }
+    public abstract <T> T cast(FormField<?> formField);
 }

@@ -37,10 +37,10 @@ public class StronglyTypedRecognizedForm {
         List<RecognizedForm> receiptPageResults = recognizeReceiptPoller.getFinalResult();
 
         for (int i = 0; i < receiptPageResults.size(); i++) {
-            final RecognizedForm recognizedReceipt = receiptPageResults.get(i);
+            final RecognizedForm recognizedForm = receiptPageResults.get(i);
             System.out.printf("----------- Recognized Receipt page %d -----------%n", i);
             // Use Receipt model transform the recognized form to strongly typed US receipt fields
-            Receipt usReceipt = new Receipt(recognizedReceipt);
+            Receipt usReceipt = new Receipt(recognizedForm);
             System.out.printf("Merchant Name: %s, confidence: %.2f%n", usReceipt.getMerchantName().getValue(),
                 usReceipt.getMerchantName().getConfidence());
             System.out.printf("Merchant Address: %s, confidence: %.2f%n",
@@ -61,15 +61,15 @@ public class StronglyTypedRecognizedForm {
                         receiptItem.getName().getConfidence());
                 }
                 if (receiptItem.getQuantity() != null) {
-                    System.out.printf("Quantity: %s, confidence: %.2f%n", receiptItem.getQuantity().getValue(),
+                    System.out.printf("Quantity: %f, confidence: %.2f%n", receiptItem.getQuantity().getValue(),
                         receiptItem.getQuantity().getConfidence());
                 }
                 if (receiptItem.getPrice() != null) {
-                    System.out.printf("Price: %s, confidence: %.2f%n", receiptItem.getPrice().getValue(),
+                    System.out.printf("Price: %f, confidence: %.2f%n", receiptItem.getPrice().getValue(),
                         receiptItem.getPrice().getConfidence());
                 }
                 if (receiptItem.getTotalPrice() != null) {
-                    System.out.printf("Total Price: %s, confidence: %.2f%n",
+                    System.out.printf("Total Price: %f, confidence: %.2f%n",
                         receiptItem.getTotalPrice().getValue(), receiptItem.getTotalPrice().getConfidence());
                 }
             });

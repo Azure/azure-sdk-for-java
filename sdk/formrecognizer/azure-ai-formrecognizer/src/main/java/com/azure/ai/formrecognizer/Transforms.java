@@ -262,11 +262,11 @@ final class Transforms {
                 break;
             case INTEGER:
                 value = new FormField<>(setDefaultConfidenceValue(fieldValue.getConfidence()), labelText,
-                    key, fieldValue.getValueInteger(), valueText, FieldValueType.INTEGER);
+                    key, fieldValue.getValueInteger(), valueText, FieldValueType.LONG);
                 break;
             case NUMBER:
                 value = new FormField<>(setDefaultConfidenceValue(fieldValue.getConfidence()), labelText,
-                    key, fieldValue.getValueNumber(), valueText, FieldValueType.FLOAT);
+                    key, fieldValue.getValueNumber(), valueText, FieldValueType.DOUBLE);
                 break;
             case ARRAY:
                 value = new FormField<>(setDefaultConfidenceValue(fieldValue.getConfidence()), null, key,

@@ -288,8 +288,8 @@ public class FormRecognizerClientJavaDocCodeSnippets {
                                 Map<String, FormField<?>> formFieldMap = FieldValueType.MAP.cast(receiptItem);
                                 formFieldMap.forEach((key, formField) -> {
                                     if ("Quantity".equals(key)) {
-                                        if (FieldValueType.FLOAT.equals(formField.getValueType())) {
-                                            Float quantity = FieldValueType.FLOAT.cast(formField);
+                                        if (FieldValueType.DOUBLE.equals(formField.getValueType())) {
+                                            Float quantity = FieldValueType.DOUBLE.cast(formField);
                                             System.out.printf("Quantity: %d, confidence: %.2f%n",
                                                 quantity, formField.getConfidence());
                                         }
@@ -415,8 +415,8 @@ public class FormRecognizerClientJavaDocCodeSnippets {
                                 Map<String, FormField<?>> formFieldMap = FieldValueType.MAP.cast(receiptItem);
                                 formFieldMap.forEach((key, formField) -> {
                                     if ("Quantity".equals(key)) {
-                                        if (FieldValueType.FLOAT.equals(formField.getValueType())) {
-                                            Float quantity = FieldValueType.FLOAT.cast(formField);
+                                        if (FieldValueType.DOUBLE.equals(formField.getValueType())) {
+                                            Float quantity = FieldValueType.DOUBLE.cast(formField);
                                             System.out.printf("Quantity: %d, confidence: %.2f%n",
                                                 quantity, formField.getConfidence());
                                         }
@@ -487,8 +487,8 @@ public class FormRecognizerClientJavaDocCodeSnippets {
                                 Map<String, FormField<?>> formFieldMap = FieldValueType.MAP.cast(receiptItem);
                                 formFieldMap.forEach((key, formField) -> {
                                     if ("Quantity".equals(key)) {
-                                        if (FieldValueType.FLOAT.equals(formField.getValueType())) {
-                                            Float quantity = FieldValueType.FLOAT.cast(formField);
+                                        if (FieldValueType.DOUBLE.equals(formField.getValueType())) {
+                                            Float quantity = FieldValueType.DOUBLE.cast(formField);
                                             System.out.printf("Quantity: %d, confidence: %.2f%n",
                                                 quantity, formField.getConfidence());
                                         }

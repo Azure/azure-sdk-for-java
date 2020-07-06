@@ -290,8 +290,8 @@ public class FormRecognizerAsyncClientJavaDocCodeSnippets {
                 recognizePollingOperation.getFinalResult())
             .subscribe(recognizedReceipts -> {
                 for (int i = 0; i < recognizedReceipts.size(); i++) {
-                    RecognizedForm recognizedReceipt = recognizedReceipts.get(i);
-                    Map<String, FormField<?>> recognizedFields = recognizedReceipt.getFields();
+                    RecognizedForm recognizedForm = recognizedReceipts.get(i);
+                    Map<String, FormField<?>> recognizedFields = recognizedForm.getFields();
                     System.out.printf("----------- Recognized Receipt page %d -----------%n", i);
                     FormField<?> merchantNameField = recognizedFields.get("MerchantName");
                     if (merchantNameField != null) {
@@ -331,8 +331,8 @@ public class FormRecognizerAsyncClientJavaDocCodeSnippets {
                                     Map<String, FormField<?>> formFieldMap = FieldValueType.MAP.cast(receiptItem);
                                     formFieldMap.forEach((key, formField) -> {
                                         if ("Quantity".equals(key)) {
-                                            if (FieldValueType.FLOAT.equals(formField.getValueType())) {
-                                                Float quantity = FieldValueType.FLOAT.cast(formField);
+                                            if (FieldValueType.DOUBLE.equals(formField.getValueType())) {
+                                                Float quantity = FieldValueType.DOUBLE.cast(formField);
                                                 System.out.printf("Quantity: %f, confidence: %.2f%n",
                                                     quantity, formField.getConfidence());
                                             }
@@ -434,8 +434,8 @@ public class FormRecognizerAsyncClientJavaDocCodeSnippets {
                 // if training polling operation completed, retrieve the final result.
                 recognizePollingOperation.getFinalResult().subscribe(recognizedReceipts -> {
                     for (int i = 0; i < recognizedReceipts.size(); i++) {
-                        RecognizedForm recognizedReceipt = recognizedReceipts.get(i);
-                        Map<String, FormField<?>> recognizedFields = recognizedReceipt.getFields();
+                        RecognizedForm recognizedForm = recognizedReceipts.get(i);
+                        Map<String, FormField<?>> recognizedFields = recognizedForm.getFields();
                         System.out.printf("----------- Recognized Receipt page %d -----------%n", i);
                         FormField<?> merchantNameField = recognizedFields.get("MerchantName");
                         if (merchantNameField != null) {
@@ -475,8 +475,8 @@ public class FormRecognizerAsyncClientJavaDocCodeSnippets {
                                         Map<String, FormField<?>> formFieldMap = FieldValueType.MAP.cast(receiptItem);
                                         formFieldMap.forEach((key, formField) -> {
                                             if ("Quantity".equals(key)) {
-                                                if (FieldValueType.FLOAT.equals(formField.getValueType())) {
-                                                    Float quantity = FieldValueType.FLOAT.cast(formField);
+                                                if (FieldValueType.DOUBLE.equals(formField.getValueType())) {
+                                                    Float quantity = FieldValueType.DOUBLE.cast(formField);
                                                     System.out.printf("Quantity: %f, confidence: %.2f%n",
                                                         quantity, formField.getConfidence());
                                                 }
@@ -511,8 +511,8 @@ public class FormRecognizerAsyncClientJavaDocCodeSnippets {
                 // if training polling operation completed, retrieve the final result.
                 recognizePollingOperation.getFinalResult().subscribe(recognizedReceipts -> {
                     for (int i = 0; i < recognizedReceipts.size(); i++) {
-                        RecognizedForm recognizedReceipt = recognizedReceipts.get(i);
-                        Map<String, FormField<?>> recognizedFields = recognizedReceipt.getFields();
+                        RecognizedForm recognizedForm = recognizedReceipts.get(i);
+                        Map<String, FormField<?>> recognizedFields = recognizedForm.getFields();
                         System.out.printf("----------- Recognized Receipt page %d -----------%n", i);
                         FormField<?> merchantNameField = recognizedFields.get("MerchantName");
                         if (merchantNameField != null) {
@@ -552,8 +552,8 @@ public class FormRecognizerAsyncClientJavaDocCodeSnippets {
                                         Map<String, FormField<?>> formFieldMap = FieldValueType.MAP.cast(receiptItem);
                                         formFieldMap.forEach((key, formField) -> {
                                             if ("Quantity".equals(key)) {
-                                                if (FieldValueType.FLOAT.equals(formField.getValueType())) {
-                                                    Float quantity = FieldValueType.FLOAT.cast(formField);
+                                                if (FieldValueType.DOUBLE.equals(formField.getValueType())) {
+                                                    Float quantity = FieldValueType.DOUBLE.cast(formField);
                                                     System.out.printf("Quantity: %f, confidence: %.2f%n",
                                                         quantity, formField.getConfidence());
                                                 }

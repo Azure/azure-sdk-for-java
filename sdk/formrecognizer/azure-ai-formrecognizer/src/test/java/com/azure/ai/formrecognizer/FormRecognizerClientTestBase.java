@@ -267,7 +267,7 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
             }
             switch (expectedFieldValue.getType()) {
                 case NUMBER:
-                    assertEquals(expectedFieldValue.getValueNumber(), FieldValueType.FLOAT.cast(actualFormField));
+                    assertEquals(expectedFieldValue.getValueNumber(), FieldValueType.DOUBLE.cast(actualFormField));
                     break;
                 case DATE:
                     assertEquals(expectedFieldValue.getValueDate(), FieldValueType.DATE.cast(actualFormField));
@@ -280,7 +280,7 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
                     assertEquals(expectedFieldValue.getValueString(), FieldValueType.STRING.cast(actualFormField));
                     break;
                 case INTEGER:
-                    assertEquals(expectedFieldValue.getValueInteger(), FieldValueType.INTEGER.cast(actualFormField));
+                    assertEquals(expectedFieldValue.getValueInteger(), FieldValueType.LONG.cast(actualFormField));
                     break;
                 case PHONE_NUMBER:
                     assertEquals(expectedFieldValue.getValuePhoneNumber(), FieldValueType.PHONE_NUMBER.cast(actualFormField));

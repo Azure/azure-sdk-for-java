@@ -42,8 +42,8 @@ public class RecognizeReceiptsFromUrl {
         List<RecognizedForm> receiptPageResults = recognizeReceiptPoller.getFinalResult();
 
         for (int i = 0; i < receiptPageResults.size(); i++) {
-            RecognizedForm recognizedReceipt = receiptPageResults.get(i);
-            Map<String, FormField<?>> recognizedFields = recognizedReceipt.getFields();
+            RecognizedForm recognizedForm = receiptPageResults.get(i);
+            Map<String, FormField<?>> recognizedFields = recognizedForm.getFields();
             System.out.printf("----------- Recognized Receipt page %d -----------%n", i);
             FormField<?> merchantNameField = recognizedFields.get("MerchantName");
             if (merchantNameField != null) {
@@ -98,22 +98,22 @@ public class RecognizeReceiptsFromUrl {
                                     }
                                 }
                                 if ("Quantity".equals(key)) {
-                                    if (FieldValueType.FLOAT.equals(formField.getValueType())) {
-                                        Float quantity = FieldValueType.FLOAT.cast(formField);
+                                    if (FieldValueType.DOUBLE.equals(formField.getValueType())) {
+                                        Float quantity = FieldValueType.DOUBLE.cast(formField);
                                         System.out.printf("Quantity: %f, confidence: %.2f%n",
                                             quantity, formField.getConfidence());
                                     }
                                 }
                                 if ("Price".equals(key)) {
-                                    if (FieldValueType.FLOAT.equals(formField.getValueType())) {
-                                        Float price = FieldValueType.FLOAT.cast(formField);
+                                    if (FieldValueType.DOUBLE.equals(formField.getValueType())) {
+                                        Float price = FieldValueType.DOUBLE.cast(formField);
                                         System.out.printf("Price: %f, confidence: %.2f%n",
                                             price, formField.getConfidence());
                                     }
                                 }
                                 if ("TotalPrice".equals(key)) {
-                                    if (FieldValueType.FLOAT.equals(formField.getValueType())) {
-                                        Float totalPrice = FieldValueType.FLOAT.cast(formField);
+                                    if (FieldValueType.DOUBLE.equals(formField.getValueType())) {
+                                        Float totalPrice = FieldValueType.DOUBLE.cast(formField);
                                         System.out.printf("Total Price: %f, confidence: %.2f%n",
                                             totalPrice, formField.getConfidence());
                                     }
