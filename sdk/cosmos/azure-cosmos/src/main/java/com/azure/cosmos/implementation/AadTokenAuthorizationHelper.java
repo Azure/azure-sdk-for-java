@@ -21,8 +21,8 @@ public class AadTokenAuthorizationHelper {
     public static final String AAD_AUTH_SIGNATURE_SEGMENT = "sig";
     public static final String AAD_AUTH_SCHEMA_TYPE_VALUE = "aad";
     public static final String AAD_AUTH_VERSION_VALUE = "1.0";
-    public static final String AAD_AUTH_TOKEN_FORMAT = "%s=%s&%s=%s&%s=%s";
     public static final String AAD_AUTH_TOKEN_GENERAL_SCOPE = "https://management.azure.com/.default";
+    public static final String AAD_AUTH_TOKEN_COSMOS_GENERAL_SCOPE = "https://cosmos.azure.com/.default";
     private static final String AUTH_PREFIX = "type=aad&ver=1.0&sig=";
     private static final Logger logger = LoggerFactory.getLogger(AadTokenAuthorizationHelper.class);
 
@@ -35,24 +35,24 @@ public class AadTokenAuthorizationHelper {
      */
     public static Mono<RxDocumentServiceRequest> populateAuthorizationHeader(RxDocumentServiceRequest request, SimpleTokenCache simpleTokenCache) {
         if (request == null) {
-            return Mono.error(new IllegalArgumentException("request"));
+            throw new IllegalArgumentException("request");
         }
         if (simpleTokenCache == null) {
-            return Mono.error(new IllegalArgumentException("simpleTokenCache"));
+            throw new IllegalArgumentException("simpleTokenCache");
         }
 
         return simpleTokenCache.getToken()
             .map(accessToken -> {
-                String authorization = String.format(AAD_AUTH_TOKEN_FORMAT,
-                    AAD_AUTH_SCHEMA_TYPE_SEGMENT, AAD_AUTH_SCHEMA_TYPE_VALUE,
-                    AAD_AUTH_VERSION_SEGMENT, AAD_AUTH_VERSION_VALUE,
-                    AAD_AUTH_SIGNATURE_SEGMENT, accessToken.getToken());
+                StringBuilder authorizationBuilder = new StringBuilder()
+                    .append(AAD_AUTH_SCHEMA_TYPE_SEGMENT).append("=").append(AAD_AUTH_SCHEMA_TYPE_VALUE)
+                    .append(AAD_AUTH_VERSION_SEGMENT).append("=").append(AAD_AUTH_VERSION_VALUE)
+                    .append(AAD_AUTH_SIGNATURE_SEGMENT).append("=").append(accessToken.getToken());
                 try {
-                    authorization = URLEncoder.encode(authorization, "UTF-8");
+                    String authorization = URLEncoder.encode(authorizationBuilder.toString(), "UTF-8");
+                    request.getHeaders().put(HttpConstants.HttpHeaders.AUTHORIZATION, authorization);
                 } catch (UnsupportedEncodingException e) {
                     throw new IllegalStateException("Failed to encode authorization token.", e);
                 }
-                request.getHeaders().put(HttpConstants.HttpHeaders.AUTHORIZATION, authorization);
 
                 return request;
             });
