@@ -26,19 +26,13 @@ public final class ImageAnalysisSkillConverter {
         if (obj == null) {
             return null;
         }
-        ImageAnalysisSkill imageAnalysisSkill = new ImageAnalysisSkill();
 
-        if (obj.getOutputs() != null) {
-            List<OutputFieldMappingEntry> outputs =
-                obj.getOutputs().stream().map(OutputFieldMappingEntryConverter::map).collect(Collectors.toList());
-            imageAnalysisSkill.setOutputs(outputs);
-        }
+        List<InputFieldMappingEntry> inputs = obj.getInputs() == null ? null
+            : obj.getInputs().stream().map(InputFieldMappingEntryConverter::map).collect(Collectors.toList());
+        List<OutputFieldMappingEntry> outputs = obj.getOutputs() == null ? null
+            : obj.getOutputs().stream().map(OutputFieldMappingEntryConverter::map).collect(Collectors.toList());
 
-        if (obj.getInputs() != null) {
-            List<InputFieldMappingEntry> inputs =
-                obj.getInputs().stream().map(InputFieldMappingEntryConverter::map).collect(Collectors.toList());
-            imageAnalysisSkill.setInputs(inputs);
-        }
+        ImageAnalysisSkill imageAnalysisSkill = new ImageAnalysisSkill(inputs, outputs);
 
         String name = obj.getName();
         imageAnalysisSkill.setName(name);
@@ -77,20 +71,16 @@ public final class ImageAnalysisSkillConverter {
         if (obj == null) {
             return null;
         }
+
+        List<com.azure.search.documents.indexes.implementation.models.InputFieldMappingEntry> inputs =
+            obj.getInputs() == null ? null
+                : obj.getInputs().stream().map(InputFieldMappingEntryConverter::map).collect(Collectors.toList());
+
+        List<com.azure.search.documents.indexes.implementation.models.OutputFieldMappingEntry> outputs =
+            obj.getOutputs() == null ? null
+                : obj.getOutputs().stream().map(OutputFieldMappingEntryConverter::map).collect(Collectors.toList());
         com.azure.search.documents.indexes.implementation.models.ImageAnalysisSkill imageAnalysisSkill =
-            new com.azure.search.documents.indexes.implementation.models.ImageAnalysisSkill();
-
-        if (obj.getOutputs() != null) {
-            List<com.azure.search.documents.indexes.implementation.models.OutputFieldMappingEntry> outputs =
-                obj.getOutputs().stream().map(OutputFieldMappingEntryConverter::map).collect(Collectors.toList());
-            imageAnalysisSkill.setOutputs(outputs);
-        }
-
-        if (obj.getInputs() != null) {
-            List<com.azure.search.documents.indexes.implementation.models.InputFieldMappingEntry> inputs =
-                obj.getInputs().stream().map(InputFieldMappingEntryConverter::map).collect(Collectors.toList());
-            imageAnalysisSkill.setInputs(inputs);
-        }
+            new com.azure.search.documents.indexes.implementation.models.ImageAnalysisSkill(inputs, outputs);
 
         String name = obj.getName();
         imageAnalysisSkill.setName(name);
@@ -118,6 +108,7 @@ public final class ImageAnalysisSkillConverter {
                 obj.getDetails().stream().map(ImageDetailConverter::map).collect(Collectors.toList());
             imageAnalysisSkill.setDetails(details);
         }
+        imageAnalysisSkill.validate();
         return imageAnalysisSkill;
     }
 

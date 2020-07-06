@@ -11,7 +11,6 @@ import com.azure.core.annotation.Get;
 import com.azure.core.annotation.Headers;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
-import com.azure.core.annotation.Patch;
 import com.azure.core.annotation.PathParam;
 import com.azure.core.annotation.Put;
 import com.azure.core.annotation.QueryParam;
@@ -30,18 +29,15 @@ import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.util.polling.AsyncPollResponse;
 import com.azure.core.util.polling.PollerFlux;
+import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.network.NetworkManagementClient;
 import com.azure.resourcemanager.network.fluent.inner.BastionHostInner;
 import com.azure.resourcemanager.network.fluent.inner.BastionHostListResultInner;
-import com.azure.resourcemanager.network.models.ErrorException;
-import com.azure.resourcemanager.network.models.TagsObject;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsListing;
 import java.nio.ByteBuffer;
-import java.util.Map;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -118,21 +114,6 @@ public final class BastionHostsClient
             Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
-                + "/bastionHosts/{bastionHostName}")
-        @ExpectedResponses({200, 201})
-        @UnexpectedResponseExceptionType(ErrorException.class)
-        Mono<Response<Flux<ByteBuffer>>> updateTags(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("bastionHostName") String bastionHostname,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") TagsObject bastionHostParameters,
-            Context context);
-
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Network/bastionHosts")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -153,50 +134,6 @@ public final class BastionHostsClient
             @PathParam("resourceGroupName") String resourceGroupName,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
-            Context context);
-
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
-                + "/bastionHosts/{bastionHostName}")
-        @ExpectedResponses({200, 202, 204})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> beginDeleteWithoutPolling(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("bastionHostName") String bastionHostname,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            Context context);
-
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
-                + "/bastionHosts/{bastionHostName}")
-        @ExpectedResponses({200, 201})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<BastionHostInner>> beginCreateOrUpdateWithoutPolling(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("bastionHostName") String bastionHostname,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @BodyParam("application/json") BastionHostInner parameters,
-            Context context);
-
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
-                + "/bastionHosts/{bastionHostName}")
-        @ExpectedResponses({200, 201})
-        @UnexpectedResponseExceptionType(ErrorException.class)
-        Mono<Response<BastionHostInner>> beginUpdateTagsWithoutPolling(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("bastionHostName") String bastionHostname,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") TagsObject bastionHostParameters,
             Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
@@ -246,7 +183,7 @@ public final class BastionHostsClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -295,7 +232,7 @@ public final class BastionHostsClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return service
             .delete(
                 this.client.getEndpoint(),
@@ -317,7 +254,7 @@ public final class BastionHostsClient
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<Void>, Void> beginDelete(String resourceGroupName, String bastionHostname) {
+    public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String bastionHostname) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, bastionHostname);
         return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
     }
@@ -334,7 +271,7 @@ public final class BastionHostsClient
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<Void>, Void> beginDelete(
+    public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String bastionHostname, Context context) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, bastionHostname, context);
         return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
@@ -351,13 +288,42 @@ public final class BastionHostsClient
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String bastionHostname) {
+        return beginDeleteAsync(resourceGroupName, bastionHostname).getSyncPoller();
+    }
+
+    /**
+     * Deletes the specified Bastion Host.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param bastionHostname The name of the Bastion Host.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<Void>, Void> beginDelete(
+        String resourceGroupName, String bastionHostname, Context context) {
+        return beginDeleteAsync(resourceGroupName, bastionHostname, context).getSyncPoller();
+    }
+
+    /**
+     * Deletes the specified Bastion Host.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param bastionHostname The name of the Bastion Host.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String bastionHostname) {
-        Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, bastionHostname);
-        return this
-            .client
-            .<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class)
+        return beginDeleteAsync(resourceGroupName, bastionHostname)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -373,12 +339,9 @@ public final class BastionHostsClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String bastionHostname, Context context) {
-        Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, bastionHostname, context);
-        return this
-            .client
-            .<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class)
+        return beginDeleteAsync(resourceGroupName, bastionHostname, context)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -443,7 +406,7 @@ public final class BastionHostsClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -492,7 +455,7 @@ public final class BastionHostsClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return service
             .getByResourceGroup(
                 this.client.getEndpoint(),
@@ -621,7 +584,7 @@ public final class BastionHostsClient
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -677,7 +640,7 @@ public final class BastionHostsClient
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return service
             .createOrUpdate(
                 this.client.getEndpoint(),
@@ -701,7 +664,7 @@ public final class BastionHostsClient
      * @return bastion Host resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<BastionHostInner>, BastionHostInner> beginCreateOrUpdate(
+    public PollerFlux<PollResult<BastionHostInner>, BastionHostInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String bastionHostname, BastionHostInner parameters) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             createOrUpdateWithResponseAsync(resourceGroupName, bastionHostname, parameters);
@@ -724,7 +687,7 @@ public final class BastionHostsClient
      * @return bastion Host resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<BastionHostInner>, BastionHostInner> beginCreateOrUpdate(
+    public PollerFlux<PollResult<BastionHostInner>, BastionHostInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String bastionHostname, BastionHostInner parameters, Context context) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             createOrUpdateWithResponseAsync(resourceGroupName, bastionHostname, parameters, context);
@@ -746,16 +709,46 @@ public final class BastionHostsClient
      * @return bastion Host resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<BastionHostInner>, BastionHostInner> beginCreateOrUpdate(
+        String resourceGroupName, String bastionHostname, BastionHostInner parameters) {
+        return beginCreateOrUpdateAsync(resourceGroupName, bastionHostname, parameters).getSyncPoller();
+    }
+
+    /**
+     * Creates or updates the specified Bastion Host.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param bastionHostname The name of the Bastion Host.
+     * @param parameters Bastion Host resource.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return bastion Host resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<BastionHostInner>, BastionHostInner> beginCreateOrUpdate(
+        String resourceGroupName, String bastionHostname, BastionHostInner parameters, Context context) {
+        return beginCreateOrUpdateAsync(resourceGroupName, bastionHostname, parameters, context).getSyncPoller();
+    }
+
+    /**
+     * Creates or updates the specified Bastion Host.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param bastionHostname The name of the Bastion Host.
+     * @param parameters Bastion Host resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return bastion Host resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BastionHostInner> createOrUpdateAsync(
         String resourceGroupName, String bastionHostname, BastionHostInner parameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, bastionHostname, parameters);
-        return this
-            .client
-            .<BastionHostInner, BastionHostInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), BastionHostInner.class, BastionHostInner.class)
+        return beginCreateOrUpdateAsync(resourceGroupName, bastionHostname, parameters)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -773,14 +766,9 @@ public final class BastionHostsClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BastionHostInner> createOrUpdateAsync(
         String resourceGroupName, String bastionHostname, BastionHostInner parameters, Context context) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, bastionHostname, parameters, context);
-        return this
-            .client
-            .<BastionHostInner, BastionHostInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), BastionHostInner.class, BastionHostInner.class)
+        return beginCreateOrUpdateAsync(resourceGroupName, bastionHostname, parameters, context)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -819,233 +807,6 @@ public final class BastionHostsClient
     }
 
     /**
-     * Updates bastion host tags.
-     *
-     * @param resourceGroupName The resource group name of the BastionHost.
-     * @param bastionHostname The name of the bastionHost.
-     * @param tags Resource tags.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return bastion Host resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> updateTagsWithResponseAsync(
-        String resourceGroupName, String bastionHostname, Map<String, String> tags) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (bastionHostname == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter bastionHostname is required and cannot be null."));
-        }
-        final String apiVersion = "2019-06-01";
-        TagsObject bastionHostParameters = new TagsObject();
-        bastionHostParameters.withTags(tags);
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .updateTags(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            bastionHostname,
-                            apiVersion,
-                            bastionHostParameters,
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
-
-    /**
-     * Updates bastion host tags.
-     *
-     * @param resourceGroupName The resource group name of the BastionHost.
-     * @param bastionHostname The name of the bastionHost.
-     * @param tags Resource tags.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return bastion Host resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> updateTagsWithResponseAsync(
-        String resourceGroupName, String bastionHostname, Map<String, String> tags, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (bastionHostname == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter bastionHostname is required and cannot be null."));
-        }
-        final String apiVersion = "2019-06-01";
-        TagsObject bastionHostParameters = new TagsObject();
-        bastionHostParameters.withTags(tags);
-        return service
-            .updateTags(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                bastionHostname,
-                apiVersion,
-                bastionHostParameters,
-                context);
-    }
-
-    /**
-     * Updates bastion host tags.
-     *
-     * @param resourceGroupName The resource group name of the BastionHost.
-     * @param bastionHostname The name of the bastionHost.
-     * @param tags Resource tags.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return bastion Host resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<BastionHostInner>, BastionHostInner> beginUpdateTags(
-        String resourceGroupName, String bastionHostname, Map<String, String> tags) {
-        Mono<Response<Flux<ByteBuffer>>> mono = updateTagsWithResponseAsync(resourceGroupName, bastionHostname, tags);
-        return this
-            .client
-            .<BastionHostInner, BastionHostInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), BastionHostInner.class, BastionHostInner.class);
-    }
-
-    /**
-     * Updates bastion host tags.
-     *
-     * @param resourceGroupName The resource group name of the BastionHost.
-     * @param bastionHostname The name of the bastionHost.
-     * @param tags Resource tags.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return bastion Host resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<BastionHostInner>, BastionHostInner> beginUpdateTags(
-        String resourceGroupName, String bastionHostname, Map<String, String> tags, Context context) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateTagsWithResponseAsync(resourceGroupName, bastionHostname, tags, context);
-        return this
-            .client
-            .<BastionHostInner, BastionHostInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), BastionHostInner.class, BastionHostInner.class);
-    }
-
-    /**
-     * Updates bastion host tags.
-     *
-     * @param resourceGroupName The resource group name of the BastionHost.
-     * @param bastionHostname The name of the bastionHost.
-     * @param tags Resource tags.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return bastion Host resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<BastionHostInner> updateTagsAsync(
-        String resourceGroupName, String bastionHostname, Map<String, String> tags) {
-        Mono<Response<Flux<ByteBuffer>>> mono = updateTagsWithResponseAsync(resourceGroupName, bastionHostname, tags);
-        return this
-            .client
-            .<BastionHostInner, BastionHostInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), BastionHostInner.class, BastionHostInner.class)
-            .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
-    }
-
-    /**
-     * Updates bastion host tags.
-     *
-     * @param resourceGroupName The resource group name of the BastionHost.
-     * @param bastionHostname The name of the bastionHost.
-     * @param tags Resource tags.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return bastion Host resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<BastionHostInner> updateTagsAsync(
-        String resourceGroupName, String bastionHostname, Map<String, String> tags, Context context) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateTagsWithResponseAsync(resourceGroupName, bastionHostname, tags, context);
-        return this
-            .client
-            .<BastionHostInner, BastionHostInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), BastionHostInner.class, BastionHostInner.class)
-            .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
-    }
-
-    /**
-     * Updates bastion host tags.
-     *
-     * @param resourceGroupName The resource group name of the BastionHost.
-     * @param bastionHostname The name of the bastionHost.
-     * @param tags Resource tags.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return bastion Host resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public BastionHostInner updateTags(String resourceGroupName, String bastionHostname, Map<String, String> tags) {
-        return updateTagsAsync(resourceGroupName, bastionHostname, tags).block();
-    }
-
-    /**
-     * Updates bastion host tags.
-     *
-     * @param resourceGroupName The resource group name of the BastionHost.
-     * @param bastionHostname The name of the bastionHost.
-     * @param tags Resource tags.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return bastion Host resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public BastionHostInner updateTags(
-        String resourceGroupName, String bastionHostname, Map<String, String> tags, Context context) {
-        return updateTagsAsync(resourceGroupName, bastionHostname, tags, context).block();
-    }
-
-    /**
      * Lists all Bastion Hosts in a subscription.
      *
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1066,7 +827,7 @@ public final class BastionHostsClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -1106,7 +867,7 @@ public final class BastionHostsClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return service
             .list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), context)
             .map(
@@ -1199,7 +960,7 @@ public final class BastionHostsClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -1251,7 +1012,7 @@ public final class BastionHostsClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return service
             .listByResourceGroup(
                 this.client.getEndpoint(), resourceGroupName, apiVersion, this.client.getSubscriptionId(), context)
@@ -1326,543 +1087,6 @@ public final class BastionHostsClient
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BastionHostInner> listByResourceGroup(String resourceGroupName, Context context) {
         return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName, context));
-    }
-
-    /**
-     * Deletes the specified Bastion Host.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param bastionHostname The name of the Bastion Host.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> beginDeleteWithoutPollingWithResponseAsync(
-        String resourceGroupName, String bastionHostname) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (bastionHostname == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter bastionHostname is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2019-06-01";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .beginDeleteWithoutPolling(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            bastionHostname,
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
-
-    /**
-     * Deletes the specified Bastion Host.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param bastionHostname The name of the Bastion Host.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> beginDeleteWithoutPollingWithResponseAsync(
-        String resourceGroupName, String bastionHostname, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (bastionHostname == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter bastionHostname is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2019-06-01";
-        return service
-            .beginDeleteWithoutPolling(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                bastionHostname,
-                apiVersion,
-                this.client.getSubscriptionId(),
-                context);
-    }
-
-    /**
-     * Deletes the specified Bastion Host.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param bastionHostname The name of the Bastion Host.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> beginDeleteWithoutPollingAsync(String resourceGroupName, String bastionHostname) {
-        return beginDeleteWithoutPollingWithResponseAsync(resourceGroupName, bastionHostname)
-            .flatMap((Response<Void> res) -> Mono.empty());
-    }
-
-    /**
-     * Deletes the specified Bastion Host.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param bastionHostname The name of the Bastion Host.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> beginDeleteWithoutPollingAsync(
-        String resourceGroupName, String bastionHostname, Context context) {
-        return beginDeleteWithoutPollingWithResponseAsync(resourceGroupName, bastionHostname, context)
-            .flatMap((Response<Void> res) -> Mono.empty());
-    }
-
-    /**
-     * Deletes the specified Bastion Host.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param bastionHostname The name of the Bastion Host.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void beginDeleteWithoutPolling(String resourceGroupName, String bastionHostname) {
-        beginDeleteWithoutPollingAsync(resourceGroupName, bastionHostname).block();
-    }
-
-    /**
-     * Deletes the specified Bastion Host.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param bastionHostname The name of the Bastion Host.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void beginDeleteWithoutPolling(String resourceGroupName, String bastionHostname, Context context) {
-        beginDeleteWithoutPollingAsync(resourceGroupName, bastionHostname, context).block();
-    }
-
-    /**
-     * Creates or updates the specified Bastion Host.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param bastionHostname The name of the Bastion Host.
-     * @param parameters Bastion Host resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return bastion Host resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BastionHostInner>> beginCreateOrUpdateWithoutPollingWithResponseAsync(
-        String resourceGroupName, String bastionHostname, BastionHostInner parameters) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (bastionHostname == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter bastionHostname is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (parameters == null) {
-            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
-        } else {
-            parameters.validate();
-        }
-        final String apiVersion = "2019-06-01";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .beginCreateOrUpdateWithoutPolling(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            bastionHostname,
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            parameters,
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
-
-    /**
-     * Creates or updates the specified Bastion Host.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param bastionHostname The name of the Bastion Host.
-     * @param parameters Bastion Host resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return bastion Host resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BastionHostInner>> beginCreateOrUpdateWithoutPollingWithResponseAsync(
-        String resourceGroupName, String bastionHostname, BastionHostInner parameters, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (bastionHostname == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter bastionHostname is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (parameters == null) {
-            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
-        } else {
-            parameters.validate();
-        }
-        final String apiVersion = "2019-06-01";
-        return service
-            .beginCreateOrUpdateWithoutPolling(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                bastionHostname,
-                apiVersion,
-                this.client.getSubscriptionId(),
-                parameters,
-                context);
-    }
-
-    /**
-     * Creates or updates the specified Bastion Host.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param bastionHostname The name of the Bastion Host.
-     * @param parameters Bastion Host resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return bastion Host resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<BastionHostInner> beginCreateOrUpdateWithoutPollingAsync(
-        String resourceGroupName, String bastionHostname, BastionHostInner parameters) {
-        return beginCreateOrUpdateWithoutPollingWithResponseAsync(resourceGroupName, bastionHostname, parameters)
-            .flatMap(
-                (Response<BastionHostInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Creates or updates the specified Bastion Host.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param bastionHostname The name of the Bastion Host.
-     * @param parameters Bastion Host resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return bastion Host resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<BastionHostInner> beginCreateOrUpdateWithoutPollingAsync(
-        String resourceGroupName, String bastionHostname, BastionHostInner parameters, Context context) {
-        return beginCreateOrUpdateWithoutPollingWithResponseAsync(
-                resourceGroupName, bastionHostname, parameters, context)
-            .flatMap(
-                (Response<BastionHostInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Creates or updates the specified Bastion Host.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param bastionHostname The name of the Bastion Host.
-     * @param parameters Bastion Host resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return bastion Host resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public BastionHostInner beginCreateOrUpdateWithoutPolling(
-        String resourceGroupName, String bastionHostname, BastionHostInner parameters) {
-        return beginCreateOrUpdateWithoutPollingAsync(resourceGroupName, bastionHostname, parameters).block();
-    }
-
-    /**
-     * Creates or updates the specified Bastion Host.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param bastionHostname The name of the Bastion Host.
-     * @param parameters Bastion Host resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return bastion Host resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public BastionHostInner beginCreateOrUpdateWithoutPolling(
-        String resourceGroupName, String bastionHostname, BastionHostInner parameters, Context context) {
-        return beginCreateOrUpdateWithoutPollingAsync(resourceGroupName, bastionHostname, parameters, context).block();
-    }
-
-    /**
-     * Updates bastion host tags.
-     *
-     * @param resourceGroupName The resource group name of the BastionHost.
-     * @param bastionHostname The name of the bastionHost.
-     * @param tags Resource tags.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return bastion Host resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BastionHostInner>> beginUpdateTagsWithoutPollingWithResponseAsync(
-        String resourceGroupName, String bastionHostname, Map<String, String> tags) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (bastionHostname == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter bastionHostname is required and cannot be null."));
-        }
-        final String apiVersion = "2019-06-01";
-        TagsObject bastionHostParameters = new TagsObject();
-        bastionHostParameters.withTags(tags);
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .beginUpdateTagsWithoutPolling(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            bastionHostname,
-                            apiVersion,
-                            bastionHostParameters,
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
-
-    /**
-     * Updates bastion host tags.
-     *
-     * @param resourceGroupName The resource group name of the BastionHost.
-     * @param bastionHostname The name of the bastionHost.
-     * @param tags Resource tags.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return bastion Host resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BastionHostInner>> beginUpdateTagsWithoutPollingWithResponseAsync(
-        String resourceGroupName, String bastionHostname, Map<String, String> tags, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (bastionHostname == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter bastionHostname is required and cannot be null."));
-        }
-        final String apiVersion = "2019-06-01";
-        TagsObject bastionHostParameters = new TagsObject();
-        bastionHostParameters.withTags(tags);
-        return service
-            .beginUpdateTagsWithoutPolling(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                bastionHostname,
-                apiVersion,
-                bastionHostParameters,
-                context);
-    }
-
-    /**
-     * Updates bastion host tags.
-     *
-     * @param resourceGroupName The resource group name of the BastionHost.
-     * @param bastionHostname The name of the bastionHost.
-     * @param tags Resource tags.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return bastion Host resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<BastionHostInner> beginUpdateTagsWithoutPollingAsync(
-        String resourceGroupName, String bastionHostname, Map<String, String> tags) {
-        return beginUpdateTagsWithoutPollingWithResponseAsync(resourceGroupName, bastionHostname, tags)
-            .flatMap(
-                (Response<BastionHostInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Updates bastion host tags.
-     *
-     * @param resourceGroupName The resource group name of the BastionHost.
-     * @param bastionHostname The name of the bastionHost.
-     * @param tags Resource tags.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return bastion Host resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<BastionHostInner> beginUpdateTagsWithoutPollingAsync(
-        String resourceGroupName, String bastionHostname, Map<String, String> tags, Context context) {
-        return beginUpdateTagsWithoutPollingWithResponseAsync(resourceGroupName, bastionHostname, tags, context)
-            .flatMap(
-                (Response<BastionHostInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Updates bastion host tags.
-     *
-     * @param resourceGroupName The resource group name of the BastionHost.
-     * @param bastionHostname The name of the bastionHost.
-     * @param tags Resource tags.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return bastion Host resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public BastionHostInner beginUpdateTagsWithoutPolling(
-        String resourceGroupName, String bastionHostname, Map<String, String> tags) {
-        return beginUpdateTagsWithoutPollingAsync(resourceGroupName, bastionHostname, tags).block();
-    }
-
-    /**
-     * Updates bastion host tags.
-     *
-     * @param resourceGroupName The resource group name of the BastionHost.
-     * @param bastionHostname The name of the bastionHost.
-     * @param tags Resource tags.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return bastion Host resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public BastionHostInner beginUpdateTagsWithoutPolling(
-        String resourceGroupName, String bastionHostname, Map<String, String> tags, Context context) {
-        return beginUpdateTagsWithoutPollingAsync(resourceGroupName, bastionHostname, tags, context).block();
     }
 
     /**

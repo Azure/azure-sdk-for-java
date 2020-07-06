@@ -4,6 +4,7 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -22,9 +23,15 @@ public final class LuceneStandardTokenizer extends LexicalTokenizer {
     private Integer maxTokenLength;
 
     /**
-     * Constructor for {@link LuceneStandardTokenizer}.
+     * Constructor of {@link LuceneStandardTokenizer}.
+     *
+     * @param name The name of the tokenizer. It must only contain letters, digits, spaces,
+     * dashes or underscores, can only start and end with alphanumeric
+     * characters, and is limited to 128 characters.
      */
-    public LuceneStandardTokenizer() {
+    @JsonCreator
+    public LuceneStandardTokenizer(@JsonProperty(value = "name") String name) {
+        super(name);
         odataType = "#Microsoft.Azure.Search.LuceneStandardTokenizerV2";
     }
 

@@ -20,6 +20,7 @@ import com.azure.resourcemanager.keyvault.models.NetworkRuleBypassOptions;
 import com.azure.resourcemanager.keyvault.models.NetworkRuleSet;
 import com.azure.resourcemanager.keyvault.models.Secrets;
 import com.azure.resourcemanager.keyvault.models.Sku;
+import com.azure.resourcemanager.keyvault.models.SkuFamily;
 import com.azure.resourcemanager.keyvault.models.SkuName;
 import com.azure.resourcemanager.keyvault.models.Vault;
 import com.azure.resourcemanager.keyvault.models.VaultCreateOrUpdateParameters;
@@ -283,7 +284,7 @@ class VaultImpl extends GroupableResourceImpl<Vault, VaultInner, VaultImpl, KeyV
         if (inner().properties() == null) {
             inner().withProperties(new VaultProperties());
         }
-        inner().properties().withSku(new Sku().withName(skuName));
+        inner().properties().withSku(new Sku().withName(skuName).withFamily(SkuFamily.A));
         return this;
     }
 
@@ -306,7 +307,8 @@ class VaultImpl extends GroupableResourceImpl<Vault, VaultInner, VaultImpl, KeyV
                                                 String
                                                     .format(
                                                         "User principal name %s is not found in tenant %s",
-                                                        accessPolicy.userPrincipalName(), authorizationManager.tenantId()),
+                                                        accessPolicy.userPrincipalName(),
+                                                        authorizationManager.tenantId()),
                                                 null))));
                 } else if (accessPolicy.servicePrincipalName() != null) {
                     observables

@@ -9,6 +9,7 @@ import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.ExpressRouteCircuitReference;
+import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.azure.resourcemanager.network.models.ServiceProviderProvisioningState;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -21,8 +22,7 @@ public class ExpressRouteCrossConnectionInner extends Resource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ExpressRouteCrossConnectionInner.class);
 
     /*
-     * Gets a unique read-only string that changes whenever the resource is
-     * updated.
+     * A unique read-only string that changes whenever the resource is updated.
      */
     @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
@@ -77,11 +77,10 @@ public class ExpressRouteCrossConnectionInner extends Resource {
     private String serviceProviderNotes;
 
     /*
-     * Gets the provisioning state of the public IP resource. Possible values
-     * are: 'Updating', 'Deleting', and 'Failed'.
+     * The provisioning state of the express route cross connection resource.
      */
     @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private String provisioningState;
+    private ProvisioningState provisioningState;
 
     /*
      * The list of peerings.
@@ -96,7 +95,7 @@ public class ExpressRouteCrossConnectionInner extends Resource {
     private String id;
 
     /**
-     * Get the etag property: Gets a unique read-only string that changes whenever the resource is updated.
+     * Get the etag property: A unique read-only string that changes whenever the resource is updated.
      *
      * @return the etag value.
      */
@@ -235,12 +234,11 @@ public class ExpressRouteCrossConnectionInner extends Resource {
     }
 
     /**
-     * Get the provisioningState property: Gets the provisioning state of the public IP resource. Possible values are:
-     * 'Updating', 'Deleting', and 'Failed'.
+     * Get the provisioningState property: The provisioning state of the express route cross connection resource.
      *
      * @return the provisioningState value.
      */
-    public String provisioningState() {
+    public ProvisioningState provisioningState() {
         return this.provisioningState;
     }
 

@@ -4,7 +4,7 @@ package com.azure.cosmos;
 
 import com.azure.core.util.Context;
 import com.azure.cosmos.implementation.Constants;
-import com.azure.cosmos.implementation.CosmosItemProperties;
+import com.azure.cosmos.implementation.InternalObjectNode;
 import com.azure.cosmos.implementation.Document;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.Offer;
@@ -464,8 +464,9 @@ public class CosmosAsyncContainer {
         if (queryInfo != null && queryInfo.hasSelectValue()) {
             List<T> transformedResults = response.getResults()
                                              .stream()
-                                             .map(d -> d.get(Constants.Properties.VALUE))
-                                             .map(object -> transform(object, classType))
+                                             .map(d -> d.has(Constants.Properties.VALUE) ?
+                                                 transform(d.get(Constants.Properties.VALUE), classType) :
+                                                 ModelBridgeInternal.toObjectFromJsonSerializable(d, classType))
                                              .collect(Collectors.toList());
 
             return BridgeInternal.createFeedResponseWithQueryMetrics(transformedResults,
@@ -561,7 +562,7 @@ public class CosmosAsyncContainer {
     public <T> Mono<CosmosItemResponse<T>> replaceItem(
         T item, String itemId, PartitionKey partitionKey,
         CosmosItemRequestOptions options) {
-        Document doc = CosmosItemProperties.fromObject(item);
+        Document doc = InternalObjectNode.fromObject(item);
         if (options == null) {
             options = new CosmosItemRequestOptions();
         }

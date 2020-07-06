@@ -96,7 +96,7 @@ public class ProxySendTest extends IntegrationTestBase {
                         Assertions.assertTrue(batch.tryAdd(messages.get(i)), "Unable to add message: " + i);
                     }
 
-                    return sender.send(batch);
+                    return sender.sendMessages(batch);
                 }))
                 .verifyComplete();
         } finally {

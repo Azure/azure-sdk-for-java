@@ -14,6 +14,7 @@ import com.azure.resourcemanager.keyvault.models.CheckNameAvailabilityResult;
 import com.azure.resourcemanager.keyvault.models.CreateMode;
 import com.azure.resourcemanager.keyvault.models.DeletedVault;
 import com.azure.resourcemanager.keyvault.models.Sku;
+import com.azure.resourcemanager.keyvault.models.SkuFamily;
 import com.azure.resourcemanager.keyvault.models.SkuName;
 import com.azure.resourcemanager.keyvault.models.Vault;
 import com.azure.resourcemanager.keyvault.models.VaultCreateOrUpdateParameters;
@@ -30,7 +31,8 @@ public class VaultsImpl extends GroupableResourcesImpl<Vault, VaultImpl, VaultIn
     private final AuthorizationManager authorizationManager;
     private final String tenantId;
 
-    public VaultsImpl(final KeyVaultManager keyVaultManager, final AuthorizationManager authorizationManager, final String tenantId) {
+    public VaultsImpl(
+        final KeyVaultManager keyVaultManager, final AuthorizationManager authorizationManager, final String tenantId) {
         super(keyVaultManager.inner().getVaults(), keyVaultManager);
         this.authorizationManager = authorizationManager;
         this.tenantId = tenantId;
@@ -144,7 +146,7 @@ public class VaultsImpl extends GroupableResourcesImpl<Vault, VaultImpl, VaultIn
                         .withProperties(
                             new VaultProperties()
                                 .withCreateMode(CreateMode.RECOVER)
-                                .withSku(new Sku().withName(SkuName.STANDARD))
+                                .withSku(new Sku().withName(SkuName.STANDARD).withFamily(SkuFamily.A))
                                 .withTenantId(UUID.fromString(tenantId)));
                     return inner()
                         .createOrUpdateAsync(resourceGroupName, vaultName, parameters)

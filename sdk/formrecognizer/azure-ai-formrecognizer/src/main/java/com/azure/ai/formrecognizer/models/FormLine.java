@@ -5,13 +5,14 @@ package com.azure.ai.formrecognizer.models;
 
 import com.azure.core.annotation.Immutable;
 
+import java.util.Collections;
 import java.util.List;
 
 /**
  * The FormLine model.
  */
 @Immutable
-public final class FormLine extends FormContent {
+public final class FormLine extends FormElement {
 
     /*
      * List of words in the text line.
@@ -20,7 +21,7 @@ public final class FormLine extends FormContent {
 
     /**
      * Creates raw OCR item.
-     * When includeTextDetails is set to true, a list of recognized text lines.
+     * When includeFieldElements is set to true, a list of recognized text lines.
      *
      * @param text The text content of recognized field.
      * @param boundingBox The BoundingBox of the recognized field.
@@ -29,25 +30,17 @@ public final class FormLine extends FormContent {
      */
     public FormLine(String text, BoundingBox boundingBox, Integer pageNumber,
         final List<FormWord> formWords) {
-        super(text, boundingBox, pageNumber, TextContentType.LINE);
-        this.formWords = formWords;
+        super(text, boundingBox, pageNumber);
+        this.formWords = formWords == null ? null : Collections.unmodifiableList(formWords);
     }
 
     /**
-     * Get the words property: List of words in the text line.
+     * Get the list of words in the text line.
      *
-     * @return the words value.
+     * @return the unmodifiable list of words in the {@code FormLine}.
      */
     public List<FormWord> getFormWords() {
         return this.formWords;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public TextContentType getTextContentType() {
-        return super.getTextContentType();
     }
 
     /**

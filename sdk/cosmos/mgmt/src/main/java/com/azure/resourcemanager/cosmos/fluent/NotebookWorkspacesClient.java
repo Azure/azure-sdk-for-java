@@ -30,7 +30,6 @@ import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.util.polling.AsyncPollResponse;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.resourcemanager.cosmos.CosmosDBManagementClient;
 import com.azure.resourcemanager.cosmos.fluent.inner.NotebookWorkspaceConnectionInfoResultInner;
@@ -743,7 +742,7 @@ public final class NotebookWorkspacesClient implements InnerSupportsDelete<Void>
             .<NotebookWorkspaceInner, NotebookWorkspaceInner>getLroResultAsync(
                 mono, this.client.getHttpPipeline(), NotebookWorkspaceInner.class, NotebookWorkspaceInner.class)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -769,7 +768,7 @@ public final class NotebookWorkspacesClient implements InnerSupportsDelete<Void>
             .<NotebookWorkspaceInner, NotebookWorkspaceInner>getLroResultAsync(
                 mono, this.client.getHttpPipeline(), NotebookWorkspaceInner.class, NotebookWorkspaceInner.class)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -777,6 +776,7 @@ public final class NotebookWorkspacesClient implements InnerSupportsDelete<Void>
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
+     * @param notebookCreateUpdateParameters The notebook workspace to create for the current database account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -951,7 +951,7 @@ public final class NotebookWorkspacesClient implements InnerSupportsDelete<Void>
             .client
             .<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -972,7 +972,7 @@ public final class NotebookWorkspacesClient implements InnerSupportsDelete<Void>
             .client
             .<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -1327,7 +1327,7 @@ public final class NotebookWorkspacesClient implements InnerSupportsDelete<Void>
             .client
             .<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -1349,7 +1349,7 @@ public final class NotebookWorkspacesClient implements InnerSupportsDelete<Void>
             .client
             .<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -1526,7 +1526,7 @@ public final class NotebookWorkspacesClient implements InnerSupportsDelete<Void>
             .client
             .<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -1547,7 +1547,7 @@ public final class NotebookWorkspacesClient implements InnerSupportsDelete<Void>
             .client
             .<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**

@@ -3,11 +3,11 @@
 
 package com.azure.resourcemanager.compute.implementation;
 
-import com.azure.core.management.SubResource;
 import com.azure.resourcemanager.compute.models.ComputeSku;
 import com.azure.resourcemanager.compute.models.ProximityPlacementGroup;
 import com.azure.resourcemanager.compute.models.ProximityPlacementGroupType;
 import com.azure.resourcemanager.compute.fluent.inner.ProximityPlacementGroupInner;
+import com.azure.resourcemanager.compute.models.SubResourceWithColocationStatus;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceId;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -61,12 +61,12 @@ final class ProximityPlacementGroupImpl implements ProximityPlacementGroup {
         return inner;
     }
 
-    private List<String> getStringListFromSubResourceList(List<SubResource> subList) {
+    private List<String> getStringListFromSubResourceList(List<SubResourceWithColocationStatus> subList) {
         List<String> stringList = null;
 
         if (subList != null && !subList.isEmpty()) {
             stringList = new ArrayList<>();
-            Iterator<SubResource> iter = subList.iterator();
+            Iterator<SubResourceWithColocationStatus> iter = subList.iterator();
             while (iter.hasNext()) {
                 stringList.add(iter.next().id());
             }

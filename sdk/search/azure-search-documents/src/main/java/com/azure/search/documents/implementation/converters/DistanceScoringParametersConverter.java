@@ -18,13 +18,9 @@ public final class DistanceScoringParametersConverter {
         if (obj == null) {
             return null;
         }
-        DistanceScoringParameters distanceScoringParameters = new DistanceScoringParameters();
+        DistanceScoringParameters distanceScoringParameters = new DistanceScoringParameters(
+            obj.getReferencePointParameter(), obj.getBoostingDistance());
 
-        String referencePointParameter = obj.getReferencePointParameter();
-        distanceScoringParameters.setReferencePointParameter(referencePointParameter);
-
-        double boostingDistance = obj.getBoostingDistance();
-        distanceScoringParameters.setBoostingDistance(boostingDistance);
         return distanceScoringParameters;
     }
 
@@ -37,13 +33,10 @@ public final class DistanceScoringParametersConverter {
             return null;
         }
         com.azure.search.documents.indexes.implementation.models.DistanceScoringParameters distanceScoringParameters =
-            new com.azure.search.documents.indexes.implementation.models.DistanceScoringParameters();
+            new com.azure.search.documents.indexes.implementation.models.DistanceScoringParameters(
+                obj.getReferencePointParameter(), obj.getBoostingDistance());
 
-        String referencePointParameter = obj.getReferencePointParameter();
-        distanceScoringParameters.setReferencePointParameter(referencePointParameter);
-
-        double boostingDistance = obj.getBoostingDistance();
-        distanceScoringParameters.setBoostingDistance(boostingDistance);
+        distanceScoringParameters.validate();
         return distanceScoringParameters;
     }
 

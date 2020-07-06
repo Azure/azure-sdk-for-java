@@ -17,6 +17,7 @@ import com.azure.resourcemanager.network.implementation.NetworkUsagesImpl;
 import com.azure.resourcemanager.network.implementation.NetworkWatchersImpl;
 import com.azure.resourcemanager.network.implementation.NetworksImpl;
 import com.azure.resourcemanager.network.implementation.PublicIpAddressesImpl;
+import com.azure.resourcemanager.network.implementation.PublicIpPrefixesImpl;
 import com.azure.resourcemanager.network.implementation.RouteFiltersImpl;
 import com.azure.resourcemanager.network.implementation.RouteTablesImpl;
 import com.azure.resourcemanager.network.implementation.VirtualNetworkGatewaysImpl;
@@ -33,6 +34,7 @@ import com.azure.resourcemanager.network.models.NetworkUsages;
 import com.azure.resourcemanager.network.models.NetworkWatchers;
 import com.azure.resourcemanager.network.models.Networks;
 import com.azure.resourcemanager.network.models.PublicIpAddresses;
+import com.azure.resourcemanager.network.models.PublicIpPrefixes;
 import com.azure.resourcemanager.network.models.RouteFilters;
 import com.azure.resourcemanager.network.models.RouteTables;
 import com.azure.resourcemanager.network.models.VirtualNetworkGateways;
@@ -48,6 +50,7 @@ public final class NetworkManager extends Manager<NetworkManager, NetworkManagem
 
     // Collections
     private PublicIpAddresses publicIPAddresses;
+    private PublicIpPrefixes publicIpPrefixes;
     private Networks networks;
     private NetworkSecurityGroups networkSecurityGroups;
     private NetworkInterfaces networkInterfaces;
@@ -95,6 +98,14 @@ public final class NetworkManager extends Manager<NetworkManager, NetworkManagem
         return authenticate(httpPipeline, profile, new SdkContext());
     }
 
+    /**
+     * Creates an instance of NetworkManager that exposes network resource management API entry points.
+     *
+     * @param httpPipeline the HttpPipeline to be used for API calls.
+     * @param profile the profile to use
+     * @param sdkContext the sdk context
+     * @return the NetworkManager
+     */
     public static NetworkManager authenticate(HttpPipeline httpPipeline, AzureProfile profile, SdkContext sdkContext) {
         return new NetworkManager(httpPipeline, profile, sdkContext);
     }
@@ -161,6 +172,14 @@ public final class NetworkManager extends Manager<NetworkManager, NetworkManagem
             this.publicIPAddresses = new PublicIpAddressesImpl(this);
         }
         return this.publicIPAddresses;
+    }
+
+    /** @return entry point to public IP prefix management */
+    public PublicIpPrefixes publicIpPrefixes() {
+        if (this.publicIpPrefixes == null) {
+            this.publicIpPrefixes = new PublicIpPrefixesImpl(this);
+        }
+        return this.publicIpPrefixes;
     }
 
     /** @return entry point to network interface management */

@@ -50,8 +50,7 @@ public final class CreateVirtualMachineUsingCustomImageFromVM {
         final String rgName = azure.sdkContext().randomResourceName("rgCOMV", 15);
         final String publicIpDnsLabel = azure.sdkContext().randomResourceName("pip", 15);
         final String userName = "tirekicker";
-        // [SuppressMessage("Microsoft.Security", "CS002:SecretInNextLine", Justification="Serves as an example, not for deployment. Please change when using this in your code.")]
-        final String password = "12NewPA$$w0rd!";
+        final String password = Utils.password();
         final Region region = Region.US_WEST_CENTRAL;
 
         final String apacheInstallScript = "https://raw.githubusercontent.com/Azure/azure-libraries-for-java/master/azure-samples/src/main/resources/install_apache.sh";
@@ -144,7 +143,7 @@ public final class CreateVirtualMachineUsingCustomImageFromVM {
                     .withNewPrimaryNetwork("10.0.0.0/28")
                     .withPrimaryPrivateIPAddressDynamic()
                     .withoutPrimaryPublicIPAddress()
-                    .withLinuxCustomImage(virtualMachineCustomImage.id())
+                    .withGeneralizedLinuxCustomImage(virtualMachineCustomImage.id())
                     .withRootUsername(userName)
                     .withRootPassword(password)
                     .withSize(VirtualMachineSizeTypes.STANDARD_D3_V2)
@@ -164,7 +163,7 @@ public final class CreateVirtualMachineUsingCustomImageFromVM {
                     .withNewPrimaryNetwork("10.0.0.0/28")
                     .withPrimaryPrivateIPAddressDynamic()
                     .withoutPrimaryPublicIPAddress()
-                    .withLinuxCustomImage(virtualMachineCustomImage.id())
+                    .withGeneralizedLinuxCustomImage(virtualMachineCustomImage.id())
                     .withRootUsername(userName)
                     .withRootPassword(password)
                     .withNewDataDiskFromImage(1, 200, CachingTypes.READ_WRITE)  // TODO: Naming needs to be finalized

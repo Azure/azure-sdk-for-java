@@ -16,7 +16,10 @@ import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.BlobStorageException;
+import com.azure.storage.blob.options.BlockBlobCommitBlockListOptions;
 import com.azure.storage.blob.models.BlockBlobItem;
+import com.azure.storage.blob.options.BlockBlobOutputStreamOptions;
+import com.azure.storage.blob.options.BlockBlobSimpleUploadOptions;
 import com.azure.storage.blob.models.BlockList;
 import com.azure.storage.blob.models.BlockListType;
 import com.azure.storage.blob.models.CpkInfo;
@@ -24,6 +27,7 @@ import com.azure.storage.blob.models.CustomerProvidedKey;
 import com.azure.storage.blob.models.ParallelTransferOptions;
 import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.Constants;
+import com.azure.storage.common.implementation.StorageImplUtils;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
@@ -35,7 +39,6 @@ import java.nio.ByteBuffer;
 import java.time.Duration;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 import static com.azure.storage.common.implementation.StorageImplUtils.blockWithOptionalTimeout;
 
@@ -55,12 +58,24 @@ public final class BlockBlobClient extends BlobClientBase {
 
     /**
      * Indicates the maximum number of bytes that can be sent in a call to upload.
+     * @deprecated Use {@link #MAX_STAGE_BLOCK_BYTES_LONG}.
      */
+    @Deprecated
     public static final int MAX_UPLOAD_BLOB_BYTES = BlockBlobAsyncClient.MAX_UPLOAD_BLOB_BYTES;
+    /**
+     * Indicates the maximum number of bytes that can be sent in a call to upload.
+     */
+    public static final long MAX_UPLOAD_BLOB_BYTES_LONG = BlockBlobAsyncClient.MAX_UPLOAD_BLOB_BYTES_LONG;
+    /**
+     * Indicates the maximum number of bytes that can be sent in a call to stageBlock.
+     * @deprecated Use {@link #MAX_STAGE_BLOCK_BYTES_LONG}
+     */
+    @Deprecated
+    public static final int MAX_STAGE_BLOCK_BYTES = BlockBlobAsyncClient.MAX_STAGE_BLOCK_BYTES;
     /**
      * Indicates the maximum number of bytes that can be sent in a call to stageBlock.
      */
-    public static final int MAX_STAGE_BLOCK_BYTES = BlockBlobAsyncClient.MAX_STAGE_BLOCK_BYTES;
+    public static final long MAX_STAGE_BLOCK_BYTES_LONG = BlockBlobAsyncClient.MAX_STAGE_BLOCK_BYTES_LONG;
     /**
      * Indicates the maximum number of blocks allowed in a block blob.
      */
@@ -138,11 +153,25 @@ public final class BlockBlobClient extends BlobClientBase {
     public BlobOutputStream getBlobOutputStream(ParallelTransferOptions parallelTransferOptions,
         BlobHttpHeaders headers, Map<String, String> metadata, AccessTier tier,
         BlobRequestConditions requestConditions) {
+        return this.getBlobOutputStream(new BlockBlobOutputStreamOptions()
+            .setParallelTransferOptions(parallelTransferOptions).setHeaders(headers).setMetadata(metadata).setTier(tier)
+            .setRequestConditions(requestConditions));
+    }
 
+    /**
+     * Creates and opens an output stream to write data to the block blob. If the blob already exists on the service, it
+     * will be overwritten.
+     * <p>
+     * To avoid overwriting, pass "*" to {@link BlobRequestConditions#setIfNoneMatch(String)}.
+     *
+     * @param options {@link BlockBlobOutputStreamOptions}
+     * @return A {@link BlobOutputStream} object used to write data to the blob.
+     * @throws BlobStorageException If a storage service error occurred.
+     */
+    public BlobOutputStream getBlobOutputStream(BlockBlobOutputStreamOptions options) {
         BlobAsyncClient blobClient = prepareBuilder().buildAsyncClient();
 
-        return BlobOutputStream.blockBlobOutputStream(blobClient, parallelTransferOptions, headers, metadata, tier,
-            requestConditions);
+        return BlobOutputStream.blockBlobOutputStream(blobClient, options, null);
     }
 
     private BlobClientBuilder prepareBuilder() {
@@ -250,12 +279,38 @@ public final class BlockBlobClient extends BlobClientBase {
     public Response<BlockBlobItem> uploadWithResponse(InputStream data, long length, BlobHttpHeaders headers,
         Map<String, String> metadata, AccessTier tier, byte[] contentMd5, BlobRequestConditions requestConditions,
         Duration timeout, Context context) {
-        Objects.requireNonNull(data);
-        Flux<ByteBuffer> fbb = Utility.convertStreamToByteBuffer(data, length,
-            BlobAsyncClient.BLOB_DEFAULT_UPLOAD_BLOCK_SIZE);
-        Mono<Response<BlockBlobItem>> upload = client
-            .uploadWithResponse(fbb.subscribeOn(Schedulers.elastic()), length, headers, metadata, tier, contentMd5,
-                requestConditions, context);
+        return this.uploadWithResponse(new BlockBlobSimpleUploadOptions(data, length).setHeaders(headers)
+            .setMetadata(metadata).setTier(tier).setContentMd5(contentMd5).setRequestConditions(requestConditions),
+            timeout, context);
+    }
+
+    /**
+     * Creates a new block blob, or updates the content of an existing block blob. Updating an existing block blob
+     * overwrites any existing metadata on the blob. Partial updates are not supported with PutBlob; the content of the
+     * existing blob is overwritten with the new content. To perform a partial update of a block blob's, use PutBlock
+     * and PutBlockList. For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/put-blob">Azure Docs</a>.
+     * <p>
+     * To avoid overwriting, pass "*" to {@link BlobRequestConditions#setIfNoneMatch(String)}.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.specialized.BlockBlobClient.uploadWithResponse#BlockBlobSimpleUploadOptions-Duration-Context}
+     *
+     * @param options {@link BlockBlobSimpleUploadOptions}
+     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     *
+     * @return The information of the uploaded block blob.
+     *
+     * @throws UnexpectedLengthException when the length of data does not match the input {@code length}.
+     * @throws NullPointerException if the input data is null.
+     * @throws UncheckedIOException If an I/O error occurs
+     */
+    public Response<BlockBlobItem> uploadWithResponse(BlockBlobSimpleUploadOptions options, Duration timeout,
+        Context context) {
+        StorageImplUtils.assertNotNull("options", options);
+        Mono<Response<BlockBlobItem>> upload = client.uploadWithResponse(options, context);
         try {
             return blockWithOptionalTimeout(upload, timeout);
         } catch (UncheckedIOException e) {
@@ -315,8 +370,7 @@ public final class BlockBlobClient extends BlobClientBase {
      */
     public Response<Void> stageBlockWithResponse(String base64BlockId, InputStream data, long length, byte[] contentMd5,
         String leaseId, Duration timeout, Context context) {
-        Objects.requireNonNull(data);
-
+        StorageImplUtils.assertNotNull("data", data);
         Flux<ByteBuffer> fbb = Utility.convertStreamToByteBuffer(data, length,
             BlobAsyncClient.BLOB_DEFAULT_UPLOAD_BLOCK_SIZE);
 
@@ -491,8 +545,35 @@ public final class BlockBlobClient extends BlobClientBase {
     public Response<BlockBlobItem> commitBlockListWithResponse(List<String> base64BlockIds, BlobHttpHeaders headers,
             Map<String, String> metadata, AccessTier tier, BlobRequestConditions requestConditions, Duration timeout,
             Context context) {
+        return this.commitBlockListWithResponse(new BlockBlobCommitBlockListOptions(base64BlockIds)
+                .setHeaders(headers).setMetadata(metadata).setTier(tier).setRequestConditions(requestConditions),
+                timeout, context);
+    }
+
+    /**
+     * Writes a blob by specifying the list of block IDs that are to make up the blob. In order to be written as part
+     * of a blob, a block must have been successfully written to the server in a prior stageBlock operation. You can
+     * call commitBlockList to update a blob by uploading only those blocks that have changed, then committing the new
+     * and existing blocks together. Any blocks not specified in the block list and permanently deleted. For more
+     * information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/put-block-list">Azure Docs</a>.
+     * <p>
+     * To avoid overwriting, pass "*" to {@link BlobRequestConditions#setIfNoneMatch(String)}.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.specialized.BlockBlobClient.uploadFromFile#BlockBlobCommitBlockListOptions-Duration-Context}
+     *
+     * @param options {@link BlockBlobCommitBlockListOptions options}
+     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     *
+     * @return The information of the block blob.
+     */
+    public Response<BlockBlobItem> commitBlockListWithResponse(BlockBlobCommitBlockListOptions options,
+        Duration timeout, Context context) {
         Mono<Response<BlockBlobItem>> response = client.commitBlockListWithResponse(
-            base64BlockIds, headers, metadata, tier, requestConditions, context);
+            options, context);
 
         return blockWithOptionalTimeout(response, timeout);
     }
