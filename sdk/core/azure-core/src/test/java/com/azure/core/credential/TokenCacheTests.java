@@ -262,7 +262,7 @@ public class TokenCacheTests {
         }
     }
 
-    private static class TestTokenRefreshOptions extends TokenRefreshOptions {
+    private static final class TestTokenRefreshOptions extends TokenRefreshOptions {
         private final Duration offset;
 
         private TestTokenRefreshOptions(Duration offset) {
