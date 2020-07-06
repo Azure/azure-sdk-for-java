@@ -339,7 +339,7 @@ public class SpringAppDeploymentImpl
     }
 
     @Override
-    public SpringAppDeploymentImpl activate() {
+    public SpringAppDeploymentImpl withActivation() {
         this.addPostRunDependent(
             context -> parent().update().withActiveDeployment(name()).applyAsync()
                 .map(app -> (Indexable) app)

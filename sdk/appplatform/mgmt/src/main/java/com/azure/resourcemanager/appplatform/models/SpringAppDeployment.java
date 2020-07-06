@@ -194,7 +194,7 @@ public interface SpringAppDeployment
              * Activates of the deployment after definition.
              * @return the next stage of deployment definition
              */
-            WithSettingsAndCreate activate();
+            WithSettingsAndCreate withActivation();
         }
 
         interface WithBaseSettings {
@@ -209,7 +209,7 @@ public interface SpringAppDeployment
              * Activates of the deployment after definition.
              * @return the next stage of deployment definition
              */
-            WithCreate activate();
+            WithCreate withActivation();
         }
 
         /**
@@ -300,7 +300,7 @@ public interface SpringAppDeployment
              * Activates of the deployment after update.
              * @return the next stage of deployment update
              */
-            Update activate();
+            Update withActivation();
         }
 
         /** The stage of a deployment update allowing to specify the source code or package. */
