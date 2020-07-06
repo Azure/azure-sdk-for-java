@@ -2,13 +2,13 @@
 // Licensed under the MIT License.
 package com.azure.resourcemanager;
 
-import com.azure.resourcemanager.network.LoadBalancerBackend;
-import com.azure.resourcemanager.network.LoadBalancerInboundNatRule;
-import com.azure.resourcemanager.network.Network;
-import com.azure.resourcemanager.network.NetworkInterface;
-import com.azure.resourcemanager.network.NetworkInterfaces;
-import com.azure.resourcemanager.network.NicIpConfiguration;
-import com.azure.resourcemanager.network.Subnet;
+import com.azure.resourcemanager.network.models.LoadBalancerBackend;
+import com.azure.resourcemanager.network.models.LoadBalancerInboundNatRule;
+import com.azure.resourcemanager.network.models.Network;
+import com.azure.resourcemanager.network.models.NetworkInterface;
+import com.azure.resourcemanager.network.models.NetworkInterfaces;
+import com.azure.resourcemanager.network.models.NicIpConfiguration;
+import com.azure.resourcemanager.network.models.Subnet;
 import com.azure.resourcemanager.resources.fluentcore.arm.Region;
 import java.util.Collection;
 import java.util.List;

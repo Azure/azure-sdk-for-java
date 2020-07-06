@@ -3,12 +3,12 @@
 package com.azure.resourcemanager.network.implementation;
 
 import com.azure.core.management.SubResource;
-import com.azure.resourcemanager.network.ApplicationGateway;
-import com.azure.resourcemanager.network.ApplicationGatewayListener;
-import com.azure.resourcemanager.network.ApplicationGatewayRedirectConfiguration;
-import com.azure.resourcemanager.network.ApplicationGatewayRedirectType;
-import com.azure.resourcemanager.network.ApplicationGatewayRequestRoutingRule;
-import com.azure.resourcemanager.network.models.ApplicationGatewayRedirectConfigurationInner;
+import com.azure.resourcemanager.network.models.ApplicationGateway;
+import com.azure.resourcemanager.network.models.ApplicationGatewayListener;
+import com.azure.resourcemanager.network.models.ApplicationGatewayRedirectConfiguration;
+import com.azure.resourcemanager.network.models.ApplicationGatewayRedirectType;
+import com.azure.resourcemanager.network.models.ApplicationGatewayRequestRoutingRule;
+import com.azure.resourcemanager.network.fluent.inner.ApplicationGatewayRedirectConfigurationInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.ChildResourceImpl;
 import com.azure.resourcemanager.resources.fluentcore.utils.Utils;

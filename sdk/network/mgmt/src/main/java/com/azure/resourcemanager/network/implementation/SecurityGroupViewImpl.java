@@ -2,10 +2,10 @@
 // Licensed under the MIT License.
 package com.azure.resourcemanager.network.implementation;
 
-import com.azure.resourcemanager.network.NetworkWatcher;
-import com.azure.resourcemanager.network.SecurityGroupNetworkInterface;
-import com.azure.resourcemanager.network.SecurityGroupView;
-import com.azure.resourcemanager.network.models.SecurityGroupViewResultInner;
+import com.azure.resourcemanager.network.models.NetworkWatcher;
+import com.azure.resourcemanager.network.models.SecurityGroupNetworkInterface;
+import com.azure.resourcemanager.network.models.SecurityGroupView;
+import com.azure.resourcemanager.network.fluent.inner.SecurityGroupViewResultInner;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.RefreshableWrapperImpl;
 import java.util.Collections;
 import java.util.List;
@@ -70,7 +70,7 @@ class SecurityGroupViewImpl extends RefreshableWrapperImpl<SecurityGroupViewResu
             .parent()
             .manager()
             .inner()
-            .networkWatchers()
+            .getNetworkWatchers()
             .getVMSecurityRulesAsync(parent.resourceGroupName(), parent.name(), vmId);
     }
 }

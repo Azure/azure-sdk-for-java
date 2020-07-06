@@ -2,10 +2,10 @@
 // Licensed under the MIT License.
 package com.azure.resourcemanager.network.implementation;
 
-import com.azure.resourcemanager.network.NextHop;
-import com.azure.resourcemanager.network.NextHopParameters;
-import com.azure.resourcemanager.network.NextHopType;
-import com.azure.resourcemanager.network.models.NextHopResultInner;
+import com.azure.resourcemanager.network.models.NextHop;
+import com.azure.resourcemanager.network.models.NextHopParameters;
+import com.azure.resourcemanager.network.models.NextHopType;
+import com.azure.resourcemanager.network.fluent.inner.NextHopResultInner;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.ExecutableImpl;
 import reactor.core.publisher.Mono;
 
@@ -89,7 +89,7 @@ public class NextHopImpl extends ExecutableImpl<NextHop> implements NextHop, Nex
             .parent()
             .manager()
             .inner()
-            .networkWatchers()
+            .getNetworkWatchers()
             .getNextHopAsync(parent.resourceGroupName(), parent.name(), parameters)
             .map(
                 nextHopResultInner -> {

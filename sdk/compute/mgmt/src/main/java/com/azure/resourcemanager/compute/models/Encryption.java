@@ -24,7 +24,7 @@ public final class Encryption {
     /*
      * The type of key used to encrypt the data of the disk.
      */
-    @JsonProperty(value = "type", required = true)
+    @JsonProperty(value = "type")
     private EncryptionType type;
 
     /**
@@ -75,10 +75,5 @@ public final class Encryption {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (type() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property type in model Encryption"));
-        }
     }
 }

@@ -2,11 +2,11 @@
 // Licensed under the MIT License.
 package com.azure.resourcemanager.appservice.implementation;
 
-import com.azure.resourcemanager.appservice.BuiltInAuthenticationProvider;
-import com.azure.resourcemanager.appservice.UnauthenticatedClientAction;
-import com.azure.resourcemanager.appservice.WebAppAuthentication;
-import com.azure.resourcemanager.appservice.WebAppBase;
-import com.azure.resourcemanager.appservice.models.SiteAuthSettingsInner;
+import com.azure.resourcemanager.appservice.models.BuiltInAuthenticationProvider;
+import com.azure.resourcemanager.appservice.models.UnauthenticatedClientAction;
+import com.azure.resourcemanager.appservice.models.WebAppAuthentication;
+import com.azure.resourcemanager.appservice.models.WebAppBase;
+import com.azure.resourcemanager.appservice.fluent.inner.SiteAuthSettingsInner;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.IndexableWrapperImpl;
 import java.util.ArrayList;
 

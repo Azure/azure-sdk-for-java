@@ -2,7 +2,6 @@
 
 ## 1.1.0-beta.1 (Unreleased)
 
-
 ## 1.0.7 (2020-06-08)
 - Upgraded `azure-core` dependency to 1.5.1
 

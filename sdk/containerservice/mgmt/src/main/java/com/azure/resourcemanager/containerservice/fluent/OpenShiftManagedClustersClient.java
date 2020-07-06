@@ -30,7 +30,6 @@ import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.util.polling.AsyncPollResponse;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.resourcemanager.containerservice.ContainerServiceManagementClient;
 import com.azure.resourcemanager.containerservice.fluent.inner.OpenShiftManagedClusterInner;
@@ -863,7 +862,7 @@ public final class OpenShiftManagedClustersClient
                 OpenShiftManagedClusterInner.class,
                 OpenShiftManagedClusterInner.class)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -891,7 +890,7 @@ public final class OpenShiftManagedClustersClient
                 OpenShiftManagedClusterInner.class,
                 OpenShiftManagedClusterInner.class)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -1101,7 +1100,7 @@ public final class OpenShiftManagedClustersClient
                 OpenShiftManagedClusterInner.class,
                 OpenShiftManagedClusterInner.class)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -1129,7 +1128,7 @@ public final class OpenShiftManagedClustersClient
                 OpenShiftManagedClusterInner.class,
                 OpenShiftManagedClusterInner.class)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -1308,7 +1307,7 @@ public final class OpenShiftManagedClustersClient
             .client
             .<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -1329,7 +1328,7 @@ public final class OpenShiftManagedClustersClient
             .client
             .<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**

@@ -2,23 +2,24 @@
 // Licensed under the MIT License.
 package com.azure.resourcemanager.network.implementation;
 
-import com.azure.resourcemanager.network.ExpressRouteCircuit;
-import com.azure.resourcemanager.network.ExpressRouteCircuits;
-import com.azure.resourcemanager.network.models.ExpressRouteCircuitInner;
-import com.azure.resourcemanager.network.models.ExpressRouteCircuitsInner;
+import com.azure.resourcemanager.network.NetworkManager;
+import com.azure.resourcemanager.network.fluent.ExpressRouteCircuitsClient;
+import com.azure.resourcemanager.network.fluent.inner.ExpressRouteCircuitInner;
+import com.azure.resourcemanager.network.models.ExpressRouteCircuit;
+import com.azure.resourcemanager.network.models.ExpressRouteCircuits;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.TopLevelModifiableResourcesImpl;
 
-class ExpressRouteCircuitsImpl
+public class ExpressRouteCircuitsImpl
     extends TopLevelModifiableResourcesImpl<
         ExpressRouteCircuit,
         ExpressRouteCircuitImpl,
         ExpressRouteCircuitInner,
-        ExpressRouteCircuitsInner,
-        NetworkManager>
+    ExpressRouteCircuitsClient,
+    NetworkManager>
     implements ExpressRouteCircuits {
 
-    ExpressRouteCircuitsImpl(NetworkManager manager) {
-        super(manager.inner().expressRouteCircuits(), manager);
+    public ExpressRouteCircuitsImpl(NetworkManager manager) {
+        super(manager.inner().getExpressRouteCircuits(), manager);
     }
 
     @Override

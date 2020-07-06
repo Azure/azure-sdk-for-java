@@ -3,20 +3,21 @@
 
 package com.azure.resourcemanager.appservice.implementation;
 
-import com.azure.resourcemanager.appservice.AppServicePlan;
-import com.azure.resourcemanager.appservice.AppServicePlans;
-import com.azure.resourcemanager.appservice.models.AppServicePlanInner;
-import com.azure.resourcemanager.appservice.models.AppServicePlansInner;
+import com.azure.resourcemanager.appservice.AppServiceManager;
+import com.azure.resourcemanager.appservice.models.AppServicePlan;
+import com.azure.resourcemanager.appservice.models.AppServicePlans;
+import com.azure.resourcemanager.appservice.fluent.inner.AppServicePlanInner;
+import com.azure.resourcemanager.appservice.fluent.AppServicePlansClient;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.TopLevelModifiableResourcesImpl;
 
 /** The implementation for AppServicePlans. */
-class AppServicePlansImpl
+public class AppServicePlansImpl
     extends TopLevelModifiableResourcesImpl<
-        AppServicePlan, AppServicePlanImpl, AppServicePlanInner, AppServicePlansInner, AppServiceManager>
+        AppServicePlan, AppServicePlanImpl, AppServicePlanInner, AppServicePlansClient, AppServiceManager>
     implements AppServicePlans {
 
-    AppServicePlansImpl(AppServiceManager manager) {
-        super(manager.inner().appServicePlans(), manager);
+    public AppServicePlansImpl(AppServiceManager manager) {
+        super(manager.inner().getAppServicePlans(), manager);
     }
 
     @Override

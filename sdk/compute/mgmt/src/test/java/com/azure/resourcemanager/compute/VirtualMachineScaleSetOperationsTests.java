@@ -32,18 +32,19 @@ import com.azure.resourcemanager.authorization.models.BuiltInRole;
 import com.azure.resourcemanager.authorization.models.RoleAssignment;
 import com.azure.resourcemanager.keyvault.models.Secret;
 import com.azure.resourcemanager.keyvault.models.Vault;
-import com.azure.resourcemanager.network.ApplicationSecurityGroup;
-import com.azure.resourcemanager.network.LoadBalancer;
-import com.azure.resourcemanager.network.LoadBalancerBackend;
-import com.azure.resourcemanager.network.LoadBalancerInboundNatRule;
-import com.azure.resourcemanager.network.LoadBalancerSkuType;
-import com.azure.resourcemanager.network.LoadBalancingRule;
-import com.azure.resourcemanager.network.Network;
-import com.azure.resourcemanager.network.NetworkSecurityGroup;
-import com.azure.resourcemanager.network.PublicIpAddress;
-import com.azure.resourcemanager.network.SecurityRuleProtocol;
-import com.azure.resourcemanager.network.VirtualMachineScaleSetNetworkInterface;
-import com.azure.resourcemanager.network.VirtualMachineScaleSetNicIpConfiguration;
+import com.azure.resourcemanager.network.models.ApplicationSecurityGroup;
+import com.azure.resourcemanager.network.models.LoadBalancer;
+import com.azure.resourcemanager.network.models.LoadBalancerBackend;
+import com.azure.resourcemanager.network.models.LoadBalancerInboundNatRule;
+import com.azure.resourcemanager.network.models.LoadBalancerSkuType;
+import com.azure.resourcemanager.network.models.LoadBalancingRule;
+import com.azure.resourcemanager.network.models.Network;
+import com.azure.resourcemanager.network.models.NetworkSecurityGroup;
+import com.azure.resourcemanager.network.models.PublicIpAddress;
+import com.azure.resourcemanager.network.models.SecurityRuleProtocol;
+import com.azure.resourcemanager.network.models.VirtualMachineScaleSetNetworkInterface;
+import com.azure.resourcemanager.network.models.VirtualMachineScaleSetNicIpConfiguration;
+import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 import com.azure.resourcemanager.resources.models.ResourceGroup;
 import com.azure.resourcemanager.resources.core.TestUtilities;
 import com.azure.resourcemanager.resources.fluentcore.arm.AvailabilityZoneId;
@@ -87,7 +88,7 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
     public void canUpdateVirtualMachineScaleSetWithExtensionProtectedSettings() throws Exception {
         final String vmssName = generateRandomResourceName("vmss", 10);
         final String uname = "jvuser";
-        final String password = "123OData!@#123";
+        final String password = password();
 
         ResourceGroup resourceGroup = this.resourceManager.resourceGroups().define(rgName).withRegion(region).create();
 
@@ -224,9 +225,9 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
     public void canCreateVirtualMachineScaleSetWithCustomScriptExtension() throws Exception {
         final String vmssName = generateRandomResourceName("vmss", 10);
         final String uname = "jvuser";
-        final String password = "123OData!@#123";
+        final String password = password();
         final String apacheInstallScript =
-            "https://raw.githubusercontent.com/Azure/azure-sdk-for-java/blob/master/sdk/compute/mgmt/src/test/resources/install_apache.sh";
+            "https://raw.githubusercontent.com/Azure/azure-sdk-for-java/master/sdk/compute/mgmt/src/test/resources/install_apache.sh";
         final String installCommand = "bash install_apache.sh Abc.123x(";
         List<String> fileUris = new ArrayList<>();
         fileUris.add(apacheInstallScript);
@@ -354,7 +355,7 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
                 .withoutPrimaryInternalLoadBalancer()
                 .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
                 .withRootUsername("jvuser")
-                .withRootPassword("123OData!@#123")
+                .withRootPassword(password())
                 .withVirtualMachinePublicIp(vmssVmDnsLabel)
                 .withExistingApplicationSecurityGroup(asg)
                 .create();
@@ -498,7 +499,7 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
                 .withoutPrimaryInternalLoadBalancer()
                 .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
                 .withRootUsername("jvuser")
-                .withRootPassword("123OData!@#123")
+                .withRootPassword(password())
                 .withSecrets(group)
                 .withNewStorageAccount(generateRandomResourceName("stg", 15))
                 .withNewStorageAccount(generateRandomResourceName("stg3", 15))
@@ -964,7 +965,7 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
         //
         // TODO: Renable the below code snippet: https://github.com/Azure/azure-libraries-for-net/issues/739
 
-        //        ServicePrincipal servicePrincipal = rbacManager
+        //        ServicePrincipal servicePrincipal = authorizationManager
         //                .servicePrincipals()
         //                .getById(virtualMachineScaleSet.systemAssignedManagedServiceIdentityPrincipalId());
         //
@@ -973,7 +974,7 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
 
         // Ensure role assigned for resource group
         //
-        PagedIterable<RoleAssignment> rgRoleAssignments = rbacManager.roleAssignments().listByScope(resourceGroup.id());
+        PagedIterable<RoleAssignment> rgRoleAssignments = authorizationManager.roleAssignments().listByScope(resourceGroup.id());
         Assertions.assertNotNull(rgRoleAssignments);
         boolean found = false;
         for (RoleAssignment roleAssignment : rgRoleAssignments) {
@@ -1052,7 +1053,7 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
         //
         // TODO: Renable the below code snippet: https://github.com/Azure/azure-libraries-for-net/issues/739
 
-        //        ServicePrincipal servicePrincipal = rbacManager
+        //        ServicePrincipal servicePrincipal = authorizationManager
         //                .servicePrincipals()
         //                .getById(virtualMachineScaleSet.systemAssignedManagedServiceIdentityPrincipalId());
         //
@@ -1061,7 +1062,7 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
 
         // Ensure role assigned for resource group
         //
-        PagedIterable<RoleAssignment> rgRoleAssignments = rbacManager.roleAssignments().listByScope(resourceGroup.id());
+        PagedIterable<RoleAssignment> rgRoleAssignments = authorizationManager.roleAssignments().listByScope(resourceGroup.id());
         Assertions.assertNotNull(rgRoleAssignments);
         boolean found = false;
         for (RoleAssignment roleAssignment : rgRoleAssignments) {
@@ -1080,7 +1081,7 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
         // Ensure role assigned for storage account
         //
         PagedIterable<RoleAssignment> stgRoleAssignments =
-            rbacManager.roleAssignments().listByScope(storageAccount.id());
+            authorizationManager.roleAssignments().listByScope(storageAccount.id());
         Assertions.assertNotNull(stgRoleAssignments);
         found = false;
         for (RoleAssignment roleAssignment : stgRoleAssignments) {
@@ -1206,6 +1207,53 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
 
         vmss.update().withMaxPrice(2000.0).apply();
         Assertions.assertEquals(vmss.billingProfile().maxPrice(), (Double) 2000.0);
+    }
+
+    @Test
+    public void canPerformSimulateEvictionOnSpotVMSSInstance() {
+        final String vmssName = generateRandomResourceName("vmss", 10);
+
+        ResourceGroup resourceGroup = this.resourceManager.resourceGroups()
+            .define(rgName)
+            .withRegion(region)
+            .create();
+
+        Network network = this.networkManager
+            .networks()
+            .define("vmssvnet")
+            .withRegion(region)
+            .withExistingResourceGroup(resourceGroup)
+            .withAddressSpace("10.0.0.0/28")
+            .withSubnet("subnet1", "10.0.0.0/28")
+            .create();
+
+        VirtualMachineScaleSet vmss = computeManager.virtualMachineScaleSets()
+            .define(vmssName)
+            .withRegion(region)
+            .withExistingResourceGroup(rgName)
+            .withSku(VirtualMachineScaleSetSkuTypes.STANDARD_D3_V2)
+            .withExistingPrimaryNetworkSubnet(network, "subnet1")
+            .withoutPrimaryInternetFacingLoadBalancer()
+            .withoutPrimaryInternalLoadBalancer()
+            .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
+            .withRootUsername("jvuser")
+            .withRootPassword("123OData!@#123")
+            .withSpotPriorityVirtualMachine(VirtualMachineEvictionPolicyTypes.DEALLOCATE)
+            .create();
+
+        PagedIterable<VirtualMachineScaleSetVM> vmInstances = vmss.virtualMachines().list();
+        for (VirtualMachineScaleSetVM instance: vmInstances) {
+            Assertions.assertTrue(instance.osDiskSizeInGB() > 0);
+            // call simulate eviction
+            vmss.virtualMachines().simulateEviction(instance.instanceId());
+        }
+
+        SdkContext.sleep(30 * 60 * 1000);
+
+        for (VirtualMachineScaleSetVM instance: vmInstances) {
+            instance.refresh();
+            Assertions.assertTrue(instance.osDiskSizeInGB() == 0);
+        }
     }
 
     private void checkVmsEqual(VirtualMachineScaleSetVM original, VirtualMachineScaleSetVM fetched) {

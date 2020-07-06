@@ -3,13 +3,13 @@
 package com.azure.resourcemanager.network.implementation;
 
 import com.azure.core.management.SubResource;
-import com.azure.resourcemanager.network.ApplicationGateway;
-import com.azure.resourcemanager.network.ApplicationGatewayFrontend;
-import com.azure.resourcemanager.network.ApplicationGatewayFrontendIpConfiguration;
-import com.azure.resourcemanager.network.IpAllocationMethod;
-import com.azure.resourcemanager.network.Network;
-import com.azure.resourcemanager.network.PublicIpAddress;
-import com.azure.resourcemanager.network.Subnet;
+import com.azure.resourcemanager.network.models.ApplicationGateway;
+import com.azure.resourcemanager.network.models.ApplicationGatewayFrontend;
+import com.azure.resourcemanager.network.models.ApplicationGatewayFrontendIpConfiguration;
+import com.azure.resourcemanager.network.models.IpAllocationMethod;
+import com.azure.resourcemanager.network.models.Network;
+import com.azure.resourcemanager.network.models.PublicIpAddress;
+import com.azure.resourcemanager.network.models.Subnet;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.ChildResourceImpl;
 
@@ -138,7 +138,7 @@ class ApplicationGatewayFrontendImpl
 
     @Override
     public Subnet getSubnet() {
-        return this.parent().manager().getAssociatedSubnet(this.inner().subnet());
+        return Utils.getAssociatedSubnet(this.parent().manager(), this.inner().subnet());
     }
 
     @Override

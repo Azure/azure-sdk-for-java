@@ -23,25 +23,29 @@ import com.azure.core.management.serializer.AzureJacksonAdapter;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.UrlBuilder;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.appservice.AppServicePlan;
-import com.azure.resourcemanager.appservice.FunctionApp;
-import com.azure.resourcemanager.appservice.FunctionAuthenticationPolicy;
-import com.azure.resourcemanager.appservice.FunctionDeploymentSlots;
-import com.azure.resourcemanager.appservice.FunctionRuntimeStack;
-import com.azure.resourcemanager.appservice.NameValuePair;
-import com.azure.resourcemanager.appservice.OperatingSystem;
-import com.azure.resourcemanager.appservice.PricingTier;
-import com.azure.resourcemanager.appservice.SkuDescription;
-import com.azure.resourcemanager.appservice.SkuName;
-import com.azure.resourcemanager.appservice.models.SiteConfigResourceInner;
-import com.azure.resourcemanager.appservice.models.SiteInner;
-import com.azure.resourcemanager.appservice.models.SiteLogsConfigInner;
+import com.azure.resourcemanager.appservice.AppServiceManager;
+import com.azure.resourcemanager.appservice.fluent.inner.SiteConfigResourceInner;
+import com.azure.resourcemanager.appservice.fluent.inner.SiteInner;
+import com.azure.resourcemanager.appservice.fluent.inner.SiteLogsConfigInner;
+import com.azure.resourcemanager.appservice.models.AppServicePlan;
+import com.azure.resourcemanager.appservice.models.FunctionApp;
+import com.azure.resourcemanager.appservice.models.FunctionAuthenticationPolicy;
+import com.azure.resourcemanager.appservice.models.FunctionDeploymentSlots;
+import com.azure.resourcemanager.appservice.models.FunctionRuntimeStack;
+import com.azure.resourcemanager.appservice.models.NameValuePair;
+import com.azure.resourcemanager.appservice.models.OperatingSystem;
+import com.azure.resourcemanager.appservice.models.PricingTier;
+import com.azure.resourcemanager.appservice.models.SkuDescription;
+import com.azure.resourcemanager.appservice.models.SkuName;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import com.azure.resourcemanager.resources.fluentcore.model.Indexable;
 import com.azure.resourcemanager.storage.models.StorageAccount;
 import com.azure.resourcemanager.storage.models.StorageAccountKey;
 import com.azure.resourcemanager.storage.models.StorageAccountSkuType;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -51,9 +55,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
-
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
 
 /** The implementation for FunctionApp. */
 class FunctionAppImpl
@@ -201,11 +202,9 @@ class FunctionAppImpl
                         .zipWith(
                             cachedAppServicePlanObservable,
                             (StorageAccountKey storageAccountKey, AppServicePlan appServicePlan) -> {
-                                String connectionString =
-                                    String
-                                        .format(
-                                            "DefaultEndpointsProtocol=https;AccountName=%s;AccountKey=%s",
-                                            storageAccountToSet.name(), storageAccountKey.value());
+                                String connectionString = com.azure.resourcemanager.resources.fluentcore.utils.Utils
+                                    .getStorageConnectionString(storageAccountToSet.name(), storageAccountKey.value(),
+                                        manager().environment());
                                 addAppSettingIfNotModified(SETTING_WEB_JOBS_STORAGE, connectionString);
                                 addAppSettingIfNotModified(SETTING_WEB_JOBS_DASHBOARD, connectionString);
                                 if (OperatingSystem.WINDOWS.equals(operatingSystem())
@@ -553,7 +552,7 @@ class FunctionAppImpl
     public Mono<Void> syncTriggersAsync() {
         return manager()
             .inner()
-            .webApps()
+            .getWebApps()
             .syncFunctionTriggersAsync(resourceGroupName(), name())
             .onErrorResume(
                 throwable -> {
@@ -768,7 +767,7 @@ class FunctionAppImpl
 
         @Override
         public Mono<AccessToken> getToken(TokenRequestContext request) {
-            return functionApp.manager().inner().webApps()
+            return functionApp.manager().inner().getWebApps()
                     .getFunctionsAdminTokenAsync(functionApp.resourceGroupName(), functionApp.name())
                     .map(token -> {
                         String jwt = new String(Base64.getUrlDecoder().decode(token.split("\\.")[1]));

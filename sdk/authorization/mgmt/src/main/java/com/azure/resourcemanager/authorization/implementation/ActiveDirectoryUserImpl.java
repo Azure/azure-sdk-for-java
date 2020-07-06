@@ -3,7 +3,7 @@
 
 package com.azure.resourcemanager.authorization.implementation;
 
-import com.azure.resourcemanager.authorization.GraphRbacManager;
+import com.azure.resourcemanager.authorization.AuthorizationManager;
 import com.azure.resourcemanager.authorization.models.ActiveDirectoryUser;
 import com.azure.resourcemanager.authorization.models.PasswordProfile;
 import com.azure.resourcemanager.authorization.models.UserCreateParameters;
@@ -17,12 +17,12 @@ import reactor.core.publisher.Mono;
 class ActiveDirectoryUserImpl extends CreatableUpdatableImpl<ActiveDirectoryUser, UserInner, ActiveDirectoryUserImpl>
     implements ActiveDirectoryUser, ActiveDirectoryUser.Definition, ActiveDirectoryUser.Update {
 
-    private final GraphRbacManager manager;
+    private final AuthorizationManager manager;
     private UserCreateParameters createParameters;
     private UserUpdateParameters updateParameters;
     private String emailAlias;
 
-    ActiveDirectoryUserImpl(UserInner innerObject, GraphRbacManager manager) {
+    ActiveDirectoryUserImpl(UserInner innerObject, AuthorizationManager manager) {
         super(innerObject.displayName(), innerObject);
         this.manager = manager;
         this.createParameters = new UserCreateParameters().withDisplayName(name()).withAccountEnabled(true);
@@ -163,7 +163,7 @@ class ActiveDirectoryUserImpl extends CreatableUpdatableImpl<ActiveDirectoryUser
     }
 
     @Override
-    public GraphRbacManager manager() {
+    public AuthorizationManager manager() {
         return this.manager;
     }
 }

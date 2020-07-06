@@ -7,13 +7,14 @@ import com.azure.ai.formrecognizer.FormRecognizerAsyncClient;
 import com.azure.ai.formrecognizer.FormRecognizerClientBuilder;
 import com.azure.ai.formrecognizer.FormRecognizerServiceVersion;
 import com.azure.ai.formrecognizer.implementation.FormRecognizerClientImpl;
+import com.azure.ai.formrecognizer.implementation.Utility;
 import com.azure.ai.formrecognizer.implementation.models.CopyAuthorizationResult;
 import com.azure.ai.formrecognizer.implementation.models.CopyOperationResult;
 import com.azure.ai.formrecognizer.implementation.models.CopyRequest;
 import com.azure.ai.formrecognizer.implementation.models.Model;
-import com.azure.ai.formrecognizer.implementation.models.OperationStatus;
 import com.azure.ai.formrecognizer.implementation.models.ModelInfo;
 import com.azure.ai.formrecognizer.implementation.models.ModelStatus;
+import com.azure.ai.formrecognizer.implementation.models.OperationStatus;
 import com.azure.ai.formrecognizer.implementation.models.TrainRequest;
 import com.azure.ai.formrecognizer.implementation.models.TrainSourceFilter;
 import com.azure.ai.formrecognizer.models.AccountProperties;
@@ -124,17 +125,19 @@ public final class FormTrainingAsyncClient {
      * Other type of content is ignored.
      * <p>The service does not support cancellation of the long running operation and returns with an
      * error message indicating absence of cancellation support.</p>
+     * See <a href="https://docs.microsoft.com/azure/cognitive-services/form-recognizer/build-training-data-set#upload-your-training-data">here</a>
+     * for information on building your own training data set.
      *
      * <p><strong>Code sample</strong></p>
      * {@codesnippet com.azure.ai.formrecognizer.training.FormTrainingAsyncClient.beginTraining#string-boolean}
      *
-     * @param trainingFilesUrl source URL parameter that is either an externally accessible Azure
+     * @param trainingFilesUrl source URL parameter that is an externally accessible Azure
      * storage blob container Uri (preferably a Shared Access Signature Uri).
      * @param useTrainingLabels boolean to specify the use of labeled files for training the model.
      *
      * @return A {@link PollerFlux} that polls the training model operation until it has completed, has failed, or has
-     * been cancelled. The completed operation returns a {@link CustomFormModel}.
-     * @throws FormRecognizerException If training fails and model with {@link ModelStatus#INVALID} is created.
+     * been cancelled. The completed operation returns the trained {@link CustomFormModel custom form model}.
+     * @throws FormRecognizerException If training fails and a model with {@link ModelStatus#INVALID} is created.
      * @throws NullPointerException If {@code trainingFilesUrl} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -148,6 +151,8 @@ public final class FormTrainingAsyncClient {
      * <p>Models are trained using documents that are of the following content type -
      * 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff'.Other type of content is ignored.
      * </p>
+     * See <a href="https://docs.microsoft.com/azure/cognitive-services/form-recognizer/build-training-data-set#upload-your-training-data">here</a>
+     * for information on building your own training data set.
      * <p>The service does not support cancellation of the long running operation and returns with an
      * error message indicating absence of cancellation support.</p>
      *
@@ -161,8 +166,8 @@ public final class FormTrainingAsyncClient {
      * @param pollInterval Duration between each poll for the operation status. If none is specified, a default of
      * 5 seconds is used.
      *
-     * @return A {@link PollerFlux} that polls the extract receipt operation until it
-     * has completed, has failed, or has been cancelled. The completed operation returns a {@link CustomFormModel}.
+     * @return A {@link PollerFlux} that polls the training model operation until it has completed, has failed, or has
+     * been cancelled. The completed operation returns the trained {@link CustomFormModel custom form model}.
      * @throws FormRecognizerException If training fails and model with {@link ModelStatus#INVALID} is created.
      * @throws NullPointerException If {@code trainingFilesUrl} is {@code null}.
      */
@@ -190,7 +195,7 @@ public final class FormTrainingAsyncClient {
      * @param modelId The UUID string format model identifier.
      *
      * @return The detailed information for the specified model.
-     * @throws NullPointerException If {@code modelId} is {@code null}.
+     * @throws IllegalArgumentException If {@code modelId} is {@code null} or empty.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CustomFormModel> getCustomModel(String modelId) {
@@ -198,7 +203,7 @@ public final class FormTrainingAsyncClient {
     }
 
     /**
-     * Get detailed information for a specified custom model id with Http response
+     * Get detailed information for a specified custom model id with Http response.
      *
      * <p><strong>Code sample</strong></p>
      * {@codesnippet com.azure.ai.formrecognizer.training.FormTrainingAsyncClient.getCustomModelWithResponse#string}
@@ -206,7 +211,7 @@ public final class FormTrainingAsyncClient {
      * @param modelId The UUID string format model identifier.
      *
      * @return A {@link Response} containing the requested {@link CustomFormModel model}.
-     * @throws NullPointerException If {@code modelId} is {@code null}.
+     * @throws IllegalArgumentException If {@code modelId} is {@code null} or empty.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<CustomFormModel>> getCustomModelWithResponse(String modelId) {
@@ -218,18 +223,22 @@ public final class FormTrainingAsyncClient {
     }
 
     Mono<Response<CustomFormModel>> getCustomModelWithResponse(String modelId, Context context) {
-        Objects.requireNonNull(modelId, "'modelId' cannot be null");
+        if (CoreUtils.isNullOrEmpty(modelId)) {
+            throw logger.logExceptionAsError(new IllegalArgumentException("'modelId' is required and cannot"
+                + " be null or empty"));
+        }
         return service.getCustomModelWithResponseAsync(UUID.fromString(modelId), true, context)
+            .onErrorMap(Utility::mapToHttpResponseExceptionIfExist)
             .map(response -> new SimpleResponse<>(response, toCustomFormModel(response.getValue())));
     }
 
     /**
-     * Get account information for all custom models.
+     * Get account information of the form recognizer account.
      *
      * <p><strong>Code sample</strong></p>
      * {@codesnippet com.azure.ai.formrecognizer.training.FormTrainingAsyncClient.getAccountProperties}
      *
-     * @return The account information.
+     * @return The requested account information details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AccountProperties> getAccountProperties() {
@@ -237,7 +246,7 @@ public final class FormTrainingAsyncClient {
     }
 
     /**
-     * Get account information.
+     * Get account information of the form recognizer account with an Http response.
      *
      * <p><strong>Code sample</strong></p>
      * {@codesnippet com.azure.ai.formrecognizer.training.FormTrainingAsyncClient.getAccountPropertiesWithResponse}
@@ -255,6 +264,7 @@ public final class FormTrainingAsyncClient {
 
     Mono<Response<AccountProperties>> getAccountPropertiesWithResponse(Context context) {
         return service.getCustomModelsWithResponseAsync(context)
+            .onErrorMap(Utility::mapToHttpResponseExceptionIfExist)
             .map(response -> new SimpleResponse<>(response,
                 new AccountProperties(response.getValue().getSummary().getCount(),
                     response.getValue().getSummary().getLimit())));
@@ -269,7 +279,7 @@ public final class FormTrainingAsyncClient {
      * @param modelId The UUID string format model identifier.
      *
      * @return An empty Mono.
-     * @throws NullPointerException If {@code modelId} is {@code null}.
+     * @throws IllegalArgumentException If {@code modelId} is {@code null} or empty.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteModel(String modelId) {
@@ -284,8 +294,8 @@ public final class FormTrainingAsyncClient {
      *
      * @param modelId The UUID string format model identifier.
      *
-     * @return A {@link Mono} containing containing status code and HTTP headers
-     * @throws NullPointerException If {@code modelId} is {@code null}.
+     * @return A {@link Response} containing the status code and HTTP headers.
+     * @throws IllegalArgumentException If {@code modelId} is {@code null} or empty.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteModelWithResponse(String modelId) {
@@ -297,14 +307,17 @@ public final class FormTrainingAsyncClient {
     }
 
     Mono<Response<Void>> deleteModelWithResponse(String modelId, Context context) {
-        Objects.requireNonNull(modelId, "'modelId' cannot be null");
-
+        if (CoreUtils.isNullOrEmpty(modelId)) {
+            throw logger.logExceptionAsError(new IllegalArgumentException("'modelId' is required and cannot"
+                + " be null or empty"));
+        }
         return service.deleteCustomModelWithResponseAsync(UUID.fromString(modelId), context)
+            .onErrorMap(Utility::mapToHttpResponseExceptionIfExist)
             .map(response -> new SimpleResponse<>(response, null));
     }
 
     /**
-     * List information for all models.
+     * List information for each model on the form recognizer account.
      *
      * <p><strong>Code sample</strong></p>
      * {@codesnippet com.azure.ai.formrecognizer.training.FormTrainingAsyncClient.listCustomModels}
@@ -322,7 +335,8 @@ public final class FormTrainingAsyncClient {
     }
 
     /**
-     * List information for all models with taking {@link Context}.
+     * List information for each model on the form recognizer account with an Http response and a specified
+     * {@link Context}.
      *
      * @param context Additional context that is passed through the Http pipeline during the service call.
      *
@@ -449,6 +463,7 @@ public final class FormTrainingAsyncClient {
         Objects.requireNonNull(resourceId, "'resourceId' cannot be null");
         Objects.requireNonNull(resourceRegion, "'resourceRegion' cannot be null");
         return service.generateModelCopyAuthorizationWithResponseAsync(context)
+            .onErrorMap(Utility::mapToHttpResponseExceptionIfExist)
             .map(response -> {
                 CopyAuthorizationResult copyAuthorizationResult = response.getValue();
                 return new SimpleResponse<>(response, new CopyAuthorization(copyAuthorizationResult.getModelId(),
@@ -462,6 +477,7 @@ public final class FormTrainingAsyncClient {
             .doOnRequest(ignoredValue -> logger.info("Listing information for all models"))
             .doOnSuccess(response -> logger.info("Listed all models"))
             .doOnError(error -> logger.warning("Failed to list all models information", error))
+            .onErrorMap(Utility::mapToHttpResponseExceptionIfExist)
             .map(res -> new PagedResponseBase<>(
                 res.getRequest(),
                 res.getStatusCode(),
@@ -480,6 +496,7 @@ public final class FormTrainingAsyncClient {
             .doOnSuccess(response -> logger.info("Retrieved the next listing page - Page {}", nextPageLink))
             .doOnError(error -> logger.warning("Failed to retrieve the next listing page - Page {}", nextPageLink,
                 error))
+            .onErrorMap(Utility::mapToHttpResponseExceptionIfExist)
             .map(res -> new PagedResponseBase<>(
                 res.getRequest(),
                 res.getStatusCode(),
@@ -505,7 +522,8 @@ public final class FormTrainingAsyncClient {
                                 : CustomFormModelStatus.fromString(copyOperationResult.getStatus().toString()),
                             copyOperationResult.getCreatedDateTime(),
                             copyOperationResult.getLastUpdatedDateTime());
-                    });
+                    })
+                    .onErrorMap(Utility::mapToHttpResponseExceptionIfExist);
             } catch (RuntimeException ex) {
                 return monoError(logger, ex);
             }
@@ -520,7 +538,8 @@ public final class FormTrainingAsyncClient {
                 UUID targetId = UUID.fromString(operationResultPollResponse.getValue().getResultId());
                 return service.getCustomModelCopyResultWithResponseAsync(UUID.fromString(modelId), targetId)
                         .flatMap(modelSimpleResponse ->
-                            processCopyModelResponse(modelSimpleResponse, operationResultPollResponse));
+                            processCopyModelResponse(modelSimpleResponse, operationResultPollResponse))
+                    .onErrorMap(Utility::mapToHttpResponseExceptionIfExist);
             } catch (HttpResponseException ex) {
                 return monoError(logger, ex);
             }
@@ -539,10 +558,11 @@ public final class FormTrainingAsyncClient {
                     .setCopyAuthorization(new CopyAuthorizationResult()
                         .setModelId(target.getModelId())
                         .setAccessToken(target.getAccessToken())
-                        .setExpirationDateTimeTicks(target.getExpiresOn()));
+                        .setExpirationDateTimeTicks(target.getExpiresOn().toEpochSecond()));
                 return service.copyCustomModelWithResponseAsync(UUID.fromString(modelId), copyRequest)
                     .map(response ->
-                        new OperationResult(parseModelId(response.getDeserializedHeaders().getOperationLocation())));
+                        new OperationResult(parseModelId(response.getDeserializedHeaders().getOperationLocation())))
+                    .onErrorMap(Utility::mapToHttpResponseExceptionIfExist);
             } catch (RuntimeException ex) {
                 return monoError(logger, ex);
             }
@@ -579,7 +599,8 @@ public final class FormTrainingAsyncClient {
                     .map(modelSimpleResponse -> {
                         throwIfModelStatusInvalid(modelSimpleResponse.getValue());
                         return toCustomFormModel(modelSimpleResponse.getValue());
-                    });
+                    })
+                    .onErrorMap(Utility::mapToHttpResponseExceptionIfExist);
             } catch (RuntimeException ex) {
                 return monoError(logger, ex);
             }
@@ -594,7 +615,8 @@ public final class FormTrainingAsyncClient {
                 UUID modelUid = UUID.fromString(operationResultPollResponse.getValue().getResultId());
                 return service.getCustomModelWithResponseAsync(modelUid, true)
                     .flatMap(modelSimpleResponse ->
-                        processTrainingModelResponse(modelSimpleResponse, operationResultPollResponse));
+                        processTrainingModelResponse(modelSimpleResponse, operationResultPollResponse))
+                    .onErrorMap(Utility::mapToHttpResponseExceptionIfExist);
             } catch (HttpResponseException e) {
                 logger.logExceptionAsError(e);
                 return Mono.just(new PollResponse<>(LongRunningOperationStatus.FAILED, null));
@@ -613,7 +635,8 @@ public final class FormTrainingAsyncClient {
                     setSourceFilter(trainSourceFilter).setUseLabelFile(useTrainingLabels);
                 return service.trainCustomModelAsyncWithResponseAsync(serviceTrainRequest)
                     .map(response ->
-                        new OperationResult(parseModelId(response.getDeserializedHeaders().getLocation())));
+                        new OperationResult(parseModelId(response.getDeserializedHeaders().getLocation())))
+                    .onErrorMap(Utility::mapToHttpResponseExceptionIfExist);
             } catch (RuntimeException ex) {
                 return monoError(logger, ex);
             }

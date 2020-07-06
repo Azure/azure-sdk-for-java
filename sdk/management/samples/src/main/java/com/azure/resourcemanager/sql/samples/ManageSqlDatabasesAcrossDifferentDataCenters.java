@@ -12,8 +12,8 @@ import com.azure.resourcemanager.Azure;
 import com.azure.resourcemanager.compute.models.KnownWindowsVirtualMachineImage;
 import com.azure.resourcemanager.compute.models.VirtualMachine;
 import com.azure.resourcemanager.compute.models.VirtualMachineSizeTypes;
-import com.azure.resourcemanager.network.Network;
-import com.azure.resourcemanager.network.PublicIpAddress;
+import com.azure.resourcemanager.network.models.Network;
+import com.azure.resourcemanager.network.models.PublicIpAddress;
 import com.azure.resourcemanager.resources.fluentcore.arm.Region;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import com.azure.resourcemanager.resources.fluentcore.profile.AzureProfile;
@@ -52,8 +52,7 @@ public final class ManageSqlDatabasesAcrossDifferentDataCenters {
         final String sqlServerName = azure.sdkContext().randomResourceName("sqlserver", 20);
         final String rgName =  azure.sdkContext().randomResourceName("rgRSSDRE", 20);
         final String administratorLogin = "sqladmin3423";
-        // [SuppressMessage("Microsoft.Security", "CS002:SecretInNextLine", Justification="Serves as an example, not for deployment. Please change when using this in your code.")]
-        final String administratorPassword = "myS3cureP@ssword";
+        final String administratorPassword = Utils.password();
         final String slaveSqlServer1Name =  azure.sdkContext().randomResourceName("slave1sql", 20);
         final String slaveSqlServer2Name =  azure.sdkContext().randomResourceName("slave2sql", 20);
         final String databaseName = "mydatabase";

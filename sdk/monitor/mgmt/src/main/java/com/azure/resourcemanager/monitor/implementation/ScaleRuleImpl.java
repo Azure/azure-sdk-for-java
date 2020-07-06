@@ -3,15 +3,15 @@
 
 package com.azure.resourcemanager.monitor.implementation;
 
-import com.azure.resourcemanager.monitor.ComparisonOperationType;
-import com.azure.resourcemanager.monitor.MetricStatisticType;
-import com.azure.resourcemanager.monitor.MetricTrigger;
-import com.azure.resourcemanager.monitor.ScaleAction;
-import com.azure.resourcemanager.monitor.ScaleDirection;
-import com.azure.resourcemanager.monitor.ScaleRule;
-import com.azure.resourcemanager.monitor.ScaleType;
-import com.azure.resourcemanager.monitor.TimeAggregationType;
-import com.azure.resourcemanager.monitor.models.ScaleRuleInner;
+import com.azure.resourcemanager.monitor.models.ComparisonOperationType;
+import com.azure.resourcemanager.monitor.models.MetricStatisticType;
+import com.azure.resourcemanager.monitor.models.MetricTrigger;
+import com.azure.resourcemanager.monitor.models.ScaleAction;
+import com.azure.resourcemanager.monitor.models.ScaleDirection;
+import com.azure.resourcemanager.monitor.models.ScaleRule;
+import com.azure.resourcemanager.monitor.models.ScaleType;
+import com.azure.resourcemanager.monitor.models.TimeAggregationType;
+import com.azure.resourcemanager.monitor.fluent.inner.ScaleRuleInner;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.WrapperImpl;
 import java.time.Duration;
 

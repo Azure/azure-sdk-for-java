@@ -4,7 +4,7 @@
 package com.azure.resourcemanager.authorization.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.resourcemanager.authorization.GraphRbacManager;
+import com.azure.resourcemanager.authorization.AuthorizationManager;
 import com.azure.resourcemanager.authorization.fluent.UsersClient;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsGettingById;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsGettingByName;
@@ -22,6 +22,6 @@ public interface ActiveDirectoryUsers
         SupportsListing<ActiveDirectoryUser>,
         SupportsCreating<ActiveDirectoryUser.DefinitionStages.Blank>,
         SupportsDeletingById,
-        HasManager<GraphRbacManager>,
+        HasManager<AuthorizationManager>,
         HasInner<UsersClient> {
 }

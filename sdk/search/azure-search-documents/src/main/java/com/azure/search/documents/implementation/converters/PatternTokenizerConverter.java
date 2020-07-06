@@ -22,10 +22,7 @@ public final class PatternTokenizerConverter {
         if (obj == null) {
             return null;
         }
-        PatternTokenizer patternTokenizer = new PatternTokenizer();
-
-        String name = obj.getName();
-        patternTokenizer.setName(name);
+        PatternTokenizer patternTokenizer = new PatternTokenizer(obj.getName());
 
         String pattern = obj.getPattern();
         patternTokenizer.setPattern(pattern);
@@ -49,10 +46,7 @@ public final class PatternTokenizerConverter {
             return null;
         }
         com.azure.search.documents.indexes.implementation.models.PatternTokenizer patternTokenizer =
-            new com.azure.search.documents.indexes.implementation.models.PatternTokenizer();
-
-        String name = obj.getName();
-        patternTokenizer.setName(name);
+            new com.azure.search.documents.indexes.implementation.models.PatternTokenizer(obj.getName());
 
         String pattern = obj.getPattern();
         patternTokenizer.setPattern(pattern);
@@ -64,6 +58,7 @@ public final class PatternTokenizerConverter {
 
         Integer group = obj.getGroup();
         patternTokenizer.setGroup(group);
+        patternTokenizer.validate();
         return patternTokenizer;
     }
 

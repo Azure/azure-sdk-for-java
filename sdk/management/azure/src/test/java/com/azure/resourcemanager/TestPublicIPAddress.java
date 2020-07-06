@@ -2,12 +2,12 @@
 // Licensed under the MIT License.
 package com.azure.resourcemanager;
 
-import com.azure.resourcemanager.network.LoadBalancer;
-import com.azure.resourcemanager.network.LoadBalancerPublicFrontend;
-import com.azure.resourcemanager.network.NetworkInterface;
-import com.azure.resourcemanager.network.NicIpConfiguration;
-import com.azure.resourcemanager.network.PublicIpAddress;
-import com.azure.resourcemanager.network.PublicIpAddresses;
+import com.azure.resourcemanager.network.models.LoadBalancer;
+import com.azure.resourcemanager.network.models.LoadBalancerPublicFrontend;
+import com.azure.resourcemanager.network.models.NetworkInterface;
+import com.azure.resourcemanager.network.models.NicIpConfiguration;
+import com.azure.resourcemanager.network.models.PublicIpAddress;
+import com.azure.resourcemanager.network.models.PublicIpAddresses;
 import com.azure.resourcemanager.resources.fluentcore.arm.Region;
 import org.junit.jupiter.api.Assertions;
 

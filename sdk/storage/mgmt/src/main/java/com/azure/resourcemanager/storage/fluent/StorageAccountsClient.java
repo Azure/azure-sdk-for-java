@@ -31,8 +31,8 @@ import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.util.polling.AsyncPollResponse;
 import com.azure.core.util.polling.PollerFlux;
+import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsListing;
@@ -285,50 +285,6 @@ public final class StorageAccountsClient
             @PathParam("accountName") String accountName,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
-            Context context);
-
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage"
-                + "/storageAccounts/{accountName}")
-        @ExpectedResponses({200, 202})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<StorageAccountInner>> beginCreateWithoutPolling(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("accountName") String accountName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @BodyParam("application/json") StorageAccountCreateParameters parameters,
-            Context context);
-
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage"
-                + "/storageAccounts/{accountName}/failover")
-        @ExpectedResponses({200, 202})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> beginFailoverWithoutPolling(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("accountName") String accountName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            Context context);
-
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage"
-                + "/storageAccounts/{accountName}/restoreBlobRanges")
-        @ExpectedResponses({200, 202})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<BlobRestoreStatusInner>> beginRestoreBlobRangesWithoutPolling(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("accountName") String accountName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @BodyParam("application/json") BlobRestoreParameters parameters,
             Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
@@ -623,7 +579,7 @@ public final class StorageAccountsClient
      * @return the storage account.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<StorageAccountInner>, StorageAccountInner> beginCreate(
+    public PollerFlux<PollResult<StorageAccountInner>, StorageAccountInner> beginCreateAsync(
         String resourceGroupName, String accountName, StorageAccountCreateParameters parameters) {
         Mono<Response<Flux<ByteBuffer>>> mono = createWithResponseAsync(resourceGroupName, accountName, parameters);
         return this
@@ -650,7 +606,7 @@ public final class StorageAccountsClient
      * @return the storage account.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<StorageAccountInner>, StorageAccountInner> beginCreate(
+    public PollerFlux<PollResult<StorageAccountInner>, StorageAccountInner> beginCreateAsync(
         String resourceGroupName, String accountName, StorageAccountCreateParameters parameters, Context context) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             createWithResponseAsync(resourceGroupName, accountName, parameters, context);
@@ -677,15 +633,56 @@ public final class StorageAccountsClient
      * @return the storage account.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<StorageAccountInner>, StorageAccountInner> beginCreate(
+        String resourceGroupName, String accountName, StorageAccountCreateParameters parameters) {
+        return beginCreateAsync(resourceGroupName, accountName, parameters).getSyncPoller();
+    }
+
+    /**
+     * Asynchronously creates a new storage account with the specified parameters. If an account is already created and
+     * a subsequent create request is issued with different properties, the account properties will be updated. If an
+     * account is already created and a subsequent create or update request is issued with the exact same set of
+     * properties, the request will succeed.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
+     *     insensitive.
+     * @param accountName The name of the storage account within the specified resource group. Storage account names
+     *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * @param parameters The parameters used when creating a storage account.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the storage account.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<StorageAccountInner>, StorageAccountInner> beginCreate(
+        String resourceGroupName, String accountName, StorageAccountCreateParameters parameters, Context context) {
+        return beginCreateAsync(resourceGroupName, accountName, parameters, context).getSyncPoller();
+    }
+
+    /**
+     * Asynchronously creates a new storage account with the specified parameters. If an account is already created and
+     * a subsequent create request is issued with different properties, the account properties will be updated. If an
+     * account is already created and a subsequent create or update request is issued with the exact same set of
+     * properties, the request will succeed.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
+     *     insensitive.
+     * @param accountName The name of the storage account within the specified resource group. Storage account names
+     *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * @param parameters The parameters used when creating a storage account.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the storage account.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<StorageAccountInner> createAsync(
         String resourceGroupName, String accountName, StorageAccountCreateParameters parameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono = createWithResponseAsync(resourceGroupName, accountName, parameters);
-        return this
-            .client
-            .<StorageAccountInner, StorageAccountInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), StorageAccountInner.class, StorageAccountInner.class)
+        return beginCreateAsync(resourceGroupName, accountName, parameters)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -708,14 +705,9 @@ public final class StorageAccountsClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<StorageAccountInner> createAsync(
         String resourceGroupName, String accountName, StorageAccountCreateParameters parameters, Context context) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createWithResponseAsync(resourceGroupName, accountName, parameters, context);
-        return this
-            .client
-            .<StorageAccountInner, StorageAccountInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), StorageAccountInner.class, StorageAccountInner.class)
+        return beginCreateAsync(resourceGroupName, accountName, parameters, context)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -2654,7 +2646,7 @@ public final class StorageAccountsClient
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<Void>, Void> beginFailover(String resourceGroupName, String accountName) {
+    public PollerFlux<PollResult<Void>, Void> beginFailoverAsync(String resourceGroupName, String accountName) {
         Mono<Response<Flux<ByteBuffer>>> mono = failoverWithResponseAsync(resourceGroupName, accountName);
         return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
     }
@@ -2675,7 +2667,7 @@ public final class StorageAccountsClient
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<Void>, Void> beginFailover(
+    public PollerFlux<PollResult<Void>, Void> beginFailoverAsync(
         String resourceGroupName, String accountName, Context context) {
         Mono<Response<Flux<ByteBuffer>>> mono = failoverWithResponseAsync(resourceGroupName, accountName, context);
         return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
@@ -2696,13 +2688,48 @@ public final class StorageAccountsClient
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<Void>, Void> beginFailover(String resourceGroupName, String accountName) {
+        return beginFailoverAsync(resourceGroupName, accountName).getSyncPoller();
+    }
+
+    /**
+     * Failover request can be triggered for a storage account in case of availability issues. The failover occurs from
+     * the storage account's primary cluster to secondary cluster for RA-GRS accounts. The secondary cluster will become
+     * primary after failover.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
+     *     insensitive.
+     * @param accountName The name of the storage account within the specified resource group. Storage account names
+     *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<Void>, Void> beginFailover(
+        String resourceGroupName, String accountName, Context context) {
+        return beginFailoverAsync(resourceGroupName, accountName, context).getSyncPoller();
+    }
+
+    /**
+     * Failover request can be triggered for a storage account in case of availability issues. The failover occurs from
+     * the storage account's primary cluster to secondary cluster for RA-GRS accounts. The secondary cluster will become
+     * primary after failover.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
+     *     insensitive.
+     * @param accountName The name of the storage account within the specified resource group. Storage account names
+     *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> failoverAsync(String resourceGroupName, String accountName) {
-        Mono<Response<Flux<ByteBuffer>>> mono = failoverWithResponseAsync(resourceGroupName, accountName);
-        return this
-            .client
-            .<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class)
-            .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+        return beginFailoverAsync(resourceGroupName, accountName).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -2722,12 +2749,9 @@ public final class StorageAccountsClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> failoverAsync(String resourceGroupName, String accountName, Context context) {
-        Mono<Response<Flux<ByteBuffer>>> mono = failoverWithResponseAsync(resourceGroupName, accountName, context);
-        return this
-            .client
-            .<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class)
+        return beginFailoverAsync(resourceGroupName, accountName, context)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -2907,7 +2931,7 @@ public final class StorageAccountsClient
      * @return blob restore status.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<BlobRestoreStatusInner>, BlobRestoreStatusInner> beginRestoreBlobRanges(
+    public PollerFlux<PollResult<BlobRestoreStatusInner>, BlobRestoreStatusInner> beginRestoreBlobRangesAsync(
         String resourceGroupName, String accountName, OffsetDateTime timeToRestore, List<BlobRestoreRange> blobRanges) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             restoreBlobRangesWithResponseAsync(resourceGroupName, accountName, timeToRestore, blobRanges);
@@ -2933,7 +2957,7 @@ public final class StorageAccountsClient
      * @return blob restore status.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<BlobRestoreStatusInner>, BlobRestoreStatusInner> beginRestoreBlobRanges(
+    public PollerFlux<PollResult<BlobRestoreStatusInner>, BlobRestoreStatusInner> beginRestoreBlobRangesAsync(
         String resourceGroupName,
         String accountName,
         OffsetDateTime timeToRestore,
@@ -2962,16 +2986,57 @@ public final class StorageAccountsClient
      * @return blob restore status.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<BlobRestoreStatusInner>, BlobRestoreStatusInner> beginRestoreBlobRanges(
+        String resourceGroupName, String accountName, OffsetDateTime timeToRestore, List<BlobRestoreRange> blobRanges) {
+        return beginRestoreBlobRangesAsync(resourceGroupName, accountName, timeToRestore, blobRanges).getSyncPoller();
+    }
+
+    /**
+     * Restore blobs in the specified blob ranges.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
+     *     insensitive.
+     * @param accountName The name of the storage account within the specified resource group. Storage account names
+     *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * @param timeToRestore Restore blob to the specified time.
+     * @param blobRanges Blob ranges to restore.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return blob restore status.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<BlobRestoreStatusInner>, BlobRestoreStatusInner> beginRestoreBlobRanges(
+        String resourceGroupName,
+        String accountName,
+        OffsetDateTime timeToRestore,
+        List<BlobRestoreRange> blobRanges,
+        Context context) {
+        return beginRestoreBlobRangesAsync(resourceGroupName, accountName, timeToRestore, blobRanges, context)
+            .getSyncPoller();
+    }
+
+    /**
+     * Restore blobs in the specified blob ranges.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
+     *     insensitive.
+     * @param accountName The name of the storage account within the specified resource group. Storage account names
+     *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * @param timeToRestore Restore blob to the specified time.
+     * @param blobRanges Blob ranges to restore.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return blob restore status.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BlobRestoreStatusInner> restoreBlobRangesAsync(
         String resourceGroupName, String accountName, OffsetDateTime timeToRestore, List<BlobRestoreRange> blobRanges) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            restoreBlobRangesWithResponseAsync(resourceGroupName, accountName, timeToRestore, blobRanges);
-        return this
-            .client
-            .<BlobRestoreStatusInner, BlobRestoreStatusInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), BlobRestoreStatusInner.class, BlobRestoreStatusInner.class)
+        return beginRestoreBlobRangesAsync(resourceGroupName, accountName, timeToRestore, blobRanges)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -2996,14 +3061,9 @@ public final class StorageAccountsClient
         OffsetDateTime timeToRestore,
         List<BlobRestoreRange> blobRanges,
         Context context) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            restoreBlobRangesWithResponseAsync(resourceGroupName, accountName, timeToRestore, blobRanges, context);
-        return this
-            .client
-            .<BlobRestoreStatusInner, BlobRestoreStatusInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), BlobRestoreStatusInner.class, BlobRestoreStatusInner.class)
+        return beginRestoreBlobRangesAsync(resourceGroupName, accountName, timeToRestore, blobRanges, context)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -3212,636 +3272,6 @@ public final class StorageAccountsClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void revokeUserDelegationKeys(String resourceGroupName, String accountName, Context context) {
         revokeUserDelegationKeysAsync(resourceGroupName, accountName, context).block();
-    }
-
-    /**
-     * Asynchronously creates a new storage account with the specified parameters. If an account is already created and
-     * a subsequent create request is issued with different properties, the account properties will be updated. If an
-     * account is already created and a subsequent create or update request is issued with the exact same set of
-     * properties, the request will succeed.
-     *
-     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
-     * @param accountName The name of the storage account within the specified resource group. Storage account names
-     *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @param parameters The parameters used when creating a storage account.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the storage account.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<StorageAccountInner>> beginCreateWithoutPollingWithResponseAsync(
-        String resourceGroupName, String accountName, StorageAccountCreateParameters parameters) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (accountName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (parameters == null) {
-            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
-        } else {
-            parameters.validate();
-        }
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .beginCreateWithoutPolling(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            accountName,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            parameters,
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
-
-    /**
-     * Asynchronously creates a new storage account with the specified parameters. If an account is already created and
-     * a subsequent create request is issued with different properties, the account properties will be updated. If an
-     * account is already created and a subsequent create or update request is issued with the exact same set of
-     * properties, the request will succeed.
-     *
-     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
-     * @param accountName The name of the storage account within the specified resource group. Storage account names
-     *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @param parameters The parameters used when creating a storage account.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the storage account.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<StorageAccountInner>> beginCreateWithoutPollingWithResponseAsync(
-        String resourceGroupName, String accountName, StorageAccountCreateParameters parameters, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (accountName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (parameters == null) {
-            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
-        } else {
-            parameters.validate();
-        }
-        return service
-            .beginCreateWithoutPolling(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                accountName,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                parameters,
-                context);
-    }
-
-    /**
-     * Asynchronously creates a new storage account with the specified parameters. If an account is already created and
-     * a subsequent create request is issued with different properties, the account properties will be updated. If an
-     * account is already created and a subsequent create or update request is issued with the exact same set of
-     * properties, the request will succeed.
-     *
-     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
-     * @param accountName The name of the storage account within the specified resource group. Storage account names
-     *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @param parameters The parameters used when creating a storage account.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the storage account.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<StorageAccountInner> beginCreateWithoutPollingAsync(
-        String resourceGroupName, String accountName, StorageAccountCreateParameters parameters) {
-        return beginCreateWithoutPollingWithResponseAsync(resourceGroupName, accountName, parameters)
-            .flatMap(
-                (Response<StorageAccountInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Asynchronously creates a new storage account with the specified parameters. If an account is already created and
-     * a subsequent create request is issued with different properties, the account properties will be updated. If an
-     * account is already created and a subsequent create or update request is issued with the exact same set of
-     * properties, the request will succeed.
-     *
-     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
-     * @param accountName The name of the storage account within the specified resource group. Storage account names
-     *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @param parameters The parameters used when creating a storage account.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the storage account.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<StorageAccountInner> beginCreateWithoutPollingAsync(
-        String resourceGroupName, String accountName, StorageAccountCreateParameters parameters, Context context) {
-        return beginCreateWithoutPollingWithResponseAsync(resourceGroupName, accountName, parameters, context)
-            .flatMap(
-                (Response<StorageAccountInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Asynchronously creates a new storage account with the specified parameters. If an account is already created and
-     * a subsequent create request is issued with different properties, the account properties will be updated. If an
-     * account is already created and a subsequent create or update request is issued with the exact same set of
-     * properties, the request will succeed.
-     *
-     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
-     * @param accountName The name of the storage account within the specified resource group. Storage account names
-     *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @param parameters The parameters used when creating a storage account.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the storage account.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public StorageAccountInner beginCreateWithoutPolling(
-        String resourceGroupName, String accountName, StorageAccountCreateParameters parameters) {
-        return beginCreateWithoutPollingAsync(resourceGroupName, accountName, parameters).block();
-    }
-
-    /**
-     * Asynchronously creates a new storage account with the specified parameters. If an account is already created and
-     * a subsequent create request is issued with different properties, the account properties will be updated. If an
-     * account is already created and a subsequent create or update request is issued with the exact same set of
-     * properties, the request will succeed.
-     *
-     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
-     * @param accountName The name of the storage account within the specified resource group. Storage account names
-     *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @param parameters The parameters used when creating a storage account.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the storage account.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public StorageAccountInner beginCreateWithoutPolling(
-        String resourceGroupName, String accountName, StorageAccountCreateParameters parameters, Context context) {
-        return beginCreateWithoutPollingAsync(resourceGroupName, accountName, parameters, context).block();
-    }
-
-    /**
-     * Failover request can be triggered for a storage account in case of availability issues. The failover occurs from
-     * the storage account's primary cluster to secondary cluster for RA-GRS accounts. The secondary cluster will become
-     * primary after failover.
-     *
-     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
-     * @param accountName The name of the storage account within the specified resource group. Storage account names
-     *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> beginFailoverWithoutPollingWithResponseAsync(
-        String resourceGroupName, String accountName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (accountName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .beginFailoverWithoutPolling(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            accountName,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
-
-    /**
-     * Failover request can be triggered for a storage account in case of availability issues. The failover occurs from
-     * the storage account's primary cluster to secondary cluster for RA-GRS accounts. The secondary cluster will become
-     * primary after failover.
-     *
-     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
-     * @param accountName The name of the storage account within the specified resource group. Storage account names
-     *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> beginFailoverWithoutPollingWithResponseAsync(
-        String resourceGroupName, String accountName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (accountName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        return service
-            .beginFailoverWithoutPolling(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                accountName,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                context);
-    }
-
-    /**
-     * Failover request can be triggered for a storage account in case of availability issues. The failover occurs from
-     * the storage account's primary cluster to secondary cluster for RA-GRS accounts. The secondary cluster will become
-     * primary after failover.
-     *
-     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
-     * @param accountName The name of the storage account within the specified resource group. Storage account names
-     *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> beginFailoverWithoutPollingAsync(String resourceGroupName, String accountName) {
-        return beginFailoverWithoutPollingWithResponseAsync(resourceGroupName, accountName)
-            .flatMap((Response<Void> res) -> Mono.empty());
-    }
-
-    /**
-     * Failover request can be triggered for a storage account in case of availability issues. The failover occurs from
-     * the storage account's primary cluster to secondary cluster for RA-GRS accounts. The secondary cluster will become
-     * primary after failover.
-     *
-     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
-     * @param accountName The name of the storage account within the specified resource group. Storage account names
-     *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> beginFailoverWithoutPollingAsync(String resourceGroupName, String accountName, Context context) {
-        return beginFailoverWithoutPollingWithResponseAsync(resourceGroupName, accountName, context)
-            .flatMap((Response<Void> res) -> Mono.empty());
-    }
-
-    /**
-     * Failover request can be triggered for a storage account in case of availability issues. The failover occurs from
-     * the storage account's primary cluster to secondary cluster for RA-GRS accounts. The secondary cluster will become
-     * primary after failover.
-     *
-     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
-     * @param accountName The name of the storage account within the specified resource group. Storage account names
-     *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void beginFailoverWithoutPolling(String resourceGroupName, String accountName) {
-        beginFailoverWithoutPollingAsync(resourceGroupName, accountName).block();
-    }
-
-    /**
-     * Failover request can be triggered for a storage account in case of availability issues. The failover occurs from
-     * the storage account's primary cluster to secondary cluster for RA-GRS accounts. The secondary cluster will become
-     * primary after failover.
-     *
-     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
-     * @param accountName The name of the storage account within the specified resource group. Storage account names
-     *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void beginFailoverWithoutPolling(String resourceGroupName, String accountName, Context context) {
-        beginFailoverWithoutPollingAsync(resourceGroupName, accountName, context).block();
-    }
-
-    /**
-     * Restore blobs in the specified blob ranges.
-     *
-     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
-     * @param accountName The name of the storage account within the specified resource group. Storage account names
-     *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @param timeToRestore Restore blob to the specified time.
-     * @param blobRanges Blob ranges to restore.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return blob restore status.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BlobRestoreStatusInner>> beginRestoreBlobRangesWithoutPollingWithResponseAsync(
-        String resourceGroupName, String accountName, OffsetDateTime timeToRestore, List<BlobRestoreRange> blobRanges) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (accountName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (timeToRestore == null) {
-            return Mono.error(new IllegalArgumentException("Parameter timeToRestore is required and cannot be null."));
-        }
-        if (blobRanges == null) {
-            return Mono.error(new IllegalArgumentException("Parameter blobRanges is required and cannot be null."));
-        } else {
-            blobRanges.forEach(e -> e.validate());
-        }
-        BlobRestoreParameters parameters = new BlobRestoreParameters();
-        parameters.withTimeToRestore(timeToRestore);
-        parameters.withBlobRanges(blobRanges);
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .beginRestoreBlobRangesWithoutPolling(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            accountName,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            parameters,
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
-
-    /**
-     * Restore blobs in the specified blob ranges.
-     *
-     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
-     * @param accountName The name of the storage account within the specified resource group. Storage account names
-     *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @param timeToRestore Restore blob to the specified time.
-     * @param blobRanges Blob ranges to restore.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return blob restore status.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BlobRestoreStatusInner>> beginRestoreBlobRangesWithoutPollingWithResponseAsync(
-        String resourceGroupName,
-        String accountName,
-        OffsetDateTime timeToRestore,
-        List<BlobRestoreRange> blobRanges,
-        Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (accountName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (timeToRestore == null) {
-            return Mono.error(new IllegalArgumentException("Parameter timeToRestore is required and cannot be null."));
-        }
-        if (blobRanges == null) {
-            return Mono.error(new IllegalArgumentException("Parameter blobRanges is required and cannot be null."));
-        } else {
-            blobRanges.forEach(e -> e.validate());
-        }
-        BlobRestoreParameters parameters = new BlobRestoreParameters();
-        parameters.withTimeToRestore(timeToRestore);
-        parameters.withBlobRanges(blobRanges);
-        return service
-            .beginRestoreBlobRangesWithoutPolling(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                accountName,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                parameters,
-                context);
-    }
-
-    /**
-     * Restore blobs in the specified blob ranges.
-     *
-     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
-     * @param accountName The name of the storage account within the specified resource group. Storage account names
-     *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @param timeToRestore Restore blob to the specified time.
-     * @param blobRanges Blob ranges to restore.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return blob restore status.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<BlobRestoreStatusInner> beginRestoreBlobRangesWithoutPollingAsync(
-        String resourceGroupName, String accountName, OffsetDateTime timeToRestore, List<BlobRestoreRange> blobRanges) {
-        return beginRestoreBlobRangesWithoutPollingWithResponseAsync(
-                resourceGroupName, accountName, timeToRestore, blobRanges)
-            .flatMap(
-                (Response<BlobRestoreStatusInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Restore blobs in the specified blob ranges.
-     *
-     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
-     * @param accountName The name of the storage account within the specified resource group. Storage account names
-     *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @param timeToRestore Restore blob to the specified time.
-     * @param blobRanges Blob ranges to restore.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return blob restore status.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<BlobRestoreStatusInner> beginRestoreBlobRangesWithoutPollingAsync(
-        String resourceGroupName,
-        String accountName,
-        OffsetDateTime timeToRestore,
-        List<BlobRestoreRange> blobRanges,
-        Context context) {
-        return beginRestoreBlobRangesWithoutPollingWithResponseAsync(
-                resourceGroupName, accountName, timeToRestore, blobRanges, context)
-            .flatMap(
-                (Response<BlobRestoreStatusInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Restore blobs in the specified blob ranges.
-     *
-     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
-     * @param accountName The name of the storage account within the specified resource group. Storage account names
-     *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @param timeToRestore Restore blob to the specified time.
-     * @param blobRanges Blob ranges to restore.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return blob restore status.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public BlobRestoreStatusInner beginRestoreBlobRangesWithoutPolling(
-        String resourceGroupName, String accountName, OffsetDateTime timeToRestore, List<BlobRestoreRange> blobRanges) {
-        return beginRestoreBlobRangesWithoutPollingAsync(resourceGroupName, accountName, timeToRestore, blobRanges)
-            .block();
-    }
-
-    /**
-     * Restore blobs in the specified blob ranges.
-     *
-     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
-     * @param accountName The name of the storage account within the specified resource group. Storage account names
-     *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @param timeToRestore Restore blob to the specified time.
-     * @param blobRanges Blob ranges to restore.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return blob restore status.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public BlobRestoreStatusInner beginRestoreBlobRangesWithoutPolling(
-        String resourceGroupName,
-        String accountName,
-        OffsetDateTime timeToRestore,
-        List<BlobRestoreRange> blobRanges,
-        Context context) {
-        return beginRestoreBlobRangesWithoutPollingAsync(
-                resourceGroupName, accountName, timeToRestore, blobRanges, context)
-            .block();
     }
 
     /**

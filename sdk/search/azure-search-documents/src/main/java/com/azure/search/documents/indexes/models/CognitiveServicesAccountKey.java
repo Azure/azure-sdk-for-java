@@ -4,6 +4,7 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -22,6 +23,17 @@ public final class CognitiveServicesAccountKey extends CognitiveServicesAccount 
      */
     @JsonProperty(value = "key", required = true)
     private String key;
+
+    /**
+     * Constructor of {@link CognitiveServicesAccountKey}.
+     *
+     * @param key The key used to provision the cognitive service resource attached to a
+     * skillset.
+     */
+    @JsonCreator
+    public CognitiveServicesAccountKey(@JsonProperty(value = "key", required = true) String key) {
+        this.key = key;
+    }
 
     /**
      * Get the key property: The key used to provision the cognitive service

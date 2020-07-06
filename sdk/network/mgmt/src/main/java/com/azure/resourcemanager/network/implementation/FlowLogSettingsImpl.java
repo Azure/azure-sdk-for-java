@@ -2,9 +2,9 @@
 // Licensed under the MIT License.
 package com.azure.resourcemanager.network.implementation;
 
-import com.azure.resourcemanager.network.FlowLogSettings;
-import com.azure.resourcemanager.network.RetentionPolicyParameters;
-import com.azure.resourcemanager.network.models.FlowLogInformationInner;
+import com.azure.resourcemanager.network.models.FlowLogSettings;
+import com.azure.resourcemanager.network.models.RetentionPolicyParameters;
+import com.azure.resourcemanager.network.fluent.inner.FlowLogInformationInner;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.RefreshableWrapperImpl;
 import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
 import reactor.core.publisher.Mono;
@@ -32,7 +32,7 @@ class FlowLogSettingsImpl extends RefreshableWrapperImpl<FlowLogInformationInner
             .parent()
             .manager()
             .inner()
-            .networkWatchers()
+            .getNetworkWatchers()
             .setFlowLogConfigurationAsync(parent().resourceGroupName(), parent().name(), this.inner())
             .map(
                 flowLogInformationInner ->
@@ -101,7 +101,7 @@ class FlowLogSettingsImpl extends RefreshableWrapperImpl<FlowLogInformationInner
             .parent()
             .manager()
             .inner()
-            .networkWatchers()
+            .getNetworkWatchers()
             .getFlowLogStatusAsync(parent().resourceGroupName(), parent().name(), inner().targetResourceId());
     }
 

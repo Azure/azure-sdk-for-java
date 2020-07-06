@@ -10,8 +10,12 @@ import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonToken;
 import com.google.gson.stream.JsonWriter;
 import org.junit.jupiter.api.Test;
+import reactor.test.StepVerifier;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.Objects;
 
@@ -33,7 +37,11 @@ public class GsonJsonSerializerTests {
         String json = "{\"name\":null,\"age\":50}";
         Person expected = new Person(null, 50);
 
-        assertEquals(expected, DEFAULT_SERIALIZER.deserialize(json.getBytes(StandardCharsets.UTF_8), Person.class));
+        InputStream jsonStream = new ByteArrayInputStream(json.getBytes(StandardCharsets.UTF_8));
+
+        StepVerifier.create(DEFAULT_SERIALIZER.deserialize(jsonStream, Person.class))
+            .assertNext(actual -> assertEquals(expected, actual))
+            .verifyComplete();
     }
 
     @Test
@@ -41,16 +49,24 @@ public class GsonJsonSerializerTests {
         String json = "{\"name\":null,\"age\":50}";
         Person expected = new Person("John Doe", 50);
 
-        assertEquals(expected, CUSTOM_SERIALIZER.deserialize(json.getBytes(StandardCharsets.UTF_8), Person.class));
+        InputStream jsonStream = new ByteArrayInputStream(json.getBytes(StandardCharsets.UTF_8));
+
+        StepVerifier.create(CUSTOM_SERIALIZER.deserialize(jsonStream, Person.class))
+            .assertNext(actual -> assertEquals(expected, actual))
+            .verifyComplete();
     }
 
     @Test
     public void deserializeWithDefaultSerializerToJsonObject() {
         String json = "{\"name\":null,\"age\":50}";
 
-        JsonObject jsonObject = DEFAULT_SERIALIZER.deserialize(json.getBytes(StandardCharsets.UTF_8), JsonObject.class);
-        assertEquals(50, jsonObject.get("age").getAsInt());
-        assertTrue(jsonObject.get("name").isJsonNull());
+        InputStream jsonStream = new ByteArrayInputStream(json.getBytes(StandardCharsets.UTF_8));
+
+        StepVerifier.create(DEFAULT_SERIALIZER.deserialize(jsonStream, JsonObject.class))
+            .assertNext(actual -> {
+                assertEquals(50, actual.get("age").getAsInt());
+                assertTrue(actual.get("name").isJsonNull());
+            }).verifyComplete();
     }
 
     @Test
@@ -58,7 +74,11 @@ public class GsonJsonSerializerTests {
         Person person = new Person(null, 50);
         byte[] expected = "{\"age\":50}".getBytes(StandardCharsets.UTF_8);
 
-        assertArrayEquals(expected, DEFAULT_SERIALIZER.serialize(person));
+        StepVerifier.create(DEFAULT_SERIALIZER.serialize(new ByteArrayOutputStream(), person))
+            .assertNext(actual -> {
+                assertTrue(actual != null);
+                assertArrayEquals(expected, actual.toByteArray());
+            }).verifyComplete();
     }
 
     @Test
@@ -66,7 +86,11 @@ public class GsonJsonSerializerTests {
         Person person = new Person(null, 50);
         byte[] expected = "{\"name\":\"John Doe\",\"age\":50}".getBytes(StandardCharsets.UTF_8);
 
-        assertArrayEquals(expected, CUSTOM_SERIALIZER.serialize(person));
+        StepVerifier.create(CUSTOM_SERIALIZER.serialize(new ByteArrayOutputStream(), person))
+            .assertNext(actual -> {
+                assertTrue(actual != null);
+                assertArrayEquals(expected, actual.toByteArray());
+            }).verifyComplete();
     }
 
     public static final class Person {

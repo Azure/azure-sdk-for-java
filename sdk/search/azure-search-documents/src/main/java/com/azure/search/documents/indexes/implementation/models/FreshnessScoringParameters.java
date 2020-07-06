@@ -7,12 +7,11 @@
 package com.azure.search.documents.indexes.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.Duration;
 
-/**
- * Provides parameter values to a freshness scoring function.
- */
+/** The FreshnessScoringParameters model. */
 @Fluent
 public final class FreshnessScoringParameters {
     /*
@@ -22,9 +21,15 @@ public final class FreshnessScoringParameters {
     @JsonProperty(value = "boostingDuration", required = true)
     private Duration boostingDuration;
 
+    /** Creates an instance of FreshnessScoringParameters class. */
+    @JsonCreator
+    public FreshnessScoringParameters(@JsonProperty(value = "boostingDuration") Duration boostingDuration) {
+        this.boostingDuration = boostingDuration;
+    }
+
     /**
-     * Get the boostingDuration property: The expiration period after which
-     * boosting will stop for a particular document.
+     * Get the boostingDuration property: The expiration period after which boosting will stop for a particular
+     * document.
      *
      * @return the boostingDuration value.
      */
@@ -33,14 +38,21 @@ public final class FreshnessScoringParameters {
     }
 
     /**
-     * Set the boostingDuration property: The expiration period after which
-     * boosting will stop for a particular document.
+     * Set the boostingDuration property: The expiration period after which boosting will stop for a particular
+     * document.
      *
      * @param boostingDuration the boostingDuration value to set.
      * @return the FreshnessScoringParameters object itself.
      */
-    public FreshnessScoringParameters setBoostingDuration(Duration boostingDuration) {
-        this.boostingDuration = boostingDuration;
-        return this;
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (getBoostingDuration() == null) {
+            throw new IllegalArgumentException(
+                    "Missing required property boostingDuration in model FreshnessScoringParameters");
+        }
     }
 }

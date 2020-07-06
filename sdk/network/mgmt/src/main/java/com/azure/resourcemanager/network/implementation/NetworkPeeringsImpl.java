@@ -4,11 +4,12 @@ package com.azure.resourcemanager.network.implementation;
 
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.resourcemanager.network.Network;
-import com.azure.resourcemanager.network.NetworkPeering;
-import com.azure.resourcemanager.network.NetworkPeerings;
-import com.azure.resourcemanager.network.models.VirtualNetworkPeeringInner;
-import com.azure.resourcemanager.network.models.VirtualNetworkPeeringsInner;
+import com.azure.resourcemanager.network.NetworkManager;
+import com.azure.resourcemanager.network.fluent.VirtualNetworkPeeringsClient;
+import com.azure.resourcemanager.network.models.Network;
+import com.azure.resourcemanager.network.models.NetworkPeering;
+import com.azure.resourcemanager.network.models.NetworkPeerings;
+import com.azure.resourcemanager.network.fluent.inner.VirtualNetworkPeeringInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.IndependentChildrenImpl;
 import reactor.core.publisher.Mono;
@@ -19,8 +20,8 @@ class NetworkPeeringsImpl
         NetworkPeering,
         NetworkPeeringImpl,
         VirtualNetworkPeeringInner,
-        VirtualNetworkPeeringsInner,
-        NetworkManager,
+        VirtualNetworkPeeringsClient,
+    NetworkManager,
         Network>
     implements NetworkPeerings {
 
@@ -28,7 +29,7 @@ class NetworkPeeringsImpl
 
     // Constructor to use from the context of a parent
     NetworkPeeringsImpl(final NetworkImpl parent) {
-        super(parent.manager().inner().virtualNetworkPeerings(), parent.manager());
+        super(parent.manager().inner().getVirtualNetworkPeerings(), parent.manager());
         this.network = parent;
     }
 
@@ -93,7 +94,7 @@ class NetworkPeeringsImpl
                         return peering
                             .manager()
                             .inner()
-                            .virtualNetworkPeerings()
+                            .getVirtualNetworkPeerings()
                             .deleteAsync(peering.resourceGroupName(), networkName, peering.name());
                     }
                 })

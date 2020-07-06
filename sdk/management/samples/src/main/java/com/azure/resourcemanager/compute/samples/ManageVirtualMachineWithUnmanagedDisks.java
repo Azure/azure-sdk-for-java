@@ -14,7 +14,7 @@ import com.azure.resourcemanager.compute.models.KnownWindowsVirtualMachineImage;
 import com.azure.resourcemanager.compute.models.VirtualMachine;
 import com.azure.resourcemanager.compute.models.VirtualMachineUnmanagedDataDisk;
 import com.azure.resourcemanager.compute.models.VirtualMachineSizeTypes;
-import com.azure.resourcemanager.network.Network;
+import com.azure.resourcemanager.network.models.Network;
 import com.azure.resourcemanager.resources.fluentcore.arm.Region;
 import com.azure.resourcemanager.resources.fluentcore.profile.AzureProfile;
 import com.azure.resourcemanager.samples.Utils;
@@ -48,8 +48,7 @@ public final class ManageVirtualMachineWithUnmanagedDisks {
         final String linuxVMName = azure.sdkContext().randomResourceName("lVM", 15);
         final String rgName = azure.sdkContext().randomResourceName("rgCOMV", 15);
         final String userName = "tirekicker";
-        // [SuppressMessage("Microsoft.Security", "CS002:SecretInNextLine", Justification="Serves as an example, not for deployment. Please change when using this in your code.")]
-        final String password = "12NewPA$$w0rd!";
+        final String password = Utils.password();
         final String dataDiskName = "disk2";
 
         try {

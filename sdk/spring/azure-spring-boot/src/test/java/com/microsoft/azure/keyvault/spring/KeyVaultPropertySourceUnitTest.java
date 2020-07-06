@@ -3,15 +3,15 @@
 
 package com.microsoft.azure.keyvault.spring;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.when;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class KeyVaultPropertySourceUnitTest {
@@ -25,8 +25,8 @@ public class KeyVaultPropertySourceUnitTest {
     public void setup() {
         final String[] propertyNameList = new String[]{TEST_PROPERTY_NAME_1};
 
-        when(keyVaultOperation.get(anyString())).thenReturn(TEST_PROPERTY_NAME_1);
-        when(keyVaultOperation.list()).thenReturn(propertyNameList);
+        when(keyVaultOperation.getProperty(anyString())).thenReturn(TEST_PROPERTY_NAME_1);
+        when(keyVaultOperation.getPropertyNames()).thenReturn(propertyNameList);
 
         keyVaultPropertySource = new KeyVaultPropertySource(keyVaultOperation);
     }

@@ -44,8 +44,7 @@ public class ManageSqlServerDnsAliases {
         final String dbName = "dbSample";
         final String rgName = azure.sdkContext().randomResourceName("rgRSSDFW", 20);
         final String administratorLogin = "sqladmin3423";
-        // [SuppressMessage("Microsoft.Security", "CS002:SecretInNextLine", Justification="Serves as an example, not for deployment. Please change when using this in your code.")]
-        final String administratorPassword = "myS3curePwd";
+        final String administratorPassword = Utils.password();
         try {
             // Check if the expected SQL driver is available
             Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");

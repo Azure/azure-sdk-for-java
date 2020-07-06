@@ -3,14 +3,14 @@
 package com.azure.resourcemanager.network.implementation;
 
 import com.azure.core.management.SubResource;
-import com.azure.resourcemanager.network.ApplicationGateway;
-import com.azure.resourcemanager.network.ApplicationGatewayAuthenticationCertificate;
-import com.azure.resourcemanager.network.ApplicationGatewayBackendHttpConfiguration;
-import com.azure.resourcemanager.network.ApplicationGatewayBackendHttpSettings;
-import com.azure.resourcemanager.network.ApplicationGatewayConnectionDraining;
-import com.azure.resourcemanager.network.ApplicationGatewayCookieBasedAffinity;
-import com.azure.resourcemanager.network.ApplicationGatewayProbe;
-import com.azure.resourcemanager.network.ApplicationGatewayProtocol;
+import com.azure.resourcemanager.network.models.ApplicationGateway;
+import com.azure.resourcemanager.network.models.ApplicationGatewayAuthenticationCertificate;
+import com.azure.resourcemanager.network.models.ApplicationGatewayBackendHttpConfiguration;
+import com.azure.resourcemanager.network.models.ApplicationGatewayBackendHttpSettings;
+import com.azure.resourcemanager.network.models.ApplicationGatewayConnectionDraining;
+import com.azure.resourcemanager.network.models.ApplicationGatewayCookieBasedAffinity;
+import com.azure.resourcemanager.network.models.ApplicationGatewayProbe;
+import com.azure.resourcemanager.network.models.ApplicationGatewayProtocol;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.ChildResourceImpl;
 import com.azure.resourcemanager.resources.fluentcore.utils.Utils;

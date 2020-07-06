@@ -4,7 +4,6 @@
 package com.azure.ai.formrecognizer;
 
 import com.azure.ai.formrecognizer.models.FieldValueType;
-import com.azure.ai.formrecognizer.models.FormContentType;
 import com.azure.ai.formrecognizer.models.FormField;
 import com.azure.ai.formrecognizer.models.OperationResult;
 import com.azure.ai.formrecognizer.models.RecognizedReceipt;
@@ -44,14 +43,14 @@ public class RecognizeReceipts {
         InputStream targetStream = new ByteArrayInputStream(fileContent);
 
         SyncPoller<OperationResult, List<RecognizedReceipt>> analyzeReceiptPoller =
-            client.beginRecognizeReceipts(targetStream, sourceFile.length(), FormContentType.IMAGE_JPEG);
+            client.beginRecognizeReceipts(targetStream, sourceFile.length());
 
         List<RecognizedReceipt> receiptPageResults = analyzeReceiptPoller.getFinalResult();
 
         for (int i = 0; i < receiptPageResults.size(); i++) {
             RecognizedReceipt recognizedReceipt = receiptPageResults.get(i);
             Map<String, FormField> recognizedFields = recognizedReceipt.getRecognizedForm().getFields();
-            System.out.printf("----------- Recognized Receipt page %s -----------%n", i);
+            System.out.printf("----------- Recognized Receipt page %d -----------%n", i);
             FormField merchantNameField = recognizedFields.get("MerchantName");
             if (merchantNameField != null) {
                 if (merchantNameField.getFieldValue().getType() == FieldValueType.STRING) {
@@ -93,20 +92,20 @@ public class RecognizeReceipts {
                                 }
                                 if (key.equals("Quantity")) {
                                     if (formField.getFieldValue().getType() == FieldValueType.INTEGER) {
-                                        System.out.printf("Quantity: %s, confidence: %.2f%n",
+                                        System.out.printf("Quantity: %d, confidence: %.2f%n",
                                             formField.getFieldValue().asInteger(), formField.getConfidence());
                                     }
                                 }
                                 if (key.equals("Price")) {
                                     if (formField.getFieldValue().getType() == FieldValueType.FLOAT) {
-                                        System.out.printf("Price: %s, confidence: %.2f%n",
+                                        System.out.printf("Price: %f, confidence: %.2f%n",
                                             formField.getFieldValue().asFloat(),
                                             formField.getConfidence());
                                     }
                                 }
                                 if (key.equals("TotalPrice")) {
                                     if (formField.getFieldValue().getType() == FieldValueType.FLOAT) {
-                                        System.out.printf("Total Price: %s, confidence: %.2f%n",
+                                        System.out.printf("Total Price: %f, confidence: %.2f%n",
                                             formField.getFieldValue().asFloat(),
                                             formField.getConfidence());
                                     }

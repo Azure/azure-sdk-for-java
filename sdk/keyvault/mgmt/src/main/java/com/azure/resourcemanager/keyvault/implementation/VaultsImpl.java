@@ -5,7 +5,7 @@ package com.azure.resourcemanager.keyvault.implementation;
 
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.resourcemanager.authorization.GraphRbacManager;
+import com.azure.resourcemanager.authorization.AuthorizationManager;
 import com.azure.resourcemanager.keyvault.KeyVaultManager;
 import com.azure.resourcemanager.keyvault.fluent.VaultsClient;
 import com.azure.resourcemanager.keyvault.fluent.inner.DeletedVaultInner;
@@ -14,6 +14,7 @@ import com.azure.resourcemanager.keyvault.models.CheckNameAvailabilityResult;
 import com.azure.resourcemanager.keyvault.models.CreateMode;
 import com.azure.resourcemanager.keyvault.models.DeletedVault;
 import com.azure.resourcemanager.keyvault.models.Sku;
+import com.azure.resourcemanager.keyvault.models.SkuFamily;
 import com.azure.resourcemanager.keyvault.models.SkuName;
 import com.azure.resourcemanager.keyvault.models.Vault;
 import com.azure.resourcemanager.keyvault.models.VaultCreateOrUpdateParameters;
@@ -27,12 +28,13 @@ import java.util.UUID;
 /** The implementation of Vaults and its parent interfaces. */
 public class VaultsImpl extends GroupableResourcesImpl<Vault, VaultImpl, VaultInner, VaultsClient, KeyVaultManager>
     implements Vaults {
-    private final GraphRbacManager graphRbacManager;
+    private final AuthorizationManager authorizationManager;
     private final String tenantId;
 
-    public VaultsImpl(final KeyVaultManager keyVaultManager, final GraphRbacManager graphRbacManager, final String tenantId) {
+    public VaultsImpl(
+        final KeyVaultManager keyVaultManager, final AuthorizationManager authorizationManager, final String tenantId) {
         super(keyVaultManager.inner().getVaults(), keyVaultManager);
-        this.graphRbacManager = graphRbacManager;
+        this.authorizationManager = authorizationManager;
         this.tenantId = tenantId;
     }
 
@@ -70,7 +72,7 @@ public class VaultsImpl extends GroupableResourcesImpl<Vault, VaultImpl, VaultIn
     protected VaultImpl wrapModel(String name) {
         VaultInner inner = new VaultInner().withProperties(new VaultProperties());
         inner.properties().withTenantId(UUID.fromString(tenantId));
-        return new VaultImpl(name, inner, this.manager(), graphRbacManager);
+        return new VaultImpl(name, inner, this.manager(), authorizationManager);
     }
 
     @Override
@@ -78,7 +80,7 @@ public class VaultsImpl extends GroupableResourcesImpl<Vault, VaultImpl, VaultIn
         if (vaultInner == null) {
             return null;
         }
-        return new VaultImpl(vaultInner.name(), vaultInner, this.manager(), graphRbacManager);
+        return new VaultImpl(vaultInner.name(), vaultInner, this.manager(), authorizationManager);
     }
 
     @Override
@@ -144,11 +146,11 @@ public class VaultsImpl extends GroupableResourcesImpl<Vault, VaultImpl, VaultIn
                         .withProperties(
                             new VaultProperties()
                                 .withCreateMode(CreateMode.RECOVER)
-                                .withSku(new Sku().withName(SkuName.STANDARD))
+                                .withSku(new Sku().withName(SkuName.STANDARD).withFamily(SkuFamily.A))
                                 .withTenantId(UUID.fromString(tenantId)));
                     return inner()
                         .createOrUpdateAsync(resourceGroupName, vaultName, parameters)
-                        .map(inner -> (Vault) new VaultImpl(inner.id(), inner, manager, graphRbacManager));
+                        .map(inner -> (Vault) new VaultImpl(inner.id(), inner, manager, authorizationManager));
                 });
     }
 }

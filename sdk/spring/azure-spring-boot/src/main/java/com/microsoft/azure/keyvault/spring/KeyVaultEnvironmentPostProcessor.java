@@ -3,7 +3,7 @@
 
 package com.microsoft.azure.keyvault.spring;
 
-import com.microsoft.azure.utils.Constants;
+import com.microsoft.azure.keyvault.spring.KeyVaultProperties.Property;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.context.config.ConfigFileApplicationListener;
 import org.springframework.boot.env.EnvironmentPostProcessor;
@@ -18,22 +18,61 @@ public class KeyVaultEnvironmentPostProcessor implements EnvironmentPostProcesso
     public static final int DEFAULT_ORDER = ConfigFileApplicationListener.DEFAULT_ORDER + 1;
     private int order = DEFAULT_ORDER;
 
+    /**
+     * Post process the environment.
+     *
+     * <p>
+     * Here we are going to process any key vault(s) and make them as available
+     * PropertySource(s). Note this supports both the singular key vault setup,
+     * as well as the multiple key vault setup.
+     * </p>
+     *
+     * @param environment the environment.
+     * @param application the application.
+     */
     @Override
     public void postProcessEnvironment(ConfigurableEnvironment environment, SpringApplication application) {
-        if (isKeyVaultEnabled(environment)) {
-            final KeyVaultEnvironmentPostProcessorHelper helper =
-                new KeyVaultEnvironmentPostProcessorHelper(environment);
-            helper.addKeyVaultPropertySource();
+        final KeyVaultEnvironmentPostProcessorHelper helper
+            = new KeyVaultEnvironmentPostProcessorHelper(environment);
+        if (hasMultipleKeyVaultsEnabled(environment)) {
+            final String property = environment.getProperty(KeyVaultProperties.getPropertyName(Property.ORDER), "");
+            final String[] keyVaultNames = property.split(",");
+            for (int i = keyVaultNames.length - 1; i >= 0; i--) {
+                final String normalizedName = keyVaultNames[i].trim();
+                if (isKeyVaultEnabled(environment, normalizedName)) {
+                    helper.addKeyVaultPropertySource(normalizedName);
+                }
+            }
+        } else if (isKeyVaultEnabled(environment, "")) {
+            helper.addKeyVaultPropertySource("");
         }
     }
 
-    private boolean isKeyVaultEnabled(ConfigurableEnvironment environment) {
-        if (environment.getProperty(Constants.AZURE_KEYVAULT_VAULT_URI) == null) {
-            // User doesn't want to enable Key Vault property initializer.
-            return false;
-        }
-        return environment.getProperty(Constants.AZURE_KEYVAULT_ENABLED, Boolean.class, true)
+    /**
+     * Is the key vault enabled.
+     *
+     * @param environment    the environment.
+     * @param normalizedName the normalized name used to differentiate between
+     *                       multiple key vaults.
+     * @return true if the key vault is enabled, false otherwise.
+     */
+    private boolean isKeyVaultEnabled(ConfigurableEnvironment environment, String normalizedName) {
+        return environment.getProperty(
+                KeyVaultProperties.getPropertyName(normalizedName, Property.ENABLED),
+                Boolean.class,
+                true)
+            && environment.getProperty(KeyVaultProperties.getPropertyName(normalizedName, Property.URI)) != null
             && isKeyVaultClientAvailable();
+    }
+
+    /**
+     * Determine whether or not multiple key vaults are enabled.
+     *
+     * @param environment the environment.
+     * @return true if enabled, false otherwise.
+     */
+    private boolean hasMultipleKeyVaultsEnabled(ConfigurableEnvironment environment) {
+        return environment.getProperty(KeyVaultProperties.getPropertyName(Property.ORDER)) != null;
     }
 
     private boolean isKeyVaultClientAvailable() {

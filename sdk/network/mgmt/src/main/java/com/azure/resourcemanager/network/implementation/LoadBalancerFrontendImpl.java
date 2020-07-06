@@ -3,20 +3,20 @@
 package com.azure.resourcemanager.network.implementation;
 
 import com.azure.core.management.SubResource;
-import com.azure.resourcemanager.network.IpAllocationMethod;
-import com.azure.resourcemanager.network.LoadBalancer;
-import com.azure.resourcemanager.network.LoadBalancerFrontend;
-import com.azure.resourcemanager.network.LoadBalancerInboundNatPool;
-import com.azure.resourcemanager.network.LoadBalancerInboundNatRule;
-import com.azure.resourcemanager.network.LoadBalancerPrivateFrontend;
-import com.azure.resourcemanager.network.LoadBalancerPublicFrontend;
-import com.azure.resourcemanager.network.LoadBalancingRule;
-import com.azure.resourcemanager.network.Network;
-import com.azure.resourcemanager.network.PublicIpAddress;
-import com.azure.resourcemanager.network.Subnet;
-import com.azure.resourcemanager.network.models.FrontendIpConfigurationInner;
-import com.azure.resourcemanager.network.models.PublicIpAddressInner;
-import com.azure.resourcemanager.network.models.SubnetInner;
+import com.azure.resourcemanager.network.models.IpAllocationMethod;
+import com.azure.resourcemanager.network.models.LoadBalancer;
+import com.azure.resourcemanager.network.models.LoadBalancerFrontend;
+import com.azure.resourcemanager.network.models.LoadBalancerInboundNatPool;
+import com.azure.resourcemanager.network.models.LoadBalancerInboundNatRule;
+import com.azure.resourcemanager.network.models.LoadBalancerPrivateFrontend;
+import com.azure.resourcemanager.network.models.LoadBalancerPublicFrontend;
+import com.azure.resourcemanager.network.models.LoadBalancingRule;
+import com.azure.resourcemanager.network.models.Network;
+import com.azure.resourcemanager.network.models.PublicIpAddress;
+import com.azure.resourcemanager.network.models.Subnet;
+import com.azure.resourcemanager.network.fluent.inner.FrontendIpConfigurationInner;
+import com.azure.resourcemanager.network.fluent.inner.PublicIpAddressInner;
+import com.azure.resourcemanager.network.fluent.inner.SubnetInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.AvailabilityZoneId;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.ChildResourceImpl;
@@ -259,7 +259,7 @@ class LoadBalancerFrontendImpl extends ChildResourceImpl<FrontendIpConfiguration
 
     @Override
     public Subnet getSubnet() {
-        return this.parent().manager().getAssociatedSubnet(this.inner().subnet());
+        return Utils.getAssociatedSubnet(this.parent().manager(), this.inner().subnet());
     }
 
     @Override

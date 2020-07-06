@@ -2,11 +2,11 @@
 // Licensed under the MIT License.
 package com.azure.resourcemanager.appservice.implementation;
 
-import com.azure.resourcemanager.appservice.MSDeploy;
-import com.azure.resourcemanager.appservice.MSDeployCore;
-import com.azure.resourcemanager.appservice.WebAppBase;
-import com.azure.resourcemanager.appservice.WebDeployment;
-import com.azure.resourcemanager.appservice.models.MSDeployStatusInner;
+import com.azure.resourcemanager.appservice.models.MSDeploy;
+import com.azure.resourcemanager.appservice.models.MSDeployCore;
+import com.azure.resourcemanager.appservice.models.WebAppBase;
+import com.azure.resourcemanager.appservice.models.WebDeployment;
+import com.azure.resourcemanager.appservice.fluent.inner.MSDeployStatusInner;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.ExecutableImpl;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;

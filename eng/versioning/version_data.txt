@@ -8,7 +8,7 @@ com.microsoft.azure:azure-applicationinsights-query;1.0.0-beta-2;1.0.0-beta-2
 com.microsoft.azure.cognitiveservices:azure-cognitiveservices-spellcheck;1.1.0-beta.1;1.1.0-beta.1
 com.microsoft.azure.cognitiveservices:azure-cognitiveservices-textanalytics;1.1.0-beta.1;1.1.0-beta.1
 com.microsoft.azure.cognitiveservices:azure-cognitiveservices-luis-runtime;1.1.0-beta.1;1.1.0-beta.1
-com.microsoft.azure.cognitiveservices:azure-cognitiveservices-luis-authoring;1.0.3-beta;1.0.3-beta
+com.microsoft.azure.cognitiveservices:azure-cognitiveservices-luis-authoring;1.0.5-beta;1.0.5-beta
 com.microsoft.azure.cognitiveservices:azure-cognitiveservices-autosuggest;1.1.0-beta.1;1.1.0-beta.1
 com.microsoft.azure.cognitiveservices:azure-cognitiveservices-customimagesearch;1.1.0-beta.1;1.1.0-beta.1
 com.microsoft.azure.cognitiveservices:azure-cognitiveservices-customsearch;1.1.0-beta.1;1.1.0-beta.1
@@ -34,7 +34,7 @@ com.microsoft.azure:azure-keyvault-cryptography;1.2.4;1.3.0-beta.1
 com.microsoft.azure:azure-keyvault-extensions;1.2.4;1.3.0-beta.1
 com.microsoft.azure:azure-keyvault-test;1.2.3;1.2.4
 com.microsoft.azure:azure-keyvault-webkey;1.2.4;1.3.0-beta.1
-com.microsoft.azure:azure-servicebus;3.3.0;3.4.0-beta.1
+com.microsoft.azure:azure-servicebus;3.4.0;3.5.0-beta.1
 com.microsoft.azure:azure-storage-blob;11.0.2;11.0.2
 com.microsoft.azure.msi_auth_token_provider:azure-authentication-msi-token-provider;1.1.0-beta.1;1.1.0-beta.1
 com.microsoft.azure:azure-eventgrid;1.4.0-beta.1;1.4.0-beta.1
