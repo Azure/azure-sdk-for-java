@@ -23,6 +23,7 @@ import com.azure.data.tables.implementation.models.OdataMetadataFormat;
 import com.azure.data.tables.implementation.models.QueryOptions;
 import com.azure.data.tables.implementation.models.ResponseFormat;
 import com.azure.data.tables.implementation.models.TableProperties;
+import com.azure.data.tables.implementation.models.TableResponseProperties;
 import com.azure.data.tables.implementation.models.TableServiceErrorException;
 import com.azure.storage.common.implementation.connectionstring.StorageAuthenticationSettings;
 import com.azure.storage.common.implementation.connectionstring.StorageConnectionString;
@@ -195,7 +196,7 @@ public class AzureTableImplTest extends TestBase {
                 Assertions.assertEquals(expectedStatusCode, response.getStatusCode());
                 Assertions.assertNotNull(response.getValue(), "Expected there to be a result.");
 
-                var results = response.getValue().getValue();
+                List<TableResponseProperties> results = response.getValue().getValue();
 
                 Assertions.assertNotNull(results, "Expected there to be a set of items.");
                 Assertions.assertEquals(2, results.size());
