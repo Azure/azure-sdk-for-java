@@ -29,6 +29,11 @@ import java.util.Optional;
 import static com.azure.core.util.tracing.Tracer.*;
 import static com.azure.messaging.eventhubs.implementation.ClientConstants.AZ_NAMESPACE_VALUE;
 
+/**
+ * Base class containing common implementation for batch sending.
+ *
+ * Implemented by {@link ObjectBatch} and {@link EventDataBatch}.
+ */
 public abstract class EventDataBatchBase {
     private final ClientLogger logger = new ClientLogger(this.getClass());
     private final Object lock = new Object();
