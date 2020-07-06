@@ -45,7 +45,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class ContainerCreateDeleteWithSameNameTest extends TestSuiteBase {
     private final static int TIMEOUT = 300000;
-    // Delete collections in emulator usually takes a long time,
+    // Delete collections in emulator is not instant,
     // so to avoid get 500 back, we are adding delay for creating the collection with same name, since in this case we want to test 410/1000
     private final static int COLLECTION_RECREATION_TIME_DELAY = 2000;
     private CosmosAsyncClient client;
