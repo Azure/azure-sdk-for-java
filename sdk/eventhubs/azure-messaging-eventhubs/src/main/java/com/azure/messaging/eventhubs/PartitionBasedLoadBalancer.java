@@ -428,10 +428,16 @@ final class PartitionBasedLoadBalancer {
                     logger.warning("Error while listing checkpoints", ex);
                     ErrorContext errorContext = new ErrorContext(partitionAgnosticContext, ex);
                     processError.accept(errorContext);
-                    isLoadBalancerRunning.set(false);
+                    if (loadBalancingStrategy == LoadBalancingStrategy.BALANCED) {
+                        isLoadBalancerRunning.set(false);
+                    }
                     throw logger.logExceptionAsError(new IllegalStateException("Error while listing checkpoints", ex));
                 },
-                () -> isLoadBalancerRunning.set(false));
+                () -> {
+                    if (loadBalancingStrategy == LoadBalancingStrategy.BALANCED) {
+                        isLoadBalancerRunning.set(false);
+                    }
+                });
     }
 
     private PartitionOwnership createPartitionOwnershipRequest(
