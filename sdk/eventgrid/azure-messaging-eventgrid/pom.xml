@@ -61,12 +61,12 @@
     <dependency>
       <groupId>com.microsoft.azure.v2</groupId>
       <artifactId>azure-client-runtime</artifactId>
-      <version>2.0.0-beta4</version>
+      <version>2.0.0-beta4</version> <!-- {x-version-update;com.microsoft.azure:azure-client-runtime;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.6.0-beta.1</version>
+      <version>1.6.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core;external_dependency} -->
     </dependency>
   </dependencies>
 

@@ -1,12 +1,14 @@
 package com.azure.messaging.eventgrid.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.messaging.eventgrid.EventSchema;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.time.OffsetDateTime;
 
 /** The CloudEvent model. */
 @Fluent
-public final class CloudEvent {
+public final class CloudEvent implements EventSchema {
     /*
      * An identifier for the event. The combination of id and source must be
      * unique for each distinct event.
@@ -67,7 +69,6 @@ public final class CloudEvent {
     /**
      * Get the id property: An identifier for the event. The combination of id and source must be unique for each
      * distinct event.
-     *
      * @return the id value.
      */
     public String getId() {
@@ -77,8 +78,8 @@ public final class CloudEvent {
     /**
      * Set the id property: An identifier for the event. The combination of id and source must be unique for each
      * distinct event.
-     *
      * @param id the id value to set.
+     *
      * @return the CloudEvent object itself.
      */
     public CloudEvent setId(String id) {
@@ -89,7 +90,6 @@ public final class CloudEvent {
     /**
      * Get the source property: Identifies the context in which an event happened. The combination of id and source must
      * be unique for each distinct event.
-     *
      * @return the source value.
      */
     public String getSource() {
@@ -99,8 +99,8 @@ public final class CloudEvent {
     /**
      * Set the source property: Identifies the context in which an event happened. The combination of id and source must
      * be unique for each distinct event.
-     *
      * @param source the source value to set.
+     *
      * @return the CloudEvent object itself.
      */
     public CloudEvent setSource(String source) {
@@ -108,21 +108,37 @@ public final class CloudEvent {
         return this;
     }
 
+    @Override
+    public boolean isCloudEvent() {
+        return true;
+    }
+
+    @Override
+    public boolean isEventGridEvent() {
+        return false;
+    }
+
+    @Override
+    public boolean isCustomEvent() {
+        return false;
+    }
+
     /**
      * Get the data property: Event data specific to the event type.
-     *
      * @return the data value.
      */
+    @Override
     public Object getData() {
         return this.data;
     }
 
     /**
      * Set the data property: Event data specific to the event type.
-     *
      * @param data the data value to set.
+     *
      * @return the CloudEvent object itself.
      */
+    @Override
     public CloudEvent setData(Object data) {
         this.data = data;
         return this;
@@ -130,7 +146,6 @@ public final class CloudEvent {
 
     /**
      * Get the type property: Type of event related to the originating occurrence.
-     *
      * @return the type value.
      */
     public String getType() {
@@ -139,8 +154,8 @@ public final class CloudEvent {
 
     /**
      * Set the type property: Type of event related to the originating occurrence.
-     *
      * @param type the type value to set.
+     *
      * @return the CloudEvent object itself.
      */
     public CloudEvent setType(String type) {
@@ -150,7 +165,6 @@ public final class CloudEvent {
 
     /**
      * Get the time property: The time (in UTC) the event was generated, in RFC3339 format.
-     *
      * @return the time value.
      */
     public OffsetDateTime getTime() {
@@ -159,8 +173,8 @@ public final class CloudEvent {
 
     /**
      * Set the time property: The time (in UTC) the event was generated, in RFC3339 format.
-     *
      * @param time the time value to set.
+     *
      * @return the CloudEvent object itself.
      */
     public CloudEvent setTime(OffsetDateTime time) {
@@ -170,7 +184,6 @@ public final class CloudEvent {
 
     /**
      * Get the specversion property: The version of the CloudEvents specification which the event uses.
-     *
      * @return the specversion value.
      */
     public String getSpecversion() {
@@ -179,8 +192,8 @@ public final class CloudEvent {
 
     /**
      * Set the specversion property: The version of the CloudEvents specification which the event uses.
-     *
      * @param specversion the specversion value to set.
+     *
      * @return the CloudEvent object itself.
      */
     public CloudEvent setSpecversion(String specversion) {
@@ -190,7 +203,6 @@ public final class CloudEvent {
 
     /**
      * Get the dataschema property: Identifies the schema that data adheres to.
-     *
      * @return the dataschema value.
      */
     public String getDataschema() {
@@ -199,8 +211,8 @@ public final class CloudEvent {
 
     /**
      * Set the dataschema property: Identifies the schema that data adheres to.
-     *
      * @param dataschema the dataschema value to set.
+     *
      * @return the CloudEvent object itself.
      */
     public CloudEvent setDataschema(String dataschema) {
@@ -210,7 +222,6 @@ public final class CloudEvent {
 
     /**
      * Get the datacontenttype property: Content type of data value.
-     *
      * @return the datacontenttype value.
      */
     public String getDatacontenttype() {
@@ -219,8 +230,8 @@ public final class CloudEvent {
 
     /**
      * Set the datacontenttype property: Content type of data value.
-     *
      * @param datacontenttype the datacontenttype value to set.
+     *
      * @return the CloudEvent object itself.
      */
     public CloudEvent setDatacontenttype(String datacontenttype) {
@@ -231,7 +242,6 @@ public final class CloudEvent {
     /**
      * Get the subject property: This describes the subject of the event in the context of the event producer
      * (identified by source).
-     *
      * @return the subject value.
      */
     public String getSubject() {
@@ -241,8 +251,8 @@ public final class CloudEvent {
     /**
      * Set the subject property: This describes the subject of the event in the context of the event producer
      * (identified by source).
-     *
      * @param subject the subject value to set.
+     *
      * @return the CloudEvent object itself.
      */
     public CloudEvent setSubject(String subject) {
