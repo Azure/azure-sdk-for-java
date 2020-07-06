@@ -112,7 +112,7 @@ public class SpringCloudTest extends AppPlatformTest {
             .withSourceCodeFolder(sourceCodeFolder)
             .withTargetModule("gateway")
             .withSettingsFromActiveDeployment()
-            .activate()
+            .withActivation()
             .create();
         app.refresh();
 
