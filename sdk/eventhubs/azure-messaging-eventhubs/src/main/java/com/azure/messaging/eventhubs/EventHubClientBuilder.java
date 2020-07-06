@@ -136,7 +136,7 @@ public class EventHubClientBuilder {
     private String consumerGroup;
     private EventHubConnectionProcessor eventHubConnectionProcessor;
     private int prefetchCount;
-    private ObjectSerializer objectSerializer;
+    private ObjectSerializer serializer;
 
     /**
      * Keeps track of the open clients that were created from this builder when there is a shared connection.
@@ -365,11 +365,11 @@ public class EventHubClientBuilder {
 
     /**
      * Set registry serializer
-     * @param objectSerializer serializer
+     * @param serializer ObjectSerializer implementation
      * @return updated builder instance
      */
-    public EventHubClientBuilder objectSerializer(ObjectSerializer objectSerializer) {
-        this.objectSerializer = objectSerializer;
+    public EventHubClientBuilder serializer(ObjectSerializer serializer) {
+        this.serializer = serializer;
         return this;
     }
 
@@ -497,7 +497,7 @@ public class EventHubClientBuilder {
 
         final TracerProvider tracerProvider = new TracerProvider(ServiceLoader.load(Tracer.class));
 
-        return new EventHubAsyncClient(processor, tracerProvider, messageSerializer, objectSerializer, scheduler,
+        return new EventHubAsyncClient(processor, tracerProvider, messageSerializer, serializer, scheduler,
             isSharedConnection.get(), this::onClientClose);
     }
 
