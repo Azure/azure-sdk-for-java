@@ -29,7 +29,7 @@ import java.util.Optional;
 import static com.azure.core.util.tracing.Tracer.*;
 import static com.azure.messaging.eventhubs.implementation.ClientConstants.AZ_NAMESPACE_VALUE;
 
-public abstract class Batch {
+public abstract class EventDataBatchBase {
     private final ClientLogger logger = new ClientLogger(this.getClass());
     private final Object lock = new Object();
     private final int maxMessageSize;
@@ -43,8 +43,8 @@ public abstract class Batch {
     private final String entityPath;
     private final String hostname;
 
-    Batch(int maxMessageSize, String partitionId, String partitionKey, ErrorContextProvider contextProvider,
-                   TracerProvider tracerProvider, String entityPath, String hostname) {
+    EventDataBatchBase(int maxMessageSize, String partitionId, String partitionKey, ErrorContextProvider contextProvider,
+                       TracerProvider tracerProvider, String entityPath, String hostname) {
         this.maxMessageSize = maxMessageSize;
         this.partitionKey = partitionKey;
         this.partitionId = partitionId;

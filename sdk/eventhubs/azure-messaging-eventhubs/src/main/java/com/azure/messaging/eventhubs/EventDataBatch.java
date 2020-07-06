@@ -16,7 +16,7 @@ import com.azure.core.amqp.implementation.TracerProvider;
  * @see EventHubClientBuilder See EventHubClientBuilder for examples of building an asynchronous or synchronous
  *     producer.
  */
-public final class EventDataBatch extends Batch {
+public final class EventDataBatch extends EventDataBatchBase {
     EventDataBatch(int maxMessageSize, String partitionId, String partitionKey, ErrorContextProvider contextProvider,
         TracerProvider tracerProvider, String entityPath, String hostname) {
         super(maxMessageSize, partitionId, partitionKey, contextProvider, tracerProvider, entityPath, hostname);

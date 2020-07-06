@@ -5,13 +5,11 @@ import com.azure.core.amqp.implementation.ErrorContextProvider;
 import com.azure.core.amqp.implementation.TracerProvider;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.experimental.serializer.ObjectSerializer;
-import reactor.core.publisher.Mono;
 
 import java.io.ByteArrayOutputStream;
-import java.io.OutputStream;
 import java.util.Objects;
 
-public final class ObjectBatch<T> extends Batch {
+public final class ObjectBatch<T> extends EventDataBatchBase {
     private final ClientLogger logger = new ClientLogger(ObjectBatch.class);
     private final Object lock = new Object();
     private final Class<T> batchType;
