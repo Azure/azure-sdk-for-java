@@ -29,10 +29,10 @@ import java.util.Optional;
 @ContextConfiguration(classes = TestRepositoryConfiguration.class)
 public class GroupRepositoryIT {
 
-    private static final Long STUDENT_ID_0 = 1111L;
-    private static final Long STUDENT_ID_1 = 1234L;
-    private static final Long STUDENT_ID_2 = 2345L;
-    private static final Long STUDENT_ID_3 = 4823L;
+    private static final String STUDENT_ID_0 = "1111";
+    private static final String STUDENT_ID_1 = "1234";
+    private static final String STUDENT_ID_2 = "2345";
+    private static final String STUDENT_ID_3 = "4823";
 
     private static final String STUDENT_NAME_0 = "student-0";
     private static final String STUDENT_NAME_1 = "student-1";

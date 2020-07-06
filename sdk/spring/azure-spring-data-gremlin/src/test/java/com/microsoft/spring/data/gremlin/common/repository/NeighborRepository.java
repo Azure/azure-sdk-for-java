@@ -6,5 +6,5 @@ package com.microsoft.spring.data.gremlin.common.repository;
 import com.microsoft.spring.data.gremlin.common.domain.Neighbor;
 import com.microsoft.spring.data.gremlin.repository.GremlinRepository;
 
-public interface NeighborRepository extends GremlinRepository<Neighbor, Long> {
+public interface NeighborRepository extends GremlinRepository<Neighbor, String> {
 }

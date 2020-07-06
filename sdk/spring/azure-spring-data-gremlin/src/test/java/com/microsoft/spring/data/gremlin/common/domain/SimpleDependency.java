@@ -7,6 +7,8 @@ import com.microsoft.spring.data.gremlin.annotation.Edge;
 import com.microsoft.spring.data.gremlin.annotation.EdgeFrom;
 import com.microsoft.spring.data.gremlin.annotation.EdgeTo;
 
+import java.util.Objects;
+
 @Edge
 public class SimpleDependency {
 
@@ -60,5 +62,25 @@ public class SimpleDependency {
 
     public void setToId(String toId) {
         this.toId = toId;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        SimpleDependency that = (SimpleDependency) o;
+        return Objects.equals(id, that.id)
+            && Objects.equals(name, that.name)
+            && Objects.equals(fromId, that.fromId)
+            && Objects.equals(toId, that.toId);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, fromId, toId);
     }
 }

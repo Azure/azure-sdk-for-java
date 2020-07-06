@@ -8,6 +8,7 @@ import org.springframework.data.annotation.Id;
 
 import java.util.Date;
 import java.util.Map;
+import java.util.Objects;
 
 @Vertex
 public class Service {
@@ -94,5 +95,28 @@ public class Service {
 
     public void setProperties(Map<String, Object> properties) {
         this.properties = properties;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        Service service = (Service) o;
+        return instanceCount == service.instanceCount
+            && active == service.active
+            && Objects.equals(id, service.id)
+            && Objects.equals(name, service.name)
+            && type == service.type
+            && Objects.equals(createAt, service.createAt)
+            && Objects.equals(properties, service.properties);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, instanceCount, active, name, type, createAt, properties);
     }
 }

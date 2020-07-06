@@ -6,11 +6,13 @@ package com.microsoft.spring.data.gremlin.common.domain;
 import com.microsoft.spring.data.gremlin.annotation.Vertex;
 import org.springframework.data.annotation.Id;
 
+import java.util.Objects;
+
 @Vertex
 public class Book {
 
     @Id
-    private Integer serialNumber;
+    private String serialNumber;
 
     private String name;
 
@@ -19,17 +21,17 @@ public class Book {
     public Book() {
     }
 
-    public Book(Integer serialNumber, String name, Double price) {
+    public Book(String serialNumber, String name, Double price) {
         this.serialNumber = serialNumber;
         this.name = name;
         this.price = price;
     }
 
-    public Integer getSerialNumber() {
+    public String getSerialNumber() {
         return serialNumber;
     }
 
-    public void setSerialNumber(Integer serialNumber) {
+    public void setSerialNumber(String serialNumber) {
         this.serialNumber = serialNumber;
     }
 
@@ -47,5 +49,24 @@ public class Book {
 
     public void setPrice(Double price) {
         this.price = price;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        Book book = (Book) o;
+        return Objects.equals(serialNumber, book.serialNumber)
+            && Objects.equals(name, book.name)
+            && Objects.equals(price, book.price);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(serialNumber, name, price);
     }
 }

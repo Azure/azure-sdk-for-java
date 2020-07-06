@@ -6,5 +6,5 @@ package com.microsoft.spring.data.gremlin.common.repository;
 import com.microsoft.spring.data.gremlin.common.domain.BookReference;
 import com.microsoft.spring.data.gremlin.repository.GremlinRepository;
 
-public interface BookReferenceRepository extends GremlinRepository<BookReference, Integer> {
+public interface BookReferenceRepository extends GremlinRepository<BookReference, String> {
 }

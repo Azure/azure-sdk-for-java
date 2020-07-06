@@ -27,10 +27,10 @@ import java.util.Optional;
 @ContextConfiguration(classes = TestRepositoryConfiguration.class)
 public class StudentRepositoryIT {
 
-    private static final Long ID_0 = 12349274637234L;
-    private static final Long ID_1 = 1L;
-    private static final Long ID_2 = 2L;
-    private static final Long NO_EXIST_ID = -1L;
+    private static final String ID_0 = "12349274637234";
+    private static final String ID_1 = "1";
+    private static final String ID_2 = "2";
+    private static final String NO_EXIST_ID = "-1";
 
     private static final String NAME_0 = "name-0";
     private static final String NAME_1 = "name-1";
@@ -138,7 +138,7 @@ public class StudentRepositoryIT {
     @Test
     public void testFindAllById() {
         final List<Student> expected = Arrays.asList(STUDENT_0, STUDENT_1);
-        final List<Long> ids = Arrays.asList(STUDENT_0.getId(), STUDENT_1.getId(), NO_EXIST_ID);
+        final List<String> ids = Arrays.asList(STUDENT_0.getId(), STUDENT_1.getId(), NO_EXIST_ID);
 
         repository.saveAll(STUDENTS);
 

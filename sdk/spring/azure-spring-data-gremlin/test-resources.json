@@ -1,0 +1,83 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "baseName": {
+      "type": "string",
+      "defaultValue": "[resourceGroup().name]",
+      "metadata": {
+        "description": "The base resource name."
+      }
+    }
+  },
+  "variables": {
+    "location": "[resourceGroup().location]",
+    "accountName": "[toLower(concat(parameters('baseName'), '-gremlin'))]",
+    "databaseName": "TestDB",
+    "graphName": "roadmap-collection",
+    "resourceId": "[resourceId('Microsoft.DocumentDB/databaseAccounts', variables('accountName'))]",
+    "apiVersion": "2020-03-01"
+  },
+  "resources": [
+    {
+      "type": "Microsoft.DocumentDB/databaseAccounts",
+      "name": "[variables('accountName')]",
+      "apiVersion": "[variables('apiVersion')]",
+      "location": "[variables('location')]",
+      "kind": "GlobalDocumentDB",
+      "properties": {
+        "capabilities": [
+          {
+            "name": "EnableGremlin"
+          }
+        ],
+        "databaseAccountOfferType": "Standard"
+      }
+    },
+    {
+      "type": "Microsoft.DocumentDB/databaseAccounts/gremlinDatabases",
+      "name": "[concat(variables('accountName'), '/', variables('databaseName'))]",
+      "apiVersion": "2020-03-01",
+      "dependsOn": [
+        "[resourceId('Microsoft.DocumentDB/databaseAccounts/', variables('accountName'))]"
+      ],
+      "properties": {
+        "resource": {
+          "id": "[variables('databaseName')]"
+        },
+        "options": {}
+      }
+    },
+    {
+      "name": "[concat(variables('accountName'), '/', variables('databaseName'), '/', variables('graphName'))]",
+      "type": "Microsoft.DocumentDB/databaseAccounts/gremlinDatabases/graphs",
+      "apiVersion": "2019-08-01",
+      "location": "[variables('location')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.DocumentDB/databaseAccounts/gremlinDatabases', variables('accountName'), variables('databaseName'))]"
+      ],
+      "properties": {
+        "resource": {
+          "id": "[variables('graphName')]"
+        },
+        "options": {
+          "throughput": "400"
+        }
+      }
+    }
+  ],
+  "outputs": {
+    "SPRING_GREMLIN_ENDPOINT": {
+      "type": "string",
+      "value": "[concat(variables('accountName'), '.gremlin.cosmos.azure.com')]"
+    },
+    "SPRING_GREMLIN_USERNAME": {
+      "type": "string",
+      "value": "[concat('/dbs/', variables('databaseName'), '/colls/', variables('graphName'))]"
+    },
+    "SPRING_GREMLIN_PASSWORD": {
+      "type": "string",
+      "value": "[listKeys(variables('resourceId'), variables('apiVersion')).primaryMasterKey]"
+    }
+  }
+}

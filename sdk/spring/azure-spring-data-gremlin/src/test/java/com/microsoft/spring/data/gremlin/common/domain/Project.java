@@ -6,6 +6,8 @@ package com.microsoft.spring.data.gremlin.common.domain;
 import com.microsoft.spring.data.gremlin.annotation.Vertex;
 import com.microsoft.spring.data.gremlin.common.TestConstants;
 
+import java.util.Objects;
+
 @Vertex(label = TestConstants.VERTEX_PROJECT_LABEL)
 public class Project {
 
@@ -46,5 +48,24 @@ public class Project {
 
     public void setUri(String uri) {
         this.uri = uri;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        Project project = (Project) o;
+        return Objects.equals(id, project.id)
+            && Objects.equals(name, project.name)
+            && Objects.equals(uri, project.uri);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, uri);
     }
 }

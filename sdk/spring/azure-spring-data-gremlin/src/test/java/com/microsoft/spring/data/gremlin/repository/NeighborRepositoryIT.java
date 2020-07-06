@@ -29,14 +29,14 @@ import java.util.Optional;
 @ContextConfiguration(classes = TestRepositoryConfiguration.class)
 public class NeighborRepositoryIT {
 
-    private static final Long STUDENT_ID_0 = 12349274637234L;
-    private static final Long STUDENT_ID_1 = 1L;
-    private static final Long STUDENT_ID_2 = 2L;
+    private static final String STUDENT_ID_0 = "12349274637234";
+    private static final String STUDENT_ID_1 = "1";
+    private static final String STUDENT_ID_2 = "2";
     private static final Long DISTANCE_0 = 1234L;
     private static final Long DISTANCE_1 = 3422L;
-    private static final Long NEIGHBOR_ID_0 = 3L;
-    private static final Long NEIGHBOR_ID_1 = 4L;
-    private static final Long NO_EXIST_ID = -1L;
+    private static final String NEIGHBOR_ID_0 = "3";
+    private static final String NEIGHBOR_ID_1 = "4";
+    private static final String NO_EXIST_ID = "-1";
 
     private static final String NAME_0 = "name-0";
     private static final String NAME_1 = "name-1";
@@ -156,7 +156,7 @@ public class NeighborRepositoryIT {
         studentRepository.saveAll(STUDENTS);
         neighborRepository.saveAll(NEIGHBORS);
 
-        final List<Long> ids = Arrays.asList(NEIGHBOR_0.getId(), NEIGHBOR_1.getId());
+        final List<String> ids = Arrays.asList(NEIGHBOR_0.getId(), NEIGHBOR_1.getId());
         final List<Neighbor> found = Lists.newArrayList(neighborRepository.findAllById(ids));
 
         assertDomainListEquals(found, NEIGHBORS);

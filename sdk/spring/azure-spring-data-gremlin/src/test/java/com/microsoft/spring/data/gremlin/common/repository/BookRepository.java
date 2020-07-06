@@ -8,7 +8,7 @@ import com.microsoft.spring.data.gremlin.repository.GremlinRepository;
 
 import java.util.List;
 
-public interface BookRepository extends GremlinRepository<Book, Integer> {
+public interface BookRepository extends GremlinRepository<Book, String> {
 
     List<Book> findByNameOrPrice(String name, Double price);
 }

@@ -6,6 +6,8 @@ package com.microsoft.spring.data.gremlin.common.domain;
 import com.microsoft.spring.data.gremlin.annotation.Vertex;
 import org.springframework.data.annotation.Id;
 
+import java.util.Objects;
+
 @Vertex
 public class UserDomain {
 
@@ -47,5 +49,24 @@ public class UserDomain {
 
     public void setEnabled(boolean enabled) {
         this.enabled = enabled;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        UserDomain that = (UserDomain) o;
+        return level == that.level
+            && enabled == that.enabled
+            && Objects.equals(name, that.name);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, level, enabled);
     }
 }

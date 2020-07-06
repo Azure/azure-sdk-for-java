@@ -7,10 +7,12 @@ import com.microsoft.spring.data.gremlin.annotation.Edge;
 import com.microsoft.spring.data.gremlin.annotation.EdgeFrom;
 import com.microsoft.spring.data.gremlin.annotation.EdgeTo;
 
+import java.util.Objects;
+
 @Edge
 public class Neighbor {
 
-    private Long id;
+    private String id;
 
     private Long distance;
 
@@ -23,18 +25,18 @@ public class Neighbor {
     public Neighbor() {
     }
 
-    public Neighbor(Long id, Long distance, Student studentFrom, Student studentTo) {
+    public Neighbor(String id, Long distance, Student studentFrom, Student studentTo) {
         this.id = id;
         this.distance = distance;
         this.studentFrom = studentFrom;
         this.studentTo = studentTo;
     }
 
-    public Long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -60,5 +62,25 @@ public class Neighbor {
 
     public void setStudentTo(Student studentTo) {
         this.studentTo = studentTo;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        Neighbor neighbor = (Neighbor) o;
+        return Objects.equals(id, neighbor.id)
+            && Objects.equals(distance, neighbor.distance)
+            && Objects.equals(studentFrom, neighbor.studentFrom)
+            && Objects.equals(studentTo, neighbor.studentTo);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, distance, studentFrom, studentTo);
     }
 }

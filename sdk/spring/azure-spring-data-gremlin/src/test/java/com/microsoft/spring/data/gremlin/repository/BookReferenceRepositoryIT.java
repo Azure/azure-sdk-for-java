@@ -29,12 +29,12 @@ import java.util.Optional;
 @ContextConfiguration(classes = TestRepositoryConfiguration.class)
 public class BookReferenceRepositoryIT {
 
-    private static final Integer BOOK_ID_0 = 0;
-    private static final Integer BOOK_ID_1 = 1;
-    private static final Integer BOOK_ID_2 = 2;
-    private static final Integer BOOK_REFERENCE_ID_0 = 3;
-    private static final Integer BOOK_REFERENCE_ID_1 = 4;
-    private static final Integer NO_EXIST_ID = -1;
+    private static final String BOOK_ID_0 = "0";
+    private static final String BOOK_ID_1 = "1";
+    private static final String BOOK_ID_2 = "2";
+    private static final String BOOK_REFERENCE_ID_0 = "3";
+    private static final String BOOK_REFERENCE_ID_1 = "4";
+    private static final String NO_EXIST_ID = "-1";
 
     private static final String NAME_0 = "name-0";
     private static final String NAME_1 = "name-1";
@@ -158,7 +158,7 @@ public class BookReferenceRepositoryIT {
         bookRepository.saveAll(BOOKS);
         referenceRepository.saveAll(BOOK_REFERENCES);
 
-        final List<Integer> ids = Arrays.asList(BOOK_REFERENCE_0.getId(), BOOK_REFERENCE_1.getId());
+        final List<String> ids = Arrays.asList(BOOK_REFERENCE_0.getId(), BOOK_REFERENCE_1.getId());
         final List<BookReference> found = Lists.newArrayList(referenceRepository.findAllById(ids));
 
         assertDomainListEquals(found, BOOK_REFERENCES);

@@ -6,6 +6,8 @@ package com.microsoft.spring.data.gremlin.common.domain;
 import com.microsoft.spring.data.gremlin.annotation.Vertex;
 import org.springframework.data.annotation.Id;
 
+import java.util.Objects;
+
 @Vertex
 public class GroupOwner {
 
@@ -36,5 +38,23 @@ public class GroupOwner {
 
     public void setExpireDays(Integer expireDays) {
         this.expireDays = expireDays;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        GroupOwner that = (GroupOwner) o;
+        return Objects.equals(name, that.name)
+            && Objects.equals(expireDays, that.expireDays);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, expireDays);
     }
 }

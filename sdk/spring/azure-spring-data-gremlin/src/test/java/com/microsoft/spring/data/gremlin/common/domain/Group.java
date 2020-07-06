@@ -9,12 +9,14 @@ import com.microsoft.spring.data.gremlin.annotation.EdgeTo;
 import com.microsoft.spring.data.gremlin.annotation.GeneratedValue;
 import org.springframework.data.annotation.Id;
 
+import java.util.Objects;
+
 @Edge
 public class Group {
 
     @Id
     @GeneratedValue
-    private Long id;
+    private String id;
 
     @EdgeFrom
     private Student student;
@@ -22,16 +24,19 @@ public class Group {
     @EdgeTo
     private GroupOwner groupOwner;
 
+    public Group() {
+    }
+
     public Group(Student student, GroupOwner groupOwner) {
         this.student = student;
         this.groupOwner = groupOwner;
     }
 
-    public Long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -49,5 +54,24 @@ public class Group {
 
     public void setGroupOwner(GroupOwner groupOwner) {
         this.groupOwner = groupOwner;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        Group group = (Group) o;
+        return Objects.equals(id, group.id)
+            && Objects.equals(student, group.student)
+            && Objects.equals(groupOwner, group.groupOwner);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, student, groupOwner);
     }
 }

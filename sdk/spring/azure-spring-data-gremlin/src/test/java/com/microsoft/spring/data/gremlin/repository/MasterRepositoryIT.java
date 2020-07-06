@@ -24,8 +24,8 @@ import java.util.List;
 @ContextConfiguration(classes = TestRepositoryConfiguration.class)
 public class MasterRepositoryIT {
 
-    private static final Long ID_STUDENT = 1L;
-    private static final Long ID_MASTER = 2L;
+    private static final String ID_STUDENT = "1";
+    private static final String ID_MASTER = "2";
 
     private static final String NAME = "name";
 

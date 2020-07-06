@@ -8,7 +8,7 @@ import com.microsoft.spring.data.gremlin.repository.GremlinRepository;
 
 import java.util.List;
 
-public interface StudentRepository extends GremlinRepository<Student, Long> {
+public interface StudentRepository extends GremlinRepository<Student, String> {
 
     List<Student> findByName(String name);
 }

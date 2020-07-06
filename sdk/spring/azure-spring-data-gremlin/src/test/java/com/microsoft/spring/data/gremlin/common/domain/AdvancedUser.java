@@ -10,6 +10,9 @@ public class AdvancedUser extends User {
 
     private int level;
 
+    public AdvancedUser() {
+    }
+
     public AdvancedUser(String id, String name, int level) {
         super(id, name);
         this.level = level;

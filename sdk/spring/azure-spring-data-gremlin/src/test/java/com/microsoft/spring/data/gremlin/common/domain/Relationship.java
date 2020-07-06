@@ -8,6 +8,8 @@ import com.microsoft.spring.data.gremlin.annotation.EdgeFrom;
 import com.microsoft.spring.data.gremlin.annotation.EdgeTo;
 import com.microsoft.spring.data.gremlin.common.TestConstants;
 
+import java.util.Objects;
+
 @Edge(label = TestConstants.EDGE_RELATIONSHIP_LABEL)
 public class Relationship {
 
@@ -72,5 +74,26 @@ public class Relationship {
 
     public void setProject(Project project) {
         this.project = project;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        Relationship that = (Relationship) o;
+        return Objects.equals(id, that.id)
+            && Objects.equals(name, that.name)
+            && Objects.equals(location, that.location)
+            && Objects.equals(person, that.person)
+            && Objects.equals(project, that.project);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, location, person, project);
     }
 }

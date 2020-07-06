@@ -19,6 +19,10 @@
   <description>Gremlin support for Spring Data</description>
   <url>https://github.com/Azure/azure-sdk-for-java</url>
 
+  <properties>
+    <skipSpringITs>true</skipSpringITs>
+  </properties>
+
   <dependencies>
     <!-- Spring framework -->
     <dependency>
@@ -156,6 +160,15 @@
               <version>1.18.12</version>
             </additionalDependency>
           </additionalDependencies>
+        </configuration>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-failsafe-plugin</artifactId>
+        <version>2.22.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-failsafe-plugin;external_dependency} -->
+        <configuration>
+          <skipITs>${skipSpringITs}</skipITs>
         </configuration>
       </plugin>
     </plugins>

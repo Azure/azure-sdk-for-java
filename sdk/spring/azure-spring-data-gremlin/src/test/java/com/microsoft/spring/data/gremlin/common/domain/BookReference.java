@@ -7,47 +7,68 @@ import com.microsoft.spring.data.gremlin.annotation.Edge;
 import com.microsoft.spring.data.gremlin.annotation.EdgeFrom;
 import com.microsoft.spring.data.gremlin.annotation.EdgeTo;
 
+import java.util.Objects;
+
 @Edge
 public class BookReference {
 
-    private Integer id;
+    private String id;
 
     @EdgeFrom
-    private Integer fromSerialNumber;
+    private String fromSerialNumber;
 
     @EdgeTo
-    private Integer toSerialNumber;
+    private String toSerialNumber;
 
     public BookReference() {
     }
 
-    public BookReference(Integer id, Integer fromSerialNumber, Integer toSerialNumber) {
+    public BookReference(String id, String fromSerialNumber, String toSerialNumber) {
         this.id = id;
         this.fromSerialNumber = fromSerialNumber;
         this.toSerialNumber = toSerialNumber;
     }
 
-    public Integer getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(String id) {
         this.id = id;
     }
 
-    public Integer getFromSerialNumber() {
+    public String getFromSerialNumber() {
         return fromSerialNumber;
     }
 
-    public void setFromSerialNumber(Integer fromSerialNumber) {
+    public void setFromSerialNumber(String fromSerialNumber) {
         this.fromSerialNumber = fromSerialNumber;
     }
 
-    public Integer getToSerialNumber() {
+    public String getToSerialNumber() {
         return toSerialNumber;
     }
 
-    public void setToSerialNumber(Integer toSerialNumber) {
+    public void setToSerialNumber(String toSerialNumber) {
         this.toSerialNumber = toSerialNumber;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        BookReference that = (BookReference) o;
+        return Objects.equals(id, that.id)
+            && Objects.equals(fromSerialNumber, that.fromSerialNumber)
+            && Objects.equals(toSerialNumber, that.toSerialNumber);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, fromSerialNumber, toSerialNumber);
     }
 }
