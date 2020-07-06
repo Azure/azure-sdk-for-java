@@ -132,7 +132,7 @@ public final class Utils {
             return service.download(getHost(url), getPathAndQuery(url))
                 .flatMap(response -> FluxUtil.collectBytesInByteBufferStream(response.getValue()));
         } catch (MalformedURLException ex) {
-            return Mono.empty();
+            return Mono.error(() -> ex);
         }
     }
 
