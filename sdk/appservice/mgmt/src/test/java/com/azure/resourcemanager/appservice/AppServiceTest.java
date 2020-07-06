@@ -20,6 +20,7 @@ import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.http.rest.SimpleResponse;
+import com.azure.core.util.FluxUtil;
 import com.azure.resourcemanager.appservice.models.AppServiceCertificateOrder;
 import com.azure.resourcemanager.appservice.models.AppServiceDomain;
 import com.azure.resourcemanager.appservice.models.PublishingProfile;
@@ -34,6 +35,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.nio.ByteBuffer;
+import java.nio.charset.StandardCharsets;
 import java.time.temporal.ChronoUnit;
 
 import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
@@ -169,7 +171,7 @@ public class AppServiceTest extends TestBase {
 
     protected Response<String> curl(String urlString) throws IOException {
         try {
-            return Utils.stringResponse(httpClient.getString(Utils.getHost(urlString), Utils.getPathAndQuery(urlString))).block();
+            return stringResponse(httpClient.getString(Utils.getHost(urlString), Utils.getPathAndQuery(urlString))).block();
         } catch (MalformedURLException e) {
             Assertions.fail();
             return null;
@@ -178,12 +180,25 @@ public class AppServiceTest extends TestBase {
 
     protected String post(String urlString, String body) {
         try {
-            return Utils.stringResponse(httpClient.postString(Utils.getHost(urlString), Utils.getPathAndQuery(urlString), body))
+            return stringResponse(httpClient.postString(Utils.getHost(urlString), Utils.getPathAndQuery(urlString), body))
                 .block()
                 .getValue();
         } catch (Exception e) {
             return null;
         }
+    }
+
+    private static Mono<SimpleResponse<String>> stringResponse(Mono<SimpleResponse<Flux<ByteBuffer>>> responseMono) {
+        return responseMono
+            .flatMap(
+                response ->
+                    FluxUtil
+                        .collectBytesInByteBufferStream(response.getValue())
+                        .map(bytes -> new String(bytes, StandardCharsets.UTF_8))
+                        .map(
+                            str ->
+                                new SimpleResponse<>(
+                                    response.getRequest(), response.getStatusCode(), response.getHeaders(), str)));
     }
 
     protected WebAppTestClient httpClient =

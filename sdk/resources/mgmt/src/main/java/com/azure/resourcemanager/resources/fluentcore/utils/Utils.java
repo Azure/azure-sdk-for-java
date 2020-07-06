@@ -25,8 +25,6 @@ import reactor.core.publisher.Mono;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.ByteBuffer;
-import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -131,30 +129,11 @@ public final class Utils {
     public static Mono<byte[]> downloadFileAsync(String url, HttpPipeline httpPipeline) {
         FileService service = RestProxy.create(FileService.class, httpPipeline);
         try {
-            return stringResponse(service.download(getHost(url), getPathAndQuery(url)))
-                .map(simpleResponse -> simpleResponse.getValue().getBytes(Charset.defaultCharset()));
+            return service.download(getHost(url), getPathAndQuery(url))
+                .flatMap(response -> FluxUtil.collectBytesInByteBufferStream(response.getValue()));
         } catch (MalformedURLException ex) {
             return Mono.empty();
         }
-    }
-
-    /**
-     * Convert the simple response.
-     *
-     * @param responseMono the response with flux of byte buffer
-     * @return a response with string
-     */
-    public static Mono<SimpleResponse<String>> stringResponse(Mono<SimpleResponse<Flux<ByteBuffer>>> responseMono) {
-        return responseMono
-            .flatMap(
-                response ->
-                    FluxUtil
-                        .collectBytesInByteBufferStream(response.getValue())
-                        .map(bytes -> new String(bytes, StandardCharsets.UTF_8))
-                        .map(
-                            str ->
-                                new SimpleResponse<>(
-                                    response.getRequest(), response.getStatusCode(), response.getHeaders(), str)));
     }
 
     /**
