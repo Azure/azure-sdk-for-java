@@ -8,6 +8,7 @@ import com.azure.core.amqp.AmqpMessageConstant;
 import com.azure.core.amqp.AmqpRetryPolicy;
 import com.azure.core.amqp.implementation.AmqpReceiveLink;
 import com.azure.core.amqp.implementation.MessageSerializer;
+import com.azure.core.experimental.serializer.ObjectSerializer;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.implementation.AmqpReceiveLinkProcessor;
@@ -30,9 +31,12 @@ import reactor.core.Disposables;
 import reactor.core.publisher.DirectProcessor;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.FluxSink;
+import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 import reactor.test.StepVerifier;
 
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Date;
@@ -222,6 +226,57 @@ class EventHubPartitionAsyncConsumerTest {
         Assertions.assertNotNull(actual);
         Assertions.assertEquals(lastOffset, actual.getOffset());
         Assertions.assertFalse(actual.isInclusive());
+    }
+
+    @Test
+    void receiveAndDeserialize() {
+        // just a test value
+        Object o = 0;
+        ObjectSerializer testSerializer = new ObjectSerializer() {
+            @Override
+            public <T> Mono<T> deserialize(InputStream stream, Class<T> clazz) {
+                if (clazz.isInstance(o)) {
+                    return Mono.just(clazz.cast(o));
+                }
+                return null;
+            }
+
+            @Override
+            public <S extends OutputStream> Mono<S> serialize(S stream, Object value) {
+                return null;
+            }
+        };
+
+        // Arrange
+        linkProcessor = createSink(link1, link2).subscribeWith(new AmqpReceiveLinkProcessor(PREFETCH, retryPolicy, parentConnection));
+        consumer = new EventHubPartitionAsyncConsumer(linkProcessor, messageSerializer, HOSTNAME, EVENT_HUB_NAME,
+            CONSUMER_GROUP, PARTITION_ID, testSerializer, currentPosition, false, Schedulers.parallel());
+
+        final EventData event = new EventData("Foo");
+        final LastEnqueuedEventProperties last = new LastEnqueuedEventProperties(10L, 15L,
+            Instant.ofEpochMilli(1243454), Instant.ofEpochMilli(1240004));
+
+        when(messageSerializer.deserialize(same(message1), eq(EventData.class))).thenReturn(event);
+        when(messageSerializer.deserialize(same(message1), eq(LastEnqueuedEventProperties.class))).thenReturn(last);
+
+        // Act & Assert
+        StepVerifier.create(consumer.receive())
+            .then(() -> {
+                messageProcessorSink.next(message1);
+            })
+            .assertNext(partitionEvent -> {
+                verifyPartitionContext(partitionEvent.getPartitionContext());
+                verifyLastEnqueuedInformation(false, last,
+                    partitionEvent.getLastEnqueuedEventProperties());
+                Assertions.assertSame(event, partitionEvent.getData());
+                Assertions.assertSame(Integer.class.cast(o), partitionEvent.getDeserializedObject(Integer.class).block());
+            })
+            .thenCancel()
+            .verify();
+
+        // The emitter processor is not closed until the partition consumer is.
+        Assertions.assertFalse(linkProcessor.isTerminated());
+        Assertions.assertSame(originalPosition, currentPosition.get().get());
     }
 
 

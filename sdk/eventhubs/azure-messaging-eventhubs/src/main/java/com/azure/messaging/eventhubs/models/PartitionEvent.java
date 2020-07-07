@@ -5,11 +5,14 @@ package com.azure.messaging.eventhubs.models;
 
 import com.azure.core.annotation.Immutable;
 import com.azure.core.experimental.serializer.ObjectSerializer;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.EventData;
 import reactor.core.publisher.Mono;
 
 import java.io.ByteArrayInputStream;
 import java.util.Objects;
+
+import static com.azure.core.util.FluxUtil.monoError;
 
 /**
  * A container for {@link EventData} along with the partition information for this event data.
@@ -20,9 +23,8 @@ public class PartitionEvent {
     private final PartitionContext partitionContext;
     private final EventData eventData;
     private final LastEnqueuedEventProperties lastEnqueuedEventProperties;
-    private final ObjectSerializer objectSerializer;
-
-    private Object deserialized;
+    private final ObjectSerializer serializer;
+    private final ClientLogger logger = new ClientLogger(PartitionEvent.class);
 
     /**
      * Creates an instance of PartitionEvent.
@@ -30,15 +32,28 @@ public class PartitionEvent {
      * @param partitionContext The partition information associated with the event data.
      * @param eventData The event data received from the Event Hub.
      * @param lastEnqueuedEventProperties The properties of the last enqueued event in the partition.
-     * @param objectSerializer ObjectSerializer implementation for deserializing event data payload.  May be null.
      * @throws NullPointerException if {@code partitionContext} or {@code eventData} is {@code null}.
      */
     public PartitionEvent(final PartitionContext partitionContext, final EventData eventData,
-        LastEnqueuedEventProperties lastEnqueuedEventProperties, ObjectSerializer objectSerializer) {
+                          LastEnqueuedEventProperties lastEnqueuedEventProperties) {
+        this(partitionContext, eventData, lastEnqueuedEventProperties, null);
+    }
+
+    /**
+     * Creates an instance of PartitionEvent.
+     *
+     * @param partitionContext The partition information associated with the event data.
+     * @param eventData The event data received from the Event Hub.
+     * @param lastEnqueuedEventProperties The properties of the last enqueued event in the partition.
+     * @param serializer ObjectSerializer implementation for deserializing event data payload.  May be null.
+     * @throws NullPointerException if {@code partitionContext} or {@code eventData} is {@code null}.
+     */
+    public PartitionEvent(final PartitionContext partitionContext, final EventData eventData,
+        LastEnqueuedEventProperties lastEnqueuedEventProperties, ObjectSerializer serializer) {
         this.partitionContext = Objects.requireNonNull(partitionContext, "'partitionContext' cannot be null");
         this.eventData = Objects.requireNonNull(eventData, "'eventData' cannot be null");
         this.lastEnqueuedEventProperties = lastEnqueuedEventProperties;
-        this.objectSerializer = objectSerializer;
+        this.serializer = serializer;
     }
 
     /**
@@ -76,17 +91,14 @@ public class PartitionEvent {
      * @return deserialized object as type T
      */
     public <T> Mono<T> getDeserializedObject(Class<T> objectType) {
-        Objects.requireNonNull(objectSerializer, "No serializer set for deserializing event data payload.");
-        Objects.requireNonNull(objectType, "objectType cannot be null.");
-
-        if (deserialized != null) {
-            if (objectType.isInstance(deserialized)) {
-                return Mono.just(objectType.cast(deserialized));
-            }
+        if (this.serializer == null) {
+            return monoError(logger,
+                new NullPointerException("No serializer set for deserializing EventData payload."));
+        }
+        if (objectType == null) {
+            return monoError(logger, new IllegalArgumentException("objectType cannot be null."));
         }
 
-        Mono<T> objectMono =  objectSerializer.deserialize(new ByteArrayInputStream(eventData.getBody()), objectType);
-        objectMono.subscribe(o -> deserialized = o);
-        return objectMono;
+        return serializer.deserialize(new ByteArrayInputStream(eventData.getBody()), objectType);
     }
 }

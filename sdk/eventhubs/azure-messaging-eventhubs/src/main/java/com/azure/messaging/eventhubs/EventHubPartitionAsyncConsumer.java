@@ -40,14 +40,14 @@ class EventHubPartitionAsyncConsumer implements AutoCloseable {
     private final Scheduler scheduler;
     private final EmitterProcessor<PartitionEvent> emitterProcessor;
     private final EventPosition initialPosition;
-    private final ObjectSerializer objectSerializer;
+    private final ObjectSerializer serializer;
 
     private volatile Long currentOffset;
 
     EventHubPartitionAsyncConsumer(AmqpReceiveLinkProcessor amqpReceiveLinkProcessor,
                                        MessageSerializer messageSerializer, String fullyQualifiedNamespace,
                                        String eventHubName, String consumerGroup, String partitionId,
-                                       ObjectSerializer objectSerializer,
+                                       ObjectSerializer serializer,
                                        AtomicReference<Supplier<EventPosition>> currentEventPosition,
                                        boolean trackLastEnqueuedEventProperties, Scheduler scheduler) {
         this.initialPosition = Objects.requireNonNull(currentEventPosition.get().get(),
@@ -58,7 +58,7 @@ class EventHubPartitionAsyncConsumer implements AutoCloseable {
         this.eventHubName = eventHubName;
         this.consumerGroup = consumerGroup;
         this.partitionId = partitionId;
-        this.objectSerializer = objectSerializer;
+        this.serializer = serializer;
         this.trackLastEnqueuedEventProperties = trackLastEnqueuedEventProperties;
         this.scheduler = Objects.requireNonNull(scheduler, "'scheduler' cannot be null.");
 
@@ -143,6 +143,6 @@ class EventHubPartitionAsyncConsumer implements AutoCloseable {
 
         final PartitionContext partitionContext = new PartitionContext(fullyQualifiedNamespace, eventHubName,
             consumerGroup, partitionId);
-        return new PartitionEvent(partitionContext, event, lastEnqueuedEventProperties.get(), this.objectSerializer);
+        return new PartitionEvent(partitionContext, event, lastEnqueuedEventProperties.get(), this.serializer);
     }
 }
