@@ -68,6 +68,12 @@
       <artifactId>azure-core</artifactId>
       <version>1.6.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core;external_dependency} -->
     </dependency>
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-core-http-netty</artifactId>
+      <version>1.6.0-beta.1</version>
+      <scope>test</scope>
+    </dependency>
   </dependencies>
 
   <build>
