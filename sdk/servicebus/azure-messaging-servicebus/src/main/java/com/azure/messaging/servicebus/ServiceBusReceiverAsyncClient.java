@@ -1282,16 +1282,6 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
     }
 
     /**
-     * Renews the message lock, and updates its value in the container.
-     */
-    private Mono<Instant> renewMessageLock(String lockToken, String linkName) {
-        return connectionProcessor
-            .flatMap(connection -> connection.getManagementNode(entityPath, entityType))
-            .flatMap(serviceBusManagementNode ->
-                serviceBusManagementNode.renewMessageLock(lockToken, linkName));
-    }
-
-    /**
      * If the receiver has not connected via {@link #receiveMessages()}, all its current operations have been performed
      * through the management node.
      *

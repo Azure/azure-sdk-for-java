@@ -74,10 +74,6 @@ class UnnamedSessionReceiver implements AutoCloseable {
         this.renewSessionLock = renewSessionLock;
         this.lockContainer = new MessageLockContainer(ServiceBusConstants.OPERATION_TIMEOUT);
 
-        final AmqpErrorContext errorContext = new LinkErrorContext(receiveLink.getHostname(),
-            receiveLink.getEntityPath(), null, null);
-        final SessionMessageManagement messageManagement = new SessionMessageManagement(receiveLink);
-
         receiveLink.setEmptyCreditListener(() -> 1);
 
         final Flux<ServiceBusReceivedMessageContext> receivedMessagesFlux = receiveLink
