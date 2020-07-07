@@ -99,7 +99,7 @@ public final class SearchClient {
      *
      * <p><strong>Code Sample</strong></p>
      *
-     * <p> Upload dynamic SearchDocument with response. </p>
+     * <p> Upload dynamic SearchDocument. </p>
      *
      * {@codesnippet com.azure.search.documents.SearchClient.uploadDocumentsWithResponse#Iterable-IndexDocumentsOptions-Context}
      *
@@ -164,7 +164,7 @@ public final class SearchClient {
      *
      * <p><strong>Code Sample</strong></p>
      *
-     * <p> Merge dynamic SearchDocument with response. </p>
+     * <p> Merge dynamic SearchDocument. </p>
      *
      * {@codesnippet com.azure.search.documents.SearchClient.mergeDocumentsWithResponse#Iterable-IndexDocumentsOptions-Context}
      *
@@ -231,7 +231,7 @@ public final class SearchClient {
      *
      * <p><strong>Code Sample</strong></p>
      *
-     * <p> Merge or upload dynamic SearchDocument with response. </p>
+     * <p> Merge or upload dynamic SearchDocument. </p>
      *
      * {@codesnippet com.azure.search.documents.SearchClient.mergeOrUploadDocumentsWithResponse#Iterable-IndexDocumentsOptions-Context}
      *
@@ -282,7 +282,7 @@ public final class SearchClient {
      *
      * <p><strong>Code Sample</strong></p>
      *
-     * <p> Delete dynamic SearchDocument with response. </p>
+     * <p> Delete dynamic SearchDocument. </p>
      *
      * {@codesnippet com.azure.search.documents.SearchClient.deleteDocumentsWithResponse#Iterable-IndexDocumentsOptions-Context}
      *
@@ -333,7 +333,7 @@ public final class SearchClient {
      *
      * <p><strong>Code Sample</strong></p>
      *
-     * <p> Index batch operation on dynamic SearchDocument with response. </p>
+     * <p> Index batch operation on dynamic SearchDocument. </p>
      *
      * {@codesnippet com.azure.search.documents.SearchClient.indexDocumentsWithResponse#IndexDocumentsBatch-IndexDocumentsOptions-Context}
      *
@@ -386,7 +386,7 @@ public final class SearchClient {
      *
      * <p><strong>Code Sample</strong></p>
      *
-     * <p> Get dynamic SearchDocument with response. </p>
+     * <p> Get dynamic SearchDocument. </p>
      *
      * {@codesnippet com.azure.search.documents.SearchClient.getDocumentWithResponse#String-Class-List-Context}
      *
@@ -426,7 +426,7 @@ public final class SearchClient {
      *
      * <p><strong>Code Sample</strong></p>
      *
-     * <p> Get document count with response. </p>
+     * <p> Get document count. </p>
      *
      * {@codesnippet com.azure.search.documents.SearchClient.getDocumentCountWithResponse#Context}
      *

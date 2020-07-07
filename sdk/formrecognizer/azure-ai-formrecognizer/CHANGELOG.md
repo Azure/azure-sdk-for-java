@@ -2,6 +2,9 @@
 
 ## 1.0.0-beta.4 (Unreleased)
 ### Breaking Changes
+- `beginRecognizeReceipt` APIs now return a `RecognizedForm` model instead of a `RecognizedReceipt`. See
+[this](https://github.com/Azure/azure-sdk-for-java/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/java/com/azure/ai/formrecognizer/StronglyTypedRecognizedFormUSReceipt.java)
+suggested approach for extracting information from receipts.
 - Methods returning `textContent` have been renamed to `fieldElements` on `FieldData` and `FormTableCell`
 - Renamed `FormContent` to `FormElement`
 - Renamed `FieldText` to `FieldData`
@@ -9,7 +12,7 @@
 - Throw `HttpResponseException` instead of `ErrorResponseException` to model service side exceptions
 `CustomFormModel` and `CustomFormModelInfo`.
 - Changed `CopyAuthorization.getExpiresOn()` to return a `OffsetDateTime` instead of a `long` value
-- Added `RecognizeOptions` and `RecognizeCustomFormOptions` to pass configurable options when using recognize APIs on FormRecognizerClient.
+- Added `RecognizeOptions` to pass configurable options when using recognize APIs on FormRecognizerClient.
 - Changed `submodels` property on `CustomFormModel` to return a `List` instead of `IterableStream`
 - Renamed `fieldMap` property to `fields` on `CustomFormSubmodel` model
 - Renamed `elements` property on model `FormTableCell` to `textContent`

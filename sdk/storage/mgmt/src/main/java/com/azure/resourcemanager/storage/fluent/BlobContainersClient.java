@@ -44,7 +44,7 @@ import com.azure.resourcemanager.storage.models.BlobContainersExtendImmutability
 import com.azure.resourcemanager.storage.models.BlobContainersGetImmutabilityPolicyResponse;
 import com.azure.resourcemanager.storage.models.BlobContainersLockImmutabilityPolicyResponse;
 import com.azure.resourcemanager.storage.models.LeaseContainerRequest;
-import com.azure.resourcemanager.storage.models.ListSharesExpand;
+import com.azure.resourcemanager.storage.models.ListContainersInclude;
 import java.util.List;
 import reactor.core.publisher.Mono;
 
@@ -90,7 +90,7 @@ public final class BlobContainersClient {
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("$maxpagesize") String maxpagesize,
             @QueryParam("$filter") String filter,
-            @QueryParam("$include") ListSharesExpand include,
+            @QueryParam("$include") ListContainersInclude include,
             Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
@@ -319,7 +319,11 @@ public final class BlobContainersClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<ListContainerItemInner>> listSinglePageAsync(
-        String resourceGroupName, String accountName, String maxpagesize, String filter, ListSharesExpand include) {
+        String resourceGroupName,
+        String accountName,
+        String maxpagesize,
+        String filter,
+        ListContainersInclude include) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -388,7 +392,7 @@ public final class BlobContainersClient {
         String accountName,
         String maxpagesize,
         String filter,
-        ListSharesExpand include,
+        ListContainersInclude include,
         Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -449,7 +453,11 @@ public final class BlobContainersClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ListContainerItemInner> listAsync(
-        String resourceGroupName, String accountName, String maxpagesize, String filter, ListSharesExpand include) {
+        String resourceGroupName,
+        String accountName,
+        String maxpagesize,
+        String filter,
+        ListContainersInclude include) {
         return new PagedFlux<>(
             () -> listSinglePageAsync(resourceGroupName, accountName, maxpagesize, filter, include),
             nextLink -> listNextSinglePageAsync(nextLink));
@@ -478,7 +486,7 @@ public final class BlobContainersClient {
         String accountName,
         String maxpagesize,
         String filter,
-        ListSharesExpand include,
+        ListContainersInclude include,
         Context context) {
         return new PagedFlux<>(
             () -> listSinglePageAsync(resourceGroupName, accountName, maxpagesize, filter, include, context),
@@ -502,7 +510,7 @@ public final class BlobContainersClient {
     public PagedFlux<ListContainerItemInner> listAsync(String resourceGroupName, String accountName) {
         final String maxpagesize = null;
         final String filter = null;
-        final ListSharesExpand include = null;
+        final ListContainersInclude include = null;
         final Context context = null;
         return new PagedFlux<>(
             () -> listSinglePageAsync(resourceGroupName, accountName, maxpagesize, filter, include),
@@ -527,7 +535,11 @@ public final class BlobContainersClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ListContainerItemInner> list(
-        String resourceGroupName, String accountName, String maxpagesize, String filter, ListSharesExpand include) {
+        String resourceGroupName,
+        String accountName,
+        String maxpagesize,
+        String filter,
+        ListContainersInclude include) {
         return new PagedIterable<>(listAsync(resourceGroupName, accountName, maxpagesize, filter, include));
     }
 
@@ -554,7 +566,7 @@ public final class BlobContainersClient {
         String accountName,
         String maxpagesize,
         String filter,
-        ListSharesExpand include,
+        ListContainersInclude include,
         Context context) {
         return new PagedIterable<>(listAsync(resourceGroupName, accountName, maxpagesize, filter, include, context));
     }
@@ -576,7 +588,7 @@ public final class BlobContainersClient {
     public PagedIterable<ListContainerItemInner> list(String resourceGroupName, String accountName) {
         final String maxpagesize = null;
         final String filter = null;
-        final ListSharesExpand include = null;
+        final ListContainersInclude include = null;
         final Context context = null;
         return new PagedIterable<>(listAsync(resourceGroupName, accountName, maxpagesize, filter, include));
     }
