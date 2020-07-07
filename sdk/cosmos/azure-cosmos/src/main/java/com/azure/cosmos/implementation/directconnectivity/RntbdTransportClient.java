@@ -32,6 +32,7 @@ import io.netty.handler.ssl.SslContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Mono;
+import reactor.core.publisher.SignalType;
 
 import java.io.File;
 import java.io.IOException;
@@ -153,7 +154,7 @@ public final class RntbdTransportClient extends TransportClient {
             request.getPartitionKeyRangeIdentity(),
             endpoint));
 
-        return Mono.fromFuture(record.whenComplete((response, throwable) -> {
+        final Mono<StoreResponse> result = Mono.fromFuture(record.whenComplete((response, throwable) -> {
 
             record.stage(RntbdRequestRecord.Stage.COMPLETED);
 
@@ -166,7 +167,7 @@ public final class RntbdTransportClient extends TransportClient {
                 response.setRequestTimeline(timeline);
             }
 
-        })).doOnCancel(() -> logger.debug("REQUEST CANCELLED: {}", record)).onErrorMap(throwable -> {
+        })).onErrorMap(throwable -> {
 
             Throwable error = throwable instanceof CompletionException ? throwable.getCause() : throwable;
 
@@ -175,9 +176,9 @@ public final class RntbdTransportClient extends TransportClient {
                 String unexpectedError = RntbdObjectMapper.toJson(error);
 
                 reportIssue(logger, endpoint,
-                    "request completed with an unexpected {}: \\{\"request\":{},\"error\":{}}",
+                    "request completed with an unexpected {}: \\{\"record\":{},\"error\":{}}",
                     error.getClass(),
-                    request,
+                    record,
                     unexpectedError);
 
                 error = new GoneException(
@@ -193,6 +194,64 @@ public final class RntbdTransportClient extends TransportClient {
             }
 
             return error;
+        });
+        
+        return result.doFinally(signalType -> {
+
+            // This lambda ensures that a pending Direct TCP request in a reactive stream dropped by an end user or the
+            // HA layer completes without bubbling up to reactor.core.publisher.Hooks#onErrorDropped as a
+            // CompletionException error. Pending requests may be left outstanding when, for example, an end user calls
+            // CosmosAsyncClient#close or the HA layer detects that a partition split has occurred. This code guarantees
+            // that each pending Mono<StoreResponse> in the stream will run to completion with a new subscriber.
+            // Consequently the default Hooks#onErrorDropped method will not be called thus preventing distracting error
+            // messages.
+            //
+            // This lambda does not prevent requests that complete exceptionally before the call to this lambda from
+            // bubbling up to Hooks#onErrorDropped as CompletionException errors. We will still see some onErrorDropped
+            // messages due to CompletionException errors. Anecdotal evidence shows that this is more likely to be seen
+            // in low latency environments on Azure cloud.
+            //
+            // One might be tempted to complete a pending request here, but that is ill advised. Testing and
+            // inspection of the reactor code shows that this does not prevent errors from bubbling up to
+            // reactor.core.publisher.Hooks#onErrorDropped. Worse than this it has been seen to cause failures in
+            // the HA layer:
+            //
+            // * Calling record.cancel or record.completeExceptionally causes failures in (low-latency) cloud
+            //   environments and all errors bubble up Hooks#onErrorDropped.
+            //
+            // * Calling record.complete with a null value causes failures in all environments, depending on the
+            //   operation being performed. In short: many of our tests fail.
+            //
+            // TODO (DANOBLE) verify the correctness of this statement: Fact: We still see some of these errors. Does
+            //  reactor provide a mechanism other than Hooks#onErrorDropped(Consumer<? super Throwable> consumer) for
+            //  doing this per Mono or must we, for example, rely on something like this in the consistency layer:
+            //  https://www.codota.com/code/java/classes/reactor.core.publisher.Hooks
+
+            if (signalType != SignalType.CANCEL) {
+                return;
+            }
+
+            result.subscribe(
+                response -> {
+                    if (logger.isDebugEnabled()) {
+                        logger.debug(
+                            "received response to cancelled request: {\"request\":{},\"response\":{\"type\":{},"
+                                + "\"value\":{}}}}",
+                            RntbdObjectMapper.toJson(record),
+                            response.getClass().getSimpleName(),
+                            RntbdObjectMapper.toJson(response));
+                    }
+                },
+                throwable -> {
+                    if (logger.isDebugEnabled()) {
+                        logger.debug(
+                            "received response to cancelled request: {\"request\":{},\"response\":{\"type\":{},"
+                                + "\"value\":{}}}",
+                            RntbdObjectMapper.toJson(record),
+                            throwable.getClass().getSimpleName(),
+                            RntbdObjectMapper.toJson(throwable));
+                    }
+                });
         });
     }
 
@@ -214,7 +273,9 @@ public final class RntbdTransportClient extends TransportClient {
     // region Privates
 
     private void throwIfClosed() {
-        checkState(!this.closed.get(), "%s is closed", this);
+        if (this.closed.get()) {
+            throw new TransportException(lenientFormat("%s is closed", this), null);
+        }
     }
 
     // endregion
@@ -310,7 +371,7 @@ public final class RntbdTransportClient extends TransportClient {
             this.connectionAcquisitionTimeout = Duration.ZERO;
             this.connectTimeout = connectionPolicy.getConnectTimeout();
             this.idleChannelTimeout = connectionPolicy.getIdleConnectionTimeout();
-            this.idleEndpointTimeout = Duration.ofSeconds(70L);
+            this.idleEndpointTimeout = connectionPolicy.getIdleEndpointTimeout();
             this.maxBufferCapacity = 8192 << 10;
             this.maxChannelsPerEndpoint = connectionPolicy.getMaxConnectionsPerEndpoint();
             this.maxRequestsPerChannel = connectionPolicy.getMaxRequestsPerConnection();
@@ -436,7 +497,7 @@ public final class RntbdTransportClient extends TransportClient {
          *   "maxRequestsPerChannel": 30,
          *   "receiveHangDetectionTime": "PT1M5S",
          *   "requestExpiryInterval": "PT5S",
-         *   "requestTimeout": "PT1M",
+         *   "requestTimeout": "PT5S",
          *   "requestTimerResolution": "PT0.5S",
          *   "sendHangDetectionTime": "PT10S",
          *   "shutdownTimeout": "PT15S",
