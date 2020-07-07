@@ -7,7 +7,7 @@ import com.azure.ai.formrecognizer.models.FormPage;
 import com.azure.ai.formrecognizer.models.FormTable;
 import com.azure.ai.formrecognizer.models.FormWord;
 import com.azure.ai.formrecognizer.models.OperationResult;
-import com.azure.ai.formrecognizer.models.RecognizeCustomFormsOptions;
+import com.azure.ai.formrecognizer.models.RecognizeOptions;
 import com.azure.ai.formrecognizer.models.RecognizedForm;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.polling.PollerFlux;
@@ -35,9 +35,9 @@ public class GetBoundingBoxesAsync {
             .buildAsyncClient();
 
         String modelId = "{model_Id}";
-        String filePath = "{file_source_url}";
+        String formUrl = "{form_url}";
         PollerFlux<OperationResult, List<RecognizedForm>> recognizeFormPoller =
-            client.beginRecognizeCustomFormsFromUrl(new RecognizeCustomFormsOptions(filePath, modelId)
+            client.beginRecognizeCustomFormsFromUrl(formUrl, modelId, new RecognizeOptions()
                 .setIncludeFieldElements(true));
 
         Mono<List<RecognizedForm>> recognizeFormResult = recognizeFormPoller
@@ -63,7 +63,7 @@ public class GetBoundingBoxesAsync {
                 recognizedForm.getFields().forEach((fieldText, fieldValue) -> {
                     System.out.printf("Field %s has value %s based on %s with a confidence score "
                             + "of %.2f.%n",
-                        fieldText, fieldValue.getFieldValue(), fieldValue.getValueData().getText(),
+                        fieldText, fieldValue.getValue(), fieldValue.getValueData().getText(),
                         fieldValue.getConfidence());
                 });
 

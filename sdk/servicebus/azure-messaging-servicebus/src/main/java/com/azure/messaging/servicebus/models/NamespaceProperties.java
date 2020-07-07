@@ -87,7 +87,7 @@ public final class NamespaceProperties {
      * @param alias the alias value to set.
      * @return the NamespaceProperties object itself.
      */
-    public NamespaceProperties setAlias(String alias) {
+    NamespaceProperties setAlias(String alias) {
         this.alias = alias;
         return this;
     }
@@ -107,7 +107,7 @@ public final class NamespaceProperties {
      * @param createdTime the createdTime value to set.
      * @return the NamespaceProperties object itself.
      */
-    public NamespaceProperties setCreatedTime(OffsetDateTime createdTime) {
+    NamespaceProperties setCreatedTime(OffsetDateTime createdTime) {
         this.createdTime = createdTime;
         return this;
     }
@@ -127,7 +127,7 @@ public final class NamespaceProperties {
      * @param messagingSku the messagingSku value to set.
      * @return the NamespaceProperties object itself.
      */
-    public NamespaceProperties setMessagingSku(MessagingSku messagingSku) {
+    NamespaceProperties setMessagingSku(MessagingSku messagingSku) {
         this.messagingSku = messagingSku;
         return this;
     }
@@ -147,7 +147,7 @@ public final class NamespaceProperties {
      * @param messagingUnits the messagingUnits value to set.
      * @return the NamespaceProperties object itself.
      */
-    public NamespaceProperties setMessagingUnits(Integer messagingUnits) {
+    NamespaceProperties setMessagingUnits(Integer messagingUnits) {
         this.messagingUnits = messagingUnits;
         return this;
     }
@@ -167,7 +167,7 @@ public final class NamespaceProperties {
      * @param modifiedTime the modifiedTime value to set.
      * @return the NamespaceProperties object itself.
      */
-    public NamespaceProperties setModifiedTime(OffsetDateTime modifiedTime) {
+    NamespaceProperties setModifiedTime(OffsetDateTime modifiedTime) {
         this.modifiedTime = modifiedTime;
         return this;
     }
@@ -187,7 +187,7 @@ public final class NamespaceProperties {
      * @param name the name value to set.
      * @return the NamespaceProperties object itself.
      */
-    public NamespaceProperties setName(String name) {
+    NamespaceProperties setName(String name) {
         this.name = name;
         return this;
     }
