@@ -114,21 +114,6 @@ public final class EventGridEvent implements EventSchema {
         return this;
     }
 
-    @Override
-    public boolean isCloudEvent() {
-        return false;
-    }
-
-    @Override
-    public boolean isEventGridEvent() {
-        return true;
-    }
-
-    @Override
-    public boolean isCustomEvent() {
-        return false;
-    }
-
     /**
      * Get the data property: Event data specific to the event type.
      * @return the data value.
