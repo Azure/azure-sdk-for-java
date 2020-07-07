@@ -251,7 +251,7 @@ jobs:
         TestName: Integration_Test_Spring_Data_Cosmosdb
         ServiceDirectory: cosmos
         Artifacts:
-            - name: spring-data-cosmosdb
+            - name: azure-spring-data-cosmos
               groupId: com.microsoft.azure
               safeName: springdatacosmosdb
         TimeoutInMinutes: 90
