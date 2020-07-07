@@ -36,7 +36,7 @@ com.azure:azure-security-keyvault-certificates;4.0.4;4.1.0-beta.4
 com.azure:azure-security-keyvault-keys;4.1.4;4.2.0-beta.5
 com.azure:azure-security-keyvault-secrets;4.1.4;4.2.0-beta.4
 com.azure:azure-sdk-template;1.0.4-beta.19;1.0.4-beta.20
-com.azure:azure-storage-blob;12.7.0;12.8.0-beta.1
+com.azure:azure-storage-blob;12.8.0-beta.1;12.8.0-beta.2
 com.azure:azure-storage-blob-batch;12.6.0-beta.1;12.6.0-beta.2
 com.azure:azure-storage-blob-changefeed;12.0.0-beta.1;12.0.0-beta.2
 com.azure:azure-storage-blob-cryptography;12.8.0-beta.1;12.8.0-beta.2
