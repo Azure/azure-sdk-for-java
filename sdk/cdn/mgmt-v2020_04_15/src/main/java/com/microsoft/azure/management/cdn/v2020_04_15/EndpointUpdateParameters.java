@@ -121,7 +121,7 @@ public class EndpointUpdateParameters {
      * List of keys used to validate the signed URL hashes.
      */
     @JsonProperty(value = "properties.urlSigningKeys")
-    private UrlSigningKey urlSigningKeys;
+    private List<UrlSigningKey> urlSigningKeys;
 
     /**
      * A policy that specifies the delivery rules to be used for an endpoint.
@@ -381,7 +381,7 @@ public class EndpointUpdateParameters {
      *
      * @return the urlSigningKeys value
      */
-    public UrlSigningKey urlSigningKeys() {
+    public List<UrlSigningKey> urlSigningKeys() {
         return this.urlSigningKeys;
     }
 
@@ -391,7 +391,7 @@ public class EndpointUpdateParameters {
      * @param urlSigningKeys the urlSigningKeys value to set
      * @return the EndpointUpdateParameters object itself.
      */
-    public EndpointUpdateParameters withUrlSigningKeys(UrlSigningKey urlSigningKeys) {
+    public EndpointUpdateParameters withUrlSigningKeys(List<UrlSigningKey> urlSigningKeys) {
         this.urlSigningKeys = urlSigningKeys;
         return this;
     }
