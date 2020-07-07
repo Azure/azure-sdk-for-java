@@ -66,7 +66,7 @@ public class SearchIndexerClient {
      *
      * <p><strong>Code Sample</strong></p>
      *
-     * <p> Create or update search indexer data source connection response named "dataSource". </p>
+     * <p> Create or update search indexer data source connection named "dataSource". </p>
      *
      * {@codesnippet com.azure.search.documents.indexes.SearchIndexerClient.createOrUpdateDataSourceConnectionWithResponse#SearchIndexerDataSourceConnection-boolean-Context}
      *
@@ -79,8 +79,7 @@ public class SearchIndexerClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SearchIndexerDataSourceConnection> createOrUpdateDataSourceConnectionWithResponse(
-        SearchIndexerDataSourceConnection dataSourceConnection, boolean onlyIfUnchanged,
-        Context context) {
+        SearchIndexerDataSourceConnection dataSourceConnection, boolean onlyIfUnchanged, Context context) {
         return asyncClient.createOrUpdateDataSourceConnectionWithResponse(dataSourceConnection, onlyIfUnchanged,
             context).block();
     }
@@ -108,7 +107,7 @@ public class SearchIndexerClient {
      *
      * <p><strong>Code Sample</strong></p>
      *
-     * <p> Create search indexer data source connection response named "dataSource". </p>
+     * <p> Create search indexer data source connection named "dataSource". </p>
      *
      * {@codesnippet com.azure.search.documents.indexes.SearchIndexerClient.createDataSourceConnectionWithResponse#SearchIndexerDataSourceConnection-Context}
      *
@@ -128,7 +127,7 @@ public class SearchIndexerClient {
      *
      * <p><strong>Code Sample</strong></p>
      *
-     * <p> Get search indexer data source connection response named "dataSource". </p>
+     * <p> Get search indexer data source connection named "dataSource". </p>
      *
      * {@codesnippet com.azure.search.documents.indexes.SearchIndexerClient.getDataSourceConnection#String}
      *
@@ -145,7 +144,7 @@ public class SearchIndexerClient {
      *
      * <p><strong>Code Sample</strong></p>
      *
-     * <p> Get search indexer data source connection response named "dataSource". </p>
+     * <p> Get search indexer data source connection named "dataSource". </p>
      *
      * {@codesnippet com.azure.search.documents.indexes.SearchIndexerClient.getDataSourceConnectionWithResponse#String-Context}
      *
@@ -165,7 +164,7 @@ public class SearchIndexerClient {
      *
      * <p><strong>Code Sample</strong></p>
      *
-     * <p> List all search indexer data source connection. </p>
+     * <p> List all search indexer data source connections. </p>
      *
      * {@codesnippet com.azure.search.documents.indexes.SearchIndexerClient.listDataSourceConnections}
      *
@@ -181,7 +180,7 @@ public class SearchIndexerClient {
      *
      * <p><strong>Code Sample</strong></p>
      *
-     * <p> List all search indexer data source connection. </p>
+     * <p> List all search indexer data source connections. </p>
      *
      * {@codesnippet com.azure.search.documents.indexes.SearchIndexerClient.listDataSourceConnectionsWithResponse#Context}
      *
@@ -214,7 +213,7 @@ public class SearchIndexerClient {
      *
      * <p><strong>Code Sample</strong></p>
      *
-     * <p> List all search indexer data source connection names with context. </p>
+     * <p> List all search indexer data source connection names. </p>
      *
      * {@codesnippet com.azure.search.documents.indexes.SearchIndexerClient.listDataSourceConnectionNamesWithContext#Context}
      *
@@ -248,7 +247,7 @@ public class SearchIndexerClient {
      *
      * <p><strong>Code Sample</strong></p>
      *
-     * <p> Delete all search indexer data source connection named "dataSource" with response. </p>
+     * <p> Delete all search indexer data source connection named "dataSource". </p>
      *
      * {@codesnippet com.azure.search.documents.indexes.SearchIndexerClient.deleteDataSourceConnectionWithResponse#SearchIndexerDataSourceConnection-boolean-Context}
      *
@@ -289,7 +288,7 @@ public class SearchIndexerClient {
      *
      * <p><strong>Code Sample</strong></p>
      *
-     * <p> Create search indexer named "searchIndexer" with response. </p>
+     * <p> Create search indexer named "searchIndexer". </p>
      *
      * {@codesnippet com.azure.search.documents.indexes.SearchIndexerClient.createIndexerWithResponse#SearchIndexer-Context}
      *
@@ -325,7 +324,7 @@ public class SearchIndexerClient {
      *
      * <p><strong>Code Sample</strong></p>
      *
-     * <p> Create or update search indexer named "searchIndexer" with response. </p>
+     * <p> Create or update search indexer named "searchIndexer". </p>
      *
      * {@codesnippet com.azure.search.documents.indexes.SearchIndexerClient.createOrUpdateIndexerWithResponse#SearchIndexer-boolean-Context}
      *
@@ -346,7 +345,7 @@ public class SearchIndexerClient {
      *
      * <p><strong>Code Sample</strong></p>
      *
-     * <p> List all search indexer. </p>
+     * <p> List all search indexers. </p>
      *
      * {@codesnippet com.azure.search.documents.indexes.SearchIndexerClient.listIndexers}
      *
@@ -362,7 +361,7 @@ public class SearchIndexerClient {
      *
      * <p><strong>Code Sample</strong></p>
      *
-     * <p> List all search indexer with response. </p>
+     * <p> List all search indexers. </p>
      *
      * {@codesnippet com.azure.search.documents.indexes.SearchIndexerClient.listIndexersWithResponse#Context}
      *
@@ -395,7 +394,7 @@ public class SearchIndexerClient {
      *
      * <p><strong>Code Sample</strong></p>
      *
-     * <p> List all search indexer names with response. </p>
+     * <p> List all search indexer names. </p>
      *
      * {@codesnippet com.azure.search.documents.indexes.SearchIndexerClient.listIndexerNames#Context}
      *
@@ -429,7 +428,7 @@ public class SearchIndexerClient {
      *
      * <p><strong>Code Sample</strong></p>
      *
-     * <p> Get search indexer response with name "searchIndexer". </p>
+     * <p> Get search indexer with name "searchIndexer". </p>
      *
      * {@codesnippet com.azure.search.documents.indexes.SearchIndexerClient.getIndexerWithResponse#String-Context}
      *
@@ -464,7 +463,7 @@ public class SearchIndexerClient {
      *
      * <p><strong>Code Sample</strong></p>
      *
-     * <p> Delete search indexer response named "searchIndexer".  </p>
+     * <p> Delete search indexe named "searchIndexer".  </p>
      *
      * {@codesnippet com.azure.search.documents.indexes.SearchIndexerClient.deleteIndexerWithResponse#SearchIndexer-boolean-Context}
      *
@@ -502,7 +501,7 @@ public class SearchIndexerClient {
      *
      * <p><strong>Code Sample</strong></p>
      *
-     * <p> Reset search indexer response named "searchIndexer".  </p>
+     * <p> Reset search indexer named "searchIndexer".  </p>
      *
      * {@codesnippet com.azure.search.documents.indexes.SearchIndexerClient.resetIndexerWithResponse#String-Context}
      *
@@ -536,7 +535,7 @@ public class SearchIndexerClient {
      *
      * <p><strong>Code Sample</strong></p>
      *
-     * <p> Run search indexer response named "searchIndexer".  </p>
+     * <p> Run search indexer named "searchIndexer".  </p>
      *
      * {@codesnippet com.azure.search.documents.indexes.SearchIndexerClient.runIndexerWithResponse#String-Context}
      *
@@ -571,7 +570,7 @@ public class SearchIndexerClient {
      *
      * <p><strong>Code Sample</strong></p>
      *
-     * <p> Run search indexer status with response.  </p>
+     * <p> Get search indexer status.  </p>
      *
      * {@codesnippet com.azure.search.documents.indexes.SearchIndexerClient.getIndexerStatusWithResponse#String-Context}
      *
@@ -608,7 +607,7 @@ public class SearchIndexerClient {
      *
      * <p><strong>Code Sample</strong></p>
      *
-     * <p> Create search indexer skillset "searchIndexerSkillset" with response. </p>
+     * <p> Create search indexer skillset "searchIndexerSkillset". </p>
      *
      * {@codesnippet com.azure.search.documents.indexes.SearchIndexerClient.createSkillsetWithResponse#SearchIndexerSkillset-Context}
      *
@@ -644,7 +643,7 @@ public class SearchIndexerClient {
      *
      * <p><strong>Code Sample</strong></p>
      *
-     * <p> Get search indexer skillset "searchIndexerSkillset" with response. </p>
+     * <p> Get search indexer skillset "searchIndexerSkillset". </p>
      *
      * {@codesnippet com.azure.search.documents.indexes.SearchIndexerClient.getSkillsetWithResponse#String-Context}
      *
@@ -679,7 +678,7 @@ public class SearchIndexerClient {
      *
      * <p><strong>Code Sample</strong></p>
      *
-     * <p> List all search indexer skillsets with response. </p>
+     * <p> List all search indexer skillsets. </p>
      *
      * {@codesnippet com.azure.search.documents.indexes.SearchIndexerClient.listSkillsetsWithContext#Context}
      *
@@ -746,7 +745,7 @@ public class SearchIndexerClient {
      *
      * <p><strong>Code Sample</strong></p>
      *
-     * <p> Create or update search indexer skillset "searchIndexerSkillset" with response. </p>
+     * <p> Create or update search indexer skillset "searchIndexerSkillset". </p>
      *
      * {@codesnippet com.azure.search.documents.indexes.SearchIndexerClient.createOrUpdateSkillsetWithResponse#SearchIndexerSkillset-boolean-Context}
      *
@@ -766,6 +765,12 @@ public class SearchIndexerClient {
     /**
      * Deletes a cognitive skillset in an Azure Cognitive Search service.
      *
+     * <p><strong>Code Sample</strong></p>
+     *
+     * <p> Delete search indexer skillset "searchIndexerSkillset". </p>
+     *
+     * {@codesnippet com.azure.search.documents.indexes.SearchIndexerClient.deleteSkillset#String}
+     *
      * @param skillsetName the name of the skillset to delete
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -775,6 +780,12 @@ public class SearchIndexerClient {
 
     /**
      * Deletes a cognitive skillset in an Azure Cognitive Search service.
+     *
+     * <p><strong>Code Sample</strong></p>
+     *
+     * <p> Delete search indexer skillset "searchIndexerSkillset". </p>
+     *
+     * {@codesnippet com.azure.search.documents.indexes.SearchIndexerClient.deleteSkillsetWithResponse#SearchIndexerSkillset-boolean-Context}
      *
      * @param skillset the {@link SearchIndexerSkillset} to delete.
      * @param onlyIfUnchanged {@code true} to delete if the {@code skillset} is the same as the current service value.

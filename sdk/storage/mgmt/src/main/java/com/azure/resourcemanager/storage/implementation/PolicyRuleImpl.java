@@ -15,6 +15,8 @@ import com.azure.resourcemanager.storage.models.ManagementPolicyFilter;
 import com.azure.resourcemanager.storage.models.ManagementPolicyRule;
 import com.azure.resourcemanager.storage.models.ManagementPolicySnapShot;
 import com.azure.resourcemanager.storage.models.PolicyRule;
+import com.azure.resourcemanager.storage.models.RuleType;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -52,7 +54,7 @@ class PolicyRuleImpl implements PolicyRule, PolicyRule.Definition, PolicyRule.Up
     }
 
     @Override
-    public String type() {
+    public RuleType type() {
         return this.inner.type();
     }
 
@@ -155,7 +157,7 @@ class PolicyRuleImpl implements PolicyRule, PolicyRule.Definition, PolicyRule.Up
 
     @Override
     public PolicyRuleImpl withLifecycleRuleType() {
-        this.inner.withType("Lifecycle");
+        this.inner.withType(RuleType.LIFECYCLE);
         return this;
     }
 

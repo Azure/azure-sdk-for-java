@@ -77,39 +77,32 @@ public class OrderByDocumentQueryExecutionContext<T extends Resource>
 
     public static <T extends Resource> Flux<IDocumentQueryExecutionComponent<T>> createAsync(
             IDocumentQueryClient client,
-            ResourceType resourceTypeEnum,
-            Class<T> resourceType,
-            SqlQuerySpec expression,
-            CosmosQueryRequestOptions cosmosQueryRequestOptions,
-            String resourceLink,
-            String collectionRid,
-            PartitionedQueryExecutionInfo partitionedQueryExecutionInfo,
-            List<PartitionKeyRange> partitionKeyRanges,
-            int initialPageSize,
-            boolean isContinuationExpected,
-            boolean getLazyFeedResponse,
-            UUID correlatedActivityId) {
+            PipelinedDocumentQueryParams<T> initParams) {
 
-        OrderByDocumentQueryExecutionContext<T> context = new OrderByDocumentQueryExecutionContext<T>(client,
-                partitionKeyRanges,
-                resourceTypeEnum,
-                resourceType,
-                expression,
-                cosmosQueryRequestOptions,
-                resourceLink,
-                partitionedQueryExecutionInfo.getQueryInfo().getRewrittenQuery(),
-                isContinuationExpected,
-                getLazyFeedResponse,
-                new OrderbyRowComparer<T>(partitionedQueryExecutionInfo.getQueryInfo().getOrderBy()),
-                collectionRid,
-                correlatedActivityId);
+        OrderByDocumentQueryExecutionContext<T> context = new OrderByDocumentQueryExecutionContext<T>(
+                client,
+                initParams.getPartitionKeyRanges(),
+                initParams.getResourceTypeEnum(),
+                initParams.getResourceType(),
+                initParams.getQuery(),
+                initParams.getCosmosQueryRequestOptions(),
+                initParams.getResourceLink(),
+                initParams.getQueryInfo().getRewrittenQuery(),
+                initParams.isContinuationExpected(),
+                initParams.isGetLazyResponseFeed(),
+                new OrderbyRowComparer<T>(initParams.getQueryInfo().getOrderBy()),
+                initParams.getCollectionRid(),
+                initParams.getCorrelatedActivityId());
+
+        context.setTop(initParams.getTop());
 
         try {
-            context.initialize(partitionKeyRanges,
-                    partitionedQueryExecutionInfo.getQueryInfo().getOrderBy(),
-                    partitionedQueryExecutionInfo.getQueryInfo().getOrderByExpressions(),
-                    initialPageSize,
-                    ModelBridgeInternal.getRequestContinuationFromQueryRequestOptions(cosmosQueryRequestOptions));
+            context.initialize(
+                    initParams.getPartitionKeyRanges(),
+                    initParams.getQueryInfo().getOrderBy(),
+                    initParams.getQueryInfo().getOrderByExpressions(),
+                    initParams.getInitialPageSize(),
+                    ModelBridgeInternal.getRequestContinuationFromQueryRequestOptions(initParams.getCosmosQueryRequestOptions()));
 
             return Flux.just(context);
         } catch (CosmosException dce) {

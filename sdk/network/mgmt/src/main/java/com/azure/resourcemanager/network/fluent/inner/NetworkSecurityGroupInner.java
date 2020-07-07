@@ -8,6 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -21,7 +22,7 @@ public class NetworkSecurityGroupInner extends Resource {
     /*
      * A unique read-only string that changes whenever the resource is updated.
      */
-    @JsonProperty(value = "etag")
+    @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
 
     /*
@@ -33,7 +34,7 @@ public class NetworkSecurityGroupInner extends Resource {
     /*
      * The default security rules of network security group.
      */
-    @JsonProperty(value = "properties.defaultSecurityRules")
+    @JsonProperty(value = "properties.defaultSecurityRules", access = JsonProperty.Access.WRITE_ONLY)
     private List<SecurityRuleInner> defaultSecurityRules;
 
     /*
@@ -51,15 +52,14 @@ public class NetworkSecurityGroupInner extends Resource {
     /*
      * The resource GUID property of the network security group resource.
      */
-    @JsonProperty(value = "properties.resourceGuid")
+    @JsonProperty(value = "properties.resourceGuid", access = JsonProperty.Access.WRITE_ONLY)
     private String resourceGuid;
 
     /*
-     * The provisioning state of the public IP resource. Possible values are:
-     * 'Updating', 'Deleting', and 'Failed'.
+     * The provisioning state of the network security group resource.
      */
-    @JsonProperty(value = "properties.provisioningState")
-    private String provisioningState;
+    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
+    private ProvisioningState provisioningState;
 
     /*
      * Resource ID.
@@ -74,17 +74,6 @@ public class NetworkSecurityGroupInner extends Resource {
      */
     public String etag() {
         return this.etag;
-    }
-
-    /**
-     * Set the etag property: A unique read-only string that changes whenever the resource is updated.
-     *
-     * @param etag the etag value to set.
-     * @return the NetworkSecurityGroupInner object itself.
-     */
-    public NetworkSecurityGroupInner withEtag(String etag) {
-        this.etag = etag;
-        return this;
     }
 
     /**
@@ -117,17 +106,6 @@ public class NetworkSecurityGroupInner extends Resource {
     }
 
     /**
-     * Set the defaultSecurityRules property: The default security rules of network security group.
-     *
-     * @param defaultSecurityRules the defaultSecurityRules value to set.
-     * @return the NetworkSecurityGroupInner object itself.
-     */
-    public NetworkSecurityGroupInner withDefaultSecurityRules(List<SecurityRuleInner> defaultSecurityRules) {
-        this.defaultSecurityRules = defaultSecurityRules;
-        return this;
-    }
-
-    /**
      * Get the networkInterfaces property: A collection of references to network interfaces.
      *
      * @return the networkInterfaces value.
@@ -155,36 +133,12 @@ public class NetworkSecurityGroupInner extends Resource {
     }
 
     /**
-     * Set the resourceGuid property: The resource GUID property of the network security group resource.
-     *
-     * @param resourceGuid the resourceGuid value to set.
-     * @return the NetworkSecurityGroupInner object itself.
-     */
-    public NetworkSecurityGroupInner withResourceGuid(String resourceGuid) {
-        this.resourceGuid = resourceGuid;
-        return this;
-    }
-
-    /**
-     * Get the provisioningState property: The provisioning state of the public IP resource. Possible values are:
-     * 'Updating', 'Deleting', and 'Failed'.
+     * Get the provisioningState property: The provisioning state of the network security group resource.
      *
      * @return the provisioningState value.
      */
-    public String provisioningState() {
+    public ProvisioningState provisioningState() {
         return this.provisioningState;
-    }
-
-    /**
-     * Set the provisioningState property: The provisioning state of the public IP resource. Possible values are:
-     * 'Updating', 'Deleting', and 'Failed'.
-     *
-     * @param provisioningState the provisioningState value to set.
-     * @return the NetworkSecurityGroupInner object itself.
-     */
-    public NetworkSecurityGroupInner withProvisioningState(String provisioningState) {
-        this.provisioningState = provisioningState;
-        return this;
     }
 
     /**

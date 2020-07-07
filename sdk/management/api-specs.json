@@ -11,6 +11,12 @@
     "package": "com.microsoft.azure.resourcemanager.apimanagement",
     "args": "--payload-flattening-threshold=1 --tag=package-2018-01"
   },
+  "appplatform": {
+    "dir": "../appplatform/mgmt",
+    "source": "specification/appplatform/resource-manager/readme.md",
+    "package": "com.azure.resourcemanager.appplatform",
+    "args": "--payload-flattening-threshold=1 --tag=package-2019-05-01-preview --remove-inner=TestKeys,ResourceSku,ResourceUploadDefinition"
+  },
   "appservice": {
     "dir": "../appservice/mgmt",
     "source": "specification/web/resource-manager/readme.md",
@@ -206,7 +212,7 @@
     "dir": "../network/mgmt",
     "source": "specification/network/resource-manager/readme.md",
     "package": "com.azure.resourcemanager.network",
-    "args": "--payload-flattening-threshold=1 --tag=package-2019-06 --add-inner=ApplicationGatewayIpConfiguration,ApplicationGatewayPathRule,ApplicationGatewayProbe,ApplicationGatewayRedirectConfiguration,ApplicationGatewayRequestRoutingRule,ApplicationGatewaySslCertificate,ApplicationGatewayUrlPathMap,ApplicationGatewayAuthenticationCertificate,VirtualNetworkGatewayIpConfiguration,ConnectionMonitor,PacketCapture"
+    "args": "--payload-flattening-threshold=1 --tag=package-2019-11 --add-inner=ApplicationGatewayIpConfiguration,ApplicationGatewayPathRule,ApplicationGatewayProbe,ApplicationGatewayRedirectConfiguration,ApplicationGatewayRequestRoutingRule,ApplicationGatewaySslCertificate,ApplicationGatewayUrlPathMap,ApplicationGatewayAuthenticationCertificate,VirtualNetworkGatewayIpConfiguration,ConnectionMonitor,PacketCapture"
   },
   "notificationhubs": {
     "dir": "../notificationhubs/mgmt",

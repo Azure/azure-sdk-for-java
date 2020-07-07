@@ -5,7 +5,7 @@
 The `Azure` class is the simplest entry point for creating and interacting with Azure resources.
 
 ```java
-AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE, true);
+AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
 TokenCredential credential = new DefaultAzureCredentialBuilder()
     .authorityHost(profile.environment().getActiveDirectoryEndpoint())
     .build();

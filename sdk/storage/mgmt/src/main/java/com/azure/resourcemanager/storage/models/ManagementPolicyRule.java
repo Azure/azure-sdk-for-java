@@ -31,18 +31,13 @@ public final class ManagementPolicyRule {
      * The valid value is Lifecycle
      */
     @JsonProperty(value = "type", required = true)
-    private String type;
+    private RuleType type;
 
     /*
      * An object that defines the Lifecycle rule.
      */
     @JsonProperty(value = "definition", required = true)
     private ManagementPolicyDefinition definition;
-
-    /** Creates an instance of ManagementPolicyRule class. */
-    public ManagementPolicyRule() {
-        type = "Lifecycle";
-    }
 
     /**
      * Get the enabled property: Rule is enabled if set to true.
@@ -91,7 +86,7 @@ public final class ManagementPolicyRule {
      *
      * @return the type value.
      */
-    public String type() {
+    public RuleType type() {
         return this.type;
     }
 
@@ -101,7 +96,7 @@ public final class ManagementPolicyRule {
      * @param type the type value to set.
      * @return the ManagementPolicyRule object itself.
      */
-    public ManagementPolicyRule withType(String type) {
+    public ManagementPolicyRule withType(RuleType type) {
         this.type = type;
         return this;
     }
@@ -136,6 +131,11 @@ public final class ManagementPolicyRule {
             throw logger
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property name in model ManagementPolicyRule"));
+        }
+        if (type() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException("Missing required property type in model ManagementPolicyRule"));
         }
         if (definition() == null) {
             throw logger

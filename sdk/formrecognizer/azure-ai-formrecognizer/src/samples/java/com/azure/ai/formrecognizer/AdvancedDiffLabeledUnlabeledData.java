@@ -4,7 +4,7 @@
 package com.azure.ai.formrecognizer;
 
 import com.azure.ai.formrecognizer.models.FormContentType;
-import com.azure.ai.formrecognizer.models.RecognizeCustomFormsOptions;
+import com.azure.ai.formrecognizer.models.RecognizeOptions;
 import com.azure.ai.formrecognizer.models.RecognizedForm;
 import com.azure.core.credential.AzureKeyCredential;
 
@@ -48,13 +48,20 @@ public class AdvancedDiffLabeledUnlabeledData {
 
         List<RecognizedForm> formsWithLabeledModel =
             client.beginRecognizeCustomForms(
-                new RecognizeCustomFormsOptions(new FileInputStream(analyzeFile), analyzeFile.length(),
-                    "{labeled_model_Id}").setFormContentType(FormContentType.APPLICATION_PDF)
-                    .setIncludeTextContent(true).setPollInterval(Duration.ofSeconds(5))).getFinalResult();
+                new FileInputStream(analyzeFile), analyzeFile.length(),
+                "{labeled_model_Id}", new RecognizeOptions()
+                    .setContentType(FormContentType.APPLICATION_PDF)
+                    .setIncludeFieldElements(true)
+                    .setPollInterval(Duration.ofSeconds(5)))
+                .getFinalResult();
+
         List<RecognizedForm> formsWithUnlabeledModel =
             client.beginRecognizeCustomForms(new FileInputStream(analyzeFile), analyzeFile.length(),
-                "{unlabeled_model_Id}",
-                FormContentType.APPLICATION_PDF).getFinalResult();
+                "{unlabeled_model_Id}", new RecognizeOptions()
+                    .setContentType(FormContentType.APPLICATION_PDF)
+                    .setIncludeFieldElements(true)
+                    .setPollInterval(Duration.ofSeconds(5)))
+                .getFinalResult();
 
         System.out.println("--------Recognizing forms with labeled custom model--------");
 
@@ -65,13 +72,13 @@ public class AdvancedDiffLabeledUnlabeledData {
         // the key
         formsWithLabeledModel.forEach(labeledForm -> labeledForm.getFields().forEach((label, formField) -> {
             final StringBuilder boundingBoxStr = new StringBuilder();
-            if (formField.getValueText().getBoundingBox() != null) {
-                formField.getValueText().getBoundingBox().getPoints().stream().map(point ->
+            if (formField.getValueData().getBoundingBox() != null) {
+                formField.getValueData().getBoundingBox().getPoints().stream().map(point ->
                     String.format("[%.2f, %.2f]", point.getX(), point.getY())).forEach(boundingBoxStr::append);
             }
             System.out.printf("Field %s has value %s based on %s within bounding box %s with a confidence score "
                     + "of %.2f.%n",
-                label, formField.getFieldValue(), formField.getValueText().getText(), boundingBoxStr,
+                label, formField.getValue(), formField.getValueData().getText(), boundingBoxStr,
                 formField.getConfidence());
 
             // Find the value of a specific labeled field.
@@ -97,30 +104,30 @@ public class AdvancedDiffLabeledUnlabeledData {
         // `value` will contain the typed field value and `valueText` will contain information about the field value
         formsWithUnlabeledModel.forEach(unLabeledForm -> unLabeledForm.getFields().forEach((label, formField) -> {
             final StringBuilder boundingBoxStr = new StringBuilder();
-            if (formField.getValueText().getBoundingBox() != null) {
-                formField.getValueText().getBoundingBox().getPoints().stream().map(point ->
+            if (formField.getValueData().getBoundingBox() != null) {
+                formField.getValueData().getBoundingBox().getPoints().stream().map(point ->
                     String.format("[%.2f, %.2f]", point.getX(), point.getY())).forEach(boundingBoxStr::append);
             }
 
             final StringBuilder boundingBoxLabelStr = new StringBuilder();
-            if (formField.getLabelText() != null && formField.getLabelText().getBoundingBox() != null) {
-                formField.getLabelText().getBoundingBox().getPoints().stream().map(point ->
+            if (formField.getLabelData() != null && formField.getLabelData().getBoundingBox() != null) {
+                formField.getLabelData().getBoundingBox().getPoints().stream().map(point ->
                     String.format("[%.2f, %.2f]", point.getX(), point.getY())).forEach(boundingBoxStr::append);
             }
             System.out.printf("Field %s has label %s  within bounding box %s with a confidence score "
                     + "of %.2f.%n",
-                label, formField.getLabelText().getText(), boundingBoxLabelStr, formField.getConfidence());
+                label, formField.getLabelData().getText(), boundingBoxLabelStr, formField.getConfidence());
 
             System.out.printf("Field %s has value %s based on %s within bounding box %s with a confidence score "
                     + "of %.2f.%n",
-                label, formField.getFieldValue(), formField.getValueText().getText(), boundingBoxStr,
+                label, formField.getValue(), formField.getValueData().getText(), boundingBoxStr,
                 formField.getConfidence());
 
             // Find the value of a specific unlabeled field. The specific key "Vendor Name:" provided in the example
             // will only be found if sample training forms used
             unLabeledForm.getFields().entrySet()
                 .stream()
-                .filter(formFieldEntry -> "Vendor Name:".equals(formFieldEntry.getValue().getLabelText().getText()))
+                .filter(formFieldEntry -> "Vendor Name:".equals(formFieldEntry.getValue().getLabelData().getText()))
                 //filter by label text
                 .findAny()
                 .ifPresent(formFieldEntry -> System.out.printf("The Vendor name is: %s%n", formFieldEntry.getValue()));

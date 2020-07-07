@@ -8,6 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -27,7 +28,7 @@ public class NetworkInterfaceTapConfigurationInner extends SubResource {
     /*
      * A unique read-only string that changes whenever the resource is updated.
      */
-    @JsonProperty(value = "etag")
+    @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
 
     /*
@@ -37,17 +38,17 @@ public class NetworkInterfaceTapConfigurationInner extends SubResource {
     private String type;
 
     /*
-     * The reference of the Virtual Network Tap resource.
+     * The reference to the Virtual Network Tap resource.
      */
     @JsonProperty(value = "properties.virtualNetworkTap")
     private VirtualNetworkTapInner virtualNetworkTap;
 
     /*
-     * The provisioning state of the network interface tap configuration.
-     * Possible values are: 'Updating', 'Deleting', and 'Failed'.
+     * The provisioning state of the network interface tap configuration
+     * resource.
      */
     @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private String provisioningState;
+    private ProvisioningState provisioningState;
 
     /**
      * Get the name property: The name of the resource that is unique within a resource group. This name can be used to
@@ -81,17 +82,6 @@ public class NetworkInterfaceTapConfigurationInner extends SubResource {
     }
 
     /**
-     * Set the etag property: A unique read-only string that changes whenever the resource is updated.
-     *
-     * @param etag the etag value to set.
-     * @return the NetworkInterfaceTapConfigurationInner object itself.
-     */
-    public NetworkInterfaceTapConfigurationInner withEtag(String etag) {
-        this.etag = etag;
-        return this;
-    }
-
-    /**
      * Get the type property: Sub Resource type.
      *
      * @return the type value.
@@ -101,7 +91,7 @@ public class NetworkInterfaceTapConfigurationInner extends SubResource {
     }
 
     /**
-     * Get the virtualNetworkTap property: The reference of the Virtual Network Tap resource.
+     * Get the virtualNetworkTap property: The reference to the Virtual Network Tap resource.
      *
      * @return the virtualNetworkTap value.
      */
@@ -110,7 +100,7 @@ public class NetworkInterfaceTapConfigurationInner extends SubResource {
     }
 
     /**
-     * Set the virtualNetworkTap property: The reference of the Virtual Network Tap resource.
+     * Set the virtualNetworkTap property: The reference to the Virtual Network Tap resource.
      *
      * @param virtualNetworkTap the virtualNetworkTap value to set.
      * @return the NetworkInterfaceTapConfigurationInner object itself.
@@ -121,12 +111,11 @@ public class NetworkInterfaceTapConfigurationInner extends SubResource {
     }
 
     /**
-     * Get the provisioningState property: The provisioning state of the network interface tap configuration. Possible
-     * values are: 'Updating', 'Deleting', and 'Failed'.
+     * Get the provisioningState property: The provisioning state of the network interface tap configuration resource.
      *
      * @return the provisioningState value.
      */
-    public String provisioningState() {
+    public ProvisioningState provisioningState() {
         return this.provisioningState;
     }
 

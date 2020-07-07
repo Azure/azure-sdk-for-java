@@ -43,7 +43,7 @@ public final class JacksonJsonSerializer implements JsonSerializer {
     }
 
     @Override
-    public Mono<OutputStream> serialize(OutputStream stream, Object value) {
+    public <S extends OutputStream> Mono<S> serialize(S stream, Object value) {
         return Mono.fromCallable(() -> {
             mapper.writeValue(stream, value);
 

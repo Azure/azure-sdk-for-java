@@ -5,7 +5,7 @@ package com.azure.ai.formrecognizer;
 
 import com.azure.ai.formrecognizer.models.FormContentType;
 import com.azure.ai.formrecognizer.models.OperationResult;
-import com.azure.ai.formrecognizer.models.RecognizeCustomFormsOptions;
+import com.azure.ai.formrecognizer.models.RecognizeOptions;
 import com.azure.ai.formrecognizer.models.RecognizedForm;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.polling.PollerFlux;
@@ -55,14 +55,19 @@ public class AdvancedDiffLabeledUnlabeledDataAsync {
         byte[] fileContent = Files.readAllBytes(analyzeFile.toPath());
 
         PollerFlux<OperationResult, List<RecognizedForm>> labeledCustomFormPoller =
-            client.beginRecognizeCustomForms(new RecognizeCustomFormsOptions(
-                toFluxByteBuffer(new ByteArrayInputStream(fileContent)), analyzeFile.length(), "{labeled_model_Id}")
-                .setFormContentType(FormContentType.APPLICATION_PDF).setIncludeTextContent(true)
-                .setPollInterval(Duration.ofSeconds(5)));
+            client.beginRecognizeCustomForms(toFluxByteBuffer(new ByteArrayInputStream(fileContent)),
+                analyzeFile.length(), "{labeled_model_Id}", new RecognizeOptions()
+                    .setContentType(FormContentType.APPLICATION_PDF)
+                    .setIncludeFieldElements(true)
+                    .setPollInterval(Duration.ofSeconds(5)));
 
         PollerFlux<OperationResult, List<RecognizedForm>> unlabeledCustomFormPoller =
             client.beginRecognizeCustomForms(toFluxByteBuffer(new ByteArrayInputStream(fileContent)),
-                analyzeFile.length(), "{unlabeled_model_Id}", FormContentType.APPLICATION_PDF);
+                analyzeFile.length(), "{unlabeled_model_Id}",
+                new RecognizeOptions()
+                    .setContentType(FormContentType.APPLICATION_PDF)
+                    .setIncludeFieldElements(true)
+                    .setPollInterval(Duration.ofSeconds(5)));
 
         Mono<List<RecognizedForm>> labeledDataResult = labeledCustomFormPoller
             .last()
@@ -97,13 +102,13 @@ public class AdvancedDiffLabeledUnlabeledDataAsync {
         labeledDataResult.subscribe(formsWithLabeledModel -> formsWithLabeledModel.forEach(labeledForm ->
             labeledForm.getFields().forEach((label, formField) -> {
                 final StringBuilder boundingBoxStr = new StringBuilder();
-                if (formField.getValueText().getBoundingBox() != null) {
-                    formField.getValueText().getBoundingBox().getPoints().stream().map(point -> String.format("[%.2f,"
+                if (formField.getValueData().getBoundingBox() != null) {
+                    formField.getValueData().getBoundingBox().getPoints().stream().map(point -> String.format("[%.2f,"
                         + " %.2f]", point.getX(), point.getY())).forEach(boundingBoxStr::append);
                 }
                 System.out.printf("Field %s has value %s based on %s within bounding box %s with a confidence score "
                         + "of %.2f.%n",
-                    label, formField.getFieldValue(), formField.getValueText().getText(), boundingBoxStr,
+                    label, formField.getValue(), formField.getValueData().getText(), boundingBoxStr,
                     formField.getConfidence());
 
                 // Find the value of a specific labeled field.
@@ -136,23 +141,23 @@ public class AdvancedDiffLabeledUnlabeledDataAsync {
         unlabeledDataResult.subscribe(recognizedForms -> recognizedForms.forEach(unLabeledForm ->
             unLabeledForm.getFields().forEach((label, formField) -> {
                 final StringBuilder boundingBoxStr = new StringBuilder();
-                if (formField.getValueText().getBoundingBox() != null) {
-                    formField.getValueText().getBoundingBox().getPoints().stream().map(point ->
+                if (formField.getValueData().getBoundingBox() != null) {
+                    formField.getValueData().getBoundingBox().getPoints().stream().map(point ->
                         String.format("[%.2f, %.2f]", point.getX(), point.getY())).forEach(boundingBoxStr::append);
                 }
 
                 final StringBuilder boundingBoxLabelStr = new StringBuilder();
-                if (formField.getLabelText() != null && formField.getLabelText().getBoundingBox() != null) {
-                    formField.getLabelText().getBoundingBox().getPoints().stream().map(point ->
+                if (formField.getLabelData() != null && formField.getLabelData().getBoundingBox() != null) {
+                    formField.getLabelData().getBoundingBox().getPoints().stream().map(point ->
                         String.format("[%.2f, %.2f]", point.getX(), point.getY())).forEach(boundingBoxStr::append);
                 }
                 System.out.printf("Field %s has label %s  within bounding box %s with a confidence score "
                         + "of %.2f.%n",
-                    label, formField.getLabelText().getText(), boundingBoxLabelStr, formField.getConfidence());
+                    label, formField.getLabelData().getText(), boundingBoxLabelStr, formField.getConfidence());
 
                 System.out.printf("Field %s has value %s based on %s within bounding box %s with a confidence "
                         + "score of %.2f.%n",
-                    label, formField.getFieldValue(), formField.getValueText().getText(), boundingBoxStr,
+                    label, formField.getValue(), formField.getValueData().getText(), boundingBoxStr,
                     formField.getConfidence());
 
                 // Find the value of a specific unlabeled field. The specific key "Vendor Name:" provided in the
@@ -160,7 +165,7 @@ public class AdvancedDiffLabeledUnlabeledDataAsync {
                 unLabeledForm.getFields().entrySet()
                     .stream()
                     //filter by label text
-                    .filter(formFieldEntry -> "Vendor Name:".equals(formFieldEntry.getValue().getLabelText().getText()))
+                    .filter(formFieldEntry -> "Vendor Name:".equals(formFieldEntry.getValue().getLabelData().getText()))
                     .findAny()
                     .ifPresent(formFieldEntry ->
                         System.out.printf("The Vendor name is: %s%n", formFieldEntry.getValue()));
