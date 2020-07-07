@@ -12,7 +12,6 @@ import com.azure.messaging.servicebus.implementation.MessageLockContainer;
 import com.azure.messaging.servicebus.implementation.MessageManagementOperations;
 import com.azure.messaging.servicebus.implementation.MessageUtils;
 import com.azure.messaging.servicebus.implementation.ServiceBusConstants;
-import com.azure.messaging.servicebus.implementation.ServiceBusMessageProcessor;
 import com.azure.messaging.servicebus.implementation.ServiceBusReceiveLink;
 import org.apache.qpid.proton.amqp.transport.DeliveryState;
 import reactor.core.Disposable;
@@ -89,15 +88,15 @@ class UnnamedSessionReceiver implements AutoCloseable {
                 receiveLink.addCredits(prefetch);
             })
             .takeUntilOther(cancelReceiveProcessor)
-            .map(message -> messageSerializer.deserialize(message, ServiceBusReceivedMessage.class))
-            .subscribeWith(new ServiceBusMessageProcessor(receiveLink.getLinkName(), false, false,
-                Duration.ZERO, retryOptions, errorContext, messageManagement))
             .map(message -> {
-                if (!CoreUtils.isNullOrEmpty(message.getLockToken())) {
-                    lockContainer.addOrUpdate(message.getLockToken(), message.getLockedUntil());
+                final ServiceBusReceivedMessage deserialized = messageSerializer.deserialize(message,
+                    ServiceBusReceivedMessage.class);
+
+                if (!CoreUtils.isNullOrEmpty(deserialized.getLockToken())) {
+                    lockContainer.addOrUpdate(deserialized.getLockToken(), deserialized.getLockedUntil());
                 }
 
-                return new ServiceBusReceivedMessageContext(message);
+                return new ServiceBusReceivedMessageContext(deserialized);
             })
             .onErrorResume(error -> {
                 logger.warning("sessionId[{}]. Error occurred. Ending session.", sessionId, error);
