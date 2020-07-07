@@ -51,8 +51,7 @@ public class AzureBasicFileAttributes implements BasicFileAttributes {
     the former wastes network time only to throw a slightly more specific error when we will throw on 404 anyway. The
     latter introduces virtual directories into the actual code path/api surface. While we are clear in our docs about
     the possible pitfalls of virtual directories, and customers should be aware of it, they shouldn't have to code
-    against it. Therefore, we fall back to documenting that reading attributes on a virtual directory will throw. And
-    who reads attributes on a directory anyway?
+    against it. Therefore, we fall back to documenting that reading attributes on a virtual directory will throw.
      */
     AzureBasicFileAttributes(Path path) throws IOException {
         try {
@@ -72,6 +71,7 @@ public class AzureBasicFileAttributes implements BasicFileAttributes {
 
     /**
      * Unsupported.
+     * @throws UnsupportedOperationException Operation not supported.
      * {@inheritDoc}
      */
     @Override
@@ -133,6 +133,7 @@ public class AzureBasicFileAttributes implements BasicFileAttributes {
 
     /**
      * Unsupported.
+     * @throws UnsupportedOperationException Operation not supported.
      * {@inheritDoc}
      */
     @Override

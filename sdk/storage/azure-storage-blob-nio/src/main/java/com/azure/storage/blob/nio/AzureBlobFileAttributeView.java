@@ -52,7 +52,7 @@ public final class AzureBlobFileAttributeView implements BasicFileAttributeView 
                 if (m == null) {
                     throw LoggingUtility.logError(view.logger, new ClassCastException());
                 }
-                view.setMetadata((Map<String, String>) obj);
+                view.setMetadata(m);
             } catch (IOException e) {
                 throw LoggingUtility.logError(view.logger, new UncheckedIOException(ATTR_CONSUMER_ERROR, e));
             }
@@ -137,6 +137,7 @@ public final class AzureBlobFileAttributeView implements BasicFileAttributeView 
     /**
      * Unsupported.
      *
+     * @throws UnsupportedOperationException Operation not supported.
      * {@inheritDoc}
      */
     @Override

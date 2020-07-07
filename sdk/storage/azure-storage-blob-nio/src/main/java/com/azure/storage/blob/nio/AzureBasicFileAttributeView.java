@@ -47,6 +47,7 @@ public final class AzureBasicFileAttributeView implements BasicFileAttributeView
     /**
      * Unsupported.
      *
+     * @throws UnsupportedOperationException Operation not supported.
      * {@inheritDoc}
      */
     @Override

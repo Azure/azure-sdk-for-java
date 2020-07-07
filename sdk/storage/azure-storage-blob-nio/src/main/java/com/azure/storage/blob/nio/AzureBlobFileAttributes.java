@@ -228,6 +228,7 @@ public final class AzureBlobFileAttributes implements BasicFileAttributes {
 
     /**
      * Unsupported.
+     * @throws UnsupportedOperationException Operation not supported.
      * {@inheritDoc}
      */
     @Override
@@ -281,6 +282,7 @@ public final class AzureBlobFileAttributes implements BasicFileAttributes {
 
     /**
      * Unsupported.
+     * @throws UnsupportedOperationException Operation not supported.
      * {@inheritDoc}
      */
     @Override
