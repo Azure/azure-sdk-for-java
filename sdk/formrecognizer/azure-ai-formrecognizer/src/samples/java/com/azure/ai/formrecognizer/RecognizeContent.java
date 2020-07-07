@@ -3,7 +3,6 @@
 
 package com.azure.ai.formrecognizer;
 
-import com.azure.ai.formrecognizer.models.FormContentType;
 import com.azure.ai.formrecognizer.models.FormPage;
 import com.azure.ai.formrecognizer.models.FormTable;
 import com.azure.ai.formrecognizer.models.OperationResult;
@@ -43,7 +42,7 @@ public class RecognizeContent {
         InputStream targetStream = new ByteArrayInputStream(fileContent);
 
         SyncPoller<OperationResult, List<FormPage>> recognizeContentPoller =
-            client.beginRecognizeContent(targetStream, sourceFile.length(), FormContentType.IMAGE_JPEG);
+            client.beginRecognizeContent(targetStream, sourceFile.length());
 
         List<FormPage> contentPageResults = recognizeContentPoller.getFinalResult();
 
