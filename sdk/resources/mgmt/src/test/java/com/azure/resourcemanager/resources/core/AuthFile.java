@@ -1,10 +1,9 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License.
+// Licensed under the MIT License. See License.txt in the project root for license information.
 
 package com.azure.resourcemanager.resources.core;
 
 import com.azure.core.credential.TokenCredential;
-import com.azure.core.implementation.TypeUtil;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.serializer.AzureJacksonAdapter;
 import com.azure.core.util.logging.ClientLogger;
@@ -21,7 +20,6 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.HashMap;
-import java.util.Map;
 import java.util.Properties;
 
 /**
@@ -59,10 +57,10 @@ final class AuthFile {
         AuthFile authFile;
         if (isJsonBased(content)) {
             authFile = ADAPTER.deserialize(content, AuthFile.class, SerializerEncoding.JSON);
-            Map<String, String> endpoints = ADAPTER.deserialize(content,
-                TypeUtil.createParameterizedType(Map.class, String.class, String.class),
-                SerializerEncoding.JSON);
-            authFile.environment.endpoints().putAll(endpoints);
+//            Map<String, String> endpoints = ADAPTER.deserialize(content,
+//                TypeUtil.createParameterizedType(Map.class, String.class, String.class),
+//                SerializerEncoding.JSON);
+//            authFile.environment.endpoints().putAll(endpoints);
         } else {
             // Set defaults
             Properties authSettings = new Properties();

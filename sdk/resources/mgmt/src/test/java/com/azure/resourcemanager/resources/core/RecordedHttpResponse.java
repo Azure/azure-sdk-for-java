@@ -1,12 +1,11 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License.
+// Licensed under the MIT License. See License.txt in the project root for license information.
 
 package com.azure.resourcemanager.resources.core;
 
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
-import com.azure.core.implementation.http.BufferedHttpResponse;
 import com.azure.core.util.FluxUtil;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -77,7 +76,7 @@ public class RecordedHttpResponse extends HttpResponse {
     }
 
     @Override
-    public BufferedHttpResponse buffer() {
-        return new BufferedHttpResponse(this);
+    public HttpResponse buffer() {
+        return this;
     }
 }

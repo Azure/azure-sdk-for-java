@@ -259,10 +259,10 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.1</version>
+                <version>3.8.1</version>
                 <configuration>
-                    <source>1.8</source>
-                    <target>1.8</target>
+                    <source>11</source>
+                    <target>11</target>
                     <showWarnings>true</showWarnings>
                     <showDeprecation>true</showDeprecation>
                     <compilerArgument>-Xlint:unchecked</compilerArgument>
@@ -274,7 +274,7 @@
                 <artifactId>maven-javadoc-plugin</artifactId>
                 <version>3.1.1</version>
                 <configuration>
-                    <source>1.8</source>
+                    <source>11</source>
                     <doctitle>Azure SDK for Java Reference Documentation</doctitle>
                     <windowtitle>Azure SDK for Java Reference Documentation</windowtitle>
                     <footer>Visit the &lt;a href="https://docs.microsoft.com/java/azure/"&gt;Azure for Java Developers&lt;/a&gt;site
@@ -353,22 +353,16 @@
                     <artifactId>maven-surefire-plugin</artifactId>
                     <version>3.0.0-M3</version>
                     <configuration>
-                        <reuseForks>false</reuseForks>
-                        <useSystemClassLoader>false</useSystemClassLoader>
+                        <forkCount>1</forkCount>
                         <includes>
                             <include>**/Test*.java</include>
                             <include>**/*Test.java</include>
                             <include>**/*Tests.java</include>
                             <include>**/*TestCase.java</include>
                         </includes>
-                        <environmentVariables>
-                            <test.mode>${testMode}</test.mode>
-                        </environmentVariables>
-                        <properties>
-                          <configurationParameters>
-                            junit.jupiter.execution.parallel.enabled=false
-                          </configurationParameters>
-                        </properties>
+                        <argLine>
+                          --add-opens com.azure.resourcemanager.resources/com.azure.resourcemanager.resources.core=com.fasterxml.jackson.databind,com.azure.core
+                        </argLine>
                     </configuration>
                 </plugin>
 
