@@ -1,6 +1,6 @@
 # Release History
 
-## 12.0.0-beta.1 (Unreleased)
+## 12.0.0-beta.1 (2020-07-07)
 - Initial release.
 - Added support to get changefeed events for an account. 
 
