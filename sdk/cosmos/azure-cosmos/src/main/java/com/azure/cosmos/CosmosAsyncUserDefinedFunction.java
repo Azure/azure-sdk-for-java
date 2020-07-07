@@ -57,10 +57,6 @@ public class CosmosAsyncUserDefinedFunction {
      * @return an {@link Mono} containing the single resource response for the read user defined function or an error.
      */
     public Mono<CosmosUserDefinedFunctionResponse> read() {
-        if(!container.getDatabase().getClient().getTracerProvider().isEnabled()) {
-            return readInternal();
-        }
-
         return withContext(context -> readInternal(context));
     }
 
@@ -77,10 +73,6 @@ public class CosmosAsyncUserDefinedFunction {
      * or an error.
      */
     public Mono<CosmosUserDefinedFunctionResponse> replace(CosmosUserDefinedFunctionProperties udfSettings) {
-        if(!container.getDatabase().getClient().getTracerProvider().isEnabled()) {
-            return replaceInternal(udfSettings);
-        }
-
         return withContext(context -> replaceInternal(udfSettings, context));
     }
 
@@ -96,10 +88,6 @@ public class CosmosAsyncUserDefinedFunction {
      * an error.
      */
     public Mono<CosmosUserDefinedFunctionResponse> delete() {
-        if(!container.getDatabase().getClient().getTracerProvider().isEnabled()) {
-            return deleteInternal();
-        }
-
         return withContext(context -> deleteInternal(context));
     }
 

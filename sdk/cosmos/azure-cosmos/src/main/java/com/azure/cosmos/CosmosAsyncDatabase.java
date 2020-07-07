@@ -86,9 +86,6 @@ public class CosmosAsyncDatabase {
             options = new CosmosDatabaseRequestOptions();
         }
 
-        if (!client.getTracerProvider().isEnabled()) {
-            return readInternal(options);
-        }
         final CosmosDatabaseRequestOptions requestOptions = options;
         return withContext(context -> readInternal(requestOptions, context));
     }
@@ -119,9 +116,6 @@ public class CosmosAsyncDatabase {
     public Mono<CosmosDatabaseResponse> delete(CosmosDatabaseRequestOptions options) {
         if (options == null) {
             options = new CosmosDatabaseRequestOptions();
-        }
-        if (!client.getTracerProvider().isEnabled()) {
-            return deleteInternal(options);
         }
 
         final CosmosDatabaseRequestOptions requestOptions = options;
@@ -209,10 +203,6 @@ public class CosmosAsyncDatabase {
             options = new CosmosContainerRequestOptions();
         }
 
-        if (!client.getTracerProvider().isEnabled()) {
-            return createContainerInternal(containerProperties, options);
-        }
-
         final CosmosContainerRequestOptions requestOptions = options;
         return withContext(context -> createContainerInternal(containerProperties, requestOptions, context));
     }
@@ -292,10 +282,6 @@ public class CosmosAsyncDatabase {
     public Mono<CosmosContainerResponse> createContainerIfNotExists(
         CosmosContainerProperties containerProperties) {
         CosmosAsyncContainer container = getContainer(containerProperties.getId());
-        if (!client.getTracerProvider().isEnabled()) {
-            return createContainerIfNotExistsInternal(container.read(), containerProperties, null, null);
-        }
-
         return withContext(context -> createContainerIfNotExistsInternal(containerProperties, container, null,
             context));
     }
@@ -322,10 +308,6 @@ public class CosmosAsyncDatabase {
         CosmosContainerRequestOptions options = new CosmosContainerRequestOptions();
         ModelBridgeInternal.setThroughputProperties(options, ThroughputProperties.createManualThroughput(throughput));
         CosmosAsyncContainer container = getContainer(containerProperties.getId());
-        if (!client.getTracerProvider().isEnabled()) {
-            return createContainerIfNotExistsInternal(container.read(), containerProperties, options, null);
-        }
-
         return withContext(context -> createContainerIfNotExistsInternal(containerProperties, container, options,
             context));
     }
@@ -352,10 +334,6 @@ public class CosmosAsyncDatabase {
         CosmosContainerRequestOptions options = new CosmosContainerRequestOptions();
         ModelBridgeInternal.setThroughputProperties(options, throughputProperties);
         CosmosAsyncContainer container = getContainer(containerProperties.getId());
-        if (!client.getTracerProvider().isEnabled()) {
-            return createContainerIfNotExistsInternal(container.read(), containerProperties, options, null);
-        }
-
         return withContext(context -> createContainerIfNotExistsInternal(containerProperties, container, options,
             context));
     }
@@ -374,11 +352,6 @@ public class CosmosAsyncDatabase {
      */
     public Mono<CosmosContainerResponse> createContainerIfNotExists(String id, String partitionKeyPath) {
         CosmosAsyncContainer container = getContainer(id);
-        if (!client.getTracerProvider().isEnabled()) {
-            return createContainerIfNotExistsInternal(container.read(), new CosmosContainerProperties(id,
-                partitionKeyPath), null, null);
-        }
-
         return withContext(context -> createContainerIfNotExistsInternal(new CosmosContainerProperties(id,
                 partitionKeyPath), container, null,
             context));
@@ -406,10 +379,6 @@ public class CosmosAsyncDatabase {
         CosmosContainerRequestOptions options = new CosmosContainerRequestOptions();
         ModelBridgeInternal.setThroughputProperties(options, throughputProperties);
         CosmosAsyncContainer container = getContainer(id);
-        if (!client.getTracerProvider().isEnabled()) {
-            return createContainerIfNotExistsInternal(container.read(), new CosmosContainerProperties(id, partitionKeyPath), options, null);
-        }
-
         return withContext(context -> createContainerIfNotExistsInternal(new CosmosContainerProperties(id,
             partitionKeyPath), container, options, context));
     }
@@ -436,12 +405,6 @@ public class CosmosAsyncDatabase {
         CosmosContainerRequestOptions options = new CosmosContainerRequestOptions();
         ModelBridgeInternal.setThroughputProperties(options, ThroughputProperties.createManualThroughput(throughput));
         CosmosAsyncContainer container = getContainer(id);
-        if (!client.getTracerProvider().isEnabled()) {
-            return createContainerIfNotExistsInternal(container.read(), new CosmosContainerProperties(id,
-                    partitionKeyPath),
-                options, null);
-        }
-
         return withContext(context -> createContainerIfNotExistsInternal(new CosmosContainerProperties(id,
             partitionKeyPath), container, options, context));
     }
@@ -464,10 +427,10 @@ public class CosmosAsyncDatabase {
                 this.getClient().getServiceEndpoint(), getId());
             setContinuationTokenAndMaxItemCount(pagedFluxOptions, options);
             return getDocClientWrapper().readCollections(getLink(), options)
-                       .map(response -> BridgeInternal.createFeedResponse(
-                           ModelBridgeInternal.getCosmosContainerPropertiesFromV2Results(response.getResults()),
-                           response.getResponseHeaders()));
-        }, this.getClient().getTracerProvider().isEnabled());
+                .map(response -> BridgeInternal.createFeedResponse(
+                    ModelBridgeInternal.getCosmosContainerPropertiesFromV2Results(response.getResults()),
+                    response.getResponseHeaders()));
+        });
     }
 
     /**
@@ -568,9 +531,6 @@ public class CosmosAsyncDatabase {
      * created cosmos user or an error.
      */
     public Mono<CosmosUserResponse> createUser(CosmosUserProperties userProperties) {
-        if (!client.getTracerProvider().isEnabled()) {
-            return createUserInternal(userProperties);
-        }
         return withContext(context -> createUserInternal(userProperties, context));
     }
 
@@ -586,10 +546,6 @@ public class CosmosAsyncDatabase {
      * upserted user or an error.
      */
     public Mono<CosmosUserResponse> upsertUser(CosmosUserProperties userProperties) {
-        if (!client.getTracerProvider().isEnabled()) {
-            return upsertUserInternal(userProperties);
-        }
-
         return withContext(context -> upsertUserInternal(userProperties, context));
     }
 
@@ -625,10 +581,10 @@ public class CosmosAsyncDatabase {
                 this.getClient().getServiceEndpoint(), getId());
             setContinuationTokenAndMaxItemCount(pagedFluxOptions, options);
             return getDocClientWrapper().readUsers(getLink(), options)
-                       .map(response -> BridgeInternal.createFeedResponse(
-                           ModelBridgeInternal.getCosmosUserPropertiesFromV2Results(response.getResults()), response
-                                                                                             .getResponseHeaders()));
-        }, this.getClient().getTracerProvider().isEnabled());
+                .map(response -> BridgeInternal.createFeedResponse(
+                    ModelBridgeInternal.getCosmosUserPropertiesFromV2Results(response.getResults()), response
+                        .getResponseHeaders()));
+        });
     }
 
     /**
@@ -711,10 +667,6 @@ public class CosmosAsyncDatabase {
      * @return the mono.
      */
     public Mono<ThroughputResponse> replaceThroughput(ThroughputProperties throughputProperties) {
-       if(!this.client.getTracerProvider().isEnabled()) {
-           return replaceThroughputInternal(this.read(), throughputProperties);
-       }
-
        return withContext(context -> replaceThroughputInternal(throughputProperties, context));
     }
 
@@ -724,10 +676,6 @@ public class CosmosAsyncDatabase {
      * @return the mono containing throughput response.
      */
     public Mono<ThroughputResponse> readThroughput() {
-        if(!this.client.getTracerProvider().isEnabled()) {
-            return readThroughputInternal(this.read());
-        }
-
         return withContext(context -> readThroughputInternal(context));
     }
 
@@ -771,7 +719,7 @@ public class CosmosAsyncDatabase {
                 .map(response -> BridgeInternal.createFeedResponse(
                     ModelBridgeInternal.getCosmosContainerPropertiesFromV2Results(response.getResults()),
                     response.getResponseHeaders()));
-        }, this.getClient().getTracerProvider().isEnabled());
+        });
     }
 
     private CosmosPagedFlux<CosmosUserProperties> queryUsersInternal(SqlQuerySpec querySpec, CosmosQueryRequestOptions options) {
@@ -782,9 +730,10 @@ public class CosmosAsyncDatabase {
             setContinuationTokenAndMaxItemCount(pagedFluxOptions, options);
             return getDocClientWrapper().queryUsers(getLink(), querySpec, options)
                 .map(response -> BridgeInternal.createFeedResponseWithQueryMetrics(
-                    ModelBridgeInternal.getCosmosUserPropertiesFromV2Results(response.getResults()), response.getResponseHeaders(),
+                    ModelBridgeInternal.getCosmosUserPropertiesFromV2Results(response.getResults()),
+                    response.getResponseHeaders(),
                     ModelBridgeInternal.queryMetrics(response)));
-        }, this.getClient().getTracerProvider().isEnabled());
+        });
     }
 
     private Mono<CosmosContainerResponse> createContainerIfNotExistsInternal(

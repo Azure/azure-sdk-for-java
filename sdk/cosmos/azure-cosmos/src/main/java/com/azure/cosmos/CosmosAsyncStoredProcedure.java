@@ -74,10 +74,6 @@ public class CosmosAsyncStoredProcedure {
      * @return an {@link Mono} containing the single resource response with the read stored procedure or an error.
      */
     public Mono<CosmosStoredProcedureResponse> read(CosmosStoredProcedureRequestOptions options) {
-        if (!cosmosContainer.getDatabase().getClient().getTracerProvider().isEnabled()) {
-            return readInternal(options);
-        }
-
         return withContext(context -> readInternal(options, context));
     }
 
@@ -107,10 +103,6 @@ public class CosmosAsyncStoredProcedure {
      * @return an {@link Mono} containing the single resource response for the deleted stored procedure or an error.
      */
     public Mono<CosmosStoredProcedureResponse> delete(CosmosStoredProcedureRequestOptions options) {
-        if (!cosmosContainer.getDatabase().getClient().getTracerProvider().isEnabled()) {
-            return deleteInternal(options);
-        }
-
         return withContext(context -> deleteInternal(options, context));
     }
 
@@ -128,10 +120,6 @@ public class CosmosAsyncStoredProcedure {
      */
     public Mono<CosmosStoredProcedureResponse> execute(List<Object> procedureParams,
                                                             CosmosStoredProcedureRequestOptions options) {
-        if (!cosmosContainer.getDatabase().getClient().getTracerProvider().isEnabled()) {
-            return executeInternal(procedureParams, options);
-        }
-
         return withContext(context -> executeInternal(procedureParams, options, context));
     }
 
@@ -164,10 +152,6 @@ public class CosmosAsyncStoredProcedure {
      */
     public Mono<CosmosStoredProcedureResponse> replace(CosmosStoredProcedureProperties storedProcedureProperties,
                                                             CosmosStoredProcedureRequestOptions options) {
-        if (!cosmosContainer.getDatabase().getClient().getTracerProvider().isEnabled()) {
-            return replaceInternal(storedProcedureProperties, options);
-        }
-
         return withContext(context -> replaceInternal(storedProcedureProperties, options,
             context));
     }

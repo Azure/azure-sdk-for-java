@@ -52,7 +52,7 @@ public class ReadFeedExceptionHandlingTest extends TestSuiteBase {
         Mockito.when(mockedClientWrapper.readAllDatabases()).thenReturn(UtilBridgeInternal.createCosmosPagedFlux(pagedFluxOptions -> {
             pagedFluxOptions.setTracerInformation(new TracerProvider(ServiceLoader.load(Tracer.class)), "testSpan", "testEndpoint,", "testDb");
             return response;
-        }, false));
+        }));
         TestSubscriber<FeedResponse<CosmosDatabaseProperties>> subscriber = new TestSubscriber<>();
         mockedClientWrapper.readAllDatabases().byPage().subscribe(subscriber);
         assertThat(subscriber.valueCount()).isEqualTo(2);

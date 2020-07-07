@@ -60,10 +60,6 @@ public class CosmosAsyncPermission {
             options = new CosmosPermissionRequestOptions();
         }
 
-        if (!cosmosUser.getDatabase().getClient().getTracerProvider().isEnabled()) {
-            return readInternal(options);
-        }
-
         final CosmosPermissionRequestOptions requestOptions = options;
         return withContext(context -> readInternal(requestOptions, context));
     }
@@ -85,10 +81,6 @@ public class CosmosAsyncPermission {
             options = new CosmosPermissionRequestOptions();
         }
 
-        if (!cosmosUser.getDatabase().getClient().getTracerProvider().isEnabled()) {
-            return replaceInternal(permissionProperties, options);
-        }
-
         final CosmosPermissionRequestOptions requestOptions = options;
         return withContext(context -> replaceInternal(permissionProperties, requestOptions, context));
     }
@@ -106,10 +98,6 @@ public class CosmosAsyncPermission {
     public Mono<CosmosPermissionResponse> delete(CosmosPermissionRequestOptions options) {
         if (options == null) {
             options = new CosmosPermissionRequestOptions();
-        }
-
-        if (!cosmosUser.getDatabase().getClient().getTracerProvider().isEnabled()) {
-            return deleteInternal(options);
         }
 
         final CosmosPermissionRequestOptions requestOptions = options;

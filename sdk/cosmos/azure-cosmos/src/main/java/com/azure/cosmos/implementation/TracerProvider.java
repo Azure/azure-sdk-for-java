@@ -10,8 +10,6 @@ import com.azure.cosmos.models.CosmosResponse;
 import reactor.core.publisher.Mono;
 import reactor.core.publisher.Signal;
 
-import java.io.PrintWriter;
-import java.io.StringWriter;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicReference;
@@ -132,16 +130,16 @@ public class TracerProvider {
         final boolean isNestedCall = callDepth.isPresent();
         return resultPublisher
             .doOnSubscribe(ignoredValue -> {
-                if (!isNestedCall) {
+                if (isEnabled() && !isNestedCall) {
                     parentContext.set(this.startSpan(spanName, databaseId, endpoint,
                         context));
                 }
             }).doOnSuccess(response -> {
-                if (!isNestedCall) {
+                if (isEnabled() && !isNestedCall) {
                     this.endSpan(parentContext.get(), Signal.complete(), statusCodeFunc.apply(response));
                 }
             }).doOnError(throwable -> {
-                if (!isNestedCall) {
+                if (isEnabled() && !isNestedCall) {
                     this.endSpan(parentContext.get(), Signal.error(throwable), ERROR_CODE);
                 }
             });

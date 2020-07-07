@@ -4,7 +4,7 @@ package com.azure.cosmos;
 
 import com.azure.core.util.Context;
 import com.azure.core.util.tracing.Tracer;
-import com.azure.cosmos.implementation.CosmosItemProperties;
+import com.azure.cosmos.implementation.InternalObjectNode;
 import com.azure.cosmos.implementation.LifeCycleUtils;
 import com.azure.cosmos.implementation.TestConfigurations;
 import com.azure.cosmos.implementation.TracerProvider;
@@ -109,19 +109,19 @@ public class CosmosTracerTest extends TestSuiteBase {
         Mockito.verify(tracer, Mockito.times(2)).startSpan(Matchers.anyString(), Matchers.anyString(),
             Matchers.anyString(), Matchers.any(Context.class));
 
-        CosmosItemProperties properties = new CosmosItemProperties();
-        properties.setId(ITEM_ID);
-        cosmosAsyncContainer.createItem(properties).block();
+        InternalObjectNode item = new InternalObjectNode();
+        item.setId(ITEM_ID);
+        cosmosAsyncContainer.createItem(item).block();
         Mockito.verify(tracer, Mockito.times(3)).startSpan(Matchers.anyString(), Matchers.anyString(),
             Matchers.anyString(), Matchers.any(Context.class));
 
-        cosmosAsyncContainer.upsertItem(properties,
+        cosmosAsyncContainer.upsertItem(item,
             new CosmosItemRequestOptions()).block();
         Mockito.verify(tracer, Mockito.times(4)).startSpan(Matchers.anyString(), Matchers.anyString(),
             Matchers.anyString(), Matchers.any(Context.class));
 
         cosmosAsyncContainer.readItem(ITEM_ID, PartitionKey.NONE,
-            CosmosItemProperties.class).block();
+            InternalObjectNode.class).block();
         Mockito.verify(tracer, Mockito.times(5)).startSpan(Matchers.anyString(), Matchers.anyString(),
             Matchers.anyString(), Matchers.any(Context.class));
 

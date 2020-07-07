@@ -67,10 +67,6 @@ public final class CosmosAsyncConflict {
             options = new CosmosConflictRequestOptions();
         }
         RequestOptions requestOptions = ModelBridgeInternal.toRequestOptions(options);
-        if (!this.container.getDatabase().getClient().getTracerProvider().isEnabled()) {
-            return readInternal(requestOptions);
-        }
-
         return withContext(context -> readInternal(requestOptions, context));
     }
 
@@ -90,10 +86,6 @@ public final class CosmosAsyncConflict {
             options = new CosmosConflictRequestOptions();
         }
         RequestOptions requestOptions = ModelBridgeInternal.toRequestOptions(options);
-        if (!this.container.getDatabase().getClient().getTracerProvider().isEnabled()) {
-            return deleteInternal(requestOptions);
-        }
-
         return withContext(context -> deleteInternal(requestOptions, context));
     }
 

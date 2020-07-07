@@ -202,11 +202,6 @@ public final class CosmosAsyncClient implements Closeable {
      * an error.
      */
     public Mono<CosmosDatabaseResponse> createDatabaseIfNotExists(CosmosDatabaseProperties databaseProperties) {
-        if(!getTracerProvider().isEnabled()) {
-            CosmosAsyncDatabase database = getDatabase(databaseProperties.getId());
-            return createDatabaseIfNotExistsInternal(database.read(), database, null, null);
-        }
-
         return withContext(context -> createDatabaseIfNotExistsInternal(getDatabase(databaseProperties.getId()),
             null, context));
     }
@@ -222,11 +217,6 @@ public final class CosmosAsyncClient implements Closeable {
      * an error.
      */
     public Mono<CosmosDatabaseResponse> createDatabaseIfNotExists(String id) {
-        if(!getTracerProvider().isEnabled()) {
-            CosmosAsyncDatabase database = getDatabase(id);
-            return createDatabaseIfNotExistsInternal(database.read(), database, null,null);
-        }
-
         return withContext(context -> createDatabaseIfNotExistsInternal(getDatabase(id), null, context));
     }
 
@@ -244,11 +234,6 @@ public final class CosmosAsyncClient implements Closeable {
      * @return the mono.
      */
     public Mono<CosmosDatabaseResponse> createDatabaseIfNotExists(String id, ThroughputProperties throughputProperties) {
-        if(!getTracerProvider().isEnabled()) {
-            CosmosAsyncDatabase database = getDatabase(id);
-            return createDatabaseIfNotExistsInternal(database.read(), database, throughputProperties, null);
-        }
-
         return withContext(context -> createDatabaseIfNotExistsInternal(getDatabase(id),
             throughputProperties, context));
     }
@@ -272,10 +257,6 @@ public final class CosmosAsyncClient implements Closeable {
         }
         Database wrappedDatabase = new Database();
         wrappedDatabase.setId(databaseProperties.getId());
-        if(!getTracerProvider().isEnabled()) {
-            return createDatabaseInternal(wrappedDatabase, options);
-        }
-
         final CosmosDatabaseRequestOptions requestOptions = options;
         return withContext(context -> createDatabaseInternal(wrappedDatabase, requestOptions, context));
     }
@@ -332,11 +313,6 @@ public final class CosmosAsyncClient implements Closeable {
         ModelBridgeInternal.setThroughputProperties(options, throughputProperties);
         Database wrappedDatabase = new Database();
         wrappedDatabase.setId(databaseProperties.getId());
-        if (!getTracerProvider().isEnabled()) {
-            return createDatabaseInternal(wrappedDatabase, options);
-        }
-
-
         final CosmosDatabaseRequestOptions requestOptions = options;
         return withContext(context -> createDatabaseInternal(wrappedDatabase, requestOptions, context));
     }
@@ -406,11 +382,11 @@ public final class CosmosAsyncClient implements Closeable {
             pagedFluxOptions.setTracerInformation(this.tracerProvider, spanName, this.serviceEndpoint, null);
             setContinuationTokenAndMaxItemCount(pagedFluxOptions, options);
             return getDocClientWrapper().readDatabases(options)
-                                        .map(response ->
-                                            BridgeInternal.createFeedResponse(
-                                                ModelBridgeInternal.getCosmosDatabasePropertiesFromV2Results(response.getResults()),
-                                                response.getResponseHeaders()));
-        }, this.tracerProvider.isEnabled());
+                .map(response ->
+                    BridgeInternal.createFeedResponse(
+                        ModelBridgeInternal.getCosmosDatabasePropertiesFromV2Results(response.getResults()),
+                        response.getResponseHeaders()));
+        });
     }
 
     /**
@@ -481,14 +457,14 @@ public final class CosmosAsyncClient implements Closeable {
 
     private CosmosPagedFlux<CosmosDatabaseProperties> queryDatabasesInternal(SqlQuerySpec querySpec, CosmosQueryRequestOptions options){
         return UtilBridgeInternal.createCosmosPagedFlux(pagedFluxOptions -> {
-            String   spanName = "queryDatabases";
+            String spanName = "queryDatabases";
             pagedFluxOptions.setTracerInformation(this.tracerProvider, spanName, this.serviceEndpoint, null);
             setContinuationTokenAndMaxItemCount(pagedFluxOptions, options);
             return getDocClientWrapper().queryDatabases(querySpec, options)
                 .map(response -> BridgeInternal.createFeedResponse(
                     ModelBridgeInternal.getCosmosDatabasePropertiesFromV2Results(response.getResults()),
                     response.getResponseHeaders()));
-        }, this.tracerProvider.isEnabled());
+        });
     }
 
 

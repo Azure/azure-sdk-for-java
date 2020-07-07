@@ -73,10 +73,6 @@ public class CosmosAsyncScripts {
         StoredProcedure sProc = new StoredProcedure();
         sProc.setId(properties.getId());
         sProc.setBody(properties.getBody());
-        if (!container.getDatabase().getClient().getTracerProvider().isEnabled()) {
-            return createStoredProcedureInternal(sProc, options);
-        }
-
         final CosmosStoredProcedureRequestOptions requestOptions = options;
         return withContext(context -> createStoredProcedureInternal(sProc, requestOptions, context));
     }
@@ -123,7 +119,7 @@ public class CosmosAsyncScripts {
                 .map(response -> BridgeInternal.createFeedResponse(
                     ModelBridgeInternal.getCosmosStoredProcedurePropertiesFromV2Results(response.getResults()),
                     response.getResponseHeaders()));
-        }, this.container.getDatabase().getClient().getTracerProvider().isEnabled());
+        });
     }
 
     /**
@@ -192,10 +188,6 @@ public class CosmosAsyncScripts {
         UserDefinedFunction udf = new UserDefinedFunction();
         udf.setId(properties.getId());
         udf.setBody(properties.getBody());
-        if (!container.getDatabase().getClient().getTracerProvider().isEnabled()) {
-            return createUserDefinedFunctionInternal(udf);
-        }
-
         return withContext(context -> createUserDefinedFunctionInternal(udf, context));
     }
 
@@ -239,7 +231,7 @@ public class CosmosAsyncScripts {
                 .map(response -> BridgeInternal.createFeedResponse(
                     ModelBridgeInternal.getCosmosUserDefinedFunctionPropertiesFromV2Results(response.getResults()),
                     response.getResponseHeaders()));
-        }, this.container.getDatabase().getClient().getTracerProvider().isEnabled());
+        });
     }
 
     /**
@@ -305,10 +297,6 @@ public class CosmosAsyncScripts {
      * @return an {@link Mono} containing the single resource response with the created trigger or an error.
      */
     public Mono<CosmosTriggerResponse> createTrigger(CosmosTriggerProperties properties) {
-        if (!container.getDatabase().getClient().getTracerProvider().isEnabled()) {
-            return createTriggerInternal(properties);
-        }
-
         return withContext(context -> createTriggerInternal(properties, context));
     }
 
@@ -354,7 +342,7 @@ public class CosmosAsyncScripts {
                 .map(response -> BridgeInternal.createFeedResponse(
                     ModelBridgeInternal.getCosmosTriggerPropertiesFromV2Results(response.getResults()),
                     response.getResponseHeaders()));
-        }, this.container.getDatabase().getClient().getTracerProvider().isEnabled());
+        });
     }
 
     /**
@@ -416,7 +404,7 @@ public class CosmosAsyncScripts {
                 .map(response -> BridgeInternal.createFeedResponse(
                     ModelBridgeInternal.getCosmosStoredProcedurePropertiesFromV2Results(response.getResults()),
                     response.getResponseHeaders()));
-        }, this.container.getDatabase().getClient().getTracerProvider().isEnabled());
+        });
     }
 
     private CosmosPagedFlux<CosmosUserDefinedFunctionProperties> queryUserDefinedFunctionsInternal(
@@ -434,7 +422,7 @@ public class CosmosAsyncScripts {
                 .map(response -> BridgeInternal.createFeedResponse(
                     ModelBridgeInternal.getCosmosUserDefinedFunctionPropertiesFromV2Results(response.getResults()),
                     response.getResponseHeaders()));
-        }, this.container.getDatabase().getClient().getTracerProvider().isEnabled());
+        });
     }
 
     private CosmosPagedFlux<CosmosTriggerProperties> queryTriggersInternal(
@@ -459,7 +447,7 @@ public class CosmosAsyncScripts {
                 .map(response -> BridgeInternal.createFeedResponse(
                     ModelBridgeInternal.getCosmosTriggerPropertiesFromV2Results(response.getResults()),
                     response.getResponseHeaders()));
-        }, this.container.getDatabase().getClient().getTracerProvider().isEnabled());
+        });
     }
 
     private Mono<CosmosStoredProcedureResponse> createStoredProcedureInternal(StoredProcedure sProc,

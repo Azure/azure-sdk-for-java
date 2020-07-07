@@ -55,10 +55,6 @@ public class CosmosAsyncTrigger {
      * @return an {@link Mono} containing the single resource response for the read cosmos trigger or an error.
      */
     public Mono<CosmosTriggerResponse> read() {
-        if (!container.getDatabase().getClient().getTracerProvider().isEnabled()) {
-            return readInternal();
-        }
-
         return withContext(context -> readInternal(context));
     }
 
@@ -73,10 +69,6 @@ public class CosmosAsyncTrigger {
      * @return an {@link Mono} containing the single resource response with the replaced cosmos trigger or an error.
      */
     public Mono<CosmosTriggerResponse> replace(CosmosTriggerProperties triggerProperties) {
-        if (!container.getDatabase().getClient().getTracerProvider().isEnabled()) {
-            return replaceInternal(triggerProperties);
-        }
-
         return withContext(context -> replaceInternal(triggerProperties, context));
     }
 
@@ -90,10 +82,6 @@ public class CosmosAsyncTrigger {
      * @return an {@link Mono} containing the single resource response for the deleted cosmos trigger or an error.
      */
     public Mono<CosmosTriggerResponse> delete() {
-        if (!container.getDatabase().getClient().getTracerProvider().isEnabled()) {
-            return deleteInternal();
-        }
-
         return withContext(context -> deleteInternal(context));
     }
 

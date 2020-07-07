@@ -35,21 +35,14 @@ import java.util.function.Function;
 public final class CosmosPagedFlux<T> extends ContinuablePagedFlux<String, T, FeedResponse<T>> {
 
     private final Function<CosmosPagedFluxOptions, Flux<FeedResponse<T>>> optionsFluxFunction;
-    private final boolean isTracerEnabled;
 
-    CosmosPagedFlux(Function<CosmosPagedFluxOptions, Flux<FeedResponse<T>>> optionsFluxFunction,
-                    boolean isTracerEnable) {
+    CosmosPagedFlux(Function<CosmosPagedFluxOptions, Flux<FeedResponse<T>>> optionsFluxFunction) {
         this.optionsFluxFunction = optionsFluxFunction;
-        this.isTracerEnabled = isTracerEnable;
     }
 
     @Override
     public Flux<FeedResponse<T>> byPage() {
         CosmosPagedFluxOptions cosmosPagedFluxOptions = new CosmosPagedFluxOptions();
-        if (!this.isTracerEnabled) {
-            return this.optionsFluxFunction.apply(cosmosPagedFluxOptions);
-        }
-
         return FluxUtil.fluxContext(context -> byPage(cosmosPagedFluxOptions, context));
     }
 
@@ -57,10 +50,6 @@ public final class CosmosPagedFlux<T> extends ContinuablePagedFlux<String, T, Fe
     public Flux<FeedResponse<T>> byPage(String continuationToken) {
         CosmosPagedFluxOptions cosmosPagedFluxOptions = new CosmosPagedFluxOptions();
         cosmosPagedFluxOptions.setRequestContinuation(continuationToken);
-        if (!this.isTracerEnabled) {
-            return this.optionsFluxFunction.apply(cosmosPagedFluxOptions);
-        }
-
         return FluxUtil.fluxContext(context -> byPage(cosmosPagedFluxOptions, context));
     }
 
@@ -68,10 +57,6 @@ public final class CosmosPagedFlux<T> extends ContinuablePagedFlux<String, T, Fe
     public Flux<FeedResponse<T>> byPage(int preferredPageSize) {
         CosmosPagedFluxOptions cosmosPagedFluxOptions = new CosmosPagedFluxOptions();
         cosmosPagedFluxOptions.setMaxItemCount(preferredPageSize);
-        if (!this.isTracerEnabled) {
-            return this.optionsFluxFunction.apply(cosmosPagedFluxOptions);
-        }
-
         return FluxUtil.fluxContext(context -> byPage(cosmosPagedFluxOptions, context));
     }
 
@@ -80,10 +65,6 @@ public final class CosmosPagedFlux<T> extends ContinuablePagedFlux<String, T, Fe
         CosmosPagedFluxOptions cosmosPagedFluxOptions = new CosmosPagedFluxOptions();
         cosmosPagedFluxOptions.setRequestContinuation(continuationToken);
         cosmosPagedFluxOptions.setMaxItemCount(preferredPageSize);
-        if (!this.isTracerEnabled) {
-            return this.optionsFluxFunction.apply(cosmosPagedFluxOptions);
-        }
-
         return FluxUtil.fluxContext(context -> byPage(cosmosPagedFluxOptions, context));
     }
 
@@ -109,15 +90,21 @@ public final class CosmosPagedFlux<T> extends ContinuablePagedFlux<String, T, Fe
     private Flux<FeedResponse<T>> byPage(CosmosPagedFluxOptions pagedFluxOptions, Context context) {
         final AtomicReference<Context> parentContext = new AtomicReference<>(Context.NONE);
         return this.optionsFluxFunction.apply(pagedFluxOptions).doOnSubscribe(ignoredValue -> {
-            parentContext.set(pagedFluxOptions.getTracerProvider().startSpan(pagedFluxOptions.getTracerSpanName(),
-                pagedFluxOptions.getDatabaseId(), pagedFluxOptions.getServiceEndpoint(),
-                context));
+            if (pagedFluxOptions.getTracerProvider().isEnabled()) {
+                parentContext.set(pagedFluxOptions.getTracerProvider().startSpan(pagedFluxOptions.getTracerSpanName(),
+                    pagedFluxOptions.getDatabaseId(), pagedFluxOptions.getServiceEndpoint(),
+                    context));
+            }
         }).doOnComplete(() -> {
-            pagedFluxOptions.getTracerProvider().endSpan(parentContext.get(), Signal.complete(),
-                HttpConstants.StatusCodes.OK);
+            if (pagedFluxOptions.getTracerProvider().isEnabled()) {
+                pagedFluxOptions.getTracerProvider().endSpan(parentContext.get(), Signal.complete(),
+                    HttpConstants.StatusCodes.OK);
+            }
         }).doOnError(throwable -> {
-            pagedFluxOptions.getTracerProvider().endSpan(parentContext.get(), Signal.error(throwable),
-                TracerProvider.ERROR_CODE);
+            if (pagedFluxOptions.getTracerProvider().isEnabled()) {
+                pagedFluxOptions.getTracerProvider().endSpan(parentContext.get(), Signal.error(throwable),
+                    TracerProvider.ERROR_CODE);
+            }
         });
     }
 }

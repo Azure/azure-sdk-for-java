@@ -58,10 +58,6 @@ public class CosmosAsyncUser {
      * @return a {@link Mono} containing the single resource response with the read user or an error.
      */
     public Mono<CosmosUserResponse> read() {
-        if (!database.getClient().getTracerProvider().isEnabled()) {
-            return readInternal();
-        }
-
         return withContext(context -> readInternal(context));
     }
 
@@ -72,10 +68,6 @@ public class CosmosAsyncUser {
      * @return a {@link Mono} containing the single resource response with the replaced user or an error.
      */
     public Mono<CosmosUserResponse> replace(CosmosUserProperties userProperties) {
-        if (!database.getClient().getTracerProvider().isEnabled()) {
-            return replaceInternal(userProperties);
-        }
-
         return withContext(context -> replaceInternal(userProperties, context));
     }
 
@@ -85,10 +77,6 @@ public class CosmosAsyncUser {
      * @return a {@link Mono} containing the single resource response with the deleted user or an error.
      */
     public Mono<CosmosUserResponse> delete() {
-        if (!database.getClient().getTracerProvider().isEnabled()) {
-            return deleteInternal();
-        }
-
         return withContext(context -> deleteInternal(context));
     }
 
@@ -111,10 +99,6 @@ public class CosmosAsyncUser {
         }
 
         Permission permission = ModelBridgeInternal.getPermission(permissionProperties, database.getId());
-        if (!database.getClient().getTracerProvider().isEnabled()) {
-            return createPermissionInternal(permission, options);
-        }
-
         final CosmosPermissionRequestOptions requesOptions = options;
         return withContext(context -> createPermissionInternal(permission, requesOptions, context));
     }
@@ -136,10 +120,6 @@ public class CosmosAsyncUser {
         Permission permission = ModelBridgeInternal.getPermission(permissionProperties, database.getId());
         if (options == null) {
             options = new CosmosPermissionRequestOptions();
-        }
-
-        if (!database.getClient().getTracerProvider().isEnabled()) {
-            return upsertPermissionInternal(permission, options);
         }
 
         final CosmosPermissionRequestOptions requestOptions = options;
@@ -185,7 +165,7 @@ public class CosmosAsyncUser {
                        .map(response -> BridgeInternal.createFeedResponse(
                            ModelBridgeInternal.getCosmosPermissionPropertiesFromResults(response.getResults()),
                            response.getResponseHeaders()));
-        }, this.getDatabase().getClient().getTracerProvider().isEnabled());
+        });
     }
 
     /**
@@ -228,7 +208,7 @@ public class CosmosAsyncUser {
                        .map(response -> BridgeInternal.createFeedResponse(
                            ModelBridgeInternal.getCosmosPermissionPropertiesFromResults(response.getResults()),
                            response.getResponseHeaders()));
-        }, this.getDatabase().getClient().getTracerProvider().isEnabled());
+        });
     }
 
     /**
