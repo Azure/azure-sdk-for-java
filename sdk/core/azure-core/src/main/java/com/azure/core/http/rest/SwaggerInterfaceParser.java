@@ -67,12 +67,7 @@ class SwaggerInterfaceParser {
      * @return the SwaggerMethodParser associated with the provided swaggerMethod
      */
     SwaggerMethodParser getMethodParser(Method swaggerMethod) {
-        SwaggerMethodParser result = METHOD_PARSERS.get(swaggerMethod);
-        if (result == null) {
-            result = new SwaggerMethodParser(swaggerMethod, getHost());
-            METHOD_PARSERS.put(swaggerMethod, result);
-        }
-        return result;
+        return METHOD_PARSERS.computeIfAbsent(swaggerMethod, sm -> new SwaggerMethodParser(sm, getHost()));
     }
 
     /**

@@ -91,4 +91,9 @@ public final class TracerProxy {
         }
         return tracer.setSpanName(spanName, context);
     }
+
+    // TODO document
+    public static boolean isEnabled() {
+        return tracer != null;
+    }
 }

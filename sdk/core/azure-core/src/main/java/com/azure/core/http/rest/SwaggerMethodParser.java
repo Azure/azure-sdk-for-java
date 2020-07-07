@@ -40,6 +40,7 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.BitSet;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -65,6 +66,7 @@ class SwaggerMethodParser implements HttpResponseDecodeData {
     private final String bodyContentType;
     private final Type bodyJavaType;
     private final int[] expectedStatusCodes;
+    private final BitSet expectedStatusCodesBitSet;
     private final Type returnType;
     private final Type returnValueWireType;
     private final UnexpectedResponseExceptionType[] unexpectedResponseExceptionTypes;
@@ -148,7 +150,14 @@ class SwaggerMethodParser implements HttpResponseDecodeData {
         }
 
         final ExpectedResponses expectedResponses = swaggerMethod.getAnnotation(ExpectedResponses.class);
-        expectedStatusCodes = expectedResponses == null ? null : expectedResponses.value();
+        expectedStatusCodes = expectedResponses == null ? null : CoreUtils.clone(expectedResponses.value());
+
+        expectedStatusCodesBitSet = new BitSet();
+        if (expectedStatusCodes != null) {
+            for (int code : expectedStatusCodes) {
+                expectedStatusCodesBitSet.set(code);
+            }
+        }
 
         unexpectedResponseExceptionTypes = swaggerMethod.getAnnotationsByType(UnexpectedResponseExceptionType.class);
 
@@ -223,7 +232,7 @@ class SwaggerMethodParser implements HttpResponseDecodeData {
      */
     @Override
     public int[] getExpectedStatusCodes() {
-        return CoreUtils.clone(expectedStatusCodes);
+        return expectedStatusCodes;
     }
 
     /**
@@ -346,14 +355,18 @@ class SwaggerMethodParser implements HttpResponseDecodeData {
      * Get whether or not the provided response status code is one of the expected status codes for this Swagger
      * method.
      *
-     * @param responseStatusCode the status code that was returned in the HTTP response
+     * 1. If the returned int[] is null, then all 2XX status codes are considered as success code.
+     * 2. If the returned int[] is not-null, only the codes in the array are considered as success code.
+     *
+     * @param statusCode the status code that was returned in the HTTP response
      * @return whether or not the provided response status code is one of the expected status codes for this Swagger
      * method
      */
-    public boolean isExpectedResponseStatusCode(int responseStatusCode) {
-        return (expectedStatusCodes == null)
-            ? (responseStatusCode < 400)
-            : Arrays.stream(expectedStatusCodes).anyMatch(x -> x == responseStatusCode);
+    @Override
+    public boolean isExpectedResponseStatusCode(int statusCode) {
+        return expectedStatusCodes == null
+            ? statusCode / 100 == 2
+            : expectedStatusCodesBitSet.get(statusCode);
     }
 
     /**
@@ -443,15 +456,15 @@ class SwaggerMethodParser implements HttpResponseDecodeData {
     }
 
     private static String serialize(SerializerAdapter serializer, Object value) {
-        String result = null;
-        if (value != null) {
-            if (value instanceof String) {
-                result = (String) value;
-            } else {
-                result = serializer.serializeRaw(value);
-            }
+        if (value == null) {
+            return null;
         }
-        return result;
+
+        if (value instanceof String) {
+            return (String) value;
+        } else {
+            return serializer.serializeRaw(value);
+        }
     }
 
     private static String serializeFormData(SerializerAdapter serializer, String key, Object value,

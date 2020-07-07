@@ -12,6 +12,7 @@ import com.azure.core.implementation.TypeUtil;
 import reactor.core.publisher.Mono;
 
 import java.lang.reflect.Type;
+import java.util.Arrays;
 
 /**
  * Type representing necessary information required to decode a specific Http response.
@@ -62,6 +63,16 @@ public interface HttpResponseDecodeData {
      */
     default int[] getExpectedStatusCodes() {
         return null;
+    }
+
+    // TODO document
+    default boolean isExpectedResponseStatusCode(int statusCode) {
+        final int[] expectedStatuses = getExpectedStatusCodes();
+        if (expectedStatuses != null) {
+            return Arrays.stream(expectedStatuses).anyMatch(expectedCode -> expectedCode == statusCode);
+        } else {
+            return statusCode / 100 == 2;
+        }
     }
 
     /**

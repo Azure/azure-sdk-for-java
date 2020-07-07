@@ -7,6 +7,7 @@ import com.azure.core.util.logging.ClientLogger;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -14,7 +15,7 @@ import java.util.Map;
  * A builder class that is used to create URLs.
  */
 public final class UrlBuilder {
-    private final ClientLogger logger = new ClientLogger(UrlBuilder.class);
+    private static final Map<String, UrlBuilder> PARSED_URLS = new HashMap<>();
 
     private String scheme;
     private String host;
@@ -299,9 +300,24 @@ public final class UrlBuilder {
      * @return The UrlBuilder that was parsed from the string.
      */
     public static UrlBuilder parse(String url) {
-        final UrlBuilder result = new UrlBuilder();
-        result.with(url, UrlTokenizerState.SCHEME_OR_HOST);
-        return result;
+        // to save parsing every time, we retain a parsed version in memory. We can't give this back to the caller
+        // however as the caller is free to add query string params. Because of this, we clone the parsed UrlBuilder
+        // instance returning one with a clean query string.
+        if (PARSED_URLS.containsKey(url)) {
+            final UrlBuilder cachedUrl = PARSED_URLS.get(url);
+
+            final UrlBuilder ub = new UrlBuilder();
+            ub.scheme = cachedUrl.scheme;
+            ub.host = cachedUrl.host;
+            ub.path = cachedUrl.path;
+            ub.port = cachedUrl.port;
+
+            return ub;
+        } else {
+            final UrlBuilder ub = new UrlBuilder().with(url, UrlTokenizerState.SCHEME_OR_HOST);
+            PARSED_URLS.put(url, ub);
+            return ub;
+        }
     }
 
     /**
