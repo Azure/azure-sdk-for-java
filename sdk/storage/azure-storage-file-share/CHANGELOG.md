@@ -1,6 +1,7 @@
 # Release History
 
-## 12.6.0-beta.1 (Unreleased)
+## 12.6.0-beta.1 (2019-07-07)
+- Added support for the 2019-12-12 service version.
 - Added support for restoring file share.
 
 ## 12.5.0 (2020-06-12)

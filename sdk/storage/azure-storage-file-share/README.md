@@ -24,7 +24,7 @@ Shares provide a way to organize sets of files and also can be mounted as an SMB
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-storage-file-share</artifactId>
-  <version>12.5.0</version>
+  <version>12.6.0-beta.1</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
