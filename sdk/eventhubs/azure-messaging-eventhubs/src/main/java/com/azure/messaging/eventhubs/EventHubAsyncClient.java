@@ -36,8 +36,8 @@ class EventHubAsyncClient implements Closeable {
     private final ObjectSerializer objectSerializer;
 
     EventHubAsyncClient(EventHubConnectionProcessor connectionProcessor, TracerProvider tracerProvider,
-                        MessageSerializer messageSerializer, ObjectSerializer objectSerializer, Scheduler scheduler, boolean isSharedConnection,
-                        Runnable onClientClose) {
+                            MessageSerializer messageSerializer, ObjectSerializer objectSerializer, Scheduler scheduler,
+                            boolean isSharedConnection, Runnable onClientClose) {
         this.tracerProvider = Objects.requireNonNull(tracerProvider, "'tracerProvider' cannot be null.");
         this.messageSerializer = Objects.requireNonNull(messageSerializer, "'messageSerializer' cannot be null.");
         this.connectionProcessor = Objects.requireNonNull(connectionProcessor,

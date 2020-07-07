@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.messaging.eventhubs;
 
 import com.azure.core.amqp.AmqpMessageConstant;
@@ -26,7 +29,11 @@ import java.util.Locale;
 import java.util.Objects;
 import java.util.Optional;
 
-import static com.azure.core.util.tracing.Tracer.*;
+import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
+import static com.azure.core.util.tracing.Tracer.DIAGNOSTIC_ID_KEY;
+import static com.azure.core.util.tracing.Tracer.ENTITY_PATH_KEY;
+import static com.azure.core.util.tracing.Tracer.HOST_NAME_KEY;
+import static com.azure.core.util.tracing.Tracer.SPAN_CONTEXT_KEY;
 import static com.azure.messaging.eventhubs.implementation.ClientConstants.AZ_NAMESPACE_VALUE;
 
 /**
@@ -48,8 +55,9 @@ abstract class EventDataBatchBase {
     private final String entityPath;
     private final String hostname;
 
-    EventDataBatchBase(int maxMessageSize, String partitionId, String partitionKey, ErrorContextProvider contextProvider,
-                       TracerProvider tracerProvider, String entityPath, String hostname) {
+    EventDataBatchBase(int maxMessageSize, String partitionId, String partitionKey,
+                       ErrorContextProvider contextProvider, TracerProvider tracerProvider, String entityPath,
+                       String hostname) {
         this.maxMessageSize = maxMessageSize;
         this.partitionKey = partitionKey;
         this.partitionId = partitionId;

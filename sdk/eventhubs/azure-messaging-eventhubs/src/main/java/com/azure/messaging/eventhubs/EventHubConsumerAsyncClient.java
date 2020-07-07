@@ -85,9 +85,10 @@ public class EventHubConsumerAsyncClient implements Closeable {
         new ConcurrentHashMap<>();
 
     EventHubConsumerAsyncClient(String fullyQualifiedNamespace, String eventHubName,
-                                EventHubConnectionProcessor connectionProcessor, MessageSerializer messageSerializer,
-                                ObjectSerializer objectSerializer, String consumerGroup, int prefetchCount,
-                                Scheduler scheduler, boolean isSharedConnection, Runnable onClientClosed) {
+                                    EventHubConnectionProcessor connectionProcessor,
+                                    MessageSerializer messageSerializer, ObjectSerializer objectSerializer,
+                                    String consumerGroup, int prefetchCount, Scheduler scheduler,
+                                    boolean isSharedConnection, Runnable onClientClosed) {
         this.fullyQualifiedNamespace = fullyQualifiedNamespace;
         this.eventHubName = eventHubName;
         this.connectionProcessor = connectionProcessor;

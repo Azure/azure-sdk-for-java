@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.messaging.eventhubs;
 
 import com.azure.core.amqp.exception.AmqpException;
@@ -23,7 +26,7 @@ public final class ObjectBatch<T> extends EventDataBatchBase {
 
     ObjectBatch(int maxMessageSize, String partitionId, String partitionKey, Class<T> batchType,
                     ErrorContextProvider contextProvider, TracerProvider tracerProvider,
-                ObjectSerializer objectSerializer, String entityPath, String hostname) {
+                    ObjectSerializer objectSerializer, String entityPath, String hostname) {
         super(maxMessageSize, partitionId, partitionKey, contextProvider, tracerProvider, entityPath, hostname);
         this.batchType = Objects.requireNonNull(batchType, "'batchType' cannot be null.");
         this.objectSerializer = Objects.requireNonNull(objectSerializer, "'objectSerializer' cannot be null.");

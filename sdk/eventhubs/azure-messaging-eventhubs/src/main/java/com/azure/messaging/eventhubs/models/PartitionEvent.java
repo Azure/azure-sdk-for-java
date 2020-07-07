@@ -68,6 +68,13 @@ public class PartitionEvent {
         return lastEnqueuedEventProperties;
     }
 
+    /**
+     * Deserializes event payload into object.
+     *
+     * @param objectType Class object of type T
+     * @param <T> object type for deserialization
+     * @return deserialized object as type T
+     */
     public <T> Mono<T> getDeserializedObject(Class<T> objectType) {
         Objects.requireNonNull(objectSerializer, "No serializer set for deserializing event data payload.");
         Objects.requireNonNull(objectType, "objectType cannot be null.");
@@ -75,7 +82,7 @@ public class PartitionEvent {
         if (deserialized != null) {
             if (objectType.isInstance(deserialized)) {
                 return Mono.just(objectType.cast(deserialized));
-            };
+            }
         }
 
         Mono<T> objectMono =  objectSerializer.deserialize(new ByteArrayInputStream(eventData.getBody()), objectType);
