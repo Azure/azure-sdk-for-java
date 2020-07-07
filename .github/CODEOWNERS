@@ -12,22 +12,22 @@
 /sdk/boms/azure-sdk-bom/                            @alzimmermsft @jonathangiles @srnagar @hemanttanwar @anuchandy
 
 # Service teams
-/sdk/appconfiguration/                              @mssfang @alzimmermsft @conniey @sima-zhu
-/sdk/batch/                                         @xingwu1 @bgklein @matthchr
-/sdk/core/                                          @alzimmermsft @jianghaolu @srnagar @hemanttanwar @anuchandy
-/sdk/core/azure-core-tracing-opentelemetry/         @samvaity @alzimmermsft
-/sdk/cosmos/                                        @moderakh @kushagraThapar @David-Noble-at-work @kirankumarkolli @mbhaskar
+/sdk/appconfiguration/                              @mssfang @alzimmermsft @conniey @sima-zhu                     %AzConfig
+/sdk/batch/                                         @xingwu1 @bgklein @matthchr                                   %Batch
+/sdk/core/                                          @alzimmermsft @jianghaolu @srnagar @hemanttanwar @anuchandy   %Azure.Core
+/sdk/core/azure-core-tracing-opentelemetry/         @samvaity @alzimmermsft 
+/sdk/cosmos/                                        @moderakh @kushagraThapar @David-Noble-at-work @kirankumarkolli @mbhaskar   %Cosmos
 /sdk/cosmos/azure-spring-data-cosmos/               @kushagraThapar @saragluna @yiliuTo @chenrujun @zhoufenqin @jialindai
-/sdk/eventhubs/                                     @conniey @srnagar @mssfang
-/sdk/formrecognizer/                                @samvaity @mssfang @sima-zhu
-/sdk/identity/                                      @schaabs @g2vinay @jianghaolu
-/sdk/keyvault/                                      @g2vinay @vcolin7 @samvaity
-/sdk/schemaregistry/                                @arerlend @sjkwak
-/sdk/search/                                        @alzimmermsft @sima-zhu @mssfang @samvaity @conniey
-/sdk/servicebus/                                    @yvgopal @nemakam @hemanttanwar @conniey
-/sdk/storage/                                       @amishra-dev @rickle-msft @jaschrep-msft @gapra-msft @alzimmermsft @sima-zhu
-/sdk/textanalytics/                                 @samvaity @mssfang @sima-zhu
-/sdk/spring/                                        @saragluna @yiliuTo @chenrujun @zhoufenqin @jialindai
+/sdk/eventhubs/                                     @conniey @srnagar @mssfang        %Event Hubs
+/sdk/formrecognizer/                                @samvaity @mssfang @sima-zhu      %Cognitive - Form Recognizer
+/sdk/identity/                                      @schaabs @g2vinay @jianghaolu     %Azure.Identity
+/sdk/keyvault/                                      @g2vinay @vcolin7 @samvaity       %KeyVault
+/sdk/schemaregistry/                                @arerlend @sjkwak                 %Schema Registry
+/sdk/search/                                        @alzimmermsft @sima-zhu @mssfang @samvaity @conniey     %Search
+/sdk/servicebus/                                    @yvgopal @nemakam @hemanttanwar @conniey                %Service Bus
+/sdk/storage/                                       @amishra-dev @rickle-msft @jaschrep-msft @gapra-msft @alzimmermsft @sima-zhu    %Storage
+/sdk/textanalytics/                                 @samvaity @mssfang @sima-zhu      %Cognitive - Text Analytics
+/sdk/spring/                                        @saragluna @yiliuTo @chenrujun @zhoufenqin @jialindai  
 
 # end to end tests
 /sdk/e2e/                                           @jianghaolu @g2vinay
