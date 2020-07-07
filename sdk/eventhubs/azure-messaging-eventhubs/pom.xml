@@ -41,11 +41,6 @@
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
-      <artifactId>azure-core</artifactId>
-      <version>1.6.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
-    </dependency>
-    <dependency>
-      <groupId>com.azure</groupId>
       <artifactId>azure-core-amqp</artifactId>
       <version>1.3.0</version> <!-- {x-version-update;com.azure:azure-core-amqp;dependency} -->
     </dependency>
