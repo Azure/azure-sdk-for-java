@@ -516,12 +516,16 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
     }
 
     static protected CosmosContainerProperties getCollectionDefinition() {
+        return getCollectionDefinition(UUID.randomUUID().toString());
+    }
+
+    static protected CosmosContainerProperties getCollectionDefinition(String collectionId) {
         PartitionKeyDefinition partitionKeyDef = new PartitionKeyDefinition();
-        ArrayList<String> paths = new ArrayList<String>();
+        ArrayList<String> paths = new ArrayList<>();
         paths.add("/mypk");
         partitionKeyDef.setPaths(paths);
 
-        CosmosContainerProperties collectionDefinition = new CosmosContainerProperties(UUID.randomUUID().toString(), partitionKeyDef);
+        CosmosContainerProperties collectionDefinition = new CosmosContainerProperties(collectionId, partitionKeyDef);
 
         return collectionDefinition;
     }

@@ -2,6 +2,9 @@
 
 ## 1.0.0-beta.4 (Unreleased)
 ### Breaking Changes
+- `beginRecognizeReceipt` APIs now return a `RecognizedForm` model instead of a `RecognizedReceipt`. See
+[this](https://github.com/Azure/azure-sdk-for-java/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/java/com/azure/ai/formrecognizer/StronglyTypedRecognizedFormUSReceipt.java)
+suggested approach for extracting information from receipts.
 - Methods returning `textContent` have been renamed to `fieldElements` on `FieldData` and `FormTableCell`
 - Renamed `FormContent` to `FormElement`
 - Renamed `FieldText` to `FieldData`
