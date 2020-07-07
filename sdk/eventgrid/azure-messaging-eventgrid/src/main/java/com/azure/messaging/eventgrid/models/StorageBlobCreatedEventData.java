@@ -35,7 +35,7 @@ public final class StorageBlobCreatedEventData {
     /*
      * The etag of the blob at the time this event was triggered.
      */
-    @JsonProperty(value = "etag")
+    @JsonProperty(value = "eTag")
     private String etag;
 
     /*

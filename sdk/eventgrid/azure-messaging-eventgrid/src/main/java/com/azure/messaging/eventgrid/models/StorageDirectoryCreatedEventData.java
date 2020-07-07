@@ -35,7 +35,7 @@ public final class StorageDirectoryCreatedEventData {
     /*
      * The etag of the directory at the time this event was triggered.
      */
-    @JsonProperty(value = "etag")
+    @JsonProperty(value = "eTag")
     private String etag;
 
     /*
