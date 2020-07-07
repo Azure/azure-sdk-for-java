@@ -56,7 +56,7 @@ mvnw clean install -DskipTests
 ```
 
 ## Version management
-Developing version naming convention is like `0.1.2-SNAPSHOT`. Release version naming convention is like `0.1.2`. 
+Developing version naming convention is like `0.1.2-beta.1`. Release version naming convention is like `0.1.2`. 
 
 ## Contribute to code
 Contribution is welcome. Please follow [this instruction](https://github.com/Azure/azure-sdk-for-java/blob/master/CONTRIBUTING.md) to contribute code.
