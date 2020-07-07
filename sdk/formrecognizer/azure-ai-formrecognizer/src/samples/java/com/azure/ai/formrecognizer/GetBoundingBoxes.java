@@ -50,7 +50,7 @@ public class GetBoundingBoxes {
             recognizedForm.getFields().forEach((fieldText, fieldValue) -> System.out.printf("Field %s has value %s "
                     + "based on %s with a confidence score "
                     + "of %.2f.%n",
-                fieldText, fieldValue.getFieldValue(), fieldValue.getValueData().getText(),
+                fieldText, fieldValue.getValue(), fieldValue.getValueData().getText(),
                 fieldValue.getConfidence()));
 
             // Page Information

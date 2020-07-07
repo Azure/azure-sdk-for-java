@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation;
 
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
@@ -34,6 +35,17 @@ public class BackoffRetryUtility {
                 return callbackMethod.call();
             } catch (Exception e) {
                 return Mono.error(e);
+            }
+        }).retryWhen(RetryUtils.toRetryWhenFunc(retryPolicy));
+    }
+
+    static public <T> Flux<T> fluxExecuteRetry(Callable<Flux<T>> callbackMethod, IRetryPolicy retryPolicy) {
+
+        return Flux.defer(() -> {
+            try {
+                return callbackMethod.call();
+            } catch (Exception e) {
+                return Flux.error(e);
             }
         }).retryWhen(RetryUtils.toRetryWhenFunc(retryPolicy));
     }
