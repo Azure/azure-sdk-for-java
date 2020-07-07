@@ -150,7 +150,7 @@ public class ContainerCreateDeleteWithSameNameTest extends TestSuiteBase {
         ObjectMapper objectMapper = Utils.getSimpleObjectMapper();
         BiConsumer<CosmosAsyncContainer, CosmosAsyncContainer> func = (feedContainer, leaseContainer) -> {
             String hostName = RandomStringUtils.randomAlphabetic(6);
-            int CHANGE_FEED_PROCESSOR_TIMEOUT = 10000;
+            int CHANGE_FEED_PROCESSOR_TIMEOUT = 5000;
             final int FEED_COUNT = 5;
             List<TestObject> createdDocuments = new ArrayList<>();
             Map<String, TestObject> receivedDocuments = new ConcurrentHashMap<>();
@@ -269,6 +269,7 @@ public class ContainerCreateDeleteWithSameNameTest extends TestSuiteBase {
 
             // step3: delete the lease container
             safeDeleteCollection(leaseContainer);
+            truncateCollection(feedContainer);
             Thread.sleep(COLLECTION_RECREATION_TIME_DELAY);
 
             // step4: recreate the lease container and lease container with same ids as step1
