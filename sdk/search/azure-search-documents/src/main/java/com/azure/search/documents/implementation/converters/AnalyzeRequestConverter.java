@@ -35,15 +35,17 @@ public final class AnalyzeRequestConverter {
         }
 
         if (obj.getCharFilters() != null) {
-            List<CharFilterName> charFilters =
-                obj.getCharFilters().stream().map(CharFilterNameConverter::map).collect(Collectors.toList());
+            CharFilterName[] charFilters = obj.getCharFilters().stream()
+                .map(CharFilterNameConverter::map)
+                .toArray(CharFilterName[]::new);
             analyzeTextOptions.setCharFilters(charFilters);
         }
 
 
         if (obj.getTokenFilters() != null) {
-            List<TokenFilterName> tokenFilters =
-                obj.getTokenFilters().stream().map(TokenFilterNameConverter::map).collect(Collectors.toList());
+            TokenFilterName[] tokenFilters = obj.getTokenFilters().stream()
+                .map(TokenFilterNameConverter::map)
+                .toArray(TokenFilterName[]::new);
             analyzeTextOptions.setTokenFilters(tokenFilters);
         }
 

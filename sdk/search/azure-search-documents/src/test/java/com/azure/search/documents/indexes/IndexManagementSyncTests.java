@@ -100,10 +100,7 @@ public class IndexManagementSyncTests extends SearchTestBase {
         SearchIndex index = createTestIndex(null)
             .setCorsOptions(new CorsOptions(Collections.singletonList("*")))
             .setScoringProfiles(Collections.singletonList(new ScoringProfile("MyProfile")
-                .setFunctions(Collections.singletonList(new MagnitudeScoringFunction("Rating", 2.0,
-                    new MagnitudeScoringParameters(1, 4)))
-                )
-            ));
+                .setFunctions(new MagnitudeScoringFunction("Rating", 2.0, new MagnitudeScoringParameters(1, 4)))));
         SearchIndex indexResponse = client.createIndex(index);
         indexesToDelete.add(indexResponse.getName());
 

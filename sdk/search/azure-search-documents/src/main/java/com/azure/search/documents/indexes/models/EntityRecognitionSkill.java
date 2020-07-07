@@ -7,6 +7,8 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -76,8 +78,8 @@ public final class EntityRecognitionSkill extends SearchIndexerSkill {
      * @param categories the categories value to set.
      * @return the EntityRecognitionSkill object itself.
      */
-    public EntityRecognitionSkill setCategories(List<EntityCategory> categories) {
-        this.categories = categories;
+    public EntityRecognitionSkill setCategories(EntityCategory... categories) {
+        this.categories = Arrays.asList(categories);
         return this;
     }
 

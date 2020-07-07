@@ -52,8 +52,9 @@ public final class EntityRecognitionSkillConverter {
         }
 
         if (obj.getCategories() != null) {
-            List<EntityCategory> categories =
-                obj.getCategories().stream().map(EntityCategoryConverter::map).collect(Collectors.toList());
+            EntityCategory[] categories = obj.getCategories().stream()
+                .map(EntityCategoryConverter::map)
+                .toArray(EntityCategory[]::new);
             entityRecognitionSkill.setCategories(categories);
         }
 

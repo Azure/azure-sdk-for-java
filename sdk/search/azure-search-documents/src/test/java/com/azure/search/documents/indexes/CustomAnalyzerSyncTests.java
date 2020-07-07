@@ -198,8 +198,8 @@ public class CustomAnalyzerSyncTests extends SearchTestBase {
         assertFalse(iterator.hasNext());
 
         request = new AnalyzeTextOptions("One's <two/>", LexicalTokenizerName.WHITESPACE)
-            .setTokenFilters(Collections.singletonList(TokenFilterName.APOSTROPHE))
-            .setCharFilters(Collections.singletonList(CharFilterName.HTML_STRIP));
+            .setTokenFilters(TokenFilterName.APOSTROPHE)
+            .setCharFilters(CharFilterName.HTML_STRIP);
         results = searchIndexClient.analyzeText(index.getName(), request);
         // End offset is based on the original token, not the one emitted by the filters.
         iterator = results.iterator();
@@ -230,8 +230,8 @@ public class CustomAnalyzerSyncTests extends SearchTestBase {
             .forEach(r -> searchIndexClient.analyzeText(index.getName(), r));
 
         AnalyzeTextOptions request = new AnalyzeTextOptions("One two", LexicalTokenizerName.WHITESPACE)
-            .setTokenFilters(new ArrayList<>(TokenFilterName.values()))
-            .setCharFilters(new ArrayList<>(CharFilterName.values()));
+            .setTokenFilters(TokenFilterName.values().toArray(new TokenFilterName[0]))
+            .setCharFilters(CharFilterName.values().toArray(new CharFilterName[0]));
         searchIndexClient.analyzeText(index.getName(), request);
     }
 
@@ -304,10 +304,10 @@ public class CustomAnalyzerSyncTests extends SearchTestBase {
     public void canUseAllRegexFlagsAnalyzer() {
         SearchIndex index = createTestIndex(null)
             .setAnalyzers(Collections.singletonList(new PatternAnalyzer(generateName())
-                .setStopwords(Arrays.asList("stop1", "stop2"))
+                .setStopwords("stop1", "stop2")
                 .setLowerCaseTerms(true)
                 .setPattern(".*")
-                .setFlags(new ArrayList<>(RegexFlags.values()))));
+                .setFlags(RegexFlags.values().toArray(new RegexFlags[0]))));
 
         SearchIndex createdIndex = searchIndexClient.createIndex(index);
         indexesToCleanup.add(index.getName());
@@ -344,9 +344,8 @@ public class CustomAnalyzerSyncTests extends SearchTestBase {
                 new PatternAnalyzer(null)
             ));
 
-        assertThrows(IllegalArgumentException.class, () -> {
-            searchIndexClient.createIndex(index);
-        }, "Missing required property name in model LexicalAnalyzer");
+        assertThrows(IllegalArgumentException.class, () ->
+            searchIndexClient.createIndex(index), "Missing required property name in model LexicalAnalyzer");
 
     }
 
@@ -404,24 +403,9 @@ public class CustomAnalyzerSyncTests extends SearchTestBase {
     }
 
     @Test
-    public void canUseAllRegexFlagsNullFlagsAnalyzer() {
-        SearchIndex index = createTestIndex(null)
-            .setAnalyzers(Collections.singletonList(
-                new PatternAnalyzer(generateName()).setFlags(null))
-            );
-
-        SearchIndex createdIndex = searchIndexClient.createIndex(index);
-        indexesToCleanup.add(index.getName());
-
-        assertAnalysisComponentsEqual(index, createdIndex);
-    }
-
-    @Test
     public void canUseAllRegexFlagsEmptyFlagsAnalyzer() {
         SearchIndex index = createTestIndex(null)
-            .setAnalyzers(Collections.singletonList(
-                new PatternAnalyzer(generateName()).setFlags(new ArrayList<>()))
-            );
+            .setAnalyzers(Collections.singletonList(new PatternAnalyzer(generateName()).setFlags()));
 
         assertHttpResponseException(
             () -> searchIndexClient.createIndex(index),
@@ -431,22 +415,9 @@ public class CustomAnalyzerSyncTests extends SearchTestBase {
     }
 
     @Test
-    public void canUseAllRegexFlagsNullStopwordsAnalyzer() {
-        SearchIndex index = createTestIndex(null)
-            .setAnalyzers(Collections.singletonList(new PatternAnalyzer(generateName())
-                .setStopwords(null)));
-
-        SearchIndex createdIndex = searchIndexClient.createIndex(index);
-        indexesToCleanup.add(index.getName());
-
-        assertAnalysisComponentsEqual(index, createdIndex);
-    }
-
-    @Test
     public void canUseAllRegexFlagsEmptyStopwordsAnalyzer() {
         SearchIndex index = createTestIndex(null)
-            .setAnalyzers(Collections.singletonList(new PatternAnalyzer(generateName())
-                .setStopwords(new ArrayList<>())));
+            .setAnalyzers(Collections.singletonList(new PatternAnalyzer(generateName()).setStopwords()));
 
         SearchIndex createdIndex = searchIndexClient.createIndex(index);
         indexesToCleanup.add(index.getName());
@@ -459,7 +430,7 @@ public class CustomAnalyzerSyncTests extends SearchTestBase {
         SearchIndex index = createTestIndex(null)
             .setTokenizers(Collections.singletonList(new PatternTokenizer(generateName())
                 .setPattern(".*")
-                .setFlags(new ArrayList<>(RegexFlags.values()))
+                .setFlags(RegexFlags.values().toArray(new RegexFlags[0]))
                 .setGroup(0)));
 
         SearchIndex createdIndex = searchIndexClient.createIndex(index);
@@ -495,9 +466,8 @@ public class CustomAnalyzerSyncTests extends SearchTestBase {
         SearchIndex index = createTestIndex(null)
             .setTokenizers(Collections.singletonList(new PatternTokenizer(null)));
 
-        assertThrows(IllegalArgumentException.class, () -> {
-            searchIndexClient.createIndex(index);
-        }, "Missing required property name in model SearchIndexer");
+        assertThrows(IllegalArgumentException.class, () ->
+            searchIndexClient.createIndex(index), "Missing required property name in model SearchIndexer");
 
     }
 
@@ -540,24 +510,9 @@ public class CustomAnalyzerSyncTests extends SearchTestBase {
     }
 
     @Test
-    public void canUseAllRegexFlagsNullFlagsTokenizer() {
-        SearchIndex index = createTestIndex(null)
-            .setTokenizers(Collections.singletonList(new PatternTokenizer(generateName())
-                .setFlags(null)));
-
-        SearchIndex createdIndex = searchIndexClient.createIndex(index);
-        indexesToCleanup.add(index.getName());
-
-        assertAnalysisComponentsEqual(index, createdIndex);
-        System.out.println(RegexFlags.values());
-    }
-
-    @Test
     public void canUseAllRegexFlagsEmptyFlagsTokenizer() {
         SearchIndex index = createTestIndex(null)
-            .setTokenizers(Collections.singletonList(new PatternTokenizer(generateName())
-                .setFlags(new ArrayList<>()))
-            );
+            .setTokenizers(Collections.singletonList(new PatternTokenizer(generateName()).setFlags()));
 
         assertHttpResponseException(
             () -> searchIndexClient.createIndex(index),
@@ -672,8 +627,7 @@ public class CustomAnalyzerSyncTests extends SearchTestBase {
             new EdgeNGramTokenizer(generateName())
                 .setMinGram(1)
                 .setMaxGram(2)
-                .setTokenChars(Arrays.asList(TokenCharacterKind.values()))
-        );
+                .setTokenChars(TokenCharacterKind.values()));
         tokenizers.addAll(
             Arrays.stream(MicrosoftStemmingTokenizerLanguage.values())
                 .map(mtl -> new MicrosoftLanguageStemmingTokenizer(generateName())
@@ -688,7 +642,7 @@ public class CustomAnalyzerSyncTests extends SearchTestBase {
         // Set token filters
         List<TokenFilter> tokenFilters = new ArrayList<>();
         tokenFilters.add(new CjkBigramTokenFilter(generateName())
-            .setIgnoreScripts(Arrays.asList(CjkBigramTokenFilterScripts.values()))
+            .setIgnoreScripts(CjkBigramTokenFilterScripts.values())
             .setOutputUnigrams(true));
         tokenFilters.addAll(
             Arrays.stream(EdgeNGramTokenFilterSide.values())
@@ -858,13 +812,13 @@ public class CustomAnalyzerSyncTests extends SearchTestBase {
                 new PatternAnalyzer(generateName())
                     .setLowerCaseTerms(false)
                     .setPattern("abc")
-                    .setFlags(Collections.singletonList(RegexFlags.DOT_ALL))
-                    .setStopwords(Collections.singletonList("the")),
+                    .setFlags(RegexFlags.DOT_ALL)
+                    .setStopwords("the"),
                 new LuceneStandardAnalyzer(generateName())
                     .setMaxTokenLength(100)
-                    .setStopwords(Collections.singletonList("the")),
+                    .setStopwords("the"),
                 new StopAnalyzer(generateName())
-                    .setStopwords(Collections.singletonList("the")),
+                    .setStopwords("the"),
                 new StopAnalyzer(generateName())
             ))
             .setTokenizers(Arrays.asList(
@@ -874,11 +828,11 @@ public class CustomAnalyzerSyncTests extends SearchTestBase {
                 new EdgeNGramTokenizer(generateName())
                     .setMinGram(2)
                     .setMaxGram(4)
-                    .setTokenChars(Collections.singletonList(TokenCharacterKind.LETTER)),
+                    .setTokenChars(TokenCharacterKind.LETTER),
                 new NGramTokenizer(generateName())
                     .setMinGram(2)
                     .setMaxGram(4)
-                    .setTokenChars(Collections.singletonList(TokenCharacterKind.LETTER)),
+                    .setTokenChars(TokenCharacterKind.LETTER),
                 new ClassicTokenizer(generateName())
                     .setMaxTokenLength(100),
                 new KeywordTokenizer(generateName())
@@ -899,7 +853,7 @@ public class CustomAnalyzerSyncTests extends SearchTestBase {
                     .setNumberOfTokensToSkip(2),
                 new PatternTokenizer(generateName())
                     .setPattern(".*")
-                    .setFlags(Collections.singletonList(RegexFlags.MULTILINE))
+                    .setFlags(RegexFlags.MULTILINE)
                     .setGroup(0),
                 new LuceneStandardTokenizer(generateName())
                     .setMaxTokenLength(100),
@@ -909,7 +863,7 @@ public class CustomAnalyzerSyncTests extends SearchTestBase {
             .setTokenFilters(Arrays.asList(
                 new CjkBigramTokenFilter(customTokenFilterName.toString()),  // One custom token filter for CustomAnalyzer above.
                 new CjkBigramTokenFilter(generateName())
-                    .setIgnoreScripts(Collections.singletonList(CjkBigramTokenFilterScripts.HAN))
+                    .setIgnoreScripts(CjkBigramTokenFilterScripts.HAN)
                     .setOutputUnigrams(true),
                 new CjkBigramTokenFilter(generateName()),
                 new AsciiFoldingTokenFilter(generateName())
@@ -929,7 +883,7 @@ public class CustomAnalyzerSyncTests extends SearchTestBase {
                     .setMaxGram(10)
                     .setSide(EdgeNGramTokenFilterSide.BACK),
                 new ElisionTokenFilter(generateName())
-                    .setArticles(Collections.singletonList("a")),
+                    .setArticles("a"),
                 new ElisionTokenFilter(generateName()),
                 new KeepTokenFilter(generateName(), Collections.singletonList("aloha")),
                 new KeepTokenFilter(generateName(), Arrays.asList("e", "komo", "mai")),
@@ -986,7 +940,7 @@ public class CustomAnalyzerSyncTests extends SearchTestBase {
                     .setPreserveOriginal(true)
                     .setSplitOnNumerics(false)
                     .setStemEnglishPossessive(false)
-                    .setProtectedWords(Collections.singletonList("protected"))))
+                    .setProtectedWords("protected")))
             .setCharFilters(Arrays.asList(
                 new MappingCharFilter(customCharFilterName.toString(),
                     Collections.singletonList("a => b")), // One custom char filter for CustomeAnalyer above.

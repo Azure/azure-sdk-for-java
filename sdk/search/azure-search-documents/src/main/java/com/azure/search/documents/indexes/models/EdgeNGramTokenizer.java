@@ -7,6 +7,8 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -106,8 +108,8 @@ public final class EdgeNGramTokenizer extends LexicalTokenizer {
      * @param tokenChars the tokenChars value to set.
      * @return the EdgeNGramTokenizer object itself.
      */
-    public EdgeNGramTokenizer setTokenChars(List<TokenCharacterKind> tokenChars) {
-        this.tokenChars = tokenChars;
+    public EdgeNGramTokenizer setTokenChars(TokenCharacterKind... tokenChars) {
+        this.tokenChars = Arrays.asList(tokenChars);
         return this;
     }
 }

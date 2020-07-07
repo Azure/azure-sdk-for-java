@@ -26,8 +26,9 @@ public final class ScoringProfileConverter {
         ScoringProfile scoringProfile = new ScoringProfile(obj.getName());
 
         if (obj.getFunctions() != null) {
-            List<ScoringFunction> functions =
-                obj.getFunctions().stream().map(ScoringFunctionConverter::map).collect(Collectors.toList());
+            ScoringFunction[] functions = obj.getFunctions().stream()
+                .map(ScoringFunctionConverter::map)
+                .toArray(ScoringFunction[]::new);
             scoringProfile.setFunctions(functions);
         }
 

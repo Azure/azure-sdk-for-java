@@ -7,6 +7,8 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -329,8 +331,8 @@ public final class WordDelimiterTokenFilter extends TokenFilter {
      * @param protectedWords the protectedWords value to set.
      * @return the WordDelimiterTokenFilter object itself.
      */
-    public WordDelimiterTokenFilter setProtectedWords(List<String> protectedWords) {
-        this.protectedWords = protectedWords;
+    public WordDelimiterTokenFilter setProtectedWords(String... protectedWords) {
+        this.protectedWords = Arrays.asList(protectedWords);
         return this;
     }
 }

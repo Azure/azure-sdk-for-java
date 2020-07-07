@@ -8,6 +8,8 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -83,8 +85,8 @@ public final class LuceneStandardAnalyzer extends LexicalAnalyzer {
      * @param stopwords the stopwords value to set.
      * @return the LuceneStandardAnalyzer object itself.
      */
-    public LuceneStandardAnalyzer setStopwords(List<String> stopwords) {
-        this.stopwords = stopwords;
+    public LuceneStandardAnalyzer setStopwords(String... stopwords) {
+        this.stopwords = Arrays.asList(stopwords);
         return this;
     }
 }

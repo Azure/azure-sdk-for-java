@@ -28,8 +28,9 @@ public final class EdgeNGramTokenizerConverter {
         edgeNGramTokenizer.setMaxGram(maxGram);
 
         if (obj.getTokenChars() != null) {
-            List<TokenCharacterKind> tokenChars =
-                obj.getTokenChars().stream().map(TokenCharacterKindConverter::map).collect(Collectors.toList());
+            TokenCharacterKind[] tokenChars = obj.getTokenChars().stream()
+                .map(TokenCharacterKindConverter::map)
+                .toArray(TokenCharacterKind[]::new);
             edgeNGramTokenizer.setTokenChars(tokenChars);
         }
 

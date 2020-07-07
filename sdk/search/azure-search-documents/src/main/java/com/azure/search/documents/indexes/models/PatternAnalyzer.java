@@ -8,6 +8,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -115,8 +116,8 @@ public final class PatternAnalyzer extends LexicalAnalyzer {
      * @param flags the flags value to set.
      * @return the PatternAnalyzer object itself.
      */
-    public PatternAnalyzer setFlags(List<RegexFlags> flags) {
-        this.flags = flags;
+    public PatternAnalyzer setFlags(RegexFlags... flags) {
+        this.flags = Arrays.asList(flags);
         return this;
     }
 
@@ -135,8 +136,8 @@ public final class PatternAnalyzer extends LexicalAnalyzer {
      * @param stopwords the stopwords value to set.
      * @return the PatternAnalyzer object itself.
      */
-    public PatternAnalyzer setStopwords(List<String> stopwords) {
-        this.stopwords = stopwords;
+    public PatternAnalyzer setStopwords(String... stopwords) {
+        this.stopwords = Arrays.asList(stopwords);
         return this;
     }
 }

@@ -7,6 +7,8 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -87,8 +89,8 @@ public final class ImageAnalysisSkill extends SearchIndexerSkill {
      * @param visualFeatures the visualFeatures value to set.
      * @return the ImageAnalysisSkill object itself.
      */
-    public ImageAnalysisSkill setVisualFeatures(List<VisualFeature> visualFeatures) {
-        this.visualFeatures = visualFeatures;
+    public ImageAnalysisSkill setVisualFeatures(VisualFeature... visualFeatures) {
+        this.visualFeatures = Arrays.asList(visualFeatures);
         return this;
     }
 
@@ -109,8 +111,8 @@ public final class ImageAnalysisSkill extends SearchIndexerSkill {
      * @param details the details value to set.
      * @return the ImageAnalysisSkill object itself.
      */
-    public ImageAnalysisSkill setDetails(List<ImageDetail> details) {
-        this.details = details;
+    public ImageAnalysisSkill setDetails(ImageDetail... details) {
+        this.details = Arrays.asList(details);
         return this;
     }
 }

@@ -117,15 +117,13 @@ public class SkillsetManagementSyncTests extends SearchTestBase {
 
     @Test
     public void createSkillsetReturnsCorrectDefinitionOcrEntity() {
-        SearchIndexerSkillset expectedSkillset = createTestSkillsetOcrEntity(null);
+        SearchIndexerSkillset expectedSkillset = createTestSkillsetOcrEntity((EntityCategory) null);
         SearchIndexerSkillset actualSkillset = client.createSkillset(expectedSkillset);
         skillsetsToDelete.add(actualSkillset.getName());
         assertObjectEquals(expectedSkillset, actualSkillset, true, "etag");
 
-        List<EntityCategory> entityCategories = Arrays.asList(
-            EntityCategory.LOCATION, EntityCategory.ORGANIZATION, EntityCategory.PERSON);
-
-        expectedSkillset = createTestSkillsetOcrEntity(entityCategories);
+        expectedSkillset = createTestSkillsetOcrEntity(EntityCategory.LOCATION, EntityCategory.ORGANIZATION,
+            EntityCategory.PERSON);
         actualSkillset = client.createSkillset(expectedSkillset);
         skillsetsToDelete.add(actualSkillset.getName());
         assertObjectEquals(expectedSkillset, actualSkillset, true, "etag");
@@ -611,8 +609,8 @@ public class SkillsetManagementSyncTests extends SearchTestBase {
             .singletonList(createOutputFieldMappingEntry("description", "mydescription"));
 
         skills.add(new ImageAnalysisSkill(inputs, outputs)
-            .setVisualFeatures(new ArrayList<>(VisualFeature.values()))
-            .setDetails(new ArrayList<>((ImageDetail.values())))
+            .setVisualFeatures(VisualFeature.values().toArray(new VisualFeature[0]))
+            .setDetails(ImageDetail.values().toArray(new ImageDetail[0]))
             .setDefaultLanguageCode(ImageAnalysisSkillLanguage.EN)
             .setName("myimage")
             .setDescription("Tested image analysis skill")
@@ -754,7 +752,7 @@ public class SkillsetManagementSyncTests extends SearchTestBase {
         ));
     }
 
-    SearchIndexerSkillset createTestSkillsetOcrEntity(List<EntityCategory> categories) {
+    SearchIndexerSkillset createTestSkillsetOcrEntity(EntityCategory... categories) {
         List<SearchIndexerSkill> skills = new ArrayList<>();
         List<InputFieldMappingEntry> inputs = Arrays.asList(
             simpleInputFieldMappingEntry("url", "/document/url"),

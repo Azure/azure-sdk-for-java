@@ -28,8 +28,9 @@ public final class CjkBigramTokenFilterConverter {
         cjkBigramTokenFilter.setOutputUnigrams(outputUnigrams);
 
         if (obj.getIgnoreScripts() != null) {
-            List<CjkBigramTokenFilterScripts> ignoreScripts =
-                obj.getIgnoreScripts().stream().map(CjkBigramTokenFilterScriptsConverter::map).collect(Collectors.toList());
+            CjkBigramTokenFilterScripts[] ignoreScripts = obj.getIgnoreScripts().stream()
+                .map(CjkBigramTokenFilterScriptsConverter::map)
+                .toArray(CjkBigramTokenFilterScripts[]::new);
             cjkBigramTokenFilter.setIgnoreScripts(ignoreScripts);
         }
         return cjkBigramTokenFilter;

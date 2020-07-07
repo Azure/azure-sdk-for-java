@@ -44,8 +44,9 @@ public final class ImageAnalysisSkillConverter {
         imageAnalysisSkill.setDescription(description);
 
         if (obj.getVisualFeatures() != null) {
-            List<VisualFeature> visualFeatures =
-                obj.getVisualFeatures().stream().map(VisualFeatureConverter::map).collect(Collectors.toList());
+            VisualFeature[] visualFeatures = obj.getVisualFeatures().stream()
+                .map(VisualFeatureConverter::map)
+                .toArray(VisualFeature[]::new);
             imageAnalysisSkill.setVisualFeatures(visualFeatures);
         }
 
@@ -56,8 +57,9 @@ public final class ImageAnalysisSkillConverter {
         }
 
         if (obj.getDetails() != null) {
-            List<ImageDetail> details =
-                obj.getDetails().stream().map(ImageDetailConverter::map).collect(Collectors.toList());
+            ImageDetail[] details = obj.getDetails().stream()
+                .map(ImageDetailConverter::map)
+                .toArray(ImageDetail[]::new);
             imageAnalysisSkill.setDetails(details);
         }
         return imageAnalysisSkill;

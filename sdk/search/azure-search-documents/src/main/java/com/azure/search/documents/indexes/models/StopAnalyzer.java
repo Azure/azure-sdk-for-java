@@ -7,6 +7,8 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -49,8 +51,8 @@ public final class StopAnalyzer extends LexicalAnalyzer {
      * @param stopwords the stopwords value to set.
      * @return the StopAnalyzer object itself.
      */
-    public StopAnalyzer setStopwords(List<String> stopwords) {
-        this.stopwords = stopwords;
+    public StopAnalyzer setStopwords(String... stopwords) {
+        this.stopwords = Arrays.asList(stopwords);
         return this;
     }
 }
