@@ -46,5 +46,3 @@ jobs:
         VERSIONED_STORAGE_ACCOUNT_NAME: $(java-storage-versioned-account-name)
         VERSIONED_STORAGE_ACCOUNT_KEY: $(java-storage-versioned-account-key)
 
-variables:
-    MemoryOptions: '-Xmx8g'
