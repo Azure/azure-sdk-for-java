@@ -61,13 +61,13 @@ AzureProfile profile = new AzureProfile("<YOUR_TENANT_ID>", "<YOUR_SUBSCRIPTION_
 
 ### Authenticating with default HttpPipeline
 
-Once the `TokenCredential` and `AzureProfile` are ready, you can move forward with below authenticating code. It helps build http pipeline internally with [default configuration](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/resources/mgmt/src/main/java/com/azure/management/resources/fluentcore/utils/HttpPipelineProvider.java#L43).
+Once the `TokenCredential` and `AzureProfile` are ready, you can move forward with below authenticating code. It helps build http pipeline internally with [default configuration](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/resources/mgmt/src/main/java/com/azure/resourcemanager/resources/fluentcore/utils/HttpPipelineProvider.java#L43).
 
 ```java
 Azure azure = Azure.authenticate(credential, profile).withDefaultSubscription();
 ```
 
-The `Authenticated` class provides access to a subset of Azure APIs that do not require a specific subscription. If the profile does not contain a subscription, you can select a subscription via [`Authenticated::subscriptions`](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/management/azure/src/main/java/com/azure/management/Azure.java#L191). Similarly, you can select a tenant via [`Authenticated::tenants`](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/management/azure/src/main/java/com/azure/management/Azure.java#L198).
+The `Authenticated` class provides access to a subset of Azure APIs that do not require a specific subscription. If the profile does not contain a subscription, you can select a subscription via [`Authenticated::subscriptions`](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/management/azure/src/main/java/com/azure/resourcemanager/Azure.java#L191). Similarly, you can select a tenant via [`Authenticated::tenants`](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/management/azure/src/main/java/com/azure/resourcemanager/Azure.java#L198).
 
 ```java
 Azure.Authenticated authenticated = Azure.authenticate(credential, profile);
@@ -80,7 +80,7 @@ Azure azure = authenticated.withSubscription(subscriptionId);
 If you want to take full control of Azure client, you could build your own http pipeline for authentication.
 
 ### Preparing HttpPipelinePolicy
-  * The `HttpPipelinePolicy` is an interface that process provided request context and invokes the next policy. To learn more, see [policies in Azure Core](https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/core/azure-core/src/main/java/com/azure/core/http/policy) and [policies in Azure Management Libraries for Java](https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/resources/mgmt/src/main/java/com/azure/management/resources/fluentcore/policy).
+  * The `HttpPipelinePolicy` is an interface that process provided request context and invokes the next policy. To learn more, see [policies in Azure Core](https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/core/azure-core/src/main/java/com/azure/core/http/policy) and [policies in Azure Management Libraries for Java](https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/resources/mgmt/src/main/java/com/azure/resourcemanager/resources/fluentcore/policy).
 
 
 ### Preparing HttpClient
