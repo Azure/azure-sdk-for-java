@@ -70,7 +70,7 @@ class ServiceBusAsyncConsumerTest {
     @Mock
     private MessageSerializer serializer;
     @Mock
-    private BiFunction<MessageLockToken, String, Mono<Instant>> renewMessageLock;
+    private BiFunction<String, String, Mono<Instant>> renewMessageLock;
 
     @BeforeAll
     static void beforeAll() {

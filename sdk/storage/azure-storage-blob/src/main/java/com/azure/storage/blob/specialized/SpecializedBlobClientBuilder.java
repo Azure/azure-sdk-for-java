@@ -62,6 +62,7 @@ public final class SpecializedBlobClientBuilder {
     private String containerName;
     private String blobName;
     private String snapshot;
+    private String versionId;
 
     private CpkInfo customerProvidedKey;
     private EncryptionScope encryptionScope;
@@ -103,7 +104,7 @@ public final class SpecializedBlobClientBuilder {
         String containerName = getContainerName();
 
         return new AppendBlobAsyncClient(getHttpPipeline(), getUrl(containerName), getServiceVersion(),
-            accountName, containerName, blobName, snapshot, customerProvidedKey, encryptionScope);
+            accountName, containerName, blobName, snapshot, customerProvidedKey, encryptionScope, versionId);
     }
 
     /**
@@ -134,7 +135,7 @@ public final class SpecializedBlobClientBuilder {
         String containerName = getContainerName();
 
         return new BlockBlobAsyncClient(getHttpPipeline(), getUrl(containerName), getServiceVersion(),
-            accountName, containerName, blobName, snapshot, customerProvidedKey, encryptionScope);
+            accountName, containerName, blobName, snapshot, customerProvidedKey, encryptionScope, versionId);
     }
 
     /**
@@ -164,7 +165,7 @@ public final class SpecializedBlobClientBuilder {
         String containerName = getContainerName();
 
         return new PageBlobAsyncClient(getHttpPipeline(), getUrl(containerName), getServiceVersion(),
-            accountName, containerName, blobName, snapshot, customerProvidedKey, encryptionScope);
+            accountName, containerName, blobName, snapshot, customerProvidedKey, encryptionScope, versionId);
     }
 
     /*
@@ -218,6 +219,7 @@ public final class SpecializedBlobClientBuilder {
         endpoint(blobClient.getBlobUrl());
         serviceVersion(blobClient.getServiceVersion());
         this.snapshot = blobClient.getSnapshotId();
+        this.versionId = blobClient.getVersionId();
         this.customerProvidedKey = blobClient.getCustomerProvidedKey();
         if (blobClient.getEncryptionScope() != null) {
             this.encryptionScope = new EncryptionScope().setEncryptionScope(blobClient.getEncryptionScope());
@@ -236,6 +238,7 @@ public final class SpecializedBlobClientBuilder {
         endpoint(blobAsyncClient.getBlobUrl());
         serviceVersion(blobAsyncClient.getServiceVersion());
         this.snapshot = blobAsyncClient.getSnapshotId();
+        this.versionId = blobAsyncClient.getVersionId();
         this.customerProvidedKey = blobAsyncClient.getCustomerProvidedKey();
         if (blobAsyncClient.getEncryptionScope() != null) {
             this.encryptionScope = new EncryptionScope().setEncryptionScope(blobAsyncClient.getEncryptionScope());
@@ -301,6 +304,7 @@ public final class SpecializedBlobClientBuilder {
             this.containerName = parts.getBlobContainerName();
             this.blobName = Utility.urlEncode(parts.getBlobName());
             this.snapshot = parts.getSnapshot();
+            this.versionId = parts.getVersionId();
 
             String sasToken = parts.getCommonSasQueryParameters().encode();
             if (!CoreUtils.isNullOrEmpty(sasToken)) {
@@ -473,6 +477,17 @@ public final class SpecializedBlobClientBuilder {
      */
     public SpecializedBlobClientBuilder snapshot(String snapshot) {
         this.snapshot = snapshot;
+        return this;
+    }
+
+    /**
+     * Sets the version identifier of the blob.
+     *
+     * @param versionId Version identifier for the blob, pass {@code null} to interact with the latest blob version.
+     * @return the updated SpecializedBlobClientBuilder object
+     */
+    public SpecializedBlobClientBuilder versionId(String versionId) {
+        this.versionId = versionId;
         return this;
     }
 

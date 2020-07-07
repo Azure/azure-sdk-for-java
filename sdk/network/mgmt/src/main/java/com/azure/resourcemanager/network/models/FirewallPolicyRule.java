@@ -28,7 +28,7 @@ public class FirewallPolicyRule {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(FirewallPolicyRule.class);
 
     /*
-     * Name of the Rule
+     * The name of the rule.
      */
     @JsonProperty(value = "name")
     private String name;
@@ -40,7 +40,7 @@ public class FirewallPolicyRule {
     private Integer priority;
 
     /**
-     * Get the name property: Name of the Rule.
+     * Get the name property: The name of the rule.
      *
      * @return the name value.
      */
@@ -49,7 +49,7 @@ public class FirewallPolicyRule {
     }
 
     /**
-     * Set the name property: Name of the Rule.
+     * Set the name property: The name of the rule.
      *
      * @param name the name value to set.
      * @return the FirewallPolicyRule object itself.
