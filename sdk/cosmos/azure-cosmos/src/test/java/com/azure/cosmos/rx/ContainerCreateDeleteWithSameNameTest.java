@@ -193,8 +193,15 @@ public class ContainerCreateDeleteWithSameNameTest extends TestSuiteBase {
 
             // Wait for the feed processor to receive and process the documents.
             try {
-                Thread.sleep(2 * CHANGE_FEED_PROCESSOR_TIMEOUT);
                 assertThat(changeFeedProcessor.isStarted()).as("Change Feed Processor instance is running").isTrue();
+
+                long remainingWork = 2 * CHANGE_FEED_PROCESSOR_TIMEOUT;
+                while (remainingWork > 0 && receivedDocuments.size() < createdDocuments.size()) {
+                    remainingWork -= 100;
+                    Thread.sleep(100);
+                }
+
+                assertThat(remainingWork >= 0).as("Failed to receive all the feed documents").isTrue();
 
                 changeFeedProcessor.stop().subscribeOn(Schedulers.elastic()).timeout(Duration.ofMillis(CHANGE_FEED_PROCESSOR_TIMEOUT)).subscribe();
 
