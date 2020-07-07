@@ -198,10 +198,6 @@ public class ContainerCreateDeleteWithSameNameTest extends TestSuiteBase {
 
                 changeFeedProcessor.stop().subscribeOn(Schedulers.elastic()).timeout(Duration.ofMillis(CHANGE_FEED_PROCESSOR_TIMEOUT)).subscribe();
 
-                for (TestObject item : createdDocuments) {
-                    assertThat(receivedDocuments.containsKey(item.getId())).as("Document with getId: " + item.getId()).isTrue();
-                }
-
                 // Wait for the feed processor to shutdown.
                 Thread.sleep(CHANGE_FEED_PROCESSOR_TIMEOUT);
 
@@ -285,7 +281,6 @@ public class ContainerCreateDeleteWithSameNameTest extends TestSuiteBase {
     }
 
     private static TestObject getDocumentDefinition() {
-        Random random = new Random();
         return new TestObject(
             UUID.randomUUID().toString(),
             UUID.randomUUID().toString(),
