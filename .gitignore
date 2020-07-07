@@ -68,3 +68,4 @@ package-lock.json
 # VS Code
 .vscode/
 .factorypath
+jacoco.exec
