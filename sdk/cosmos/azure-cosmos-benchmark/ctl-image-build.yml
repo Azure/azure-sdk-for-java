@@ -1,0 +1,45 @@
+pool:
+  name: Azure Pipelines
+  demands: maven
+
+  timeoutInMinutes: 20
+
+#Your build pipeline references a secret variable named ‘ContainerRegistryPwd’. Create or edit the build pipeline for this YAML file, define the variable on the Variables tab, and then select the option to make it secret. See https://go.microsoft.com/fwlink/?linkid=865972
+variables:
+  ContainerRegistryName: 'javactl'
+  ContainerRegistryUserName: 'javactl'
+  ContainerRegistryUrl: 'javactl.azurecr.io'
+
+steps:
+- task: Maven@3
+  displayName: 'Maven pom.xml'
+  inputs:
+    options: '-Ppackage-assembly -DskipTests -Dgpg.skip -Dmaven.javadoc.skip=true -Dcheckstyle.skip=true -Dspotbugs.skip=true -Drevapi.skip=true -pl ,com.azure:azure-cosmos,com.azure:azure-cosmos-benchmark'
+
+- task: CopyFiles@2
+  displayName: 'Copy benchmark jar'
+  inputs:
+    SourceFolder: '$(build.sourcesdirectory)/sdk/cosmos/azure-cosmos-benchmark/target'
+    Contents: '*'
+    TargetFolder: /tmp/ctl
+
+- task: CopyFiles@2
+  displayName: 'Copy docker config files'
+  inputs:
+    SourceFolder: '$(build.sourcesdirectory)/sdk/cosmos/azure-cosmos-benchmark/ctl'
+    TargetFolder: /tmp/ctl
+
+- powershell: |
+   # Below will build the image and push it to azure container registry
+   
+   cd /tmp/ctl
+   
+   docker build . -t java-ctl
+   
+   az acr login --name $(ContainerRegistryName) -u $(ContainerRegistryUserName) -p $(ContainerRegistryPwd)
+   
+   docker tag java-ctl $(ContainerRegistryUrl)/javactl/benchmark
+   
+   docker push $(ContainerRegistryUrl)/javactl/benchmark
+   
+  displayName: 'Build and push image'
