@@ -1,5 +1,8 @@
 # Release History
 
+## 12.2.0-beta.2 (Unreleased)
+
+
 ## 12.2.0-beta.1 (2019-07-07)
 - Added support for the 2019-12-12 service version.
 - Added support to query a file. 
