@@ -1,5 +1,4 @@
 parameters:
-
   TimeoutInMinutes: 240
   ServiceDirectory: spring
   TestStepMavenInputs:
@@ -10,7 +9,6 @@ parameters:
     jdkVersionOption: '$(JavaTestVersion)'
     jdkArchitectureOption: 'x64'
     publishJUnitResults: false
-
   Artifacts:
     - name: azure-spring-boot-tests
       groupId: com.microsoft.azure
