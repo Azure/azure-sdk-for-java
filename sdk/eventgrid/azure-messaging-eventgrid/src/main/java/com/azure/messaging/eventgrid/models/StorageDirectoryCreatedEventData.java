@@ -36,7 +36,7 @@ public final class StorageDirectoryCreatedEventData {
      * The etag of the directory at the time this event was triggered.
      */
     @JsonProperty(value = "eTag")
-    private String etag;
+    private String eTag;
 
     /*
      * The path to the directory.
@@ -128,21 +128,21 @@ public final class StorageDirectoryCreatedEventData {
     }
 
     /**
-     * Get the etag property: The etag of the directory at the time this event was triggered.
-     * @return the etag value.
+     * Get the eTag property: The etag of the directory at the time this event was triggered.
+     * @return the eTag value.
      */
     public String getEtag() {
-        return this.etag;
+        return this.eTag;
     }
 
     /**
-     * Set the etag property: The etag of the directory at the time this event was triggered.
-     * @param etag the eTag value to set.
+     * Set the eTag property: The etag of the directory at the time this event was triggered.
+     * @param eTag the eTag value to set.
      *
      * @return the StorageDirectoryCreatedEventData object itself.
      */
-    public StorageDirectoryCreatedEventData setEtag(String etag) {
-        this.etag = etag;
+    public StorageDirectoryCreatedEventData setEtag(String eTag) {
+        this.eTag = eTag;
         return this;
     }
 

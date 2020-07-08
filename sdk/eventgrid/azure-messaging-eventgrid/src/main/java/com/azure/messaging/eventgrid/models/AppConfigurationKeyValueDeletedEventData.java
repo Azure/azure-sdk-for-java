@@ -32,6 +32,7 @@ public final class AppConfigurationKeyValueDeletedEventData {
 
     /**
      * Get the key property: The key used to identify the key-value that was deleted.
+     *
      * @return the key value.
      */
     public String getKey() {
@@ -40,8 +41,8 @@ public final class AppConfigurationKeyValueDeletedEventData {
 
     /**
      * Set the key property: The key used to identify the key-value that was deleted.
-     * @param key the key value to set.
      *
+     * @param key the key value to set.
      * @return the AppConfigurationKeyValueDeletedEventData object itself.
      */
     public AppConfigurationKeyValueDeletedEventData setKey(String key) {
@@ -51,6 +52,7 @@ public final class AppConfigurationKeyValueDeletedEventData {
 
     /**
      * Get the label property: The label, if any, used to identify the key-value that was deleted.
+     *
      * @return the label value.
      */
     public String getLabel() {
@@ -59,8 +61,8 @@ public final class AppConfigurationKeyValueDeletedEventData {
 
     /**
      * Set the label property: The label, if any, used to identify the key-value that was deleted.
-     * @param label the label value to set.
      *
+     * @param label the label value to set.
      * @return the AppConfigurationKeyValueDeletedEventData object itself.
      */
     public AppConfigurationKeyValueDeletedEventData setLabel(String label) {
@@ -70,6 +72,7 @@ public final class AppConfigurationKeyValueDeletedEventData {
 
     /**
      * Get the etag property: The etag representing the key-value that was deleted.
+     *
      * @return the etag value.
      */
     public String getEtag() {
@@ -78,8 +81,8 @@ public final class AppConfigurationKeyValueDeletedEventData {
 
     /**
      * Set the etag property: The etag representing the key-value that was deleted.
-     * @param etag the etag value to set.
      *
+     * @param etag the etag value to set.
      * @return the AppConfigurationKeyValueDeletedEventData object itself.
      */
     public AppConfigurationKeyValueDeletedEventData setEtag(String etag) {

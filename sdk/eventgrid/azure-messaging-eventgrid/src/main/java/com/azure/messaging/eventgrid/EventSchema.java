@@ -19,4 +19,20 @@ public interface EventSchema {
      * @return the Event Object itself.
      */
     EventSchema setData(Object data);
+
+    /**
+     * Gives the event's data type, e.g. "Contoso.Items.ItemReceived". In the CloudEvent Schema this corresponds
+     * to the "type" field.
+     * @return the event type string.
+     */
+    String getEventType();
+
+    /**
+     * Sets the event's data type, e.g. "Contoso.Items.ItemReceived". In the CloudEvent Schema this corresponds
+     * to the "type" field.
+     * @param eventType the event type signature to set.
+     *
+     * @return the Event Object itself.
+     */
+    EventSchema setEventType(String eventType);
 }

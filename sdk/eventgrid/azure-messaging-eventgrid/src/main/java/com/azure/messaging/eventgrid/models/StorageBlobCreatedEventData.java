@@ -36,7 +36,7 @@ public final class StorageBlobCreatedEventData {
      * The etag of the blob at the time this event was triggered.
      */
     @JsonProperty(value = "eTag")
-    private String etag;
+    private String eTag;
 
     /*
      * The content type of the blob. This is the same as what would be returned
@@ -153,21 +153,21 @@ public final class StorageBlobCreatedEventData {
     }
 
     /**
-     * Get the etag property: The etag of the blob at the time this event was triggered.
-     * @return the etag value.
+     * Get the eTag property: The etag of the blob at the time this event was triggered.
+     * @return the eTag value.
      */
     public String getEtag() {
-        return this.etag;
+        return this.eTag;
     }
 
     /**
-     * Set the etag property: The etag of the blob at the time this event was triggered.
-     * @param etag the etag value to set.
+     * Set the eTag property: The etag of the blob at the time this event was triggered.
+     * @param eTag the eTag value to set.
      *
      * @return the StorageBlobCreatedEventData object itself.
      */
-    public StorageBlobCreatedEventData setEtag(String etag) {
-        this.etag = etag;
+    public StorageBlobCreatedEventData setEtag(String eTag) {
+        this.eTag = eTag;
         return this;
     }
 
