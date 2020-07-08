@@ -154,6 +154,7 @@ public class HttpResponseBodyDecoderTests {
     public void headRequestReturnsEmpty() {
         HttpResponseDecodeData decodeData = mock(HttpResponseDecodeData.class);
         when(decodeData.getExpectedStatusCodes()).thenReturn(new int[] { 200 });
+        when(decodeData.isExpectedResponseStatusCode(200)).thenReturn(true);
 
         HttpResponse response = new MockHttpResponse(HEAD_REQUEST, 200);
         StepVerifier.create(HttpResponseBodyDecoder.decode(null, response, new JacksonAdapter(), decodeData))
@@ -173,22 +174,27 @@ public class HttpResponseBodyDecoderTests {
         // Types that will cause a response to be non decodable.
         HttpResponseDecodeData nullReturnType = mock(HttpResponseDecodeData.class);
         when(nullReturnType.getReturnType()).thenReturn(null);
+        when(nullReturnType.isExpectedResponseStatusCode(200)).thenReturn(true);
 
         ParameterizedType fluxByteBuffer = mockParameterizedType(Flux.class, ByteBuffer.class);
         HttpResponseDecodeData fluxByteBufferReturnType = mock(HttpResponseDecodeData.class);
         when(fluxByteBufferReturnType.getReturnType()).thenReturn(fluxByteBuffer);
+        when(fluxByteBufferReturnType.isExpectedResponseStatusCode(200)).thenReturn(true);
 
         ParameterizedType monoByteArray = mockParameterizedType(Mono.class, byte[].class);
         HttpResponseDecodeData monoByteArrayReturnType = mock(HttpResponseDecodeData.class);
         when(monoByteArrayReturnType.getReturnType()).thenReturn(monoByteArray);
+        when(monoByteArrayReturnType.isExpectedResponseStatusCode(200)).thenReturn(true);
 
         ParameterizedType voidTypeResponse = mockParameterizedType(ResponseBase.class, int.class, Void.TYPE);
         HttpResponseDecodeData voidTypeResponseReturnType = mock(HttpResponseDecodeData.class);
         when(voidTypeResponseReturnType.getReturnType()).thenReturn(voidTypeResponse);
+        when(voidTypeResponseReturnType.isExpectedResponseStatusCode(200)).thenReturn(true);
 
         ParameterizedType voidClassResponse = mockParameterizedType(ResponseBase.class, int.class, void.class);
         HttpResponseDecodeData voidClassResponseReturnType = mock(HttpResponseDecodeData.class);
         when(voidClassResponseReturnType.getReturnType()).thenReturn(voidClassResponse);
+        when(voidClassResponseReturnType.isExpectedResponseStatusCode(200)).thenReturn(true);
 
         return Stream.of(
             Arguments.of(nullReturnType),
@@ -221,23 +227,29 @@ public class HttpResponseBodyDecoderTests {
         HttpResponseDecodeData stringDecodeData = mock(HttpResponseDecodeData.class);
         when(stringDecodeData.getReturnType()).thenReturn(String.class);
         when(stringDecodeData.getReturnValueWireType()).thenReturn(String.class);
+        when(stringDecodeData.isExpectedResponseStatusCode(200)).thenReturn(true);
         HttpResponse stringResponse = new MockHttpResponse(GET_REQUEST, 200, "hello");
 
         HttpResponseDecodeData offsetDateTimeDecodeData = mock(HttpResponseDecodeData.class);
         when(offsetDateTimeDecodeData.getReturnType()).thenReturn(OffsetDateTime.class);
         when(offsetDateTimeDecodeData.getReturnValueWireType()).thenReturn(OffsetDateTime.class);
+        when(offsetDateTimeDecodeData.isExpectedResponseStatusCode(200)).thenReturn(true);
+
         OffsetDateTime offsetDateTimeNow = OffsetDateTime.now(ZoneOffset.UTC);
         HttpResponse offsetDateTimeResponse = new MockHttpResponse(GET_REQUEST, 200, offsetDateTimeNow);
 
         HttpResponseDecodeData dateTimeRfc1123DecodeData = mock(HttpResponseDecodeData.class);
         when(dateTimeRfc1123DecodeData.getReturnType()).thenReturn(OffsetDateTime.class);
         when(dateTimeRfc1123DecodeData.getReturnValueWireType()).thenReturn(DateTimeRfc1123.class);
+        when(dateTimeRfc1123DecodeData.isExpectedResponseStatusCode(200)).thenReturn(true);
+
         DateTimeRfc1123 dateTimeRfc1123Now = new DateTimeRfc1123(offsetDateTimeNow);
         HttpResponse dateTimeRfc1123Response = new MockHttpResponse(GET_REQUEST, 200, dateTimeRfc1123Now);
 
         HttpResponseDecodeData unixTimeDecodeData = mock(HttpResponseDecodeData.class);
         when(unixTimeDecodeData.getReturnType()).thenReturn(OffsetDateTime.class);
         when(unixTimeDecodeData.getReturnValueWireType()).thenReturn(UnixTime.class);
+        when(unixTimeDecodeData.isExpectedResponseStatusCode(200)).thenReturn(true);
         UnixTime unixTimeNow = new UnixTime(offsetDateTimeNow);
         HttpResponse unixTimeResponse = new MockHttpResponse(GET_REQUEST, 200, unixTimeNow);
 
@@ -245,6 +257,7 @@ public class HttpResponseBodyDecoderTests {
         HttpResponseDecodeData stringListDecodeData = mock(HttpResponseDecodeData.class);
         when(stringListDecodeData.getReturnType()).thenReturn(stringList);
         when(stringListDecodeData.getReturnValueWireType()).thenReturn(String.class);
+        when(stringListDecodeData.isExpectedResponseStatusCode(200)).thenReturn(true);
         List<String> list = Arrays.asList("hello", "azure");
         HttpResponse stringListResponse = new MockHttpResponse(GET_REQUEST, 200, list);
 
@@ -252,6 +265,7 @@ public class HttpResponseBodyDecoderTests {
         HttpResponseDecodeData mapStringStringDecodeData = mock(HttpResponseDecodeData.class);
         when(mapStringStringDecodeData.getReturnType()).thenReturn(mapStringString);
         when(mapStringStringDecodeData.getReturnValueWireType()).thenReturn(String.class);
+        when(mapStringStringDecodeData.isExpectedResponseStatusCode(200)).thenReturn(true);
         Map<String, String> map = Collections.singletonMap("hello", "azure");
         HttpResponse mapStringStringResponse = new MockHttpResponse(GET_REQUEST, 200, map);
 
@@ -273,6 +287,8 @@ public class HttpResponseBodyDecoderTests {
         HttpResponseDecodeData decodeData = mock(HttpResponseDecodeData.class);
         when(decodeData.getReturnType()).thenReturn(parameterizedType);
         when(decodeData.getReturnValueWireType()).thenReturn(Base64Url.class);
+        when(decodeData.isExpectedResponseStatusCode(200)).thenReturn(true);
+
         List<Base64Url> base64Urls = Arrays.asList(new Base64Url("base"), new Base64Url("64"));
         HttpResponse response = new MockHttpResponse(GET_REQUEST, 200, base64Urls);
 
@@ -303,10 +319,12 @@ public class HttpResponseBodyDecoderTests {
         HttpResponseDecodeData pageDecodeData = mock(HttpResponseDecodeData.class);
         when(pageDecodeData.getReturnType()).thenReturn(String.class);
         when(pageDecodeData.getReturnValueWireType()).thenReturn(Page.class);
+        when(pageDecodeData.isExpectedResponseStatusCode(200)).thenReturn(true);
 
         HttpResponseDecodeData itemPageDecodeData = mock(HttpResponseDecodeData.class);
         when(itemPageDecodeData.getReturnType()).thenReturn(String.class);
         when(itemPageDecodeData.getReturnValueWireType()).thenReturn(ItemPage.class);
+        when(itemPageDecodeData.isExpectedResponseStatusCode(200)).thenReturn(true);
 
         StepVerifier.create(HttpResponseBodyDecoder.decode(null, response, new JacksonAdapter(), pageDecodeData))
             .assertNext(actual -> {
@@ -332,6 +350,7 @@ public class HttpResponseBodyDecoderTests {
         HttpResponseDecodeData decodeData = mock(HttpResponseDecodeData.class);
         when(decodeData.getReturnType()).thenReturn(String.class);
         when(decodeData.getReturnValueWireType()).thenReturn(String.class);
+        when(decodeData.isExpectedResponseStatusCode(200)).thenReturn(true);
 
         StepVerifier.create(HttpResponseBodyDecoder
             .decode("malformed JSON string", response, new JacksonAdapter(), decodeData))
@@ -345,6 +364,7 @@ public class HttpResponseBodyDecoderTests {
         HttpResponseDecodeData decodeData = mock(HttpResponseDecodeData.class);
         when(decodeData.getReturnType()).thenReturn(String.class);
         when(decodeData.getReturnValueWireType()).thenReturn(String.class);
+        when(decodeData.isExpectedResponseStatusCode(200)).thenReturn(true);
 
         SerializerAdapter serializer = mock(SerializerAdapter.class);
         when(serializer.deserialize(any(), any(), any())).thenThrow(IOException.class);
@@ -367,24 +387,31 @@ public class HttpResponseBodyDecoderTests {
         HttpResponseDecodeData badResponseData = mock(HttpResponseDecodeData.class);
         when(badResponseData.getUnexpectedException(anyInt()))
             .thenReturn(new UnexpectedExceptionInformation(HttpResponseException.class));
+        when(badResponseData.isExpectedResponseStatusCode(400)).thenReturn(false);
 
         HttpResponseDecodeData nonDecodable = mock(HttpResponseDecodeData.class);
         when(nonDecodable.getReturnType()).thenReturn(void.class);
+        when(nonDecodable.isExpectedResponseStatusCode(200)).thenReturn(true);
 
         HttpResponseDecodeData stringReturn = mock(HttpResponseDecodeData.class);
         when(stringReturn.getReturnType()).thenReturn(String.class);
+        when(stringReturn.isExpectedResponseStatusCode(200)).thenReturn(true);
 
         ParameterizedType monoString = mockParameterizedType(Mono.class, String.class);
         HttpResponseDecodeData monoStringReturn = mock(HttpResponseDecodeData.class);
         when(monoStringReturn.getReturnType()).thenReturn(monoString);
+        when(monoStringReturn.isExpectedResponseStatusCode(200)).thenReturn(true);
 
         ParameterizedType responseString = mockParameterizedType(Response.class, String.class);
         HttpResponseDecodeData responseStringReturn = mock(HttpResponseDecodeData.class);
         when(responseStringReturn.getReturnType()).thenReturn(responseString);
+        when(responseStringReturn.isExpectedResponseStatusCode(200)).thenReturn(true);
 
+        HttpResponseDecodeData headDecodeData = mock(HttpResponseDecodeData.class);
+        when(headDecodeData.isExpectedResponseStatusCode(200)).thenReturn(true);
         return Stream.of(
             Arguments.of(badResponse, badResponseData, Object.class),
-            Arguments.of(headResponse, mock(HttpResponseDecodeData.class), null),
+            Arguments.of(headResponse, headDecodeData, null),
             Arguments.of(getResponse, nonDecodable, null),
             Arguments.of(getResponse, stringReturn, String.class),
             Arguments.of(getResponse, monoStringReturn, String.class),

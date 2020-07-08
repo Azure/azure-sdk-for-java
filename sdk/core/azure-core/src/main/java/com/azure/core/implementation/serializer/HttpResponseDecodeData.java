@@ -65,7 +65,13 @@ public interface HttpResponseDecodeData {
         return null;
     }
 
-    // TODO document
+    /**
+     * This method returns {@code true} if the given {@code statusCode} is in the list of expected HTTP resposne
+     * codes returned by {@link #getExpectedStatusCodes()}, {@code false} otherwise.
+     *
+     * @param statusCode The HTTP response status code to evaluate.
+     * @return {@code true} is the given status code is expected.
+     */
     default boolean isExpectedResponseStatusCode(int statusCode) {
         final int[] expectedStatuses = getExpectedStatusCodes();
         if (expectedStatuses != null) {

@@ -24,7 +24,6 @@ import java.io.IOException;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.time.OffsetDateTime;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -127,16 +126,7 @@ final class HttpResponseBodyDecoder {
      * @return true if the response status code is considered as error, false otherwise.
      */
     static boolean isErrorStatus(HttpResponse httpResponse, HttpResponseDecodeData decodeData) {
-        final int[] expectedStatuses = decodeData.getExpectedStatusCodes();
-        int statusCode = httpResponse.getStatusCode();
-        if (expectedStatuses != null) {
-            return Arrays.stream(expectedStatuses).noneMatch(expectedCode -> expectedCode == statusCode);
-        } else {
-            return statusCode / 100 != 2;
-        }
-
-        // FIXME I would like to enable this but mocking issues prevent it from working properly
-//        return !decodeData.isExpectedResponseStatusCode(httpResponse.getStatusCode());
+        return !decodeData.isExpectedResponseStatusCode(httpResponse.getStatusCode());
     }
 
     /**
