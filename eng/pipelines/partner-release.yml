@@ -1,6 +1,31 @@
 trigger: none
 pr: none
 
+resources:
+  repositories:
+    - repository: azure-sdk-build-tools
+      type: git
+      name: internal/azure-sdk-build-tools
+      ref: refs/tags/azure-sdk-build-tools_20200618.4
+
+variables:
+  BuildToolScripts: $(Pipeline.Workspace)/azure-sdk-build-tools/scripts
+  Artifacts: $(Pipeline.Workspace)/artifacts
+
+pool:
+  vmImage: 'windows-latest'
+
 steps:
-- script: |
-    echo Hello, world
+- checkout: azure-sdk-build-tools
+  path: azure-sdk-build-tools
+
+- task: PowerShell@2
+  displayName: 'Download packages from blob storage'
+  inputs:
+    targetType: filePath
+    filePath: './$(BuildToolScripts)/copy-from-azuresdkpartnerdrops.ps1'
+    arguments: '$(Artifacts) $(BlobPath) $(azuresdkpartnerdrops-access-key)'
+
+- template: ../../tools/java-esrp-signing/java-esrp-signing.yml
+  parameters:
+    ArtifactDirectory: $(Artifacts)
