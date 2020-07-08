@@ -23,7 +23,7 @@ steps:
   displayName: 'Download packages from blob storage'
   inputs:
     targetType: filePath
-    filePath: './$(BuildToolScripts)/copy-from-azuresdkpartnerdrops.ps1'
+    filePath: '$(BuildToolScripts)/copy-from-azuresdkpartnerdrops.ps1'
     arguments: '$(Artifacts) $(BlobPath) $(azuresdkpartnerdrops-access-key)'
 
 - template: tools/java-esrp-signing/java-esrp-signing.yml@azure-sdk-build-tools
