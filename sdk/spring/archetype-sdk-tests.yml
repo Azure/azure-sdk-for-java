@@ -11,36 +11,36 @@ parameters:
       DisplayName: 'Linux - Java 8'
       SubscriptionConfiguration: $(sub-config-azure-cloud-test-resources)
       AZURE_TEST_HTTP_CLIENTS: netty
-    macOS - Java 8 (AzureCloud):
-      OSVmImage: 'macOS-10.15'
-      JavaTestVersion: '1.8'
-      DisplayName: 'macOS - Java 8'
-      SubscriptionConfiguration: $(sub-config-azure-cloud-test-resources)
-      AZURE_TEST_HTTP_CLIENTS: okhttp
-    Windows - Java 8 (AzureCloud):
-      OSVmImage: 'windows-2019'
-      JavaTestVersion: '1.8'
-      DisplayName: 'Windows - Java 8'
-      SubscriptionConfiguration: $(sub-config-azure-cloud-test-resources)
-      AZURE_TEST_HTTP_CLIENTS: netty
-    Linux - Java 11 (AzureCloud):
-      OSVmImage: 'ubuntu-18.04'
-      JavaTestVersion: '1.11'
-      DisplayName: 'Linux - Java 11'
-      SubscriptionConfiguration: $(sub-config-azure-cloud-test-resources)
-      AZURE_TEST_HTTP_CLIENTS: okhttp
-    macOS - Java 11 (AzureCloud):
-      OSVmImage: 'macOS-10.15'
-      JavaTestVersion: '1.11'
-      DisplayName: 'macOS - Java 11'
-      SubscriptionConfiguration: $(sub-config-azure-cloud-test-resources)
-      AZURE_TEST_HTTP_CLIENTS: netty
-    Windows - Java 11 (AzureCloud):
-      OSVmImage: 'windows-2019'
-      JavaTestVersion: '1.11'
-      DisplayName: 'Windows - Java 11'
-      SubscriptionConfiguration: $(sub-config-azure-cloud-test-resources)
-      AZURE_TEST_HTTP_CLIENTS: okhttp
+#    macOS - Java 8 (AzureCloud):
+#      OSVmImage: 'macOS-10.15'
+#      JavaTestVersion: '1.8'
+#      DisplayName: 'macOS - Java 8'
+#      SubscriptionConfiguration: $(sub-config-azure-cloud-test-resources)
+#      AZURE_TEST_HTTP_CLIENTS: okhttp
+#    Windows - Java 8 (AzureCloud):
+#      OSVmImage: 'windows-2019'
+#      JavaTestVersion: '1.8'
+#      DisplayName: 'Windows - Java 8'
+#      SubscriptionConfiguration: $(sub-config-azure-cloud-test-resources)
+#      AZURE_TEST_HTTP_CLIENTS: netty
+#    Linux - Java 11 (AzureCloud):
+#      OSVmImage: 'ubuntu-18.04'
+#      JavaTestVersion: '1.11'
+#      DisplayName: 'Linux - Java 11'
+#      SubscriptionConfiguration: $(sub-config-azure-cloud-test-resources)
+#      AZURE_TEST_HTTP_CLIENTS: okhttp
+#    macOS - Java 11 (AzureCloud):
+#      OSVmImage: 'macOS-10.15'
+#      JavaTestVersion: '1.11'
+#      DisplayName: 'macOS - Java 11'
+#      SubscriptionConfiguration: $(sub-config-azure-cloud-test-resources)
+#      AZURE_TEST_HTTP_CLIENTS: netty
+#    Windows - Java 11 (AzureCloud):
+#      OSVmImage: 'windows-2019'
+#      JavaTestVersion: '1.11'
+#      DisplayName: 'Windows - Java 11'
+#      SubscriptionConfiguration: $(sub-config-azure-cloud-test-resources)
+#      AZURE_TEST_HTTP_CLIENTS: okhttp
   PreRunSteps: []
   PostRunSteps: []
   TestName: LiveTest
