@@ -77,7 +77,7 @@ class ServiceBusAsyncConsumer implements AutoCloseable {
     @Override
     public void close() {
         if (!isDisposed.getAndSet(true)) {
-            linkProcessor.cancel();
+            linkProcessor.dispose();
         }
     }
 }
