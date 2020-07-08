@@ -9,6 +9,7 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.implementation.annotation.Beta;
 import com.azure.resourcemanager.appplatform.AppPlatformManager;
 import com.azure.resourcemanager.appplatform.fluent.ServicesClient;
+import com.azure.resourcemanager.resources.fluentcore.arm.Region;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsDeletingByResourceGroup;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsGettingById;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsGettingByResourceGroup;
@@ -18,6 +19,7 @@ import com.azure.resourcemanager.resources.fluentcore.collection.SupportsCreatin
 import com.azure.resourcemanager.resources.fluentcore.collection.SupportsDeletingById;
 import com.azure.resourcemanager.resources.fluentcore.collection.SupportsListing;
 import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
+import reactor.core.publisher.Mono;
 
 /** Entry point for Spring Service management API. */
 @Fluent
@@ -32,6 +34,12 @@ public interface SpringServices
         SupportsListingByResourceGroup<SpringService>,
         SupportsDeletingById,
         SupportsDeletingByResourceGroup {
+    /** @return the service name is available or not. */
+    Boolean checkNameAvailability(String name, Region region);
+
+    /** @return the service name is available or not. */
+    Mono<Boolean> checkNameAvailabilityAsync(String name, Region region);
+
     /** @return all available sku. */
     PagedIterable<ResourceSku> listSkus();
 

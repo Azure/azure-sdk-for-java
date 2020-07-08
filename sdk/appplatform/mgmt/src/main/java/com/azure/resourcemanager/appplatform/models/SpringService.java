@@ -35,6 +35,9 @@ public interface SpringService
     /** @return the entry point of the spring app */
     SpringApps apps();
 
+    /** @return the entry point of the spring service certificate */
+    SpringServiceCertificates certificates();
+
     /**
      * Lists test keys for the service.
      * @return all test keys
@@ -136,6 +139,28 @@ public interface SpringService
             WithCreate withTracing(String appInsightInstrumentationKey);
         }
 
+        /** The stage of a spring service update allowing to specify the certificate. */
+        interface WithCertificate {
+            /**
+             * Specifies a certificate in key vault with latest version binding to the spring service.
+             * @param name the certificate name
+             * @param keyVaultUri the uri for key vault that contains certificate
+             * @param certNameInKeyVault the certificate name in the key vault
+             * @return the next stage of spring service update
+             */
+            WithCreate withCertificate(String name, String keyVaultUri, String certNameInKeyVault);
+
+            /**
+             * Specifies a certificate in key vault with specific version binding to the spring service.
+             * @param name the certificate name
+             * @param keyVaultUri the uri for key vault that contains certificate
+             * @param certNameInKeyVault the certificate name in the key vault
+             * @param certVersion the certificate version in the key vault
+             * @return the next stage of spring service update
+             */
+            WithCreate withCertificate(String name, String keyVaultUri, String certNameInKeyVault, String certVersion);
+        }
+
         /**
          * The stage of the definition which contains all the minimum required inputs for the resource to be created,
          * but also allows for any other optional settings to be specified.
@@ -144,7 +169,8 @@ public interface SpringService
             extends Creatable<SpringService>,
                 Resource.DefinitionWithTags<WithCreate>,
                 WithSku,
-                WithTracing { }
+                WithTracing,
+                WithCertificate { }
     }
 
     /** The template for an update operation, containing all the settings that can be modified. */
@@ -153,7 +179,8 @@ public interface SpringService
         Resource.UpdateWithTags<Update>,
         UpdateStages.WithSku,
         UpdateStages.WithTracing,
-        UpdateStages.WithConfiguration { }
+        UpdateStages.WithConfiguration,
+        UpdateStages.WithCertificate { }
 
     /** Grouping of spring service update stages. */
     interface UpdateStages {
@@ -231,6 +258,35 @@ public interface SpringService
              * @return the next stage of spring service update
              */
             Update withoutGitConfig();
+        }
+
+        /** The stage of a spring service update allowing to specify the certificate. */
+        interface WithCertificate {
+            /**
+             * Specifies a certificate in key vault with latest version binding to the spring service.
+             * @param name the certificate name
+             * @param keyVaultUri the uri for key vault that contains certificate
+             * @param certNameInKeyVault the certificate name in the key vault
+             * @return the next stage of spring service update
+             */
+            Update withCertificate(String name, String keyVaultUri, String certNameInKeyVault);
+
+            /**
+             * Specifies a certificate in key vault with specific version binding to the spring service.
+             * @param name the certificate name
+             * @param keyVaultUri the uri for key vault that contains certificate
+             * @param certNameInKeyVault the certificate name in the key vault
+             * @param certVersion the certificate version in the key vault
+             * @return the next stage of spring service update
+             */
+            Update withCertificate(String name, String keyVaultUri, String certNameInKeyVault, String certVersion);
+
+            /**
+             * Removes a certificate binding to the spring service.
+             * @param name the certificate name
+             * @return the next stage of spring service update
+             */
+            Update withoutCertificate(String name);
         }
     }
 }

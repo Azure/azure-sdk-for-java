@@ -17,7 +17,7 @@ import java.io.File;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** An immutable client-side representation of an Azure deployment Deployment request. */
+/** An immutable client-side representation of an Azure Spring App Deployment. */
 @Fluent
 @Beta
 public interface SpringAppDeployment
@@ -41,6 +41,33 @@ public interface SpringAppDeployment
 
     /** @return all the instances of the deployment */
     List<DeploymentInstance> instances();
+
+    /** Starts the deployment. */
+    void start();
+
+    /**
+     * Starts the deployment.
+     * @return null
+     */
+    Mono<Void> startAsync();
+
+    /** Stops the deployment. */
+    void stop();
+
+    /**
+     * Stops the deployment.
+     * @return null
+     */
+    Mono<Void> stopAsync();
+
+    /** Restarts the deployment. */
+    void restart();
+
+    /**
+     * Restarts the deployment.
+     * @return null
+     */
+    Mono<Void> restartAsync();
 
     /** @return the log file url of the deployment */
     String getLogFileUrl();
@@ -288,7 +315,7 @@ public interface SpringAppDeployment
              * @return the next stage of deployment update
              */
             Update withoutEnvironment(String key);
-            
+
             /**
              * Specifies the version of the deployment.
              * @param versionName the version name of the deployment
