@@ -1,5 +1,5 @@
 jobs:
-  - job: Cosmos CTL
+  - job: Cosmos-CTL
     timeoutInMinutes: 20
     variables:
       - template: /eng/pipelines/templates/variables/globals.yml
