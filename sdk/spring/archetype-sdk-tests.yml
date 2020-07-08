@@ -63,7 +63,7 @@ jobs:
     timeoutInMinutes: ${{ parameters.TimeoutInMinutes }}
 
     variables:
-      - template: ../variables/globals.yml
+      - template: ../../eng/pipelines/templates/variables/globals.yml
       # Default $(SubscriptionConfiguration) if the matrix does not specify a $(SubscriptionConfiguration)
       - name: SubscriptionConfiguration
         value: ${{ parameters.SubscriptionConfiguration }}
@@ -94,7 +94,7 @@ jobs:
 
       - ${{ parameters.PreRunSteps }}
 
-      - template: ../steps/generate-project-list.yml
+      - template: ../../eng/pipelines/templates/steps/generate-project-list.yml
         parameters:
           Artifacts: ${{parameters.Artifacts}}
           AdditionalModules: ${{parameters.AdditionalModules}}
