@@ -3,8 +3,12 @@
 The Azure Management Libraries for Java is a higher-level, object-oriented API for *managing* Azure resources,
 that is optimized for ease of use, succinctness and consistency.
 
-- [API reference documentation][docs]
+- **[API reference documentation][docs]**
 - **[Code snippets and samples][sample]**
+
+## Migration from older version of Azure management library (``com.microsoft.azure-mgmt-**``)
+
+If you are an existing user of the older version of Azure management library for Java (the packages that contains ``com.microsoft.azure-mgmt-**``) and you are looking for a migration guide to the new version of the SDK, please refer to [this migration guide](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/management/docs/MIGRATION_GUIDE.md)
 
 ## Getting started
 
