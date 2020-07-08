@@ -280,6 +280,5 @@ More samples can be found at :
 - [Authentication Documentation](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/management/docs/AUTH.md)
 
 ## Need help?
-----------
 
 If you have encountered an issue during migration, please file an issue via [Github Issues](https://github.com/Azure/azure-sdk-for-java/issues) and make sure you add the "Preview" label to the issue
