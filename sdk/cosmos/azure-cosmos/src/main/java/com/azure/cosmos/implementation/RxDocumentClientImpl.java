@@ -294,14 +294,6 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
     private void initializeDirectConnectivity() {
 
-        this.storeClientFactory = new StoreClientFactory(
-            this.addressResolver,
-            this.configs,
-            this.connectionPolicy,
-            this.userAgentContainer,
-            this.connectionSharingAcrossClientsEnabled
-        );
-
         this.addressResolver = new GlobalAddressResolver(
             this.reactorHttpClient,
             this.globalEndpointManager,
@@ -314,6 +306,14 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             //     this.gatewayConfigurationReader,
             null,
             this.connectionPolicy);
+
+        this.storeClientFactory = new StoreClientFactory(
+            this.addressResolver,
+            this.configs,
+            this.connectionPolicy,
+            this.userAgentContainer,
+            this.connectionSharingAcrossClientsEnabled
+        );
 
         this.createStoreModel(true);
     }

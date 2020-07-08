@@ -38,6 +38,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
+import java.nio.channels.ClosedChannelException;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Iterator;
@@ -47,6 +48,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicLong;
 
 import static com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdReporter.reportIssue;
+import static com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdReporter.reportIssueUnless;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkArgument;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkState;
@@ -73,6 +75,18 @@ public final class RntbdTransportClient extends TransportClient {
     // region Constructors
 
     RntbdTransportClient(
+        final Configs configs,
+        final ConnectionPolicy connectionPolicy,
+        final UserAgentContainer userAgent,
+        final IAddressResolver addressResolver) {
+
+        this(
+            new Options.Builder(connectionPolicy).userAgent(userAgent).build(),
+            configs.getSslContext(),
+            addressResolver == null ? null : new RntbdConnectionStateListener(addressResolver));
+    }
+
+    RntbdTransportClient(
         final RntbdEndpoint.Provider endpointProvider,
         final RntbdConnectionStateListener connectionStateListener) {
 
@@ -91,18 +105,6 @@ public final class RntbdTransportClient extends TransportClient {
         this.connectionStateListener = connectionStateListener;
         this.id = instanceCount.incrementAndGet();
         this.tag = RntbdTransportClient.tag(this.id);
-    }
-
-    RntbdTransportClient(
-        final Configs configs,
-        final ConnectionPolicy connectionPolicy,
-        final UserAgentContainer userAgent,
-        final IAddressResolver addressResolver) {
-
-        this(
-            new Options.Builder(connectionPolicy).userAgent(userAgent).build(),
-            configs.getSslContext(),
-            new RntbdConnectionStateListener(addressResolver));
     }
 
     // endregion
@@ -186,16 +188,36 @@ public final class RntbdTransportClient extends TransportClient {
                     address.toString());
             }
 
-            if (error instanceof GoneException && throwable.getCause() instanceof IOException) {
-                this.connectionStateListener.onConnectionEvent(
-                    RntbdConnectionEvent.READ_FAILURE,
-                    Instant.now(),
-                    endpoint);
+            if (error instanceof GoneException) {
+
+                final Throwable cause = error.getCause();
+
+                if (cause instanceof IOException) {
+
+                    final Class<?> type = cause.getClass();
+                    final RntbdConnectionEvent event;
+
+                    if (type == ClosedChannelException.class) {
+                        event = RntbdConnectionEvent.READ_EOF;
+                    } else if (type == IOException.class) {
+                        event = RntbdConnectionEvent.READ_FAILURE;
+                    } else {
+                        reportIssue(logger, endpoint, "expected ClosedChannelException or IOException, not ", cause);
+                        event = RntbdConnectionEvent.READ_FAILURE;
+                    }
+
+                    logger.info("Lost connection due to {}\n  {}\n  {}",
+                        type.getSimpleName(),
+                        RntbdObjectMapper.toString(error),
+                        RntbdObjectMapper.toString(cause));
+
+                    this.connectionStateListener.onConnectionEvent(event, Instant.now(), endpoint);
+                }
             }
 
             return error;
         });
-        
+
         return result.doFinally(signalType -> {
 
             // This lambda ensures that a pending Direct TCP request in a reactive stream dropped by an end user or the

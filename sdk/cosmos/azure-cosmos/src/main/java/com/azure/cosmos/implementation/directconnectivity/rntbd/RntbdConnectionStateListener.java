@@ -30,7 +30,8 @@ public class RntbdConnectionStateListener {
 
     // region Constructors
 
-    public RntbdConnectionStateListener(IAddressResolver addressResolver) {
+    public RntbdConnectionStateListener(final IAddressResolver addressResolver) {
+        checkNotNull(addressResolver, "expected non-null addressResolver");
         this.partitionAddressCache = new ConcurrentHashMap<>();
         this.addressResolver = addressResolver;
     }
@@ -39,7 +40,10 @@ public class RntbdConnectionStateListener {
 
     // region Methods
 
-    public void onConnectionEvent(RntbdConnectionEvent event, Instant instant, RntbdEndpoint endpoint) {
+    public void onConnectionEvent(
+        final RntbdConnectionEvent event,
+        final Instant instant,
+        final RntbdEndpoint endpoint) {
 
         logger.debug("onConnectionEvent fired, connectionEvent: {}, eventTime: {}, serverKey: {}",
             event,
@@ -53,7 +57,7 @@ public class RntbdConnectionStateListener {
         }
     }
 
-    public void updateConnectionState(RntbdAddressCacheToken addressCacheToken) {
+    public void updateConnectionState(final RntbdAddressCacheToken addressCacheToken) {
         if (addressCacheToken != null) {
             this.updatePartitionAddressCache(addressCacheToken);
         }
@@ -65,17 +69,19 @@ public class RntbdConnectionStateListener {
 
     private Mono<Void> updateAddressCacheAsync(final RntbdEndpoint endpoint) {
 
-        checkNotNull(endpoint, "expected non-null serverKey");
+        checkNotNull(endpoint, "expected non-null endpoint");
 
         final Set<RntbdAddressCacheToken> tokens = this.partitionAddressCache.get(endpoint.remoteAddress());
         final Mono<Void> update;
 
-        return tokens == null
+        update = tokens == null
             ? Mono.empty()
             : this.addressResolver.updateAsync(new UnmodifiableList<>(new ArrayList<>(tokens)));
+
+        return update;
     }
 
-    private void updatePartitionAddressCache(RntbdAddressCacheToken addressCacheToken) {
+    private void updatePartitionAddressCache(final RntbdAddressCacheToken addressCacheToken) {
 
         logger.debug("Adding addressCacheToken {} to partitionAddressCache", addressCacheToken);
 
