@@ -16,6 +16,7 @@ import java.time.Duration;
 import java.util.List;
 
 public class CosmosDataEncryptionKeyProvider implements DataEncryptionKeyProvider {
+    // TODO: proper sample and documentation on container
     private static final String ContainerPartitionKeyPath = "/id";
     private final DataEncryptionKeyContainerCore dataEncryptionKeyContainerCore;
     private final DekCache DekCache;
