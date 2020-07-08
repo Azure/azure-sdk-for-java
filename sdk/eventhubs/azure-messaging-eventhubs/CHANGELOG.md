@@ -1,5 +1,8 @@
 # Release History
 
+## 5.2.0-beta.1 (Unreleased)
+
+
 ## 5.1.2 (2020-07-08)
 - Updated dependency version of `azure-core-amqp` which has a bug fix for updating User Agent string format.
 - Fix bug where batch receive handler runs on non-blocking thread and fails on blocking calls. 
