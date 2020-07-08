@@ -14,6 +14,7 @@ public final class CosmosStoredProcedureRequestOptions {
     private String sessionToken;
     private String ifMatchETag;
     private String ifNoneMatchETag;
+    private boolean scriptLoggingEnabled;
 
     /**
      * Gets the If-Match (ETag) associated with the request in the Azure Cosmos DB service.
@@ -115,6 +116,28 @@ public final class CosmosStoredProcedureRequestOptions {
         return this;
     }
 
+    /**
+     * Gets whether Javascript stored procedure logging is enabled for the current request in the Azure Cosmos DB database
+     * service or not.
+     *
+     * @return true if Javascript stored procedure logging is enabled
+     */
+    public boolean isScriptLoggingEnabled() {
+        return scriptLoggingEnabled;
+    }
+
+    /**
+     * Sets whether Javascript stored procedure logging is enabled for the current request in the Azure Cosmos DB database
+     * service or not.
+     *
+     * @param scriptLoggingEnabled true if stored procedure Javascript logging is enabled
+     * @return the CosmosStoredProcedureRequestOptions.
+     */
+    public CosmosStoredProcedureRequestOptions setScriptLoggingEnabled(boolean scriptLoggingEnabled) {
+        this.scriptLoggingEnabled = scriptLoggingEnabled;
+        return this;
+    }
+
     RequestOptions toRequestOptions() {
         RequestOptions requestOptions = new RequestOptions();
         requestOptions.setIfMatchETag(getIfMatchETag());
@@ -122,6 +145,7 @@ public final class CosmosStoredProcedureRequestOptions {
         requestOptions.setConsistencyLevel(getConsistencyLevel());
         requestOptions.setPartitionKey(partitionKey);
         requestOptions.setSessionToken(sessionToken);
+        requestOptions.setScriptLoggingEnabled(scriptLoggingEnabled);
         return requestOptions;
     }
 }
