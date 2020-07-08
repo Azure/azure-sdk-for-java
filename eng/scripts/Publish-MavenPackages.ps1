@@ -293,7 +293,7 @@ foreach ($packageDetail in $packageDetails) {
     mvn org.sonatype.plugins:nexus-staging-maven-plugin:deploy-staged-repository "--batch-mode" "-DnexusUrl=https://oss.sonatype.org" "$repositoryDirectoryOption" "$stagingProfileIdOption" "$stagingDescriptionOption" "-DrepositoryId=target-repo" "-DserverId=target-repo" "-Drepo.username=$RepositoryUsername" "-Drepo.password=""$RepositoryPassword""" "--settings=$PSScriptRoot\..\maven.publish.settings.xml"
 
     Write-Information "Reading staging properties."
-    $stagedRepositoryProperties = ConvertFrom-StringData (Get-Content "$localRepositoryDirectory\$($packageDetails.SonaTypeProfileID).properties" -Raw)
+    $stagedRepositoryProperties = ConvertFrom-StringData (Get-Content "$localRepositoryDirectory\$($packageDetail.SonaTypeProfileID).properties" -Raw)
 
     $stagedRepositoryId = $stagedRepositoryProperties["stagingRepository.id"]
     Write-Information "Staging Repository ID is: $stagedRepositoryId"
