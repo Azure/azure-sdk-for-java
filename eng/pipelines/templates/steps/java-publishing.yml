@@ -75,3 +75,18 @@ steps:
           -RepositoryPassword $(azuresdk-sonatype-password)
           -GPGExecutablePath ${{ parameters.BuildToolsPath }}/tools/gpg/bin/gpg.exe
           -InformationAction Continue
+
+  - ${{if eq(parameters.Target, 'MavenCentralPartner')}}:
+    - task: PowerShell@2
+      displayName: 'Publish to Maven Central'
+      inputs:
+        pwsh: true
+        workingDirectory: $(Agent.BuildDirectory)
+        filePath: ${{ parameters.JavaRepoRoot }}/eng/scripts/Publish-MavenPackages.ps1
+        arguments: >
+          -ArtifactDirectory ${{ parameters.ArtifactDirectory }}
+          -RepositoryUrl https://oss.sonatype.org/service/local/staging/deploy/maven2/
+          -RepositoryUsername azuresdk
+          -RepositoryPassword $(azuresdk-sonatype-password)
+          -GPGExecutablePath ${{ parameters.BuildToolsPath }}/tools/gpg/bin/gpg.exe
+          -InformationAction Continue

@@ -37,7 +37,7 @@ steps:
 - template: /eng/pipelines/templates/steps/java-publishing.yml
   parameters:
     ArtifactDirectory: $(Artifacts)
-    Target: MavenCentral
+    Target: MavenCentralPartner
     BuildToolsPath: $(Pipeline.Workspace)/azure-sdk-build-tools
     JavaRepoRoot: $(Pipeline.Workspace)/azure-sdk-for-java
     StageOnly: $(StageOnly)
