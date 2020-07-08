@@ -16,6 +16,9 @@ pool:
   vmImage: 'windows-latest'
 
 steps:
+- checkout: self
+  path: azure-sdk-for-java
+
 - checkout: azure-sdk-build-tools
   path: azure-sdk-build-tools
 
@@ -29,3 +32,12 @@ steps:
 - template: tools/java-esrp-signing/java-esrp-signing.yml@azure-sdk-build-tools
   parameters:
     ArtifactDirectory: $(Artifacts)
+
+- template: tools/gpg/gpg.yml@azure-sdk-build-tools
+- template: /eng/pipelines/templates/steps/java-publishing.yml
+  parameters:
+    ArtifactDirectory: $(Artifacts)
+    Target: MavenCentral
+    BuildToolsPath: $(Pipeline.Workspace)/azure-sdk-build-tools
+    JavaRepoRoot: $(Pipeline.Workspace)/azure-sdk-for-java
+    StageOnly: $(StageOnly)

@@ -5,6 +5,7 @@ parameters:
   ArtifactID: not-specified
   BuildToolsPath: $(Pipeline.Workspace)/azure-sdk-build-tools
   JavaRepoRoot: $(Pipeline.Workspace)/azure-sdk-for-java
+  StageOnly: false
 
 steps:
   - ${{if eq(parameters.Target, 'Burner')}}:
