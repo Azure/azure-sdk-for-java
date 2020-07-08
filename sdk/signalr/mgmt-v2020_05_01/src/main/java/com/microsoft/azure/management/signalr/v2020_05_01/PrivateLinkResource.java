@@ -9,15 +9,15 @@
 package com.microsoft.azure.management.signalr.v2020_05_01;
 
 import com.microsoft.azure.arm.model.HasInner;
-import com.microsoft.azure.management.signalr.v2020_05_01.implementation.PrivateLinkResourceInner;
 import com.microsoft.azure.arm.resources.models.HasManager;
-import com.microsoft.azure.management.signalr.v2020_05_01.implementation.SignalRManager;
+import com.microsoft.azure.management.signalr.v2020_05_01.implementation.SignalRServiceManager;
+import com.microsoft.azure.management.signalr.v2020_05_01.implementation.PrivateLinkResourceInner;
 import java.util.List;
 
 /**
  * Type representing PrivateLinkResource.
  */
-public interface PrivateLinkResource extends HasInner<PrivateLinkResourceInner>, HasManager<SignalRManager> {
+public interface PrivateLinkResource extends HasInner<PrivateLinkResourceInner>, HasManager<SignalRServiceManager> {
     /**
      * @return the groupId value.
      */

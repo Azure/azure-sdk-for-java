@@ -17,14 +17,14 @@ import com.microsoft.azure.Page;
 import com.microsoft.azure.management.signalr.v2020_05_01.Operation;
 
 class OperationsImpl extends WrapperImpl<OperationsInner> implements Operations {
-    private final SignalRManager manager;
+    private final SignalRServiceManager manager;
 
-    OperationsImpl(SignalRManager manager) {
+    OperationsImpl(SignalRServiceManager manager) {
         super(manager.inner().operations());
         this.manager = manager;
     }
 
-    public SignalRManager manager() {
+    public SignalRServiceManager manager() {
         return this.manager;
     }
 

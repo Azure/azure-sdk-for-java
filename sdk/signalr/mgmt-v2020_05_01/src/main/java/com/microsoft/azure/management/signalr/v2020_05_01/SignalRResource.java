@@ -9,22 +9,17 @@
 package com.microsoft.azure.management.signalr.v2020_05_01;
 
 import com.microsoft.azure.arm.model.HasInner;
-import com.microsoft.azure.arm.resources.models.Resource;
-import com.microsoft.azure.arm.resources.models.GroupableResourceCore;
-import com.microsoft.azure.arm.resources.models.HasResourceGroup;
-import com.microsoft.azure.arm.model.Refreshable;
-import com.microsoft.azure.arm.model.Updatable;
-import com.microsoft.azure.arm.model.Appliable;
-import com.microsoft.azure.arm.model.Creatable;
 import com.microsoft.azure.arm.resources.models.HasManager;
-import com.microsoft.azure.management.signalr.v2020_05_01.implementation.SignalRManager;
-import java.util.List;
+import com.microsoft.azure.management.signalr.v2020_05_01.implementation.SignalRServiceManager;
 import com.microsoft.azure.management.signalr.v2020_05_01.implementation.SignalRResourceInner;
+import java.util.List;
+import com.microsoft.azure.management.signalr.v2020_05_01.implementation.PrivateEndpointConnectionInner;
+import java.util.Map;
 
 /**
  * Type representing SignalRResource.
  */
-public interface SignalRResource extends HasInner<SignalRResourceInner>, Resource, GroupableResourceCore<SignalRManager, SignalRResourceInner>, HasResourceGroup, Refreshable<SignalRResource>, Updatable<SignalRResource.Update>, HasManager<SignalRManager> {
+public interface SignalRResource extends HasInner<SignalRResourceInner>, HasManager<SignalRServiceManager> {
     /**
      * @return the cors value.
      */
@@ -51,9 +46,24 @@ public interface SignalRResource extends HasInner<SignalRResourceInner>, Resourc
     String hostNamePrefix();
 
     /**
+     * @return the id value.
+     */
+    String id();
+
+    /**
      * @return the kind value.
      */
     ServiceKind kind();
+
+    /**
+     * @return the location value.
+     */
+    String location();
+
+    /**
+     * @return the name value.
+     */
+    String name();
 
     /**
      * @return the networkACLs value.
@@ -63,7 +73,7 @@ public interface SignalRResource extends HasInner<SignalRResourceInner>, Resourc
     /**
      * @return the privateEndpointConnections value.
      */
-    List<PrivateEndpointConnection> privateEndpointConnections();
+    List<PrivateEndpointConnectionInner> privateEndpointConnections();
 
     /**
      * @return the provisioningState value.
@@ -86,6 +96,16 @@ public interface SignalRResource extends HasInner<SignalRResourceInner>, Resourc
     ResourceSku sku();
 
     /**
+     * @return the tags value.
+     */
+    Map<String, String> tags();
+
+    /**
+     * @return the type value.
+     */
+    String type();
+
+    /**
      * @return the upstream value.
      */
     ServerlessUpstreamSettings upstream();
@@ -95,223 +115,4 @@ public interface SignalRResource extends HasInner<SignalRResourceInner>, Resourc
      */
     String version();
 
-    /**
-     * The entirety of the SignalRResource definition.
-     */
-    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithGroup, DefinitionStages.WithCreate {
-    }
-
-    /**
-     * Grouping of SignalRResource definition stages.
-     */
-    interface DefinitionStages {
-        /**
-         * The first stage of a SignalRResource definition.
-         */
-        interface Blank extends GroupableResourceCore.DefinitionWithRegion<WithGroup> {
-        }
-
-        /**
-         * The stage of the SignalRResource definition allowing to specify the resource group.
-         */
-        interface WithGroup extends GroupableResourceCore.DefinitionStages.WithGroup<WithCreate> {
-        }
-
-        /**
-         * The stage of the signalrresource definition allowing to specify Cors.
-         */
-        interface WithCors {
-            /**
-             * Specifies cors.
-             * @param cors Cross-Origin Resource Sharing (CORS) settings
-             * @return the next definition stage
-             */
-            WithCreate withCors(SignalRCorsSettings cors);
-        }
-
-        /**
-         * The stage of the signalrresource definition allowing to specify Features.
-         */
-        interface WithFeatures {
-            /**
-             * Specifies features.
-             * @param features List of SignalR featureFlags. e.g. ServiceMode.
- FeatureFlags that are not included in the parameters for the update operation will not be modified.
- And the response will only include featureFlags that are explicitly set.
- When a featureFlag is not explicitly set, SignalR service will use its globally default value.
- But keep in mind, the default value doesn't mean "false". It varies in terms of different FeatureFlags
-             * @return the next definition stage
-             */
-            WithCreate withFeatures(List<SignalRFeature> features);
-        }
-
-        /**
-         * The stage of the signalrresource definition allowing to specify HostNamePrefix.
-         */
-        interface WithHostNamePrefix {
-            /**
-             * Specifies hostNamePrefix.
-             * @param hostNamePrefix Prefix for the hostName of the SignalR service. Retained for future use.
- The hostname will be of format: &amp;lt;hostNamePrefix&amp;gt;.service.signalr.net
-             * @return the next definition stage
-             */
-            WithCreate withHostNamePrefix(String hostNamePrefix);
-        }
-
-        /**
-         * The stage of the signalrresource definition allowing to specify Kind.
-         */
-        interface WithKind {
-            /**
-             * Specifies kind.
-             * @param kind The kind of the service - e.g. "SignalR", or "RawWebSockets" for "Microsoft.SignalRService/SignalR". Possible values include: 'SignalR', 'RawWebSockets'
-             * @return the next definition stage
-             */
-            WithCreate withKind(ServiceKind kind);
-        }
-
-        /**
-         * The stage of the signalrresource definition allowing to specify NetworkACLs.
-         */
-        interface WithNetworkACLs {
-            /**
-             * Specifies networkACLs.
-             * @param networkACLs Network ACLs
-             * @return the next definition stage
-             */
-            WithCreate withNetworkACLs(SignalRNetworkACLs networkACLs);
-        }
-
-        /**
-         * The stage of the signalrresource definition allowing to specify Sku.
-         */
-        interface WithSku {
-            /**
-             * Specifies sku.
-             * @param sku The billing information of the resource.(e.g. Free, Standard)
-             * @return the next definition stage
-             */
-            WithCreate withSku(ResourceSku sku);
-        }
-
-        /**
-         * The stage of the signalrresource definition allowing to specify Upstream.
-         */
-        interface WithUpstream {
-            /**
-             * Specifies upstream.
-             * @param upstream Upstream settings when the Azure SignalR is in server-less mode
-             * @return the next definition stage
-             */
-            WithCreate withUpstream(ServerlessUpstreamSettings upstream);
-        }
-
-        /**
-         * The stage of the definition which contains all the minimum required inputs for
-         * the resource to be created (via {@link WithCreate#create()}), but also allows
-         * for any other optional settings to be specified.
-         */
-        interface WithCreate extends Creatable<SignalRResource>, Resource.DefinitionWithTags<WithCreate>, DefinitionStages.WithCors, DefinitionStages.WithFeatures, DefinitionStages.WithHostNamePrefix, DefinitionStages.WithKind, DefinitionStages.WithNetworkACLs, DefinitionStages.WithSku, DefinitionStages.WithUpstream {
-        }
-    }
-    /**
-     * The template for a SignalRResource update operation, containing all the settings that can be modified.
-     */
-    interface Update extends Appliable<SignalRResource>, Resource.UpdateWithTags<Update>, UpdateStages.WithCors, UpdateStages.WithFeatures, UpdateStages.WithHostNamePrefix, UpdateStages.WithKind, UpdateStages.WithNetworkACLs, UpdateStages.WithSku, UpdateStages.WithUpstream {
-    }
-
-    /**
-     * Grouping of SignalRResource update stages.
-     */
-    interface UpdateStages {
-        /**
-         * The stage of the signalrresource update allowing to specify Cors.
-         */
-        interface WithCors {
-            /**
-             * Specifies cors.
-             * @param cors Cross-Origin Resource Sharing (CORS) settings
-             * @return the next update stage
-             */
-            Update withCors(SignalRCorsSettings cors);
-        }
-
-        /**
-         * The stage of the signalrresource update allowing to specify Features.
-         */
-        interface WithFeatures {
-            /**
-             * Specifies features.
-             * @param features List of SignalR featureFlags. e.g. ServiceMode.
- FeatureFlags that are not included in the parameters for the update operation will not be modified.
- And the response will only include featureFlags that are explicitly set.
- When a featureFlag is not explicitly set, SignalR service will use its globally default value.
- But keep in mind, the default value doesn't mean "false". It varies in terms of different FeatureFlags
-             * @return the next update stage
-             */
-            Update withFeatures(List<SignalRFeature> features);
-        }
-
-        /**
-         * The stage of the signalrresource update allowing to specify HostNamePrefix.
-         */
-        interface WithHostNamePrefix {
-            /**
-             * Specifies hostNamePrefix.
-             * @param hostNamePrefix Prefix for the hostName of the SignalR service. Retained for future use.
- The hostname will be of format: &amp;lt;hostNamePrefix&amp;gt;.service.signalr.net
-             * @return the next update stage
-             */
-            Update withHostNamePrefix(String hostNamePrefix);
-        }
-
-        /**
-         * The stage of the signalrresource update allowing to specify Kind.
-         */
-        interface WithKind {
-            /**
-             * Specifies kind.
-             * @param kind The kind of the service - e.g. "SignalR", or "RawWebSockets" for "Microsoft.SignalRService/SignalR". Possible values include: 'SignalR', 'RawWebSockets'
-             * @return the next update stage
-             */
-            Update withKind(ServiceKind kind);
-        }
-
-        /**
-         * The stage of the signalrresource update allowing to specify NetworkACLs.
-         */
-        interface WithNetworkACLs {
-            /**
-             * Specifies networkACLs.
-             * @param networkACLs Network ACLs
-             * @return the next update stage
-             */
-            Update withNetworkACLs(SignalRNetworkACLs networkACLs);
-        }
-
-        /**
-         * The stage of the signalrresource update allowing to specify Sku.
-         */
-        interface WithSku {
-            /**
-             * Specifies sku.
-             * @param sku The billing information of the resource.(e.g. Free, Standard)
-             * @return the next update stage
-             */
-            Update withSku(ResourceSku sku);
-        }
-
-        /**
-         * The stage of the signalrresource update allowing to specify Upstream.
-         */
-        interface WithUpstream {
-            /**
-             * Specifies upstream.
-             * @param upstream Upstream settings when the Azure SignalR is in server-less mode
-             * @return the next update stage
-             */
-            Update withUpstream(ServerlessUpstreamSettings upstream);
-        }
-
-    }
 }

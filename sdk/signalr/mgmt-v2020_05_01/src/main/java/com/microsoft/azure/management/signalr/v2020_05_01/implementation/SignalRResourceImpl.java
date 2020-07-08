@@ -8,50 +8,29 @@
 
 package com.microsoft.azure.management.signalr.v2020_05_01.implementation;
 
-import com.microsoft.azure.arm.resources.models.implementation.GroupableResourceCoreImpl;
 import com.microsoft.azure.management.signalr.v2020_05_01.SignalRResource;
-import rx.Observable;
-import com.microsoft.azure.management.signalr.v2020_05_01.ResourceSku;
+import com.microsoft.azure.arm.model.implementation.WrapperImpl;
+import com.microsoft.azure.management.signalr.v2020_05_01.SignalRCorsSettings;
 import java.util.List;
 import com.microsoft.azure.management.signalr.v2020_05_01.SignalRFeature;
-import com.microsoft.azure.management.signalr.v2020_05_01.SignalRCorsSettings;
-import com.microsoft.azure.management.signalr.v2020_05_01.ServerlessUpstreamSettings;
+import com.microsoft.azure.management.signalr.v2020_05_01.ServiceKind;
 import com.microsoft.azure.management.signalr.v2020_05_01.SignalRNetworkACLs;
 import com.microsoft.azure.management.signalr.v2020_05_01.ProvisioningState;
-import com.microsoft.azure.management.signalr.v2020_05_01.ServiceKind;
-import java.util.ArrayList;
-import com.microsoft.azure.management.signalr.v2020_05_01.PrivateEndpointConnection;
+import com.microsoft.azure.management.signalr.v2020_05_01.ResourceSku;
+import java.util.Map;
+import com.microsoft.azure.management.signalr.v2020_05_01.ServerlessUpstreamSettings;
 
-class SignalRResourceImpl extends GroupableResourceCoreImpl<SignalRResource, SignalRResourceInner, SignalRResourceImpl, SignalRManager> implements SignalRResource, SignalRResource.Definition, SignalRResource.Update {
-    SignalRResourceImpl(String name, SignalRResourceInner inner, SignalRManager manager) {
-        super(name, inner, manager);
+class SignalRResourceImpl extends WrapperImpl<SignalRResourceInner> implements SignalRResource {
+    private final SignalRServiceManager manager;
+    SignalRResourceImpl(SignalRResourceInner inner, SignalRServiceManager manager) {
+        super(inner);
+        this.manager = manager;
     }
 
     @Override
-    public Observable<SignalRResource> createResourceAsync() {
-        SignalRsInner client = this.manager().inner().signalRs();
-        return client.createOrUpdateAsync(this.resourceGroupName(), this.name(), this.inner())
-            .map(innerToFluentMap(this));
+    public SignalRServiceManager manager() {
+        return this.manager;
     }
-
-    @Override
-    public Observable<SignalRResource> updateResourceAsync() {
-        SignalRsInner client = this.manager().inner().signalRs();
-        return client.updateAsync(this.resourceGroupName(), this.name(), this.inner())
-            .map(innerToFluentMap(this));
-    }
-
-    @Override
-    protected Observable<SignalRResourceInner> getInnerAsync() {
-        SignalRsInner client = this.manager().inner().signalRs();
-        return client.getByResourceGroupAsync(this.resourceGroupName(), this.name());
-    }
-
-    @Override
-    public boolean isInCreateMode() {
-        return this.inner().id() == null;
-    }
-
 
     @Override
     public SignalRCorsSettings cors() {
@@ -79,8 +58,23 @@ class SignalRResourceImpl extends GroupableResourceCoreImpl<SignalRResource, Sig
     }
 
     @Override
+    public String id() {
+        return this.inner().id();
+    }
+
+    @Override
     public ServiceKind kind() {
         return this.inner().kind();
+    }
+
+    @Override
+    public String location() {
+        return this.inner().location();
+    }
+
+    @Override
+    public String name() {
+        return this.inner().name();
     }
 
     @Override
@@ -89,14 +83,8 @@ class SignalRResourceImpl extends GroupableResourceCoreImpl<SignalRResource, Sig
     }
 
     @Override
-    public List<PrivateEndpointConnection> privateEndpointConnections() {
-        List<PrivateEndpointConnection> lst = new ArrayList<PrivateEndpointConnection>();
-        if (this.inner().privateEndpointConnections() != null) {
-            for (PrivateEndpointConnectionInner inner : this.inner().privateEndpointConnections()) {
-                lst.add( new PrivateEndpointConnectionImpl(inner, manager()));
-            }
-        }
-        return lst;
+    public List<PrivateEndpointConnectionInner> privateEndpointConnections() {
+        return this.inner().privateEndpointConnections();
     }
 
     @Override
@@ -120,6 +108,16 @@ class SignalRResourceImpl extends GroupableResourceCoreImpl<SignalRResource, Sig
     }
 
     @Override
+    public Map<String, String> tags() {
+        return this.inner().getTags();
+    }
+
+    @Override
+    public String type() {
+        return this.inner().type();
+    }
+
+    @Override
     public ServerlessUpstreamSettings upstream() {
         return this.inner().upstream();
     }
@@ -127,48 +125,6 @@ class SignalRResourceImpl extends GroupableResourceCoreImpl<SignalRResource, Sig
     @Override
     public String version() {
         return this.inner().version();
-    }
-
-    @Override
-    public SignalRResourceImpl withCors(SignalRCorsSettings cors) {
-        this.inner().withCors(cors);
-        return this;
-    }
-
-    @Override
-    public SignalRResourceImpl withFeatures(List<SignalRFeature> features) {
-        this.inner().withFeatures(features);
-        return this;
-    }
-
-    @Override
-    public SignalRResourceImpl withHostNamePrefix(String hostNamePrefix) {
-        this.inner().withHostNamePrefix(hostNamePrefix);
-        return this;
-    }
-
-    @Override
-    public SignalRResourceImpl withKind(ServiceKind kind) {
-        this.inner().withKind(kind);
-        return this;
-    }
-
-    @Override
-    public SignalRResourceImpl withNetworkACLs(SignalRNetworkACLs networkACLs) {
-        this.inner().withNetworkACLs(networkACLs);
-        return this;
-    }
-
-    @Override
-    public SignalRResourceImpl withSku(ResourceSku sku) {
-        this.inner().withSku(sku);
-        return this;
-    }
-
-    @Override
-    public SignalRResourceImpl withUpstream(ServerlessUpstreamSettings upstream) {
-        this.inner().withUpstream(upstream);
-        return this;
     }
 
 }
