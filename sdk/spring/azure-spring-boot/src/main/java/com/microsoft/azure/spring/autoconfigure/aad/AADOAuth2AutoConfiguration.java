@@ -33,7 +33,6 @@ import static com.microsoft.azure.telemetry.TelemetryData.getClassPackageSimpleN
  * {@literal azure.activedirectory.active-directory-groups} property.
  */
 @Configuration
-@ConditionalOnResource(resources = "classpath:aad.enable.config")
 @ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.SERVLET)
 @ConditionalOnProperty(prefix = "azure.activedirectory", value = "tenant-id")
 @PropertySource("classpath:/aad-oauth2-common.properties")
