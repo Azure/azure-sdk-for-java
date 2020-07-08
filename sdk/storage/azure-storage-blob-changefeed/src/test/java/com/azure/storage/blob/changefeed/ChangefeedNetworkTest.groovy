@@ -1,6 +1,6 @@
 package com.azure.storage.blob.changefeed
 
-import org.junit.Ignore
+import spock.lang.Ignore
 import reactor.test.StepVerifier
 import spock.lang.Requires
 import spock.lang.Unroll
