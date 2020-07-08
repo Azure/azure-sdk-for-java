@@ -1,0 +1,27 @@
+# line format:
+# <groupId>:<artifactId>:version
+org.springframework.boot:spring-boot-actuator-autoconfigure:2.2.0.RELEASE
+org.springframework.boot:spring-boot-autoconfigure-processor:2.2.0.RELEASE
+org.springframework.boot:spring-boot-autoconfigure:2.2.0.RELEASE
+org.springframework.boot:spring-boot-configuration-processor:2.2.0.RELEASE
+org.springframework.boot:spring-boot-dependencies:2.2.0.RELEASE
+org.springframework.boot:spring-boot-starter-actuator:2.2.0.RELEASE
+org.springframework.boot:spring-boot-starter-parent:2.2.0.RELEASE
+org.springframework.boot:spring-boot-starter-test:2.2.0.RELEASE
+org.springframework.boot:spring-boot-starter-validation:2.2.0.RELEASE
+org.springframework.boot:spring-boot-starter-web:2.2.0.RELEASE
+org.springframework.boot:spring-boot-starter:2.2.0.RELEASE
+org.springframework.boot:spring-boot:2.2.0.RELEASE
+org.springframework.data:spring-data-commons:2.2.0.RELEASE
+org.springframework.security:spring-security-config:5.2.0.RELEASE
+org.springframework.security:spring-security-core:5.2.0.RELEASE
+org.springframework.security:spring-security-oauth2-client:5.2.0.RELEASE
+org.springframework.security:spring-security-oauth2-core:5.2.0.RELEASE
+org.springframework.security:spring-security-oauth2-jose:5.2.0.RELEASE
+org.springframework.security:spring-security-web:5.2.0.RELEASE
+org.springframework:spring-beans:5.2.5.RELEASE
+org.springframework:spring-core:5.2.5.RELEASE
+org.springframework:spring-expression:5.2.5.RELEASE
+org.springframework:spring-jms:5.2.5.RELEASE
+org.springframework:spring-tx:5.2.5.RELEASE
+org.springframework:spring-web:5.2.5.RELEASE
