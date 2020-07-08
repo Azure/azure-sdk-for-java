@@ -3,7 +3,7 @@
 
 package com.azure.storage.blob
 
-
+import com.azure.core.test.TestMode
 import com.azure.storage.blob.specialized.BlobClientBase
 import com.azure.storage.blob.specialized.BlobLeaseClientBuilder
 import com.azure.storage.blob.specialized.SpecializedBlobClientBuilder
@@ -28,6 +28,10 @@ class AzuriteTest extends APISpec {
             .endpoint(azuriteEndpoint)
             .httpClient(getHttpClient())
             .credential(azuriteCredential)
+
+        if(testMode == TestMode.RECORD) {
+            builder.addPolicy(interceptorManager.getRecordPolicy())
+        }
 
         return builder.buildClient()
     }

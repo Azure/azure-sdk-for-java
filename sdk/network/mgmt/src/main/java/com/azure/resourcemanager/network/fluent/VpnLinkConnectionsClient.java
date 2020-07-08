@@ -21,13 +21,13 @@ import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
+import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.NetworkManagementClient;
 import com.azure.resourcemanager.network.fluent.inner.ListVpnSiteLinkConnectionsResultInner;
 import com.azure.resourcemanager.network.fluent.inner.VpnSiteLinkConnectionInner;
-import com.azure.resourcemanager.network.models.ErrorException;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in VpnLinkConnections. */
@@ -63,7 +63,7 @@ public final class VpnLinkConnectionsClient {
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/vpnGateways"
                 + "/{gatewayName}/vpnConnections/{connectionName}/vpnLinkConnections")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ErrorException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ListVpnSiteLinkConnectionsResultInner>> listByVpnConnection(
             @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
@@ -76,7 +76,7 @@ public final class VpnLinkConnectionsClient {
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ErrorException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ListVpnSiteLinkConnectionsResultInner>> listByVpnConnectionNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
@@ -88,7 +88,7 @@ public final class VpnLinkConnectionsClient {
      * @param gatewayName The name of the gateway.
      * @param connectionName The name of the vpn connection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the request to list all vpn connections to a virtual wan vpn gateway.
      */
@@ -117,7 +117,7 @@ public final class VpnLinkConnectionsClient {
         if (connectionName == null) {
             return Mono.error(new IllegalArgumentException("Parameter connectionName is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -150,7 +150,7 @@ public final class VpnLinkConnectionsClient {
      * @param connectionName The name of the vpn connection.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the request to list all vpn connections to a virtual wan vpn gateway.
      */
@@ -179,7 +179,7 @@ public final class VpnLinkConnectionsClient {
         if (connectionName == null) {
             return Mono.error(new IllegalArgumentException("Parameter connectionName is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return service
             .listByVpnConnection(
                 this.client.getEndpoint(),
@@ -207,7 +207,7 @@ public final class VpnLinkConnectionsClient {
      * @param gatewayName The name of the gateway.
      * @param connectionName The name of the vpn connection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the request to list all vpn connections to a virtual wan vpn gateway.
      */
@@ -227,7 +227,7 @@ public final class VpnLinkConnectionsClient {
      * @param connectionName The name of the vpn connection.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the request to list all vpn connections to a virtual wan vpn gateway.
      */
@@ -246,7 +246,7 @@ public final class VpnLinkConnectionsClient {
      * @param gatewayName The name of the gateway.
      * @param connectionName The name of the vpn connection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the request to list all vpn connections to a virtual wan vpn gateway.
      */
@@ -264,7 +264,7 @@ public final class VpnLinkConnectionsClient {
      * @param connectionName The name of the vpn connection.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the request to list all vpn connections to a virtual wan vpn gateway.
      */
@@ -279,7 +279,7 @@ public final class VpnLinkConnectionsClient {
      *
      * @param nextLink The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the request to list all vpn connections to a virtual wan vpn gateway.
      */
@@ -308,7 +308,7 @@ public final class VpnLinkConnectionsClient {
      * @param nextLink The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the request to list all vpn connections to a virtual wan vpn gateway.
      */

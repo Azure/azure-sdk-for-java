@@ -6,8 +6,9 @@ package com.azure.storage.blob.specialized
 import com.azure.core.exception.UnexpectedLengthException
 import com.azure.core.util.Context
 import com.azure.storage.blob.APISpec
-import com.azure.storage.blob.models.BlobErrorCode
+import com.azure.storage.blob.options.AppendBlobCreateOptions
 import com.azure.storage.blob.models.AppendBlobRequestConditions
+import com.azure.storage.blob.models.BlobErrorCode
 import com.azure.storage.blob.models.BlobHttpHeaders
 import com.azure.storage.blob.models.BlobRange
 import com.azure.storage.blob.models.BlobRequestConditions
@@ -99,6 +100,31 @@ class AppendBlobAPITest extends APISpec {
         key1  | value1 | key2   | value2
         null  | null   | null   | null
         "foo" | "bar"  | "fizz" | "buzz"
+    }
+
+    @Unroll
+    def "Create tags"() {
+        setup:
+        def tags = new HashMap<String, String>()
+        if (key1 != null) {
+            tags.put(key1, value1)
+        }
+        if (key2 != null) {
+            tags.put(key2, value2)
+        }
+
+        when:
+        bc.createWithResponse(new AppendBlobCreateOptions().setTags(tags), null, Context.NONE)
+        def response = bc.getTagsWithResponse(null, null)
+
+        then:
+        response.getValue() == tags
+
+        where:
+        key1                | value1     | key2   | value2
+        null                | null       | null   | null
+        "foo"               | "bar"      | "fizz" | "buzz"
+        " +-./:=_  +-./:=_" | " +-./:=_" | null   | null
     }
 
     @Unroll

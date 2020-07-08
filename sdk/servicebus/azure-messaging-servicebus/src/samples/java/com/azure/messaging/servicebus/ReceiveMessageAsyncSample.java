@@ -39,7 +39,7 @@ public class ReceiveMessageAsyncSample {
             .queueName("<<queue-name>>")
             .buildAsyncClient();
 
-        Disposable subscription = receiver.receive()
+        Disposable subscription = receiver.receiveMessages()
             .flatMap(context -> {
                 ServiceBusReceivedMessage message = context.getMessage();
 

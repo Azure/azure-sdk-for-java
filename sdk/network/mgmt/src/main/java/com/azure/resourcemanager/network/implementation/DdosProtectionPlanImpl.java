@@ -47,7 +47,7 @@ class DdosProtectionPlanImpl
 
     @Override
     public String provisioningState() {
-        return inner().provisioningState();
+        return inner().provisioningState().toString();
     }
 
     @Override

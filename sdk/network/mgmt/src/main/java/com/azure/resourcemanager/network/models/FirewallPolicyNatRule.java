@@ -19,7 +19,7 @@ public final class FirewallPolicyNatRule extends FirewallPolicyRule {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(FirewallPolicyNatRule.class);
 
     /*
-     * The action type of a Nat rule, SNAT or DNAT
+     * The action type of a Nat rule.
      */
     @JsonProperty(value = "action")
     private FirewallPolicyNatRuleAction action;
@@ -37,13 +37,13 @@ public final class FirewallPolicyNatRule extends FirewallPolicyRule {
     private String translatedPort;
 
     /*
-     * The match conditions for incoming traffic
+     * The match conditions for incoming traffic.
      */
     @JsonProperty(value = "ruleCondition")
     private FirewallPolicyRuleCondition ruleCondition;
 
     /**
-     * Get the action property: The action type of a Nat rule, SNAT or DNAT.
+     * Get the action property: The action type of a Nat rule.
      *
      * @return the action value.
      */
@@ -52,7 +52,7 @@ public final class FirewallPolicyNatRule extends FirewallPolicyRule {
     }
 
     /**
-     * Set the action property: The action type of a Nat rule, SNAT or DNAT.
+     * Set the action property: The action type of a Nat rule.
      *
      * @param action the action value to set.
      * @return the FirewallPolicyNatRule object itself.

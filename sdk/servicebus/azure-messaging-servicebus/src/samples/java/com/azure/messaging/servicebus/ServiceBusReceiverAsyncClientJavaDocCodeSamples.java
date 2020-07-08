@@ -63,7 +63,7 @@ public class ServiceBusReceiverAsyncClientJavaDocCodeSamples {
 
         // Keep a reference to `subscription`. When the program is finished receiving messages, call
         // subscription.dispose(). This will stop fetching messages from the Service Bus.
-        Disposable subscription = receiver.receive()
+        Disposable subscription = receiver.receiveMessages()
             .subscribe(context -> {
                 ServiceBusReceivedMessage message = context.getMessage();
                 System.out.printf("Received message id: %s%n", message.getMessageId());
@@ -88,7 +88,7 @@ public class ServiceBusReceiverAsyncClientJavaDocCodeSamples {
             .buildAsyncClient();
 
         // BEGIN: com.azure.messaging.servicebus.servicebusasyncreceiverclient.receive#basesubscriber
-        receiver.receive().subscribe(new BaseSubscriber<ServiceBusReceivedMessageContext>() {
+        receiver.receiveMessages().subscribe(new BaseSubscriber<ServiceBusReceivedMessageContext>() {
             private static final int NUMBER_OF_MESSAGES = 5;
             private final AtomicInteger currentNumberOfMessages = new AtomicInteger();
 
@@ -126,7 +126,7 @@ public class ServiceBusReceiverAsyncClientJavaDocCodeSamples {
             .buildAsyncClient();
 
         // BEGIN: com.azure.messaging.servicebus.servicebusasyncreceiverclient.receive#all
-        Disposable subscription = receiver.receive().flatMap(context -> {
+        Disposable subscription = receiver.receiveMessages().flatMap(context -> {
             ServiceBusReceivedMessage message = context.getMessage();
             System.out.printf("Received message id: %s%n", message.getMessageId());
             System.out.printf("Contents of message as string: %s%n", new String(message.getBody(), UTF_8));
@@ -151,7 +151,7 @@ public class ServiceBusReceiverAsyncClientJavaDocCodeSamples {
             .buildAsyncClient();
 
         // BEGIN: com.azure.messaging.servicebus.servicebusasyncreceiverclient.receive#int-duration
-        Disposable subscription = receiver.receive(15, Duration.ofSeconds(30))
+        Disposable subscription = receiver.receiveMessages(15, Duration.ofSeconds(30))
             .flatMap(context -> {
                 ServiceBusReceivedMessage message = context.getMessage();
                 System.out.printf("Received message id: %s%n", message.getMessageId());
