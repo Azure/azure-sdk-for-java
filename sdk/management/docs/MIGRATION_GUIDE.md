@@ -16,7 +16,6 @@ For users new to the Java SDK for resource management libraries, please see the 
   * [Error Handling](#error-handling)
   * [rxJava -> Reactor](#rxjava-to-reactor)
 * [Additional Samples](#additional-samples)
-* [Need Help](#need-help?)
 
 ## Prerequisites
 
