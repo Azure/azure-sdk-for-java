@@ -113,11 +113,6 @@ public class EventHubProducerAsyncClient implements Closeable {
     private final Runnable onClientClose;
     private final ObjectSerializer serializer;
 
-    private enum SendMode {
-        EVENT_DATA,
-        OBJECT
-    }
-
     /**
      * Creates a new instance of this {@link EventHubProducerAsyncClient} that can send messages to a single partition
      * when {@link CreateBatchOptions#getPartitionId()} is not null or an empty string. Otherwise, allows the service to
