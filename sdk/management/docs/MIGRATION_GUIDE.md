@@ -6,15 +6,17 @@ to the next version of Azure resource management libraries (`com.microsoft.azure
 For users new to the Java SDK for resource management libraries, please see the [README for 'com.azure.resourcemanager.*`](http://aka.ms/azure-sdk-java-mgmt)
 
 ## Table of contents
-* Prerequisites
-* Updated Maven depedencies
-* General Changes
-  * Authentication
-  * Customized Policy
-  * Custom HTTP Client
-  * Error Handling
-  * rxJava -> Reactor
-* Additional Samples
+
+* [Prerequisites](#prerequisites)
+* [Updated Maven depedencies](#updated-maven-dependecies)
+* [General Changes](#general-changes)
+  * [Authentication](#authentication)
+  * [Customized Policy](#customized-policy)
+  * [Custom HTTP Client](#custom-http-client)
+  * [Error Handling](#error-handling)
+  * [rxJava -> Reactor](#rxjava-to-reactor)
+* [Additional Samples](#additional-samples)
+* [Need Help](#need-help?)
 
 ## Prerequisites
 
@@ -156,7 +158,7 @@ try {
 }
 ```
 
-## rxJava -> Reactor
+## rxJava to Reactor
 
 In old version (`com.microsoft.azure-mgmt-**`), `rxJava` is used for non-blocking applications
 
@@ -277,3 +279,8 @@ More samples can be found at :
 - [README for new version of SDK](http://aka.ms/azure-sdk-java-mgmt)
 - [Code Samples for Resource Management Libraries](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/management/docs/SAMPLE.md)
 - [Authentication Documentation](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/management/docs/AUTH.md)
+
+## Need help?
+----------
+
+If you have encountered an issue during migration, please file an issue via [Github Issues](https://github.com/Azure/azure-sdk-for-java/issues) and make sure you add the "Preview" label to the issue
