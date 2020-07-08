@@ -221,7 +221,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
         while (!pollStatus.isComplete()) {
             SdkContext.sleep(delayInMills);
 
-            PollResponse<Void> pollResponse = acceptedVirtualMachine.getSyncPoller().poll();
+            PollResponse<?> pollResponse = acceptedVirtualMachine.getSyncPoller().poll();
             pollStatus = pollResponse.getStatus();
             delayInMills = pollResponse.getRetryAfter() == null
                 ? 10000
@@ -242,7 +242,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
         while (!pollStatus.isComplete()) {
             SdkContext.sleep(delayInMills);
 
-            PollResponse<Void> pollResponse = acceptedDelete.getSyncPoller().poll();
+            PollResponse<?> pollResponse = acceptedDelete.getSyncPoller().poll();
             pollStatus = pollResponse.getStatus();
             delayInMills = pollResponse.getRetryAfter() == null
                 ? 10000

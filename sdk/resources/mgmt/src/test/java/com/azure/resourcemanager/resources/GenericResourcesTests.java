@@ -116,7 +116,7 @@ public class GenericResourcesTests extends ResourceManagerTestBase {
         while (!pollStatus.isComplete()) {
             SdkContext.sleep(delayInMills);
 
-            PollResponse<Void> pollResponse = acceptedResource.getSyncPoller().poll();
+            PollResponse<?> pollResponse = acceptedResource.getSyncPoller().poll();
             pollStatus = pollResponse.getStatus();
             delayInMills = pollResponse.getRetryAfter() == null
                 ? 10000

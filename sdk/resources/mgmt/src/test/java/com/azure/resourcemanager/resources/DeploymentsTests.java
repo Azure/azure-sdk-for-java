@@ -256,7 +256,7 @@ public class DeploymentsTests extends ResourceManagerTestBase {
         while (!pollStatus.isComplete()) {
             SdkContext.sleep(delayInMills);
 
-            PollResponse<Void> pollResponse = acceptedDeployment.getSyncPoller().poll();
+            PollResponse<?> pollResponse = acceptedDeployment.getSyncPoller().poll();
             pollStatus = pollResponse.getStatus();
             delayInMills = pollResponse.getRetryAfter() == null
                 ? 10000
@@ -290,7 +290,7 @@ public class DeploymentsTests extends ResourceManagerTestBase {
         while (!pollStatus.isComplete()) {
             SdkContext.sleep(delayInMills);
 
-            PollResponse<Void> pollResponse = acceptedDeployment.getSyncPoller().poll();
+            PollResponse<?> pollResponse = acceptedDeployment.getSyncPoller().poll();
             pollStatus = pollResponse.getStatus();
             delayInMills = pollResponse.getRetryAfter() == null
                 ? 10000
@@ -322,7 +322,7 @@ public class DeploymentsTests extends ResourceManagerTestBase {
             while (!pollStatus.isComplete()) {
                 SdkContext.sleep(delayInMills);
 
-                PollResponse<Void> pollResponse = acceptedDeployment.getSyncPoller().poll();
+                PollResponse<?> pollResponse = acceptedDeployment.getSyncPoller().poll();
                 pollStatus = pollResponse.getStatus();
                 delayInMills = pollResponse.getRetryAfter() == null
                     ? 10000
