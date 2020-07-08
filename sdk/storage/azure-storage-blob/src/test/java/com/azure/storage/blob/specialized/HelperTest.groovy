@@ -5,14 +5,14 @@ package com.azure.storage.blob.specialized
 
 import com.azure.storage.blob.APISpec
 import com.azure.storage.blob.BlobContainerAsyncClient
-import com.azure.storage.blob.sas.BlobContainerSasPermission
-import com.azure.storage.blob.sas.BlobSasPermission
-import com.azure.storage.blob.BlobServiceVersion
 import com.azure.storage.blob.BlobUrlParts
 import com.azure.storage.blob.models.BlobRange
 import com.azure.storage.blob.models.UserDelegationKey
+import com.azure.storage.blob.sas.BlobContainerSasPermission
+import com.azure.storage.blob.sas.BlobSasPermission
 import com.azure.storage.blob.sas.BlobServiceSasQueryParameters
 import com.azure.storage.blob.sas.BlobServiceSasSignatureValues
+import com.azure.storage.blob.sas.BlobSasServiceVersion
 import com.azure.storage.common.Utility
 import com.azure.storage.common.implementation.Constants
 import com.azure.storage.common.implementation.StorageImplUtils
@@ -133,18 +133,18 @@ class HelperTest extends APISpec {
          */
         where:
         permissions             | startTime                                       | expiryTime                                     | identifier | ipRange          | protocol               | snapId   | cacheControl | disposition   | encoding   | language   | type   || expectedStringToSign
-        new BlobSasPermission() | null                                            | OffsetDateTime.now(ZoneOffset.UTC).plusDays(1) | null       | null             | null                   | null     | null         | null          | null       | null       | null   || "r\n\n%s\n" + "/blob/%s/containerName/blobName\n\n\n\n" + BlobServiceVersion.getLatest().getVersion() + "\nb\n\n\n\n\n\n"
-        null                    | OffsetDateTime.now(ZoneOffset.UTC).minusDays(1) | OffsetDateTime.now(ZoneOffset.UTC).plusDays(1) | null       | null             | null                   | null     | null         | null          | null       | null       | null   || "\n%s\n%s\n/blob/%s/containerName/blobName\n\n\n\n" + BlobServiceVersion.getLatest().getVersion() + "\nb\n\n\n\n\n\n"
-        null                    | null                                            | OffsetDateTime.now(ZoneOffset.UTC).plusDays(1) | null       | null             | null                   | null     | null         | null          | null       | null       | null   || "\n\n%s\n/blob/%s/containerName/blobName\n\n\n\n" + BlobServiceVersion.getLatest().getVersion() + "\nb\n\n\n\n\n\n"
-        null                    | null                                            | OffsetDateTime.now(ZoneOffset.UTC).plusDays(1) | "id"       | null             | null                   | null     | null         | null          | null       | null       | null   || "\n\n%s\n/blob/%s/containerName/blobName\nid\n\n\n" + BlobServiceVersion.getLatest().getVersion() + "\nb\n\n\n\n\n\n"
-        null                    | null                                            | OffsetDateTime.now(ZoneOffset.UTC).plusDays(1) | null       | new SasIpRange() | null                   | null     | null         | null          | null       | null       | null   || "\n\n%s\n/blob/%s/containerName/blobName\n\nip\n\n" + BlobServiceVersion.getLatest().getVersion() + "\nb\n\n\n\n\n\n"
-        null                    | null                                            | OffsetDateTime.now(ZoneOffset.UTC).plusDays(1) | null       | null             | SasProtocol.HTTPS_ONLY | null     | null         | null          | null       | null       | null   || "\n\n%s\n/blob/%s/containerName/blobName\n\n\n" + SasProtocol.HTTPS_ONLY + "\n" + BlobServiceVersion.getLatest().getVersion() + "\nb\n\n\n\n\n\n"
-        null                    | null                                            | OffsetDateTime.now(ZoneOffset.UTC).plusDays(1) | null       | null             | null                   | "snapId" | null         | null          | null       | null       | null   || "\n\n%s\n/blob/%s/containerName/blobName\n\n\n\n" + BlobServiceVersion.getLatest().getVersion() + "\nbs\nsnapId\n\n\n\n\n"
-        null                    | null                                            | OffsetDateTime.now(ZoneOffset.UTC).plusDays(1) | null       | null             | null                   | null     | "control"    | null          | null       | null       | null   || "\n\n%s\n/blob/%s/containerName/blobName\n\n\n\n" + BlobServiceVersion.getLatest().getVersion() + "\nb\n\ncontrol\n\n\n\n"
-        null                    | null                                            | OffsetDateTime.now(ZoneOffset.UTC).plusDays(1) | null       | null             | null                   | null     | null         | "disposition" | null       | null       | null   || "\n\n%s\n/blob/%s/containerName/blobName\n\n\n\n" + BlobServiceVersion.getLatest().getVersion() + "\nb\n\n\ndisposition\n\n\n"
-        null                    | null                                            | OffsetDateTime.now(ZoneOffset.UTC).plusDays(1) | null       | null             | null                   | null     | null         | null          | "encoding" | null       | null   || "\n\n%s\n/blob/%s/containerName/blobName\n\n\n\n" + BlobServiceVersion.getLatest().getVersion() + "\nb\n\n\n\nencoding\n\n"
-        null                    | null                                            | OffsetDateTime.now(ZoneOffset.UTC).plusDays(1) | null       | null             | null                   | null     | null         | null          | null       | "language" | null   || "\n\n%s\n/blob/%s/containerName/blobName\n\n\n\n" + BlobServiceVersion.getLatest().getVersion() + "\nb\n\n\n\n\nlanguage\n"
-        null                    | null                                            | OffsetDateTime.now(ZoneOffset.UTC).plusDays(1) | null       | null             | null                   | null     | null         | null          | null       | null       | "type" || "\n\n%s\n/blob/%s/containerName/blobName\n\n\n\n" + BlobServiceVersion.getLatest().getVersion() + "\nb\n\n\n\n\n\ntype"
+        new BlobSasPermission() | null                                            | OffsetDateTime.now(ZoneOffset.UTC).plusDays(1) | null       | null             | null                   | null     | null         | null          | null       | null       | null   || "r\n\n%s\n" + "/blob/%s/containerName/blobName\n\n\n\n" + BlobSasServiceVersion.getLatest().getVersion() + "\nb\n\n\n\n\n\n"
+        null                    | OffsetDateTime.now(ZoneOffset.UTC).minusDays(1) | OffsetDateTime.now(ZoneOffset.UTC).plusDays(1) | null       | null             | null                   | null     | null         | null          | null       | null       | null   || "\n%s\n%s\n/blob/%s/containerName/blobName\n\n\n\n" + BlobSasServiceVersion.getLatest().getVersion() + "\nb\n\n\n\n\n\n"
+        null                    | null                                            | OffsetDateTime.now(ZoneOffset.UTC).plusDays(1) | null       | null             | null                   | null     | null         | null          | null       | null       | null   || "\n\n%s\n/blob/%s/containerName/blobName\n\n\n\n" + BlobSasServiceVersion.getLatest().getVersion() + "\nb\n\n\n\n\n\n"
+        null                    | null                                            | OffsetDateTime.now(ZoneOffset.UTC).plusDays(1) | "id"       | null             | null                   | null     | null         | null          | null       | null       | null   || "\n\n%s\n/blob/%s/containerName/blobName\nid\n\n\n" + BlobSasServiceVersion.getLatest().getVersion() + "\nb\n\n\n\n\n\n"
+        null                    | null                                            | OffsetDateTime.now(ZoneOffset.UTC).plusDays(1) | null       | new SasIpRange() | null                   | null     | null         | null          | null       | null       | null   || "\n\n%s\n/blob/%s/containerName/blobName\n\nip\n\n" + BlobSasServiceVersion.getLatest().getVersion() + "\nb\n\n\n\n\n\n"
+        null                    | null                                            | OffsetDateTime.now(ZoneOffset.UTC).plusDays(1) | null       | null             | SasProtocol.HTTPS_ONLY | null     | null         | null          | null       | null       | null   || "\n\n%s\n/blob/%s/containerName/blobName\n\n\n" + SasProtocol.HTTPS_ONLY + "\n" + BlobSasServiceVersion.getLatest().getVersion() + "\nb\n\n\n\n\n\n"
+        null                    | null                                            | OffsetDateTime.now(ZoneOffset.UTC).plusDays(1) | null       | null             | null                   | "snapId" | null         | null          | null       | null       | null   || "\n\n%s\n/blob/%s/containerName/blobName\n\n\n\n" + BlobSasServiceVersion.getLatest().getVersion() + "\nbs\nsnapId\n\n\n\n\n"
+        null                    | null                                            | OffsetDateTime.now(ZoneOffset.UTC).plusDays(1) | null       | null             | null                   | null     | "control"    | null          | null       | null       | null   || "\n\n%s\n/blob/%s/containerName/blobName\n\n\n\n" + BlobSasServiceVersion.getLatest().getVersion() + "\nb\n\ncontrol\n\n\n\n"
+        null                    | null                                            | OffsetDateTime.now(ZoneOffset.UTC).plusDays(1) | null       | null             | null                   | null     | null         | "disposition" | null       | null       | null   || "\n\n%s\n/blob/%s/containerName/blobName\n\n\n\n" + BlobSasServiceVersion.getLatest().getVersion() + "\nb\n\n\ndisposition\n\n\n"
+        null                    | null                                            | OffsetDateTime.now(ZoneOffset.UTC).plusDays(1) | null       | null             | null                   | null     | null         | null          | "encoding" | null       | null   || "\n\n%s\n/blob/%s/containerName/blobName\n\n\n\n" + BlobSasServiceVersion.getLatest().getVersion() + "\nb\n\n\n\nencoding\n\n"
+        null                    | null                                            | OffsetDateTime.now(ZoneOffset.UTC).plusDays(1) | null       | null             | null                   | null     | null         | null          | null       | "language" | null   || "\n\n%s\n/blob/%s/containerName/blobName\n\n\n\n" + BlobSasServiceVersion.getLatest().getVersion() + "\nb\n\n\n\n\nlanguage\n"
+        null                    | null                                            | OffsetDateTime.now(ZoneOffset.UTC).plusDays(1) | null       | null             | null                   | null     | null         | null          | null       | null       | "type" || "\n\n%s\n/blob/%s/containerName/blobName\n\n\n\n" + BlobSasServiceVersion.getLatest().getVersion() + "\nb\n\n\n\n\n\ntype"
     }
 
     @Unroll
@@ -200,23 +200,23 @@ class HelperTest extends APISpec {
          */
         where:
         permissions             | startTime                                                 | expiryTime                                                | keyOid                                 | keyTid                                 | keyStart                                                              | keyExpiry                                                             | keyService | keyVersion   | keyValue                                       | ipRange          | protocol               | snapId   | cacheControl | disposition   | encoding   | language   | type   || expectedStringToSign
-        new BlobSasPermission() | null                                                      | null                                                      | null                                   | null                                   | null                                                                  | null                                                                  | null       | null         | "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=" | null             | null                   | null     | null         | null          | null       | null       | null   || "r\n\n%s\n" + "/blob/%s/containerName/blobName\n\n\n\n\n\n\n\n\n" + BlobServiceVersion.getLatest().getVersion() + "\nb\n\n\n\n\n\n"
-        null                    | OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC) | null                                                      | null                                   | null                                   | null                                                                  | null                                                                  | null       | null         | "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=" | null             | null                   | null     | null         | null          | null       | null       | null   || "\n" + Constants.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\n%s\n/blob/%s/containerName/blobName\n\n\n\n\n\n\n\n\n" + BlobServiceVersion.getLatest().getVersion() + "\nb\n\n\n\n\n\n"
-        null                    | null                                                      | OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC) | null                                   | null                                   | null                                                                  | null                                                                  | null       | null         | "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=" | null             | null                   | null     | null         | null          | null       | null       | null   || "\n\n%s\n/blob/%s/containerName/blobName\n\n\n\n\n\n\n\n\n" + BlobServiceVersion.getLatest().getVersion() + "\nb\n\n\n\n\n\n"
-        null                    | null                                                      | null                                                      | "11111111-1111-1111-1111-111111111111" | null                                   | null                                                                  | null                                                                  | null       | null         | "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=" | null             | null                   | null     | null         | null          | null       | null       | null   || "\n\n%s\n/blob/%s/containerName/blobName\n11111111-1111-1111-1111-111111111111\n\n\n\n\n\n\n\n" + BlobServiceVersion.getLatest().getVersion() + "\nb\n\n\n\n\n\n"
-        null                    | null                                                      | null                                                      | null                                   | "22222222-2222-2222-2222-222222222222" | null                                                                  | null                                                                  | null       | null         | "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=" | null             | null                   | null     | null         | null          | null       | null       | null   || "\n\n%s\n/blob/%s/containerName/blobName\n\n22222222-2222-2222-2222-222222222222\n\n\n\n\n\n\n" + BlobServiceVersion.getLatest().getVersion() + "\nb\n\n\n\n\n\n"
-        null                    | null                                                      | null                                                      | null                                   | null                                   | OffsetDateTime.of(LocalDateTime.of(2018, 1, 1, 0, 0), ZoneOffset.UTC) | null                                                                  | null       | null         | "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=" | null             | null                   | null     | null         | null          | null       | null       | null   || "\n\n%s\n/blob/%s/containerName/blobName\n\n\n2018-01-01T00:00:00Z\n\n\n\n\n\n" + BlobServiceVersion.getLatest().getVersion() + "\nb\n\n\n\n\n\n"
-        null                    | null                                                      | null                                                      | null                                   | null                                   | null                                                                  | OffsetDateTime.of(LocalDateTime.of(2018, 1, 1, 0, 0), ZoneOffset.UTC) | null       | null         | "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=" | null             | null                   | null     | null         | null          | null       | null       | null   || "\n\n%s\n/blob/%s/containerName/blobName\n\n\n\n2018-01-01T00:00:00Z\n\n\n\n\n" + BlobServiceVersion.getLatest().getVersion() + "\nb\n\n\n\n\n\n"
-        null                    | null                                                      | null                                                      | null                                   | null                                   | null                                                                  | null                                                                  | "b"        | null         | "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=" | null             | null                   | null     | null         | null          | null       | null       | null   || "\n\n%s\n/blob/%s/containerName/blobName\n\n\n\n\nb\n\n\n\n" + BlobServiceVersion.getLatest().getVersion() + "\nb\n\n\n\n\n\n"
-        null                    | null                                                      | null                                                      | null                                   | null                                   | null                                                                  | null                                                                  | null       | "2018-06-17" | "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=" | null             | null                   | null     | null         | null          | null       | null       | null   || "\n\n%s\n/blob/%s/containerName/blobName\n\n\n\n\n\n2018-06-17\n\n\n" + BlobServiceVersion.getLatest().getVersion() + "\nb\n\n\n\n\n\n"
-        null                    | null                                                      | null                                                      | null                                   | null                                   | null                                                                  | null                                                                  | null       | null         | "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=" | new SasIpRange() | null                   | null     | null         | null          | null       | null       | null   || "\n\n%s\n/blob/%s/containerName/blobName\n\n\n\n\n\n\nip\n\n" + BlobServiceVersion.getLatest().getVersion() + "\nb\n\n\n\n\n\n"
-        null                    | null                                                      | null                                                      | null                                   | null                                   | null                                                                  | null                                                                  | null       | null         | "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=" | null             | SasProtocol.HTTPS_ONLY | null     | null         | null          | null       | null       | null   || "\n\n%s\n/blob/%s/containerName/blobName\n\n\n\n\n\n\n\n" + SasProtocol.HTTPS_ONLY + "\n" + BlobServiceVersion.getLatest().getVersion() + "\nb\n\n\n\n\n\n"
-        null                    | null                                                      | null                                                      | null                                   | null                                   | null                                                                  | null                                                                  | null       | null         | "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=" | null             | null                   | "snapId" | null         | null          | null       | null       | null   || "\n\n%s\n/blob/%s/containerName/blobName\n\n\n\n\n\n\n\n\n" + BlobServiceVersion.getLatest().getVersion() + "\nbs\nsnapId\n\n\n\n\n"
-        null                    | null                                                      | null                                                      | null                                   | null                                   | null                                                                  | null                                                                  | null       | null         | "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=" | null             | null                   | null     | "control"    | null          | null       | null       | null   || "\n\n%s\n/blob/%s/containerName/blobName\n\n\n\n\n\n\n\n\n" + BlobServiceVersion.getLatest().getVersion() + "\nb\n\ncontrol\n\n\n\n"
-        null                    | null                                                      | null                                                      | null                                   | null                                   | null                                                                  | null                                                                  | null       | null         | "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=" | null             | null                   | null     | null         | "disposition" | null       | null       | null   || "\n\n%s\n/blob/%s/containerName/blobName\n\n\n\n\n\n\n\n\n" + BlobServiceVersion.getLatest().getVersion() + "\nb\n\n\ndisposition\n\n\n"
-        null                    | null                                                      | null                                                      | null                                   | null                                   | null                                                                  | null                                                                  | null       | null         | "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=" | null             | null                   | null     | null         | null          | "encoding" | null       | null   || "\n\n%s\n/blob/%s/containerName/blobName\n\n\n\n\n\n\n\n\n" + BlobServiceVersion.getLatest().getVersion() + "\nb\n\n\n\nencoding\n\n"
-        null                    | null                                                      | null                                                      | null                                   | null                                   | null                                                                  | null                                                                  | null       | null         | "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=" | null             | null                   | null     | null         | null          | null       | "language" | null   || "\n\n%s\n/blob/%s/containerName/blobName\n\n\n\n\n\n\n\n\n" + BlobServiceVersion.getLatest().getVersion() + "\nb\n\n\n\n\nlanguage\n"
-        null                    | null                                                      | null                                                      | null                                   | null                                   | null                                                                  | null                                                                  | null       | null         | "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=" | null             | null                   | null     | null         | null          | null       | null       | "type" || "\n\n%s\n/blob/%s/containerName/blobName\n\n\n\n\n\n\n\n\n" + BlobServiceVersion.getLatest().getVersion() + "\nb\n\n\n\n\n\ntype"
+        new BlobSasPermission() | null                                                      | null                                                      | null                                   | null                                   | null                                                                  | null                                                                  | null       | null         | "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=" | null             | null                   | null     | null         | null          | null       | null       | null   || "r\n\n%s\n" + "/blob/%s/containerName/blobName\n\n\n\n\n\n\n\n\n" + BlobSasServiceVersion.getLatest().getVersion() + "\nb\n\n\n\n\n\n"
+        null                    | OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC) | null                                                      | null                                   | null                                   | null                                                                  | null                                                                  | null       | null         | "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=" | null             | null                   | null     | null         | null          | null       | null       | null   || "\n" + Constants.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\n%s\n/blob/%s/containerName/blobName\n\n\n\n\n\n\n\n\n" + BlobSasServiceVersion.getLatest().getVersion() + "\nb\n\n\n\n\n\n"
+        null                    | null                                                      | OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC) | null                                   | null                                   | null                                                                  | null                                                                  | null       | null         | "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=" | null             | null                   | null     | null         | null          | null       | null       | null   || "\n\n%s\n/blob/%s/containerName/blobName\n\n\n\n\n\n\n\n\n" + BlobSasServiceVersion.getLatest().getVersion() + "\nb\n\n\n\n\n\n"
+        null                    | null                                                      | null                                                      | "11111111-1111-1111-1111-111111111111" | null                                   | null                                                                  | null                                                                  | null       | null         | "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=" | null             | null                   | null     | null         | null          | null       | null       | null   || "\n\n%s\n/blob/%s/containerName/blobName\n11111111-1111-1111-1111-111111111111\n\n\n\n\n\n\n\n" + BlobSasServiceVersion.getLatest().getVersion() + "\nb\n\n\n\n\n\n"
+        null                    | null                                                      | null                                                      | null                                   | "22222222-2222-2222-2222-222222222222" | null                                                                  | null                                                                  | null       | null         | "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=" | null             | null                   | null     | null         | null          | null       | null       | null   || "\n\n%s\n/blob/%s/containerName/blobName\n\n22222222-2222-2222-2222-222222222222\n\n\n\n\n\n\n" + BlobSasServiceVersion.getLatest().getVersion() + "\nb\n\n\n\n\n\n"
+        null                    | null                                                      | null                                                      | null                                   | null                                   | OffsetDateTime.of(LocalDateTime.of(2018, 1, 1, 0, 0), ZoneOffset.UTC) | null                                                                  | null       | null         | "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=" | null             | null                   | null     | null         | null          | null       | null       | null   || "\n\n%s\n/blob/%s/containerName/blobName\n\n\n2018-01-01T00:00:00Z\n\n\n\n\n\n" + BlobSasServiceVersion.getLatest().getVersion() + "\nb\n\n\n\n\n\n"
+        null                    | null                                                      | null                                                      | null                                   | null                                   | null                                                                  | OffsetDateTime.of(LocalDateTime.of(2018, 1, 1, 0, 0), ZoneOffset.UTC) | null       | null         | "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=" | null             | null                   | null     | null         | null          | null       | null       | null   || "\n\n%s\n/blob/%s/containerName/blobName\n\n\n\n2018-01-01T00:00:00Z\n\n\n\n\n" + BlobSasServiceVersion.getLatest().getVersion() + "\nb\n\n\n\n\n\n"
+        null                    | null                                                      | null                                                      | null                                   | null                                   | null                                                                  | null                                                                  | "b"        | null         | "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=" | null             | null                   | null     | null         | null          | null       | null       | null   || "\n\n%s\n/blob/%s/containerName/blobName\n\n\n\n\nb\n\n\n\n" + BlobSasServiceVersion.getLatest().getVersion() + "\nb\n\n\n\n\n\n"
+        null                    | null                                                      | null                                                      | null                                   | null                                   | null                                                                  | null                                                                  | null       | "2018-06-17" | "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=" | null             | null                   | null     | null         | null          | null       | null       | null   || "\n\n%s\n/blob/%s/containerName/blobName\n\n\n\n\n\n2018-06-17\n\n\n" + BlobSasServiceVersion.getLatest().getVersion() + "\nb\n\n\n\n\n\n"
+        null                    | null                                                      | null                                                      | null                                   | null                                   | null                                                                  | null                                                                  | null       | null         | "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=" | new SasIpRange() | null                   | null     | null         | null          | null       | null       | null   || "\n\n%s\n/blob/%s/containerName/blobName\n\n\n\n\n\n\nip\n\n" + BlobSasServiceVersion.getLatest().getVersion() + "\nb\n\n\n\n\n\n"
+        null                    | null                                                      | null                                                      | null                                   | null                                   | null                                                                  | null                                                                  | null       | null         | "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=" | null             | SasProtocol.HTTPS_ONLY | null     | null         | null          | null       | null       | null   || "\n\n%s\n/blob/%s/containerName/blobName\n\n\n\n\n\n\n\n" + SasProtocol.HTTPS_ONLY + "\n" + BlobSasServiceVersion.getLatest().getVersion() + "\nb\n\n\n\n\n\n"
+        null                    | null                                                      | null                                                      | null                                   | null                                   | null                                                                  | null                                                                  | null       | null         | "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=" | null             | null                   | "snapId" | null         | null          | null       | null       | null   || "\n\n%s\n/blob/%s/containerName/blobName\n\n\n\n\n\n\n\n\n" + BlobSasServiceVersion.getLatest().getVersion() + "\nbs\nsnapId\n\n\n\n\n"
+        null                    | null                                                      | null                                                      | null                                   | null                                   | null                                                                  | null                                                                  | null       | null         | "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=" | null             | null                   | null     | "control"    | null          | null       | null       | null   || "\n\n%s\n/blob/%s/containerName/blobName\n\n\n\n\n\n\n\n\n" + BlobSasServiceVersion.getLatest().getVersion() + "\nb\n\ncontrol\n\n\n\n"
+        null                    | null                                                      | null                                                      | null                                   | null                                   | null                                                                  | null                                                                  | null       | null         | "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=" | null             | null                   | null     | null         | "disposition" | null       | null       | null   || "\n\n%s\n/blob/%s/containerName/blobName\n\n\n\n\n\n\n\n\n" + BlobSasServiceVersion.getLatest().getVersion() + "\nb\n\n\ndisposition\n\n\n"
+        null                    | null                                                      | null                                                      | null                                   | null                                   | null                                                                  | null                                                                  | null       | null         | "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=" | null             | null                   | null     | null         | null          | "encoding" | null       | null   || "\n\n%s\n/blob/%s/containerName/blobName\n\n\n\n\n\n\n\n\n" + BlobSasServiceVersion.getLatest().getVersion() + "\nb\n\n\n\nencoding\n\n"
+        null                    | null                                                      | null                                                      | null                                   | null                                   | null                                                                  | null                                                                  | null       | null         | "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=" | null             | null                   | null     | null         | null          | null       | "language" | null   || "\n\n%s\n/blob/%s/containerName/blobName\n\n\n\n\n\n\n\n\n" + BlobSasServiceVersion.getLatest().getVersion() + "\nb\n\n\n\n\nlanguage\n"
+        null                    | null                                                      | null                                                      | null                                   | null                                   | null                                                                  | null                                                                  | null       | null         | "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=" | null             | null                   | null     | null         | null          | null       | null       | "type" || "\n\n%s\n/blob/%s/containerName/blobName\n\n\n\n\n\n\n\n\n" + BlobSasServiceVersion.getLatest().getVersion() + "\nb\n\n\n\n\n\ntype"
     }
 
     @Unroll
@@ -245,9 +245,9 @@ class HelperTest extends APISpec {
 
         where:
         containerName | blobName | snapId | expiryTime           || expectedResource | expectedStringToSign
-        "c"           | "b"      | "id"   | OffsetDateTime.now() || "bs"             | "\n\n%s\n" + "/blob/%s/c/b\n\n\n\n" + BlobServiceVersion.getLatest().getVersion() + "\nbs\nid\n\n\n\n\n"
-        "c"           | "b"      | null   | OffsetDateTime.now() || "b"              | "\n\n%s\n" + "/blob/%s/c/b\n\n\n\n" + BlobServiceVersion.getLatest().getVersion() + "\nb\n\n\n\n\n\n"
-        "c"           | null     | null   | OffsetDateTime.now() || "c"              | "\n\n%s\n" + "/blob/%s/c\n\n\n\n" + BlobServiceVersion.getLatest().getVersion() + "\nc\n\n\n\n\n\n"
+        "c"           | "b"      | "id"   | OffsetDateTime.now() || "bs"             | "\n\n%s\n" + "/blob/%s/c/b\n\n\n\n" + BlobSasServiceVersion.getLatest().getVersion() + "\nbs\nid\n\n\n\n\n"
+        "c"           | "b"      | null   | OffsetDateTime.now() || "b"              | "\n\n%s\n" + "/blob/%s/c/b\n\n\n\n" + BlobSasServiceVersion.getLatest().getVersion() + "\nb\n\n\n\n\n\n"
+        "c"           | null     | null   | OffsetDateTime.now() || "c"              | "\n\n%s\n" + "/blob/%s/c\n\n\n\n" + BlobSasServiceVersion.getLatest().getVersion() + "\nc\n\n\n\n\n\n"
     }
 
     def "serviceSasSignatureValues IA"() {
@@ -275,18 +275,20 @@ class HelperTest extends APISpec {
             .setDeletePermission(delete)
             .setCreatePermission(create)
             .setAddPermission(add)
+            .setDeleteVersionPermission(deleteVersion)
 
         expect:
         perms.toString() == expectedString
 
         where:
-        read  | write | delete | create | add   || expectedString
-        true  | false | false  | false  | false || "r"
-        false | true  | false  | false  | false || "w"
-        false | false | true   | false  | false || "d"
-        false | false | false  | true   | false || "c"
-        false | false | false  | false  | true  || "a"
-        true  | true  | true   | true   | true  || "racwd"
+        read  | write | delete | create | add   | deleteVersion || expectedString
+        true  | false | false  | false  | false | false         | "r"
+        false | true  | false  | false  | false | false         | "w"
+        false | false | true   | false  | false | false         | "d"
+        false | false | false  | true   | false | false         | "c"
+        false | false | false  | false  | true  | false         | "a"
+        false | false | false  | false  | false | true          | "x"
+        true  | true  | true   | true   | true  | true          | "racwdx"
     }
 
     @Unroll
@@ -300,16 +302,18 @@ class HelperTest extends APISpec {
         perms.hasDeletePermission() == delete
         perms.hasCreatePermission() == create
         perms.hasAddPermission() == add
+        perms.hasDeleteVersionPermission() == deleteVersion
 
         where:
-        permString || read  | write | delete | create | add
-        "r"        || true  | false | false  | false  | false
-        "w"        || false | true  | false  | false  | false
-        "d"        || false | false | true   | false  | false
-        "c"        || false | false | false  | true   | false
-        "a"        || false | false | false  | false  | true
-        "racwd"    || true  | true  | true   | true   | true
-        "dcwra"    || true  | true  | true   | true   | true
+        permString || read  | write | delete | create | add   | deleteVersion
+        "r"        || true  | false | false  | false  | false | false
+        "w"        || false | true  | false  | false  | false | false
+        "d"        || false | false | true   | false  | false | false
+        "c"        || false | false | false  | true   | false | false
+        "a"        || false | false | false  | false  | true  | false
+        "x"        || false | false | false  | false  | false | true
+        "racwdx"   || true  | true  | true   | true   | true  | true
+        "dcwxra"   || true  | true  | true   | true   | true  | true
     }
 
     def "BlobSASPermissions parse IA"() {
@@ -330,19 +334,21 @@ class HelperTest extends APISpec {
             .setCreatePermission(create)
             .setAddPermission(add)
             .setListPermission(list)
+            .setDeleteVersionPermission(deleteVersion)
 
         expect:
         perms.toString() == expectedString
 
         where:
-        read  | write | delete | create | add   | list  || expectedString
-        true  | false | false  | false  | false | false || "r"
-        false | true  | false  | false  | false | false || "w"
-        false | false | true   | false  | false | false || "d"
-        false | false | false  | true   | false | false || "c"
-        false | false | false  | false  | true  | false || "a"
-        false | false | false  | false  | false | true  || "l"
-        true  | true  | true   | true   | true  | true  || "racwdl"
+        read  | write | delete | create | add   | list  | deleteVersion || expectedString
+        true  | false | false  | false  | false | false | false         || "r"
+        false | true  | false  | false  | false | false | false         || "w"
+        false | false | true   | false  | false | false | false         || "d"
+        false | false | false  | true   | false | false | false         || "c"
+        false | false | false  | false  | true  | false | false         || "a"
+        false | false | false  | false  | false | true  | false         || "l"
+        false | false | false  | false  | false | false | true          || "x"
+        true  | true  | true   | true   | true  | true  | true          || "racwdxl"
     }
 
     @Unroll
@@ -357,17 +363,19 @@ class HelperTest extends APISpec {
         perms.hasCreatePermission() == create
         perms.hasAddPermission() == add
         perms.hasListPermission() == list
+        perms.hasDeleteVersionPermission() == deleteVersion
 
         where:
-        permString || read  | write | delete | create | add   | list
-        "r"        || true  | false | false  | false  | false | false
-        "w"        || false | true  | false  | false  | false | false
-        "d"        || false | false | true   | false  | false | false
-        "c"        || false | false | false  | true   | false | false
-        "a"        || false | false | false  | false  | true  | false
-        "l"        || false | false | false  | false  | false | true
-        "racwdl"   || true  | true  | true   | true   | true  | true
-        "dcwrla"   || true  | true  | true   | true   | true  | true
+        permString || read  | write | delete | create | add   | list  | deleteVersion
+        "r"        || true  | false | false  | false  | false | false | false
+        "w"        || false | true  | false  | false  | false | false | false
+        "d"        || false | false | true   | false  | false | false | false
+        "c"        || false | false | false  | true   | false | false | false
+        "a"        || false | false | false  | false  | true  | false | false
+        "l"        || false | false | false  | false  | false | true  | false
+        "x"        || false | false | false  | false  | false | false | true
+        "racwdxl"  || true  | true  | true   | true   | true  | true  | true
+        "dcwxrla"  || true  | true  | true   | true   | true  | true  | true
     }
 
     def "ContainerSASPermissions parse IA"() {
@@ -503,21 +511,23 @@ class HelperTest extends APISpec {
             .setCreatePermission(create)
             .setUpdatePermission(update)
             .setProcessMessages(process)
+            .setDeleteVersionPermission(deleteVersion)
 
         expect:
         perms.toString() == expectedString
 
         where:
-        read  | write | delete | list  | add   | create | update | process || expectedString
-        true  | false | false  | false | false | false  | false  | false   || "r"
-        false | true  | false  | false | false | false  | false  | false   || "w"
-        false | false | true   | false | false | false  | false  | false   || "d"
-        false | false | false  | true  | false | false  | false  | false   || "l"
-        false | false | false  | false | true  | false  | false  | false   || "a"
-        false | false | false  | false | false | true   | false  | false   || "c"
-        false | false | false  | false | false | false  | true   | false   || "u"
-        false | false | false  | false | false | false  | false  | true    || "p"
-        true  | true  | true   | true  | true  | true   | true   | true    || "rwdlacup"
+        read  | write | delete | list  | add   | create | update | process | deleteVersion || expectedString
+        true  | false | false  | false | false | false  | false  | false   | false         || "r"
+        false | true  | false  | false | false | false  | false  | false   | false         || "w"
+        false | false | true   | false | false | false  | false  | false   | false         || "d"
+        false | false | false  | true  | false | false  | false  | false   | false         || "l"
+        false | false | false  | false | true  | false  | false  | false   | false         || "a"
+        false | false | false  | false | false | true   | false  | false   | false         || "c"
+        false | false | false  | false | false | false  | true   | false   | false         || "u"
+        false | false | false  | false | false | false  | false  | true    | false         || "p"
+        false | false | false  | false | false | false  | false  | false   | true          || "x"
+        true  | true  | true   | true  | true  | true   | true   | true    | true          || "rwdxlacup"
     }
 
     @Unroll
@@ -534,19 +544,21 @@ class HelperTest extends APISpec {
         perms.hasCreatePermission() == create
         perms.hasUpdatePermission() == update
         perms.hasProcessMessages() == process
+        perms.hasDeleteVersionPermission() == deleteVersion
 
         where:
-        permString || read  | write | delete | list  | add   | create | update | process
-        "r"        || true  | false | false  | false | false | false  | false  | false
-        "w"        || false | true  | false  | false | false | false  | false  | false
-        "d"        || false | false | true   | false | false | false  | false  | false
-        "l"        || false | false | false  | true  | false | false  | false  | false
-        "a"        || false | false | false  | false | true  | false  | false  | false
-        "c"        || false | false | false  | false | false | true   | false  | false
-        "u"        || false | false | false  | false | false | false  | true   | false
-        "p"        || false | false | false  | false | false | false  | false  | true
-        "rwdlacup" || true  | true  | true   | true  | true  | true   | true   | true
-        "lwrupcad" || true  | true  | true   | true  | true  | true   | true   | true
+        permString  || read  | write | delete | list  | add   | create | update | process | deleteVersion
+        "r"         || true  | false | false  | false | false | false  | false  | false   | false
+        "w"         || false | true  | false  | false | false | false  | false  | false   | false
+        "d"         || false | false | true   | false | false | false  | false  | false   | false
+        "l"         || false | false | false  | true  | false | false  | false  | false   | false
+        "a"         || false | false | false  | false | true  | false  | false  | false   | false
+        "c"         || false | false | false  | false | false | true   | false  | false   | false
+        "u"         || false | false | false  | false | false | false  | true   | false   | false
+        "p"         || false | false | false  | false | false | false  | false  | true    | false
+        "x"         || false | false | false  | false | false | false  | false  | false   | true
+        "rwdxlacup" || true  | true  | true   | true  | true  | true   | true   | true    | true
+        "lwrupcxad" || true  | true  | true   | true  | true  | true   | true   | true    | true
     }
 
     def "AccountSASPermissions parse IA"() {

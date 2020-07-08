@@ -23,9 +23,9 @@ import com.azure.cosmos.TestNGLogListener;
 import com.azure.cosmos.ThrottlingRetryOptions;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.ConnectionPolicy;
-import com.azure.cosmos.implementation.InternalObjectNode;
 import com.azure.cosmos.implementation.FailureValidator;
 import com.azure.cosmos.implementation.FeedResponseListValidator;
+import com.azure.cosmos.implementation.InternalObjectNode;
 import com.azure.cosmos.implementation.PathParser;
 import com.azure.cosmos.implementation.Resource;
 import com.azure.cosmos.implementation.TestConfigurations;
@@ -40,6 +40,7 @@ import com.azure.cosmos.models.CosmosContainerRequestOptions;
 import com.azure.cosmos.models.CosmosDatabaseProperties;
 import com.azure.cosmos.models.CosmosDatabaseResponse;
 import com.azure.cosmos.models.CosmosItemResponse;
+import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.CosmosResponse;
 import com.azure.cosmos.models.CosmosStoredProcedureRequestOptions;
 import com.azure.cosmos.models.CosmosUserProperties;
@@ -50,7 +51,6 @@ import com.azure.cosmos.models.IndexingPolicy;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.PartitionKeyDefinition;
-import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.models.ThroughputProperties;
 import com.azure.cosmos.util.CosmosPagedFlux;
@@ -492,11 +492,9 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
             .block();
     }
 
-    public void voidBulkInsertBlocking(CosmosAsyncContainer cosmosContainer,
-                                       List<InternalObjectNode> documentDefinitionList) {
+    public <T> void voidBulkInsertBlocking(CosmosAsyncContainer cosmosContainer, List<T> documentDefinitionList) {
         bulkInsert(cosmosContainer, documentDefinitionList, DEFAULT_BULK_INSERT_CONCURRENCY_LEVEL)
             .publishOn(Schedulers.parallel())
-            .map(itemResponse -> BridgeInternal.getProperties(itemResponse))
             .then()
             .block();
     }
@@ -518,12 +516,16 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
     }
 
     static protected CosmosContainerProperties getCollectionDefinition() {
+        return getCollectionDefinition(UUID.randomUUID().toString());
+    }
+
+    static protected CosmosContainerProperties getCollectionDefinition(String collectionId) {
         PartitionKeyDefinition partitionKeyDef = new PartitionKeyDefinition();
-        ArrayList<String> paths = new ArrayList<String>();
+        ArrayList<String> paths = new ArrayList<>();
         paths.add("/mypk");
         partitionKeyDef.setPaths(paths);
 
-        CosmosContainerProperties collectionDefinition = new CosmosContainerProperties(UUID.randomUUID().toString(), partitionKeyDef);
+        CosmosContainerProperties collectionDefinition = new CosmosContainerProperties(collectionId, partitionKeyDef);
 
         return collectionDefinition;
     }

@@ -11,6 +11,8 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.ApplicationGatewayBackendAddressPool;
 import com.azure.resourcemanager.network.models.IpAllocationMethod;
 import com.azure.resourcemanager.network.models.IpVersion;
+import com.azure.resourcemanager.network.models.NetworkInterfaceIpConfigurationPrivateLinkConnectionProperties;
+import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -31,7 +33,7 @@ public class NetworkInterfaceIpConfigurationInner extends SubResource {
     /*
      * A unique read-only string that changes whenever the resource is updated.
      */
-    @JsonProperty(value = "etag")
+    @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
 
     /*
@@ -41,13 +43,13 @@ public class NetworkInterfaceIpConfigurationInner extends SubResource {
     private List<VirtualNetworkTapInner> virtualNetworkTaps;
 
     /*
-     * The reference of ApplicationGatewayBackendAddressPool resource.
+     * The reference to ApplicationGatewayBackendAddressPool resource.
      */
     @JsonProperty(value = "properties.applicationGatewayBackendAddressPools")
     private List<ApplicationGatewayBackendAddressPool> applicationGatewayBackendAddressPools;
 
     /*
-     * The reference of LoadBalancerBackendAddressPool resource.
+     * The reference to LoadBalancerBackendAddressPool resource.
      */
     @JsonProperty(value = "properties.loadBalancerBackendAddressPools")
     private List<BackendAddressPoolInner> loadBalancerBackendAddressPools;
@@ -71,8 +73,7 @@ public class NetworkInterfaceIpConfigurationInner extends SubResource {
     private IpAllocationMethod privateIpAllocationMethod;
 
     /*
-     * Available from Api-Version 2016-03-30 onwards, it represents whether the
-     * specific ipconfiguration is IPv4 or IPv6. Default is taken as IPv4.
+     * Whether the specific IP configuration is IPv4 or IPv6. Default is IPv4.
      */
     @JsonProperty(value = "properties.privateIPAddressVersion")
     private IpVersion privateIpAddressVersion;
@@ -84,8 +85,7 @@ public class NetworkInterfaceIpConfigurationInner extends SubResource {
     private SubnetInner subnet;
 
     /*
-     * Gets whether this is a primary customer address on the network
-     * interface.
+     * Whether this is a primary customer address on the network interface.
      */
     @JsonProperty(value = "properties.primary")
     private Boolean primary;
@@ -104,10 +104,15 @@ public class NetworkInterfaceIpConfigurationInner extends SubResource {
 
     /*
      * The provisioning state of the network interface IP configuration.
-     * Possible values are: 'Updating', 'Deleting', and 'Failed'.
      */
-    @JsonProperty(value = "properties.provisioningState")
-    private String provisioningState;
+    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
+    private ProvisioningState provisioningState;
+
+    /*
+     * PrivateLinkConnection properties for the network interface.
+     */
+    @JsonProperty(value = "properties.privateLinkConnectionProperties", access = JsonProperty.Access.WRITE_ONLY)
+    private NetworkInterfaceIpConfigurationPrivateLinkConnectionProperties privateLinkConnectionProperties;
 
     /**
      * Get the name property: The name of the resource that is unique within a resource group. This name can be used to
@@ -141,17 +146,6 @@ public class NetworkInterfaceIpConfigurationInner extends SubResource {
     }
 
     /**
-     * Set the etag property: A unique read-only string that changes whenever the resource is updated.
-     *
-     * @param etag the etag value to set.
-     * @return the NetworkInterfaceIpConfigurationInner object itself.
-     */
-    public NetworkInterfaceIpConfigurationInner withEtag(String etag) {
-        this.etag = etag;
-        return this;
-    }
-
-    /**
      * Get the virtualNetworkTaps property: The reference to Virtual Network Taps.
      *
      * @return the virtualNetworkTaps value.
@@ -173,7 +167,7 @@ public class NetworkInterfaceIpConfigurationInner extends SubResource {
     }
 
     /**
-     * Get the applicationGatewayBackendAddressPools property: The reference of ApplicationGatewayBackendAddressPool
+     * Get the applicationGatewayBackendAddressPools property: The reference to ApplicationGatewayBackendAddressPool
      * resource.
      *
      * @return the applicationGatewayBackendAddressPools value.
@@ -183,7 +177,7 @@ public class NetworkInterfaceIpConfigurationInner extends SubResource {
     }
 
     /**
-     * Set the applicationGatewayBackendAddressPools property: The reference of ApplicationGatewayBackendAddressPool
+     * Set the applicationGatewayBackendAddressPools property: The reference to ApplicationGatewayBackendAddressPool
      * resource.
      *
      * @param applicationGatewayBackendAddressPools the applicationGatewayBackendAddressPools value to set.
@@ -196,7 +190,7 @@ public class NetworkInterfaceIpConfigurationInner extends SubResource {
     }
 
     /**
-     * Get the loadBalancerBackendAddressPools property: The reference of LoadBalancerBackendAddressPool resource.
+     * Get the loadBalancerBackendAddressPools property: The reference to LoadBalancerBackendAddressPool resource.
      *
      * @return the loadBalancerBackendAddressPools value.
      */
@@ -205,7 +199,7 @@ public class NetworkInterfaceIpConfigurationInner extends SubResource {
     }
 
     /**
-     * Set the loadBalancerBackendAddressPools property: The reference of LoadBalancerBackendAddressPool resource.
+     * Set the loadBalancerBackendAddressPools property: The reference to LoadBalancerBackendAddressPool resource.
      *
      * @param loadBalancerBackendAddressPools the loadBalancerBackendAddressPools value to set.
      * @return the NetworkInterfaceIpConfigurationInner object itself.
@@ -279,8 +273,7 @@ public class NetworkInterfaceIpConfigurationInner extends SubResource {
     }
 
     /**
-     * Get the privateIpAddressVersion property: Available from Api-Version 2016-03-30 onwards, it represents whether
-     * the specific ipconfiguration is IPv4 or IPv6. Default is taken as IPv4.
+     * Get the privateIpAddressVersion property: Whether the specific IP configuration is IPv4 or IPv6. Default is IPv4.
      *
      * @return the privateIpAddressVersion value.
      */
@@ -289,8 +282,7 @@ public class NetworkInterfaceIpConfigurationInner extends SubResource {
     }
 
     /**
-     * Set the privateIpAddressVersion property: Available from Api-Version 2016-03-30 onwards, it represents whether
-     * the specific ipconfiguration is IPv4 or IPv6. Default is taken as IPv4.
+     * Set the privateIpAddressVersion property: Whether the specific IP configuration is IPv4 or IPv6. Default is IPv4.
      *
      * @param privateIpAddressVersion the privateIpAddressVersion value to set.
      * @return the NetworkInterfaceIpConfigurationInner object itself.
@@ -321,7 +313,7 @@ public class NetworkInterfaceIpConfigurationInner extends SubResource {
     }
 
     /**
-     * Get the primary property: Gets whether this is a primary customer address on the network interface.
+     * Get the primary property: Whether this is a primary customer address on the network interface.
      *
      * @return the primary value.
      */
@@ -330,7 +322,7 @@ public class NetworkInterfaceIpConfigurationInner extends SubResource {
     }
 
     /**
-     * Set the primary property: Gets whether this is a primary customer address on the network interface.
+     * Set the primary property: Whether this is a primary customer address on the network interface.
      *
      * @param primary the primary value to set.
      * @return the NetworkInterfaceIpConfigurationInner object itself.
@@ -384,25 +376,21 @@ public class NetworkInterfaceIpConfigurationInner extends SubResource {
     }
 
     /**
-     * Get the provisioningState property: The provisioning state of the network interface IP configuration. Possible
-     * values are: 'Updating', 'Deleting', and 'Failed'.
+     * Get the provisioningState property: The provisioning state of the network interface IP configuration.
      *
      * @return the provisioningState value.
      */
-    public String provisioningState() {
+    public ProvisioningState provisioningState() {
         return this.provisioningState;
     }
 
     /**
-     * Set the provisioningState property: The provisioning state of the network interface IP configuration. Possible
-     * values are: 'Updating', 'Deleting', and 'Failed'.
+     * Get the privateLinkConnectionProperties property: PrivateLinkConnection properties for the network interface.
      *
-     * @param provisioningState the provisioningState value to set.
-     * @return the NetworkInterfaceIpConfigurationInner object itself.
+     * @return the privateLinkConnectionProperties value.
      */
-    public NetworkInterfaceIpConfigurationInner withProvisioningState(String provisioningState) {
-        this.provisioningState = provisioningState;
-        return this;
+    public NetworkInterfaceIpConfigurationPrivateLinkConnectionProperties privateLinkConnectionProperties() {
+        return this.privateLinkConnectionProperties;
     }
 
     /**
@@ -431,6 +419,9 @@ public class NetworkInterfaceIpConfigurationInner extends SubResource {
         }
         if (applicationSecurityGroups() != null) {
             applicationSecurityGroups().forEach(e -> e.validate());
+        }
+        if (privateLinkConnectionProperties() != null) {
+            privateLinkConnectionProperties().validate();
         }
     }
 }

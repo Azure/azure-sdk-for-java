@@ -29,8 +29,8 @@ import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.util.polling.AsyncPollResponse;
 import com.azure.core.util.polling.PollerFlux;
+import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.network.NetworkManagementClient;
 import com.azure.resourcemanager.network.fluent.inner.ExpressRouteCircuitConnectionInner;
 import com.azure.resourcemanager.network.fluent.inner.ExpressRouteCircuitConnectionListResultInner;
@@ -134,39 +134,6 @@ public final class ExpressRouteCircuitConnectionsClient {
             @PathParam("subscriptionId") String subscriptionId,
             Context context);
 
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
-                + "/expressRouteCircuits/{circuitName}/peerings/{peeringName}/connections/{connectionName}")
-        @ExpectedResponses({200, 202, 204})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> beginDeleteWithoutPolling(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("circuitName") String circuitName,
-            @PathParam("peeringName") String peeringName,
-            @PathParam("connectionName") String connectionName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            Context context);
-
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
-                + "/expressRouteCircuits/{circuitName}/peerings/{peeringName}/connections/{connectionName}")
-        @ExpectedResponses({200, 201})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ExpressRouteCircuitConnectionInner>> beginCreateOrUpdateWithoutPolling(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("circuitName") String circuitName,
-            @PathParam("peeringName") String peeringName,
-            @PathParam("connectionName") String connectionName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @BodyParam("application/json") ExpressRouteCircuitConnectionInner expressRouteCircuitConnectionParameters,
-            Context context);
-
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
@@ -215,7 +182,7 @@ public final class ExpressRouteCircuitConnectionsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -273,7 +240,7 @@ public final class ExpressRouteCircuitConnectionsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return service
             .delete(
                 this.client.getEndpoint(),
@@ -299,7 +266,7 @@ public final class ExpressRouteCircuitConnectionsClient {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<Void>, Void> beginDelete(
+    public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String circuitName, String peeringName, String connectionName) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             deleteWithResponseAsync(resourceGroupName, circuitName, peeringName, connectionName);
@@ -320,7 +287,7 @@ public final class ExpressRouteCircuitConnectionsClient {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<Void>, Void> beginDelete(
+    public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String circuitName, String peeringName, String connectionName, Context context) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             deleteWithResponseAsync(resourceGroupName, circuitName, peeringName, connectionName, context);
@@ -340,15 +307,48 @@ public final class ExpressRouteCircuitConnectionsClient {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<Void>, Void> beginDelete(
+        String resourceGroupName, String circuitName, String peeringName, String connectionName) {
+        return beginDeleteAsync(resourceGroupName, circuitName, peeringName, connectionName).getSyncPoller();
+    }
+
+    /**
+     * Deletes the specified Express Route Circuit Connection from the specified express route circuit.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param circuitName The name of the express route circuit.
+     * @param peeringName The name of the peering.
+     * @param connectionName The name of the express route circuit connection.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<Void>, Void> beginDelete(
+        String resourceGroupName, String circuitName, String peeringName, String connectionName, Context context) {
+        return beginDeleteAsync(resourceGroupName, circuitName, peeringName, connectionName, context).getSyncPoller();
+    }
+
+    /**
+     * Deletes the specified Express Route Circuit Connection from the specified express route circuit.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param circuitName The name of the express route circuit.
+     * @param peeringName The name of the peering.
+     * @param connectionName The name of the express route circuit connection.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(
         String resourceGroupName, String circuitName, String peeringName, String connectionName) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, circuitName, peeringName, connectionName);
-        return this
-            .client
-            .<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class)
+        return beginDeleteAsync(resourceGroupName, circuitName, peeringName, connectionName)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -367,13 +367,9 @@ public final class ExpressRouteCircuitConnectionsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(
         String resourceGroupName, String circuitName, String peeringName, String connectionName, Context context) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, circuitName, peeringName, connectionName, context);
-        return this
-            .client
-            .<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class)
+        return beginDeleteAsync(resourceGroupName, circuitName, peeringName, connectionName, context)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -450,7 +446,7 @@ public final class ExpressRouteCircuitConnectionsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -508,7 +504,7 @@ public final class ExpressRouteCircuitConnectionsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return service
             .get(
                 this.client.getEndpoint(),
@@ -665,7 +661,7 @@ public final class ExpressRouteCircuitConnectionsClient {
         } else {
             expressRouteCircuitConnectionParameters.validate();
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -739,7 +735,7 @@ public final class ExpressRouteCircuitConnectionsClient {
         } else {
             expressRouteCircuitConnectionParameters.validate();
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return service
             .createOrUpdate(
                 this.client.getEndpoint(),
@@ -769,7 +765,7 @@ public final class ExpressRouteCircuitConnectionsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<ExpressRouteCircuitConnectionInner>, ExpressRouteCircuitConnectionInner>
-        beginCreateOrUpdate(
+        beginCreateOrUpdateAsync(
             String resourceGroupName,
             String circuitName,
             String peeringName,
@@ -804,7 +800,7 @@ public final class ExpressRouteCircuitConnectionsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<ExpressRouteCircuitConnectionInner>, ExpressRouteCircuitConnectionInner>
-        beginCreateOrUpdate(
+        beginCreateOrUpdateAsync(
             String resourceGroupName,
             String circuitName,
             String peeringName,
@@ -843,24 +839,77 @@ public final class ExpressRouteCircuitConnectionsClient {
      * @return express Route Circuit Connection in an ExpressRouteCircuitPeering resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<ExpressRouteCircuitConnectionInner>, ExpressRouteCircuitConnectionInner>
+        beginCreateOrUpdate(
+            String resourceGroupName,
+            String circuitName,
+            String peeringName,
+            String connectionName,
+            ExpressRouteCircuitConnectionInner expressRouteCircuitConnectionParameters) {
+        return beginCreateOrUpdateAsync(
+                resourceGroupName, circuitName, peeringName, connectionName, expressRouteCircuitConnectionParameters)
+            .getSyncPoller();
+    }
+
+    /**
+     * Creates or updates a Express Route Circuit Connection in the specified express route circuits.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param circuitName The name of the express route circuit.
+     * @param peeringName The name of the peering.
+     * @param connectionName The name of the express route circuit connection.
+     * @param expressRouteCircuitConnectionParameters Express Route Circuit Connection in an ExpressRouteCircuitPeering
+     *     resource.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return express Route Circuit Connection in an ExpressRouteCircuitPeering resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<ExpressRouteCircuitConnectionInner>, ExpressRouteCircuitConnectionInner>
+        beginCreateOrUpdate(
+            String resourceGroupName,
+            String circuitName,
+            String peeringName,
+            String connectionName,
+            ExpressRouteCircuitConnectionInner expressRouteCircuitConnectionParameters,
+            Context context) {
+        return beginCreateOrUpdateAsync(
+                resourceGroupName,
+                circuitName,
+                peeringName,
+                connectionName,
+                expressRouteCircuitConnectionParameters,
+                context)
+            .getSyncPoller();
+    }
+
+    /**
+     * Creates or updates a Express Route Circuit Connection in the specified express route circuits.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param circuitName The name of the express route circuit.
+     * @param peeringName The name of the peering.
+     * @param connectionName The name of the express route circuit connection.
+     * @param expressRouteCircuitConnectionParameters Express Route Circuit Connection in an ExpressRouteCircuitPeering
+     *     resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return express Route Circuit Connection in an ExpressRouteCircuitPeering resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ExpressRouteCircuitConnectionInner> createOrUpdateAsync(
         String resourceGroupName,
         String circuitName,
         String peeringName,
         String connectionName,
         ExpressRouteCircuitConnectionInner expressRouteCircuitConnectionParameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(
-                resourceGroupName, circuitName, peeringName, connectionName, expressRouteCircuitConnectionParameters);
-        return this
-            .client
-            .<ExpressRouteCircuitConnectionInner, ExpressRouteCircuitConnectionInner>getLroResultAsync(
-                mono,
-                this.client.getHttpPipeline(),
-                ExpressRouteCircuitConnectionInner.class,
-                ExpressRouteCircuitConnectionInner.class)
+        return beginCreateOrUpdateAsync(
+                resourceGroupName, circuitName, peeringName, connectionName, expressRouteCircuitConnectionParameters)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -886,23 +935,15 @@ public final class ExpressRouteCircuitConnectionsClient {
         String connectionName,
         ExpressRouteCircuitConnectionInner expressRouteCircuitConnectionParameters,
         Context context) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(
+        return beginCreateOrUpdateAsync(
                 resourceGroupName,
                 circuitName,
                 peeringName,
                 connectionName,
                 expressRouteCircuitConnectionParameters,
-                context);
-        return this
-            .client
-            .<ExpressRouteCircuitConnectionInner, ExpressRouteCircuitConnectionInner>getLroResultAsync(
-                mono,
-                this.client.getHttpPipeline(),
-                ExpressRouteCircuitConnectionInner.class,
-                ExpressRouteCircuitConnectionInner.class)
+                context)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -1000,7 +1041,7 @@ public final class ExpressRouteCircuitConnectionsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -1062,7 +1103,7 @@ public final class ExpressRouteCircuitConnectionsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return service
             .list(
                 this.client.getEndpoint(),
@@ -1155,466 +1196,6 @@ public final class ExpressRouteCircuitConnectionsClient {
     public PagedIterable<ExpressRouteCircuitConnectionInner> list(
         String resourceGroupName, String circuitName, String peeringName, Context context) {
         return new PagedIterable<>(listAsync(resourceGroupName, circuitName, peeringName, context));
-    }
-
-    /**
-     * Deletes the specified Express Route Circuit Connection from the specified express route circuit.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param circuitName The name of the express route circuit.
-     * @param peeringName The name of the peering.
-     * @param connectionName The name of the express route circuit connection.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> beginDeleteWithoutPollingWithResponseAsync(
-        String resourceGroupName, String circuitName, String peeringName, String connectionName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (circuitName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter circuitName is required and cannot be null."));
-        }
-        if (peeringName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter peeringName is required and cannot be null."));
-        }
-        if (connectionName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter connectionName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2019-06-01";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .beginDeleteWithoutPolling(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            circuitName,
-                            peeringName,
-                            connectionName,
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
-
-    /**
-     * Deletes the specified Express Route Circuit Connection from the specified express route circuit.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param circuitName The name of the express route circuit.
-     * @param peeringName The name of the peering.
-     * @param connectionName The name of the express route circuit connection.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> beginDeleteWithoutPollingWithResponseAsync(
-        String resourceGroupName, String circuitName, String peeringName, String connectionName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (circuitName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter circuitName is required and cannot be null."));
-        }
-        if (peeringName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter peeringName is required and cannot be null."));
-        }
-        if (connectionName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter connectionName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2019-06-01";
-        return service
-            .beginDeleteWithoutPolling(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                circuitName,
-                peeringName,
-                connectionName,
-                apiVersion,
-                this.client.getSubscriptionId(),
-                context);
-    }
-
-    /**
-     * Deletes the specified Express Route Circuit Connection from the specified express route circuit.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param circuitName The name of the express route circuit.
-     * @param peeringName The name of the peering.
-     * @param connectionName The name of the express route circuit connection.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> beginDeleteWithoutPollingAsync(
-        String resourceGroupName, String circuitName, String peeringName, String connectionName) {
-        return beginDeleteWithoutPollingWithResponseAsync(resourceGroupName, circuitName, peeringName, connectionName)
-            .flatMap((Response<Void> res) -> Mono.empty());
-    }
-
-    /**
-     * Deletes the specified Express Route Circuit Connection from the specified express route circuit.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param circuitName The name of the express route circuit.
-     * @param peeringName The name of the peering.
-     * @param connectionName The name of the express route circuit connection.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> beginDeleteWithoutPollingAsync(
-        String resourceGroupName, String circuitName, String peeringName, String connectionName, Context context) {
-        return beginDeleteWithoutPollingWithResponseAsync(
-                resourceGroupName, circuitName, peeringName, connectionName, context)
-            .flatMap((Response<Void> res) -> Mono.empty());
-    }
-
-    /**
-     * Deletes the specified Express Route Circuit Connection from the specified express route circuit.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param circuitName The name of the express route circuit.
-     * @param peeringName The name of the peering.
-     * @param connectionName The name of the express route circuit connection.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void beginDeleteWithoutPolling(
-        String resourceGroupName, String circuitName, String peeringName, String connectionName) {
-        beginDeleteWithoutPollingAsync(resourceGroupName, circuitName, peeringName, connectionName).block();
-    }
-
-    /**
-     * Deletes the specified Express Route Circuit Connection from the specified express route circuit.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param circuitName The name of the express route circuit.
-     * @param peeringName The name of the peering.
-     * @param connectionName The name of the express route circuit connection.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void beginDeleteWithoutPolling(
-        String resourceGroupName, String circuitName, String peeringName, String connectionName, Context context) {
-        beginDeleteWithoutPollingAsync(resourceGroupName, circuitName, peeringName, connectionName, context).block();
-    }
-
-    /**
-     * Creates or updates a Express Route Circuit Connection in the specified express route circuits.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param circuitName The name of the express route circuit.
-     * @param peeringName The name of the peering.
-     * @param connectionName The name of the express route circuit connection.
-     * @param expressRouteCircuitConnectionParameters Express Route Circuit Connection in an ExpressRouteCircuitPeering
-     *     resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return express Route Circuit Connection in an ExpressRouteCircuitPeering resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ExpressRouteCircuitConnectionInner>> beginCreateOrUpdateWithoutPollingWithResponseAsync(
-        String resourceGroupName,
-        String circuitName,
-        String peeringName,
-        String connectionName,
-        ExpressRouteCircuitConnectionInner expressRouteCircuitConnectionParameters) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (circuitName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter circuitName is required and cannot be null."));
-        }
-        if (peeringName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter peeringName is required and cannot be null."));
-        }
-        if (connectionName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter connectionName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (expressRouteCircuitConnectionParameters == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter expressRouteCircuitConnectionParameters is required and cannot be null."));
-        } else {
-            expressRouteCircuitConnectionParameters.validate();
-        }
-        final String apiVersion = "2019-06-01";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .beginCreateOrUpdateWithoutPolling(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            circuitName,
-                            peeringName,
-                            connectionName,
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            expressRouteCircuitConnectionParameters,
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
-
-    /**
-     * Creates or updates a Express Route Circuit Connection in the specified express route circuits.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param circuitName The name of the express route circuit.
-     * @param peeringName The name of the peering.
-     * @param connectionName The name of the express route circuit connection.
-     * @param expressRouteCircuitConnectionParameters Express Route Circuit Connection in an ExpressRouteCircuitPeering
-     *     resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return express Route Circuit Connection in an ExpressRouteCircuitPeering resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ExpressRouteCircuitConnectionInner>> beginCreateOrUpdateWithoutPollingWithResponseAsync(
-        String resourceGroupName,
-        String circuitName,
-        String peeringName,
-        String connectionName,
-        ExpressRouteCircuitConnectionInner expressRouteCircuitConnectionParameters,
-        Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (circuitName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter circuitName is required and cannot be null."));
-        }
-        if (peeringName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter peeringName is required and cannot be null."));
-        }
-        if (connectionName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter connectionName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (expressRouteCircuitConnectionParameters == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter expressRouteCircuitConnectionParameters is required and cannot be null."));
-        } else {
-            expressRouteCircuitConnectionParameters.validate();
-        }
-        final String apiVersion = "2019-06-01";
-        return service
-            .beginCreateOrUpdateWithoutPolling(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                circuitName,
-                peeringName,
-                connectionName,
-                apiVersion,
-                this.client.getSubscriptionId(),
-                expressRouteCircuitConnectionParameters,
-                context);
-    }
-
-    /**
-     * Creates or updates a Express Route Circuit Connection in the specified express route circuits.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param circuitName The name of the express route circuit.
-     * @param peeringName The name of the peering.
-     * @param connectionName The name of the express route circuit connection.
-     * @param expressRouteCircuitConnectionParameters Express Route Circuit Connection in an ExpressRouteCircuitPeering
-     *     resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return express Route Circuit Connection in an ExpressRouteCircuitPeering resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ExpressRouteCircuitConnectionInner> beginCreateOrUpdateWithoutPollingAsync(
-        String resourceGroupName,
-        String circuitName,
-        String peeringName,
-        String connectionName,
-        ExpressRouteCircuitConnectionInner expressRouteCircuitConnectionParameters) {
-        return beginCreateOrUpdateWithoutPollingWithResponseAsync(
-                resourceGroupName, circuitName, peeringName, connectionName, expressRouteCircuitConnectionParameters)
-            .flatMap(
-                (Response<ExpressRouteCircuitConnectionInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Creates or updates a Express Route Circuit Connection in the specified express route circuits.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param circuitName The name of the express route circuit.
-     * @param peeringName The name of the peering.
-     * @param connectionName The name of the express route circuit connection.
-     * @param expressRouteCircuitConnectionParameters Express Route Circuit Connection in an ExpressRouteCircuitPeering
-     *     resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return express Route Circuit Connection in an ExpressRouteCircuitPeering resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ExpressRouteCircuitConnectionInner> beginCreateOrUpdateWithoutPollingAsync(
-        String resourceGroupName,
-        String circuitName,
-        String peeringName,
-        String connectionName,
-        ExpressRouteCircuitConnectionInner expressRouteCircuitConnectionParameters,
-        Context context) {
-        return beginCreateOrUpdateWithoutPollingWithResponseAsync(
-                resourceGroupName,
-                circuitName,
-                peeringName,
-                connectionName,
-                expressRouteCircuitConnectionParameters,
-                context)
-            .flatMap(
-                (Response<ExpressRouteCircuitConnectionInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Creates or updates a Express Route Circuit Connection in the specified express route circuits.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param circuitName The name of the express route circuit.
-     * @param peeringName The name of the peering.
-     * @param connectionName The name of the express route circuit connection.
-     * @param expressRouteCircuitConnectionParameters Express Route Circuit Connection in an ExpressRouteCircuitPeering
-     *     resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return express Route Circuit Connection in an ExpressRouteCircuitPeering resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ExpressRouteCircuitConnectionInner beginCreateOrUpdateWithoutPolling(
-        String resourceGroupName,
-        String circuitName,
-        String peeringName,
-        String connectionName,
-        ExpressRouteCircuitConnectionInner expressRouteCircuitConnectionParameters) {
-        return beginCreateOrUpdateWithoutPollingAsync(
-                resourceGroupName, circuitName, peeringName, connectionName, expressRouteCircuitConnectionParameters)
-            .block();
-    }
-
-    /**
-     * Creates or updates a Express Route Circuit Connection in the specified express route circuits.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param circuitName The name of the express route circuit.
-     * @param peeringName The name of the peering.
-     * @param connectionName The name of the express route circuit connection.
-     * @param expressRouteCircuitConnectionParameters Express Route Circuit Connection in an ExpressRouteCircuitPeering
-     *     resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return express Route Circuit Connection in an ExpressRouteCircuitPeering resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ExpressRouteCircuitConnectionInner beginCreateOrUpdateWithoutPolling(
-        String resourceGroupName,
-        String circuitName,
-        String peeringName,
-        String connectionName,
-        ExpressRouteCircuitConnectionInner expressRouteCircuitConnectionParameters,
-        Context context) {
-        return beginCreateOrUpdateWithoutPollingAsync(
-                resourceGroupName,
-                circuitName,
-                peeringName,
-                connectionName,
-                expressRouteCircuitConnectionParameters,
-                context)
-            .block();
     }
 
     /**

@@ -21,10 +21,7 @@ public final class WordDelimiterTokenFilterConverter {
         if (obj == null) {
             return null;
         }
-        WordDelimiterTokenFilter wordDelimiterTokenFilter = new WordDelimiterTokenFilter();
-
-        String name = obj.getName();
-        wordDelimiterTokenFilter.setName(name);
+        WordDelimiterTokenFilter wordDelimiterTokenFilter = new WordDelimiterTokenFilter(obj.getName());
 
         Boolean catenateNumbers = obj.isCatenateNumbers();
         wordDelimiterTokenFilter.setNumbersCatenated(catenateNumbers);
@@ -69,10 +66,7 @@ public final class WordDelimiterTokenFilterConverter {
             return null;
         }
         com.azure.search.documents.indexes.implementation.models.WordDelimiterTokenFilter wordDelimiterTokenFilter =
-            new com.azure.search.documents.indexes.implementation.models.WordDelimiterTokenFilter();
-
-        String name = obj.getName();
-        wordDelimiterTokenFilter.setName(name);
+            new com.azure.search.documents.indexes.implementation.models.WordDelimiterTokenFilter(obj.getName());
 
         Boolean catenateNumbers = obj.areNumbersCatenated();
         wordDelimiterTokenFilter.setCatenateNumbers(catenateNumbers);
@@ -105,6 +99,7 @@ public final class WordDelimiterTokenFilterConverter {
 
         Boolean catenateWords = obj.areWordsCatenated();
         wordDelimiterTokenFilter.setCatenateWords(catenateWords);
+        wordDelimiterTokenFilter.validate();
         return wordDelimiterTokenFilter;
     }
 

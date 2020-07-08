@@ -567,18 +567,42 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     }
 
     private <T extends Resource> Flux<FeedResponse<T>> createQuery(
-            String parentResourceLink,
+        String parentResourceLink,
+        SqlQuerySpec sqlQuery,
+        CosmosQueryRequestOptions options,
+        Class<T> klass,
+        ResourceType resourceTypeEnum) {
+
+        String resourceLink = parentResourceLinkToQueryLink(parentResourceLink, resourceTypeEnum);
+        UUID activityId = Utils.randomUUID();
+        IDocumentQueryClient queryClient = documentQueryClientImpl(RxDocumentClientImpl.this);
+
+        // Trying to put this logic as low as the query pipeline
+        // Since for parallelQuery, each partition will have its own request, so at this point, there will be no request associate with this retry policy.
+        // For default document context, it already wired up InvalidPartitionExceptionRetry, but there is no harm to wire it again here
+        InvalidPartitionExceptionRetryPolicy invalidPartitionExceptionRetryPolicy = new InvalidPartitionExceptionRetryPolicy(
+            this.collectionCache,
+            null,
+            resourceLink,
+            options);
+
+        return ObservableHelper.fluxInlineIfPossibleAsObs(
+            () -> createQueryInternal(resourceLink, sqlQuery, options, klass, resourceTypeEnum, queryClient, activityId),
+            invalidPartitionExceptionRetryPolicy);
+    }
+
+    private <T extends Resource> Flux<FeedResponse<T>> createQueryInternal(
+            String resourceLink,
             SqlQuerySpec sqlQuery,
             CosmosQueryRequestOptions options,
             Class<T> klass,
-            ResourceType resourceTypeEnum) {
+            ResourceType resourceTypeEnum,
+            IDocumentQueryClient queryClient,
+            UUID activityId) {
 
-        String queryResourceLink = parentResourceLinkToQueryLink(parentResourceLink, resourceTypeEnum);
-
-        UUID activityId = Utils.randomUUID();
-        IDocumentQueryClient queryClient = documentQueryClientImpl(RxDocumentClientImpl.this);
         Flux<? extends IDocumentQueryExecutionContext<T>> executionContext =
-                DocumentQueryExecutionContextFactory.createDocumentQueryExecutionContextAsync(queryClient, resourceTypeEnum, klass, sqlQuery , options, queryResourceLink, false, activityId);
+                DocumentQueryExecutionContextFactory.createDocumentQueryExecutionContextAsync(queryClient, resourceTypeEnum, klass, sqlQuery , options, resourceLink, false, activityId);
+
         return executionContext.flatMap(iDocumentQueryExecutionContext -> {
             QueryInfo queryInfo = null;
             if (iDocumentQueryExecutionContext instanceof PipelinedDocumentQueryExecutionContext) {

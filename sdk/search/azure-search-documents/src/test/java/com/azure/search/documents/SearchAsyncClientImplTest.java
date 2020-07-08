@@ -21,8 +21,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import static com.azure.search.documents.TestHelpers.assertHttpResponseExceptionAsync;
 import static com.azure.search.documents.TestHelpers.assertMapEquals;
-import static com.azure.search.documents.TestHelpers.createPointGeometry;
-import static com.azure.search.documents.TestHelpers.generateRequestOptions;
 import static com.azure.search.documents.TestHelpers.uploadDocument;
 import static com.azure.search.documents.TestHelpers.uploadDocuments;
 import static com.azure.search.documents.TestHelpers.waitForIndexing;
@@ -35,7 +33,7 @@ public class SearchAsyncClientImplTest extends SearchTestBase {
     @Override
     protected void beforeTest() {
         super.beforeTest();
-        asyncClient = getSearchIndexClientBuilder(createHotelIndex()).buildAsyncClient();
+        asyncClient = getSearchClientBuilder(createHotelIndex()).buildAsyncClient();
     }
 
     @Override
@@ -112,7 +110,7 @@ public class SearchAsyncClientImplTest extends SearchTestBase {
         expectedDoc.put("Rating", 3);
         expectedDoc.put("Address", addressDoc);
         expectedDoc.put("Rooms", rooms);
-        expectedDoc.put("Location", createPointGeometry(40.760586, -73.975403));
+//        expectedDoc.put("Location", createPointGeometryString(40.760586, -73.975403));
 
         uploadDocument(asyncClient, expectedDoc);
 
@@ -219,7 +217,7 @@ public class SearchAsyncClientImplTest extends SearchTestBase {
         Runnable searchWithNoSkip = () -> {
             try {
                 SearchOptions sp = new SearchOptions();
-                processResult(asyncClient.search("*", sp, generateRequestOptions()), 200);
+                processResult(asyncClient.search("*", sp), 200);
             } catch (Exception ex) {
                 failed.set(true);
             }
@@ -228,7 +226,7 @@ public class SearchAsyncClientImplTest extends SearchTestBase {
         Runnable searchWithSkip10 = () -> {
             try {
                 SearchOptions sp = new SearchOptions().setSkip(10);
-                processResult(asyncClient.search("*", sp, generateRequestOptions()), 190);
+                processResult(asyncClient.search("*", sp), 190);
             } catch (Exception ex) {
                 failed.set(true);
             }
@@ -238,7 +236,7 @@ public class SearchAsyncClientImplTest extends SearchTestBase {
         Runnable searchWithSkip30 = () -> {
             try {
                 SearchOptions sp = new SearchOptions().setSkip(30);
-                processResult(asyncClient.search("*", sp, generateRequestOptions()), 170);
+                processResult(asyncClient.search("*", sp), 170);
             } catch (Exception ex) {
                 failed.set(true);
             }

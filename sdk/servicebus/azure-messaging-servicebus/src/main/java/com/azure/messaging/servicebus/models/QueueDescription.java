@@ -5,6 +5,8 @@
 package com.azure.messaging.servicebus.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.messaging.servicebus.implementation.EntityHelper;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
@@ -14,12 +16,33 @@ import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.DEFAULT_LOCK_DURATION;
+import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.MAX_DURATION;
+
 /** The QueueDescription model. */
 @JacksonXmlRootElement(
         localName = "QueueDescription",
         namespace = "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect")
 @Fluent
 public final class QueueDescription {
+    /*
+     * Last time a message was sent, or the last time there was a receive
+     * request to this queue.
+     */
+    @JacksonXmlProperty(
+            localName = "AccessedAt",
+            namespace = "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect")
+    private OffsetDateTime accessedAt;
+
+    /*
+     * ISO 8601 timeSpan idle interval after which the queue is automatically
+     * deleted. The minimum duration is 5 minutes.
+     */
+    @JacksonXmlProperty(
+            localName = "AutoDeleteOnIdle",
+            namespace = "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect")
+    private Duration autoDeleteOnIdle;
+
     private static final class AuthorizationRulesWrapper {
         @JacksonXmlProperty(localName = "AuthorizationRule")
         private final List<AuthorizationRule> items;
@@ -31,8 +54,6 @@ public final class QueueDescription {
         }
     }
 
-    private String name;
-
     /*
      * Authorization rules for resource.
      */
@@ -42,30 +63,12 @@ public final class QueueDescription {
     private AuthorizationRulesWrapper authorizationRules;
 
     /*
-     * ISO 8601 timeSpan idle interval after which the queue is automatically
-     * deleted. The minimum duration is 5 minutes.
-     */
-    @JacksonXmlProperty(
-            localName = "AutoDeleteOnIdle",
-            namespace = "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect")
-    private Duration autoDeleteOnIdle;
-
-    /*
      * The exact time the queue was created.
      */
     @JacksonXmlProperty(
             localName = "CreatedAt",
             namespace = "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect")
     private OffsetDateTime createdAt;
-
-    /*
-     * A value that indicates whether this queue has dead letter support when a
-     * message expires.
-     */
-    @JacksonXmlProperty(
-            localName = "DeadLetteringOnMessageExpiration",
-            namespace = "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect")
-    private Boolean deadLetteringOnMessageExpiration;
 
     /*
      * ISO 8601 default message timespan to live value. This is the duration
@@ -79,6 +82,15 @@ public final class QueueDescription {
     private Duration defaultMessageTimeToLive;
 
     /*
+     * A value that indicates whether this queue has dead letter support when a
+     * message expires.
+     */
+    @JacksonXmlProperty(
+            localName = "DeadLetteringOnMessageExpiration",
+            namespace = "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect")
+    private Boolean deadLetteringOnMessageExpiration;
+
+    /*
      * ISO 8601 timeSpan structure that defines the duration of the duplicate
      * detection history. The default value is 10 minutes.
      */
@@ -86,14 +98,6 @@ public final class QueueDescription {
             localName = "DuplicateDetectionHistoryTimeWindow",
             namespace = "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect")
     private Duration duplicateDetectionHistoryTimeWindow;
-
-    /*
-     * Availibility status of the entity
-     */
-    @JacksonXmlProperty(
-            localName = "EntityAvailabilityStatus",
-            namespace = "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect")
-    private EntityAvailabilityStatus entityAvailabilityStatus;
 
     /*
      * Value that indicates whether server-side batched operations are enabled.
@@ -121,6 +125,32 @@ public final class QueueDescription {
             localName = "EnablePartitioning",
             namespace = "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect")
     private Boolean enablePartitioning;
+
+    /*
+     * Availability status of the entity
+     */
+    @JacksonXmlProperty(
+            localName = "EntityAvailabilityStatus",
+            namespace = "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect")
+    private EntityAvailabilityStatus entityAvailabilityStatus;
+
+    /*
+     * The name of the recipient entity to which all the messages sent to the
+     * queue are forwarded to.
+     */
+    @JacksonXmlProperty(
+            localName = "ForwardTo",
+            namespace = "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect")
+    private String forwardTo;
+
+    /*
+     * The name of the recipient entity to which all the dead-lettered messages
+     * of this queue are forwarded to.
+     */
+    @JacksonXmlProperty(
+            localName = "ForwardDeadLetteredMessagesTo",
+            namespace = "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect")
+    private String forwardDeadLetteredMessagesTo;
 
     /*
      * A value indicating if the resource can be accessed without
@@ -160,6 +190,22 @@ public final class QueueDescription {
     private Integer maxSizeInMegabytes;
 
     /*
+     * The number of messages in the queue.
+     */
+    @JacksonXmlProperty(
+            localName = "MessageCount",
+            namespace = "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect")
+    private Integer messageCount;
+
+    /*
+     * Details about the message counts in queue.
+     */
+    @JacksonXmlProperty(
+            localName = "CountDetails",
+            namespace = "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect")
+    private MessageCountDetails messageCountDetails;
+
+    /*
      * A value indicating if this queue requires duplicate detection.
      */
     @JacksonXmlProperty(
@@ -175,6 +221,14 @@ public final class QueueDescription {
             localName = "RequiresSession",
             namespace = "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect")
     private Boolean requiresSession;
+
+    /*
+     * The size of the queue, in bytes.
+     */
+    @JacksonXmlProperty(
+            localName = "SizeInBytes",
+            namespace = "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect")
+    private Long sizeInBytes;
 
     /*
      * Status of a Service Bus resource
@@ -193,15 +247,6 @@ public final class QueueDescription {
     private Boolean supportOrdering;
 
     /*
-     * Last time a message was sent, or the last time there was a receive
-     * request to this queue.
-     */
-    @JacksonXmlProperty(
-            localName = "AccessedAt",
-            namespace = "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect")
-    private OffsetDateTime accessedAt;
-
-    /*
      * The exact time a message was updated in the queue.
      */
     @JacksonXmlProperty(
@@ -210,28 +255,72 @@ public final class QueueDescription {
     private OffsetDateTime updatedAt;
 
     /*
-     * The size of the queue, in bytes.
+     * Custom metdata that user can associate with the description. Max length
+     * is 1024 chars.
      */
     @JacksonXmlProperty(
-            localName = "SizeInBytes",
+            localName = "UserMetadata",
             namespace = "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect")
-    private Integer sizeInBytes;
+    private String userMetadata;
 
-    /*
-     * The number of messages in the queue.
-     */
-    @JacksonXmlProperty(
-            localName = "MessageCount",
-            namespace = "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect")
-    private Integer messageCount;
+    private String queueName;
 
-    /*
-     * Details about the message counts in queue.
+    static {
+        // This is used by classes in different packages to get access to private and package-private methods.
+        EntityHelper.setQueueAccessor((entity, name) -> entity.setName(name));
+    }
+
+    /**
+     * Json deserialization constructor.
      */
-    @JacksonXmlProperty(
-            localName = "CountDetails",
-            namespace = "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect")
-    private MessageCountDetails messageCountDetails;
+    @JsonCreator
+    QueueDescription() {
+    }
+
+    /**
+     * Creates an instance with the name of the queue. Default values for the queue are populated. The properties
+     * populated with defaults are:
+     *
+     * <ul>
+     *     <li>{@link #setAutoDeleteOnIdle(Duration)} is max duration value.</li>
+     *     <li>{@link #setDefaultMessageTimeToLive(Duration)} is max duration value.</li>
+     *     <li>{@link #setDuplicateDetectionHistoryTimeWindow(Duration)} is max duration value, but duplication
+     *     detection is disabled.</li>
+     *     <li>{@link #setRequiresDuplicateDetection(Boolean)} is false.</li>
+     *     <li>{@link #setEnableBatchedOperations(Boolean)} is true.</li>
+     *     <li>{@link #setLockDuration(Duration)} is 1 minute.</li>
+     *     <li>{@link #setMaxDeliveryCount(Integer)} is 10.</li>
+     *     <li>{@link #setMaxSizeInMegabytes(Integer)} is 1024MB.</li>
+     *     <li>{@link #setRequiresSession(Boolean)} is false.</li>
+     * </ul>
+     *
+     * @param queueName Name of the queue.
+     * @throws NullPointerException if {@code queueName} is a null.
+     * @throws IllegalArgumentException if {@code queueName} is an empty string.
+     */
+    public QueueDescription(String queueName) {
+        final ClientLogger logger = new ClientLogger(QueueDescription.class);
+        if (queueName == null) {
+            throw logger.logExceptionAsError(new NullPointerException("'queueName' cannot be null."));
+        } else if (queueName.isEmpty()) {
+            throw logger.logExceptionAsError(new IllegalArgumentException("'queueName' cannot be an empty string."));
+        }
+
+        this.queueName = queueName;
+
+        this.autoDeleteOnIdle = MAX_DURATION;
+        this.defaultMessageTimeToLive = MAX_DURATION;
+        this.duplicateDetectionHistoryTimeWindow = Duration.ofSeconds(60);
+        this.enableBatchedOperations = true;
+        this.enablePartitioning = false;
+        this.lockDuration = DEFAULT_LOCK_DURATION;
+        this.maxDeliveryCount = 10;
+        this.maxSizeInMegabytes = 1024;
+        this.requiresDuplicateDetection = false;
+        this.requiresSession = false;
+        this.deadLetteringOnMessageExpiration = false;
+        this.authorizationRules = new AuthorizationRulesWrapper(new ArrayList<>());
+    }
 
     /**
      * Gets the name of the queue.
@@ -239,40 +328,39 @@ public final class QueueDescription {
      * @return The name of the queue;
      */
     public String getName() {
-        return name;
+        return queueName;
     }
 
     /**
-     * Sets the name of the queue.
+     * Sets the queue name.
      *
-     * @param name Name of the queue.
+     * @param queueName Name of the queue.
      * @return the QueueDescription object itself.
      */
-    public QueueDescription setName(String name) {
-        this.name = name;
+    QueueDescription setName(String queueName) {
+        this.queueName = queueName;
         return this;
     }
 
     /**
-     * Get the authorizationRules property: Authorization rules for resource.
+     * Get the accessedAt property: Last time a message was sent, or the last time there was a receive request to this
+     * queue.
      *
-     * @return the authorizationRules value.
+     * @return the accessedAt value.
      */
-    public List<AuthorizationRule> getAuthorizationRules() {
-        if (this.authorizationRules == null) {
-            this.authorizationRules = new AuthorizationRulesWrapper(new ArrayList<AuthorizationRule>());
-        }
-        return this.authorizationRules.items;
+    OffsetDateTime getAccessedAt() {
+        return this.accessedAt;
     }
 
     /**
-     * Set the authorizationRules property: Authorization rules for resource.
+     * Set the accessedAt property: Last time a message was sent, or the last time there was a receive request to this
+     * queue.
      *
-     * @param authorizationRules the authorizationRules value to set.
+     * @param accessedAt the accessedAt value to set.
      * @return the QueueDescription object itself.
      */
-    public QueueDescription setAuthorizationRules(List<AuthorizationRule> authorizationRules) {
-        this.authorizationRules = new AuthorizationRulesWrapper(authorizationRules);
+    QueueDescription setAccessedAt(OffsetDateTime accessedAt) {
+        this.accessedAt = accessedAt;
         return this;
     }
 
@@ -299,11 +387,34 @@ public final class QueueDescription {
     }
 
     /**
+     * Get the authorizationRules property: Authorization rules for resource.
+     *
+     * @return the authorizationRules value.
+     */
+    public List<AuthorizationRule> getAuthorizationRules() {
+        if (this.authorizationRules == null) {
+            this.authorizationRules = new AuthorizationRulesWrapper(new ArrayList<AuthorizationRule>());
+        }
+        return this.authorizationRules.items;
+    }
+
+    /**
+     * Set the authorizationRules property: Authorization rules for resource.
+     *
+     * @param authorizationRules the authorizationRules value to set.
+     * @return the QueueDescription object itself.
+     */
+    QueueDescription setAuthorizationRules(List<AuthorizationRule> authorizationRules) {
+        this.authorizationRules = new AuthorizationRulesWrapper(authorizationRules);
+        return this;
+    }
+
+    /**
      * Get the createdAt property: The exact time the queue was created.
      *
      * @return the createdAt value.
      */
-    public OffsetDateTime getCreatedAt() {
+    OffsetDateTime getCreatedAt() {
         return this.createdAt;
     }
 
@@ -313,30 +424,8 @@ public final class QueueDescription {
      * @param createdAt the createdAt value to set.
      * @return the QueueDescription object itself.
      */
-    public QueueDescription setCreatedAt(OffsetDateTime createdAt) {
+    QueueDescription setCreatedAt(OffsetDateTime createdAt) {
         this.createdAt = createdAt;
-        return this;
-    }
-
-    /**
-     * Get the deadLetteringOnMessageExpiration property: A value that indicates whether this queue has dead letter
-     * support when a message expires.
-     *
-     * @return the deadLetteringOnMessageExpiration value.
-     */
-    public Boolean isDeadLetteringOnMessageExpiration() {
-        return this.deadLetteringOnMessageExpiration;
-    }
-
-    /**
-     * Set the deadLetteringOnMessageExpiration property: A value that indicates whether this queue has dead letter
-     * support when a message expires.
-     *
-     * @param deadLetteringOnMessageExpiration the deadLetteringOnMessageExpiration value to set.
-     * @return the QueueDescription object itself.
-     */
-    public QueueDescription setDeadLetteringOnMessageExpiration(Boolean deadLetteringOnMessageExpiration) {
-        this.deadLetteringOnMessageExpiration = deadLetteringOnMessageExpiration;
         return this;
     }
 
@@ -365,6 +454,28 @@ public final class QueueDescription {
     }
 
     /**
+     * Get the deadLetteringOnMessageExpiration property: A value that indicates whether this queue has dead letter
+     * support when a message expires.
+     *
+     * @return the deadLetteringOnMessageExpiration value.
+     */
+    public Boolean deadLetteringOnMessageExpiration() {
+        return this.deadLetteringOnMessageExpiration;
+    }
+
+    /**
+     * Set the deadLetteringOnMessageExpiration property: A value that indicates whether this queue has dead letter
+     * support when a message expires.
+     *
+     * @param deadLetteringOnMessageExpiration the deadLetteringOnMessageExpiration value to set.
+     * @return the QueueDescription object itself.
+     */
+    public QueueDescription setDeadLetteringOnMessageExpiration(Boolean deadLetteringOnMessageExpiration) {
+        this.deadLetteringOnMessageExpiration = deadLetteringOnMessageExpiration;
+        return this;
+    }
+
+    /**
      * Get the duplicateDetectionHistoryTimeWindow property: ISO 8601 timeSpan structure that defines the duration of
      * the duplicate detection history. The default value is 10 minutes.
      *
@@ -387,32 +498,12 @@ public final class QueueDescription {
     }
 
     /**
-     * Get the entityAvailabilityStatus property: Availibility status of the entity.
-     *
-     * @return the entityAvailabilityStatus value.
-     */
-    public EntityAvailabilityStatus getEntityAvailabilityStatus() {
-        return this.entityAvailabilityStatus;
-    }
-
-    /**
-     * Set the entityAvailabilityStatus property: Availibility status of the entity.
-     *
-     * @param entityAvailabilityStatus the entityAvailabilityStatus value to set.
-     * @return the QueueDescription object itself.
-     */
-    public QueueDescription setEntityAvailabilityStatus(EntityAvailabilityStatus entityAvailabilityStatus) {
-        this.entityAvailabilityStatus = entityAvailabilityStatus;
-        return this;
-    }
-
-    /**
      * Get the enableBatchedOperations property: Value that indicates whether server-side batched operations are
      * enabled.
      *
      * @return the enableBatchedOperations value.
      */
-    public Boolean isEnableBatchedOperations() {
+    public Boolean enableBatchedOperations() {
         return this.enableBatchedOperations;
     }
 
@@ -434,7 +525,7 @@ public final class QueueDescription {
      *
      * @return the enableExpress value.
      */
-    public Boolean isEnableExpress() {
+    Boolean enableExpress() {
         return this.enableExpress;
     }
 
@@ -445,7 +536,7 @@ public final class QueueDescription {
      * @param enableExpress the enableExpress value to set.
      * @return the QueueDescription object itself.
      */
-    public QueueDescription setEnableExpress(Boolean enableExpress) {
+    QueueDescription setEnableExpress(Boolean enableExpress) {
         this.enableExpress = enableExpress;
         return this;
     }
@@ -456,7 +547,7 @@ public final class QueueDescription {
      *
      * @return the enablePartitioning value.
      */
-    public Boolean isEnablePartitioning() {
+    public Boolean enablePartitioning() {
         return this.enablePartitioning;
     }
 
@@ -473,11 +564,75 @@ public final class QueueDescription {
     }
 
     /**
+     * Get the entityAvailabilityStatus property: Availability status of the entity.
+     *
+     * @return the entityAvailabilityStatus value.
+     */
+    EntityAvailabilityStatus getEntityAvailabilityStatus() {
+        return this.entityAvailabilityStatus;
+    }
+
+    /**
+     * Set the entityAvailabilityStatus property: Availability status of the entity.
+     *
+     * @param entityAvailabilityStatus the entityAvailabilityStatus value to set.
+     * @return the QueueDescription object itself.
+     */
+    QueueDescription setEntityAvailabilityStatus(EntityAvailabilityStatus entityAvailabilityStatus) {
+        this.entityAvailabilityStatus = entityAvailabilityStatus;
+        return this;
+    }
+
+    /**
+     * Get the forwardTo property: The name of the recipient entity to which all the messages sent to the queue are
+     * forwarded to.
+     *
+     * @return the forwardTo value.
+     */
+    public String getForwardTo() {
+        return this.forwardTo;
+    }
+
+    /**
+     * Set the forwardTo property: The name of the recipient entity to which all the messages sent to the queue are
+     * forwarded to.
+     *
+     * @param forwardTo the forwardTo value to set.
+     * @return the QueueDescription object itself.
+     */
+    public QueueDescription setForwardTo(String forwardTo) {
+        this.forwardTo = forwardTo;
+        return this;
+    }
+
+    /**
+     * Get the forwardDeadLetteredMessagesTo property: The name of the recipient entity to which all the dead-lettered
+     * messages of this queue are forwarded to.
+     *
+     * @return the forwardDeadLetteredMessagesTo value.
+     */
+    public String getForwardDeadLetteredMessagesTo() {
+        return this.forwardDeadLetteredMessagesTo;
+    }
+
+    /**
+     * Set the forwardDeadLetteredMessagesTo property: The name of the recipient entity to which all the dead-lettered
+     * messages of this queue are forwarded to.
+     *
+     * @param forwardDeadLetteredMessagesTo the forwardDeadLetteredMessagesTo value to set.
+     * @return the QueueDescription object itself.
+     */
+    public QueueDescription setForwardDeadLetteredMessagesTo(String forwardDeadLetteredMessagesTo) {
+        this.forwardDeadLetteredMessagesTo = forwardDeadLetteredMessagesTo;
+        return this;
+    }
+
+    /**
      * Get the isAnonymousAccessible property: A value indicating if the resource can be accessed without authorization.
      *
      * @return the isAnonymousAccessible value.
      */
-    public Boolean isAnonymousAccessible() {
+    Boolean isAnonymousAccessible() {
         return this.isAnonymousAccessible;
     }
 
@@ -487,7 +642,7 @@ public final class QueueDescription {
      * @param isAnonymousAccessible the isAnonymousAccessible value to set.
      * @return the QueueDescription object itself.
      */
-    public QueueDescription setIsAnonymousAccessible(Boolean isAnonymousAccessible) {
+    QueueDescription setIsAnonymousAccessible(Boolean isAnonymousAccessible) {
         this.isAnonymousAccessible = isAnonymousAccessible;
         return this;
     }
@@ -561,153 +716,11 @@ public final class QueueDescription {
     }
 
     /**
-     * Get the requiresDuplicateDetection property: A value indicating if this queue requires duplicate detection.
-     *
-     * @return the requiresDuplicateDetection value.
-     */
-    public Boolean isRequiresDuplicateDetection() {
-        return this.requiresDuplicateDetection;
-    }
-
-    /**
-     * Set the requiresDuplicateDetection property: A value indicating if this queue requires duplicate detection.
-     *
-     * @param requiresDuplicateDetection the requiresDuplicateDetection value to set.
-     * @return the QueueDescription object itself.
-     */
-    public QueueDescription setRequiresDuplicateDetection(Boolean requiresDuplicateDetection) {
-        this.requiresDuplicateDetection = requiresDuplicateDetection;
-        return this;
-    }
-
-    /**
-     * Get the requiresSession property: A value that indicates whether the queue supports the concept of sessions.
-     *
-     * @return the requiresSession value.
-     */
-    public Boolean isRequiresSession() {
-        return this.requiresSession;
-    }
-
-    /**
-     * Set the requiresSession property: A value that indicates whether the queue supports the concept of sessions.
-     *
-     * @param requiresSession the requiresSession value to set.
-     * @return the QueueDescription object itself.
-     */
-    public QueueDescription setRequiresSession(Boolean requiresSession) {
-        this.requiresSession = requiresSession;
-        return this;
-    }
-
-    /**
-     * Get the status property: Status of a Service Bus resource.
-     *
-     * @return the status value.
-     */
-    public EntityStatus getStatus() {
-        return this.status;
-    }
-
-    /**
-     * Set the status property: Status of a Service Bus resource.
-     *
-     * @param status the status value to set.
-     * @return the QueueDescription object itself.
-     */
-    public QueueDescription setStatus(EntityStatus status) {
-        this.status = status;
-        return this;
-    }
-
-    /**
-     * Get the supportOrdering property: A value that indicates whether the queue supports ordering.
-     *
-     * @return the supportOrdering value.
-     */
-    public Boolean isSupportOrdering() {
-        return this.supportOrdering;
-    }
-
-    /**
-     * Set the supportOrdering property: A value that indicates whether the queue supports ordering.
-     *
-     * @param supportOrdering the supportOrdering value to set.
-     * @return the QueueDescription object itself.
-     */
-    public QueueDescription setSupportOrdering(Boolean supportOrdering) {
-        this.supportOrdering = supportOrdering;
-        return this;
-    }
-
-    /**
-     * Get the accessedAt property: Last time a message was sent, or the last time there was a receive request to this
-     * queue.
-     *
-     * @return the accessedAt value.
-     */
-    public OffsetDateTime getAccessedAt() {
-        return this.accessedAt;
-    }
-
-    /**
-     * Set the accessedAt property: Last time a message was sent, or the last time there was a receive request to this
-     * queue.
-     *
-     * @param accessedAt the accessedAt value to set.
-     * @return the QueueDescription object itself.
-     */
-    public QueueDescription setAccessedAt(OffsetDateTime accessedAt) {
-        this.accessedAt = accessedAt;
-        return this;
-    }
-
-    /**
-     * Get the updatedAt property: The exact time a message was updated in the queue.
-     *
-     * @return the updatedAt value.
-     */
-    public OffsetDateTime getUpdatedAt() {
-        return this.updatedAt;
-    }
-
-    /**
-     * Set the updatedAt property: The exact time a message was updated in the queue.
-     *
-     * @param updatedAt the updatedAt value to set.
-     * @return the QueueDescription object itself.
-     */
-    public QueueDescription setUpdatedAt(OffsetDateTime updatedAt) {
-        this.updatedAt = updatedAt;
-        return this;
-    }
-
-    /**
-     * Get the sizeInBytes property: The size of the queue, in bytes.
-     *
-     * @return the sizeInBytes value.
-     */
-    public Integer getSizeInBytes() {
-        return this.sizeInBytes;
-    }
-
-    /**
-     * Set the sizeInBytes property: The size of the queue, in bytes.
-     *
-     * @param sizeInBytes the sizeInBytes value to set.
-     * @return the QueueDescription object itself.
-     */
-    public QueueDescription setSizeInBytes(Integer sizeInBytes) {
-        this.sizeInBytes = sizeInBytes;
-        return this;
-    }
-
-    /**
      * Get the messageCount property: The number of messages in the queue.
      *
      * @return the messageCount value.
      */
-    public Integer getMessageCount() {
+    Integer getMessageCount() {
         return this.messageCount;
     }
 
@@ -717,7 +730,7 @@ public final class QueueDescription {
      * @param messageCount the messageCount value to set.
      * @return the QueueDescription object itself.
      */
-    public QueueDescription setMessageCount(Integer messageCount) {
+    QueueDescription setMessageCount(Integer messageCount) {
         this.messageCount = messageCount;
         return this;
     }
@@ -739,6 +752,148 @@ public final class QueueDescription {
      */
     QueueDescription setMessageCountDetails(MessageCountDetails messageCountDetails) {
         this.messageCountDetails = messageCountDetails;
+        return this;
+    }
+
+    /**
+     * Get the requiresDuplicateDetection property: A value indicating if this queue requires duplicate detection.
+     *
+     * @return the requiresDuplicateDetection value.
+     */
+    public Boolean requiresDuplicateDetection() {
+        return this.requiresDuplicateDetection;
+    }
+
+    /**
+     * Set the requiresDuplicateDetection property: A value indicating if this queue requires duplicate detection.
+     *
+     * @param requiresDuplicateDetection the requiresDuplicateDetection value to set.
+     * @return the QueueDescription object itself.
+     */
+    public QueueDescription setRequiresDuplicateDetection(Boolean requiresDuplicateDetection) {
+        this.requiresDuplicateDetection = requiresDuplicateDetection;
+        return this;
+    }
+
+    /**
+     * Get the requiresSession property: A value that indicates whether the queue supports the concept of sessions.
+     *
+     * @return the requiresSession value.
+     */
+    public Boolean requiresSession() {
+        return this.requiresSession;
+    }
+
+    /**
+     * Set the requiresSession property: A value that indicates whether the queue supports the concept of sessions.
+     *
+     * @param requiresSession the requiresSession value to set.
+     * @return the QueueDescription object itself.
+     */
+    public QueueDescription setRequiresSession(Boolean requiresSession) {
+        this.requiresSession = requiresSession;
+        return this;
+    }
+
+    /**
+     * Get the sizeInBytes property: The size of the queue, in bytes.
+     *
+     * @return the sizeInBytes value.
+     */
+    Long getSizeInBytes() {
+        return this.sizeInBytes;
+    }
+
+    /**
+     * Set the sizeInBytes property: The size of the queue, in bytes.
+     *
+     * @param sizeInBytes the sizeInBytes value to set.
+     * @return the QueueDescription object itself.
+     */
+    QueueDescription setSizeInBytes(Long sizeInBytes) {
+        this.sizeInBytes = sizeInBytes;
+        return this;
+    }
+
+    /**
+     * Get the status property: Status of a Service Bus resource.
+     *
+     * @return the status value.
+     */
+    public EntityStatus getStatus() {
+        return this.status;
+    }
+
+    /**
+     * Set the status property: Status of a Service Bus resource.
+     *
+     * @param status the status value to set.
+     * @return the QueueDescription object itself.
+     */
+    QueueDescription setStatus(EntityStatus status) {
+        this.status = status;
+        return this;
+    }
+
+    /**
+     * Get the supportOrdering property: A value that indicates whether the queue supports ordering.
+     *
+     * @return the supportOrdering value.
+     */
+    Boolean supportOrdering() {
+        return this.supportOrdering;
+    }
+
+    /**
+     * Set the supportOrdering property: A value that indicates whether the queue supports ordering.
+     *
+     * @param supportOrdering the supportOrdering value to set.
+     * @return the QueueDescription object itself.
+     */
+    QueueDescription setSupportOrdering(Boolean supportOrdering) {
+        this.supportOrdering = supportOrdering;
+        return this;
+    }
+
+    /**
+     * Get the updatedAt property: The exact time a message was updated in the queue.
+     *
+     * @return the updatedAt value.
+     */
+    OffsetDateTime getUpdatedAt() {
+        return this.updatedAt;
+    }
+
+    /**
+     * Set the updatedAt property: The exact time a message was updated in the queue.
+     *
+     * @param updatedAt the updatedAt value to set.
+     * @return the QueueDescription object itself.
+     */
+    QueueDescription setUpdatedAt(OffsetDateTime updatedAt) {
+        this.updatedAt = updatedAt;
+        return this;
+    }
+
+    /**
+     * Get the userMetadata property: Custom metdata that user can associate with the description. Max length is 1024
+     * chars.
+     *
+     * @return the userMetadata value.
+     */
+    public String getUserMetadata() {
+        return this.userMetadata;
+    }
+
+    /**
+     * Set the userMetadata property: Custom metdata that user can associate with the description. Max length is 1024
+     * chars.
+     *
+     * @param userMetadata the userMetadata value to set.
+     * @return the QueueDescription object itself.
+     */
+    public QueueDescription setUserMetadata(String userMetadata) {
+        this.userMetadata = userMetadata;
         return this;
     }
 }

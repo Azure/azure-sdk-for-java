@@ -4,6 +4,7 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -28,6 +29,17 @@ public final class SearchIndexerDataContainer {
     private String query;
 
     /**
+     * Constructor of {@link SearchIndexerDataContainer}.
+     *
+     * @param name The name of the table or view (for Azure SQL data source) or collection
+     * (for CosmosDB data source) that will be indexed.
+     */
+    @JsonCreator
+    public SearchIndexerDataContainer(@JsonProperty(value = "name", required = true) String name) {
+        this.name = name;
+    }
+
+    /**
      * Get the name property: The name of the table or view (for Azure SQL data
      * source) or collection (for CosmosDB data source) that will be indexed.
      *
@@ -37,17 +49,6 @@ public final class SearchIndexerDataContainer {
         return this.name;
     }
 
-    /**
-     * Set the name property: The name of the table or view (for Azure SQL data
-     * source) or collection (for CosmosDB data source) that will be indexed.
-     *
-     * @param name the name value to set.
-     * @return the SearchIndexerDataContainer object itself.
-     */
-    public SearchIndexerDataContainer setName(String name) {
-        this.name = name;
-        return this;
-    }
 
     /**
      * Get the query property: A query that is applied to this data container.

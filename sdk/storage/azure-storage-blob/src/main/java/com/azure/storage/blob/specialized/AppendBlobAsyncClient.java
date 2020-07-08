@@ -19,6 +19,7 @@ import com.azure.storage.blob.implementation.models.AppendBlobAppendBlockFromUrl
 import com.azure.storage.blob.implementation.models.AppendBlobAppendBlockHeaders;
 import com.azure.storage.blob.implementation.models.AppendBlobCreateHeaders;
 import com.azure.storage.blob.implementation.models.EncryptionScope;
+import com.azure.storage.blob.options.AppendBlobCreateOptions;
 import com.azure.storage.blob.models.AppendBlobRequestConditions;
 import com.azure.storage.blob.models.AppendBlobItem;
 import com.azure.storage.blob.models.BlobHttpHeaders;
@@ -87,12 +88,13 @@ public final class AppendBlobAsyncClient extends BlobAsyncClientBase {
      * {@code null} to allow the service to use its own encryption.
      * @param encryptionScope Encryption scope used during encryption of the blob's data on the server, pass
      * {@code null} to allow the service to use its own encryption.
+     * @param versionId The version identifier for the blob, pass {@code null} to interact with the latest blob version.
      */
     AppendBlobAsyncClient(HttpPipeline pipeline, String url, BlobServiceVersion serviceVersion,
         String accountName, String containerName, String blobName, String snapshot, CpkInfo customerProvidedKey,
-        EncryptionScope encryptionScope) {
+        EncryptionScope encryptionScope, String versionId) {
         super(pipeline, url, serviceVersion, accountName, containerName, blobName, snapshot, customerProvidedKey,
-            encryptionScope);
+            encryptionScope, versionId);
     }
 
     /**
@@ -153,27 +155,49 @@ public final class AppendBlobAsyncClient extends BlobAsyncClientBase {
      */
     public Mono<Response<AppendBlobItem>> createWithResponse(BlobHttpHeaders headers, Map<String, String> metadata,
         BlobRequestConditions requestConditions) {
+        return this.createWithResponse(new AppendBlobCreateOptions().setHeaders(headers).setMetadata(metadata)
+            .setRequestConditions(requestConditions));
+    }
+
+    /**
+     * Creates a 0-length append blob. Call appendBlock to append data to an append blob.
+     * <p>
+     * To avoid overwriting, pass "*" to {@link BlobRequestConditions#setIfNoneMatch(String)}.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.specialized.AppendBlobAsyncClient.createWithResponse#AppendBlobCreateOptions}
+     *
+     * @param options {@link AppendBlobCreateOptions}
+     * @return A {@link Mono} containing {@link Response} whose {@link Response#getValue() value} contains the created
+     * appended blob.
+     */
+    public Mono<Response<AppendBlobItem>> createWithResponse(AppendBlobCreateOptions options) {
         try {
-            return withContext(context -> createWithResponse(headers, metadata, requestConditions, context));
+            return withContext(context -> createWithResponse(options, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
 
-    Mono<Response<AppendBlobItem>> createWithResponse(BlobHttpHeaders headers, Map<String, String> metadata,
-        BlobRequestConditions requestConditions, Context context) {
+    Mono<Response<AppendBlobItem>> createWithResponse(AppendBlobCreateOptions options, Context context) {
+        options = (options == null) ? new AppendBlobCreateOptions() : options;
+
+        BlobRequestConditions requestConditions = options.getRequestConditions();
         requestConditions = (requestConditions == null) ? new BlobRequestConditions() : requestConditions;
         context = context == null ? Context.NONE : context;
 
-        return this.azureBlobStorage.appendBlobs().createWithRestResponseAsync(null, null, 0, null, metadata,
-            requestConditions.getLeaseId(), requestConditions.getIfModifiedSince(),
+        return this.azureBlobStorage.appendBlobs().createWithRestResponseAsync(null, null, 0, null,
+            options.getMetadata(), requestConditions.getLeaseId(), requestConditions.getIfModifiedSince(),
             requestConditions.getIfUnmodifiedSince(), requestConditions.getIfMatch(),
-            requestConditions.getIfNoneMatch(), null, headers, getCustomerProvidedKey(), encryptionScope,
+            requestConditions.getIfNoneMatch(), null, tagsToString(options.getTags()), options.getHeaders(),
+            getCustomerProvidedKey(), encryptionScope, null,
             context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(rb -> {
                 AppendBlobCreateHeaders hd = rb.getDeserializedHeaders();
                 AppendBlobItem item = new AppendBlobItem(hd.getETag(), hd.getLastModified(), hd.getContentMD5(),
-                    hd.isServerEncrypted(), hd.getEncryptionKeySha256(), hd.getEncryptionScope(), null, null);
+                    hd.isServerEncrypted(), hd.getEncryptionKeySha256(), hd.getEncryptionScope(), null, null,
+                    hd.getVersionId());
                 return new SimpleResponse<>(rb, item);
             });
     }
@@ -245,7 +269,7 @@ public final class AppendBlobAsyncClient extends BlobAsyncClientBase {
             appendBlobRequestConditions.getMaxSize(), appendBlobRequestConditions.getAppendPosition(),
             appendBlobRequestConditions.getIfModifiedSince(), appendBlobRequestConditions.getIfUnmodifiedSince(),
             appendBlobRequestConditions.getIfMatch(), appendBlobRequestConditions.getIfNoneMatch(), null,
-            getCustomerProvidedKey(), encryptionScope,
+            getCustomerProvidedKey(), encryptionScope, null,
             context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(rb -> {
                 AppendBlobAppendBlockHeaders hd = rb.getDeserializedHeaders();
@@ -333,7 +357,7 @@ public final class AppendBlobAsyncClient extends BlobAsyncClientBase {
             destRequestConditions.getIfMatch(), destRequestConditions.getIfNoneMatch(),
             sourceRequestConditions.getIfModifiedSince(), sourceRequestConditions.getIfUnmodifiedSince(),
             sourceRequestConditions.getIfMatch(), sourceRequestConditions.getIfNoneMatch(), null,
-            getCustomerProvidedKey(), encryptionScope,
+            getCustomerProvidedKey(), encryptionScope, null,
             context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(rb -> {
                 AppendBlobAppendBlockFromUrlHeaders hd = rb.getDeserializedHeaders();

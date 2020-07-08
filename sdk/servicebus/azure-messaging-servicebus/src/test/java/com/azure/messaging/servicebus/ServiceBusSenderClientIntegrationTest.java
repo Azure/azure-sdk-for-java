@@ -38,8 +38,13 @@ class ServiceBusSenderClientIntegrationTest extends IntegrationTestBase {
     protected void afterTest() {
         dispose(sender);
 
+        final int numberOfMessages = messagesPending.get();
+        if (numberOfMessages < 1) {
+            dispose(receiver);
+            return;
+        }
         try {
-            receiver.receive()
+            receiver.receiveMessages()
                 .take(messagesPending.get())
                 .map(message -> {
                     logger.info("Message received: {}", message.getMessage().getSequenceNumber());
@@ -74,7 +79,7 @@ class ServiceBusSenderClientIntegrationTest extends IntegrationTestBase {
         final ServiceBusMessage message = TestUtils.getServiceBusMessage(CONTENTS_BYTES, messageId);
 
         // Assert & Act
-        sender.send(message);
+        sender.sendMessage(message);
 
         messagesPending.incrementAndGet();
     }
@@ -98,7 +103,7 @@ class ServiceBusSenderClientIntegrationTest extends IntegrationTestBase {
             Assertions.assertTrue(batch.tryAdd(message));
         }
 
-        sender.send(batch);
+        sender.sendMessages(batch);
 
         for (int i = 0; i < messages.size(); i++) {
             messagesPending.incrementAndGet();
@@ -117,7 +122,7 @@ class ServiceBusSenderClientIntegrationTest extends IntegrationTestBase {
         final List<ServiceBusMessage> messages = TestUtils.getServiceBusMessages(count, UUID.randomUUID().toString(), CONTENTS_BYTES);
 
         // Assert & Act
-        sender.send(messages);
+        sender.sendMessages(messages);
 
         messages.forEach(serviceBusMessage -> messagesPending.incrementAndGet());
     }
@@ -182,8 +187,8 @@ class ServiceBusSenderClientIntegrationTest extends IntegrationTestBase {
                     .buildAsyncClient();
                 break;
             case SUBSCRIPTION:
-                final String topicName = getTopicName();
-                final String subscriptionName = getSubscriptionName(entityIndex);
+                final String topicName = getTopicName(entityIndex);
+                final String subscriptionName = TestUtils.getSubscriptionBaseName();
 
                 Assertions.assertNotNull(topicName, "'topicName' cannot be null.");
                 Assertions.assertNotNull(subscriptionName, "'subscriptionName' cannot be null.");

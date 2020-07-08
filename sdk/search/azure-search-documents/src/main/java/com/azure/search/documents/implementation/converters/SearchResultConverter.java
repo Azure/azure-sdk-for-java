@@ -22,10 +22,7 @@ public final class SearchResultConverter {
         if (obj == null) {
             return null;
         }
-        SearchResult searchResult = new SearchResult();
-
-        double score = obj.getScore();
-        PrivateFieldAccessHelper.set(searchResult, "score", score);
+        SearchResult searchResult = new SearchResult(obj.getScore());
 
         if (obj.getHighlights() != null) {
             Map<String, List<String>> highlights =
@@ -47,10 +44,7 @@ public final class SearchResultConverter {
             return null;
         }
         com.azure.search.documents.implementation.models.SearchResult searchResult =
-            new com.azure.search.documents.implementation.models.SearchResult();
-
-        double score = obj.getScore();
-        PrivateFieldAccessHelper.set(searchResult, "score", score);
+            new com.azure.search.documents.implementation.models.SearchResult(obj.getScore());
 
         if (obj.getHighlights() != null) {
             Map<String, List<String>> highlights =
@@ -61,6 +55,7 @@ public final class SearchResultConverter {
 
         SearchDocument additionalProperties = obj.getDocument(SearchDocument.class);
         PrivateFieldAccessHelper.set(searchResult, "additionalProperties", additionalProperties);
+        searchResult.validate();
         return searchResult;
     }
 

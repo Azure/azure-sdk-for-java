@@ -31,11 +31,8 @@ import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.util.polling.AsyncPollResponse;
 import com.azure.core.util.polling.PollerFlux;
-import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
-import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
-import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsListing;
+import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.resources.ResourceManagementClient;
 import com.azure.resourcemanager.resources.fluent.inner.DeploymentExportResultInner;
 import com.azure.resourcemanager.resources.fluent.inner.DeploymentExtendedInner;
@@ -44,9 +41,10 @@ import com.azure.resourcemanager.resources.fluent.inner.DeploymentListResultInne
 import com.azure.resourcemanager.resources.fluent.inner.DeploymentValidateResultInner;
 import com.azure.resourcemanager.resources.fluent.inner.TemplateHashResultInner;
 import com.azure.resourcemanager.resources.fluent.inner.WhatIfOperationResultInner;
+import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
+import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
+import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsListing;
 import com.azure.resourcemanager.resources.models.DeploymentWhatIf;
-import com.azure.resourcemanager.resources.models.DeploymentsBeginWhatIfAtSubscriptionScopeWithoutPollingResponse;
-import com.azure.resourcemanager.resources.models.DeploymentsBeginWhatIfWithoutPollingResponse;
 import com.azure.resourcemanager.resources.models.ScopedDeployment;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
@@ -606,157 +604,6 @@ public final class DeploymentsClient
             @BodyParam("application/json") Object template,
             Context context);
 
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
-        @Delete("/{scope}/providers/Microsoft.Resources/deployments/{deploymentName}")
-        @ExpectedResponses({202, 204})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> beginDeleteAtScopeWithoutPolling(
-            @HostParam("$host") String endpoint,
-            @PathParam("scope") String scope,
-            @PathParam("deploymentName") String deploymentName,
-            @QueryParam("api-version") String apiVersion,
-            Context context);
-
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Put("/{scope}/providers/Microsoft.Resources/deployments/{deploymentName}")
-        @ExpectedResponses({200, 201})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<DeploymentExtendedInner>> beginCreateOrUpdateAtScopeWithoutPolling(
-            @HostParam("$host") String endpoint,
-            @PathParam("scope") String scope,
-            @PathParam("deploymentName") String deploymentName,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") DeploymentInner parameters,
-            Context context);
-
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
-        @Delete("/providers/Microsoft.Resources/deployments/{deploymentName}")
-        @ExpectedResponses({202, 204})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> beginDeleteAtTenantScopeWithoutPolling(
-            @HostParam("$host") String endpoint,
-            @PathParam("deploymentName") String deploymentName,
-            @QueryParam("api-version") String apiVersion,
-            Context context);
-
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Put("/providers/Microsoft.Resources/deployments/{deploymentName}")
-        @ExpectedResponses({200, 201})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<DeploymentExtendedInner>> beginCreateOrUpdateAtTenantScopeWithoutPolling(
-            @HostParam("$host") String endpoint,
-            @PathParam("deploymentName") String deploymentName,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") ScopedDeployment parameters,
-            Context context);
-
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
-        @Delete(
-            "/providers/Microsoft.Management/managementGroups/{groupId}/providers/Microsoft.Resources/deployments"
-                + "/{deploymentName}")
-        @ExpectedResponses({202, 204})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> beginDeleteAtManagementGroupScopeWithoutPolling(
-            @HostParam("$host") String endpoint,
-            @PathParam("groupId") String groupId,
-            @PathParam("deploymentName") String deploymentName,
-            @QueryParam("api-version") String apiVersion,
-            Context context);
-
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Put(
-            "/providers/Microsoft.Management/managementGroups/{groupId}/providers/Microsoft.Resources/deployments"
-                + "/{deploymentName}")
-        @ExpectedResponses({200, 201})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<DeploymentExtendedInner>> beginCreateOrUpdateAtManagementGroupScopeWithoutPolling(
-            @HostParam("$host") String endpoint,
-            @PathParam("groupId") String groupId,
-            @PathParam("deploymentName") String deploymentName,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") ScopedDeployment parameters,
-            Context context);
-
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
-        @Delete("/subscriptions/{subscriptionId}/providers/Microsoft.Resources/deployments/{deploymentName}")
-        @ExpectedResponses({202, 204})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> beginDeleteAtSubscriptionScopeWithoutPolling(
-            @HostParam("$host") String endpoint,
-            @PathParam("deploymentName") String deploymentName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            Context context);
-
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Put("/subscriptions/{subscriptionId}/providers/Microsoft.Resources/deployments/{deploymentName}")
-        @ExpectedResponses({200, 201})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<DeploymentExtendedInner>> beginCreateOrUpdateAtSubscriptionScopeWithoutPolling(
-            @HostParam("$host") String endpoint,
-            @PathParam("deploymentName") String deploymentName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @BodyParam("application/json") DeploymentInner parameters,
-            Context context);
-
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Post("/subscriptions/{subscriptionId}/providers/Microsoft.Resources/deployments/{deploymentName}/whatIf")
-        @ExpectedResponses({200, 202})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<DeploymentsBeginWhatIfAtSubscriptionScopeWithoutPollingResponse>
-            beginWhatIfAtSubscriptionScopeWithoutPolling(
-                @HostParam("$host") String endpoint,
-                @PathParam("deploymentName") String deploymentName,
-                @QueryParam("api-version") String apiVersion,
-                @PathParam("subscriptionId") String subscriptionId,
-                @BodyParam("application/json") DeploymentWhatIf parameters,
-                Context context);
-
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.Resources"
-                + "/deployments/{deploymentName}")
-        @ExpectedResponses({202, 204})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> beginDeleteWithoutPolling(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("deploymentName") String deploymentName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            Context context);
-
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.Resources"
-                + "/deployments/{deploymentName}")
-        @ExpectedResponses({200, 201})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<DeploymentExtendedInner>> beginCreateOrUpdateWithoutPolling(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("deploymentName") String deploymentName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @BodyParam("application/json") DeploymentInner parameters,
-            Context context);
-
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.Resources"
-                + "/deployments/{deploymentName}/whatIf")
-        @ExpectedResponses({200, 202})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<DeploymentsBeginWhatIfWithoutPollingResponse> beginWhatIfWithoutPolling(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("deploymentName") String deploymentName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @BodyParam("application/json") DeploymentWhatIf parameters,
-            Context context);
-
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
@@ -882,7 +729,7 @@ public final class DeploymentsClient
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<Void>, Void> beginDeleteAtScope(String scope, String deploymentName) {
+    public PollerFlux<PollResult<Void>, Void> beginDeleteAtScopeAsync(String scope, String deploymentName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteAtScopeWithResponseAsync(scope, deploymentName);
         return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
     }
@@ -904,7 +751,8 @@ public final class DeploymentsClient
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<Void>, Void> beginDeleteAtScope(String scope, String deploymentName, Context context) {
+    public PollerFlux<PollResult<Void>, Void> beginDeleteAtScopeAsync(
+        String scope, String deploymentName, Context context) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteAtScopeWithResponseAsync(scope, deploymentName, context);
         return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
     }
@@ -925,13 +773,49 @@ public final class DeploymentsClient
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<Void>, Void> beginDeleteAtScope(String scope, String deploymentName) {
+        return beginDeleteAtScopeAsync(scope, deploymentName).getSyncPoller();
+    }
+
+    /**
+     * A template deployment that is currently running cannot be deleted. Deleting a template deployment removes the
+     * associated deployment operations. This is an asynchronous operation that returns a status of 202 until the
+     * template deployment is successfully deleted. The Location response header contains the URI that is used to obtain
+     * the status of the process. While the process is running, a call to the URI in the Location header returns a
+     * status of 202. When the process finishes, the URI in the Location header returns a status of 204 on success. If
+     * the asynchronous request failed, the URI in the Location header returns an error-level status code.
+     *
+     * @param scope The scope of a deployment.
+     * @param deploymentName The name of the deployment.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<Void>, Void> beginDeleteAtScope(String scope, String deploymentName, Context context) {
+        return beginDeleteAtScopeAsync(scope, deploymentName, context).getSyncPoller();
+    }
+
+    /**
+     * A template deployment that is currently running cannot be deleted. Deleting a template deployment removes the
+     * associated deployment operations. This is an asynchronous operation that returns a status of 202 until the
+     * template deployment is successfully deleted. The Location response header contains the URI that is used to obtain
+     * the status of the process. While the process is running, a call to the URI in the Location header returns a
+     * status of 202. When the process finishes, the URI in the Location header returns a status of 204 on success. If
+     * the asynchronous request failed, the URI in the Location header returns an error-level status code.
+     *
+     * @param scope The scope of a deployment.
+     * @param deploymentName The name of the deployment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAtScopeAsync(String scope, String deploymentName) {
-        Mono<Response<Flux<ByteBuffer>>> mono = deleteAtScopeWithResponseAsync(scope, deploymentName);
-        return this
-            .client
-            .<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class)
-            .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+        return beginDeleteAtScopeAsync(scope, deploymentName).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -952,12 +836,9 @@ public final class DeploymentsClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAtScopeAsync(String scope, String deploymentName, Context context) {
-        Mono<Response<Flux<ByteBuffer>>> mono = deleteAtScopeWithResponseAsync(scope, deploymentName, context);
-        return this
-            .client
-            .<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class)
+        return beginDeleteAtScopeAsync(scope, deploymentName, context)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -1245,7 +1126,7 @@ public final class DeploymentsClient
      * @return deployment information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<DeploymentExtendedInner>, DeploymentExtendedInner> beginCreateOrUpdateAtScope(
+    public PollerFlux<PollResult<DeploymentExtendedInner>, DeploymentExtendedInner> beginCreateOrUpdateAtScopeAsync(
         String scope, String deploymentName, DeploymentInner parameters) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             createOrUpdateAtScopeWithResponseAsync(scope, deploymentName, parameters);
@@ -1268,7 +1149,7 @@ public final class DeploymentsClient
      * @return deployment information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<DeploymentExtendedInner>, DeploymentExtendedInner> beginCreateOrUpdateAtScope(
+    public PollerFlux<PollResult<DeploymentExtendedInner>, DeploymentExtendedInner> beginCreateOrUpdateAtScopeAsync(
         String scope, String deploymentName, DeploymentInner parameters, Context context) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             createOrUpdateAtScopeWithResponseAsync(scope, deploymentName, parameters, context);
@@ -1290,16 +1171,46 @@ public final class DeploymentsClient
      * @return deployment information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<DeploymentExtendedInner>, DeploymentExtendedInner> beginCreateOrUpdateAtScope(
+        String scope, String deploymentName, DeploymentInner parameters) {
+        return beginCreateOrUpdateAtScopeAsync(scope, deploymentName, parameters).getSyncPoller();
+    }
+
+    /**
+     * You can provide the template and parameters directly in the request or link to JSON files.
+     *
+     * @param scope The scope of a deployment.
+     * @param deploymentName The name of the deployment.
+     * @param parameters Deployment operation parameters.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return deployment information.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<DeploymentExtendedInner>, DeploymentExtendedInner> beginCreateOrUpdateAtScope(
+        String scope, String deploymentName, DeploymentInner parameters, Context context) {
+        return beginCreateOrUpdateAtScopeAsync(scope, deploymentName, parameters, context).getSyncPoller();
+    }
+
+    /**
+     * You can provide the template and parameters directly in the request or link to JSON files.
+     *
+     * @param scope The scope of a deployment.
+     * @param deploymentName The name of the deployment.
+     * @param parameters Deployment operation parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return deployment information.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DeploymentExtendedInner> createOrUpdateAtScopeAsync(
         String scope, String deploymentName, DeploymentInner parameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateAtScopeWithResponseAsync(scope, deploymentName, parameters);
-        return this
-            .client
-            .<DeploymentExtendedInner, DeploymentExtendedInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), DeploymentExtendedInner.class, DeploymentExtendedInner.class)
+        return beginCreateOrUpdateAtScopeAsync(scope, deploymentName, parameters)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -1317,14 +1228,9 @@ public final class DeploymentsClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DeploymentExtendedInner> createOrUpdateAtScopeAsync(
         String scope, String deploymentName, DeploymentInner parameters, Context context) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateAtScopeWithResponseAsync(scope, deploymentName, parameters, context);
-        return this
-            .client
-            .<DeploymentExtendedInner, DeploymentExtendedInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), DeploymentExtendedInner.class, DeploymentExtendedInner.class)
+        return beginCreateOrUpdateAtScopeAsync(scope, deploymentName, parameters, context)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -2226,7 +2132,7 @@ public final class DeploymentsClient
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<Void>, Void> beginDeleteAtTenantScope(String deploymentName) {
+    public PollerFlux<PollResult<Void>, Void> beginDeleteAtTenantScopeAsync(String deploymentName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteAtTenantScopeWithResponseAsync(deploymentName);
         return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
     }
@@ -2247,7 +2153,7 @@ public final class DeploymentsClient
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<Void>, Void> beginDeleteAtTenantScope(String deploymentName, Context context) {
+    public PollerFlux<PollResult<Void>, Void> beginDeleteAtTenantScopeAsync(String deploymentName, Context context) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteAtTenantScopeWithResponseAsync(deploymentName, context);
         return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
     }
@@ -2267,13 +2173,47 @@ public final class DeploymentsClient
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<Void>, Void> beginDeleteAtTenantScope(String deploymentName) {
+        return beginDeleteAtTenantScopeAsync(deploymentName).getSyncPoller();
+    }
+
+    /**
+     * A template deployment that is currently running cannot be deleted. Deleting a template deployment removes the
+     * associated deployment operations. This is an asynchronous operation that returns a status of 202 until the
+     * template deployment is successfully deleted. The Location response header contains the URI that is used to obtain
+     * the status of the process. While the process is running, a call to the URI in the Location header returns a
+     * status of 202. When the process finishes, the URI in the Location header returns a status of 204 on success. If
+     * the asynchronous request failed, the URI in the Location header returns an error-level status code.
+     *
+     * @param deploymentName The name of the deployment.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<Void>, Void> beginDeleteAtTenantScope(String deploymentName, Context context) {
+        return beginDeleteAtTenantScopeAsync(deploymentName, context).getSyncPoller();
+    }
+
+    /**
+     * A template deployment that is currently running cannot be deleted. Deleting a template deployment removes the
+     * associated deployment operations. This is an asynchronous operation that returns a status of 202 until the
+     * template deployment is successfully deleted. The Location response header contains the URI that is used to obtain
+     * the status of the process. While the process is running, a call to the URI in the Location header returns a
+     * status of 202. When the process finishes, the URI in the Location header returns a status of 204 on success. If
+     * the asynchronous request failed, the URI in the Location header returns an error-level status code.
+     *
+     * @param deploymentName The name of the deployment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAtTenantScopeAsync(String deploymentName) {
-        Mono<Response<Flux<ByteBuffer>>> mono = deleteAtTenantScopeWithResponseAsync(deploymentName);
-        return this
-            .client
-            .<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class)
-            .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+        return beginDeleteAtTenantScopeAsync(deploymentName).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -2293,12 +2233,9 @@ public final class DeploymentsClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAtTenantScopeAsync(String deploymentName, Context context) {
-        Mono<Response<Flux<ByteBuffer>>> mono = deleteAtTenantScopeWithResponseAsync(deploymentName, context);
-        return this
-            .client
-            .<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class)
+        return beginDeleteAtTenantScopeAsync(deploymentName, context)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -2562,8 +2499,8 @@ public final class DeploymentsClient
      * @return deployment information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<DeploymentExtendedInner>, DeploymentExtendedInner> beginCreateOrUpdateAtTenantScope(
-        String deploymentName, ScopedDeployment parameters) {
+    public PollerFlux<PollResult<DeploymentExtendedInner>, DeploymentExtendedInner>
+        beginCreateOrUpdateAtTenantScopeAsync(String deploymentName, ScopedDeployment parameters) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             createOrUpdateAtTenantScopeWithResponseAsync(deploymentName, parameters);
         return this
@@ -2584,8 +2521,8 @@ public final class DeploymentsClient
      * @return deployment information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<DeploymentExtendedInner>, DeploymentExtendedInner> beginCreateOrUpdateAtTenantScope(
-        String deploymentName, ScopedDeployment parameters, Context context) {
+    public PollerFlux<PollResult<DeploymentExtendedInner>, DeploymentExtendedInner>
+        beginCreateOrUpdateAtTenantScopeAsync(String deploymentName, ScopedDeployment parameters, Context context) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             createOrUpdateAtTenantScopeWithResponseAsync(deploymentName, parameters, context);
         return this
@@ -2605,16 +2542,44 @@ public final class DeploymentsClient
      * @return deployment information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<DeploymentExtendedInner>, DeploymentExtendedInner> beginCreateOrUpdateAtTenantScope(
+        String deploymentName, ScopedDeployment parameters) {
+        return beginCreateOrUpdateAtTenantScopeAsync(deploymentName, parameters).getSyncPoller();
+    }
+
+    /**
+     * You can provide the template and parameters directly in the request or link to JSON files.
+     *
+     * @param deploymentName The name of the deployment.
+     * @param parameters Deployment operation parameters.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return deployment information.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<DeploymentExtendedInner>, DeploymentExtendedInner> beginCreateOrUpdateAtTenantScope(
+        String deploymentName, ScopedDeployment parameters, Context context) {
+        return beginCreateOrUpdateAtTenantScopeAsync(deploymentName, parameters, context).getSyncPoller();
+    }
+
+    /**
+     * You can provide the template and parameters directly in the request or link to JSON files.
+     *
+     * @param deploymentName The name of the deployment.
+     * @param parameters Deployment operation parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return deployment information.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DeploymentExtendedInner> createOrUpdateAtTenantScopeAsync(
         String deploymentName, ScopedDeployment parameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateAtTenantScopeWithResponseAsync(deploymentName, parameters);
-        return this
-            .client
-            .<DeploymentExtendedInner, DeploymentExtendedInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), DeploymentExtendedInner.class, DeploymentExtendedInner.class)
+        return beginCreateOrUpdateAtTenantScopeAsync(deploymentName, parameters)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -2631,14 +2596,9 @@ public final class DeploymentsClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DeploymentExtendedInner> createOrUpdateAtTenantScopeAsync(
         String deploymentName, ScopedDeployment parameters, Context context) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateAtTenantScopeWithResponseAsync(deploymentName, parameters, context);
-        return this
-            .client
-            .<DeploymentExtendedInner, DeploymentExtendedInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), DeploymentExtendedInner.class, DeploymentExtendedInner.class)
+        return beginCreateOrUpdateAtTenantScopeAsync(deploymentName, parameters, context)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -3480,7 +3440,8 @@ public final class DeploymentsClient
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<Void>, Void> beginDeleteAtManagementGroupScope(String groupId, String deploymentName) {
+    public PollerFlux<PollResult<Void>, Void> beginDeleteAtManagementGroupScopeAsync(
+        String groupId, String deploymentName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteAtManagementGroupScopeWithResponseAsync(groupId, deploymentName);
         return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
     }
@@ -3502,7 +3463,7 @@ public final class DeploymentsClient
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<Void>, Void> beginDeleteAtManagementGroupScope(
+    public PollerFlux<PollResult<Void>, Void> beginDeleteAtManagementGroupScopeAsync(
         String groupId, String deploymentName, Context context) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             deleteAtManagementGroupScopeWithResponseAsync(groupId, deploymentName, context);
@@ -3525,13 +3486,52 @@ public final class DeploymentsClient
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<Void>, Void> beginDeleteAtManagementGroupScope(String groupId, String deploymentName) {
+        return beginDeleteAtManagementGroupScopeAsync(groupId, deploymentName).getSyncPoller();
+    }
+
+    /**
+     * A template deployment that is currently running cannot be deleted. Deleting a template deployment removes the
+     * associated deployment operations. This is an asynchronous operation that returns a status of 202 until the
+     * template deployment is successfully deleted. The Location response header contains the URI that is used to obtain
+     * the status of the process. While the process is running, a call to the URI in the Location header returns a
+     * status of 202. When the process finishes, the URI in the Location header returns a status of 204 on success. If
+     * the asynchronous request failed, the URI in the Location header returns an error-level status code.
+     *
+     * @param groupId The management group ID.
+     * @param deploymentName The name of the deployment.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<Void>, Void> beginDeleteAtManagementGroupScope(
+        String groupId, String deploymentName, Context context) {
+        return beginDeleteAtManagementGroupScopeAsync(groupId, deploymentName, context).getSyncPoller();
+    }
+
+    /**
+     * A template deployment that is currently running cannot be deleted. Deleting a template deployment removes the
+     * associated deployment operations. This is an asynchronous operation that returns a status of 202 until the
+     * template deployment is successfully deleted. The Location response header contains the URI that is used to obtain
+     * the status of the process. While the process is running, a call to the URI in the Location header returns a
+     * status of 202. When the process finishes, the URI in the Location header returns a status of 204 on success. If
+     * the asynchronous request failed, the URI in the Location header returns an error-level status code.
+     *
+     * @param groupId The management group ID.
+     * @param deploymentName The name of the deployment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAtManagementGroupScopeAsync(String groupId, String deploymentName) {
-        Mono<Response<Flux<ByteBuffer>>> mono = deleteAtManagementGroupScopeWithResponseAsync(groupId, deploymentName);
-        return this
-            .client
-            .<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class)
+        return beginDeleteAtManagementGroupScopeAsync(groupId, deploymentName)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -3552,13 +3552,9 @@ public final class DeploymentsClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAtManagementGroupScopeAsync(String groupId, String deploymentName, Context context) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteAtManagementGroupScopeWithResponseAsync(groupId, deploymentName, context);
-        return this
-            .client
-            .<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class)
+        return beginDeleteAtManagementGroupScopeAsync(groupId, deploymentName, context)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -3849,7 +3845,8 @@ public final class DeploymentsClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<DeploymentExtendedInner>, DeploymentExtendedInner>
-        beginCreateOrUpdateAtManagementGroupScope(String groupId, String deploymentName, ScopedDeployment parameters) {
+        beginCreateOrUpdateAtManagementGroupScopeAsync(
+            String groupId, String deploymentName, ScopedDeployment parameters) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             createOrUpdateAtManagementGroupScopeWithResponseAsync(groupId, deploymentName, parameters);
         return this
@@ -3872,7 +3869,7 @@ public final class DeploymentsClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<DeploymentExtendedInner>, DeploymentExtendedInner>
-        beginCreateOrUpdateAtManagementGroupScope(
+        beginCreateOrUpdateAtManagementGroupScopeAsync(
             String groupId, String deploymentName, ScopedDeployment parameters, Context context) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             createOrUpdateAtManagementGroupScopeWithResponseAsync(groupId, deploymentName, parameters, context);
@@ -3894,16 +3891,48 @@ public final class DeploymentsClient
      * @return deployment information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<DeploymentExtendedInner>, DeploymentExtendedInner>
+        beginCreateOrUpdateAtManagementGroupScope(String groupId, String deploymentName, ScopedDeployment parameters) {
+        return beginCreateOrUpdateAtManagementGroupScopeAsync(groupId, deploymentName, parameters).getSyncPoller();
+    }
+
+    /**
+     * You can provide the template and parameters directly in the request or link to JSON files.
+     *
+     * @param groupId The management group ID.
+     * @param deploymentName The name of the deployment.
+     * @param parameters Deployment operation parameters.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return deployment information.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<DeploymentExtendedInner>, DeploymentExtendedInner>
+        beginCreateOrUpdateAtManagementGroupScope(
+            String groupId, String deploymentName, ScopedDeployment parameters, Context context) {
+        return beginCreateOrUpdateAtManagementGroupScopeAsync(groupId, deploymentName, parameters, context)
+            .getSyncPoller();
+    }
+
+    /**
+     * You can provide the template and parameters directly in the request or link to JSON files.
+     *
+     * @param groupId The management group ID.
+     * @param deploymentName The name of the deployment.
+     * @param parameters Deployment operation parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return deployment information.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DeploymentExtendedInner> createOrUpdateAtManagementGroupScopeAsync(
         String groupId, String deploymentName, ScopedDeployment parameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateAtManagementGroupScopeWithResponseAsync(groupId, deploymentName, parameters);
-        return this
-            .client
-            .<DeploymentExtendedInner, DeploymentExtendedInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), DeploymentExtendedInner.class, DeploymentExtendedInner.class)
+        return beginCreateOrUpdateAtManagementGroupScopeAsync(groupId, deploymentName, parameters)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -3921,14 +3950,9 @@ public final class DeploymentsClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DeploymentExtendedInner> createOrUpdateAtManagementGroupScopeAsync(
         String groupId, String deploymentName, ScopedDeployment parameters, Context context) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateAtManagementGroupScopeWithResponseAsync(groupId, deploymentName, parameters, context);
-        return this
-            .client
-            .<DeploymentExtendedInner, DeploymentExtendedInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), DeploymentExtendedInner.class, DeploymentExtendedInner.class)
+        return beginCreateOrUpdateAtManagementGroupScopeAsync(groupId, deploymentName, parameters, context)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -4864,7 +4888,7 @@ public final class DeploymentsClient
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<Void>, Void> beginDeleteAtSubscriptionScope(String deploymentName) {
+    public PollerFlux<PollResult<Void>, Void> beginDeleteAtSubscriptionScopeAsync(String deploymentName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteAtSubscriptionScopeWithResponseAsync(deploymentName);
         return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
     }
@@ -4885,7 +4909,8 @@ public final class DeploymentsClient
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<Void>, Void> beginDeleteAtSubscriptionScope(String deploymentName, Context context) {
+    public PollerFlux<PollResult<Void>, Void> beginDeleteAtSubscriptionScopeAsync(
+        String deploymentName, Context context) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteAtSubscriptionScopeWithResponseAsync(deploymentName, context);
         return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
     }
@@ -4905,13 +4930,49 @@ public final class DeploymentsClient
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<Void>, Void> beginDeleteAtSubscriptionScope(String deploymentName) {
+        return beginDeleteAtSubscriptionScopeAsync(deploymentName).getSyncPoller();
+    }
+
+    /**
+     * A template deployment that is currently running cannot be deleted. Deleting a template deployment removes the
+     * associated deployment operations. This is an asynchronous operation that returns a status of 202 until the
+     * template deployment is successfully deleted. The Location response header contains the URI that is used to obtain
+     * the status of the process. While the process is running, a call to the URI in the Location header returns a
+     * status of 202. When the process finishes, the URI in the Location header returns a status of 204 on success. If
+     * the asynchronous request failed, the URI in the Location header returns an error-level status code.
+     *
+     * @param deploymentName The name of the deployment.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<Void>, Void> beginDeleteAtSubscriptionScope(String deploymentName, Context context) {
+        return beginDeleteAtSubscriptionScopeAsync(deploymentName, context).getSyncPoller();
+    }
+
+    /**
+     * A template deployment that is currently running cannot be deleted. Deleting a template deployment removes the
+     * associated deployment operations. This is an asynchronous operation that returns a status of 202 until the
+     * template deployment is successfully deleted. The Location response header contains the URI that is used to obtain
+     * the status of the process. While the process is running, a call to the URI in the Location header returns a
+     * status of 202. When the process finishes, the URI in the Location header returns a status of 204 on success. If
+     * the asynchronous request failed, the URI in the Location header returns an error-level status code.
+     *
+     * @param deploymentName The name of the deployment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAtSubscriptionScopeAsync(String deploymentName) {
-        Mono<Response<Flux<ByteBuffer>>> mono = deleteAtSubscriptionScopeWithResponseAsync(deploymentName);
-        return this
-            .client
-            .<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class)
+        return beginDeleteAtSubscriptionScopeAsync(deploymentName)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -4931,12 +4992,9 @@ public final class DeploymentsClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAtSubscriptionScopeAsync(String deploymentName, Context context) {
-        Mono<Response<Flux<ByteBuffer>>> mono = deleteAtSubscriptionScopeWithResponseAsync(deploymentName, context);
-        return this
-            .client
-            .<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class)
+        return beginDeleteAtSubscriptionScopeAsync(deploymentName, context)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -5239,7 +5297,7 @@ public final class DeploymentsClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<DeploymentExtendedInner>, DeploymentExtendedInner>
-        beginCreateOrUpdateAtSubscriptionScope(String deploymentName, DeploymentInner parameters) {
+        beginCreateOrUpdateAtSubscriptionScopeAsync(String deploymentName, DeploymentInner parameters) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             createOrUpdateAtSubscriptionScopeWithResponseAsync(deploymentName, parameters);
         return this
@@ -5261,7 +5319,8 @@ public final class DeploymentsClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<DeploymentExtendedInner>, DeploymentExtendedInner>
-        beginCreateOrUpdateAtSubscriptionScope(String deploymentName, DeploymentInner parameters, Context context) {
+        beginCreateOrUpdateAtSubscriptionScopeAsync(
+            String deploymentName, DeploymentInner parameters, Context context) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             createOrUpdateAtSubscriptionScopeWithResponseAsync(deploymentName, parameters, context);
         return this
@@ -5281,16 +5340,44 @@ public final class DeploymentsClient
      * @return deployment information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<DeploymentExtendedInner>, DeploymentExtendedInner>
+        beginCreateOrUpdateAtSubscriptionScope(String deploymentName, DeploymentInner parameters) {
+        return beginCreateOrUpdateAtSubscriptionScopeAsync(deploymentName, parameters).getSyncPoller();
+    }
+
+    /**
+     * You can provide the template and parameters directly in the request or link to JSON files.
+     *
+     * @param deploymentName The name of the deployment.
+     * @param parameters Deployment operation parameters.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return deployment information.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<DeploymentExtendedInner>, DeploymentExtendedInner>
+        beginCreateOrUpdateAtSubscriptionScope(String deploymentName, DeploymentInner parameters, Context context) {
+        return beginCreateOrUpdateAtSubscriptionScopeAsync(deploymentName, parameters, context).getSyncPoller();
+    }
+
+    /**
+     * You can provide the template and parameters directly in the request or link to JSON files.
+     *
+     * @param deploymentName The name of the deployment.
+     * @param parameters Deployment operation parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return deployment information.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DeploymentExtendedInner> createOrUpdateAtSubscriptionScopeAsync(
         String deploymentName, DeploymentInner parameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateAtSubscriptionScopeWithResponseAsync(deploymentName, parameters);
-        return this
-            .client
-            .<DeploymentExtendedInner, DeploymentExtendedInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), DeploymentExtendedInner.class, DeploymentExtendedInner.class)
+        return beginCreateOrUpdateAtSubscriptionScopeAsync(deploymentName, parameters)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -5307,14 +5394,9 @@ public final class DeploymentsClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DeploymentExtendedInner> createOrUpdateAtSubscriptionScopeAsync(
         String deploymentName, DeploymentInner parameters, Context context) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateAtSubscriptionScopeWithResponseAsync(deploymentName, parameters, context);
-        return this
-            .client
-            .<DeploymentExtendedInner, DeploymentExtendedInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), DeploymentExtendedInner.class, DeploymentExtendedInner.class)
+        return beginCreateOrUpdateAtSubscriptionScopeAsync(deploymentName, parameters, context)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -5926,7 +6008,7 @@ public final class DeploymentsClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<WhatIfOperationResultInner>, WhatIfOperationResultInner>
-        beginWhatIfAtSubscriptionScope(String deploymentName, DeploymentWhatIf parameters) {
+        beginWhatIfAtSubscriptionScopeAsync(String deploymentName, DeploymentWhatIf parameters) {
         Mono<Response<Flux<ByteBuffer>>> mono = whatIfAtSubscriptionScopeWithResponseAsync(deploymentName, parameters);
         return this
             .client
@@ -5950,7 +6032,7 @@ public final class DeploymentsClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<WhatIfOperationResultInner>, WhatIfOperationResultInner>
-        beginWhatIfAtSubscriptionScope(String deploymentName, DeploymentWhatIf parameters, Context context) {
+        beginWhatIfAtSubscriptionScopeAsync(String deploymentName, DeploymentWhatIf parameters, Context context) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             whatIfAtSubscriptionScopeWithResponseAsync(deploymentName, parameters, context);
         return this
@@ -5973,15 +6055,44 @@ public final class DeploymentsClient
      * @return result of the What-If operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<WhatIfOperationResultInner>, WhatIfOperationResultInner>
+        beginWhatIfAtSubscriptionScope(String deploymentName, DeploymentWhatIf parameters) {
+        return beginWhatIfAtSubscriptionScopeAsync(deploymentName, parameters).getSyncPoller();
+    }
+
+    /**
+     * Returns changes that will be made by the deployment if executed at the scope of the subscription.
+     *
+     * @param deploymentName The name of the deployment.
+     * @param parameters Deployment What-if operation parameters.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return result of the What-If operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<WhatIfOperationResultInner>, WhatIfOperationResultInner>
+        beginWhatIfAtSubscriptionScope(String deploymentName, DeploymentWhatIf parameters, Context context) {
+        return beginWhatIfAtSubscriptionScopeAsync(deploymentName, parameters, context).getSyncPoller();
+    }
+
+    /**
+     * Returns changes that will be made by the deployment if executed at the scope of the subscription.
+     *
+     * @param deploymentName The name of the deployment.
+     * @param parameters Deployment What-if operation parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return result of the What-If operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<WhatIfOperationResultInner> whatIfAtSubscriptionScopeAsync(
         String deploymentName, DeploymentWhatIf parameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono = whatIfAtSubscriptionScopeWithResponseAsync(deploymentName, parameters);
-        return this
-            .client
-            .<WhatIfOperationResultInner, WhatIfOperationResultInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), WhatIfOperationResultInner.class, WhatIfOperationResultInner.class)
+        return beginWhatIfAtSubscriptionScopeAsync(deploymentName, parameters)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -5998,14 +6109,9 @@ public final class DeploymentsClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<WhatIfOperationResultInner> whatIfAtSubscriptionScopeAsync(
         String deploymentName, DeploymentWhatIf parameters, Context context) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            whatIfAtSubscriptionScopeWithResponseAsync(deploymentName, parameters, context);
-        return this
-            .client
-            .<WhatIfOperationResultInner, WhatIfOperationResultInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), WhatIfOperationResultInner.class, WhatIfOperationResultInner.class)
+        return beginWhatIfAtSubscriptionScopeAsync(deploymentName, parameters, context)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -6506,7 +6612,7 @@ public final class DeploymentsClient
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<Void>, Void> beginDelete(String resourceGroupName, String deploymentName) {
+    public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String deploymentName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, deploymentName);
         return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
     }
@@ -6530,7 +6636,7 @@ public final class DeploymentsClient
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<Void>, Void> beginDelete(
+    public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String deploymentName, Context context) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, deploymentName, context);
         return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
@@ -6554,13 +6660,56 @@ public final class DeploymentsClient
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String deploymentName) {
+        return beginDeleteAsync(resourceGroupName, deploymentName).getSyncPoller();
+    }
+
+    /**
+     * A template deployment that is currently running cannot be deleted. Deleting a template deployment removes the
+     * associated deployment operations. Deleting a template deployment does not affect the state of the resource group.
+     * This is an asynchronous operation that returns a status of 202 until the template deployment is successfully
+     * deleted. The Location response header contains the URI that is used to obtain the status of the process. While
+     * the process is running, a call to the URI in the Location header returns a status of 202. When the process
+     * finishes, the URI in the Location header returns a status of 204 on success. If the asynchronous request failed,
+     * the URI in the Location header returns an error-level status code.
+     *
+     * @param resourceGroupName The name of the resource group with the deployment to delete. The name is case
+     *     insensitive.
+     * @param deploymentName The name of the deployment.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<Void>, Void> beginDelete(
+        String resourceGroupName, String deploymentName, Context context) {
+        return beginDeleteAsync(resourceGroupName, deploymentName, context).getSyncPoller();
+    }
+
+    /**
+     * A template deployment that is currently running cannot be deleted. Deleting a template deployment removes the
+     * associated deployment operations. Deleting a template deployment does not affect the state of the resource group.
+     * This is an asynchronous operation that returns a status of 202 until the template deployment is successfully
+     * deleted. The Location response header contains the URI that is used to obtain the status of the process. While
+     * the process is running, a call to the URI in the Location header returns a status of 202. When the process
+     * finishes, the URI in the Location header returns a status of 204 on success. If the asynchronous request failed,
+     * the URI in the Location header returns an error-level status code.
+     *
+     * @param resourceGroupName The name of the resource group with the deployment to delete. The name is case
+     *     insensitive.
+     * @param deploymentName The name of the deployment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String deploymentName) {
-        Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, deploymentName);
-        return this
-            .client
-            .<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class)
+        return beginDeleteAsync(resourceGroupName, deploymentName)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -6583,12 +6732,9 @@ public final class DeploymentsClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String deploymentName, Context context) {
-        Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, deploymentName, context);
-        return this
-            .client
-            .<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class)
+        return beginDeleteAsync(resourceGroupName, deploymentName, context)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -6934,7 +7080,7 @@ public final class DeploymentsClient
      * @return deployment information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<DeploymentExtendedInner>, DeploymentExtendedInner> beginCreateOrUpdate(
+    public PollerFlux<PollResult<DeploymentExtendedInner>, DeploymentExtendedInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String deploymentName, DeploymentInner parameters) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             createOrUpdateWithResponseAsync(resourceGroupName, deploymentName, parameters);
@@ -6958,7 +7104,7 @@ public final class DeploymentsClient
      * @return deployment information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<DeploymentExtendedInner>, DeploymentExtendedInner> beginCreateOrUpdate(
+    public PollerFlux<PollResult<DeploymentExtendedInner>, DeploymentExtendedInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String deploymentName, DeploymentInner parameters, Context context) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             createOrUpdateWithResponseAsync(resourceGroupName, deploymentName, parameters, context);
@@ -6981,16 +7127,48 @@ public final class DeploymentsClient
      * @return deployment information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<DeploymentExtendedInner>, DeploymentExtendedInner> beginCreateOrUpdate(
+        String resourceGroupName, String deploymentName, DeploymentInner parameters) {
+        return beginCreateOrUpdateAsync(resourceGroupName, deploymentName, parameters).getSyncPoller();
+    }
+
+    /**
+     * You can provide the template and parameters directly in the request or link to JSON files.
+     *
+     * @param resourceGroupName The name of the resource group to deploy the resources to. The name is case insensitive.
+     *     The resource group must already exist.
+     * @param deploymentName The name of the deployment.
+     * @param parameters Deployment operation parameters.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return deployment information.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<DeploymentExtendedInner>, DeploymentExtendedInner> beginCreateOrUpdate(
+        String resourceGroupName, String deploymentName, DeploymentInner parameters, Context context) {
+        return beginCreateOrUpdateAsync(resourceGroupName, deploymentName, parameters, context).getSyncPoller();
+    }
+
+    /**
+     * You can provide the template and parameters directly in the request or link to JSON files.
+     *
+     * @param resourceGroupName The name of the resource group to deploy the resources to. The name is case insensitive.
+     *     The resource group must already exist.
+     * @param deploymentName The name of the deployment.
+     * @param parameters Deployment operation parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return deployment information.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DeploymentExtendedInner> createOrUpdateAsync(
         String resourceGroupName, String deploymentName, DeploymentInner parameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, deploymentName, parameters);
-        return this
-            .client
-            .<DeploymentExtendedInner, DeploymentExtendedInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), DeploymentExtendedInner.class, DeploymentExtendedInner.class)
+        return beginCreateOrUpdateAsync(resourceGroupName, deploymentName, parameters)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -7009,14 +7187,9 @@ public final class DeploymentsClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DeploymentExtendedInner> createOrUpdateAsync(
         String resourceGroupName, String deploymentName, DeploymentInner parameters, Context context) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, deploymentName, parameters, context);
-        return this
-            .client
-            .<DeploymentExtendedInner, DeploymentExtendedInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), DeploymentExtendedInner.class, DeploymentExtendedInner.class)
+        return beginCreateOrUpdateAsync(resourceGroupName, deploymentName, parameters, context)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -7705,7 +7878,7 @@ public final class DeploymentsClient
      * @return result of the What-If operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<WhatIfOperationResultInner>, WhatIfOperationResultInner> beginWhatIf(
+    public PollerFlux<PollResult<WhatIfOperationResultInner>, WhatIfOperationResultInner> beginWhatIfAsync(
         String resourceGroupName, String deploymentName, DeploymentWhatIf parameters) {
         Mono<Response<Flux<ByteBuffer>>> mono = whatIfWithResponseAsync(resourceGroupName, deploymentName, parameters);
         return this
@@ -7731,7 +7904,7 @@ public final class DeploymentsClient
      * @return result of the What-If operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<WhatIfOperationResultInner>, WhatIfOperationResultInner> beginWhatIf(
+    public PollerFlux<PollResult<WhatIfOperationResultInner>, WhatIfOperationResultInner> beginWhatIfAsync(
         String resourceGroupName, String deploymentName, DeploymentWhatIf parameters, Context context) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             whatIfWithResponseAsync(resourceGroupName, deploymentName, parameters, context);
@@ -7757,15 +7930,48 @@ public final class DeploymentsClient
      * @return result of the What-If operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<WhatIfOperationResultInner>, WhatIfOperationResultInner> beginWhatIf(
+        String resourceGroupName, String deploymentName, DeploymentWhatIf parameters) {
+        return beginWhatIfAsync(resourceGroupName, deploymentName, parameters).getSyncPoller();
+    }
+
+    /**
+     * Returns changes that will be made by the deployment if executed at the scope of the resource group.
+     *
+     * @param resourceGroupName The name of the resource group the template will be deployed to. The name is case
+     *     insensitive.
+     * @param deploymentName The name of the deployment.
+     * @param parameters Deployment What-if operation parameters.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return result of the What-If operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<WhatIfOperationResultInner>, WhatIfOperationResultInner> beginWhatIf(
+        String resourceGroupName, String deploymentName, DeploymentWhatIf parameters, Context context) {
+        return beginWhatIfAsync(resourceGroupName, deploymentName, parameters, context).getSyncPoller();
+    }
+
+    /**
+     * Returns changes that will be made by the deployment if executed at the scope of the resource group.
+     *
+     * @param resourceGroupName The name of the resource group the template will be deployed to. The name is case
+     *     insensitive.
+     * @param deploymentName The name of the deployment.
+     * @param parameters Deployment What-if operation parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return result of the What-If operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<WhatIfOperationResultInner> whatIfAsync(
         String resourceGroupName, String deploymentName, DeploymentWhatIf parameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono = whatIfWithResponseAsync(resourceGroupName, deploymentName, parameters);
-        return this
-            .client
-            .<WhatIfOperationResultInner, WhatIfOperationResultInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), WhatIfOperationResultInner.class, WhatIfOperationResultInner.class)
+        return beginWhatIfAsync(resourceGroupName, deploymentName, parameters)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -7784,14 +7990,9 @@ public final class DeploymentsClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<WhatIfOperationResultInner> whatIfAsync(
         String resourceGroupName, String deploymentName, DeploymentWhatIf parameters, Context context) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            whatIfWithResponseAsync(resourceGroupName, deploymentName, parameters, context);
-        return this
-            .client
-            .<WhatIfOperationResultInner, WhatIfOperationResultInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), WhatIfOperationResultInner.class, WhatIfOperationResultInner.class)
+        return beginWhatIfAsync(resourceGroupName, deploymentName, parameters, context)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -8355,2062 +8556,6 @@ public final class DeploymentsClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public TemplateHashResultInner calculateTemplateHash(Object template, Context context) {
         return calculateTemplateHashAsync(template, context).block();
-    }
-
-    /**
-     * A template deployment that is currently running cannot be deleted. Deleting a template deployment removes the
-     * associated deployment operations. This is an asynchronous operation that returns a status of 202 until the
-     * template deployment is successfully deleted. The Location response header contains the URI that is used to obtain
-     * the status of the process. While the process is running, a call to the URI in the Location header returns a
-     * status of 202. When the process finishes, the URI in the Location header returns a status of 204 on success. If
-     * the asynchronous request failed, the URI in the Location header returns an error-level status code.
-     *
-     * @param scope The scope of a deployment.
-     * @param deploymentName The name of the deployment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> beginDeleteAtScopeWithoutPollingWithResponseAsync(String scope, String deploymentName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (scope == null) {
-            return Mono.error(new IllegalArgumentException("Parameter scope is required and cannot be null."));
-        }
-        if (deploymentName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter deploymentName is required and cannot be null."));
-        }
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .beginDeleteAtScopeWithoutPolling(
-                            this.client.getEndpoint(), scope, deploymentName, this.client.getApiVersion(), context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
-
-    /**
-     * A template deployment that is currently running cannot be deleted. Deleting a template deployment removes the
-     * associated deployment operations. This is an asynchronous operation that returns a status of 202 until the
-     * template deployment is successfully deleted. The Location response header contains the URI that is used to obtain
-     * the status of the process. While the process is running, a call to the URI in the Location header returns a
-     * status of 202. When the process finishes, the URI in the Location header returns a status of 204 on success. If
-     * the asynchronous request failed, the URI in the Location header returns an error-level status code.
-     *
-     * @param scope The scope of a deployment.
-     * @param deploymentName The name of the deployment.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> beginDeleteAtScopeWithoutPollingWithResponseAsync(
-        String scope, String deploymentName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (scope == null) {
-            return Mono.error(new IllegalArgumentException("Parameter scope is required and cannot be null."));
-        }
-        if (deploymentName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter deploymentName is required and cannot be null."));
-        }
-        return service
-            .beginDeleteAtScopeWithoutPolling(
-                this.client.getEndpoint(), scope, deploymentName, this.client.getApiVersion(), context);
-    }
-
-    /**
-     * A template deployment that is currently running cannot be deleted. Deleting a template deployment removes the
-     * associated deployment operations. This is an asynchronous operation that returns a status of 202 until the
-     * template deployment is successfully deleted. The Location response header contains the URI that is used to obtain
-     * the status of the process. While the process is running, a call to the URI in the Location header returns a
-     * status of 202. When the process finishes, the URI in the Location header returns a status of 204 on success. If
-     * the asynchronous request failed, the URI in the Location header returns an error-level status code.
-     *
-     * @param scope The scope of a deployment.
-     * @param deploymentName The name of the deployment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> beginDeleteAtScopeWithoutPollingAsync(String scope, String deploymentName) {
-        return beginDeleteAtScopeWithoutPollingWithResponseAsync(scope, deploymentName)
-            .flatMap((Response<Void> res) -> Mono.empty());
-    }
-
-    /**
-     * A template deployment that is currently running cannot be deleted. Deleting a template deployment removes the
-     * associated deployment operations. This is an asynchronous operation that returns a status of 202 until the
-     * template deployment is successfully deleted. The Location response header contains the URI that is used to obtain
-     * the status of the process. While the process is running, a call to the URI in the Location header returns a
-     * status of 202. When the process finishes, the URI in the Location header returns a status of 204 on success. If
-     * the asynchronous request failed, the URI in the Location header returns an error-level status code.
-     *
-     * @param scope The scope of a deployment.
-     * @param deploymentName The name of the deployment.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> beginDeleteAtScopeWithoutPollingAsync(String scope, String deploymentName, Context context) {
-        return beginDeleteAtScopeWithoutPollingWithResponseAsync(scope, deploymentName, context)
-            .flatMap((Response<Void> res) -> Mono.empty());
-    }
-
-    /**
-     * A template deployment that is currently running cannot be deleted. Deleting a template deployment removes the
-     * associated deployment operations. This is an asynchronous operation that returns a status of 202 until the
-     * template deployment is successfully deleted. The Location response header contains the URI that is used to obtain
-     * the status of the process. While the process is running, a call to the URI in the Location header returns a
-     * status of 202. When the process finishes, the URI in the Location header returns a status of 204 on success. If
-     * the asynchronous request failed, the URI in the Location header returns an error-level status code.
-     *
-     * @param scope The scope of a deployment.
-     * @param deploymentName The name of the deployment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void beginDeleteAtScopeWithoutPolling(String scope, String deploymentName) {
-        beginDeleteAtScopeWithoutPollingAsync(scope, deploymentName).block();
-    }
-
-    /**
-     * A template deployment that is currently running cannot be deleted. Deleting a template deployment removes the
-     * associated deployment operations. This is an asynchronous operation that returns a status of 202 until the
-     * template deployment is successfully deleted. The Location response header contains the URI that is used to obtain
-     * the status of the process. While the process is running, a call to the URI in the Location header returns a
-     * status of 202. When the process finishes, the URI in the Location header returns a status of 204 on success. If
-     * the asynchronous request failed, the URI in the Location header returns an error-level status code.
-     *
-     * @param scope The scope of a deployment.
-     * @param deploymentName The name of the deployment.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void beginDeleteAtScopeWithoutPolling(String scope, String deploymentName, Context context) {
-        beginDeleteAtScopeWithoutPollingAsync(scope, deploymentName, context).block();
-    }
-
-    /**
-     * You can provide the template and parameters directly in the request or link to JSON files.
-     *
-     * @param scope The scope of a deployment.
-     * @param deploymentName The name of the deployment.
-     * @param parameters Deployment operation parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return deployment information.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<DeploymentExtendedInner>> beginCreateOrUpdateAtScopeWithoutPollingWithResponseAsync(
-        String scope, String deploymentName, DeploymentInner parameters) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (scope == null) {
-            return Mono.error(new IllegalArgumentException("Parameter scope is required and cannot be null."));
-        }
-        if (deploymentName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter deploymentName is required and cannot be null."));
-        }
-        if (parameters == null) {
-            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
-        } else {
-            parameters.validate();
-        }
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .beginCreateOrUpdateAtScopeWithoutPolling(
-                            this.client.getEndpoint(),
-                            scope,
-                            deploymentName,
-                            this.client.getApiVersion(),
-                            parameters,
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
-
-    /**
-     * You can provide the template and parameters directly in the request or link to JSON files.
-     *
-     * @param scope The scope of a deployment.
-     * @param deploymentName The name of the deployment.
-     * @param parameters Deployment operation parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return deployment information.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<DeploymentExtendedInner>> beginCreateOrUpdateAtScopeWithoutPollingWithResponseAsync(
-        String scope, String deploymentName, DeploymentInner parameters, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (scope == null) {
-            return Mono.error(new IllegalArgumentException("Parameter scope is required and cannot be null."));
-        }
-        if (deploymentName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter deploymentName is required and cannot be null."));
-        }
-        if (parameters == null) {
-            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
-        } else {
-            parameters.validate();
-        }
-        return service
-            .beginCreateOrUpdateAtScopeWithoutPolling(
-                this.client.getEndpoint(), scope, deploymentName, this.client.getApiVersion(), parameters, context);
-    }
-
-    /**
-     * You can provide the template and parameters directly in the request or link to JSON files.
-     *
-     * @param scope The scope of a deployment.
-     * @param deploymentName The name of the deployment.
-     * @param parameters Deployment operation parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return deployment information.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DeploymentExtendedInner> beginCreateOrUpdateAtScopeWithoutPollingAsync(
-        String scope, String deploymentName, DeploymentInner parameters) {
-        return beginCreateOrUpdateAtScopeWithoutPollingWithResponseAsync(scope, deploymentName, parameters)
-            .flatMap(
-                (Response<DeploymentExtendedInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * You can provide the template and parameters directly in the request or link to JSON files.
-     *
-     * @param scope The scope of a deployment.
-     * @param deploymentName The name of the deployment.
-     * @param parameters Deployment operation parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return deployment information.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DeploymentExtendedInner> beginCreateOrUpdateAtScopeWithoutPollingAsync(
-        String scope, String deploymentName, DeploymentInner parameters, Context context) {
-        return beginCreateOrUpdateAtScopeWithoutPollingWithResponseAsync(scope, deploymentName, parameters, context)
-            .flatMap(
-                (Response<DeploymentExtendedInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * You can provide the template and parameters directly in the request or link to JSON files.
-     *
-     * @param scope The scope of a deployment.
-     * @param deploymentName The name of the deployment.
-     * @param parameters Deployment operation parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return deployment information.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public DeploymentExtendedInner beginCreateOrUpdateAtScopeWithoutPolling(
-        String scope, String deploymentName, DeploymentInner parameters) {
-        return beginCreateOrUpdateAtScopeWithoutPollingAsync(scope, deploymentName, parameters).block();
-    }
-
-    /**
-     * You can provide the template and parameters directly in the request or link to JSON files.
-     *
-     * @param scope The scope of a deployment.
-     * @param deploymentName The name of the deployment.
-     * @param parameters Deployment operation parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return deployment information.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public DeploymentExtendedInner beginCreateOrUpdateAtScopeWithoutPolling(
-        String scope, String deploymentName, DeploymentInner parameters, Context context) {
-        return beginCreateOrUpdateAtScopeWithoutPollingAsync(scope, deploymentName, parameters, context).block();
-    }
-
-    /**
-     * A template deployment that is currently running cannot be deleted. Deleting a template deployment removes the
-     * associated deployment operations. This is an asynchronous operation that returns a status of 202 until the
-     * template deployment is successfully deleted. The Location response header contains the URI that is used to obtain
-     * the status of the process. While the process is running, a call to the URI in the Location header returns a
-     * status of 202. When the process finishes, the URI in the Location header returns a status of 204 on success. If
-     * the asynchronous request failed, the URI in the Location header returns an error-level status code.
-     *
-     * @param deploymentName The name of the deployment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> beginDeleteAtTenantScopeWithoutPollingWithResponseAsync(String deploymentName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (deploymentName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter deploymentName is required and cannot be null."));
-        }
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .beginDeleteAtTenantScopeWithoutPolling(
-                            this.client.getEndpoint(), deploymentName, this.client.getApiVersion(), context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
-
-    /**
-     * A template deployment that is currently running cannot be deleted. Deleting a template deployment removes the
-     * associated deployment operations. This is an asynchronous operation that returns a status of 202 until the
-     * template deployment is successfully deleted. The Location response header contains the URI that is used to obtain
-     * the status of the process. While the process is running, a call to the URI in the Location header returns a
-     * status of 202. When the process finishes, the URI in the Location header returns a status of 204 on success. If
-     * the asynchronous request failed, the URI in the Location header returns an error-level status code.
-     *
-     * @param deploymentName The name of the deployment.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> beginDeleteAtTenantScopeWithoutPollingWithResponseAsync(
-        String deploymentName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (deploymentName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter deploymentName is required and cannot be null."));
-        }
-        return service
-            .beginDeleteAtTenantScopeWithoutPolling(
-                this.client.getEndpoint(), deploymentName, this.client.getApiVersion(), context);
-    }
-
-    /**
-     * A template deployment that is currently running cannot be deleted. Deleting a template deployment removes the
-     * associated deployment operations. This is an asynchronous operation that returns a status of 202 until the
-     * template deployment is successfully deleted. The Location response header contains the URI that is used to obtain
-     * the status of the process. While the process is running, a call to the URI in the Location header returns a
-     * status of 202. When the process finishes, the URI in the Location header returns a status of 204 on success. If
-     * the asynchronous request failed, the URI in the Location header returns an error-level status code.
-     *
-     * @param deploymentName The name of the deployment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> beginDeleteAtTenantScopeWithoutPollingAsync(String deploymentName) {
-        return beginDeleteAtTenantScopeWithoutPollingWithResponseAsync(deploymentName)
-            .flatMap((Response<Void> res) -> Mono.empty());
-    }
-
-    /**
-     * A template deployment that is currently running cannot be deleted. Deleting a template deployment removes the
-     * associated deployment operations. This is an asynchronous operation that returns a status of 202 until the
-     * template deployment is successfully deleted. The Location response header contains the URI that is used to obtain
-     * the status of the process. While the process is running, a call to the URI in the Location header returns a
-     * status of 202. When the process finishes, the URI in the Location header returns a status of 204 on success. If
-     * the asynchronous request failed, the URI in the Location header returns an error-level status code.
-     *
-     * @param deploymentName The name of the deployment.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> beginDeleteAtTenantScopeWithoutPollingAsync(String deploymentName, Context context) {
-        return beginDeleteAtTenantScopeWithoutPollingWithResponseAsync(deploymentName, context)
-            .flatMap((Response<Void> res) -> Mono.empty());
-    }
-
-    /**
-     * A template deployment that is currently running cannot be deleted. Deleting a template deployment removes the
-     * associated deployment operations. This is an asynchronous operation that returns a status of 202 until the
-     * template deployment is successfully deleted. The Location response header contains the URI that is used to obtain
-     * the status of the process. While the process is running, a call to the URI in the Location header returns a
-     * status of 202. When the process finishes, the URI in the Location header returns a status of 204 on success. If
-     * the asynchronous request failed, the URI in the Location header returns an error-level status code.
-     *
-     * @param deploymentName The name of the deployment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void beginDeleteAtTenantScopeWithoutPolling(String deploymentName) {
-        beginDeleteAtTenantScopeWithoutPollingAsync(deploymentName).block();
-    }
-
-    /**
-     * A template deployment that is currently running cannot be deleted. Deleting a template deployment removes the
-     * associated deployment operations. This is an asynchronous operation that returns a status of 202 until the
-     * template deployment is successfully deleted. The Location response header contains the URI that is used to obtain
-     * the status of the process. While the process is running, a call to the URI in the Location header returns a
-     * status of 202. When the process finishes, the URI in the Location header returns a status of 204 on success. If
-     * the asynchronous request failed, the URI in the Location header returns an error-level status code.
-     *
-     * @param deploymentName The name of the deployment.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void beginDeleteAtTenantScopeWithoutPolling(String deploymentName, Context context) {
-        beginDeleteAtTenantScopeWithoutPollingAsync(deploymentName, context).block();
-    }
-
-    /**
-     * You can provide the template and parameters directly in the request or link to JSON files.
-     *
-     * @param deploymentName The name of the deployment.
-     * @param parameters Deployment operation parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return deployment information.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<DeploymentExtendedInner>> beginCreateOrUpdateAtTenantScopeWithoutPollingWithResponseAsync(
-        String deploymentName, ScopedDeployment parameters) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (deploymentName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter deploymentName is required and cannot be null."));
-        }
-        if (parameters == null) {
-            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
-        } else {
-            parameters.validate();
-        }
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .beginCreateOrUpdateAtTenantScopeWithoutPolling(
-                            this.client.getEndpoint(),
-                            deploymentName,
-                            this.client.getApiVersion(),
-                            parameters,
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
-
-    /**
-     * You can provide the template and parameters directly in the request or link to JSON files.
-     *
-     * @param deploymentName The name of the deployment.
-     * @param parameters Deployment operation parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return deployment information.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<DeploymentExtendedInner>> beginCreateOrUpdateAtTenantScopeWithoutPollingWithResponseAsync(
-        String deploymentName, ScopedDeployment parameters, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (deploymentName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter deploymentName is required and cannot be null."));
-        }
-        if (parameters == null) {
-            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
-        } else {
-            parameters.validate();
-        }
-        return service
-            .beginCreateOrUpdateAtTenantScopeWithoutPolling(
-                this.client.getEndpoint(), deploymentName, this.client.getApiVersion(), parameters, context);
-    }
-
-    /**
-     * You can provide the template and parameters directly in the request or link to JSON files.
-     *
-     * @param deploymentName The name of the deployment.
-     * @param parameters Deployment operation parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return deployment information.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DeploymentExtendedInner> beginCreateOrUpdateAtTenantScopeWithoutPollingAsync(
-        String deploymentName, ScopedDeployment parameters) {
-        return beginCreateOrUpdateAtTenantScopeWithoutPollingWithResponseAsync(deploymentName, parameters)
-            .flatMap(
-                (Response<DeploymentExtendedInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * You can provide the template and parameters directly in the request or link to JSON files.
-     *
-     * @param deploymentName The name of the deployment.
-     * @param parameters Deployment operation parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return deployment information.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DeploymentExtendedInner> beginCreateOrUpdateAtTenantScopeWithoutPollingAsync(
-        String deploymentName, ScopedDeployment parameters, Context context) {
-        return beginCreateOrUpdateAtTenantScopeWithoutPollingWithResponseAsync(deploymentName, parameters, context)
-            .flatMap(
-                (Response<DeploymentExtendedInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * You can provide the template and parameters directly in the request or link to JSON files.
-     *
-     * @param deploymentName The name of the deployment.
-     * @param parameters Deployment operation parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return deployment information.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public DeploymentExtendedInner beginCreateOrUpdateAtTenantScopeWithoutPolling(
-        String deploymentName, ScopedDeployment parameters) {
-        return beginCreateOrUpdateAtTenantScopeWithoutPollingAsync(deploymentName, parameters).block();
-    }
-
-    /**
-     * You can provide the template and parameters directly in the request or link to JSON files.
-     *
-     * @param deploymentName The name of the deployment.
-     * @param parameters Deployment operation parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return deployment information.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public DeploymentExtendedInner beginCreateOrUpdateAtTenantScopeWithoutPolling(
-        String deploymentName, ScopedDeployment parameters, Context context) {
-        return beginCreateOrUpdateAtTenantScopeWithoutPollingAsync(deploymentName, parameters, context).block();
-    }
-
-    /**
-     * A template deployment that is currently running cannot be deleted. Deleting a template deployment removes the
-     * associated deployment operations. This is an asynchronous operation that returns a status of 202 until the
-     * template deployment is successfully deleted. The Location response header contains the URI that is used to obtain
-     * the status of the process. While the process is running, a call to the URI in the Location header returns a
-     * status of 202. When the process finishes, the URI in the Location header returns a status of 204 on success. If
-     * the asynchronous request failed, the URI in the Location header returns an error-level status code.
-     *
-     * @param groupId The management group ID.
-     * @param deploymentName The name of the deployment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> beginDeleteAtManagementGroupScopeWithoutPollingWithResponseAsync(
-        String groupId, String deploymentName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (groupId == null) {
-            return Mono.error(new IllegalArgumentException("Parameter groupId is required and cannot be null."));
-        }
-        if (deploymentName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter deploymentName is required and cannot be null."));
-        }
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .beginDeleteAtManagementGroupScopeWithoutPolling(
-                            this.client.getEndpoint(), groupId, deploymentName, this.client.getApiVersion(), context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
-
-    /**
-     * A template deployment that is currently running cannot be deleted. Deleting a template deployment removes the
-     * associated deployment operations. This is an asynchronous operation that returns a status of 202 until the
-     * template deployment is successfully deleted. The Location response header contains the URI that is used to obtain
-     * the status of the process. While the process is running, a call to the URI in the Location header returns a
-     * status of 202. When the process finishes, the URI in the Location header returns a status of 204 on success. If
-     * the asynchronous request failed, the URI in the Location header returns an error-level status code.
-     *
-     * @param groupId The management group ID.
-     * @param deploymentName The name of the deployment.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> beginDeleteAtManagementGroupScopeWithoutPollingWithResponseAsync(
-        String groupId, String deploymentName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (groupId == null) {
-            return Mono.error(new IllegalArgumentException("Parameter groupId is required and cannot be null."));
-        }
-        if (deploymentName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter deploymentName is required and cannot be null."));
-        }
-        return service
-            .beginDeleteAtManagementGroupScopeWithoutPolling(
-                this.client.getEndpoint(), groupId, deploymentName, this.client.getApiVersion(), context);
-    }
-
-    /**
-     * A template deployment that is currently running cannot be deleted. Deleting a template deployment removes the
-     * associated deployment operations. This is an asynchronous operation that returns a status of 202 until the
-     * template deployment is successfully deleted. The Location response header contains the URI that is used to obtain
-     * the status of the process. While the process is running, a call to the URI in the Location header returns a
-     * status of 202. When the process finishes, the URI in the Location header returns a status of 204 on success. If
-     * the asynchronous request failed, the URI in the Location header returns an error-level status code.
-     *
-     * @param groupId The management group ID.
-     * @param deploymentName The name of the deployment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> beginDeleteAtManagementGroupScopeWithoutPollingAsync(String groupId, String deploymentName) {
-        return beginDeleteAtManagementGroupScopeWithoutPollingWithResponseAsync(groupId, deploymentName)
-            .flatMap((Response<Void> res) -> Mono.empty());
-    }
-
-    /**
-     * A template deployment that is currently running cannot be deleted. Deleting a template deployment removes the
-     * associated deployment operations. This is an asynchronous operation that returns a status of 202 until the
-     * template deployment is successfully deleted. The Location response header contains the URI that is used to obtain
-     * the status of the process. While the process is running, a call to the URI in the Location header returns a
-     * status of 202. When the process finishes, the URI in the Location header returns a status of 204 on success. If
-     * the asynchronous request failed, the URI in the Location header returns an error-level status code.
-     *
-     * @param groupId The management group ID.
-     * @param deploymentName The name of the deployment.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> beginDeleteAtManagementGroupScopeWithoutPollingAsync(
-        String groupId, String deploymentName, Context context) {
-        return beginDeleteAtManagementGroupScopeWithoutPollingWithResponseAsync(groupId, deploymentName, context)
-            .flatMap((Response<Void> res) -> Mono.empty());
-    }
-
-    /**
-     * A template deployment that is currently running cannot be deleted. Deleting a template deployment removes the
-     * associated deployment operations. This is an asynchronous operation that returns a status of 202 until the
-     * template deployment is successfully deleted. The Location response header contains the URI that is used to obtain
-     * the status of the process. While the process is running, a call to the URI in the Location header returns a
-     * status of 202. When the process finishes, the URI in the Location header returns a status of 204 on success. If
-     * the asynchronous request failed, the URI in the Location header returns an error-level status code.
-     *
-     * @param groupId The management group ID.
-     * @param deploymentName The name of the deployment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void beginDeleteAtManagementGroupScopeWithoutPolling(String groupId, String deploymentName) {
-        beginDeleteAtManagementGroupScopeWithoutPollingAsync(groupId, deploymentName).block();
-    }
-
-    /**
-     * A template deployment that is currently running cannot be deleted. Deleting a template deployment removes the
-     * associated deployment operations. This is an asynchronous operation that returns a status of 202 until the
-     * template deployment is successfully deleted. The Location response header contains the URI that is used to obtain
-     * the status of the process. While the process is running, a call to the URI in the Location header returns a
-     * status of 202. When the process finishes, the URI in the Location header returns a status of 204 on success. If
-     * the asynchronous request failed, the URI in the Location header returns an error-level status code.
-     *
-     * @param groupId The management group ID.
-     * @param deploymentName The name of the deployment.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void beginDeleteAtManagementGroupScopeWithoutPolling(
-        String groupId, String deploymentName, Context context) {
-        beginDeleteAtManagementGroupScopeWithoutPollingAsync(groupId, deploymentName, context).block();
-    }
-
-    /**
-     * You can provide the template and parameters directly in the request or link to JSON files.
-     *
-     * @param groupId The management group ID.
-     * @param deploymentName The name of the deployment.
-     * @param parameters Deployment operation parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return deployment information.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<DeploymentExtendedInner>>
-        beginCreateOrUpdateAtManagementGroupScopeWithoutPollingWithResponseAsync(
-            String groupId, String deploymentName, ScopedDeployment parameters) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (groupId == null) {
-            return Mono.error(new IllegalArgumentException("Parameter groupId is required and cannot be null."));
-        }
-        if (deploymentName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter deploymentName is required and cannot be null."));
-        }
-        if (parameters == null) {
-            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
-        } else {
-            parameters.validate();
-        }
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .beginCreateOrUpdateAtManagementGroupScopeWithoutPolling(
-                            this.client.getEndpoint(),
-                            groupId,
-                            deploymentName,
-                            this.client.getApiVersion(),
-                            parameters,
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
-
-    /**
-     * You can provide the template and parameters directly in the request or link to JSON files.
-     *
-     * @param groupId The management group ID.
-     * @param deploymentName The name of the deployment.
-     * @param parameters Deployment operation parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return deployment information.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<DeploymentExtendedInner>>
-        beginCreateOrUpdateAtManagementGroupScopeWithoutPollingWithResponseAsync(
-            String groupId, String deploymentName, ScopedDeployment parameters, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (groupId == null) {
-            return Mono.error(new IllegalArgumentException("Parameter groupId is required and cannot be null."));
-        }
-        if (deploymentName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter deploymentName is required and cannot be null."));
-        }
-        if (parameters == null) {
-            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
-        } else {
-            parameters.validate();
-        }
-        return service
-            .beginCreateOrUpdateAtManagementGroupScopeWithoutPolling(
-                this.client.getEndpoint(), groupId, deploymentName, this.client.getApiVersion(), parameters, context);
-    }
-
-    /**
-     * You can provide the template and parameters directly in the request or link to JSON files.
-     *
-     * @param groupId The management group ID.
-     * @param deploymentName The name of the deployment.
-     * @param parameters Deployment operation parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return deployment information.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DeploymentExtendedInner> beginCreateOrUpdateAtManagementGroupScopeWithoutPollingAsync(
-        String groupId, String deploymentName, ScopedDeployment parameters) {
-        return beginCreateOrUpdateAtManagementGroupScopeWithoutPollingWithResponseAsync(
-                groupId, deploymentName, parameters)
-            .flatMap(
-                (Response<DeploymentExtendedInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * You can provide the template and parameters directly in the request or link to JSON files.
-     *
-     * @param groupId The management group ID.
-     * @param deploymentName The name of the deployment.
-     * @param parameters Deployment operation parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return deployment information.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DeploymentExtendedInner> beginCreateOrUpdateAtManagementGroupScopeWithoutPollingAsync(
-        String groupId, String deploymentName, ScopedDeployment parameters, Context context) {
-        return beginCreateOrUpdateAtManagementGroupScopeWithoutPollingWithResponseAsync(
-                groupId, deploymentName, parameters, context)
-            .flatMap(
-                (Response<DeploymentExtendedInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * You can provide the template and parameters directly in the request or link to JSON files.
-     *
-     * @param groupId The management group ID.
-     * @param deploymentName The name of the deployment.
-     * @param parameters Deployment operation parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return deployment information.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public DeploymentExtendedInner beginCreateOrUpdateAtManagementGroupScopeWithoutPolling(
-        String groupId, String deploymentName, ScopedDeployment parameters) {
-        return beginCreateOrUpdateAtManagementGroupScopeWithoutPollingAsync(groupId, deploymentName, parameters)
-            .block();
-    }
-
-    /**
-     * You can provide the template and parameters directly in the request or link to JSON files.
-     *
-     * @param groupId The management group ID.
-     * @param deploymentName The name of the deployment.
-     * @param parameters Deployment operation parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return deployment information.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public DeploymentExtendedInner beginCreateOrUpdateAtManagementGroupScopeWithoutPolling(
-        String groupId, String deploymentName, ScopedDeployment parameters, Context context) {
-        return beginCreateOrUpdateAtManagementGroupScopeWithoutPollingAsync(
-                groupId, deploymentName, parameters, context)
-            .block();
-    }
-
-    /**
-     * A template deployment that is currently running cannot be deleted. Deleting a template deployment removes the
-     * associated deployment operations. This is an asynchronous operation that returns a status of 202 until the
-     * template deployment is successfully deleted. The Location response header contains the URI that is used to obtain
-     * the status of the process. While the process is running, a call to the URI in the Location header returns a
-     * status of 202. When the process finishes, the URI in the Location header returns a status of 204 on success. If
-     * the asynchronous request failed, the URI in the Location header returns an error-level status code.
-     *
-     * @param deploymentName The name of the deployment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> beginDeleteAtSubscriptionScopeWithoutPollingWithResponseAsync(String deploymentName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (deploymentName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter deploymentName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .beginDeleteAtSubscriptionScopeWithoutPolling(
-                            this.client.getEndpoint(),
-                            deploymentName,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
-
-    /**
-     * A template deployment that is currently running cannot be deleted. Deleting a template deployment removes the
-     * associated deployment operations. This is an asynchronous operation that returns a status of 202 until the
-     * template deployment is successfully deleted. The Location response header contains the URI that is used to obtain
-     * the status of the process. While the process is running, a call to the URI in the Location header returns a
-     * status of 202. When the process finishes, the URI in the Location header returns a status of 204 on success. If
-     * the asynchronous request failed, the URI in the Location header returns an error-level status code.
-     *
-     * @param deploymentName The name of the deployment.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> beginDeleteAtSubscriptionScopeWithoutPollingWithResponseAsync(
-        String deploymentName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (deploymentName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter deploymentName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        return service
-            .beginDeleteAtSubscriptionScopeWithoutPolling(
-                this.client.getEndpoint(),
-                deploymentName,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                context);
-    }
-
-    /**
-     * A template deployment that is currently running cannot be deleted. Deleting a template deployment removes the
-     * associated deployment operations. This is an asynchronous operation that returns a status of 202 until the
-     * template deployment is successfully deleted. The Location response header contains the URI that is used to obtain
-     * the status of the process. While the process is running, a call to the URI in the Location header returns a
-     * status of 202. When the process finishes, the URI in the Location header returns a status of 204 on success. If
-     * the asynchronous request failed, the URI in the Location header returns an error-level status code.
-     *
-     * @param deploymentName The name of the deployment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> beginDeleteAtSubscriptionScopeWithoutPollingAsync(String deploymentName) {
-        return beginDeleteAtSubscriptionScopeWithoutPollingWithResponseAsync(deploymentName)
-            .flatMap((Response<Void> res) -> Mono.empty());
-    }
-
-    /**
-     * A template deployment that is currently running cannot be deleted. Deleting a template deployment removes the
-     * associated deployment operations. This is an asynchronous operation that returns a status of 202 until the
-     * template deployment is successfully deleted. The Location response header contains the URI that is used to obtain
-     * the status of the process. While the process is running, a call to the URI in the Location header returns a
-     * status of 202. When the process finishes, the URI in the Location header returns a status of 204 on success. If
-     * the asynchronous request failed, the URI in the Location header returns an error-level status code.
-     *
-     * @param deploymentName The name of the deployment.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> beginDeleteAtSubscriptionScopeWithoutPollingAsync(String deploymentName, Context context) {
-        return beginDeleteAtSubscriptionScopeWithoutPollingWithResponseAsync(deploymentName, context)
-            .flatMap((Response<Void> res) -> Mono.empty());
-    }
-
-    /**
-     * A template deployment that is currently running cannot be deleted. Deleting a template deployment removes the
-     * associated deployment operations. This is an asynchronous operation that returns a status of 202 until the
-     * template deployment is successfully deleted. The Location response header contains the URI that is used to obtain
-     * the status of the process. While the process is running, a call to the URI in the Location header returns a
-     * status of 202. When the process finishes, the URI in the Location header returns a status of 204 on success. If
-     * the asynchronous request failed, the URI in the Location header returns an error-level status code.
-     *
-     * @param deploymentName The name of the deployment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void beginDeleteAtSubscriptionScopeWithoutPolling(String deploymentName) {
-        beginDeleteAtSubscriptionScopeWithoutPollingAsync(deploymentName).block();
-    }
-
-    /**
-     * A template deployment that is currently running cannot be deleted. Deleting a template deployment removes the
-     * associated deployment operations. This is an asynchronous operation that returns a status of 202 until the
-     * template deployment is successfully deleted. The Location response header contains the URI that is used to obtain
-     * the status of the process. While the process is running, a call to the URI in the Location header returns a
-     * status of 202. When the process finishes, the URI in the Location header returns a status of 204 on success. If
-     * the asynchronous request failed, the URI in the Location header returns an error-level status code.
-     *
-     * @param deploymentName The name of the deployment.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void beginDeleteAtSubscriptionScopeWithoutPolling(String deploymentName, Context context) {
-        beginDeleteAtSubscriptionScopeWithoutPollingAsync(deploymentName, context).block();
-    }
-
-    /**
-     * You can provide the template and parameters directly in the request or link to JSON files.
-     *
-     * @param deploymentName The name of the deployment.
-     * @param parameters Deployment operation parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return deployment information.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<DeploymentExtendedInner>>
-        beginCreateOrUpdateAtSubscriptionScopeWithoutPollingWithResponseAsync(
-            String deploymentName, DeploymentInner parameters) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (deploymentName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter deploymentName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (parameters == null) {
-            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
-        } else {
-            parameters.validate();
-        }
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .beginCreateOrUpdateAtSubscriptionScopeWithoutPolling(
-                            this.client.getEndpoint(),
-                            deploymentName,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            parameters,
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
-
-    /**
-     * You can provide the template and parameters directly in the request or link to JSON files.
-     *
-     * @param deploymentName The name of the deployment.
-     * @param parameters Deployment operation parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return deployment information.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<DeploymentExtendedInner>>
-        beginCreateOrUpdateAtSubscriptionScopeWithoutPollingWithResponseAsync(
-            String deploymentName, DeploymentInner parameters, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (deploymentName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter deploymentName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (parameters == null) {
-            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
-        } else {
-            parameters.validate();
-        }
-        return service
-            .beginCreateOrUpdateAtSubscriptionScopeWithoutPolling(
-                this.client.getEndpoint(),
-                deploymentName,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                parameters,
-                context);
-    }
-
-    /**
-     * You can provide the template and parameters directly in the request or link to JSON files.
-     *
-     * @param deploymentName The name of the deployment.
-     * @param parameters Deployment operation parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return deployment information.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DeploymentExtendedInner> beginCreateOrUpdateAtSubscriptionScopeWithoutPollingAsync(
-        String deploymentName, DeploymentInner parameters) {
-        return beginCreateOrUpdateAtSubscriptionScopeWithoutPollingWithResponseAsync(deploymentName, parameters)
-            .flatMap(
-                (Response<DeploymentExtendedInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * You can provide the template and parameters directly in the request or link to JSON files.
-     *
-     * @param deploymentName The name of the deployment.
-     * @param parameters Deployment operation parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return deployment information.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DeploymentExtendedInner> beginCreateOrUpdateAtSubscriptionScopeWithoutPollingAsync(
-        String deploymentName, DeploymentInner parameters, Context context) {
-        return beginCreateOrUpdateAtSubscriptionScopeWithoutPollingWithResponseAsync(
-                deploymentName, parameters, context)
-            .flatMap(
-                (Response<DeploymentExtendedInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * You can provide the template and parameters directly in the request or link to JSON files.
-     *
-     * @param deploymentName The name of the deployment.
-     * @param parameters Deployment operation parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return deployment information.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public DeploymentExtendedInner beginCreateOrUpdateAtSubscriptionScopeWithoutPolling(
-        String deploymentName, DeploymentInner parameters) {
-        return beginCreateOrUpdateAtSubscriptionScopeWithoutPollingAsync(deploymentName, parameters).block();
-    }
-
-    /**
-     * You can provide the template and parameters directly in the request or link to JSON files.
-     *
-     * @param deploymentName The name of the deployment.
-     * @param parameters Deployment operation parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return deployment information.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public DeploymentExtendedInner beginCreateOrUpdateAtSubscriptionScopeWithoutPolling(
-        String deploymentName, DeploymentInner parameters, Context context) {
-        return beginCreateOrUpdateAtSubscriptionScopeWithoutPollingAsync(deploymentName, parameters, context).block();
-    }
-
-    /**
-     * Returns changes that will be made by the deployment if executed at the scope of the subscription.
-     *
-     * @param deploymentName The name of the deployment.
-     * @param parameters Deployment What-if operation parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the What-If operation.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DeploymentsBeginWhatIfAtSubscriptionScopeWithoutPollingResponse>
-        beginWhatIfAtSubscriptionScopeWithoutPollingWithResponseAsync(
-            String deploymentName, DeploymentWhatIf parameters) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (deploymentName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter deploymentName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (parameters == null) {
-            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
-        } else {
-            parameters.validate();
-        }
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .beginWhatIfAtSubscriptionScopeWithoutPolling(
-                            this.client.getEndpoint(),
-                            deploymentName,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            parameters,
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
-
-    /**
-     * Returns changes that will be made by the deployment if executed at the scope of the subscription.
-     *
-     * @param deploymentName The name of the deployment.
-     * @param parameters Deployment What-if operation parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the What-If operation.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DeploymentsBeginWhatIfAtSubscriptionScopeWithoutPollingResponse>
-        beginWhatIfAtSubscriptionScopeWithoutPollingWithResponseAsync(
-            String deploymentName, DeploymentWhatIf parameters, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (deploymentName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter deploymentName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (parameters == null) {
-            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
-        } else {
-            parameters.validate();
-        }
-        return service
-            .beginWhatIfAtSubscriptionScopeWithoutPolling(
-                this.client.getEndpoint(),
-                deploymentName,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                parameters,
-                context);
-    }
-
-    /**
-     * Returns changes that will be made by the deployment if executed at the scope of the subscription.
-     *
-     * @param deploymentName The name of the deployment.
-     * @param parameters Deployment What-if operation parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the What-If operation.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<WhatIfOperationResultInner> beginWhatIfAtSubscriptionScopeWithoutPollingAsync(
-        String deploymentName, DeploymentWhatIf parameters) {
-        return beginWhatIfAtSubscriptionScopeWithoutPollingWithResponseAsync(deploymentName, parameters)
-            .flatMap(
-                (DeploymentsBeginWhatIfAtSubscriptionScopeWithoutPollingResponse res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Returns changes that will be made by the deployment if executed at the scope of the subscription.
-     *
-     * @param deploymentName The name of the deployment.
-     * @param parameters Deployment What-if operation parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the What-If operation.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<WhatIfOperationResultInner> beginWhatIfAtSubscriptionScopeWithoutPollingAsync(
-        String deploymentName, DeploymentWhatIf parameters, Context context) {
-        return beginWhatIfAtSubscriptionScopeWithoutPollingWithResponseAsync(deploymentName, parameters, context)
-            .flatMap(
-                (DeploymentsBeginWhatIfAtSubscriptionScopeWithoutPollingResponse res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Returns changes that will be made by the deployment if executed at the scope of the subscription.
-     *
-     * @param deploymentName The name of the deployment.
-     * @param parameters Deployment What-if operation parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the What-If operation.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public WhatIfOperationResultInner beginWhatIfAtSubscriptionScopeWithoutPolling(
-        String deploymentName, DeploymentWhatIf parameters) {
-        return beginWhatIfAtSubscriptionScopeWithoutPollingAsync(deploymentName, parameters).block();
-    }
-
-    /**
-     * Returns changes that will be made by the deployment if executed at the scope of the subscription.
-     *
-     * @param deploymentName The name of the deployment.
-     * @param parameters Deployment What-if operation parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the What-If operation.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public WhatIfOperationResultInner beginWhatIfAtSubscriptionScopeWithoutPolling(
-        String deploymentName, DeploymentWhatIf parameters, Context context) {
-        return beginWhatIfAtSubscriptionScopeWithoutPollingAsync(deploymentName, parameters, context).block();
-    }
-
-    /**
-     * A template deployment that is currently running cannot be deleted. Deleting a template deployment removes the
-     * associated deployment operations. Deleting a template deployment does not affect the state of the resource group.
-     * This is an asynchronous operation that returns a status of 202 until the template deployment is successfully
-     * deleted. The Location response header contains the URI that is used to obtain the status of the process. While
-     * the process is running, a call to the URI in the Location header returns a status of 202. When the process
-     * finishes, the URI in the Location header returns a status of 204 on success. If the asynchronous request failed,
-     * the URI in the Location header returns an error-level status code.
-     *
-     * @param resourceGroupName The name of the resource group with the deployment to delete. The name is case
-     *     insensitive.
-     * @param deploymentName The name of the deployment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> beginDeleteWithoutPollingWithResponseAsync(
-        String resourceGroupName, String deploymentName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (deploymentName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter deploymentName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .beginDeleteWithoutPolling(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            deploymentName,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
-
-    /**
-     * A template deployment that is currently running cannot be deleted. Deleting a template deployment removes the
-     * associated deployment operations. Deleting a template deployment does not affect the state of the resource group.
-     * This is an asynchronous operation that returns a status of 202 until the template deployment is successfully
-     * deleted. The Location response header contains the URI that is used to obtain the status of the process. While
-     * the process is running, a call to the URI in the Location header returns a status of 202. When the process
-     * finishes, the URI in the Location header returns a status of 204 on success. If the asynchronous request failed,
-     * the URI in the Location header returns an error-level status code.
-     *
-     * @param resourceGroupName The name of the resource group with the deployment to delete. The name is case
-     *     insensitive.
-     * @param deploymentName The name of the deployment.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> beginDeleteWithoutPollingWithResponseAsync(
-        String resourceGroupName, String deploymentName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (deploymentName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter deploymentName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        return service
-            .beginDeleteWithoutPolling(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                deploymentName,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                context);
-    }
-
-    /**
-     * A template deployment that is currently running cannot be deleted. Deleting a template deployment removes the
-     * associated deployment operations. Deleting a template deployment does not affect the state of the resource group.
-     * This is an asynchronous operation that returns a status of 202 until the template deployment is successfully
-     * deleted. The Location response header contains the URI that is used to obtain the status of the process. While
-     * the process is running, a call to the URI in the Location header returns a status of 202. When the process
-     * finishes, the URI in the Location header returns a status of 204 on success. If the asynchronous request failed,
-     * the URI in the Location header returns an error-level status code.
-     *
-     * @param resourceGroupName The name of the resource group with the deployment to delete. The name is case
-     *     insensitive.
-     * @param deploymentName The name of the deployment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> beginDeleteWithoutPollingAsync(String resourceGroupName, String deploymentName) {
-        return beginDeleteWithoutPollingWithResponseAsync(resourceGroupName, deploymentName)
-            .flatMap((Response<Void> res) -> Mono.empty());
-    }
-
-    /**
-     * A template deployment that is currently running cannot be deleted. Deleting a template deployment removes the
-     * associated deployment operations. Deleting a template deployment does not affect the state of the resource group.
-     * This is an asynchronous operation that returns a status of 202 until the template deployment is successfully
-     * deleted. The Location response header contains the URI that is used to obtain the status of the process. While
-     * the process is running, a call to the URI in the Location header returns a status of 202. When the process
-     * finishes, the URI in the Location header returns a status of 204 on success. If the asynchronous request failed,
-     * the URI in the Location header returns an error-level status code.
-     *
-     * @param resourceGroupName The name of the resource group with the deployment to delete. The name is case
-     *     insensitive.
-     * @param deploymentName The name of the deployment.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> beginDeleteWithoutPollingAsync(String resourceGroupName, String deploymentName, Context context) {
-        return beginDeleteWithoutPollingWithResponseAsync(resourceGroupName, deploymentName, context)
-            .flatMap((Response<Void> res) -> Mono.empty());
-    }
-
-    /**
-     * A template deployment that is currently running cannot be deleted. Deleting a template deployment removes the
-     * associated deployment operations. Deleting a template deployment does not affect the state of the resource group.
-     * This is an asynchronous operation that returns a status of 202 until the template deployment is successfully
-     * deleted. The Location response header contains the URI that is used to obtain the status of the process. While
-     * the process is running, a call to the URI in the Location header returns a status of 202. When the process
-     * finishes, the URI in the Location header returns a status of 204 on success. If the asynchronous request failed,
-     * the URI in the Location header returns an error-level status code.
-     *
-     * @param resourceGroupName The name of the resource group with the deployment to delete. The name is case
-     *     insensitive.
-     * @param deploymentName The name of the deployment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void beginDeleteWithoutPolling(String resourceGroupName, String deploymentName) {
-        beginDeleteWithoutPollingAsync(resourceGroupName, deploymentName).block();
-    }
-
-    /**
-     * A template deployment that is currently running cannot be deleted. Deleting a template deployment removes the
-     * associated deployment operations. Deleting a template deployment does not affect the state of the resource group.
-     * This is an asynchronous operation that returns a status of 202 until the template deployment is successfully
-     * deleted. The Location response header contains the URI that is used to obtain the status of the process. While
-     * the process is running, a call to the URI in the Location header returns a status of 202. When the process
-     * finishes, the URI in the Location header returns a status of 204 on success. If the asynchronous request failed,
-     * the URI in the Location header returns an error-level status code.
-     *
-     * @param resourceGroupName The name of the resource group with the deployment to delete. The name is case
-     *     insensitive.
-     * @param deploymentName The name of the deployment.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void beginDeleteWithoutPolling(String resourceGroupName, String deploymentName, Context context) {
-        beginDeleteWithoutPollingAsync(resourceGroupName, deploymentName, context).block();
-    }
-
-    /**
-     * You can provide the template and parameters directly in the request or link to JSON files.
-     *
-     * @param resourceGroupName The name of the resource group to deploy the resources to. The name is case insensitive.
-     *     The resource group must already exist.
-     * @param deploymentName The name of the deployment.
-     * @param parameters Deployment operation parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return deployment information.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<DeploymentExtendedInner>> beginCreateOrUpdateWithoutPollingWithResponseAsync(
-        String resourceGroupName, String deploymentName, DeploymentInner parameters) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (deploymentName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter deploymentName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (parameters == null) {
-            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
-        } else {
-            parameters.validate();
-        }
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .beginCreateOrUpdateWithoutPolling(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            deploymentName,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            parameters,
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
-
-    /**
-     * You can provide the template and parameters directly in the request or link to JSON files.
-     *
-     * @param resourceGroupName The name of the resource group to deploy the resources to. The name is case insensitive.
-     *     The resource group must already exist.
-     * @param deploymentName The name of the deployment.
-     * @param parameters Deployment operation parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return deployment information.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<DeploymentExtendedInner>> beginCreateOrUpdateWithoutPollingWithResponseAsync(
-        String resourceGroupName, String deploymentName, DeploymentInner parameters, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (deploymentName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter deploymentName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (parameters == null) {
-            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
-        } else {
-            parameters.validate();
-        }
-        return service
-            .beginCreateOrUpdateWithoutPolling(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                deploymentName,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                parameters,
-                context);
-    }
-
-    /**
-     * You can provide the template and parameters directly in the request or link to JSON files.
-     *
-     * @param resourceGroupName The name of the resource group to deploy the resources to. The name is case insensitive.
-     *     The resource group must already exist.
-     * @param deploymentName The name of the deployment.
-     * @param parameters Deployment operation parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return deployment information.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DeploymentExtendedInner> beginCreateOrUpdateWithoutPollingAsync(
-        String resourceGroupName, String deploymentName, DeploymentInner parameters) {
-        return beginCreateOrUpdateWithoutPollingWithResponseAsync(resourceGroupName, deploymentName, parameters)
-            .flatMap(
-                (Response<DeploymentExtendedInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * You can provide the template and parameters directly in the request or link to JSON files.
-     *
-     * @param resourceGroupName The name of the resource group to deploy the resources to. The name is case insensitive.
-     *     The resource group must already exist.
-     * @param deploymentName The name of the deployment.
-     * @param parameters Deployment operation parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return deployment information.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DeploymentExtendedInner> beginCreateOrUpdateWithoutPollingAsync(
-        String resourceGroupName, String deploymentName, DeploymentInner parameters, Context context) {
-        return beginCreateOrUpdateWithoutPollingWithResponseAsync(
-                resourceGroupName, deploymentName, parameters, context)
-            .flatMap(
-                (Response<DeploymentExtendedInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * You can provide the template and parameters directly in the request or link to JSON files.
-     *
-     * @param resourceGroupName The name of the resource group to deploy the resources to. The name is case insensitive.
-     *     The resource group must already exist.
-     * @param deploymentName The name of the deployment.
-     * @param parameters Deployment operation parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return deployment information.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public DeploymentExtendedInner beginCreateOrUpdateWithoutPolling(
-        String resourceGroupName, String deploymentName, DeploymentInner parameters) {
-        return beginCreateOrUpdateWithoutPollingAsync(resourceGroupName, deploymentName, parameters).block();
-    }
-
-    /**
-     * You can provide the template and parameters directly in the request or link to JSON files.
-     *
-     * @param resourceGroupName The name of the resource group to deploy the resources to. The name is case insensitive.
-     *     The resource group must already exist.
-     * @param deploymentName The name of the deployment.
-     * @param parameters Deployment operation parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return deployment information.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public DeploymentExtendedInner beginCreateOrUpdateWithoutPolling(
-        String resourceGroupName, String deploymentName, DeploymentInner parameters, Context context) {
-        return beginCreateOrUpdateWithoutPollingAsync(resourceGroupName, deploymentName, parameters, context).block();
-    }
-
-    /**
-     * Returns changes that will be made by the deployment if executed at the scope of the resource group.
-     *
-     * @param resourceGroupName The name of the resource group the template will be deployed to. The name is case
-     *     insensitive.
-     * @param deploymentName The name of the deployment.
-     * @param parameters Deployment What-if operation parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the What-If operation.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DeploymentsBeginWhatIfWithoutPollingResponse> beginWhatIfWithoutPollingWithResponseAsync(
-        String resourceGroupName, String deploymentName, DeploymentWhatIf parameters) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (deploymentName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter deploymentName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (parameters == null) {
-            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
-        } else {
-            parameters.validate();
-        }
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .beginWhatIfWithoutPolling(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            deploymentName,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            parameters,
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
-
-    /**
-     * Returns changes that will be made by the deployment if executed at the scope of the resource group.
-     *
-     * @param resourceGroupName The name of the resource group the template will be deployed to. The name is case
-     *     insensitive.
-     * @param deploymentName The name of the deployment.
-     * @param parameters Deployment What-if operation parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the What-If operation.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DeploymentsBeginWhatIfWithoutPollingResponse> beginWhatIfWithoutPollingWithResponseAsync(
-        String resourceGroupName, String deploymentName, DeploymentWhatIf parameters, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (deploymentName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter deploymentName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (parameters == null) {
-            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
-        } else {
-            parameters.validate();
-        }
-        return service
-            .beginWhatIfWithoutPolling(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                deploymentName,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                parameters,
-                context);
-    }
-
-    /**
-     * Returns changes that will be made by the deployment if executed at the scope of the resource group.
-     *
-     * @param resourceGroupName The name of the resource group the template will be deployed to. The name is case
-     *     insensitive.
-     * @param deploymentName The name of the deployment.
-     * @param parameters Deployment What-if operation parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the What-If operation.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<WhatIfOperationResultInner> beginWhatIfWithoutPollingAsync(
-        String resourceGroupName, String deploymentName, DeploymentWhatIf parameters) {
-        return beginWhatIfWithoutPollingWithResponseAsync(resourceGroupName, deploymentName, parameters)
-            .flatMap(
-                (DeploymentsBeginWhatIfWithoutPollingResponse res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Returns changes that will be made by the deployment if executed at the scope of the resource group.
-     *
-     * @param resourceGroupName The name of the resource group the template will be deployed to. The name is case
-     *     insensitive.
-     * @param deploymentName The name of the deployment.
-     * @param parameters Deployment What-if operation parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the What-If operation.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<WhatIfOperationResultInner> beginWhatIfWithoutPollingAsync(
-        String resourceGroupName, String deploymentName, DeploymentWhatIf parameters, Context context) {
-        return beginWhatIfWithoutPollingWithResponseAsync(resourceGroupName, deploymentName, parameters, context)
-            .flatMap(
-                (DeploymentsBeginWhatIfWithoutPollingResponse res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Returns changes that will be made by the deployment if executed at the scope of the resource group.
-     *
-     * @param resourceGroupName The name of the resource group the template will be deployed to. The name is case
-     *     insensitive.
-     * @param deploymentName The name of the deployment.
-     * @param parameters Deployment What-if operation parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the What-If operation.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public WhatIfOperationResultInner beginWhatIfWithoutPolling(
-        String resourceGroupName, String deploymentName, DeploymentWhatIf parameters) {
-        return beginWhatIfWithoutPollingAsync(resourceGroupName, deploymentName, parameters).block();
-    }
-
-    /**
-     * Returns changes that will be made by the deployment if executed at the scope of the resource group.
-     *
-     * @param resourceGroupName The name of the resource group the template will be deployed to. The name is case
-     *     insensitive.
-     * @param deploymentName The name of the deployment.
-     * @param parameters Deployment What-if operation parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the What-If operation.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public WhatIfOperationResultInner beginWhatIfWithoutPolling(
-        String resourceGroupName, String deploymentName, DeploymentWhatIf parameters, Context context) {
-        return beginWhatIfWithoutPollingAsync(resourceGroupName, deploymentName, parameters, context).block();
     }
 
     /**

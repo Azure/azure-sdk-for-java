@@ -1,25 +1,24 @@
 package com.azure.cosmos;
 
-import com.azure.cosmos.implementation.InternalObjectNode;
 import com.azure.cosmos.implementation.FailureValidator;
+import com.azure.cosmos.implementation.InternalObjectNode;
 import com.azure.cosmos.implementation.RetryAnalyzer;
-import com.azure.cosmos.models.CosmosContainerResponse;
-import com.azure.cosmos.models.CosmosDatabaseResponse;
-import com.azure.cosmos.models.CosmosItemResponse;
+import com.azure.cosmos.implementation.TestConfigurations;
 import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.CosmosContainerRequestOptions;
+import com.azure.cosmos.models.CosmosContainerResponse;
 import com.azure.cosmos.models.CosmosDatabaseProperties;
 import com.azure.cosmos.models.CosmosDatabaseRequestOptions;
+import com.azure.cosmos.models.CosmosDatabaseResponse;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
+import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.CosmosResponse;
 import com.azure.cosmos.models.IndexingMode;
 import com.azure.cosmos.models.IndexingPolicy;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKey;
-import com.azure.cosmos.models.PartitionKeyDefinition;
 import com.azure.cosmos.rx.CosmosItemResponseValidator;
 import com.azure.cosmos.rx.TestSuiteBase;
-import com.azure.cosmos.implementation.TestConfigurations;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeClass;
@@ -63,17 +62,6 @@ public class AzureKeyCredentialTest extends TestSuiteBase {
             // with special characters in the name.
             {"+ -_,:.|~" + UUID.randomUUID().toString() + " +-_,:.|~"} ,
         };
-    }
-
-    private CosmosContainerProperties getCollectionDefinition(String collectionName) {
-        PartitionKeyDefinition partitionKeyDef = new PartitionKeyDefinition();
-        ArrayList<String> paths = new ArrayList<>();
-        paths.add("/mypk");
-        partitionKeyDef.setPaths(paths);
-
-        return new CosmosContainerProperties(
-            collectionName,
-            partitionKeyDef);
     }
 
     private InternalObjectNode getDocumentDefinition(String documentId) {
@@ -169,13 +157,13 @@ public class AzureKeyCredentialTest extends TestSuiteBase {
 
         // replace indexing mode
         IndexingPolicy indexingMode = new IndexingPolicy();
-        indexingMode.setIndexingMode(IndexingMode.LAZY);
+        indexingMode.setIndexingMode(IndexingMode.CONSISTENT);
         collectionSettings.setIndexingPolicy(indexingMode);
         Mono<CosmosContainerResponse> readObservable = collection.replace(collectionSettings, new CosmosContainerRequestOptions());
 
         // validate
         CosmosResponseValidator<CosmosContainerResponse> validator = new CosmosResponseValidator.Builder<CosmosContainerResponse>()
-            .indexingMode(IndexingMode.LAZY).build();
+            .indexingMode(IndexingMode.CONSISTENT).build();
         validateSuccess(readObservable, validator);
 
         //  sanity check

@@ -15,7 +15,7 @@ public final class WinRMListener {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(WinRMListener.class);
 
     /*
-     * Specifies the protocol of listener. <br><br> Possible values are:
+     * Specifies the protocol of WinRM listener. <br><br> Possible values are:
      * <br>**http** <br><br> **https**
      */
     @JsonProperty(value = "protocol")
@@ -35,7 +35,7 @@ public final class WinRMListener {
     private String certificateUrl;
 
     /**
-     * Get the protocol property: Specifies the protocol of listener. &lt;br&gt;&lt;br&gt; Possible values are:
+     * Get the protocol property: Specifies the protocol of WinRM listener. &lt;br&gt;&lt;br&gt; Possible values are:
      * &lt;br&gt;**http** &lt;br&gt;&lt;br&gt; **https**.
      *
      * @return the protocol value.
@@ -45,7 +45,7 @@ public final class WinRMListener {
     }
 
     /**
-     * Set the protocol property: Specifies the protocol of listener. &lt;br&gt;&lt;br&gt; Possible values are:
+     * Set the protocol property: Specifies the protocol of WinRM listener. &lt;br&gt;&lt;br&gt; Possible values are:
      * &lt;br&gt;**http** &lt;br&gt;&lt;br&gt; **https**.
      *
      * @param protocol the protocol value to set.
