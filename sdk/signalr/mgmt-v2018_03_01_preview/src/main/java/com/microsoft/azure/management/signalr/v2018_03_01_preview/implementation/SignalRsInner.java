@@ -1277,6 +1277,7 @@ public class SignalRsInner implements InnerSupportsGet<SignalRResourceInner>, In
 
     private ServiceResponse<SignalRResourceInner> beginCreateOrUpdateDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<SignalRResourceInner, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<SignalRResourceInner>() { }.getType())
                 .register(201, new TypeToken<SignalRResourceInner>() { }.getType())
                 .register(202, new TypeToken<Void>() { }.getType())
                 .registerError(CloudException.class)

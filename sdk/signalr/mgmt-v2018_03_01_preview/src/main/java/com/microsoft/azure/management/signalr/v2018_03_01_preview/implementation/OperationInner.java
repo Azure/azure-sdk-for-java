@@ -42,7 +42,7 @@ public class OperationInner {
     private OperationProperties properties;
 
     /**
-     * Get the name value.
+     * Get name of the operation with format: {provider}/{resource}/{operation}.
      *
      * @return the name value
      */
@@ -51,7 +51,7 @@ public class OperationInner {
     }
 
     /**
-     * Set the name value.
+     * Set name of the operation with format: {provider}/{resource}/{operation}.
      *
      * @param name the name value to set
      * @return the OperationInner object itself.
@@ -62,7 +62,7 @@ public class OperationInner {
     }
 
     /**
-     * Get the display value.
+     * Get the object that describes the operation.
      *
      * @return the display value
      */
@@ -71,7 +71,7 @@ public class OperationInner {
     }
 
     /**
-     * Set the display value.
+     * Set the object that describes the operation.
      *
      * @param display the display value to set
      * @return the OperationInner object itself.
@@ -82,7 +82,7 @@ public class OperationInner {
     }
 
     /**
-     * Get the origin value.
+     * Get optional. The intended executor of the operation; governs the display of the operation in the RBAC UX and the audit logs UX.
      *
      * @return the origin value
      */
@@ -91,7 +91,7 @@ public class OperationInner {
     }
 
     /**
-     * Set the origin value.
+     * Set optional. The intended executor of the operation; governs the display of the operation in the RBAC UX and the audit logs UX.
      *
      * @param origin the origin value to set
      * @return the OperationInner object itself.
@@ -102,7 +102,7 @@ public class OperationInner {
     }
 
     /**
-     * Get the properties value.
+     * Get extra properties for the operation.
      *
      * @return the properties value
      */
@@ -111,7 +111,7 @@ public class OperationInner {
     }
 
     /**
-     * Set the properties value.
+     * Set extra properties for the operation.
      *
      * @param properties the properties value to set
      * @return the OperationInner object itself.
