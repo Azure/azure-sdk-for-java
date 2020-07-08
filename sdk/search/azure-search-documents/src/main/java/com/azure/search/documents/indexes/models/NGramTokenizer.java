@@ -112,4 +112,15 @@ public final class NGramTokenizer extends LexicalTokenizer {
         this.tokenChars = Arrays.asList(tokenChars);
         return this;
     }
+
+    /**
+     * Set the tokenChars property: Character classes to keep in the tokens.
+     *
+     * @param tokenChars the tokenChars value to set.
+     * @return the NGramTokenizer object itself.
+     */
+    public NGramTokenizer setTokenChars(List<TokenCharacterKind> tokenChars) {
+        this.tokenChars = tokenChars;
+        return this;
+    }
 }

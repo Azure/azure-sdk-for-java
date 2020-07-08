@@ -108,6 +108,18 @@ public final class ScoringProfile {
     }
 
     /**
+     * Set the functions property: The collection of functions that influence
+     * the scoring of documents.
+     *
+     * @param functions the functions value to set.
+     * @return the ScoringProfile object itself.
+     */
+    public ScoringProfile setFunctions(List<ScoringFunction> functions) {
+        this.functions = functions;
+        return this;
+    }
+
+    /**
      * Get the functionAggregation property: A value indicating how the results
      * of individual scoring functions should be combined. Defaults to "Sum".
      * Ignored if there are no scoring functions. Possible values include:

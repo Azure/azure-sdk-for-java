@@ -112,4 +112,15 @@ public final class EdgeNGramTokenizer extends LexicalTokenizer {
         this.tokenChars = Arrays.asList(tokenChars);
         return this;
     }
+
+    /**
+     * Set the tokenChars property: Character classes to keep in the tokens.
+     *
+     * @param tokenChars the tokenChars value to set.
+     * @return the EdgeNGramTokenizer object itself.
+     */
+    public EdgeNGramTokenizer setTokenChars(List<TokenCharacterKind> tokenChars) {
+        this.tokenChars = tokenChars;
+        return this;
+    }
 }

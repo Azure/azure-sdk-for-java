@@ -7,6 +7,8 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -69,6 +71,18 @@ public final class StopwordsTokenFilter extends TokenFilter {
      */
     public List<String> getStopwords() {
         return this.stopwords;
+    }
+
+    /**
+     * Set the stopwords property: The list of stopwords. This property and the
+     * stopwords list property cannot both be set.
+     *
+     * @param stopwords the stopwords value to set.
+     * @return the StopwordsTokenFilter object itself.
+     */
+    public StopwordsTokenFilter setStopwords(String... stopwords) {
+        this.stopwords = Arrays.asList(stopwords);
+        return this;
     }
 
     /**

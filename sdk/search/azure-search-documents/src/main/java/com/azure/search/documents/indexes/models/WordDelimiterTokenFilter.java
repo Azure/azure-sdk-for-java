@@ -335,4 +335,16 @@ public final class WordDelimiterTokenFilter extends TokenFilter {
         this.protectedWords = Arrays.asList(protectedWords);
         return this;
     }
+
+    /**
+     * Set the protectedWords property: A list of tokens to protect from being
+     * delimited.
+     *
+     * @param protectedWords the protectedWords value to set.
+     * @return the WordDelimiterTokenFilter object itself.
+     */
+    public WordDelimiterTokenFilter setProtectedWords(List<String> protectedWords) {
+        this.protectedWords = protectedWords;
+        return this;
+    }
 }

@@ -55,4 +55,15 @@ public final class StopAnalyzer extends LexicalAnalyzer {
         this.stopwords = Arrays.asList(stopwords);
         return this;
     }
+
+    /**
+     * Set the stopwords property: A list of stopwords.
+     *
+     * @param stopwords the stopwords value to set.
+     * @return the StopAnalyzer object itself.
+     */
+    public StopAnalyzer setStopwords(List<String> stopwords) {
+        this.stopwords = stopwords;
+        return this;
+    }
 }

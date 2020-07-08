@@ -95,6 +95,17 @@ public final class ImageAnalysisSkill extends SearchIndexerSkill {
     }
 
     /**
+     * Set the visualFeatures property: A list of visual features.
+     *
+     * @param visualFeatures the visualFeatures value to set.
+     * @return the ImageAnalysisSkill object itself.
+     */
+    public ImageAnalysisSkill setVisualFeatures(List<VisualFeature> visualFeatures) {
+        this.visualFeatures = visualFeatures;
+        return this;
+    }
+
+    /**
      * Get the details property: A string indicating which domain-specific
      * details to return.
      *
@@ -113,6 +124,18 @@ public final class ImageAnalysisSkill extends SearchIndexerSkill {
      */
     public ImageAnalysisSkill setDetails(ImageDetail... details) {
         this.details = Arrays.asList(details);
+        return this;
+    }
+
+    /**
+     * Set the details property: A string indicating which domain-specific
+     * details to return.
+     *
+     * @param details the details value to set.
+     * @return the ImageAnalysisSkill object itself.
+     */
+    public ImageAnalysisSkill setDetails(List<ImageDetail> details) {
+        this.details = details;
         return this;
     }
 }

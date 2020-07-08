@@ -6,6 +6,8 @@ package com.azure.search.documents.indexes.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -259,6 +261,18 @@ public final class SearchIndexer {
      * @param fieldMappings the fieldMappings value to set.
      * @return the SearchIndexer object itself.
      */
+    public SearchIndexer setFieldMappings(FieldMapping... fieldMappings) {
+        this.fieldMappings = Arrays.asList(fieldMappings);
+        return this;
+    }
+
+    /**
+     * Set the fieldMappings property: Defines mappings between fields in the
+     * data source and corresponding target fields in the index.
+     *
+     * @param fieldMappings the fieldMappings value to set.
+     * @return the SearchIndexer object itself.
+     */
     public SearchIndexer setFieldMappings(List<FieldMapping> fieldMappings) {
         this.fieldMappings = fieldMappings;
         return this;
@@ -272,6 +286,18 @@ public final class SearchIndexer {
      */
     public List<FieldMapping> getOutputFieldMappings() {
         return this.outputFieldMappings;
+    }
+
+    /**
+     * Set the outputFieldMappings property: Output field mappings are applied
+     * after enrichment and immediately before indexing.
+     *
+     * @param outputFieldMappings the outputFieldMappings value to set.
+     * @return the SearchIndexer object itself.
+     */
+    public SearchIndexer setOutputFieldMappings(FieldMapping... outputFieldMappings) {
+        this.outputFieldMappings = Arrays.asList(outputFieldMappings);
+        return this;
     }
 
     /**

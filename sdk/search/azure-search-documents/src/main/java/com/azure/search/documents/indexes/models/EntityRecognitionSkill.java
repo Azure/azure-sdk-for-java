@@ -84,6 +84,18 @@ public final class EntityRecognitionSkill extends SearchIndexerSkill {
     }
 
     /**
+     * Set the categories property: A list of entity categories that should be
+     * extracted.
+     *
+     * @param categories the categories value to set.
+     * @return the EntityRecognitionSkill object itself.
+     */
+    public EntityRecognitionSkill setCategories(List<EntityCategory> categories) {
+        this.categories = categories;
+        return this;
+    }
+
+    /**
      * Get the defaultLanguageCode property: A value indicating which language
      * code to use. Default is en. Possible values include: 'ar', 'cs',
      * 'zh-Hans', 'zh-Hant', 'da', 'nl', 'en', 'fi', 'fr', 'de', 'el', 'hu',

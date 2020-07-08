@@ -122,6 +122,17 @@ public final class PatternAnalyzer extends LexicalAnalyzer {
     }
 
     /**
+     * Set the flags property: Regular expression flags.
+     *
+     * @param flags the flags value to set.
+     * @return the PatternAnalyzer object itself.
+     */
+    public PatternAnalyzer setFlags(List<RegexFlags> flags) {
+        this.flags = flags;
+        return this;
+    }
+
+    /**
      * Get the stopwords property: A list of stopwords.
      *
      * @return the stopwords value.
@@ -138,6 +149,17 @@ public final class PatternAnalyzer extends LexicalAnalyzer {
      */
     public PatternAnalyzer setStopwords(String... stopwords) {
         this.stopwords = Arrays.asList(stopwords);
+        return this;
+    }
+
+    /**
+     * Set the stopwords property: A list of stopwords.
+     *
+     * @param stopwords the stopwords value to set.
+     * @return the PatternAnalyzer object itself.
+     */
+    public PatternAnalyzer setStopwords(List<String> stopwords) {
+        this.stopwords = stopwords;
         return this;
     }
 }

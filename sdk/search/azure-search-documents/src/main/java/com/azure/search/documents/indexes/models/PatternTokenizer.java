@@ -97,6 +97,17 @@ public final class PatternTokenizer extends LexicalTokenizer {
     }
 
     /**
+     * Set the flags property: Regular expression flags.
+     *
+     * @param flags the flags value to set.
+     * @return the PatternTokenizer object itself.
+     */
+    public PatternTokenizer setFlags(List<RegexFlags> flags) {
+        this.flags = flags;
+        return this;
+    }
+
+    /**
      * Get the group property: The zero-based ordinal of the matching group in
      * the regular expression pattern to extract into tokens. Use -1 if you
      * want to use the entire pattern to split the input into tokens,

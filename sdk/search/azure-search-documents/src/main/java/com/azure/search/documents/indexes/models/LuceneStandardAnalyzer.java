@@ -89,4 +89,15 @@ public final class LuceneStandardAnalyzer extends LexicalAnalyzer {
         this.stopwords = Arrays.asList(stopwords);
         return this;
     }
+
+    /**
+     * Set the stopwords property: A list of stopwords.
+     *
+     * @param stopwords the stopwords value to set.
+     * @return the LuceneStandardAnalyzer object itself.
+     */
+    public LuceneStandardAnalyzer setStopwords(List<String> stopwords) {
+        this.stopwords = stopwords;
+        return this;
+    }
 }

@@ -66,6 +66,17 @@ public final class CjkBigramTokenFilter extends TokenFilter {
     }
 
     /**
+     * Set the ignoreScripts property: The scripts to ignore.
+     *
+     * @param ignoreScripts the ignoreScripts value to set.
+     * @return the CjkBigramTokenFilter object itself.
+     */
+    public CjkBigramTokenFilter setIgnoreScripts(List<CjkBigramTokenFilterScripts> ignoreScripts) {
+        this.ignoreScripts = ignoreScripts;
+        return this;
+    }
+
+    /**
      * Get the outputUnigrams property: A value indicating whether to output
      * both unigrams and bigrams (if true), or just bigrams (if false). Default
      * is false.

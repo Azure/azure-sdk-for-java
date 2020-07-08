@@ -55,4 +55,15 @@ public final class ElisionTokenFilter extends TokenFilter {
         this.articles = Arrays.asList(articles);
         return this;
     }
+
+    /**
+     * Set the articles property: The set of articles to remove.
+     *
+     * @param articles the articles value to set.
+     * @return the ElisionTokenFilter object itself.
+     */
+    public ElisionTokenFilter setArticles(List<String> articles) {
+        this.articles = articles;
+        return this;
+    }
 }

@@ -7,6 +7,8 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -683,6 +685,23 @@ public final class SearchField {
      * @param synonymMapNames the synonymMap names to set.
      * @return the SearchField object itself.
      */
+    public SearchField setSynonymMapNames(String... synonymMapNames) {
+        this.synonymMapNames = Arrays.asList(synonymMapNames);
+        return this;
+    }
+
+    /**
+     * Set the synonymMaps property: A list of the names of synonym maps to
+     * associate with this field. This option can be used only with searchable
+     * fields. Currently only one synonym map per field is supported. Assigning
+     * a synonym map to a field ensures that query terms targeting that field
+     * are expanded at query-time using the rules in the synonym map. This
+     * attribute can be changed on existing fields. Must be null or an empty
+     * collection for complex fields.
+     *
+     * @param synonymMapNames the synonymMap names to set.
+     * @return the SearchField object itself.
+     */
     public SearchField setSynonymMapNames(List<String> synonymMapNames) {
         this.synonymMapNames = synonymMapNames;
         return this;
@@ -697,6 +716,19 @@ public final class SearchField {
      */
     public List<SearchField> getFields() {
         return this.fields;
+    }
+
+    /**
+     * Set the fields property: A list of sub-fields if this is a field of type
+     * Edm.ComplexType or Collection(Edm.ComplexType). Must be null or empty
+     * for simple fields.
+     *
+     * @param fields the fields value to set.
+     * @return the SearchField object itself.
+     */
+    public SearchField setFields(SearchField... fields) {
+        this.fields = Arrays.asList(fields);
+        return this;
     }
 
     /**
