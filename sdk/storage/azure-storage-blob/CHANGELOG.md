@@ -1,6 +1,9 @@
 # Release History
 
-## 12.8.0-beta.1 (Unreleased)
+## 12.8.0-beta.2 (Unreleased)
+
+
+## 12.8.0-beta.1 (2020-07-07)
 - Added support for the 2019-12-12 service version.
 - Added support for blob tags. Added get/setTags method to Blob(Async)ClientBase. Added filterTags api to BlobServiceClient. Added ability to specify tags on all methods that create a blob. Tag count returned on getProperties/getBlob. Option to include returning tags on listing. 
 - Added support to query a blob. Added query and opernQueryInputStream methods to Blob(Async)ClientBase.

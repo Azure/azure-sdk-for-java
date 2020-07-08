@@ -704,9 +704,8 @@ public final class SearchAsyncClient {
 
         Map<String, List<FacetResult>> facets = new HashMap<>();
 
-        result.getFacets().forEach((key, values) -> {
-            facets.put(key, values.stream().map(FacetResultConverter::map).collect(Collectors.toList()));
-        });
+        result.getFacets().forEach((key, values) ->
+            facets.put(key, values.stream().map(FacetResultConverter::map).collect(Collectors.toList())));
 
         return facets;
     }
@@ -951,10 +950,11 @@ public final class SearchAsyncClient {
     }
 
     private static <T> IndexDocumentsBatch<T> buildIndexBatch(Iterable<T> documents, IndexActionType actionType) {
-        List<IndexAction<T>> actions = new ArrayList<IndexAction<T>>();
+        List<IndexAction<T>> actions = new ArrayList<>();
         documents.forEach(d -> actions.add(new IndexAction<T>()
             .setActionType(actionType)
             .setDocument(d)));
-        return new IndexDocumentsBatch<T>(actions);
+
+        return new IndexDocumentsBatch<T>().addActions(actions);
     }
 }
