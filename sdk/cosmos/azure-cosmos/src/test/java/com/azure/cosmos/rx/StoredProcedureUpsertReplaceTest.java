@@ -122,7 +122,7 @@ public class StoredProcedureUpsertReplaceTest extends TestSuiteBase {
 
         String logResult = "The value of x is 1.";
         assert executeResponse != null;
-        assertThat(URLDecoder.decode(executeResponse.getScriptLog(), StandardCharsets.UTF_8)).isEqualTo(logResult);
+        assertThat(URLDecoder.decode(executeResponse.getScriptLog(), StandardCharsets.UTF_8.toString())).isEqualTo(logResult);
     }
 
     @BeforeClass(groups = { "simple" }, timeOut = SETUP_TIMEOUT)
