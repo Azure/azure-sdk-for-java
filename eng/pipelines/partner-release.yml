@@ -1,0 +1,6 @@
+trigger: none
+pr: none
+
+steps:
+- script: |
+    echo Hello, world
