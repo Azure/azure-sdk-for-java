@@ -139,6 +139,18 @@ jobs:
           ${{ insert }}: ${{ parameters.TestStepMavenInputs }}
         env: ${{ parameters.EnvVars }}
 
+      - script: |
+          python3 --version
+          python3 ./sdk/spring/script/set-version/set_versions.py
+        displayName: set_versions.py
+
+      - task: Maven@3
+        displayName: 'Run tests: $(DisplayName)'
+        inputs:
+          mavenPomFile: pom.xml
+          ${{ insert }}: ${{ parameters.TestStepMavenInputs }}
+        env: ${{ parameters.EnvVars }}
+
       - ${{ parameters.PostRunSteps }}
 
       - ${{ if ne(parameters.DisableAzureResourceCreation, 'true') }}:
