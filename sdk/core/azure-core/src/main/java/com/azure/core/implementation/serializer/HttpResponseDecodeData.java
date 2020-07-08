@@ -77,7 +77,7 @@ public interface HttpResponseDecodeData {
         if (expectedStatuses != null) {
             return Arrays.stream(expectedStatuses).anyMatch(expectedCode -> expectedCode == statusCode);
         } else {
-            return statusCode / 100 == 2;
+            return statusCode < 400;
         }
     }
 

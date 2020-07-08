@@ -365,7 +365,7 @@ class SwaggerMethodParser implements HttpResponseDecodeData {
     @Override
     public boolean isExpectedResponseStatusCode(int statusCode) {
         return expectedStatusCodes == null
-            ? statusCode / 100 == 2
+            ? statusCode < 400
             : expectedStatusCodesBitSet.get(statusCode);
     }
 
