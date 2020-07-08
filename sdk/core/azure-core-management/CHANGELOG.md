@@ -1,7 +1,10 @@
 # Release History
 
-## 1.0.0-beta.2 (Unreleased)
+## 1.0.0-beta.2 (2020-07-08)
 
+- Added additional `ManagementError` constructors.
+- Added additional `PollingState` checks.
+- Fixed polling status HTTP status code check to include `204`.
 
 ## 1.0.0-beta.1 (2020-06-17)
 - `PollerFactory` for polling of long-running operation.
