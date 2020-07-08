@@ -285,7 +285,11 @@ public class EventHubProducerAsyncClient implements Closeable {
      */
     public <T> Mono<ObjectBatch<T>> createBatch(Class<T> objectType, CreateBatchOptions options) {
         if (objectType == null) {
-            return monoError(logger, new NullPointerException("'objectType' cannot be null."));
+            return monoError(logger, new IllegalArgumentException("'objectType' cannot be null."));
+        }
+        if (serializer == null) {
+            return monoError(logger,
+                new NullPointerException("No serializer set for performing object serialization for ObjectBatch."));
         }
         if (options == null) {
             return monoError(logger, new NullPointerException("'options' cannot be null."));
