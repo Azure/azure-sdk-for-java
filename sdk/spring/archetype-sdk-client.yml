@@ -11,33 +11,33 @@ parameters:
       OSVmImage: 'ubuntu-18.04'
       JavaTestVersion: '1.8'
       RunTitle: 'Linux on Java 1.8'
-    macOS - Java 8:
-      OSVmImage: 'macOS-10.15'
-      JavaTestVersion: '1.8'
-      RunTitle: 'macOS on Java 1.8'
-    Windows - Java 8:
-      OSVmImage: 'windows-2019'
-      JavaTestVersion: '1.8'
-      RunTitle: 'Windows on Java 1.8'
-    Linux - Java 11:
-      OSVmImage: 'ubuntu-18.04'
-      JavaTestVersion: '1.11'
-      RunTitle: 'Linux on Java 1.11'
-    macOS - Java 11:
-      OSVmImage: 'macOS-10.15'
-      JavaTestVersion: '1.11'
-      RunTitle: 'macOS on Java 1.11'
-    Windows - Java 11:
-      OSVmImage: 'windows-2019'
-      JavaTestVersion: '1.11'
-      RunTitle: 'Windows on Java 1.11'
-    Windows From Source - Java 8:
-      OSVmImage: 'windows-2019'
-      JavaTestVersion: '1.8'
-      RunTitle: 'From Source: Windows on Java 1.8'
-      PLSkipOptions: '!com.azure:jacoco-test-coverage'
-      AdditionalOptions: '-amd'
-      TestFromSource: true
+#    macOS - Java 8:
+#      OSVmImage: 'macOS-10.15'
+#      JavaTestVersion: '1.8'
+#      RunTitle: 'macOS on Java 1.8'
+#    Windows - Java 8:
+#      OSVmImage: 'windows-2019'
+#      JavaTestVersion: '1.8'
+#      RunTitle: 'Windows on Java 1.8'
+#    Linux - Java 11:
+#      OSVmImage: 'ubuntu-18.04'
+#      JavaTestVersion: '1.11'
+#      RunTitle: 'Linux on Java 1.11'
+#    macOS - Java 11:
+#      OSVmImage: 'macOS-10.15'
+#      JavaTestVersion: '1.11'
+#      RunTitle: 'macOS on Java 1.11'
+#    Windows - Java 11:
+#      OSVmImage: 'windows-2019'
+#      JavaTestVersion: '1.11'
+#      RunTitle: 'Windows on Java 1.11'
+#    Windows From Source - Java 8:
+#      OSVmImage: 'windows-2019'
+#      JavaTestVersion: '1.8'
+#      RunTitle: 'From Source: Windows on Java 1.8'
+#      PLSkipOptions: '!com.azure:jacoco-test-coverage'
+#      AdditionalOptions: '-amd'
+#      TestFromSource: true
 
 jobs:
   - job: 'Build'
