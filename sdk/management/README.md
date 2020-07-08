@@ -3,7 +3,7 @@
 The Azure Management Libraries for Java is a higher-level, object-oriented API for *managing* Azure resources,
 that is optimized for ease of use, succinctness and consistency.
 
-- [API reference documentation][docs]
+- [Azure SDK for Java][java_sdk]
 - **[Code snippets and samples][sample]**
 
 ## Getting started
@@ -95,6 +95,8 @@ The key concepts of Azure Management Libraries includes:
 - Integration with Azure role-based access control.
 - Asynchronous operations with [Reactor][reactor]. (Preview)
 - Configurable client, e.g. configuring HTTP client, retries, logging, etc.
+- [API design][design]
+- [API design (preview)][design_preview]
 
 ### Service features
 
@@ -306,7 +308,7 @@ If you would like to become an active contributor to this project please follow 
 5. Create new Pull Request
 
 <!-- LINKS -->
-[docs]: http://azure.github.io/azure-sdk-for-java/
+[java_sdk]: http://azure.github.io/azure-sdk-for-java/
 [jdk]: https://docs.microsoft.com/java/azure/jdk/
 [azure_subscription]: https://azure.microsoft.com/free/
 [azure_identity]: ../identity/azure-identity
@@ -317,4 +319,5 @@ If you would like to become an active contributor to this project please follow 
 [authenticate]: docs/AUTH.md
 [sample]: docs/SAMPLE.md
 [design]: docs/DESIGN.md
+[design_preview]: docs/DESIGN_PREVIEW.md
 [reactor]: https://projectreactor.io/
