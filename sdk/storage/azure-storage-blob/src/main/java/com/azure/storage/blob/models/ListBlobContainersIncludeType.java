@@ -14,7 +14,12 @@ public enum ListBlobContainersIncludeType {
     /**
      * Enum value metadata.
      */
-    METADATA("metadata");
+    METADATA("metadata"),
+
+    /**
+     * Enum value deleted.
+     */
+    DELETED("deleted");
 
     /**
      * The actual serialized value for a ListBlobContainersIncludeType instance.

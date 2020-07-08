@@ -45,7 +45,7 @@ extends:
         safeName: azurecosmos
       - name: spring-data-cosmosdb
         groupId: com.microsoft.azure
-        safeName: springdatacosmosdb
+        safeName: azurespringdatacosmos
     AdditionalModules:
       - name: azure-cosmos-benchmark
         groupId: com.azure

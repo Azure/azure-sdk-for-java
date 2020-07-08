@@ -1,26 +1,26 @@
 {
   "networkCallRecords" : [ {
     "Method" : "DELETE",
-    "Uri" : "https://gapradev.queue.core.windows.net/queueaysncapitestsdeletequeueerror35611904ea47819",
+    "Uri" : "https://REDACTED.queue.core.windows.net/queueaysncapitestsdeletequeueerror39002c3c26acf6c",
     "Headers" : {
-      "x-ms-version" : "2019-07-07",
-      "User-Agent" : "azsdk-java-azure-storage-queue/12.3.0-beta.1 (11.0.4; Windows 10 10.0)",
-      "x-ms-client-request-id" : "c617832d-6bfa-47d0-816d-d37a50137147"
+      "x-ms-version" : "2019-12-12",
+      "User-Agent" : "azsdk-java-azure-storage-queue/12.6.0-beta.1 (11.0.6; Windows 10 10.0)",
+      "x-ms-client-request-id" : "2577f0f3-c56a-47e5-8e60-fa36169083c7"
     },
     "Response" : {
-      "x-ms-version" : "2019-07-07",
+      "x-ms-version" : "2019-12-12",
       "Server" : "Windows-Azure-Queue/1.0 Microsoft-HTTPAPI/2.0",
       "x-ms-error-code" : "QueueNotFound",
       "retry-after" : "0",
       "Content-Length" : "217",
       "StatusCode" : "404",
-      "x-ms-request-id" : "d25b82b1-f003-0012-5d71-e0e9eb000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>QueueNotFound</Code><Message>The specified queue does not exist.\nRequestId:d25b82b1-f003-0012-5d71-e0e9eb000000\nTime:2020-02-11T00:24:50.4004035Z</Message></Error>",
-      "Date" : "Tue, 11 Feb 2020 00:24:50 GMT",
-      "x-ms-client-request-id" : "c617832d-6bfa-47d0-816d-d37a50137147",
+      "x-ms-request-id" : "37a3a096-3003-009b-7403-3a8ca5000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>QueueNotFound</Code><Message>The specified queue does not exist.\nRequestId:37a3a096-3003-009b-7403-3a8ca5000000\nTime:2020-06-04T00:05:14.6816898Z</Message></Error>",
+      "Date" : "Thu, 04 Jun 2020 00:05:14 GMT",
+      "x-ms-client-request-id" : "2577f0f3-c56a-47e5-8e60-fa36169083c7",
       "Content-Type" : "application/xml"
     },
     "Exception" : null
   } ],
-  "variables" : [ "queueaysncapitestsdeletequeueerror35611904ea47819" ]
+  "variables" : [ "queueaysncapitestsdeletequeueerror39002c3c26acf6c" ]
 }

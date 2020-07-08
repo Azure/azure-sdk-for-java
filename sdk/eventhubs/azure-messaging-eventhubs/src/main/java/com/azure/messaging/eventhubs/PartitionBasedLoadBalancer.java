@@ -10,7 +10,6 @@ import com.azure.messaging.eventhubs.models.PartitionContext;
 import com.azure.messaging.eventhubs.models.PartitionOwnership;
 import java.util.concurrent.atomic.AtomicBoolean;
 import reactor.core.Exceptions;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.util.function.Tuple2;
 
@@ -21,7 +20,6 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -60,7 +58,7 @@ final class PartitionBasedLoadBalancer {
 
     /**
      * Creates an instance of PartitionBasedLoadBalancer for the given Event Hub name and consumer group.
-     *  @param checkpointStore The partition manager that this load balancer will use to read/update ownership details.
+     * @param checkpointStore The partition manager that this load balancer will use to read/update ownership details.
      * @param eventHubAsyncClient The asynchronous Event Hub client used to consume events.
      * @param eventHubName The Event Hub name the {@link EventProcessorClient} is associated with.
      * @param consumerGroupName The consumer group name the {@link EventProcessorClient} is associated with.
@@ -123,12 +121,6 @@ final class PartitionBasedLoadBalancer {
          */
         final Mono<List<String>> partitionsMono = eventHubAsyncClient
             .getPartitionIds()
-            .onErrorResume(TimeoutException.class, error -> {
-                // In the subsequent step where it tries to balance the load, it'll propagate an error to the user.
-                // So it is okay to return an empty Flux.
-                logger.warning("Unable to get partitionIds from eventHubAsyncClient.");
-                return Flux.empty();
-            })
             .collectList();
 
         Mono.zip(partitionOwnershipMono, partitionsMono)

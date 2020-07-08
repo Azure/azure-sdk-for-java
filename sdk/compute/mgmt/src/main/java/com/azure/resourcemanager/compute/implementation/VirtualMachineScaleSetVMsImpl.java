@@ -109,11 +109,21 @@ class VirtualMachineScaleSetVMsImpl
 
     @Override
     public Mono<Void> updateInstancesAsync(String... instanceIds) {
-        return this.updateInstancesAsync(new ArrayList<String>(Arrays.asList(instanceIds)));
+        return this.updateInstancesAsync(new ArrayList<>(Arrays.asList(instanceIds)));
     }
 
     @Override
     public void updateInstances(String... instanceIds) {
         this.updateInstancesAsync(instanceIds).block();
+    }
+
+    @Override
+    public Mono<Void> simulateEvictionAsync(String instanceId) {
+        return this.client.simulateEvictionAsync(this.scaleSet.resourceGroupName(), this.scaleSet.name(), instanceId);
+    }
+
+    @Override
+    public void simulateEviction(String instanceId) {
+        this.simulateEvictionAsync(instanceId).block();
     }
 }

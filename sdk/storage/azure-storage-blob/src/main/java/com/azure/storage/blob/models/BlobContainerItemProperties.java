@@ -77,6 +77,18 @@ public final class BlobContainerItemProperties {
     @JsonProperty(value = "DenyEncryptionScopeOverride")
     private boolean encryptionScopeOverridePrevented;
 
+    /*
+     * The deletedTime property.
+     */
+    @JsonProperty(value = "DeletedTime")
+    private DateTimeRfc1123 deletedTime;
+
+    /*
+     * The remainingRetentionDays property.
+     */
+    @JsonProperty(value = "RemainingRetentionDays")
+    private Integer remainingRetentionDays;
+
     /**
      * Get the lastModified property: The lastModified property.
      *
@@ -296,6 +308,55 @@ public final class BlobContainerItemProperties {
      */
     public BlobContainerItemProperties setEncryptionScopeOverridePrevented(boolean encryptionScopeOverridePrevented) {
         this.encryptionScopeOverridePrevented = encryptionScopeOverridePrevented;
+        return this;
+    }
+
+    /**
+     * Get the deletedTime property: The deletedTime property.
+     *
+     * @return the deletedTime value.
+     */
+    public OffsetDateTime getDeletedTime() {
+        if (this.deletedTime == null) {
+            return null;
+        }
+        return this.deletedTime.getDateTime();
+    }
+
+    /**
+     * Set the deletedTime property: The deletedTime property.
+     *
+     * @param deletedTime the deletedTime value to set.
+     * @return the BlobContainerItemProperties object itself.
+     */
+    public BlobContainerItemProperties setDeletedTime(OffsetDateTime deletedTime) {
+        if (deletedTime == null) {
+            this.deletedTime = null;
+        } else {
+            this.deletedTime = new DateTimeRfc1123(deletedTime);
+        }
+        return this;
+    }
+
+    /**
+     * Get the remainingRetentionDays property: The remainingRetentionDays
+     * property.
+     *
+     * @return the remainingRetentionDays value.
+     */
+    public Integer getRemainingRetentionDays() {
+        return this.remainingRetentionDays;
+    }
+
+    /**
+     * Set the remainingRetentionDays property: The remainingRetentionDays
+     * property.
+     *
+     * @param remainingRetentionDays the remainingRetentionDays value to set.
+     * @return the BlobContainerItemProperties object itself.
+     */
+    public BlobContainerItemProperties setRemainingRetentionDays(Integer remainingRetentionDays) {
+        this.remainingRetentionDays = remainingRetentionDays;
         return this;
     }
 }

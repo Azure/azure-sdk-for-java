@@ -16,7 +16,7 @@ import java.util.UUID;
 /**
  * This class represents a received message from Service Bus.
  */
-public final class ServiceBusReceivedMessage implements MessageLockToken {
+public final class ServiceBusReceivedMessage {
     private UUID lockToken;
     private long sequenceNumber;
     private long deliveryCount;
@@ -197,7 +197,6 @@ public final class ServiceBusReceivedMessage implements MessageLockToken {
      * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/message-transfers-locks-settlement">Message
      * transfers, locks, and settlement</a>
      */
-    @Override
     public String getLockToken() {
         return lockToken != null ? lockToken.toString() : null;
     }

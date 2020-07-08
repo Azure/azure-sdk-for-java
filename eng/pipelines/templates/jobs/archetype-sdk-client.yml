@@ -150,6 +150,13 @@ jobs:
           pip install doc-warden==$(DocWardenVersion)
           ward scan -d $(Build.SourcesDirectory) -c $(Build.SourcesDirectory)/eng/.docsettings.yml
         displayName: 'Verify Readmes'
+      
+      - ${{ each artifact in parameters.Artifacts }}:
+        - template: /eng/common/pipelines/templates/steps/verify-changelog.yml
+          parameters:
+            PackageName: ${{artifact.name}}
+            ServiceName: ${{parameters.ServiceDirectory}}
+            ForRelease: false
 
       # We `install` the code quality reports tooling into our local m2 cache separately from building the Maven project
       # reports. This means it is available as part of that, but also so that this is not documented in the project report.
@@ -186,7 +193,7 @@ jobs:
         displayName: 'Run SpotBugs, Checkstyle, RevApi, and Javadoc'
         inputs:
           mavenPomFile: pom.xml
-          options: '--no-transfer-progress -DskipTests -Dgpg.skip -Dverify-readme-windows -pl $(ProjectList)'
+          options: '$(DefaultOptions) --no-transfer-progress -DskipTests -Dgpg.skip -Dverify-readme-windows -pl $(ProjectList)'
           mavenOptions: '$(MemoryOptions)'
           javaHomeOption: 'JDKVersion'
           jdkVersionOption: $(JavaBuildVersion)

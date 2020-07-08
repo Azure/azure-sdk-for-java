@@ -8,7 +8,7 @@ import com.azure.core.annotation.ServiceClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.AzureServiceClient;
+import com.azure.resourcemanager.resources.fluentcore.AzureServiceClient;
 import com.azure.resourcemanager.containerservice.fluent.AgentPoolsClient;
 import com.azure.resourcemanager.containerservice.fluent.ContainerServicesClient;
 import com.azure.resourcemanager.containerservice.fluent.ManagedClustersClient;

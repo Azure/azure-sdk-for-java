@@ -216,7 +216,7 @@ public final class DirectorysImpl {
      * @param posixPermissions Optional and only valid if Hierarchical Namespace is enabled for the account. Sets POSIX access permissions for the file owner, the file owning group, and others. Each class may be granted read, write, or execute permission.  The sticky bit is also supported.  Both symbolic (rwxrw-rw-) and 4-digit octal notation (e.g. 0766) are supported.
      * @param posixUmask Only valid if Hierarchical Namespace is enabled for the account. This umask restricts permission settings for file and directory, and will only be applied when default Acl does not exist in parent directory. If the umask bit has set, it means that the corresponding permission will be disabled. Otherwise the corresponding permission will be determined by the permission. A 4-digit octal notation (e.g. 0022) is supported here. If no umask was specified, a default umask - 0027 will be used.
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
-     * @param sourceLeaseId A lease ID for the source path. If specified, the source path must have an active lease and the leaase ID must match.
+     * @param sourceLeaseId A lease ID for the source path. If specified, the source path must have an active lease and the lease ID must match.
      * @param ifModifiedSince Specify this header value to operate only on a blob if it has been modified since the specified date/time.
      * @param ifUnmodifiedSince Specify this header value to operate only on a blob if it has not been modified since the specified date/time.
      * @param ifMatch Specify an ETag value to operate only on blobs with a matching value.

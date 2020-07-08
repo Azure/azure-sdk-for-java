@@ -9,10 +9,18 @@ import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollResponse;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.storage.blob.BlobServiceClientBuilder;
+import com.azure.storage.blob.options.BlobBeginCopyOptions;
+import com.azure.storage.blob.options.BlobCopyFromUrlOptions;
 import com.azure.storage.blob.models.BlobProperties;
 import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.BlobCopyInfo;
 import com.azure.storage.blob.models.BlobHttpHeaders;
+import com.azure.storage.blob.models.BlobQueryDelimitedSerialization;
+import com.azure.storage.blob.models.BlobQueryError;
+import com.azure.storage.blob.models.BlobQueryJsonSerialization;
+import com.azure.storage.blob.options.BlobQueryOptions;
+import com.azure.storage.blob.models.BlobQueryProgress;
+import com.azure.storage.blob.models.BlobQuerySerialization;
 import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.DeleteSnapshotsOptionType;
@@ -26,6 +34,7 @@ import com.azure.storage.blob.sas.BlobServiceSasSignatureValues;
 import com.azure.storage.common.implementation.Constants;
 
 import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.UncheckedIOException;
 import java.nio.file.OpenOption;
@@ -37,6 +46,7 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.function.Consumer;
 
 /**
  * Code snippets for {@link BlobClientBase}
@@ -125,7 +135,7 @@ public class BlobClientBaseJavaDocCodeSnippets {
         BlobRange range = new BlobRange(1024, 2048L);
         DownloadRetryOptions options = new DownloadRetryOptions().setMaxRetryRequests(5);
 
-        client.downloadToFileWithResponse(file, range, new ParallelTransferOptions(4 * Constants.MB, null, null),
+        client.downloadToFileWithResponse(file, range, new ParallelTransferOptions().setBlockSizeLong(4L * Constants.MB),
             options, null, false, timeout, new Context(key2, value2));
         System.out.println("Completed download to file");
         // END: com.azure.storage.blob.specialized.BlobClientBase.downloadToFileWithResponse#String-BlobRange-ParallelTransferOptions-DownloadRetryOptions-BlobRequestConditions-boolean-Duration-Context
@@ -136,7 +146,7 @@ public class BlobClientBaseJavaDocCodeSnippets {
         Set<OpenOption> openOptions = new HashSet<>(Arrays.asList(StandardOpenOption.CREATE_NEW,
             StandardOpenOption.WRITE, StandardOpenOption.READ)); // Default options
 
-        client.downloadToFileWithResponse(file, blobRange, new ParallelTransferOptions(4 * Constants.MB, null, null),
+        client.downloadToFileWithResponse(file, blobRange, new ParallelTransferOptions().setBlockSizeLong(4L * Constants.MB),
             downloadRetryOptions, null, false, openOptions, timeout, new Context(key2, value2));
         System.out.println("Completed download to file");
         // END: com.azure.storage.blob.specialized.BlobClientBase.downloadToFileWithResponse#String-BlobRange-ParallelTransferOptions-DownloadRetryOptions-BlobRequestConditions-boolean-Set-Duration-Context
@@ -182,6 +192,26 @@ public class BlobClientBaseJavaDocCodeSnippets {
         client.setMetadata(Collections.singletonMap("metadata", "value"));
         System.out.println("Set metadata completed");
         // END: com.azure.storage.blob.specialized.BlobClientBase.setMetadata#Map
+    }
+
+    /**
+     * Code snippets for {@link BlobClientBase#getTags()}
+     */
+    public void getTags() {
+        // BEGIN: com.azure.storage.blob.specialized.BlobClientBase.getTags
+        Map<String, String> tags = client.getTags();
+        System.out.printf("Number of tags: %d%n", tags.size());
+        // END: com.azure.storage.blob.specialized.BlobClientBase.getTags
+    }
+
+    /**
+     * Code snippets for {@link BlobClientBase#setTags(Map)}
+     */
+    public void setTags() {
+        // BEGIN: com.azure.storage.blob.specialized.BlobClientBase.setTags#Map
+        client.setTags(Collections.singletonMap("tag", "value"));
+        System.out.println("Set tag completed");
+        // END: com.azure.storage.blob.specialized.BlobClientBase.setTags#Map
     }
 
     /**
@@ -253,6 +283,26 @@ public class BlobClientBaseJavaDocCodeSnippets {
     }
 
     /**
+     * Code snippets for {@link BlobClientBase#beginCopy(BlobBeginCopyOptions)}
+     */
+    public void beginCopyFromUrl2() {
+        // BEGIN: com.azure.storage.blob.specialized.BlobClientBase.beginCopy#BlobBeginCopyOptions
+        Map<String, String> metadata = Collections.singletonMap("metadata", "value");
+        Map<String, String> tags = Collections.singletonMap("tag", "value");
+        RequestConditions modifiedRequestConditions = new RequestConditions()
+            .setIfUnmodifiedSince(OffsetDateTime.now().minusDays(7));
+        BlobRequestConditions blobRequestConditions = new BlobRequestConditions().setLeaseId(leaseId);
+        SyncPoller<BlobCopyInfo, Void> poller = client.beginCopy(new BlobBeginCopyOptions(url).setMetadata(metadata)
+            .setTags(tags).setTier(AccessTier.HOT).setRehydratePriority(RehydratePriority.STANDARD)
+            .setSourceRequestConditions(modifiedRequestConditions)
+            .setDestinationRequestConditions(blobRequestConditions).setPollInterval(Duration.ofSeconds(2)));
+
+        PollResponse<BlobCopyInfo> response = poller.waitUntil(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED);
+        System.out.printf("Copy identifier: %s%n", response.getValue().getCopyId());
+        // END: com.azure.storage.blob.specialized.BlobClientBase.beginCopy#BlobBeginCopyOptions
+    }
+
+    /**
      * Code snippets for {@link BlobClientBase#abortCopyFromUrlWithResponse(String, String, Duration, Context)}
      */
     public void abortCopyFromUrlWithResponseCodeSnippets() {
@@ -281,6 +331,26 @@ public class BlobClientBaseJavaDocCodeSnippets {
                 blobRequestConditions, timeout,
                 new Context(key1, value1)).getValue());
         // END: com.azure.storage.blob.specialized.BlobClientBase.copyFromUrlWithResponse#String-Map-AccessTier-RequestConditions-BlobRequestConditions-Duration-Context
+    }
+
+    /**
+     * Code snippets for {@link BlobClientBase#copyFromUrlWithResponse(BlobCopyFromUrlOptions, Duration, Context)}
+     */
+    public void copyFromUrlWithResponse2CodeSnippets() {
+
+        // BEGIN: com.azure.storage.blob.specialized.BlobClientBase.copyFromUrlWithResponse#BlobCopyFromUrlOptions-Duration-Context
+        Map<String, String> metadata = Collections.singletonMap("metadata", "value");
+        Map<String, String> tags = Collections.singletonMap("tag", "value");
+        RequestConditions modifiedRequestConditions = new RequestConditions()
+            .setIfUnmodifiedSince(OffsetDateTime.now().minusDays(7));
+        BlobRequestConditions blobRequestConditions = new BlobRequestConditions().setLeaseId(leaseId);
+
+        System.out.printf("Copy identifier: %s%n",
+            client.copyFromUrlWithResponse(new BlobCopyFromUrlOptions(url).setMetadata(metadata).setTags(tags)
+                .setTier(AccessTier.HOT).setSourceRequestConditions(modifiedRequestConditions)
+                .setDestinationRequestConditions(blobRequestConditions), timeout,
+                new Context(key1, value1)).getValue());
+        // END: com.azure.storage.blob.specialized.BlobClientBase.copyFromUrlWithResponse#BlobCopyFromUrlOptions-Duration-Context
     }
 
     /**
@@ -357,6 +427,27 @@ public class BlobClientBaseJavaDocCodeSnippets {
     }
 
     /**
+     * Code snippets for {@link BlobClientBase#getTagsWithResponse(Duration, Context)}
+     */
+    public void getTagsWithResponse() {
+        // BEGIN: com.azure.storage.blob.specialized.BlobClientBase.getTagsWithResponse#Duration-Context
+        Map<String, String> tags = client.getTagsWithResponse(timeout, new Context(key1, value1)).getValue();
+        System.out.printf("Number of tags: %d%n", tags.size());
+        // END: com.azure.storage.blob.specialized.BlobClientBase.getTagsWithResponse#Duration-Context
+    }
+
+    /**
+     * Code snippets for {@link BlobClientBase#setTagsWithResponse(Map, Duration, Context)}
+     */
+    public void setTagsWithResponse() {
+        // BEGIN: com.azure.storage.blob.specialized.BlobClientBase.setTagsWithResponse#Map-Duration-Context
+        System.out.printf("Set metadata completed with status %d%n",
+            client.setTagsWithResponse(Collections.singletonMap("tag", "value"), timeout, new Context(key1, value1))
+                .getStatusCode());
+        // END: com.azure.storage.blob.specialized.BlobClientBase.setTagsWithResponse#Map-Duration-Context
+    }
+
+    /**
      * Code snippets for {@link BlobClientBase#createSnapshotWithResponse(Map, BlobRequestConditions, Duration,
      * Context)}
      */
@@ -427,5 +518,90 @@ public class BlobClientBaseJavaDocCodeSnippets {
 
         client.generateUserDelegationSas(values, userDelegationKey);
         // END: com.azure.storage.blob.specialized.BlobClientBase.generateUserDelegationSas#BlobServiceSasSignatureValues-UserDelegationKey
+    }
+
+    /**
+     * Code snippet for {@link BlobClientBase#openQueryInputStream(String)}
+     */
+    public void openQueryInputStream() {
+        // BEGIN: com.azure.storage.blob.specialized.BlobClientBase.openQueryInputStream#String
+        String expression = "SELECT * from BlobStorage";
+        InputStream inputStream = client.openQueryInputStream(expression);
+        // Now you can read from the input stream like you would normally.
+        // END: com.azure.storage.blob.specialized.BlobClientBase.openQueryInputStream#String
+    }
+
+    /**
+     * Code snippet for {@link BlobClientBase#openQueryInputStream(BlobQueryOptions)}
+     */
+    public void openQueryInputStream2() {
+        // BEGIN: com.azure.storage.blob.specialized.BlobClientBase.openQueryInputStream#BlobQueryOptions
+        String expression = "SELECT * from BlobStorage";
+        BlobQuerySerialization input = new BlobQueryDelimitedSerialization()
+            .setColumnSeparator(',')
+            .setEscapeChar('\n')
+            .setRecordSeparator('\n')
+            .setHeadersPresent(true)
+            .setFieldQuote('"');
+        BlobQuerySerialization output = new BlobQueryJsonSerialization()
+            .setRecordSeparator('\n');
+        BlobRequestConditions requestConditions = new BlobRequestConditions()
+            .setLeaseId("leaseId");
+        Consumer<BlobQueryError> errorConsumer = System.out::println;
+        Consumer<BlobQueryProgress> progressConsumer = progress -> System.out.println("total blob bytes read: "
+            + progress.getBytesScanned());
+        BlobQueryOptions queryOptions = new BlobQueryOptions(expression)
+            .setInputSerialization(input)
+            .setOutputSerialization(output)
+            .setRequestConditions(requestConditions)
+            .setErrorConsumer(errorConsumer)
+            .setProgressConsumer(progressConsumer);
+
+        InputStream inputStream = client.openQueryInputStream(queryOptions);
+        // Now you can read from the input stream like you would normally.
+        // END: com.azure.storage.blob.specialized.BlobClientBase.openQueryInputStream#BlobQueryOptions
+    }
+
+    /**
+     * Code snippet for {@link BlobClientBase#query(OutputStream, String)}
+     */
+    public void query() {
+        // BEGIN: com.azure.storage.blob.specialized.BlobClientBase.query#OutputStream-String
+        ByteArrayOutputStream queryData = new ByteArrayOutputStream();
+        String expression = "SELECT * from BlobStorage";
+        client.query(queryData, expression);
+        System.out.println("Query completed.");
+        // END: com.azure.storage.blob.specialized.BlobClientBase.query#OutputStream-String
+    }
+
+    /**
+     * Code snippet for {@link BlobClientBase#queryWithResponse(BlobQueryOptions, Duration, Context)}
+     */
+    public void queryWithResponse() {
+        // BEGIN: com.azure.storage.blob.specialized.BlobClientBase.queryWithResponse#BlobQueryOptions-Duration-Context
+        ByteArrayOutputStream queryData = new ByteArrayOutputStream();
+        String expression = "SELECT * from BlobStorage";
+        BlobQueryJsonSerialization input = new BlobQueryJsonSerialization()
+            .setRecordSeparator('\n');
+        BlobQueryDelimitedSerialization output = new BlobQueryDelimitedSerialization()
+            .setEscapeChar('\0')
+            .setColumnSeparator(',')
+            .setRecordSeparator('\n')
+            .setFieldQuote('\'')
+            .setHeadersPresent(true);
+        BlobRequestConditions requestConditions = new BlobRequestConditions().setLeaseId(leaseId);
+        Consumer<BlobQueryError> errorConsumer = System.out::println;
+        Consumer<BlobQueryProgress> progressConsumer = progress -> System.out.println("total blob bytes read: "
+            + progress.getBytesScanned());
+        BlobQueryOptions queryOptions = new BlobQueryOptions(expression, queryData)
+            .setInputSerialization(input)
+            .setOutputSerialization(output)
+            .setRequestConditions(requestConditions)
+            .setErrorConsumer(errorConsumer)
+            .setProgressConsumer(progressConsumer);
+        System.out.printf("Query completed with status %d%n",
+            client.queryWithResponse(queryOptions, timeout, new Context(key1, value1))
+                .getStatusCode());
+        // END: com.azure.storage.blob.specialized.BlobClientBase.queryWithResponse#BlobQueryOptions-Duration-Context
     }
 }

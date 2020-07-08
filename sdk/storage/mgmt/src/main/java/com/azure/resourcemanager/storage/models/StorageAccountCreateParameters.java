@@ -117,6 +117,20 @@ public class StorageAccountCreateParameters {
     @JsonProperty(value = "properties.routingPreference")
     private RoutingPreference routingPreference;
 
+    /*
+     * Allow or disallow public access to all blobs or containers in the
+     * storage account. The default interpretation is true for this property.
+     */
+    @JsonProperty(value = "properties.allowBlobPublicAccess")
+    private Boolean allowBlobPublicAccess;
+
+    /*
+     * Set the minimum TLS version to be permitted on requests to storage. The
+     * default interpretation is TLS 1.0 for this property.
+     */
+    @JsonProperty(value = "properties.minimumTlsVersion")
+    private MinimumTlsVersion minimumTlsVersion;
+
     /**
      * Get the sku property: Required. Gets or sets the SKU name.
      *
@@ -423,6 +437,50 @@ public class StorageAccountCreateParameters {
      */
     public StorageAccountCreateParameters withRoutingPreference(RoutingPreference routingPreference) {
         this.routingPreference = routingPreference;
+        return this;
+    }
+
+    /**
+     * Get the allowBlobPublicAccess property: Allow or disallow public access to all blobs or containers in the storage
+     * account. The default interpretation is true for this property.
+     *
+     * @return the allowBlobPublicAccess value.
+     */
+    public Boolean allowBlobPublicAccess() {
+        return this.allowBlobPublicAccess;
+    }
+
+    /**
+     * Set the allowBlobPublicAccess property: Allow or disallow public access to all blobs or containers in the storage
+     * account. The default interpretation is true for this property.
+     *
+     * @param allowBlobPublicAccess the allowBlobPublicAccess value to set.
+     * @return the StorageAccountCreateParameters object itself.
+     */
+    public StorageAccountCreateParameters withAllowBlobPublicAccess(Boolean allowBlobPublicAccess) {
+        this.allowBlobPublicAccess = allowBlobPublicAccess;
+        return this;
+    }
+
+    /**
+     * Get the minimumTlsVersion property: Set the minimum TLS version to be permitted on requests to storage. The
+     * default interpretation is TLS 1.0 for this property.
+     *
+     * @return the minimumTlsVersion value.
+     */
+    public MinimumTlsVersion minimumTlsVersion() {
+        return this.minimumTlsVersion;
+    }
+
+    /**
+     * Set the minimumTlsVersion property: Set the minimum TLS version to be permitted on requests to storage. The
+     * default interpretation is TLS 1.0 for this property.
+     *
+     * @param minimumTlsVersion the minimumTlsVersion value to set.
+     * @return the StorageAccountCreateParameters object itself.
+     */
+    public StorageAccountCreateParameters withMinimumTlsVersion(MinimumTlsVersion minimumTlsVersion) {
+        this.minimumTlsVersion = minimumTlsVersion;
         return this;
     }
 

@@ -116,7 +116,7 @@ do
             if ($LASTEXITCODE -ne 0)
             {
                 Write-Error "Unable to apply diff file LASTEXITCODE=$($LASTEXITCODE), see command output above."
-                continue
+                exit $LASTEXITCODE
             }
 
             Write-Host "git add -A"

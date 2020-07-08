@@ -56,6 +56,9 @@ extends:
       - name: azure-storage-blob-batch
         groupId: com.azure
         safeName: azurestorageblobbatch
+      - name: azure-storage-blob-changefeed
+        groupId: com.azure
+        safeName: azurestorageblobchangefeed
       - name: azure-storage-blob-cryptography
         groupId: com.azure
         safeName: azurestorageblobcryptography
@@ -68,6 +71,9 @@ extends:
       - name: azure-storage-file-datalake
         groupId: com.azure
         safeName: azurestoragefiledatalake
+      - name: azure-storage-internal-avro
+        groupId: com.azure
+        safeName: azurestorageinternalavro
       - name: azure-storage-queue
         groupId: com.azure
         safeName: azurestoragequeue

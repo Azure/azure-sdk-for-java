@@ -51,6 +51,24 @@ public final class AzureFirewallNetworkRule {
     @JsonProperty(value = "destinationPorts")
     private List<String> destinationPorts;
 
+    /*
+     * List of destination FQDNs.
+     */
+    @JsonProperty(value = "destinationFqdns")
+    private List<String> destinationFqdns;
+
+    /*
+     * List of source IpGroups for this rule.
+     */
+    @JsonProperty(value = "sourceIpGroups")
+    private List<String> sourceIpGroups;
+
+    /*
+     * List of destination IpGroups for this rule.
+     */
+    @JsonProperty(value = "destinationIpGroups")
+    private List<String> destinationIpGroups;
+
     /**
      * Get the name property: Name of the network rule.
      *
@@ -168,6 +186,66 @@ public final class AzureFirewallNetworkRule {
      */
     public AzureFirewallNetworkRule withDestinationPorts(List<String> destinationPorts) {
         this.destinationPorts = destinationPorts;
+        return this;
+    }
+
+    /**
+     * Get the destinationFqdns property: List of destination FQDNs.
+     *
+     * @return the destinationFqdns value.
+     */
+    public List<String> destinationFqdns() {
+        return this.destinationFqdns;
+    }
+
+    /**
+     * Set the destinationFqdns property: List of destination FQDNs.
+     *
+     * @param destinationFqdns the destinationFqdns value to set.
+     * @return the AzureFirewallNetworkRule object itself.
+     */
+    public AzureFirewallNetworkRule withDestinationFqdns(List<String> destinationFqdns) {
+        this.destinationFqdns = destinationFqdns;
+        return this;
+    }
+
+    /**
+     * Get the sourceIpGroups property: List of source IpGroups for this rule.
+     *
+     * @return the sourceIpGroups value.
+     */
+    public List<String> sourceIpGroups() {
+        return this.sourceIpGroups;
+    }
+
+    /**
+     * Set the sourceIpGroups property: List of source IpGroups for this rule.
+     *
+     * @param sourceIpGroups the sourceIpGroups value to set.
+     * @return the AzureFirewallNetworkRule object itself.
+     */
+    public AzureFirewallNetworkRule withSourceIpGroups(List<String> sourceIpGroups) {
+        this.sourceIpGroups = sourceIpGroups;
+        return this;
+    }
+
+    /**
+     * Get the destinationIpGroups property: List of destination IpGroups for this rule.
+     *
+     * @return the destinationIpGroups value.
+     */
+    public List<String> destinationIpGroups() {
+        return this.destinationIpGroups;
+    }
+
+    /**
+     * Set the destinationIpGroups property: List of destination IpGroups for this rule.
+     *
+     * @param destinationIpGroups the destinationIpGroups value to set.
+     * @return the AzureFirewallNetworkRule object itself.
+     */
+    public AzureFirewallNetworkRule withDestinationIpGroups(List<String> destinationIpGroups) {
+        this.destinationIpGroups = destinationIpGroups;
         return this;
     }
 
