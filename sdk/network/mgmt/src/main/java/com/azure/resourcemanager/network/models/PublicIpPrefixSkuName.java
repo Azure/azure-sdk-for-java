@@ -4,41 +4,28 @@
 
 package com.azure.resourcemanager.network.models;
 
+import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
+import java.util.Collection;
 
 /** Defines values for PublicIpPrefixSkuName. */
-public enum PublicIpPrefixSkuName {
-    /** Enum value Standard. */
-    STANDARD("Standard");
-
-    /** The actual serialized value for a PublicIpPrefixSkuName instance. */
-    private final String value;
-
-    PublicIpPrefixSkuName(String value) {
-        this.value = value;
-    }
+public final class PublicIpPrefixSkuName extends ExpandableStringEnum<PublicIpPrefixSkuName> {
+    /** Static value Standard for PublicIpPrefixSkuName. */
+    public static final PublicIpPrefixSkuName STANDARD = fromString("Standard");
 
     /**
-     * Parses a serialized value to a PublicIpPrefixSkuName instance.
+     * Creates or finds a PublicIpPrefixSkuName from its string representation.
      *
-     * @param value the serialized value to parse.
-     * @return the parsed PublicIpPrefixSkuName object, or null if unable to parse.
+     * @param name a name to look for.
+     * @return the corresponding PublicIpPrefixSkuName.
      */
     @JsonCreator
-    public static PublicIpPrefixSkuName fromString(String value) {
-        PublicIpPrefixSkuName[] items = PublicIpPrefixSkuName.values();
-        for (PublicIpPrefixSkuName item : items) {
-            if (item.toString().equalsIgnoreCase(value)) {
-                return item;
-            }
-        }
-        return null;
+    public static PublicIpPrefixSkuName fromString(String name) {
+        return fromString(name, PublicIpPrefixSkuName.class);
     }
 
-    @JsonValue
-    @Override
-    public String toString() {
-        return this.value;
+    /** @return known PublicIpPrefixSkuName values. */
+    public static Collection<PublicIpPrefixSkuName> values() {
+        return values(PublicIpPrefixSkuName.class);
     }
 }

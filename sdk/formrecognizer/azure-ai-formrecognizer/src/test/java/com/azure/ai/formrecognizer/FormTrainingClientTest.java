@@ -9,8 +9,12 @@ import com.azure.ai.formrecognizer.models.CustomFormModel;
 import com.azure.ai.formrecognizer.models.CustomFormModelInfo;
 import com.azure.ai.formrecognizer.models.CustomFormModelStatus;
 import com.azure.ai.formrecognizer.models.ErrorInformation;
+import com.azure.ai.formrecognizer.models.FormContentType;
 import com.azure.ai.formrecognizer.models.FormRecognizerException;
 import com.azure.ai.formrecognizer.models.OperationResult;
+import com.azure.ai.formrecognizer.models.RecognizeOptions;
+import com.azure.ai.formrecognizer.models.RecognizedForm;
+import com.azure.ai.formrecognizer.models.TrainingFileFilter;
 import com.azure.ai.formrecognizer.training.FormTrainingClient;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
@@ -21,7 +25,10 @@ import io.netty.handler.codec.http.HttpResponseStatus;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
+import java.util.List;
+
 import static com.azure.ai.formrecognizer.FormTrainingAsyncClientTest.EXPECTED_COPY_REQUEST_INVALID_TARGET_RESOURCE_REGION;
+import static com.azure.ai.formrecognizer.TestUtils.BLANK_FORM_FILE_LENGTH;
 import static com.azure.ai.formrecognizer.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
 import static com.azure.ai.formrecognizer.TestUtils.INVALID_MODEL_ID;
 import static com.azure.ai.formrecognizer.TestUtils.INVALID_MODEL_ID_ERROR;
@@ -37,6 +44,23 @@ public class FormTrainingClientTest extends FormTrainingClientTestBase {
     private FormTrainingClient getFormTrainingClient(HttpClient httpClient,
         FormRecognizerServiceVersion serviceVersion) {
         return getFormTrainingClientBuilder(httpClient, serviceVersion).buildClient();
+    }
+
+    /**
+     * Verifies the form recognizer client is valid.
+     */
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
+    public void getFormRecognizerClientAndValidate(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
+        FormRecognizerClient formRecognizerClient = getFormTrainingClient(httpClient, serviceVersion)
+            .getFormRecognizerClient();
+        blankPdfDataRunner(data -> {
+            SyncPoller<OperationResult, List<RecognizedForm>> syncPoller =
+                formRecognizerClient.beginRecognizeReceipts(data, BLANK_FORM_FILE_LENGTH, new RecognizeOptions()
+                    .setContentType(FormContentType.APPLICATION_PDF).setPollInterval(durationTestMode));
+            syncPoller.waitForCompletion();
+            validateBlankPdfResultData(syncPoller.getFinalResult());
+        });
     }
 
     /**
@@ -68,8 +92,8 @@ public class FormTrainingClientTest extends FormTrainingClientTestBase {
     public void getCustomModelWithResponse(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
         client = getFormTrainingClient(httpClient, serviceVersion);
         beginTrainingUnlabeledRunner((trainingDataSasUrl, useTrainingLabels) -> {
-            CustomFormModel trainedUnlabeledModel = client.beginTraining(trainingDataSasUrl, useTrainingLabels)
-                .getFinalResult();
+            CustomFormModel trainedUnlabeledModel = client.beginTraining(trainingDataSasUrl, useTrainingLabels,
+                null, durationTestMode).getFinalResult();
             Response<CustomFormModel> customModelWithResponse =
                 client.getCustomModelWithResponse(trainedUnlabeledModel.getModelId(),
                     Context.NONE);
@@ -87,7 +111,7 @@ public class FormTrainingClientTest extends FormTrainingClientTestBase {
         client = getFormTrainingClient(httpClient, serviceVersion);
         beginTrainingUnlabeledRunner((trainingFilesUrl, useTrainingLabels) -> {
             SyncPoller<OperationResult, CustomFormModel> syncPoller = client.beginTraining(trainingFilesUrl,
-                useTrainingLabels);
+                useTrainingLabels, null, durationTestMode);
             syncPoller.waitForCompletion();
             CustomFormModel trainedUnlabeledModel = syncPoller.getFinalResult();
             validateCustomModelData(client.getCustomModel(trainedUnlabeledModel.getModelId()), false);
@@ -102,8 +126,8 @@ public class FormTrainingClientTest extends FormTrainingClientTestBase {
     public void getCustomModelLabeled(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
         client = getFormTrainingClient(httpClient, serviceVersion);
         beginTrainingLabeledRunner((trainingDataSASUrl, useTrainingLabels) -> {
-            CustomFormModel customFormModel = client.beginTraining(trainingDataSASUrl, useTrainingLabels)
-                .getFinalResult();
+            CustomFormModel customFormModel = client.beginTraining(trainingDataSASUrl, useTrainingLabels,
+                null, durationTestMode).getFinalResult();
             validateCustomModelData(client.getCustomModel(customFormModel.getModelId()), true);
         });
     }
@@ -147,8 +171,8 @@ public class FormTrainingClientTest extends FormTrainingClientTestBase {
     public void deleteModelValidModelIdWithResponse(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
         client = getFormTrainingClient(httpClient, serviceVersion);
         beginTrainingLabeledRunner((trainingDataSASUrl, useTrainingLabels) -> {
-            SyncPoller<OperationResult, CustomFormModel> syncPoller =
-                client.beginTraining(trainingDataSASUrl, useTrainingLabels);
+            SyncPoller<OperationResult, CustomFormModel> syncPoller = client.beginTraining(trainingDataSASUrl,
+                useTrainingLabels, null, durationTestMode);
             syncPoller.waitForCompletion();
             CustomFormModel createdModel = syncPoller.getFinalResult();
 
@@ -201,36 +225,6 @@ public class FormTrainingClientTest extends FormTrainingClientTestBase {
     }
 
     /**
-     * Verifies the result of the training operation for a valid labeled model Id and training set Url.
-     */
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
-    public void beginTrainingLabeledResult(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
-        client = getFormTrainingClient(httpClient, serviceVersion);
-        beginTrainingLabeledRunner((trainingDataSASUrl, useTrainingLabels) -> {
-            SyncPoller<OperationResult, CustomFormModel> syncPoller =
-                client.beginTraining(trainingDataSASUrl, useTrainingLabels);
-            syncPoller.waitForCompletion();
-            validateCustomModelData(syncPoller.getFinalResult(), true);
-        });
-    }
-
-    /**
-     * Verifies the result of the training operation for a valid unlabeled model Id and training set Url.
-     */
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
-    public void beginTrainingUnlabeledResult(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
-        client = getFormTrainingClient(httpClient, serviceVersion);
-        beginTrainingUnlabeledRunner((trainingDataSASUrl, useTrainingLabels) -> {
-            SyncPoller<OperationResult, CustomFormModel> syncPoller =
-                client.beginTraining(trainingDataSASUrl, useTrainingLabels);
-            syncPoller.waitForCompletion();
-            validateCustomModelData(syncPoller.getFinalResult(), false);
-        });
-    }
-
-    /**
      * Verifies the result of the copy operation for valid parameters.
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -239,7 +233,7 @@ public class FormTrainingClientTest extends FormTrainingClientTestBase {
         client = getFormTrainingClient(httpClient, serviceVersion);
         beginTrainingUnlabeledRunner((trainingFilesUrl, useTrainingLabels) -> {
             SyncPoller<OperationResult, CustomFormModel> syncPoller =
-                client.beginTraining(trainingFilesUrl, useTrainingLabels);
+                client.beginTraining(trainingFilesUrl, useTrainingLabels, null, durationTestMode);
             syncPoller.waitForCompletion();
             CustomFormModel actualModel = syncPoller.getFinalResult();
 
@@ -266,7 +260,7 @@ public class FormTrainingClientTest extends FormTrainingClientTestBase {
         client = getFormTrainingClient(httpClient, serviceVersion);
         beginTrainingUnlabeledRunner((trainingFilesUrl, useTrainingLabels) -> {
             SyncPoller<OperationResult, CustomFormModel> syncPoller =
-                client.beginTraining(trainingFilesUrl, useTrainingLabels);
+                client.beginTraining(trainingFilesUrl, useTrainingLabels, null, durationTestMode);
             syncPoller.waitForCompletion();
             final CustomFormModel actualModel = syncPoller.getFinalResult();
 
@@ -289,7 +283,7 @@ public class FormTrainingClientTest extends FormTrainingClientTestBase {
         client = getFormTrainingClient(httpClient, serviceVersion);
         beginTrainingUnlabeledRunner((trainingFilesUrl, useTrainingLabels) -> {
             SyncPoller<OperationResult, CustomFormModel> syncPoller =
-                client.beginTraining(trainingFilesUrl, useTrainingLabels);
+                client.beginTraining(trainingFilesUrl, useTrainingLabels, null, durationTestMode);
             syncPoller.waitForCompletion();
             CustomFormModel actualModel = syncPoller.getFinalResult();
 
@@ -330,6 +324,142 @@ public class FormTrainingClientTest extends FormTrainingClientTestBase {
             assertEquals(EXPECTED_INVALID_MODEL_STATUS_ERROR_CODE, errorInformation.getCode());
             assertEquals(EXPECTED_INVALID_MODEL_ERROR, errorInformation.getMessage());
             assertTrue(formRecognizerException.getMessage().contains(EXPECTED_INVALID_STATUS_EXCEPTION_MESSAGE));
+        });
+    }
+
+    /**
+     * Verifies the result of the training operation for a valid labeled model Id and JPG training set Url.
+     */
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
+    public void beginTrainingWithTrainingLabelsForJPGTrainingSet(HttpClient httpClient,
+        FormRecognizerServiceVersion serviceVersion) {
+        client = getFormTrainingClient(httpClient, serviceVersion);
+        beginTrainingLabeledRunner((trainingFilesUrl, useTrainingLabels) -> {
+            SyncPoller<OperationResult, CustomFormModel> trainingPoller = client.beginTraining(trainingFilesUrl,
+                useTrainingLabels, null, durationTestMode);
+            trainingPoller.waitForCompletion();
+            validateCustomModelData(trainingPoller.getFinalResult(), true);
+        });
+    }
+
+    /**
+     * Verifies the result of the training operation for a valid unlabeled model Id and JPG training set Url.
+     */
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
+    public void beginTrainingWithoutTrainingLabelsForJPGTrainingSet(HttpClient httpClient,
+        FormRecognizerServiceVersion serviceVersion) {
+        client = getFormTrainingClient(httpClient, serviceVersion);
+        beginTrainingUnlabeledRunner((trainingFilesUrl, useTrainingLabels) -> {
+            SyncPoller<OperationResult, CustomFormModel> trainingPoller = client.beginTraining(trainingFilesUrl,
+                useTrainingLabels, null, durationTestMode);
+            trainingPoller.waitForCompletion();
+            validateCustomModelData(trainingPoller.getFinalResult(), false);
+        });
+    }
+
+    /**
+     * Verifies the result of the training operation for a valid labeled model Id and multi-page PDF training set Url.
+     */
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
+    public void beginTrainingWithTrainingLabelsForMultiPagePDFTrainingSet(HttpClient httpClient,
+        FormRecognizerServiceVersion serviceVersion) {
+        client = getFormTrainingClient(httpClient, serviceVersion);
+        beginTrainingMultipageRunner(trainingFilesUrl -> {
+            SyncPoller<OperationResult, CustomFormModel> trainingPoller = client.beginTraining(trainingFilesUrl,
+                true, null, durationTestMode);
+            trainingPoller.waitForCompletion();
+            validateCustomModelData(trainingPoller.getFinalResult(), true);
+        });
+    }
+
+    /**
+     * Verifies the result of the training operation for a valid unlabeled model Id and multi-page PDF training set Url.
+     */
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
+    public void beginTrainingWithoutTrainingLabelsForMultiPagePDFTrainingSet(HttpClient httpClient,
+        FormRecognizerServiceVersion serviceVersion) {
+        client = getFormTrainingClient(httpClient, serviceVersion);
+        beginTrainingMultipageRunner(trainingFilesUrl -> {
+            SyncPoller<OperationResult, CustomFormModel> trainingPoller = client.beginTraining(trainingFilesUrl,
+                false, null, durationTestMode);
+            trainingPoller.waitForCompletion();
+            validateCustomModelData(trainingPoller.getFinalResult(), false);
+        });
+    }
+
+    /**
+     * Verifies the result of the training operation for a valid unlabeled model Id and include subfolder training set
+     * Url with existing prefix name.
+     */
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
+    public void beginTrainingWithoutTrainingLabelsIncludeSubfolderWithPrefixName(HttpClient httpClient,
+        FormRecognizerServiceVersion serviceVersion) {
+        client = getFormTrainingClient(httpClient, serviceVersion);
+        beginTrainingUnlabeledRunner((trainingFilesUrl, useTrainingLabels) -> {
+            SyncPoller<OperationResult, CustomFormModel> trainingPoller = client.beginTraining(trainingFilesUrl,
+                useTrainingLabels, new TrainingFileFilter().setIncludeSubFolders(true).setPrefix(PREFIX_SUBFOLDER),
+                durationTestMode);
+            trainingPoller.waitForCompletion();
+            validateCustomModelData(trainingPoller.getFinalResult(), false);
+        });
+    }
+
+    /**
+     * Verifies the result of the training operation for a valid unlabeled model ID and exclude subfolder training set
+     * URL with existing prefix name.
+     */
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
+    public void beginTrainingWithoutTrainingLabelsExcludeSubfolderWithPrefixName(HttpClient httpClient,
+        FormRecognizerServiceVersion serviceVersion) {
+        client = getFormTrainingClient(httpClient, serviceVersion);
+        beginTrainingUnlabeledRunner((trainingFilesUrl, useTrainingLabels) -> {
+            SyncPoller<OperationResult, CustomFormModel> trainingPoller = client.beginTraining(trainingFilesUrl,
+                useTrainingLabels, new TrainingFileFilter().setPrefix(PREFIX_SUBFOLDER),
+                durationTestMode);
+            trainingPoller.waitForCompletion();
+            validateCustomModelData(trainingPoller.getFinalResult(), false);
+        });
+    }
+
+    /**
+     * Verifies the result of the training operation for a valid unlabeled model Id and include subfolder training set
+     * Url with non-existing prefix name.
+     */
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
+    public void beginTrainingWithoutTrainingLabelsIncludeSubfolderWithNonExistPrefixName(HttpClient httpClient,
+        FormRecognizerServiceVersion serviceVersion) {
+        client = getFormTrainingClient(httpClient, serviceVersion);
+        beginTrainingMultipageRunner(trainingFilesUrl -> {
+            FormRecognizerException thrown = assertThrows(FormRecognizerException.class, () ->
+                client.beginTraining(trainingFilesUrl, false,
+                    new TrainingFileFilter().setIncludeSubFolders(true).setPrefix(INVALID_PREFIX_FILE_NAME),
+                    durationTestMode).getFinalResult());
+            assertEquals(NO_VALID_BLOB_FOUND, thrown.getErrorInformation().get(0).getMessage());
+        });
+    }
+
+    /**
+     * Verifies the result of the training operation for a valid unlabeled model Id and exclude subfolder training set
+     * Url with non-existing prefix name.
+     */
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
+    public void beginTrainingWithoutTrainingLabelsExcludeSubfolderWithNonExistPrefixName(HttpClient httpClient,
+        FormRecognizerServiceVersion serviceVersion) {
+        client = getFormTrainingClient(httpClient, serviceVersion);
+        beginTrainingMultipageRunner(trainingFilesUrl -> {
+            FormRecognizerException thrown = assertThrows(FormRecognizerException.class, () ->
+                client.beginTraining(trainingFilesUrl, false,
+                    new TrainingFileFilter().setPrefix(INVALID_PREFIX_FILE_NAME), durationTestMode)
+                    .getFinalResult());
+            assertEquals(NO_VALID_BLOB_FOUND, thrown.getErrorInformation().get(0).getMessage());
         });
     }
 }

@@ -234,8 +234,25 @@ exposes operations on these resources through two main client types.
   * [Define AI powered Skillsets to transform and enrich your data](https://docs.microsoft.com/rest/api/searchservice/skillset-operations)
 
 ## Examples
+The following examples all use a simple [Hotel data set](https://docs.microsoft.com/samples/azure-samples/azure-search-sample-data/azure-search-sample-data/)
+that you can [import into your own index from the Azure portal.](https://docs.microsoft.com/azure/search/search-get-started-portal#step-1---start-the-import-data-wizard-and-create-a-data-source)
+These are just a few of the basics - please [check out our Samples][samples_readme] for
+much more.
 
-#### Use `SearchDocument` like a dictionary
+* [Querying](#querying)
+  * [Use `SearchDocument` like a dictionary for search results](#use-searchdocument-like-a-dictionary-for-search-results)
+  * [Use Java model for search results](#use-java-model-class-for-search-results)
+  * [Search Options](#search-options)
+* [Creating an index](#creating-an-index)
+* [Adding documents to your index](#adding-documents-to-your-index)
+* [Retrieving a specific document from your index](#retrieving-a-specific-document-from-your-index)
+* [Async APIs](#async-apis)
+
+### Querying
+There are two ways to interact with the data returned from a search query.
+Let's explore them with a search for a "luxury" hotel.
+
+#### Use `SearchDocument` like a dictionary for search results
 
 `SearchDocument` is the default type returned from queries when you don't
 provide your own.  Here we perform the search, enumerate over the results, and
@@ -252,7 +269,7 @@ for (SearchResult searchResult: searchResultsIterable) {
 }
 ```
 
-#### Use Java model class
+#### Use Java model class for search results
 Define a `Hotel` class.
 <!-- embedme ./src/samples/java/com/azure/search/documents/ReadmeSamples.java#L160-L181 -->
 ```Java
@@ -395,8 +412,8 @@ to be aware of.
 <!-- embedme ./src/samples/java/com/azure/search/documents/ReadmeSamples.java#L217-L220 -->
 ```Java
 IndexDocumentsBatch<Hotel> batch = new IndexDocumentsBatch<Hotel>();
-batch.addUploadActions(new Hotel().setId("783").setName("Upload Inn"));
-batch.addMergeActions(new Hotel().setId("12").setName("Renovated Ranch"));
+batch.addUploadActions(Collections.singletonList(new Hotel().setId("783").setName("Upload Inn")));
+batch.addMergeActions(Collections.singletonList(new Hotel().setId("12").setName("Renovated Ranch")));
 searchClient.indexDocuments(batch);
 ```
 
@@ -420,8 +437,6 @@ support for async APIs as well. You'll need to use [SearchAsyncClient](#Create-a
         });
 }
 ```
-
-**Samples are explained in detail [here][samples_readme].**
 
 ## Troubleshooting
 

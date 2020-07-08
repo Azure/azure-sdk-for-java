@@ -5,11 +5,17 @@
 package com.azure.messaging.servicebus.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.messaging.servicebus.implementation.EntityHelper;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
 import java.time.Duration;
 import java.time.OffsetDateTime;
+
+import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.DEFAULT_LOCK_DURATION;
+import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.MAX_DURATION;
 
 /** The SubscriptionDescription model. */
 @JacksonXmlRootElement(
@@ -175,6 +181,117 @@ public final class SubscriptionDescription {
             namespace = "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect")
     private EntityAvailabilityStatus entityAvailabilityStatus;
 
+    static {
+        // This is used by classes in different packages to get access to private and package-private methods.
+        EntityHelper.setSubscriptionAccessor(new EntityHelper.SubscriptionAccessor() {
+            @Override
+            public void setTopicName(SubscriptionDescription subscriptionDescription, String topicName) {
+                subscriptionDescription.setTopicName(topicName);
+            }
+
+            @Override
+            public void setSubscriptionName(SubscriptionDescription subscriptionDescription, String subscriptionName) {
+                subscriptionDescription.setSubscriptionName(subscriptionName);
+            }
+        });
+    }
+
+    private String topicName;
+    private String subscriptionName;
+
+    /**
+     * Json deserialization constructor.
+     */
+    @JsonCreator
+    SubscriptionDescription() {
+    }
+
+    /**
+     * Creates an instance with the name of the subscription and its associated topic. Default values for the
+     * subscription are populated. The properties populated with defaults are:
+     *
+     * <ul>
+     *     <li>{@link #setAutoDeleteOnIdle(Duration)}</li>
+     *     <li>{@link #setDeadLetteringOnMessageExpiration(Boolean)}</li>
+     *     <li>{@link #setDefaultMessageTimeToLive(Duration)}</li>
+     *     <li>{@link #setEnableBatchedOperations(Boolean)}</li>
+     *     <li>{@link #setEnableDeadLetteringOnFilterEvaluationExceptions(Boolean)}</li>
+     *     <li>{@link #setLockDuration(Duration)}</li>
+     *     <li>{@link #setMaxDeliveryCount(Integer)}</li>
+     *     <li>{@link #setRequiresSession(Boolean)}</li>
+     * </ul>
+     *
+     * @param topicName Name of the topic associated with this subscription.
+     * @param subscriptionName Name of the subscription.
+     * @throws NullPointerException if {@code topicName} or {@code subscriptionName} are null.
+     * @throws IllegalArgumentException if {@code topicName} or {@code subscriptionName} are empty strings.
+     */
+    public SubscriptionDescription(String topicName, String subscriptionName) {
+        final ClientLogger logger = new ClientLogger(SubscriptionDescription.class);
+        if (topicName == null) {
+            throw logger.logExceptionAsError(new NullPointerException("'topicName' cannot be null."));
+        } else if (topicName.isEmpty()) {
+            throw logger.logExceptionAsError(new IllegalArgumentException("'topicName' cannot be an empty string."));
+        } else if (subscriptionName == null) {
+            throw logger.logExceptionAsError(new NullPointerException("'subscriptionName' cannot be null."));
+        } else if (subscriptionName.isEmpty()) {
+            throw logger.logExceptionAsError(
+                new IllegalArgumentException("'subscriptionName' cannot be an empty string."));
+        }
+
+        this.topicName = topicName;
+        this.subscriptionName = subscriptionName;
+
+        // Defaults copied from .NET's implementation.
+        this.autoDeleteOnIdle = MAX_DURATION;
+        this.deadLetteringOnMessageExpiration = false;
+        this.deadLetteringOnFilterEvaluationExceptions = true;
+        this.defaultMessageTimeToLive = MAX_DURATION;
+        this.enableBatchedOperations = true;
+        this.lockDuration = DEFAULT_LOCK_DURATION;
+        this.maxDeliveryCount = 10;
+        this.requiresSession = false;
+    }
+
+    /**
+     * Gets the name of the topic under which subscription exists.
+     * @return The name of the topic under which subscription exists.
+     */
+    public String getTopicName() {
+        return topicName;
+    }
+
+    /**
+     * Sets the name of the topic.
+     *
+     * @param topicName Name of the topic.
+     * @return the SubscriptionDescription object itself.
+     */
+    SubscriptionDescription setTopicName(String topicName) {
+        this.topicName = topicName;
+        return this;
+    }
+
+    /**
+     * Gets the name of the subscription.
+     *
+     * @return The name of the subscription.
+     */
+    public String getSubscriptionName() {
+        return subscriptionName;
+    }
+
+    /**
+     * Sets the name of the subscription.
+     *
+     * @param subscriptionName Name of the subscription.
+     * @return the SubscriptionDescription object itself.
+     */
+    SubscriptionDescription setSubscriptionName(String subscriptionName) {
+        this.subscriptionName = subscriptionName;
+        return this;
+    }
+
     /**
      * Get the lockDuration property: ISO 8601 timespan duration of a peek-lock; that is, the amount of time that the
      * message is locked for other receivers. The maximum value for LockDuration is 5 minutes; the default value is 1
@@ -204,7 +321,7 @@ public final class SubscriptionDescription {
      *
      * @return the requiresSession value.
      */
-    public Boolean isRequiresSession() {
+    public Boolean requiresSession() {
         return this.requiresSession;
     }
 
@@ -249,7 +366,7 @@ public final class SubscriptionDescription {
      *
      * @return the deadLetteringOnMessageExpiration value.
      */
-    public Boolean isDeadLetteringOnMessageExpiration() {
+    public Boolean deadLetteringOnMessageExpiration() {
         return this.deadLetteringOnMessageExpiration;
     }
 
@@ -271,7 +388,7 @@ public final class SubscriptionDescription {
      *
      * @return the deadLetteringOnFilterEvaluationExceptions value.
      */
-    public Boolean isDeadLetteringOnFilterEvaluationExceptions() {
+    public Boolean enableDeadLetteringOnFilterEvaluationExceptions() {
         return this.deadLetteringOnFilterEvaluationExceptions;
     }
 
@@ -282,7 +399,7 @@ public final class SubscriptionDescription {
      * @param deadLetteringOnFilterEvaluationExceptions the deadLetteringOnFilterEvaluationExceptions value to set.
      * @return the SubscriptionDescription object itself.
      */
-    public SubscriptionDescription setDeadLetteringOnFilterEvaluationExceptions(
+    public SubscriptionDescription setEnableDeadLetteringOnFilterEvaluationExceptions(
             Boolean deadLetteringOnFilterEvaluationExceptions) {
         this.deadLetteringOnFilterEvaluationExceptions = deadLetteringOnFilterEvaluationExceptions;
         return this;
@@ -293,7 +410,7 @@ public final class SubscriptionDescription {
      *
      * @return the messageCount value.
      */
-    public Integer getMessageCount() {
+    Integer getMessageCount() {
         return this.messageCount;
     }
 
@@ -303,7 +420,7 @@ public final class SubscriptionDescription {
      * @param messageCount the messageCount value to set.
      * @return the SubscriptionDescription object itself.
      */
-    public SubscriptionDescription setMessageCount(Integer messageCount) {
+    SubscriptionDescription setMessageCount(Integer messageCount) {
         this.messageCount = messageCount;
         return this;
     }
@@ -336,7 +453,7 @@ public final class SubscriptionDescription {
      *
      * @return the enableBatchedOperations value.
      */
-    public Boolean isEnableBatchedOperations() {
+    public Boolean enableBatchedOperations() {
         return this.enableBatchedOperations;
     }
 
@@ -367,7 +484,7 @@ public final class SubscriptionDescription {
      * @param status the status value to set.
      * @return the SubscriptionDescription object itself.
      */
-    public SubscriptionDescription setStatus(EntityStatus status) {
+    SubscriptionDescription setStatus(EntityStatus status) {
         this.status = status;
         return this;
     }
@@ -399,7 +516,7 @@ public final class SubscriptionDescription {
      *
      * @return the createdAt value.
      */
-    public OffsetDateTime getCreatedAt() {
+    OffsetDateTime getCreatedAt() {
         return this.createdAt;
     }
 
@@ -409,7 +526,7 @@ public final class SubscriptionDescription {
      * @param createdAt the createdAt value to set.
      * @return the SubscriptionDescription object itself.
      */
-    public SubscriptionDescription setCreatedAt(OffsetDateTime createdAt) {
+    SubscriptionDescription setCreatedAt(OffsetDateTime createdAt) {
         this.createdAt = createdAt;
         return this;
     }
@@ -419,7 +536,7 @@ public final class SubscriptionDescription {
      *
      * @return the updatedAt value.
      */
-    public OffsetDateTime getUpdatedAt() {
+    OffsetDateTime getUpdatedAt() {
         return this.updatedAt;
     }
 
@@ -429,7 +546,7 @@ public final class SubscriptionDescription {
      * @param updatedAt the updatedAt value to set.
      * @return the SubscriptionDescription object itself.
      */
-    public SubscriptionDescription setUpdatedAt(OffsetDateTime updatedAt) {
+    SubscriptionDescription setUpdatedAt(OffsetDateTime updatedAt) {
         this.updatedAt = updatedAt;
         return this;
     }
@@ -440,7 +557,7 @@ public final class SubscriptionDescription {
      *
      * @return the accessedAt value.
      */
-    public OffsetDateTime getAccessedAt() {
+    OffsetDateTime getAccessedAt() {
         return this.accessedAt;
     }
 
@@ -451,7 +568,7 @@ public final class SubscriptionDescription {
      * @param accessedAt the accessedAt value to set.
      * @return the SubscriptionDescription object itself.
      */
-    public SubscriptionDescription setAccessedAt(OffsetDateTime accessedAt) {
+    SubscriptionDescription setAccessedAt(OffsetDateTime accessedAt) {
         this.accessedAt = accessedAt;
         return this;
     }
@@ -461,7 +578,7 @@ public final class SubscriptionDescription {
      *
      * @return the messageCountDetails value.
      */
-    public MessageCountDetails getMessageCountDetails() {
+    MessageCountDetails getMessageCountDetails() {
         return this.messageCountDetails;
     }
 
@@ -471,7 +588,7 @@ public final class SubscriptionDescription {
      * @param messageCountDetails the messageCountDetails value to set.
      * @return the SubscriptionDescription object itself.
      */
-    public SubscriptionDescription setMessageCountDetails(MessageCountDetails messageCountDetails) {
+    SubscriptionDescription setMessageCountDetails(MessageCountDetails messageCountDetails) {
         this.messageCountDetails = messageCountDetails;
         return this;
     }
@@ -545,7 +662,7 @@ public final class SubscriptionDescription {
      *
      * @return the entityAvailabilityStatus value.
      */
-    public EntityAvailabilityStatus getEntityAvailabilityStatus() {
+    EntityAvailabilityStatus getEntityAvailabilityStatus() {
         return this.entityAvailabilityStatus;
     }
 
@@ -555,7 +672,7 @@ public final class SubscriptionDescription {
      * @param entityAvailabilityStatus the entityAvailabilityStatus value to set.
      * @return the SubscriptionDescription object itself.
      */
-    public SubscriptionDescription setEntityAvailabilityStatus(EntityAvailabilityStatus entityAvailabilityStatus) {
+    SubscriptionDescription setEntityAvailabilityStatus(EntityAvailabilityStatus entityAvailabilityStatus) {
         this.entityAvailabilityStatus = entityAvailabilityStatus;
         return this;
     }

@@ -9,6 +9,7 @@ import com.azure.messaging.servicebus.models.CreateBatchOptions;
 import com.azure.messaging.servicebus.models.ReceiveMode;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Tag;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -140,6 +141,80 @@ class ServiceBusSenderAsyncClientIntegrationTest extends IntegrationTestBase {
     }
 
     /**
+     * Verifies that we can send message to final destination using via-queue.
+     */
+    @Test
+    void viaMessageSendTest() {
+        // Arrange
+        final Duration shortTimeout = Duration.ofSeconds(15);
+        final int viaIntermediateEntity = TestUtils.USE_CASE_SEND_VIA_1;
+        final int destinationEntity = TestUtils.USE_CASE_SEND_VIA_2;
+        final boolean shareConnection = true;
+        final MessagingEntityType entityType = MessagingEntityType.QUEUE;
+        final boolean isSessionEnabled =  false;
+        final String messageId = UUID.randomUUID().toString();
+        final int total = 1;
+        final int totalToDestination = 2;
+        final List<ServiceBusMessage> messages = TestUtils.getServiceBusMessages(total, messageId, CONTENTS_BYTES);
+        final String viaQueueName = getQueueName(viaIntermediateEntity);
+
+        setSenderAndReceiver(entityType, viaIntermediateEntity, false, false, shareConnection);
+        final ServiceBusReceiverAsyncClient intermediateReceiver =  receiver;
+        final ServiceBusSenderAsyncClient intermediateSender = sender;
+
+        final ServiceBusSenderAsyncClient destination1ViaSender = getSenderBuilder(false, entityType,
+            destinationEntity, false, shareConnection)
+            .viaQueueName(viaQueueName)
+            .buildAsyncClient();
+
+        final ServiceBusReceiverAsyncClient destination1Receiver = getReceiverBuilder(false, entityType, destinationEntity, Function.identity(), shareConnection)
+            .receiveMode(ReceiveMode.RECEIVE_AND_DELETE)
+            .buildAsyncClient();
+
+        final AtomicReference<ServiceBusTransactionContext> transaction = new AtomicReference<>();
+
+        // Act
+        StepVerifier.create(destination1ViaSender.createTransaction())
+            .assertNext(transactionContext -> {
+                transaction.set(transactionContext);
+                assertNotNull(transaction);
+            })
+            .verifyComplete();
+        assertNotNull(transaction.get());
+
+        StepVerifier.create(intermediateSender.sendMessages(messages, transaction.get()))
+            .verifyComplete();
+        StepVerifier.create(destination1ViaSender.sendMessages(messages, transaction.get()))
+            .verifyComplete();
+        StepVerifier.create(destination1ViaSender.sendMessages(messages, transaction.get()))
+            .verifyComplete();
+
+        StepVerifier.create(destination1ViaSender.commitTransaction(transaction.get()).delaySubscription(Duration.ofSeconds(1)))
+                .verifyComplete();
+
+        // Assert
+        // Verify message is received by final destination Entity
+        StepVerifier.create(destination1Receiver.receiveMessages().take(totalToDestination).timeout(shortTimeout))
+            .assertNext(receivedMessage -> {
+                assertMessageEquals(receivedMessage, messageId, isSessionEnabled);
+                messagesPending.decrementAndGet();
+            })
+            .assertNext(receivedMessage -> {
+                assertMessageEquals(receivedMessage, messageId, isSessionEnabled);
+                messagesPending.decrementAndGet();
+            })
+            .verifyComplete();
+
+        // Verify, intermediate-via queue has is delivered to intermediate Entity.
+        StepVerifier.create(intermediateReceiver.receiveMessages().take(total).timeout(shortTimeout))
+            .assertNext(receivedMessage -> {
+                assertMessageEquals(receivedMessage, messageId, isSessionEnabled);
+                messagesPending.decrementAndGet();
+            })
+            .verifyComplete();
+    }
+
+    /**
      * Verifies that we can do following
      * 1. create transaction
      * 2. send message  with transactionContext
@@ -159,8 +234,8 @@ class ServiceBusSenderAsyncClientIntegrationTest extends IntegrationTestBase {
         // Assert & Act
         AtomicReference<ServiceBusTransactionContext> transaction = new AtomicReference<>();
         StepVerifier.create(sender.createTransaction())
-            .assertNext(txn -> {
-                transaction.set(txn);
+            .assertNext(transactionContext -> {
+                transaction.set(transactionContext);
                 assertNotNull(transaction);
             })
             .verifyComplete();
@@ -234,8 +309,8 @@ class ServiceBusSenderAsyncClientIntegrationTest extends IntegrationTestBase {
         // Assert & Act
         AtomicReference<ServiceBusTransactionContext> transaction = new AtomicReference<>();
         StepVerifier.create(sender.createTransaction())
-            .assertNext(txn -> {
-                transaction.set(txn);
+            .assertNext(transactionContext -> {
+                transaction.set(transactionContext);
                 assertNotNull(transaction);
             })
             .verifyComplete();
@@ -267,8 +342,8 @@ class ServiceBusSenderAsyncClientIntegrationTest extends IntegrationTestBase {
      * Sets the sender and receiver. If session is enabled, then a single-named session receiver is created with
      * shared connection as needed.
      */
-    private void setSenderAndReceiver(MessagingEntityType entityType, int entityIndex, boolean useCredentials, boolean isSessionEnabled,
-                                      boolean shareConnection) {
+    private void setSenderAndReceiver(MessagingEntityType entityType, int entityIndex, boolean useCredentials,
+        boolean isSessionEnabled, boolean shareConnection) {
         this.sender = getSenderBuilder(useCredentials, entityType, entityIndex, isSessionEnabled, shareConnection).buildAsyncClient();
 
         if (isSessionEnabled) {

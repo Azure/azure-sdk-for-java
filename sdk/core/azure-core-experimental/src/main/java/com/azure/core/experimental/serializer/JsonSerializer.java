@@ -38,10 +38,11 @@ public interface JsonSerializer extends ObjectSerializer {
      *
      * @param stream {@link OutputStream} where the object's JSON will be written.
      * @param value The object.
+     * @param <S> Type of the output stream
      * @return The stream where the object's JSON was written.
      */
     @Override
-    Mono<OutputStream> serialize(OutputStream stream, Object value);
+    <S extends OutputStream> Mono<S> serialize(S stream, Object value);
 
     /**
      * Writes a JSON tree into a stream.

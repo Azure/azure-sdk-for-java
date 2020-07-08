@@ -885,12 +885,11 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
         }
     }
 
-    /* TODO (gapra): Service docs*/
     /**
      * Queries the entire file.
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/">Azure Docs</a></p>
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/query-blob-contents">Azure Docs</a></p>
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -908,7 +907,7 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
      * Queries the entire file.
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/">Azure Docs</a></p>
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/query-blob-contents">Azure Docs</a></p>
      *
      * <p><strong>Code Samples</strong></p>
      *

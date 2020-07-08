@@ -20,7 +20,7 @@ public final class FirewallPolicyFilterRule extends FirewallPolicyRule {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(FirewallPolicyFilterRule.class);
 
     /*
-     * The action type of a Filter rule
+     * The action type of a Filter rule.
      */
     @JsonProperty(value = "action")
     private FirewallPolicyFilterRuleAction action;
