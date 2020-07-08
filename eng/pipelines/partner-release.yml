@@ -26,6 +26,6 @@ steps:
     filePath: './$(BuildToolScripts)/copy-from-azuresdkpartnerdrops.ps1'
     arguments: '$(Artifacts) $(BlobPath) $(azuresdkpartnerdrops-access-key)'
 
-- template: ../../tools/java-esrp-signing/java-esrp-signing.yml
+- template: tools/java-esrp-signing/java-esrp-signing.yml@azure-sdk-build-tools
   parameters:
     ArtifactDirectory: $(Artifacts)
