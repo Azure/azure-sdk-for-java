@@ -10,7 +10,7 @@ To build the project, run maven commands.
 
 ```bash
 git clone https://github.com/Azure/azure-sdk-for-java.git 
-cd sdk/cosmos/azure-spring-data-cosmosdb
+cd sdk/cosmos/azure-spring-data-cosmos
 mvnw clean install
 ```
 
@@ -19,7 +19,7 @@ There're integration tests on azure and on emulator to trigger integration test 
 
 - Run unit tests
 ```bash
-mvnw clean install
+mvn clean install -Dgpg.skip
 ```
 
 - Run integration tests
@@ -52,7 +52,7 @@ mvnw clean install
 
 - Skip tests execution
 ```bash
-mvnw clean install -DskipTests
+mvn clean install -Dgpg.skip-DskipTests
 ```
 
 ## Version management
