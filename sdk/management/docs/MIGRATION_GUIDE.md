@@ -8,7 +8,7 @@ For users new to the Java SDK for resource management libraries, please see the 
 ## Table of contents
 
 * [Prerequisites](#prerequisites)
-* [Updated Maven depedencies](#updated-maven-dependecies)
+* [Updated Maven depedencies](#updated-maven-dependencies)
 * [General Changes](#general-changes)
   * [Authentication](#authentication)
   * [Customized Policy](#customized-policy)
