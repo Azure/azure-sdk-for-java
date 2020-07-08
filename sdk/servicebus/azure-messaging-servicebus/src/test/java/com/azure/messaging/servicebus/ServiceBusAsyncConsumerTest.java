@@ -4,7 +4,6 @@
 package com.azure.messaging.servicebus;
 
 import com.azure.core.amqp.AmqpEndpointState;
-import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.AmqpRetryPolicy;
 import com.azure.core.amqp.exception.AmqpErrorContext;
 import com.azure.core.amqp.implementation.MessageSerializer;
@@ -32,9 +31,7 @@ import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
 import java.time.Duration;
-import java.time.Instant;
 import java.util.UUID;
-import java.util.function.BiFunction;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -53,8 +50,6 @@ class ServiceBusAsyncConsumerTest {
     private final EmitterProcessor<AmqpEndpointState> endpointProcessor = EmitterProcessor.create();
     private final FluxSink<AmqpEndpointState> endpointProcessorSink = endpointProcessor.sink();
     private final ClientLogger logger = new ClientLogger(ServiceBusAsyncConsumer.class);
-    private final AmqpRetryOptions retryOptions = new AmqpRetryOptions();
-    private final Duration renewDuration = Duration.ofSeconds(5);
 
     private ServiceBusReceiveLinkProcessor linkProcessor;
 
@@ -68,8 +63,6 @@ class ServiceBusAsyncConsumerTest {
     private Disposable parentConnection;
     @Mock
     private MessageSerializer serializer;
-    @Mock
-    private BiFunction<String, String, Mono<Instant>> renewMessageLock;
 
     @BeforeAll
     static void beforeAll() {
