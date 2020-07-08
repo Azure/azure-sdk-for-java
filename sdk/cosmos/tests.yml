@@ -253,7 +253,7 @@ jobs:
         Artifacts:
             - name: spring-data-cosmosdb
               groupId: com.microsoft.azure
-              safeName: azurespringdatacosmos
+              safeName: springdatacosmosdb
         TimeoutInMinutes: 90
         Matrix:
           Session_Integration:
