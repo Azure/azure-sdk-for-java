@@ -120,6 +120,8 @@ public final class CosmosStoredProcedureRequestOptions {
      * Gets whether Javascript stored procedure logging is enabled for the current request in the Azure Cosmos DB database
      * service or not.
      *
+     * Default value is false
+     *
      * @return true if Javascript stored procedure logging is enabled
      */
     public boolean isScriptLoggingEnabled() {
@@ -129,6 +131,8 @@ public final class CosmosStoredProcedureRequestOptions {
     /**
      * Sets whether Javascript stored procedure logging is enabled for the current request in the Azure Cosmos DB database
      * service or not.
+     *
+     * Default value is false
      *
      * @param scriptLoggingEnabled true if stored procedure Javascript logging is enabled
      * @return the CosmosStoredProcedureRequestOptions.
