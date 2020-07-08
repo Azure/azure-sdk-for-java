@@ -13,6 +13,8 @@ import reactor.core.publisher.Mono;
 import java.io.ByteArrayOutputStream;
 import java.util.Objects;
 
+import static com.azure.core.util.FluxUtil.monoError;
+
 /**
  * A class for aggregating Java objects into a single, size-limited, batch. Objects are serialized into EventData
  * objects and are added to the batch.  It is treated as a single message when sent to the Azure Event Hubs service.
@@ -44,7 +46,7 @@ public final class ObjectBatch<T> extends EventDataBatchBase {
      */
     public Mono<Boolean> tryAdd(final T object) {
         if (object == null) {
-            throw logger.logExceptionAsWarning(new IllegalArgumentException("object cannot be null"));
+            return monoError(logger, new IllegalArgumentException("object cannot be null"));
         }
 
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
