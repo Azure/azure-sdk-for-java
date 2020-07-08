@@ -71,7 +71,7 @@ public class EventHubConsumerAsyncClient implements Closeable {
     private final String eventHubName;
     private final EventHubConnectionProcessor connectionProcessor;
     private final MessageSerializer messageSerializer;
-    private final ObjectSerializer objectSerializer;
+    private final ObjectSerializer serializer;
     private final String consumerGroup;
     private final int prefetchCount;
     private final Scheduler scheduler;
@@ -86,14 +86,14 @@ public class EventHubConsumerAsyncClient implements Closeable {
 
     EventHubConsumerAsyncClient(String fullyQualifiedNamespace, String eventHubName,
                                     EventHubConnectionProcessor connectionProcessor,
-                                    MessageSerializer messageSerializer, ObjectSerializer objectSerializer,
+                                    MessageSerializer messageSerializer, ObjectSerializer serializer,
                                     String consumerGroup, int prefetchCount, Scheduler scheduler,
                                     boolean isSharedConnection, Runnable onClientClosed) {
         this.fullyQualifiedNamespace = fullyQualifiedNamespace;
         this.eventHubName = eventHubName;
         this.connectionProcessor = connectionProcessor;
         this.messageSerializer = messageSerializer;
-        this.objectSerializer = objectSerializer;
+        this.serializer = serializer;
         this.consumerGroup = consumerGroup;
         this.prefetchCount = prefetchCount;
         this.scheduler = scheduler;
@@ -369,7 +369,7 @@ public class EventHubConsumerAsyncClient implements Closeable {
             new AmqpReceiveLinkProcessor(prefetchCount, retryPolicy, connectionProcessor));
 
         return new EventHubPartitionAsyncConsumer(linkMessageProcessor, messageSerializer, getFullyQualifiedNamespace(),
-            getEventHubName(), consumerGroup, partitionId, objectSerializer,
+            getEventHubName(), consumerGroup, partitionId, serializer,
             initialPosition, receiveOptions.getTrackLastEnqueuedEventProperties(), scheduler);
     }
 }

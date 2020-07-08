@@ -33,11 +33,11 @@ class EventHubAsyncClient implements Closeable {
     private final boolean isSharedConnection;
     private final Runnable onClientClose;
     private final TracerProvider tracerProvider;
-    private final ObjectSerializer objectSerializer;
+    private final ObjectSerializer serializer;
 
     EventHubAsyncClient(EventHubConnectionProcessor connectionProcessor, TracerProvider tracerProvider,
-                            MessageSerializer messageSerializer, ObjectSerializer objectSerializer, Scheduler scheduler,
-                            boolean isSharedConnection, Runnable onClientClose) {
+                        MessageSerializer messageSerializer, ObjectSerializer serializer, Scheduler scheduler,
+                        boolean isSharedConnection, Runnable onClientClose) {
         this.tracerProvider = Objects.requireNonNull(tracerProvider, "'tracerProvider' cannot be null.");
         this.messageSerializer = Objects.requireNonNull(messageSerializer, "'messageSerializer' cannot be null.");
         this.connectionProcessor = Objects.requireNonNull(connectionProcessor,
@@ -46,7 +46,7 @@ class EventHubAsyncClient implements Closeable {
         this.onClientClose = Objects.requireNonNull(onClientClose, "'onClientClose' cannot be null.");
 
         this.isSharedConnection = isSharedConnection;
-        this.objectSerializer = objectSerializer;
+        this.serializer = serializer;
     }
 
     /**
@@ -109,7 +109,7 @@ class EventHubAsyncClient implements Closeable {
     EventHubProducerAsyncClient createProducer() {
         return new EventHubProducerAsyncClient(connectionProcessor.getFullyQualifiedNamespace(), getEventHubName(),
             connectionProcessor, connectionProcessor.getRetryOptions(), tracerProvider, messageSerializer,
-            objectSerializer, scheduler, isSharedConnection, onClientClose);
+            serializer, scheduler, isSharedConnection, onClientClose);
     }
 
     /**
@@ -133,7 +133,7 @@ class EventHubAsyncClient implements Closeable {
         }
 
         return new EventHubConsumerAsyncClient(connectionProcessor.getFullyQualifiedNamespace(), getEventHubName(),
-            connectionProcessor, messageSerializer, objectSerializer, consumerGroup, prefetchCount, scheduler,
+            connectionProcessor, messageSerializer, serializer, consumerGroup, prefetchCount, scheduler,
             isSharedConnection, onClientClose);
     }
 

@@ -24,14 +24,14 @@ import static com.azure.core.util.FluxUtil.monoError;
 public final class ObjectBatch<T> extends EventDataBatchBase {
     private final ClientLogger logger = new ClientLogger(ObjectBatch.class);
     private final Class<T> batchType;
-    private final ObjectSerializer objectSerializer;
+    private final ObjectSerializer serializer;
 
     ObjectBatch(int maxMessageSize, String partitionId, String partitionKey, Class<T> batchType,
                     ErrorContextProvider contextProvider, TracerProvider tracerProvider,
-                    ObjectSerializer objectSerializer, String entityPath, String hostname) {
+                    ObjectSerializer serializer, String entityPath, String hostname) {
         super(maxMessageSize, partitionId, partitionKey, contextProvider, tracerProvider, entityPath, hostname);
         this.batchType = Objects.requireNonNull(batchType, "'batchType' cannot be null.");
-        this.objectSerializer = Objects.requireNonNull(objectSerializer, "'objectSerializer' cannot be null.");
+        this.serializer = Objects.requireNonNull(serializer, "'serializer' cannot be null.");
     }
 
     /**
@@ -50,6 +50,6 @@ public final class ObjectBatch<T> extends EventDataBatchBase {
         }
 
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        return objectSerializer.serialize(outputStream, object).map(s -> tryAdd(new EventData(s.toByteArray())));
+        return serializer.serialize(outputStream, object).map(s -> tryAdd(new EventData(s.toByteArray())));
     }
 }
