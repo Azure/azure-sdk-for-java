@@ -22,6 +22,12 @@ public class ServiceSpecification {
     private List<MetricSpecification> metricSpecifications;
 
     /**
+     * Specifications of the Logs for Azure Monitoring.
+     */
+    @JsonProperty(value = "logSpecifications")
+    private List<LogSpecification> logSpecifications;
+
+    /**
      * Get specifications of the Metrics for Azure Monitoring.
      *
      * @return the metricSpecifications value
@@ -38,6 +44,26 @@ public class ServiceSpecification {
      */
     public ServiceSpecification withMetricSpecifications(List<MetricSpecification> metricSpecifications) {
         this.metricSpecifications = metricSpecifications;
+        return this;
+    }
+
+    /**
+     * Get specifications of the Logs for Azure Monitoring.
+     *
+     * @return the logSpecifications value
+     */
+    public List<LogSpecification> logSpecifications() {
+        return this.logSpecifications;
+    }
+
+    /**
+     * Set specifications of the Logs for Azure Monitoring.
+     *
+     * @param logSpecifications the logSpecifications value to set
+     * @return the ServiceSpecification object itself.
+     */
+    public ServiceSpecification withLogSpecifications(List<LogSpecification> logSpecifications) {
+        this.logSpecifications = logSpecifications;
         return this;
     }
 
