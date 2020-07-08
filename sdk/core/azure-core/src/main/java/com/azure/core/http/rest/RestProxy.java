@@ -257,13 +257,13 @@ public final class RestProxy implements InvocationHandler {
             // be fixed to ensure correct definitions are applied
             if (contentType == null || contentType.isEmpty()) {
                 throw logger.logThrowableAsError(new IllegalStateException(
-                    "The method " + methodParser.getFullyQualifiedMethodName() + " does does not have its content " +
-                        "type correctly specified in its service interface"));
+                    "The method " + methodParser.getFullyQualifiedMethodName() + " does does not have its content "
+                        + "type correctly specified in its service interface"));
             }
 
             request.getHeaders().put("Content-Type", contentType);
 
-            // FIXME this feels hacky
+            // TODO(jogiles) this feels hacky
             boolean isJson = false;
             final String[] contentTypeParts = contentType.split(";");
             for (String contentTypePart : contentTypeParts) {

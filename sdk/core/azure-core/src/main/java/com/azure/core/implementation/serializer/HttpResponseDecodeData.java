@@ -12,7 +12,6 @@ import com.azure.core.implementation.TypeUtil;
 import reactor.core.publisher.Mono;
 
 import java.lang.reflect.Type;
-import java.util.Arrays;
 
 /**
  * Type representing necessary information required to decode a specific Http response.
@@ -60,7 +59,9 @@ public interface HttpResponseDecodeData {
      * 2. If the returned int[] is not-null, only the codes in the array are considered as success code.
      *
      * @return the expected HTTP response status codes
+     * @deprecated Use {@link #isExpectedResponseStatusCode(int)} instead.
      */
+    @Deprecated // This is only used in tests now - all uses should go via isExpectedResponseStatusCode instead
     default int[] getExpectedStatusCodes() {
         return null;
     }
@@ -70,15 +71,10 @@ public interface HttpResponseDecodeData {
      * codes returned by {@link #getExpectedStatusCodes()}, {@code false} otherwise.
      *
      * @param statusCode The HTTP response status code to evaluate.
-     * @return {@code true} is the given status code is expected.
+     * @return {@code true} if the given status code is expected.
      */
     default boolean isExpectedResponseStatusCode(int statusCode) {
-        final int[] expectedStatuses = getExpectedStatusCodes();
-        if (expectedStatuses != null) {
-            return Arrays.stream(expectedStatuses).anyMatch(expectedCode -> expectedCode == statusCode);
-        } else {
-            return statusCode < 400;
-        }
+        return false;
     }
 
     /**

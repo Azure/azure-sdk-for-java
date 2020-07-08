@@ -6,9 +6,7 @@ package com.azure.core.implementation;
 import java.lang.reflect.GenericDeclaration;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
-import java.lang.reflect.TypeVariable;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.WeakHashMap;
@@ -92,7 +90,8 @@ public final class TypeUtil {
                      * with actual type arguments from the parameterized type
                      */
                     final Type[] superTypeArguments = getTypeArguments(genericSuperClass);
-                    final Type[] typeParameters = ((GenericDeclaration) parameterizedType.getRawType()).getTypeParameters();
+                    final Type[] typeParameters =
+                        ((GenericDeclaration) parameterizedType.getRawType()).getTypeParameters();
                     int k = 0;
                     outer:
                     for (int i = 0; i != superTypeArguments.length; i++) {

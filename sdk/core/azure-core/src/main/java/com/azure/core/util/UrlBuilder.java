@@ -3,8 +3,6 @@
 
 package com.azure.core.util;
 
-import com.azure.core.util.logging.ClientLogger;
-
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashMap;

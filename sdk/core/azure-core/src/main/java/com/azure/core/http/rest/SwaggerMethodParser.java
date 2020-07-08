@@ -65,8 +65,7 @@ class SwaggerMethodParser implements HttpResponseDecodeData {
     private final Integer bodyContentMethodParameterIndex;
     private final String bodyContentType;
     private final Type bodyJavaType;
-    private final int[] expectedStatusCodes;
-    private final BitSet expectedStatusCodesBitSet;
+    private final BitSet expectedStatusCodes;
     private final Type returnType;
     private final Type returnValueWireType;
     private final UnexpectedResponseExceptionType[] unexpectedResponseExceptionTypes;
@@ -150,13 +149,13 @@ class SwaggerMethodParser implements HttpResponseDecodeData {
         }
 
         final ExpectedResponses expectedResponses = swaggerMethod.getAnnotation(ExpectedResponses.class);
-        expectedStatusCodes = expectedResponses == null ? null : CoreUtils.clone(expectedResponses.value());
-
-        expectedStatusCodesBitSet = new BitSet();
-        if (expectedStatusCodes != null) {
-            for (int code : expectedStatusCodes) {
-                expectedStatusCodesBitSet.set(code);
+        if (expectedResponses != null && expectedResponses.value().length > 0) {
+            expectedStatusCodes = new BitSet();
+            for (int code : expectedResponses.value()) {
+                expectedStatusCodes.set(code);
             }
+        } else {
+            expectedStatusCodes = null;
         }
 
         unexpectedResponseExceptionTypes = swaggerMethod.getAnnotationsByType(UnexpectedResponseExceptionType.class);
@@ -232,7 +231,8 @@ class SwaggerMethodParser implements HttpResponseDecodeData {
      */
     @Override
     public int[] getExpectedStatusCodes() {
-        return expectedStatusCodes;
+//        return expectedStatusCodes;
+        return expectedStatusCodes == null ? null : expectedStatusCodes.stream().toArray();
     }
 
     /**
@@ -363,10 +363,10 @@ class SwaggerMethodParser implements HttpResponseDecodeData {
      * method
      */
     @Override
-    public boolean isExpectedResponseStatusCode(int statusCode) {
+    public boolean isExpectedResponseStatusCode(final int statusCode) {
         return expectedStatusCodes == null
             ? statusCode < 400
-            : expectedStatusCodesBitSet.get(statusCode);
+            : expectedStatusCodes.get(statusCode);
     }
 
     /**
