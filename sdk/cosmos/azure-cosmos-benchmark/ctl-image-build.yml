@@ -3,14 +3,15 @@ jobs:
     timeoutInMinutes: 20
     variables:
       - template: /eng/pipelines/templates/variables/globals.yml
+      - name: ContainerRegistryName
+        value: 'javactl'
+      - name: ContainerRegistryUserName
+        value: 'javactl'
+      - name: ContainerRegistryUrl
+        value: 'javactl.azurecr.io'
+
     pool:
       vmImage: 'ubuntu-18.04'
-
-    # java-cosmos-container-registry-pwd
-    variables:
-      ContainerRegistryName: 'javactl'
-      ContainerRegistryUserName: 'javactl'
-      ContainerRegistryUrl: 'javactl.azurecr.io'
 
     steps:
     - task: Maven@3
