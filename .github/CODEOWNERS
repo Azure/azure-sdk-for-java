@@ -15,7 +15,7 @@
 /sdk/appconfiguration/                              @mssfang @alzimmermsft @conniey @sima-zhu                     %AzConfig
 /sdk/batch/                                         @xingwu1 @bgklein @matthchr                                   %Batch
 /sdk/core/                                          @alzimmermsft @jianghaolu @srnagar @hemanttanwar @anuchandy   %Azure.Core
-/sdk/core/azure-core-tracing-opentelemetry/         @samvaity @alzimmermsft 
+/sdk/core/azure-core-tracing-opentelemetry/         @samvaity @alzimmermsft                                       %Azure.Core
 /sdk/cosmos/                                        @moderakh @kushagraThapar @David-Noble-at-work @kirankumarkolli @mbhaskar   %Cosmos
 /sdk/cosmos/azure-spring-data-cosmos/               @kushagraThapar @saragluna @yiliuTo @chenrujun @zhoufenqin @jialindai
 /sdk/eventhubs/                                     @conniey @srnagar @mssfang        %Event Hubs
