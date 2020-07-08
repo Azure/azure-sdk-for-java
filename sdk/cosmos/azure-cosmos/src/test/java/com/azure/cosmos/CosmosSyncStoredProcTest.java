@@ -202,7 +202,7 @@ public class CosmosSyncStoredProcTest extends TestSuiteBase {
                                                                  .execute(null, options);
 
         String logResult = "The value of x is 1.";
-        assertThat(URLDecoder.decode(executeResponse.getScriptLog(), StandardCharsets.UTF_8.toString())).isEqualTo(logResult);
+        assertThat(executeResponse.getScriptLog()).isEqualTo(logResult);
     }
 
     @Test(groups = {"simple"}, timeOut = TIMEOUT)
