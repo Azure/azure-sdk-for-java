@@ -11,7 +11,6 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.implementation.ServiceBusAmqpConnection;
 import com.azure.messaging.servicebus.implementation.ServiceBusReceiveLink;
 import com.azure.messaging.servicebus.implementation.ServiceBusReceiveLinkProcessor;
-import org.apache.qpid.proton.amqp.messaging.Accepted;
 import org.apache.qpid.proton.amqp.transport.DeliveryState;
 import org.apache.qpid.proton.message.Message;
 import org.junit.jupiter.api.AfterAll;
@@ -163,7 +162,10 @@ class ServiceBusAsyncConsumerTest {
                 messagePublisher.next(message1);
             })
             .expectNext(receivedMessage1)
-            .then(() -> consumer.close())
+            .then(() -> {
+                linkPublisher.complete();
+                endpointPublisher.complete();
+            })
             .verifyComplete();
 
         verify(link, never()).updateDisposition(anyString(), any(DeliveryState.class));
