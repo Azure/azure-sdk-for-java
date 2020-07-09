@@ -9,6 +9,7 @@ import com.azure.cosmos.implementation.routing.PartitionKeyRangeIdentity;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.net.SocketAddress;
+import java.net.URI;
 import java.util.Objects;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
@@ -38,6 +39,10 @@ public final class RntbdAddressCacheToken {
     @JsonProperty
     public SocketAddress getRemoteAddress() {
         return this.endpoint.remoteAddress();
+    }
+
+    public URI getRemoteURI() {
+        return this.endpoint.remoteURI();
     }
 
     @Override

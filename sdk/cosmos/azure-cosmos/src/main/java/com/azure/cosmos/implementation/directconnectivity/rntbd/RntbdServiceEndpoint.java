@@ -6,6 +6,7 @@ package com.azure.cosmos.implementation.directconnectivity.rntbd;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.implementation.GoneException;
 import com.azure.cosmos.implementation.directconnectivity.RntbdTransportClient;
+import com.azure.cosmos.implementation.directconnectivity.TransportException;
 import com.azure.cosmos.implementation.guava25.collect.ImmutableMap;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.SerializerProvider;
@@ -28,6 +29,7 @@ import org.slf4j.LoggerFactory;
 import java.io.IOException;
 import java.net.SocketAddress;
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -62,6 +64,7 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
     private final RntbdMetrics metrics;
     private final Provider provider;
     private final SocketAddress remoteAddress;
+    private final URI remoteURI;
     private final RntbdRequestTimer requestTimer;
     private final Tag tag;
 
@@ -76,6 +79,21 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
         final RntbdRequestTimer timer,
         final URI physicalAddress) {
 
+        try {
+            this.remoteURI = new URI(
+                physicalAddress.getScheme(),
+                null,
+                physicalAddress.getHost(),
+                physicalAddress.getPort(),
+                null,
+                null,
+                null);
+        } catch (URISyntaxException error) {
+            throw new IllegalArgumentException(
+                lenientFormat("physicalAddress %s cannot be parsed as a server-based authority", physicalAddress),
+                error);
+        }
+
         final Bootstrap bootstrap = new Bootstrap()
             .channel(NioSocketChannel.class)
             .group(group)
@@ -84,13 +102,14 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
             .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, config.connectTimeoutInMillis())
             .option(ChannelOption.RCVBUF_ALLOCATOR, receiveBufferAllocator)
             .option(ChannelOption.SO_KEEPALIVE, true)
-            .remoteAddress(physicalAddress.getHost(), physicalAddress.getPort());
+            .remoteAddress(this.remoteURI.getHost(), this.remoteURI.getPort());
 
         this.channelPool = new RntbdClientChannelPool(this, bootstrap, config);
         this.remoteAddress = bootstrap.config().remoteAddress();
         this.concurrentRequests = new AtomicInteger();
         this.lastRequestNanoTime = new AtomicLong();
         this.closed = new AtomicBoolean();
+
         this.requestTimer = timer;
 
         this.tag = Tag.of(TAG_NAME, RntbdMetrics.escape(this.remoteAddress.toString()));
@@ -136,6 +155,11 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
     @Override
     public SocketAddress remoteAddress() {
         return this.remoteAddress;
+    }
+
+    @Override
+    public URI remoteURI() {
+        return this.remoteURI;
     }
 
     @Override

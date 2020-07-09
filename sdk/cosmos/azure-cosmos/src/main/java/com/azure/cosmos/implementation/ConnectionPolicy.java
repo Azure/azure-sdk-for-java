@@ -41,6 +41,7 @@ public final class ConnectionPolicy {
 
     //  Direct connection config properties
     private Duration connectTimeout;
+    private boolean enableTcpConnectionEndpointRediscovery;
     private Duration idleEndpointTimeout;
     private int maxConnectionsPerEndpoint;
     private int maxRequestsPerConnection;
@@ -50,6 +51,7 @@ public final class ConnectionPolicy {
      */
     public ConnectionPolicy(GatewayConnectionConfig gatewayConnectionConfig) {
         this(ConnectionMode.GATEWAY);
+        this.enableTcpConnectionEndpointRediscovery = false;
         this.idleConnectionTimeout = gatewayConnectionConfig.getIdleConnectionTimeout();
         this.maxConnectionPoolSize = gatewayConnectionConfig.getMaxConnectionPoolSize();
         this.requestTimeout = BridgeInternal.getRequestTimeoutFromGatewayConnectionConfig(gatewayConnectionConfig);
@@ -59,6 +61,7 @@ public final class ConnectionPolicy {
     public ConnectionPolicy(DirectConnectionConfig directConnectionConfig) {
         this(ConnectionMode.DIRECT);
         this.connectTimeout = directConnectionConfig.getConnectTimeout();
+        this.enableTcpConnectionEndpointRediscovery = directConnectionConfig.getEnableConnectionEndpointRediscovery();
         this.idleConnectionTimeout = directConnectionConfig.getIdleConnectionTimeout();
         this.idleEndpointTimeout = directConnectionConfig.getIdleEndpointTimeout();
         this.maxConnectionsPerEndpoint = directConnectionConfig.getMaxConnectionsPerEndpoint();
@@ -84,6 +87,25 @@ public final class ConnectionPolicy {
      */
     public static ConnectionPolicy getDefaultPolicy() {
         return ConnectionPolicy.defaultPolicy;
+    }
+
+    /**
+     * Gets a value that indicates whether Direct TCP connection endpoint rediscovery should is enabled.
+     *
+     * @return {@code true} if Direct TCP connection endpoint rediscovery should is enabled; {@code false} otherwise.
+     */
+    public boolean getEnableTcpConnectionEndpointRediscovery() {
+        return this.enableTcpConnectionEndpointRediscovery;
+    }
+
+    /**
+     * Sets a value that indicates whether Direct TCP connection endpoint rediscovery should is enabled.
+     *
+     * @return the {@linkplain ConnectionPolicy}.
+     */
+    public ConnectionPolicy getEnableTcpConnectionEndpointRediscovery(boolean enableTcpConnectionEndpointRediscovery) {
+        this.enableTcpConnectionEndpointRediscovery = enableTcpConnectionEndpointRediscovery;
+        return this;
     }
 
     /**

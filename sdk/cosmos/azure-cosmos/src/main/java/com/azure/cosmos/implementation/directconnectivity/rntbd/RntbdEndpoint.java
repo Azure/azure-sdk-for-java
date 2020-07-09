@@ -34,6 +34,8 @@ public interface RntbdEndpoint extends AutoCloseable {
 
     SocketAddress remoteAddress();
 
+    URI remoteURI();
+
     int requestQueueLength();
 
     Tag tag();

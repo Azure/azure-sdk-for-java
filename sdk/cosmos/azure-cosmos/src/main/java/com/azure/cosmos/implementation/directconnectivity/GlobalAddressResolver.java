@@ -28,6 +28,7 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
@@ -91,6 +92,20 @@ public class GlobalAddressResolver implements IAddressResolver {
 
     @Override
     public Mono<Void> updateAsync(List<RntbdAddressCacheToken> tokens) {
+
+        CompletableFuture<?>[] updates = new CompletableFuture<?>[tokens.size()];
+        int i = 0;
+
+        for (RntbdAddressCacheToken token : tokens) {
+            EndpointCache endpointCache = this.addressCacheByEndpoint.get(token.getRemoteURI());
+            updates[i++] = endpointCache.addressCache.getServerAddressesViaGatewayAsync();
+//            if (endpointCache.)
+//            {
+//                tasks.Add(endpointCache.AddressCache.UpdateAsync(cacheToken.PartitionKeyRangeIdentity, cancellationToken));
+//            }
+        }
+
+//        await Task.WhenAll(tasks);
         return Mono.error(new NotImplementedException("GlobalAddressResolver.updateAsync"));
     }
 
