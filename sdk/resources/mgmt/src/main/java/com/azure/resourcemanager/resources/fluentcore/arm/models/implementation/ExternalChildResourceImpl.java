@@ -413,17 +413,6 @@ public abstract class ExternalChildResourceImpl<FluentModelT extends Indexable,
                             .doOnNext(createdExternalChild -> externalChild.setPendingOperation(PendingOperation.None))
                             .map(updatedExternalChild -> updatedExternalChild);
                 case ToBeRemoved:
-                    // With 2.0 runtime, deleteResourceAsync() will be
-                    // returning 'Completable' then use below code instead
-                    //
-                    //  return this.externalChild.deleteResourceAsync().doOnCompleted(new Action0() {
-                    //      @Override
-                    //      public void call() {
-                    //          externalChild.setPendingOperation(PendingOperation.None);
-                    //      }
-                    //  }).andThen(voidObservable());
-                    //
-                    // TODO: Fix void mono result.
                     return this.externalChild.deleteResourceAsync()
                             .doOnSuccess(aVoid -> externalChild.setPendingOperation(PendingOperation.None))
                             .map(aVoid -> voidIndexable());
