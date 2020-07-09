@@ -100,6 +100,42 @@ public class SpringAppDeploymentImpl
     }
 
     @Override
+    public void start() {
+        startAsync().block();
+    }
+
+    @Override
+    public Mono<Void> startAsync() {
+        return manager().inner().getDeployments().startAsync(
+            parent().parent().resourceGroupName(), parent().parent().name(), parent().name(), name()
+        );
+    }
+
+    @Override
+    public void stop() {
+        stopAsync().block();
+    }
+
+    @Override
+    public Mono<Void> stopAsync() {
+        return manager().inner().getDeployments().stopAsync(
+            parent().parent().resourceGroupName(), parent().parent().name(), parent().name(), name()
+        );
+    }
+
+    @Override
+    public void restart() {
+        restartAsync().block();
+    }
+
+    @Override
+    public Mono<Void> restartAsync() {
+        return manager().inner().getDeployments().restartAsync(
+            parent().parent().resourceGroupName(), parent().parent().name(), parent().name(), name()
+        );
+    }
+
+    @Override
     public String getLogFileUrl() {
         return getLogFileUrlAsync().block();
     }
