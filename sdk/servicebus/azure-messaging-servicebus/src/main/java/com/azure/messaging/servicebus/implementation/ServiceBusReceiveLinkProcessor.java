@@ -197,7 +197,12 @@ public class ServiceBusReceiveLinkProcessor extends FluxProcessor<ServiceBusRece
             oldSubscription = currentLinkSubscriptions;
 
             currentLink = next;
-            next.setEmptyCreditListener(() -> getCreditsToAdd(0));
+            next.setEmptyCreditListener(() -> {
+                final int creditsToAdd = getCreditsToAdd(0);
+                linkCreditsAdded.set(creditsToAdd > 0);
+
+                return creditsToAdd;
+            });
 
             currentLinkSubscriptions = Disposables.composite(
                 next.receive().publishOn(Schedulers.boundedElastic()).subscribe(message -> {
@@ -531,8 +536,8 @@ public class ServiceBusReceiveLinkProcessor extends FluxProcessor<ServiceBusRece
             return;
         }
 
-        final boolean added = linkCreditsAdded.getAndSet(true);
-        if (added) {
+        // Credits have already been added to the link. We won't try again.
+        if (linkCreditsAdded.getAndSet(true)) {
             return;
         }
 
