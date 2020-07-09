@@ -5,7 +5,6 @@ package com.azure.messaging.servicebus.implementation;
 
 import com.azure.core.amqp.AmqpEndpointState;
 import com.azure.core.amqp.AmqpRetryPolicy;
-import com.azure.core.amqp.exception.AmqpErrorContext;
 import com.azure.core.amqp.implementation.AmqpReceiveLink;
 import com.azure.core.util.logging.ClientLogger;
 import org.apache.qpid.proton.amqp.transport.DeliveryState;
@@ -42,25 +41,31 @@ public class ServiceBusReceiveLinkProcessor extends FluxProcessor<ServiceBusRece
     implements Subscription {
     private final ClientLogger logger = new ClientLogger(ServiceBusReceiveLinkProcessor.class);
     private final Object lock = new Object();
+    private final Object queueLock = new Object();
     private final AtomicBoolean isTerminated = new AtomicBoolean();
     private final AtomicInteger retryAttempts = new AtomicInteger();
-    private final Deque<Message> messageQueue = new ConcurrentLinkedDeque<>();
-    private final AtomicBoolean hasFirstLink = new AtomicBoolean();
     private final AtomicBoolean linkCreditsAdded = new AtomicBoolean();
     private final AtomicReference<String> linkName = new AtomicReference<>();
+
+    // Queue containing all the prefetched messages.
+    private final Deque<Message> messageQueue = new ConcurrentLinkedDeque<>();
+    private final int minimumNumberOfMessages;
+    private final int prefetch;
 
     private final AtomicReference<CoreSubscriber<? super Message>> downstream = new AtomicReference<>();
     private final AtomicInteger wip = new AtomicInteger();
 
-    private final int prefetch;
     private final AmqpRetryPolicy retryPolicy;
-    private final AmqpErrorContext errorContext;
 
     private volatile Throwable lastError;
     private volatile boolean isCancelled;
     private volatile ServiceBusReceiveLink currentLink;
     private volatile Disposable currentLinkSubscriptions;
     private volatile Disposable retrySubscription;
+
+    // size() on Deque is O(n) operation, so we use an integer to keep track. All reads and writes to this are gated by
+    // the `queueLock`.
+    private volatile int pendingMessages;
 
     // Opting to use AtomicReferenceFieldUpdater because Project Reactor provides utility methods that calculates
     // backpressure requests, sets the upstream correctly, and reports its state.
@@ -81,31 +86,23 @@ public class ServiceBusReceiveLinkProcessor extends FluxProcessor<ServiceBusRece
      * @throws NullPointerException if {@code retryPolicy} is null.
      * @throws IllegalArgumentException if {@code prefetch} is less than 0.
      */
-    public ServiceBusReceiveLinkProcessor(int prefetch, AmqpRetryPolicy retryPolicy, AmqpErrorContext errorContext) {
+    public ServiceBusReceiveLinkProcessor(int prefetch, AmqpRetryPolicy retryPolicy) {
         this.retryPolicy = Objects.requireNonNull(retryPolicy, "'retryPolicy' cannot be null.");
-        this.errorContext = errorContext;
 
-        if (prefetch <= 0) {
+        if (prefetch < 0) {
             throw logger.logExceptionAsError(
-                new IllegalArgumentException("'prefetch' cannot be less than or equal to 0."));
+                new IllegalArgumentException("'prefetch' cannot be less than 0."));
         }
 
         this.prefetch = prefetch;
+
+        // When the queue has this number of messages left, it's time to add more credits to refill the prefetch queue.
+        this.minimumNumberOfMessages = Math.floorDiv(prefetch, 3);
     }
 
     public String getLinkName() {
         return linkName.get();
     }
-
-    /**
-     * Gets the error context associated with this link.
-     *
-     * @return the error context associated with this link.
-     */
-    public AmqpErrorContext getErrorContext() {
-        return errorContext;
-    }
-
 
     public Mono<Void> updateDisposition(String lockToken, DeliveryState deliveryState) {
         if (isDisposed()) {
@@ -119,7 +116,15 @@ public class ServiceBusReceiveLinkProcessor extends FluxProcessor<ServiceBusRece
                 "lockToken[%s]. state[%s]. Cannot update disposition with no link.", lockToken, deliveryState)));
         }
 
-        return link.updateDisposition(lockToken, deliveryState);
+        return link.updateDisposition(lockToken, deliveryState)
+            .then(Mono.fromRunnable(() -> {
+                // Check if we should add more credits.
+                synchronized (queueLock) {
+                    pendingMessages--;
+                }
+
+                checkAndAddCredits(link);
+            }));
     }
 
     /**
@@ -192,17 +197,15 @@ public class ServiceBusReceiveLinkProcessor extends FluxProcessor<ServiceBusRece
             oldSubscription = currentLinkSubscriptions;
 
             currentLink = next;
-
-            if (!hasFirstLink.getAndSet(true)) {
-                linkCreditsAdded.set(true);
-                next.addCredits(prefetch);
-            }
-
-            next.setEmptyCreditListener(() -> getCreditsToAdd());
+            next.setEmptyCreditListener(() -> getCreditsToAdd(0));
 
             currentLinkSubscriptions = Disposables.composite(
                 next.receive().publishOn(Schedulers.boundedElastic()).subscribe(message -> {
-                    messageQueue.add(message);
+                    synchronized (queueLock) {
+                        messageQueue.add(message);
+                        pendingMessages++;
+                    }
+
                     drain();
                 }),
                 next.getEndpointStates().subscribe(
@@ -236,6 +239,8 @@ public class ServiceBusReceiveLinkProcessor extends FluxProcessor<ServiceBusRece
                         }
                     }));
         }
+
+        checkAndAddCredits(next);
 
         if (oldChannel != null) {
             oldChannel.dispose();
@@ -365,12 +370,11 @@ public class ServiceBusReceiveLinkProcessor extends FluxProcessor<ServiceBusRece
         Operators.addCap(REQUESTED, this, request);
 
         final AmqpReceiveLink link = currentLink;
-        if (link != null && !linkCreditsAdded.getAndSet(true)) {
-            int credits = getCreditsToAdd();
-            logger.info("Link credits not yet added. Adding: {}", credits);
-            link.addCredits(credits);
+        if (link == null) {
+            return;
         }
 
+        checkAndAddCredits(link);
         drain();
     }
 
@@ -463,14 +467,19 @@ public class ServiceBusReceiveLinkProcessor extends FluxProcessor<ServiceBusRece
                     break;
                 }
 
-                Message message = messageQueue.poll();
+                final Message message = messageQueue.poll();
                 if (message == null) {
                     break;
                 }
 
                 if (isCancelled) {
                     Operators.onDiscard(message, subscriber.currentContext());
-                    Operators.onDiscardQueueWithClear(messageQueue, subscriber.currentContext(), null);
+
+                    synchronized (queueLock) {
+                        Operators.onDiscardQueueWithClear(messageQueue, subscriber.currentContext(), null);
+                        pendingMessages = 0;
+                    }
+
                     return;
                 }
 
@@ -509,22 +518,62 @@ public class ServiceBusReceiveLinkProcessor extends FluxProcessor<ServiceBusRece
             currentLink.dispose();
         }
 
-        messageQueue.clear();
+        synchronized (queueLock) {
+            messageQueue.clear();
+            pendingMessages = 0;
+        }
+
         return true;
     }
 
-    private int getCreditsToAdd() {
+    private void checkAndAddCredits(AmqpReceiveLink link) {
+        if (link == null) {
+            return;
+        }
+
+        final boolean added = linkCreditsAdded.getAndSet(true);
+        if (added) {
+            return;
+        }
+
+        final int credits = getCreditsToAdd(link.getCredits());
+        linkCreditsAdded.set(credits > 0);
+
+        logger.info("Link credits to add. Credits: '{}'", credits);
+
+        if (credits > 0) {
+            link.addCredits(credits);
+        }
+    }
+
+    private int getCreditsToAdd(int linkCredits) {
         final CoreSubscriber<? super Message> subscriber = downstream.get();
         final long r = requested;
+        final boolean hasBackpressure = r != Long.MAX_VALUE;
+
         if (subscriber == null || r == 0) {
             logger.info("Not adding credits. No downstream subscribers or items requested.");
-            linkCreditsAdded.set(false);
             return 0;
         }
 
-        linkCreditsAdded.set(true);
+        final int creditsToAdd;
+        if (messageQueue.isEmpty() && !hasBackpressure) {
+            creditsToAdd = prefetch;
+        } else {
+            synchronized (queueLock) {
+                final int pending = pendingMessages + linkCredits;
 
-        // If there is no back pressure, always add 1. Otherwise, add whatever is requested.
-        return r == Long.MAX_VALUE ? 1 : Long.valueOf(r).intValue();
+                if (hasBackpressure) {
+                    creditsToAdd = Math.max(Long.valueOf(r).intValue() - pending, 0);
+                } else {
+                    // If the queue has less than 1/3 of the prefetch, then add the difference to keep the queue full.
+                    creditsToAdd = minimumNumberOfMessages >= pendingMessages
+                        ? Math.max(prefetch - pending, 1)
+                        : 0;
+                }
+            }
+        }
+
+        return creditsToAdd;
     }
 }
