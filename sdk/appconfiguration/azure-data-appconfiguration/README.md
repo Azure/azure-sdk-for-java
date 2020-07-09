@@ -23,12 +23,12 @@ Use the client library for App Configuration to create and manage application co
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-data-appconfiguration</artifactId>
-  <version>1.1.2</version>
+  <version>1.1.3</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
 
-### Create an App Configuration Store
+#### Create an App Configuration Store
 
 To create a Configuration Store you can use the Azure Portal or [Azure CLI][azure_cli].
 
