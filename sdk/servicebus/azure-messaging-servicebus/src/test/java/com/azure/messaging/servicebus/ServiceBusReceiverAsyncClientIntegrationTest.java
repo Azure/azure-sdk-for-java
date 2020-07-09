@@ -933,44 +933,6 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         messagesPending.decrementAndGet();
     }
 
-    @MethodSource("com.azure.messaging.servicebus.IntegrationTestBase#messagingEntityProvider")
-    @ParameterizedTest
-    void receivesByNumber(MessagingEntityType entityType) {
-        // Arrange
-        setSenderAndReceiver(entityType, TestUtils.USE_CASE_RECEIVE_BY_NUMBER, false);
-
-        final String messageId = UUID.randomUUID().toString();
-        final int number = 10;
-        final List<ServiceBusMessage> messages = TestUtils.getServiceBusMessages(number, messageId, CONTENTS_BYTES);
-
-        sendMessage(messages).block(Duration.ofSeconds(10));
-
-        // Act & Assert
-        StepVerifier.create(receiveAndDeleteReceiver.receiveMessages(messages.size(), Duration.ofSeconds(15))
-            .doOnNext(next -> messagesPending.decrementAndGet()))
-            .expectNextCount(number)
-            .verifyComplete();
-    }
-
-    @MethodSource("com.azure.messaging.servicebus.IntegrationTestBase#messagingEntityProvider")
-    @ParameterizedTest
-    void receivesByTime(MessagingEntityType entityType) {
-        // Arrange
-
-        setSenderAndReceiver(entityType, TestUtils.USE_CASE_RECEIVE_BY_TIME, false);
-        final String messageId = UUID.randomUUID().toString();
-        final int number = 10;
-        final List<ServiceBusMessage> messages = TestUtils.getServiceBusMessages(number, messageId, CONTENTS_BYTES);
-
-        sendMessage(messages).block(Duration.ofSeconds(15));
-
-        // Act & Assert
-        StepVerifier.create(receiveAndDeleteReceiver.receiveMessages(number + 10, Duration.ofSeconds(15))
-            .doOnNext(next -> messagesPending.decrementAndGet()))
-            .expectNextCount(number)
-            .verifyComplete();
-    }
-
     /**
      * Verifies that we can receive a message from dead letter queue.
      */

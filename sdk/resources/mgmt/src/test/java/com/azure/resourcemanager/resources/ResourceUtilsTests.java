@@ -3,11 +3,19 @@
 
 package com.azure.resourcemanager.resources;
 
+import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.HttpPipelineBuilder;
+import com.azure.core.http.policy.HttpLogDetailLevel;
+import com.azure.core.http.policy.HttpLogOptions;
+import com.azure.core.http.policy.HttpLoggingPolicy;
+import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+
+import java.time.temporal.ChronoUnit;
 
 public class ResourceUtilsTests {
     @Test
@@ -39,11 +47,16 @@ public class ResourceUtilsTests {
 
     @Test
     public void canDownloadFile() throws Exception {
-        // TODO(not known): Fix this
-//        RestProxy retrofit = new RestProxyBuilder().baseUrl("http://microsoft.com").addCallAdapterFactory(RxJavaCallAdapterFactory.create()).build();
-//        byte[] content = Utils.downloadFileAsync("http://google.com/humans.txt", retrofit).toBlocking().single();
-//        String contentString = new String(content);
-//        Assertions.assertNotNull(contentString);
+        HttpPipeline httpPipeline = new HttpPipelineBuilder()
+            .policies(
+                new HttpLoggingPolicy(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS)),
+                new RetryPolicy("Retry-After", ChronoUnit.SECONDS)
+            )
+            .build();
+        byte[] content = Utils.downloadFileAsync("https://www.google.com/humans.txt", httpPipeline).block();
+        String contentString = new String(content);
+        Assertions.assertNotNull(contentString);
+        Assertions.assertTrue(contentString.startsWith("Google is built by a large team of engineers,"));
     }
 
     @Test

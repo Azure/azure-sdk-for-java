@@ -417,6 +417,8 @@
   <suppress checks="LineLength" files="com.azure.ai.formrecognizer.implementation.models"/>
   <suppress checks="LineLength" files="com.azure.ai.formrecognizer.Transforms.java"/>
 
+  <suppress checks="GoodLoggingCheck" files="com.azure.ai.formrecognizer.models.FieldValueType.java" />
+
   <!-- TODO: Fix with https://github.com/Azure/azure-sdk-for-java/issues#6716 Method name should follow a common vocabulary. -->
   <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files=".*[/\\]textanalytics[/\\].*"/>
 
@@ -472,9 +474,9 @@
   <suppress checks="AvoidNestedBlocks" files="com.azure.storage.internal.avro.implementation.schema.AvroSchema.java"/>
   <suppress checks="AvoidNestedBlocks" files="com.azure.storage.internal.avro.implementation.schema.AvroType.java"/>
   <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck"
-            files="com.microsoft.azure.spring.data.cosmosdb.config.AbstractCosmosConfiguration.java"/>
+            files="com.azure.spring.data.cosmos.config.AbstractCosmosConfiguration.java"/>
   <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck"
-            files="com.microsoft.azure.spring.data.cosmosdb.core.query.CosmosPageRequest.java"/>
+            files="com.azure.spring.data.cosmos.core.query.CosmosPageRequest.java"/>
 
   <!-- Checkstyle suppressions for azure-test-watch package -->
   <suppress checks="com.azure.tools.checkstyle.checks.ExternalDependencyExposedCheck" files="com.azure.testing.AzureTestWatcher.java"/>
@@ -483,10 +485,10 @@
   <!-- Checkstyle suppressions for resource manager package -->
   <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files="com.azure.resourcemanager.*"/>
 
-  <!-- Checkstyle suppressions for spring-data-cosmosdb package -->
-  <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck|ExternalDependencyExposedCheck|ThrowFromClientLoggerCheck" files="com.microsoft.azure.spring.data.cosmosdb.*\.java"/>
-  <suppress checks="MethodName|MemberName|ParameterName|VisibilityModifier" files="com.microsoft.azure.spring.data.cosmosdb.domain|repository|config.*\.java"/>
-  <suppress checks="ConstantName" files="com.microsoft.azure.spring.data.cosmosdb.repository|common.*\.java" />
+  <!-- Checkstyle suppressions for azure-spring-data-cosmos package -->
+  <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck|ExternalDependencyExposedCheck|ThrowFromClientLoggerCheck" files="com.azure.spring.data.cosmos.*\.java"/>
+  <suppress checks="MethodName|MemberName|ParameterName|VisibilityModifier" files="com.azure.spring.data.cosmos.domain|repository|config.*\.java"/>
+  <suppress checks="ConstantName" files="com.azure.spring.data.cosmos.repository|common.*\.java" />
 
   <!-- Checkstyle suppressions for spring-data-gremlin package  -->
   <suppress checks="PackageName" files="com.microsoft.spring.data.gremlin.*" />
