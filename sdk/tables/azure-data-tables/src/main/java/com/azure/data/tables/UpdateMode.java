@@ -2,7 +2,10 @@
 // Licensed under the MIT License.
 package com.azure.data.tables;
 
-enum UpdateMode {
+/**
+ * update type for update and upsert methods
+ */
+public enum UpdateMode {
     MERGE,
     REPLACE
 }

@@ -4,7 +4,6 @@ package com.azure.data.tables;
 
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.http.rest.PagedFlux;
-import java.util.List;
 import java.util.Map;
 import reactor.core.publisher.Mono;
 
@@ -102,6 +101,6 @@ public class TableAsyncClient {
      * @return table name
      */
     public String getTableName() {
-        return null;
+        return tableName;
     }
 }

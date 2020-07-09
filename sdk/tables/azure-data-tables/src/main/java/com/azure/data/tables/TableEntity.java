@@ -10,7 +10,7 @@ import java.util.Map;
  */
 @Fluent
 public class TableEntity {
-    private Map<String, Object> properties;
+    private final Map<String, Object> properties;
     //tableName
     //etag
 
@@ -20,6 +20,7 @@ public class TableEntity {
      * @param properties map of properties of the entity
      */
     public TableEntity(Map<String, Object> properties) {
+        this.properties = properties;
     }
 
     /**

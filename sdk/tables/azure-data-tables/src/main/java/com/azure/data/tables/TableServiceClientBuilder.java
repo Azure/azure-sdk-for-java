@@ -89,8 +89,8 @@ public class TableServiceClientBuilder {
      * @throws NullPointerException If {@code credential} is {@code null}.
      */
     public TableServiceClientBuilder credential(TablesSharedKeyCredential credential) {
-        this.tablesSharedKeyCredential = Objects.requireNonNull(tablesSharedKeyCredential, "credential cannot" +
-            "be null");
+        this.tablesSharedKeyCredential = Objects.requireNonNull(tablesSharedKeyCredential, "credential cannot"
+            + "be null");
         return this;
     }
 
@@ -113,7 +113,7 @@ public class TableServiceClientBuilder {
      */
     public TableServiceClientBuilder httpClient(HttpClient httpClient) {
         if (this.httpClient != null && httpClient == null) {
-            System.out.println("'httpClient' is being set to 'null' when it was previously configured.");
+            logger.error("'httpClient' is being set to 'null' when it was previously configured.");
         }
         this.httpClient = httpClient;
         return this;

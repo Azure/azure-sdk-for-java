@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.data.tables;
 
-import com.azure.core.util.logging.ClientLogger;
 import java.util.HashMap;
 import java.util.Map;
 import reactor.core.publisher.Mono;
@@ -22,7 +21,7 @@ public class TableServiceAsyncClientCodeSnippets {
             .buildAsyncClient();
 
         tableServiceAsyncClient.createTable("OfficeSupplies").subscribe(
-            Void -> {},
+            Void -> { },
             error -> System.err.println("There was an error creating the table. Error: " + error),
             () -> System.out.println("Table creation successful."));
     }
@@ -36,7 +35,7 @@ public class TableServiceAsyncClientCodeSnippets {
             .buildAsyncClient();
 
         tableServiceAsyncClient.deleteTable("OfficeSupplies").subscribe(
-            Void -> {},
+            Void -> { },
             error -> System.err.println("There was an error deleting the table. Error: " + error),
             () -> System.out.println("Table deletion successful."));
     }
@@ -53,8 +52,8 @@ public class TableServiceAsyncClientCodeSnippets {
         tableServiceAsyncClient.queryTables(queryOptions).subscribe(azureTable -> {
             System.out.println(azureTable.getName());
         }, error -> {
-            System.err.println("There was an error querying the service. Error: " + error);
-        });
+                System.err.println("There was an error querying the service. Error: " + error);
+            });
     }
 
     /**
@@ -73,8 +72,8 @@ public class TableServiceAsyncClientCodeSnippets {
         tableAsyncClient.createEntity(properties).subscribe(tableEntity -> {
             System.out.println("Insert Entity Successful. Entity: " + tableEntity);
         }, error -> {
-            System.err.println("There was an error inserting the Entity. Error: " + error);
-        });
+                System.err.println("There was an error inserting the Entity. Error: " + error);
+            });
     }
 
     /**
@@ -93,7 +92,7 @@ public class TableServiceAsyncClientCodeSnippets {
             System.out.println("Table Entity: " + tableEntity);
             return tableAsyncClient.deleteEntity(tableEntity);
         }).subscribe(
-            Void -> {},
+            Void -> { },
             error -> System.err.println("There was an error deleting the Entity. Error: " + error),
             () -> System.out.println("Delete Entity Successful."));
     }
@@ -116,7 +115,7 @@ public class TableServiceAsyncClientCodeSnippets {
             Mono<Void> updateEntityMono = tableAsyncClient.upsertEntity(UpdateMode.MERGE, tableEntity);
             return updateEntityMono;
         }).subscribe(
-            Void -> {},
+            Void -> { },
             error -> System.err.println("There was an error upserting the Entity. Error: " + error),
             () -> System.out.println("Upsert Entity Successful."));
     }
@@ -139,7 +138,7 @@ public class TableServiceAsyncClientCodeSnippets {
             Mono<Void> updateEntityMono = tableAsyncClient.updateEntity(UpdateMode.REPLACE, tableEntity);
             return updateEntityMono;
         }).subscribe(
-            Void -> {},
+            Void -> { },
             error -> System.err.println("There was an error updating the Entity. Error: " + error),
             () -> System.out.println("Update Entity Successful."));
     }
@@ -160,8 +159,8 @@ public class TableServiceAsyncClientCodeSnippets {
         tableAsyncClient.queryEntities(queryOptions).subscribe(tableEntity -> {
             System.out.println("Table Entity: " + tableEntity);
         }, error -> {
-            System.err.println("There was an error querying the table. Error: " + error);
-        });
+                System.err.println("There was an error querying the table. Error: " + error);
+            });
     }
 
     /**
@@ -176,9 +175,9 @@ public class TableServiceAsyncClientCodeSnippets {
 
         tableAsyncClient.get("crayolaMarkers", "markers")
             .subscribe(tableEntity -> {
-            System.out.println("Table Entity exists: " + tableEntity);
-        }, error -> {
-            System.err.println("There was an error getting the entity. Error: " + error);
-        });
+                System.out.println("Table Entity exists: " + tableEntity);
+            }, error -> {
+                    System.err.println("There was an error getting the entity. Error: " + error);
+                });
     }
 }

@@ -12,7 +12,6 @@ import com.azure.core.credential.TokenCredential;
 public class TableClientBuilder {
     private String connectionString;
     private String tableName;
-    private TokenCredential tokenCredential;
 
     /**
      * Sets the connection string to help build the client
@@ -32,7 +31,6 @@ public class TableClientBuilder {
      * @return the TableClientBuilder
      */
     public TableClientBuilder connectionString(TokenCredential tokenCredential) {
-        this.tokenCredential = tokenCredential;
         return this;
     }
 
