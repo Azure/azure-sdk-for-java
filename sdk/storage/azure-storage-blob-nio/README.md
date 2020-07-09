@@ -146,6 +146,7 @@ Create a `FileSystem` using the [`shared key`](#get-credentials) retrieved above
 Note that you can further configure the file system using constants available in `AzureFileSystem`.
 Please see the docs for `AzureFileSystemProvider` for a full explanation of initializing and configuring a filesystem
 
+<!-- embedme ./src/samples/java/com/azure/storage/blob/nio/ReadmeSamples.java#L39-L42 -->
 ```java
 Map<String, Object> config = new HashMap<>();
 config.put(AzureFileSystem.AZURE_STORAGE_ACCOUNT_KEY, "<your_account_key>");
@@ -157,6 +158,7 @@ FileSystem myFs = FileSystems.newFileSystem(new URI("azb://?account=<your_accoun
 
 Create a directory using the `Files` api
 
+<!-- embedme ./src/samples/java/com/azure/storage/blob/nio/ReadmeSamples.java#L46-L47 -->
 ```java
 Path dirPath = myFs.getPath("dir");
 Files.createDirectory(dirPath);
@@ -166,6 +168,7 @@ Files.createDirectory(dirPath);
 
 Iterate over a directory using a `DirectoryStream`
 
+<!-- embedme ./src/samples/java/com/azure/storage/blob/nio/ReadmeSamples.java#L51-L53 -->
 ```java
 for (Path p : Files.newDirectoryStream(dirPath)) {
    System.out.println(p.toString());
@@ -176,6 +179,7 @@ for (Path p : Files.newDirectoryStream(dirPath)) {
 
 Read the contents of a file using an `InputStream`. Skipping, marking, and resetting are all supported.
 
+<!-- embedme ./src/samples/java/com/azure/storage/blob/nio/ReadmeSamples.java#L57-L60 -->
 ```java
 Path filePath = myFs.getPath("file");
 InputStream is = Files.newInputStream(filePath);
@@ -188,6 +192,7 @@ is.close();
 Write to a file. Only writing whole files is supported. Random IO is not supported. The stream must be closed in order 
 to guarantee that the data is available to be read.
 
+<!-- embedme ./src/samples/java/com/azure/storage/blob/nio/ReadmeSamples.java#L64-L66 -->
 ```java
 OutputStream os = Files.newOutputStream(filePath);
 os.write(0);
@@ -196,6 +201,7 @@ os.close();
 
 ### Copy a file
 
+<!-- embedme ./src/samples/java/com/azure/storage/blob/nio/ReadmeSamples.java#L70-L71 -->
 ```java
 Path destinationPath = myFs.getPath("destinationFile");
 Files.copy(filePath, destinationPath, StandardCopyOption.COPY_ATTRIBUTES);
@@ -203,6 +209,7 @@ Files.copy(filePath, destinationPath, StandardCopyOption.COPY_ATTRIBUTES);
 
 ### Delete a file
 
+<!-- embedme ./src/samples/java/com/azure/storage/blob/nio/ReadmeSamples.java#L75-L75 -->
 ```java
 Files.delete(filePath);
 ```
@@ -211,6 +218,7 @@ Files.delete(filePath);
 
 Read attributes of a file through the `AzureBlobFileAttributes`.
 
+<!-- embedme ./src/samples/java/com/azure/storage/blob/nio/ReadmeSamples.java#L79-L80 -->
 ```java
 AzureBlobFileAttributes attr = Files.readAttributes(filePath, AzureBlobFileAttributes.class);
 BlobHttpHeaders headers = attr.blobHttpHeaders();
@@ -220,6 +228,7 @@ Or read attributes dynamically by specifying a string of desired attributes. Thi
 to retrieve any attribute will always retrieve all of them as an atomic bulk operation. You may specify "*" instead of a 
 list of specific attributes to have all attributes returned in the map.
 
+<!-- embedme ./src/samples/java/com/azure/storage/blob/nio/ReadmeSamples.java#L84-L84 -->
 ```java
 Map<String, Object> attributes = Files.readAttributes(filePath, "azureBlob:metadata,headers");
 ```
@@ -228,6 +237,7 @@ Map<String, Object> attributes = Files.readAttributes(filePath, "azureBlob:metad
 
 Set attributes of a file through the `AzureBlobFileAttributeView`.
 
+<!-- embedme ./src/samples/java/com/azure/storage/blob/nio/ReadmeSamples.java#L88-L89 -->
 ```java
 AzureBlobFileAttributeView view = Files.getFileAttributeView(filePath, AzureBlobFileAttributeView.class);
 view.setMetadata(Collections.EMPTY_MAP);
@@ -235,8 +245,9 @@ view.setMetadata(Collections.EMPTY_MAP);
 
 Or set an attribute dynamically by specifying the attribute as a string.
 
+<!-- embedme ./src/samples/java/com/azure/storage/blob/nio/ReadmeSamples.java#L93-L93 -->
 ```java
-Files.setAttribute(filePath, "azureBlob:blobHttpHeaders", new BlobHttpHeaders())
+Files.setAttribute(filePath, "azureBlob:blobHttpHeaders", new BlobHttpHeaders());
 ```
 
 ## Troubleshooting
@@ -256,9 +267,6 @@ All client libraries, by default, use the Tomcat-native Boring SSL library to en
 operations. The Boring SSL library is an uber jar containing native libraries for Linux / macOS / Windows, and provides 
 better performance compared to the default SSL implementation within the JDK. For more information, including how to 
 reduce the dependency size, refer to the [performance tuning][performance_tuning] section of the wiki.
-
-## Next steps Samples
-Samples are explained in detail [here][samples_readme].
 
 ## Continued development
 
@@ -307,7 +315,7 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [storage_account_create_portal]: https://docs.microsoft.com/azure/storage/common/storage-quickstart-create-account?tabs=azure-portal
 [identity]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/identity/azure-identity/README.md
 [error_codes]: https://docs.microsoft.com/rest/api/storageservices/blob-service-error-codes
-[samples]: src/samples
+[samples]: https://docs.oracle.com/javase/tutorial/essential/io/fileio.html
 [cla]: https://cla.microsoft.com
 [coc]: https://opensource.microsoft.com/codeofconduct/
 [coc_faq]: https://opensource.microsoft.com/codeofconduct/faq/
