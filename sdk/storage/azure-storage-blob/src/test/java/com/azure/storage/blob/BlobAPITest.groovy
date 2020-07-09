@@ -31,6 +31,7 @@ import com.azure.storage.blob.models.PublicAccessType
 import com.azure.storage.blob.models.RehydratePriority
 import com.azure.storage.blob.models.SyncCopyStatusType
 import com.azure.storage.blob.options.BlobParallelUploadOptions
+import com.azure.storage.blob.options.BlobSetAccessTierOptions
 import com.azure.storage.blob.sas.BlobSasPermission
 import com.azure.storage.blob.sas.BlobServiceSasSignatureValues
 import com.azure.storage.blob.specialized.BlobClientBase
@@ -2227,6 +2228,38 @@ class BlobAPITest extends APISpec {
 
         when:
         bc.setAccessTierWithResponse(AccessTier.HOT, null, "garbage", null, null)
+
+        then:
+        thrown(BlobStorageException)
+    }
+
+    def "Set tier tags"() {
+        setup:
+        def cc = blobServiceClient.createBlobContainer(generateContainerName())
+        def bc = cc.getBlobClient(generateBlobName()).getBlockBlobClient()
+        bc.upload(defaultInputStream.get(), defaultDataSize)
+        def t = new HashMap<String, String>()
+        t.put("foo", "bar")
+        bc.setTags(t)
+
+        when:
+        bc.setAccessTierWithResponse(new BlobSetAccessTierOptions(AccessTier.HOT).setIfTags("\"foo\" = 'bar'"), null, null)
+
+        then:
+        notThrown(BlobStorageException)
+
+        cleanup:
+        cc.delete()
+    }
+
+    def "Set tier tags fail"() {
+        setup:
+        def cc = blobServiceClient.createBlobContainer(generateContainerName())
+        def bc = cc.getBlobClient(generateBlobName()).getBlockBlobClient()
+        bc.upload(defaultInputStream.get(), defaultDataSize)
+
+        when:
+        bc.setAccessTierWithResponse(new BlobSetAccessTierOptions(AccessTier.HOT).setIfTags("\"foo\" = 'bar'"), null, null)
 
         then:
         thrown(BlobStorageException)

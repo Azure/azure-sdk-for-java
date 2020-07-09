@@ -18,6 +18,7 @@ import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.BlobQueryDelimitedSerialization;
 import com.azure.storage.blob.models.BlobQueryError;
 import com.azure.storage.blob.models.BlobQueryJsonSerialization;
+import com.azure.storage.blob.options.BlobGetTagsOptions;
 import com.azure.storage.blob.options.BlobQueryOptions;
 import com.azure.storage.blob.models.BlobQueryProgress;
 import com.azure.storage.blob.models.BlobQuerySerialization;
@@ -29,6 +30,7 @@ import com.azure.storage.blob.models.ParallelTransferOptions;
 import com.azure.storage.blob.models.RehydratePriority;
 import com.azure.storage.blob.models.StorageAccountInfo;
 import com.azure.storage.blob.models.UserDelegationKey;
+import com.azure.storage.blob.options.BlobSetTagsOptions;
 import com.azure.storage.blob.sas.BlobSasPermission;
 import com.azure.storage.blob.sas.BlobServiceSasSignatureValues;
 import com.azure.storage.common.implementation.Constants;
@@ -427,24 +429,26 @@ public class BlobClientBaseJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippets for {@link BlobClientBase#getTagsWithResponse(Duration, Context)}
+     * Code snippets for {@link BlobClientBase#getTagsWithResponse(BlobGetTagsOptions, Duration, Context)}
      */
     public void getTagsWithResponse() {
-        // BEGIN: com.azure.storage.blob.specialized.BlobClientBase.getTagsWithResponse#Duration-Context
-        Map<String, String> tags = client.getTagsWithResponse(timeout, new Context(key1, value1)).getValue();
+        // BEGIN: com.azure.storage.blob.specialized.BlobClientBase.getTagsWithResponse#BlobGetTagsOptions-Duration-Context
+        Map<String, String> tags = client.getTagsWithResponse(new BlobGetTagsOptions(), timeout,
+            new Context(key1, value1)).getValue();
         System.out.printf("Number of tags: %d%n", tags.size());
-        // END: com.azure.storage.blob.specialized.BlobClientBase.getTagsWithResponse#Duration-Context
+        // END: com.azure.storage.blob.specialized.BlobClientBase.getTagsWithResponse#BlobGetTagsOptions-Duration-Context
     }
 
     /**
-     * Code snippets for {@link BlobClientBase#setTagsWithResponse(Map, Duration, Context)}
+     * Code snippets for {@link BlobClientBase#setTagsWithResponse(BlobSetTagsOptions, Duration, Context)}
      */
     public void setTagsWithResponse() {
-        // BEGIN: com.azure.storage.blob.specialized.BlobClientBase.setTagsWithResponse#Map-Duration-Context
+        // BEGIN: com.azure.storage.blob.specialized.BlobClientBase.setTagsWithResponse#BlobSetTagsOptions-Map-Duration-Context
         System.out.printf("Set metadata completed with status %d%n",
-            client.setTagsWithResponse(Collections.singletonMap("tag", "value"), timeout, new Context(key1, value1))
+            client.setTagsWithResponse(new BlobSetTagsOptions(Collections.singletonMap("tag", "value")), timeout,
+                new Context(key1, value1))
                 .getStatusCode());
-        // END: com.azure.storage.blob.specialized.BlobClientBase.setTagsWithResponse#Map-Duration-Context
+        // END: com.azure.storage.blob.specialized.BlobClientBase.setTagsWithResponse#BlobSetTagsOptions-Map-Duration-Context
     }
 
     /**
