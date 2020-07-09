@@ -101,7 +101,7 @@ This is because the `sdk-build-tools` project isn't released to Maven. To resolv
 
 `mvn clean install eng/code-quality-reports/pom.xml`
 
-All code in the Azure SDKs for Java repository must pass Checkstyle before being merged. The `azure-sdk-tools` is updated periodically, so if a new branch fails Checkstyle you'll need to reinstall `sdk-build-tools`.
+All code in the Azure SDKs for Java repository must pass Checkstyle before being merged. The `sdk-build-tools` is updated periodically, so if a new branch fails Checkstyle you'll need to reinstall.
 
 ## Versions and versioning
 
