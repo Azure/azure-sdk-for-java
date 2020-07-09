@@ -11,6 +11,7 @@ import com.azure.core.amqp.implementation.StringUtil;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
+import com.azure.core.experimental.serializer.ObjectSerializer;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.implementation.AmqpReceiveLinkProcessor;
 import com.azure.messaging.eventhubs.implementation.EventHubConnectionProcessor;
@@ -70,6 +71,7 @@ public class EventHubConsumerAsyncClient implements Closeable {
     private final String eventHubName;
     private final EventHubConnectionProcessor connectionProcessor;
     private final MessageSerializer messageSerializer;
+    private final ObjectSerializer serializer;
     private final String consumerGroup;
     private final int prefetchCount;
     private final Scheduler scheduler;
@@ -83,12 +85,15 @@ public class EventHubConsumerAsyncClient implements Closeable {
         new ConcurrentHashMap<>();
 
     EventHubConsumerAsyncClient(String fullyQualifiedNamespace, String eventHubName,
-        EventHubConnectionProcessor connectionProcessor, MessageSerializer messageSerializer, String consumerGroup,
-        int prefetchCount, Scheduler scheduler, boolean isSharedConnection, Runnable onClientClosed) {
+                                    EventHubConnectionProcessor connectionProcessor,
+                                    MessageSerializer messageSerializer, ObjectSerializer serializer,
+                                    String consumerGroup, int prefetchCount, Scheduler scheduler,
+                                    boolean isSharedConnection, Runnable onClientClosed) {
         this.fullyQualifiedNamespace = fullyQualifiedNamespace;
         this.eventHubName = eventHubName;
         this.connectionProcessor = connectionProcessor;
         this.messageSerializer = messageSerializer;
+        this.serializer = serializer;
         this.consumerGroup = consumerGroup;
         this.prefetchCount = prefetchCount;
         this.scheduler = scheduler;
@@ -364,7 +369,7 @@ public class EventHubConsumerAsyncClient implements Closeable {
             new AmqpReceiveLinkProcessor(prefetchCount, retryPolicy, connectionProcessor));
 
         return new EventHubPartitionAsyncConsumer(linkMessageProcessor, messageSerializer, getFullyQualifiedNamespace(),
-            getEventHubName(), consumerGroup, partitionId, initialPosition,
-            receiveOptions.getTrackLastEnqueuedEventProperties(), scheduler);
+            getEventHubName(), consumerGroup, partitionId, serializer,
+            initialPosition, receiveOptions.getTrackLastEnqueuedEventProperties(), scheduler);
     }
 }
