@@ -609,8 +609,8 @@ public class SkillsetManagementSyncTests extends SearchTestBase {
             .singletonList(createOutputFieldMappingEntry("description", "mydescription"));
 
         skills.add(new ImageAnalysisSkill(inputs, outputs)
-            .setVisualFeatures(VisualFeature.values().toArray(new VisualFeature[0]))
-            .setDetails(ImageDetail.values().toArray(new ImageDetail[0]))
+            .setVisualFeatures(new ArrayList<>(VisualFeature.values()))
+            .setDetails(new ArrayList<>(ImageDetail.values()))
             .setDefaultLanguageCode(ImageAnalysisSkillLanguage.EN)
             .setName("myimage")
             .setDescription("Tested image analysis skill")
@@ -741,15 +741,13 @@ public class SkillsetManagementSyncTests extends SearchTestBase {
     }
 
     SearchIndexerSkillset mutateSkillsInSkillset(SearchIndexerSkillset skillset) {
-        return skillset.setSkills(Collections.singletonList(
-            new KeyPhraseExtractionSkill(Collections
-                .singletonList(simpleInputFieldMappingEntry("text", "/document/mydescription/*/Tags/*")),
-                Collections.singletonList(createOutputFieldMappingEntry("keyPhrases", "myKeyPhrases")))
-                .setDefaultLanguageCode(KeyPhraseExtractionSkillLanguage.EN)
-                .setName("mykeyphrases")
-                .setDescription("Tested Key Phrase skill")
-                .setContext(CONTEXT_VALUE)
-        ));
+        return skillset.setSkills(new KeyPhraseExtractionSkill(Collections
+            .singletonList(simpleInputFieldMappingEntry("text", "/document/mydescription/*/Tags/*")),
+            Collections.singletonList(createOutputFieldMappingEntry("keyPhrases", "myKeyPhrases")))
+            .setDefaultLanguageCode(KeyPhraseExtractionSkillLanguage.EN)
+            .setName("mykeyphrases")
+            .setDescription("Tested Key Phrase skill")
+            .setContext(CONTEXT_VALUE));
     }
 
     SearchIndexerSkillset createTestSkillsetOcrEntity(EntityCategory... categories) {
@@ -943,7 +941,7 @@ public class SkillsetManagementSyncTests extends SearchTestBase {
         );
 
         return new SearchIndexerSkillset(testResourceNamer.randomName("key-phrase-extraction-skillset", 48),
-             skills).setDescription("Skillset for testing default configuration");
+            skills).setDescription("Skillset for testing default configuration");
     }
 
     SearchIndexerSkillset createSkillsetWithMergeDefaultSettings() {

@@ -319,8 +319,7 @@ public class IndexAndServiceStatisticsExample {
             .setDefaultScoringProfile("MyProfile")
             .setCorsOptions(new CorsOptions(Arrays.asList("http://tempuri.org", "http://localhost:80"))
                 .setMaxAgeInSeconds(60L))
-            .setSuggesters(Collections.singletonList(new SearchSuggester("FancySuggester",
-                Collections.singletonList("HotelName"))));
+            .setSuggesters(new SearchSuggester("FancySuggester", Collections.singletonList("HotelName")));
     }
 
     /**

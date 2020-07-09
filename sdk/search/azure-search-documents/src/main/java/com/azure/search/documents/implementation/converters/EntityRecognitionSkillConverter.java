@@ -3,7 +3,6 @@
 
 package com.azure.search.documents.implementation.converters;
 
-import com.azure.search.documents.indexes.models.EntityCategory;
 import com.azure.search.documents.indexes.models.EntityRecognitionSkill;
 import com.azure.search.documents.indexes.models.EntityRecognitionSkillLanguage;
 import com.azure.search.documents.indexes.models.InputFieldMappingEntry;
@@ -52,10 +51,9 @@ public final class EntityRecognitionSkillConverter {
         }
 
         if (obj.getCategories() != null) {
-            EntityCategory[] categories = obj.getCategories().stream()
+            entityRecognitionSkill.setCategories(obj.getCategories().stream()
                 .map(EntityCategoryConverter::map)
-                .toArray(EntityCategory[]::new);
-            entityRecognitionSkill.setCategories(categories);
+                .collect(Collectors.toList()));
         }
 
         Double minimumPrecision = obj.getMinimumPrecision();

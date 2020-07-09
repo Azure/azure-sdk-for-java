@@ -5,6 +5,7 @@ package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
@@ -62,6 +63,7 @@ public final class ElisionTokenFilter extends TokenFilter {
      * @param articles the articles value to set.
      * @return the ElisionTokenFilter object itself.
      */
+    @JsonSetter
     public ElisionTokenFilter setArticles(List<String> articles) {
         this.articles = articles;
         return this;

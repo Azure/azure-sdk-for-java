@@ -22,7 +22,7 @@ public final class StopAnalyzerConverter {
         StopAnalyzer stopAnalyzer = new StopAnalyzer(obj.getName());
 
         if (obj.getStopwords() != null) {
-            stopAnalyzer.setStopwords(obj.getStopwords().toArray(new String[0]));
+            stopAnalyzer.setStopwords(obj.getStopwords());
         }
         return stopAnalyzer;
     }

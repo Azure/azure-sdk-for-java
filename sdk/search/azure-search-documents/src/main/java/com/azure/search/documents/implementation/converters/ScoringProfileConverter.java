@@ -3,7 +3,6 @@
 
 package com.azure.search.documents.implementation.converters;
 
-import com.azure.search.documents.indexes.models.ScoringFunction;
 import com.azure.search.documents.indexes.models.ScoringFunctionAggregation;
 import com.azure.search.documents.indexes.models.ScoringProfile;
 import com.azure.search.documents.indexes.models.TextWeights;
@@ -26,10 +25,9 @@ public final class ScoringProfileConverter {
         ScoringProfile scoringProfile = new ScoringProfile(obj.getName());
 
         if (obj.getFunctions() != null) {
-            ScoringFunction[] functions = obj.getFunctions().stream()
+            scoringProfile.setFunctions(obj.getFunctions().stream()
                 .map(ScoringFunctionConverter::map)
-                .toArray(ScoringFunction[]::new);
-            scoringProfile.setFunctions(functions);
+                .collect(Collectors.toList()));
         }
 
         if (obj.getTextWeights() != null) {

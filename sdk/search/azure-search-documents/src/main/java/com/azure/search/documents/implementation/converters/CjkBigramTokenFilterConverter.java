@@ -4,7 +4,6 @@
 package com.azure.search.documents.implementation.converters;
 
 import com.azure.search.documents.indexes.models.CjkBigramTokenFilter;
-import com.azure.search.documents.indexes.models.CjkBigramTokenFilterScripts;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -28,10 +27,9 @@ public final class CjkBigramTokenFilterConverter {
         cjkBigramTokenFilter.setOutputUnigrams(outputUnigrams);
 
         if (obj.getIgnoreScripts() != null) {
-            CjkBigramTokenFilterScripts[] ignoreScripts = obj.getIgnoreScripts().stream()
+            cjkBigramTokenFilter.setIgnoreScripts(obj.getIgnoreScripts().stream()
                 .map(CjkBigramTokenFilterScriptsConverter::map)
-                .toArray(CjkBigramTokenFilterScripts[]::new);
-            cjkBigramTokenFilter.setIgnoreScripts(ignoreScripts);
+                .collect(Collectors.toList()));
         }
         return cjkBigramTokenFilter;
     }

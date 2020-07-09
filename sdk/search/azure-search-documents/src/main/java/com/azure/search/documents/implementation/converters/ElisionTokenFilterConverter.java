@@ -24,7 +24,7 @@ public final class ElisionTokenFilterConverter {
         ElisionTokenFilter elisionTokenFilter = new ElisionTokenFilter(obj.getName());
 
         if (obj.getArticles() != null) {
-            elisionTokenFilter.setArticles(obj.getArticles().toArray(new String[0]));
+            elisionTokenFilter.setArticles(obj.getArticles());
         }
         return elisionTokenFilter;
     }

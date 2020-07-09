@@ -4,10 +4,8 @@
 package com.azure.search.documents.implementation.converters;
 
 import com.azure.search.documents.indexes.models.AnalyzeTextOptions;
-import com.azure.search.documents.indexes.models.CharFilterName;
 import com.azure.search.documents.indexes.models.LexicalAnalyzerName;
 import com.azure.search.documents.indexes.models.LexicalTokenizerName;
-import com.azure.search.documents.indexes.models.TokenFilterName;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -35,18 +33,16 @@ public final class AnalyzeRequestConverter {
         }
 
         if (obj.getCharFilters() != null) {
-            CharFilterName[] charFilters = obj.getCharFilters().stream()
+            analyzeTextOptions.setCharFilters(obj.getCharFilters().stream()
                 .map(CharFilterNameConverter::map)
-                .toArray(CharFilterName[]::new);
-            analyzeTextOptions.setCharFilters(charFilters);
+                .collect(Collectors.toList()));
         }
 
 
         if (obj.getTokenFilters() != null) {
-            TokenFilterName[] tokenFilters = obj.getTokenFilters().stream()
+            analyzeTextOptions.setTokenFilters(obj.getTokenFilters().stream()
                 .map(TokenFilterNameConverter::map)
-                .toArray(TokenFilterName[]::new);
-            analyzeTextOptions.setTokenFilters(tokenFilters);
+                .collect(Collectors.toList()));
         }
 
 

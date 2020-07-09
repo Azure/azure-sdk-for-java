@@ -5,6 +5,7 @@ package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonSetter;
 
 import java.util.Arrays;
 import java.util.List;
@@ -216,6 +217,7 @@ public final class AnalyzeTextOptions {
      * @param tokenFilters the tokenFilters value to set.
      * @return the AnalyzeRequest object itself.
      */
+    @JsonSetter
     public AnalyzeTextOptions setTokenFilters(List<TokenFilterName> tokenFilters) {
         this.tokenFilters = tokenFilters;
         return this;
@@ -253,6 +255,7 @@ public final class AnalyzeTextOptions {
      * @param charFilters the charFilters value to set.
      * @return the AnalyzeRequest object itself.
      */
+    @JsonSetter
     public AnalyzeTextOptions setCharFilters(List<CharFilterName> charFilters) {
         this.charFilters = charFilters;
         return this;

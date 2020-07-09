@@ -5,6 +5,7 @@ package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
@@ -119,6 +120,7 @@ public final class NGramTokenizer extends LexicalTokenizer {
      * @param tokenChars the tokenChars value to set.
      * @return the NGramTokenizer object itself.
      */
+    @JsonSetter
     public NGramTokenizer setTokenChars(List<TokenCharacterKind> tokenChars) {
         this.tokenChars = tokenChars;
         return this;

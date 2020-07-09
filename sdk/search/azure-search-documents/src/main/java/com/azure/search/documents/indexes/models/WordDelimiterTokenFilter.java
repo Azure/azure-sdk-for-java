@@ -5,6 +5,7 @@ package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
@@ -343,6 +344,7 @@ public final class WordDelimiterTokenFilter extends TokenFilter {
      * @param protectedWords the protectedWords value to set.
      * @return the WordDelimiterTokenFilter object itself.
      */
+    @JsonSetter
     public WordDelimiterTokenFilter setProtectedWords(List<String> protectedWords) {
         this.protectedWords = protectedWords;
         return this;

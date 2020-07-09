@@ -5,6 +5,7 @@ package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
@@ -118,6 +119,7 @@ public final class CustomAnalyzer extends LexicalAnalyzer {
      * @param tokenFilters the tokenFilters value to set.
      * @return the CustomAnalyzer object itself.
      */
+    @JsonSetter
     public CustomAnalyzer setTokenFilters(List<TokenFilterName> tokenFilters) {
         this.tokenFilters = tokenFilters;
         return this;
@@ -158,6 +160,7 @@ public final class CustomAnalyzer extends LexicalAnalyzer {
      * @param charFilters the charFilters value to set.
      * @return the CustomAnalyzer object itself.
      */
+    @JsonSetter
     public CustomAnalyzer setCharFilters(List<CharFilterName> charFilters) {
         this.charFilters = charFilters;
         return this;

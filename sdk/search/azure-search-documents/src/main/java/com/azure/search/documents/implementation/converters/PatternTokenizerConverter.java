@@ -27,10 +27,9 @@ public final class PatternTokenizerConverter {
         patternTokenizer.setPattern(pattern);
 
         if (obj.getFlags() != null) {
-            RegexFlags[] regexFlags = Arrays.stream(obj.getFlags().toString().split("\\|"))
+            patternTokenizer.setFlags(Arrays.stream(obj.getFlags().toString().split("\\|"))
                 .map(RegexFlags::fromString)
-                .toArray(RegexFlags[]::new);
-            patternTokenizer.setFlags(regexFlags);
+                .collect(Collectors.toList()));
         }
 
         Integer group = obj.getGroup();

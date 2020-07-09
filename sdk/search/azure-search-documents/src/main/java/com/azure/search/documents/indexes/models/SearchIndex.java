@@ -6,6 +6,7 @@ package com.azure.search.documents.indexes.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonSetter;
 
 import java.util.Arrays;
 import java.util.List;
@@ -165,6 +166,7 @@ public final class SearchIndex {
      * @param fields the fields value to set.
      * @return the SearchIndex object itself.
      */
+    @JsonSetter
     public SearchIndex setFields(List<SearchField> fields) {
         this.fields = fields;
         return this;
@@ -196,6 +198,7 @@ public final class SearchIndex {
      * @param scoringProfiles the scoringProfiles value to set.
      * @return the SearchIndex object itself.
      */
+    @JsonSetter
     public SearchIndex setScoringProfiles(List<ScoringProfile> scoringProfiles) {
         this.scoringProfiles = scoringProfiles;
         return this;
@@ -275,6 +278,7 @@ public final class SearchIndex {
      * @param suggesters the suggesters value to set.
      * @return the SearchIndex object itself.
      */
+    @JsonSetter
     public SearchIndex setSuggesters(List<SearchSuggester> suggesters) {
         this.suggesters = suggesters;
         return this;
@@ -306,6 +310,7 @@ public final class SearchIndex {
      * @param analyzers the analyzers value to set.
      * @return the SearchIndex object itself.
      */
+    @JsonSetter
     public SearchIndex setAnalyzers(List<LexicalAnalyzer> analyzers) {
         this.analyzers = analyzers;
         return this;
@@ -337,6 +342,7 @@ public final class SearchIndex {
      * @param tokenizers the tokenizers value to set.
      * @return the SearchIndex object itself.
      */
+    @JsonSetter
     public SearchIndex setTokenizers(List<LexicalTokenizer> tokenizers) {
         this.tokenizers = tokenizers;
         return this;
@@ -368,6 +374,7 @@ public final class SearchIndex {
      * @param tokenFilters the tokenFilters value to set.
      * @return the SearchIndex object itself.
      */
+    @JsonSetter
     public SearchIndex setTokenFilters(List<TokenFilter> tokenFilters) {
         this.tokenFilters = tokenFilters;
         return this;
@@ -399,6 +406,7 @@ public final class SearchIndex {
      * @param charFilters the charFilters value to set.
      * @return the SearchIndex object itself.
      */
+    @JsonSetter
     public SearchIndex setCharFilters(List<CharFilter> charFilters) {
         this.charFilters = charFilters;
         return this;

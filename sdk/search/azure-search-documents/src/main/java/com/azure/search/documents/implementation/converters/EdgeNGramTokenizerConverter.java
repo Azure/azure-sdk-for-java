@@ -4,7 +4,6 @@
 package com.azure.search.documents.implementation.converters;
 
 import com.azure.search.documents.indexes.models.EdgeNGramTokenizer;
-import com.azure.search.documents.indexes.models.TokenCharacterKind;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -28,10 +27,9 @@ public final class EdgeNGramTokenizerConverter {
         edgeNGramTokenizer.setMaxGram(maxGram);
 
         if (obj.getTokenChars() != null) {
-            TokenCharacterKind[] tokenChars = obj.getTokenChars().stream()
+            edgeNGramTokenizer.setTokenChars(obj.getTokenChars().stream()
                 .map(TokenCharacterKindConverter::map)
-                .toArray(TokenCharacterKind[]::new);
-            edgeNGramTokenizer.setTokenChars(tokenChars);
+                .collect(Collectors.toList()));
         }
 
         Integer minGram = obj.getMinGram();

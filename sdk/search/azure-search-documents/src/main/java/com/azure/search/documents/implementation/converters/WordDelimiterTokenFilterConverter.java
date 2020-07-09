@@ -27,7 +27,7 @@ public final class WordDelimiterTokenFilterConverter {
         wordDelimiterTokenFilter.setNumbersCatenated(catenateNumbers);
 
         if (obj.getProtectedWords() != null) {
-            wordDelimiterTokenFilter.setProtectedWords(obj.getProtectedWords().toArray(new String[0]));
+            wordDelimiterTokenFilter.setProtectedWords(obj.getProtectedWords());
         }
 
         Boolean generateNumberParts = obj.isGenerateNumberParts();

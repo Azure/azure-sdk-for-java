@@ -5,6 +5,7 @@ package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
@@ -127,6 +128,7 @@ public final class PatternAnalyzer extends LexicalAnalyzer {
      * @param flags the flags value to set.
      * @return the PatternAnalyzer object itself.
      */
+    @JsonSetter
     public PatternAnalyzer setFlags(List<RegexFlags> flags) {
         this.flags = flags;
         return this;
@@ -158,6 +160,7 @@ public final class PatternAnalyzer extends LexicalAnalyzer {
      * @param stopwords the stopwords value to set.
      * @return the PatternAnalyzer object itself.
      */
+    @JsonSetter
     public PatternAnalyzer setStopwords(List<String> stopwords) {
         this.stopwords = stopwords;
         return this;

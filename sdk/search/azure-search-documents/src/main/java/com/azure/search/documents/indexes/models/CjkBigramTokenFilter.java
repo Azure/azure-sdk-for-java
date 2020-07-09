@@ -6,6 +6,7 @@ package com.azure.search.documents.indexes.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
@@ -71,6 +72,7 @@ public final class CjkBigramTokenFilter extends TokenFilter {
      * @param ignoreScripts the ignoreScripts value to set.
      * @return the CjkBigramTokenFilter object itself.
      */
+    @JsonSetter
     public CjkBigramTokenFilter setIgnoreScripts(List<CjkBigramTokenFilterScripts> ignoreScripts) {
         this.ignoreScripts = ignoreScripts;
         return this;

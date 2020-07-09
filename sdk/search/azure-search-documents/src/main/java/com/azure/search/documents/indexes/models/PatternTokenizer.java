@@ -5,6 +5,7 @@ package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
@@ -102,6 +103,7 @@ public final class PatternTokenizer extends LexicalTokenizer {
      * @param flags the flags value to set.
      * @return the PatternTokenizer object itself.
      */
+    @JsonSetter
     public PatternTokenizer setFlags(List<RegexFlags> flags) {
         this.flags = flags;
         return this;

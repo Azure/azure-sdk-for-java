@@ -5,6 +5,7 @@ package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
@@ -92,6 +93,7 @@ public final class StopwordsTokenFilter extends TokenFilter {
      * @param stopwords the stopwords value to set.
      * @return the StopwordsTokenFilter object itself.
      */
+    @JsonSetter
     public StopwordsTokenFilter setStopwords(List<String> stopwords) {
         this.stopwords = stopwords;
         return this;

@@ -7,6 +7,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonSetter;
 
 import java.util.Arrays;
 import java.util.List;
@@ -702,6 +703,7 @@ public final class SearchField {
      * @param synonymMapNames the synonymMap names to set.
      * @return the SearchField object itself.
      */
+    @JsonSetter
     public SearchField setSynonymMapNames(List<String> synonymMapNames) {
         this.synonymMapNames = synonymMapNames;
         return this;
@@ -739,6 +741,7 @@ public final class SearchField {
      * @param fields the fields value to set.
      * @return the SearchField object itself.
      */
+    @JsonSetter
     public SearchField setFields(List<SearchField> fields) {
         this.fields = fields;
         return this;
