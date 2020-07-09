@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.0-beta.2 (2020-07-08)
+## 1.0.0-beta.2 (2020-07-09)
 
 - Added additional `ManagementError` constructors.
 - Added additional `PollingState` checks.
