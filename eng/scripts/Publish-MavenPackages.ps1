@@ -187,6 +187,7 @@ Write-Information "Repository Password is: [redacted]"
 Write-Information "GPG Executable Path is: $GPGExecutablePath"
 Write-Information "Group ID Filter is: $GroupIDFilter"
 Write-Information "Artifact ID Filter is: $ArtifactIDFilter"
+Write-Information "Stage Only is: $StageOnly"
 
 Write-Information "Getting filtered package details."
 $packageDetails = Get-FilteredMavenPackageDetails -ArtifactDirectory $ArtifactDirectory -GroupIDFilter $GroupIDFilter -ArtifactIDFilter $ArtifactIDFilter

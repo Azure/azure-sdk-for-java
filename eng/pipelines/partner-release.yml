@@ -33,6 +33,9 @@ steps:
   parameters:
     ArtifactDirectory: $(Artifacts)
 
+- publish: $(Artifacts)
+  artifact: packages-signed
+
 - template: tools/gpg/gpg.yml@azure-sdk-build-tools
 - template: /eng/pipelines/templates/steps/java-publishing.yml
   parameters:
