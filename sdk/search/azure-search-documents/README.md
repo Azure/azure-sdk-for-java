@@ -412,8 +412,8 @@ to be aware of.
 <!-- embedme ./src/samples/java/com/azure/search/documents/ReadmeSamples.java#L217-L220 -->
 ```Java
 IndexDocumentsBatch<Hotel> batch = new IndexDocumentsBatch<Hotel>();
-batch.addUploadActions(new Hotel().setId("783").setName("Upload Inn"));
-batch.addMergeActions(new Hotel().setId("12").setName("Renovated Ranch"));
+batch.addUploadActions(Collections.singletonList(new Hotel().setId("783").setName("Upload Inn")));
+batch.addMergeActions(Collections.singletonList(new Hotel().setId("12").setName("Renovated Ranch")));
 searchClient.indexDocuments(batch);
 ```
 
