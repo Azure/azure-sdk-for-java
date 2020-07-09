@@ -98,7 +98,7 @@ public class GlobalAddressResolver implements IAddressResolver {
 
         for (RntbdAddressCacheToken token : tokens) {
             EndpointCache endpointCache = this.addressCacheByEndpoint.get(token.getRemoteURI());
-            updates[i++] = endpointCache.addressCache.getServerAddressesViaGatewayAsync();
+//            updates[i++] = endpointCache.addressCache.getServerAddressesViaGatewayAsync();
 //            if (endpointCache.)
 //            {
 //                tasks.Add(endpointCache.AddressCache.UpdateAsync(cacheToken.PartitionKeyRangeIdentity, cancellationToken));
