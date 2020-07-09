@@ -23,8 +23,10 @@ class KeyvaultKeyTest extends APISpec {
     String keyId
 
     def setup() {
-        def keyVaultUrl = Configuration.getGlobalConfiguration().get("KEYVAULT_URL")
-
+        def keyVaultUrl = "https://azstoragesdkvailt.vault.azure.net/"
+        if (testMode != TestMode.PLAYBACK) {
+            keyVaultUrl = Configuration.getGlobalConfiguration().get("KEYVAULT_URL")
+        }
         KeyClientBuilder builder = new KeyClientBuilder()
 
         if (testMode != TestMode.PLAYBACK) {
