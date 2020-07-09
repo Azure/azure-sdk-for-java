@@ -24,8 +24,10 @@ jobs:
             displayName: 'Run tests after set_version: $(DisplayName)'
             inputs:
               mavenPomFile: pom.xml
-              ${{ insert }}: ${{ parameters.TestStepMavenInputs }}
-            env: ${{ parameters.EnvVars }}
+              options: '-Dmaven.wagon.http.pool=false $(DefaultOptions) -Dmaven.javadoc.skip=true -Drevapi.skip=true -DskipSpringITs=false -pl $(ProjectList)'
+              goals: "verify"
+            env:
+              AZURE_TEST_MODE: LIVE
         Artifacts:
           - name: azure-spring-boot-tests
             groupId: com.microsoft.azure
