@@ -21,11 +21,10 @@ public class TableServiceAsyncClientCodeSnippets {
             .connectionString("connectionString")
             .buildAsyncClient();
 
-        tableServiceAsyncClient.createTable("OfficeSupplies").subscribe(Void -> {
-            logger.info("Table creation successful.");
-        }, error -> {
-            logger.error("There was an error creating the table. Error: " + error);
-        });
+        tableServiceAsyncClient.createTable("OfficeSupplies").subscribe(
+            Void -> {},
+            error -> logger.error("There was an error creating the table. Error: " + error),
+            () -> logger.info("Table creation successful."));
     }
 
     /**
@@ -36,11 +35,10 @@ public class TableServiceAsyncClientCodeSnippets {
             .connectionString("connectionString")
             .buildAsyncClient();
 
-        tableServiceAsyncClient.deleteTable("OfficeSupplies").subscribe(Void -> {
-            logger.info("Table deletion successful");
-        }, error -> {
-            logger.error("There was an error deleting the table. Error: " + error);
-        });
+        tableServiceAsyncClient.deleteTable("OfficeSupplies").subscribe(
+            Void -> {},
+            error -> logger.error("There was an error deleting the table. Error: " + error),
+            () -> logger.info("Table deletion successful."));
     }
 
     /**
@@ -100,11 +98,10 @@ public class TableServiceAsyncClientCodeSnippets {
             logger.info("Table Entity: " + tableEntity);
             Mono<Void> deleteEntityMono = tableAsyncClient.deleteEntity(tableEntity);
             return deleteEntityMono;
-        }).subscribe(Void -> {
-            logger.info("Delete Entity Successful.");
-        }, error -> {
-            logger.error("There was an error deleting the Entity. Error: " + error);
-        });
+        }).subscribe(
+            Void -> {},
+            error -> logger.error("There was an error deleting the Entity. Error: " + error),
+            () -> logger.info("Delete Entity Successful."));
     }
 
     /**
@@ -126,11 +123,10 @@ public class TableServiceAsyncClientCodeSnippets {
             tableEntity.addProperty("Price", "5");
             Mono<Void> updateEntityMono = tableAsyncClient.upsertEntity(UpdateMode.Merge, tableEntity);
             return updateEntityMono;
-        }).subscribe(Void -> {
-            logger.info("Update Entity Successful.");
-        }, error -> {
-            logger.error("There was an error updating the Entity. Error: " + error);
-        });
+        }).subscribe(
+            Void -> {},
+            error -> logger.error("There was an error upserting the Entity. Error: " + error),
+            () -> logger.info("Upsert Entity Successful."));
     }
 
     /**
@@ -152,11 +148,10 @@ public class TableServiceAsyncClientCodeSnippets {
             tableEntity.addProperty("Price", "5");
             Mono<Void> updateEntityMono = tableAsyncClient.updateEntity(UpdateMode.Replace, tableEntity);
             return updateEntityMono;
-        }).subscribe(Void -> {
-            logger.info("Update Entity Successful.");
-        }, error -> {
-            logger.error("There was an error updating the Entity. Error: " + error);
-        });
+        }).subscribe(
+            Void -> {},
+            error -> logger.error("There was an error updating the Entity. Error: " + error),
+            () -> logger.info("Update Entity Successful."));
     }
 
     /**

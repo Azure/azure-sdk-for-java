@@ -101,7 +101,7 @@ public class TableAsyncClient {
      *
      * @return table name
      */
-    public Mono<String> getTableName() {
-        return Mono.empty();
+    public String getTableName() {
+        return null;
     }
 }
