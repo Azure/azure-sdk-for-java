@@ -19,6 +19,7 @@ import com.azure.core.test.utils.TestResourceNamer
 import com.azure.core.util.Configuration
 import com.azure.core.util.FluxUtil
 import com.azure.core.util.logging.ClientLogger
+import com.azure.security.keyvault.keys.cryptography.models.KeyWrapAlgorithm
 import com.azure.storage.blob.BlobAsyncClient
 import com.azure.storage.blob.BlobClient
 import com.azure.storage.blob.BlobServiceClientBuilder
@@ -88,7 +89,7 @@ class APISpec extends Specification {
     static def PREMIUM_STORAGE = "PREMIUM_STORAGE_"
 
     TestResourceNamer resourceNamer
-    private InterceptorManager interceptorManager
+    def InterceptorManager interceptorManager
     protected String testName
 
     // Fields used for conveniently creating blobs with data.
@@ -229,8 +230,10 @@ class APISpec extends Specification {
                                                          AsyncKeyEncryptionKeyResolver keyResolver,
                                                          StorageSharedKeyCredential credential, String endpoint,
                                                          HttpPipelinePolicy... policies) {
+
+        KeyWrapAlgorithm algorithm = key.getKeyId().block() == "local" ? KeyWrapAlgorithm.A256KW : KeyWrapAlgorithm.RSA_OAEP_256
         EncryptedBlobClientBuilder builder = new EncryptedBlobClientBuilder()
-            .key(key, "keyWrapAlgorithm")
+            .key(key, algorithm.toString())
             .keyResolver(keyResolver)
             .endpoint(endpoint)
             .httpClient(getHttpClient())
@@ -277,7 +280,7 @@ class APISpec extends Specification {
         generateResourceName(containerPrefix, entityNo++)
     }
 
-    private String generateResourceName(String prefix, int entityNo) {
+    def String generateResourceName(String prefix, int entityNo) {
         return resourceNamer.randomName(prefix + testName + entityNo, 63)
     }
 
