@@ -5,7 +5,6 @@ package com.azure.core.util.serializer;
 
 import com.azure.core.http.HttpHeaders;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.List;
