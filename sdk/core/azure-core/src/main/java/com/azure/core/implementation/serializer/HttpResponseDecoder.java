@@ -83,8 +83,13 @@ public final class HttpResponseDecoder {
          * @return publisher that emits decoded http content
          */
         public Mono<Object> getDecodedBody(String body) {
+            return getDecodedBody(body.getBytes());
+        }
+
+        // TODO (jogiles) JavaDoc
+        public Mono<Object> getDecodedBody(byte[] body) {
             if (this.bodyCached == null) {
-                this.bodyCached = HttpResponseBodyDecoder.decode(body,
+                this.bodyCached = HttpResponseBodyDecoder.decodeByteArray(body,
                     this.response,
                     this.serializer,
                     this.decodeData).cache();

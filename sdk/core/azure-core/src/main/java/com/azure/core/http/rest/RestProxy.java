@@ -274,7 +274,8 @@ public final class RestProxy implements InvocationHandler {
             }
 
             if (isJson) {
-                request.setBody(serializer.serialize(bodyContentObject, SerializerEncoding.JSON));
+                // TODO (jogiles) can we have the ByteArrayOutputStream in the body instead of doing an array copy?
+                request.setBody(serializer.serializeToStream(bodyContentObject, SerializerEncoding.JSON).toByteArray());
             } else if (FluxUtil.isFluxByteBuffer(methodParser.getBodyJavaType())) {
                 // Content-Length or Transfer-Encoding: chunked must be provided by a user-specified header when a
                 // Flowable<byte[]> is given for the body.
@@ -289,8 +290,10 @@ public final class RestProxy implements InvocationHandler {
             } else if (bodyContentObject instanceof ByteBuffer) {
                 request.setBody(Flux.just((ByteBuffer) bodyContentObject));
             } else {
+                // TODO (jogiles) can we have the ByteArrayOutputStream in the body instead of doing an array copy?
                 request.setBody(
-                    serializer.serialize(bodyContentObject, SerializerEncoding.fromHeaders(request.getHeaders())));
+                    serializer.serializeToStream(
+                        bodyContentObject, SerializerEncoding.fromHeaders(request.getHeaders())).toByteArray());
             }
         }
 
@@ -304,14 +307,16 @@ public final class RestProxy implements InvocationHandler {
     }
 
     private static Exception instantiateUnexpectedException(UnexpectedExceptionInformation exception,
-        HttpResponse httpResponse, String responseContent, Object responseDecodedContent) {
+        HttpResponse httpResponse, byte[] responseContent, Object responseDecodedContent) {
         final int responseStatusCode = httpResponse.getStatusCode();
         String contentType = httpResponse.getHeaderValue("Content-Type");
         String bodyRepresentation;
         if ("application/octet-stream".equalsIgnoreCase(contentType)) {
             bodyRepresentation = "(" + httpResponse.getHeaderValue("Content-Length") + "-byte body)";
         } else {
-            bodyRepresentation = responseContent.isEmpty() ? "(empty body)" : "\"" + responseContent + "\"";
+            bodyRepresentation = responseContent == null || responseContent.length == 0
+                                     ? "(empty body)"
+                                     : "\"" + new String(responseContent) + "\"";
         }
 
         Exception result;
@@ -349,12 +354,12 @@ public final class RestProxy implements InvocationHandler {
         final int responseStatusCode = decodedResponse.getSourceResponse().getStatusCode();
         final Mono<HttpDecodedResponse> asyncResult;
         if (!methodParser.isExpectedResponseStatusCode(responseStatusCode)) {
-            Mono<String> bodyAsString = decodedResponse.getSourceResponse().getBodyAsString();
-            //
-            asyncResult = bodyAsString.flatMap((Function<String, Mono<HttpDecodedResponse>>) responseContent -> {
+            Mono<byte[]> bodyAsBytes = decodedResponse.getSourceResponse().getBodyAsByteArray();
+
+            asyncResult = bodyAsBytes.flatMap((Function<byte[], Mono<HttpDecodedResponse>>) responseContent -> {
                 // bodyAsString() emits non-empty string, now look for decoded version of same string
                 Mono<Object> decodedErrorBody = decodedResponse.getDecodedBody(responseContent);
-                //
+
                 return decodedErrorBody
                     .flatMap((Function<Object, Mono<HttpDecodedResponse>>) responseDecodedErrorObject -> {
                         // decodedBody() emits 'responseDecodedErrorObject' the successfully decoded exception
@@ -365,7 +370,6 @@ public final class RestProxy implements InvocationHandler {
                                 responseContent,
                                 responseDecodedErrorObject);
                         return Mono.error(exception);
-                        //
                     })
                     .switchIfEmpty(Mono.defer((Supplier<Mono<HttpDecodedResponse>>) () -> {
                         // decodedBody() emits empty, indicate unable to decode 'responseContent',
@@ -376,7 +380,6 @@ public final class RestProxy implements InvocationHandler {
                                 responseContent,
                                 null);
                         return Mono.error(exception);
-                        //
                     }));
             }).switchIfEmpty(Mono.defer((Supplier<Mono<HttpDecodedResponse>>) () -> {
                 // bodyAsString() emits empty, indicate no body, create exception empty content string no exception
@@ -384,10 +387,9 @@ public final class RestProxy implements InvocationHandler {
                 Throwable exception =
                     instantiateUnexpectedException(methodParser.getUnexpectedException(responseStatusCode),
                         decodedResponse.getSourceResponse(),
-                        "",
+                        null,
                         null);
                 return Mono.error(exception);
-                //
             }));
         } else {
             asyncResult = Mono.just(decodedResponse);
@@ -466,7 +468,7 @@ public final class RestProxy implements InvocationHandler {
             asyncResult = Mono.just(response.getSourceResponse().getBody());
         } else {
             // Mono<Object> or Mono<Page<T>>
-            asyncResult = response.getDecodedBody(null);
+            asyncResult = response.getDecodedBody((byte[]) null);
         }
         return asyncResult;
     }

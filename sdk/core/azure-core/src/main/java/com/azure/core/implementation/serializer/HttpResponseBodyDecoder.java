@@ -33,6 +33,14 @@ import java.util.Set;
  * Decoder to decode body of HTTP response.
  */
 final class HttpResponseBodyDecoder {
+    // TODO (jogiles) JavaDoc (even though it is non-public
+    static Mono<Object> decode(final String body,
+                               final HttpResponse httpResponse,
+                               final SerializerAdapter serializer,
+                               final HttpResponseDecodeData decodeData) {
+        return decodeByteArray(body == null ? null : body.getBytes(), httpResponse, serializer, decodeData);
+    }
+
     /**
      * Decodes body of a http response.
      *
@@ -47,7 +55,7 @@ final class HttpResponseBodyDecoder {
      * @return publisher that emits decoded response body upon subscription if body is decodable, no emission if the
      * body is not-decodable
      */
-    static Mono<Object> decode(final String body,
+    static Mono<Object> decodeByteArray(final byte[] body,
                                final HttpResponse httpResponse,
                                final SerializerAdapter serializer,
                                final HttpResponseDecodeData decodeData) {
@@ -56,10 +64,10 @@ final class HttpResponseBodyDecoder {
 
         return Mono.defer(() -> {
             if (isErrorStatus(httpResponse, decodeData)) {
-                Mono<String> bodyMono = body == null ? httpResponse.getBodyAsString() : Mono.just(body);
-                return bodyMono.flatMap(bodyString -> {
+                Mono<byte[]> bodyMono = body == null ? httpResponse.getBodyAsByteArray() : Mono.just(body);
+                return bodyMono.flatMap(bodyAsByteArray -> {
                     try {
-                        final Object decodedErrorEntity = deserializeBody(bodyString,
+                        final Object decodedErrorEntity = deserializeBody(bodyAsByteArray,
                             decodeData.getUnexpectedException(httpResponse.getStatusCode()).getExceptionBodyType(),
                             null, serializer, SerializerEncoding.fromHeaders(httpResponse.getHeaders()));
 
@@ -79,10 +87,10 @@ final class HttpResponseBodyDecoder {
                     return Mono.empty();
                 }
 
-                Mono<String> bodyMono = body == null ? httpResponse.getBodyAsString() : Mono.just(body);
-                return bodyMono.flatMap(bodyString -> {
+                Mono<byte[]> bodyMono = body == null ? httpResponse.getBodyAsByteArray() : Mono.just(body);
+                return bodyMono.flatMap(bodyAsByteArray -> {
                     try {
-                        final Object decodedSuccessEntity = deserializeBody(bodyString,
+                        final Object decodedSuccessEntity = deserializeBody(bodyAsByteArray,
                             extractEntityTypeFromReturnType(decodeData), decodeData.getReturnValueWireType(),
                             serializer, SerializerEncoding.fromHeaders(httpResponse.getHeaders()));
 
@@ -143,7 +151,7 @@ final class HttpResponseBodyDecoder {
      * @return Deserialized object
      * @throws IOException When the body cannot be deserialized
      */
-    private static Object deserializeBody(final String value,
+    private static Object deserializeBody(final byte[] value,
                                           final Type resultType,
                                           final Type wireType,
                                           final SerializerAdapter serializer,
@@ -215,7 +223,7 @@ final class HttpResponseBodyDecoder {
      * @return An object representing an instance of {@param wireType}
      * @throws IOException if the serializer is unable to deserialize the value.
      */
-    private static Object deserializePage(final String value,
+    private static Object deserializePage(final byte[] value,
                                           final Type resultType,
                                           final Type wireType,
                                           final SerializerAdapter serializer,

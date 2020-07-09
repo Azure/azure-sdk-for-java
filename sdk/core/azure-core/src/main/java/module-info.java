@@ -9,6 +9,7 @@ module com.azure.core {
     requires transitive com.fasterxml.jackson.annotation;
     requires transitive com.fasterxml.jackson.core;
     requires transitive com.fasterxml.jackson.databind;
+    requires transitive com.fasterxml.jackson.module.afterburner;
 
     requires transitive com.fasterxml.jackson.dataformat.xml;
     requires transitive com.fasterxml.jackson.datatype.jsr310;

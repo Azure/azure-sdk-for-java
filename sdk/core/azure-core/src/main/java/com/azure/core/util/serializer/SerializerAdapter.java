@@ -5,6 +5,7 @@ package com.azure.core.util.serializer;
 
 import com.azure.core.http.HttpHeaders;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.List;
@@ -22,6 +23,17 @@ public interface SerializerAdapter {
      * @throws IOException exception from serialization
      */
     String serialize(Object object, SerializerEncoding encoding) throws IOException;
+
+    /**
+     * Serializes an object into a string.
+     *
+     * @param object the object to serialize
+     * @param encoding the encoding to use for serialization
+     * @return the serialized string. Null if the object to serialize is null
+     * @throws IOException exception from serialization
+     */
+    // TODO (jogiles) JavaDoc
+    ByteArrayOutputStream serializeToStream(Object object, SerializerEncoding encoding) throws IOException;
 
     /**
      * Serializes an object into a raw string. The leading and trailing quotes will be trimmed.
@@ -52,7 +64,22 @@ public interface SerializerAdapter {
      * @return the deserialized object
      * @throws IOException exception from deserialization
      */
-    <U> U deserialize(String value, Type type, SerializerEncoding encoding) throws IOException;
+    default <U> U deserialize(String value, Type type, SerializerEncoding encoding) throws IOException {
+        return deserialize(value.getBytes(), type, encoding);
+    }
+
+    /**
+     * Deserializes a byte[] into a {@code U} object.
+     *
+     * @param value the byte[] value to deserialize
+     * @param <U> the type of the deserialized object
+     * @param type the type to deserialize
+     * @param encoding the encoding used in the serialized value
+     * @return the deserialized object
+     * @throws IOException exception from deserialization
+     */
+    // TODO (jogiles) JavaDoc. Also, this overload will lead to compilation issues - might be best to rename
+    <U> U deserialize(byte[] value, Type type, SerializerEncoding encoding) throws IOException;
 
     /**
      * Deserialize the provided headers returned from a REST API to an entity instance declared as

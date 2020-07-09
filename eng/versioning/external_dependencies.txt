@@ -8,6 +8,7 @@ com.fasterxml.jackson.dataformat:jackson-dataformat-xml;2.10.1
 com.fasterxml.jackson.datatype:jackson-datatype-jdk8;2.10.0
 com.fasterxml.jackson.datatype:jackson-datatype-jsr310;2.10.1
 com.fasterxml.jackson.module:jackson-module-parameter-names;2.10.0
+com.fasterxml.jackson.module:jackson-module-afterburner;2.10.1
 com.github.spotbugs:spotbugs;4.0.0-beta3
 com.github.spotbugs:spotbugs-maven-plugin;3.1.12.2
 com.google.code.gson:gson;2.8.5

@@ -8,7 +8,6 @@ import com.azure.core.http.HttpHeader;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.implementation.TypeUtil;
 import com.azure.core.implementation.serializer.MalformedValueException;
-import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -21,7 +20,9 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import com.fasterxml.jackson.dataformat.xml.ser.ToXmlGenerator;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.fasterxml.jackson.module.afterburner.AfterburnerModule;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.lang.reflect.Field;
@@ -79,7 +80,8 @@ public class JacksonAdapter implements SerializerAdapter {
             .registerModule(AdditionalPropertiesSerializer.getModule(flatteningMapper))
             .registerModule(AdditionalPropertiesDeserializer.getModule(flatteningMapper))
             .registerModule(FlatteningSerializer.getModule(simpleMapper()))
-            .registerModule(FlatteningDeserializer.getModule(simpleMapper()));
+            .registerModule(FlatteningDeserializer.getModule(simpleMapper()))
+            .registerModule(new AfterburnerModule());
         headerMapper = simpleMapper
             .copy()
             .configure(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES, true);
@@ -118,6 +120,7 @@ public class JacksonAdapter implements SerializerAdapter {
         if (object == null) {
             return null;
         }
+
         StringWriter writer = new StringWriter();
         if (encoding == SerializerEncoding.XML) {
             xmlMapper.writeValue(writer, object);
@@ -126,6 +129,22 @@ public class JacksonAdapter implements SerializerAdapter {
         }
 
         return writer.toString();
+    }
+
+    @Override
+    public ByteArrayOutputStream serializeToStream(Object object, SerializerEncoding encoding) throws IOException {
+        if (object == null) {
+            return null;
+        }
+
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        if (encoding == SerializerEncoding.XML) {
+            xmlMapper.writeValue(baos, object);
+        } else {
+            serializer().writeValue(baos, object);
+        }
+
+        return baos;
     }
 
     @Override
@@ -156,8 +175,8 @@ public class JacksonAdapter implements SerializerAdapter {
 
     @Override
     @SuppressWarnings("unchecked")
-    public <T> T deserialize(String value, final Type type, SerializerEncoding encoding) throws IOException {
-        if (CoreUtils.isNullOrEmpty(value)) {
+    public <T> T deserialize(byte[] value, final Type type, SerializerEncoding encoding) throws IOException {
+        if (value == null || value.length == 0) {
             return null;
         }
 
