@@ -7,22 +7,21 @@
 package com.azure.search.documents.indexes.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.JsonFlatten;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.util.List;
 
-/**
- * A skill that extracts text from image files.
- */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata.type")
+/** The OcrSkill model. */
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata\\.type")
 @JsonTypeName("#Microsoft.Skills.Vision.OcrSkill")
+@JsonFlatten
 @Fluent
-public final class OcrSkill extends SearchIndexerSkill {
+public class OcrSkill extends SearchIndexerSkill {
     /*
-     * A value indicating which language code to use. Default is en. Possible
-     * values include: 'zh-Hans', 'zh-Hant', 'cs', 'da', 'nl', 'en', 'fi',
-     * 'fr', 'de', 'el', 'hu', 'it', 'ja', 'ko', 'nb', 'pl', 'pt', 'ru', 'es',
-     * 'sv', 'tr', 'ar', 'ro', 'sr-Cyrl', 'sr-Latn', 'sk'
+     * A value indicating which language code to use. Default is en.
      */
     @JsonProperty(value = "defaultLanguageCode")
     private OcrSkillLanguage defaultLanguageCode;
@@ -34,12 +33,16 @@ public final class OcrSkill extends SearchIndexerSkill {
     @JsonProperty(value = "detectOrientation")
     private Boolean shouldDetectOrientation;
 
+    /** Creates an instance of OcrSkill class. */
+    @JsonCreator
+    public OcrSkill(
+            @JsonProperty(value = "inputs") List<InputFieldMappingEntry> inputs,
+            @JsonProperty(value = "outputs") List<OutputFieldMappingEntry> outputs) {
+        super(inputs, outputs);
+    }
+
     /**
-     * Get the defaultLanguageCode property: A value indicating which language
-     * code to use. Default is en. Possible values include: 'zh-Hans',
-     * 'zh-Hant', 'cs', 'da', 'nl', 'en', 'fi', 'fr', 'de', 'el', 'hu', 'it',
-     * 'ja', 'ko', 'nb', 'pl', 'pt', 'ru', 'es', 'sv', 'tr', 'ar', 'ro',
-     * 'sr-Cyrl', 'sr-Latn', 'sk'.
+     * Get the defaultLanguageCode property: A value indicating which language code to use. Default is en.
      *
      * @return the defaultLanguageCode value.
      */
@@ -48,11 +51,7 @@ public final class OcrSkill extends SearchIndexerSkill {
     }
 
     /**
-     * Set the defaultLanguageCode property: A value indicating which language
-     * code to use. Default is en. Possible values include: 'zh-Hans',
-     * 'zh-Hant', 'cs', 'da', 'nl', 'en', 'fi', 'fr', 'de', 'el', 'hu', 'it',
-     * 'ja', 'ko', 'nb', 'pl', 'pt', 'ru', 'es', 'sv', 'tr', 'ar', 'ro',
-     * 'sr-Cyrl', 'sr-Latn', 'sk'.
+     * Set the defaultLanguageCode property: A value indicating which language code to use. Default is en.
      *
      * @param defaultLanguageCode the defaultLanguageCode value to set.
      * @return the OcrSkill object itself.
@@ -63,8 +62,8 @@ public final class OcrSkill extends SearchIndexerSkill {
     }
 
     /**
-     * Get the shouldDetectOrientation property: A value indicating to turn
-     * orientation detection on or not. Default is false.
+     * Get the shouldDetectOrientation property: A value indicating to turn orientation detection on or not. Default is
+     * false.
      *
      * @return the shouldDetectOrientation value.
      */
@@ -73,8 +72,8 @@ public final class OcrSkill extends SearchIndexerSkill {
     }
 
     /**
-     * Set the shouldDetectOrientation property: A value indicating to turn
-     * orientation detection on or not. Default is false.
+     * Set the shouldDetectOrientation property: A value indicating to turn orientation detection on or not. Default is
+     * false.
      *
      * @param shouldDetectOrientation the shouldDetectOrientation value to set.
      * @return the OcrSkill object itself.
@@ -82,5 +81,15 @@ public final class OcrSkill extends SearchIndexerSkill {
     public OcrSkill setShouldDetectOrientation(Boolean shouldDetectOrientation) {
         this.shouldDetectOrientation = shouldDetectOrientation;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    @Override
+    public void validate() {
+        super.validate();
     }
 }

@@ -26,12 +26,14 @@ azure.activedirectory.tenant-id=xxxxxx-your-tenant-id-xxxxxx
 azure.activedirectory.active-directory-groups=group1, group2
 ```
 
+If `azure.activedirectory.tenant-id` is configured, `AADOAuth2LoginSecurityConfig` will take effect and this app will use AAD to authentication and authorization.
+If `azure.activedirectory.tenant-id` is **NOT** configured, `NoLoginSecurityConfig` will take effect and this app will **NOT** use AAD to  authentication and authorization.
+
 ### Run with Maven
 ```shell
-# Under azure-spring-boot project root directory
+# Under sdk/spring project root directory
 mvn clean install -DskipTests
-cd azure-spring-boot-samples
-cd azure-spring-boot-sample-active-directory-backend
+cd azure-spring-boot-samples/azure-spring-boot-sample-active-directory-backend
 mvn spring-boot:run
 ```
 

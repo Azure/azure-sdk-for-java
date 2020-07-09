@@ -37,6 +37,17 @@ public final class EdgeNGramTokenizer extends LexicalTokenizer {
     private List<TokenCharacterKind> tokenChars;
 
     /**
+     * Constructor of {@link LexicalTokenizer}.
+     *
+     * @param name The name of the tokenizer. It must only contain letters, digits, spaces,
+     * dashes or underscores, can only start and end with alphanumeric
+     * characters, and is limited to 128 characters.
+     */
+    public EdgeNGramTokenizer(String name) {
+        super(name);
+    }
+
+    /**
      * Get the minGram property: The minimum n-gram length. Default is 1.
      * Maximum is 300. Must be less than the value of maxGram.
      *

@@ -56,14 +56,14 @@ public final class ApplicationGatewayOnDemandProbe {
     private ApplicationGatewayProbeHealthResponseMatch match;
 
     /*
-     * Reference of backend pool of application gateway to which probe request
+     * Reference to backend pool of application gateway to which probe request
      * will be sent.
      */
     @JsonProperty(value = "backendAddressPool")
     private SubResource backendAddressPool;
 
     /*
-     * Reference of backend http setting of application gateway to be used for
+     * Reference to backend http setting of application gateway to be used for
      * test probe.
      */
     @JsonProperty(value = "backendHttpSettings")
@@ -197,7 +197,7 @@ public final class ApplicationGatewayOnDemandProbe {
     }
 
     /**
-     * Get the backendAddressPool property: Reference of backend pool of application gateway to which probe request will
+     * Get the backendAddressPool property: Reference to backend pool of application gateway to which probe request will
      * be sent.
      *
      * @return the backendAddressPool value.
@@ -207,7 +207,7 @@ public final class ApplicationGatewayOnDemandProbe {
     }
 
     /**
-     * Set the backendAddressPool property: Reference of backend pool of application gateway to which probe request will
+     * Set the backendAddressPool property: Reference to backend pool of application gateway to which probe request will
      * be sent.
      *
      * @param backendAddressPool the backendAddressPool value to set.
@@ -219,7 +219,7 @@ public final class ApplicationGatewayOnDemandProbe {
     }
 
     /**
-     * Get the backendHttpSettings property: Reference of backend http setting of application gateway to be used for
+     * Get the backendHttpSettings property: Reference to backend http setting of application gateway to be used for
      * test probe.
      *
      * @return the backendHttpSettings value.
@@ -229,7 +229,7 @@ public final class ApplicationGatewayOnDemandProbe {
     }
 
     /**
-     * Set the backendHttpSettings property: Reference of backend http setting of application gateway to be used for
+     * Set the backendHttpSettings property: Reference to backend http setting of application gateway to be used for
      * test probe.
      *
      * @param backendHttpSettings the backendHttpSettings value to set.

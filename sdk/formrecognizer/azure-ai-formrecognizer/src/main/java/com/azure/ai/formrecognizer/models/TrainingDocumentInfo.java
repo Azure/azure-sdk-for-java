@@ -5,6 +5,7 @@ package com.azure.ai.formrecognizer.models;
 
 import com.azure.core.annotation.Immutable;
 
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -46,7 +47,8 @@ public final class TrainingDocumentInfo {
         this.name = name;
         this.trainingStatus = trainingStatus;
         this.pageCount = pageCount;
-        this.documentErrors = documentErrors;
+        this.documentErrors = documentErrors == null ? null
+            : Collections.unmodifiableList(documentErrors);
     }
 
     /**
@@ -79,7 +81,7 @@ public final class TrainingDocumentInfo {
     /**
      * Get the list of errors.
      *
-     * @return the errors value.
+     * @return the unmodifiable list of errors.
      */
     public List<FormRecognizerError> getDocumentErrors() {
         return this.documentErrors;

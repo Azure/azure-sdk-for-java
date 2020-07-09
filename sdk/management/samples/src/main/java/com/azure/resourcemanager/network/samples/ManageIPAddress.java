@@ -43,8 +43,7 @@ public final class ManageIPAddress {
         final String vmName = azure.sdkContext().randomResourceName("vm", 8);
         final String rgName = azure.sdkContext().randomResourceName("rgNEMP", 24);
         final String userName = "tirekicker";
-        // [SuppressMessage("Microsoft.Security", "CS002:SecretInNextLine", Justification="Serves as an example, not for deployment. Please change when using this in your code.")]
-        final String password = "12NewPA$$w0rd!";
+        final String password = Utils.password();
 
         try {
 

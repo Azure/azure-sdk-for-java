@@ -30,8 +30,8 @@ import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.util.polling.AsyncPollResponse;
 import com.azure.core.util.polling.PollerFlux;
+import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.network.NetworkManagementClient;
 import com.azure.resourcemanager.network.fluent.inner.PacketCaptureInner;
 import com.azure.resourcemanager.network.fluent.inner.PacketCaptureListResultInner;
@@ -158,67 +158,6 @@ public final class PacketCapturesClient {
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
             Context context);
-
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
-                + "/networkWatchers/{networkWatcherName}/packetCaptures/{packetCaptureName}")
-        @ExpectedResponses({201})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<PacketCaptureResultInner>> beginCreateWithoutPolling(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("networkWatcherName") String networkWatcherName,
-            @PathParam("packetCaptureName") String packetCaptureName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @BodyParam("application/json") PacketCaptureInner parameters,
-            Context context);
-
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
-                + "/networkWatchers/{networkWatcherName}/packetCaptures/{packetCaptureName}")
-        @ExpectedResponses({202, 204})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> beginDeleteWithoutPolling(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("networkWatcherName") String networkWatcherName,
-            @PathParam("packetCaptureName") String packetCaptureName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            Context context);
-
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
-                + "/networkWatchers/{networkWatcherName}/packetCaptures/{packetCaptureName}/stop")
-        @ExpectedResponses({200, 202})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> beginStopWithoutPolling(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("networkWatcherName") String networkWatcherName,
-            @PathParam("packetCaptureName") String packetCaptureName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            Context context);
-
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
-                + "/networkWatchers/{networkWatcherName}/packetCaptures/{packetCaptureName}/queryStatus")
-        @ExpectedResponses({200, 202})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<PacketCaptureQueryStatusResultInner>> beginGetStatusWithoutPolling(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("networkWatcherName") String networkWatcherName,
-            @PathParam("packetCaptureName") String packetCaptureName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            Context context);
     }
 
     /**
@@ -265,7 +204,7 @@ public final class PacketCapturesClient {
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -331,7 +270,7 @@ public final class PacketCapturesClient {
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return service
             .create(
                 this.client.getEndpoint(),
@@ -357,7 +296,7 @@ public final class PacketCapturesClient {
      * @return information about packet capture session.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<PacketCaptureResultInner>, PacketCaptureResultInner> beginCreate(
+    public PollerFlux<PollResult<PacketCaptureResultInner>, PacketCaptureResultInner> beginCreateAsync(
         String resourceGroupName, String networkWatcherName, String packetCaptureName, PacketCaptureInner parameters) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             createWithResponseAsync(resourceGroupName, networkWatcherName, packetCaptureName, parameters);
@@ -381,7 +320,7 @@ public final class PacketCapturesClient {
      * @return information about packet capture session.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<PacketCaptureResultInner>, PacketCaptureResultInner> beginCreate(
+    public PollerFlux<PollResult<PacketCaptureResultInner>, PacketCaptureResultInner> beginCreateAsync(
         String resourceGroupName,
         String networkWatcherName,
         String packetCaptureName,
@@ -408,16 +347,53 @@ public final class PacketCapturesClient {
      * @return information about packet capture session.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<PacketCaptureResultInner>, PacketCaptureResultInner> beginCreate(
+        String resourceGroupName, String networkWatcherName, String packetCaptureName, PacketCaptureInner parameters) {
+        return beginCreateAsync(resourceGroupName, networkWatcherName, packetCaptureName, parameters).getSyncPoller();
+    }
+
+    /**
+     * Create and start a packet capture on the specified VM.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param networkWatcherName The name of the network watcher.
+     * @param packetCaptureName The name of the packet capture session.
+     * @param parameters Parameters that define the create packet capture operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information about packet capture session.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<PacketCaptureResultInner>, PacketCaptureResultInner> beginCreate(
+        String resourceGroupName,
+        String networkWatcherName,
+        String packetCaptureName,
+        PacketCaptureInner parameters,
+        Context context) {
+        return beginCreateAsync(resourceGroupName, networkWatcherName, packetCaptureName, parameters, context)
+            .getSyncPoller();
+    }
+
+    /**
+     * Create and start a packet capture on the specified VM.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param networkWatcherName The name of the network watcher.
+     * @param packetCaptureName The name of the packet capture session.
+     * @param parameters Parameters that define the create packet capture operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information about packet capture session.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PacketCaptureResultInner> createAsync(
         String resourceGroupName, String networkWatcherName, String packetCaptureName, PacketCaptureInner parameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createWithResponseAsync(resourceGroupName, networkWatcherName, packetCaptureName, parameters);
-        return this
-            .client
-            .<PacketCaptureResultInner, PacketCaptureResultInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), PacketCaptureResultInner.class, PacketCaptureResultInner.class)
+        return beginCreateAsync(resourceGroupName, networkWatcherName, packetCaptureName, parameters)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -440,14 +416,9 @@ public final class PacketCapturesClient {
         String packetCaptureName,
         PacketCaptureInner parameters,
         Context context) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createWithResponseAsync(resourceGroupName, networkWatcherName, packetCaptureName, parameters, context);
-        return this
-            .client
-            .<PacketCaptureResultInner, PacketCaptureResultInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), PacketCaptureResultInner.class, PacketCaptureResultInner.class)
+        return beginCreateAsync(resourceGroupName, networkWatcherName, packetCaptureName, parameters, context)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -529,7 +500,7 @@ public final class PacketCapturesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -584,7 +555,7 @@ public final class PacketCapturesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return service
             .get(
                 this.client.getEndpoint(),
@@ -719,7 +690,7 @@ public final class PacketCapturesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -774,7 +745,7 @@ public final class PacketCapturesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return service
             .delete(
                 this.client.getEndpoint(),
@@ -798,7 +769,7 @@ public final class PacketCapturesClient {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<Void>, Void> beginDelete(
+    public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String networkWatcherName, String packetCaptureName) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             deleteWithResponseAsync(resourceGroupName, networkWatcherName, packetCaptureName);
@@ -818,7 +789,7 @@ public final class PacketCapturesClient {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<Void>, Void> beginDelete(
+    public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String networkWatcherName, String packetCaptureName, Context context) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             deleteWithResponseAsync(resourceGroupName, networkWatcherName, packetCaptureName, context);
@@ -837,14 +808,45 @@ public final class PacketCapturesClient {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<Void>, Void> beginDelete(
+        String resourceGroupName, String networkWatcherName, String packetCaptureName) {
+        return beginDeleteAsync(resourceGroupName, networkWatcherName, packetCaptureName).getSyncPoller();
+    }
+
+    /**
+     * Deletes the specified packet capture session.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param networkWatcherName The name of the network watcher.
+     * @param packetCaptureName The name of the packet capture session.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<Void>, Void> beginDelete(
+        String resourceGroupName, String networkWatcherName, String packetCaptureName, Context context) {
+        return beginDeleteAsync(resourceGroupName, networkWatcherName, packetCaptureName, context).getSyncPoller();
+    }
+
+    /**
+     * Deletes the specified packet capture session.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param networkWatcherName The name of the network watcher.
+     * @param packetCaptureName The name of the packet capture session.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String networkWatcherName, String packetCaptureName) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, networkWatcherName, packetCaptureName);
-        return this
-            .client
-            .<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class)
+        return beginDeleteAsync(resourceGroupName, networkWatcherName, packetCaptureName)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -862,13 +864,9 @@ public final class PacketCapturesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(
         String resourceGroupName, String networkWatcherName, String packetCaptureName, Context context) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, networkWatcherName, packetCaptureName, context);
-        return this
-            .client
-            .<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class)
+        return beginDeleteAsync(resourceGroupName, networkWatcherName, packetCaptureName, context)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -940,7 +938,7 @@ public final class PacketCapturesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -995,7 +993,7 @@ public final class PacketCapturesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return service
             .stop(
                 this.client.getEndpoint(),
@@ -1019,7 +1017,7 @@ public final class PacketCapturesClient {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<Void>, Void> beginStop(
+    public PollerFlux<PollResult<Void>, Void> beginStopAsync(
         String resourceGroupName, String networkWatcherName, String packetCaptureName) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             stopWithResponseAsync(resourceGroupName, networkWatcherName, packetCaptureName);
@@ -1039,7 +1037,7 @@ public final class PacketCapturesClient {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<Void>, Void> beginStop(
+    public PollerFlux<PollResult<Void>, Void> beginStopAsync(
         String resourceGroupName, String networkWatcherName, String packetCaptureName, Context context) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             stopWithResponseAsync(resourceGroupName, networkWatcherName, packetCaptureName, context);
@@ -1058,14 +1056,45 @@ public final class PacketCapturesClient {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<Void>, Void> beginStop(
+        String resourceGroupName, String networkWatcherName, String packetCaptureName) {
+        return beginStopAsync(resourceGroupName, networkWatcherName, packetCaptureName).getSyncPoller();
+    }
+
+    /**
+     * Stops a specified packet capture session.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param networkWatcherName The name of the network watcher.
+     * @param packetCaptureName The name of the packet capture session.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<Void>, Void> beginStop(
+        String resourceGroupName, String networkWatcherName, String packetCaptureName, Context context) {
+        return beginStopAsync(resourceGroupName, networkWatcherName, packetCaptureName, context).getSyncPoller();
+    }
+
+    /**
+     * Stops a specified packet capture session.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param networkWatcherName The name of the network watcher.
+     * @param packetCaptureName The name of the packet capture session.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> stopAsync(String resourceGroupName, String networkWatcherName, String packetCaptureName) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            stopWithResponseAsync(resourceGroupName, networkWatcherName, packetCaptureName);
-        return this
-            .client
-            .<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class)
+        return beginStopAsync(resourceGroupName, networkWatcherName, packetCaptureName)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -1083,13 +1112,9 @@ public final class PacketCapturesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> stopAsync(
         String resourceGroupName, String networkWatcherName, String packetCaptureName, Context context) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            stopWithResponseAsync(resourceGroupName, networkWatcherName, packetCaptureName, context);
-        return this
-            .client
-            .<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class)
+        return beginStopAsync(resourceGroupName, networkWatcherName, packetCaptureName, context)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -1161,7 +1186,7 @@ public final class PacketCapturesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -1216,7 +1241,7 @@ public final class PacketCapturesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return service
             .getStatus(
                 this.client.getEndpoint(),
@@ -1241,7 +1266,7 @@ public final class PacketCapturesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<PacketCaptureQueryStatusResultInner>, PacketCaptureQueryStatusResultInner>
-        beginGetStatus(String resourceGroupName, String networkWatcherName, String packetCaptureName) {
+        beginGetStatusAsync(String resourceGroupName, String networkWatcherName, String packetCaptureName) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             getStatusWithResponseAsync(resourceGroupName, networkWatcherName, packetCaptureName);
         return this
@@ -1267,7 +1292,8 @@ public final class PacketCapturesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<PacketCaptureQueryStatusResultInner>, PacketCaptureQueryStatusResultInner>
-        beginGetStatus(String resourceGroupName, String networkWatcherName, String packetCaptureName, Context context) {
+        beginGetStatusAsync(
+            String resourceGroupName, String networkWatcherName, String packetCaptureName, Context context) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             getStatusWithResponseAsync(resourceGroupName, networkWatcherName, packetCaptureName, context);
         return this
@@ -1291,19 +1317,46 @@ public final class PacketCapturesClient {
      * @return status of packet capture session.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<PacketCaptureQueryStatusResultInner>, PacketCaptureQueryStatusResultInner>
+        beginGetStatus(String resourceGroupName, String networkWatcherName, String packetCaptureName) {
+        return beginGetStatusAsync(resourceGroupName, networkWatcherName, packetCaptureName).getSyncPoller();
+    }
+
+    /**
+     * Query the status of a running packet capture session.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param networkWatcherName The name of the Network Watcher resource.
+     * @param packetCaptureName The name given to the packet capture session.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return status of packet capture session.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<PacketCaptureQueryStatusResultInner>, PacketCaptureQueryStatusResultInner>
+        beginGetStatus(String resourceGroupName, String networkWatcherName, String packetCaptureName, Context context) {
+        return beginGetStatusAsync(resourceGroupName, networkWatcherName, packetCaptureName, context).getSyncPoller();
+    }
+
+    /**
+     * Query the status of a running packet capture session.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param networkWatcherName The name of the Network Watcher resource.
+     * @param packetCaptureName The name given to the packet capture session.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return status of packet capture session.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PacketCaptureQueryStatusResultInner> getStatusAsync(
         String resourceGroupName, String networkWatcherName, String packetCaptureName) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            getStatusWithResponseAsync(resourceGroupName, networkWatcherName, packetCaptureName);
-        return this
-            .client
-            .<PacketCaptureQueryStatusResultInner, PacketCaptureQueryStatusResultInner>getLroResultAsync(
-                mono,
-                this.client.getHttpPipeline(),
-                PacketCaptureQueryStatusResultInner.class,
-                PacketCaptureQueryStatusResultInner.class)
+        return beginGetStatusAsync(resourceGroupName, networkWatcherName, packetCaptureName)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -1321,17 +1374,9 @@ public final class PacketCapturesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PacketCaptureQueryStatusResultInner> getStatusAsync(
         String resourceGroupName, String networkWatcherName, String packetCaptureName, Context context) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            getStatusWithResponseAsync(resourceGroupName, networkWatcherName, packetCaptureName, context);
-        return this
-            .client
-            .<PacketCaptureQueryStatusResultInner, PacketCaptureQueryStatusResultInner>getLroResultAsync(
-                mono,
-                this.client.getHttpPipeline(),
-                PacketCaptureQueryStatusResultInner.class,
-                PacketCaptureQueryStatusResultInner.class)
+        return beginGetStatusAsync(resourceGroupName, networkWatcherName, packetCaptureName, context)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -1402,7 +1447,7 @@ public final class PacketCapturesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -1455,7 +1500,7 @@ public final class PacketCapturesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return service
             .list(
                 this.client.getEndpoint(),
@@ -1532,775 +1577,5 @@ public final class PacketCapturesClient {
     public PagedIterable<PacketCaptureResultInner> list(
         String resourceGroupName, String networkWatcherName, Context context) {
         return new PagedIterable<>(listAsync(resourceGroupName, networkWatcherName, context));
-    }
-
-    /**
-     * Create and start a packet capture on the specified VM.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param networkWatcherName The name of the network watcher.
-     * @param packetCaptureName The name of the packet capture session.
-     * @param parameters Parameters that define the create packet capture operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about packet capture session.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<PacketCaptureResultInner>> beginCreateWithoutPollingWithResponseAsync(
-        String resourceGroupName, String networkWatcherName, String packetCaptureName, PacketCaptureInner parameters) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (networkWatcherName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter networkWatcherName is required and cannot be null."));
-        }
-        if (packetCaptureName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter packetCaptureName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (parameters == null) {
-            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
-        } else {
-            parameters.validate();
-        }
-        final String apiVersion = "2019-06-01";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .beginCreateWithoutPolling(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            networkWatcherName,
-                            packetCaptureName,
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            parameters,
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
-
-    /**
-     * Create and start a packet capture on the specified VM.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param networkWatcherName The name of the network watcher.
-     * @param packetCaptureName The name of the packet capture session.
-     * @param parameters Parameters that define the create packet capture operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about packet capture session.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<PacketCaptureResultInner>> beginCreateWithoutPollingWithResponseAsync(
-        String resourceGroupName,
-        String networkWatcherName,
-        String packetCaptureName,
-        PacketCaptureInner parameters,
-        Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (networkWatcherName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter networkWatcherName is required and cannot be null."));
-        }
-        if (packetCaptureName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter packetCaptureName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (parameters == null) {
-            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
-        } else {
-            parameters.validate();
-        }
-        final String apiVersion = "2019-06-01";
-        return service
-            .beginCreateWithoutPolling(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                networkWatcherName,
-                packetCaptureName,
-                apiVersion,
-                this.client.getSubscriptionId(),
-                parameters,
-                context);
-    }
-
-    /**
-     * Create and start a packet capture on the specified VM.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param networkWatcherName The name of the network watcher.
-     * @param packetCaptureName The name of the packet capture session.
-     * @param parameters Parameters that define the create packet capture operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about packet capture session.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PacketCaptureResultInner> beginCreateWithoutPollingAsync(
-        String resourceGroupName, String networkWatcherName, String packetCaptureName, PacketCaptureInner parameters) {
-        return beginCreateWithoutPollingWithResponseAsync(
-                resourceGroupName, networkWatcherName, packetCaptureName, parameters)
-            .flatMap(
-                (Response<PacketCaptureResultInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Create and start a packet capture on the specified VM.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param networkWatcherName The name of the network watcher.
-     * @param packetCaptureName The name of the packet capture session.
-     * @param parameters Parameters that define the create packet capture operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about packet capture session.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PacketCaptureResultInner> beginCreateWithoutPollingAsync(
-        String resourceGroupName,
-        String networkWatcherName,
-        String packetCaptureName,
-        PacketCaptureInner parameters,
-        Context context) {
-        return beginCreateWithoutPollingWithResponseAsync(
-                resourceGroupName, networkWatcherName, packetCaptureName, parameters, context)
-            .flatMap(
-                (Response<PacketCaptureResultInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Create and start a packet capture on the specified VM.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param networkWatcherName The name of the network watcher.
-     * @param packetCaptureName The name of the packet capture session.
-     * @param parameters Parameters that define the create packet capture operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about packet capture session.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PacketCaptureResultInner beginCreateWithoutPolling(
-        String resourceGroupName, String networkWatcherName, String packetCaptureName, PacketCaptureInner parameters) {
-        return beginCreateWithoutPollingAsync(resourceGroupName, networkWatcherName, packetCaptureName, parameters)
-            .block();
-    }
-
-    /**
-     * Create and start a packet capture on the specified VM.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param networkWatcherName The name of the network watcher.
-     * @param packetCaptureName The name of the packet capture session.
-     * @param parameters Parameters that define the create packet capture operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about packet capture session.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PacketCaptureResultInner beginCreateWithoutPolling(
-        String resourceGroupName,
-        String networkWatcherName,
-        String packetCaptureName,
-        PacketCaptureInner parameters,
-        Context context) {
-        return beginCreateWithoutPollingAsync(
-                resourceGroupName, networkWatcherName, packetCaptureName, parameters, context)
-            .block();
-    }
-
-    /**
-     * Deletes the specified packet capture session.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param networkWatcherName The name of the network watcher.
-     * @param packetCaptureName The name of the packet capture session.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> beginDeleteWithoutPollingWithResponseAsync(
-        String resourceGroupName, String networkWatcherName, String packetCaptureName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (networkWatcherName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter networkWatcherName is required and cannot be null."));
-        }
-        if (packetCaptureName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter packetCaptureName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2019-06-01";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .beginDeleteWithoutPolling(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            networkWatcherName,
-                            packetCaptureName,
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
-
-    /**
-     * Deletes the specified packet capture session.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param networkWatcherName The name of the network watcher.
-     * @param packetCaptureName The name of the packet capture session.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> beginDeleteWithoutPollingWithResponseAsync(
-        String resourceGroupName, String networkWatcherName, String packetCaptureName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (networkWatcherName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter networkWatcherName is required and cannot be null."));
-        }
-        if (packetCaptureName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter packetCaptureName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2019-06-01";
-        return service
-            .beginDeleteWithoutPolling(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                networkWatcherName,
-                packetCaptureName,
-                apiVersion,
-                this.client.getSubscriptionId(),
-                context);
-    }
-
-    /**
-     * Deletes the specified packet capture session.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param networkWatcherName The name of the network watcher.
-     * @param packetCaptureName The name of the packet capture session.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> beginDeleteWithoutPollingAsync(
-        String resourceGroupName, String networkWatcherName, String packetCaptureName) {
-        return beginDeleteWithoutPollingWithResponseAsync(resourceGroupName, networkWatcherName, packetCaptureName)
-            .flatMap((Response<Void> res) -> Mono.empty());
-    }
-
-    /**
-     * Deletes the specified packet capture session.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param networkWatcherName The name of the network watcher.
-     * @param packetCaptureName The name of the packet capture session.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> beginDeleteWithoutPollingAsync(
-        String resourceGroupName, String networkWatcherName, String packetCaptureName, Context context) {
-        return beginDeleteWithoutPollingWithResponseAsync(
-                resourceGroupName, networkWatcherName, packetCaptureName, context)
-            .flatMap((Response<Void> res) -> Mono.empty());
-    }
-
-    /**
-     * Deletes the specified packet capture session.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param networkWatcherName The name of the network watcher.
-     * @param packetCaptureName The name of the packet capture session.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void beginDeleteWithoutPolling(
-        String resourceGroupName, String networkWatcherName, String packetCaptureName) {
-        beginDeleteWithoutPollingAsync(resourceGroupName, networkWatcherName, packetCaptureName).block();
-    }
-
-    /**
-     * Deletes the specified packet capture session.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param networkWatcherName The name of the network watcher.
-     * @param packetCaptureName The name of the packet capture session.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void beginDeleteWithoutPolling(
-        String resourceGroupName, String networkWatcherName, String packetCaptureName, Context context) {
-        beginDeleteWithoutPollingAsync(resourceGroupName, networkWatcherName, packetCaptureName, context).block();
-    }
-
-    /**
-     * Stops a specified packet capture session.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param networkWatcherName The name of the network watcher.
-     * @param packetCaptureName The name of the packet capture session.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> beginStopWithoutPollingWithResponseAsync(
-        String resourceGroupName, String networkWatcherName, String packetCaptureName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (networkWatcherName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter networkWatcherName is required and cannot be null."));
-        }
-        if (packetCaptureName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter packetCaptureName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2019-06-01";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .beginStopWithoutPolling(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            networkWatcherName,
-                            packetCaptureName,
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
-
-    /**
-     * Stops a specified packet capture session.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param networkWatcherName The name of the network watcher.
-     * @param packetCaptureName The name of the packet capture session.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> beginStopWithoutPollingWithResponseAsync(
-        String resourceGroupName, String networkWatcherName, String packetCaptureName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (networkWatcherName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter networkWatcherName is required and cannot be null."));
-        }
-        if (packetCaptureName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter packetCaptureName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2019-06-01";
-        return service
-            .beginStopWithoutPolling(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                networkWatcherName,
-                packetCaptureName,
-                apiVersion,
-                this.client.getSubscriptionId(),
-                context);
-    }
-
-    /**
-     * Stops a specified packet capture session.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param networkWatcherName The name of the network watcher.
-     * @param packetCaptureName The name of the packet capture session.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> beginStopWithoutPollingAsync(
-        String resourceGroupName, String networkWatcherName, String packetCaptureName) {
-        return beginStopWithoutPollingWithResponseAsync(resourceGroupName, networkWatcherName, packetCaptureName)
-            .flatMap((Response<Void> res) -> Mono.empty());
-    }
-
-    /**
-     * Stops a specified packet capture session.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param networkWatcherName The name of the network watcher.
-     * @param packetCaptureName The name of the packet capture session.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> beginStopWithoutPollingAsync(
-        String resourceGroupName, String networkWatcherName, String packetCaptureName, Context context) {
-        return beginStopWithoutPollingWithResponseAsync(
-                resourceGroupName, networkWatcherName, packetCaptureName, context)
-            .flatMap((Response<Void> res) -> Mono.empty());
-    }
-
-    /**
-     * Stops a specified packet capture session.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param networkWatcherName The name of the network watcher.
-     * @param packetCaptureName The name of the packet capture session.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void beginStopWithoutPolling(String resourceGroupName, String networkWatcherName, String packetCaptureName) {
-        beginStopWithoutPollingAsync(resourceGroupName, networkWatcherName, packetCaptureName).block();
-    }
-
-    /**
-     * Stops a specified packet capture session.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param networkWatcherName The name of the network watcher.
-     * @param packetCaptureName The name of the packet capture session.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void beginStopWithoutPolling(
-        String resourceGroupName, String networkWatcherName, String packetCaptureName, Context context) {
-        beginStopWithoutPollingAsync(resourceGroupName, networkWatcherName, packetCaptureName, context).block();
-    }
-
-    /**
-     * Query the status of a running packet capture session.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param networkWatcherName The name of the Network Watcher resource.
-     * @param packetCaptureName The name given to the packet capture session.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return status of packet capture session.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<PacketCaptureQueryStatusResultInner>> beginGetStatusWithoutPollingWithResponseAsync(
-        String resourceGroupName, String networkWatcherName, String packetCaptureName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (networkWatcherName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter networkWatcherName is required and cannot be null."));
-        }
-        if (packetCaptureName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter packetCaptureName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2019-06-01";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .beginGetStatusWithoutPolling(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            networkWatcherName,
-                            packetCaptureName,
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
-
-    /**
-     * Query the status of a running packet capture session.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param networkWatcherName The name of the Network Watcher resource.
-     * @param packetCaptureName The name given to the packet capture session.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return status of packet capture session.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<PacketCaptureQueryStatusResultInner>> beginGetStatusWithoutPollingWithResponseAsync(
-        String resourceGroupName, String networkWatcherName, String packetCaptureName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (networkWatcherName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter networkWatcherName is required and cannot be null."));
-        }
-        if (packetCaptureName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter packetCaptureName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2019-06-01";
-        return service
-            .beginGetStatusWithoutPolling(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                networkWatcherName,
-                packetCaptureName,
-                apiVersion,
-                this.client.getSubscriptionId(),
-                context);
-    }
-
-    /**
-     * Query the status of a running packet capture session.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param networkWatcherName The name of the Network Watcher resource.
-     * @param packetCaptureName The name given to the packet capture session.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return status of packet capture session.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PacketCaptureQueryStatusResultInner> beginGetStatusWithoutPollingAsync(
-        String resourceGroupName, String networkWatcherName, String packetCaptureName) {
-        return beginGetStatusWithoutPollingWithResponseAsync(resourceGroupName, networkWatcherName, packetCaptureName)
-            .flatMap(
-                (Response<PacketCaptureQueryStatusResultInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Query the status of a running packet capture session.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param networkWatcherName The name of the Network Watcher resource.
-     * @param packetCaptureName The name given to the packet capture session.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return status of packet capture session.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PacketCaptureQueryStatusResultInner> beginGetStatusWithoutPollingAsync(
-        String resourceGroupName, String networkWatcherName, String packetCaptureName, Context context) {
-        return beginGetStatusWithoutPollingWithResponseAsync(
-                resourceGroupName, networkWatcherName, packetCaptureName, context)
-            .flatMap(
-                (Response<PacketCaptureQueryStatusResultInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Query the status of a running packet capture session.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param networkWatcherName The name of the Network Watcher resource.
-     * @param packetCaptureName The name given to the packet capture session.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return status of packet capture session.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PacketCaptureQueryStatusResultInner beginGetStatusWithoutPolling(
-        String resourceGroupName, String networkWatcherName, String packetCaptureName) {
-        return beginGetStatusWithoutPollingAsync(resourceGroupName, networkWatcherName, packetCaptureName).block();
-    }
-
-    /**
-     * Query the status of a running packet capture session.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param networkWatcherName The name of the Network Watcher resource.
-     * @param packetCaptureName The name given to the packet capture session.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return status of packet capture session.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PacketCaptureQueryStatusResultInner beginGetStatusWithoutPolling(
-        String resourceGroupName, String networkWatcherName, String packetCaptureName, Context context) {
-        return beginGetStatusWithoutPollingAsync(resourceGroupName, networkWatcherName, packetCaptureName, context)
-            .block();
     }
 }

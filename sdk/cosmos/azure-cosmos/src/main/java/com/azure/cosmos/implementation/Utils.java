@@ -16,11 +16,16 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.fasterxml.jackson.module.afterburner.AfterburnerModule;
 import io.netty.buffer.ByteBuf;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
@@ -29,6 +34,7 @@ import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Base64;
 import java.util.Collection;
 import java.util.Collections;
@@ -43,6 +49,9 @@ import java.util.UUID;
  * This is meant to be internally used only by our sdk.
  */
 public class Utils {
+
+    private final static Logger logger = LoggerFactory.getLogger(Utils.class);
+
     private static final int ONE_KB = 1024;
     private static final ZoneId GMT_ZONE_ID = ZoneId.of("GMT");
     public static final Base64.Encoder Base64Encoder = Base64.getEncoder();
@@ -89,6 +98,18 @@ public class Utils {
             encodedString = encodedString.substring(0, encodedString.length() - 2);
         }
         return encodedString;
+    }
+
+    public static String decodeAsUTF8String(String inputString) {
+        if (inputString == null || inputString.isEmpty()) {
+            return inputString;
+        }
+        try {
+            return URLDecoder.decode(inputString, StandardCharsets.UTF_8.toString());
+        } catch (UnsupportedEncodingException e) {
+            logger.warn("Error while decoding input string", e);
+            return inputString;
+        }
     }
 
     /**
@@ -558,7 +579,8 @@ public class Utils {
         try {
             return getSimpleObjectMapper().readValue(itemResponseBodyAsString, itemClassType);
         } catch (IOException e) {
-            throw new IllegalStateException("Failed to get POJO.", e);
+            throw new IllegalStateException(
+                String.format("Failed to parse string [%s] to POJO.", itemResponseBodyAsString, e));
         }
     }
 
@@ -566,10 +588,12 @@ public class Utils {
         if (Utils.isEmpty(item)) {
             return null;
         }
+
         try {
             return getSimpleObjectMapper().readValue(item, itemClassType);
         } catch (IOException e) {
-            throw new IllegalStateException("Failed to get POJO.", e);
+            throw new IllegalStateException(
+                String.format("Failed to parse byte-array %s to POJO.", Arrays.toString(item)), e);
         }
     }
 
@@ -645,5 +669,12 @@ public class Utils {
         } catch (JsonProcessingException e) {
             throw new IllegalStateException("Unable to convert JSON to STRING", e);
         }
+    }
+
+    public static byte[] serializeObjectToByteArray(Object obj) throws IOException {
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        ObjectOutputStream os = new ObjectOutputStream(out);
+        os.writeObject(obj);
+        return out.toByteArray();
     }
 }

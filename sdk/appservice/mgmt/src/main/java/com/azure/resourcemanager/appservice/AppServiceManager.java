@@ -18,6 +18,7 @@ import com.azure.resourcemanager.appservice.models.AppServicePlans;
 import com.azure.resourcemanager.appservice.models.FunctionApps;
 import com.azure.resourcemanager.appservice.models.WebApps;
 import com.azure.resourcemanager.authorization.AuthorizationManager;
+import com.azure.resourcemanager.dns.DnsZoneManager;
 import com.azure.resourcemanager.keyvault.KeyVaultManager;
 import com.azure.resourcemanager.resources.fluentcore.arm.AzureConfigurable;
 import com.azure.resourcemanager.resources.fluentcore.arm.implementation.AzureConfigurableImpl;
@@ -33,6 +34,7 @@ public final class AppServiceManager extends Manager<AppServiceManager, WebSiteM
     private final AuthorizationManager authorizationManager;
     private final KeyVaultManager keyVaultManager;
     private final StorageManager storageManager;
+    private final DnsZoneManager dnsZoneManager;
     // Collections
     private WebApps webApps;
     private AppServicePlans appServicePlans;
@@ -117,6 +119,7 @@ public final class AppServiceManager extends Manager<AppServiceManager, WebSiteM
         keyVaultManager = KeyVaultManager.authenticate(httpPipeline, profile, sdkContext);
         storageManager = StorageManager.authenticate(httpPipeline, profile, sdkContext);
         authorizationManager = AuthorizationManager.authenticate(httpPipeline, profile, sdkContext);
+        dnsZoneManager = DnsZoneManager.authenticate(httpPipeline, profile, sdkContext);
     }
 
     /** @return the Graph RBAC manager instance. */
@@ -132,6 +135,11 @@ public final class AppServiceManager extends Manager<AppServiceManager, WebSiteM
     /** @return the storage manager instance. */
     public StorageManager storageManager() {
         return storageManager;
+    }
+
+    /** @return the DNS zone manager instance. */
+    public DnsZoneManager dnsZoneManager() {
+        return dnsZoneManager;
     }
 
     /** @return the web app management API entry point */

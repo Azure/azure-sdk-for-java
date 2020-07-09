@@ -29,8 +29,8 @@ import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.util.polling.AsyncPollResponse;
 import com.azure.core.util.polling.PollerFlux;
+import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.compute.ComputeManagementClient;
 import com.azure.resourcemanager.compute.fluent.inner.DiskEncryptionSetInner;
 import com.azure.resourcemanager.compute.fluent.inner.DiskEncryptionSetListInner;
@@ -256,7 +256,7 @@ public final class DiskEncryptionSetsClient
         } else {
             diskEncryptionSet.validate();
         }
-        final String apiVersion = "2019-07-01";
+        final String apiVersion = "2019-11-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -318,7 +318,7 @@ public final class DiskEncryptionSetsClient
         } else {
             diskEncryptionSet.validate();
         }
-        final String apiVersion = "2019-07-01";
+        final String apiVersion = "2019-11-01";
         return service
             .createOrUpdate(
                 this.client.getEndpoint(),
@@ -344,7 +344,7 @@ public final class DiskEncryptionSetsClient
      * @return disk encryption set resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<DiskEncryptionSetInner>, DiskEncryptionSetInner> beginCreateOrUpdate(
+    public PollerFlux<PollResult<DiskEncryptionSetInner>, DiskEncryptionSetInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String diskEncryptionSetName, DiskEncryptionSetInner diskEncryptionSet) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             createOrUpdateWithResponseAsync(resourceGroupName, diskEncryptionSetName, diskEncryptionSet);
@@ -369,7 +369,7 @@ public final class DiskEncryptionSetsClient
      * @return disk encryption set resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<DiskEncryptionSetInner>, DiskEncryptionSetInner> beginCreateOrUpdate(
+    public PollerFlux<PollResult<DiskEncryptionSetInner>, DiskEncryptionSetInner> beginCreateOrUpdateAsync(
         String resourceGroupName,
         String diskEncryptionSetName,
         DiskEncryptionSetInner diskEncryptionSet,
@@ -396,16 +396,54 @@ public final class DiskEncryptionSetsClient
      * @return disk encryption set resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<DiskEncryptionSetInner>, DiskEncryptionSetInner> beginCreateOrUpdate(
+        String resourceGroupName, String diskEncryptionSetName, DiskEncryptionSetInner diskEncryptionSet) {
+        return beginCreateOrUpdateAsync(resourceGroupName, diskEncryptionSetName, diskEncryptionSet).getSyncPoller();
+    }
+
+    /**
+     * Creates or updates a disk encryption set.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param diskEncryptionSetName The name of the disk encryption set that is being created. The name can't be changed
+     *     after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The
+     *     maximum name length is 80 characters.
+     * @param diskEncryptionSet disk encryption set resource.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return disk encryption set resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<DiskEncryptionSetInner>, DiskEncryptionSetInner> beginCreateOrUpdate(
+        String resourceGroupName,
+        String diskEncryptionSetName,
+        DiskEncryptionSetInner diskEncryptionSet,
+        Context context) {
+        return beginCreateOrUpdateAsync(resourceGroupName, diskEncryptionSetName, diskEncryptionSet, context)
+            .getSyncPoller();
+    }
+
+    /**
+     * Creates or updates a disk encryption set.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param diskEncryptionSetName The name of the disk encryption set that is being created. The name can't be changed
+     *     after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The
+     *     maximum name length is 80 characters.
+     * @param diskEncryptionSet disk encryption set resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return disk encryption set resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DiskEncryptionSetInner> createOrUpdateAsync(
         String resourceGroupName, String diskEncryptionSetName, DiskEncryptionSetInner diskEncryptionSet) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, diskEncryptionSetName, diskEncryptionSet);
-        return this
-            .client
-            .<DiskEncryptionSetInner, DiskEncryptionSetInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), DiskEncryptionSetInner.class, DiskEncryptionSetInner.class)
+        return beginCreateOrUpdateAsync(resourceGroupName, diskEncryptionSetName, diskEncryptionSet)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -428,14 +466,9 @@ public final class DiskEncryptionSetsClient
         String diskEncryptionSetName,
         DiskEncryptionSetInner diskEncryptionSet,
         Context context) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, diskEncryptionSetName, diskEncryptionSet, context);
-        return this
-            .client
-            .<DiskEncryptionSetInner, DiskEncryptionSetInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), DiskEncryptionSetInner.class, DiskEncryptionSetInner.class)
+        return beginCreateOrUpdateAsync(resourceGroupName, diskEncryptionSetName, diskEncryptionSet, context)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -522,7 +555,7 @@ public final class DiskEncryptionSetsClient
         } else {
             diskEncryptionSet.validate();
         }
-        final String apiVersion = "2019-07-01";
+        final String apiVersion = "2019-11-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -584,7 +617,7 @@ public final class DiskEncryptionSetsClient
         } else {
             diskEncryptionSet.validate();
         }
-        final String apiVersion = "2019-07-01";
+        final String apiVersion = "2019-11-01";
         return service
             .update(
                 this.client.getEndpoint(),
@@ -610,7 +643,7 @@ public final class DiskEncryptionSetsClient
      * @return disk encryption set resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<DiskEncryptionSetInner>, DiskEncryptionSetInner> beginUpdate(
+    public PollerFlux<PollResult<DiskEncryptionSetInner>, DiskEncryptionSetInner> beginUpdateAsync(
         String resourceGroupName, String diskEncryptionSetName, DiskEncryptionSetUpdate diskEncryptionSet) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             updateWithResponseAsync(resourceGroupName, diskEncryptionSetName, diskEncryptionSet);
@@ -635,7 +668,7 @@ public final class DiskEncryptionSetsClient
      * @return disk encryption set resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<DiskEncryptionSetInner>, DiskEncryptionSetInner> beginUpdate(
+    public PollerFlux<PollResult<DiskEncryptionSetInner>, DiskEncryptionSetInner> beginUpdateAsync(
         String resourceGroupName,
         String diskEncryptionSetName,
         DiskEncryptionSetUpdate diskEncryptionSet,
@@ -662,16 +695,53 @@ public final class DiskEncryptionSetsClient
      * @return disk encryption set resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<DiskEncryptionSetInner>, DiskEncryptionSetInner> beginUpdate(
+        String resourceGroupName, String diskEncryptionSetName, DiskEncryptionSetUpdate diskEncryptionSet) {
+        return beginUpdateAsync(resourceGroupName, diskEncryptionSetName, diskEncryptionSet).getSyncPoller();
+    }
+
+    /**
+     * Updates (patches) a disk encryption set.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param diskEncryptionSetName The name of the disk encryption set that is being created. The name can't be changed
+     *     after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The
+     *     maximum name length is 80 characters.
+     * @param diskEncryptionSet disk encryption set update resource.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return disk encryption set resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<DiskEncryptionSetInner>, DiskEncryptionSetInner> beginUpdate(
+        String resourceGroupName,
+        String diskEncryptionSetName,
+        DiskEncryptionSetUpdate diskEncryptionSet,
+        Context context) {
+        return beginUpdateAsync(resourceGroupName, diskEncryptionSetName, diskEncryptionSet, context).getSyncPoller();
+    }
+
+    /**
+     * Updates (patches) a disk encryption set.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param diskEncryptionSetName The name of the disk encryption set that is being created. The name can't be changed
+     *     after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The
+     *     maximum name length is 80 characters.
+     * @param diskEncryptionSet disk encryption set update resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return disk encryption set resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DiskEncryptionSetInner> updateAsync(
         String resourceGroupName, String diskEncryptionSetName, DiskEncryptionSetUpdate diskEncryptionSet) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateWithResponseAsync(resourceGroupName, diskEncryptionSetName, diskEncryptionSet);
-        return this
-            .client
-            .<DiskEncryptionSetInner, DiskEncryptionSetInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), DiskEncryptionSetInner.class, DiskEncryptionSetInner.class)
+        return beginUpdateAsync(resourceGroupName, diskEncryptionSetName, diskEncryptionSet)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -694,14 +764,9 @@ public final class DiskEncryptionSetsClient
         String diskEncryptionSetName,
         DiskEncryptionSetUpdate diskEncryptionSet,
         Context context) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateWithResponseAsync(resourceGroupName, diskEncryptionSetName, diskEncryptionSet, context);
-        return this
-            .client
-            .<DiskEncryptionSetInner, DiskEncryptionSetInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), DiskEncryptionSetInner.class, DiskEncryptionSetInner.class)
+        return beginUpdateAsync(resourceGroupName, diskEncryptionSetName, diskEncryptionSet, context)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -781,7 +846,7 @@ public final class DiskEncryptionSetsClient
             return Mono
                 .error(new IllegalArgumentException("Parameter diskEncryptionSetName is required and cannot be null."));
         }
-        final String apiVersion = "2019-07-01";
+        final String apiVersion = "2019-11-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -832,7 +897,7 @@ public final class DiskEncryptionSetsClient
             return Mono
                 .error(new IllegalArgumentException("Parameter diskEncryptionSetName is required and cannot be null."));
         }
-        final String apiVersion = "2019-07-01";
+        final String apiVersion = "2019-11-01";
         return service
             .getByResourceGroup(
                 this.client.getEndpoint(),
@@ -967,7 +1032,7 @@ public final class DiskEncryptionSetsClient
             return Mono
                 .error(new IllegalArgumentException("Parameter diskEncryptionSetName is required and cannot be null."));
         }
-        final String apiVersion = "2019-07-01";
+        final String apiVersion = "2019-11-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -1018,7 +1083,7 @@ public final class DiskEncryptionSetsClient
             return Mono
                 .error(new IllegalArgumentException("Parameter diskEncryptionSetName is required and cannot be null."));
         }
-        final String apiVersion = "2019-07-01";
+        final String apiVersion = "2019-11-01";
         return service
             .delete(
                 this.client.getEndpoint(),
@@ -1042,7 +1107,7 @@ public final class DiskEncryptionSetsClient
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<Void>, Void> beginDelete(String resourceGroupName, String diskEncryptionSetName) {
+    public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String diskEncryptionSetName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, diskEncryptionSetName);
         return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
     }
@@ -1061,7 +1126,7 @@ public final class DiskEncryptionSetsClient
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<Void>, Void> beginDelete(
+    public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String diskEncryptionSetName, Context context) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             deleteWithResponseAsync(resourceGroupName, diskEncryptionSetName, context);
@@ -1081,13 +1146,46 @@ public final class DiskEncryptionSetsClient
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String diskEncryptionSetName) {
+        return beginDeleteAsync(resourceGroupName, diskEncryptionSetName).getSyncPoller();
+    }
+
+    /**
+     * Deletes a disk encryption set.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param diskEncryptionSetName The name of the disk encryption set that is being created. The name can't be changed
+     *     after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The
+     *     maximum name length is 80 characters.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<Void>, Void> beginDelete(
+        String resourceGroupName, String diskEncryptionSetName, Context context) {
+        return beginDeleteAsync(resourceGroupName, diskEncryptionSetName, context).getSyncPoller();
+    }
+
+    /**
+     * Deletes a disk encryption set.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param diskEncryptionSetName The name of the disk encryption set that is being created. The name can't be changed
+     *     after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The
+     *     maximum name length is 80 characters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String diskEncryptionSetName) {
-        Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, diskEncryptionSetName);
-        return this
-            .client
-            .<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class)
+        return beginDeleteAsync(resourceGroupName, diskEncryptionSetName)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -1105,13 +1203,9 @@ public final class DiskEncryptionSetsClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String diskEncryptionSetName, Context context) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, diskEncryptionSetName, context);
-        return this
-            .client
-            .<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class)
+        return beginDeleteAsync(resourceGroupName, diskEncryptionSetName, context)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(client::getLroFinalResultOrError);
     }
 
     /**
@@ -1174,7 +1268,7 @@ public final class DiskEncryptionSetsClient
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2019-07-01";
+        final String apiVersion = "2019-11-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -1226,7 +1320,7 @@ public final class DiskEncryptionSetsClient
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2019-07-01";
+        final String apiVersion = "2019-11-01";
         return service
             .listByResourceGroup(
                 this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, apiVersion, context)
@@ -1324,7 +1418,7 @@ public final class DiskEncryptionSetsClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-07-01";
+        final String apiVersion = "2019-11-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -1364,7 +1458,7 @@ public final class DiskEncryptionSetsClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-07-01";
+        final String apiVersion = "2019-11-01";
         return service
             .list(this.client.getEndpoint(), this.client.getSubscriptionId(), apiVersion, context)
             .map(
@@ -1472,7 +1566,7 @@ public final class DiskEncryptionSetsClient
         } else {
             diskEncryptionSet.validate();
         }
-        final String apiVersion = "2019-07-01";
+        final String apiVersion = "2019-11-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -1534,7 +1628,7 @@ public final class DiskEncryptionSetsClient
         } else {
             diskEncryptionSet.validate();
         }
-        final String apiVersion = "2019-07-01";
+        final String apiVersion = "2019-11-01";
         return service
             .beginCreateOrUpdateWithoutPolling(
                 this.client.getEndpoint(),
@@ -1693,7 +1787,7 @@ public final class DiskEncryptionSetsClient
         } else {
             diskEncryptionSet.validate();
         }
-        final String apiVersion = "2019-07-01";
+        final String apiVersion = "2019-11-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -1755,7 +1849,7 @@ public final class DiskEncryptionSetsClient
         } else {
             diskEncryptionSet.validate();
         }
-        final String apiVersion = "2019-07-01";
+        final String apiVersion = "2019-11-01";
         return service
             .beginUpdateWithoutPolling(
                 this.client.getEndpoint(),
@@ -1904,7 +1998,7 @@ public final class DiskEncryptionSetsClient
             return Mono
                 .error(new IllegalArgumentException("Parameter diskEncryptionSetName is required and cannot be null."));
         }
-        final String apiVersion = "2019-07-01";
+        final String apiVersion = "2019-11-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -1955,7 +2049,7 @@ public final class DiskEncryptionSetsClient
             return Mono
                 .error(new IllegalArgumentException("Parameter diskEncryptionSetName is required and cannot be null."));
         }
-        final String apiVersion = "2019-07-01";
+        final String apiVersion = "2019-11-01";
         return service
             .beginDeleteWithoutPolling(
                 this.client.getEndpoint(),

@@ -1,9 +1,16 @@
 # Release History
 
-## 12.7.0-beta.2 (Unreleased)
+## 12.8.0-beta.2 (Unreleased)
 
 
-## 12.7.0-beta.1 (Unreleased)
+## 12.8.0-beta.1 (2020-07-07)
+- Added support for the 2019-12-12 service version.
+- Buffered UploadUtils now supports uploading data of long sized length.
+
+## 12.7.0 (2020-06-12)
+- Updated azure-core dependency.
+
+## 12.7.0-beta.1 (2020-06-08)
 
 
 ## 12.6.1 (2020-05-06)
@@ -45,4 +52,3 @@
 ### Features included in `azure-storage-blob-cryptography`
 - This package supports common functionality needed for blob storage.
 - Reactive streams support using [Project Reactor](https://projectreactor.io/).
-

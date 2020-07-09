@@ -22,7 +22,6 @@ import java.nio.file.PathMatcher;
 import java.nio.file.WatchService;
 import java.nio.file.attribute.BasicFileAttributeView;
 import java.nio.file.attribute.FileAttributeView;
-import java.nio.file.attribute.UserDefinedFileAttributeView;
 import java.nio.file.attribute.UserPrincipalLookupService;
 import java.nio.file.spi.FileSystemProvider;
 
@@ -93,9 +92,19 @@ public final class AzureFileSystem extends FileSystem {
     public static final String AZURE_STORAGE_SECONDARY_HOST = "AzureStorageSecondaryHost";
 
     /**
-     * Expected type: Integer
+     * Expected type: Long
      */
     public static final String AZURE_STORAGE_UPLOAD_BLOCK_SIZE = "AzureStorageUploadBlockSize";
+
+    /**
+     * Expected type: Integer
+     */
+    public static final String AZURE_STORAGE_MAX_CONCURRENCY_PER_REQUEST = "AzureStorageMaxConcurrencyPerRequest";
+
+    /**
+     * Expected type: Long
+     */
+    public static final String AZURE_STORAGE_PUT_BLOB_THRESHOLD = "AzureStoragePutBlobThreshold";
 
     /**
      * Expected type: Integer
@@ -119,14 +128,16 @@ public final class AzureFileSystem extends FileSystem {
     static {
         Map<Class<? extends FileAttributeView>, String> map = new HashMap<>();
         map.put(BasicFileAttributeView.class, "basic");
-        map.put(UserDefinedFileAttributeView.class, "user");
-        map.put(AzureStorageFileAttributeView.class, "azureStorage");
+        map.put(AzureBasicFileAttributeView.class, "azureBasic");
+        map.put(AzureBlobFileAttributeView.class, "azureBlob");
         SUPPORTED_ATTRIBUTE_VIEWS = Collections.unmodifiableMap(map);
     }
 
     private final AzureFileSystemProvider parentFileSystemProvider;
     private final BlobServiceClient blobServiceClient;
-    private final Integer blockSize;
+    private final Long blockSize;
+    private final Long putBlobThreshold;
+    private final Integer maxConcurrencyPerRequest;
     private final Integer downloadResumeRetries;
     private final Map<String, FileStore> fileStores;
     private FileStore defaultFileStore;
@@ -144,7 +155,9 @@ public final class AzureFileSystem extends FileSystem {
         // Read configurations and build client.
         try {
             this.blobServiceClient = this.buildBlobServiceClient(accountName, config);
-            this.blockSize = (Integer) config.get(AZURE_STORAGE_UPLOAD_BLOCK_SIZE);
+            this.blockSize = (Long) config.get(AZURE_STORAGE_UPLOAD_BLOCK_SIZE);
+            this.putBlobThreshold = (Long) config.get(AZURE_STORAGE_PUT_BLOB_THRESHOLD);
+            this.maxConcurrencyPerRequest = (Integer) config.get(AZURE_STORAGE_MAX_CONCURRENCY_PER_REQUEST);
             this.downloadResumeRetries = (Integer) config.get(AZURE_STORAGE_DOWNLOAD_RESUME_RETRIES);
 
             // Initialize and ensure access to FileStores.
@@ -254,7 +267,7 @@ public final class AzureFileSystem extends FileSystem {
      * <ul>
      *     <li>{@link java.nio.file.attribute.BasicFileAttributeView}</li>
      *     <li>{@link java.nio.file.attribute.UserDefinedFileAttributeView}</li>
-     *     <li>{@link AzureStorageFileAttributeView}</li>
+     *     <li>{@link AzureBasicFileAttributeView}</li>
      * </ul>
      *
      * {@inheritDoc}
@@ -404,5 +417,17 @@ public final class AzureFileSystem extends FileSystem {
             throw LoggingUtility.logError(logger, new IOException("Invalid file store: " + name));
         }
         return store;
+    }
+
+    Long getBlockSize() {
+        return this.blockSize;
+    }
+
+    Long getPutBlobThreshold() {
+        return this.putBlobThreshold;
+    }
+
+    Integer getMaxConcurrencyPerRequest() {
+        return this.maxConcurrencyPerRequest;
     }
 }

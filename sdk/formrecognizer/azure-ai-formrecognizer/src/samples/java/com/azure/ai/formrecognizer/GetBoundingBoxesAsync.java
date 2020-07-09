@@ -7,8 +7,8 @@ import com.azure.ai.formrecognizer.models.FormPage;
 import com.azure.ai.formrecognizer.models.FormTable;
 import com.azure.ai.formrecognizer.models.FormWord;
 import com.azure.ai.formrecognizer.models.OperationResult;
+import com.azure.ai.formrecognizer.models.RecognizeOptions;
 import com.azure.ai.formrecognizer.models.RecognizedForm;
-import com.azure.ai.formrecognizer.models.TextContentType;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.polling.PollerFlux;
 import reactor.core.publisher.Mono;
@@ -35,9 +35,10 @@ public class GetBoundingBoxesAsync {
             .buildAsyncClient();
 
         String modelId = "{model_Id}";
-        String filePath = "{file_source_url}";
+        String formUrl = "{form_url}";
         PollerFlux<OperationResult, List<RecognizedForm>> recognizeFormPoller =
-            client.beginRecognizeCustomFormsFromUrl(filePath, modelId, true, null);
+            client.beginRecognizeCustomFormsFromUrl(formUrl, modelId, new RecognizeOptions()
+                .setIncludeFieldElements(true));
 
         Mono<List<RecognizedForm>> recognizeFormResult = recognizeFormPoller
             .last()
@@ -62,7 +63,7 @@ public class GetBoundingBoxesAsync {
                 recognizedForm.getFields().forEach((fieldText, fieldValue) -> {
                     System.out.printf("Field %s has value %s based on %s with a confidence score "
                             + "of %.2f.%n",
-                        fieldText, fieldValue.getFieldValue(), fieldValue.getValueText().getText(),
+                        fieldText, fieldValue.getValue(), fieldValue.getValueData().getText(),
                         fieldValue.getConfidence());
                 });
 
@@ -71,22 +72,22 @@ public class GetBoundingBoxesAsync {
                 for (int i1 = 0; i1 < pages.size(); i1++) {
                     final FormPage formPage = pages.get(i1);
                     System.out.printf("-------Recognizing Page %s of Form -------%n", i1);
-                    System.out.printf("Has width %s , angle %s, height %s %n", formPage.getWidth(),
+                    System.out.printf("Has width %f , angle %f, height %f %n", formPage.getWidth(),
                         formPage.getTextAngle(), formPage.getHeight());
                     // Table information
                     System.out.println("Recognized Tables: ");
                     final List<FormTable> tables = formPage.getTables();
                     for (int i2 = 0; i2 < tables.size(); i2++) {
                         final FormTable formTable = tables.get(i2);
-                        System.out.printf("Table %s%n", i2);
+                        System.out.printf("Table %d%n", i2);
                         formTable.getCells().forEach(formTableCell -> {
                             System.out.printf("Cell text %s has following words: %n", formTableCell.getText());
-                            // textContent only exists if you set includeTextContent to True in your
+                            // textContent only exists if you set includeFieldElements to True in your
                             // call to beginRecognizeCustomFormsFromUrl
                             // It is also a list of FormWords and FormLines, but in this example, we only deal with
                             // FormWords
-                            formTableCell.getElements().forEach(formContent -> {
-                                if (formContent.getTextContentType().equals(TextContentType.WORD)) {
+                            formTableCell.getFieldElements().forEach(formContent -> {
+                                if (formContent instanceof FormWord) {
                                     FormWord formWordElement = (FormWord) (formContent);
                                     final StringBuilder boundingBoxStr = new StringBuilder();
                                     if (formWordElement.getBoundingBox() != null) {

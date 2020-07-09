@@ -6,17 +6,16 @@
 
 package com.azure.cosmos;
 
+import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.CosmosContainerRequestOptions;
 import com.azure.cosmos.models.CosmosContainerResponse;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.IndexingMode;
 import com.azure.cosmos.models.IndexingPolicy;
-import com.azure.cosmos.models.PartitionKeyDefinition;
 import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.models.ThroughputProperties;
 import com.azure.cosmos.rx.TestSuiteBase;
-import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.util.CosmosPagedIterable;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
@@ -24,7 +23,6 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
 
-import java.util.ArrayList;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -51,19 +49,6 @@ public class CosmosContainerTest extends TestSuiteBase {
         logger.info("starting ....");
         safeDeleteSyncDatabase(createdDatabase);
         safeCloseSyncClient(client);
-    }
-
-    private CosmosContainerProperties getCollectionDefinition(String collectionName) {
-        PartitionKeyDefinition partitionKeyDef = new PartitionKeyDefinition();
-        ArrayList<String> paths = new ArrayList<String>();
-        paths.add("/mypk");
-        partitionKeyDef.setPaths(paths);
-
-        CosmosContainerProperties collectionDefinition = new CosmosContainerProperties(
-            collectionName,
-            partitionKeyDef);
-
-        return collectionDefinition;
     }
 
     @Test(groups = { "emulator" }, timeOut = TIMEOUT)
@@ -229,9 +214,9 @@ public class CosmosContainerTest extends TestSuiteBase {
 
         CosmosContainerResponse replaceResponse = createdDatabase.getContainer(containerProperties.getId())
                                                           .replace(containerResponse.getProperties().setIndexingPolicy(
-                                                              new IndexingPolicy().setIndexingMode(IndexingMode.LAZY)));
+                                                              new IndexingPolicy().setIndexingMode(IndexingMode.CONSISTENT)));
         assertThat(replaceResponse.getProperties().getIndexingPolicy().getIndexingMode())
-            .isEqualTo(IndexingMode.LAZY);
+            .isEqualTo(IndexingMode.CONSISTENT);
 
         CosmosContainerResponse replaceResponse1 = createdDatabase.getContainer(containerProperties.getId())
                                                           .replace(containerResponse.getProperties().setIndexingPolicy(

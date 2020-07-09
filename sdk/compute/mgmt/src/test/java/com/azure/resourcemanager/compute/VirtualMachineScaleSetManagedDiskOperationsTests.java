@@ -24,6 +24,7 @@ import com.azure.resourcemanager.resources.core.TestUtilities;
 import com.azure.resourcemanager.resources.fluentcore.arm.Region;
 import com.azure.resourcemanager.resources.fluentcore.profile.AzureProfile;
 import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
+
 import java.util.Iterator;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -99,6 +100,9 @@ public class VirtualMachineScaleSetManagedDiskOperationsTests extends ComputeMan
 
         virtualMachineScaleSetVMs = vmScaleSet.virtualMachines();
         virtualMachines = virtualMachineScaleSetVMs.list();
+
+        SdkContext.sleep(60 * 1000);
+
         Assertions.assertEquals(TestUtilities.getSize(virtualMachines), vmScaleSet.capacity());
         for (VirtualMachineScaleSetVM vm : virtualMachines) {
             Assertions.assertNotNull(vm.dataDisks());
@@ -182,7 +186,7 @@ public class VirtualMachineScaleSetManagedDiskOperationsTests extends ComputeMan
     @Test
     public void canCreateVirtualMachineScaleSetFromCustomImageWithManagedDisk() throws Exception {
         final String userName = "tirekicker";
-        final String password = "12NewPA$$w0rd!";
+        final String password = password();
         final String publicIpDnsLabel = generateRandomResourceName("pip", 10);
         final String customImageName = generateRandomResourceName("img", 10);
         final String vmssName = generateRandomResourceName("vmss", 10);
@@ -259,7 +263,7 @@ public class VirtualMachineScaleSetManagedDiskOperationsTests extends ComputeMan
                 .withExistingPrimaryNetworkSubnet(network, "subnet1")
                 .withExistingPrimaryInternetFacingLoadBalancer(publicLoadBalancer)
                 .withoutPrimaryInternalLoadBalancer()
-                .withLinuxCustomImage(virtualMachineCustomImage.id())
+                .withGeneralizedLinuxCustomImage(virtualMachineCustomImage.id())
                 .withRootUsername(userName)
                 .withRootPassword(password)
                 .create();

@@ -28,9 +28,9 @@ If you are using Maven, add the following dependency.
 [//]: # "{x-version-update-start;com.azure:azure-active-directory-spring-boot-starter;current}"
 ```xml
 <dependency>
-    <groupId>com.azure</groupId>
+    <groupId>com.microsoft.azure</groupId>
     <artifactId>azure-active-directory-spring-boot-starter</artifactId>
-    <version>2.2.5-beta.1</version>
+    <version>2.3.3-beta.1</version>
 </dependency>
 ```
 [//]: # "{x-version-update-end}"

@@ -24,6 +24,17 @@ public final class ElisionTokenFilter extends TokenFilter {
     private List<String> articles;
 
     /**
+     * Constructor of {@link TokenFilter}.
+     *
+     * @param name The name of the token filter. It must only contain letters, digits,
+     * spaces, dashes or underscores, can only start and end with alphanumeric
+     * characters, and is limited to 128 characters.
+     */
+    public ElisionTokenFilter(String name) {
+        super(name);
+    }
+
+    /**
      * Get the articles property: The set of articles to remove.
      *
      * @return the articles value.

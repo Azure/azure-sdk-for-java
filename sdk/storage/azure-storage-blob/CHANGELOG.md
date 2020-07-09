@@ -1,9 +1,20 @@
 # Release History
 
-## 12.7.0-beta.2 (Unreleased)
+## 12.8.0-beta.2 (Unreleased)
 
 
-## 12.7.0-beta.1 (Unreleased)
+## 12.8.0-beta.1 (2020-07-07)
+- Added support for the 2019-12-12 service version.
+- Added support for blob tags. Added get/setTags method to Blob(Async)ClientBase. Added filterTags api to BlobServiceClient. Added ability to specify tags on all methods that create a blob. Tag count returned on getProperties/getBlob. Option to include returning tags on listing. 
+- Added support to query a blob. Added query and opernQueryInputStream methods to Blob(Async)ClientBase.
+- Added support to version a blob. Added `getVersionClient` to clients that returns a new client associated to the version. 
+- Added support to increase the maximum size of data that can be sent via a stage block. 
+
+## 12.7.0 (2020-06-12)
+- Moved BlobParallelUploadOptions into options package.
+- Added data source and data length to BlobParallelUploadOptions and removed them from the relevant method parameter lists
+
+## 12.7.0-beta.1 (2020-06-08)
 - Fixed a bug that would cause empty data to be sent if a call to stage block, block blob upload, append block, or upload pages was automatically retried by the SDK.
 - Added a maxConcurrency option on ParallelTransferOptions that allows the customer to limit how many concurrent network requests will be outstanding per api request at once. 
 - Added an overload to BlobClient.upload which returns a BlockBlobItem containing the properties returned by the service upon blob creation.

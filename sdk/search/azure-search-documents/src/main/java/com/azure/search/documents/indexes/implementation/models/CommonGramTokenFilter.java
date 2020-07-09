@@ -7,20 +7,19 @@
 package com.azure.search.documents.indexes.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.JsonFlatten;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 
-/**
- * Construct bigrams for frequently occurring terms while indexing. Single
- * terms are still indexed too, with bigrams overlaid. This token filter is
- * implemented using Apache Lucene.
- */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata.type")
+/** The CommonGramTokenFilter model. */
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata\\.type")
 @JsonTypeName("#Microsoft.Azure.Search.CommonGramTokenFilter")
+@JsonFlatten
 @Fluent
-public final class CommonGramTokenFilter extends TokenFilter {
+public class CommonGramTokenFilter extends TokenFilter {
     /*
      * The set of common words.
      */
@@ -43,6 +42,14 @@ public final class CommonGramTokenFilter extends TokenFilter {
     @JsonProperty(value = "queryMode")
     private Boolean useQueryMode;
 
+    /** Creates an instance of CommonGramTokenFilter class. */
+    @JsonCreator
+    public CommonGramTokenFilter(
+            @JsonProperty(value = "name") String name, @JsonProperty(value = "commonWords") List<String> commonWords) {
+        super(name);
+        this.commonWords = commonWords;
+    }
+
     /**
      * Get the commonWords property: The set of common words.
      *
@@ -58,14 +65,9 @@ public final class CommonGramTokenFilter extends TokenFilter {
      * @param commonWords the commonWords value to set.
      * @return the CommonGramTokenFilter object itself.
      */
-    public CommonGramTokenFilter setCommonWords(List<String> commonWords) {
-        this.commonWords = commonWords;
-        return this;
-    }
-
     /**
-     * Get the ignoreCase property: A value indicating whether common words
-     * matching will be case insensitive. Default is false.
+     * Get the ignoreCase property: A value indicating whether common words matching will be case insensitive. Default
+     * is false.
      *
      * @return the ignoreCase value.
      */
@@ -74,8 +76,8 @@ public final class CommonGramTokenFilter extends TokenFilter {
     }
 
     /**
-     * Set the ignoreCase property: A value indicating whether common words
-     * matching will be case insensitive. Default is false.
+     * Set the ignoreCase property: A value indicating whether common words matching will be case insensitive. Default
+     * is false.
      *
      * @param ignoreCase the ignoreCase value to set.
      * @return the CommonGramTokenFilter object itself.
@@ -86,10 +88,9 @@ public final class CommonGramTokenFilter extends TokenFilter {
     }
 
     /**
-     * Get the useQueryMode property: A value that indicates whether the token
-     * filter is in query mode. When in query mode, the token filter generates
-     * bigrams and then removes common words and single terms followed by a
-     * common word. Default is false.
+     * Get the useQueryMode property: A value that indicates whether the token filter is in query mode. When in query
+     * mode, the token filter generates bigrams and then removes common words and single terms followed by a common
+     * word. Default is false.
      *
      * @return the useQueryMode value.
      */
@@ -98,10 +99,9 @@ public final class CommonGramTokenFilter extends TokenFilter {
     }
 
     /**
-     * Set the useQueryMode property: A value that indicates whether the token
-     * filter is in query mode. When in query mode, the token filter generates
-     * bigrams and then removes common words and single terms followed by a
-     * common word. Default is false.
+     * Set the useQueryMode property: A value that indicates whether the token filter is in query mode. When in query
+     * mode, the token filter generates bigrams and then removes common words and single terms followed by a common
+     * word. Default is false.
      *
      * @param useQueryMode the useQueryMode value to set.
      * @return the CommonGramTokenFilter object itself.
@@ -109,5 +109,18 @@ public final class CommonGramTokenFilter extends TokenFilter {
     public CommonGramTokenFilter setUseQueryMode(Boolean useQueryMode) {
         this.useQueryMode = useQueryMode;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    @Override
+    public void validate() {
+        super.validate();
+        if (getCommonWords() == null) {
+            throw new IllegalArgumentException("Missing required property commonWords in model CommonGramTokenFilter");
+        }
     }
 }

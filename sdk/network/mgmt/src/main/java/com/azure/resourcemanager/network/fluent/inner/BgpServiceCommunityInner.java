@@ -26,7 +26,7 @@ public class BgpServiceCommunityInner extends Resource {
     private String serviceName;
 
     /*
-     * Get a list of bgp communities.
+     * A list of bgp communities.
      */
     @JsonProperty(value = "properties.bgpCommunities")
     private List<BgpCommunity> bgpCommunities;
@@ -58,7 +58,7 @@ public class BgpServiceCommunityInner extends Resource {
     }
 
     /**
-     * Get the bgpCommunities property: Get a list of bgp communities.
+     * Get the bgpCommunities property: A list of bgp communities.
      *
      * @return the bgpCommunities value.
      */
@@ -67,7 +67,7 @@ public class BgpServiceCommunityInner extends Resource {
     }
 
     /**
-     * Set the bgpCommunities property: Get a list of bgp communities.
+     * Set the bgpCommunities property: A list of bgp communities.
      *
      * @param bgpCommunities the bgpCommunities value to set.
      * @return the BgpServiceCommunityInner object itself.

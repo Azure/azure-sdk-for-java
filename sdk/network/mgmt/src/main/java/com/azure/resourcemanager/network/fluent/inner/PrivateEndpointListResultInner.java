@@ -16,7 +16,7 @@ public final class PrivateEndpointListResultInner {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(PrivateEndpointListResultInner.class);
 
     /*
-     * Gets a list of private endpoint resources in a resource group.
+     * A list of private endpoint resources in a resource group.
      */
     @JsonProperty(value = "value")
     private List<PrivateEndpointInner> value;
@@ -28,7 +28,7 @@ public final class PrivateEndpointListResultInner {
     private String nextLink;
 
     /**
-     * Get the value property: Gets a list of private endpoint resources in a resource group.
+     * Get the value property: A list of private endpoint resources in a resource group.
      *
      * @return the value value.
      */
@@ -37,7 +37,7 @@ public final class PrivateEndpointListResultInner {
     }
 
     /**
-     * Set the value property: Gets a list of private endpoint resources in a resource group.
+     * Set the value property: A list of private endpoint resources in a resource group.
      *
      * @param value the value value to set.
      * @return the PrivateEndpointListResultInner object itself.

@@ -7,19 +7,19 @@
 package com.azure.search.documents.indexes.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.JsonFlatten;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 
-/**
- * Matches single or multi-word synonyms in a token stream. This token filter
- * is implemented using Apache Lucene.
- */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata.type")
+/** The SynonymTokenFilter model. */
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata\\.type")
 @JsonTypeName("#Microsoft.Azure.Search.SynonymTokenFilter")
+@JsonFlatten
 @Fluent
-public final class SynonymTokenFilter extends TokenFilter {
+public class SynonymTokenFilter extends TokenFilter {
     /*
      * A list of synonyms in following one of two formats: 1. incredible,
      * unbelievable, fabulous => amazing - all terms on the left side of =>
@@ -51,13 +51,19 @@ public final class SynonymTokenFilter extends TokenFilter {
     @JsonProperty(value = "expand")
     private Boolean expand;
 
+    /** Creates an instance of SynonymTokenFilter class. */
+    @JsonCreator
+    public SynonymTokenFilter(
+            @JsonProperty(value = "name") String name, @JsonProperty(value = "synonyms") List<String> synonyms) {
+        super(name);
+        this.synonyms = synonyms;
+    }
+
     /**
-     * Get the synonyms property: A list of synonyms in following one of two
-     * formats: 1. incredible, unbelievable, fabulous =&gt; amazing - all terms
-     * on the left side of =&gt; symbol will be replaced with all terms on its
-     * right side; 2. incredible, unbelievable, fabulous, amazing - comma
-     * separated list of equivalent words. Set the expand option to change how
-     * this list is interpreted.
+     * Get the synonyms property: A list of synonyms in following one of two formats: 1. incredible, unbelievable,
+     * fabulous =&gt; amazing - all terms on the left side of =&gt; symbol will be replaced with all terms on its right
+     * side; 2. incredible, unbelievable, fabulous, amazing - comma separated list of equivalent words. Set the expand
+     * option to change how this list is interpreted.
      *
      * @return the synonyms value.
      */
@@ -66,24 +72,16 @@ public final class SynonymTokenFilter extends TokenFilter {
     }
 
     /**
-     * Set the synonyms property: A list of synonyms in following one of two
-     * formats: 1. incredible, unbelievable, fabulous =&gt; amazing - all terms
-     * on the left side of =&gt; symbol will be replaced with all terms on its
-     * right side; 2. incredible, unbelievable, fabulous, amazing - comma
-     * separated list of equivalent words. Set the expand option to change how
-     * this list is interpreted.
+     * Set the synonyms property: A list of synonyms in following one of two formats: 1. incredible, unbelievable,
+     * fabulous =&gt; amazing - all terms on the left side of =&gt; symbol will be replaced with all terms on its right
+     * side; 2. incredible, unbelievable, fabulous, amazing - comma separated list of equivalent words. Set the expand
+     * option to change how this list is interpreted.
      *
      * @param synonyms the synonyms value to set.
      * @return the SynonymTokenFilter object itself.
      */
-    public SynonymTokenFilter setSynonyms(List<String> synonyms) {
-        this.synonyms = synonyms;
-        return this;
-    }
-
     /**
-     * Get the ignoreCase property: A value indicating whether to case-fold
-     * input for matching. Default is false.
+     * Get the ignoreCase property: A value indicating whether to case-fold input for matching. Default is false.
      *
      * @return the ignoreCase value.
      */
@@ -92,8 +90,7 @@ public final class SynonymTokenFilter extends TokenFilter {
     }
 
     /**
-     * Set the ignoreCase property: A value indicating whether to case-fold
-     * input for matching. Default is false.
+     * Set the ignoreCase property: A value indicating whether to case-fold input for matching. Default is false.
      *
      * @param ignoreCase the ignoreCase value to set.
      * @return the SynonymTokenFilter object itself.
@@ -104,15 +101,12 @@ public final class SynonymTokenFilter extends TokenFilter {
     }
 
     /**
-     * Get the expand property: A value indicating whether all words in the
-     * list of synonyms (if =&gt; notation is not used) will map to one
-     * another. If true, all words in the list of synonyms (if =&gt; notation
-     * is not used) will map to one another. The following list: incredible,
-     * unbelievable, fabulous, amazing is equivalent to: incredible,
-     * unbelievable, fabulous, amazing =&gt; incredible, unbelievable,
-     * fabulous, amazing. If false, the following list: incredible,
-     * unbelievable, fabulous, amazing will be equivalent to: incredible,
-     * unbelievable, fabulous, amazing =&gt; incredible. Default is true.
+     * Get the expand property: A value indicating whether all words in the list of synonyms (if =&gt; notation is not
+     * used) will map to one another. If true, all words in the list of synonyms (if =&gt; notation is not used) will
+     * map to one another. The following list: incredible, unbelievable, fabulous, amazing is equivalent to: incredible,
+     * unbelievable, fabulous, amazing =&gt; incredible, unbelievable, fabulous, amazing. If false, the following list:
+     * incredible, unbelievable, fabulous, amazing will be equivalent to: incredible, unbelievable, fabulous, amazing
+     * =&gt; incredible. Default is true.
      *
      * @return the expand value.
      */
@@ -121,15 +115,12 @@ public final class SynonymTokenFilter extends TokenFilter {
     }
 
     /**
-     * Set the expand property: A value indicating whether all words in the
-     * list of synonyms (if =&gt; notation is not used) will map to one
-     * another. If true, all words in the list of synonyms (if =&gt; notation
-     * is not used) will map to one another. The following list: incredible,
-     * unbelievable, fabulous, amazing is equivalent to: incredible,
-     * unbelievable, fabulous, amazing =&gt; incredible, unbelievable,
-     * fabulous, amazing. If false, the following list: incredible,
-     * unbelievable, fabulous, amazing will be equivalent to: incredible,
-     * unbelievable, fabulous, amazing =&gt; incredible. Default is true.
+     * Set the expand property: A value indicating whether all words in the list of synonyms (if =&gt; notation is not
+     * used) will map to one another. If true, all words in the list of synonyms (if =&gt; notation is not used) will
+     * map to one another. The following list: incredible, unbelievable, fabulous, amazing is equivalent to: incredible,
+     * unbelievable, fabulous, amazing =&gt; incredible, unbelievable, fabulous, amazing. If false, the following list:
+     * incredible, unbelievable, fabulous, amazing will be equivalent to: incredible, unbelievable, fabulous, amazing
+     * =&gt; incredible. Default is true.
      *
      * @param expand the expand value to set.
      * @return the SynonymTokenFilter object itself.
@@ -137,5 +128,18 @@ public final class SynonymTokenFilter extends TokenFilter {
     public SynonymTokenFilter setExpand(Boolean expand) {
         this.expand = expand;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    @Override
+    public void validate() {
+        super.validate();
+        if (getSynonyms() == null) {
+            throw new IllegalArgumentException("Missing required property synonyms in model SynonymTokenFilter");
+        }
     }
 }

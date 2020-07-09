@@ -3,24 +3,18 @@
 
 package com.microsoft.azure.keyvault.spring;
 
-import com.azure.core.http.rest.PagedFlux;
-import com.azure.core.http.rest.PagedIterable;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.when;
+
 import com.azure.security.keyvault.secrets.SecretClient;
 import com.azure.security.keyvault.secrets.models.KeyVaultSecret;
-import com.azure.security.keyvault.secrets.models.SecretProperties;
-import com.microsoft.azure.utils.Constants;
+import java.util.Arrays;
+import java.util.LinkedHashMap;
+import java.util.List;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
-
-import java.util.Arrays;
-import java.util.List;
-import java.util.function.Consumer;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class KeyVaultOperationUnitTest {
@@ -30,8 +24,6 @@ public class KeyVaultOperationUnitTest {
     private static final String TEST_PROPERTY_NAME_1 = "testPropertyName1";
 
     private static final String SECRET_KEY_1 = "key1";
-
-    private static final String FAKE_VAULT_URI = "https:fake.vault.com";
 
     private static final String TEST_SPRING_RELAXED_BINDING_NAME_0 = "acme.my-project.person.first-name";
 
@@ -44,10 +36,10 @@ public class KeyVaultOperationUnitTest {
     private static final String TEST_AZURE_KEYVAULT_NAME = "acme-myproject-person-firstname";
 
     private static final List<String> TEST_SPRING_RELAXED_BINDING_NAMES = Arrays.asList(
-        TEST_SPRING_RELAXED_BINDING_NAME_0,
-        TEST_SPRING_RELAXED_BINDING_NAME_1,
-        TEST_SPRING_RELAXED_BINDING_NAME_2,
-        TEST_SPRING_RELAXED_BINDING_NAME_3
+            TEST_SPRING_RELAXED_BINDING_NAME_0,
+            TEST_SPRING_RELAXED_BINDING_NAME_1,
+            TEST_SPRING_RELAXED_BINDING_NAME_2,
+            TEST_SPRING_RELAXED_BINDING_NAME_3
     );
 
     @Mock
@@ -55,48 +47,65 @@ public class KeyVaultOperationUnitTest {
     private KeyVaultOperation keyVaultOperation;
 
     public void setupSecretBundle(String id, String value, List<String> secretKeysConfig) {
-        //provision for list
-        when(keyVaultClient.listPropertiesOfSecrets()).thenReturn(new MockPage(new PagedFlux<>(() -> null), id));
-        //provison for get
-        final KeyVaultSecret secretBundle = new KeyVaultSecret(id, value);
-        when(keyVaultClient.getSecret(anyString())).thenReturn(secretBundle);
-        keyVaultOperation = new KeyVaultOperation(keyVaultClient,
-            FAKE_VAULT_URI,
-            Constants.TOKEN_ACQUIRE_TIMEOUT_SECS,
-            secretKeysConfig);
+        keyVaultOperation = new KeyVaultOperation(
+                keyVaultClient,
+                0,
+                secretKeysConfig,
+                false);
     }
 
     @Test
-    public void testGet() {
-        //test get with no specific secret keys
+    public void testGetWithNoSpecficSecretKeys() {
         setupSecretBundle(TEST_PROPERTY_NAME_1, TEST_PROPERTY_NAME_1, null);
-        assertThat(keyVaultOperation.get(TEST_PROPERTY_NAME_1)).isEqualToIgnoringCase(TEST_PROPERTY_NAME_1);
+
+        final LinkedHashMap<String, String> properties = new LinkedHashMap<>();
+        properties.put("testpropertyname1", TEST_PROPERTY_NAME_1);
+        keyVaultOperation.setProperties(properties);
+
+        assertThat(keyVaultOperation.getProperty(TEST_PROPERTY_NAME_1)).isEqualToIgnoringCase(TEST_PROPERTY_NAME_1);
     }
 
     @Test
     public void testGetAndMissWhenSecretsProvided() {
-        //test get with specific secret key configs
         setupSecretBundle(TEST_PROPERTY_NAME_1, TEST_PROPERTY_NAME_1, SECRET_KEYS_CONFIG);
-        assertThat(keyVaultOperation.get(TEST_PROPERTY_NAME_1)).isEqualToIgnoringCase(null);
+
+        final LinkedHashMap<String, String> properties = new LinkedHashMap<>();
+        properties.put("key1", "value1");
+        properties.put("key2", "value2");
+        properties.put("key3", "value3");
+        keyVaultOperation.setProperties(properties);
+
+        assertThat(keyVaultOperation.getProperty(TEST_PROPERTY_NAME_1)).isEqualToIgnoringCase(null);
     }
 
     @Test
     public void testGetAndHitWhenSecretsProvided() {
+        when(keyVaultClient.getSecret("key1")).thenReturn(new KeyVaultSecret("key1", "key1"));
+        when(keyVaultClient.getSecret("key2")).thenReturn(new KeyVaultSecret("key2", "key2"));
+        when(keyVaultClient.getSecret("key3")).thenReturn(new KeyVaultSecret("key3", "key3"));
+
         setupSecretBundle(SECRET_KEY_1, SECRET_KEY_1, SECRET_KEYS_CONFIG);
-        assertThat(keyVaultOperation.get(SECRET_KEY_1)).isEqualToIgnoringCase(SECRET_KEY_1);
+
+        assertThat(keyVaultOperation.getProperty(SECRET_KEY_1)).isEqualToIgnoringCase(SECRET_KEY_1);
     }
 
     @Test
     public void testList() {
         //test list with no specific secret keys
         setupSecretBundle(TEST_PROPERTY_NAME_1, TEST_PROPERTY_NAME_1, null);
-        final String[] result = keyVaultOperation.list();
+        final LinkedHashMap<String, String> properties = new LinkedHashMap<>();
+        properties.put(TEST_PROPERTY_NAME_1, TEST_PROPERTY_NAME_1);
+        keyVaultOperation.setProperties(properties);
+        final String[] result = keyVaultOperation.getPropertyNames();
         assertThat(result.length).isEqualTo(1);
         assertThat(result[0]).isEqualToIgnoringCase(TEST_PROPERTY_NAME_1);
 
         //test list with specific secret key configs
+        when(keyVaultClient.getSecret("key1")).thenReturn(new KeyVaultSecret("key1", "key1"));
+        when(keyVaultClient.getSecret("key2")).thenReturn(new KeyVaultSecret("key2", "key2"));
+        when(keyVaultClient.getSecret("key3")).thenReturn(new KeyVaultSecret("key3", "key3"));
         setupSecretBundle(TEST_PROPERTY_NAME_1, TEST_PROPERTY_NAME_1, SECRET_KEYS_CONFIG);
-        final String[] specificResult = keyVaultOperation.list();
+        final String[] specificResult = keyVaultOperation.getPropertyNames();
         assertThat(specificResult.length).isEqualTo(3);
         assertThat(specificResult[0]).isEqualTo(SECRET_KEYS_CONFIG.get(0));
     }
@@ -105,56 +114,26 @@ public class KeyVaultOperationUnitTest {
     public void setTestSpringRelaxedBindingNames() {
         //test list with no specific secret keys
         setupSecretBundle(TEST_AZURE_KEYVAULT_NAME, TEST_AZURE_KEYVAULT_NAME, null);
-
-        TEST_SPRING_RELAXED_BINDING_NAMES.forEach(
-            n -> assertThat(keyVaultOperation.get(n)).isEqualTo(TEST_AZURE_KEYVAULT_NAME)
-        );
+        LinkedHashMap<String, String> properties = new LinkedHashMap<>();
+        properties.put("acme-myproject-person-firstname", TEST_AZURE_KEYVAULT_NAME);
+        keyVaultOperation.setProperties(properties);
+        TEST_SPRING_RELAXED_BINDING_NAMES
+                .forEach(n -> assertThat(keyVaultOperation.getProperty(n)).isEqualTo(TEST_AZURE_KEYVAULT_NAME));
 
         //test list with specific secret key configs
         setupSecretBundle(TEST_AZURE_KEYVAULT_NAME, TEST_AZURE_KEYVAULT_NAME, Arrays.asList(TEST_AZURE_KEYVAULT_NAME));
-        TEST_SPRING_RELAXED_BINDING_NAMES.forEach(
-            n -> assertThat(keyVaultOperation.get(n)).isEqualTo(TEST_AZURE_KEYVAULT_NAME)
-        );
+        properties = new LinkedHashMap<>();
+        properties.put(TEST_AZURE_KEYVAULT_NAME, TEST_AZURE_KEYVAULT_NAME);
+        keyVaultOperation.setProperties(properties);
+        TEST_SPRING_RELAXED_BINDING_NAMES
+                .forEach(n -> assertThat(keyVaultOperation.getProperty(n)).isEqualTo(TEST_AZURE_KEYVAULT_NAME));
 
         setupSecretBundle(TEST_AZURE_KEYVAULT_NAME, TEST_AZURE_KEYVAULT_NAME, SECRET_KEYS_CONFIG);
-        TEST_SPRING_RELAXED_BINDING_NAMES.forEach(
-            n -> assertThat(keyVaultOperation.get(n)).isEqualTo(null)
-        );
-    }
-
-    class MockPage extends PagedIterable<SecretProperties> {
-        private String name;
-
-        MockPage(PagedFlux<SecretProperties> pagedFlux, String name) {
-            super(pagedFlux);
-            this.name = name;
-        }
-
-        /**
-         * Creates instance given {@link PagedFlux}.
-         *
-         * @param pagedFlux to use as iterable
-         */
-        MockPage(PagedFlux<SecretProperties> pagedFlux) {
-            super(pagedFlux);
-        }
-
-        @Override
-        public void forEach(Consumer<? super SecretProperties> action) {
-            action.accept(new MockSecretProperties(name));
-        }
-    }
-
-    class MockSecretProperties extends SecretProperties {
-        private String name;
-
-        MockSecretProperties(String name) {
-            this.name = name;
-        }
-
-        @Override
-        public String getName() {
-            return name;
-        }
+        properties = new LinkedHashMap<>();
+        properties.put("key1", "key1");
+        properties.put("key2", "key2");
+        properties.put("key3", "key3");
+        keyVaultOperation.setProperties(properties);
+        TEST_SPRING_RELAXED_BINDING_NAMES.forEach(n -> assertThat(keyVaultOperation.getProperty(n)).isEqualTo(null));
     }
 }

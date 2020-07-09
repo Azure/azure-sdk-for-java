@@ -121,8 +121,7 @@
 //                    .withSignOnUrl("https://github.com/Azure/azure-sdk-for-java/" + name)
 //                    // password credentials definition
 //                    .definePasswordCredential("password")
-//                        // [SuppressMessage("Microsoft.Security", "CS002:SecretInNextLine", Justification="Serves as an example, not for deployment. Please change when using this in your code.")]
-//                        .withPasswordValue("P@ssw0rd")
+//                        .withPasswordValue(Utils.password())
 //                        .withDuration(Duration.ofDays(700))
 //                        .attach()
 //                    // certificate credentials definition
@@ -155,8 +154,7 @@
 //                    .withExistingApplication(activeDirectoryApplication)
 //                    // password credentials definition
 //                    .definePasswordCredential("ServicePrincipalAzureSample")
-//                    // [SuppressMessage("Microsoft.Security", "CS002:SecretInNextLine", Justification="Serves as an example, not for deployment. Please change when using this in your code.")]
-//                        .withPasswordValue("StrongPass!12")
+//                        .withPasswordValue(Utils.password())
 //                        .attach()
 //                    // certificate credentials definition
 //                    .defineCertificateCredential("spcert")
