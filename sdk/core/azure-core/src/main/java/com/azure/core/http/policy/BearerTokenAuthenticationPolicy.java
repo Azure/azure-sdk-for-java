@@ -37,8 +37,7 @@ public class BearerTokenAuthenticationPolicy implements HttpPipelinePolicy {
         assert scopes.length > 0;
         this.credential = credential;
         this.scopes = scopes;
-        this.cache = new SimpleTokenCache(() -> credential.getToken(new TokenRequestContext().addScopes(scopes)),
-            credential.getTokenRefreshOptions());
+        this.cache = new SimpleTokenCache(() -> credential.getToken(new TokenRequestContext().addScopes(scopes)));
     }
 
     @Override

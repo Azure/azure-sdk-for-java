@@ -107,7 +107,8 @@ class ClaimsBasedSecurityChannelTest {
     @Test
     public void authorizesSasToken() {
         // Arrange
-        final Date expectedDate = Date.from(validUntil.toInstant());
+        // Subtracting two minutes because the AccessToken does this internally.
+        final Date expectedDate = Date.from(validUntil.minusMinutes(2).toInstant());
         final ClaimsBasedSecurityChannel cbsChannel = new ClaimsBasedSecurityChannel(Mono.just(requestResponseChannel),
             tokenCredential, CbsAuthorizationType.SHARED_ACCESS_SIGNATURE, options);
 
