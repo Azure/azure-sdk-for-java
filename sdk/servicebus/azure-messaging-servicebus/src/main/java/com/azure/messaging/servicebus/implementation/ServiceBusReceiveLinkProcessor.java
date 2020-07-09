@@ -49,6 +49,9 @@ public class ServiceBusReceiveLinkProcessor extends FluxProcessor<ServiceBusRece
 
     // Queue containing all the prefetched messages.
     private final Deque<Message> messageQueue = new ConcurrentLinkedDeque<>();
+    // size() on Deque is O(n) operation, so we use an integer to keep track. All reads and writes to this are gated by
+    // the `queueLock`.
+    private final AtomicInteger pendingMessages = new AtomicInteger();
     private final int minimumNumberOfMessages;
     private final int prefetch;
 
@@ -62,10 +65,6 @@ public class ServiceBusReceiveLinkProcessor extends FluxProcessor<ServiceBusRece
     private volatile ServiceBusReceiveLink currentLink;
     private volatile Disposable currentLinkSubscriptions;
     private volatile Disposable retrySubscription;
-
-    // size() on Deque is O(n) operation, so we use an integer to keep track. All reads and writes to this are gated by
-    // the `queueLock`.
-    private volatile int pendingMessages;
 
     // Opting to use AtomicReferenceFieldUpdater because Project Reactor provides utility methods that calculates
     // backpressure requests, sets the upstream correctly, and reports its state.
@@ -120,7 +119,7 @@ public class ServiceBusReceiveLinkProcessor extends FluxProcessor<ServiceBusRece
             .then(Mono.fromRunnable(() -> {
                 // Check if we should add more credits.
                 synchronized (queueLock) {
-                    pendingMessages--;
+                    pendingMessages.decrementAndGet();
                 }
 
                 checkAndAddCredits(link);
@@ -208,7 +207,7 @@ public class ServiceBusReceiveLinkProcessor extends FluxProcessor<ServiceBusRece
                 next.receive().publishOn(Schedulers.boundedElastic()).subscribe(message -> {
                     synchronized (queueLock) {
                         messageQueue.add(message);
-                        pendingMessages++;
+                        pendingMessages.incrementAndGet();
                     }
 
                     drain();
@@ -482,7 +481,7 @@ public class ServiceBusReceiveLinkProcessor extends FluxProcessor<ServiceBusRece
 
                     synchronized (queueLock) {
                         Operators.onDiscardQueueWithClear(messageQueue, subscriber.currentContext(), null);
-                        pendingMessages = 0;
+                        pendingMessages.set(0);
                     }
 
                     return;
@@ -525,7 +524,7 @@ public class ServiceBusReceiveLinkProcessor extends FluxProcessor<ServiceBusRece
 
         synchronized (queueLock) {
             messageQueue.clear();
-            pendingMessages = 0;
+            pendingMessages.set(0);
         }
 
         return true;
@@ -566,13 +565,14 @@ public class ServiceBusReceiveLinkProcessor extends FluxProcessor<ServiceBusRece
             creditsToAdd = prefetch;
         } else {
             synchronized (queueLock) {
-                final int pending = pendingMessages + linkCredits;
+                final int queuedMessages = pendingMessages.get();
+                final int pending = queuedMessages + linkCredits;
 
                 if (hasBackpressure) {
                     creditsToAdd = Math.max(Long.valueOf(r).intValue() - pending, 0);
                 } else {
                     // If the queue has less than 1/3 of the prefetch, then add the difference to keep the queue full.
-                    creditsToAdd = minimumNumberOfMessages >= pendingMessages
+                    creditsToAdd = minimumNumberOfMessages >= queuedMessages
                         ? Math.max(prefetch - pending, 1)
                         : 0;
                 }
