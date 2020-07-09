@@ -289,10 +289,9 @@ public final class RestProxy implements InvocationHandler {
             } else if (bodyContentObject instanceof ByteBuffer) {
                 request.setBody(Flux.just((ByteBuffer) bodyContentObject));
             } else {
-                // TODO (jogiles) can we have the ByteArrayOutputStream in the body instead of doing an array copy?
                 request.setBody(
-                    serializer.serializeToStream(
-                        bodyContentObject, SerializerEncoding.fromHeaders(request.getHeaders())).toByteArray());
+                    serializer
+                        .serializeToBytes(bodyContentObject, SerializerEncoding.fromHeaders(request.getHeaders())));
             }
         }
 
