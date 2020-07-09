@@ -231,7 +231,7 @@ class APISpec extends Specification {
                                                          StorageSharedKeyCredential credential, String endpoint,
                                                          HttpPipelinePolicy... policies) {
 
-        KeyWrapAlgorithm algorithm = key.getKeyId().block() == "local" ? KeyWrapAlgorithm.A256KW : KeyWrapAlgorithm.RSA_OAEP_256
+        KeyWrapAlgorithm algorithm = key != null && key.getKeyId().block() == "local" ? KeyWrapAlgorithm.A256KW : KeyWrapAlgorithm.RSA_OAEP_256
         EncryptedBlobClientBuilder builder = new EncryptedBlobClientBuilder()
             .key(key, algorithm.toString())
             .keyResolver(keyResolver)
