@@ -44,11 +44,13 @@ public class RecognizeCustomFormsAsync {
         File sourceFile = new File("../formrecognizer/azure-ai-formrecognizer/src/samples/java/sample-forms/"
             + "forms/Invoice_6.pdf");
         byte[] fileContent = Files.readAllBytes(sourceFile.toPath());
-        InputStream targetStream = new ByteArrayInputStream(fileContent);
-        String modelId = "{modelId}";
+        PollerFlux<OperationResult, List<RecognizedForm>> recognizeFormPoller;
+        try (InputStream targetStream = new ByteArrayInputStream(fileContent)) {
+            String modelId = "{modelId}";
 
-        PollerFlux<OperationResult, List<RecognizedForm>> recognizeFormPoller =
-            client.beginRecognizeCustomForms(toFluxByteBuffer(targetStream), sourceFile.length(), modelId);
+            recognizeFormPoller = client.beginRecognizeCustomForms(toFluxByteBuffer(targetStream),
+                sourceFile.length(), modelId);
+        }
 
         Mono<List<RecognizedForm>> recognizeFormResult = recognizeFormPoller
             .last()

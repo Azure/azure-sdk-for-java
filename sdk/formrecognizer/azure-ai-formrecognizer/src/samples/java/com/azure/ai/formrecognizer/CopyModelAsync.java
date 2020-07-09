@@ -6,6 +6,7 @@ package com.azure.ai.formrecognizer;
 import com.azure.ai.formrecognizer.training.FormTrainingAsyncClient;
 import com.azure.ai.formrecognizer.training.FormTrainingClientBuilder;
 import com.azure.core.credential.AzureKeyCredential;
+import com.azure.core.util.polling.AsyncPollResponse;
 
 import java.util.concurrent.TimeUnit;
 
@@ -42,7 +43,7 @@ public class CopyModelAsync {
             // Start copy operation from the source client
             // The Id of the model that needs to be copied to the target resource
             .subscribe(copyAuthorization -> sourceClient.beginCopyModel(copyModelId, copyAuthorization)
-                .flatMap(copyPoller -> copyPoller.getFinalResult())
+                .flatMap(AsyncPollResponse::getFinalResult)
                     .subscribe(customFormModelInfo -> {
                         System.out.printf("Original model has model Id: %s, model status: %s, training started on: %s,"
                                 + " training completed on: %s.%n",

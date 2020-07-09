@@ -71,7 +71,7 @@ public class RecognizeReceiptsFromUrlAsync {
 
                 FormField<?> merchantPhoneNumberField = recognizedFields.get("MerchantPhoneNumber");
                 if (merchantPhoneNumberField != null) {
-                    if (FieldValueType.PHONE_NUMBER == merchantNameField.getValueType()) {
+                    if (FieldValueType.PHONE_NUMBER == merchantPhoneNumberField.getValueType()) {
                         String merchantAddress = FieldValueType.PHONE_NUMBER.cast(merchantPhoneNumberField);
                         System.out.printf("Merchant Address: %s, confidence: %.2f%n",
                             merchantAddress, merchantPhoneNumberField.getConfidence());
@@ -80,7 +80,7 @@ public class RecognizeReceiptsFromUrlAsync {
 
                 FormField<?> merchantAddressField = recognizedFields.get("MerchantAddress");
                 if (merchantAddressField != null) {
-                    if (FieldValueType.STRING == merchantNameField.getValueType()) {
+                    if (FieldValueType.STRING == merchantAddressField.getValueType()) {
                         String merchantAddress = FieldValueType.STRING.cast(merchantAddressField);
                         System.out.printf("Merchant Address: %s, confidence: %.2f%n",
                             merchantAddress, merchantAddressField.getConfidence());

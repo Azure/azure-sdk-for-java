@@ -8,6 +8,7 @@ import com.azure.ai.formrecognizer.models.OperationResult;
 import com.azure.ai.formrecognizer.models.RecognizeOptions;
 import com.azure.ai.formrecognizer.models.RecognizedForm;
 import com.azure.core.credential.AzureKeyCredential;
+import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollerFlux;
 import reactor.core.publisher.Mono;
 
@@ -73,7 +74,7 @@ public class AdvancedDiffLabeledUnlabeledDataAsync {
         Mono<List<RecognizedForm>> labeledDataResult = labeledCustomFormPoller
             .last()
             .flatMap(trainingOperationResponse -> {
-                if (trainingOperationResponse.getStatus().isComplete()) {
+                if (LongRunningOperationStatus.SUCCESSFULLY_COMPLETED == trainingOperationResponse.getStatus()) {
                     // training completed successfully, retrieving final result.
                     return trainingOperationResponse.getFinalResult();
                 } else {
@@ -85,7 +86,7 @@ public class AdvancedDiffLabeledUnlabeledDataAsync {
         Mono<List<RecognizedForm>> unlabeledDataResult = unlabeledCustomFormPoller
             .last()
             .flatMap(trainingOperationResponse -> {
-                if (trainingOperationResponse.getStatus().isComplete()) {
+                if (LongRunningOperationStatus.SUCCESSFULLY_COMPLETED == trainingOperationResponse.getStatus()) {
                     // training completed successfully, retrieving final result.
                     return trainingOperationResponse.getFinalResult();
                 } else {
@@ -147,14 +148,14 @@ public class AdvancedDiffLabeledUnlabeledDataAsync {
                         String.format("[%.2f, %.2f]", point.getX(), point.getY())).forEach(boundingBoxStr::append);
                 }
 
-                final StringBuilder boundingBoxLabelStr = new StringBuilder();
                 if (formField.getLabelData() != null && formField.getLabelData().getBoundingBox() != null) {
                     formField.getLabelData().getBoundingBox().getPoints().stream().map(point ->
                         String.format("[%.2f, %.2f]", point.getX(), point.getY())).forEach(boundingBoxStr::append);
+
+                    System.out.printf("Field %s has label %s  within bounding box %s with a confidence score "
+                            + "of %.2f.%n",
+                        label, formField.getLabelData().getText(), "", formField.getConfidence());
                 }
-                System.out.printf("Field %s has label %s  within bounding box %s with a confidence score "
-                        + "of %.2f.%n",
-                    label, formField.getLabelData().getText(), boundingBoxLabelStr, formField.getConfidence());
 
                 System.out.printf("Field %s has value %s based on %s within bounding box %s with a confidence "
                         + "score of %.2f.%n",

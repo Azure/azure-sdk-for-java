@@ -111,15 +111,14 @@ public class AdvancedDiffLabeledUnlabeledData {
                     String.format("[%.2f, %.2f]", point.getX(), point.getY())).forEach(boundingBoxStr::append);
             }
 
-            final StringBuilder boundingBoxLabelStr = new StringBuilder();
             if (formField.getLabelData() != null && formField.getLabelData().getBoundingBox() != null) {
                 formField.getLabelData().getBoundingBox().getPoints().stream().map(point ->
                     String.format("[%.2f, %.2f]", point.getX(), point.getY())).forEach(boundingBoxStr::append);
-            }
-            System.out.printf("Field %s has label %s  within bounding box %s with a confidence score "
-                    + "of %.2f.%n",
-                label, formField.getLabelData().getText(), boundingBoxLabelStr, formField.getConfidence());
 
+                System.out.printf("Field %s has label %s  within bounding box %s with a confidence score "
+                        + "of %.2f.%n",
+                    label, formField.getLabelData().getText(), "", formField.getConfidence());
+            }
             System.out.printf("Field %s has value %s based on %s within bounding box %s with a confidence score "
                     + "of %.2f.%n",
                 label, formField.getValue(), formField.getValueData().getText(), boundingBoxStr,

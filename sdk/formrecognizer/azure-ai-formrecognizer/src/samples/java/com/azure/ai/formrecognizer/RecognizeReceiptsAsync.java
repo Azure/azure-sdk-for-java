@@ -49,11 +49,12 @@ public class RecognizeReceiptsAsync {
         File sourceFile = new File("../formrecognizer/azure-ai-formrecognizer/src/samples/java/sample-forms/"
             + "receipts/contoso-allinone.jpg");
         byte[] fileContent = Files.readAllBytes(sourceFile.toPath());
-        InputStream targetStream = new ByteArrayInputStream(fileContent);
+        PollerFlux<OperationResult, List<RecognizedForm>> analyzeReceiptPoller;
+        try (InputStream targetStream = new ByteArrayInputStream(fileContent)) {
 
-        PollerFlux<OperationResult, List<RecognizedForm>> analyzeReceiptPoller =
-            client.beginRecognizeReceipts(toFluxByteBuffer(targetStream),
+            analyzeReceiptPoller = client.beginRecognizeReceipts(toFluxByteBuffer(targetStream),
                 sourceFile.length());
+        }
 
         Mono<List<RecognizedForm>> receiptPageResultsMono = analyzeReceiptPoller
             .last()
@@ -84,7 +85,7 @@ public class RecognizeReceiptsAsync {
 
                 FormField<?> merchantPhoneNumberField = recognizedFields.get("MerchantPhoneNumber");
                 if (merchantPhoneNumberField != null) {
-                    if (FieldValueType.PHONE_NUMBER == merchantNameField.getValueType()) {
+                    if (FieldValueType.PHONE_NUMBER == merchantPhoneNumberField.getValueType()) {
                         String merchantAddress = FieldValueType.PHONE_NUMBER.cast(merchantPhoneNumberField);
                         System.out.printf("Merchant Phone number: %s, confidence: %.2f%n",
                             merchantAddress, merchantPhoneNumberField.getConfidence());
@@ -93,7 +94,7 @@ public class RecognizeReceiptsAsync {
 
                 FormField<?> merchantAddressField = recognizedFields.get("MerchantAddress");
                 if (merchantAddressField != null) {
-                    if (FieldValueType.STRING == merchantNameField.getValueType()) {
+                    if (FieldValueType.STRING == merchantAddressField.getValueType()) {
                         String merchantAddress = FieldValueType.STRING.cast(merchantAddressField);
                         System.out.printf("Merchant Address: %s, confidence: %.2f%n",
                             merchantAddress, merchantAddressField.getConfidence());

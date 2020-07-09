@@ -40,11 +40,9 @@ public class RecognizeCustomForms {
             final RecognizedForm form = recognizedForms.get(i);
             System.out.printf("----------- Recognized Form page %d -----------%n", i);
             System.out.printf("Form type: %s%n", form.getFormType());
-            form.getFields().forEach((label, formField) -> {
-                System.out.printf("Field %s has value %s with confidence score of %.2f.%n", label,
-                    formField.getValueData().getText(),
-                    formField.getConfidence());
-            });
+            form.getFields().forEach((label, formField) ->
+                System.out.printf("Field %s has value %s with confidence "
+                    + "score of %.2f.%n", label, formField.getValueData().getText(), formField.getConfidence()));
             System.out.print("-----------------------------------");
         }
     }

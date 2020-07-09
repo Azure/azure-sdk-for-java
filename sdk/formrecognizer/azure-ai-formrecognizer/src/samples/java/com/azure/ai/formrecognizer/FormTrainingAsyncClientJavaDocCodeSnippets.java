@@ -12,6 +12,7 @@ import com.azure.ai.formrecognizer.training.FormTrainingClientBuilder;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
+import com.azure.core.util.polling.AsyncPollResponse;
 
 import java.time.Duration;
 
@@ -217,7 +218,7 @@ public class FormTrainingAsyncClientJavaDocCodeSnippets {
         String copyModelId = "copy-model-Id";
         formTrainingAsyncClient.getCopyAuthorization(resourceId, resourceRegion)
             .flatMapMany(copyAuthorization -> formTrainingAsyncClient.beginCopyModel(copyModelId, copyAuthorization))
-            .flatMap(copyPoller -> copyPoller.getFinalResult())
+            .flatMap(AsyncPollResponse::getFinalResult)
             .subscribe(customFormModelInfo ->
                 System.out.printf("Copied model has model Id: %s, model status: %s, training started on: %s,"
                     + " training completed on: %s.%n",
@@ -239,7 +240,7 @@ public class FormTrainingAsyncClientJavaDocCodeSnippets {
         formTrainingAsyncClient.getCopyAuthorization(resourceId, resourceRegion)
             .flatMapMany(copyAuthorization -> formTrainingAsyncClient.beginCopyModel(copyModelId, copyAuthorization,
                 Duration.ofSeconds(5)))
-            .flatMap(copyPoller -> copyPoller.getFinalResult())
+            .flatMap(AsyncPollResponse::getFinalResult)
                 .subscribe(customFormModelInfo ->
                     System.out.printf("Copied model has model Id: %s, model status: %s, training started on: %s,"
                         + "training completed on: %s.%n",
