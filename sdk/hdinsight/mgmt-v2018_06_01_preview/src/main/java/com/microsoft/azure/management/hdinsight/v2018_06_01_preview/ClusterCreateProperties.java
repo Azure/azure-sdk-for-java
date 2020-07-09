@@ -70,10 +70,22 @@ public class ClusterCreateProperties {
     private DiskEncryptionProperties diskEncryptionProperties;
 
     /**
+     * The encryption-in-transit properties.
+     */
+    @JsonProperty(value = "encryptionInTransitProperties")
+    private EncryptionInTransitProperties encryptionInTransitProperties;
+
+    /**
      * The minimal supported tls version.
      */
     @JsonProperty(value = "minSupportedTlsVersion")
     private String minSupportedTlsVersion;
+
+    /**
+     * The network settings.
+     */
+    @JsonProperty(value = "networkSettings")
+    private NetworkSettings networkSettings;
 
     /**
      * Get the version of the cluster.
@@ -256,6 +268,26 @@ public class ClusterCreateProperties {
     }
 
     /**
+     * Get the encryption-in-transit properties.
+     *
+     * @return the encryptionInTransitProperties value
+     */
+    public EncryptionInTransitProperties encryptionInTransitProperties() {
+        return this.encryptionInTransitProperties;
+    }
+
+    /**
+     * Set the encryption-in-transit properties.
+     *
+     * @param encryptionInTransitProperties the encryptionInTransitProperties value to set
+     * @return the ClusterCreateProperties object itself.
+     */
+    public ClusterCreateProperties withEncryptionInTransitProperties(EncryptionInTransitProperties encryptionInTransitProperties) {
+        this.encryptionInTransitProperties = encryptionInTransitProperties;
+        return this;
+    }
+
+    /**
      * Get the minimal supported tls version.
      *
      * @return the minSupportedTlsVersion value
@@ -272,6 +304,26 @@ public class ClusterCreateProperties {
      */
     public ClusterCreateProperties withMinSupportedTlsVersion(String minSupportedTlsVersion) {
         this.minSupportedTlsVersion = minSupportedTlsVersion;
+        return this;
+    }
+
+    /**
+     * Get the network settings.
+     *
+     * @return the networkSettings value
+     */
+    public NetworkSettings networkSettings() {
+        return this.networkSettings;
+    }
+
+    /**
+     * Set the network settings.
+     *
+     * @param networkSettings the networkSettings value to set
+     * @return the ClusterCreateProperties object itself.
+     */
+    public ClusterCreateProperties withNetworkSettings(NetworkSettings networkSettings) {
+        this.networkSettings = networkSettings;
         return this;
     }
 
