@@ -54,7 +54,6 @@ public class ServiceBusReceiveLinkProcessor extends FluxProcessor<ServiceBusRece
 
     private final int prefetch;
     private final AmqpRetryPolicy retryPolicy;
-    private final Disposable parentConnection;
     private final AmqpErrorContext errorContext;
 
     private volatile Throwable lastError;
@@ -78,15 +77,12 @@ public class ServiceBusReceiveLinkProcessor extends FluxProcessor<ServiceBusRece
      *
      * @param prefetch The number if messages to initially fetch.
      * @param retryPolicy Retry policy to apply when fetching a new AMQP channel.
-     * @param parentConnection Represents the parent connection.
      *
      * @throws NullPointerException if {@code retryPolicy} is null.
      * @throws IllegalArgumentException if {@code prefetch} is less than 0.
      */
-    public ServiceBusReceiveLinkProcessor(int prefetch, AmqpRetryPolicy retryPolicy,
-        Disposable parentConnection, AmqpErrorContext errorContext) {
+    public ServiceBusReceiveLinkProcessor(int prefetch, AmqpRetryPolicy retryPolicy, AmqpErrorContext errorContext) {
         this.retryPolicy = Objects.requireNonNull(retryPolicy, "'retryPolicy' cannot be null.");
-        this.parentConnection = Objects.requireNonNull(parentConnection, "'parentConnection' cannot be null.");
         this.errorContext = errorContext;
 
         if (prefetch <= 0) {
@@ -221,8 +217,7 @@ public class ServiceBusReceiveLinkProcessor extends FluxProcessor<ServiceBusRece
                         onError(error);
                     },
                     () -> {
-                        if (parentConnection.isDisposed() || isTerminated()
-                            || upstream == Operators.cancelledSubscription()) {
+                        if (isTerminated() || upstream == Operators.cancelledSubscription()) {
                             logger.info("Terminal state reached. Disposing of link processor.");
                             dispose();
                         } else {
@@ -313,17 +308,13 @@ public class ServiceBusReceiveLinkProcessor extends FluxProcessor<ServiceBusRece
         final String linkName = link != null ? link.getLinkName() : "n/a";
         final String entityPath = link != null ? link.getEntityPath() : "n/a";
 
-        if (retryInterval != null && !parentConnection.isDisposed() && upstream != Operators.cancelledSubscription()) {
+        if (retryInterval != null && upstream != Operators.cancelledSubscription()) {
             logger.warning("linkName[{}] entityPath[{}]. Transient error occurred. Attempt: {}. Retrying after {} ms.",
                 linkName, entityPath, attempt, retryInterval.toMillis(), throwable);
 
             retrySubscription = Mono.delay(retryInterval).subscribe(i -> requestUpstream());
 
             return;
-        }
-
-        if (parentConnection.isDisposed()) {
-            logger.info("Parent connection is disposed. Not reopening on error.");
         }
 
         logger.warning("linkName[{}] entityPath[{}]. Non-retryable error occurred in AMQP receive link.",
