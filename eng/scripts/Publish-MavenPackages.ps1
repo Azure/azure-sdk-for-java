@@ -246,9 +246,6 @@ foreach ($packageDetail in $packageDetails) {
     }
   }
 
-  $timelineRecordId = New-Guid
-  Write-Host "##vso[task.logdetail id=$(New-Guid);name=$($packageDetail.FullyQualifiedName);type=build;order=1]$($packageDetail.FullyQualifiedName)"
-
   if ($additionalAssociatedArtifacts -ne $null) {
     $commaDelimitedFileNames = ""
     $additionalAssociatedArtifacts | ForEach-Object { $commaDelimitedFileNames += ",$($_.File.FullName)" }
@@ -319,5 +316,4 @@ foreach ($packageDetail in $packageDetails) {
   else {
     throw "Repository URL must be either an Azure Artifacts feed, or a SonaType Nextus feed."
   }
-
 }
