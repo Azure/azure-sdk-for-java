@@ -217,8 +217,11 @@ public class ServiceBusReceiveLinkProcessor extends FluxProcessor<ServiceBusRece
                         onError(error);
                     },
                     () -> {
-                        if (isTerminated() || upstream == Operators.cancelledSubscription()) {
-                            logger.info("Terminal state reached. Disposing of link processor.");
+                        if (isTerminated()) {
+                            logger.info("Processor is terminated. Disposing of link processor.");
+                            dispose();
+                        } else if (upstream == Operators.cancelledSubscription()) {
+                            logger.info("Upstream has completed. Disposing of link processor.");
                             dispose();
                         } else {
                             logger.info("Receive link endpoint states are closed. Requesting another.");
