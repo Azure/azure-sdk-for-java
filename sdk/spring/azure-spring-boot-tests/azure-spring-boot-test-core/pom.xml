@@ -20,24 +20,9 @@
       <version>2.3.0.RELEASE</version> <!-- {x-version-update;org.springframework.boot:spring-boot;external_dependency} -->
     </dependency>
     <dependency>
-      <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-autoconfigure</artifactId>
-      <version>2.3.0.RELEASE</version> <!-- {x-version-update;org.springframework.boot:spring-boot-autoconfigure;external_dependency} -->
-    </dependency>
-    <dependency>
-      <groupId>org.springframework</groupId>
-      <artifactId>spring-core</artifactId>
-      <version>5.2.6.RELEASE</version> <!-- {x-version-update;org.springframework:spring-core;external_dependency} -->
-    </dependency>
-    <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-context</artifactId>
       <version>5.2.6.RELEASE</version> <!-- {x-version-update;org.springframework:spring-context;external_dependency} -->
-    </dependency>
-    <dependency>
-      <groupId>org.springframework</groupId>
-      <artifactId>spring-beans</artifactId>
-      <version>5.2.6.RELEASE</version> <!-- {x-version-update;org.springframework:spring-beans;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>
