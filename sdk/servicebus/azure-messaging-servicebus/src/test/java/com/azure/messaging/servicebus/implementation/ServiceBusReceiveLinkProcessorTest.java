@@ -29,6 +29,8 @@ import reactor.test.StepVerifier;
 import reactor.test.publisher.TestPublisher;
 
 import java.time.Duration;
+import java.util.concurrent.Semaphore;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Supplier;
 
@@ -40,8 +42,10 @@ import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
@@ -160,7 +164,7 @@ class ServiceBusReceiveLinkProcessorTest {
             .thenCancel()
             .verify();
 
-        verify(link1).addCredits(eq(PREFETCH));
+        verify(link1).addCredits(eq(backpressure));
         verify(link1).setEmptyCreditListener(creditSupplierCaptor.capture());
 
         Supplier<Integer> value = creditSupplierCaptor.getValue();
@@ -175,22 +179,29 @@ class ServiceBusReceiveLinkProcessorTest {
      * Verifies we don't set the back pressure when it is too low.
      */
     @Test
-    void respectsBackpressureLessThanMinimum() {
+    void respectsBackpressureLessThanMinimum() throws InterruptedException {
         // Arrange
+        final Semaphore semaphore = new Semaphore(1);
         final int backpressure = -1;
         ServiceBusReceiveLinkProcessor processor = Flux.<ServiceBusReceiveLink>create(sink -> sink.next(link1))
             .subscribeWith(linkProcessor);
         when(link1.getCredits()).thenReturn(1);
 
         // Act
+        semaphore.acquire();
         processor.subscribe(
             e -> System.out.println("message: " + e),
             Assertions::fail,
             () -> System.out.println("Complete."),
-            s -> s.request(backpressure));
+            s -> {
+                s.request(backpressure);
+                semaphore.release();
+            });
 
         // Assert
-        verify(link1).addCredits(eq(PREFETCH));
+        assertTrue(semaphore.tryAcquire(10, TimeUnit.SECONDS));
+
+        verify(link1, never()).addCredits(anyInt());
         verify(link1).setEmptyCreditListener(creditSupplierCaptor.capture());
 
         Supplier<Integer> value = creditSupplierCaptor.getValue();
@@ -594,10 +605,12 @@ class ServiceBusReceiveLinkProcessorTest {
     void backpressureRequestOnlyEmitsThatAmount() {
         // Arrange
         final int backpressure = 10;
+        final int existingCredits = 1;
+        final int expectedCredits  = backpressure - existingCredits;
         ServiceBusReceiveLinkProcessor processor = Flux.just(link1).subscribeWith(linkProcessor);
         FluxSink<AmqpEndpointState> sink = endpointProcessor.sink();
 
-        when(link1.getCredits()).thenReturn(1);
+        when(link1.getCredits()).thenReturn(existingCredits);
 
         // Act & Assert
         StepVerifier.create(processor, backpressure)
@@ -617,7 +630,7 @@ class ServiceBusReceiveLinkProcessorTest {
         assertFalse(processor.hasError());
         assertNull(processor.getError());
 
-        verify(link1).addCredits(eq(PREFETCH));
+        verify(link1).addCredits(expectedCredits);
         verify(link1).setEmptyCreditListener(any());
     }
 
