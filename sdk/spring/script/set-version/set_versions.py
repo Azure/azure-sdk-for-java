@@ -40,7 +40,7 @@ def set_versions_in_file(file, version_map):
     version_update_marker = re.compile(r'\{(x-version-update|x-include-update);([^;]+);([^}]+)\}')
     newlines = []
     file_changed = False
-    print('processing: ' + file)
+    print('Processing: ' + file)
     try:
         with open(file, encoding='utf-8') as f:
             for line in f:
@@ -56,6 +56,9 @@ def set_versions_in_file(file, version_map):
                     line1 = re.sub(r'(?<=<version>).+?(?=</version>)', new_version, line)
                     line2 = re.sub(r'(?<=<include>).+?(?=</include>)', new_include_string, line1)
                     newlines.append(line2)
+                    print("    Updated item:")
+                    print("        Original value: " + line.strip())
+                    print("        New value:      " + line2.strip())
                     file_changed = True
                 else:
                     newlines.append(line)
