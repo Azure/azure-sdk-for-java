@@ -136,9 +136,11 @@ There is a minor namespace change in the exception class. To be specific, the pr
 **In old version (`com.microsoft.azure.management.**`)**
 
 ```java
-final String resourceGroupName = random(8);
+final String resourceGroupName = "invalid resource group name";
 try {
-    ResourceGroup resourceGroup = azure.resourceGroups().getByName(resourceGroupName);
+    azure.resourceGroups().define(resourceGroupName)
+        .withRegion(Region.US_WEST2)
+        .create();
 } catch (CloudException e) {
     System.err.printf("Response code: %s%n", e.body().code());
     System.err.printf("Response message: %s%n", e.body().message());
@@ -148,9 +150,11 @@ try {
 **Equivalent in new version (`com.azure.resourcemanager.**`)**
 
 ```java
-final String resourceGroupName = randomString("rg", 8);
+final String resourceGroupName = "invalid resource group name";
 try {
-    ResourceGroup resourceGroup = azure.resourceGroups().getByName(resourceGroupName);
+    azure.resourceGroups().define(resourceGroupName)
+        .withRegion(Region.US_WEST2)
+        .create();
 } catch (ManagementException e) {
     System.err.printf("Response code: %s%n", e.getValue().getCode());
     System.err.printf("Response message: %s%n", e.getValue().getMessage());
