@@ -42,8 +42,12 @@ jobs:
     # Below will build the image and push it to azure container registry
     - pwsh: |
         cd $(Agent.TempDirectory)/ctl
+        Write-Host "docker build . -t java-ctl"
         docker build . -t java-ctl
+        Write-Host "az acr login --name $(ContainerRegistryName) -u $(ContainerRegistryUserName) -p $(java-cosmos-container-registry-pwd)"
         az acr login --name $(ContainerRegistryName) -u $(ContainerRegistryUserName) -p $(java-cosmos-container-registry-pwd)
+        Write-Host "docker tag java-ctl $(ContainerRegistryUrl)/javactl/benchmark"
         docker tag java-ctl $(ContainerRegistryUrl)/javactl/benchmark
+        Write-Host "docker push $(ContainerRegistryUrl)/javactl/benchmark"
         docker push $(ContainerRegistryUrl)/javactl/benchmark
       displayName: 'Build and push docker image to registry'
