@@ -15,7 +15,6 @@ import com.azure.core.amqp.implementation.TracerProvider;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
-import com.azure.core.experimental.serializer.ObjectSerializer;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
@@ -111,7 +110,6 @@ public class EventHubProducerAsyncClient implements Closeable {
     private final Scheduler scheduler;
     private final boolean isSharedConnection;
     private final Runnable onClientClose;
-    private final ObjectSerializer serializer;
 
     /**
      * Creates a new instance of this {@link EventHubProducerAsyncClient} that can send messages to a single partition
@@ -119,10 +117,8 @@ public class EventHubProducerAsyncClient implements Closeable {
      * load balance the messages amongst available partitions.
      */
     EventHubProducerAsyncClient(String fullyQualifiedNamespace, String eventHubName,
-                                    EventHubConnectionProcessor connectionProcessor, AmqpRetryOptions retryOptions,
-                                    TracerProvider tracerProvider, MessageSerializer messageSerializer,
-                                    ObjectSerializer serializer, Scheduler scheduler, boolean isSharedConnection,
-                                    Runnable onClientClose) {
+        EventHubConnectionProcessor connectionProcessor, AmqpRetryOptions retryOptions, TracerProvider tracerProvider,
+        MessageSerializer messageSerializer, Scheduler scheduler, boolean isSharedConnection, Runnable onClientClose) {
         this.fullyQualifiedNamespace = Objects.requireNonNull(fullyQualifiedNamespace,
             "'fullyQualifiedNamespace' cannot be null.");
         this.eventHubName = Objects.requireNonNull(eventHubName, "'eventHubName' cannot be null.");
@@ -136,7 +132,6 @@ public class EventHubProducerAsyncClient implements Closeable {
         this.retryPolicy = getRetryPolicy(retryOptions);
         this.scheduler = scheduler;
         this.isSharedConnection = isSharedConnection;
-        this.serializer = serializer;
     }
 
     /**
@@ -213,11 +208,6 @@ public class EventHubProducerAsyncClient implements Closeable {
             return monoError(logger, new NullPointerException("'options' cannot be null."));
         }
 
-        Mono<EventDataBatch> optionsError = validateBatchOptions(options);
-        if (optionsError != null) {
-            return optionsError;
-        }
-
         final String partitionKey = options.getPartitionKey();
         final String partitionId = options.getPartitionId();
         final int batchMaxSize = options.getMaximumSizeInBytes();
@@ -255,71 +245,6 @@ public class EventHubProducerAsyncClient implements Closeable {
 
                     return Mono.just(new EventDataBatch(batchSize, partitionId, partitionKey, link::getErrorContext,
                         tracerProvider, link.getEntityPath(), link.getHostname()));
-                }));
-    }
-
-    /**
-     * Creates an {@link ObjectBatch} that can fit as many serialized objects as events as the transport allows.
-     * @param objectType type of object in the batch
-     * @param <T> object type
-     *
-     * @return A new {@link ObjectBatch} that can fit as many serialized objects as events as the transport allows.
-     */
-    public <T> Mono<ObjectBatch<T>> createBatch(Class<T> objectType) {
-        return createBatch(objectType, DEFAULT_BATCH_OPTIONS);
-    }
-
-    /**
-     * Creates an {@link ObjectBatch} configured with the options specified.
-     *
-     * @param objectType type of object in the batch
-     * @param <T> object type
-     * @param options A set of options used to configure the {@link ObjectBatch}.
-     * @return A new {@link ObjectBatch} that can fit as many events as the transport allows.
-     * @throws NullPointerException if {@code options} is null.
-     */
-    public <T> Mono<ObjectBatch<T>> createBatch(Class<T> objectType, CreateBatchOptions options) {
-        if (objectType == null) {
-            return monoError(logger, new IllegalArgumentException("'objectType' cannot be null."));
-        }
-        if (serializer == null) {
-            return monoError(logger,
-                new NullPointerException("No serializer set for performing object serialization for ObjectBatch."));
-        }
-        if (options == null) {
-            return monoError(logger, new NullPointerException("'options' cannot be null."));
-        }
-
-        Mono<ObjectBatch<T>> optionsError = validateBatchOptions(options);
-        if (optionsError != null) {
-            return optionsError;
-        }
-
-        final String partitionKey = options.getPartitionKey();
-        final String partitionId = options.getPartitionId();
-        final int batchMaxSize = options.getMaximumSizeInBytes();
-
-        return getSendLink(partitionId)
-            .flatMap(link -> link.getLinkSize()
-                .flatMap(size -> {
-                    final int maximumLinkSize = size > 0
-                        ? size
-                        : MAX_MESSAGE_LENGTH_BYTES;
-
-                    if (batchMaxSize > maximumLinkSize) {
-                        return monoError(logger,
-                            new IllegalArgumentException(String.format(Locale.US,
-                                "BatchOptions.maximumSizeInBytes (%s bytes) is larger than the link size (%s bytes).",
-                                batchMaxSize, maximumLinkSize)));
-                    }
-
-                    final int batchSize = batchMaxSize > 0
-                        ? batchMaxSize
-                        : maximumLinkSize;
-
-                    return Mono.just(new ObjectBatch<>(batchSize, partitionId, partitionKey, objectType,
-                        link::getErrorContext, tracerProvider, serializer,
-                        link.getEntityPath(), link.getHostname()));
                 }));
     }
 
@@ -583,22 +508,6 @@ public class EventHubProducerAsyncClient implements Closeable {
 
         return connectionProcessor
             .flatMap(connection -> connection.createSendLink(linkName, entityPath, retryOptions));
-    }
-
-    private <T> Mono<T> validateBatchOptions(CreateBatchOptions options) {
-        if (!CoreUtils.isNullOrEmpty(options.getPartitionKey())
-            && !CoreUtils.isNullOrEmpty(options.getPartitionId())) {
-            return monoError(logger, new IllegalArgumentException(String.format(Locale.US,
-                "CreateBatchOptions.getPartitionKey() and CreateBatchOptions.getPartitionId() are both set. "
-                    + "Only one or the other can be used. partitionKey: '%s'. partitionId: '%s'",
-                options.getPartitionKey(), options.getPartitionId())));
-        } else if (!CoreUtils.isNullOrEmpty(options.getPartitionKey())
-            && options.getPartitionKey().length() > MAX_PARTITION_KEY_LENGTH) {
-            return monoError(logger, new IllegalArgumentException(String.format(Locale.US,
-                "Partition key '%s' exceeds the maximum allowed length: '%s'.", options.getPartitionKey(),
-                MAX_PARTITION_KEY_LENGTH)));
-        }
-        return null;
     }
 
     /**
