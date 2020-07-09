@@ -12,7 +12,7 @@
 * [Feature List](#feature-list)
 * [Quick Start](#quick-start)
 * [Query Partitioned Collection](QueryPartitionedCollection.md)
-* [Snapshots](#snapshots)
+* [Beta version package](#Beta version package)
 * [Troubleshooting](#Troubleshooting)
 * [Contributing](#Contributing)
 * [Code of Conduct](#code-of-conduct)
@@ -48,14 +48,24 @@ Version mapping between spring boot and spring-data-cosmosdb:
   By default, collection name will be class name of user domain class. To customize it, add the `@Document(collection="myCustomCollectionName")` annotation to the domain class. The collection field also supports SpEL expressions (eg. `collection = "${dynamic.collection.name}"` or `collection = "#{@someBean.getContainerName()}"`) in order to provide collection names programmatically/via configuration properties.
 - Custom IndexingPolicy
   By default, IndexingPolicy will be set by azure service. To customize it add annotation `@DocumentIndexingPolicy` to domain class. This annotation has 4 attributes to customize, see following:
+<!-- embedme src/samples/java/com/azure/cosmos/DocumentIndexingPolicyCodeSnippet.java#L16-L26 -->
 ```java
-   boolean automatic;     // Indicate if indexing policy use automatic or not
-   IndexingMode mode;     // Indexing policy mode, option Consistent|Lazy|None.
-   String[] includePaths; // Included paths for indexing
-   String[] excludePaths; // Excluded paths for indexing
+    // Indicate if indexing policy use automatic or not
+    boolean automatic() default Constants.DEFAULT_INDEXINGPOLICY_AUTOMATIC;
+
+    // Indexing policy mode, option Consistent|Lazy|None.
+    IndexingMode mode() default IndexingMode.CONSISTENT;
+
+    // Included paths for indexing
+    String[] includePaths() default {};
+
+    // Excluded paths for indexing
+    String[] excludePaths() default {};
 ```
+
 - Supports Optimistic Locking for specific collections, which means upserts/deletes by document will fail with an exception in case the document was modified by another process in the meanwhile. To enable Optimistic Locking for a collection, just create a string `_etag` field and mark it with the `@Version` annotation. See the following:
 
+<!-- embedme src/samples/java/com/azure/cosmos/MyDocument.java#L12-L18 -->
 ```java
 @Document(collection = "myCollection")
 class MyDocument {
@@ -70,11 +80,12 @@ class MyDocument {
 - Supports [Spring Data pagable and sort](https://docs.spring.io/spring-data/commons/docs/current/reference/html/#repositories.special-parameters).
   - Based on available RUs on the database account, cosmosDB can return documents less than or equal to the requested size.
   - Due to this variable number of returned documents in every iteration, user should not rely on the totalPageSize, and instead iterating over pageable should be done in this way.  
+<!-- embedme src/samples/java/com/azure/cosmos/PageableRepositoryCodeSnippet.java#L27-L34 -->
 ```java
     final CosmosPageRequest pageRequest = new CosmosPageRequest(0, pageSize, null);
-    Page<T> page = tRepository.findAll(pageRequest);
+    Page<T> page = repository.findAll(pageRequest);
     List<T> pageContent = page.getContent();
-    while(page.hasNext()) {
+    while (page.hasNext()) {
         Pageable nextPageable = page.nextPageable();
         page = repository.findAll(nextPageable);
         pageContent = page.getContent();
@@ -83,6 +94,7 @@ class MyDocument {
 - Supports [spring-boot-starter-data-rest](https://projects.spring.io/spring-data-rest/).
 - Supports List and nested type in domain class.
 - Configurable ObjectMapper bean with unique name `cosmosdbObjectMapper`, only configure customized ObjectMapper if you really need to. e.g.,
+<!-- embedme src/samples/java/com/azure/cosmos/ObjectMapperConfigurationCodeSnippet.java#L15-L18 -->
 ```java
    @Bean(name = "cosmosdbObjectMapper")
    public ObjectMapper objectMapper() {
@@ -94,13 +106,14 @@ class MyDocument {
 
 ### Add the dependency
 `spring-data-cosmosdb` is published on Maven Central Repository.  
-If you are using Maven, add the following dependency.  
+If you are using Maven, add the following dependency. 
 
+[//]: # "{x-version-update-start;com.microsoft.azure:spring-data-cosmosdb;current}"
 ```xml
 <dependency>
     <groupId>com.microsoft.azure</groupId>
     <artifactId>spring-data-cosmosdb</artifactId>
-    <version>2.2.4</version>
+    <version>3.0.0-beta.1</version>
 </dependency>
 ```
 
@@ -121,12 +134,14 @@ For reactive repository support, use `@EnableReactiveCosmosRepositories`
 2.2.x supports Response Diagnostics String and Query Metrics. 
 Set `populateQueryMetrics` flag to true in application.properties to enable query metrics.
 In addition to setting the flag, implement `ResponseDiagnosticsProcessor` to log diagnostics information. 
+<!-- embedme src/samples/java/com/azure/cosmos/AppConfiguration.java#L19-L63 -->
 
 ```java
 @Configuration
 @EnableCosmosRepositories
-@Slf4j
 public class AppConfiguration extends AbstractCosmosConfiguration {
+
+    private static final Logger logger = LoggerFactory.getLogger(AppConfiguration.class);
 
     @Value("${azure.cosmosdb.uri}")
     private String uri;
@@ -147,7 +162,7 @@ public class AppConfiguration extends AbstractCosmosConfiguration {
 
     public CosmosDBConfig getConfig() {
         this.cosmosKeyCredential = new CosmosKeyCredential(key);
-        CosmosDbConfig cosmosdbConfig = CosmosDBConfig.builder(uri, 
+        CosmosDBConfig cosmosdbConfig = CosmosDBConfig.builder(uri, 
             this.cosmosKeyCredential, dbName).build();
         cosmosdbConfig.setPopulateQueryMetrics(populateQueryMetrics);
         cosmosdbConfig.setResponseDiagnosticsProcessor(new ResponseDiagnosticsProcessorImplementation());
@@ -162,30 +177,24 @@ public class AppConfiguration extends AbstractCosmosConfiguration {
     
         @Override
         public void processResponseDiagnostics(@Nullable ResponseDiagnostics responseDiagnostics) {
-            log.info("Response Diagnostics {}", responseDiagnostics);
+            logger.info("Response Diagnostics {}", responseDiagnostics);
         }
     }
 
 }
 ```
 Or if you want to customize your config:
+<!-- embedme src/samples/java/com/azure/cosmos/AppConfigurationCodeSnippet.java#L38-L44 -->
 ```java
-public CosmosDBConfig getConfig() {
-    this.cosmosKeyCredential = new CosmosKeyCredential(key);
-    CosmosDBConfig cosmosDbConfig = CosmosDBConfig.builder(uri, this.cosmosKeyCredential, dbName).build();
-    cosmosDbConfig.getConnectionPolicy().setConnectionMode(ConnectionMode.DIRECT);
-    cosmosDbConfig.getConnectionPolicy().setMaxPoolSize(1000);
-    return cosmosDbConfig;
-}
+    public CosmosDBConfig getConfig() {
+        this.cosmosKeyCredential = new CosmosKeyCredential(key);
+        CosmosDBConfig cosmosDbConfig = CosmosDBConfig.builder(uri, this.cosmosKeyCredential, dbName).build();
+        cosmosDbConfig.getConnectionPolicy().connectionMode(ConnectionMode.DIRECT);
+        cosmosDbConfig.getConnectionPolicy().maxPoolSize(1000);
+        return cosmosDbConfig;
+    }
 ```
-By default, `@EnableCosmosRepositories` will scan the current package for any interfaces that extend one of Spring Data's repository interfaces. Using it to annotate your Configuration class to scan a different root package by type if your project layout has multiple projects and it's not finding your repositories.
-```java
-@Configuration
-@EnableCosmosRepositories(basePackageClass=UserRepository.class)
-public class AppConfiguration extends AbstractCosmosConfiguration {
-    // configuration code
-}
-```
+By default, `@EnableCosmosRepositories` will scan the current package for any interfaces that extend one of Spring Data's repository interfaces. Using it to annotate your Configuration class to scan a different root package by `@EnableCosmosRepositories(basePackageClass=UserRepository.class)` if your project layout has multiple projects and it's not finding your repositories.
 
 
 ### Define an entity
@@ -196,7 +205,7 @@ You can define entities by adding the `@Document` annotation and specifying prop
 Containers are created automatically unless you don't want them to: Set `autoCreateCollection` to false in `@Document` annotation to disable auto creation of containers. 
 
 Note: By default request units assigned to newly created containers is 4000. Specify different ru value to customize request units for container created by the SDK (minimum RU value is 400). 
-
+<!-- embedme src/samples/java/com/azure/cosmos/User.java#L12-L60 -->
 ```java
 @Document(collection = "myCollection", ru = "400")
 public class User {
@@ -207,8 +216,6 @@ public class User {
     @PartitionKey
     private String lastName;
  
-    ... // setters and getters
-    
     public User() {
         // If you do not want to create a default constructor, 
         // use annotation @JsonCreator and @JsonProperty in the full args constructor
@@ -223,6 +230,30 @@ public class User {
     @Override
     public String toString() {
         return String.format("User: %s %s, %s", firstName, lastName, id);
+}
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 }
 ```
@@ -230,27 +261,25 @@ public class User {
 
 Annotation `@Document(collection="mycollection")` is used to specify collection name in Azure Cosmos DB.
 Annotation `@PartitionKey` on `lastName` field is used to specify this field be partition key in Azure Cosmos DB.
-
+<!-- embedme src/samples/java/com/azure/cosmos/UserSample.java#L12-L17 -->
 ```java
 @Document(collection = "mycollection")
-public class User {
+public class UserSample {
     @Id
     private String emailAddress;
 
-    ...
 }
 ```
 
 ### Create repositories
 Extends CosmosRepository interface, which provides Spring Data repository support.
+<!-- embedme src/samples/java/com/azure/cosmos/UserRepository.java#L15-L19 -->
 
 ```java
-import CosmosRepository;
-import org.springframework.stereotype.Repository;
-
 @Repository
 public interface UserRepository extends CosmosRepository<User, String> {
     List<User> findByFirstName(String firstName); 
+    User findOne(String id, String lastName);
 }
 ```
 
@@ -258,6 +287,7 @@ public interface UserRepository extends CosmosRepository<User, String> {
 
 ### Create an Application class
 Here create an application class with all the components
+<!-- embedme src/samples/java/com/azure/cosmos/SampleApplication.java#L15-L49 -->
 
 ```java
 @SpringBootApplication
@@ -273,7 +303,7 @@ public class SampleApplication implements CommandLineRunner {
         SpringApplication.run(SampleApplication.class, args);
     }
 
-    public void run(String... var1) throws Exception {
+    public void run(String... var1) {
 
         final User testUser = new User("testId", "testFirstName", "testLastName");
 
@@ -281,7 +311,7 @@ public class SampleApplication implements CommandLineRunner {
         repository.save(testUser);
 
         // to find by Id, please specify partition key value if collection is partitioned
-        final User result = repository.findOne(testUser.getId(), testUser.getLastName);
+        final User result = repository.findOne(testUser.getId(), testUser.getLastName());
         // if emailAddress is mapped to id, then 
         // final User result = respository.findOne(testUser.getEmailAddress(), testUser.getLastName());
         
@@ -298,9 +328,9 @@ public class SampleApplication implements CommandLineRunner {
 ```
 Autowired UserRepository interface, then can do save, delete and find operations. Spring Data Azure Cosmos DB uses the CosmosTemplate to execute the queries behind *find*, *save* methods. You can use the template yourself for more complex queries.
 
-## Beta version nightly built package
+## Beta version package
 
-Beta version built from `master` branch are available, you can refer to the [doc](https://github.com/Azure/azure-sdk-for-java/blob/master/CONTRIBUTING.md#nightly-package-builds) to use the beta version packages.
+Beta version built from `master` branch are available, you can refer to the [instruction](https://github.com/Azure/azure-sdk-for-java/blob/master/CONTRIBUTING.md#nightly-package-builds) to use beta version packages.
 
 
 ## Troubleshooting
