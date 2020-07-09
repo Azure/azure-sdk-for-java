@@ -52,7 +52,7 @@ def set_versions_in_file(file, version_map):
                         continue
                     new_artifact = version_map[name]
                     new_version = new_artifact.version
-                    new_include_string = new_artifact.group_id + ':' + new_artifact.artifact_id + '[' + new_version + ']'
+                    new_include_string = new_artifact.group_id + ':' + new_artifact.artifact_id + ':[' + new_version + ']'
                     line1 = re.sub(r'(?<=<version>).+?(?=</version>)', new_version, line)
                     line2 = re.sub(r'(?<=<include>).+?(?=</include>)', new_include_string, line1)
                     newlines.append(line2)
