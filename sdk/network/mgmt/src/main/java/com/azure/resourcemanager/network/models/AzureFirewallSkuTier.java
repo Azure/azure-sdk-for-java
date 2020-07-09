@@ -4,41 +4,28 @@
 
 package com.azure.resourcemanager.network.models;
 
+import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
+import java.util.Collection;
 
 /** Defines values for AzureFirewallSkuTier. */
-public enum AzureFirewallSkuTier {
-    /** Enum value Standard. */
-    STANDARD("Standard");
-
-    /** The actual serialized value for a AzureFirewallSkuTier instance. */
-    private final String value;
-
-    AzureFirewallSkuTier(String value) {
-        this.value = value;
-    }
+public final class AzureFirewallSkuTier extends ExpandableStringEnum<AzureFirewallSkuTier> {
+    /** Static value Standard for AzureFirewallSkuTier. */
+    public static final AzureFirewallSkuTier STANDARD = fromString("Standard");
 
     /**
-     * Parses a serialized value to a AzureFirewallSkuTier instance.
+     * Creates or finds a AzureFirewallSkuTier from its string representation.
      *
-     * @param value the serialized value to parse.
-     * @return the parsed AzureFirewallSkuTier object, or null if unable to parse.
+     * @param name a name to look for.
+     * @return the corresponding AzureFirewallSkuTier.
      */
     @JsonCreator
-    public static AzureFirewallSkuTier fromString(String value) {
-        AzureFirewallSkuTier[] items = AzureFirewallSkuTier.values();
-        for (AzureFirewallSkuTier item : items) {
-            if (item.toString().equalsIgnoreCase(value)) {
-                return item;
-            }
-        }
-        return null;
+    public static AzureFirewallSkuTier fromString(String name) {
+        return fromString(name, AzureFirewallSkuTier.class);
     }
 
-    @JsonValue
-    @Override
-    public String toString() {
-        return this.value;
+    /** @return known AzureFirewallSkuTier values. */
+    public static Collection<AzureFirewallSkuTier> values() {
+        return values(AzureFirewallSkuTier.class);
     }
 }

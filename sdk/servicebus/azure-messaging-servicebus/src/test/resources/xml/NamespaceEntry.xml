@@ -1,0 +1,21 @@
+<entry xmlns="http://www.w3.org/2005/Atom">
+  <id>https://shivangiservicebus.servicebus.windows.net/$namespaceinfo?api-version=2017-04</id>
+  <title type="text">ShivangiServiceBus</title>
+  <updated>2020-07-02T09:53:19Z</updated>
+  <author>
+    <name>ShivangiServiceBus</name>
+  </author>
+  <link rel="self" href="https://shivangiservicebus.servicebus.windows.net/$namespaceinfo?api-version=2017-04"></link>
+  <content type="application/xml">
+    <NamespaceInfo xmlns="http://schemas.microsoft.com/netservices/2010/10/servicebus/connect"
+    >
+      <Alias>MyServiceBusFallback</Alias>
+      <CreatedTime>2020-04-09T08:38:55.807Z</CreatedTime>
+      <MessagingSKU>Premium</MessagingSKU>
+      <MessagingUnits>1</MessagingUnits>
+      <ModifiedTime>2020-06-12T06:34:38.383Z</ModifiedTime>
+      <Name>ShivangiServiceBus</Name>
+      <NamespaceType>Messaging</NamespaceType>
+    </NamespaceInfo>
+  </content>
+</entry>

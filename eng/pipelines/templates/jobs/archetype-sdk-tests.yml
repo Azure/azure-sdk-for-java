@@ -54,6 +54,9 @@ parameters:
     publishJUnitResults: false
     goals: 'test'
   TestResultsFiles: ''
+  SubscriptionConfiguration: $(sub-config-azure-cloud-test-resources)
+  ArmTemplateParameters: '@{}'
+  Location: ''
 
 jobs:
   - job: ${{ parameters.TestName }}
@@ -63,9 +66,11 @@ jobs:
       - template: ../variables/globals.yml
       # Default $(SubscriptionConfiguration) if the matrix does not specify a $(SubscriptionConfiguration)
       - name: SubscriptionConfiguration
-        value: $(sub-config-azure-cloud-test-resources)
+        value: ${{ parameters.SubscriptionConfiguration }}
       - name: ArmTemplateParameters
-        value: '@{}'
+        value: ${{ parameters.ArmTemplateParameters }}
+      - name: Location
+        value: ${{ parameters.Location }}
 
     strategy:
       matrix: ${{ parameters.Matrix }}
@@ -85,6 +90,7 @@ jobs:
             ServiceDirectory: '${{ parameters.ServiceDirectory }}'
             SubscriptionConfiguration: $(SubscriptionConfiguration)
             ArmTemplateParameters: $(ArmTemplateParameters)
+            Location: $(Location)
 
       - ${{ parameters.PreRunSteps }}
 
