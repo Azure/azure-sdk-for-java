@@ -21,9 +21,9 @@ class Artifact:
         self.group_id = items[0]
         self.artifact_id = items[1]
         self.version = items[2]
-        self.name = self.group_id + ":" + self.artifact_id
+        self.name = self.group_id + ':' + self.artifact_id
     def __str__(self):
-        return self.group_id + ":" + self.artifact_id + ":" + self.version
+        return self.group_id + ':' + self.artifact_id + ':' + self.version
 
 def load_version_map_from_file(the_file, version_map):
     with open(the_file) as f:
@@ -52,13 +52,13 @@ def set_versions_in_file(file, version_map):
                         continue
                     new_artifact = version_map[name]
                     new_version = new_artifact.version
-                    new_include_string = new_artifact.group_id + ":" + new_artifact.artifact_id + "[" + new_version + "]"
+                    new_include_string = new_artifact.group_id + ':' + new_artifact.artifact_id + '[' + new_version + ']'
                     line1 = re.sub(r'(?<=<version>).+?(?=</version>)', new_version, line)
                     line2 = re.sub(r'(?<=<include>).+?(?=</include>)', new_include_string, line1)
                     newlines.append(line2)
-                    print("    Updated item:")
-                    print("        Original value: " + line.strip())
-                    print("        New value:      " + line2.strip())
+                    print('    Updated item:')
+                    print('        Original value: ' + line.strip())
+                    print('        New value:      ' + line2.strip())
                     file_changed = True
                 else:
                     newlines.append(line)
@@ -67,7 +67,7 @@ def set_versions_in_file(file, version_map):
                 for line in newlines:
                     f.write(line)
     except Exception as e:
-        print("Unexpected exception: " + str(e))
+        print('Unexpected exception: ' + str(e))
 
 def set_versions_in_folder(folder, version_map):
     for root, dirs, files in os.walk(os.path.normpath(folder), topdown=False):
@@ -95,8 +95,8 @@ def set_versions_by_config():
 
 def change_to_root_dir():
     os.chdir(os.path.dirname(os.path.realpath(__file__)))
-    os.chdir("../../../..")
-    print("Working directory: " + os.getcwd())
+    os.chdir('../../../..')
+    print('Working directory: ' + os.getcwd())
 
 def main():
     start_time = time.time()
