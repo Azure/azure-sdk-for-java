@@ -6,6 +6,7 @@ package com.azure.ai.formrecognizer;
 import com.azure.ai.formrecognizer.models.OperationResult;
 import com.azure.ai.formrecognizer.models.RecognizedForm;
 import com.azure.core.credential.AzureKeyCredential;
+import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollerFlux;
 import reactor.core.publisher.Mono;
 
@@ -52,7 +53,7 @@ public class RecognizeCustomFormsAsync {
         Mono<List<RecognizedForm>> recognizeFormResult = recognizeFormPoller
             .last()
             .flatMap(recognizeFormPollOperation -> {
-                if (recognizeFormPollOperation.getStatus().isComplete()) {
+                if (LongRunningOperationStatus.SUCCESSFULLY_COMPLETED == recognizeFormPollOperation.getStatus()) {
                     // training completed successfully, retrieving final result.
                     return recognizeFormPollOperation.getFinalResult();
                 } else {

@@ -56,7 +56,8 @@ public class AdvancedDiffLabeledUnlabeledDataAsync {
 
         PollerFlux<OperationResult, List<RecognizedForm>> labeledCustomFormPoller =
             client.beginRecognizeCustomForms(toFluxByteBuffer(new ByteArrayInputStream(fileContent)),
-                analyzeFile.length(), "{labeled_model_Id}", new RecognizeOptions()
+                analyzeFile.length(), "{labeled_model_Id}",
+                new RecognizeOptions()
                     .setContentType(FormContentType.APPLICATION_PDF)
                     .setIncludeFieldElements(true)
                     .setPollInterval(Duration.ofSeconds(5)));

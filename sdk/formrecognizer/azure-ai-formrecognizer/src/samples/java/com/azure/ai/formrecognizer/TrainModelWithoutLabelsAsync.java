@@ -45,7 +45,7 @@ public class TrainModelWithoutLabelsAsync {
         Mono<CustomFormModel> customFormModelResult = trainingPoller
             .last()
             .flatMap(trainingOperationResponse -> {
-                if (trainingOperationResponse.getStatus().equals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED)) {
+                if (LongRunningOperationStatus.SUCCESSFULLY_COMPLETED == trainingOperationResponse.getStatus()) {
                     // training completed successfully, retrieving final result.
                     return trainingOperationResponse.getFinalResult();
                 } else {

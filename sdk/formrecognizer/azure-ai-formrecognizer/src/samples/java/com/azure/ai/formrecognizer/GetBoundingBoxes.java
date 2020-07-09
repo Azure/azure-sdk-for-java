@@ -40,10 +40,10 @@ public class GetBoundingBoxes {
 
         List<RecognizedForm> recognizedForms = recognizeFormPoller.getFinalResult();
 
-        System.out.println("--------RECOGNIZING FORM --------");
+        System.out.println("-------- RECOGNIZING FORM --------");
         for (int i = 0; i < recognizedForms.size(); i++) {
             final RecognizedForm recognizedForm = recognizedForms.get(i);
-            System.out.printf("Form %s has type: %s%n", i, recognizedForm.getFormType());
+            System.out.printf("Form %d has type: %s%n", i, recognizedForm.getFormType());
             // each field is of type FormField
             // The value of the field can also be a FormField, or a list of FormFields
             // In our sample, it is not.
@@ -57,7 +57,7 @@ public class GetBoundingBoxes {
             final List<FormPage> pages = recognizedForm.getPages();
             for (int i1 = 0; i1 < pages.size(); i1++) {
                 final FormPage formPage = pages.get(i1);
-                System.out.printf("-------Recognizing Page %s of Form -------%n", i1);
+                System.out.printf("-------Recognizing Page %d of Form -------%n", i1);
                 System.out.printf("Has width %f , angle %.2f, height %f %n", formPage.getWidth(),
                     formPage.getTextAngle(), formPage.getHeight());
                 // Table information

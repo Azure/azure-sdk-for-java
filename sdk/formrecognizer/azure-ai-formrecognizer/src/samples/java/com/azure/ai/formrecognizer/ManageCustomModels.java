@@ -60,7 +60,6 @@ public class ManageCustomModels {
                         System.out.printf("Field Accuracy: %.2f%n", customFormModelField.getAccuracy());
                     });
                 }
-
             });
         });
 

@@ -666,7 +666,7 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
             }));
     }
     /**
-     * Verifies custom form data for a document using source as input stream data and valid include text content
+     * Verifies custom form data for a document using source as input stream data and valid include field elements
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")

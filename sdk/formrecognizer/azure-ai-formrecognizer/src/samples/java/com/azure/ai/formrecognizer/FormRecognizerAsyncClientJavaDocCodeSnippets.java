@@ -179,17 +179,16 @@ public class FormRecognizerAsyncClientJavaDocCodeSnippets {
         // BEGIN: com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeContentFromUrl#string
         String formUrl = "{formUrl}";
         formRecognizerAsyncClient.beginRecognizeContentFromUrl(formUrl).flatMap(
-            recognizePollingOperation ->
-                recognizePollingOperation.getFinalResult()).subscribe(layoutPageResults ->
-                    layoutPageResults.forEach(recognizedForm -> {
-                        System.out.printf("Page Angle: %s%n", recognizedForm.getTextAngle());
-                        System.out.printf("Page Dimension unit: %s%n", recognizedForm.getUnit());
-                        // Table information
-                        System.out.println("Recognized Tables: ");
-                        recognizedForm.getTables().forEach(formTable ->
-                            formTable.getCells().forEach(recognizedTableCell ->
-                                System.out.printf("%s ", recognizedTableCell.getText())));
-                    }));
+            recognizePollingOperation -> recognizePollingOperation.getFinalResult())
+            .subscribe(contentPageResult -> contentPageResult.forEach(recognizedForm -> {
+                System.out.printf("Page Angle: %s%n", recognizedForm.getTextAngle());
+                System.out.printf("Page Dimension unit: %s%n", recognizedForm.getUnit());
+                // Table information
+                System.out.println("Recognized Tables: ");
+                recognizedForm.getTables().forEach(formTable ->
+                    formTable.getCells().forEach(recognizedTableCell ->
+                        System.out.printf("%s ", recognizedTableCell.getText())));
+            }));
         // END: com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeContentFromUrl#string
     }
 
@@ -205,16 +204,15 @@ public class FormRecognizerAsyncClientJavaDocCodeSnippets {
             .flatMap(recognizePollingOperation ->
                 // if training polling operation completed, retrieve the final result.
                 recognizePollingOperation.getFinalResult())
-            .subscribe(contentPageResult ->
-                contentPageResult.forEach(recognizedForm -> {
-                    System.out.printf("Page Angle: %s%n", recognizedForm.getTextAngle());
-                    System.out.printf("Page Dimension unit: %s%n", recognizedForm.getUnit());
-                    // Table information
-                    System.out.println("Recognized Tables: ");
-                    recognizedForm.getTables().forEach(formTable ->
-                        formTable.getCells().forEach(recognizedTableCell ->
-                            System.out.printf("%s ", recognizedTableCell.getText())));
-                }));
+            .subscribe(contentPageResult -> contentPageResult.forEach(recognizedForm -> {
+                System.out.printf("Page Angle: %s%n", recognizedForm.getTextAngle());
+                System.out.printf("Page Dimension unit: %s%n", recognizedForm.getUnit());
+                // Table information
+                System.out.println("Recognized Tables: ");
+                recognizedForm.getTables().forEach(formTable ->
+                    formTable.getCells().forEach(recognizedTableCell ->
+                        System.out.printf("%s ", recognizedTableCell.getText())));
+            }));
         // END: com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeContentFromUrl#string-recognizeOptions
     }
 
@@ -233,16 +231,15 @@ public class FormRecognizerAsyncClientJavaDocCodeSnippets {
             .flatMap(recognizePollingOperation ->
                 // if training polling operation completed, retrieve the final result.
                 recognizePollingOperation.getFinalResult())
-            .subscribe(contentPageResult ->
-                contentPageResult.forEach(formPage -> {
-                    System.out.printf("Page Angle: %s%n", formPage.getTextAngle());
-                    System.out.printf("Page Dimension unit: %s%n", formPage.getUnit());
-                    // Table information
-                    System.out.println("Recognized Tables: ");
-                    formPage.getTables().forEach(formTable ->
-                        formTable.getCells().forEach(recognizedTableCell ->
-                            System.out.printf("%s ", recognizedTableCell.getText())));
-                }));
+            .subscribe(contentPageResult -> contentPageResult.forEach(formPage -> {
+                System.out.printf("Page Angle: %s%n", formPage.getTextAngle());
+                System.out.printf("Page Dimension unit: %s%n", formPage.getUnit());
+                // Table information
+                System.out.println("Recognized Tables: ");
+                formPage.getTables().forEach(formTable ->
+                    formTable.getCells().forEach(recognizedTableCell ->
+                        System.out.printf("%s ", recognizedTableCell.getText())));
+            }));
         // END: com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeContent#Flux-long
     }
 
@@ -264,15 +261,14 @@ public class FormRecognizerAsyncClientJavaDocCodeSnippets {
             .flatMap(recognizePollingOperation ->
                 // if training polling operation completed, retrieve the final result.
                 recognizePollingOperation.getFinalResult())
-            .subscribe(contentPageResult ->
-                contentPageResult.forEach(formPage -> {
-                    System.out.printf("Page Angle: %s%n", formPage.getTextAngle());
-                    System.out.printf("Page Dimension unit: %s%n", formPage.getUnit());
-                    // Table information
-                    System.out.println("Recognized Tables: ");
-                    formPage.getTables().forEach(formTable -> formTable.getCells().forEach(recognizedTableCell ->
-                        System.out.printf("%s ", recognizedTableCell.getText())));
-                }));
+            .subscribe(contentPageResult -> contentPageResult.forEach(formPage -> {
+                System.out.printf("Page Angle: %s%n", formPage.getTextAngle());
+                System.out.printf("Page Dimension unit: %s%n", formPage.getUnit());
+                // Table information
+                System.out.println("Recognized Tables: ");
+                formPage.getTables().forEach(formTable -> formTable.getCells().forEach(recognizedTableCell ->
+                    System.out.printf("%s ", recognizedTableCell.getText())));
+            }));
         // END: com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeContent#Flux-long-recognizeOptions
     }
 
@@ -430,64 +426,65 @@ public class FormRecognizerAsyncClientJavaDocCodeSnippets {
         File receipt = new File("{file_source_url}");
         Flux<ByteBuffer> buffer = toFluxByteBuffer(new ByteArrayInputStream(Files.readAllBytes(receipt.toPath())));
         formRecognizerAsyncClient.beginRecognizeReceipts(buffer, receipt.length())
-            .subscribe(recognizePollingOperation ->
+            .flatMap(recognizePollingOperation ->
                 // if training polling operation completed, retrieve the final result.
-                recognizePollingOperation.getFinalResult().subscribe(recognizedReceipts -> {
-                    for (int i = 0; i < recognizedReceipts.size(); i++) {
-                        RecognizedForm recognizedForm = recognizedReceipts.get(i);
-                        Map<String, FormField<?>> recognizedFields = recognizedForm.getFields();
-                        System.out.printf("----------- Recognized Receipt page %d -----------%n", i);
-                        FormField<?> merchantNameField = recognizedFields.get("MerchantName");
-                        if (merchantNameField != null) {
-                            if (FieldValueType.STRING.equals(merchantNameField.getValueType())) {
-                                String merchantName = FieldValueType.STRING.cast(merchantNameField);
-                                System.out.printf("Merchant Name: %s, confidence: %.2f%n",
-                                    merchantName, merchantNameField.getConfidence());
+                recognizePollingOperation.getFinalResult())
+                    .subscribe(recognizedReceipts -> {
+                        for (int i = 0; i < recognizedReceipts.size(); i++) {
+                            RecognizedForm recognizedForm = recognizedReceipts.get(i);
+                            Map<String, FormField<?>> recognizedFields = recognizedForm.getFields();
+                            System.out.printf("----------- Recognized Receipt page %d -----------%n", i);
+                            FormField<?> merchantNameField = recognizedFields.get("MerchantName");
+                            if (merchantNameField != null) {
+                                if (FieldValueType.STRING.equals(merchantNameField.getValueType())) {
+                                    String merchantName = FieldValueType.STRING.cast(merchantNameField);
+                                    System.out.printf("Merchant Name: %s, confidence: %.2f%n",
+                                        merchantName, merchantNameField.getConfidence());
+                                }
                             }
-                        }
 
-                        FormField<?> merchantPhoneNumberField = recognizedFields.get("MerchantPhoneNumber");
-                        if (merchantPhoneNumberField != null) {
-                            if (FieldValueType.PHONE_NUMBER.equals(merchantNameField.getValueType())) {
-                                String merchantAddress = FieldValueType.PHONE_NUMBER.cast(merchantPhoneNumberField);
-                                System.out.printf("Merchant Phone number: %s, confidence: %.2f%n",
-                                    merchantAddress, merchantPhoneNumberField.getConfidence());
+                            FormField<?> merchantPhoneNumberField = recognizedFields.get("MerchantPhoneNumber");
+                            if (merchantPhoneNumberField != null) {
+                                if (FieldValueType.PHONE_NUMBER.equals(merchantNameField.getValueType())) {
+                                    String merchantAddress = FieldValueType.PHONE_NUMBER.cast(merchantPhoneNumberField);
+                                    System.out.printf("Merchant Phone number: %s, confidence: %.2f%n",
+                                        merchantAddress, merchantPhoneNumberField.getConfidence());
+                                }
                             }
-                        }
 
-                        FormField<?> transactionDateField = recognizedFields.get("TransactionDate");
-                        if (transactionDateField != null) {
-                            if (FieldValueType.DATE.equals(transactionDateField.getValueType())) {
-                                LocalDate transactionDate = FieldValueType.DATE.cast(transactionDateField);
-                                System.out.printf("Transaction Date: %s, confidence: %.2f%n",
-                                    transactionDate, transactionDateField.getConfidence());
+                            FormField<?> transactionDateField = recognizedFields.get("TransactionDate");
+                            if (transactionDateField != null) {
+                                if (FieldValueType.DATE.equals(transactionDateField.getValueType())) {
+                                    LocalDate transactionDate = FieldValueType.DATE.cast(transactionDateField);
+                                    System.out.printf("Transaction Date: %s, confidence: %.2f%n",
+                                        transactionDate, transactionDateField.getConfidence());
+                                }
                             }
-                        }
 
-                        FormField<?> receiptItemsField = recognizedFields.get("Items");
-                        if (receiptItemsField != null) {
-                            System.out.printf("Receipt Items: %n");
-                            if (FieldValueType.LIST.equals(receiptItemsField.getValueType())) {
-                                List<FormField<?>> receiptItems = FieldValueType.LIST.cast(receiptItemsField);
-                                receiptItems.forEach(receiptItem -> {
-                                    if (FieldValueType.MAP.equals(receiptItem.getValueType())) {
+                            FormField<?> receiptItemsField = recognizedFields.get("Items");
+                            if (receiptItemsField != null) {
+                                System.out.printf("Receipt Items: %n");
+                                if (FieldValueType.LIST.equals(receiptItemsField.getValueType())) {
+                                    List<FormField<?>> receiptItems = FieldValueType.LIST.cast(receiptItemsField);
+                                    receiptItems.forEach(receiptItem -> {
+                                        if (FieldValueType.MAP.equals(receiptItem.getValueType())) {
 
-                                        Map<String, FormField<?>> formFieldMap = FieldValueType.MAP.cast(receiptItem);
-                                        formFieldMap.forEach((key, formField) -> {
-                                            if ("Quantity".equals(key)) {
-                                                if (FieldValueType.DOUBLE.equals(formField.getValueType())) {
-                                                    Float quantity = FieldValueType.DOUBLE.cast(formField);
-                                                    System.out.printf("Quantity: %f, confidence: %.2f%n",
-                                                        quantity, formField.getConfidence());
+                                            Map<String, FormField<?>> formFieldMap = FieldValueType.MAP.cast(receiptItem);
+                                            formFieldMap.forEach((key, formField) -> {
+                                                if ("Quantity".equals(key)) {
+                                                    if (FieldValueType.DOUBLE.equals(formField.getValueType())) {
+                                                        Float quantity = FieldValueType.DOUBLE.cast(formField);
+                                                        System.out.printf("Quantity: %f, confidence: %.2f%n",
+                                                            quantity, formField.getConfidence());
+                                                    }
                                                 }
-                                            }
-                                        });
-                                    }
-                                });
+                                            });
+                                        }
+                                    });
+                                }
                             }
                         }
-                    }
-                }));
+                    });
         // END: com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeReceipts#Flux-long
     }
 
@@ -508,65 +505,65 @@ public class FormRecognizerAsyncClientJavaDocCodeSnippets {
                 .setContentType(FormContentType.IMAGE_JPEG)
                 .setIncludeFieldElements(includeFieldElements)
                 .setPollInterval(Duration.ofSeconds(5)))
-            .subscribe(recognizePollingOperation ->
+            .flatMap(recognizePollingOperation ->
                 // if training polling operation completed, retrieve the final result.
-                recognizePollingOperation.getFinalResult().subscribe(recognizedReceipts -> {
-                    for (int i = 0; i < recognizedReceipts.size(); i++) {
-                        RecognizedForm recognizedForm = recognizedReceipts.get(i);
-                        Map<String, FormField<?>> recognizedFields = recognizedForm.getFields();
-                        System.out.printf("----------- Recognized Receipt page %d -----------%n", i);
-                        FormField<?> merchantNameField = recognizedFields.get("MerchantName");
-                        if (merchantNameField != null) {
-                            if (FieldValueType.STRING.equals(merchantNameField.getValueType())) {
-                                String merchantName = FieldValueType.STRING.cast(merchantNameField);
-                                System.out.printf("Merchant Name: %s, confidence: %.2f%n",
-                                    merchantName, merchantNameField.getConfidence());
-                            }
-                        }
-
-                        FormField<?> merchantPhoneNumberField = recognizedFields.get("MerchantPhoneNumber");
-                        if (merchantPhoneNumberField != null) {
-                            if (FieldValueType.PHONE_NUMBER.equals(merchantNameField.getValueType())) {
-                                String merchantAddress = FieldValueType.PHONE_NUMBER.cast(merchantPhoneNumberField);
-                                System.out.printf("Merchant Phone number: %s, confidence: %.2f%n",
-                                    merchantAddress, merchantPhoneNumberField.getConfidence());
-                            }
-                        }
-
-                        FormField<?> transactionDateField = recognizedFields.get("TransactionDate");
-                        if (transactionDateField != null) {
-                            if (FieldValueType.DATE.equals(transactionDateField.getValueType())) {
-                                LocalDate transactionDate = FieldValueType.DATE.cast(transactionDateField);
-                                System.out.printf("Transaction Date: %s, confidence: %.2f%n",
-                                    transactionDate, transactionDateField.getConfidence());
-                            }
-                        }
-
-                        FormField<?> receiptItemsField = recognizedFields.get("Items");
-                        if (receiptItemsField != null) {
-                            System.out.printf("Receipt Items: %n");
-                            if (FieldValueType.LIST.equals(receiptItemsField.getValueType())) {
-                                List<FormField<?>> receiptItems = FieldValueType.LIST.cast(receiptItemsField);
-                                receiptItems.forEach(receiptItem -> {
-                                    if (FieldValueType.MAP.equals(receiptItem.getValueType())) {
-
-                                        Map<String, FormField<?>> formFieldMap = FieldValueType.MAP.cast(receiptItem);
-                                        formFieldMap.forEach((key, formField) -> {
-                                            if ("Quantity".equals(key)) {
-                                                if (FieldValueType.DOUBLE.equals(formField.getValueType())) {
-                                                    Float quantity = FieldValueType.DOUBLE.cast(formField);
-                                                    System.out.printf("Quantity: %f, confidence: %.2f%n",
-                                                        quantity, formField.getConfidence());
-                                                }
-                                            }
-                                        });
-                                    }
-                                });
-                            }
+                recognizePollingOperation.getFinalResult())
+            .subscribe(recognizedReceipts -> {
+                for (int i = 0; i < recognizedReceipts.size(); i++) {
+                    RecognizedForm recognizedForm = recognizedReceipts.get(i);
+                    Map<String, FormField<?>> recognizedFields = recognizedForm.getFields();
+                    System.out.printf("----------- Recognized Receipt page %d -----------%n", i);
+                    FormField<?> merchantNameField = recognizedFields.get("MerchantName");
+                    if (merchantNameField != null) {
+                        if (FieldValueType.STRING.equals(merchantNameField.getValueType())) {
+                            String merchantName = FieldValueType.STRING.cast(merchantNameField);
+                            System.out.printf("Merchant Name: %s, confidence: %.2f%n",
+                                merchantName, merchantNameField.getConfidence());
                         }
                     }
-                }));
 
+                    FormField<?> merchantPhoneNumberField = recognizedFields.get("MerchantPhoneNumber");
+                    if (merchantPhoneNumberField != null) {
+                        if (FieldValueType.PHONE_NUMBER.equals(merchantNameField.getValueType())) {
+                            String merchantAddress = FieldValueType.PHONE_NUMBER.cast(merchantPhoneNumberField);
+                            System.out.printf("Merchant Phone number: %s, confidence: %.2f%n",
+                                merchantAddress, merchantPhoneNumberField.getConfidence());
+                        }
+                    }
+
+                    FormField<?> transactionDateField = recognizedFields.get("TransactionDate");
+                    if (transactionDateField != null) {
+                        if (FieldValueType.DATE.equals(transactionDateField.getValueType())) {
+                            LocalDate transactionDate = FieldValueType.DATE.cast(transactionDateField);
+                            System.out.printf("Transaction Date: %s, confidence: %.2f%n",
+                                transactionDate, transactionDateField.getConfidence());
+                        }
+                    }
+
+                    FormField<?> receiptItemsField = recognizedFields.get("Items");
+                    if (receiptItemsField != null) {
+                        System.out.printf("Receipt Items: %n");
+                        if (FieldValueType.LIST.equals(receiptItemsField.getValueType())) {
+                            List<FormField<?>> receiptItems = FieldValueType.LIST.cast(receiptItemsField);
+                            receiptItems.forEach(receiptItem -> {
+                                if (FieldValueType.MAP.equals(receiptItem.getValueType())) {
+
+                                    Map<String, FormField<?>> formFieldMap = FieldValueType.MAP.cast(receiptItem);
+                                    formFieldMap.forEach((key, formField) -> {
+                                        if ("Quantity".equals(key)) {
+                                            if (FieldValueType.DOUBLE.equals(formField.getValueType())) {
+                                                Float quantity = FieldValueType.DOUBLE.cast(formField);
+                                                System.out.printf("Quantity: %f, confidence: %.2f%n",
+                                                    quantity, formField.getConfidence());
+                                            }
+                                        }
+                                    });
+                                }
+                            });
+                        }
+                    }
+                }
+            });
         // END: com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeReceipts#Flux-long-recognizeOptions
     }
 }

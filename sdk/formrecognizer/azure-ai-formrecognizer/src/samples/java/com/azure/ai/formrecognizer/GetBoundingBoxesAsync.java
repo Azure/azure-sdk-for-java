@@ -10,6 +10,7 @@ import com.azure.ai.formrecognizer.models.OperationResult;
 import com.azure.ai.formrecognizer.models.RecognizeOptions;
 import com.azure.ai.formrecognizer.models.RecognizedForm;
 import com.azure.core.credential.AzureKeyCredential;
+import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollerFlux;
 import reactor.core.publisher.Mono;
 
@@ -37,13 +38,14 @@ public class GetBoundingBoxesAsync {
         String modelId = "{model_Id}";
         String formUrl = "{form_url}";
         PollerFlux<OperationResult, List<RecognizedForm>> recognizeFormPoller =
-            client.beginRecognizeCustomFormsFromUrl(formUrl, modelId, new RecognizeOptions()
-                .setIncludeFieldElements(true));
+            client.beginRecognizeCustomFormsFromUrl(formUrl, modelId,
+                new RecognizeOptions()
+                    .setIncludeFieldElements(true));
 
         Mono<List<RecognizedForm>> recognizeFormResult = recognizeFormPoller
             .last()
             .flatMap(trainingOperationResponse -> {
-                if (trainingOperationResponse.getStatus().isComplete()) {
+                if (LongRunningOperationStatus.SUCCESSFULLY_COMPLETED == trainingOperationResponse.getStatus()) {
                     // training completed successfully, retrieving final result.
                     return trainingOperationResponse.getFinalResult();
                 } else {
@@ -52,20 +54,18 @@ public class GetBoundingBoxesAsync {
                 }
             });
 
-        System.out.println("--------RECOGNIZING FORM --------");
+        System.out.println("-------- RECOGNIZING FORM --------");
         recognizeFormResult.subscribe(recognizedForms -> {
             for (int i = 0; i < recognizedForms.size(); i++) {
                 final RecognizedForm recognizedForm = recognizedForms.get(i);
-                System.out.printf("Form %s has type: %s%n", i, recognizedForm.getFormType());
+                System.out.printf("Form %d has type: %s%n", i, recognizedForm.getFormType());
                 // each field is of type FormField
                 //     The value of the field can also be a FormField, or a list of FormFields
                 //     In our sample, it is not.
-                recognizedForm.getFields().forEach((fieldText, fieldValue) -> {
+                recognizedForm.getFields().forEach((fieldText, fieldValue) ->
                     System.out.printf("Field %s has value %s based on %s with a confidence score "
-                            + "of %.2f.%n",
-                        fieldText, fieldValue.getValue(), fieldValue.getValueData().getText(),
-                        fieldValue.getConfidence());
-                });
+                            + "of %.2f.%n", fieldText, fieldValue.getValue(), fieldValue.getValueData().getText(),
+                        fieldValue.getConfidence()));
 
                 // Page Information
                 final List<FormPage> pages = recognizedForm.getPages();
@@ -91,10 +91,9 @@ public class GetBoundingBoxesAsync {
                                     FormWord formWordElement = (FormWord) (formContent);
                                     final StringBuilder boundingBoxStr = new StringBuilder();
                                     if (formWordElement.getBoundingBox() != null) {
-                                        formWordElement.getBoundingBox().getPoints().forEach(point -> {
+                                        formWordElement.getBoundingBox().getPoints().forEach(point ->
                                             boundingBoxStr.append(String.format("[%.2f, %.2f]", point.getX(),
-                                                point.getY()));
-                                        });
+                                                point.getY())));
                                     }
                                     System.out.printf("Word '%s' within bounding box %s with a confidence of %.2f.%n",
                                         formWordElement.getText(), boundingBoxStr,

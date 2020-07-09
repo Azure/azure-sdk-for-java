@@ -49,7 +49,8 @@ public class AdvancedDiffLabeledUnlabeledData {
         List<RecognizedForm> formsWithLabeledModel =
             client.beginRecognizeCustomForms(
                 new FileInputStream(analyzeFile), analyzeFile.length(),
-                "{labeled_model_Id}", new RecognizeOptions()
+                "{labeled_model_Id}",
+                new RecognizeOptions()
                     .setContentType(FormContentType.APPLICATION_PDF)
                     .setIncludeFieldElements(true)
                     .setPollInterval(Duration.ofSeconds(5)))
@@ -57,7 +58,8 @@ public class AdvancedDiffLabeledUnlabeledData {
 
         List<RecognizedForm> formsWithUnlabeledModel =
             client.beginRecognizeCustomForms(new FileInputStream(analyzeFile), analyzeFile.length(),
-                "{unlabeled_model_Id}", new RecognizeOptions()
+                "{unlabeled_model_Id}",
+                new RecognizeOptions()
                     .setContentType(FormContentType.APPLICATION_PDF)
                     .setIncludeFieldElements(true)
                     .setPollInterval(Duration.ofSeconds(5)))

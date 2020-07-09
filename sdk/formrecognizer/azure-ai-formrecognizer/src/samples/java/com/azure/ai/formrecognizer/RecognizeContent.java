@@ -48,7 +48,7 @@ public class RecognizeContent {
 
         for (int i = 0; i < contentPageResults.size(); i++) {
             final FormPage formPage = contentPageResults.get(i);
-            System.out.printf("----Recognizing content for page %d ----%n", i);
+            System.out.printf("---- Recognizing content for page %d ----%n", i);
             // Table information
             System.out.printf("Has width: %f and height: %f, measured with unit: %s%n", formPage.getWidth(),
                 formPage.getHeight(),
