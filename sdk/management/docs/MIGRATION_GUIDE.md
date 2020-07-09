@@ -192,13 +192,7 @@ azure.publicIPAddresses()
                 // Three inbound NAT rules which contain rules that map a public port on the load
                 //  balancer to a port for a specific virtual machine in the backend address pool
                 //  - this provides direct VM connectivity for SSH to port 22 and TELNET to port 23
-                System.out.println("Creating a Internet facing load balancer with ...");
-                System.out.println("- A frontend IP address");
-                System.out.println("- Two backend address pools which contain network interfaces for the virtual\n" + "  machines to receive HTTP and HTTPS network traffic from the load balancer");
-                System.out.println("- Two load balancing rules for HTTP and HTTPS to map public ports on the load\n" + "  balancer to ports in the backend address pool");
-                System.out.println("- Two probes which contain HTTP and HTTPS health probes used to check availability\n" + "  of virtual machines in the backend address pool");
-                System.out.println("- Two inbound NAT rules which contain rules that map a public port on the load\n" + "  balancer to a port for a specific virtual machine in the backend address pool\n" + "  - this provides direct VM connectivity for SSH to port 22 and TELNET to port 23");
-
+                
                 return Observable.merge(
                     Observable.just(indexable), azure.loadBalancers().define(loadBalancerName1).withRegion(region).withExistingResourceGroup(rgName)
                     // Add two rules that uses above backend and probe     
@@ -263,14 +257,7 @@ Flux.merge(
             // Three inbound NAT rules which contain rules that map a public port on the load
             //  balancer to a port for a specific virtual machine in the backend address pool
             //  - this provides direct VM connectivity for SSH to port 22 and TELNET to port 23
-
-            System.out.println("Creating a Internet facing load balancer with ...");
-            System.out.println("- A frontend IP address");
-            System.out.println("- Two backend address pools which contain network interfaces for the virtual\n" + "  machines to receive HTTP and HTTPS network traffic from the load balancer");
-            System.out.println("- Two load balancing rules for HTTP and HTTPS to map public ports on the load\n" + "  balancer to ports in the backend address pool");
-            System.out.println("- Two probes which contain HTTP and HTTPS health probes used to check availability\n" + "  of virtual machines in the backend address pool");
-            System.out.println("- Two inbound NAT rules which contain rules that map a public port on the load\n" + "  balancer to a port for a specific virtual machine in the backend address pool\n" + "  - this provides direct VM connectivity for SSH to port 22 and TELNET to port 23");
-
+            
             return Flux.merge(
                 Flux.just(indexable), azure.loadBalancers().define(loadBalancerName1).withRegion(region).withExistingResourceGroup(rgName)
                 // Add two rules that uses above backend and probe
