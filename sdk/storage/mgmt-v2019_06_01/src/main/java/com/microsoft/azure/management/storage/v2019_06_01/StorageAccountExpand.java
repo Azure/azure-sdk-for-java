@@ -16,7 +16,10 @@ import com.fasterxml.jackson.annotation.JsonValue;
  */
 public enum StorageAccountExpand {
     /** Enum value geoReplicationStats. */
-    GEO_REPLICATION_STATS("geoReplicationStats");
+    GEO_REPLICATION_STATS("geoReplicationStats"),
+
+    /** Enum value blobRestoreStatus. */
+    BLOB_RESTORE_STATUS("blobRestoreStatus");
 
     /** The actual serialized value for a StorageAccountExpand instance. */
     private String value;

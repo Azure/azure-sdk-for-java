@@ -24,6 +24,7 @@ import java.util.UUID;
 
 import static org.junit.Assert.fail;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 
 @RunWith(PowerMockRunner.class)
@@ -47,7 +48,7 @@ public class UsernamePasswordCredentialTest {
         // mock
         IdentityClient identityClient = PowerMockito.mock(IdentityClient.class);
         when(identityClient.authenticateWithUsernamePassword(request1, username, password)).thenReturn(TestUtils.getMockMsalToken(token1, expiresAt));
-        when(identityClient.authenticateWithUserRefreshToken(any(), any()))
+        when(identityClient.authenticateWithPublicClientCache(any(), any()))
             .thenAnswer(invocation -> {
                 TokenRequestContext argument = (TokenRequestContext) invocation.getArguments()[0];
                 if (argument.getScopes().size() == 1 && argument.getScopes().get(0).equals(request2.getScopes().get(0))) {
@@ -83,7 +84,7 @@ public class UsernamePasswordCredentialTest {
         // mock
         IdentityClient identityClient = PowerMockito.mock(IdentityClient.class);
         when(identityClient.authenticateWithUsernamePassword(request, username, badPassword)).thenThrow(new MsalServiceException("bad credential", "BadCredential"));
-        when(identityClient.authenticateWithUserRefreshToken(any(), any()))
+        when(identityClient.authenticateWithPublicClientCache(any(), any()))
             .thenAnswer(invocation -> Mono.error(new UnsupportedOperationException("nothing cached")));
         PowerMockito.whenNew(IdentityClient.class).withAnyArguments().thenReturn(identityClient);
 
@@ -107,7 +108,7 @@ public class UsernamePasswordCredentialTest {
         // mock
         IdentityClient identityClient = PowerMockito.mock(IdentityClient.class);
         when(identityClient.authenticateWithUsernamePassword(request, username, password)).thenReturn(TestUtils.getMockMsalToken(token1, expiresOn));
-        when(identityClient.authenticateWithUserRefreshToken(any(), any()))
+        when(identityClient.authenticateWithPublicClientCache(any(), any()))
             .thenAnswer(invocation -> Mono.error(new UnsupportedOperationException("nothing cached")));
         PowerMockito.whenNew(IdentityClient.class).withAnyArguments().thenReturn(identityClient);
 
@@ -132,5 +133,34 @@ public class UsernamePasswordCredentialTest {
         } catch (IllegalArgumentException e) {
             Assert.assertTrue(e.getMessage().contains("username"));
         }
+    }
+
+    @Test
+    public void testValidAuthenticate() throws Exception {
+        // setup
+        String username = "testuser";
+        String password = "P@ssw0rd";
+        String token1 = "token1";
+        TokenRequestContext request1 = new TokenRequestContext().addScopes("https://management.azure.com");
+        OffsetDateTime expiresAt = OffsetDateTime.now(ZoneOffset.UTC).plusHours(1);
+
+
+
+        // mock
+        IdentityClient identityClient = PowerMockito.mock(IdentityClient.class);
+        when(identityClient.authenticateWithUsernamePassword(eq(request1), eq(username), eq(password)))
+                .thenReturn(TestUtils.getMockMsalToken(token1, expiresAt));
+        PowerMockito.whenNew(IdentityClient.class).withAnyArguments().thenReturn(identityClient);
+
+        // test
+        UsernamePasswordCredential credential =
+                new UsernamePasswordCredentialBuilder().clientId(clientId)
+                        .username(username).password(password).build();
+        StepVerifier.create(credential.authenticate(request1))
+                .expectNextMatches(authenticationRecord -> authenticationRecord.getAuthority()
+                                   .equals("http://login.microsoftonline.com")
+                                   && authenticationRecord.getUsername().equals("testuser")
+                                   && authenticationRecord.getHomeAccountId() != null)
+                .verifyComplete();
     }
 }

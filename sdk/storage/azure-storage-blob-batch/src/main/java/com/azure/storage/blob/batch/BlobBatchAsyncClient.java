@@ -12,8 +12,9 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
-import com.azure.core.util.FluxUtil;
 import com.azure.core.util.Context;
+import com.azure.core.util.IterableStream;
+import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobServiceVersion;
 import com.azure.storage.blob.implementation.AzureBlobStorageBuilder;
@@ -22,6 +23,7 @@ import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.BlobStorageException;
 import com.azure.storage.blob.models.DeleteSnapshotsOptionType;
 import com.azure.storage.common.implementation.StorageImplUtils;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
@@ -32,6 +34,8 @@ import java.util.function.BiFunction;
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.pagedFluxError;
 import static com.azure.core.util.FluxUtil.withContext;
+import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
+import static com.azure.storage.common.Utility.STORAGE_TRACING_NAMESPACE_VALUE;
 
 /**
  * This class provides a client that contains all operations that apply to Azure Storage Blob batching.
@@ -103,22 +107,28 @@ public final class BlobBatchAsyncClient {
      * @return A response only containing header and status code information, used to indicate that the batch operation
      * has completed.
      * @throws BlobStorageException If the batch request is malformed.
-     * @throws BlobBatchStorageException If {@code throwOnAnyFailure} is {@code true} and any request in the
-     * {@link BlobBatch} failed.
+     * @throws BlobBatchStorageException If {@code throwOnAnyFailure} is {@code true} and any request in the {@link
+     * BlobBatch} failed.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> submitBatchWithResponse(BlobBatch batch, boolean throwOnAnyFailure) {
         try {
-            return withContext(context -> submitBatchWithResponse(batch, throwOnAnyFailure, context));
+            return withContext(context -> submitBatchWithResponse(batch, throwOnAnyFailure,
+                context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
 
     Mono<Response<Void>> submitBatchWithResponse(BlobBatch batch, boolean throwOnAnyFailure, Context context) {
-        return client.services().submitBatchWithRestResponseAsync(
-            batch.getBody(), batch.getContentLength(), batch.getContentType(), context)
-            .flatMap(response -> BlobBatchHelper.mapBatchResponse(batch, response, throwOnAnyFailure, logger));
+        return batch.prepareBlobBatchSubmission()
+            .flatMap(batchOperationInfo -> client.services()
+                .submitBatchWithRestResponseAsync(Flux.fromIterable(batchOperationInfo.getBody()),
+                    batchOperationInfo.getContentLength(), batchOperationInfo.getContentType(),
+                    context == null ? Context.NONE.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE)
+                    : context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
+                .flatMap(response ->
+                    BlobBatchHelper.mapBatchResponse(batchOperationInfo, response, throwOnAnyFailure, logger)));
     }
 
     /**
@@ -209,8 +219,8 @@ public final class BlobBatchAsyncClient {
     private <T> PagedResponse<Response<T>> initPagedResponse(List<Response<T>> values, Response<?> response) {
         return new PagedResponse<Response<T>>() {
             @Override
-            public List<Response<T>> getItems() {
-                return values;
+            public IterableStream<Response<T>> getElements() {
+                return new IterableStream<>(values);
             }
 
             @Override

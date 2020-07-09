@@ -20,10 +20,12 @@ import com.azure.storage.blob.models.CustomerProvidedKey
 import com.azure.storage.blob.models.LeaseStateType
 import com.azure.storage.blob.models.LeaseStatusType
 import com.azure.storage.blob.models.ListBlobsOptions
+import com.azure.storage.blob.options.PageBlobCreateOptions
 import com.azure.storage.blob.models.PublicAccessType
 import com.azure.storage.blob.specialized.AppendBlobClient
 import com.azure.storage.blob.specialized.BlobClientBase
 import com.azure.storage.common.Utility
+import reactor.test.StepVerifier
 import spock.lang.Unroll
 
 import java.time.Duration
@@ -110,6 +112,7 @@ class ContainerAPITest extends APISpec {
         e.getServiceMessage().contains("The specified container already exists.")
     }
 
+
     def "Get properties null"() {
         when:
         def response = cc.getPropertiesWithResponse(null, null, null)
@@ -123,6 +126,9 @@ class ContainerAPITest extends APISpec {
         response.getValue().getLeaseState() == LeaseStateType.AVAILABLE
         response.getValue().getLeaseStatus() == LeaseStatusType.UNLOCKED
         response.getValue().getMetadata().size() == 0
+        !response.getValue().isEncryptionScopeOverridePrevented()
+        response.getValue().getDefaultEncryptionScope()
+
     }
 
     def "Get properties min"() {
@@ -663,27 +669,28 @@ class ContainerAPITest extends APISpec {
         notThrown(BlobStorageException)
     }
 
-    def setupListBlobsTest(String normalName, String copyName, String metadataName, String uncommittedName) {
+    def setupListBlobsTest(String normalName, String copyName, String metadataName, String tagsName,
+                           String uncommittedName) {
         def normal = cc.getBlobClient(normalName).getPageBlobClient()
         normal.create(512)
 
         def copyBlob = cc.getBlobClient(copyName).getPageBlobClient()
-
-        def poller = copyBlob.beginCopy(normal.getBlobUrl(), Duration.ofSeconds(1))
-        poller.waitForCompletion()
+        copyBlob.beginCopy(normal.getBlobUrl(), Duration.ofSeconds(5)).waitForCompletion()
 
         def metadataBlob = cc.getBlobClient(metadataName).getPageBlobClient()
         def metadata = new HashMap<String, String>()
         metadata.put("foo", "bar")
         metadataBlob.createWithResponse(512, null, null, metadata, null, null, null)
 
-        def snapshotTime = normal.createSnapshot().getSnapshotId()
+        def tagsBlob = cc.getBlobClient(tagsName).getPageBlobClient()
+        def tags = new HashMap<String, String>()
+        tags.put("tag", "value")
+        tagsBlob.createWithResponse(new PageBlobCreateOptions(512).setTags(tags), null, null)
 
         def uncommittedBlob = cc.getBlobClient(uncommittedName).getBlockBlobClient()
+        uncommittedBlob.stageBlock(getBlockID(), defaultInputStream.get(), defaultData.remaining())
 
-        uncommittedBlob.stageBlock("0000", defaultInputStream.get(), defaultData.remaining())
-
-        return snapshotTime
+        return normal.createSnapshot().getSnapshotId()
     }
 
     def "List blobs flat options copy"() {
@@ -692,8 +699,9 @@ class ContainerAPITest extends APISpec {
         def normalName = "a" + generateBlobName()
         def copyName = "c" + generateBlobName()
         def metadataName = "m" + generateBlobName()
+        def tagsName = "t" + generateBlobName()
         def uncommittedName = "u" + generateBlobName()
-        setupListBlobsTest(normalName, copyName, metadataName, uncommittedName)
+        setupListBlobsTest(normalName, copyName, metadataName, tagsName, uncommittedName)
 
         when:
         def blobs = cc.listBlobs(options, null).stream().collect(Collectors.toList())
@@ -707,7 +715,7 @@ class ContainerAPITest extends APISpec {
         blobs.get(1).getProperties().getCopyStatus() == CopyStatusType.SUCCESS // We waited for the copy to complete.
         blobs.get(1).getProperties().getCopyProgress() != null
         blobs.get(1).getProperties().getCopyCompletionTime() != null
-        blobs.size() == 3 // Normal, copy, metadata
+        blobs.size() == 4 // Normal, copy, metadata, tags
     }
 
     def "List blobs flat options metadata"() {
@@ -716,8 +724,9 @@ class ContainerAPITest extends APISpec {
         def normalName = "a" + generateBlobName()
         def copyName = "c" + generateBlobName()
         def metadataName = "m" + generateBlobName()
+        def tagsName = "t" + generateBlobName()
         def uncommittedName = "u" + generateBlobName()
-        setupListBlobsTest(normalName, copyName, metadataName, uncommittedName)
+        setupListBlobsTest(normalName, copyName, metadataName, tagsName, uncommittedName)
 
         when:
         def blobs = cc.listBlobs(options, null).stream().collect(Collectors.toList())
@@ -728,7 +737,31 @@ class ContainerAPITest extends APISpec {
         blobs.get(1).getProperties().getCopyCompletionTime() == null
         blobs.get(2).getName() == metadataName
         blobs.get(2).getMetadata().get("foo") == "bar"
-        blobs.size() == 3 // Normal, copy, metadata
+        blobs.size() == 4 // Normal, copy, metadata, tags
+    }
+
+    def "List blobs flat options tags"() {
+        setup:
+        def options = new ListBlobsOptions().setDetails(new BlobListDetails().setRetrieveTags(true))
+        def normalName = "a" + generateBlobName()
+        def copyName = "c" + generateBlobName()
+        def metadataName = "m" + generateBlobName()
+        def tagsName = "t" + generateBlobName()
+        def uncommittedName = "u" + generateBlobName()
+        setupListBlobsTest(normalName, copyName, metadataName, tagsName, uncommittedName)
+
+        when:
+        def blobs = cc.listBlobs(options, null).stream().collect(Collectors.toList())
+
+        then:
+        blobs.get(0).getName() == normalName
+        blobs.get(1).getName() == copyName
+        blobs.get(1).getProperties().getCopyCompletionTime() == null
+        blobs.get(2).getName() == metadataName
+        blobs.get(2).getMetadata() == null
+        blobs.get(3).getTags().get("tag") == "value"
+        blobs.get(3).getProperties().getTagCount() == 1
+        blobs.size() == 4 // Normal, copy, metadata, tags
     }
 
     def "List blobs flat options snapshots"() {
@@ -737,8 +770,9 @@ class ContainerAPITest extends APISpec {
         def normalName = "a" + generateBlobName()
         def copyName = "c" + generateBlobName()
         def metadataName = "m" + generateBlobName()
+        def tagsName = "t" + generateBlobName()
         def uncommittedName = "u" + generateBlobName()
-        def snapshotTime = setupListBlobsTest(normalName, copyName, metadataName, uncommittedName)
+        def snapshotTime = setupListBlobsTest(normalName, copyName, metadataName, tagsName, uncommittedName)
 
         when:
         def blobs = cc.listBlobs(options, null).stream().collect(Collectors.toList())
@@ -747,7 +781,7 @@ class ContainerAPITest extends APISpec {
         blobs.get(0).getName() == normalName
         blobs.get(0).getSnapshot() == snapshotTime
         blobs.get(1).getName() == normalName
-        blobs.size() == 4 // Normal, snapshot, copy, metadata
+        blobs.size() == 5 // Normal, snapshot, copy, metadata, tags
     }
 
     def "List blobs flat options uncommitted"() {
@@ -756,16 +790,17 @@ class ContainerAPITest extends APISpec {
         def normalName = "a" + generateBlobName()
         def copyName = "c" + generateBlobName()
         def metadataName = "m" + generateBlobName()
+        def tagsName = "t" + generateBlobName()
         def uncommittedName = "u" + generateBlobName()
-        setupListBlobsTest(normalName, copyName, metadataName, uncommittedName)
+        setupListBlobsTest(normalName, copyName, metadataName, tagsName, uncommittedName)
 
         when:
         def blobs = cc.listBlobs(options, null).stream().collect(Collectors.toList())
 
         then:
         blobs.get(0).getName() == normalName
-        blobs.get(3).getName() == uncommittedName
-        blobs.size() == 4 // Normal, copy, metadata, uncommitted
+        blobs.get(4).getName() == uncommittedName
+        blobs.size() == 5 // Normal, copy, metadata, tags, uncommitted
     }
 
     def "List blobs flat options deleted"() {
@@ -793,8 +828,9 @@ class ContainerAPITest extends APISpec {
         def normalName = "a" + generateBlobName()
         def copyName = "c" + generateBlobName()
         def metadataName = "m" + generateBlobName()
+        def tagsName = "t" + generateBlobName()
         def uncommittedName = "u" + generateBlobName()
-        setupListBlobsTest(normalName, copyName, metadataName, uncommittedName)
+        setupListBlobsTest(normalName, copyName, metadataName, tagsName, uncommittedName)
 
         when:
         def blobs = cc.listBlobs(options, null).iterator()
@@ -812,12 +848,15 @@ class ContainerAPITest extends APISpec {
         def normalName = "a" + generateBlobName()
         def copyName = "c" + generateBlobName()
         def metadataName = "m" + generateBlobName()
+        def tagsName = "t" + generateBlobName()
         def uncommittedName = "u" + generateBlobName()
-        setupListBlobsTest(normalName, copyName, metadataName, uncommittedName)
+        setupListBlobsTest(normalName, copyName, metadataName, tagsName, uncommittedName)
 
         expect: "Get first page of blob listings (sync and async)"
         cc.listBlobs(options, null).iterableByPage().iterator().next().getValue().size() == PAGE_SIZE
-        ccAsync.listBlobs(options).byPage().blockFirst().getValue().size() == PAGE_SIZE
+        StepVerifier.create(ccAsync.listBlobs(options).byPage().limitRequest(1))
+            .assertNext({ assert it.getValue().size() == PAGE_SIZE })
+            .verifyComplete()
     }
 
     def "List blobs flat options fail"() {
@@ -852,6 +891,42 @@ class ContainerAPITest extends APISpec {
         def pagedFlux = ccAsync.listBlobs(new ListBlobsOptions().setMaxResultsPerPage(PAGE_SIZE))
         def pagedResponse1 = pagedFlux.byPage().blockFirst()
         def pagedResponse2 = pagedFlux.byPage(pagedResponse1.getContinuationToken()).blockFirst()
+
+        then:
+        pagedResponse1.getValue().size() == PAGE_SIZE
+        pagedResponse2.getValue().size() == NUM_BLOBS - PAGE_SIZE
+        pagedResponse2.getContinuationToken() == null
+    }
+
+    def "List blobs flat marker overload"() {
+        setup:
+        def NUM_BLOBS = 10
+        def PAGE_SIZE = 6
+        for (int i = 0; i < NUM_BLOBS; i++) {
+            def bc = cc.getBlobClient(generateBlobName()).getPageBlobClient()
+            bc.create(512)
+        }
+
+        when: "list blobs with sync client"
+        def pagedIterable = cc.listBlobs(new ListBlobsOptions().setMaxResultsPerPage(PAGE_SIZE), null)
+        def pagedSyncResponse1 = pagedIterable.iterableByPage().iterator().next()
+
+        pagedIterable = cc.listBlobs(new ListBlobsOptions().setMaxResultsPerPage(PAGE_SIZE),
+            pagedSyncResponse1.getContinuationToken(), null)
+        def pagedSyncResponse2 = pagedIterable.iterableByPage().iterator().next()
+
+        then:
+        pagedSyncResponse1.getValue().size() == PAGE_SIZE
+        pagedSyncResponse2.getValue().size() == NUM_BLOBS - PAGE_SIZE
+        pagedSyncResponse2.getContinuationToken() == null
+
+
+        when: "list blobs with async client"
+        def pagedFlux = ccAsync.listBlobs(new ListBlobsOptions().setMaxResultsPerPage(PAGE_SIZE))
+        def pagedResponse1 = pagedFlux.byPage().blockFirst()
+        pagedFlux = ccAsync.listBlobs(new ListBlobsOptions().setMaxResultsPerPage(PAGE_SIZE),
+            pagedResponse1.getContinuationToken())
+        def pagedResponse2 = pagedFlux.byPage().blockFirst()
 
         then:
         pagedResponse1.getValue().size() == PAGE_SIZE
@@ -941,8 +1016,9 @@ class ContainerAPITest extends APISpec {
         def normalName = "a" + generateBlobName()
         def copyName = "c" + generateBlobName()
         def metadataName = "m" + generateBlobName()
+        def tagsName = "t" + generateBlobName()
         def uncommittedName = "u" + generateBlobName()
-        setupListBlobsTest(normalName, copyName, metadataName, uncommittedName)
+        setupListBlobsTest(normalName, copyName, metadataName, tagsName, uncommittedName)
 
         when:
         def blobs = cc.listBlobsByHierarchy("", options, null).stream().collect(Collectors.toList())
@@ -956,7 +1032,7 @@ class ContainerAPITest extends APISpec {
         blobs.get(1).getProperties().getCopyStatus() == CopyStatusType.SUCCESS // We waited for the copy to complete.
         blobs.get(1).getProperties().getCopyProgress() != null
         blobs.get(1).getProperties().getCopyCompletionTime() != null
-        blobs.size() == 3 // Normal, copy, metadata
+        blobs.size() == 4 // Normal, copy, metadata, tags
     }
 
     def "List blobs hier options metadata"() {
@@ -965,8 +1041,9 @@ class ContainerAPITest extends APISpec {
         def normalName = "a" + generateBlobName()
         def copyName = "c" + generateBlobName()
         def metadataName = "m" + generateBlobName()
+        def tagsName = "t" + generateBlobName()
         def uncommittedName = "u" + generateBlobName()
-        setupListBlobsTest(normalName, copyName, metadataName, uncommittedName)
+        setupListBlobsTest(normalName, copyName, metadataName, tagsName, uncommittedName)
 
         when:
         def blobs = cc.listBlobsByHierarchy("", options, null).stream().collect(Collectors.toList())
@@ -977,7 +1054,31 @@ class ContainerAPITest extends APISpec {
         blobs.get(1).getProperties().getCopyCompletionTime() == null
         blobs.get(2).getName() == metadataName
         blobs.get(2).getMetadata().get("foo") == "bar"
-        blobs.size() == 3 // Normal, copy, metadata
+        blobs.size() == 4 // Normal, copy, metadata, tags
+    }
+
+    def "List blobs hier options tags"() {
+        setup:
+        def options = new ListBlobsOptions().setDetails(new BlobListDetails().setRetrieveTags(true))
+        def normalName = "a" + generateBlobName()
+        def copyName = "c" + generateBlobName()
+        def metadataName = "m" + generateBlobName()
+        def tagsName = "t" + generateBlobName()
+        def uncommittedName = "u" + generateBlobName()
+        setupListBlobsTest(normalName, copyName, metadataName, tagsName, uncommittedName)
+
+        when:
+        def blobs = cc.listBlobsByHierarchy("", options, null).stream().collect(Collectors.toList())
+
+        then:
+        blobs.get(0).getName() == normalName
+        blobs.get(1).getName() == copyName
+        blobs.get(1).getProperties().getCopyCompletionTime() == null
+        blobs.get(2).getName() == metadataName
+        blobs.get(2).getMetadata() == null
+        blobs.get(3).getTags().get("tag") == "value"
+        blobs.get(3).getProperties().getTagCount() == 1
+        blobs.size() == 4 // Normal, copy, metadata, tags
     }
 
     def "List blobs hier options uncommitted"() {
@@ -986,16 +1087,17 @@ class ContainerAPITest extends APISpec {
         def normalName = "a" + generateBlobName()
         def copyName = "c" + generateBlobName()
         def metadataName = "m" + generateBlobName()
+        def tagsName = "t" + generateBlobName()
         def uncommittedName = "u" + generateBlobName()
-        setupListBlobsTest(normalName, copyName, metadataName, uncommittedName)
+        setupListBlobsTest(normalName, copyName, metadataName, tagsName, uncommittedName)
 
         when:
         def blobs = cc.listBlobsByHierarchy("", options, null).stream().collect(Collectors.toList())
 
         then:
         blobs.get(0).getName() == normalName
-        blobs.get(3).getName() == uncommittedName
-        blobs.size() == 4 // Normal, copy, metadata, uncommitted
+        blobs.get(4).getName() == uncommittedName
+        blobs.size() == 5 // Normal, copy, metadata, tags, uncommitted
     }
 
     def "List blobs hier options deleted"() {
@@ -1023,8 +1125,9 @@ class ContainerAPITest extends APISpec {
         def normalName = "a" + generateBlobName()
         def copyName = "c" + generateBlobName()
         def metadataName = "m" + generateBlobName()
+        def tagsName = "t" + generateBlobName()
         def uncommittedName = "u" + generateBlobName()
-        setupListBlobsTest(normalName, copyName, metadataName, uncommittedName)
+        setupListBlobsTest(normalName, copyName, metadataName, tagsName, uncommittedName)
 
         when:
         def blobs = cc.listBlobsByHierarchy("", options, null).iterator()
@@ -1042,15 +1145,14 @@ class ContainerAPITest extends APISpec {
         def normalName = "a" + generateBlobName()
         def copyName = "c" + generateBlobName()
         def metadataName = "m" + generateBlobName()
+        def tagsName = "t" + generateBlobName()
         def uncommittedName = "u" + generateBlobName()
-        setupListBlobsTest(normalName, copyName, metadataName, uncommittedName)
+        setupListBlobsTest(normalName, copyName, metadataName, tagsName, uncommittedName)
 
-        when:
-        // use async client, as there is no paging functionality for sync yet
-        def blobs = ccAsync.listBlobsByHierarchy("", options).byPage().blockFirst()
-
-        then:
-        blobs.getValue().size() == 1
+        expect:
+        StepVerifier.create(ccAsync.listBlobsByHierarchy("", options).byPage().limitRequest(1))
+            .assertNext({ assert it.getValue().size() == 1 })
+            .verifyComplete()
     }
 
     @Unroll

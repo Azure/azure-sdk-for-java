@@ -6,33 +6,45 @@
 ###########
 
 # Catch all
-/sdk/ @joshfree @jonathangiles
+/sdk/                                               @joshfree @jonathangiles @srnagar @hemanttanwar @anuchandy
+
+# BOM
+/sdk/boms/azure-sdk-bom/                            @alzimmermsft @jonathangiles @srnagar @hemanttanwar @anuchandy
 
 # Service teams
-/sdk/appconfiguration/                            	@mssfang @alzimmermsft @conniey @sima-zhu
-/sdk/batch/                                      	@xingwu1 @bgklein @matthchr
-/sdk/core/                                        	@alzimmermsft @jianghaolu @srnagar @hemanttanwar
-/sdk/cosmos/                                      	@moderakh @christopheranderson @kushagraThapar
-/sdk/eventhubs/                                   	@conniey @srnagar @mssfang
-/sdk/identity/                                    	@jianghaolu @g2vinay @hemanttanwar
-/sdk/keyvault/                                    	@g2vinay @samvaity
-/sdk/servicebus/                                  	@yvgopal @nemakam
-/sdk/tracing/                                    	@samvaity @alzimmermsft
+/sdk/appconfiguration/                              @mssfang @alzimmermsft @conniey @sima-zhu
+/sdk/batch/                                         @xingwu1 @bgklein @matthchr
+/sdk/core/                                          @alzimmermsft @jianghaolu @srnagar @hemanttanwar @anuchandy
+/sdk/core/azure-core-tracing-opentelemetry/         @samvaity @alzimmermsft
+/sdk/cosmos/                                        @moderakh @kushagraThapar @David-Noble-at-work @kirankumarkolli @mbhaskar
+/sdk/cosmos/azure-spring-data-cosmos/               @kushagraThapar @saragluna @yiliuTo @chenrujun @zhoufenqin @jialindai
+/sdk/eventhubs/                                     @conniey @srnagar @mssfang
+/sdk/formrecognizer/                                @samvaity @mssfang @sima-zhu
+/sdk/identity/                                      @schaabs @g2vinay @jianghaolu
+/sdk/keyvault/                                      @g2vinay @vcolin7 @samvaity
+/sdk/schemaregistry/                                @arerlend @sjkwak
+/sdk/search/                                        @alzimmermsft @sima-zhu @mssfang @samvaity @conniey
+/sdk/servicebus/                                    @yvgopal @nemakam @hemanttanwar @conniey
+/sdk/storage/                                       @amishra-dev @rickle-msft @jaschrep-msft @gapra-msft @alzimmermsft @sima-zhu
+/sdk/textanalytics/                                 @samvaity @mssfang @sima-zhu
+/sdk/spring/                                        @saragluna @yiliuTo @chenrujun @zhoufenqin @jialindai
 
-/sdk/storage/                				@rickle-msft @jaschrep-msft @gapra-msft @alzimmermsft @sima-zhu
+# end to end tests
+/sdk/e2e/                                           @jianghaolu @g2vinay
+/common/smoke-tests/                                @joshfree @jonathangiles @alzimmermsft @g2vinay @conniey @srnagar
 
 # Management Plane
-/**/resource-manager/                            	@yaohaizh
-/sdk/**/azure-mgmt-*/                            	@yaohaizh
+/sdk/management/                                    @ChenTanyi @weidongxu-microsoft @yungezz @xccc-msft
+/sdk/**/mgmt*/                                      @ChenTanyi @weidongxu-microsoft @yungezz @xccc-msft
 
 ###########
 # Eng Sys
 ###########
-/eng/                               @JimSuplizio @mitchdenny @weshaggard @danieljurek
-/eng/code-quality-reports/          @mssfang @JonathanGiles
-/eng/jacoco-test-coverage/          @srnagar @JonathanGiles
-/eng/spotbugs-aggregate-report/     @srnagar @JonathanGiles
-/parent/                            @JimSuplizio
+/eng/                                               @JimSuplizio @mitchdenny @weshaggard @danieljurek
+/eng/code-quality-reports/                          @mssfang @JonathanGiles
+/eng/jacoco-test-coverage/                          @srnagar @JonathanGiles
+/eng/spotbugs-aggregate-report/                     @srnagar @JonathanGiles
+/parent/                                            @JimSuplizio
 
-/**/tests.yml   @danieljurek
-/**/ci.yml      @mitchdenny
+/**/tests.yml                                       @danieljurek
+/**/ci.yml                                          @mitchdenny

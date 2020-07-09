@@ -1,0 +1,42 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://gaprastg71.file.core.windows.net/fileapitestsexistserrorfileapitestsexistserror3cb595801a3?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2019-07-07",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.3.0-beta.1 (11.0.4; Windows 10 10.0)",
+      "x-ms-client-request-id" : "9b8ba67c-d084-4ea0-b1c0-a87b633b17ce"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-07-07",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "0x8D7BA2CB3233743",
+      "Last-Modified" : "Tue, 25 Feb 2020 19:55:44 GMT",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "b6033d58-001a-0006-4515-eca184000000",
+      "Date" : "Tue, 25 Feb 2020 19:55:44 GMT",
+      "x-ms-client-request-id" : "9b8ba67c-d084-4ea0-b1c0-a87b633b17ce"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "HEAD",
+    "Uri" : "https://gaprastg71.file.core.windows.net/fileapitestsexistserrorfileapitestsexistserror3cb595801a3/fileapitestsexistserrorfileapitestsexistserror3cb36019ee6?sig=REDACTED",
+    "Headers" : {
+      "x-ms-version" : "2019-07-07",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.3.0-beta.1 (11.0.4; Windows 10 10.0)",
+      "x-ms-client-request-id" : "7ab52b81-756d-4b71-9f39-1b959737050e"
+    },
+    "Response" : {
+      "Server" : "Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "AuthenticationFailed",
+      "retry-after" : "0",
+      "StatusCode" : "403",
+      "x-ms-request-id" : "b6033d5d-001a-0006-4715-eca184000000",
+      "Date" : "Tue, 25 Feb 2020 19:55:44 GMT"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "fileapitestsexistserrorfileapitestsexistserror3cb595801a3", "fileapitestsexistserrorfileapitestsexistserror3cb36019ee6" ]
+}

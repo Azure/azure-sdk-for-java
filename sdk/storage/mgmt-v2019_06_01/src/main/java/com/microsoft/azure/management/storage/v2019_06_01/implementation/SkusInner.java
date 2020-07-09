@@ -63,15 +63,15 @@ public class SkusInner {
     /**
      * Lists the available SKUs supported by Microsoft.Storage for given subscription.
      *
-     * @return the PagedList<SkuInner> object if successful.
+     * @return the PagedList<SkuInformationInner> object if successful.
      */
-    public PagedList<SkuInner> list() {
-        PageImpl<SkuInner> page = new PageImpl<>();
+    public PagedList<SkuInformationInner> list() {
+        PageImpl<SkuInformationInner> page = new PageImpl<>();
         page.setItems(listWithServiceResponseAsync().toBlocking().single().body());
         page.setNextPageLink(null);
-        return new PagedList<SkuInner>(page) {
+        return new PagedList<SkuInformationInner>(page) {
             @Override
-            public Page<SkuInner> nextPage(String nextPageLink) {
+            public Page<SkuInformationInner> nextPage(String nextPageLink) {
                 return null;
             }
         };
@@ -83,20 +83,20 @@ public class SkusInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<List<SkuInner>> listAsync(final ServiceCallback<List<SkuInner>> serviceCallback) {
+    public ServiceFuture<List<SkuInformationInner>> listAsync(final ServiceCallback<List<SkuInformationInner>> serviceCallback) {
         return ServiceFuture.fromResponse(listWithServiceResponseAsync(), serviceCallback);
     }
 
     /**
      * Lists the available SKUs supported by Microsoft.Storage for given subscription.
      *
-     * @return the observable to the List&lt;SkuInner&gt; object
+     * @return the observable to the List&lt;SkuInformationInner&gt; object
      */
-    public Observable<Page<SkuInner>> listAsync() {
-        return listWithServiceResponseAsync().map(new Func1<ServiceResponse<List<SkuInner>>, Page<SkuInner>>() {
+    public Observable<Page<SkuInformationInner>> listAsync() {
+        return listWithServiceResponseAsync().map(new Func1<ServiceResponse<List<SkuInformationInner>>, Page<SkuInformationInner>>() {
             @Override
-            public Page<SkuInner> call(ServiceResponse<List<SkuInner>> response) {
-                PageImpl<SkuInner> page = new PageImpl<>();
+            public Page<SkuInformationInner> call(ServiceResponse<List<SkuInformationInner>> response) {
+                PageImpl<SkuInformationInner> page = new PageImpl<>();
                 page.setItems(response.body());
                 return page;
             }
@@ -106,9 +106,9 @@ public class SkusInner {
     /**
      * Lists the available SKUs supported by Microsoft.Storage for given subscription.
      *
-     * @return the observable to the List&lt;SkuInner&gt; object
+     * @return the observable to the List&lt;SkuInformationInner&gt; object
      */
-    public Observable<ServiceResponse<List<SkuInner>>> listWithServiceResponseAsync() {
+    public Observable<ServiceResponse<List<SkuInformationInner>>> listWithServiceResponseAsync() {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
@@ -116,16 +116,16 @@ public class SkusInner {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         return service.list(this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<SkuInner>>>>() {
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<SkuInformationInner>>>>() {
                 @Override
-                public Observable<ServiceResponse<List<SkuInner>>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponse<List<SkuInformationInner>>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<PageImpl<SkuInner>> result = listDelegate(response);
-                        List<SkuInner> items = null;
+                        ServiceResponse<PageImpl<SkuInformationInner>> result = listDelegate(response);
+                        List<SkuInformationInner> items = null;
                         if (result.body() != null) {
                             items = result.body().items();
                         }
-                        ServiceResponse<List<SkuInner>> clientResponse = new ServiceResponse<List<SkuInner>>(items, result.response());
+                        ServiceResponse<List<SkuInformationInner>> clientResponse = new ServiceResponse<List<SkuInformationInner>>(items, result.response());
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -134,9 +134,9 @@ public class SkusInner {
             });
     }
 
-    private ServiceResponse<PageImpl<SkuInner>> listDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<PageImpl<SkuInner>, CloudException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<PageImpl<SkuInner>>() { }.getType())
+    private ServiceResponse<PageImpl<SkuInformationInner>> listDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<SkuInformationInner>, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<PageImpl<SkuInformationInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }

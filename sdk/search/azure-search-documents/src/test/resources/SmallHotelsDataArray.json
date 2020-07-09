@@ -1,0 +1,82 @@
+[
+    {
+        "HotelId": "1",
+        "HotelName": "Fancy Stay",
+        "Description": "Best hotel in town if you like luxury hotels. They have an amazing infinity pool, a spa, and a really helpful concierge. The location is perfect -- right downtown, close to all the tourist attractions. We highly recommend this hotel.",
+        "Description_fr": "Meilleur hôtel en ville si vous aimez les hôtels de luxe. Ils ont une magnifique piscine à débordement, un spa et un concierge très utile. L'emplacement est parfait – en plein centre, à proximité de toutes les attractions touristiques. Nous recommandons fortement cet hôtel.",
+        "Category": "Luxury",
+        "Tags": [
+            "pool",
+            "view",
+            "wifi",
+            "concierge"
+        ],
+        "ParkingIncluded": false,
+        "SmokingAllowed": false,
+        "LastRenovationDate": "2010-06-27T00:00:00Z",
+        "Rating": 5,
+        "Location": {
+            "type": "Point",
+            "coordinates": [
+                -122.131577,
+                47.678581
+            ]
+        }
+    },
+    {
+        "HotelId": "2",
+        "HotelName": "Secret Point Motel",
+        "Description": "The hotel is ideally located on the main commercial artery of the city in the heart of New York. A few minutes away is Time's Square and the historic centre of the city, as well as other places of interest that make New York one of America's most attractive and cosmopolitan cities.",
+        "Description_fr": "L'hôtel est idéalement situé sur la principale artère commerciale de la ville en plein cœur de New York. A quelques minutes se trouve la place du temps et le centre historique de la ville, ainsi que d'autres lieux d'intérêt qui font de New York l'une des villes les plus attractives et cosmopolites de l'Amérique.",
+        "Category": "Boutique",
+        "Tags": [
+            "pool",
+            "air conditioning",
+            "concierge"
+        ],
+        "ParkingIncluded": false,
+        "LastRenovationDate": "1970-01-18T00:00:00Z",
+        "Rating": 4,
+        "Address": {
+            "StreetAddress": "677 5th Ave",
+            "City": "New York",
+            "StateProvince": "NY",
+            "PostalCode": "10022",
+            "Country": "USA"
+        },
+        "Location": {
+            "type": "Point",
+            "coordinates": [
+                -73.975403,
+                40.760586
+            ]
+        },
+        "Rooms": [
+            {
+                "Description": "Budget Room, 1 Queen Bed (Cityside)",
+                "Description_fr": "Chambre Économique, 1 grand lit (côté ville)",
+                "Type": "Budget Room",
+                "BaseRate": 9.69,
+                "BedOptions": "1 Queen Bed",
+                "SleepsCount": 2,
+                "SmokingAllowed": true,
+                "Tags": [
+                    "vcr/dvd"
+                ]
+            },
+            {
+                "Description": "Budget Room, 1 King Bed (Mountain View)",
+                "Description_fr": "Chambre Économique, 1 très grand lit (Mountain View)",
+                "Type": "Budget Room",
+                "BaseRate": 8.09,
+                "BedOptions": "1 King Bed",
+                "SleepsCount": 2,
+                "SmokingAllowed": true,
+                "Tags": [
+                    "vcr/dvd",
+                    "jacuzzi tub"
+                ]
+            }
+        ]
+    }
+]

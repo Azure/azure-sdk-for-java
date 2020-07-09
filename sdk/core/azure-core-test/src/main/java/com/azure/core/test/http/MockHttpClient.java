@@ -3,17 +3,20 @@
 
 package com.azure.core.test.http;
 
-import com.azure.core.test.implementation.entities.HttpBinFormDataJSON;
-import com.azure.core.test.implementation.entities.HttpBinFormDataJSON.Form;
-import com.azure.core.test.implementation.entities.HttpBinFormDataJSON.PizzaSize;
-import com.azure.core.test.implementation.entities.HttpBinJSON;
+import com.azure.core.http.ContentType;
 import com.azure.core.http.HttpHeader;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
+import com.azure.core.test.implementation.entities.HttpBinFormDataJSON;
+import com.azure.core.test.implementation.entities.HttpBinFormDataJSON.Form;
+import com.azure.core.test.implementation.entities.HttpBinFormDataJSON.PizzaSize;
+import com.azure.core.test.implementation.entities.HttpBinJSON;
+import com.azure.core.util.Base64Url;
 import com.azure.core.util.DateTimeRfc1123;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.Base64Url;
+import reactor.core.publisher.Mono;
+
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.time.Instant;
@@ -24,19 +27,18 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import reactor.core.publisher.Mono;
 
 /**
  * This HttpClient attempts to mimic the behavior of http://httpbin.org without ever making a network call.
  */
 public class MockHttpClient extends NoOpHttpClient {
     private static final HttpHeaders RESPONSE_HEADERS = new HttpHeaders()
-            .put("Date", "Fri, 13 Oct 2017 20:33:09 GMT")
-            .put("Via", "1.1 vegur")
-            .put("Connection", "keep-alive")
-            .put("X-Processed-Time", "1.0")
-            .put("Access-Control-Allow-Credentials", "true")
-            .put("Content-Type", "application/json");
+        .put("Date", "Fri, 13 Oct 2017 20:33:09 GMT")
+        .put("Via", "1.1 vegur")
+        .put("Connection", "keep-alive")
+        .put("X-Processed-Time", "1.0")
+        .put("Access-Control-Allow-Credentials", "true")
+        .put("Content-Type", "application/json");
 
     @Override
     public Mono<HttpResponse> send(HttpRequest request) {
@@ -46,17 +48,15 @@ public class MockHttpClient extends NoOpHttpClient {
             final URL requestUrl = request.getUrl();
             final String requestHost = requestUrl.getHost();
             final String contentType = request.getHeaders().getValue("Content-Type");
-            if ("httpbin.org".equalsIgnoreCase(requestHost)) {
+            if ("localhost".equalsIgnoreCase(requestHost)) {
                 final String requestPath = requestUrl.getPath();
                 final String requestPathLower = requestPath.toLowerCase();
-                if (requestPathLower.equals("/anything") || requestPathLower.startsWith("/anything/")) {
-                    if ("HEAD".equals(request.getHttpMethod())) {
+                if (requestPathLower.startsWith("/anything")) {
+                    if ("HEAD".equals(request.getHttpMethod().name())) {
                         response = new MockHttpResponse(request, 200, new byte[0]);
                     } else {
                         final HttpBinJSON json = new HttpBinJSON();
-                        json.url(request.getUrl().toString()
-                                // This is just to mimic the behavior we've seen with httpbin.org.
-                                .replace("%20", " "));
+                        json.url(cleanseUrl(requestUrl));
                         json.headers(toMap(request.getHeaders()));
                         response = new MockHttpResponse(request, 200, json);
                     }
@@ -64,8 +64,8 @@ public class MockHttpClient extends NoOpHttpClient {
                     final String byteCountString = requestPath.substring("/bytes/".length());
                     final int byteCount = Integer.parseInt(byteCountString);
                     HttpHeaders newHeaders = new HttpHeaders(RESPONSE_HEADERS)
-                            .put("Content-Type", "application/octet-stream")
-                            .put("Content-Length", Integer.toString(byteCount));
+                        .put("Content-Type", ContentType.APPLICATION_OCTET_STREAM)
+                        .put("Content-Length", Integer.toString(byteCount));
                     response = new MockHttpResponse(request, 200, newHeaders, byteCount == 0 ? null : new byte[byteCount]);
                 } else if (requestPathLower.startsWith("/base64urlbytes/")) {
                     final String byteCountString = requestPath.substring("/base64urlbytes/".length());
@@ -128,17 +128,17 @@ public class MockHttpClient extends NoOpHttpClient {
                     response = new MockHttpResponse(request, 200, RESPONSE_HEADERS, 0);
                 } else if (requestPathLower.equals("/delete")) {
                     final HttpBinJSON json = new HttpBinJSON();
-                    json.url(request.getUrl().toString());
+                    json.url(cleanseUrl(requestUrl));
                     json.data(createHttpBinResponseDataForRequest(request));
                     response = new MockHttpResponse(request, 200, json);
                 } else if (requestPathLower.equals("/get")) {
                     final HttpBinJSON json = new HttpBinJSON();
-                    json.url(request.getUrl().toString());
+                    json.url(cleanseUrl(requestUrl));
                     json.headers(toMap(request.getHeaders()));
                     response = new MockHttpResponse(request, 200, json);
                 } else if (requestPathLower.equals("/patch")) {
                     final HttpBinJSON json = new HttpBinJSON();
-                    json.url(request.getUrl().toString());
+                    json.url(cleanseUrl(requestUrl));
                     json.data(createHttpBinResponseDataForRequest(request));
                     response = new MockHttpResponse(request, 200, json);
                 } else if (requestPathLower.equals("/post")) {
@@ -155,20 +155,20 @@ public class MockHttpClient extends NoOpHttpClient {
                         response = new MockHttpResponse(request, 200, RESPONSE_HEADERS, json);
                     } else {
                         final HttpBinJSON json = new HttpBinJSON();
-                        json.url(request.getUrl().toString());
+                        json.url(cleanseUrl(requestUrl));
                         json.data(createHttpBinResponseDataForRequest(request));
                         json.headers(toMap(request.getHeaders()));
                         response = new MockHttpResponse(request, 200, json);
                     }
                 } else if (requestPathLower.equals("/put")) {
                     final HttpBinJSON json = new HttpBinJSON();
-                    json.url(request.getUrl().toString());
+                    json.url(cleanseUrl(requestUrl));
                     json.data(createHttpBinResponseDataForRequest(request));
                     json.headers(toMap(request.getHeaders()));
                     response = new MockHttpResponse(request, 200, RESPONSE_HEADERS, json);
                 } else if (requestPathLower.startsWith("/status/")) {
                     final String statusCodeString = requestPathLower.substring("/status/".length());
-                    final int statusCode = Integer.valueOf(statusCodeString);
+                    final int statusCode = Integer.parseInt(statusCodeString);
                     response = new MockHttpResponse(request, statusCode);
                 }
             } else if ("echo.org".equalsIgnoreCase(requestHost)) {
@@ -188,18 +188,14 @@ public class MockHttpClient extends NoOpHttpClient {
 
     private static String createHttpBinResponseDataForRequest(HttpRequest request) {
         String body = bodyToString(request);
-        if (body == null) {
-            return "";
-        } else {
-            return body;
-        }
+        return (body == null) ? "" : body;
     }
 
     private static String bodyToString(HttpRequest request) {
         String body = "";
         if (request.getBody() != null) {
             Mono<String> asyncString = FluxUtil.collectBytesInByteBufferStream(request.getBody())
-                    .map(bytes -> new String(bytes, StandardCharsets.UTF_8));
+                .map(bytes -> new String(bytes, StandardCharsets.UTF_8));
             body = asyncString.block();
         }
         return body;
@@ -226,5 +222,19 @@ public class MockHttpClient extends NoOpHttpClient {
             }
         }
         return result;
+    }
+
+    private static String cleanseUrl(URL url) {
+        StringBuilder builder = new StringBuilder();
+        builder.append(url.getProtocol())
+            .append("://")
+            .append(url.getHost())
+            .append(url.getPath().replace("%20", " "));
+
+        if (url.getQuery() != null) {
+            builder.append("?").append(url.getQuery().replace("%20", " "));
+        }
+
+        return builder.toString();
     }
 }

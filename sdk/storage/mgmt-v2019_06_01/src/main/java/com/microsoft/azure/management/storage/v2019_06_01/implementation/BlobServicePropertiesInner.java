@@ -11,6 +11,7 @@ package com.microsoft.azure.management.storage.v2019_06_01.implementation;
 import com.microsoft.azure.management.storage.v2019_06_01.CorsRules;
 import com.microsoft.azure.management.storage.v2019_06_01.DeleteRetentionPolicy;
 import com.microsoft.azure.management.storage.v2019_06_01.ChangeFeed;
+import com.microsoft.azure.management.storage.v2019_06_01.RestorePolicyProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
 import com.microsoft.azure.ProxyResource;
@@ -38,13 +39,19 @@ public class BlobServicePropertiesInner extends ProxyResource {
     private String defaultServiceVersion;
 
     /**
-     * The blob service properties for soft delete.
+     * The blob service properties for blob soft delete.
      */
     @JsonProperty(value = "properties.deleteRetentionPolicy")
     private DeleteRetentionPolicy deleteRetentionPolicy;
 
     /**
-     * Automatic Snapshot is enabled if set to true.
+     * Versioning is enabled if set to true.
+     */
+    @JsonProperty(value = "properties.isVersioningEnabled")
+    private Boolean isVersioningEnabled;
+
+    /**
+     * Deprecated in favor of isVersioningEnabled property.
      */
     @JsonProperty(value = "properties.automaticSnapshotPolicyEnabled")
     private Boolean automaticSnapshotPolicyEnabled;
@@ -54,6 +61,24 @@ public class BlobServicePropertiesInner extends ProxyResource {
      */
     @JsonProperty(value = "properties.changeFeed")
     private ChangeFeed changeFeed;
+
+    /**
+     * The blob service properties for blob restore policy.
+     */
+    @JsonProperty(value = "properties.restorePolicy")
+    private RestorePolicyProperties restorePolicy;
+
+    /**
+     * The blob service properties for container soft delete.
+     */
+    @JsonProperty(value = "properties.containerDeleteRetentionPolicy")
+    private DeleteRetentionPolicy containerDeleteRetentionPolicy;
+
+    /**
+     * Sku name and tier.
+     */
+    @JsonProperty(value = "sku", access = JsonProperty.Access.WRITE_ONLY)
+    private SkuInner sku;
 
     /**
      * Get specifies CORS rules for the Blob service. You can include up to five CorsRule elements in the request. If no CorsRule elements are included in the request body, all CORS rules will be deleted, and CORS will be disabled for the Blob service.
@@ -96,7 +121,7 @@ public class BlobServicePropertiesInner extends ProxyResource {
     }
 
     /**
-     * Get the blob service properties for soft delete.
+     * Get the blob service properties for blob soft delete.
      *
      * @return the deleteRetentionPolicy value
      */
@@ -105,7 +130,7 @@ public class BlobServicePropertiesInner extends ProxyResource {
     }
 
     /**
-     * Set the blob service properties for soft delete.
+     * Set the blob service properties for blob soft delete.
      *
      * @param deleteRetentionPolicy the deleteRetentionPolicy value to set
      * @return the BlobServicePropertiesInner object itself.
@@ -116,7 +141,27 @@ public class BlobServicePropertiesInner extends ProxyResource {
     }
 
     /**
-     * Get automatic Snapshot is enabled if set to true.
+     * Get versioning is enabled if set to true.
+     *
+     * @return the isVersioningEnabled value
+     */
+    public Boolean isVersioningEnabled() {
+        return this.isVersioningEnabled;
+    }
+
+    /**
+     * Set versioning is enabled if set to true.
+     *
+     * @param isVersioningEnabled the isVersioningEnabled value to set
+     * @return the BlobServicePropertiesInner object itself.
+     */
+    public BlobServicePropertiesInner withIsVersioningEnabled(Boolean isVersioningEnabled) {
+        this.isVersioningEnabled = isVersioningEnabled;
+        return this;
+    }
+
+    /**
+     * Get deprecated in favor of isVersioningEnabled property.
      *
      * @return the automaticSnapshotPolicyEnabled value
      */
@@ -125,7 +170,7 @@ public class BlobServicePropertiesInner extends ProxyResource {
     }
 
     /**
-     * Set automatic Snapshot is enabled if set to true.
+     * Set deprecated in favor of isVersioningEnabled property.
      *
      * @param automaticSnapshotPolicyEnabled the automaticSnapshotPolicyEnabled value to set
      * @return the BlobServicePropertiesInner object itself.
@@ -153,6 +198,55 @@ public class BlobServicePropertiesInner extends ProxyResource {
     public BlobServicePropertiesInner withChangeFeed(ChangeFeed changeFeed) {
         this.changeFeed = changeFeed;
         return this;
+    }
+
+    /**
+     * Get the blob service properties for blob restore policy.
+     *
+     * @return the restorePolicy value
+     */
+    public RestorePolicyProperties restorePolicy() {
+        return this.restorePolicy;
+    }
+
+    /**
+     * Set the blob service properties for blob restore policy.
+     *
+     * @param restorePolicy the restorePolicy value to set
+     * @return the BlobServicePropertiesInner object itself.
+     */
+    public BlobServicePropertiesInner withRestorePolicy(RestorePolicyProperties restorePolicy) {
+        this.restorePolicy = restorePolicy;
+        return this;
+    }
+
+    /**
+     * Get the blob service properties for container soft delete.
+     *
+     * @return the containerDeleteRetentionPolicy value
+     */
+    public DeleteRetentionPolicy containerDeleteRetentionPolicy() {
+        return this.containerDeleteRetentionPolicy;
+    }
+
+    /**
+     * Set the blob service properties for container soft delete.
+     *
+     * @param containerDeleteRetentionPolicy the containerDeleteRetentionPolicy value to set
+     * @return the BlobServicePropertiesInner object itself.
+     */
+    public BlobServicePropertiesInner withContainerDeleteRetentionPolicy(DeleteRetentionPolicy containerDeleteRetentionPolicy) {
+        this.containerDeleteRetentionPolicy = containerDeleteRetentionPolicy;
+        return this;
+    }
+
+    /**
+     * Get sku name and tier.
+     *
+     * @return the sku value
+     */
+    public SkuInner sku() {
+        return this.sku;
     }
 
 }

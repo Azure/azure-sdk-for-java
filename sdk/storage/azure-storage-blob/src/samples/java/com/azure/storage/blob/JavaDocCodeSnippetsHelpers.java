@@ -3,6 +3,8 @@
 
 package com.azure.storage.blob;
 
+import com.azure.storage.blob.models.UserDelegationKey;
+
 final class JavaDocCodeSnippetsHelpers {
     static BlobContainerAsyncClient getContainerAsyncClient() {
         return new BlobContainerClientBuilder().buildAsyncClient();
@@ -26,5 +28,9 @@ final class JavaDocCodeSnippetsHelpers {
 
     static BlobServiceClient getBlobServiceClient() {
         return new BlobServiceClientBuilder().buildClient();
+    }
+
+    static UserDelegationKey getUserDelegationKey() {
+        return getBlobServiceClient().getUserDelegationKey(null, null);
     }
 }

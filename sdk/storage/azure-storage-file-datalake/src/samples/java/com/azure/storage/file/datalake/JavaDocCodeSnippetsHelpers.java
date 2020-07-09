@@ -3,6 +3,8 @@
 
 package com.azure.storage.file.datalake;
 
+import com.azure.storage.file.datalake.models.UserDelegationKey;
+
 import java.net.MalformedURLException;
 import java.net.URL;
 
@@ -46,5 +48,9 @@ final class JavaDocCodeSnippetsHelpers {
         } catch (MalformedURLException ex) {
             throw new RuntimeException(ex);
         }
+    }
+
+    static UserDelegationKey getUserDelegationKey() {
+        return getDataLakeServiceClient().getUserDelegationKey(null, null);
     }
 }

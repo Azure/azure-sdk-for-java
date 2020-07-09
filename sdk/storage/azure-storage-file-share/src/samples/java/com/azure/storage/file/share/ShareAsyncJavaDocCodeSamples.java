@@ -5,8 +5,11 @@ package com.azure.storage.file.share;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.file.share.models.ShareAccessPolicy;
 import com.azure.storage.file.share.models.ShareFileHttpHeaders;
+import com.azure.storage.file.share.models.ShareRequestConditions;
 import com.azure.storage.file.share.models.ShareSignedIdentifier;
 import com.azure.storage.file.share.models.NtfsFileAttributes;
+import com.azure.storage.file.share.sas.ShareSasPermission;
+import com.azure.storage.file.share.sas.ShareServiceSasSignatureValues;
 
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
@@ -20,7 +23,8 @@ import java.util.Map;
  * Contains code snippets when generating javadocs through doclets for {@link ShareAsyncClient}.
  */
 public class ShareAsyncJavaDocCodeSamples {
-
+    private String leaseId = "leaseId";
+    ShareAsyncClient client = createAsyncClientWithSASToken();
 
     /**
      * Generates code sample for {@link ShareAsyncClient} instantiation.
@@ -32,6 +36,24 @@ public class ShareAsyncJavaDocCodeSamples {
             .endpoint("${endpoint}")
             .buildAsyncClient();
         // END: com.azure.storage.file.share.ShareAsyncClient.instantiation
+    }
+
+    /**
+     * Code snippet for {@link ShareAsyncClient#exists()}
+     */
+    public void exists() {
+        // BEGIN: com.azure.storage.file.share.ShareAsyncClient.exists
+        client.exists().subscribe(response -> System.out.printf("Exists? %b%n", response));
+        // END: com.azure.storage.file.share.ShareAsyncClient.exists
+    }
+
+    /**
+     * Code snippet for {@link ShareAsyncClient#existsWithResponse()}
+     */
+    public void existsWithResponse() {
+        // BEGIN: com.azure.storage.file.share.ShareAsyncClient.existsWithResponse
+        client.existsWithResponse().subscribe(response -> System.out.printf("Exists? %b%n", response.getValue()));
+        // END: com.azure.storage.file.share.ShareAsyncClient.existsWithResponse
     }
 
     /**
@@ -240,6 +262,36 @@ public class ShareAsyncJavaDocCodeSamples {
     }
 
     /**
+     * Generates a code sample for using {@link ShareAsyncClient#createFileWithResponse(String, long, ShareFileHttpHeaders,
+     * FileSmbProperties, String, Map, ShareRequestConditions)}
+     */
+    public void createFileWithLease() {
+        ShareAsyncClient shareAsyncClient = createAsyncClientWithSASToken();
+        // BEGIN: com.azure.storage.file.share.ShareAsyncClient.createFileWithResponse#String-long-ShareFileHttpHeaders-FileSmbProperties-String-Map-ShareRequestConditions
+        ShareFileHttpHeaders httpHeaders = new ShareFileHttpHeaders()
+            .setContentType("text/html")
+            .setContentEncoding("gzip")
+            .setContentLanguage("en")
+            .setCacheControl("no-transform")
+            .setContentDisposition("attachment");
+        FileSmbProperties smbProperties = new FileSmbProperties()
+            .setNtfsFileAttributes(EnumSet.of(NtfsFileAttributes.READ_ONLY))
+            .setFileCreationTime(OffsetDateTime.now())
+            .setFileLastWriteTime(OffsetDateTime.now())
+            .setFilePermissionKey("filePermissionKey");
+        String filePermission = "filePermission";
+        // NOTE: filePermission and filePermissionKey should never be both set
+
+        ShareRequestConditions requestConditions = new ShareRequestConditions().setLeaseId(leaseId);
+
+        shareAsyncClient.createFileWithResponse("myfile", 1024, httpHeaders, smbProperties,
+            filePermission, Collections.singletonMap("directory", "metadata"), requestConditions)
+            .subscribe(response -> System.out.printf("Creating the file completed with status code %d",
+                response.getStatusCode()));
+        // END: com.azure.storage.file.share.ShareAsyncClient.createFileWithResponse#String-long-ShareFileHttpHeaders-FileSmbProperties-String-Map-ShareRequestConditions
+    }
+
+    /**
      * Generates a code sample for using {@link ShareAsyncClient#deleteDirectory(String)}
      */
     public void deleteDirectoryAsync() {
@@ -268,6 +320,23 @@ public class ShareAsyncJavaDocCodeSamples {
         );
         // END: com.azure.storage.file.share.ShareAsyncClient.deleteFile#string
     }
+
+    /**
+     * Generates a code sample for using {@link ShareAsyncClient#deleteFileWithResponse(String, ShareRequestConditions)}
+     */
+    public void deleteFileWithResponseAsync() {
+        ShareAsyncClient shareAsyncClient = createAsyncClientWithSASToken();
+        // BEGIN: com.azure.storage.file.share.ShareAsyncClient.deleteFile#string-ShareRequestConditions
+        ShareRequestConditions requestConditions = new ShareRequestConditions().setLeaseId(leaseId);
+        shareAsyncClient.deleteFileWithResponse("myfile", requestConditions).subscribe(
+            response -> {
+            },
+            error -> System.err.println(error.toString()),
+            () -> System.out.println("Complete deleting the file.")
+        );
+        // END: com.azure.storage.file.share.ShareAsyncClient.deleteFile#string-ShareRequestConditions
+    }
+
 
     /**
      * Generates a code sample for using {@link ShareAsyncClient#delete}
@@ -526,5 +595,21 @@ public class ShareAsyncJavaDocCodeSamples {
         String shareName = shareAsyncClient.getShareName();
         System.out.println("The name of the share is " + shareName);
         // END: com.azure.storage.file.share.ShareAsyncClient.getShareName
+    }
+
+    /**
+     * Code snippet for {@link ShareAsyncClient#generateSas(ShareServiceSasSignatureValues)}
+     */
+    public void generateSas() {
+        ShareAsyncClient shareAsyncClient = createAsyncClientWithCredential();
+        // BEGIN: com.azure.storage.file.share.ShareAsyncClient.generateSas#ShareServiceSasSignatureValues
+        OffsetDateTime expiryTime = OffsetDateTime.now().plusDays(1);
+        ShareSasPermission permission = new ShareSasPermission().setReadPermission(true);
+
+        ShareServiceSasSignatureValues values = new ShareServiceSasSignatureValues(expiryTime, permission)
+            .setStartTime(OffsetDateTime.now());
+
+        shareAsyncClient.generateSas(values); // Client must be authenticated via StorageSharedKeyCredential
+        // END: com.azure.storage.file.share.ShareAsyncClient.generateSas#ShareServiceSasSignatureValues
     }
 }

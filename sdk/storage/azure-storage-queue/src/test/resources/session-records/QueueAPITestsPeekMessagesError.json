@@ -1,25 +1,26 @@
 {
   "networkCallRecords" : [ {
     "Method" : "GET",
-    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/queueapitestspeekmessageserror94607200734830ad1/messages?peekonly=true",
+    "Uri" : "https://REDACTED.queue.core.windows.net/queueapitestspeekmessageserror00948b4640202c767/messages?peekonly=true",
     "Headers" : {
-      "x-ms-version" : "2018-03-28",
-      "User-Agent" : "azsdk-java-azure-storage-queue/12.0.0-preview.5 11.0.4; Windows 10 10.0",
-      "x-ms-client-request-id" : "0b45b456-5a0a-4d03-9790-81de0bdcc432"
+      "x-ms-version" : "2019-12-12",
+      "User-Agent" : "azsdk-java-azure-storage-queue/12.6.0-beta.1 (11.0.6; Windows 10 10.0)",
+      "x-ms-client-request-id" : "38d0bd2e-9e9d-492f-bf25-4087d6ce7504"
     },
     "Response" : {
-      "x-ms-version" : "2018-03-28",
+      "x-ms-version" : "2019-12-12",
       "Server" : "Windows-Azure-Queue/1.0 Microsoft-HTTPAPI/2.0",
       "x-ms-error-code" : "QueueNotFound",
       "retry-after" : "0",
       "Content-Length" : "217",
       "StatusCode" : "404",
-      "x-ms-request-id" : "2f7e84a7-f003-0082-2f8d-839126000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>QueueNotFound</Code><Message>The specified queue does not exist.\nRequestId:2f7e84a7-f003-0082-2f8d-839126000000\nTime:2019-10-15T19:19:40.7816471Z</Message></Error>",
-      "Date" : "Tue, 15 Oct 2019 19:19:39 GMT",
+      "x-ms-request-id" : "37a39ef6-3003-009b-5603-3a8ca5000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>QueueNotFound</Code><Message>The specified queue does not exist.\nRequestId:37a39ef6-3003-009b-5603-3a8ca5000000\nTime:2020-06-04T00:05:05.8192658Z</Message></Error>",
+      "Date" : "Thu, 04 Jun 2020 00:05:05 GMT",
+      "x-ms-client-request-id" : "38d0bd2e-9e9d-492f-bf25-4087d6ce7504",
       "Content-Type" : "application/xml"
     },
     "Exception" : null
   } ],
-  "variables" : [ "queueapitestspeekmessageserror94607200734830ad1" ]
+  "variables" : [ "queueapitestspeekmessageserror00948b4640202c767" ]
 }

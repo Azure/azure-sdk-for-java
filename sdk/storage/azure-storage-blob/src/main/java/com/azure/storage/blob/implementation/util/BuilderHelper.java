@@ -16,6 +16,7 @@ import com.azure.core.http.policy.HttpPolicyProviders;
 import com.azure.core.http.policy.RequestIdPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.util.Configuration;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobUrlParts;
 import com.azure.storage.common.StorageSharedKeyCredential;
@@ -28,8 +29,10 @@ import com.azure.storage.common.policy.ResponseValidationPolicyBuilder;
 import com.azure.storage.common.policy.ScrubEtagPolicy;
 import com.azure.storage.common.policy.StorageSharedKeyCredentialPolicy;
 
+import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * This class provides helper methods for common builder patterns.
@@ -37,10 +40,10 @@ import java.util.List;
  * RESERVED FOR INTERNAL USE.
  */
 public final class BuilderHelper {
-    private static final String DEFAULT_USER_AGENT_NAME = "azure-storage-blob";
-    // {x-version-update-start;com.azure:azure-storage-blob;current}
-    private static final String DEFAULT_USER_AGENT_VERSION = "12.1.0-beta.1";
-    // {x-version-update-end}
+    private static final Map<String, String> PROPERTIES =
+        CoreUtils.getProperties("azure-storage-blob.properties");
+    private static final String SDK_NAME = "name";
+    private static final String SDK_VERSION = "version";
 
     /**
      * Constructs a {@link HttpPipeline} from values passed from a builder.
@@ -61,20 +64,24 @@ public final class BuilderHelper {
         TokenCredential tokenCredential, SasTokenCredential sasTokenCredential, String endpoint,
         RequestRetryOptions retryOptions, HttpLogOptions logOptions, HttpClient httpClient,
         List<HttpPipelinePolicy> additionalPolicies, Configuration configuration, ClientLogger logger) {
+
         // Closest to API goes first, closest to wire goes last.
         List<HttpPipelinePolicy> policies = new ArrayList<>();
 
         policies.add(getUserAgentPolicy(configuration));
         policies.add(new RequestIdPolicy());
-        policies.add(new AddDatePolicy());
 
+        HttpPolicyProviders.addBeforeRetryPolicies(policies);
+        policies.add(new RequestRetryPolicy(retryOptions));
+
+        policies.add(new AddDatePolicy());
         HttpPipelinePolicy credentialPolicy;
         if (storageSharedKeyCredential != null) {
             credentialPolicy =  new StorageSharedKeyCredentialPolicy(storageSharedKeyCredential);
         } else if (tokenCredential != null) {
             httpsValidation(tokenCredential, "bearer token", endpoint, logger);
             credentialPolicy =  new BearerTokenAuthenticationPolicy(tokenCredential,
-                String.format("%s/.default", endpoint));
+                String.format("%s/.default", getPrimaryEndpointForTokenAuth(endpoint)));
         } else if (sasTokenCredential != null) {
             credentialPolicy =  new SasTokenCredentialPolicy(sasTokenCredential);
         } else {
@@ -84,9 +91,6 @@ public final class BuilderHelper {
         if (credentialPolicy != null) {
             policies.add(credentialPolicy);
         }
-
-        HttpPolicyProviders.addBeforeRetryPolicies(policies);
-        policies.add(new RequestRetryPolicy(retryOptions));
 
         policies.addAll(additionalPolicies);
 
@@ -102,6 +106,19 @@ public final class BuilderHelper {
             .policies(policies.toArray(new HttpPipelinePolicy[0]))
             .httpClient(httpClient)
             .build();
+    }
+
+    /**
+     *
+     * @param endpoint The endpoint passed by the customer.
+     * @return The primary endpoint for the account. It may be the same endpoint passed if it is already a primary or it
+     * may have had "-secondary" stripped from the end of the account name.
+     */
+    private static String getPrimaryEndpointForTokenAuth(String endpoint) {
+        String[] parts = endpoint.split("\\.");
+        parts[0] = parts[0].endsWith("-secondary") ? parts[0].substring(0, parts[0].length() - "-secondary".length())
+            : parts[0];
+        return String.join(".", parts);
     }
 
     /**
@@ -122,8 +139,8 @@ public final class BuilderHelper {
      * @param parts The {@link BlobUrlParts} from the parse URL.
      * @return The endpoint for the blob service.
      */
-    public static String getEndpoint(BlobUrlParts parts) {
-        if (ModelHelper.IP_V4_URL_PATTERN.matcher(parts.getHost()).find()) {
+    public static String getEndpoint(BlobUrlParts parts) throws MalformedURLException {
+        if (ModelHelper.determineAuthorityIsIpStyle(parts.getHost())) {
             return String.format("%s://%s/%s", parts.getScheme(), parts.getHost(), parts.getAccountName());
         } else {
             return String.format("%s://%s", parts.getScheme(), parts.getHost());
@@ -153,8 +170,10 @@ public final class BuilderHelper {
     private static UserAgentPolicy getUserAgentPolicy(Configuration configuration) {
         configuration = (configuration == null) ? Configuration.NONE : configuration;
 
-        return new UserAgentPolicy(getDefaultHttpLogOptions().getApplicationId(), DEFAULT_USER_AGENT_NAME,
-            DEFAULT_USER_AGENT_VERSION, configuration);
+        String clientName = PROPERTIES.getOrDefault(SDK_NAME, "UnknownName");
+        String clientVersion = PROPERTIES.getOrDefault(SDK_VERSION, "UnknownVersion");
+        return new UserAgentPolicy(getDefaultHttpLogOptions().getApplicationId(), clientName, clientVersion,
+            configuration);
     }
 
     /*

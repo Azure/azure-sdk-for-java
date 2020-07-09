@@ -34,6 +34,9 @@ public final class EncoderNamedPreset extends ExpandableStringEnum<EncoderNamedP
     /** Static value ContentAwareEncodingExperimental for EncoderNamedPreset. */
     public static final EncoderNamedPreset CONTENT_AWARE_ENCODING_EXPERIMENTAL = fromString("ContentAwareEncodingExperimental");
 
+    /** Static value ContentAwareEncoding for EncoderNamedPreset. */
+    public static final EncoderNamedPreset CONTENT_AWARE_ENCODING = fromString("ContentAwareEncoding");
+
     /** Static value H264MultipleBitrate1080p for EncoderNamedPreset. */
     public static final EncoderNamedPreset H264MULTIPLE_BITRATE1080P = fromString("H264MultipleBitrate1080p");
 

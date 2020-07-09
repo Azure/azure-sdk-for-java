@@ -84,7 +84,8 @@ public final class EventPosition {
     }
 
     /**
-     * Corresponds to the event in the partition at the provided offset, inclusive of that event.
+     * Creates a position to an event in the partition at the provided offset. The event at that offset will not be
+     * included. Instead, the next event is returned.
      *
      * <p>
      * The offset is the relative position for event in the context of the stream. The offset should not be considered a
@@ -96,7 +97,7 @@ public final class EventPosition {
      * @return An {@link EventPosition} object.
      */
     public static EventPosition fromOffset(long offset) {
-        return fromOffset(offset, true);
+        return fromOffset(offset, false);
     }
 
     /**

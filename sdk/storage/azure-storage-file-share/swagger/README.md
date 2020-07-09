@@ -3,28 +3,19 @@
 > see https://aka.ms/autorest
 
 ### Setup
-```ps
-cd C:\work
-git clone --recursive https://github.com/Azure/autorest.java/
-cd autorest.java
-git checkout v3
-npm install
-cd ..
-git clone --recursive https://github.com/jianghaolu/autorest.modeler/
-cd autorest.modeler
-git checkout headerprefixfix
-npm install
-```
+
+Increase max memory if you're using Autorest older than 3. Set the environment variable `NODE_OPTIONS` to `--max-old-space-size=8192`.
 
 ### Generation
 ```ps
 cd <swagger-folder>
-autorest --use=C:/work/autorest.java --use=C:/work/autorest.modeler --version=2.0.4280
+# You may need to repeat this command few times if you're getting "TypeError: Cannot read property 'filename' of undefined" error
+autorest --use=@microsoft.azure/autorest.java@3.0.4 --use=jianghaolu/autorest.modeler#440af3935c504cea4410133e1fd940b78f6af749  --version=2.0.4280
 ```
 
 ### Code generation settings
 ``` yaml
-input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/storage-dataplane-preview/specification/storage/data-plane/Microsoft.FileStorage/preview/2019-02-02/file.json
+input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/storage-dataplane-preview/specification/storage/data-plane/Microsoft.FileStorage/preview/2019-12-12/file.json
 java: true
 output-folder: ../
 namespace: com.azure.storage.file.share
@@ -35,7 +26,7 @@ license-header: MICROSOFT_MIT_SMALL
 add-context-parameter: true
 models-subpackage: implementation.models
 custom-types-subpackage: models
-custom-types: HandleItem,ShareFileHttpHeaders,ShareItem,ShareServiceProperties,ShareCorsRule,ShareProperties,Range,CopyStatusType,ShareSignedIdentifier,SourceModifiedAccessConditions,ShareErrorCode,StorageServiceProperties,ShareMetrics,ShareAccessPolicy,ShareFileDownloadHeaders
+custom-types: HandleItem,ShareFileHttpHeaders,ShareItem,ShareServiceProperties,ShareCorsRule,ShareProperties,Range,CopyStatusType,ShareSignedIdentifier,SourceModifiedAccessConditions,ShareErrorCode,StorageServiceProperties,ShareMetrics,ShareAccessPolicy,ShareFileDownloadHeaders,LeaseDurationType,LeaseStateType,LeaseStatusType,PermissionCopyModeType
 ```
 
 ### Query Parameters
@@ -175,6 +166,19 @@ directive:
     if (!param["$ref"].endsWith("ShareName")) {
         const path = param["$ref"].replace(/[#].*$/, "#/parameters/ShareName");
         $.get.parameters.splice(0, 0, { "$ref": path });
+    }
+```
+
+### /{shareName}?restype=share&comp=undelete
+``` yaml
+directive:
+- from: swagger-document
+  where: $["x-ms-paths"]["/{shareName}?restype=share&comp=undelete"]
+  transform: >
+    let param = $.put.parameters[0];
+    if (!param["$ref"].endsWith("ShareName")) {
+        const path = param["$ref"].replace(/[#].*$/, "#/parameters/ShareName");
+        $.put.parameters.splice(0, 0, { "$ref": path });
     }
 ```
 
@@ -460,6 +464,66 @@ directive:
     }
 ```
 
+### /{shareName}/{filePath}?comp=lease&acquire
+``` yaml
+directive:
+- from: swagger-document
+  where: $["x-ms-paths"]
+  transform: >
+    if (!$["/{shareName}/{filePath}?comp=lease&acquire"]) {
+        const op = $["/{shareName}/{filePath}?comp=lease&acquire"] = $["/{shareName}/{directory}/{fileName}?comp=lease&acquire"];
+        const path = op.put.parameters[0].$ref.replace(/[#].*$/, "#/parameters/");
+        op.put.parameters.splice(0, 0, { "$ref": path + "ShareName" });
+        op.put.parameters.splice(1, 0, { "$ref": path + "FilePath" });
+        delete $["/{shareName}/{directory}/{fileName}?comp=lease&acquire"];
+    }
+```
+
+### /{shareName}/{filePath}?comp=lease&release
+``` yaml
+directive:
+- from: swagger-document
+  where: $["x-ms-paths"]
+  transform: >
+    if (!$["/{shareName}/{filePath}?comp=lease&release"]) {
+        const op = $["/{shareName}/{filePath}?comp=lease&release"] = $["/{shareName}/{directory}/{fileName}?comp=lease&release"];
+        const path = op.put.parameters[0].$ref.replace(/[#].*$/, "#/parameters/");
+        op.put.parameters.splice(0, 0, { "$ref": path + "ShareName" });
+        op.put.parameters.splice(1, 0, { "$ref": path + "FilePath" });
+        delete $["/{shareName}/{directory}/{fileName}?comp=lease&release"];
+    }
+```
+
+### /{shareName}/{filePath}?comp=lease&change
+``` yaml
+directive:
+- from: swagger-document
+  where: $["x-ms-paths"]
+  transform: >
+    if (!$["/{shareName}/{filePath}?comp=lease&change"]) {
+        const op = $["/{shareName}/{filePath}?comp=lease&change"] = $["/{shareName}/{directory}/{fileName}?comp=lease&change"];
+        const path = op.put.parameters[0].$ref.replace(/[#].*$/, "#/parameters/");
+        op.put.parameters.splice(0, 0, { "$ref": path + "ShareName" });
+        op.put.parameters.splice(1, 0, { "$ref": path + "FilePath" });
+        delete $["/{shareName}/{directory}/{fileName}?comp=lease&change"];
+    }
+```
+
+### /{shareName}/{filePath}?comp=lease&break
+``` yaml
+directive:
+- from: swagger-document
+  where: $["x-ms-paths"]
+  transform: >
+    if (!$["/{shareName}/{filePath}?comp=lease&break"]) {
+        const op = $["/{shareName}/{filePath}?comp=lease&break"] = $["/{shareName}/{directory}/{fileName}?comp=lease&break"];
+        const path = op.put.parameters[0].$ref.replace(/[#].*$/, "#/parameters/");
+        op.put.parameters.splice(0, 0, { "$ref": path + "ShareName" });
+        op.put.parameters.splice(1, 0, { "$ref": path + "FilePath" });
+        delete $["/{shareName}/{directory}/{fileName}?comp=lease&break"];
+    }
+```
+
 ### ShareProperties
 ``` yaml
 directive:
@@ -489,7 +553,7 @@ directive:
 - from: swagger-document
   where: $.parameters.ApiVersionParameter
   transform: >
-    $.enum = [ "2019-02-02" ];
+    $.enum = [ "2019-07-07" ];
 ```
 
 ### Convert FileCreationTime and FileLastWriteTime to String to Support 'now'
@@ -720,6 +784,14 @@ directive:
     transform: $.name.raw = 'Share-File-Download-Headers'
 ```
 
+### FileRangeWriteFromUrl Constant
+``` yaml
+directive:
+- from: swagger-document
+  where: $.parameters.LeaseIdOptional
+  transform: >
+    delete $["x-ms-parameter-grouping"];
+```
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fstorage%2Fazure-storage-file-share%2Fswagger%2FREADME.png)
 

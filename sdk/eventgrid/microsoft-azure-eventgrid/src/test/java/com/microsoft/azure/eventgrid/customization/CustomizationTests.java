@@ -1,11 +1,7 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.microsoft.azure.eventgrid.customization;
 
-import com.microsoft.azure.eventgrid.models.EventGridEvent;
 import com.microsoft.azure.eventgrid.customization.models.ContosoItemReceivedEventData;
 import com.microsoft.azure.eventgrid.customization.models.ContosoItemSentEventData;
 import com.microsoft.azure.eventgrid.customization.models.DroneShippingInfo;
@@ -16,6 +12,7 @@ import com.microsoft.azure.eventgrid.models.ContainerRegistryChartDeletedEventDa
 import com.microsoft.azure.eventgrid.models.ContainerRegistryChartPushedEventData;
 import com.microsoft.azure.eventgrid.models.ContainerRegistryImageDeletedEventData;
 import com.microsoft.azure.eventgrid.models.ContainerRegistryImagePushedEventData;
+import com.microsoft.azure.eventgrid.models.EventGridEvent;
 import com.microsoft.azure.eventgrid.models.EventHubCaptureFileCreatedEventData;
 import com.microsoft.azure.eventgrid.models.IotHubDeviceConnectedEventData;
 import com.microsoft.azure.eventgrid.models.IotHubDeviceCreatedEventData;
@@ -23,8 +20,8 @@ import com.microsoft.azure.eventgrid.models.IotHubDeviceDeletedEventData;
 import com.microsoft.azure.eventgrid.models.IotHubDeviceDisconnectedEventData;
 import com.microsoft.azure.eventgrid.models.IotHubDeviceTelemetryEventData;
 import com.microsoft.azure.eventgrid.models.MapsGeofenceEnteredEventData;
-import com.microsoft.azure.eventgrid.models.MapsGeofenceResultEventData;
 import com.microsoft.azure.eventgrid.models.MapsGeofenceExitedEventData;
+import com.microsoft.azure.eventgrid.models.MapsGeofenceResultEventData;
 import com.microsoft.azure.eventgrid.models.MediaJobCanceledEventData;
 import com.microsoft.azure.eventgrid.models.MediaJobCancelingEventData;
 import com.microsoft.azure.eventgrid.models.MediaJobErrorCategory;
@@ -68,9 +65,9 @@ import com.microsoft.azure.eventgrid.models.StorageBlobCreatedEventData;
 import com.microsoft.azure.eventgrid.models.StorageBlobDeletedEventData;
 import com.microsoft.azure.eventgrid.models.SubscriptionDeletedEventData;
 import com.microsoft.azure.eventgrid.models.SubscriptionValidationEventData;
+import org.apache.commons.io.IOUtils;
 import org.junit.Assert;
 import org.junit.Test;
-import org.apache.commons.io.IOUtils;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
@@ -89,12 +86,12 @@ public class CustomizationTests {
 
         Assert.assertNotNull(events);
         Assert.assertTrue(events[0].data() instanceof StorageBlobDeletedEventData);
-        StorageBlobDeletedEventData eventData = (StorageBlobDeletedEventData)events[0].data();
+        StorageBlobDeletedEventData eventData = (StorageBlobDeletedEventData) events[0].data();
         Assert.assertEquals("https://example.blob.core.windows.net/testcontainer/testfile.txt", eventData.url());
     }
 
     @Test
-    public void ConsumeCustomEvents() throws IOException {
+    public void consumeCustomEvents() throws IOException {
         String jsonData = getTestPayloadFromFile("CustomEvents.json");
         //
         EventGridSubscriber eventGridSubscriber = new EventGridSubscriber();
@@ -116,7 +113,7 @@ public class CustomizationTests {
         //
         EventGridSubscriber eventGridSubscriber = new EventGridSubscriber();
 
-        ContosoItemReceivedEventData[] arr = { new ContosoItemReceivedEventData() };
+        ContosoItemReceivedEventData[] arr = {new ContosoItemReceivedEventData()};
         eventGridSubscriber.putCustomEventMapping("Contoso.Items.ItemReceived", arr.getClass());
 
         EventGridEvent[] events = eventGridSubscriber.deserializeEventGridEvents(jsonData);
@@ -174,9 +171,9 @@ public class CustomizationTests {
         Assert.assertEquals(2, events.length);
         Assert.assertTrue(events[0].data() instanceof ContosoItemSentEventData);
         Assert.assertTrue(events[1].data() instanceof ContosoItemSentEventData);
-        ContosoItemSentEventData eventData0 = (ContosoItemSentEventData)events[0].data();
+        ContosoItemSentEventData eventData0 = (ContosoItemSentEventData) events[0].data();
         Assert.assertTrue(eventData0.shippingInfo() instanceof DroneShippingInfo);
-        ContosoItemSentEventData eventData1 = (ContosoItemSentEventData)events[1].data();
+        ContosoItemSentEventData eventData1 = (ContosoItemSentEventData) events[1].data();
         Assert.assertTrue(eventData1.shippingInfo() instanceof RocketShippingInfo);
     }
 
@@ -203,7 +200,7 @@ public class CustomizationTests {
         Assert.assertTrue(removed);
         Assert.assertEquals(1, mappings.size());
 
-       boolean contains = eventGridSubscriber.containsCustomEventMappingFor("Contoso.Items.ItemSent");
+        boolean contains = eventGridSubscriber.containsCustomEventMappingFor("Contoso.Items.ItemSent");
         Assert.assertTrue(contains);
     }
 
@@ -220,7 +217,7 @@ public class CustomizationTests {
         Assert.assertTrue(events[1].data() instanceof StorageBlobDeletedEventData);
         Assert.assertTrue(events[2].data() instanceof StorageBlobDeletedEventData);
         Assert.assertTrue(events[3].data() instanceof ServiceBusDeadletterMessagesAvailableWithNoListenersEventData);
-        StorageBlobDeletedEventData eventData = (StorageBlobDeletedEventData)events[2].data();
+        StorageBlobDeletedEventData eventData = (StorageBlobDeletedEventData) events[2].data();
         Assert.assertEquals("https://example.blob.core.windows.net/testcontainer/testfile.txt", eventData.url());
     }
 
@@ -234,7 +231,7 @@ public class CustomizationTests {
 
         Assert.assertNotNull(events);
         Assert.assertTrue(events[0].data() instanceof AppConfigurationKeyValueDeletedEventData);
-        AppConfigurationKeyValueDeletedEventData eventData = (AppConfigurationKeyValueDeletedEventData)events[0].data();
+        AppConfigurationKeyValueDeletedEventData eventData = (AppConfigurationKeyValueDeletedEventData) events[0].data();
         Assert.assertEquals("key1", eventData.key());
     }
 
@@ -247,7 +244,7 @@ public class CustomizationTests {
 
         Assert.assertNotNull(events);
         Assert.assertTrue(events[0].data() instanceof AppConfigurationKeyValueModifiedEventData);
-        AppConfigurationKeyValueModifiedEventData eventData = (AppConfigurationKeyValueModifiedEventData)events[0].data();
+        AppConfigurationKeyValueModifiedEventData eventData = (AppConfigurationKeyValueModifiedEventData) events[0].data();
         Assert.assertEquals("key1", eventData.key());
     }
 
@@ -261,7 +258,7 @@ public class CustomizationTests {
 
         Assert.assertNotNull(events);
         Assert.assertTrue(events[0].data() instanceof ContainerRegistryImagePushedEventData);
-        ContainerRegistryImagePushedEventData eventData = (ContainerRegistryImagePushedEventData)events[0].data();
+        ContainerRegistryImagePushedEventData eventData = (ContainerRegistryImagePushedEventData) events[0].data();
         Assert.assertEquals("127.0.0.1", eventData.request().addr());
     }
 
@@ -274,7 +271,7 @@ public class CustomizationTests {
 
         Assert.assertNotNull(events);
         Assert.assertTrue(events[0].data() instanceof ContainerRegistryImageDeletedEventData);
-        ContainerRegistryImageDeletedEventData eventData = (ContainerRegistryImageDeletedEventData)events[0].data();
+        ContainerRegistryImageDeletedEventData eventData = (ContainerRegistryImageDeletedEventData) events[0].data();
         Assert.assertEquals("testactor", eventData.actor().name());
     }
 
@@ -287,7 +284,7 @@ public class CustomizationTests {
 
         Assert.assertNotNull(events);
         Assert.assertTrue(events[0].data() instanceof ContainerRegistryChartDeletedEventData);
-        ContainerRegistryChartDeletedEventData eventData = (ContainerRegistryChartDeletedEventData)events[0].data();
+        ContainerRegistryChartDeletedEventData eventData = (ContainerRegistryChartDeletedEventData) events[0].data();
         Assert.assertEquals("mediatype1", eventData.target().mediaType());
     }
 
@@ -300,7 +297,7 @@ public class CustomizationTests {
 
         Assert.assertNotNull(events);
         Assert.assertTrue(events[0].data() instanceof ContainerRegistryChartPushedEventData);
-        ContainerRegistryChartPushedEventData eventData = (ContainerRegistryChartPushedEventData)events[0].data();
+        ContainerRegistryChartPushedEventData eventData = (ContainerRegistryChartPushedEventData) events[0].data();
         Assert.assertEquals("mediatype1", eventData.target().mediaType());
     }
 
@@ -314,7 +311,7 @@ public class CustomizationTests {
 
         Assert.assertNotNull(events);
         Assert.assertTrue(events[0].data() instanceof IotHubDeviceCreatedEventData);
-        IotHubDeviceCreatedEventData eventData = (IotHubDeviceCreatedEventData)events[0].data();
+        IotHubDeviceCreatedEventData eventData = (IotHubDeviceCreatedEventData) events[0].data();
         Assert.assertEquals("enabled", eventData.twin().status());
     }
 
@@ -327,7 +324,7 @@ public class CustomizationTests {
 
         Assert.assertNotNull(events);
         Assert.assertTrue(events[0].data() instanceof IotHubDeviceDeletedEventData);
-        IotHubDeviceDeletedEventData eventData = (IotHubDeviceDeletedEventData)events[0].data();
+        IotHubDeviceDeletedEventData eventData = (IotHubDeviceDeletedEventData) events[0].data();
         Assert.assertEquals("AAAAAAAAAAE=", eventData.twin().etag());
     }
 
@@ -340,7 +337,7 @@ public class CustomizationTests {
 
         Assert.assertNotNull(events);
         Assert.assertTrue(events[0].data() instanceof IotHubDeviceConnectedEventData);
-        IotHubDeviceConnectedEventData eventData = (IotHubDeviceConnectedEventData)events[0].data();
+        IotHubDeviceConnectedEventData eventData = (IotHubDeviceConnectedEventData) events[0].data();
         Assert.assertEquals("EGTESTHUB1", eventData.hubName());
     }
 
@@ -353,7 +350,7 @@ public class CustomizationTests {
 
         Assert.assertNotNull(events);
         Assert.assertTrue(events[0].data() instanceof IotHubDeviceDisconnectedEventData);
-        IotHubDeviceDisconnectedEventData eventData = (IotHubDeviceDisconnectedEventData)events[0].data();
+        IotHubDeviceDisconnectedEventData eventData = (IotHubDeviceDisconnectedEventData) events[0].data();
         Assert.assertEquals("000000000000000001D4132452F67CE200000002000000000000000000000002", eventData.deviceConnectionStateEventInfo().sequenceNumber());
     }
 
@@ -366,13 +363,13 @@ public class CustomizationTests {
 
         Assert.assertNotNull(events);
         Assert.assertTrue(events[0].data() instanceof IotHubDeviceTelemetryEventData);
-        IotHubDeviceTelemetryEventData eventData = (IotHubDeviceTelemetryEventData)events[0].data();
+        IotHubDeviceTelemetryEventData eventData = (IotHubDeviceTelemetryEventData) events[0].data();
         Assert.assertEquals("Active", eventData.properties().get("Status"));
     }
 
     // EventGrid events
     @Test
-    public void ConsumeEventGridSubscriptionValidationEvent() throws IOException {
+    public void consumeEventGridSubscriptionValidationEvent() throws IOException {
         String jsonData = getTestPayloadFromFile("EventGridSubscriptionValidationEvent.json");
         //
         EventGridSubscriber eventGridSubscriber = new EventGridSubscriber();
@@ -380,7 +377,7 @@ public class CustomizationTests {
 
         Assert.assertNotNull(events);
         Assert.assertTrue(events[0].data() instanceof SubscriptionValidationEventData);
-        SubscriptionValidationEventData eventData = (SubscriptionValidationEventData)events[0].data();
+        SubscriptionValidationEventData eventData = (SubscriptionValidationEventData) events[0].data();
         Assert.assertEquals("512d38b6-c7b8-40c8-89fe-f46f9e9622b6", eventData.validationCode());
     }
 
@@ -393,7 +390,7 @@ public class CustomizationTests {
 
         Assert.assertNotNull(events);
         Assert.assertTrue(events[0].data() instanceof SubscriptionDeletedEventData);
-        SubscriptionDeletedEventData eventData = (SubscriptionDeletedEventData)events[0].data();
+        SubscriptionDeletedEventData eventData = (SubscriptionDeletedEventData) events[0].data();
         Assert.assertEquals("/subscriptions/id/resourceGroups/rg/providers/Microsoft.EventGrid/topics/topic1/providers/Microsoft.EventGrid/eventSubscriptions/eventsubscription1", eventData.eventSubscriptionId());
     }
 
@@ -407,7 +404,7 @@ public class CustomizationTests {
 
         Assert.assertNotNull(events);
         Assert.assertTrue(events[0].data() instanceof EventHubCaptureFileCreatedEventData);
-        EventHubCaptureFileCreatedEventData eventData = (EventHubCaptureFileCreatedEventData)events[0].data();
+        EventHubCaptureFileCreatedEventData eventData = (EventHubCaptureFileCreatedEventData) events[0].data();
         Assert.assertEquals("AzureBlockBlob", eventData.fileType());
     }
 
@@ -421,7 +418,7 @@ public class CustomizationTests {
 
         Assert.assertNotNull(events);
         Assert.assertTrue(events[0].data() instanceof MapsGeofenceEnteredEventData);
-        MapsGeofenceEnteredEventData eventData = (MapsGeofenceEnteredEventData)events[0].data();
+        MapsGeofenceEnteredEventData eventData = (MapsGeofenceEnteredEventData) events[0].data();
         Assert.assertEquals(true, eventData.isEventPublished());
     }
 
@@ -434,7 +431,7 @@ public class CustomizationTests {
 
         Assert.assertNotNull(events);
         Assert.assertTrue(events[0].data() instanceof MapsGeofenceExitedEventData);
-        MapsGeofenceExitedEventData eventData = (MapsGeofenceExitedEventData)events[0].data();
+        MapsGeofenceExitedEventData eventData = (MapsGeofenceExitedEventData) events[0].data();
         Assert.assertEquals(true, eventData.isEventPublished());
     }
 
@@ -447,7 +444,7 @@ public class CustomizationTests {
 
         Assert.assertNotNull(events);
         Assert.assertTrue(events[0].data() instanceof MapsGeofenceResultEventData);
-        MapsGeofenceResultEventData eventData = (MapsGeofenceResultEventData)events[0].data();
+        MapsGeofenceResultEventData eventData = (MapsGeofenceResultEventData) events[0].data();
         Assert.assertEquals(true, eventData.isEventPublished());
     }
 
@@ -461,13 +458,13 @@ public class CustomizationTests {
 
         Assert.assertNotNull(events);
         Assert.assertTrue(events[0].data() instanceof MediaJobCanceledEventData);
-        MediaJobCanceledEventData eventData = (MediaJobCanceledEventData)events[0].data();
+        MediaJobCanceledEventData eventData = (MediaJobCanceledEventData) events[0].data();
         Assert.assertEquals(MediaJobState.CANCELING, eventData.previousState());
         Assert.assertEquals(MediaJobState.CANCELED, eventData.state());
         Assert.assertEquals(1, eventData.outputs().size());
         Assert.assertTrue(eventData.outputs().get(0) instanceof MediaJobOutputAsset);
 
-        MediaJobOutputAsset outputAsset = (MediaJobOutputAsset)eventData.outputs().get(0);
+        MediaJobOutputAsset outputAsset = (MediaJobOutputAsset) eventData.outputs().get(0);
 
         Assert.assertEquals(MediaJobState.CANCELED, outputAsset.state());
         Assert.assertNull(outputAsset.error());
@@ -484,7 +481,7 @@ public class CustomizationTests {
 
         Assert.assertNotNull(events);
         Assert.assertTrue(events[0].data() instanceof MediaJobCancelingEventData);
-        MediaJobCancelingEventData eventData = (MediaJobCancelingEventData)events[0].data();
+        MediaJobCancelingEventData eventData = (MediaJobCancelingEventData) events[0].data();
         Assert.assertEquals(MediaJobState.PROCESSING, eventData.previousState());
         Assert.assertEquals(MediaJobState.CANCELING, eventData.state());
     }
@@ -498,7 +495,7 @@ public class CustomizationTests {
 
         Assert.assertNotNull(events);
         Assert.assertTrue(events[0].data() instanceof MediaJobProcessingEventData);
-        MediaJobProcessingEventData eventData = (MediaJobProcessingEventData)events[0].data();
+        MediaJobProcessingEventData eventData = (MediaJobProcessingEventData) events[0].data();
         Assert.assertEquals(MediaJobState.SCHEDULED, eventData.previousState());
         Assert.assertEquals(MediaJobState.PROCESSING, eventData.state());
     }
@@ -512,12 +509,12 @@ public class CustomizationTests {
 
         Assert.assertNotNull(events);
         Assert.assertTrue(events[0].data() instanceof MediaJobFinishedEventData);
-        MediaJobFinishedEventData eventData = (MediaJobFinishedEventData)events[0].data();
+        MediaJobFinishedEventData eventData = (MediaJobFinishedEventData) events[0].data();
         Assert.assertEquals(MediaJobState.PROCESSING, eventData.previousState());
         Assert.assertEquals(MediaJobState.FINISHED, eventData.state());
         Assert.assertEquals(1, eventData.outputs().size());
         Assert.assertTrue(eventData.outputs().get(0) instanceof MediaJobOutputAsset);
-        MediaJobOutputAsset outputAsset = (MediaJobOutputAsset)eventData.outputs().get(0);
+        MediaJobOutputAsset outputAsset = (MediaJobOutputAsset) eventData.outputs().get(0);
 
         Assert.assertEquals(MediaJobState.FINISHED, outputAsset.state());
         Assert.assertNull(outputAsset.error());
@@ -534,7 +531,7 @@ public class CustomizationTests {
 
         Assert.assertNotNull(events);
         Assert.assertTrue(events[0].data() instanceof MediaJobErroredEventData);
-        MediaJobErroredEventData eventData = (MediaJobErroredEventData)events[0].data();
+        MediaJobErroredEventData eventData = (MediaJobErroredEventData) events[0].data();
         Assert.assertEquals(MediaJobState.PROCESSING, eventData.previousState());
         Assert.assertEquals(MediaJobState.ERROR, eventData.state());
         Assert.assertEquals(1, eventData.outputs().size());
@@ -555,11 +552,11 @@ public class CustomizationTests {
 
         Assert.assertNotNull(events);
         Assert.assertTrue(events[0].data() instanceof MediaJobOutputStateChangeEventData);
-        MediaJobOutputStateChangeEventData eventData = (MediaJobOutputStateChangeEventData)events[0].data();
+        MediaJobOutputStateChangeEventData eventData = (MediaJobOutputStateChangeEventData) events[0].data();
         Assert.assertEquals(MediaJobState.SCHEDULED, eventData.previousState());
         Assert.assertEquals(MediaJobState.PROCESSING, eventData.output().state());
         Assert.assertTrue(eventData.output() instanceof MediaJobOutputAsset);
-        MediaJobOutputAsset outputAsset = (MediaJobOutputAsset)eventData.output();
+        MediaJobOutputAsset outputAsset = (MediaJobOutputAsset) eventData.output();
         Assert.assertEquals("output-2ac2fe75-6557-4de5-ab25-5713b74a6901", outputAsset.assetName());
     }
 
@@ -572,7 +569,7 @@ public class CustomizationTests {
 
         Assert.assertNotNull(events);
         Assert.assertTrue(events[0].data() instanceof MediaJobScheduledEventData);
-        MediaJobScheduledEventData eventData = (MediaJobScheduledEventData)events[0].data();
+        MediaJobScheduledEventData eventData = (MediaJobScheduledEventData) events[0].data();
         Assert.assertEquals(MediaJobState.QUEUED, eventData.previousState());
         Assert.assertEquals(MediaJobState.SCHEDULED, eventData.state());
     }
@@ -586,7 +583,7 @@ public class CustomizationTests {
 
         Assert.assertNotNull(events);
         Assert.assertTrue(events[0].data() instanceof MediaJobOutputCanceledEventData);
-        MediaJobOutputCanceledEventData eventData = (MediaJobOutputCanceledEventData)events[0].data();
+        MediaJobOutputCanceledEventData eventData = (MediaJobOutputCanceledEventData) events[0].data();
         Assert.assertEquals(MediaJobState.CANCELING, eventData.previousState());
         Assert.assertEquals(MediaJobState.CANCELED, eventData.output().state());
         Assert.assertTrue(eventData.output() instanceof MediaJobOutputAsset);
@@ -601,7 +598,7 @@ public class CustomizationTests {
 
         Assert.assertNotNull(events);
         Assert.assertTrue(events[0].data() instanceof MediaJobOutputCancelingEventData);
-        MediaJobOutputCancelingEventData eventData = (MediaJobOutputCancelingEventData)events[0].data();
+        MediaJobOutputCancelingEventData eventData = (MediaJobOutputCancelingEventData) events[0].data();
         Assert.assertEquals(MediaJobState.PROCESSING, eventData.previousState());
         Assert.assertEquals(MediaJobState.CANCELING, eventData.output().state());
         Assert.assertTrue(eventData.output() instanceof MediaJobOutputAsset);
@@ -616,7 +613,7 @@ public class CustomizationTests {
 
         Assert.assertNotNull(events);
         Assert.assertTrue(events[0].data() instanceof MediaJobOutputErroredEventData);
-        MediaJobOutputErroredEventData eventData = (MediaJobOutputErroredEventData)events[0].data();
+        MediaJobOutputErroredEventData eventData = (MediaJobOutputErroredEventData) events[0].data();
         Assert.assertEquals(MediaJobState.PROCESSING, eventData.previousState());
         Assert.assertEquals(MediaJobState.ERROR, eventData.output().state());
         Assert.assertTrue(eventData.output() instanceof MediaJobOutputAsset);
@@ -634,13 +631,13 @@ public class CustomizationTests {
 
         Assert.assertNotNull(events);
         Assert.assertTrue(events[0].data() instanceof MediaJobOutputFinishedEventData);
-        MediaJobOutputFinishedEventData eventData = (MediaJobOutputFinishedEventData)events[0].data();
+        MediaJobOutputFinishedEventData eventData = (MediaJobOutputFinishedEventData) events[0].data();
         Assert.assertEquals(MediaJobState.PROCESSING, eventData.previousState());
         Assert.assertEquals(MediaJobState.FINISHED, eventData.output().state());
         Assert.assertTrue(eventData.output() instanceof MediaJobOutputAsset);
         Assert.assertEquals(100, eventData.output().progress());
 
-        MediaJobOutputAsset outputAsset = (MediaJobOutputAsset)eventData.output();
+        MediaJobOutputAsset outputAsset = (MediaJobOutputAsset) eventData.output();
         Assert.assertEquals("output-2ac2fe75-6557-4de5-ab25-5713b74a6901", outputAsset.assetName());
     }
 
@@ -653,7 +650,7 @@ public class CustomizationTests {
 
         Assert.assertNotNull(events);
         Assert.assertTrue(events[0].data() instanceof MediaJobOutputProcessingEventData);
-        MediaJobOutputProcessingEventData eventData = (MediaJobOutputProcessingEventData)events[0].data();
+        MediaJobOutputProcessingEventData eventData = (MediaJobOutputProcessingEventData) events[0].data();
         Assert.assertEquals(MediaJobState.SCHEDULED, eventData.previousState());
         Assert.assertEquals(MediaJobState.PROCESSING, eventData.output().state());
         Assert.assertTrue(eventData.output() instanceof MediaJobOutputAsset);
@@ -668,7 +665,7 @@ public class CustomizationTests {
 
         Assert.assertNotNull(events);
         Assert.assertTrue(events[0].data() instanceof MediaJobOutputScheduledEventData);
-        MediaJobOutputScheduledEventData eventData = (MediaJobOutputScheduledEventData)events[0].data();
+        MediaJobOutputScheduledEventData eventData = (MediaJobOutputScheduledEventData) events[0].data();
         Assert.assertEquals(MediaJobState.QUEUED, eventData.previousState());
         Assert.assertEquals(MediaJobState.SCHEDULED, eventData.output().state());
         Assert.assertTrue(eventData.output() instanceof MediaJobOutputAsset);
@@ -683,7 +680,7 @@ public class CustomizationTests {
 
         Assert.assertNotNull(events);
         Assert.assertTrue(events[0].data() instanceof MediaJobOutputProgressEventData);
-        MediaJobOutputProgressEventData eventData = (MediaJobOutputProgressEventData)events[0].data();
+        MediaJobOutputProgressEventData eventData = (MediaJobOutputProgressEventData) events[0].data();
         Assert.assertEquals("TestLabel", eventData.label());
         Assert.assertTrue(eventData.jobCorrelationData().containsKey("Field1"));
         Assert.assertEquals("test1", eventData.jobCorrelationData().get("Field1"));
@@ -700,7 +697,7 @@ public class CustomizationTests {
 
         Assert.assertNotNull(events);
         Assert.assertTrue(events[0].data() instanceof MediaJobStateChangeEventData);
-        MediaJobStateChangeEventData eventData = (MediaJobStateChangeEventData)events[0].data();
+        MediaJobStateChangeEventData eventData = (MediaJobStateChangeEventData) events[0].data();
         Assert.assertEquals(MediaJobState.SCHEDULED, eventData.previousState());
         Assert.assertEquals(MediaJobState.PROCESSING, eventData.state());
     }
@@ -714,7 +711,7 @@ public class CustomizationTests {
 
         Assert.assertNotNull(events);
         Assert.assertTrue(events[0].data() instanceof MediaLiveEventEncoderConnectedEventData);
-        MediaLiveEventEncoderConnectedEventData eventData = (MediaLiveEventEncoderConnectedEventData)events[0].data();
+        MediaLiveEventEncoderConnectedEventData eventData = (MediaLiveEventEncoderConnectedEventData) events[0].data();
         Assert.assertEquals("rtmp://liveevent-ec9d26a8.channel.media.azure.net:1935/live/cb5540b10a5646218c1328be95050c59", eventData.ingestUrl());
         Assert.assertEquals("Mystream1", eventData.streamId());
         Assert.assertEquals("<ip address>", eventData.encoderIp());
@@ -730,7 +727,7 @@ public class CustomizationTests {
 
         Assert.assertNotNull(events);
         Assert.assertTrue(events[0].data() instanceof MediaLiveEventConnectionRejectedEventData);
-        MediaLiveEventConnectionRejectedEventData eventData = (MediaLiveEventConnectionRejectedEventData)events[0].data();
+        MediaLiveEventConnectionRejectedEventData eventData = (MediaLiveEventConnectionRejectedEventData) events[0].data();
         Assert.assertEquals("Mystream1", eventData.streamId());
     }
 
@@ -743,7 +740,7 @@ public class CustomizationTests {
 
         Assert.assertNotNull(events);
         Assert.assertTrue(events[0].data() instanceof MediaLiveEventEncoderDisconnectedEventData);
-        MediaLiveEventEncoderDisconnectedEventData eventData = (MediaLiveEventEncoderDisconnectedEventData)events[0].data();
+        MediaLiveEventEncoderDisconnectedEventData eventData = (MediaLiveEventEncoderDisconnectedEventData) events[0].data();
         Assert.assertEquals("rtmp://liveevent-ec9d26a8.channel.media.azure.net:1935/live/cb5540b10a5646218c1328be95050c59", eventData.ingestUrl());
         Assert.assertEquals("Mystream1", eventData.streamId());
         Assert.assertEquals("<ip address>", eventData.encoderIp());
@@ -759,7 +756,7 @@ public class CustomizationTests {
 
         Assert.assertNotNull(events);
         Assert.assertTrue(events[0].data() instanceof MediaLiveEventIncomingStreamReceivedEventData);
-        MediaLiveEventIncomingStreamReceivedEventData eventData = (MediaLiveEventIncomingStreamReceivedEventData)events[0].data();
+        MediaLiveEventIncomingStreamReceivedEventData eventData = (MediaLiveEventIncomingStreamReceivedEventData) events[0].data();
         Assert.assertEquals("rtmp://liveevent-ec9d26a8.channel.media.azure.net:1935/live/cb5540b10a5646218c1328be95050c59", eventData.ingestUrl());
         Assert.assertEquals("<ip address>", eventData.encoderIp());
         Assert.assertEquals("3557", eventData.encoderPort());
@@ -780,7 +777,7 @@ public class CustomizationTests {
 
         Assert.assertNotNull(events);
         Assert.assertTrue(events[0].data() instanceof MediaLiveEventIncomingStreamsOutOfSyncEventData);
-        MediaLiveEventIncomingStreamsOutOfSyncEventData eventData = (MediaLiveEventIncomingStreamsOutOfSyncEventData)events[0].data();
+        MediaLiveEventIncomingStreamsOutOfSyncEventData eventData = (MediaLiveEventIncomingStreamsOutOfSyncEventData) events[0].data();
         Assert.assertEquals("10999", eventData.minLastTimestamp());
         Assert.assertEquals("video", eventData.typeOfStreamWithMinLastTimestamp());
         Assert.assertEquals("100999", eventData.maxLastTimestamp());
@@ -790,7 +787,7 @@ public class CustomizationTests {
     }
 
     @Test
-    public void ConsumeMediaLiveEventIncomingVideoStreamsOutOfSyncEvent() throws IOException {
+    public void consumeMediaLiveEventIncomingVideoStreamsOutOfSyncEvent() throws IOException {
         String jsonData = getTestPayloadFromFile("MediaLiveEventIncomingVideoStreamsOutOfSyncEvent.json");
         //
         EventGridSubscriber eventGridSubscriber = new EventGridSubscriber();
@@ -798,7 +795,7 @@ public class CustomizationTests {
 
         Assert.assertNotNull(events);
         Assert.assertTrue(events[0].data() instanceof MediaLiveEventIncomingVideoStreamsOutOfSyncEventData);
-        MediaLiveEventIncomingVideoStreamsOutOfSyncEventData eventData = (MediaLiveEventIncomingVideoStreamsOutOfSyncEventData)events[0].data();
+        MediaLiveEventIncomingVideoStreamsOutOfSyncEventData eventData = (MediaLiveEventIncomingVideoStreamsOutOfSyncEventData) events[0].data();
         Assert.assertEquals("10999", eventData.firstTimestamp());
         Assert.assertEquals("2000", eventData.firstDuration());
         Assert.assertEquals("100999", eventData.secondTimestamp());
@@ -815,7 +812,7 @@ public class CustomizationTests {
 
         Assert.assertNotNull(events);
         Assert.assertTrue(events[0].data() instanceof MediaLiveEventIncomingDataChunkDroppedEventData);
-        MediaLiveEventIncomingDataChunkDroppedEventData eventData = (MediaLiveEventIncomingDataChunkDroppedEventData)events[0].data();
+        MediaLiveEventIncomingDataChunkDroppedEventData eventData = (MediaLiveEventIncomingDataChunkDroppedEventData) events[0].data();
         Assert.assertEquals("8999", eventData.timestamp());
         Assert.assertEquals("video", eventData.trackType());
         Assert.assertEquals("video1", eventData.trackName());
@@ -832,7 +829,7 @@ public class CustomizationTests {
 
         Assert.assertNotNull(events);
         Assert.assertTrue(events[0].data() instanceof MediaLiveEventIngestHeartbeatEventData);
-        MediaLiveEventIngestHeartbeatEventData eventData = (MediaLiveEventIngestHeartbeatEventData)events[0].data();
+        MediaLiveEventIngestHeartbeatEventData eventData = (MediaLiveEventIngestHeartbeatEventData) events[0].data();
         Assert.assertEquals("video", eventData.trackType());
         Assert.assertEquals("video", eventData.trackName());
         Assert.assertEquals("11999", eventData.lastTimestamp());
@@ -851,7 +848,7 @@ public class CustomizationTests {
 
         Assert.assertNotNull(events);
         Assert.assertTrue(events[0].data() instanceof MediaLiveEventTrackDiscontinuityDetectedEventData);
-        MediaLiveEventTrackDiscontinuityDetectedEventData eventData = (MediaLiveEventTrackDiscontinuityDetectedEventData)events[0].data();
+        MediaLiveEventTrackDiscontinuityDetectedEventData eventData = (MediaLiveEventTrackDiscontinuityDetectedEventData) events[0].data();
         Assert.assertEquals("video", eventData.trackType());
         Assert.assertEquals("video", eventData.trackName());
         Assert.assertEquals("10999", eventData.previousTimestamp());
@@ -870,7 +867,7 @@ public class CustomizationTests {
 
         Assert.assertNotNull(events);
         Assert.assertTrue(events[0].data() instanceof ResourceWriteFailureData);
-        ResourceWriteFailureData eventData = (ResourceWriteFailureData)events[0].data();
+        ResourceWriteFailureData eventData = (ResourceWriteFailureData) events[0].data();
         Assert.assertEquals("72f988bf-86f1-41af-91ab-2d7cd011db47", eventData.tenantId());
     }
 
@@ -922,7 +919,7 @@ public class CustomizationTests {
 
         Assert.assertNotNull(events);
         Assert.assertTrue(events[0].data() instanceof ResourceDeleteCancelData);
-        ResourceDeleteCancelData eventData = (ResourceDeleteCancelData)events[0].data();
+        ResourceDeleteCancelData eventData = (ResourceDeleteCancelData) events[0].data();
         Assert.assertEquals("72f988bf-86f1-41af-91ab-2d7cd011db47", eventData.tenantId());
     }
 
@@ -935,7 +932,7 @@ public class CustomizationTests {
 
         Assert.assertNotNull(events);
         Assert.assertTrue(events[0].data() instanceof ResourceActionSuccessData);
-        ResourceActionSuccessData eventData = (ResourceActionSuccessData)events[0].data();
+        ResourceActionSuccessData eventData = (ResourceActionSuccessData) events[0].data();
         Assert.assertEquals("72f988bf-86f1-41af-91ab-2d7cd011db47", eventData.tenantId());
     }
 
@@ -948,7 +945,7 @@ public class CustomizationTests {
 
         Assert.assertNotNull(events);
         Assert.assertTrue(events[0].data() instanceof ResourceActionFailureData);
-        ResourceActionFailureData eventData = (ResourceActionFailureData)events[0].data();
+        ResourceActionFailureData eventData = (ResourceActionFailureData) events[0].data();
         Assert.assertEquals("72f988bf-86f1-41af-91ab-2d7cd011db47", eventData.tenantId());
     }
 
@@ -961,12 +958,12 @@ public class CustomizationTests {
 
         Assert.assertNotNull(events);
         Assert.assertTrue(events[0].data() instanceof ResourceActionCancelData);
-        ResourceActionCancelData eventData = (ResourceActionCancelData)events[0].data();
+        ResourceActionCancelData eventData = (ResourceActionCancelData) events[0].data();
         Assert.assertEquals("72f988bf-86f1-41af-91ab-2d7cd011db47", eventData.tenantId());
     }
 
     // ServiceBus events
-        @Test
+    @Test
     public void consumeServiceBusActiveMessagesAvailableWithNoListenersEvent() throws IOException {
         String jsonData = getTestPayloadFromFile("ServiceBusActiveMessagesAvailableWithNoListenersEvent.json");
         //
@@ -979,7 +976,7 @@ public class CustomizationTests {
         Assert.assertEquals("testns1", eventData.namespaceName());
     }
 
-        @Test
+    @Test
     public void consumeServiceBusDeadletterMessagesAvailableWithNoListenersEvent() throws IOException {
         String jsonData = getTestPayloadFromFile("ServiceBusDeadletterMessagesAvailableWithNoListenersEvent.json");
         //
@@ -988,12 +985,12 @@ public class CustomizationTests {
 
         Assert.assertNotNull(events);
         Assert.assertTrue(events[0].data() instanceof ServiceBusDeadletterMessagesAvailableWithNoListenersEventData);
-        ServiceBusDeadletterMessagesAvailableWithNoListenersEventData eventData = (ServiceBusDeadletterMessagesAvailableWithNoListenersEventData)events[0].data();
+        ServiceBusDeadletterMessagesAvailableWithNoListenersEventData eventData = (ServiceBusDeadletterMessagesAvailableWithNoListenersEventData) events[0].data();
         Assert.assertEquals("testns1", eventData.namespaceName());
     }
 
     // Storage events
-        @Test
+    @Test
     public void consumeStorageBlobCreatedEvent() throws IOException {
         String jsonData = getTestPayloadFromFile("StorageBlobCreatedEvent.json");
         //
@@ -1006,7 +1003,7 @@ public class CustomizationTests {
         Assert.assertEquals("https://myaccount.blob.core.windows.net/testcontainer/file1.txt", eventData.url());
     }
 
-        @Test
+    @Test
     public void consumeStorageBlobDeletedEvent() throws IOException {
         String jsonData = getTestPayloadFromFile("StorageBlobDeletedEvent.json");
         //
@@ -1015,13 +1012,13 @@ public class CustomizationTests {
 
         Assert.assertNotNull(events);
         Assert.assertTrue(events[0].data() instanceof StorageBlobDeletedEventData);
-        StorageBlobDeletedEventData eventData = (StorageBlobDeletedEventData)events[0].data();
+        StorageBlobDeletedEventData eventData = (StorageBlobDeletedEventData) events[0].data();
         Assert.assertEquals("https://example.blob.core.windows.net/testcontainer/testfile.txt", eventData.url());
     }
 
     // Resource Manager (Azure Subscription/Resource Group) events
     @Test
-    public void consumeResourceWriteSuccessEvent() throws IOException  {
+    public void consumeResourceWriteSuccessEvent() throws IOException {
         String jsonData = getTestPayloadFromFile("ResourceWriteSuccessEvent.json");
         //
         EventGridSubscriber eventGridSubscriber = new EventGridSubscriber();
@@ -1029,7 +1026,7 @@ public class CustomizationTests {
 
         Assert.assertNotNull(events);
         Assert.assertTrue(events[0].data() instanceof ResourceWriteSuccessData);
-        ResourceWriteSuccessData eventData = (ResourceWriteSuccessData)events[0].data();
+        ResourceWriteSuccessData eventData = (ResourceWriteSuccessData) events[0].data();
         Assert.assertEquals("72f988bf-86f1-41af-91ab-2d7cd011db47", eventData.tenantId());
     }
 

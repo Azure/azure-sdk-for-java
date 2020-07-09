@@ -4,10 +4,13 @@ jobs:
   - template: ../../eng/pipelines/templates/jobs/archetype-sdk-tests.yml
     parameters:
       ServiceDirectory: appconfiguration
+      Artifacts:
+        - name: azure-data-appconfiguration
+          groupId: com.azure
+          safeName: azuredataappconfiguration
       EnvVars:
         AZURE_TEST_MODE: RECORD
-        AZURE_APPCONFIG_CONNECTION_STRING: $(java-azconfig-test-connection-string)
+        AZURE_APPCONFIG_CONNECTION_STRING: $(AZURE_APPCONFIG_CONNECTION_STRING)
         AZURE_CLIENT_ID: $(aad-azure-sdk-test-client-id)
         AZURE_CLIENT_SECRET: $(aad-azure-sdk-test-client-secret)
         AZURE_TENANT_ID: $(aad-azure-sdk-test-tenant-id)
-        AZURE_LOG_LEVEL: 3

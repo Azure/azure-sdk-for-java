@@ -4,6 +4,7 @@
 package com.azure.core.amqp;
 
 import com.azure.core.amqp.exception.AmqpException;
+import reactor.core.Disposable;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -12,7 +13,7 @@ import java.time.Duration;
 /**
  * An AMQP session representing bidirectional communication that supports multiple {@link AmqpLink AMQP links}.
  */
-public interface AmqpSession extends AutoCloseable {
+public interface AmqpSession extends Disposable {
     /**
      * Gets the name for this AMQP session.
      *
@@ -34,6 +35,7 @@ public interface AmqpSession extends AutoCloseable {
      * @param entityPath The entity path this link connects to when producing events.
      * @param timeout Timeout required for creating and opening AMQP link.
      * @param retryPolicy The retry policy to use when sending messages.
+     *
      * @return A newly created AMQP link.
      */
     Mono<AmqpLink> createProducer(String linkName, String entityPath, Duration timeout, AmqpRetryPolicy retryPolicy);
@@ -45,6 +47,7 @@ public interface AmqpSession extends AutoCloseable {
      * @param entityPath The entity path this link connects to, so that it may read events from the message broker.
      * @param timeout Timeout required for creating and opening an AMQP link.
      * @param retryPolicy The retry policy to use when consuming messages.
+     *
      * @return A newly created AMQP link.
      */
     Mono<AmqpLink> createConsumer(String linkName, String entityPath, Duration timeout, AmqpRetryPolicy retryPolicy);
@@ -53,6 +56,7 @@ public interface AmqpSession extends AutoCloseable {
      * Removes an {@link AmqpLink} with the given {@code linkName}.
      *
      * @param linkName Name of the link to remove.
+     *
      * @return {@code true} if the link was removed; {@code false} otherwise.
      */
     boolean removeLink(String linkName);
@@ -66,8 +70,25 @@ public interface AmqpSession extends AutoCloseable {
     Flux<AmqpEndpointState> getEndpointStates();
 
     /**
-     * Closes the AMQP session.
+     * Creates the transaction on the message broker.
+     *
+     * @return A newly created AMQPTransaction.
      */
-    @Override
-    void close();
+    Mono<AmqpTransaction> createTransaction();
+
+    /**
+     * Commit the transaction on the message broker.
+     *
+     * @param transaction to commit.
+     * @return A completable mono.
+     */
+    Mono<Void> commitTransaction(AmqpTransaction transaction);
+
+    /**
+     * Rollback the transaction on the message broker.
+     *
+     * @param transaction to rollback
+     * @return A completable mono.
+     */
+    Mono<Void> rollbackTransaction(AmqpTransaction transaction);
 }

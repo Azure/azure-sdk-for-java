@@ -14,6 +14,7 @@ import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobAsyncClient;
 import com.azure.storage.blob.BlobServiceVersion;
+import com.azure.storage.blob.implementation.models.EncryptionScope;
 import com.azure.storage.blob.implementation.models.PageBlobClearPagesHeaders;
 import com.azure.storage.blob.implementation.models.PageBlobCreateHeaders;
 import com.azure.storage.blob.implementation.models.PageBlobResizeHeaders;
@@ -25,12 +26,14 @@ import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.CopyStatusType;
 import com.azure.storage.blob.models.CpkInfo;
+import com.azure.storage.blob.options.PageBlobCreateOptions;
 import com.azure.storage.blob.models.PageBlobItem;
 import com.azure.storage.blob.models.PageBlobRequestConditions;
 import com.azure.storage.blob.models.PageList;
 import com.azure.storage.blob.models.PageRange;
 import com.azure.storage.blob.models.SequenceNumberActionType;
 import com.azure.storage.common.implementation.Constants;
+import com.azure.storage.common.implementation.StorageImplUtils;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -41,6 +44,8 @@ import java.util.Map;
 
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;
+import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
+import static com.azure.storage.common.Utility.STORAGE_TRACING_NAMESPACE_VALUE;
 
 /**
  * Client to a page blob. It may only be instantiated through a {@link SpecializedBlobClientBuilder} or via the method
@@ -82,10 +87,15 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
      * @param snapshot The snapshot identifier for the blob, pass {@code null} to interact with the blob directly.
      * @param customerProvidedKey Customer provided key used during encryption of the blob's data on the server, pass
      * {@code null} to allow the service to use its own encryption.
+     * @param encryptionScope Encryption scope used during encryption of the blob's data on the server, pass
+     * {@code null} to allow the service to use its own encryption.
+     * @param versionId The version identifier for the blob, pass {@code null} to interact with the latest blob version.
      */
     PageBlobAsyncClient(HttpPipeline pipeline, String url, BlobServiceVersion serviceVersion,
-        String accountName, String containerName, String blobName, String snapshot, CpkInfo customerProvidedKey) {
-        super(pipeline, url, serviceVersion, accountName, containerName, blobName, snapshot, customerProvidedKey);
+        String accountName, String containerName, String blobName, String snapshot, CpkInfo customerProvidedKey,
+        EncryptionScope encryptionScope, String versionId) {
+        super(pipeline, url, serviceVersion, accountName, containerName, blobName, snapshot, customerProvidedKey,
+            encryptionScope, versionId);
     }
 
     private static String pageRangeToString(PageRange pageRange) {
@@ -178,39 +188,66 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
      */
     public Mono<Response<PageBlobItem>> createWithResponse(long size, Long sequenceNumber, BlobHttpHeaders headers,
         Map<String, String> metadata, BlobRequestConditions requestConditions) {
+        return this.createWithResponse(new PageBlobCreateOptions(size).setSequenceNumber(sequenceNumber)
+            .setHeaders(headers).setMetadata(metadata).setRequestConditions(requestConditions));
+    }
+
+    /**
+     * Creates a page blob of the specified length. Call PutPage to upload data data to a page blob. For more
+     * information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/put-blob">Azure Docs</a>.
+     * <p>
+     * To avoid overwriting, pass "*" to {@link BlobRequestConditions#setIfNoneMatch(String)}.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.specialized.PageBlobAsyncClient.createWithResponse#PageBlobCreateOptions}
+     *
+     * @param options {@link PageBlobCreateOptions}
+     * @return A reactive response containing the information of the created page blob.
+     *
+     * @throws IllegalArgumentException If {@code size} isn't a multiple of {@link PageBlobAsyncClient#PAGE_BYTES} or
+     * {@code sequenceNumber} isn't null and is less than 0.
+     */
+    public Mono<Response<PageBlobItem>> createWithResponse(PageBlobCreateOptions options) {
         try {
             return withContext(context ->
-                createWithResponse(size, sequenceNumber, headers, metadata, requestConditions, context));
+                createWithResponse(options, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
 
-    Mono<Response<PageBlobItem>> createWithResponse(long size, Long sequenceNumber, BlobHttpHeaders headers,
-        Map<String, String> metadata, BlobRequestConditions requestConditions, Context context) {
-        requestConditions = requestConditions == null ? new BlobRequestConditions() : requestConditions;
+    Mono<Response<PageBlobItem>> createWithResponse(PageBlobCreateOptions options, Context context) {
+        StorageImplUtils.assertNotNull("options", options);
+        BlobRequestConditions requestConditions = options.getRequestConditions() == null ? new BlobRequestConditions()
+            : options.getRequestConditions();
 
-        if (size % PAGE_BYTES != 0) {
+        if (options.getSize() % PAGE_BYTES != 0) {
             // Throwing is preferred to Single.error because this will error out immediately instead of waiting until
             // subscription.
             throw logger.logExceptionAsError(
                 new IllegalArgumentException("size must be a multiple of PageBlobAsyncClient.PAGE_BYTES."));
         }
-        if (sequenceNumber != null && sequenceNumber < 0) {
+        if (options.getSequenceNumber() != null && options.getSequenceNumber() < 0) {
             // Throwing is preferred to Single.error because this will error out immediately instead of waiting until
             // subscription.
             throw logger.logExceptionAsError(
                 new IllegalArgumentException("SequenceNumber must be greater than or equal to 0."));
         }
+        context = context == null ? Context.NONE : context;
 
-        return this.azureBlobStorage.pageBlobs().createWithRestResponseAsync(null, null, 0, size, null, null, metadata,
-            requestConditions.getLeaseId(), requestConditions.getIfModifiedSince(),
+        return this.azureBlobStorage.pageBlobs().createWithRestResponseAsync(null, null, 0, options.getSize(), null,
+            null, options.getMetadata(), requestConditions.getLeaseId(), requestConditions.getIfModifiedSince(),
             requestConditions.getIfUnmodifiedSince(), requestConditions.getIfMatch(),
-            requestConditions.getIfNoneMatch(), sequenceNumber, null, headers, getCustomerProvidedKey(), context)
+            requestConditions.getIfNoneMatch(), options.getSequenceNumber(), null, tagsToString(options.getTags()),
+            options.getHeaders(), getCustomerProvidedKey(), encryptionScope, null,
+                context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(rb -> {
                 PageBlobCreateHeaders hd = rb.getDeserializedHeaders();
                 PageBlobItem item = new PageBlobItem(hd.getETag(), hd.getLastModified(), hd.getContentMD5(),
-                    hd.isServerEncrypted(), hd.getEncryptionKeySha256(), null);
+                    hd.isServerEncrypted(), hd.getEncryptionKeySha256(), hd.getEncryptionScope(), null,
+                    hd.getVersionId());
                 return new SimpleResponse<>(rb, item);
             });
     }
@@ -289,6 +326,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
             throw logger.logExceptionAsError(new IllegalArgumentException("pageRange cannot be null."));
         }
         String pageRangeStr = pageRangeToString(pageRange);
+        context = context == null ? Context.NONE : context;
 
         return this.azureBlobStorage.pageBlobs().uploadPagesWithRestResponseAsync(null, null, body,
             pageRange.getEnd() - pageRange.getStart() + 1, contentMd5, null, null, pageRangeStr,
@@ -297,11 +335,13 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
             pageBlobRequestConditions.getIfSequenceNumberLessThan(),
             pageBlobRequestConditions.getIfSequenceNumberEqualTo(), pageBlobRequestConditions.getIfModifiedSince(),
             pageBlobRequestConditions.getIfUnmodifiedSince(), pageBlobRequestConditions.getIfMatch(),
-            pageBlobRequestConditions.getIfNoneMatch(), null, getCustomerProvidedKey(), context)
+            pageBlobRequestConditions.getIfNoneMatch(), null, getCustomerProvidedKey(), encryptionScope, null,
+            context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(rb -> {
                 PageBlobUploadPagesHeaders hd = rb.getDeserializedHeaders();
                 PageBlobItem item = new PageBlobItem(hd.getETag(), hd.getLastModified(), hd.getContentMD5(),
-                    hd.isServerEncrypted(), hd.getEncryptionKeySha256(), hd.getBlobSequenceNumber());
+                    hd.isServerEncrypted(), hd.getEncryptionKeySha256(), hd.getEncryptionScope(),
+                    hd.getBlobSequenceNumber());
                 return new SimpleResponse<>(rb, item);
             });
     }
@@ -367,9 +407,8 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
             Long sourceOffset, byte[] sourceContentMd5, PageBlobRequestConditions destRequestConditions,
             BlobRequestConditions sourceRequestConditions) {
         try {
-            return withContext(
-                context -> uploadPagesFromUrlWithResponse(range, sourceUrl, sourceOffset, sourceContentMd5,
-                    destRequestConditions, sourceRequestConditions, context));
+            return withContext(context -> uploadPagesFromUrlWithResponse(range, sourceUrl, sourceOffset,
+                sourceContentMd5, destRequestConditions, sourceRequestConditions, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -405,6 +444,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
         } catch (MalformedURLException ex) {
             throw logger.logExceptionAsError(new IllegalArgumentException("'sourceUrl' is not a valid url."));
         }
+        context = context == null ? Context.NONE : context;
 
         return this.azureBlobStorage.pageBlobs().uploadPagesFromURLWithRestResponseAsync(
             null, null, url, sourceRangeString, 0, rangeString, sourceContentMd5, null, null,
@@ -414,11 +454,12 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
             destRequestConditions.getIfMatch(), destRequestConditions.getIfNoneMatch(),
             sourceRequestConditions.getIfModifiedSince(), sourceRequestConditions.getIfUnmodifiedSince(),
             sourceRequestConditions.getIfMatch(), sourceRequestConditions.getIfNoneMatch(), null,
-            getCustomerProvidedKey(), context)
+            getCustomerProvidedKey(), encryptionScope, null,
+            context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(rb -> {
                 PageBlobUploadPagesFromURLHeaders hd = rb.getDeserializedHeaders();
                 PageBlobItem item = new PageBlobItem(hd.getETag(), hd.getLastModified(), hd.getContentMD5(),
-                    hd.isServerEncrypted(), hd.getEncryptionKeySha256(), null);
+                    hd.isServerEncrypted(), hd.getEncryptionKeySha256(), hd.getEncryptionScope(), null);
                 return new SimpleResponse<>(rb, item);
             });
     }
@@ -464,7 +505,8 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
     public Mono<Response<PageBlobItem>> clearPagesWithResponse(PageRange pageRange,
         PageBlobRequestConditions pageBlobRequestConditions) {
         try {
-            return withContext(context -> clearPagesWithResponse(pageRange, pageBlobRequestConditions, context));
+            return withContext(context -> clearPagesWithResponse(pageRange, pageBlobRequestConditions,
+                context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -481,17 +523,19 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
             throw logger.logExceptionAsError(new IllegalArgumentException("pageRange cannot be null."));
         }
         String pageRangeStr = pageRangeToString(pageRange);
+        context = context == null ? Context.NONE : context;
 
         return this.azureBlobStorage.pageBlobs().clearPagesWithRestResponseAsync(null, null, 0, null, pageRangeStr,
             pageBlobRequestConditions.getLeaseId(), pageBlobRequestConditions.getIfSequenceNumberLessThanOrEqualTo(),
             pageBlobRequestConditions.getIfSequenceNumberLessThan(),
             pageBlobRequestConditions.getIfSequenceNumberEqualTo(), pageBlobRequestConditions.getIfModifiedSince(),
             pageBlobRequestConditions.getIfUnmodifiedSince(), pageBlobRequestConditions.getIfMatch(),
-            pageBlobRequestConditions.getIfNoneMatch(), null, getCustomerProvidedKey(), context)
+            pageBlobRequestConditions.getIfNoneMatch(), null, getCustomerProvidedKey(), encryptionScope,
+            context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(rb -> {
                 PageBlobClearPagesHeaders hd = rb.getDeserializedHeaders();
                 PageBlobItem item = new PageBlobItem(hd.getETag(), hd.getLastModified(), hd.getContentMD5(),
-                    hd.isServerEncrypted(), hd.getEncryptionKeySha256(), hd.getBlobSequenceNumber());
+                    hd.isServerEncrypted(), hd.getEncryptionKeySha256(), null, hd.getBlobSequenceNumber());
                 return new SimpleResponse<>(rb, item);
             });
     }
@@ -531,7 +575,8 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
     public Mono<Response<PageList>> getPageRangesWithResponse(BlobRange blobRange,
         BlobRequestConditions requestConditions) {
         try {
-            return withContext(context -> getPageRangesWithResponse(blobRange, requestConditions, context));
+            return withContext(context -> getPageRangesWithResponse(blobRange, requestConditions,
+                context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -541,11 +586,13 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
         Context context) {
         blobRange = blobRange == null ? new BlobRange(0) : blobRange;
         requestConditions = requestConditions == null ? new BlobRequestConditions() : requestConditions;
+        context = context == null ? Context.NONE : context;
 
         return this.azureBlobStorage.pageBlobs().getPageRangesWithRestResponseAsync(null, null, getSnapshotId(), null,
             blobRange.toHeaderValue(), requestConditions.getLeaseId(), requestConditions.getIfModifiedSince(),
             requestConditions.getIfUnmodifiedSince(), requestConditions.getIfMatch(),
-            requestConditions.getIfNoneMatch(), null, context)
+            requestConditions.getIfNoneMatch(), null, null,
+            context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(response -> new SimpleResponse<>(response, response.getValue()));
     }
 
@@ -594,26 +641,93 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
     public Mono<Response<PageList>> getPageRangesDiffWithResponse(BlobRange blobRange, String prevSnapshot,
         BlobRequestConditions requestConditions) {
         try {
+            return withContext(context -> getPageRangesDiffWithResponse(blobRange, prevSnapshot, null,
+                requestConditions, context));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    /**
+     * This API only works for managed disk accounts.
+     * <p>Gets the collection of page ranges that differ between a specified snapshot and this page blob. For more
+     * information, see the <a href="https://docs.microsoft.com/rest/api/storageservices/get-page-ranges">Azure
+     * Docs</a>.</p>
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.specialized.PageBlobAsyncClient.getManagedDiskPageRangesDiff#BlobRange-String}
+     *
+     * @param blobRange {@link BlobRange}
+     * @param prevSnapshotUrl Specifies the URL of a previous snapshot of the target blob. Specifies that the
+     * response will contain only pages that were changed between target blob and previous snapshot. Changed pages
+     * include both updated and cleared pages. The target blob may be a snapshot, as long as the snapshot specified by
+     * prevsnapshot is the older of the two.
+     *
+     * @return A reactive response emitting all the different page ranges.
+     */
+    public Mono<PageList> getManagedDiskPageRangesDiff(BlobRange blobRange, String prevSnapshotUrl) {
+        try {
+            return getManagedDiskPageRangesDiffWithResponse(blobRange, prevSnapshotUrl, null).flatMap(FluxUtil::toMono);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    /**
+     * This API only works for managed disk accounts.
+     * <p>Gets the collection of page ranges that differ between a specified snapshot and this page blob. For more
+     * information, see the <a href="https://docs.microsoft.com/rest/api/storageservices/get-page-ranges">Azure
+     * Docs</a>.</p>
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.specialized.PageBlobAsyncClient.getManagedDiskPageRangesDiffWithResponse#BlobRange-String-BlobRequestConditions}
+     *
+     * @param blobRange {@link BlobRange}
+     * @param prevSnapshotUrl Specifies the URL of a previous snapshot of the target blob. Specifies that the
+     * response will contain only pages that were changed between target blob and previous snapshot. Changed pages
+     * include both updated and cleared pages. The target blob may be a snapshot, as long as the snapshot specified by
+     * prevsnapshot is the older of the two.
+     * @param requestConditions {@link BlobRequestConditions}
+     * @return A reactive response emitting all the different page ranges.
+     *
+     * @throws IllegalArgumentException If {@code prevSnapshot} is {@code null}
+     */
+    public Mono<Response<PageList>> getManagedDiskPageRangesDiffWithResponse(BlobRange blobRange,
+        String prevSnapshotUrl, BlobRequestConditions requestConditions) {
+        try {
             return withContext(context ->
-                getPageRangesDiffWithResponse(blobRange, prevSnapshot, requestConditions, context));
+                getPageRangesDiffWithResponse(blobRange, null, prevSnapshotUrl, requestConditions,
+                    context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
 
     Mono<Response<PageList>> getPageRangesDiffWithResponse(BlobRange blobRange, String prevSnapshot,
-        BlobRequestConditions requestConditions, Context context) {
+        String prevSnapshotUrl, BlobRequestConditions requestConditions, Context context) {
         blobRange = blobRange == null ? new BlobRange(0) : blobRange;
         requestConditions = requestConditions == null ? new BlobRequestConditions() : requestConditions;
 
-        if (prevSnapshot == null) {
+        URL url = null;
+        if (prevSnapshotUrl == null && prevSnapshot == null) {
             throw logger.logExceptionAsError(new IllegalArgumentException("prevSnapshot cannot be null"));
         }
+        if (prevSnapshotUrl != null) {
+            try {
+                url = new URL(prevSnapshotUrl);
+            } catch (MalformedURLException ex) {
+                throw logger.logExceptionAsError(new IllegalArgumentException("'prevSnapshotUrl' is not a valid url."));
+            }
+        }
+        context = context == null ? Context.NONE : context;
 
         return this.azureBlobStorage.pageBlobs().getPageRangesDiffWithRestResponseAsync(null, null, getSnapshotId(),
-            null, prevSnapshot, blobRange.toHeaderValue(), requestConditions.getLeaseId(),
+            null, prevSnapshot, url, blobRange.toHeaderValue(), requestConditions.getLeaseId(),
             requestConditions.getIfModifiedSince(), requestConditions.getIfUnmodifiedSince(),
-            requestConditions.getIfMatch(), requestConditions.getIfNoneMatch(), null, context)
+            requestConditions.getIfMatch(), requestConditions.getIfNoneMatch(), null, null,
+            context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(response -> new SimpleResponse<>(response, response.getValue()));
     }
 
@@ -670,14 +784,16 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
                 new IllegalArgumentException("size must be a multiple of PageBlobAsyncClient.PAGE_BYTES."));
         }
         requestConditions = requestConditions == null ? new BlobRequestConditions() : requestConditions;
+        context = context == null ? Context.NONE : context;
 
         return this.azureBlobStorage.pageBlobs().resizeWithRestResponseAsync(null, null, size, null,
             requestConditions.getLeaseId(), requestConditions.getIfModifiedSince(),
             requestConditions.getIfUnmodifiedSince(), requestConditions.getIfMatch(),
-            requestConditions.getIfNoneMatch(), null, getCustomerProvidedKey(), context)
+            requestConditions.getIfNoneMatch(), null, getCustomerProvidedKey(), encryptionScope,
+            context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(rb -> {
                 PageBlobResizeHeaders hd = rb.getDeserializedHeaders();
-                PageBlobItem item = new PageBlobItem(hd.getETag(), hd.getLastModified(), null, null, null,
+                PageBlobItem item = new PageBlobItem(hd.getETag(), hd.getLastModified(), null, null, null, null,
                     hd.getBlobSequenceNumber());
                 return new SimpleResponse<>(rb, item);
             });
@@ -725,8 +841,8 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
     public Mono<Response<PageBlobItem>> updateSequenceNumberWithResponse(SequenceNumberActionType action,
         Long sequenceNumber, BlobRequestConditions requestConditions) {
         try {
-            return withContext(context ->
-                updateSequenceNumberWithResponse(action, sequenceNumber, requestConditions, context));
+            return withContext(context -> updateSequenceNumberWithResponse(action, sequenceNumber, requestConditions,
+                context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -742,14 +858,16 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
         }
         requestConditions = requestConditions == null ? new BlobRequestConditions() : requestConditions;
         sequenceNumber = action == SequenceNumberActionType.INCREMENT ? null : sequenceNumber;
+        context = context == null ? Context.NONE : context;
 
         return this.azureBlobStorage.pageBlobs().updateSequenceNumberWithRestResponseAsync(null, null, action, null,
             requestConditions.getLeaseId(), requestConditions.getIfModifiedSince(),
             requestConditions.getIfUnmodifiedSince(), requestConditions.getIfMatch(),
-            requestConditions.getIfNoneMatch(), sequenceNumber, null, context)
+            requestConditions.getIfNoneMatch(), sequenceNumber, null,
+            context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(rb -> {
                 PageBlobUpdateSequenceNumberHeaders hd = rb.getDeserializedHeaders();
-                PageBlobItem item = new PageBlobItem(hd.getETag(), hd.getLastModified(), null, null, null,
+                PageBlobItem item = new PageBlobItem(hd.getETag(), hd.getLastModified(), null, null, null, null,
                     hd.getBlobSequenceNumber());
                 return new SimpleResponse<>(rb, item);
             });
@@ -809,8 +927,8 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
     public Mono<Response<CopyStatusType>> copyIncrementalWithResponse(String source, String snapshot,
         RequestConditions modifiedRequestConditions) {
         try {
-            return withContext(
-                context -> copyIncrementalWithResponse(source, snapshot, modifiedRequestConditions, context));
+            return withContext(context -> copyIncrementalWithResponse(source, snapshot, modifiedRequestConditions,
+                context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -830,9 +948,12 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
             // We are parsing a valid url and adding a query parameter. If this fails, we can't recover.
             throw logger.logExceptionAsError(new IllegalArgumentException(e));
         }
+        context = context == null ? Context.NONE : context;
+
         return this.azureBlobStorage.pageBlobs().copyIncrementalWithRestResponseAsync(null, null, url, null,
             modifiedRequestConditions.getIfModifiedSince(), modifiedRequestConditions.getIfUnmodifiedSince(),
-            modifiedRequestConditions.getIfMatch(), modifiedRequestConditions.getIfNoneMatch(), null, context)
+            modifiedRequestConditions.getIfMatch(), modifiedRequestConditions.getIfNoneMatch(), null,
+            context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(rb -> new SimpleResponse<>(rb, rb.getDeserializedHeaders().getCopyStatus()));
     }
 }

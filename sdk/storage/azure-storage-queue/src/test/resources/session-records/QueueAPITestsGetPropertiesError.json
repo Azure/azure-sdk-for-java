@@ -1,25 +1,26 @@
 {
   "networkCallRecords" : [ {
     "Method" : "GET",
-    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/queueapitestsgetpropertieserror3403359982dcbc1f1?comp=metadata",
+    "Uri" : "https://REDACTED.queue.core.windows.net/queueapitestsgetpropertieserror419637fdfec7ec819?comp=metadata",
     "Headers" : {
-      "x-ms-version" : "2018-03-28",
-      "User-Agent" : "azsdk-java-azure-storage-queue/12.0.0-preview.5 11.0.4; Windows 10 10.0",
-      "x-ms-client-request-id" : "eaff2bc2-f42a-4d44-a004-ea2d2a90a7f8"
+      "x-ms-version" : "2019-12-12",
+      "User-Agent" : "azsdk-java-azure-storage-queue/12.6.0-beta.1 (11.0.6; Windows 10 10.0)",
+      "x-ms-client-request-id" : "9c8819bc-67c2-424d-9d70-9d0a08be8f00"
     },
     "Response" : {
-      "x-ms-version" : "2018-03-28",
+      "x-ms-version" : "2019-12-12",
       "Server" : "Windows-Azure-Queue/1.0 Microsoft-HTTPAPI/2.0",
       "x-ms-error-code" : "QueueNotFound",
       "retry-after" : "0",
       "Content-Length" : "217",
       "StatusCode" : "404",
-      "x-ms-request-id" : "2f7e7d26-f003-0082-488d-839126000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>QueueNotFound</Code><Message>The specified queue does not exist.\nRequestId:2f7e7d26-f003-0082-488d-839126000000\nTime:2019-10-15T19:19:35.6026155Z</Message></Error>",
-      "Date" : "Tue, 15 Oct 2019 19:19:34 GMT",
+      "x-ms-request-id" : "37a39d21-3003-009b-7903-3a8ca5000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>QueueNotFound</Code><Message>The specified queue does not exist.\nRequestId:37a39d21-3003-009b-7903-3a8ca5000000\nTime:2020-06-04T00:04:55.1345227Z</Message></Error>",
+      "Date" : "Thu, 04 Jun 2020 00:04:54 GMT",
+      "x-ms-client-request-id" : "9c8819bc-67c2-424d-9d70-9d0a08be8f00",
       "Content-Type" : "application/xml"
     },
     "Exception" : null
   } ],
-  "variables" : [ "queueapitestsgetpropertieserror3403359982dcbc1f1" ]
+  "variables" : [ "queueapitestsgetpropertieserror419637fdfec7ec819" ]
 }

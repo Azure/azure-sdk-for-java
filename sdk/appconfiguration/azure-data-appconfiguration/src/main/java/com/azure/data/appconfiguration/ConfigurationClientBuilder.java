@@ -10,6 +10,7 @@ import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.policy.AddDatePolicy;
+import com.azure.core.http.policy.AddHeadersFromContextPolicy;
 import com.azure.core.http.policy.AddHeadersPolicy;
 import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
 import com.azure.core.http.policy.HttpLogDetailLevel;
@@ -66,7 +67,7 @@ import java.util.Objects;
  * @see ConfigurationAsyncClient
  * @see ConfigurationClient
  */
-@ServiceClientBuilder(serviceClients = ConfigurationClient.class)
+@ServiceClientBuilder(serviceClients = {ConfigurationAsyncClient.class, ConfigurationClient.class})
 public final class ConfigurationClientBuilder {
 
     // This header tells the server to return the request id in the HTTP response. Useful for correlation with what
@@ -76,16 +77,16 @@ public final class ConfigurationClientBuilder {
     private static final String CONTENT_TYPE_HEADER_VALUE = "application/json";
     private static final String ACCEPT_HEADER = "Accept";
     private static final String ACCEPT_HEADER_VALUE = "application/vnd.microsoft.azconfig.kv+json";
-    private static final String APP_CONFIG_PROPERTIES = "azure-appconfig.properties";
-    private static final String NAME = "name";
-    private static final String VERSION = "version";
+    // This is properties file's name.
+    private static final String APP_CONFIG_PROPERTIES = "azure-data-appconfiguration.properties";
+    private static final String SDK_NAME = "name";
+    private static final String SDK_VERSION = "version";
     private static final RetryPolicy DEFAULT_RETRY_POLICY = new RetryPolicy("retry-after-ms", ChronoUnit.MILLIS);
 
     private final ClientLogger logger = new ClientLogger(ConfigurationClientBuilder.class);
     private final List<HttpPipelinePolicy> policies;
     private final HttpHeaders headers;
-    private final String clientName;
-    private final String clientVersion;
+    private final Map<String, String> properties;
 
     private ConfigurationClientCredentials credential;
     private TokenCredential tokenCredential;
@@ -105,9 +106,7 @@ public final class ConfigurationClientBuilder {
         policies = new ArrayList<>();
         httpLogOptions = new HttpLogOptions();
 
-        Map<String, String> properties = CoreUtils.getProperties(APP_CONFIG_PROPERTIES);
-        clientName = properties.getOrDefault(NAME, "UnknownName");
-        clientVersion = properties.getOrDefault(VERSION, "UnknownVersion");
+        properties = CoreUtils.getProperties(APP_CONFIG_PROPERTIES);
 
         headers = new HttpHeaders()
             .put(ECHO_REQUEST_ID_HEADER, "true")
@@ -175,10 +174,19 @@ public final class ConfigurationClientBuilder {
         // Closest to API goes first, closest to wire goes last.
         final List<HttpPipelinePolicy> policies = new ArrayList<>();
 
+        String clientName = properties.getOrDefault(SDK_NAME, "UnknownName");
+        String clientVersion = properties.getOrDefault(SDK_VERSION, "UnknownVersion");
+
         policies.add(new UserAgentPolicy(httpLogOptions.getApplicationId(), clientName, clientVersion,
             buildConfiguration));
         policies.add(new RequestIdPolicy());
+        policies.add(new AddHeadersFromContextPolicy());
         policies.add(new AddHeadersPolicy(headers));
+
+        HttpPolicyProviders.addBeforeRetryPolicies(policies);
+
+        policies.add(retryPolicy == null ? DEFAULT_RETRY_POLICY : retryPolicy);
+
         policies.add(new AddDatePolicy());
 
         if (tokenCredential != null) {
@@ -190,13 +198,9 @@ public final class ConfigurationClientBuilder {
             policies.add(new ConfigurationCredentialsPolicy(credential));
         } else {
             // Throw exception that credential and tokenCredential cannot be null
-            logger.logExceptionAsError(
+            throw logger.logExceptionAsError(
                 new IllegalArgumentException("Missing credential information while building a client."));
         }
-
-        HttpPolicyProviders.addBeforeRetryPolicies(policies);
-
-        policies.add(retryPolicy == null ? DEFAULT_RETRY_POLICY : retryPolicy);
 
         policies.addAll(this.policies);
         HttpPolicyProviders.addAfterRetryPolicies(policies);
@@ -236,25 +240,30 @@ public final class ConfigurationClientBuilder {
      * @param connectionString Connection string in the format "endpoint={endpoint_value};id={id_value};
      * secret={secret_value}"
      * @return The updated ConfigurationClientBuilder object.
-     * @throws NullPointerException If {@code credential} is {@code null}.
+     * @throws NullPointerException If {@code connectionString} is {@code null}.
+     * @throws IllegalArgumentException if {@code connectionString} is an empty string, the {@code connectionString}
+     * secret is invalid, or the HMAC-SHA256 MAC algorithm cannot be instantiated.
      */
     public ConfigurationClientBuilder connectionString(String connectionString) {
-        Objects.requireNonNull(connectionString);
+        Objects.requireNonNull(connectionString, "'connectionString' cannot be null.");
+
+        if (connectionString.isEmpty()) {
+            throw logger.logExceptionAsError(
+                new IllegalArgumentException("'connectionString' cannot be an empty string."));
+        }
 
         try {
             this.credential = new ConfigurationClientCredentials(connectionString);
         } catch (InvalidKeyException err) {
             throw logger.logExceptionAsError(new IllegalArgumentException(
-                    "The secret is invalid and cannot instantiate the HMAC-SHA256 algorithm.", err));
+                "The secret contained within the connection string is invalid and cannot instantiate the HMAC-SHA256"
+                    + " algorithm.", err));
         } catch (NoSuchAlgorithmException err) {
             throw logger.logExceptionAsError(
                 new IllegalArgumentException("HMAC-SHA256 MAC algorithm cannot be instantiated.", err));
         }
 
         this.endpoint = credential.getBaseUri();
-
-        // Clear TokenCredential in favor of connection string credential
-        this.tokenCredential = null;
         return this;
     }
 
@@ -269,9 +278,6 @@ public final class ConfigurationClientBuilder {
         // token credential can not be null value
         Objects.requireNonNull(tokenCredential);
         this.tokenCredential = tokenCredential;
-
-        // Clear connection string based credential in favor of TokenCredential
-        this.credential = null;
         return this;
     }
 

@@ -8,89 +8,28 @@
 
 package com.microsoft.azure.management.recoveryservices.v2016_06_01;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.microsoft.azure.arm.model.HasInner;
+import com.microsoft.azure.arm.resources.models.HasManager;
+import com.microsoft.azure.management.recoveryservices.v2016_06_01.implementation.RecoveryServicesManager;
+import com.microsoft.azure.management.recoveryservices.v2016_06_01.implementation.CheckNameAvailabilityResultInner;
 
 /**
- * Response for check name availability API. Resource provider will set
- * availability as true | false.
+ * Type representing CheckNameAvailabilityResult.
  */
-public class CheckNameAvailabilityResult {
+public interface CheckNameAvailabilityResult extends HasInner<CheckNameAvailabilityResultInner>, HasManager<RecoveryServicesManager> {
     /**
-     * The nameAvailable property.
+     * @return the message value.
      */
-    @JsonProperty(value = "nameAvailable")
-    private Boolean nameAvailable;
+    String message();
 
     /**
-     * The reason property.
+     * @return the nameAvailable value.
      */
-    @JsonProperty(value = "reason")
-    private String reason;
+    Boolean nameAvailable();
 
     /**
-     * The message property.
+     * @return the reason value.
      */
-    @JsonProperty(value = "message")
-    private String message;
-
-    /**
-     * Get the nameAvailable value.
-     *
-     * @return the nameAvailable value
-     */
-    public Boolean nameAvailable() {
-        return this.nameAvailable;
-    }
-
-    /**
-     * Set the nameAvailable value.
-     *
-     * @param nameAvailable the nameAvailable value to set
-     * @return the CheckNameAvailabilityResult object itself.
-     */
-    public CheckNameAvailabilityResult withNameAvailable(Boolean nameAvailable) {
-        this.nameAvailable = nameAvailable;
-        return this;
-    }
-
-    /**
-     * Get the reason value.
-     *
-     * @return the reason value
-     */
-    public String reason() {
-        return this.reason;
-    }
-
-    /**
-     * Set the reason value.
-     *
-     * @param reason the reason value to set
-     * @return the CheckNameAvailabilityResult object itself.
-     */
-    public CheckNameAvailabilityResult withReason(String reason) {
-        this.reason = reason;
-        return this;
-    }
-
-    /**
-     * Get the message value.
-     *
-     * @return the message value
-     */
-    public String message() {
-        return this.message;
-    }
-
-    /**
-     * Set the message value.
-     *
-     * @param message the message value to set
-     * @return the CheckNameAvailabilityResult object itself.
-     */
-    public CheckNameAvailabilityResult withMessage(String message) {
-        this.message = message;
-        return this;
-    }
+    String reason();
 
 }

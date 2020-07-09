@@ -15,6 +15,7 @@ import com.microsoft.azure.management.storage.v2019_06_01.StorageAccountUpdatePa
 import com.microsoft.azure.management.storage.v2019_06_01.StorageAccountCreateParameters;
 import com.microsoft.azure.management.storage.v2019_06_01.AccessTier;
 import com.microsoft.azure.management.storage.v2019_06_01.AzureFilesIdentityBasedAuthentication;
+import com.microsoft.azure.management.storage.v2019_06_01.BlobRestoreStatus;
 import org.joda.time.DateTime;
 import com.microsoft.azure.management.storage.v2019_06_01.CustomDomain;
 import com.microsoft.azure.management.storage.v2019_06_01.Encryption;
@@ -22,13 +23,14 @@ import com.microsoft.azure.management.storage.v2019_06_01.GeoReplicationStats;
 import com.microsoft.azure.management.storage.v2019_06_01.Identity;
 import com.microsoft.azure.management.storage.v2019_06_01.Kind;
 import com.microsoft.azure.management.storage.v2019_06_01.LargeFileSharesState;
+import com.microsoft.azure.management.storage.v2019_06_01.MinimumTlsVersion;
 import com.microsoft.azure.management.storage.v2019_06_01.NetworkRuleSet;
 import com.microsoft.azure.management.storage.v2019_06_01.Endpoints;
 import java.util.ArrayList;
 import com.microsoft.azure.management.storage.v2019_06_01.PrivateEndpointConnection;
 import java.util.List;
 import com.microsoft.azure.management.storage.v2019_06_01.ProvisioningState;
-import com.microsoft.azure.management.storage.v2019_06_01.Sku;
+import com.microsoft.azure.management.storage.v2019_06_01.RoutingPreference;
 import com.microsoft.azure.management.storage.v2019_06_01.AccountStatus;
 import rx.functions.Func1;
 
@@ -93,8 +95,23 @@ class StorageAccountImpl extends GroupableResourceCoreImpl<StorageAccount, Stora
     }
 
     @Override
+    public Boolean allowBlobPublicAccess() {
+        return this.inner().allowBlobPublicAccess();
+    }
+
+    @Override
     public AzureFilesIdentityBasedAuthentication azureFilesIdentityBasedAuthentication() {
         return this.inner().azureFilesIdentityBasedAuthentication();
+    }
+
+    @Override
+    public BlobRestoreStatus blobRestoreStatus() {
+        BlobRestoreStatusInner inner = this.inner().blobRestoreStatus();
+        if (inner != null) {
+            return  new BlobRestoreStatusImpl(inner, manager());
+        } else {
+            return null;
+        }
     }
 
     @Override
@@ -153,6 +170,11 @@ class StorageAccountImpl extends GroupableResourceCoreImpl<StorageAccount, Stora
     }
 
     @Override
+    public MinimumTlsVersion minimumTlsVersion() {
+        return this.inner().minimumTlsVersion();
+    }
+
+    @Override
     public NetworkRuleSet networkRuleSet() {
         return this.inner().networkRuleSet();
     }
@@ -184,6 +206,11 @@ class StorageAccountImpl extends GroupableResourceCoreImpl<StorageAccount, Stora
     }
 
     @Override
+    public RoutingPreference routingPreference() {
+        return this.inner().routingPreference();
+    }
+
+    @Override
     public Endpoints secondaryEndpoints() {
         return this.inner().secondaryEndpoints();
     }
@@ -194,13 +221,8 @@ class StorageAccountImpl extends GroupableResourceCoreImpl<StorageAccount, Stora
     }
 
     @Override
-    public Sku sku() {
-        SkuInner inner = this.inner().sku();
-        if (inner != null) {
-            return  new SkuImpl(inner, manager());
-        } else {
-            return null;
-        }
+    public SkuInner sku() {
+        return this.inner().sku();
     }
 
     @Override
@@ -245,6 +267,16 @@ class StorageAccountImpl extends GroupableResourceCoreImpl<StorageAccount, Stora
             this.createParameter.withAccessTier(accessTier);
         } else {
             this.updateParameter.withAccessTier(accessTier);
+        }
+        return this;
+    }
+
+    @Override
+    public StorageAccountImpl withAllowBlobPublicAccess(Boolean allowBlobPublicAccess) {
+        if (isInCreateMode()) {
+            this.createParameter.withAllowBlobPublicAccess(allowBlobPublicAccess);
+        } else {
+            this.updateParameter.withAllowBlobPublicAccess(allowBlobPublicAccess);
         }
         return this;
     }
@@ -310,11 +342,31 @@ class StorageAccountImpl extends GroupableResourceCoreImpl<StorageAccount, Stora
     }
 
     @Override
+    public StorageAccountImpl withMinimumTlsVersion(MinimumTlsVersion minimumTlsVersion) {
+        if (isInCreateMode()) {
+            this.createParameter.withMinimumTlsVersion(minimumTlsVersion);
+        } else {
+            this.updateParameter.withMinimumTlsVersion(minimumTlsVersion);
+        }
+        return this;
+    }
+
+    @Override
     public StorageAccountImpl withNetworkRuleSet(NetworkRuleSet networkRuleSet) {
         if (isInCreateMode()) {
             this.createParameter.withNetworkRuleSet(networkRuleSet);
         } else {
             this.updateParameter.withNetworkRuleSet(networkRuleSet);
+        }
+        return this;
+    }
+
+    @Override
+    public StorageAccountImpl withRoutingPreference(RoutingPreference routingPreference) {
+        if (isInCreateMode()) {
+            this.createParameter.withRoutingPreference(routingPreference);
+        } else {
+            this.updateParameter.withRoutingPreference(routingPreference);
         }
         return this;
     }

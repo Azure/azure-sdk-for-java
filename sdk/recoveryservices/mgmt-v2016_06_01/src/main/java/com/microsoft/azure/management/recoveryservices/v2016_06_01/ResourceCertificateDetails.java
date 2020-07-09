@@ -17,7 +17,7 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 /**
  * Certificate details representing the Vault credentials.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "authType")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "authType", defaultImpl = ResourceCertificateDetails.class)
 @JsonTypeName("ResourceCertificateDetails")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "AzureActiveDirectory", value = ResourceCertificateAndAadDetails.class),

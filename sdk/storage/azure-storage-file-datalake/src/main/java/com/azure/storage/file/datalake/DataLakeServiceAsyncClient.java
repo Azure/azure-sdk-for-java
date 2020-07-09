@@ -7,25 +7,34 @@ import com.azure.core.annotation.ServiceClient;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedFlux;
+import com.azure.core.http.rest.PagedResponse;
+import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobServiceAsyncClient;
+import com.azure.storage.blob.models.BlobContainerItem;
+import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.StorageImplUtils;
+import com.azure.storage.common.sas.AccountSasSignatureValues;
 import com.azure.storage.file.datalake.implementation.DataLakeStorageClientBuilder;
 import com.azure.storage.file.datalake.implementation.DataLakeStorageClientImpl;
+import com.azure.storage.file.datalake.implementation.util.DataLakeImplUtils;
 import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
 import com.azure.storage.file.datalake.models.FileSystemItem;
 import com.azure.storage.file.datalake.models.ListFileSystemsOptions;
 import com.azure.storage.file.datalake.models.PublicAccessType;
 import com.azure.storage.file.datalake.models.UserDelegationKey;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.pagedFluxError;
@@ -253,11 +262,39 @@ public class DataLakeServiceAsyncClient {
      */
     public PagedFlux<FileSystemItem> listFileSystems(ListFileSystemsOptions options) {
         try {
-            return blobServiceAsyncClient.listBlobContainers(Transforms.toListBlobContainersOptions(options))
-                .mapPage(Transforms::toFileSystemItem);
+            return listFileSystemsWithOptionalTimeout(options, null);
         } catch (RuntimeException ex) {
             return pagedFluxError(logger, ex);
         }
+    }
+
+    PagedFlux<FileSystemItem> listFileSystemsWithOptionalTimeout(ListFileSystemsOptions options, Duration timeout) {
+        PagedFlux<BlobContainerItem> inputPagedFlux = blobServiceAsyncClient
+            .listBlobContainers(Transforms.toListBlobContainersOptions(options));
+        /* We need to create a new PagedFlux here because PagedFlux extends Flux, but not all operations were
+            overriden to return PagedFlux - so we need to do the transformations and recreate a PagedFlux. */
+        /* Note: pageSize is not passed in as a parameter since the underlying implementation of listBlobContainers
+           does not use the pageSize parameter. Passing it in will have no effect. */
+        return PagedFlux.create(() -> (continuationToken, pageSize) -> {
+            Flux<PagedResponse<BlobContainerItem>> flux = (continuationToken == null)
+                ? inputPagedFlux.byPage()
+                : inputPagedFlux.byPage(continuationToken);
+            flux = flux.onErrorMap(DataLakeImplUtils::transformBlobStorageException);
+            if (timeout != null) {
+                flux = flux.timeout(timeout);
+            }
+            return flux
+                .map(blobsPagedResponse -> new PagedResponseBase<Void, FileSystemItem>(
+                    blobsPagedResponse.getRequest(),
+                    blobsPagedResponse.getStatusCode(),
+                    blobsPagedResponse.getHeaders(),
+                    blobsPagedResponse
+                        .getValue()
+                        .stream()
+                        .map(Transforms::toFileSystemItem).collect(Collectors.toList()),
+                    blobsPagedResponse.getContinuationToken(),
+                    null));
+        });
     }
 
     /**
@@ -276,8 +313,7 @@ public class DataLakeServiceAsyncClient {
      */
     public Mono<UserDelegationKey> getUserDelegationKey(OffsetDateTime start, OffsetDateTime expiry) {
         try {
-            return blobServiceAsyncClient.getUserDelegationKey(start, expiry)
-                .map(Transforms::toDataLakeUserDelegationKey);
+            return this.getUserDelegationKeyWithResponse(start, expiry).flatMap(FluxUtil::toMono);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -301,7 +337,9 @@ public class DataLakeServiceAsyncClient {
     public Mono<Response<UserDelegationKey>> getUserDelegationKeyWithResponse(OffsetDateTime start,
         OffsetDateTime expiry) {
         try {
-            return blobServiceAsyncClient.getUserDelegationKeyWithResponse(start, expiry).map(response ->
+            return blobServiceAsyncClient.getUserDelegationKeyWithResponse(start, expiry)
+                .onErrorMap(DataLakeImplUtils::transformBlobStorageException)
+                .map(response ->
                 new SimpleResponse<>(response, Transforms.toDataLakeUserDelegationKey(response.getValue())));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -315,6 +353,23 @@ public class DataLakeServiceAsyncClient {
      */
     public String getAccountName() {
         return this.accountName;
+    }
+
+    /**
+     * Generates an account SAS for the Azure Storage account using the specified {@link AccountSasSignatureValues}.
+     * Note : The client must be authenticated via {@link StorageSharedKeyCredential}
+     * <p>See {@link AccountSasSignatureValues} for more information on how to construct an account SAS.</p>
+     *
+     * <p>The snippet below generates a SAS that lasts for two days and gives the user read and list access to file
+     * systems and file shares.</p>
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeServiceAsyncClient.generateAccountSas#AccountSasSignatureValues}
+     *
+     * @param accountSasSignatureValues {@link AccountSasSignatureValues}
+     *
+     * @return A {@code String} representing all SAS query parameters.
+     */
+    public String generateAccountSas(AccountSasSignatureValues accountSasSignatureValues) {
+        return blobServiceAsyncClient.generateAccountSas(accountSasSignatureValues);
     }
 
 }

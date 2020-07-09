@@ -1,23 +1,62 @@
 parameters:
   ServiceDirectory: ''
+  Artifacts: []
+  AdditionalModules: []
   EnvVars: {}
   MaxParallel: 0
   Matrix:
-    Win2016:
+    Linux - Java 8 (AzureCloud):
+      OSVmImage: 'ubuntu-18.04'
+      JavaTestVersion: '1.8'
+      DisplayName: 'Linux - Java 8'
+      SubscriptionConfiguration: $(sub-config-azure-cloud-test-resources)
+      AZURE_TEST_HTTP_CLIENTS: netty
+    macOS - Java 8 (AzureCloud):
+      OSVmImage: 'macOS-10.15'
+      JavaTestVersion: '1.8'
+      DisplayName: 'macOS - Java 8'
+      SubscriptionConfiguration: $(sub-config-azure-cloud-test-resources)
+      AZURE_TEST_HTTP_CLIENTS: okhttp
+    Windows - Java 8 (AzureCloud):
       OSVmImage: 'windows-2019'
-      DisplayName: 'Run Live tests'
+      JavaTestVersion: '1.8'
+      DisplayName: 'Windows - Java 8'
+      SubscriptionConfiguration: $(sub-config-azure-cloud-test-resources)
+      AZURE_TEST_HTTP_CLIENTS: netty
+    Linux - Java 11 (AzureCloud):
+      OSVmImage: 'ubuntu-18.04'
+      JavaTestVersion: '1.11'
+      DisplayName: 'Linux - Java 11'
+      SubscriptionConfiguration: $(sub-config-azure-cloud-test-resources)
+      AZURE_TEST_HTTP_CLIENTS: okhttp
+    macOS - Java 11 (AzureCloud):
+      OSVmImage: 'macOS-10.15'
+      JavaTestVersion: '1.11'
+      DisplayName: 'macOS - Java 11'
+      SubscriptionConfiguration: $(sub-config-azure-cloud-test-resources)
+      AZURE_TEST_HTTP_CLIENTS: netty
+    Windows - Java 11 (AzureCloud):
+      OSVmImage: 'windows-2019'
+      JavaTestVersion: '1.11'
+      DisplayName: 'Windows - Java 11'
+      SubscriptionConfiguration: $(sub-config-azure-cloud-test-resources)
+      AZURE_TEST_HTTP_CLIENTS: okhttp
   PreRunSteps: []
+  PostRunSteps: []
   TestName: LiveTest
   TimeoutInMinutes: 60
   TestStepMavenInputs:
-    options: '--batch-mode --fail-at-end -Dmaven.wagon.http.pool=false -Dsurefire.rerunFailingTestsCount=3 --settings eng/settings.xml'
-    mavenOptions: '-Xmx3072m -Dorg.slf4j.simpleLogger.defaultLogLevel=error -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn'
+    options: '-Dmaven.wagon.http.pool=false $(DefaultOptions) -pl $(ProjectList)'
+    mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
     javaHomeOption: 'JDKVersion'
-    jdkVersionOption: '1.8'
+    jdkVersionOption: '$(JavaTestVersion)'
     jdkArchitectureOption: 'x64'
     publishJUnitResults: false
     goals: 'test'
   TestResultsFiles: ''
+  SubscriptionConfiguration: $(sub-config-azure-cloud-test-resources)
+  ArmTemplateParameters: '@{}'
+  Location: ''
 
 jobs:
   - job: ${{ parameters.TestName }}
@@ -25,6 +64,14 @@ jobs:
 
     variables:
       - template: ../variables/globals.yml
+      # Default $(SubscriptionConfiguration) if the matrix does not specify a $(SubscriptionConfiguration)
+      - name: SubscriptionConfiguration
+        value: ${{ parameters.SubscriptionConfiguration }}
+      - name: ArmTemplateParameters
+        value: ${{ parameters.ArmTemplateParameters }}
+      - name: Location
+        value: ${{ parameters.Location }}
+
     strategy:
       matrix: ${{ parameters.Matrix }}
       maxParallel: ${{ parameters.MaxParallel }}
@@ -33,17 +80,55 @@ jobs:
       vmImage: $(OSVmImage)
 
     steps:
+      - template: /eng/common/pipelines/templates/steps/verify-agent-os.yml
+
+      - template: /eng/common/pipelines/templates/steps/bypass-local-dns.yml
+
+      - ${{ if ne(parameters.DisableAzureResourceCreation, 'true') }}:
+        - template: /eng/common/TestResources/deploy-test-resources.yml
+          parameters:
+            ServiceDirectory: '${{ parameters.ServiceDirectory }}'
+            SubscriptionConfiguration: $(SubscriptionConfiguration)
+            ArmTemplateParameters: $(ArmTemplateParameters)
+            Location: $(Location)
+
       - ${{ parameters.PreRunSteps }}
 
+      - template: ../steps/generate-project-list.yml
+        parameters:
+          Artifacts: ${{parameters.Artifacts}}
+          AdditionalModules: ${{parameters.AdditionalModules}}
+
       - task: Maven@3
-        displayName: $(DisplayName)
+        displayName: 'Build and Install, JDK Version: $(JavaBuildVersion)'
         inputs:
-          mavenPomFile: sdk/${{parameters.ServiceDirectory}}/pom.service.xml
+          mavenPomFile: pom.xml
+          goals: 'install'
+          options: '$(DefaultOptions) -DskipTests -Dgpg.skip -Dmaven.javadoc.skip=true -Dcheckstyle.skip=true -Dspotbugs.skip=true -Drevapi.skip=true -pl $(ProjectList) -am'
+          mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
+          javaHomeOption: 'JDKVersion'
+          jdkVersionOption: $(JavaBuildVersion)
+          jdkArchitectureOption: 'x64'
+          publishJUnitResults: false
+
+      - task: Maven@3
+        displayName: 'Run tests: $(DisplayName)'
+        inputs:
+          mavenPomFile: pom.xml
           ${{ insert }}: ${{ parameters.TestStepMavenInputs }}
         env: ${{ parameters.EnvVars }}
 
+      - ${{ parameters.PostRunSteps }}
+
+      - ${{ if ne(parameters.DisableAzureResourceCreation, 'true') }}:
+        - template: /eng/common/TestResources/remove-test-resources.yml
+          parameters:
+            ServiceDirectory: '${{ parameters.ServiceDirectory }}'
+            SubscriptionConfiguration: $(SubscriptionConfiguration)
+
+
       - task: PublishTestResults@2
-        condition: succeededOrFailed()
+        condition: always()
         inputs:
           mergeTestResults: true
           testRunTitle: 'Live tests for ${{ parameters.ServiceDirectory }} $(DisplayName)'

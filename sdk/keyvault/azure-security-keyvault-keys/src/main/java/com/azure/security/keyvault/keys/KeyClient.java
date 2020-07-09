@@ -3,7 +3,7 @@
 
 package com.azure.security.keyvault.keys;
 
-import com.azure.core.exception.HttpRequestException;
+import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.rest.PagedIterable;
@@ -72,7 +72,7 @@ public final class KeyClient {
      * @param keyType The type of key to create. For valid values, see {@link KeyType KeyType}.
      * @return The {@link KeyVaultKey created key}.
      * @throws ResourceModifiedException if {@code name} or {@code keyType} is null.
-     * @throws HttpRequestException if {@code name} is empty string.
+     * @throws HttpResponseException if {@code name} is empty string.
      */
     public KeyVaultKey createKey(String name, KeyType keyType) {
         return createKeyWithResponse(new CreateKeyOptions(name, keyType), Context.NONE).getValue();
@@ -153,7 +153,7 @@ public final class KeyClient {
      * @return The {@link KeyVaultKey created key}.
      * @throws NullPointerException if {@code rsaKeyCreateOptions} is {@code null}.
      * @throws ResourceModifiedException if {@code rsaKeyCreateOptions} is malformed.
-     * @throws HttpRequestException if {@code name} is empty string.
+     * @throws HttpResponseException if {@code name} is empty string.
      */
     public KeyVaultKey createRsaKey(CreateRsaKeyOptions createRsaKeyOptions) {
         return createRsaKeyWithResponse(createRsaKeyOptions, Context.NONE).getValue();
@@ -258,7 +258,7 @@ public final class KeyClient {
      * @param name The name for the imported key.
      * @param keyMaterial The Json web key being imported.
      * @return The {@link KeyVaultKey imported key}.
-     * @throws HttpRequestException if {@code name} is empty string.
+     * @throws HttpResponseException if {@code name} is empty string.
      */
     public KeyVaultKey importKey(String name, JsonWebKey keyMaterial) {
         return importKeyWithResponse(new ImportKeyOptions(name, keyMaterial), Context.NONE).getValue();
@@ -284,7 +284,7 @@ public final class KeyClient {
      *     being imported.
      * @return The {@link KeyVaultKey imported key}.
      * @throws NullPointerException if {@code keyImportOptions} is {@code null}.
-     * @throws HttpRequestException if {@code name} is empty string.
+     * @throws HttpResponseException if {@code name} is empty string.
      */
     public KeyVaultKey importKey(ImportKeyOptions importKeyOptions) {
         return importKeyWithResponse(importKeyOptions, Context.NONE).getValue();
@@ -311,7 +311,7 @@ public final class KeyClient {
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A {@link Response} whose {@link Response#getValue() value} contains the {@link KeyVaultKey imported key}.
      * @throws NullPointerException if {@code keyImportOptions} is {@code null}.
-     * @throws HttpRequestException if {@code name} is empty string.
+     * @throws HttpResponseException if {@code name} is empty string.
      */
     public Response<KeyVaultKey> importKeyWithResponse(ImportKeyOptions importKeyOptions, Context context) {
         return client.importKeyWithResponse(importKeyOptions, context).block();
@@ -328,10 +328,11 @@ public final class KeyClient {
      * @param name The name of the key, cannot be null
      * @param version The version of the key to retrieve. If this is an empty String or null, this call is
      *     equivalent to calling {@link KeyClient#getKey(String)}, with the latest version being retrieved.
-     * @return The requested {@link KeyVaultKey key}.
-     * @throws ResourceNotFoundException when a key with {@code name} and {@code version} doesn't exist in the key
-     *     vault.
-     * @throws HttpRequestException if {@code name} or {@code version} is empty string.
+     * @return The requested {@link KeyVaultKey key}. The content of the key is null if
+     * both {@code name} and {@code version} are null or empty.
+     * @throws ResourceNotFoundException when a key with {@code name} doesn't exist in the key vault or
+     * an empty/null {@code name} and a non null/empty {@code version} is provided.
+     * @throws HttpResponseException if a valid {@code name} and a non null/empty {@code version} is specified.
      */
     public KeyVaultKey getKey(String name, String version) {
         return getKeyWithResponse(name, version, Context.NONE).getValue();
@@ -350,9 +351,10 @@ public final class KeyClient {
      * @param version The version of the key to retrieve. If this is an empty String or null, this call is
      *     equivalent to calling {@link KeyClient#getKey(String)}, with the latest version being retrieved.
      * @return A {@link Response} whose {@link Response#getValue() value} contains the requested {@link KeyVaultKey key}.
-     * @throws ResourceNotFoundException when a key with {@code name} and {@code version} doesn't exist in the key
-     *     vault.
-     * @throws HttpRequestException if {@code name} or {@code version} is empty string.
+     * The content of the key is null if both {@code name} and {@code version} are null or empty.
+     * @throws ResourceNotFoundException when a key with {@code name} doesn't exist in the key vault or
+     * an empty/null {@code name} and a non null/empty {@code version} is provided.
+     * @throws HttpResponseException if a valid {@code name} and a non null/empty {@code version} is specified.
      */
     public Response<KeyVaultKey> getKeyWithResponse(String name, String version, Context context) {
         return client.getKeyWithResponse(name, version, context).block();
@@ -367,9 +369,9 @@ public final class KeyClient {
      * {@codesnippet com.azure.keyvault.keys.keyclient.getKey#string}
      *
      * @param name The name of the key.
-     * @return The requested {@link KeyVaultKey key}.
-     * @throws ResourceNotFoundException when a key with {@code name} doesn't exist in the key vault.
-     * @throws HttpRequestException if {@code name} is empty string.
+     * @return The requested {@link KeyVaultKey key}. The content of the key is null if {@code name} is null or empty.
+     * @throws ResourceNotFoundException when a key with non null/empty {@code name} doesn't exist in the key vault.
+     * @throws HttpResponseException if a non null/empty and an invalid {@code name} is specified.
      */
     public KeyVaultKey getKey(String name) {
         return getKeyWithResponse(name, "", Context.NONE).getValue();
@@ -392,7 +394,7 @@ public final class KeyClient {
      * @throws NullPointerException if {@code key} is {@code null}.
      * @throws ResourceNotFoundException when a key with {@link KeyProperties#getName() name} and {@link KeyProperties#getVersion()
      *     version} doesn't exist in the key vault.
-     * @throws HttpRequestException if {@link KeyProperties#getName() name} or {@link KeyProperties#getVersion() version} is empty
+     * @throws HttpResponseException if {@link KeyProperties#getName() name} or {@link KeyProperties#getVersion() version} is empty
      *     string.
      */
     public KeyVaultKey updateKeyProperties(KeyProperties keyProperties, KeyOperation... keyOperations) {
@@ -417,7 +419,7 @@ public final class KeyClient {
      * @throws NullPointerException if {@code key} is {@code null}.
      * @throws ResourceNotFoundException when a key with {@link KeyProperties#getName() name} and {@link KeyProperties#getVersion()
      *     version} doesn't exist in the key vault.
-     * @throws HttpRequestException if {@link KeyProperties#getName() name} or {@link KeyProperties#getVersion() version} is empty
+     * @throws HttpResponseException if {@link KeyProperties#getName() name} or {@link KeyProperties#getVersion() version} is empty
      *     string.
      */
     public Response<KeyVaultKey> updateKeyPropertiesWithResponse(KeyProperties keyProperties, Context context, KeyOperation... keyOperations) {
@@ -440,7 +442,7 @@ public final class KeyClient {
      * @param name The name of the key to be deleted.
      * @return A {@link SyncPoller} to poll on and retrieve {@link DeletedKey deleted key}
      * @throws ResourceNotFoundException when a key with {@code name} doesn't exist in the key vault.
-     * @throws HttpRequestException when a key with {@code name} is empty string.
+     * @throws HttpResponseException when a key with {@code name} is empty string.
      */
     public SyncPoller<DeletedKey, Void> beginDeleteKey(String name) {
         return client.beginDeleteKey(name).getSyncPoller();
@@ -459,7 +461,7 @@ public final class KeyClient {
      * @param name The name of the deleted key.
      * @return The {@link DeletedKey deleted key}.
      * @throws ResourceNotFoundException when a key with {@code name} doesn't exist in the key vault.
-     * @throws HttpRequestException when a key with {@code name} is empty string.
+     * @throws HttpResponseException when a key with {@code name} is empty string.
      */
     public DeletedKey getDeletedKey(String name) {
         return getDeletedKeyWithResponse(name, Context.NONE).getValue();
@@ -479,7 +481,7 @@ public final class KeyClient {
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A {@link Response} whose {@link Response#getValue() value} contains the {@link DeletedKey deleted key}.
      * @throws ResourceNotFoundException when a key with {@code name} doesn't exist in the key vault.
-     * @throws HttpRequestException when a key with {@code name} is empty string.
+     * @throws HttpResponseException when a key with {@code name} is empty string.
      */
     public Response<DeletedKey> getDeletedKeyWithResponse(String name, Context context) {
         return client.getDeletedKeyWithResponse(name, context).block();
@@ -497,7 +499,7 @@ public final class KeyClient {
      *
      * @param name The name of the deleted key.
      * @throws ResourceNotFoundException when a key with {@code name} doesn't exist in the key vault.
-     * @throws HttpRequestException when a key with {@code name} is empty string.
+     * @throws HttpResponseException when a key with {@code name} is empty string.
      */
     public void purgeDeletedKey(String name) {
         purgeDeletedKeyWithResponse(name, Context.NONE);
@@ -517,7 +519,7 @@ public final class KeyClient {
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response containing status code and HTTP headers.
      * @throws ResourceNotFoundException when a key with {@code name} doesn't exist in the key vault.
-     * @throws HttpRequestException when a key with {@code name} is empty string.
+     * @throws HttpResponseException when a key with {@code name} is empty string.
      */
     public Response<Void> purgeDeletedKeyWithResponse(String name, Context context) {
         return client.purgeDeletedKeyWithResponse(name, context).block();
@@ -536,7 +538,7 @@ public final class KeyClient {
      * @param name The name of the deleted key to be recovered.
      * @return A {@link SyncPoller} to poll on and retrieve {@link KeyVaultKey recovered key}.
      * @throws ResourceNotFoundException when a key with {@code name} doesn't exist in the key vault.
-     * @throws HttpRequestException when a key with {@code name} is empty string.
+     * @throws HttpResponseException when a key with {@code name} is empty string.
      */
     public SyncPoller<KeyVaultKey, Void> beginRecoverDeletedKey(String name) {
         return client.beginRecoverDeletedKey(name).getSyncPoller();
@@ -562,7 +564,7 @@ public final class KeyClient {
      * @param name The name of the key.
      * @return The backed up key blob.
      * @throws ResourceNotFoundException when a key with {@code name} doesn't exist in the key vault.
-     * @throws HttpRequestException when a key with {@code name} is empty string.
+     * @throws HttpResponseException when a key with {@code name} is empty string.
      */
     public byte[] backupKey(String name) {
         return backupKeyWithResponse(name, Context.NONE).getValue();
@@ -589,7 +591,7 @@ public final class KeyClient {
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A {@link Response} whose {@link Response#getValue() value} contains the backed up key blob.
      * @throws ResourceNotFoundException when a key with {@code name} doesn't exist in the key vault.
-     * @throws HttpRequestException when a key with {@code name} is empty string.
+     * @throws HttpResponseException when a key with {@code name} is empty string.
      */
     public Response<byte[]> backupKeyWithResponse(String name, Context context) {
         return client.backupKeyWithResponse(name, context).block();
@@ -755,8 +757,7 @@ public final class KeyClient {
      * @param name The name of the key.
      * @return {@link PagedIterable} of {@link KeyProperties key} of all the versions of the specified key in the vault. List
      *     is empty if key with {@code name} does not exist in key vault.
-     * @throws ResourceNotFoundException when a key with {@code name} doesn't exist in the key vault.
-     * @throws HttpRequestException when a key with {@code name} is empty string.
+     * @throws ResourceNotFoundException when a given key {@code name} is null or an empty string.
      */
     public PagedIterable<KeyProperties> listPropertiesOfKeyVersions(String name) {
         return listPropertiesOfKeyVersions(name, Context.NONE);
@@ -783,8 +784,7 @@ public final class KeyClient {
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return {@link PagedIterable} of {@link KeyProperties key} of all the versions of the specified key in the vault. List
      *     is empty if key with {@code name} does not exist in key vault.
-     * @throws ResourceNotFoundException when a key with {@code name} doesn't exist in the key vault.
-     * @throws HttpRequestException when a key with {@code name} is empty string.
+     * @throws ResourceNotFoundException when a given key {@code name} is null or an empty string.
      */
     public PagedIterable<KeyProperties> listPropertiesOfKeyVersions(String name, Context context) {
         return new PagedIterable<>(client.listPropertiesOfKeyVersions(name, context));

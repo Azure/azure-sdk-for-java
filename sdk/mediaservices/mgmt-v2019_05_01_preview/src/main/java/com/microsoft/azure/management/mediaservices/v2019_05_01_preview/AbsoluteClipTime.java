@@ -18,7 +18,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
  * absolute time can point to a different position depending on whether the
  * media file starts from a timestamp of zero or not.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata\\.type")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata\\.type", defaultImpl = AbsoluteClipTime.class)
 @JsonTypeName("#Microsoft.Media.AbsoluteClipTime")
 public class AbsoluteClipTime extends ClipTime {
     /**

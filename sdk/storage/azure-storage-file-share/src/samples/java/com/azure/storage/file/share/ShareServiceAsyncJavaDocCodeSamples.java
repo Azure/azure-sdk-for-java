@@ -2,10 +2,17 @@
 // Licensed under the MIT License.
 package com.azure.storage.file.share;
 
+import com.azure.core.http.rest.Response;
 import com.azure.storage.common.StorageSharedKeyCredential;
+import com.azure.storage.common.sas.AccountSasPermission;
+import com.azure.storage.common.sas.AccountSasResourceType;
+import com.azure.storage.common.sas.AccountSasService;
+import com.azure.storage.common.sas.AccountSasSignatureValues;
 import com.azure.storage.file.share.models.ShareServiceProperties;
 import com.azure.storage.file.share.models.ListSharesOptions;
+import reactor.core.publisher.Mono;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
@@ -259,5 +266,63 @@ public class ShareServiceAsyncJavaDocCodeSamples {
                     response.getStatusCode()));
         });
         // END: com.azure.storage.file.share.ShareServiceAsyncClient.setPropertiesWithResponse#fileServiceProperties.clearCORS
+    }
+
+    /**
+     * Code snippet for {@link ShareServiceAsyncClient#generateAccountSas(AccountSasSignatureValues)}
+     */
+    public void generateAccountSas() {
+        ShareServiceAsyncClient fileServiceAsyncClient = createAsyncClientWithCredential();
+        // BEGIN: com.azure.storage.file.share.ShareServiceAsyncClient.generateAccountSas#AccountSasSignatureValues
+        AccountSasPermission permissions = new AccountSasPermission()
+            .setListPermission(true)
+            .setReadPermission(true);
+        AccountSasResourceType resourceTypes = new AccountSasResourceType().setContainer(true);
+        AccountSasService services = new AccountSasService().setBlobAccess(true).setFileAccess(true);
+        OffsetDateTime expiryTime = OffsetDateTime.now().plus(Duration.ofDays(2));
+
+        AccountSasSignatureValues sasValues =
+            new AccountSasSignatureValues(expiryTime, permissions, services, resourceTypes);
+
+        // Client must be authenticated via StorageSharedKeyCredential
+        String sas = fileServiceAsyncClient.generateAccountSas(sasValues);
+        // END: com.azure.storage.file.share.ShareServiceAsyncClient.generateAccountSas#AccountSasSignatureValues
+    }
+
+    /**
+     * Code snippet for {@link ShareServiceAsyncClient#undeleteShare(String, String)}.
+     */
+    public void undeleteShare() {
+        ShareServiceAsyncClient fileServiceAsyncClient = createAsyncClientWithSASToken();
+        // BEGIN: com.azure.storage.file.share.ShareServiceAsyncClient.undeleteShare#String-String
+        ListSharesOptions listSharesOptions = new ListSharesOptions();
+        listSharesOptions.setIncludeDeleted(true);
+        fileServiceAsyncClient.listShares(listSharesOptions).flatMap(
+            deletedShare -> {
+                Mono<ShareAsyncClient> shareAsyncClient = fileServiceAsyncClient.undeleteShare(
+                    deletedShare.getName(), deletedShare.getVersion());
+                return shareAsyncClient;
+            }
+        ).blockFirst();
+        // END: com.azure.storage.file.share.ShareServiceAsyncClient.undeleteShare#String-String
+    }
+
+    /**
+     * Code snippet for
+     * {@link ShareServiceAsyncClient#undeleteShareWithResponse(String, String)}
+     */
+    public void undeleteShareWithResponseWithRename() {
+        ShareServiceAsyncClient fileServiceAsyncClient = createAsyncClientWithSASToken();
+        // BEGIN: com.azure.storage.file.share.ShareServiceAsyncClient.undeleteShareWithResponse#String-String
+        ListSharesOptions listSharesOptions = new ListSharesOptions();
+        listSharesOptions.setIncludeDeleted(true);
+        fileServiceAsyncClient.listShares(listSharesOptions).flatMap(
+            deletedShare -> {
+                Mono<ShareAsyncClient> shareAsyncClient = fileServiceAsyncClient.undeleteShareWithResponse(
+                    deletedShare.getName(), deletedShare.getVersion()).map(Response::getValue);
+                return shareAsyncClient;
+            }
+        ).blockFirst();
+        // END: com.azure.storage.file.share.ShareServiceAsyncClient.undeleteShareWithResponse#String-String
     }
 }

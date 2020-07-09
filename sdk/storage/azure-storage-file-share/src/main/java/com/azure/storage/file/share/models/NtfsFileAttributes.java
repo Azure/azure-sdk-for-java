@@ -74,14 +74,13 @@ public enum NtfsFileAttributes {
      */
     public static String toString(EnumSet<NtfsFileAttributes> ntfsAttributes) {
         if (ntfsAttributes == null) {
-            return "";
+            return null;
         }
 
         final StringBuilder builder = new StringBuilder();
 
         toStringHelper(builder, ntfsAttributes, NtfsFileAttributes.READ_ONLY, "ReadOnly|");
-        toStringHelper(builder, ntfsAttributes, NtfsFileAttributes.HIDDEN, "ReadOnly|");
-        toStringHelper(builder, ntfsAttributes, NtfsFileAttributes.READ_ONLY, "Hidden|");
+        toStringHelper(builder, ntfsAttributes, NtfsFileAttributes.HIDDEN, "Hidden|");
         toStringHelper(builder, ntfsAttributes, NtfsFileAttributes.SYSTEM, "System|");
         toStringHelper(builder, ntfsAttributes, NtfsFileAttributes.NORMAL, "None|");
         toStringHelper(builder, ntfsAttributes, NtfsFileAttributes.DIRECTORY, "Directory|");
@@ -124,10 +123,14 @@ public enum NtfsFileAttributes {
      * @throws IllegalArgumentException If {@code ntfsAttributes} contains an attribute that is unknown.
      */
     public static EnumSet<NtfsFileAttributes> toAttributes(String ntfsAttributes) {
+        if (ntfsAttributes == null) {
+            return null;
+        }
         EnumSet<NtfsFileAttributes> attributes = EnumSet.noneOf(NtfsFileAttributes.class);
         String[] splitAttributes = ntfsAttributes.split("\\|");
 
         for (String sa : splitAttributes) {
+            sa = sa.trim();
             if (sa.equals("ReadOnly")) {
                 attributes.add(NtfsFileAttributes.READ_ONLY);
             } else if (sa.equals("Hidden")) {
@@ -149,7 +152,7 @@ public enum NtfsFileAttributes {
             } else if (sa.equals("NoScrubData")) {
                 attributes.add(NtfsFileAttributes.NO_SCRUB_DATA);
             } else {
-                throw new IllegalArgumentException("value");
+                throw new IllegalArgumentException("FileAttribute '" + sa + "' not recognized.");
             }
         }
 

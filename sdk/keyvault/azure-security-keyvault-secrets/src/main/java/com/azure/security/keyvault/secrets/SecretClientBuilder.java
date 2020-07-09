@@ -24,6 +24,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -58,14 +59,19 @@ import java.util.Objects;
 @ServiceClientBuilder(serviceClients = SecretClient.class)
 public final class SecretClientBuilder {
     private final ClientLogger logger = new ClientLogger(SecretClientBuilder.class);
+    // This is properties file's name.
+    private static final String AZURE_KEY_VAULT_SECRETS = "azure-key-vault-secrets.properties";
+    private static final String SDK_NAME = "name";
+    private static final String SDK_VERSION = "version";
 
     private final List<HttpPipelinePolicy> policies;
+    final Map<String, String> properties;
     private TokenCredential credential;
     private HttpPipeline pipeline;
     private URL vaultUrl;
     private HttpClient httpClient;
     private HttpLogOptions httpLogOptions;
-    private final RetryPolicy retryPolicy;
+    private RetryPolicy retryPolicy;
     private Configuration configuration;
     private SecretServiceVersion version;
 
@@ -76,6 +82,7 @@ public final class SecretClientBuilder {
         retryPolicy = new RetryPolicy();
         httpLogOptions = new HttpLogOptions();
         policies = new ArrayList<>();
+        properties = CoreUtils.getProperties(AZURE_KEY_VAULT_SECRETS);
     }
 
     /**
@@ -113,7 +120,6 @@ public final class SecretClientBuilder {
      *     {@link SecretClientBuilder#vaultUrl(String)} have not been set.
      */
     public SecretAsyncClient buildAsyncClient() {
-
         Configuration buildConfiguration =
             (configuration == null) ? Configuration.getGlobalConfiguration().clone() : configuration;
         URL buildEndpoint = getBuildEndpoint(buildConfiguration);
@@ -137,7 +143,10 @@ public final class SecretClientBuilder {
 
         // Closest to API goes first, closest to wire goes last.
         final List<HttpPipelinePolicy> policies = new ArrayList<>();
-        policies.add(new UserAgentPolicy(httpLogOptions.getApplicationId(), AzureKeyVaultConfiguration.SDK_NAME, AzureKeyVaultConfiguration.SDK_VERSION,
+
+        String clientName = properties.getOrDefault(SDK_NAME, "UnknownName");
+        String clientVersion = properties.getOrDefault(SDK_VERSION, "UnknownVersion");
+        policies.add(new UserAgentPolicy(httpLogOptions.getApplicationId(), clientName, clientVersion,
             buildConfiguration));
         HttpPolicyProviders.addBeforeRetryPolicies(policies);
         policies.add(retryPolicy);
@@ -265,6 +274,21 @@ public final class SecretClientBuilder {
      */
     public SecretClientBuilder serviceVersion(SecretServiceVersion version) {
         this.version = version;
+        return this;
+    }
+
+    /**
+     * Sets the {@link RetryPolicy} that is used when each request is sent.
+     *
+     * The default retry policy will be used in the pipeline, if not provided.
+     *
+     * @param retryPolicy user's retry policy applied to each request.
+     * @return The updated SecretClientBuilder object.
+     * @throws NullPointerException if the specified {@code retryPolicy} is null.
+     */
+    public SecretClientBuilder retryPolicy(RetryPolicy retryPolicy) {
+        Objects.requireNonNull(retryPolicy, "The retry policy cannot be bull");
+        this.retryPolicy = retryPolicy;
         return this;
     }
 

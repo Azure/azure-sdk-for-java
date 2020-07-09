@@ -1,0 +1,47 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://gaprastg71.file.core.windows.net/directoryapitestsdoesnotexist46686c195ea9ff13c4?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2019-07-07",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.3.0-beta.1 (11.0.4; Windows 10 10.0)",
+      "x-ms-client-request-id" : "3e73b8dd-702c-409d-b6b0-0ac0cb71f135"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-07-07",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "0x8D7BA2D0A3F5F8F",
+      "Last-Modified" : "Tue, 25 Feb 2020 19:58:10 GMT",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "9e306bcc-c01a-0044-1115-ec1804000000",
+      "Date" : "Tue, 25 Feb 2020 19:58:09 GMT",
+      "x-ms-client-request-id" : "3e73b8dd-702c-409d-b6b0-0ac0cb71f135"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://gaprastg71.file.core.windows.net/directoryapitestsdoesnotexist46686c195ea9ff13c4/directoryapitestsdoesnotexist6588888ea37663e3a4?restype=directory",
+    "Headers" : {
+      "x-ms-version" : "2019-07-07",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.3.0-beta.1 (11.0.4; Windows 10 10.0)",
+      "x-ms-client-request-id" : "a57df443-9045-4226-a7ae-588e5fd6142e"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-07-07",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "ResourceNotFound",
+      "retry-after" : "0",
+      "Content-Length" : "223",
+      "StatusCode" : "404",
+      "x-ms-request-id" : "9e306bcf-c01a-0044-1215-ec1804000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ResourceNotFound</Code><Message>The specified resource does not exist.\nRequestId:9e306bcf-c01a-0044-1215-ec1804000000\nTime:2020-02-25T19:58:10.6304724Z</Message></Error>",
+      "Date" : "Tue, 25 Feb 2020 19:58:10 GMT",
+      "x-ms-client-request-id" : "a57df443-9045-4226-a7ae-588e5fd6142e",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "directoryapitestsdoesnotexist46686c195ea9ff13c4", "directoryapitestsdoesnotexist6588888ea37663e3a4" ]
+}

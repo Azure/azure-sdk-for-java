@@ -16,19 +16,19 @@ import rx.functions.Func1;
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.arm.utils.PagedListConverter;
-import com.microsoft.azure.management.storage.v2019_06_01.Sku;
+import com.microsoft.azure.management.storage.v2019_06_01.SkuInformation;
 
 class SkusImpl extends WrapperImpl<SkusInner> implements Skus {
-    private PagedListConverter<SkuInner, Sku> converter;
+    private PagedListConverter<SkuInformationInner, SkuInformation> converter;
     private final StorageManager manager;
 
     SkusImpl(StorageManager manager) {
         super(manager.inner().skus());
         this.manager = manager;
-        this.converter = new PagedListConverter<SkuInner, Sku>() {
+        this.converter = new PagedListConverter<SkuInformationInner, SkuInformation>() {
             @Override
-            public Observable<Sku> typeConvertAsync(SkuInner inner) {
-                return Observable.just((Sku) wrapModel(inner));
+            public Observable<SkuInformation> typeConvertAsync(SkuInformationInner inner) {
+                return Observable.just((SkuInformation) wrapModel(inner));
             }
         };
     }
@@ -37,29 +37,29 @@ class SkusImpl extends WrapperImpl<SkusInner> implements Skus {
         return this.manager;
     }
 
-    private SkuImpl wrapModel(SkuInner inner) {
-        return  new SkuImpl(inner, manager());
+    private SkuInformationImpl wrapModel(SkuInformationInner inner) {
+        return  new SkuInformationImpl(inner, manager());
     }
 
     @Override
-    public PagedList<Sku> list() {
+    public PagedList<SkuInformation> list() {
         SkusInner client = this.inner();
         return converter.convert(client.list());
     }
 
     @Override
-    public Observable<Sku> listAsync() {
+    public Observable<SkuInformation> listAsync() {
         SkusInner client = this.inner();
         return client.listAsync()
-        .flatMap(new Func1<Page<SkuInner>, Observable<SkuInner>>() {
+        .flatMap(new Func1<Page<SkuInformationInner>, Observable<SkuInformationInner>>() {
             @Override
-            public Observable<SkuInner> call(Page<SkuInner> innerPage) {
+            public Observable<SkuInformationInner> call(Page<SkuInformationInner> innerPage) {
                 return Observable.from(innerPage.items());
             }
         })
-        .map(new Func1<SkuInner, Sku>() {
+        .map(new Func1<SkuInformationInner, SkuInformation>() {
             @Override
-            public Sku call(SkuInner inner) {
+            public SkuInformation call(SkuInformationInner inner) {
                 return wrapModel(inner);
             }
         });

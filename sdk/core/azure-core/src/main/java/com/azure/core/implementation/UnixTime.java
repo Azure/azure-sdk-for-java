@@ -41,15 +41,12 @@ public final class UnixTime {
      * @return The underlying DateTime
      */
     public OffsetDateTime getDateTime() {
-        if (this.dateTime == null) {
-            return null;
-        }
         return this.dateTime;
     }
 
     @Override
     public String toString() {
-        return dateTime.toString();
+        return String.valueOf(dateTime.toEpochSecond());
     }
 
     @Override

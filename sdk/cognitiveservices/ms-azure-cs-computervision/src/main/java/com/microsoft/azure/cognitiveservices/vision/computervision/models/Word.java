@@ -12,27 +12,33 @@ import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * The Word model.
+ * An object representing a recognized word.
  */
 public class Word {
     /**
-     * The boundingBox property.
+     * Bounding box of a recognized word.
      */
-    @JsonProperty(value = "boundingBox")
-    private List<Integer> boundingBox;
+    @JsonProperty(value = "boundingBox", required = true)
+    private List<Double> boundingBox;
 
     /**
-     * The text property.
+     * The text content of the word.
      */
-    @JsonProperty(value = "text")
+    @JsonProperty(value = "text", required = true)
     private String text;
+
+    /**
+     * Qualitative confidence measure.
+     */
+    @JsonProperty(value = "confidence", required = true)
+    private double confidence;
 
     /**
      * Get the boundingBox value.
      *
      * @return the boundingBox value
      */
-    public List<Integer> boundingBox() {
+    public List<Double> boundingBox() {
         return this.boundingBox;
     }
 
@@ -42,7 +48,7 @@ public class Word {
      * @param boundingBox the boundingBox value to set
      * @return the Word object itself.
      */
-    public Word withBoundingBox(List<Integer> boundingBox) {
+    public Word withBoundingBox(List<Double> boundingBox) {
         this.boundingBox = boundingBox;
         return this;
     }
@@ -64,6 +70,26 @@ public class Word {
      */
     public Word withText(String text) {
         this.text = text;
+        return this;
+    }
+
+    /**
+     * Get the confidence value.
+     *
+     * @return the confidence value
+     */
+    public double confidence() {
+        return this.confidence;
+    }
+
+    /**
+     * Set the confidence value.
+     *
+     * @param confidence the confidence value to set
+     * @return the Word object itself.
+     */
+    public Word withConfidence(double confidence) {
+        this.confidence = confidence;
         return this;
     }
 

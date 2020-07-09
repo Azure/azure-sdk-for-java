@@ -11,13 +11,13 @@ package com.microsoft.azure.management.storage.v2019_06_01.implementation;
 import com.microsoft.azure.management.storage.v2019_06_01.BlobContainer;
 import com.microsoft.azure.arm.model.implementation.CreatableUpdatableImpl;
 import rx.Observable;
+import org.joda.time.DateTime;
 import com.microsoft.azure.management.storage.v2019_06_01.PublicAccess;
+import com.microsoft.azure.management.storage.v2019_06_01.LeaseStatus;
+import com.microsoft.azure.management.storage.v2019_06_01.LeaseState;
+import com.microsoft.azure.management.storage.v2019_06_01.LeaseDuration;
 import java.util.Map;
 import com.microsoft.azure.management.storage.v2019_06_01.ImmutabilityPolicyProperties;
-import org.joda.time.DateTime;
-import com.microsoft.azure.management.storage.v2019_06_01.LeaseDuration;
-import com.microsoft.azure.management.storage.v2019_06_01.LeaseState;
-import com.microsoft.azure.management.storage.v2019_06_01.LeaseStatus;
 import com.microsoft.azure.management.storage.v2019_06_01.LegalHoldProperties;
 
 class BlobContainerImpl extends CreatableUpdatableImpl<BlobContainer, BlobContainerInner, BlobContainerImpl> implements BlobContainer, BlobContainer.Definition, BlobContainer.Update {
@@ -25,10 +25,6 @@ class BlobContainerImpl extends CreatableUpdatableImpl<BlobContainer, BlobContai
     private String resourceGroupName;
     private String accountName;
     private String containerName;
-    private PublicAccess cpublicAccess;
-    private Map<String, String> cmetadata;
-    private PublicAccess upublicAccess;
-    private Map<String, String> umetadata;
 
     BlobContainerImpl(String name, StorageManager manager) {
         super(name, new BlobContainerInner());
@@ -58,14 +54,14 @@ class BlobContainerImpl extends CreatableUpdatableImpl<BlobContainer, BlobContai
     @Override
     public Observable<BlobContainer> createResourceAsync() {
         BlobContainersInner client = this.manager().inner().blobContainers();
-        return client.createAsync(this.resourceGroupName, this.accountName, this.containerName, this.cpublicAccess, this.cmetadata)
+        return client.createAsync(this.resourceGroupName, this.accountName, this.containerName, this.inner())
             .map(innerToFluentMap(this));
     }
 
     @Override
     public Observable<BlobContainer> updateResourceAsync() {
         BlobContainersInner client = this.manager().inner().blobContainers();
-        return client.updateAsync(this.resourceGroupName, this.accountName, this.containerName, this.upublicAccess, this.umetadata)
+        return client.updateAsync(this.resourceGroupName, this.accountName, this.containerName, this.inner())
             .map(innerToFluentMap(this));
     }
 
@@ -80,6 +76,26 @@ class BlobContainerImpl extends CreatableUpdatableImpl<BlobContainer, BlobContai
         return this.inner().id() == null;
     }
 
+
+    @Override
+    public String defaultEncryptionScope() {
+        return this.inner().defaultEncryptionScope();
+    }
+
+    @Override
+    public Boolean deleted() {
+        return this.inner().deleted();
+    }
+
+    @Override
+    public DateTime deletedTime() {
+        return this.inner().deletedTime();
+    }
+
+    @Override
+    public Boolean denyEncryptionScopeOverride() {
+        return this.inner().denyEncryptionScopeOverride();
+    }
 
     @Override
     public String etag() {
@@ -147,8 +163,18 @@ class BlobContainerImpl extends CreatableUpdatableImpl<BlobContainer, BlobContai
     }
 
     @Override
+    public Integer remainingRetentionDays() {
+        return this.inner().remainingRetentionDays();
+    }
+
+    @Override
     public String type() {
         return this.inner().type();
+    }
+
+    @Override
+    public String version() {
+        return this.inner().version();
     }
 
     @Override
@@ -159,22 +185,26 @@ class BlobContainerImpl extends CreatableUpdatableImpl<BlobContainer, BlobContai
     }
 
     @Override
-    public BlobContainerImpl withPublicAccess(PublicAccess publicAccess) {
-        if (isInCreateMode()) {
-            this.cpublicAccess = publicAccess;
-        } else {
-            this.upublicAccess = publicAccess;
-        }
+    public BlobContainerImpl withDefaultEncryptionScope(String defaultEncryptionScope) {
+        this.inner().withDefaultEncryptionScope(defaultEncryptionScope);
+        return this;
+    }
+
+    @Override
+    public BlobContainerImpl withDenyEncryptionScopeOverride(Boolean denyEncryptionScopeOverride) {
+        this.inner().withDenyEncryptionScopeOverride(denyEncryptionScopeOverride);
         return this;
     }
 
     @Override
     public BlobContainerImpl withMetadata(Map<String, String> metadata) {
-        if (isInCreateMode()) {
-            this.cmetadata = metadata;
-        } else {
-            this.umetadata = metadata;
-        }
+        this.inner().withMetadata(metadata);
+        return this;
+    }
+
+    @Override
+    public BlobContainerImpl withPublicAccess(PublicAccess publicAccess) {
+        this.inner().withPublicAccess(publicAccess);
         return this;
     }
 

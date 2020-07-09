@@ -14,13 +14,15 @@ import org.apache.qpid.proton.amqp.messaging.ApplicationProperties;
 import org.apache.qpid.proton.amqp.messaging.Data;
 import org.apache.qpid.proton.amqp.messaging.MessageAnnotations;
 import org.apache.qpid.proton.message.Message;
-import reactor.core.publisher.Flux;
 
 import java.time.Instant;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import static com.azure.core.amqp.AmqpMessageConstant.ENQUEUED_TIME_UTC_ANNOTATION_NAME;
 import static com.azure.core.amqp.AmqpMessageConstant.OFFSET_ANNOTATION_NAME;
@@ -44,9 +46,14 @@ public final class TestUtils {
     static final Map<String, Object> APPLICATION_PROPERTIES = new HashMap<>();
 
     // An application property key used to identify that the request belongs to a test set.
-    public static final String MESSAGE_TRACKING_ID = "message-tracking-id";
+    public static final String MESSAGE_ID = "message-id";
     // An application property key to identify where in the stream this event was created.
     public static final String MESSAGE_POSITION_ID = "message-position";
+
+    /**
+     * For integration tests.
+     */
+    public static final String INTEGRATION = "integration";
 
     static {
         APPLICATION_PROPERTIES.put("test-name", EventDataTest.class.getName());
@@ -85,7 +92,7 @@ public final class TestUtils {
         APPLICATION_PROPERTIES.forEach(applicationProperties::put);
 
         if (!CoreUtils.isNullOrEmpty(messageTrackingValue)) {
-            applicationProperties.put(MESSAGE_TRACKING_ID, messageTrackingValue);
+            applicationProperties.put(MESSAGE_ID, messageTrackingValue);
         }
 
         if (additionalProperties != null) {
@@ -122,31 +129,32 @@ public final class TestUtils {
         return MESSAGE_SERIALIZER.deserialize(message, EventData.class);
     }
 
-    public static Flux<EventData> getEvents(int numberOfEvents, String messageTrackingValue) {
-        return Flux.range(0, numberOfEvents)
-            .map(number -> getEvent("Event " + number, messageTrackingValue, number));
+    public static List<EventData> getEvents(int numberOfEvents, String messageTrackingValue) {
+        return IntStream.range(0, numberOfEvents)
+            .mapToObj(number -> getEvent("Event " + number, messageTrackingValue, number))
+            .collect(Collectors.toList());
     }
 
     static EventData getEvent(String body, String messageTrackingValue, int position) {
         final EventData eventData = new EventData(body.getBytes(UTF_8));
-        eventData.getProperties().put(MESSAGE_TRACKING_ID, messageTrackingValue);
+        eventData.getProperties().put(MESSAGE_ID, messageTrackingValue);
         eventData.getProperties().put(MESSAGE_POSITION_ID, position);
         return eventData;
     }
 
     /**
-     * Checks the {@link #MESSAGE_TRACKING_ID} to see if it matches the {@code expectedValue}.
+     * Checks the {@link #MESSAGE_ID} to see if it matches the {@code expectedValue}.
      */
     public static boolean isMatchingEvent(PartitionEvent partitionEvent, String expectedValue) {
         return isMatchingEvent(partitionEvent.getData(), expectedValue);
     }
 
     /**
-     * Checks the {@link #MESSAGE_TRACKING_ID} to see if it matches the {@code expectedValue}.
+     * Checks the {@link #MESSAGE_ID} to see if it matches the {@code expectedValue}.
      */
     public static boolean isMatchingEvent(EventData event, String expectedValue) {
-        return event.getProperties() != null && event.getProperties().containsKey(MESSAGE_TRACKING_ID)
-            && expectedValue.equals(event.getProperties().get(MESSAGE_TRACKING_ID));
+        return event.getProperties() != null && event.getProperties().containsKey(MESSAGE_ID)
+            && expectedValue.equals(event.getProperties().get(MESSAGE_ID));
     }
 
     private TestUtils() {

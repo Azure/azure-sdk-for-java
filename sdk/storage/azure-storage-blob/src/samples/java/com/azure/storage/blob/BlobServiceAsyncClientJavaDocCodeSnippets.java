@@ -9,9 +9,15 @@ import com.azure.storage.blob.models.BlobContainerListDetails;
 import com.azure.storage.blob.models.BlobMetrics;
 import com.azure.storage.blob.models.BlobRetentionPolicy;
 import com.azure.storage.blob.models.BlobServiceProperties;
+import com.azure.storage.blob.options.FindBlobsOptions;
 import com.azure.storage.blob.models.ListBlobContainersOptions;
 import com.azure.storage.blob.models.PublicAccessType;
+import com.azure.storage.common.sas.AccountSasPermission;
+import com.azure.storage.common.sas.AccountSasResourceType;
+import com.azure.storage.common.sas.AccountSasService;
+import com.azure.storage.common.sas.AccountSasSignatureValues;
 
+import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.Collections;
 import java.util.Map;
@@ -93,6 +99,21 @@ public class BlobServiceAsyncClientJavaDocCodeSnippets {
 
         client.listBlobContainers(options).subscribe(container -> System.out.printf("Name: %s%n", container.getName()));
         // END: com.azure.storage.blob.BlobServiceAsyncClient.listBlobContainers#ListBlobContainersOptions
+    }
+
+    /**
+     * Code snippets for {@link BlobServiceAsyncClient#findBlobsByTags(String)} and
+     * {@link BlobServiceAsyncClient#findBlobsByTags(FindBlobsOptions)}
+     */
+    public void findBlobsByTag() {
+        // BEGIN: com.azure.storage.blob.BlobServiceAsyncClient.findBlobsByTag#String
+        client.findBlobsByTags("where=tag=value").subscribe(blob -> System.out.printf("Name: %s%n", blob.getName()));
+        // END: com.azure.storage.blob.BlobServiceAsyncClient.findBlobsByTag#String
+
+        // BEGIN: com.azure.storage.blob.BlobAsyncServiceClient.findBlobsByTag#FindBlobsOptions
+        client.findBlobsByTags(new FindBlobsOptions("where=tag=value").setMaxResultsPerPage(10))
+            .subscribe(blob -> System.out.printf("Name: %s%n", blob.getName()));
+        // END: com.azure.storage.blob.BlobAsyncServiceClient.findBlobsByTag#FindBlobsOptions
     }
 
     /**
@@ -234,4 +255,63 @@ public class BlobServiceAsyncClientJavaDocCodeSnippets {
                 response.getValue().getSkuName()));
         // END: com.azure.storage.blob.BlobServiceAsyncClient.getAccountInfoWithResponse
     }
+
+    /**
+     * Code snippet for {@link BlobServiceAsyncClient#generateAccountSas(AccountSasSignatureValues)}
+     */
+    public void generateAccountSas() {
+        // BEGIN: com.azure.storage.blob.BlobServiceAsyncClient.generateAccountSas#AccountSasSignatureValues
+        AccountSasPermission permissions = new AccountSasPermission()
+            .setListPermission(true)
+            .setReadPermission(true);
+        AccountSasResourceType resourceTypes = new AccountSasResourceType().setContainer(true);
+        AccountSasService services = new AccountSasService().setBlobAccess(true).setFileAccess(true);
+        OffsetDateTime expiryTime = OffsetDateTime.now().plus(Duration.ofDays(2));
+
+        AccountSasSignatureValues sasValues =
+            new AccountSasSignatureValues(expiryTime, permissions, services, resourceTypes);
+
+        // Client must be authenticated via StorageSharedKeyCredential
+        String sas = client.generateAccountSas(sasValues);
+        // END: com.azure.storage.blob.BlobServiceAsyncClient.generateAccountSas#AccountSasSignatureValues
+    }
+
+     // Add back for container soft delete
+//    /**
+//     * Code snippet for {@link BlobServiceAsyncClient#undeleteBlobContainer(String, String)}.
+//     */
+//    public void undeleteBlobContainer() {
+//        // BEGIN: com.azure.storage.blob.BlobServiceAsyncClient.undeleteBlobContainer#String-String
+//        ListBlobContainersOptions listBlobContainersOptions = new ListBlobContainersOptions();
+//        listBlobContainersOptions.getDetails().setRetrieveDeleted(true);
+//        client.listBlobContainers(listBlobContainersOptions).flatMap(
+//            deletedContainer -> {
+//                Mono<BlobContainerAsyncClient> blobContainerClient = client.undeleteBlobContainer(
+//                    deletedContainer.getName(), deletedContainer.getVersion());
+//                return blobContainerClient;
+//            }
+//        ).then().block();
+//        // END: com.azure.storage.blob.BlobServiceAsyncClient.undeleteBlobContainer#String-String
+//    }
+//
+//    /**
+//     * Code snippet for
+//     * {@link BlobServiceAsyncClient#undeleteBlobContainerWithResponse(UndeleteBlobContainerOptions)}.
+//     */
+//    public void undeleteBlobContainerWithResponseWithRename() {
+//        Context context = new Context("Key", "Value");
+//        // BEGIN: com.azure.storage.blob.BlobServiceAsyncClient.undeleteBlobContainerWithResponse#UndeleteBlobContainerOptions
+//        ListBlobContainersOptions listBlobContainersOptions = new ListBlobContainersOptions();
+//        listBlobContainersOptions.getDetails().setRetrieveDeleted(true);
+//        client.listBlobContainers(listBlobContainersOptions).flatMap(
+//            deletedContainer -> {
+//                Mono<BlobContainerAsyncClient> blobContainerClient = client.undeleteBlobContainerWithResponse(
+//                    new UndeleteBlobContainerOptions(deletedContainer.getName(), deletedContainer.getVersion())
+//                        .setDestinationContainerName(deletedContainer.getName() + "V2"))
+//                    .map(Response::getValue);
+//                return blobContainerClient;
+//            }
+//        ).then().block();
+//        // END: com.azure.storage.blob.BlobServiceAsyncClient.undeleteBlobContainerWithResponse#UndeleteBlobContainerOptions
+//    }
 }

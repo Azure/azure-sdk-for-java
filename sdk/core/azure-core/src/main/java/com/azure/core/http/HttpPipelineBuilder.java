@@ -40,7 +40,6 @@ public class HttpPipelineBuilder {
     private HttpClient httpClient;
     private List<HttpPipelinePolicy> pipelinePolicies;
 
-
     /**
      *  Creates a new instance of HttpPipelineBuilder that can configure options for the {@link HttpPipeline} before
      *  creating an instance of it.

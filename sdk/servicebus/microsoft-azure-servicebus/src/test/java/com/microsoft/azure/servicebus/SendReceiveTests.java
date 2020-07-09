@@ -83,11 +83,17 @@ public abstract class SendReceiveTests extends Tests {
             this.drainAllMessages();
         }
 
-        this.sender.close();
+        if (this.sender != null) {
+        	this.sender.close();
+        }
+        
         if (this.receiver != null) {
             this.receiver.close();
         }
-        this.factory.close();
+        
+        if (this.factory != null) {
+        	this.factory.close();
+        }        
 
         if (this.shouldCreateEntityForEveryTest()) {
             managementClient.deleteQueueAsync(this.entityName).get();
@@ -139,6 +145,12 @@ public abstract class SendReceiveTests extends Tests {
     public void testBasicReceiveAndComplete() throws InterruptedException, ServiceBusException, ExecutionException {
         this.receiver = ClientFactory.createMessageReceiverFromEntityPath(factory, this.receiveEntityPath, ReceiveMode.PEEKLOCK);
         TestCommons.testBasicReceiveAndComplete(this.sender, this.sessionId, this.receiver);
+    }
+    
+    @Test
+    public void testLargeTimeToLiveOnMessage() throws InterruptedException, ServiceBusException, ExecutionException {
+        this.receiver = ClientFactory.createMessageReceiverFromEntityPath(factory, this.receiveEntityPath, ReceiveMode.PEEKLOCK);
+        TestCommons.testLargeTimeToLiveOnMessage(this.sender, this.sessionId, this.receiver);
     }
 
     @Test
@@ -223,6 +235,13 @@ public abstract class SendReceiveTests extends Tests {
     public void testSendReceiveMessageWithVariousPropertyTypes() throws InterruptedException, ServiceBusException {
         this.receiver = ClientFactory.createMessageReceiverFromEntityPath(factory, this.receiveEntityPath, ReceiveMode.RECEIVEANDDELETE);
         TestCommons.testSendReceiveMessageWithVariousPropertyTypes(this.sender, this.sessionId, this.receiver);
+    }
+    
+    @Test
+    public void testLongPollReceiveOnLinkAbort() throws InterruptedException, ServiceBusException, ExecutionException
+    {
+    	this.receiver = ClientFactory.createMessageReceiverFromEntityPath(factory, this.receiveEntityPath, ReceiveMode.RECEIVEANDDELETE);
+    	TestCommons.testLongPollReceiveOnLinkAbort(this.sender, this.receiver, this.managementClient, this.isEntityQueue());
     }
 
     private void drainAllMessages() throws InterruptedException, ServiceBusException {

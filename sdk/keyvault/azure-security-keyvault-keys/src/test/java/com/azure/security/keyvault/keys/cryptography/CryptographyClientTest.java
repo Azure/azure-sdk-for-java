@@ -3,15 +3,15 @@
 
 package com.azure.security.keyvault.keys.cryptography;
 
-import com.azure.core.exception.ResourceNotFoundException;
+import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.util.Context;
 import com.azure.security.keyvault.keys.KeyClient;
 import com.azure.security.keyvault.keys.KeyClientBuilder;
+import com.azure.security.keyvault.keys.KeyServiceVersion;
 import com.azure.security.keyvault.keys.cryptography.models.EncryptionAlgorithm;
 import com.azure.security.keyvault.keys.cryptography.models.KeyWrapAlgorithm;
 import com.azure.security.keyvault.keys.cryptography.models.SignatureAlgorithm;
-import com.azure.security.keyvault.keys.models.DeletedKey;
 import com.azure.security.keyvault.keys.models.KeyVaultKey;
 import com.azure.security.keyvault.keys.models.JsonWebKey;
 import com.azure.security.keyvault.keys.models.KeyCurveName;
@@ -19,8 +19,10 @@ import com.azure.security.keyvault.keys.models.KeyCurveName;
 import java.security.*;
 import java.security.spec.ECGenParameterSpec;
 import java.util.*;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 
+import static com.azure.security.keyvault.keys.cryptography.TestHelper.DISPLAY_NAME_WITH_ARGUMENTS;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -32,35 +34,34 @@ public class CryptographyClientTest extends CryptographyClientTestBase {
     @Override
     protected void beforeTest() {
         beforeTestSetup();
-        if (interceptorManager.isPlaybackMode()) {
-            client = clientSetup(pipeline -> {
-                this.pipeline = pipeline;
-                return new KeyClientBuilder()
-                    .pipeline(pipeline)
-                    .vaultUrl(getEndpoint())
-                    .buildClient();
-            });
-        } else {
-            client = clientSetup(pipeline -> {
-                this.pipeline = pipeline;
-                return new KeyClientBuilder()
-                    .pipeline(pipeline)
-                    .vaultUrl(getEndpoint())
-                    .buildClient();
-            });
-        }
     }
 
-    @Test
-    public void encryptDecryptRsa() throws Exception {
+    private void initializeKeyClient(HttpClient httpClient) {
+        pipeline = getHttpPipeline(httpClient, KeyServiceVersion.getLatest());
+        client = new KeyClientBuilder()
+                     .pipeline(pipeline)
+                     .vaultUrl(getEndpoint())
+                     .buildClient();
+    }
+
+    private CryptographyClient initializeCryptographyClient(String keyId, HttpClient httpClient, CryptographyServiceVersion serviceVersion) {
+        pipeline = getHttpPipeline(httpClient, serviceVersion);
+        return new CryptographyClientBuilder()
+                   .pipeline(pipeline)
+                   .serviceVersion(serviceVersion)
+                   .keyIdentifier(keyId)
+                   .buildClient();
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.security.keyvault.keys.cryptography.TestHelper#getTestParameters")
+    public void encryptDecryptRsa(HttpClient httpClient, CryptographyServiceVersion serviceVersion) throws Exception {
+        initializeKeyClient(httpClient);
         encryptDecryptRsaRunner(keyPair -> {
             JsonWebKey key = JsonWebKey.fromRsa(keyPair);
-            String keyName = "testRsaKey";
+            String keyName = generateResourceId("testRsaKey");
             KeyVaultKey importedKey = client.importKey(keyName, key);
-            CryptographyClient cryptoClient = new CryptographyClientBuilder()
-                .pipeline(pipeline)
-                .keyIdentifier(importedKey.getId())
-                .buildClient();
+            CryptographyClient cryptoClient = initializeCryptographyClient(importedKey.getId(), httpClient, serviceVersion);
             CryptographyServiceClient serviceClient = cryptoClient.getServiceClient();
 
             List<EncryptionAlgorithm> algorithms = Arrays.asList(EncryptionAlgorithm.RSA1_5, EncryptionAlgorithm.RSA_OAEP, EncryptionAlgorithm.RSA_OAEP_256);
@@ -79,24 +80,18 @@ public class CryptographyClientTest extends CryptographyClientTestBase {
 
                 assertArrayEquals(decryptedText, plainText);
             }
-
-            client.beginDeleteKey(keyName);
-            pollOnKeyDeletion(keyName);
-            client.purgeDeletedKey(keyName);
-            pollOnKeyPurge(keyName);
         });
     }
 
-    @Test
-    public void wrapUnwraptRsa() throws Exception {
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.security.keyvault.keys.cryptography.TestHelper#getTestParameters")
+    public void wrapUnwraptRsa(HttpClient httpClient, CryptographyServiceVersion serviceVersion) throws Exception {
+        initializeKeyClient(httpClient);
         encryptDecryptRsaRunner(keyPair -> {
             JsonWebKey key = JsonWebKey.fromRsa(keyPair);
-            String keyName = "testRsaKeyWrapUnwrap";
+            String keyName = generateResourceId("testRsaKeyWrapUnwrap");
             KeyVaultKey importedKey = client.importKey(keyName, key);
-            CryptographyClient cryptoClient = new CryptographyClientBuilder()
-                .pipeline(pipeline)
-                .keyIdentifier(importedKey.getId())
-                .buildClient();
+            CryptographyClient cryptoClient = initializeCryptographyClient(importedKey.getId(), httpClient, serviceVersion);
             CryptographyServiceClient serviceClient = cryptoClient.getServiceClient();
 
             List<KeyWrapAlgorithm> algorithms = Arrays.asList(KeyWrapAlgorithm.RSA1_5, KeyWrapAlgorithm.RSA_OAEP, KeyWrapAlgorithm.RSA_OAEP_256);
@@ -116,24 +111,19 @@ public class CryptographyClientTest extends CryptographyClientTestBase {
                 assertArrayEquals(decryptedKey, plainText);
             }
 
-            client.beginDeleteKey(keyName);
-            pollOnKeyDeletion(keyName);
-            client.purgeDeletedKey(keyName);
-            pollOnKeyPurge(keyName);
         });
     }
 
 
-    @Test
-    public void signVerifyRsa() throws Exception {
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.security.keyvault.keys.cryptography.TestHelper#getTestParameters")
+    public void signVerifyRsa(HttpClient httpClient, CryptographyServiceVersion serviceVersion) throws Exception {
+        initializeKeyClient(httpClient);
         encryptDecryptRsaRunner(keyPair -> {
             JsonWebKey key = JsonWebKey.fromRsa(keyPair);
-            String keyName = "testRsaKeySignVerify";
+            String keyName = generateResourceId("testRsaKeySignVerify");
             KeyVaultKey importedKey = client.importKey(keyName, key);
-            CryptographyClient cryptoClient = new CryptographyClientBuilder()
-                .pipeline(pipeline)
-                .keyIdentifier(importedKey.getId())
-                .buildClient();
+            CryptographyClient cryptoClient = initializeCryptographyClient(importedKey.getId(), httpClient, serviceVersion);
             CryptographyServiceClient serviceClient = cryptoClient.getServiceClient();
 
             List<SignatureAlgorithm> algorithms = Arrays.asList(SignatureAlgorithm.RS256, SignatureAlgorithm.RS384, SignatureAlgorithm.RS512);
@@ -152,16 +142,13 @@ public class CryptographyClientTest extends CryptographyClientTestBase {
 
                 assertTrue(verifyStatus);
             }
-
-            client.beginDeleteKey(keyName);
-            pollOnKeyDeletion(keyName);
-            client.purgeDeletedKey(keyName);
-            pollOnKeyPurge(keyName);
         });
     }
 
-    @Test
-    public void signVerifyEc() throws NoSuchAlgorithmException, InvalidAlgorithmParameterException {
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.security.keyvault.keys.cryptography.TestHelper#getTestParameters")
+    public void signVerifyEc(HttpClient httpClient, CryptographyServiceVersion serviceVersion) throws NoSuchAlgorithmException, InvalidAlgorithmParameterException {
+        initializeKeyClient(httpClient);
         Map<KeyCurveName, SignatureAlgorithm> curveToSignature = new HashMap<>();
         curveToSignature.put(KeyCurveName.P_256, SignatureAlgorithm.ES256);
         curveToSignature.put(KeyCurveName.P_384, SignatureAlgorithm.ES384);
@@ -174,7 +161,7 @@ public class CryptographyClientTest extends CryptographyClientTestBase {
         curveToSpec.put(KeyCurveName.P_521, "secp521r1");
         curveToSpec.put(KeyCurveName.P_256K, "secp256k1");
 
-        List<KeyCurveName> curveList =  Arrays.asList(KeyCurveName.P_256, KeyCurveName.P_384, KeyCurveName.P_521, KeyCurveName.P_256K);
+        List<KeyCurveName> curveList = Arrays.asList(KeyCurveName.P_256, KeyCurveName.P_384, KeyCurveName.P_521, KeyCurveName.P_256K);
         Provider provider = Security.getProvider("SunEC");
         for (KeyCurveName crv : curveList) {
 
@@ -184,12 +171,9 @@ public class CryptographyClientTest extends CryptographyClientTestBase {
             KeyPair keyPair = generator.generateKeyPair();
 
             JsonWebKey key = JsonWebKey.fromEc(keyPair, provider);
-            String keyName = "testEcKey" + crv.toString();
+            String keyName = generateResourceId("testEcKey" + crv.toString());
             KeyVaultKey imported = client.importKey(keyName, key);
-            CryptographyClient cryptoClient = new CryptographyClientBuilder()
-                .pipeline(pipeline)
-                .keyIdentifier(imported.getId())
-                .buildClient();
+            CryptographyClient cryptoClient = initializeCryptographyClient(imported.getId(), httpClient, serviceVersion);
             CryptographyServiceClient serviceClient = cryptoClient.getServiceClient();
 
             byte[] plainText = new byte[100];
@@ -205,50 +189,7 @@ public class CryptographyClientTest extends CryptographyClientTestBase {
             if (!interceptorManager.isPlaybackMode()) {
                 assertTrue(verifyStatus);
             }
-
-            client.beginDeleteKey(keyName);
-            pollOnKeyDeletion(keyName);
-            client.purgeDeletedKey(keyName);
-            pollOnKeyPurge(keyName);
         }
 
-    }
-
-    private void pollOnKeyDeletion(String keyName) {
-        int pendingPollCount = 0;
-        while (pendingPollCount < 30) {
-            DeletedKey deletedKey = null;
-            try {
-                deletedKey = client.getDeletedKey(keyName);
-            } catch (ResourceNotFoundException e) {
-            }
-            if (deletedKey == null) {
-                sleepInRecordMode(2000);
-                pendingPollCount += 1;
-                continue;
-            } else {
-                return;
-            }
-        }
-        System.err.printf("Deleted Key %s not found \n", keyName);
-    }
-
-    private void pollOnKeyPurge(String keyName) {
-        int pendingPollCount = 0;
-        while (pendingPollCount < 10) {
-            DeletedKey deletedKey = null;
-            try {
-                deletedKey = client.getDeletedKey(keyName);
-            } catch (ResourceNotFoundException e) {
-            }
-            if (deletedKey != null) {
-                sleepInRecordMode(2000);
-                pendingPollCount += 1;
-                continue;
-            } else {
-                return;
-            }
-        }
-        System.err.printf("Deleted Key %s was not purged \n", keyName);
     }
 }

@@ -4,6 +4,7 @@
 package com.azure.storage.file.share;
 
 import com.azure.core.annotation.ServiceClient;
+import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
@@ -11,17 +12,21 @@ import com.azure.core.util.Context;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.file.share.models.ShareFileHttpHeaders;
+import com.azure.storage.file.share.models.ShareRequestConditions;
 import com.azure.storage.file.share.models.ShareSignedIdentifier;
 import com.azure.storage.file.share.models.ShareStorageException;
 import com.azure.storage.file.share.models.ShareInfo;
 import com.azure.storage.file.share.models.ShareProperties;
 import com.azure.storage.file.share.models.ShareSnapshotInfo;
 import com.azure.storage.file.share.models.ShareStatistics;
+import com.azure.storage.file.share.sas.ShareServiceSasSignatureValues;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
 import java.util.List;
 import java.util.Map;
+
+import static com.azure.storage.common.implementation.StorageImplUtils.blockWithOptionalTimeout;
 
 /**
  * This class provides a client that contains all the operations for interacting with a share in Azure Storage Share.
@@ -100,6 +105,36 @@ public class ShareClient {
      */
     public ShareFileClient getFileClient(String filePath) {
         return new ShareFileClient(client.getFileClient(filePath));
+    }
+
+    /**
+     * Determines if the share this client represents exists in the cloud.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.file.share.ShareClient.exists}
+     *
+     * @return Flag indicating existence of the share.
+     */
+    public Boolean exists() {
+        return existsWithResponse(null, Context.NONE).getValue();
+    }
+
+    /**
+     * Determines if the share this client represents exists in the cloud.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.file.share.ShareClient.existsWithResponse#Duration-Context}
+     *
+     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return Flag indicating existence of the share.
+     */
+    public Response<Boolean> existsWithResponse(Duration timeout, Context context) {
+        Mono<Response<Boolean>> response = client.existsWithResponse(context);
+
+        return blockWithOptionalTimeout(response, timeout);
     }
 
     /**
@@ -567,7 +602,7 @@ public class ShareClient {
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/create-file">Azure Docs</a>.</p>
      *
      * @param fileName Name of the file.
-     * @param maxSize The maximum size in bytes for the file, up to 1 TiB.
+     * @param maxSize The maximum size in bytes for the file.
      * @return A response containing a {@link ShareFileClient} to interact with the created file.
      * @throws ShareStorageException If one of the following cases happen:
      * <ul>
@@ -597,7 +632,7 @@ public class ShareClient {
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/create-file">Azure Docs</a>.</p>
      *
      * @param fileName Name of the file.
-     * @param maxSize The maximum size in bytes for the file, up to 1 TiB.
+     * @param maxSize The maximum size in bytes for the file.
      * @param httpHeaders Additional parameters for the operation.
      * @param smbProperties The user settable file smb properties.
      * @param filePermission The file permission of the file
@@ -621,9 +656,51 @@ public class ShareClient {
     public Response<ShareFileClient> createFileWithResponse(String fileName, long maxSize,
         ShareFileHttpHeaders httpHeaders, FileSmbProperties smbProperties, String filePermission,
         Map<String, String> metadata, Duration timeout, Context context) {
+        return this.createFileWithResponse(fileName, maxSize, httpHeaders, smbProperties, filePermission, metadata,
+            null, timeout, context);
+    }
+
+    /**
+     * Creates the file in the share with the given name, file max size and associates the passed properties to it.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>Create the file "myfile" with length of 1024 bytes, some headers, file smb properties and metadata</p>
+     *
+     * {@codesnippet com.azure.storage.file.share.ShareClient.createFileWithResponse#String-long-ShareFileHttpHeaders-FileSmbProperties-String-Map-ShareRequestConditions-Duration-Context}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/create-file">Azure Docs</a>.</p>
+     *
+     * @param fileName Name of the file.
+     * @param maxSize The maximum size in bytes for the file.
+     * @param httpHeaders Additional parameters for the operation.
+     * @param smbProperties The user settable file smb properties.
+     * @param filePermission The file permission of the file
+     * @param metadata Optional name-value pairs associated with the file as metadata.
+     * @param requestConditions {@link ShareRequestConditions}
+     * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout
+     * concludes a {@link RuntimeException} will be thrown.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return A response containing a {@link ShareFileClient} to interact with the created file and the status of its
+     * creation.
+     * @throws ShareStorageException If one of the following cases happen:
+     * <ul>
+     * <li>
+     * If the share or parent directory does not exist.
+     * </li>
+     * <li>
+     * An attempt to create file on a share snapshot will fail with 400 (InvalidQueryParameterValue).
+     * </li>
+     * </ul>
+     * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
+     */
+    public Response<ShareFileClient> createFileWithResponse(String fileName, long maxSize,
+        ShareFileHttpHeaders httpHeaders, FileSmbProperties smbProperties, String filePermission,
+        Map<String, String> metadata, ShareRequestConditions requestConditions, Duration timeout, Context context) {
         ShareFileClient shareFileClient = getFileClient(fileName);
         return new SimpleResponse<>(shareFileClient.createWithResponse(maxSize, httpHeaders, smbProperties,
-            filePermission, metadata, timeout, context), shareFileClient);
+            filePermission, metadata, requestConditions, timeout, context), shareFileClient);
     }
 
     /**
@@ -711,7 +788,33 @@ public class ShareClient {
      * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
     public Response<Void> deleteFileWithResponse(String fileName, Duration timeout, Context context) {
-        Mono<Response<Void>> response = client.deleteFileWithResponse(fileName, context);
+        return this.deleteFileWithResponse(fileName, null, timeout, context);
+    }
+
+    /**
+     * Deletes the specified file in the share.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>Delete the file "myfile"</p>
+     *
+     * {@codesnippet com.azure.storage.file.share.ShareClient.deleteFileWithResponse#string-ShareRequestConditions-duration-context}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/delete-file2">Azure Docs</a>.</p>
+     *
+     * @param fileName Name of the file
+     * @param requestConditions {@link ShareRequestConditions}
+     * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout
+     * concludes a {@link RuntimeException} will be thrown.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return A response that only contains headers and response status code
+     * @throws ShareStorageException If the share or the file doesn't exist.
+     * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
+     */
+    public Response<Void> deleteFileWithResponse(String fileName, ShareRequestConditions requestConditions,
+        Duration timeout, Context context) {
+        Mono<Response<Void>> response = client.deleteFileWithResponse(fileName, requestConditions, context);
         return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
     }
 
@@ -811,5 +914,31 @@ public class ShareClient {
      */
     public String getAccountName() {
         return this.client.getAccountName();
+    }
+
+    /**
+     * Gets the {@link HttpPipeline} powering this client.
+     *
+     * @return The pipeline.
+     */
+    public HttpPipeline getHttpPipeline() {
+        return this.client.getHttpPipeline();
+    }
+
+    /**
+     * Generates a service sas for the queue using the specified {@link ShareServiceSasSignatureValues}
+     * Note : The client must be authenticated via {@link StorageSharedKeyCredential}
+     * <p>See {@link ShareServiceSasSignatureValues} for more information on how to construct a service SAS.</p>
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.file.share.ShareAsyncClient.generateSas#ShareServiceSasSignatureValues}
+     *
+     * @param shareServiceSasSignatureValues {@link ShareServiceSasSignatureValues}
+     *
+     * @return A {@code String} representing all SAS query parameters.
+     */
+    public String generateSas(ShareServiceSasSignatureValues shareServiceSasSignatureValues) {
+        return this.client.generateSas(shareServiceSasSignatureValues);
     }
 }

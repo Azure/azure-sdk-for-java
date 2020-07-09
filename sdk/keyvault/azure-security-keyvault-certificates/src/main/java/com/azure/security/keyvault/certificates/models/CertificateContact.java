@@ -11,10 +11,10 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public final class CertificateContact {
     /**
-     * Email addresss.
+     * Email address.
      */
     @JsonProperty(value = "email")
-    private String emailAddress;
+    private String email;
 
     /**
      * Name.
@@ -29,44 +29,18 @@ public final class CertificateContact {
     private String phone;
 
     /**
-     * Creates a new contact instance.
+     * Get the email address.
      *
-     * @param name The name of the contact
-     * @param emailAddress The email address of the contact
-     * @param phone The phone number of the contact.
+     * @return the email address
      */
-    public CertificateContact(String name, String emailAddress, String phone) {
-        this.name = name;
-        this.emailAddress = emailAddress;
-        this.phone = phone;
+    public String getEmail() {
+        return this.email;
     }
 
     /**
-     * Creates a new contact instance.
+     * Get the name.
      *
-     * @param name The name of the contact
-     * @param emailAddress The email address of the contact
-     */
-    public CertificateContact(String name, String emailAddress) {
-        this.name = name;
-        this.emailAddress = emailAddress;
-    }
-
-    CertificateContact() { }
-
-    /**
-     * Get the emailAddress.
-     *
-     * @return the emailAddress
-     */
-    public String getEmailAddress() {
-        return this.emailAddress;
-    }
-
-    /**
-     * Get the name value.
-     *
-     * @return the name value
+     * @return the name
      */
     public String getName() {
         return this.name;
@@ -79,5 +53,35 @@ public final class CertificateContact {
      */
     public String getPhone() {
         return this.phone;
+    }
+
+    /**
+     * Set the email of the contact.
+     * @param email the email of the contact to set
+     * @return the updated CertificateContact object itself.
+     */
+    public CertificateContact setEmail(String email) {
+        this.email = email;
+        return this;
+    }
+
+    /**
+     * Set the name of the contact.
+     * @param name the name of the contact to set
+     * @return the updated CertificateContact object itself.
+     */
+    public CertificateContact setName(String name) {
+        this.name = name;
+        return this;
+    }
+
+    /**
+     * Set the phone of the contact.
+     * @param phone the phone of the contact to set
+     * @return the updated CertificateContact object itself.
+     */
+    public CertificateContact setPhone(String phone) {
+        this.phone = phone;
+        return this;
     }
 }

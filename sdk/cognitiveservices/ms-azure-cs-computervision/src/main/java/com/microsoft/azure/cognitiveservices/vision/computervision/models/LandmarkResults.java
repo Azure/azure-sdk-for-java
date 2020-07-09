@@ -12,11 +12,11 @@ import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * List of landmarks recognized in the image.
+ * Result of domain-specific classifications for the domain of landmarks.
  */
 public class LandmarkResults {
     /**
-     * The landmarks property.
+     * List of landmarks recognized in the image.
      */
     @JsonProperty(value = "landmarks")
     private List<LandmarksModel> landmarks;

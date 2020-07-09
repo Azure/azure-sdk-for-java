@@ -10,8 +10,8 @@ package com.microsoft.azure.management.storage.v2019_06_01.implementation;
 
 import com.microsoft.azure.management.storage.v2019_06_01.ListContainerItem;
 import com.microsoft.azure.arm.model.implementation.WrapperImpl;
-import com.microsoft.azure.management.storage.v2019_06_01.ImmutabilityPolicyProperties;
 import org.joda.time.DateTime;
+import com.microsoft.azure.management.storage.v2019_06_01.ImmutabilityPolicyProperties;
 import com.microsoft.azure.management.storage.v2019_06_01.LeaseDuration;
 import com.microsoft.azure.management.storage.v2019_06_01.LeaseState;
 import com.microsoft.azure.management.storage.v2019_06_01.LeaseStatus;
@@ -29,6 +29,26 @@ class ListContainerItemImpl extends WrapperImpl<ListContainerItemInner> implemen
     @Override
     public StorageManager manager() {
         return this.manager;
+    }
+
+    @Override
+    public String defaultEncryptionScope() {
+        return this.inner().defaultEncryptionScope();
+    }
+
+    @Override
+    public Boolean deleted() {
+        return this.inner().deleted();
+    }
+
+    @Override
+    public DateTime deletedTime() {
+        return this.inner().deletedTime();
+    }
+
+    @Override
+    public Boolean denyEncryptionScopeOverride() {
+        return this.inner().denyEncryptionScopeOverride();
     }
 
     @Override
@@ -97,8 +117,18 @@ class ListContainerItemImpl extends WrapperImpl<ListContainerItemInner> implemen
     }
 
     @Override
+    public Integer remainingRetentionDays() {
+        return this.inner().remainingRetentionDays();
+    }
+
+    @Override
     public String type() {
         return this.inner().type();
+    }
+
+    @Override
+    public String version() {
+        return this.inner().version();
     }
 
 }

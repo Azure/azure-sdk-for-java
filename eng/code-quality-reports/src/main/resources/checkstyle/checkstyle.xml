@@ -54,7 +54,8 @@ page at http://checkstyle.sourceforge.net/config.html -->
   <module name="LineLength">
     <property name="max" value="120"/>
     <!-- Allow codeSnippet to override max line length -->
-    <property name="ignorePattern" value=".*(\{@codesnippet.*\}|&lt;a href)"/>
+    <!-- Allow comment with single word to override max line length -->
+    <property name="ignorePattern" value=".*(\{@codesnippet.*\}|&lt;a href)|^ *\* *[^ ]+$"/>
   </module>
 
   <!-- All Java AST specific tests live under TreeWalker module. -->
@@ -65,7 +66,7 @@ page at http://checkstyle.sourceforge.net/config.html -->
     <module name="AvoidStarImport"/>
     <module name="IllegalImport">
       <property name="regexp" value="true"/>
-      <property name="illegalPkgs" value="^(com\.)?sun\.\w*, ^io\.opencensus"/>
+      <property name="illegalPkgs" value="^(com\.)?sun\.\w*, ^io.opentelemetry"/>
     </module>
     <module name="RedundantImport"/>
     <module name="UnusedImports"/>
@@ -281,7 +282,6 @@ page at http://checkstyle.sourceforge.net/config.html -->
     <!-- See http://checkstyle.sf.net/config_javadoc.html -->
     <module name="JavadocMethod">
       <property name="scope" value="protected"/>
-      <property name="suppressLoadErrors" value="true"/>
     </module>
     <module name="MissingJavadocMethod"/>
     <module name="MissingJavadocType"/>
@@ -363,7 +363,10 @@ page at http://checkstyle.sourceforge.net/config.html -->
     1) Use {@codesnippet ...} instead of '<code>', '<pre>', or '{@code ...}' if these tags span multiple lines.
        Inline code sample are fine as-is.
     2) No check on class-level Javadoc. -->
-    <module name="com.azure.tools.checkstyle.checks.JavadocInlineTagCheck"/>
+    <!-- This check was removed as it causes more noise than fixes. The purpose of this check was to move away from -->
+    <!-- using <code>, <pre>, and {@code} tags while we were on-boarding codesnippets. These tags have since been   -->
+    <!-- removed and codesnippets are expected.                                                                     -->
+    <!-- <module name="com.azure.tools.checkstyle.checks.JavadocInlineTagCheck"/> -->
 
     <!-- CUSTOM CHECKS -->
     <!-- {@codesnippet ...} description should match naming pattern requirement below:

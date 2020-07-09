@@ -14,7 +14,10 @@ import java.util.Map;
  * appended to a URL directly (though caution should be taken here in case there are existing query parameters, which
  * might affect the appropriate means of appending these query parameters). NOTE: Instances of this class are immutable
  * to ensure thread safety.
+ * @deprecated Please use the generateSas method on the desired service client after initializing
+ * {@link AccountSasSignatureValues}.
  */
+@Deprecated
 public final class AccountSasQueryParameters extends BaseSasQueryParameters {
 
     private final String services;
@@ -27,7 +30,9 @@ public final class AccountSasQueryParameters extends BaseSasQueryParameters {
      * @param queryParamsMap All query parameters for the request as key-value pairs
      * @param removeSasParameters When {@code true}, the SAS query parameters will be removed from
      * queryParamsMap
+     * @deprecated Please use {@link AccountSasSignatureValues}
      */
+    @Deprecated
     AccountSasQueryParameters(Map<String, String[]> queryParamsMap, boolean removeSasParameters) {
         super(queryParamsMap, removeSasParameters);
         this.resourceTypes = getQueryParameter(queryParamsMap, Constants.UrlConstants.SAS_RESOURCES_TYPES,
@@ -51,7 +56,9 @@ public final class AccountSasQueryParameters extends BaseSasQueryParameters {
      * {@code null}.
      * @param permissions A {@code String} representing the storage permissions or {@code null}.
      * @param signature A {@code String} representing the signature for the SAS token.
+     * @deprecated Please use {@link AccountSasSignatureValues}
      */
+    @Deprecated
     AccountSasQueryParameters(String version, String services, String resourceTypes, SasProtocol protocol,
                               OffsetDateTime startTime, OffsetDateTime expiryTime, SasIpRange sasIpRange,
                               String permissions, String signature) {
@@ -63,7 +70,9 @@ public final class AccountSasQueryParameters extends BaseSasQueryParameters {
     /**
      * @return The storage services being accessed (only for Account SAS). Please refer to {@link AccountSasService} for
      * more details.
+     * @deprecated Please use {@link AccountSasSignatureValues}
      */
+    @Deprecated
     public String getServices() {
         return services;
     }
@@ -71,7 +80,9 @@ public final class AccountSasQueryParameters extends BaseSasQueryParameters {
     /**
      * @return The storage resource types being accessed (only for Account SAS). Please refer to {@link
      * AccountSasResourceType} for more details.
+     * @deprecated Please use {@link AccountSasSignatureValues}
      */
+    @Deprecated
     public String getResourceTypes() {
         return resourceTypes;
     }
@@ -80,7 +91,10 @@ public final class AccountSasQueryParameters extends BaseSasQueryParameters {
      * Encodes all SAS query parameters into a string that can be appended to a URL.
      *
      * @return A {@code String} representing all SAS query parameters.
+     * @deprecated Please use the generateSas method on the desired service client after initializing
+     * {@link AccountSasSignatureValues}.
      */
+    @Deprecated
     public String encode() {
         /*
          We should be url-encoding each key and each value, but because we know all the keys and values will encode to

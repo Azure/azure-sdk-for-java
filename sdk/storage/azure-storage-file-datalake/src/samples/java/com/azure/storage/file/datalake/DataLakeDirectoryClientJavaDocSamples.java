@@ -25,6 +25,7 @@ public class DataLakeDirectoryClientJavaDocSamples {
     private String key1 = "key1";
     private String value1 = "val1";
     private String destinationPath = "destinationPath";
+    private String fileSystemName = "fileSystemName";
 
     /**
      * Code snippet for {@link DataLakeDirectoryClient#getSubdirectoryClient(String)}
@@ -65,13 +66,19 @@ public class DataLakeDirectoryClientJavaDocSamples {
     }
 
     /**
-     * Code snippets for {@link DataLakeDirectoryClient#createFile(String)} and
+     * Code snippets for {@link DataLakeDirectoryClient#createFile(String)},
+     * {@link DataLakeDirectoryClient#createFile(String, boolean)} and
      * {@link DataLakeDirectoryClient#createFileWithResponse(String, String, String, PathHttpHeaders, Map, DataLakeRequestConditions, Duration, Context)}
      */
     public void createFileCodeSnippets() {
         // BEGIN: com.azure.storage.file.datalake.DataLakeDirectoryClient.createFile#String
         DataLakeFileClient fileClient = client.createFile(fileName);
         // END: com.azure.storage.file.datalake.DataLakeDirectoryClient.createFile#String
+
+        // BEGIN: com.azure.storage.file.datalake.DataLakeDirectoryClient.createFile#String-boolean
+        boolean overwrite = false; /* Default value. */
+        DataLakeFileClient fClient = client.createFile(fileName, overwrite);
+        // END: com.azure.storage.file.datalake.DataLakeDirectoryClient.createFile#String-boolean
 
         // BEGIN: com.azure.storage.file.datalake.DataLakeDirectoryClient.createFileWithResponse#String-String-String-PathHttpHeaders-Map-DataLakeRequestConditions-Duration-Context
         PathHttpHeaders httpHeaders = new PathHttpHeaders()
@@ -107,13 +114,19 @@ public class DataLakeDirectoryClientJavaDocSamples {
     }
 
     /**
-     * Code snippets for {@link DataLakeDirectoryClient#createSubdirectory(String)} and
+     * Code snippets for {@link DataLakeDirectoryClient#createSubdirectory(String)},
+     * {@link DataLakeDirectoryClient#createSubdirectory(String, boolean)} and
      * {@link DataLakeDirectoryClient#createSubdirectoryWithResponse(String, String, String, PathHttpHeaders, Map, DataLakeRequestConditions, Duration, Context)}
      */
     public void createSubdirectoryCodeSnippets() {
         // BEGIN: com.azure.storage.file.datalake.DataLakeDirectoryClient.createSubdirectory#String
         DataLakeDirectoryClient directoryClient = client.createSubdirectory(directoryName);
         // END: com.azure.storage.file.datalake.DataLakeDirectoryClient.createSubdirectory#String
+
+        // BEGIN: com.azure.storage.file.datalake.DataLakeDirectoryClient.createSubdirectory#String-boolean
+        boolean overwrite = false; /* Default value. */
+        DataLakeDirectoryClient dClient = client.createSubdirectory(fileName, overwrite);
+        // END: com.azure.storage.file.datalake.DataLakeDirectoryClient.createSubdirectory#String-boolean
 
         // BEGIN: com.azure.storage.file.datalake.DataLakeDirectoryClient.createSubdirectoryWithResponse#String-String-String-PathHttpHeaders-Map-DataLakeRequestConditions-Duration-Context
         PathHttpHeaders httpHeaders = new PathHttpHeaders()
@@ -151,23 +164,23 @@ public class DataLakeDirectoryClientJavaDocSamples {
     }
 
     /**
-     * Code snippets for {@link DataLakeDirectoryClient#rename(String)} and
-     * {@link DataLakeDirectoryClient#renameWithResponse(String, DataLakeRequestConditions, DataLakeRequestConditions, Duration, Context)}
+     * Code snippets for {@link DataLakeDirectoryClient#rename(String, String)} and
+     * {@link DataLakeDirectoryClient#renameWithResponse(String, String, DataLakeRequestConditions, DataLakeRequestConditions, Duration, Context)}
      */
     public void renameCodeSnippets() {
-        // BEGIN: com.azure.storage.file.datalake.DataLakeDirectoryClient.rename#String
-        DataLakeDirectoryClient renamedClient = client.rename(destinationPath);
+        // BEGIN: com.azure.storage.file.datalake.DataLakeDirectoryClient.rename#String-String
+        DataLakeDirectoryClient renamedClient = client.rename(fileSystemName, destinationPath);
         System.out.println("Directory Client has been renamed");
-        // END: com.azure.storage.file.datalake.DataLakeDirectoryClient.rename#String
+        // END: com.azure.storage.file.datalake.DataLakeDirectoryClient.rename#String-String
 
-        // BEGIN: com.azure.storage.file.datalake.DataLakeDirectoryClient.renameWithResponse#String-DataLakeRequestConditions-DataLakeRequestConditions-Duration-Context
+        // BEGIN: com.azure.storage.file.datalake.DataLakeDirectoryClient.renameWithResponse#String-String-DataLakeRequestConditions-DataLakeRequestConditions-Duration-Context
         DataLakeRequestConditions sourceRequestConditions = new DataLakeRequestConditions()
             .setLeaseId(leaseId);
         DataLakeRequestConditions destinationRequestConditions = new DataLakeRequestConditions();
 
-        DataLakeDirectoryClient newRenamedClient = client.renameWithResponse(destinationPath, sourceRequestConditions,
-            destinationRequestConditions, timeout, new Context(key1, value1)).getValue();
+        DataLakeDirectoryClient newRenamedClient = client.renameWithResponse(fileSystemName, destinationPath,
+            sourceRequestConditions, destinationRequestConditions, timeout, new Context(key1, value1)).getValue();
         System.out.println("Directory Client has been renamed");
-        // END: com.azure.storage.file.datalake.DataLakeDirectoryClient.renameWithResponse#String-DataLakeRequestConditions-DataLakeRequestConditions-Duration-Context
+        // END: com.azure.storage.file.datalake.DataLakeDirectoryClient.renameWithResponse#String-String-DataLakeRequestConditions-DataLakeRequestConditions-Duration-Context
     }
 }

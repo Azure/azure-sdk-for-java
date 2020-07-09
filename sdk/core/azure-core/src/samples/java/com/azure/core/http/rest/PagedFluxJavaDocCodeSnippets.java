@@ -3,19 +3,22 @@
 
 package com.azure.core.http.rest;
 
+import com.azure.core.util.paging.PageRetriever;
 import org.reactivestreams.Subscription;
 import reactor.core.CoreSubscriber;
 import reactor.core.publisher.BaseSubscriber;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.util.function.Function;
 import java.util.function.Supplier;
+import java.util.stream.Collectors;
 
 /**
  * Code snippets for {@link PagedFlux}
  */
 public final class PagedFluxJavaDocCodeSnippets {
-    
+
     /**
      * Code snippets for showing usage of {@link PagedFlux} in class docs
      */
@@ -141,6 +144,59 @@ public final class PagedFluxJavaDocCodeSnippets {
     }
 
     /**
+     * Code snippets for using {@link PagedFlux#create(Supplier)}
+     * to create a PagedFlux by applying decoration on another PagedFlux.
+     */
+    public void pagedFluxFromPagedFlux() {
+        // BEGIN: com.azure.core.http.rest.pagedflux.create.decoration
+
+        // Transform a PagedFlux with Integer items to PagedFlux of String items.
+        final PagedFlux<Integer> intPagedFlux = createAnInstance();
+
+        // PagedResponse<Integer> to PagedResponse<String> mapper
+        final Function<PagedResponse<Integer>, PagedResponse<String>> responseMapper
+            = intResponse -> new PagedResponseBase<Void, String>(intResponse.getRequest(),
+                intResponse.getStatusCode(),
+                intResponse.getHeaders(),
+                intResponse.getValue()
+                    .stream()
+                    .map(intValue -> Integer.toString(intValue)).collect(Collectors.toList()),
+                intResponse.getContinuationToken(),
+                null);
+
+        final Supplier<PageRetriever<String, PagedResponse<String>>> provider
+            = new Supplier<PageRetriever<String, PagedResponse<String>>>() {
+                @Override
+                public PageRetriever<String, PagedResponse<String>> get() {
+                    return (continuationToken, pageSize) -> {
+                        Flux<PagedResponse<Integer>> flux = (continuationToken == null)
+                            ? intPagedFlux.byPage()
+                            : intPagedFlux.byPage(continuationToken);
+                        return flux.map(responseMapper);
+                    };
+                }
+            };
+        PagedFlux<String> strPagedFlux = PagedFlux.create(provider);
+
+        // Create a PagedFlux from a PagedFlux with all exceptions mapped to a specific exception.
+        final PagedFlux<Integer> pagedFlux = createAnInstance();
+        final Supplier<PageRetriever<String, PagedResponse<Integer>>> eprovider
+            = new Supplier<PageRetriever<String, PagedResponse<Integer>>>() {
+                @Override
+                public PageRetriever<String, PagedResponse<Integer>> get() {
+                    return (continuationToken, pageSize) -> {
+                        Flux<PagedResponse<Integer>> flux = (continuationToken == null)
+                            ? pagedFlux.byPage()
+                            : pagedFlux.byPage(continuationToken);
+                        return flux.onErrorMap(t -> new PaginationException(t));
+                    };
+                }
+            };
+        final PagedFlux<Integer> exceptionMappedPagedFlux = PagedFlux.create(eprovider);
+        // END: com.azure.core.http.rest.pagedflux.create.decoration
+    }
+
+    /**
      * Implementation not provided
      *
      * @return A continuation token
@@ -166,5 +222,11 @@ public final class PagedFluxJavaDocCodeSnippets {
      */
     private Mono<PagedResponse<Integer>> getFirstPage() {
         return null;
+    }
+
+    class PaginationException extends RuntimeException {
+        PaginationException(Throwable ex) {
+            super(ex);
+        }
     }
 }

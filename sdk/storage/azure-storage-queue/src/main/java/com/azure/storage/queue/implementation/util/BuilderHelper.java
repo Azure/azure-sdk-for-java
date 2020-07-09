@@ -28,26 +28,35 @@ import com.azure.storage.common.policy.RequestRetryPolicy;
 import com.azure.storage.common.policy.ResponseValidationPolicyBuilder;
 import com.azure.storage.common.policy.ScrubEtagPolicy;
 import com.azure.storage.common.policy.StorageSharedKeyCredentialPolicy;
-import com.azure.storage.queue.sas.QueueServiceSasQueryParameters;
+import com.azure.storage.common.sas.CommonSasQueryParameters;
 
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
-import java.util.regex.Pattern;
 
 /**
  * This class provides helper methods for common builder patterns.
  */
 public final class BuilderHelper {
-    private static final String DEFAULT_USER_AGENT_NAME = "azure-storage-queue";
-    // {x-version-update-start;com.azure:azure-storage-queue;current}
-    private static final String DEFAULT_USER_AGENT_VERSION = "12.1.0-beta.1";
-    // {x-version-update-end}
+    private static final Map<String, String> PROPERTIES =
+        CoreUtils.getProperties("azure-storage-queue.properties");
+    private static final String SDK_NAME = "name";
+    private static final String SDK_VERSION = "version";
 
-    private static final Pattern IP_URL_PATTERN = Pattern
-        .compile("(?:\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3})|(?:localhost)");
+    /**
+     * Determines whether or not the passed authority is IP style, that is it is of the format
+     * {@code <host>:<port>}.
+     *
+     * @param authority The authority of a URL.
+     * @throws MalformedURLException If the authority is malformed.
+     * @return Whether the authority is IP style.
+     */
+    public static boolean determineAuthorityIsIpStyle(String authority) throws MalformedURLException {
+        return new URL("http://" +  authority).getPort() != -1;
+    }
 
     /**
      * Parse the endpoint for the account name, queue name, and SAS token query parameters.
@@ -62,7 +71,7 @@ public final class BuilderHelper {
             URL url = new URL(endpoint);
             QueueUrlParts parts = new QueueUrlParts().setScheme(url.getProtocol());
 
-            if (IP_URL_PATTERN.matcher(url.getHost()).find()) {
+            if (determineAuthorityIsIpStyle(url.getAuthority())) {
                 // URL is using an IP pattern of http://127.0.0.1:10000/accountName/queueName
                 // or http://localhost:10000/accountName/queueName
                 String path = url.getPath();
@@ -104,10 +113,10 @@ public final class BuilderHelper {
             }
 
             // Attempt to get the SAS token from the URL passed
-            String sasToken = new QueueServiceSasQueryParameters(
+            String sasToken = new CommonSasQueryParameters(
                 StorageImplUtils.parseQueryStringSplitValues(url.getQuery()), false).encode();
             if (!CoreUtils.isNullOrEmpty(sasToken)) {
-                parts.setQueueName(sasToken);
+                parts.setSasToken(sasToken);
             }
 
             return parts;
@@ -142,6 +151,10 @@ public final class BuilderHelper {
 
         policies.add(getUserAgentPolicy(configuration));
         policies.add(new RequestIdPolicy());
+
+        HttpPolicyProviders.addBeforeRetryPolicies(policies);
+        policies.add(new RequestRetryPolicy(retryOptions));
+
         policies.add(new AddDatePolicy());
 
         HttpPipelinePolicy credentialPolicy;
@@ -160,9 +173,6 @@ public final class BuilderHelper {
         if (credentialPolicy != null) {
             policies.add(credentialPolicy);
         }
-
-        HttpPolicyProviders.addBeforeRetryPolicies(policies);
-        policies.add(new RequestRetryPolicy(retryOptions));
 
         policies.addAll(additionalPolicies);
 
@@ -201,8 +211,10 @@ public final class BuilderHelper {
     private static UserAgentPolicy getUserAgentPolicy(Configuration configuration) {
         configuration = (configuration == null) ? Configuration.NONE : configuration;
 
-        return new UserAgentPolicy(getDefaultHttpLogOptions().getApplicationId(),
-            DEFAULT_USER_AGENT_NAME, DEFAULT_USER_AGENT_VERSION, configuration);
+        String clientName = PROPERTIES.getOrDefault(SDK_NAME, "UnknownName");
+        String clientVersion = PROPERTIES.getOrDefault(SDK_VERSION, "UnknownVersion");
+        return new UserAgentPolicy(getDefaultHttpLogOptions().getApplicationId(), clientName, clientVersion,
+            configuration);
     }
 
     /*

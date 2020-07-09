@@ -2,20 +2,25 @@
 // Licensed under the MIT License.
 package com.azure.core.test;
 
-import com.azure.core.util.Configuration;
+import com.azure.core.http.HttpClient;
+import com.azure.core.implementation.http.HttpClientProviders;
 import com.azure.core.test.utils.TestResourceNamer;
+import com.azure.core.util.Configuration;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
+import java.util.Arrays;
+import java.util.stream.Stream;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.BeforeAll;
-
-import java.io.IOException;
-import java.lang.reflect.Method;
-import java.util.Locale;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.TestInfo;
 import org.junit.jupiter.api.extension.BeforeEachCallback;
 import org.junit.jupiter.api.extension.ExtensionContext;
+
+import java.io.UncheckedIOException;
+import java.lang.reflect.Method;
+import java.util.Locale;
 
 /**
  * Base class for running live and playback tests using {@link InterceptorManager}.
@@ -23,12 +28,19 @@ import org.junit.jupiter.api.extension.ExtensionContext;
 public abstract class TestBase implements BeforeEachCallback {
     // Environment variable name used to determine the TestMode.
     private static final String AZURE_TEST_MODE = "AZURE_TEST_MODE";
+    private static final String AZURE_TEST_HTTP_CLIENTS = "AZURE_TEST_HTTP_CLIENTS";
+    public static final String AZURE_TEST_HTTP_CLIENTS_VALUE_ALL = "ALL";
+    public static final String AZURE_TEST_HTTP_CLIENTS_VALUE_NETTY = "NettyAsyncHttpClient";
+    public static final String AZURE_TEST_SERVICE_VERSIONS_VALUE_ALL = "ALL";
+
     private static TestMode testMode;
 
     private final ClientLogger logger = new ClientLogger(TestBase.class);
 
     protected InterceptorManager interceptorManager;
     protected TestResourceNamer testResourceNamer;
+    protected TestContextManager testContextManager;
+
     private ExtensionContext extensionContext;
 
     /**
@@ -53,16 +65,16 @@ public abstract class TestBase implements BeforeEachCallback {
      */
     @BeforeEach
     public void setupTest(TestInfo testInfo) {
-        final String testName = testInfo.getTestMethod().get().getName();
-        logger.info("Test Mode: {}, Name: {}", testMode, testName);
+        this.testContextManager = new TestContextManager(testInfo.getTestMethod().get(), testMode);
+        logger.info("Test Mode: {}, Name: {}", testMode, testContextManager.getTestName());
 
         try {
-            interceptorManager = new InterceptorManager(testName, testMode);
-        } catch (IOException e) {
-            logger.error("Could not create interceptor for {}", testName, e);
+            interceptorManager = new InterceptorManager(testContextManager);
+        } catch (UncheckedIOException e) {
+            logger.error("Could not create interceptor for {}", testContextManager.getTestName(), e);
             Assertions.fail();
         }
-        testResourceNamer = new TestResourceNamer(testName, testMode, interceptorManager.getRecordedData());
+        testResourceNamer = new TestResourceNamer(testContextManager, interceptorManager.getRecordedData());
 
         beforeTest();
     }
@@ -73,8 +85,10 @@ public abstract class TestBase implements BeforeEachCallback {
      */
     @AfterEach
     public void teardownTest(TestInfo testInfo) {
-        afterTest();
-        interceptorManager.close();
+        if (testContextManager.didTestRun()) {
+            afterTest();
+            interceptorManager.close();
+        }
     }
 
     /**
@@ -117,6 +131,50 @@ public abstract class TestBase implements BeforeEachCallback {
     protected void afterTest() {
     }
 
+    /**
+     * Returns a list of {@link HttpClient HttpClients} that should be tested.
+     *
+     * @return A list of {@link HttpClient HttpClients} to be tested.
+     */
+    public static Stream<HttpClient> getHttpClients() {
+        if (testMode == TestMode.PLAYBACK) {
+            // Call to @MethodSource method happens @BeforeEach call, so the interceptorManager is
+            // not yet initialized. So, playbackClient will not be available until later.
+            return Stream.of(new HttpClient[]{null});
+        }
+        return HttpClientProviders.getAllHttpClients().stream().filter(TestBase::shouldClientBeTested);
+    }
+
+    /**
+     * Returns whether the given http clients match the rules of test framework.
+     *
+     * <ul>
+     * <li>Using Netty http client as default if no environment variable is set.</li>
+     * <li>If it's set to ALL, all HttpClients in the classpath will be tested.</li>
+     * <li>Otherwise, the name of the HttpClient class should match env variable.</li>
+     * </ul>
+     *
+     * Environment values currently supported are: "ALL", "netty", "okhttp" which is case insensitive.
+     * Use comma to separate http clients want to test.
+     * e.g. {@code set AZURE_TEST_HTTP_CLIENTS = NettyAsyncHttpClient, OkHttpAsyncHttpClient}
+     *
+     * @param client Http client needs to check
+     * @return Boolean indicates whether filters out the client or not.
+     */
+    public static boolean shouldClientBeTested(HttpClient client) {
+        String configuredHttpClientToTest = Configuration.getGlobalConfiguration().get(AZURE_TEST_HTTP_CLIENTS);
+        if (CoreUtils.isNullOrEmpty(configuredHttpClientToTest)) {
+            return client.getClass().getSimpleName().equals(AZURE_TEST_HTTP_CLIENTS_VALUE_NETTY);
+        }
+        if (configuredHttpClientToTest.equalsIgnoreCase(AZURE_TEST_HTTP_CLIENTS_VALUE_ALL)) {
+            return true;
+        }
+        String[] configuredHttpClientList = configuredHttpClientToTest.split(",");
+        return Arrays.stream(configuredHttpClientList).anyMatch(configuredHttpClient ->
+            client.getClass().getSimpleName().toLowerCase(Locale.ROOT)
+                .contains(configuredHttpClient.trim().toLowerCase(Locale.ROOT)));
+    }
+
     private static TestMode initializeTestMode() {
         final ClientLogger logger = new ClientLogger(TestBase.class);
         final String azureTestMode = Configuration.getGlobalConfiguration().get(AZURE_TEST_MODE);
@@ -132,5 +190,23 @@ public abstract class TestBase implements BeforeEachCallback {
 
         logger.info("Environment variable '{}' has not been set yet. Using 'Playback' mode.", AZURE_TEST_MODE);
         return TestMode.PLAYBACK;
+    }
+
+    /**
+     * Sleeps the test for the given amount of milliseconds if {@link TestMode} isn't {@link TestMode#PLAYBACK}.
+     *
+     * @param millis Number of milliseconds to sleep the test.
+     * @throws IllegalStateException If the sleep is interrupted.
+     */
+    protected void sleepIfRunningAgainstService(long millis) {
+        if (testMode == TestMode.PLAYBACK) {
+            return;
+        }
+
+        try {
+            Thread.sleep(millis);
+        } catch (InterruptedException ex) {
+            throw logger.logExceptionAsWarning(new IllegalStateException(ex));
+        }
     }
 }

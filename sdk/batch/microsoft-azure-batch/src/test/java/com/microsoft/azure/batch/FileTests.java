@@ -23,8 +23,8 @@ public class FileTests extends BatchIntegrationTestBase {
     public static void setup() throws Exception {
         poolId = getStringIdWithUserNamePrefix("-testpool");
         if(isRecordMode()) {
-            createClient(AuthMode.SharedKey);
-            livePool = createIfNotExistPaaSPool(poolId);
+            createClient(AuthMode.AAD);
+            livePool = createIfNotExistIaaSPool(poolId);
             Assert.assertNotNull(livePool);
         }
     }
@@ -54,7 +54,7 @@ public class FileTests extends BatchIntegrationTestBase {
             batchClient.jobOperations().createJob(jobId, poolInfo);
             TaskAddParameter taskToAdd = new TaskAddParameter();
             taskToAdd.withId(taskId)
-                    .withCommandLine("cmd /c echo hello");
+                    .withCommandLine("/bin/bash -c \"echo hello\"");
             batchClient.taskOperations().createTask(jobId, taskToAdd);
 
             if (waitForTasksToComplete(batchClient, jobId, TASK_COMPLETE_TIMEOUT_IN_SECONDS)) {
@@ -71,7 +71,7 @@ public class FileTests extends BatchIntegrationTestBase {
                 ByteArrayOutputStream stream = new ByteArrayOutputStream();
                 batchClient.fileOperations().getFileFromTask(jobId, taskId, "stdout.txt", stream);
                 String fileContent = stream.toString("UTF-8");
-                Assert.assertEquals("hello\r\n", fileContent);
+                Assert.assertEquals("hello\n", fileContent);
                 stream.close();
 
                 String output = batchClient.protocolLayer().files().getFromTaskAsync(jobId, taskId, "stdout.txt").map(new Func1<InputStream, String>() {
@@ -84,12 +84,12 @@ public class FileTests extends BatchIntegrationTestBase {
                         }
                     }
                 }).toBlocking().single();
-                Assert.assertEquals("hello\r\n", output);
+                Assert.assertEquals("hello\n", output);
 
                 //Running this check temporarily in Record mode only, playback mode parses incorrect value from the recording.
                 if(isRecordMode()) {
                     FileProperties properties = batchClient.fileOperations().getFilePropertiesFromTask(jobId, taskId, "stdout.txt");
-                    Assert.assertEquals(7, properties.contentLength());
+                    Assert.assertEquals(6, properties.contentLength());
                 }
             } else {
                 throw new TimeoutException("Task did not complete within the specified timeout");
@@ -119,7 +119,7 @@ public class FileTests extends BatchIntegrationTestBase {
             batchClient.jobOperations().createJob(jobId, poolInfo);
             TaskAddParameter taskToAdd = new TaskAddParameter();
             taskToAdd.withId(taskId)
-                    .withCommandLine("cmd /c echo hello");
+                    .withCommandLine("/bin/bash -c \"echo hello\"");
             batchClient.taskOperations().createTask(jobId, taskToAdd);
 
             if (waitForTasksToComplete(batchClient, jobId, TASK_COMPLETE_TIMEOUT_IN_SECONDS)) {
@@ -139,7 +139,7 @@ public class FileTests extends BatchIntegrationTestBase {
                 ByteArrayOutputStream stream = new ByteArrayOutputStream();
                 batchClient.fileOperations().getFileFromComputeNode(poolId, nodeId, fileName, stream);
                 String fileContent = stream.toString("UTF-8");
-                Assert.assertEquals("hello\r\n", fileContent);
+                Assert.assertEquals("hello\n", fileContent);
                 stream.close();
 
                 String output = batchClient.protocolLayer().files().getFromComputeNodeAsync(poolId, nodeId, fileName).map(new Func1<InputStream, String>() {
@@ -152,12 +152,12 @@ public class FileTests extends BatchIntegrationTestBase {
                         }
                     }
                 }).toBlocking().single();
-                Assert.assertEquals("hello\r\n", output);
+                Assert.assertEquals("hello\n", output);
 
                 //Running this check temporarily in Record mode only, playback mode parses incorrect value from the recording.
                 if(isRecordMode()) {
                     FileProperties properties = batchClient.fileOperations().getFilePropertiesFromComputeNode(poolId, nodeId, fileName);
-                    Assert.assertEquals(7, properties.contentLength());
+                    Assert.assertEquals(6, properties.contentLength());
                 }
             } else {
                 throw new TimeoutException("Task did not complete within the specified timeout");

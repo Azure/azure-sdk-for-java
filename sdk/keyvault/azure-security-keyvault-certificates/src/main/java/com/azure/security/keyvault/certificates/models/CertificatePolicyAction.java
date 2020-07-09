@@ -3,51 +3,41 @@
 
 package com.azure.security.keyvault.certificates.models;
 
+import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
+
+import java.util.Collection;
 
 /**
- * Defines action values for type of {@link LifeTimeAction} in {@link CertificatePolicy}.
+ * Defines action values for type of {@link LifetimeAction} in {@link CertificatePolicy}.
  */
-public enum CertificatePolicyAction {
-
-    /** Enum value EmailContacts. */
-    EMAIL_CONTACTS("EmailContacts"),
-
-    /** Enum value AutoRenew. */
-    AUTO_RENEW("AutoRenew");
-
-    /** The actual serialized value for a LifetimeActionType instance. */
-    private String value;
-
-    CertificatePolicyAction(String value) {
-        this.value = value;
-    }
+public final class CertificatePolicyAction extends ExpandableStringEnum<CertificatePolicyAction> {
 
     /**
-     * Parses a serialized value to a LifetimeActionType instance.
+     * Static value EmailContacts for CertificatePolicyAction.
+     */
+    public static final CertificatePolicyAction EMAIL_CONTACTS = fromString("EmailContacts");
+
+    /**
+     * Static valueAutoRenew for CertificatePolicyAction.
+     */
+    public static final CertificatePolicyAction AUTO_RENEW = fromString("AutoRenew");
+
+    /**
+     * Creates or finds a CertificatePolicyAction from its string representation.
      *
-     * @param value the serialized value to parse.
-     * @return the parsed LifetimeActionType object, or null if unable to parse.
+     * @param name a name to look for.
+     * @return the corresponding CertificatePolicyAction.
      */
     @JsonCreator
-    public static CertificatePolicyAction fromString(String value) {
-        CertificatePolicyAction[] items = CertificatePolicyAction.values();
-        for (CertificatePolicyAction item : items) {
-            if (item.toString().equalsIgnoreCase(value)) {
-                return item;
-            }
-        }
-        return null;
+    public static CertificatePolicyAction fromString(String name) {
+        return fromString(name, CertificatePolicyAction.class);
     }
 
     /**
-     * Get the string value of the enum.
-     * @return the string value of enum.
+     * @return known CertificatePolicyAction values.
      */
-    @JsonValue
-    @Override
-    public String toString() {
-        return this.value;
+    public static Collection<CertificatePolicyAction> values() {
+        return values(CertificatePolicyAction.class);
     }
 }

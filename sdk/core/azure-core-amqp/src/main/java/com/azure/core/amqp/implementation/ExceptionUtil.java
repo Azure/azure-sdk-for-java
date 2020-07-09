@@ -39,8 +39,8 @@ public final class ExceptionUtil {
 
         final AmqpErrorCondition condition = AmqpErrorCondition.fromString(errorCondition);
         if (condition == null) {
-            throw new IllegalArgumentException(String.format(Locale.ROOT, "'%s' is not a known ErrorCondition.",
-                errorCondition));
+            return new AmqpException(false, String.format("errorCondition[%s]. description[%s]",
+                errorCondition, description), errorContext);
         }
 
         boolean isTransient;
@@ -50,6 +50,7 @@ public final class ExceptionUtil {
             case INTERNAL_ERROR:
             case LINK_DETACH_FORCED:
             case CONNECTION_FORCED:
+            case CONNECTION_FRAMING_ERROR:
             case PROTON_IO:
                 isTransient = true;
                 break;
@@ -86,7 +87,8 @@ public final class ExceptionUtil {
      * @return An exception that maps to that status code.
      */
     public static Exception amqpResponseCodeToException(int statusCode, String statusDescription,
-                                                        AmqpErrorContext errorContext) {
+        AmqpErrorContext errorContext) {
+
         final AmqpResponseCode amqpResponseCode = AmqpResponseCode.fromValue(statusCode);
         final String message = String.format(AMQP_REQUEST_FAILED_ERROR, statusCode, statusDescription);
 

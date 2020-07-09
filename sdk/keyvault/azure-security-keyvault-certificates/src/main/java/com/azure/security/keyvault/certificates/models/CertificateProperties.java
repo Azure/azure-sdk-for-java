@@ -4,6 +4,7 @@
 package com.azure.security.keyvault.certificates.models;
 
 import com.azure.core.util.Base64Url;
+import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -16,6 +17,13 @@ import java.util.Map;
  * Represents base properties of a certificate.
  */
 public class CertificateProperties {
+
+    private final ClientLogger logger = new ClientLogger(CertificateProperties.class);
+
+    /**
+     * URL for the Azure KeyVault service.
+     */
+    private String vaultUrl;
 
     /**
      * Determines whether the object is enabled.
@@ -80,6 +88,12 @@ public class CertificateProperties {
     @JsonProperty(value = "x5t", access = JsonProperty.Access.WRITE_ONLY)
     Base64Url x509Thumbprint;
 
+    /**
+     * The number of days a certificate is retained before being deleted for a soft delete-enabled Key Vault.
+     */
+    @JsonProperty(value = "recoverableDays", access = JsonProperty.Access.WRITE_ONLY)
+    private Integer recoverableDays;
+
     CertificateProperties(String name) {
         this.name = name;
     }
@@ -87,9 +101,9 @@ public class CertificateProperties {
     CertificateProperties() { }
 
     /**
-     * Get the id value.
+     * Get the certificate identifier.
      *
-     * @return the id value
+     * @return the certificate identifier
      */
     public String getId() {
         return this.id;
@@ -102,6 +116,14 @@ public class CertificateProperties {
      */
     public OffsetDateTime getNotBefore() {
         return notBefore;
+    }
+
+    /**
+     * Gets the number of days a key is retained before being deleted for a soft delete-enabled Key Vault.
+     * @return the recoverable days.
+     */
+    public Integer getRecoverableDays() {
+        return recoverableDays;
     }
 
     /**
@@ -139,6 +161,15 @@ public class CertificateProperties {
      */
     public Map<String, String> getTags() {
         return this.tags;
+    }
+
+    /**
+     * Get the URL for the Azure KeyVault service.
+     *
+     * @return the value of the URL for the Azure KeyVault service.
+     */
+    public String getVaultUrl() {
+        return this.vaultUrl;
     }
 
     /**
@@ -219,6 +250,7 @@ public class CertificateProperties {
         this.updatedOn = epochToOffsetDateTime(attributes.get("updated"));
         this.recoveryLevel = (String) attributes.get("recoveryLevel");
         this.tags = (Map<String, String>) lazyValueSelection(attributes.get("tags"), this.tags);
+        this.recoverableDays = (Integer) attributes.get("recoverableDays");
         unpackId((String) attributes.get("id"));
     }
 
@@ -237,10 +269,11 @@ public class CertificateProperties {
             try {
                 URL url = new URL(id);
                 String[] tokens = url.getPath().split("/");
+                this.vaultUrl = (tokens.length >= 2 ? tokens[1] : null);
                 this.name = (tokens.length >= 3 ? tokens[2] : null);
                 this.version = (tokens.length >= 4 ? tokens[3] : null);
             } catch (MalformedURLException e) {
-                e.printStackTrace();
+                throw logger.logExceptionAsError(new IllegalArgumentException("The Azure Key Vault endpoint url is malformed.", e));
             }
         }
     }

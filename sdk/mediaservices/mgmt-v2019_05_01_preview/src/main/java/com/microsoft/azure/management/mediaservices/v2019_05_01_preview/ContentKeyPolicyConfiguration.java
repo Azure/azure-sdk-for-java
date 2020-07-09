@@ -16,7 +16,7 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
  * Base class for Content Key Policy configuration. A derived class must be
  * used to create a configuration.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata\\.type")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata\\.type", defaultImpl = ContentKeyPolicyConfiguration.class)
 @JsonTypeName("ContentKeyPolicyConfiguration")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "#Microsoft.Media.ContentKeyPolicyClearKeyConfiguration", value = ContentKeyPolicyClearKeyConfiguration.class),

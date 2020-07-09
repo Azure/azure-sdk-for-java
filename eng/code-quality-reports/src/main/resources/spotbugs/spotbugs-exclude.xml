@@ -46,6 +46,38 @@
     <Bug pattern="UUF_UNUSED_PUBLIC_OR_PROTECTED_FIELD"/>
   </Match>
 
+  <!-- Defines native api, doesn't follow java style.-->
+  <Match>
+      <Class name="~com\.azure\.identity\.implementation\.WindowsCredentialApi(.+)"/>
+      <Bug pattern="UUF_UNUSED_PUBLIC_OR_PROTECTED_FIELD,
+      UWF_UNWRITTEN_PUBLIC_OR_PROTECTED_FIELD,
+      NM_FIELD_NAMING_CONVENTION"/>
+  </Match>
+
+  <!-- Exception needs to be caught here.-->
+  <Match>
+      <Class name="~com\.azure\.identity\.implementation\.VisualStudioCacheAccessor"/>
+      <Bug pattern="REC_CATCH_EXCEPTION"/>
+  </Match>
+
+  <!-- Exception needs to be caught here.-->
+  <Match>
+      <Class name="~com\.azure\.identity\.IntelliJCredential"/>
+      <Bug pattern="REC_CATCH_EXCEPTION"/>
+  </Match>
+
+  <!-- Accesses native api, doesn't follow java style.-->
+  <Match>
+      <Class name="~com\.azure\.identity\.implementation\.LinuxKeyRingAccessor(.+)"/>
+      <Bug pattern="UWF_UNWRITTEN_FIELD"/>
+  </Match>
+
+  <!-- Accesses native api, doesn't follow java style.-->
+  <Match>
+      <Class name="com.azure.identity.implementation.WindowsCredentialAccessor"/>
+      <Bug pattern="NP_UNWRITTEN_PUBLIC_OR_PROTECTED_FIELD"/>
+  </Match>
+
   <!-- Public field already exists in the public API surface. -->
   <Match>
     <Class name="com.microsoft.azure.batch.auth.BatchUserTokenCredentials"/>
@@ -396,6 +428,8 @@
       <Class name="com.azure.storage.blob.BlobProperties"/>
       <Class name="com.azure.storage.blob.BlobContainerProperties"/>
       <Class name="com.azure.storage.file.share.implementation.models.DirectoryCreateHeaders"/>
+      <Class name="com.azure.storage.blob.implementation.models.BlobDownloadHeaders"/>
+      <Class name="com.azure.storage.blob.models.BlobQueryHeaders"/>
     </Or>
     <Bug pattern="NM_CONFUSING"/>
   </Match>
@@ -461,6 +495,16 @@
     <Bug pattern="NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE"/>
   </Match>
 
+  <!-- Incorrect flagging, error will be thrown if value is null -->
+  <Match>
+      <Class name="com.azure.endtoend.identity.WebJobsIdentityTest"/>
+      <Or>
+          <Method name="testMSIEndpointWithSystemAssigned"/>
+          <Method name="testMSIEndpointWithUserAssigned"/>
+      </Or>
+      <Bug pattern="NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE"/>
+  </Match>
+
   <!-- Incorrect flagging, if the response is null a StorageException would have been thrown -->
   <Match>
     <Or>
@@ -492,6 +536,7 @@
       <Class name="com.azure.security.keyvault.secrets.models.KeyVaultSecret"/>
       <Class name="com.azure.security.keyvault.secrets.models.SecretProperties"/>
       <Class name="com.azure.security.keyvault.keys.models.DeletedKey"/>
+      <Class name="com.azure.security.keyvault.keys.cryptography.SecretKey"/>
       <Class name="com.azure.security.keyvault.keys.models.KeyVaultKey"/>
       <Class name="com.azure.security.keyvault.keys.models.KeyProperties"/>
       <Class name="com.azure.security.keyvault.certificates.models.DeletedCertificate"/>
@@ -500,7 +545,7 @@
       <Class name="com.azure.security.keyvault.certificates.models.IssuerProperties"/>
       <Class name="com.azure.security.keyvault.certificates.models.CertificateIssuer"/>
       <Class name="com.azure.security.keyvault.certificates.models.CertificatePolicy"/>
-      <Class name="com.azure.security.keyvault.certificates.models.LifeTimeAction"/>
+      <Class name="com.azure.security.keyvault.certificates.models.LifetimeAction"/>
       <Class name="com.azure.security.keyvault.certificates.models.CertificateOperation"/>
     </Or>
     <Bug pattern="UPM_UNCALLED_PRIVATE_METHOD"/>
@@ -531,6 +576,10 @@
         <Class name="com.azure.security.keyvault.keys.models.ByteExtensions"/>
         <Method name="clone"/>
       </And>
+      <And>
+          <Class name="com.azure.security.keyvault.keys.models.KeyProperties"/>
+          <Method name="decode"/>
+      </And>
     </Or>
     <Bug pattern="PZLA_PREFER_ZERO_LENGTH_ARRAYS"/>
   </Match>
@@ -558,6 +607,7 @@
   <Match>
     <Or>
       <Class name="~.*JavaDoc(CodeSnippets|CodeSamples|Samples)"/>
+      <Class name="~.*ReadmeSamples"/>
       <Class name="com.azure.storage.blob.batch.ReadmeCodeSamples"/>
       <Class name="com.azure.storage.file.datalake.GetSetAccessControlExample"/>
     </Or>
@@ -581,6 +631,14 @@
     <Bug pattern="UPM_UNCALLED_PRIVATE_METHOD"/>
   </Match>
 
+  <!-- This is a false positive. Exception is thrown and caught to map to a different type of exception-->
+  <Match>
+    <Or>
+      <Class name="com.azure.messaging.eventhubs.PartitionPumpManager"/>
+    </Or>
+    <Bug pattern="REC_CATCH_EXCEPTION"/>
+  </Match>
+
   <!-- Names defined in the service. -->
   <Match>
     <Class name="com.azure.data.appconfiguration.models.ConfigurationSetting"/>
@@ -599,9 +657,13 @@
     <Bug pattern="UWF_FIELD_NOT_INITIALIZED_IN_CONSTRUCTOR"/>
   </Match>
 
-  <!-- Retry thus does not throw -->
+  <!-- Retry thus does not throw.
+    SharedTokenCacheCredential needs to catch any catch exception that gets thrown.-->
   <Match>
-    <Class name="com.azure.identity.implementation.msalextensions.CacheLock"/>
+    <Or>
+      <Class name="com.azure.identity.SharedTokenCacheCredential"/>
+      <Class name="com.azure.identity.implementation.msalextensions.CacheLock"/>
+    </Or>
     <Bug pattern="REC_CATCH_EXCEPTION"/>
   </Match>
   <!-- Return value not needed -->
@@ -651,7 +713,7 @@
     <Bug pattern="SIC_INNER_SHOULD_BE_STATIC_ANON"/>
   </Match>
 
-  <!-- Initial implementation of JacksonDeserializer is using an inline class in registerCustomDeserializer-->
+  <!-- Initial implementation of JacksonDeserializer is using an inline class-->
   <Match>
     <Class name="com.azure.core.implementation.serializer.jsonwrapper.jacksonwrapper.JacksonDeserializer"/>
     <Bug pattern="SIC_INNER_SHOULD_BE_STATIC_ANON"/>
@@ -700,6 +762,1278 @@
     <Class name="com.azure.core.util.polling.PollingContext"/>
     <Method name="clone"/>
     <Bug pattern="CN_IMPLEMENTS_CLONE_BUT_NOT_CLONEABLE"/>
+  </Match>
+
+  <Match>
+    <Or>
+      <Class name="com.azure.core.util.paging.PagedFluxCoreJavaDocCodeSnippets"/>
+    </Or>
+    <Bug pattern="NP_LOAD_OF_KNOWN_NULL_VALUE,
+    SIC_INNER_SHOULD_BE_STATIC_ANON,
+    UMAC_UNCALLABLE_METHOD_OF_ANONYMOUS_CLASS,
+    NP_BOOLEAN_RETURN_NULL"/>
+  </Match>
+
+  <!-- Disable some spotbugs rules on perf-tests -->
+  <Match>
+    <Or>
+      <Package name="com.azure.storage.blob.perf"/>
+      <Package name="com.azure.storage.blob.perf.core"/>
+    </Or>
+    <Bug pattern="BC_UNCONFIRMED_CAST, DM_EXIT, RCN_REDUNDANT_NULLCHECK_WOULD_HAVE_BEEN_A_NPE"/>
+  </Match>
+
+  <!-- StringUtils.strip can return NULL so the NULL check is required -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.PathsHelper"/>
+    <Method name="parsePathSegments"/>
+    <Bug pattern="RCN_REDUNDANT_NULLCHECK_OF_NONNULL_VALUE"/>
+  </Match>
+
+  <!-- Suppress false positive, there is no null in the flagged code -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.TestConfigurations"/>
+    <Method name="loadFromPathIfExists"/>
+    <Bug pattern="RCN_REDUNDANT_NULLCHECK_OF_NONNULL_VALUE,REC_CATCH_EXCEPTION"/>
+  </Match>
+
+  <!-- ClassLoader::getResourceAsStream can return null, ref: https://docs.oracle.com/javase/8/docs/technotes/guides/lang/resources.html -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.directconnectivity.RntbdTransportClient$Options$Builder"/>
+    <Bug pattern="RCN_REDUNDANT_NULLCHECK_OF_NONNULL_VALUE"/>
+  </Match>
+
+  <!-- Tracking work-item: https://github.com/Azure/azure-sdk-for-java/issues/9037 -->
+  <Match>
+    <Or>
+      <Class name="com.azure.cosmos.ClientSideRequestStatistics"/>
+      <Class name="com.azure.cosmos.models.CosmosItemResponse"/>
+    </Or>
+    <Bug pattern="IS2_INCONSISTENT_SYNC"/>
+  </Match>
+
+  <!-- The following two suggestion for _static_ inner class is suppressed,
+       first method is 1 line and second one is ~4 lines, doesn't worth a dedicated class.
+    -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.routing.LocationCache"/>
+    <Method name="markEndpointUnavailable"/>
+    <Bug pattern="SIC_INNER_SHOULD_BE_STATIC_ANON"/>
+  </Match>
+
+  <Match>
+    <Class name="com.azure.cosmos.implementation.DatabaseAccount"/>
+    <Method name="getQueryEngineConfiguration"/>
+    <Bug pattern="SIC_INNER_SHOULD_BE_STATIC_ANON"/>
+  </Match>
+
+  <!-- This code smells, created an issue: https://github.com/Azure/azure-sdk-for-java/issues/9039 -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.directconnectivity.GoneAndRetryWithRetryPolicy" />
+    <Method name="shouldRetry"/>
+    <Bug pattern="RCN_REDUNDANT_NULLCHECK_WOULD_HAVE_BEEN_A_NPE"/>
+  </Match>
+
+  <!-- DB is retrieved synchronously (Flux::block()) after creating it, so no chance of null  -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.DatabaseForTest" />
+    <Method name="create"/>
+    <Bug pattern="NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE"/>
+  </Match>
+
+  <!-- Issue: https://github.com/Azure/azure-sdk-for-java/issues/9041 -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.RxGatewayStoreModel" />
+    <Bug pattern="NP_NULL_ON_SOME_PATH"/>
+  </Match>
+
+  <!-- Issue: https://github.com/Azure/azure-sdk-for-java/issues/9044 -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.RxGatewayStoreModel"/>
+    <Method name="validateOrThrow"/>
+    <Bug pattern="DM_DEFAULT_ENCODING"/>
+  </Match>
+
+  <!-- The in-memory map is not serializable, given value is of type IServerIdentity which is not serializable -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.routing.InMemoryCollectionRoutingMap$MinPartitionKeyPairComparator"/>
+    <Bug pattern="SE_COMPARATOR_SHOULD_BE_SERIALIZABLE"/>
+  </Match>
+
+  <!-- The following 3 suppression are valid, the types uses default value if parse fails  -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.Configs"/>
+    <Method name="getIntValue"/>
+    <Bug pattern="DM_BOXED_PRIMITIVE_FOR_PARSING"/>
+  </Match>
+
+  <Match>
+    <Class name="com.azure.cosmos.implementation.Integers"/>
+    <Method name="tryParse"/>
+    <Bug pattern="DM_BOXED_PRIMITIVE_FOR_PARSING"/>
+  </Match>
+
+  <Match>
+    <Class name="com.azure.cosmos.implementation.Longs"/>
+    <Method name="tryParse"/>
+    <Bug pattern="DM_BOXED_PRIMITIVE_FOR_PARSING"/>
+  </Match>
+
+  <!-- Issue: https://github.com/Azure/azure-sdk-for-java/issues/9048 -->
+  <Match>
+    <Class name="com.azure.cosmos.models.ModelBridgeInternal"/>
+    <Method name="toDatabaseAccount"/>
+    <Bug pattern="DM_BOXED_PRIMITIVE_FOR_PARSING"/>
+  </Match>
+
+
+  <!-- Extra null check is for assertion -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.directconnectivity.AddressResolver"/>
+    <Method name="~(.*)\$(resolveAddressesAndIdentityAsync|null)\$(.*)"/>
+    <Bug pattern="RCN_REDUNDANT_NULLCHECK_OF_NULL_VALUE"/>
+  </Match>
+
+  <!-- Issue: https://github.com/Azure/azure-sdk-for-java/issues/9050 -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdClientChannelPool"/>
+    <Bug pattern="RCN_REDUNDANT_NULLCHECK_OF_NULL_VALUE"/>
+  </Match>
+
+  <!-- Code is doing DCL, this needs to be evaluated
+   https://www.cs.umd.edu/~pugh/java/memoryModel/DoubleCheckedLocking.html
+   Issue: https://github.com/Azure/azure-sdk-for-java/issues/9054
+   -->
+  <Match>
+    <Class name="com.azure.cosmos.models.CosmosItemResponse"/>
+    <Method name="getItem"/>
+    <Bug pattern="RCN_REDUNDANT_NULLCHECK_OF_NULL_VALUE"/>
+  </Match>
+
+  <!-- Fallthrough is by design -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.routing.MurmurHash3_32"/>
+    <Method name="hash"/>
+    <Bug pattern="SF_SWITCH_FALLTHROUGH"/>
+  </Match>
+
+  <!-- Suppress URF_UNREAD_FIELD, the fields are read but during serialization -->
+  <Match>
+    <Class name="com.azure.cosmos.ClientSideRequestStatistics$AddressResolutionStatistics"/>
+    <Field name="endTime"/>
+    <Bug pattern="URF_UNREAD_FIELD"/>
+  </Match>
+
+  <!-- Suppress URF_UNREAD_FIELD, the fields are read but during serialization -->
+  <Match>
+    <Class name="com.azure.cosmos.ClientSideRequestStatistics$AddressResolutionStatistics"/>
+    <Field name="startTime"/>
+    <Bug pattern="URF_UNREAD_FIELD"/>
+  </Match>
+
+  <!-- Suppress URF_UNREAD_FIELD, the fields are read but during serialization -->
+  <Match>
+    <Class name="com.azure.cosmos.ClientSideRequestStatistics$AddressResolutionStatistics"/>
+    <Field name="targetEndpoint"/>
+    <Bug pattern="URF_UNREAD_FIELD"/>
+  </Match>
+
+  <!-- Suppress URF_UNREAD_FIELD, the fields are read but during serialization -->
+  <Match>
+    <Class name="com.azure.cosmos.ClientSideRequestStatistics$StoreResponseStatistics"/>
+    <Field name="requestResourceType"/>
+    <Bug pattern="URF_UNREAD_FIELD"/>
+  </Match>
+
+  <!-- Suppress URF_UNREAD_FIELD, the field is read but during serialization -->
+  <Match>
+    <Class name="com.azure.cosmos.ClientSideRequestStatistics$StoreResponseStatistics"/>
+    <Field name="requestResponseTime"/>
+    <Bug pattern="URF_UNREAD_FIELD"/>
+  </Match>
+
+  <!-- Suppress URF_UNREAD_FIELD, the field is read but during serialization -->
+  <Match>
+    <Class name="com.azure.cosmos.ClientSideRequestStatistics$StoreResponseStatistics"/>
+    <Field name="storeResult"/>
+    <Bug pattern="URF_UNREAD_FIELD"/>
+  </Match>
+
+  <!-- Suppress URF_UNREAD_FIELD, the field is read but during serialization -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.RequestTimeline$Event"/>
+    <Field name="durationInMicroSec"/>
+    <Bug pattern="URF_UNREAD_FIELD"/>
+  </Match>
+
+  <!-- The entire class is unused. Bug: https://github.com/Azure/azure-sdk-for-java/issues/9075 -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.changefeed.implementation.RemainingWorkEstimatorImpl"/>
+    <Bug pattern="URF_UNREAD_FIELD"/>
+  </Match>
+
+  <!-- serviceConfigReader type is not used, but comment seems this is be used in future updates -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.directconnectivity.GlobalAddressResolver"/>
+    <Field name="serviceConfigReader"/>
+    <Bug pattern="URF_UNREAD_FIELD"/>
+  </Match>
+
+  <!-- gatewayAddressCache also seems associated with serviceConfigReader suppressed previously -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.directconnectivity.GlobalAddressResolver"/>
+    <Field name="gatewayAddressCache"/>
+    <Bug pattern="URF_UNREAD_FIELD"/>
+  </Match>
+
+  <!-- addressResolver also seems associated with serviceConfigReader suppressed previously -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.directconnectivity.GlobalAddressResolver"/>
+    <Field name="addressResolver"/>
+    <Bug pattern="URF_UNREAD_FIELD"/>
+  </Match>
+
+  <!-- Bug: https://github.com/Azure/azure-sdk-for-java/issues/9076 -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.directconnectivity.StoreClientFactory"/>
+    <Field name="maxConcurrentConnectionOpenRequests"/>
+    <Bug pattern="URF_UNREAD_FIELD"/>
+  </Match>
+
+  <!-- Bug: https://github.com/Azure/azure-sdk-for-java/issues/9076 -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.directconnectivity.StoreClientFactory"/>
+    <Field name="requestTimeout"/>
+    <Bug pattern="URF_UNREAD_FIELD"/>
+  </Match>
+
+  <!-- Bug: https://github.com/Azure/azure-sdk-for-java/issues/9076 -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.directconnectivity.StoreClientFactory"/>
+    <Field name="enableTransportClientSharing"/>
+    <Bug pattern="URF_UNREAD_FIELD"/>
+  </Match>
+
+  <!-- Suppress URF_UNREAD_FIELD, the field is read but during serialization -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdResponseHeaders"/>
+    <Field name="indexTermsGenerated"/>
+    <Bug pattern="URF_UNREAD_FIELD"/>
+  </Match>
+
+  <!-- Suppress URF_UNREAD_FIELD, the field is read but during serialization -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdResponseHeaders"/>
+    <Field name="queriesPerformed"/>
+    <Bug pattern="URF_UNREAD_FIELD"/>
+  </Match>
+
+  <!-- Suppress URF_UNREAD_FIELD, the field is read but during serialization -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdResponseHeaders"/>
+    <Field name="readsPerformed"/>
+    <Bug pattern="URF_UNREAD_FIELD"/>
+  </Match>
+
+  <!-- Suppress URF_UNREAD_FIELD, the field is read but during serialization -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdResponseHeaders"/>
+    <Field name="scriptsExecuted"/>
+    <Bug pattern="URF_UNREAD_FIELD"/>
+  </Match>
+
+  <!-- Suppress URF_UNREAD_FIELD, the field is read but during serialization -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdResponseHeaders"/>
+    <Field name="writesPerformed"/>
+    <Bug pattern="URF_UNREAD_FIELD"/>
+  </Match>
+
+  <!-- This field is set to false as of today, looks like the field it left for future enhancement -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.query.DefaultDocumentQueryExecutionContext"/>
+    <Field name="isContinuationExpected"/>
+    <Bug pattern="URF_UNREAD_FIELD"/>
+  </Match>
+
+  <!-- Bug: https://github.com/Azure/azure-sdk-for-java/issues/9077 -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.query.PipelinedDocumentQueryExecutionContext"/>
+    <Field name="correlatedActivityId"/>
+    <Bug pattern="URF_UNREAD_FIELD"/>
+  </Match>
+
+  <!-- Bug: https://github.com/Azure/azure-sdk-for-java/issues/9078 -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdRequestHeaders"/>
+    <Method name="addResourceIdOrPathHeaders"/>
+    <Bug pattern="SF_SWITCH_NO_DEFAULT"/>
+  </Match>
+
+  <!-- Bug: https://github.com/Azure/azure-sdk-for-java/issues/9078 -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.routing.MurmurHash3_32"/>
+    <Method name="hash"/>
+    <Bug pattern="SF_SWITCH_NO_DEFAULT"/>
+  </Match>
+
+  <!-- Bug: https://github.com/Azure/azure-sdk-for-java/issues/9078 -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.routing.PartitionKeyInternal"/>
+    <Method name="fromObjectArray"/>
+    <Bug pattern="SF_SWITCH_NO_DEFAULT"/>
+  </Match>
+
+  <!-- Bug: https://github.com/Azure/azure-sdk-for-java/issues/9082 -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.changefeed.ServiceItemLease"/>
+    <Field name="ContinuationToken"/>
+    <Bug pattern="NM_FIELD_NAMING_CONVENTION"/>
+  </Match>
+
+  <!-- Bug: https://github.com/Azure/azure-sdk-for-java/issues/9082 -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.changefeed.ServiceItemLease"/>
+    <Field name="LeaseToken"/>
+    <Bug pattern="NM_FIELD_NAMING_CONVENTION"/>
+  </Match>
+
+  <!-- Bug: https://github.com/Azure/azure-sdk-for-java/issues/9082 -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.changefeed.ServiceItemLease"/>
+    <Field name="Owner"/>
+    <Bug pattern="NM_FIELD_NAMING_CONVENTION"/>
+  </Match>
+
+  <!-- Bug: https://github.com/Azure/azure-sdk-for-java/issues/9082 -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.routing.LocationCache$LocationUnavailabilityInfo"/>
+    <Field name="LastUnavailabilityCheckTimeStamp"/>
+    <Bug pattern="NM_FIELD_NAMING_CONVENTION"/>
+  </Match>
+
+  <!-- Bug: https://github.com/Azure/azure-sdk-for-java/issues/9082 -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.routing.LocationCache$LocationUnavailabilityInfo"/>
+    <Field name="UnavailableOperations"/>
+    <Bug pattern="NM_FIELD_NAMING_CONVENTION"/>
+  </Match>
+
+  <!-- Bug: https://github.com/Azure/azure-sdk-for-java/issues/9082 -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.RxDocumentServiceRequest"/>
+    <Field name="UseGatewayMode"/>
+    <Bug pattern="NM_FIELD_NAMING_CONVENTION"/>
+  </Match>
+
+  <!-- The static field sharedGatewayHttpClient is cleared using synchronized ref count mechanism -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.http.SharedGatewayHttpClient"/>
+    <Field name="sharedGatewayHttpClient"/>
+    <Bug pattern="ST_WRITE_TO_STATIC_FROM_INSTANCE_METHOD"/>
+  </Match>
+
+  <!-- Bug: https://github.com/Azure/azure-sdk-for-java/issues/9087 -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.RetryPolicyWithDiagnostics"/>
+    <Field name="retriesCountForDiagnostics"/>
+    <Bug pattern="VO_VOLATILE_INCREMENT"/>
+  </Match>
+
+  <!-- Bug: https://github.com/Azure/azure-sdk-for-java/issues/9087 -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.changefeed.implementation.AutoCheckpointer"/>
+    <Field name="processedDocCount"/>
+    <Bug pattern="VO_VOLATILE_INCREMENT"/>
+  </Match>
+
+  <!-- Bug: https://github.com/Azure/azure-sdk-for-java/issues/9087 -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.query.DefaultDocumentQueryExecutionContext"/>
+    <Field name="retries"/>
+    <Bug pattern="VO_VOLATILE_INCREMENT"/>
+  </Match>
+
+  <!-- Bug: https://github.com/Azure/azure-sdk-for-java/issues/9054 -->
+  <Match>
+    <Class name="com.azure.cosmos.models.CosmosItemResponse"/>
+    <Field name="item"/>
+    <Bug pattern="DC_DOUBLECHECK"/>
+  </Match>
+
+  <!-- Bug: https://github.com/Azure/azure-sdk-for-java/issues/9088 -->
+  <Match>
+    <Class name="com.azure.cosmos.CosmosException"/>
+    <Field name="cosmosError"/>
+    <Bug pattern="SE_BAD_FIELD"/>
+  </Match>
+
+  <!-- Bug: https://github.com/Azure/azure-sdk-for-java/issues/9088 -->
+  <Match>
+    <Class name="com.azure.cosmos.CosmosException"/>
+    <Field name="cosmosDiagnostics"/>
+    <Bug pattern="SE_BAD_FIELD"/>
+  </Match>
+
+  <!-- Bug: https://github.com/Azure/azure-sdk-for-java/issues/9088 -->
+  <Match>
+    <Class name="com.azure.cosmos.CosmosException"/>
+    <Field name="requestTimeline"/>
+    <Bug pattern="SE_BAD_FIELD"/>
+  </Match>
+
+  <!-- Bug: https://github.com/Azure/azure-sdk-for-java/issues/9088 -->
+  <Match>
+    <Class name="com.azure.cosmos.CosmosException"/>
+    <Field name="requestUri"/>
+    <Bug pattern="SE_BAD_FIELD"/>
+  </Match>
+
+  <!-- Bug: https://github.com/Azure/azure-sdk-for-java/issues/9088 -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdContextException"/>
+    <Field name="cosmosError"/>
+    <Bug pattern="SE_BAD_FIELD"/>
+  </Match>
+
+  <!-- Bug: https://github.com/Azure/azure-sdk-for-java/issues/9088 -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdContextException"/>
+    <Field name="status"/>
+    <Bug pattern="SE_BAD_FIELD"/>
+  </Match>
+
+  <!-- Exception is required to catch, ref: code comment in the OrderbyRowComparer::compare() method  -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.query.orderbyquery.OrderbyRowComparer"/>
+    <Method name="compare"/>
+    <Bug pattern="REC_CATCH_EXCEPTION"/>
+  </Match>
+
+  <!-- Exception is required to handle null location names, malformed endpoint, ref: code comment  -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.routing.LocationCache"/>
+    <Method name="getEndpointByLocation"/>
+    <Bug pattern="REC_CATCH_EXCEPTION"/>
+  </Match>
+
+  <!-- Code has a TODO to handle Exception case  -->
+  <Match>
+    <Class name="~com\.azure\.cosmos\.implementation\.directconnectivity\.StoreReader(.*)"/>
+    <Method name="~(.*)\$(readFromReplicas|null)\$(.*)"/>
+    <Bug pattern="REC_CATCH_EXCEPTION"/>
+  </Match>
+
+  <!-- Exception is required to handle when parsing system information  -->
+  <Match>
+    <Class name="com.azure.cosmos.ClientSideRequestStatistics$ClientSideRequestStatisticsSerializer"/>
+    <Method name="serialize"/>
+    <Bug pattern="REC_CATCH_EXCEPTION"/>
+  </Match>
+
+  <!-- Exception is required to handle and fallback to default pair  -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.ResourceId"/>
+    <Method name="tryParse"/>
+    <Bug pattern="REC_CATCH_EXCEPTION"/>
+  </Match>
+
+  <!-- Bug: https://github.com/Azure/azure-sdk-for-java/issues/9089 -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.PathsHelper"/>
+    <Method name="getResourcePathArray"/>
+    <Bug pattern="PZLA_PREFER_ZERO_LENGTH_ARRAYS"/>
+  </Match>
+
+  <!-- Bug: https://github.com/Azure/azure-sdk-for-java/issues/9089 -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.RxDocumentServiceRequest"/>
+    <Method name="toByteArray"/>
+    <Bug pattern="PZLA_PREFER_ZERO_LENGTH_ARRAYS"/>
+  </Match>
+
+  <!-- Bug: https://github.com/Azure/azure-sdk-for-java/issues/9089 -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.Utils"/>
+    <Method name="getUTF8BytesOrNull"/>
+    <Bug pattern="PZLA_PREFER_ZERO_LENGTH_ARRAYS"/>
+  </Match>
+
+  <!-- Bug: https://github.com/Azure/azure-sdk-for-java/issues/9089 -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdResponse"/>
+    <Method name="toByteArray"/>
+    <Bug pattern="PZLA_PREFER_ZERO_LENGTH_ARRAYS"/>
+  </Match>
+
+  <!-- Bug: https://github.com/Azure/azure-sdk-for-java/issues/9090 -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.directconnectivity.ServiceConfig"/>
+    <Field name="systemReplicationPolicy"/>
+    <Bug pattern="URF_UNREAD_PUBLIC_OR_PROTECTED_FIELD"/>
+  </Match>
+
+  <!-- Bug: https://github.com/Azure/azure-sdk-for-java/issues/9090 -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.directconnectivity.ServiceConfig"/>
+    <Field name="userReplicationPolicy"/>
+    <Bug pattern="URF_UNREAD_PUBLIC_OR_PROTECTED_FIELD"/>
+  </Match>
+
+  <!-- Bug: https://github.com/Azure/azure-sdk-for-java/issues/9090 -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.query.ParallelDocumentQueryExecutionContextBase"/>
+    <Field name="pageSize"/>
+    <Bug pattern="URF_UNREAD_PUBLIC_OR_PROTECTED_FIELD"/>
+  </Match>
+
+
+  <!-- Bug: https://github.com/Azure/azure-sdk-for-java/issues/9090 -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.query.ParallelDocumentQueryExecutionContextBase"/>
+    <Field name="partitionKeyRanges"/>
+    <Bug pattern="URF_UNREAD_PUBLIC_OR_PROTECTED_FIELD"/>
+  </Match>
+
+  <!-- Bug: https://github.com/Azure/azure-sdk-for-java/issues/9090 -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.QueryMetrics"/>
+    <Field name="ZERO"/>
+    <Bug pattern="URF_UNREAD_PUBLIC_OR_PROTECTED_FIELD"/>
+  </Match>
+
+  <!-- Bug: https://github.com/Azure/azure-sdk-for-java/issues/9091 -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.query.orderbyquery.OrderbyRowComparer"/>
+    <Method name="compare"/>
+    <Bug pattern="DC_PARTIALLY_CONSTRUCTED"/>
+  </Match>
+
+  <!--  ChannelHandlerContext::fireUserEventTriggered is fluent method and return ref can be ignored -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdContextDecoder"/>
+    <Method name="decode"/>
+    <Bug pattern="RV_RETURN_VALUE_IGNORED_NO_SIDE_EFFECT"/>
+  </Match>
+
+  <!--  ChannelHandlerContext::channelRead is fluent method and return ref can be ignored -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdContextRequestDecoder"/>
+    <Method name="channelRead"/>
+    <Bug pattern="RV_RETURN_VALUE_IGNORED_NO_SIDE_EFFECT"/>
+  </Match>
+
+  <!--  ChannelHandlerContext::fireChannelActive is fluent method and return ref can be ignored -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdRequestManager"/>
+    <Method name="channelActive"/>
+    <Bug pattern="RV_RETURN_VALUE_IGNORED_NO_SIDE_EFFECT"/>
+  </Match>
+
+  <!--  ChannelHandlerContext::fireChannelInactive is fluent method and return ref can be ignored -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdRequestManager"/>
+    <Method name="channelInactive"/>
+    <Bug pattern="RV_RETURN_VALUE_IGNORED_NO_SIDE_EFFECT"/>
+  </Match>
+
+  <Match>
+    <Class name="com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdRequestManager"/>
+    <Method name="channelReadComplete"/>
+    <Bug pattern="RV_RETURN_VALUE_IGNORED_NO_SIDE_EFFECT"/>
+  </Match>
+
+  <!--  ChannelHandlerContext::fireChannelRegistered is fluent method and return ref can be ignored -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdRequestManager"/>
+    <Method name="channelRegistered"/>
+    <Bug pattern="RV_RETURN_VALUE_IGNORED_NO_SIDE_EFFECT"/>
+  </Match>
+
+  <!--  ChannelHandlerContext::fireChannelUnregistered is fluent method and return ref can be ignored -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdRequestManager"/>
+    <Method name="channelUnregistered"/>
+    <Bug pattern="RV_RETURN_VALUE_IGNORED_NO_SIDE_EFFECT"/>
+  </Match>
+
+  <!--  ChannelHandlerContext::fireChannelWritabilityChanged is fluent method and return ref can be ignored -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdRequestManager"/>
+    <Method name="channelWritabilityChanged"/>
+    <Bug pattern="RV_RETURN_VALUE_IGNORED_NO_SIDE_EFFECT"/>
+  </Match>
+
+  <!--  ChannelHandlerContext::flush is fluent method and return ref can be ignored -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdRequestManager"/>
+    <Method name="flush"/>
+    <Bug pattern="RV_RETURN_VALUE_IGNORED_NO_SIDE_EFFECT"/>
+  </Match>
+
+  <!--  ChannelHandlerContext::read is fluent method and return ref can be ignored -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdRequestManager"/>
+    <Method name="read"/>
+    <Bug pattern="RV_RETURN_VALUE_IGNORED_NO_SIDE_EFFECT"/>
+  </Match>
+
+  <!--  ChannelHandlerContext::flush is fluent method and return ref can be ignored -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdRequestManager"/>
+    <Method name="removeContextNegotiatorAndFlushPendingWrites"/>
+    <Bug pattern="RV_RETURN_VALUE_IGNORED_NO_SIDE_EFFECT"/>
+  </Match>
+
+  <!--  ChannelHandlerContext::fireUserEventTriggered is fluent method and return ref can be ignored -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdRequestManager"/>
+    <Method name="userEventTriggered"/>
+    <Bug pattern="RV_RETURN_VALUE_IGNORED_NO_SIDE_EFFECT"/>
+  </Match>
+
+  <!--  ChannelHandlerContext::fireChannelRead is fluent method and return ref can be ignored -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdRequestDecoder"/>
+    <Method name="channelRead"/>
+    <Bug pattern="RV_RETURN_VALUE_IGNORED_NO_SIDE_EFFECT"/>
+  </Match>
+
+  <!-- CompletableFuture.getNow(null) is valid (null param), suppressing false positive
+        https://github.com/spotbugs/spotbugs/issues/1001 -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdRequestManager"/>
+    <Method name="hasRequestedRntbdContext"/>
+    <Bug pattern="NP_NONNULL_PARAM_VIOLATION"/>
+  </Match>
+
+  <!-- CompletableFuture.getNow(null) is valid (null param), suppressing false positive
+      https://github.com/spotbugs/spotbugs/issues/1001 -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdRequestManager"/>
+    <Method name="hasRntbdContext"/>
+    <Bug pattern="NP_NONNULL_PARAM_VIOLATION"/>
+  </Match>
+
+  <!-- CompletableFuture.getNow(null) is valid (null param), suppressing false positive
+      https://github.com/spotbugs/spotbugs/issues/1001 -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdRequestManager"/>
+    <Method name="messageReceived"/>
+    <Bug pattern="NP_NONNULL_PARAM_VIOLATION"/>
+  </Match>
+
+  <!-- CompletableFuture.getNow(null) is valid (null param), suppressing false positive
+      https://github.com/spotbugs/spotbugs/issues/1001 -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdRequestManager"/>
+    <Method name="rntbdContext"/>
+    <Bug pattern="NP_NONNULL_PARAM_VIOLATION"/>
+  </Match>
+
+  <!-- Bug: https://github.com/Azure/azure-sdk-for-java/issues/9092 -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.query.OrderByUtils$PageToItemTransformer"/>
+    <Method name="~(.*)\$(apply|null)\$(.*)"/>
+    <Bug pattern="RV_RETURN_VALUE_IGNORED_INFERRED"/>
+  </Match>
+
+  <!-- Bug: https://github.com/Azure/azure-sdk-for-java/issues/9092 -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.query.AggregateDocumentQueryExecutionContext"/>
+    <Method name="~(.*)\$(drainAsync|null)\$(.*)"/>
+    <Bug pattern="RV_RETURN_VALUE_IGNORED_INFERRED"/>
+  </Match>
+
+  <!-- Bug: https://github.com/Azure/azure-sdk-for-java/issues/9093 -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.PathsHelper"/>
+    <Method name="tryParsePathSegments"/>
+    <Bug pattern="DLS_DEAD_LOCAL_STORE_OF_NULL"/>
+  </Match>
+
+  <!-- Bug: https://github.com/Azure/azure-sdk-for-java/issues/9093 -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.QueryMetrics"/>
+    <Method name="createFromDelimitedString"/>
+    <Bug pattern="DLS_DEAD_LOCAL_STORE"/>
+  </Match>
+
+  <!-- Bug: https://github.com/Azure/azure-sdk-for-java/issues/9093 -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.ReplicationPolicy"/>
+    <Method name="setMaxReplicaSetSize"/>
+    <Bug pattern="DLS_DEAD_LOCAL_STORE"/>
+  </Match>
+
+  <!-- Bug: https://github.com/Azure/azure-sdk-for-java/issues/9093 -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.ResourceThrottleRetryPolicy"/>
+    <Method name="shouldRetry"/>
+    <Bug pattern="DLS_DEAD_LOCAL_STORE"/>
+  </Match>
+
+  <!-- Bug: https://github.com/Azure/azure-sdk-for-java/issues/9093 -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.ResourceTokenAuthorizationHelper"/>
+    <Method name="getAuthorizationTokenUsingResourceTokens"/>
+    <Bug pattern="DLS_DEAD_LOCAL_STORE"/>
+  </Match>
+
+  <!-- Bug: https://github.com/Azure/azure-sdk-for-java/issues/9093 -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.directconnectivity.GoneAndRetryWithRetryPolicy"/>
+    <Method name="shouldRetry"/>
+    <Bug pattern="DLS_DEAD_LOCAL_STORE"/>
+  </Match>
+
+  <!-- Bug: https://github.com/Azure/azure-sdk-for-java/issues/9093 -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.directconnectivity.StoreReader"/>
+    <Method name="readFromStoreAsync"/>
+    <Bug pattern="DLS_DEAD_LOCAL_STORE"/>
+  </Match>
+
+  <!-- Bug: https://github.com/Azure/azure-sdk-for-java/issues/9093 -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.routing.LocationCache"/>
+    <Method name="anyEndpointsAvailable"/>
+    <Bug pattern="DLS_DEAD_LOCAL_STORE"/>
+  </Match>
+
+  <!-- Bug: https://github.com/Azure/azure-sdk-for-java/issues/9093 -->
+  <Match>
+    <Class name="com.azure.cosmos.models.JsonSerializable"/>
+    <Method name="getObjectByPath"/>
+    <Bug pattern="DLS_DEAD_LOCAL_STORE"/>
+  </Match>
+
+  <!-- Bug: https://github.com/Azure/azure-sdk-for-java/issues/9094 -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.caches.AsyncCache"/>
+    <Method name="getAsync"/>
+    <Bug pattern="NP_LOAD_OF_KNOWN_NULL_VALUE"/>
+  </Match>
+
+  <!-- Bug: https://github.com/Azure/azure-sdk-for-java/issues/9050 -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdClientChannelPool"/>
+    <Bug pattern="NP_LOAD_OF_KNOWN_NULL_VALUE"/>
+  </Match>
+
+  <!-- The static field sharedTransportClient is cleared using synchronized ref count mechanism -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.directconnectivity.SharedTransportClient"/>
+    <Field name="sharedTransportClient"/>
+    <Bug pattern="ST_WRITE_TO_STATIC_FROM_INSTANCE_METHOD"/>
+  </Match>
+
+  <!-- Bug: https://github.com/Azure/azure-sdk-for-java/issues/9095 -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.RxDocumentServiceRequest"/>
+    <Field name="resourceFullName"/>
+    <Bug pattern="UUF_UNUSED_FIELD"/>
+  </Match>
+
+  <!-- Bug: https://github.com/Azure/azure-sdk-for-java/issues/9095 -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.directconnectivity.AddressResolver$RefreshState"/>
+    <Field name="resolutionResult"/>
+    <Bug pattern="UUF_UNUSED_FIELD"/>
+  </Match>
+
+  <!-- Bug: https://github.com/Azure/azure-sdk-for-java/issues/9095 -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.directconnectivity.GlobalAddressResolver"/>
+    <Field name="addressResolver"/>
+    <Bug pattern="UUF_UNUSED_FIELD"/>
+  </Match>
+
+  <!-- Bug: https://github.com/Azure/azure-sdk-for-java/issues/9095 -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.directconnectivity.GlobalAddressResolver"/>
+    <Field name="gatewayAddressCache"/>
+    <Bug pattern="UUF_UNUSED_FIELD"/>
+  </Match>
+
+  <!-- Bug: https://github.com/Azure/azure-sdk-for-java/issues/9096 -->
+  <Match>
+    <Class name="com.azure.cosmos.models.SqlParameterList"/>
+    <Method name="listIterator"/>
+    <Bug pattern="IL_INFINITE_RECURSIVE_LOOP"/>
+  </Match>
+
+  <!-- False positive, IPartitionKeyComponent does not extend from Comparable -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.routing.IPartitionKeyComponent"/>
+    <Bug pattern="CO_ABSTRACT_SELF"/>
+  </Match>
+
+  <!--Bug: https://github.com/Azure/azure-sdk-for-java/issues/9097 -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.directconnectivity.ConsistencyReader"/>
+    <Method name="readAsync"/>
+    <Bug pattern="DB_DUPLICATE_SWITCH_CLAUSES"/>
+  </Match>
+
+  <!--Bug: https://github.com/Azure/azure-sdk-for-java/issues/9097 -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.directconnectivity.HttpTransportClient"/>
+    <Method name="prepareHttpMessage"/>
+    <Bug pattern="DB_DUPLICATE_SWITCH_CLAUSES"/>
+  </Match>
+
+  <!-- Field is not initialized in Ctr but is set using setters -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.changefeed.ProcessorSettings"/>
+    <Field name="maxItemCount"/>
+    <Bug pattern="UWF_FIELD_NOT_INITIALIZED_IN_CONSTRUCTOR"/>
+  </Match>
+
+
+  <!-- Bug: https://github.com/Azure/azure-sdk-for-java/issues/9098 -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.directconnectivity.AddressResolver"/>
+    <Method name="~(.*)\$(resolveAddressesAndIdentityAsync|null)\$(.*)"/>
+    <Bug pattern="ES_COMPARING_STRINGS_WITH_EQ"/>
+  </Match>
+
+  <!-- Bug: https://github.com/Azure/azure-sdk-for-java/issues/9099 -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.RxDocumentServiceRequest"/>
+    <Field name="entityId"/>
+    <Bug pattern="UWF_UNWRITTEN_PUBLIC_OR_PROTECTED_FIELD"/>
+  </Match>
+
+  <!-- Bug: https://github.com/Azure/azure-sdk-for-java/issues/9100 -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.caches.RxPartitionKeyRangeCache"/>
+    <Method name="~(.*)\$(tryGetRangeByPartitionKeyRangeId|null)\$(.*)"/>
+    <Bug pattern="NP_NULL_PARAM_DEREF"/>
+  </Match>
+
+  <!-- Bug: https://github.com/Azure/azure-sdk-for-java/issues/9100 -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.directconnectivity.GatewayAddressCache"/>
+    <Method name="getServerAddressesViaGatewayAsync"/>
+    <Bug pattern="NP_NULL_PARAM_DEREF"/>
+  </Match>
+
+  <!-- Returning a new copy of the object is not necessary -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.RxDocumentServiceRequest"/>
+    <Method name="getContentAsByteArray"/>
+    <Bug pattern="EI_EXPOSE_REP"/>
+  </Match>
+
+  <!-- Returning a new copy of the object is not necessary -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.directconnectivity.StoreResponse"/>
+    <Method name="getResponseBody"/>
+    <Bug pattern="EI_EXPOSE_REP"/>
+  </Match>
+
+  <!-- Returning a new copy of the object is not necessary -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.directconnectivity.StoreResponse"/>
+    <Method name="getResponseHeaderNames"/>
+    <Bug pattern="EI_EXPOSE_REP"/>
+  </Match>
+
+  <!-- Returning a new copy of the object is not necessary -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.directconnectivity.StoreResponse"/>
+    <Method name="getResponseHeaderValues"/>
+    <Bug pattern="EI_EXPOSE_REP"/>
+  </Match>
+
+  <!-- Returning a new copy of the object is not necessary -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.directconnectivity.StoreResponse"/>
+    <Method name="&lt;init&gt;"/>
+    <Bug pattern="EI_EXPOSE_REP2"/>
+  </Match>
+
+  <!-- Returning a new copy of the object is not necessary -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.RxDocumentServiceRequest"/>
+    <Method name="setContentBytes"/>
+    <Bug pattern="EI_EXPOSE_REP2"/>
+  </Match>
+
+  <!-- https://github.com/Azure/azure-sdk-for-java/issues/9102 -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.ItemOperations"/>
+    <Method name="readManyAsync"/>
+    <Bug pattern="UC_USELESS_OBJECT"/>
+  </Match>
+
+  <!-- https://github.com/Azure/azure-sdk-for-java/issues/9102 -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.RxDocumentClientImpl"/>
+    <Method name="~(.*)\$(readMany|null)\$(.*)"/>
+    <Bug pattern="UC_USELESS_OBJECT"/>
+  </Match>
+
+  <!-- Bug: https://github.com/Azure/azure-sdk-for-java/issues/9103 -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.directconnectivity.ServiceConfig"/>
+    <Method name="&lt;init&gt;"/>
+    <Bug pattern="ISC_INSTANTIATE_STATIC_CLASS"/>
+  </Match>
+
+  <!-- Super doesn't need to be cloned since it is Object -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.DocumentServiceRequestContext"/>
+    <Bug pattern="CN_IDIOM_NO_SUPER_CALL"/>
+  </Match>
+
+  <!-- Super doesn't need to be cloned since it is Object -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.RxDocumentServiceRequest"/>
+    <Bug pattern="CN_IDIOM_NO_SUPER_CALL"/>
+  </Match>
+
+  <!-- Exception is ignored by design which indicate that error while evaluating system information -->
+  <Match>
+    <Class name="com.azure.cosmos.ClientSideRequestStatistics$ClientSideRequestStatisticsSerializer"/>
+    <Method name="serialize"/>
+    <Bug pattern="DE_MIGHT_IGNORE"/>
+  </Match>
+
+  <!-- Exception is ignored by design which indicate that non-parsable id -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.ResourceId"/>
+    <Method name="verify"/>
+    <Bug pattern="DE_MIGHT_IGNORE"/>
+  </Match>
+
+  <!-- Bug: https://github.com/Azure/azure-sdk-for-java/issues/9104 -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.routing.StringPartitionKeyComponent"/>
+    <Method name="writeForBinaryEncoding"/>
+    <Bug pattern="INT_BAD_COMPARISON_WITH_SIGNED_BYTE"/>
+  </Match>
+
+  <!-- The Bug was reported because StringPartitionKeyComponent's hashCode() implementation is
+        based only on the hashCode() method of it's member variable 'value'.
+        This is valid since the StringPartitionKeyComponent has only one member variable so
+        delegating to that member variable's hashCode is fine -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.routing.StringPartitionKeyComponent"/>
+    <Bug pattern="HE_HASHCODE_USE_OBJECT_EQUALS"/>
+  </Match>
+
+  <!-- Bug: https://github.com/Azure/azure-sdk-for-java/issues/9046 -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.ResourceId"/>
+    <Method name="equals"/>
+    <Bug pattern="HE_EQUALS_USE_HASHCODE"/>
+  </Match>
+
+  <!-- Bug: https://github.com/Azure/azure-sdk-for-java/issues/9105 -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.ResourceId"/>
+    <Method name="tryParse"/>
+    <Bug pattern="BIT_SIGNED_CHECK"/>
+  </Match>
+
+
+  <!-- False positive, equals method is implemented correctly by using equality of member variables  -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.VectorSessionToken"/>
+    <Method name="equals"/>
+    <Bug pattern="EQ_UNUSUAL"/>
+  </Match>
+
+  <!-- False positive, equals method is implemented correctly by using equality of member variables  -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.routing.PartitionKeyInternal"/>
+    <Method name="equals"/>
+    <Bug pattern="EQ_UNUSUAL"/>
+  </Match>
+
+  <!-- Bug: https://github.com/Azure/azure-sdk-for-java/issues/9106 -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.PathsHelper"/>
+    <Method name="generatePathForNameBased"/>
+    <Bug pattern="BC_VACUOUS_INSTANCEOF,SIO_SUPERFLUOUS_INSTANCEOF"/>
+  </Match>
+
+  <!-- Bug: https://github.com/Azure/azure-sdk-for-java/issues/9107 -->
+  <Match>
+    <Class name="com.azure.cosmos.ConnectionPolicy"/>
+    <Field name="defaultPolicy"/>
+    <Bug pattern="LI_LAZY_INIT_STATIC"/>
+  </Match>
+
+  <!-- Bug: https://github.com/Azure/azure-sdk-for-java/issues/9108 -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.changefeed.CancellationTokenSource"/>
+    <Method name="close"/>
+    <Bug pattern="UC_USELESS_VOID_METHOD"/>
+  </Match>
+
+  <!-- Bug: https://github.com/Azure/azure-sdk-for-java/issues/9109 -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.query.orderbyquery.OrderbyRowComparer"/>
+    <Method name="compare"/>
+    <Bug pattern="RV_NEGATING_RESULT_OF_COMPARETO"/>
+  </Match>
+
+
+  <!-- Bug: https://github.com/Azure/azure-sdk-for-java/issues/9110 -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.directconnectivity.Address"/>
+    <Method name="isPrimary"/>
+    <Bug pattern="NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE"/>
+  </Match>
+
+  <!-- Bug: https://github.com/Azure/azure-sdk-for-java/issues/9110 -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.query.OrderByContinuationToken"/>
+    <Method name="getInclusive"/>
+    <Bug pattern="NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE"/>
+  </Match>
+
+  <!-- Bug: https://github.com/Azure/azure-sdk-for-java/issues/9110 -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.query.QueryInfo"/>
+    <Method name="hasSelectValue"/>
+    <Bug pattern="NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE"/>
+  </Match>
+
+  <!-- Bug: https://github.com/Azure/azure-sdk-for-java/issues/9110 -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.routing.Range"/>
+    <Method name="isMaxInclusive"/>
+    <Bug pattern="NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE"/>
+  </Match>
+
+  <!-- Bug: https://github.com/Azure/azure-sdk-for-java/issues/9110 -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.routing.Range"/>
+    <Method name="isMinInclusive"/>
+    <Bug pattern="NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE"/>
+  </Match>
+
+  <!-- https://github.com/Azure/azure-sdk-for-java/issues/9179 -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.SessionContainer"/>
+    <Method name="setSessionToken"/>
+    <Bug pattern="RCN_REDUNDANT_NULLCHECK_WOULD_HAVE_BEEN_A_NPE"/>
+  </Match>
+
+  <!-- https://github.com/Azure/azure-sdk-for-java/issues/9179 -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.SessionContainer"/>
+    <Method name="shouldUpdateSessionToken"/>
+    <Bug pattern="RCN_REDUNDANT_NULLCHECK_WOULD_HAVE_BEEN_A_NPE"/>
+  </Match>
+
+  <!-- https://github.com/Azure/azure-sdk-for-java/issues/9179 -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.routing.MurmurHash3_128"/>
+    <Method name="rotateLeft32"/>
+    <Bug pattern="UPM_UNCALLED_PRIVATE_METHOD"/>
+  </Match>
+
+
+  <Match>
+    <Class name="com.azure.cosmos.implementation.routing.UInt128"/>
+    <Method name="compareTo"/>
+    <Bug pattern="SA_FIELD_SELF_COMPARISON"/>
+  </Match>
+
+  <!-- Serializing a null value should return null to allow client to handle null cases
+    consistently instead of injecting null payload behavior from the payload. -->
+  <Match>
+    <Class name="com.azure.data.schemaregistry.avro.SchemaRegistryAvroSerializer"/>
+    <Method name="serialize"/>
+    <Bug pattern="PZLA_PREFER_ZERO_LENGTH_ARRAYS"/>
+  </Match>
+
+  <!-- Exclude spotbug from non-shipping modules -->
+  <Match>
+    <Or>
+      <Package name="com.azure.cosmos.benchmark"/>
+      <Package name="com.azure.cosmos.examples"/>
+      <Package name="com.azure.cosmos.examples.ChangeFeed"/>
+      <Package name="com.azure.cosmos.rx.examples.multimaster"/>
+      <Package name="com.azure.cosmos.rx.examples.multimaster.samples"/>
+    </Or>
+    <Bug pattern="JLM_JSR166_UTILCONCURRENT_MONITORENTER,
+    NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE,
+    NO_NOTIFY_NOT_NOTIFYALL,
+    UC_USELESS_OBJECT,
+    SIC_INNER_SHOULD_BE_STATIC,
+    SIC_INNER_SHOULD_BE_STATIC_ANON,
+    UWF_FIELD_NOT_INITIALIZED_IN_CONSTRUCTOR,
+    NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE,
+    BX_UNBOXING_IMMEDIATELY_REBOXED,
+    MS_SHOULD_BE_FINAL,
+    REC_CATCH_EXCEPTION,
+    WA_NOT_IN_LOOP,
+    MS_SHOULD_BE_FINAL,
+    BC_UNCONFIRMED_CAST_OF_RETURN_VALUE,
+    DLS_DEAD_LOCAL_STORE,
+    IM_BAD_CHECK_FOR_ODD,
+    RC_REF_COMPARISON,
+    REC_CATCH_EXCEPTION"/>
+  </Match>
+
+  <!-- Exclude vendor-ed apache-commons types from spotbug -->
+  <Match>
+    <Class name="~com\.azure\.cosmos\.implementation\.apachecommons(.+)"/>
+    <Bug pattern="BC_UNCONFIRMED_CAST_OF_RETURN_VALUE,
+    IS2_INCONSISTENT_SYNC,
+    BC_UNCONFIRMED_CAST_OF_RETURN_VALUE,
+    SE_BAD_FIELD,
+    SE_TRANSIENT_FIELD_NOT_RESTORED,
+    ES_COMPARING_PARAMETER_STRING_WITH_EQ,
+    PZLA_PREFER_ZERO_LENGTH_ARRAYS,
+    DM_CONVERT_CASE"/>
+  </Match>
+
+    <!-- Exclude vendor-ed guava25 types from spotbug -->
+  <Match>
+    <Class name="~com\.azure\.cosmos\.implementation\.guava25(.+)"/>
+    <Bug pattern="BC_BAD_CAST_TO_ABSTRACT_COLLECTION,
+    BC_UNCONFIRMED_CAST,
+    BC_UNCONFIRMED_CAST_OF_RETURN_VALUE,
+    DLS_DEAD_LOCAL_STORE,
+    DLS_DEAD_LOCAL_STORE_IN_RETURN,
+    DMI_NONSERIALIZABLE_OBJECT_WRITTEN,
+    DP_CREATE_CLASSLOADER_INSIDE_DO_PRIVILEGED,
+    EQ_DOESNT_OVERRIDE_EQUALS,
+    HE_EQUALS_NO_HASHCODE,
+    HE_EQUALS_USE_HASHCODE,
+    HE_HASHCODE_NO_EQUALS,
+    HE_INHERITS_EQUALS_USE_HASHCODE,
+    IA_AMBIGUOUS_INVOCATION_OF_INHERITED_OR_OUTER_METHOD,
+    IS2_INCONSISTENT_SYNC,
+    IT_NO_SUCH_ELEMENT,
+    NM_SAME_SIMPLE_NAME_AS_INTERFACE,
+    NP_LOAD_OF_KNOWN_NULL_VALUE,
+    NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE,
+    NS_NON_SHORT_CIRCUIT,
+    PZLA_PREFER_ZERO_LENGTH_ARRAYS,
+    RI_REDUNDANT_INTERFACES,
+    RV_RETURN_VALUE_IGNORED_NO_SIDE_EFFECT,
+    SA_FIELD_SELF_ASSIGNMENT,
+    SE_BAD_FIELD,
+    SE_COMPARATOR_SHOULD_BE_SERIALIZABLE,
+    SE_INNER_CLASS,
+    SE_NO_SERIALVERSIONID,
+    SE_TRANSIENT_FIELD_NOT_RESTORED,
+    SF_SWITCH_FALLTHROUGH,
+    UC_USELESS_CONDITION,
+    UMAC_UNCALLABLE_METHOD_OF_ANONYMOUS_CLASS,
+    UWF_FIELD_NOT_INITIALIZED_IN_CONSTRUCTOR,
+    UWF_UNWRITTEN_FIELD"/>
+    </Match>
+
+  <!-- Exclude vendor-ed com.fasterxml.uuid:java-uuid-generator types from spotbug -->
+  <Match>
+    <Class name="~com\.azure\.cosmos\.implementation\.uuid(.+)"/>
+    <Bug pattern="CN_IDIOM_NO_SUPER_CALL,
+    MS_PKGPROTECT,
+    DM_CONVERT_CASE,
+    MS_MUTABLE_COLLECTION_PKGPROTECT,
+    RCN_REDUNDANT_NULLCHECK_OF_NONNULL_VALUE,
+    SF_SWITCH_NO_DEFAULT,
+    UCF_USELESS_CONTROL_FLOW,
+    SE_COMPARATOR_SHOULD_BE_SERIALIZABLE,
+    CI_CONFUSED_INHERITANCE,
+    MS_SHOULD_BE_FINAL"/>
+  </Match>
+
+  <!-- Empty byte array is returned as null to reactor. Reactor transform null from Callable to downstream onComplete  -->
+  <Match>
+    <Class name="~com\.azure\.core\.http\.okhttp\.OkHttpAsyncHttpClient\$OkHttpResponse(.*)"/>
+    <Method name="~(.*)\$(getBodyAsByteArray|null)\$(.*)"/>
+    <Bug pattern="PZLA_PREFER_ZERO_LENGTH_ARRAYS"/>
+  </Match>
+
+  <!-- Internal Avro Parser does read the blockCount field. Seems to be a false positive.  -->
+  <Match>
+    <Or>
+      <Class name="com.azure.storage.internal.avro.implementation.schema.complex.AvroArraySchema"/>
+      <Class name="com.azure.storage.internal.avro.implementation.schema.complex.AvroMapSchema"/>
+      <Class name="com.azure.storage.internal.avro.implementation.schema.file.AvroBlockSchema"/>
+    </Or>
+    <Bug pattern="DLS_DEAD_LOCAL_STORE"/>
+  </Match>
+
+  <!-- Internal Avro Parser does check the types before casting. Seems to be a false positive.  -->
+  <Match>
+    <Class name="com.azure.storage.internal.avro.implementation.schema.AvroSchema"/>
+    <Method name="getSchema"/>
+    <Bug pattern="BC_UNCONFIRMED_CAST"/>
+  </Match>
+
+  <!-- FluxInputStream definitely throws an IOException since this.lastError is an IOException. -->
+  <Match>
+    <Class name="com.azure.storage.common.implementation.FluxInputStream"/>
+    <Method name="read"/>
+    <Bug pattern="BC_UNCONFIRMED_CAST_OF_RETURN_VALUE"/>
+  </Match>
+
+  <!-- Exclude NP_LOAD_OF_KNOWN_NULL_VALUE from the files generated by autorest -->
+  <Match>
+    <Package name="~com\.azure\.resourcemanager\.(.+)\.fluent"/>
+    <Bug pattern="NP_LOAD_OF_KNOWN_NULL_VALUE,SKIPPED_CLASS_TOO_BIG"/>
+  </Match>
+
+  <!-- Exclude REC_CATCH_EXCEPTION for management samples. All samples in management catch Exception instead of throw it. -->
+  <Match>
+    <Package name="~com\.azure\.resourcemanager(\.[^.]+)*\.samples(\.[^.]+)*"/>
+    <Bug pattern="REC_CATCH_EXCEPTION"/>
+  </Match>
+
+  <!-- Exclude from spring related classes -->
+  <Match>
+    <Or>
+      <Class name="com.microsoft.azure.utils.PropertyLoader"/> <!-- false positive -->
+      <Class name="com.microsoft.azure.spring.support.GetHashMac"/> <!-- false positive -->
+    </Or>
+    <Bug pattern="RCN_REDUNDANT_NULLCHECK_WOULD_HAVE_BEEN_A_NPE,
+                  NP_LOAD_OF_KNOWN_NULL_VALUE,
+                  RCN_REDUNDANT_NULLCHECK_OF_NONNULL_VALUE,
+                  RCN_REDUNDANT_NULLCHECK_OF_NULL_VALUE"/>
+  </Match>
+
+
+  <!-- These fields are designed to be not written. They are for deserializing. -->
+  <Match>
+      <Class name="com.azure.identity.implementation.LinuxKeyRingAccessor$GError"/>
+      <Bug pattern="UWF_UNWRITTEN_FIELD"/>
+  </Match>
+
+  <!-- These fields use File Reader with default encoding, java 8 doesn't support passing in encoding type. -->
+  <Match>
+      <Class name="com.azure.identity.implementation.IntelliJCacheAccessor"/>
+      <Or>
+          <Method name="getIntellijServicePrincipalDetails"/>
+          <Method name="getKdbxPassword"/>
+      </Or>
+      <Bug pattern="DM_DEFAULT_ENCODING"/>
+  </Match>
+
+  <!-- The field is designed to be unread and for serialization purpose. -->
+  <Match>
+      <Class name="~com\.azure\.search\.documents\.indexes\.models\.(EdgeNGramTokenFilter|KeywordTokenizer|LuceneStandardTokenizer|NGramTokenFilter)"/>
+      <Bug pattern="URF_UNREAD_FIELD"/>
+  </Match>
+
+  <!-- Use static final ObjectMapper property to save the cost of ObjectMapper initialization. -->
+  <Match>
+    <Class name="com.azure.search.documents.SearchAsyncClient" />
+    <Bug pattern="SIC_INNER_SHOULD_BE_STATIC_ANON" />
+  </Match>
+  <Match>
+    <Class name="~com\.azure\.search\.documents\.indexes\.implementation\.models\.(Suggester|SynonymMap)" />
+    <Bug pattern="IP_PARAMETER_IS_DEAD_BUT_OVERWRITTEN"/>
   </Match>
 
 </FindBugsFilter>

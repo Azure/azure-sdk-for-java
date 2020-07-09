@@ -3,10 +3,12 @@
 
 package com.azure.core.amqp.implementation;
 
-import com.azure.core.amqp.ExponentialAmqpRetryPolicy;
-import com.azure.core.amqp.FixedAmqpRetryPolicy;
 import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.AmqpRetryPolicy;
+import com.azure.core.amqp.ExponentialAmqpRetryPolicy;
+import com.azure.core.amqp.FixedAmqpRetryPolicy;
+import com.azure.core.amqp.exception.AmqpException;
+import com.azure.core.util.logging.ClientLogger;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -19,6 +21,8 @@ import java.util.concurrent.TimeoutException;
  * Helper class to help with retry policies.
  */
 public class RetryUtil {
+    private static final ClientLogger LOGGER = new ClientLogger(RetryUtil.class);
+
     // So this class can't be instantiated.
     private RetryUtil() {
     }
@@ -69,12 +73,27 @@ public class RetryUtil {
     private static Flux<Long> retry(Flux<Throwable> source, AmqpRetryPolicy retryPolicy) {
         return source.zipWith(Flux.range(1, retryPolicy.getMaxRetries() + 1),
             (error, attempt) -> {
-                if (!(error instanceof TimeoutException) || attempt > retryPolicy.getMaxRetries()) {
+                if (attempt > retryPolicy.getMaxRetries()) {
+                    LOGGER.warning("Retry attempts are exhausted. Current: {}. Max: {}.", attempt,
+                        retryPolicy.getMaxRetries());
                     throw Exceptions.propagate(error);
                 }
 
-                //TODO (conniey): is it possible to add a logger here even though it is static? :/
-                return retryPolicy.calculateRetryDelay((TimeoutException) error, attempt);
+                if (error instanceof TimeoutException) {
+                    LOGGER.info("TimeoutException error occurred. Retrying operation. Attempt: {}.",
+                        attempt, error);
+
+                    return retryPolicy.calculateRetryDelay(error, attempt);
+                } else if (error instanceof AmqpException && (((AmqpException) error).isTransient())) {
+                    LOGGER.info("Retryable error occurred. Retrying operation. Attempt: {}. Error condition: {}",
+                        attempt, ((AmqpException) error).getErrorCondition(), error);
+
+                    return retryPolicy.calculateRetryDelay(error, attempt);
+                } else {
+                    LOGGER.warning("Error is not a TimeoutException nor is it a retryable AMQP exception.", error);
+
+                    throw Exceptions.propagate(error);
+                }
             })
             .flatMap(Mono::delay);
     }

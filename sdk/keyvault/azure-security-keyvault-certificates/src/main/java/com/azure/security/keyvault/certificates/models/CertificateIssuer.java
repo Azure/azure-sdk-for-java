@@ -5,6 +5,8 @@ package com.azure.security.keyvault.certificates.models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.time.Instant;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
@@ -38,9 +40,23 @@ public final class CertificateIssuer {
     private List<AdministratorContact> administratorContacts;
 
     /**
-     * The Issuer properties
+     * The issuer id.
      */
-    private final IssuerProperties properties;
+    @JsonProperty(value = "id")
+    private String id;
+
+    /**
+     * The issuer provider.
+     */
+    @JsonProperty(value = "provider")
+    private String provider;
+
+    /**
+     * Name of the referenced issuer object or reserved names; for example,
+     * 'Self' or 'Unknown'.
+     */
+    @JsonProperty(value = "name")
+    String name;
 
     /**
      * Determines whether the issuer is enabled.
@@ -65,35 +81,43 @@ public final class CertificateIssuer {
      * @param provider The provider of the issuer.
      */
     public CertificateIssuer(String name, String provider) {
-        properties = new IssuerProperties(name, provider);
-    }
-
-    CertificateIssuer() {
-        properties = new IssuerProperties();
+        this.name = name;
+        this.provider = provider;
     }
 
     /**
-     * Get the certificate properties.
-     * @return the certificate properties.
+     * Creates an instance of the issuer.
+     *
+     * @param name The name of the issuer.
      */
-    public IssuerProperties getProperties() {
-        return properties;
+    public CertificateIssuer(String name) {
+        this.name = name;
     }
 
+    CertificateIssuer() { }
+
     /**
-     * Get the certificate identifier
-     * @return the certificate identifier
+     * Get the id of the issuer.
+     * @return the identifier.
      */
     public String getId() {
-        return properties.getId();
+        return id;
     }
 
     /**
-     * Get the certificate name
-     * @return the certificate name
+     * Get the issuer provider
+     * @return the issuer provider
+     */
+    public String getProvider() {
+        return provider;
+    }
+
+    /**
+     * Get the issuer name
+     * @return the issuer name
      */
     public String getName() {
-        return properties.getName();
+        return name;
     }
 
     /**
@@ -187,10 +211,10 @@ public final class CertificateIssuer {
     }
 
     /**
-     * Get tje created UTC time.
+     * Get the created UTC time.
      * @return the created UTC time.
      */
-    public OffsetDateTime getCreated() {
+    public OffsetDateTime getCreatedOn() {
         return created;
     }
 
@@ -198,7 +222,7 @@ public final class CertificateIssuer {
      * Get the updated UTC time.
      * @return the updated UTC time.
      */
-    public OffsetDateTime getUpdated() {
+    public OffsetDateTime getUpdatedOn() {
         return updated;
     }
 
@@ -225,7 +249,7 @@ public final class CertificateIssuer {
             String lastName = map.containsKey("last_name") ? map.get("last_name") : "";
             String email = map.containsKey("email") ? map.get("email") : "";
             String phone = map.containsKey("phone") ? map.get("phone") : "";
-            output.add(new AdministratorContact(firstName, lastName, email, phone));
+            output.add(new AdministratorContact().setFirstName(firstName).setLastName(lastName).setEmail(email).setPhone(phone));
         }
         return  output;
     }
@@ -247,6 +271,15 @@ public final class CertificateIssuer {
 
     @JsonProperty(value = "id")
     void unpackId(String id) {
-        properties.unpackId(id);
+        if (id != null && id.length() > 0) {
+            this.id = id;
+            try {
+                URL url = new URL(id);
+                String[] tokens = url.getPath().split("/");
+                this.name = (tokens.length >= 4 ? tokens[3] : null);
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            }
+        }
     }
 }

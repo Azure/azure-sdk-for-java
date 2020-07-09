@@ -4,24 +4,30 @@
 package com.azure.storage.file.share;
 
 import com.azure.core.annotation.ServiceClient;
+import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.StorageImplUtils;
+import com.azure.storage.file.share.models.CloseHandlesInfo;
 import com.azure.storage.file.share.models.ShareDirectoryInfo;
 import com.azure.storage.file.share.models.ShareDirectoryProperties;
 import com.azure.storage.file.share.models.ShareDirectorySetMetadataInfo;
 import com.azure.storage.file.share.models.ShareFileHttpHeaders;
 import com.azure.storage.file.share.models.ShareFileInfo;
 import com.azure.storage.file.share.models.HandleItem;
+import com.azure.storage.file.share.models.ShareRequestConditions;
 import com.azure.storage.file.share.models.ShareStorageException;
 import com.azure.storage.file.share.models.ShareFileItem;
+import com.azure.storage.file.share.sas.ShareServiceSasSignatureValues;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
 import java.util.Map;
+
+import static com.azure.storage.common.implementation.StorageImplUtils.blockWithOptionalTimeout;
 
 /**
  * This class provides a client that contains all the operations for interacting with directory in Azure Storage File
@@ -94,6 +100,36 @@ public class ShareDirectoryClient {
      */
     public ShareDirectoryClient getSubdirectoryClient(String subdirectoryName) {
         return new ShareDirectoryClient(shareDirectoryAsyncClient.getSubdirectoryClient(subdirectoryName));
+    }
+
+    /**
+     * Determines if the directory this client represents exists in the cloud.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.file.share.ShareDirectoryClient.exists}
+     *
+     * @return Flag indicating existence of the directory.
+     */
+    public Boolean exists() {
+        return existsWithResponse(null, Context.NONE).getValue();
+    }
+
+    /**
+     * Determines if the directory this client represents exists in the cloud.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.file.share.ShareDirectoryClient.existsWithResponse#Duration-Context}
+     *
+     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return Flag indicating existence of the directory.
+     */
+    public Response<Boolean> existsWithResponse(Duration timeout, Context context) {
+        Mono<Response<Boolean>> response = shareDirectoryAsyncClient.existsWithResponse(context);
+
+        return blockWithOptionalTimeout(response, timeout);
     }
 
     /**
@@ -430,9 +466,10 @@ public class ShareDirectoryClient {
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/force-close-handles">Azure Docs</a>.</p>
      *
      * @param handleId Handle ID to be closed.
+     * @return Information about the closed handles.
      */
-    public void forceCloseHandle(String handleId) {
-        forceCloseHandleWithResponse(handleId, null, Context.NONE);
+    public CloseHandlesInfo forceCloseHandle(String handleId) {
+        return forceCloseHandleWithResponse(handleId, null, Context.NONE).getValue();
     }
 
     /**
@@ -452,11 +489,12 @@ public class ShareDirectoryClient {
      * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout
      * concludes a {@link RuntimeException} will be thrown.
      * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @return A response that only contains headers and response status code.
+     * @return A response that contains information about the closed handles, headers and response status code.
      */
-    public Response<Void> forceCloseHandleWithResponse(String handleId, Duration timeout, Context context) {
-        return StorageImplUtils.blockWithOptionalTimeout(shareDirectoryAsyncClient
-            .forceCloseHandleWithResponse(handleId, context), timeout);
+    public Response<CloseHandlesInfo> forceCloseHandleWithResponse(String handleId, Duration timeout, Context context) {
+        Mono<Response<CloseHandlesInfo>> response = shareDirectoryAsyncClient
+            .forceCloseHandleWithResponse(handleId, context);
+        return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
     }
 
     /**
@@ -476,12 +514,13 @@ public class ShareDirectoryClient {
      * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout
      * concludes a {@link RuntimeException} will be thrown.
      * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @return The number of handles closed.
+     * @return Information about the closed handles
      */
-    public int forceCloseAllHandles(boolean recursive, Duration timeout, Context context) {
+    public CloseHandlesInfo forceCloseAllHandles(boolean recursive, Duration timeout, Context context) {
         return new PagedIterable<>(shareDirectoryAsyncClient.forceCloseAllHandlesWithTimeout(recursive, timeout,
-            context))
-            .stream().reduce(0, Integer::sum);
+            context)).stream().reduce(new CloseHandlesInfo(0, 0),
+                (accu, next) -> new CloseHandlesInfo(accu.getClosedHandles() + next.getClosedHandles(),
+                    accu.getFailedHandles() + next.getFailedHandles()));
     }
 
     /**
@@ -621,7 +660,7 @@ public class ShareDirectoryClient {
      *
      * <p>Create the file named "myFile"</p>
      *
-     * {@codesnippet com.azure.storage.file.share.ShareDirectoryClient.createFile#com.azure.storage.file.share.ShareDirectoryAsyncClient.createFileWithResponse#String-long-ShareFileHttpHeaders-FileSmbProperties-String-Map-duration-context}
+     * {@codesnippet com.azure.storage.file.share.ShareDirectoryClient.createFile#String-long-ShareFileHttpHeaders-FileSmbProperties-String-Map-duration-context}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/create-file">Azure Docs</a>.</p>
@@ -643,9 +682,44 @@ public class ShareDirectoryClient {
     public Response<ShareFileClient> createFileWithResponse(String fileName, long maxSize,
         ShareFileHttpHeaders httpHeaders, FileSmbProperties smbProperties, String filePermission,
         Map<String, String> metadata, Duration timeout, Context context) {
+        return this.createFileWithResponse(fileName, maxSize, httpHeaders, smbProperties, filePermission, metadata,
+            null, timeout, context);
+    }
+
+    /**
+     * Creates a file in this directory with specific name and returns a response of ShareDirectoryInfo to
+     * interact with it.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>Create the file named "myFile"</p>
+     *
+     * {@codesnippet com.azure.storage.file.share.ShareDirectoryClient.createFile#String-long-ShareFileHttpHeaders-FileSmbProperties-String-Map-ShareRequestConditions-duration-context}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/create-file">Azure Docs</a>.</p>
+     *
+     * @param fileName Name of the file
+     * @param maxSize Max size of the file
+     * @param httpHeaders The user settable file http headers.
+     * @param smbProperties The user settable file smb properties.
+     * @param filePermission THe file permission of the file.
+     * @param metadata Optional name-value pairs associated with the file as metadata.
+     * @param requestConditions {@link ShareRequestConditions}
+     * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout
+     * concludes a {@link RuntimeException} will be thrown.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return A response containing the directory info and the status of creating the directory.
+     * @throws ShareStorageException If the directory has already existed, the parent directory does not exist or file
+     * name is an invalid resource name.
+     * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
+     */
+    public Response<ShareFileClient> createFileWithResponse(String fileName, long maxSize,
+        ShareFileHttpHeaders httpHeaders, FileSmbProperties smbProperties, String filePermission,
+        Map<String, String> metadata, ShareRequestConditions requestConditions, Duration timeout, Context context) {
         ShareFileClient shareFileClient = getFileClient(fileName);
         Response<ShareFileInfo> response = shareFileClient.createWithResponse(maxSize, httpHeaders, smbProperties,
-            filePermission, metadata, timeout, context);
+            filePermission, metadata, requestConditions, timeout, context);
         return new SimpleResponse<>(response, shareFileClient);
     }
 
@@ -691,7 +765,35 @@ public class ShareDirectoryClient {
      * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
     public Response<Void> deleteFileWithResponse(String fileName, Duration timeout, Context context) {
-        Mono<Response<Void>> response = shareDirectoryAsyncClient.deleteFileWithResponse(fileName, context);
+        return this.deleteFileWithResponse(fileName, null, timeout, context);
+    }
+
+    /**
+     * Deletes the file with specific name in this directory.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>Delete the file "filetest"</p>
+     *
+     * {@codesnippet com.azure.storage.file.share.ShareDirectoryClient.deleteFileWithResponse#string-ShareRequestConditions-duration-context}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/delete-file2">Azure Docs</a>.</p>
+     *
+     * @param fileName Name of the file
+     * @param requestConditions {@link ShareRequestConditions}
+     * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout
+     * concludes a {@link RuntimeException} will be thrown.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return A response that only contains headers and response status code
+     * @throws ShareStorageException If the directory doesn't exist or the file doesn't exist or file name is an invalid
+     * resource name.
+     * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
+     */
+    public Response<Void> deleteFileWithResponse(String fileName, ShareRequestConditions requestConditions,
+        Duration timeout, Context context) {
+        Mono<Response<Void>> response = shareDirectoryAsyncClient.deleteFileWithResponse(fileName, requestConditions,
+            context);
         return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
     }
 
@@ -744,5 +846,31 @@ public class ShareDirectoryClient {
      */
     public String getAccountName() {
         return this.shareDirectoryAsyncClient.getAccountName();
+    }
+
+    /**
+     * Gets the {@link HttpPipeline} powering this client.
+     *
+     * @return The pipeline.
+     */
+    public HttpPipeline getHttpPipeline() {
+        return this.shareDirectoryAsyncClient.getHttpPipeline();
+    }
+
+    /**
+     * Generates a service SAS for the directory using the specified {@link ShareServiceSasSignatureValues}
+     * Note : The client must be authenticated via {@link StorageSharedKeyCredential}
+     * <p>See {@link ShareServiceSasSignatureValues} for more information on how to construct a service SAS.</p>
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.file.share.ShareDirectoryClient.generateSas#ShareServiceSasSignatureValues}
+     *
+     * @param shareServiceSasSignatureValues {@link ShareServiceSasSignatureValues}
+     *
+     * @return A {@code String} representing all SAS query parameters.
+     */
+    public String generateSas(ShareServiceSasSignatureValues shareServiceSasSignatureValues) {
+        return this.shareDirectoryAsyncClient.generateSas(shareServiceSasSignatureValues);
     }
 }

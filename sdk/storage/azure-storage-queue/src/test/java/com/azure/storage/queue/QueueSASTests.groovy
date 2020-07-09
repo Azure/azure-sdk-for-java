@@ -18,6 +18,7 @@ import com.azure.storage.queue.models.SendMessageResult
 import com.azure.storage.queue.sas.QueueSasPermission
 import com.azure.storage.queue.sas.QueueServiceSasSignatureValues
 import org.junit.Test
+import spock.lang.Ignore
 import spock.lang.Unroll
 
 import java.time.Duration
@@ -30,6 +31,7 @@ class QueueSASTests extends APISpec {
     def setup() {
         primaryQueueServiceClient = queueServiceBuilderHelper(interceptorManager).buildClient()
         queueClient = primaryQueueServiceClient.getQueueClient(testResourceName.randomName(methodName, 60))
+
     }
 
     @Unroll
@@ -85,7 +87,7 @@ class QueueSASTests extends APISpec {
         thrown(IllegalArgumentException)
     }
 
-    def "queueServiceSASSignatureValues canonicalizedResource"() {
+    def "queueServiceSAS canonicalizedResource"() {
         setup:
         def queueName = queueClient.getQueueName()
 
@@ -97,7 +99,7 @@ class QueueSASTests extends APISpec {
     }
 
     @Test
-    def "Test QueueSAS enqueue dequeue with permissions"() {
+    def " QueueSAS enqueue dequeue with permissions"() {
         setup:
         queueClient.create()
         SendMessageResult resp = queueClient.sendMessage("test")
@@ -146,7 +148,7 @@ class QueueSASTests extends APISpec {
     }
 
     @Test
-    def "Test QueueSAS update delete with permissions"() {
+    def "QueueSAS update delete with permissions"() {
         setup:
         queueClient.create()
         SendMessageResult resp = queueClient.sendMessage("test")
@@ -196,7 +198,7 @@ class QueueSASTests extends APISpec {
 
     // NOTE: Serializer for set access policy keeps milliseconds
     @Test
-    def "Test QueueSAS enqueue dequeue with identifier"() {
+    def "QueueSAS enqueue dequeue with identifier"() {
         setup:
         queueClient.create()
         queueClient.sendMessage("test")
@@ -242,7 +244,7 @@ class QueueSASTests extends APISpec {
     }
 
     @Test
-    def "Test Account QueueServiceSAS create queue delete queue"() {
+    def "AccountSAS create delete queue"() {
         def service = new AccountSasService()
             .setQueueAccess(true)
         def resourceType = new AccountSasResourceType()
@@ -262,6 +264,7 @@ class QueueSASTests extends APISpec {
             .setResourceTypes(resourceType.toString())
             .setPermissions(permissions)
             .setExpiryTime(expiryTime)
+            .setVersion(QueueServiceVersion.V2019_02_02.version)
             .generateSasQueryParameters(credential)
             .encode()
 
@@ -269,20 +272,21 @@ class QueueSASTests extends APISpec {
         scBuilder.endpoint(primaryQueueServiceClient.getQueueServiceUrl())
             .sasToken(sas)
         def sc = scBuilder.buildClient()
-        sc.createQueue("queue")
+        def queueName = testResourceName.randomName(methodName, 60)
+        sc.createQueue(queueName)
 
         then:
         notThrown(QueueStorageException)
 
         when:
-        sc.deleteQueue("queue")
+        sc.deleteQueue(queueName)
 
         then:
         notThrown(QueueStorageException)
     }
 
     @Test
-    def "Test Account QueueServiceSAS list queues"() {
+    def "AccountSAS list queues"() {
         def service = new AccountSasService()
             .setQueueAccess(true)
         def resourceType = new AccountSasResourceType()
@@ -312,6 +316,43 @@ class QueueSASTests extends APISpec {
 
         then:
         notThrown(QueueStorageException)
+    }
+
+    def "AccountSAS network on endpoint"() {
+        setup:
+        def service = new AccountSasService()
+            .setQueueAccess(true)
+        def resourceType = new AccountSasResourceType()
+            .setContainer(true)
+            .setService(true)
+            .setObject(true)
+        def permissions = new AccountSasPermission()
+            .setReadPermission(true)
+            .setCreatePermission(true)
+            .setWritePermission(true)
+            .setListPermission(true)
+            .setDeletePermission(true)
+        def expiryTime = getUTCNow().plusDays(1)
+
+        def sas = new AccountSasSignatureValues()
+            .setServices(service.toString())
+            .setResourceTypes(resourceType.toString())
+            .setPermissions(permissions)
+            .setExpiryTime(expiryTime)
+            .generateSasQueryParameters(primaryCredential)
+            .encode()
+
+        def queueName = testResourceName.randomName(methodName, 60)
+
+        when:
+        def sc = getServiceClientBuilder(null, primaryQueueServiceClient.getQueueServiceUrl() + "?" + sas, null).buildClient()
+        sc.createQueue(queueName)
+
+        def qc = getQueueClientBuilder(primaryQueueServiceClient.getQueueServiceUrl() + "/" + queueName + "?" + sas).buildClient()
+        qc.delete()
+
+        then:
+        notThrown(Exception)
     }
 
 }

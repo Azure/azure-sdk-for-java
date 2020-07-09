@@ -254,7 +254,7 @@ public class EventData {
      * @throws NullPointerException if {@code key} or {@code value} is null.
      * @return The updated {@link EventData}.
      */
-    EventData addContext(String key, Object value) {
+    public EventData addContext(String key, Object value) {
         Objects.requireNonNull(key, "The 'key' parameter cannot be null.");
         Objects.requireNonNull(value, "The 'value' parameter cannot be null.");
         this.context = context.addData(key, value);
@@ -290,6 +290,7 @@ public class EventData {
                     "offset: %s should always be in map.", OFFSET_ANNOTATION_NAME.getValue()));
             }
             this.offset = Long.valueOf(offset);
+            put(OFFSET_ANNOTATION_NAME.getValue(), this.offset);
 
             final Date enqueuedTimeValue = removeSystemProperty(ENQUEUED_TIME_UTC_ANNOTATION_NAME.getValue());
             if (enqueuedTimeValue == null) {
@@ -297,6 +298,7 @@ public class EventData {
                     "enqueuedTime: %s should always be in map.", ENQUEUED_TIME_UTC_ANNOTATION_NAME.getValue()));
             }
             this.enqueuedTime = enqueuedTimeValue.toInstant();
+            put(ENQUEUED_TIME_UTC_ANNOTATION_NAME.getValue(), this.enqueuedTime);
 
             final Long sequenceNumber = removeSystemProperty(SEQUENCE_NUMBER_ANNOTATION_NAME.getValue());
             if (sequenceNumber == null) {
@@ -304,6 +306,7 @@ public class EventData {
                     "sequenceNumber: %s should always be in map.", SEQUENCE_NUMBER_ANNOTATION_NAME.getValue()));
             }
             this.sequenceNumber = sequenceNumber;
+            put(SEQUENCE_NUMBER_ANNOTATION_NAME.getValue(), this.sequenceNumber);
         }
 
         /**

@@ -5,12 +5,16 @@ package com.azure.storage.file.share;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.storage.common.StorageSharedKeyCredential;
+import com.azure.storage.file.share.models.CloseHandlesInfo;
 import com.azure.storage.file.share.models.ShareDirectoryInfo;
 import com.azure.storage.file.share.models.ShareDirectoryProperties;
 import com.azure.storage.file.share.models.ShareDirectorySetMetadataInfo;
 import com.azure.storage.file.share.models.ShareFileHttpHeaders;
 import com.azure.storage.file.share.models.HandleItem;
 import com.azure.storage.file.share.models.NtfsFileAttributes;
+import com.azure.storage.file.share.models.ShareRequestConditions;
+import com.azure.storage.file.share.sas.ShareFileSasPermission;
+import com.azure.storage.file.share.sas.ShareServiceSasSignatureValues;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
@@ -27,6 +31,10 @@ public class ShareDirectoryJavaDocCodeSamples {
 
     private String key1 = "key1";
     private String value1 = "val1";
+
+    private String leaseId = "leaseId";
+    ShareDirectoryClient client = createClientWithSASToken();
+    private Duration timeout = Duration.ofSeconds(30);
 
     /**
      * Generates code sample for {@link ShareDirectoryClient} instantiation.
@@ -91,6 +99,21 @@ public class ShareDirectoryJavaDocCodeSamples {
             .buildDirectoryClient();
         // END: com.azure.storage.file.share.ShareDirectoryClient.instantiation.connectionstring
         return shareDirectoryClient;
+    }
+
+    /**
+     * Code snippets for {@link ShareDirectoryClient#exists()} and {@link ShareDirectoryClient#existsWithResponse(
+     * Duration, Context)}
+     */
+    public void exists() {
+        // BEGIN: com.azure.storage.file.share.ShareDirectoryClient.exists
+        System.out.printf("Exists? %b%n", client.exists());
+        // END: com.azure.storage.file.share.ShareDirectoryClient.exists
+
+        // BEGIN: com.azure.storage.file.share.ShareDirectoryClient.existsWithResponse#Duration-Context
+        Context context = new Context("Key", "Value");
+        System.out.printf("Exists? %b%n", client.existsWithResponse(timeout, context).getValue());
+        // END: com.azure.storage.file.share.ShareDirectoryClient.existsWithResponse#Duration-Context
     }
 
     /**
@@ -163,7 +186,7 @@ public class ShareDirectoryJavaDocCodeSamples {
      */
     public void createFileMaxOverload() {
         ShareDirectoryClient shareDirectoryClient = createClientWithSASToken();
-        // BEGIN: com.azure.storage.file.share.ShareDirectoryClient.createFile#com.azure.storage.file.share.ShareDirectoryAsyncClient.createFileWithResponse#String-long-ShareFileHttpHeaders-FileSmbProperties-String-Map-duration-context
+        // BEGIN: com.azure.storage.file.share.ShareDirectoryClient.createFile#String-long-ShareFileHttpHeaders-FileSmbProperties-String-Map-duration-context
         ShareFileHttpHeaders httpHeaders = new ShareFileHttpHeaders()
             .setContentType("text/html")
             .setContentEncoding("gzip")
@@ -181,7 +204,37 @@ public class ShareDirectoryJavaDocCodeSamples {
             httpHeaders, smbProperties, filePermission, Collections.singletonMap("directory", "metadata"),
             Duration.ofSeconds(1), new Context(key1, value1));
         System.out.println("Completed creating the file with status code: " + response.getStatusCode());
-        // END: com.azure.storage.file.share.ShareDirectoryClient.createFile#com.azure.storage.file.share.ShareDirectoryAsyncClient.createFileWithResponse#String-long-ShareFileHttpHeaders-FileSmbProperties-String-Map-duration-context
+        // END: com.azure.storage.file.share.ShareDirectoryClient.createFile#String-long-ShareFileHttpHeaders-FileSmbProperties-String-Map-duration-context
+    }
+
+    /**
+     * Generates a code sample for using {@link ShareDirectoryClient#createFileWithResponse(String, long, ShareFileHttpHeaders,
+     * FileSmbProperties, String, Map, ShareRequestConditions, Duration, Context)}
+     */
+    public void createFileWithLease() {
+        ShareDirectoryClient shareDirectoryClient = createClientWithSASToken();
+        // BEGIN: com.azure.storage.file.share.ShareDirectoryClient.createFile#String-long-ShareFileHttpHeaders-FileSmbProperties-String-Map-ShareRequestConditions-duration-context
+        ShareFileHttpHeaders httpHeaders = new ShareFileHttpHeaders()
+            .setContentType("text/html")
+            .setContentEncoding("gzip")
+            .setContentLanguage("en")
+            .setCacheControl("no-transform")
+            .setContentDisposition("attachment");
+        FileSmbProperties smbProperties = new FileSmbProperties()
+            .setNtfsFileAttributes(EnumSet.of(NtfsFileAttributes.READ_ONLY))
+            .setFileCreationTime(OffsetDateTime.now())
+            .setFileLastWriteTime(OffsetDateTime.now())
+            .setFilePermissionKey("filePermissionKey");
+        String filePermission = "filePermission";
+        // NOTE: filePermission and filePermissionKey should never be both set
+
+        ShareRequestConditions requestConditions = new ShareRequestConditions().setLeaseId(leaseId);
+
+        Response<ShareFileClient> response = shareDirectoryClient.createFileWithResponse("myFile", 1024,
+            httpHeaders, smbProperties, filePermission, Collections.singletonMap("directory", "metadata"),
+            requestConditions, Duration.ofSeconds(1), new Context(key1, value1));
+        System.out.println("Completed creating the file with status code: " + response.getStatusCode());
+        // END: com.azure.storage.file.share.ShareDirectoryClient.createFile#String-long-ShareFileHttpHeaders-FileSmbProperties-String-Map-ShareRequestConditions-duration-context
     }
 
     /**
@@ -233,6 +286,19 @@ public class ShareDirectoryJavaDocCodeSamples {
             Duration.ofSeconds(1), new Context(key1, value1));
         System.out.println("Completed deleting the file with status code: " + response.getStatusCode());
         // END: com.azure.storage.file.share.ShareDirectoryClient.deleteFileWithResponse#string-duration-context
+    }
+
+    /**
+     * Generates a code sample for using {@link ShareDirectoryClient#deleteFileWithResponse(String,ShareRequestConditions, Duration, Context)}
+     */
+    public void deleteFileWithLease() {
+        ShareDirectoryClient shareDirectoryClient = createClientWithSASToken();
+        // BEGIN: com.azure.storage.file.share.ShareDirectoryClient.deleteFileWithResponse#string-ShareRequestConditions-duration-context
+        ShareRequestConditions requestConditions = new ShareRequestConditions().setLeaseId(leaseId);
+        Response<Void> response = shareDirectoryClient.deleteFileWithResponse("myfile", requestConditions,
+            Duration.ofSeconds(1), new Context(key1, value1));
+        System.out.println("Completed deleting the file with status code: " + response.getStatusCode());
+        // END: com.azure.storage.file.share.ShareDirectoryClient.deleteFileWithResponse#string-ShareRequestConditions-duration-context
     }
 
     /**
@@ -412,8 +478,8 @@ public class ShareDirectoryJavaDocCodeSamples {
         ShareDirectoryClient shareDirectoryClient = createClientWithConnectionString();
         // BEGIN: com.azure.storage.file.share.ShareDirectoryClient.forceCloseHandleWithResponse#String-Duration-Context
         shareDirectoryClient.listHandles(null, true, Duration.ofSeconds(30), Context.NONE).forEach(handleItem -> {
-            Response<Void> closeResponse = shareDirectoryClient.forceCloseHandleWithResponse(handleItem.getHandleId(),
-                Duration.ofSeconds(30), Context.NONE);
+            Response<CloseHandlesInfo> closeResponse = shareDirectoryClient.forceCloseHandleWithResponse(
+                handleItem.getHandleId(), Duration.ofSeconds(30), Context.NONE);
             System.out.printf("Closing handle %s on resource %s completed with status code %d%n",
                 handleItem.getHandleId(), handleItem.getPath(), closeResponse.getStatusCode());
         });
@@ -426,8 +492,10 @@ public class ShareDirectoryJavaDocCodeSamples {
     public void forceCloseAllHandles() {
         ShareDirectoryClient shareDirectoryClient = createClientWithConnectionString();
         // BEGIN: com.azure.storage.file.share.ShareDirectoryClient.forceCloseAllHandles#boolean-Duration-Context
-        int closedHandleCount = shareDirectoryClient.forceCloseAllHandles(true, Duration.ofSeconds(30), Context.NONE);
-        System.out.printf("Closed %d open handles on the directory%n", closedHandleCount);
+        CloseHandlesInfo closeHandlesInfo = shareDirectoryClient.forceCloseAllHandles(true, Duration.ofSeconds(30),
+            Context.NONE);
+        System.out.printf("Closed %d open handles on the directory%n", closeHandlesInfo.getClosedHandles());
+        System.out.printf("Failed to close %d open handles on the directory%n", closeHandlesInfo.getFailedHandles());
         // END: com.azure.storage.file.share.ShareDirectoryClient.forceCloseAllHandles#boolean-Duration-Context
     }
 
@@ -469,5 +537,21 @@ public class ShareDirectoryJavaDocCodeSamples {
         String directoryPath = shareDirectoryClient.getDirectoryPath();
         System.out.println("The name of the directory is " + directoryPath);
         // END: com.azure.storage.file.share.ShareDirectoryClient.getDirectoryPath
+    }
+
+    /**
+     * Code snippet for {@link ShareDirectoryClient#generateSas(ShareServiceSasSignatureValues)}
+     */
+    public void generateSas() {
+        ShareDirectoryClient shareDirectoryClient = createClientWithCredential();
+        // BEGIN: com.azure.storage.file.share.ShareDirectoryClient.generateSas#ShareServiceSasSignatureValues
+        OffsetDateTime expiryTime = OffsetDateTime.now().plusDays(1);
+        ShareFileSasPermission permission = new ShareFileSasPermission().setReadPermission(true);
+
+        ShareServiceSasSignatureValues values = new ShareServiceSasSignatureValues(expiryTime, permission)
+            .setStartTime(OffsetDateTime.now());
+
+        shareDirectoryClient.generateSas(values); // Client must be authenticated via StorageSharedKeyCredential
+        // END: com.azure.storage.file.share.ShareDirectoryClient.generateSas#ShareServiceSasSignatureValues
     }
 }

@@ -8,6 +8,7 @@
 
 package com.microsoft.azure.management.recoveryservices.v2016_06_01;
 
+import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -25,6 +26,26 @@ public class VaultProperties {
      */
     @JsonProperty(value = "upgradeDetails")
     private UpgradeDetails upgradeDetails;
+
+    /**
+     * List of private endpoint connection.
+     */
+    @JsonProperty(value = "privateEndpointConnections", access = JsonProperty.Access.WRITE_ONLY)
+    private List<PrivateEndpointConnectionVaultProperties> privateEndpointConnections;
+
+    /**
+     * Private endpoint state for backup. Possible values include: 'None',
+     * 'Enabled'.
+     */
+    @JsonProperty(value = "privateEndpointStateForBackup", access = JsonProperty.Access.WRITE_ONLY)
+    private VaultPrivateEndpointState privateEndpointStateForBackup;
+
+    /**
+     * Private endpoint state for site recovery. Possible values include:
+     * 'None', 'Enabled'.
+     */
+    @JsonProperty(value = "privateEndpointStateForSiteRecovery", access = JsonProperty.Access.WRITE_ONLY)
+    private VaultPrivateEndpointState privateEndpointStateForSiteRecovery;
 
     /**
      * Get provisioning State.
@@ -53,6 +74,33 @@ public class VaultProperties {
     public VaultProperties withUpgradeDetails(UpgradeDetails upgradeDetails) {
         this.upgradeDetails = upgradeDetails;
         return this;
+    }
+
+    /**
+     * Get list of private endpoint connection.
+     *
+     * @return the privateEndpointConnections value
+     */
+    public List<PrivateEndpointConnectionVaultProperties> privateEndpointConnections() {
+        return this.privateEndpointConnections;
+    }
+
+    /**
+     * Get private endpoint state for backup. Possible values include: 'None', 'Enabled'.
+     *
+     * @return the privateEndpointStateForBackup value
+     */
+    public VaultPrivateEndpointState privateEndpointStateForBackup() {
+        return this.privateEndpointStateForBackup;
+    }
+
+    /**
+     * Get private endpoint state for site recovery. Possible values include: 'None', 'Enabled'.
+     *
+     * @return the privateEndpointStateForSiteRecovery value
+     */
+    public VaultPrivateEndpointState privateEndpointStateForSiteRecovery() {
+        return this.privateEndpointStateForSiteRecovery;
     }
 
 }

@@ -1,13 +1,11 @@
 <!-- Copyright (c) Microsoft Corporation. All rights reserved.
      Licensed under the MIT License. -->
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <parent>
     <artifactId>azure-client-sdk-parent</artifactId>
     <groupId>com.azure</groupId>
     <version>1.7.0</version> <!-- {x-version-update;com.azure:azure-client-sdk-parent;current} -->
-    <relativePath>../../pom.client.xml</relativePath>
+    <relativePath>../../sdk/parents/azure-client-sdk-parent</relativePath>
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <artifactId>spotbugs-reporting</artifactId>
@@ -22,64 +20,6 @@
 
   <build>
     <plugins>
-      <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>build-helper-maven-plugin</artifactId>
-        <version>3.0.0</version> <!-- {x-version-update;org.codehaus.mojo:build-helper-maven-plugin;external_dependency} -->
-        <executions>
-          <execution>
-            <id>add-client-source</id>
-            <phase>${client.phase}</phase>
-            <goals>
-              <goal>add-source</goal>
-            </goals>
-            <configuration>
-              <sources>
-                <source>..\..\sdk\appconfiguration\azure-data-appconfiguration\src\main\java\com</source>
-                <source>..\..\sdk\appconfiguration\azure-data-appconfiguration\src\samples\java\com</source>
-                <source>..\..\sdk\core\azure-core\src\main\java\com</source>
-                <source>..\..\sdk\core\azure-core\src\samples\java\com</source>
-                <source>..\..\sdk\core\azure-core-amqp\src\main\java\com</source>
-                <source>..\..\sdk\core\azure-core-http-netty\src\main\java\com</source>
-                <source>..\..\sdk\core\azure-core-http-netty\src\samples\java\com</source>
-                <source>..\..\sdk\core\azure-core-http-okhttp\src\main\java\com</source>
-                <source>..\..\sdk\core\azure-core-http-okhttp\src\samples\java\com</source>
-                <!-- <source>..\..\sdk\core\azure-core-management\src\main\java\com</source> -->
-                <source>..\..\sdk\core\azure-core-test\src\main\java\com</source>
-                <source>..\..\sdk\core\azure-core-tracing-opencensus\src\main\java\com</source>
-                <source>..\..\sdk\eventhubs\azure-messaging-eventhubs\src\main\java\com</source>
-                <source>..\..\sdk\eventhubs\azure-messaging-eventhubs\src\samples\java\com</source>
-                <source>..\..\sdk\eventhubs\azure-messaging-eventhubs-checkpointstore-blob\src\main\java\com</source>
-                <source>..\..\sdk\eventhubs\azure-messaging-eventhubs-checkpointstore-blob\src\samples\java\com</source>
-                <source>..\..\sdk\identity\azure-identity\src\main\java\com</source>
-                <source>..\..\sdk\identity\azure-identity\src\samples\java\com</source>
-<!--                <source>..\..\sdk\keyvault\azure-security-keyvault-certificates\src\main\java\com</source>-->
-<!--                <source>..\..\sdk\keyvault\azure-security-keyvault-certificates\src\samples\java\com</source>-->
-                <source>..\..\sdk\keyvault\azure-security-keyvault-keys\src\main\java\com</source>
-<!--                <source>..\..\sdk\keyvault\azure-security-keyvault-keys\src\samples\java\com</source>-->
-                <source>..\..\sdk\keyvault\azure-security-keyvault-secrets\src\main\java\com</source>
-<!--                <source>..\..\sdk\keyvault\azure-security-keyvault-secrets\src\samples\java\com</source>-->
-                <source>..\..\sdk\storage\azure-storage-common\src\main\java\com</source>
-                <source>..\..\sdk\storage\azure-storage-common\src\samples\java\com</source>
-                <source>..\..\sdk\storage\azure-storage-blob\src\main\java\com</source>
-                <source>..\..\sdk\storage\azure-storage-blob\src\samples\java\com</source>
-                <source>..\..\sdk\storage\azure-storage-blob-batch\src\main\java\com</source>
-                <source>..\..\sdk\storage\azure-storage-blob-batch\src\samples\java\com</source>
-                <source>..\..\sdk\storage\azure-storage-blob-cryptography\src\main\java\com</source>
-                <source>..\..\sdk\storage\azure-storage-blob-cryptography\src\samples\java\com</source>
-                <source>..\..\sdk\storage\azure-storage-file-share\src\main\java\com</source>
-                <source>..\..\sdk\storage\azure-storage-file-share\src\samples\java\com</source>
-                <source>..\..\sdk\storage\azure-storage-file-datalake\src\main\java\com</source>
-                <source>..\..\sdk\storage\azure-storage-file-datalake\src\samples\java\com</source>
-                <source>..\..\sdk\storage\azure-storage-queue\src\main\java\com</source>
-                <source>..\..\sdk\storage\azure-storage-queue\src\samples\java\com</source>
-                <source>..\..\sdk\storage\azure-storage-queue-cryptography\src\main\java\com</source>
-              </sources>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
-
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>build-helper-maven-plugin</artifactId>
@@ -123,146 +63,19 @@
         </configuration>
       </plugin>
 
+      <!-- This is not a module we need to run revapi on because there are no APIs shipped here. -->
+      <plugin>
+        <groupId>org.revapi</groupId>
+        <artifactId>revapi-maven-plugin</artifactId>
+        <version>0.11.2</version> <!-- {x-version-update;org.revapi:revapi-maven-plugin;external_dependency} -->
+        <configuration>
+          <skip>true</skip>
+        </configuration>
+      </plugin>
     </plugins>
   </build>
 
   <profiles>
-    <profile>
-      <id>client-modules</id>
-      <activation>
-        <property>
-          <name>!data-plane</name>
-        </property>
-        <activeByDefault>true</activeByDefault>
-      </activation>
-      <dependencies>
-        <dependency>
-          <groupId>com.azure</groupId>
-          <artifactId>azure-data-appconfiguration</artifactId>
-          <version>1.0.0-beta.7</version> <!-- {x-version-update;com.azure:azure-data-appconfiguration;current} -->
-        </dependency>
-        <dependency>
-          <groupId>com.azure</groupId>
-          <artifactId>azure-core</artifactId>
-          <version>1.1.0</version> <!-- {x-version-update;com.azure:azure-core;current} -->
-        </dependency>
-        <dependency>
-          <groupId>com.azure</groupId>
-          <artifactId>azure-core-amqp</artifactId>
-          <version>1.0.0-beta.8</version> <!-- {x-version-update;com.azure:azure-core-amqp;current} -->
-        </dependency>
-        <dependency>
-          <groupId>com.azure</groupId>
-          <artifactId>azure-core-http-netty</artifactId>
-          <version>1.1.0</version> <!-- {x-version-update;com.azure:azure-core-http-netty;current} -->
-        </dependency>
-        <dependency>
-          <groupId>com.azure</groupId>
-          <artifactId>azure-core-http-okhttp</artifactId>
-          <version>1.1.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core-http-okhttp;current} -->
-        </dependency>
-<!--         <dependency>
-          <groupId>com.azure</groupId>
-          <artifactId>azure-core-management</artifactId>
-          <version>1.0.0-beta.8</version> {x-version-update;com.azure:azure-core-management;current}
-        </dependency> -->
-        <dependency>
-          <groupId>com.azure</groupId>
-          <artifactId>azure-core-test</artifactId>
-          <version>1.1.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core-test;current} -->
-        </dependency>
-        <dependency>
-          <groupId>com.azure</groupId>
-          <artifactId>azure-core-tracing-opencensus</artifactId>
-          <version>1.0.0-beta.5</version> <!-- {x-version-update;com.azure:azure-core-tracing-opencensus;current} -->
-        </dependency>
-        <dependency>
-          <groupId>com.azure</groupId>
-          <artifactId>azure-messaging-eventhubs</artifactId>
-          <version>5.0.0-beta.6</version> <!-- {x-version-update;com.azure:azure-messaging-eventhubs;current} -->
-        </dependency>
-        <dependency>
-          <groupId>com.azure</groupId>
-          <artifactId>azure-messaging-eventhubs-checkpointstore-blob</artifactId>
-          <version>1.0.0-beta.4</version> <!-- {x-version-update;com.azure:azure-messaging-eventhubs-checkpointstore-blob;current} -->
-        </dependency>
-        <dependency>
-          <groupId>com.azure</groupId>
-          <artifactId>azure-identity</artifactId>
-          <version>1.0.1</version> <!-- {x-version-update;com.azure:azure-identity;current} -->
-        </dependency>
-        <dependency>
-          <groupId>com.azure</groupId>
-          <artifactId>azure-security-keyvault-certificates</artifactId>
-          <version>4.0.0-beta.6</version> <!-- {x-version-update;com.azure:azure-security-keyvault-certificates;current} -->
-        </dependency>
-        <dependency>
-          <groupId>com.azure</groupId>
-          <artifactId>azure-security-keyvault-keys</artifactId>
-          <version>4.1.0-beta.1</version> <!-- {x-version-update;com.azure:azure-security-keyvault-keys;current} -->
-        </dependency>
-        <dependency>
-          <groupId>com.azure</groupId>
-          <artifactId>azure-security-keyvault-secrets</artifactId>
-          <version>4.1.0-beta.1</version> <!-- {x-version-update;com.azure:azure-security-keyvault-secrets;current} -->
-        </dependency>
-        <dependency>
-          <groupId>com.azure</groupId>
-          <artifactId>azure-storage-common</artifactId>
-          <version>12.1.0-beta.1</version> <!-- {x-version-update;com.azure:azure-storage-common;current} -->
-        </dependency>
-        <dependency>
-          <groupId>com.azure</groupId>
-          <artifactId>azure-storage-blob</artifactId>
-          <version>12.1.0-beta.1</version> <!-- {x-version-update;com.azure:azure-storage-blob;current} -->
-        </dependency>
-        <dependency>
-          <groupId>com.azure</groupId>
-          <artifactId>azure-storage-blob-batch</artifactId>
-          <version>12.1.0-beta.1</version> <!-- {x-version-update;com.azure:azure-storage-blob-batch;current} -->
-        </dependency>
-        <dependency>
-          <groupId>com.azure</groupId>
-          <artifactId>azure-storage-blob-cryptography</artifactId>
-          <version>12.1.0-beta.1</version> <!-- {x-version-update;com.azure:azure-storage-blob-cryptography;current} -->
-        </dependency>
-        <dependency>
-          <groupId>com.azure</groupId>
-          <artifactId>azure-storage-file-share</artifactId>
-          <version>12.0.0-beta.6</version> <!-- {x-version-update;com.azure:azure-storage-file-share;current} -->
-        </dependency>
-        <dependency>
-          <groupId>com.azure</groupId>
-          <artifactId>azure-storage-file-datalake</artifactId>
-          <version>12.0.0-beta.7</version> <!-- {x-version-update;com.azure:azure-storage-file-datalake;current} -->
-        </dependency>
-        <dependency>
-          <groupId>com.azure</groupId>
-          <artifactId>azure-storage-queue</artifactId>
-          <version>12.1.0-beta.1</version> <!-- {x-version-update;com.azure:azure-storage-queue;current} -->
-        </dependency>
-        <dependency>
-          <groupId>com.azure</groupId>
-          <artifactId>azure-storage-queue-cryptography</artifactId>
-          <version>12.0.0-beta.6</version> <!-- {x-version-update;com.azure:azure-storage-queue-cryptography;current} -->
-        </dependency>
-        <!-- Added this dependency to include necessary annotations used by reactor core.
-        Without this dependency, javadoc throws a warning as it cannot find enum When.MAYBE
-        which is used in @Nullable annotation in reactor core classes -->
-        <dependency>
-          <groupId>com.google.code.findbugs</groupId>
-          <artifactId>jsr305</artifactId>
-          <version>3.0.2</version> <!-- {x-version-update;com.google.code.findbugs:jsr305;external_dependency} -->
-          <scope>provided</scope>
-        </dependency>
-      </dependencies>
-
-      <properties>
-        <client.phase>generate-sources</client.phase>
-        <data.phase>none</data.phase>
-      </properties>
-    </profile>
-
     <profile>
       <id>data-modules</id>
       <activation>
@@ -274,47 +87,47 @@
         <dependency>
           <groupId>com.microsoft.azure</groupId>
           <artifactId>azure-keyvault</artifactId>
-          <version>1.2.3</version> <!-- {x-version-update;com.microsoft.azure:azure-keyvault;current} -->
+          <version>1.3.0-beta.1</version> <!-- {x-version-update;com.microsoft.azure:azure-keyvault;current} -->
         </dependency>
         <dependency>
           <groupId>com.microsoft.azure</groupId>
           <artifactId>azure-keyvault-cryptography</artifactId>
-          <version>1.2.3</version> <!-- {x-version-update;com.microsoft.azure:azure-keyvault-cryptography;current} -->
+          <version>1.3.0-beta.1</version> <!-- {x-version-update;com.microsoft.azure:azure-keyvault-cryptography;current} -->
         </dependency>
         <dependency>
           <groupId>com.microsoft.azure</groupId>
           <artifactId>azure-keyvault-core</artifactId>
-          <version>1.2.3</version> <!-- {x-version-update;com.microsoft.azure:azure-keyvault-core;current} -->
+          <version>1.3.0-beta.1</version> <!-- {x-version-update;com.microsoft.azure:azure-keyvault-core;current} -->
         </dependency>
         <dependency>
           <groupId>com.microsoft.azure</groupId>
           <artifactId>azure-keyvault-extensions</artifactId>
-          <version>1.2.3</version> <!-- {x-version-update;com.microsoft.azure:azure-keyvault-extensions;current} -->
+          <version>1.3.0-beta.1</version> <!-- {x-version-update;com.microsoft.azure:azure-keyvault-extensions;current} -->
         </dependency>
         <dependency>
           <groupId>com.microsoft.azure</groupId>
           <artifactId>azure-keyvault-webkey</artifactId>
-          <version>1.2.3</version> <!-- {x-version-update;com.microsoft.azure:azure-keyvault-webkey;current} -->
+          <version>1.3.0-beta.1</version> <!-- {x-version-update;com.microsoft.azure:azure-keyvault-webkey;current} -->
         </dependency>
         <dependency>
           <groupId>com.microsoft.azure</groupId>
           <artifactId>azure-batch</artifactId>
-          <version>7.1.0-beta.1</version> <!-- {x-version-update;com.microsoft.azure:azure-batch;current} -->
+          <version>8.1.0-beta.1</version> <!-- {x-version-update;com.microsoft.azure:azure-batch;current} -->
         </dependency>
         <dependency>
           <groupId>com.microsoft.azure</groupId>
           <artifactId>azure-eventhubs</artifactId>
-          <version>3.1.0</version> <!-- {x-version-update;com.microsoft.azure:azure-eventhubs;current} -->
+          <version>3.3.0-beta.1</version> <!-- {x-version-update;com.microsoft.azure:azure-eventhubs;current} -->
         </dependency>
         <dependency>
           <groupId>com.microsoft.azure</groupId>
           <artifactId>azure-eventhubs-eph</artifactId>
-          <version>3.1.0</version> <!-- {x-version-update;com.microsoft.azure:azure-eventhubs-eph;current} -->
+          <version>3.3.0-beta.1</version> <!-- {x-version-update;com.microsoft.azure:azure-eventhubs-eph;current} -->
         </dependency>
         <dependency>
           <groupId>com.microsoft.azure</groupId>
           <artifactId>azure-eventhubs-extensions</artifactId>
-          <version>3.1.0</version> <!-- {x-version-update;com.microsoft.azure:azure-eventhubs-extensions;current} -->
+          <version>3.3.0-beta.1</version> <!-- {x-version-update;com.microsoft.azure:azure-eventhubs-extensions;current} -->
         </dependency>
         <!-- Storage is excluded from Spotbugs report as it collides with the storage library
              dependency in eventhubs code. This issue is under investigation.
@@ -327,7 +140,7 @@
         <dependency>
           <groupId>com.microsoft.azure</groupId>
           <artifactId>azure-servicebus</artifactId>
-          <version>3.1.4</version> <!-- {x-version-update;com.microsoft.azure:azure-servicebus;current} -->
+          <version>3.5.0-beta.1</version> <!-- {x-version-update;com.microsoft.azure:azure-servicebus;current} -->
         </dependency>
       </dependencies>
       <properties>

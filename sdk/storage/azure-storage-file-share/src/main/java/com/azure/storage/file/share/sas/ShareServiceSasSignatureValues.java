@@ -14,25 +14,12 @@ import com.azure.storage.file.share.ShareServiceVersion;
 import java.time.OffsetDateTime;
 
 /**
- * Used to generate a Shared Access Signature (SAS) for Azure Files service. Once all the values here are set
- * appropriately, call {@link
- * #generateSasQueryParameters(StorageSharedKeyCredential) generateSasQueryParameters(StorageSharedKeyCredential)} to
- * obtain a representation of the SAS which can be applied to file urls.
+ * Used to initialize parameters for a Shared Access Signature (SAS) for an Azure File Storage service. Once all the
+ * values here are set, use the appropriate SAS generation method on the desired share/file/directory client to obtain a
+ * representation of the SAS which can then be applied to a new client using the .sasToken(String) method on the
+ * desired client builder.
  *
- * <p><strong>Generating a file share SAS</strong></p>
- * <p>The snippet below generates a file share SAS that lasts for three days, and gives the user read, create, and list
- * permissions to the share.
- *
- * {@codesnippet com.azure.storage.file.fileServiceSasQueryParameters.generateSasQueryParameters.shareSas#StorageSharedKeyCredential}
- *
- * <p><strong>Generating a file SAS</strong></p>
- * <p>The snippet below generates a file SAS that has the same duration and permissions specified by the
- * {@link #setIdentifier(String) stored access policy}.
- *
- * {@codesnippet com.azure.storage.file.fileServiceSasQueryParameters.generateSasQueryParameters#StorageSharedKeyCredential}
- *
- * @see ShareServiceSasQueryParameters
- * @see <a href=https://docs.microsoft.com/azure/storage/common/storage-sas-overview>Storage SAS overview</a>
+ * @see <a href=https://docs.microsoft.com/en-ca/azure/storage/common/storage-sas-overview>Storage SAS overview</a>
  * @see <a href=https://docs.microsoft.com/rest/api/storageservices/constructing-a-service-sas>Constructing a Service
  * SAS</a>
  */
@@ -77,8 +64,48 @@ public final class ShareServiceSasSignatureValues {
 
     /**
      * Creates an object with empty values for all fields.
+     * @deprecated Please use {@link #ShareServiceSasSignatureValues(String)},
+     * {@link #ShareServiceSasSignatureValues(OffsetDateTime, ShareSasPermission)}, or
+     * {@link #ShareServiceSasSignatureValues(OffsetDateTime, ShareFileSasPermission)}
      */
+    @Deprecated
     public ShareServiceSasSignatureValues() {
+    }
+
+    /**
+     * Creates an object with the specified expiry time and permissions
+     *
+     * @param expiryTime The time after which the SAS will no longer work.
+     * @param permissions {@link ShareSasPermission} allowed by the SAS.
+     */
+    public ShareServiceSasSignatureValues(OffsetDateTime expiryTime, ShareSasPermission permissions) {
+        StorageImplUtils.assertNotNull("expiryTime", expiryTime);
+        StorageImplUtils.assertNotNull("permissions", permissions);
+        this.expiryTime = expiryTime;
+        this.permissions = permissions.toString();
+    }
+
+    /**
+     * Creates an object with the specified expiry time and permissions
+     *
+     * @param expiryTime The time after which the SAS will no longer work.
+     * @param permissions {@link ShareFileSasPermission} allowed by the SAS.
+     */
+    public ShareServiceSasSignatureValues(OffsetDateTime expiryTime, ShareFileSasPermission permissions) {
+        StorageImplUtils.assertNotNull("expiryTime", expiryTime);
+        StorageImplUtils.assertNotNull("permissions", permissions);
+        this.expiryTime = expiryTime;
+        this.permissions = permissions.toString();
+    }
+
+    /**
+     * Creates an object with the specified identifier.
+     *
+     * @param identifier Name of the access policy.
+     */
+    public ShareServiceSasSignatureValues(String identifier) {
+        StorageImplUtils.assertNotNull("identifier", identifier);
+        this.identifier = identifier;
     }
 
     /**
@@ -211,7 +238,10 @@ public final class ShareServiceSasSignatureValues {
      * Gets the name of the share being made accessible.
      *
      * @return The name of the share being made accessible.
+     * @deprecated Share name is now auto-populated by the SAS generation methods provided on the desired
+     * share/file/directory client.
      */
+    @Deprecated
     public String getShareName() {
         return shareName;
     }
@@ -221,7 +251,10 @@ public final class ShareServiceSasSignatureValues {
      *
      * @param shareName The name of the share being made accessible.
      * @return the updated FileServiceSasSignatureValues object
+     * @deprecated Please use the generateSas methods provided on the desired share/file/directory client that will
+     * auto-populate the share name.
      */
+    @Deprecated
     public ShareServiceSasSignatureValues setShareName(String shareName) {
         this.shareName = shareName;
         return this;
@@ -231,7 +264,10 @@ public final class ShareServiceSasSignatureValues {
      * Gets the path of the file or directory being made accessible. {@code null} or an empty string for a share SAS.
      *
      * @return The path of the file or directory being made accessible. {@code null} or an empty string for a share SAS.
+     * @deprecated File path is now auto-populated by the SAS generation methods provided on the desired file/directory
+     * client.
      */
+    @Deprecated
     public String getFilePath() {
         return filePath;
     }
@@ -242,7 +278,10 @@ public final class ShareServiceSasSignatureValues {
      *
      * @param filePath The name of the share being made accessible.
      * @return the updated FileServiceSasSignatureValues object
+     * @deprecated Please use the generateSas methods provided on the desired file/directory client that will
+     * auto-populate the file path.
      */
+    @Deprecated
     public ShareServiceSasSignatureValues setFilePath(String filePath) {
         this.filePath = filePath;
         return this;
@@ -365,7 +404,6 @@ public final class ShareServiceSasSignatureValues {
      * parameters.
      *
      * <p><strong>Notes on SAS generation</strong></p>
-     * <p>
      * <ul>
      * <li>If {@link #setVersion(String) version} is not set, the {@link ShareServiceVersion#getLatest() latest service
      * version} is used.</li>
@@ -391,7 +429,10 @@ public final class ShareServiceSasSignatureValues {
      * encoded string, or the UTF-8 charset isn't supported.
      * @throws IllegalArgumentException if {@link #getPermissions()} contains an invalid character for the SAS resource.
      * @throws NullPointerException If {@code storageSharedKeyCredentials} is null.
+     * @deprecated Please use the generateSas(ShareServiceSasSignatureValues) method on the desired share/file/directory
+     * client after initializing {@link ShareServiceSasSignatureValues}.
      */
+    @Deprecated
     public ShareServiceSasQueryParameters generateSasQueryParameters(
         StorageSharedKeyCredential storageSharedKeyCredentials) {
         StorageImplUtils.assertNotNull("storageSharedKeyCredentials", storageSharedKeyCredentials);

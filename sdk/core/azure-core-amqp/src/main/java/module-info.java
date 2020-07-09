@@ -3,18 +3,21 @@
 
 module com.azure.core.amqp {
     requires transitive com.azure.core;
-    requires transitive reactor.core;
 
-    requires proton.j;
-    requires qpid.proton.j.extensions;
-    requires org.reactivestreams;
+    requires transitive com.microsoft.azure.qpid.protonj.extensions;
+    requires transitive org.reactivestreams;
+    requires transitive org.apache.qpid.proton.j;
 
     exports com.azure.core.amqp;
     exports com.azure.core.amqp.exception;
 
     // FIXME this should not be a long-term solution
     exports com.azure.core.amqp.implementation to
-        com.azure.messaging.eventhubs;
+        com.azure.messaging.eventhubs,
+        com.azure.messaging.servicebus.implementation,
+        com.azure.messaging.servicebus;
+
     exports com.azure.core.amqp.implementation.handler to
-        com.azure.messaging.eventhubs;
+        com.azure.messaging.eventhubs,
+        com.azure.messaging.servicebus;
 }

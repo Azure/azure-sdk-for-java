@@ -1,0 +1,68 @@
+trigger: none
+pr: none
+
+
+jobs:
+  - job: Generate
+    timeoutInMinutes: 180
+    variables:
+      - template: templates/variables/globals.yml
+    pool:
+      vmImage: 'ubuntu-18.04'
+    steps:
+    - task: Maven@3
+      displayName: 'Generate Reports'
+      inputs:
+        mavenPomFile: pom.xml
+        options: '$(DefaultOptions) -Dinclude-non-shipping-modules -Ddependency-checker -Dgpg.skip -Dmaven.javadoc.skip=true -Dcheckstyle.skip=true -Dspotbugs.skip=true -Drevapi.skip=true -pl com.azure:jacoco-test-coverage -am'
+        mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
+        javaHomeOption: 'JDKVersion'
+        jdkVersionOption: $(JavaBuildVersion)
+        jdkArchitectureOption: 'x64'
+        publishJUnitResults: false
+        goals: 'clean verify site:site site:stage'
+
+    - task: PublishTestResults@2
+      condition: succeededOrFailed()
+      inputs:
+        mergeTestResults: true
+        testRunTitle: 'Linux on Java $(JavaBuildVersion)'
+
+    # Azure DevOps only seems to respect the last code coverage result published, so only do this for Linux + Java LTS.
+    # Code coverage reporting is setup only for Track 2 modules.
+    - task: PublishCodeCoverageResults@1
+      inputs:
+        codeCoverageTool: JaCoCo
+        summaryFileLocation: eng/jacoco-test-coverage/target/site/test-coverage/jacoco.xml
+        reportDirectory: eng/jacoco-test-coverage/target/site/test-coverage/
+        failIfCoverageEmpty: true
+
+    # Publish code coverage to an artifact so it can be uploaded to the Maven site.
+    # Do this for track 2 modules only. Code coverage from previous step is only published for Linux + Java LTS.
+    - task: PublishPipelineArtifact@0
+      displayName: 'Publish coverage artifact'
+      inputs:
+        artifactName: coverage
+        targetPath: eng/jacoco-test-coverage/target/site/
+
+    - pwsh: |
+        $(Build.SourcesDirectory)/eng/DependencyGraph/gen-dep-graph-data.ps1
+      displayName: Generate Interdependency Report Data
+
+    - pwsh: |
+        Copy-Item eng/jacoco-test-coverage/target/staging $(Build.ArtifactStagingDirectory) -Recurse
+        Copy-Item eng/jacoco-test-coverage/target/dependency-allowlist.json $(Build.ArtifactStagingDirectory)/staging
+        Copy-Item eng/code-quality-reports/src/main/resources/index.html $(Build.ArtifactStagingDirectory)
+        Copy-Item eng/code-quality-reports/src/main/resources/dependency-allowlist.html $(Build.ArtifactStagingDirectory)/staging
+
+        # What is this?
+        # copy output/pom.client.html (Join-Path $(Build.ArtifactStagingDirectory) "staging")
+
+        Copy-Item eng/common/InterdependencyGraph.html $(Build.ArtifactStagingDirectory)/staging
+        Copy-Item data.js $(Build.ArtifactStagingDirectory)/staging
+      displayName: 'Copy reports to artifact staging'
+
+    - publish: $(Build.ArtifactStagingDirectory)
+      condition: succeededOrFailed()
+      displayName: 'Publish Report Artifacts'
+      artifact: reports

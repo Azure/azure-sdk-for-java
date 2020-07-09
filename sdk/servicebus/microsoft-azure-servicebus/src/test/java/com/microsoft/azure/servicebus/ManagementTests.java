@@ -514,6 +514,41 @@ public class ManagementTests extends TestBase {
         this.managementClientAsync.deleteQueueAsync(destinationName);
         this.managementClientAsync.deleteQueueAsync(dlqDestinationName);
     }
+    
+    @Test
+    public void subscriptionForwardToCreationTest() throws ServiceBusException, InterruptedException {
+        String sourceName = UUID.randomUUID().toString().substring(0, 8);
+        String destinationName = UUID.randomUUID().toString().substring(0, 8);
+        String subscriptionName = "subscription1";
+        
+        TopicDescription destinationTopicDesc = new TopicDescription(destinationName);
+        Utils.completeFuture(this.managementClientAsync.createTopicAsync(destinationTopicDesc));
+        SubscriptionDescription subDesc = new SubscriptionDescription(destinationName, subscriptionName);
+        Utils.completeFuture(this.managementClientAsync.createSubscriptionAsync(subDesc));
+
+        TopicDescription sourceTopicDesc = new TopicDescription(sourceName);
+        Utils.completeFuture(this.managementClientAsync.createTopicAsync(sourceTopicDesc));
+        SubscriptionDescription sourceSubDesc = new SubscriptionDescription(sourceName, subscriptionName);
+        sourceSubDesc.setForwardTo(destinationName);
+        Utils.completeFuture(this.managementClientAsync.createSubscriptionAsync(sourceSubDesc));
+
+        MessagingFactory factory = MessagingFactory.createFromNamespaceEndpointURI(TestUtils.getNamespaceEndpointURI(), TestUtils.getClientSettings());
+        IMessageSender sender = ClientFactory.createMessageSenderFromEntityPath(factory, sourceName);
+        IMessage message = new Message();
+        message.setMessageId("mid");
+        sender.send(message);
+        sender.close();
+
+        IMessageReceiver receiver = ClientFactory.createMessageReceiverFromEntityPath(factory, destinationName + "/subscriptions/" + subscriptionName);
+        IMessage msg = receiver.receive();
+        Assert.assertNotNull(msg);
+        Assert.assertEquals("mid", msg.getMessageId());
+        receiver.complete(msg.getLockToken());
+        receiver.close();
+
+        this.managementClientAsync.deleteTopicAsync(sourceName);
+        this.managementClientAsync.deleteTopicAsync(destinationName);
+    }
 
     @Test
     public void authRulesEqualityCheckTest() {

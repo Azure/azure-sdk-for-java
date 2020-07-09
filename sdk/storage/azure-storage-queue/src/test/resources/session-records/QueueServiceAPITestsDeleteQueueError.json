@@ -1,25 +1,26 @@
 {
   "networkCallRecords" : [ {
     "Method" : "DELETE",
-    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/queueserviceapitestsdeletequeueerror80596eaf10aec7",
+    "Uri" : "https://REDACTED.queue.core.windows.net/queueserviceapitestsdeletequeueerror310600a6de2c65",
     "Headers" : {
-      "x-ms-version" : "2018-03-28",
-      "User-Agent" : "azsdk-java-azure-storage-queue/12.0.0-preview.5 11.0.4; Windows 10 10.0",
-      "x-ms-client-request-id" : "2679e3f0-2068-4398-b40e-556fab154b7c"
+      "x-ms-version" : "2019-12-12",
+      "User-Agent" : "azsdk-java-azure-storage-queue/12.6.0-beta.1 (11.0.6; Windows 10 10.0)",
+      "x-ms-client-request-id" : "2906c7cf-ff27-49a9-b9ae-2d7555f3154e"
     },
     "Response" : {
-      "x-ms-version" : "2018-03-28",
+      "x-ms-version" : "2019-12-12",
       "Server" : "Windows-Azure-Queue/1.0 Microsoft-HTTPAPI/2.0",
       "x-ms-error-code" : "QueueNotFound",
       "retry-after" : "0",
       "Content-Length" : "217",
       "StatusCode" : "404",
-      "x-ms-request-id" : "2f7e9f82-f003-0082-6b8d-839126000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>QueueNotFound</Code><Message>The specified queue does not exist.\nRequestId:2f7e9f82-f003-0082-6b8d-839126000000\nTime:2019-10-15T19:19:59.5098528Z</Message></Error>",
-      "Date" : "Tue, 15 Oct 2019 19:19:58 GMT",
+      "x-ms-request-id" : "37a3aec5-3003-009b-1304-3a8ca5000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>QueueNotFound</Code><Message>The specified queue does not exist.\nRequestId:37a3aec5-3003-009b-1304-3a8ca5000000\nTime:2020-06-04T00:06:43.1638292Z</Message></Error>",
+      "Date" : "Thu, 04 Jun 2020 00:06:43 GMT",
+      "x-ms-client-request-id" : "2906c7cf-ff27-49a9-b9ae-2d7555f3154e",
       "Content-Type" : "application/xml"
     },
     "Exception" : null
   } ],
-  "variables" : [ "queueserviceapitestsdeletequeueerror80596eaf10aec7" ]
+  "variables" : [ "queueserviceapitestsdeletequeueerror310600a6de2c65" ]
 }

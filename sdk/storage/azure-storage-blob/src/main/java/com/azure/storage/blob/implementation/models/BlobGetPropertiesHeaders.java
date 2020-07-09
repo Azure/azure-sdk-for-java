@@ -6,8 +6,8 @@ package com.azure.storage.blob.implementation.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.HeaderCollection;
-import com.azure.core.util.DateTimeRfc1123;
 import com.azure.core.util.CoreUtils;
+import com.azure.core.util.DateTimeRfc1123;
 import com.azure.storage.blob.models.BlobType;
 import com.azure.storage.blob.models.CopyStatusType;
 import com.azure.storage.blob.models.LeaseDurationType;
@@ -43,6 +43,19 @@ public final class BlobGetPropertiesHeaders {
      */
     @HeaderCollection("x-ms-meta-")
     private Map<String, String> metadata;
+
+    /*
+     * Optional. Only valid when Object Replication is enabled for the storage
+     * container and on the destination blob of the replication.
+     */
+    @JsonProperty(value = "x-ms-or-policy-id")
+    private String objectReplicationPolicyId;
+
+    /*
+     * The objectReplicationRules property.
+     */
+    @HeaderCollection("x-ms-or-")
+    private Map<String, String> objectReplicationRules;
 
     /*
      * The blob's type. Possible values include: 'BlockBlob', 'PageBlob',
@@ -274,6 +287,14 @@ public final class BlobGetPropertiesHeaders {
     private String encryptionKeySha256;
 
     /*
+     * Returns the name of the encryption scope used to encrypt the blob
+     * contents and application metadata.  Note that the absence of this header
+     * implies use of the default account encryption scope.
+     */
+    @JsonProperty(value = "x-ms-encryption-scope")
+    private String encryptionScope;
+
+    /*
      * The tier of page blob on a premium storage account or tier of block blob
      * on blob storage LRS accounts. For a list of allowed premium page blob
      * tiers, see
@@ -306,6 +327,39 @@ public final class BlobGetPropertiesHeaders {
      */
     @JsonProperty(value = "x-ms-access-tier-change-time")
     private DateTimeRfc1123 accessTierChangeTime;
+
+    /*
+     * A DateTime value returned by the service that uniquely identifies the
+     * blob. The value of this header indicates the blob version, and may be
+     * used in subsequent requests to access this version of the blob.
+     */
+    @JsonProperty(value = "x-ms-version-id")
+    private String versionId;
+
+    /*
+     * The value of this header indicates whether version of this blob is a
+     * current version, see also x-ms-version-id header.
+     */
+    @JsonProperty(value = "x-ms-is-current-version")
+    private Boolean isCurrentVersion;
+
+    /*
+     * The number of tags associated with the blob
+     */
+    @JsonProperty(value = "x-ms-tag-count")
+    private Long tagCount;
+
+    /*
+     * The time this blob will expire.
+     */
+    @JsonProperty(value = "x-ms-expiry-time")
+    private DateTimeRfc1123 expiresOn;
+
+    /*
+     * If this blob has been sealed
+     */
+    @JsonProperty(value = "x-ms-blob-sealed")
+    private Boolean isSealed;
 
     /*
      * The errorCode property.
@@ -392,6 +446,53 @@ public final class BlobGetPropertiesHeaders {
      */
     public BlobGetPropertiesHeaders setMetadata(Map<String, String> metadata) {
         this.metadata = metadata;
+        return this;
+    }
+
+    /**
+     * Get the objectReplicationPolicyId property: Optional. Only valid when
+     * Object Replication is enabled for the storage container and on the
+     * destination blob of the replication.
+     *
+     * @return the objectReplicationPolicyId value.
+     */
+    public String getObjectReplicationPolicyId() {
+        return this.objectReplicationPolicyId;
+    }
+
+    /**
+     * Set the objectReplicationPolicyId property: Optional. Only valid when
+     * Object Replication is enabled for the storage container and on the
+     * destination blob of the replication.
+     *
+     * @param objectReplicationPolicyId the objectReplicationPolicyId value to
+     * set.
+     * @return the BlobGetPropertiesHeaders object itself.
+     */
+    public BlobGetPropertiesHeaders setObjectReplicationPolicyId(String objectReplicationPolicyId) {
+        this.objectReplicationPolicyId = objectReplicationPolicyId;
+        return this;
+    }
+
+    /**
+     * Get the objectReplicationRules property: The objectReplicationRules
+     * property.
+     *
+     * @return the objectReplicationRules value.
+     */
+    public Map<String, String> getObjectReplicationRules() {
+        return this.objectReplicationRules;
+    }
+
+    /**
+     * Set the objectReplicationRules property: The objectReplicationRules
+     * property.
+     *
+     * @param objectReplicationRules the objectReplicationRules value to set.
+     * @return the BlobGetPropertiesHeaders object itself.
+     */
+    public BlobGetPropertiesHeaders setObjectReplicationRules(Map<String, String> objectReplicationRules) {
+        this.objectReplicationRules = objectReplicationRules;
         return this;
     }
 
@@ -1122,6 +1223,32 @@ public final class BlobGetPropertiesHeaders {
     }
 
     /**
+     * Get the encryptionScope property: Returns the name of the encryption
+     * scope used to encrypt the blob contents and application metadata.  Note
+     * that the absence of this header implies use of the default account
+     * encryption scope.
+     *
+     * @return the encryptionScope value.
+     */
+    public String getEncryptionScope() {
+        return this.encryptionScope;
+    }
+
+    /**
+     * Set the encryptionScope property: Returns the name of the encryption
+     * scope used to encrypt the blob contents and application metadata.  Note
+     * that the absence of this header implies use of the default account
+     * encryption scope.
+     *
+     * @param encryptionScope the encryptionScope value to set.
+     * @return the BlobGetPropertiesHeaders object itself.
+     */
+    public BlobGetPropertiesHeaders setEncryptionScope(String encryptionScope) {
+        this.encryptionScope = encryptionScope;
+        return this;
+    }
+
+    /**
      * Get the accessTier property: The tier of page blob on a premium storage
      * account or tier of block blob on blob storage LRS accounts. For a list
      * of allowed premium page blob tiers, see
@@ -1231,6 +1358,123 @@ public final class BlobGetPropertiesHeaders {
         } else {
             this.accessTierChangeTime = new DateTimeRfc1123(accessTierChangeTime);
         }
+        return this;
+    }
+
+    /**
+     * Get the versionId property: A DateTime value returned by the service
+     * that uniquely identifies the blob. The value of this header indicates
+     * the blob version, and may be used in subsequent requests to access this
+     * version of the blob.
+     *
+     * @return the versionId value.
+     */
+    public String getVersionId() {
+        return this.versionId;
+    }
+
+    /**
+     * Set the versionId property: A DateTime value returned by the service
+     * that uniquely identifies the blob. The value of this header indicates
+     * the blob version, and may be used in subsequent requests to access this
+     * version of the blob.
+     *
+     * @param versionId the versionId value to set.
+     * @return the BlobGetPropertiesHeaders object itself.
+     */
+    public BlobGetPropertiesHeaders setVersionId(String versionId) {
+        this.versionId = versionId;
+        return this;
+    }
+
+    /**
+     * Get the isCurrentVersion property: The value of this header indicates
+     * whether version of this blob is a current version, see also
+     * x-ms-version-id header.
+     *
+     * @return the isCurrentVersion value.
+     */
+    public Boolean isCurrentVersion() {
+        return this.isCurrentVersion;
+    }
+
+    /**
+     * Set the isCurrentVersion property: The value of this header indicates
+     * whether version of this blob is a current version, see also
+     * x-ms-version-id header.
+     *
+     * @param isCurrentVersion the isCurrentVersion value to set.
+     * @return the BlobGetPropertiesHeaders object itself.
+     */
+    public BlobGetPropertiesHeaders setIsCurrentVersion(Boolean isCurrentVersion) {
+        this.isCurrentVersion = isCurrentVersion;
+        return this;
+    }
+
+    /**
+     * Get the tagCount property: The number of tags associated with the blob.
+     *
+     * @return the tagCount value.
+     */
+    public Long getTagCount() {
+        return this.tagCount;
+    }
+
+    /**
+     * Set the tagCount property: The number of tags associated with the blob.
+     *
+     * @param tagCount the tagCount value to set.
+     * @return the BlobGetPropertiesHeaders object itself.
+     */
+    public BlobGetPropertiesHeaders setTagCount(Long tagCount) {
+        this.tagCount = tagCount;
+        return this;
+    }
+
+    /**
+     * Get the expiresOn property: The time this blob will expire.
+     *
+     * @return the expiresOn value.
+     */
+    public OffsetDateTime getExpiresOn() {
+        if (this.expiresOn == null) {
+            return null;
+        }
+        return this.expiresOn.getDateTime();
+    }
+
+    /**
+     * Set the expiresOn property: The time this blob will expire.
+     *
+     * @param expiresOn the expiresOn value to set.
+     * @return the BlobGetPropertiesHeaders object itself.
+     */
+    public BlobGetPropertiesHeaders setExpiresOn(OffsetDateTime expiresOn) {
+        if (expiresOn == null) {
+            this.expiresOn = null;
+        } else {
+            this.expiresOn = new DateTimeRfc1123(expiresOn);
+        }
+        return this;
+    }
+
+    /**
+     * Get the isSealed property: If this blob has been sealed.
+     *
+     * @return the isSealed value.
+     */
+    public Boolean isSealed() {
+        return this.isSealed;
+    }
+
+    /**
+     * Set the isSealed property: If this blob has been sealed.
+     *
+     * @param isSealed the isSealed value to set.
+     * @return the BlobGetPropertiesHeaders object itself.
+     */
+    public BlobGetPropertiesHeaders setIsSealed(Boolean isSealed) {
+        this.isSealed = isSealed;
         return this;
     }
 

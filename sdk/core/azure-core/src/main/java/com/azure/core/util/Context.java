@@ -143,7 +143,9 @@ public class Context {
     }
 
     private Map<Object, Object> getValuesHelper(Map<Object, Object> values) {
-        values.putIfAbsent(key, value);
+        if (key != null) {
+            values.putIfAbsent(key, value);
+        }
 
         return (parent == null) ? values : parent.getValuesHelper(values);
     }

@@ -17,9 +17,13 @@ import com.azure.storage.blob.models.CpkInfo;
 import com.azure.storage.blob.models.ListBlobsOptions;
 import com.azure.storage.blob.models.PublicAccessType;
 import com.azure.storage.blob.models.StorageAccountInfo;
+import com.azure.storage.blob.models.UserDelegationKey;
+import com.azure.storage.blob.sas.BlobServiceSasSignatureValues;
+import com.azure.storage.common.StorageSharedKeyCredential;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
+import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
 
@@ -61,9 +65,7 @@ public final class BlobContainerClient {
 
     /**
      * Initializes a new BlobClient object by concatenating blobName to the end of ContainerAsyncClient's URL. The new
-     * BlobClient uses the same request policy pipeline as the ContainerAsyncClient. To change the pipeline, create the
-     * BlobClient and then call its WithPipeline method passing in the desired pipeline object. Or, call this package's
-     * getBlobAsyncClient instead of calling this object's getBlobAsyncClient method.
+     * BlobClient uses the same request policy pipeline as the ContainerAsyncClient.
      *
      * @param blobName A {@code String} representing the name of the blob.
      *
@@ -78,9 +80,7 @@ public final class BlobContainerClient {
 
     /**
      * Initializes a new BlobClient object by concatenating blobName to the end of ContainerAsyncClient's URL. The new
-     * BlobClient uses the same request policy pipeline as the ContainerAsyncClient. To change the pipeline, create the
-     * BlobClient and then call its WithPipeline method passing in the desired pipeline object. Or, call this package's
-     * getBlobAsyncClient instead of calling this object's getBlobAsyncClient method.
+     * BlobClient uses the same request policy pipeline as the ContainerAsyncClient.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -92,6 +92,18 @@ public final class BlobContainerClient {
      */
     public BlobClient getBlobClient(String blobName, String snapshot) {
         return new BlobClient(client.getBlobAsyncClient(blobName, snapshot));
+    }
+
+    /**
+     * Initializes a new BlobClient object by concatenating blobName to the end of ContainerAsyncClient's URL. The new
+     * BlobClient uses the same request policy pipeline as the ContainerAsyncClient.
+     *
+     * @param blobName A {@code String} representing the name of the blob.
+     * @param versionId the version identifier for the blob, pass {@code null} to interact with the latest blob version.
+     * @return A new {@link BlobClient} object which references the blob with the specified name in this container.
+     */
+    public BlobClient getBlobVersionClient(String blobName, String versionId) {
+        return new BlobClient(client.getBlobVersionAsyncClient(blobName, versionId));
     }
 
     /**
@@ -151,6 +163,15 @@ public final class BlobContainerClient {
      */
     public CpkInfo getCustomerProvidedKey() {
         return client.getCustomerProvidedKey();
+    }
+
+    /**
+     * Gets the {@code encryption scope} used to encrypt this blob's content on the server.
+     *
+     * @return the encryption scope used for encryption.
+     */
+    public String getEncryptionScope() {
+        return client.getEncryptionScope();
     }
 
     /**
@@ -444,7 +465,31 @@ public final class BlobContainerClient {
      * @return The listed blobs, flattened.
      */
     public PagedIterable<BlobItem> listBlobs(ListBlobsOptions options, Duration timeout) {
-        return new PagedIterable<>(client.listBlobsFlatWithOptionalTimeout(options, timeout));
+        return this.listBlobs(options, null, timeout);
+    }
+
+    /**
+     * Returns a lazy loaded list of blobs in this container, with folder structures flattened. The returned {@link
+     * PagedIterable} can be consumed through while new items are automatically retrieved as needed.
+     *
+     * <p>
+     * Blob names are returned in lexicographic order.
+     *
+     * <p>
+     * For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/list-blobs">Azure Docs</a>.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.BlobContainerClient.listBlobs#ListBlobsOptions-String-Duration}
+     *
+     * @param options {@link ListBlobsOptions}
+     * @param continuationToken Identifies the portion of the list to be returned with the next list operation.
+     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @return The listed blobs, flattened.
+     */
+    public PagedIterable<BlobItem> listBlobs(ListBlobsOptions options, String continuationToken, Duration timeout) {
+        return new PagedIterable<>(client.listBlobsFlatWithOptionalTimeout(options, continuationToken, timeout));
     }
 
     /**
@@ -551,5 +596,42 @@ public final class BlobContainerClient {
         Mono<Response<StorageAccountInfo>> response = client.getAccountInfoWithResponse(context);
 
         return blockWithOptionalTimeout(response, timeout);
+    }
+
+    /**
+     * Generates a user delegation SAS for the container using the specified {@link BlobServiceSasSignatureValues}.
+     * <p>See {@link BlobServiceSasSignatureValues} for more information on how to construct a user delegation SAS.</p>
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.BlobContainerClient.generateUserDelegationSas#BlobServiceSasSignatureValues-UserDelegationKey}
+     *
+     * @param blobServiceSasSignatureValues {@link BlobServiceSasSignatureValues}
+     * @param userDelegationKey A {@link UserDelegationKey} object used to sign the SAS values.
+     * @see BlobServiceClient#getUserDelegationKey(OffsetDateTime, OffsetDateTime) for more information on how to get a
+     * user delegation key.
+     *
+     * @return A {@code String} representing all SAS query parameters.
+     */
+    public String generateUserDelegationSas(BlobServiceSasSignatureValues blobServiceSasSignatureValues,
+        UserDelegationKey userDelegationKey) {
+        return this.client.generateUserDelegationSas(blobServiceSasSignatureValues, userDelegationKey);
+    }
+
+    /**
+     * Generates a service SAS for the container using the specified {@link BlobServiceSasSignatureValues}
+     * Note : The client must be authenticated via {@link StorageSharedKeyCredential}
+     * <p>See {@link BlobServiceSasSignatureValues} for more information on how to construct a service SAS.</p>
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.BlobContainerClient.generateSas#BlobServiceSasSignatureValues}
+     *
+     * @param blobServiceSasSignatureValues {@link BlobServiceSasSignatureValues}
+     *
+     * @return A {@code String} representing all SAS query parameters.
+     */
+    public String generateSas(BlobServiceSasSignatureValues blobServiceSasSignatureValues) {
+        return this.client.generateSas(blobServiceSasSignatureValues);
     }
 }

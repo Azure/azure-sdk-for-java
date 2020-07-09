@@ -3,6 +3,7 @@
 
 package com.azure.core.util.serializer;
 
+import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.implementation.TypeUtil;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.JsonFactory;
@@ -93,6 +94,7 @@ final class AdditionalPropertiesDeserializer extends StdDeserializer<Object> imp
 
         // compare top level fields and keep only missing fields
         final Class<?> tClass = this.defaultDeserializer.handledType();
+        boolean isJsonFlatten = (tClass.getAnnotation(JsonFlatten.class) != null);
         for (Class<?> c : TypeUtil.getAllClasses(tClass)) {
             Field[] fields = c.getDeclaredFields();
             for (Field field : fields) {
@@ -104,7 +106,7 @@ final class AdditionalPropertiesDeserializer extends StdDeserializer<Object> imp
                     continue;
                 }
                 JsonProperty property = field.getAnnotation(JsonProperty.class);
-                String key = property.value().split("((?<!\\\\))\\.")[0];
+                String key = isJsonFlatten ? property.value().split("((?<!\\\\))\\.")[0] : property.value();
                 if (!key.isEmpty()) {
                     if (copy.has(key)) {
                         copy.remove(key);

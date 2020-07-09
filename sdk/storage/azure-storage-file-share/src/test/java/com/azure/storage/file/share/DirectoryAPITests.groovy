@@ -79,6 +79,32 @@ class DirectoryAPITests extends APISpec {
         fileClient instanceof ShareFileClient
     }
 
+    def "Exists"() {
+        when:
+        primaryDirectoryClient.create()
+
+        then:
+        primaryDirectoryClient.exists()
+    }
+
+    def "Does not exist"() {
+        expect:
+        !primaryDirectoryClient.exists()
+    }
+
+    def "Exists error"() {
+        setup:
+        primaryDirectoryClient = directoryBuilderHelper(interceptorManager, shareName, directoryPath)
+            .sasToken("sig=dummyToken").buildDirectoryClient()
+
+        when:
+        primaryDirectoryClient.exists()
+
+        then:
+        def e = thrown(ShareStorageException)
+        FileTestHelper.assertExceptionStatusCodeAndMessage(e, 403, ShareErrorCode.AUTHENTICATION_FAILED)
+    }
+
     def "Create directory"() {
         expect:
         FileTestHelper.assertResponseStatusCode(primaryDirectoryClient.createWithResponse(null, null, null, null, null), 201)
@@ -123,6 +149,29 @@ class DirectoryAPITests extends APISpec {
         smbProperties.setFileCreationTime(getUTCNow())
             .setFileLastWriteTime(getUTCNow())
             .setFilePermissionKey(filePermissionKey)
+        when:
+        def resp = primaryDirectoryClient.createWithResponse(smbProperties, null, null, null, null)
+
+        then:
+        FileTestHelper.assertResponseStatusCode(resp, 201)
+        resp.getValue().getSmbProperties()
+        resp.getValue().getSmbProperties().getFilePermissionKey()
+        resp.getValue().getSmbProperties().getNtfsFileAttributes()
+        resp.getValue().getSmbProperties().getFileLastWriteTime()
+        resp.getValue().getSmbProperties().getFileCreationTime()
+        resp.getValue().getSmbProperties().getFileChangeTime()
+        resp.getValue().getSmbProperties().getParentId()
+        resp.getValue().getSmbProperties().getFileId()
+    }
+
+    def "Create directory with ntfs attributes"() {
+        setup:
+        def filePermissionKey = shareClient.createPermission(filePermission)
+        def attributes = EnumSet.of(NtfsFileAttributes.HIDDEN, NtfsFileAttributes.DIRECTORY)
+        smbProperties.setFileCreationTime(getUTCNow())
+            .setFileLastWriteTime(getUTCNow())
+            .setFilePermissionKey(filePermissionKey)
+            .setNtfsFileAttributes(attributes)
         when:
         def resp = primaryDirectoryClient.createWithResponse(smbProperties, null, null, null, null)
 
@@ -382,9 +431,11 @@ class DirectoryAPITests extends APISpec {
         primaryDirectoryClient.create()
 
         when:
-        primaryDirectoryClient.forceCloseHandle("1")
+        def handlesClosedInfo = primaryDirectoryClient.forceCloseHandle("1")
 
         then:
+        handlesClosedInfo.getClosedHandles() == 0
+        handlesClosedInfo.getFailedHandles() == 0
         notThrown(ShareStorageException)
     }
 
@@ -404,11 +455,12 @@ class DirectoryAPITests extends APISpec {
         primaryDirectoryClient.create()
 
         when:
-        def numberOfHandlesClosed = primaryDirectoryClient.forceCloseAllHandles(false, null, null)
+        def handlesClosedInfo  = primaryDirectoryClient.forceCloseAllHandles(false, null, null)
 
         then:
         notThrown(ShareStorageException)
-        numberOfHandlesClosed == 0
+        handlesClosedInfo.getClosedHandles() == 0
+        handlesClosedInfo.getFailedHandles() == 0
     }
 
     def "Create sub directory"() {

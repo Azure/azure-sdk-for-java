@@ -14,24 +14,11 @@ import com.azure.storage.queue.QueueServiceVersion;
 import java.time.OffsetDateTime;
 
 /**
- * Used to generate a Shared Access Signature (SAS) for Azure Storage Queues service. Once all the values here are set,
- * call {@link
- * #generateSasQueryParameters(StorageSharedKeyCredential) generateSasQueryParameters(StorageSharedKeyCredential)}
- * to obtain a representation of the SAS which can be applied to queue urls.
+ * Used to initialize parameters for a Shared Access Signature (SAS) for an Azure Queue Storage service. Once all the
+ * values here are set, use the appropriate SAS generation method on the desired queue client to obtain a
+ * representation of the SAS which can then be applied to a new client using the .sasToken(String) method on the
+ * desired client builder.
  *
- * <p><strong>Generating a queue SAS with expiryTime and permissions</strong></p>
- * <p>The snippet below generates a queue SAS that lasts for two days and gives the user read, add, and update
- * permissions to the queue.
- *
- * {@codesnippet com.azure.storage.queue.queueServiceSasSignatureValues.generateSasQueryParameters#StorageSharedKeyCredential}
- *
- * <p><strong>Generating a queue SAS with stored access policy identifier</strong></p>
- * <p>The snippet below generates a queue SAS that has the same duration and permissions specified by the
- * {@link #setIdentifier(String) stored access policy}.
- *
- * {@codesnippet com.azure.storage.queue.queueServiceSasSignatureValues.generateSasQueryParameters.identifier#StorageSharedKeyCredential}
- *
- * @see QueueServiceSasQueryParameters
  * @see <a href=https://docs.microsoft.com/en-ca/azure/storage/common/storage-sas-overview>Storage SAS overview</a>
  * @see <a href=https://docs.microsoft.com/rest/api/storageservices/constructing-a-service-sas>Constructing a Service
  * SAS</a>
@@ -55,8 +42,34 @@ public final class QueueServiceSasSignatureValues {
 
     /**
      * Creates an object with empty values for all fields.
+     * @deprecated Please use {@link #QueueServiceSasSignatureValues(String)}, or
+     * {@link #QueueServiceSasSignatureValues(OffsetDateTime, QueueSasPermission)}
      */
+    @Deprecated
     public QueueServiceSasSignatureValues() {
+    }
+
+    /**
+     * Creates an object with the specified expiry time and permissions
+     *
+     * @param expiryTime The time after which the SAS will no longer work.
+     * @param permissions {@link QueueSasPermission} allowed by the SAS.
+     */
+    public QueueServiceSasSignatureValues(OffsetDateTime expiryTime, QueueSasPermission permissions) {
+        StorageImplUtils.assertNotNull("expiryTime", expiryTime);
+        StorageImplUtils.assertNotNull("permissions", permissions);
+        this.expiryTime = expiryTime;
+        this.permissions = permissions.toString();
+    }
+
+    /**
+     * Creates an object with the specified identifier.
+     *
+     * @param identifier Name of the access policy.
+     */
+    public QueueServiceSasSignatureValues(String identifier) {
+        StorageImplUtils.assertNotNull("identifier", identifier);
+        this.identifier = identifier;
     }
 
     /**
@@ -177,7 +190,9 @@ public final class QueueServiceSasSignatureValues {
      * Gets the name of the queue this SAS may access.
      *
      * @return The name of the queue the SAS user may access.
+     * @deprecated Queue name is now auto-populated by the SAS generation methods provided on the desired queue client.
      */
+    @Deprecated
     public String getQueueName() {
         return queueName;
     }
@@ -187,7 +202,10 @@ public final class QueueServiceSasSignatureValues {
      *
      * @param queueName Canonical name of the object the SAS grants access
      * @return the updated QueueServiceSasSignatureValues object
+     * @deprecated Please use the generateSas methods provided on the desired queue client that will
+     * auto-populate the queue name.
      */
+    @Deprecated
     public QueueServiceSasSignatureValues setQueueName(String queueName) {
         this.queueName = queueName;
         return this;
@@ -197,8 +215,19 @@ public final class QueueServiceSasSignatureValues {
      * @return the name of the access policy on the queue this SAS references if any. Please see
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/establishing-a-stored-access-policy">here</a>
      * for more information.
+     * @deprecated Please use {@link #getIdentifier()}
      */
+    @Deprecated
     public String getId() {
+        return identifier;
+    }
+
+    /**
+     * @return the name of the access policy on the queue this SAS references if any. Please see
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/establishing-a-stored-access-policy">here</a>
+     * for more information.
+     */
+    public String getIdentifier() {
         return identifier;
     }
 
@@ -220,7 +249,6 @@ public final class QueueServiceSasSignatureValues {
      * parameters.
      *
      * <p><strong>Notes on SAS generation</strong></p>
-     * <p>
      * <ul>
      * <li>If {@link #setVersion(String) version} is not set, the {@link QueueServiceVersion#getLatest() latest service
      * version} is used.</li>
@@ -237,7 +265,10 @@ public final class QueueServiceSasSignatureValues {
      * @throws IllegalStateException If the HMAC-SHA256 algorithm isn't supported, if the key isn't a valid Base64
      * encoded string, or the UTF-8 charset isn't supported.
      * @throws NullPointerException If {@code storageSharedKeyCredentials} is null.
+     * @deprecated Please use the generateSas(QueueServiceSasSignatureValues) method on the desired queue client
+     * after initializing {@link QueueServiceSasSignatureValues}.
      */
+    @Deprecated
     public QueueServiceSasQueryParameters generateSasQueryParameters(
         StorageSharedKeyCredential storageSharedKeyCredentials) {
         StorageImplUtils.assertNotNull("storageSharedKeyCredentials", storageSharedKeyCredentials);

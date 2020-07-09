@@ -18,7 +18,9 @@ public class PageBlobItem {
     private final byte[] contentMd5;
     private final Boolean isServerEncrypted;
     private final String encryptionKeySha256;
+    private final String encryptionScope;
     private final Long blobSequenceNumber;
+    private final String versionId;
 
     /**
      * Constructs a {@link PageBlobItem}.
@@ -32,12 +34,50 @@ public class PageBlobItem {
      */
     public PageBlobItem(final String eTag, final OffsetDateTime lastModified, final byte[] contentMd5,
         final Boolean isServerEncrypted, final String encryptionKeySha256, final Long blobSequenceNumber) {
+        this(eTag, lastModified, contentMd5, isServerEncrypted, encryptionKeySha256, null, blobSequenceNumber);
+    }
+
+    /**
+     * Constructs a {@link PageBlobItem}.
+     *
+     * @param eTag ETag of the page blob.
+     * @param lastModified Last modified time of the page blob.
+     * @param contentMd5 Content MD5 of the page blob.
+     * @param isServerEncrypted Flag indicating if the page blob is encrypted on the server.
+     * @param encryptionKeySha256 The encryption key used to encrypt the page blob.
+     * @param encryptionScope The encryption scope used to encrypt the page blob.
+     * @param blobSequenceNumber The current sequence number for the page blob.
+     */
+    public PageBlobItem(final String eTag, final OffsetDateTime lastModified, final byte[] contentMd5,
+        final Boolean isServerEncrypted, final String encryptionKeySha256, final String encryptionScope,
+        final Long blobSequenceNumber) {
+        this(eTag, lastModified, contentMd5, isServerEncrypted, encryptionKeySha256, encryptionScope,
+            blobSequenceNumber, null);
+    }
+
+    /**
+     * Constructs a {@link PageBlobItem}.
+     *
+     * @param eTag ETag of the page blob.
+     * @param lastModified Last modified time of the page blob.
+     * @param contentMd5 Content MD5 of the page blob.
+     * @param isServerEncrypted Flag indicating if the page blob is encrypted on the server.
+     * @param encryptionKeySha256 The encryption key used to encrypt the page blob.
+     * @param encryptionScope The encryption scope used to encrypt the page blob.
+     * @param blobSequenceNumber The current sequence number for the page blob.
+     * @param versionId The version identifier of the page blob.
+     */
+    public PageBlobItem(final String eTag, final OffsetDateTime lastModified, final byte[] contentMd5,
+                        final Boolean isServerEncrypted, final String encryptionKeySha256, final String encryptionScope,
+                        final Long blobSequenceNumber, final String versionId) {
         this.eTag = eTag;
         this.lastModified = lastModified;
         this.contentMd5 = CoreUtils.clone(contentMd5);
         this.isServerEncrypted = isServerEncrypted;
         this.encryptionKeySha256 = encryptionKeySha256;
+        this.encryptionScope = encryptionScope;
         this.blobSequenceNumber = blobSequenceNumber;
+        this.versionId = versionId;
     }
 
     /**
@@ -69,6 +109,13 @@ public class PageBlobItem {
     }
 
     /**
+     * @return the encryption scope used to encrypt the page blob
+     */
+    public String getEncryptionScope() {
+        return encryptionScope;
+    }
+
+    /**
      * @return the MD5 of the page blob's content
      */
     public byte[] getContentMd5() {
@@ -80,5 +127,12 @@ public class PageBlobItem {
      */
     public Long getBlobSequenceNumber() {
         return blobSequenceNumber;
+    }
+
+    /**
+     * @return the version identifier of the page blob
+     */
+    public String getVersionId() {
+        return versionId;
     }
 }

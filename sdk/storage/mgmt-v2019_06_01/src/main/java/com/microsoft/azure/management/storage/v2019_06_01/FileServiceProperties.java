@@ -16,6 +16,7 @@ import com.microsoft.azure.arm.model.Updatable;
 import com.microsoft.azure.arm.model.Appliable;
 import com.microsoft.azure.arm.model.Creatable;
 import com.microsoft.azure.arm.resources.models.HasManager;
+import com.microsoft.azure.management.storage.v2019_06_01.implementation.SkuInner;
 import com.microsoft.azure.management.storage.v2019_06_01.implementation.StorageManager;
 import java.util.List;
 
@@ -39,6 +40,16 @@ public interface FileServiceProperties extends HasInner<FileServicePropertiesInn
     String name();
 
     /**
+     * @return the shareDeleteRetentionPolicy value.
+     */
+    DeleteRetentionPolicy shareDeleteRetentionPolicy();
+
+    /**
+     * @return the sku value.
+     */
+    SkuInner sku();
+
+    /**
      * @return the type value.
      */
     String type();
@@ -46,7 +57,7 @@ public interface FileServiceProperties extends HasInner<FileServicePropertiesInn
     /**
      * The entirety of the FileServiceProperties definition.
      */
-    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithStorageAccount, DefinitionStages.WithCors, DefinitionStages.WithCreate {
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithStorageAccount, DefinitionStages.WithCors, DefinitionStages.WithShareDeleteRetentionPolicy, DefinitionStages.WithCreate {
     }
 
     /**
@@ -81,7 +92,19 @@ public interface FileServiceProperties extends HasInner<FileServicePropertiesInn
             * @param cors Specifies CORS rules for the File service. You can include up to five CorsRule elements in the request. If no CorsRule elements are included in the request body, all CORS rules will be deleted, and CORS will be disabled for the File service
             * @return the next definition stage
             */
-            WithCreate withCors(CorsRules cors);
+            WithShareDeleteRetentionPolicy withCors(CorsRules cors);
+        }
+
+        /**
+         * The stage of the fileserviceproperties definition allowing to specify ShareDeleteRetentionPolicy.
+         */
+        interface WithShareDeleteRetentionPolicy {
+           /**
+            * Specifies shareDeleteRetentionPolicy.
+            * @param shareDeleteRetentionPolicy The file service properties for share soft delete
+            * @return the next definition stage
+            */
+            WithCreate withShareDeleteRetentionPolicy(DeleteRetentionPolicy shareDeleteRetentionPolicy);
         }
 
         /**
@@ -95,7 +118,7 @@ public interface FileServiceProperties extends HasInner<FileServicePropertiesInn
     /**
      * The template for a FileServiceProperties update operation, containing all the settings that can be modified.
      */
-    interface Update extends Appliable<FileServiceProperties>, UpdateStages.WithCors {
+    interface Update extends Appliable<FileServiceProperties>, UpdateStages.WithCors, UpdateStages.WithShareDeleteRetentionPolicy {
     }
 
     /**
@@ -112,6 +135,18 @@ public interface FileServiceProperties extends HasInner<FileServicePropertiesInn
              * @return the next update stage
              */
             Update withCors(CorsRules cors);
+        }
+
+        /**
+         * The stage of the fileserviceproperties update allowing to specify ShareDeleteRetentionPolicy.
+         */
+        interface WithShareDeleteRetentionPolicy {
+            /**
+             * Specifies shareDeleteRetentionPolicy.
+             * @param shareDeleteRetentionPolicy The file service properties for share soft delete
+             * @return the next update stage
+             */
+            Update withShareDeleteRetentionPolicy(DeleteRetentionPolicy shareDeleteRetentionPolicy);
         }
 
     }

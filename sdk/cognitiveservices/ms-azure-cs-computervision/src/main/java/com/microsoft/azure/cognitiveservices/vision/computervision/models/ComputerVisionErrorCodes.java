@@ -8,79 +8,85 @@
 
 package com.microsoft.azure.cognitiveservices.vision.computervision.models;
 
+import java.util.Collection;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
+import com.microsoft.rest.ExpandableStringEnum;
 
 /**
  * Defines values for ComputerVisionErrorCodes.
  */
-public enum ComputerVisionErrorCodes {
-    /** Enum value InvalidImageUrl. */
-    INVALID_IMAGE_URL("InvalidImageUrl"),
+public final class ComputerVisionErrorCodes extends ExpandableStringEnum<ComputerVisionErrorCodes> {
+    /** Static value InvalidImageFormat for ComputerVisionErrorCodes. */
+    public static final ComputerVisionErrorCodes INVALID_IMAGE_FORMAT = fromString("InvalidImageFormat");
 
-    /** Enum value InvalidImageFormat. */
-    INVALID_IMAGE_FORMAT("InvalidImageFormat"),
+    /** Static value UnsupportedMediaType for ComputerVisionErrorCodes. */
+    public static final ComputerVisionErrorCodes UNSUPPORTED_MEDIA_TYPE = fromString("UnsupportedMediaType");
 
-    /** Enum value InvalidImageSize. */
-    INVALID_IMAGE_SIZE("InvalidImageSize"),
+    /** Static value InvalidImageUrl for ComputerVisionErrorCodes. */
+    public static final ComputerVisionErrorCodes INVALID_IMAGE_URL = fromString("InvalidImageUrl");
 
-    /** Enum value NotSupportedVisualFeature. */
-    NOT_SUPPORTED_VISUAL_FEATURE("NotSupportedVisualFeature"),
+    /** Static value NotSupportedFeature for ComputerVisionErrorCodes. */
+    public static final ComputerVisionErrorCodes NOT_SUPPORTED_FEATURE = fromString("NotSupportedFeature");
 
-    /** Enum value NotSupportedImage. */
-    NOT_SUPPORTED_IMAGE("NotSupportedImage"),
+    /** Static value NotSupportedImage for ComputerVisionErrorCodes. */
+    public static final ComputerVisionErrorCodes NOT_SUPPORTED_IMAGE = fromString("NotSupportedImage");
 
-    /** Enum value InvalidDetails. */
-    INVALID_DETAILS("InvalidDetails"),
+    /** Static value Timeout for ComputerVisionErrorCodes. */
+    public static final ComputerVisionErrorCodes TIMEOUT = fromString("Timeout");
 
-    /** Enum value NotSupportedLanguage. */
-    NOT_SUPPORTED_LANGUAGE("NotSupportedLanguage"),
+    /** Static value InternalServerError for ComputerVisionErrorCodes. */
+    public static final ComputerVisionErrorCodes INTERNAL_SERVER_ERROR = fromString("InternalServerError");
 
-    /** Enum value BadArgument. */
-    BAD_ARGUMENT("BadArgument"),
+    /** Static value InvalidImageSize for ComputerVisionErrorCodes. */
+    public static final ComputerVisionErrorCodes INVALID_IMAGE_SIZE = fromString("InvalidImageSize");
 
-    /** Enum value FailedToProcess. */
-    FAILED_TO_PROCESS("FailedToProcess"),
+    /** Static value BadArgument for ComputerVisionErrorCodes. */
+    public static final ComputerVisionErrorCodes BAD_ARGUMENT = fromString("BadArgument");
 
-    /** Enum value Timeout. */
-    TIMEOUT("Timeout"),
+    /** Static value DetectFaceError for ComputerVisionErrorCodes. */
+    public static final ComputerVisionErrorCodes DETECT_FACE_ERROR = fromString("DetectFaceError");
 
-    /** Enum value InternalServerError. */
-    INTERNAL_SERVER_ERROR("InternalServerError"),
+    /** Static value NotSupportedLanguage for ComputerVisionErrorCodes. */
+    public static final ComputerVisionErrorCodes NOT_SUPPORTED_LANGUAGE = fromString("NotSupportedLanguage");
 
-    /** Enum value Unspecified. */
-    UNSPECIFIED("Unspecified"),
+    /** Static value InvalidThumbnailSize for ComputerVisionErrorCodes. */
+    public static final ComputerVisionErrorCodes INVALID_THUMBNAIL_SIZE = fromString("InvalidThumbnailSize");
 
-    /** Enum value StorageException. */
-    STORAGE_EXCEPTION("StorageException");
+    /** Static value InvalidDetails for ComputerVisionErrorCodes. */
+    public static final ComputerVisionErrorCodes INVALID_DETAILS = fromString("InvalidDetails");
 
-    /** The actual serialized value for a ComputerVisionErrorCodes instance. */
-    private String value;
+    /** Static value InvalidModel for ComputerVisionErrorCodes. */
+    public static final ComputerVisionErrorCodes INVALID_MODEL = fromString("InvalidModel");
 
-    ComputerVisionErrorCodes(String value) {
-        this.value = value;
+    /** Static value CancelledRequest for ComputerVisionErrorCodes. */
+    public static final ComputerVisionErrorCodes CANCELLED_REQUEST = fromString("CancelledRequest");
+
+    /** Static value NotSupportedVisualFeature for ComputerVisionErrorCodes. */
+    public static final ComputerVisionErrorCodes NOT_SUPPORTED_VISUAL_FEATURE = fromString("NotSupportedVisualFeature");
+
+    /** Static value FailedToProcess for ComputerVisionErrorCodes. */
+    public static final ComputerVisionErrorCodes FAILED_TO_PROCESS = fromString("FailedToProcess");
+
+    /** Static value Unspecified for ComputerVisionErrorCodes. */
+    public static final ComputerVisionErrorCodes UNSPECIFIED = fromString("Unspecified");
+
+    /** Static value StorageException for ComputerVisionErrorCodes. */
+    public static final ComputerVisionErrorCodes STORAGE_EXCEPTION = fromString("StorageException");
+
+    /**
+     * Creates or finds a ComputerVisionErrorCodes from its string representation.
+     * @param name a name to look for
+     * @return the corresponding ComputerVisionErrorCodes
+     */
+    @JsonCreator
+    public static ComputerVisionErrorCodes fromString(String name) {
+        return fromString(name, ComputerVisionErrorCodes.class);
     }
 
     /**
-     * Parses a serialized value to a ComputerVisionErrorCodes instance.
-     *
-     * @param value the serialized value to parse.
-     * @return the parsed ComputerVisionErrorCodes object, or null if unable to parse.
+     * @return known ComputerVisionErrorCodes values
      */
-    @JsonCreator
-    public static ComputerVisionErrorCodes fromString(String value) {
-        ComputerVisionErrorCodes[] items = ComputerVisionErrorCodes.values();
-        for (ComputerVisionErrorCodes item : items) {
-            if (item.toString().equalsIgnoreCase(value)) {
-                return item;
-            }
-        }
-        return null;
-    }
-
-    @JsonValue
-    @Override
-    public String toString() {
-        return this.value;
+    public static Collection<ComputerVisionErrorCodes> values() {
+        return values(ComputerVisionErrorCodes.class);
     }
 }

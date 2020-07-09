@@ -8,6 +8,7 @@
 
 package com.microsoft.azure.management.storage.v2019_06_01;
 
+import org.joda.time.DateTime;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -31,6 +32,18 @@ public class KeyVaultProperties {
      */
     @JsonProperty(value = "keyvaulturi")
     private String keyVaultUri;
+
+    /**
+     * The object identifier of the current versioned Key Vault Key in use.
+     */
+    @JsonProperty(value = "currentVersionedKeyIdentifier", access = JsonProperty.Access.WRITE_ONLY)
+    private String currentVersionedKeyIdentifier;
+
+    /**
+     * Timestamp of last rotation of the Key Vault Key.
+     */
+    @JsonProperty(value = "lastKeyRotationTimestamp", access = JsonProperty.Access.WRITE_ONLY)
+    private DateTime lastKeyRotationTimestamp;
 
     /**
      * Get the name of KeyVault key.
@@ -90,6 +103,24 @@ public class KeyVaultProperties {
     public KeyVaultProperties withKeyVaultUri(String keyVaultUri) {
         this.keyVaultUri = keyVaultUri;
         return this;
+    }
+
+    /**
+     * Get the object identifier of the current versioned Key Vault Key in use.
+     *
+     * @return the currentVersionedKeyIdentifier value
+     */
+    public String currentVersionedKeyIdentifier() {
+        return this.currentVersionedKeyIdentifier;
+    }
+
+    /**
+     * Get timestamp of last rotation of the Key Vault Key.
+     *
+     * @return the lastKeyRotationTimestamp value
+     */
+    public DateTime lastKeyRotationTimestamp() {
+        return this.lastKeyRotationTimestamp;
     }
 
 }

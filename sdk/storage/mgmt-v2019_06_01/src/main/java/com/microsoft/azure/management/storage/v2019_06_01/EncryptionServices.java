@@ -29,13 +29,13 @@ public class EncryptionServices {
     /**
      * The encryption function of the table storage service.
      */
-    @JsonProperty(value = "table", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "table")
     private EncryptionService table;
 
     /**
      * The encryption function of the queue storage service.
      */
-    @JsonProperty(value = "queue", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "queue")
     private EncryptionService queue;
 
     /**
@@ -88,12 +88,34 @@ public class EncryptionServices {
     }
 
     /**
+     * Set the encryption function of the table storage service.
+     *
+     * @param table the table value to set
+     * @return the EncryptionServices object itself.
+     */
+    public EncryptionServices withTable(EncryptionService table) {
+        this.table = table;
+        return this;
+    }
+
+    /**
      * Get the encryption function of the queue storage service.
      *
      * @return the queue value
      */
     public EncryptionService queue() {
         return this.queue;
+    }
+
+    /**
+     * Set the encryption function of the queue storage service.
+     *
+     * @param queue the queue value to set
+     * @return the EncryptionServices object itself.
+     */
+    public EncryptionServices withQueue(EncryptionService queue) {
+        this.queue = queue;
+        return this;
     }
 
 }

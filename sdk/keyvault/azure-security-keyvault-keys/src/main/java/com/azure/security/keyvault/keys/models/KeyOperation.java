@@ -45,6 +45,11 @@ public final class KeyOperation extends ExpandableStringEnum<KeyOperation> {
     public static final KeyOperation UNWRAP_KEY = fromString("unwrapKey");
 
     /**
+     * Static value Import for KeyOperation.
+     */
+    public static final KeyOperation IMPORT = fromString("import");
+
+    /**
      * Creates or finds a KeyOperation from its string representation.
      *
      * @param name a name to look for.

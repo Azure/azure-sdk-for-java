@@ -6,16 +6,19 @@ package com.azure.storage.blob.specialized
 import com.azure.core.exception.UnexpectedLengthException
 import com.azure.core.http.RequestConditions
 import com.azure.storage.blob.APISpec
+import com.azure.storage.blob.BlobContainerClient
 import com.azure.storage.blob.models.BlobErrorCode
 import com.azure.storage.blob.models.BlobHttpHeaders
 import com.azure.storage.blob.models.BlobRange
 import com.azure.storage.blob.models.BlobRequestConditions
 import com.azure.storage.blob.models.BlobStorageException
 import com.azure.storage.blob.models.CopyStatusType
+import com.azure.storage.blob.options.PageBlobCreateOptions
 import com.azure.storage.blob.models.PageBlobRequestConditions
 import com.azure.storage.blob.models.PageRange
 import com.azure.storage.blob.models.PublicAccessType
 import com.azure.storage.blob.models.SequenceNumberActionType
+import spock.lang.Ignore
 import spock.lang.Unroll
 
 import java.security.MessageDigest
@@ -109,6 +112,33 @@ class PageBlobAPITest extends APISpec {
         key1  | value1 | key2   | value2
         null  | null   | null   | null
         "foo" | "bar"  | "fizz" | "buzz"
+    }
+
+    @Unroll
+    def "Create tags"() {
+        setup:
+        def tags = new HashMap<String, String>()
+        if (key1 != null) {
+            tags.put(key1, value1)
+        }
+        if (key2 != null) {
+            tags.put(key2, value2)
+        }
+
+        when:
+        bc.createWithResponse(new PageBlobCreateOptions(PageBlobClient.PAGE_BYTES).setTags(tags), null, null)
+
+        def response = bc.getTagsWithResponse(null, null)
+
+        then:
+        response.getStatusCode() == 200
+        response.getValue() == tags
+
+        where:
+        key1                | value1     | key2   | value2
+        null                | null       | null   | null
+        "foo"               | "bar"      | "fizz" | "buzz"
+        " +-./:=_  +-./:=_" | " +-./:=_" | null   | null
     }
 
     @Unroll
@@ -809,6 +839,41 @@ class PageBlobAPITest extends APISpec {
         thrown(BlobStorageException)
     }
 
+    /* Uncomment any managed disk lines if a managed disk account is available to be tested. They are difficult to
+     acquire so we do not run them in the nightly live run tests. */
+
+    @Ignore
+    def "Get page ranges diff prev snapshot url"() {
+        setup:
+        BlobContainerClient managedDiskContainer = managedDiskServiceClient.getBlobContainerClient(generateContainerName())
+        managedDiskContainer.create()
+        PageBlobClient managedDiskBlob = managedDiskContainer.getBlobClient(generateBlobName()).getPageBlobClient()
+        managedDiskBlob.create(PageBlobClient.PAGE_BYTES * 2)
+
+        managedDiskBlob.uploadPages(new PageRange().setStart(PageBlobClient.PAGE_BYTES).setEnd(PageBlobClient.PAGE_BYTES * 2 - 1),
+            new ByteArrayInputStream(getRandomByteArray(PageBlobClient.PAGE_BYTES)))
+
+        def snapUrl = managedDiskBlob.createSnapshot().getBlobUrl()
+
+        managedDiskBlob.uploadPages(new PageRange().setStart(0).setEnd(PageBlobClient.PAGE_BYTES - 1),
+            new ByteArrayInputStream(getRandomByteArray(PageBlobClient.PAGE_BYTES)))
+
+        managedDiskBlob.clearPages(new PageRange().setStart(PageBlobClient.PAGE_BYTES).setEnd(PageBlobClient.PAGE_BYTES * 2 - 1))
+
+        when:
+        def response = managedDiskBlob.getManagedDiskPageRangesDiffWithResponse(new BlobRange(0, PageBlobClient.PAGE_BYTES * 2), snapUrl, null, null, null)
+
+        then:
+        response.getValue().getPageRange().size() == 1
+        response.getValue().getPageRange().get(0).getStart() == 0
+        response.getValue().getPageRange().get(0).getEnd() == PageBlobClient.PAGE_BYTES - 1
+        response.getValue().getClearRange().size() == 1
+        response.getValue().getClearRange().get(0).getStart() == PageBlobClient.PAGE_BYTES
+        response.getValue().getClearRange().get(0).getEnd() == PageBlobClient.PAGE_BYTES * 2 - 1
+        validateBasicHeaders(response.getHeaders())
+        Integer.parseInt(response.getHeaders().getValue("x-ms-blob-content-length")) == PageBlobClient.PAGE_BYTES * 2
+    }
+
     @Unroll
     def "PageRange IA"() {
         setup:
@@ -1127,7 +1192,7 @@ class PageBlobAPITest extends APISpec {
         "blob"                 | "blob"
         "path/to]a blob"       | "path/to]a blob"
         "path%2Fto%5Da%20blob" | "path/to]a blob"
-        "斑點"                 | "斑點"
+        "斑點"                   | "斑點"
         "%E6%96%91%E9%BB%9E"   | "斑點"
     }
 

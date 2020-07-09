@@ -84,7 +84,9 @@ public class SessionHandler extends Handler {
 
     @Override
     public void onSessionLocalClose(Event e) {
-        final ErrorCondition condition = e.getSession().getCondition();
+        final ErrorCondition condition = (e != null && e.getSession() != null)
+            ? e.getSession().getCondition()
+            : null;
 
         logger.verbose("onSessionLocalClose connectionId[{}], entityName[{}], condition[{}]",
             entityName, getConnectionId(),

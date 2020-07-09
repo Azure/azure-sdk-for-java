@@ -194,12 +194,7 @@ public final class DataLakeStorageClientImpl {
      * Initializes an instance of DataLakeStorageClient client.
      */
     public DataLakeStorageClientImpl() {
-        this(new HttpPipelineBuilder()
-                 .policies(
-                     new UserAgentPolicy(),
-                     new RetryPolicy(),
-                     new CookiePolicy())
-                 .build());
+        new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy()).build();
     }
 
     /**

@@ -1,24 +1,104 @@
-# Change Log azure-storage-blob
+# Release History
 
-## Version XX.X.X (XXXX-XX-XX)
+## 12.8.0-beta.2 (Unreleased)
+
+
+## 12.8.0-beta.1 (2020-07-07)
+- Added support for the 2019-12-12 service version.
+- Added support for blob tags. Added get/setTags method to Blob(Async)ClientBase. Added filterTags api to BlobServiceClient. Added ability to specify tags on all methods that create a blob. Tag count returned on getProperties/getBlob. Option to include returning tags on listing. 
+- Added support to query a blob. Added query and opernQueryInputStream methods to Blob(Async)ClientBase.
+- Added support to version a blob. Added `getVersionClient` to clients that returns a new client associated to the version. 
+- Added support to increase the maximum size of data that can be sent via a stage block. 
+
+## 12.7.0 (2020-06-12)
+- Moved BlobParallelUploadOptions into options package.
+- Added data source and data length to BlobParallelUploadOptions and removed them from the relevant method parameter lists
+
+## 12.7.0-beta.1 (2020-06-08)
+- Fixed a bug that would cause empty data to be sent if a call to stage block, block blob upload, append block, or upload pages was automatically retried by the SDK.
+- Added a maxConcurrency option on ParallelTransferOptions that allows the customer to limit how many concurrent network requests will be outstanding per api request at once. 
+- Added an overload to BlobClient.upload which returns a BlockBlobItem containing the properties returned by the service upon blob creation.
+- Fixed a bug that caused auth failures when constructing a client to a secondary endpoint using token auth.
+- Modified client constructors to throw on invalid urls early to prevent SAS tokens from being logged in Exceptions.
+
+## 12.6.1 (2020-05-06)
+- Updated `azure-core` version to `1.5.0` to pickup fixes for percent encoding `UTF-8` and invalid leading bytes in a body string.
+
+## 12.6.0 (2020-04-06)
+- Fixed a bug that would prevent client initialization against Azurite in some containerized environments.
+- Fixed a bug that would prevent progress from being reported when uploading small files.
+- Modified BlobOutputStream to wait on a condition variable until transfer is complete instead of polling.
+- Fixed a bug where the Date header wouldn't be updated with a new value on request retry.
+- Fixed a bug that ignored the timeout and context parameters on BlobClient.uploadWithResponse.
+- Added an overload to BlobOutputStream which accepts a context.
+
+## 12.5.0 (2020-03-11)
+- Fixed a bug that was adding an invalid 'include' query-parameter for list blob item requests if no dataset-include options were specified.
+- Fixed a bug in ReliableDownload that would cause multiple subscriber errors.
+- Added logic to ReliableDownload to retry on TimeoutException
+- Added default timeout to download stream to timeout if a certain amount of time passes without seeing any data.
+- Fixed a bug that would cause IOExceptions to be swallowed in BlobClient.upload(InputStream, long)
+
+## 12.4.0 (2020-02-12)
+- Added ability to access BlobProperties from BlobInputStream.
+- Modified downloadToFile to populate BlobProperties.blobSize to be the actual blob size instead of the content length of the first range.
+- Added upload methods on BlobClient to upload from an InputStream.
+
+- Added support for the 2019-07-07 service version.
+- Added support for encryption scopes service, container and blob builders now accept an encryption scope parameter and service and container builders accept a BlobContainerEncryptionScope parameter.
+- Added support for managed disk page range diff for managed disk accounts.
+
+## 12.3.1 (2020-02-10)
+- Updated `azure-core-http-netty` to version 1.3.0
+- Update `azure-storage-common` to version 12.3.1
+
+## 12.3.0 (2020-01-16)
 This package's
-[documentation](LINK)
+[documentation](https://github.com/Azure/azure-sdk-for-java/blob/azure-storage-blob_12.3.0/sdk/storage/azure-storage-blob/README.md)
 and
-[samples](LINK)
+[samples](https://github.com/Azure/azure-sdk-for-java/blob/azure-storage-blob_12.3.0/sdk/storage/azure-storage-blob/src/samples/java/com/azure/storage/blob)
+
+- Added ability to create service clients anonymously and should only be used to create anonymous container and blob clients. Anonymous service clients will throw on attempting to create network requests.
+- Added an overload to listBlobs to include a continuation token.
+- Added a check in BlobServiceClient.setAccountProperties to block invalid requests.
+- Fixed a bug that could result in data corruption on download when using the downloadToFile method.
+
+## 12.2.0 (2020-01-08)
+This package's
+[documentation](https://github.com/Azure/azure-sdk-for-java/blob/azure-storage-blob_12.2.0/sdk/storage/azure-storage-blob/README.md)
+and
+[samples](https://github.com/Azure/azure-sdk-for-java/blob/azure-storage-blob_12.2.0/sdk/storage/azure-storage-blob/src/samples/java/com/azure/storage/blob)
+
+- Added a field to ParallelTransferOptions that allows customers to configure the maximum size to upload in a single PUT. Data sizes larger than this value will be chunked and parallelized.
+- Added overloads to downloadToFile to add the option to overwrite existing files. Default behavior is to not overwrite.
+- Improved performance of BlockBlobOutputStream.
+- Added overloads to BlockBlobClient.getBlobOutputStream to allow users to provide parallel transfer options, http headers, metadata, access tier, and request conditions.
+
+## 12.2.0-beta.1 (2019-12-17)
+- Added SAS generation methods on clients to improve discoverability and convenience of sas. Deprecated setContainerName, setBlobName, setSnapshotId, generateSasQueryParameters methods on BlobServiceSasSignatureValues to direct users to using the methods added on clients.
+- Fixed a bug where Account SAS would not work when set on clients.
+
+## 12.1.0 (2019-12-04)
+This package's
+[documentation](https://github.com/Azure/azure-sdk-for-java/blob/azure-storage-blob_12.1.0/sdk/storage/azure-storage-blob/README.md)
+and
+[samples](https://github.com/Azure/azure-sdk-for-java/blob/azure-storage-blob_12.1.0/sdk/storage/azure-storage-blob/src/samples/java/com/azure/storage/blob)
 
 - Optimized downloadToFile to avoid an unnecessary getProperties call and to lock on an etag once the operation has started.
 - Fixed a race condition that would sometimes result in a RuntimeException with a message related to unexpected header value of client-request-id.
 - Fixed a bug in the RetryPolicy that would apply the delay of a fixed retry policy to the first try.
 - Fixed a bug that could cause the overwrite flag to not be honored in cases where data was uploaded by another source after a parallel operation has already started.
 - Added overloads to accept an overwrite flag to commitBlockList and getBlobOutputStream. Note that this changes the default behavior of the min overload and these methods will now fail if they are attempting to overwrite data.
+- Added a check in ClientBuilders to enforce HTTPS for bearer token authentication.
+- Upgraded to version 1.1.0 of Azure Core.
 
-## Version 12.0.0 (2019-10-31)
+## 12.0.0 (2019-10-31)
 
 - Removed BaseBlobClientBuilder
 - Removed BlobClientBuilder, BlobContainerClientBuilder, BlobServiceClientBuilder, and SpecializedBlobClientBuilder inheritance of BaseBlobClientBuilder
 - Renamed ListBlobContainerOptions getMaxResults and setMaxResults to getMaxResultsPerPage and setMaxResultsPerPage
 - Renamed ListBlobsOptions getMaxResults and setMaxResults to getMaxResultsPerPage and setMaxResultsPerPage
-- Reanmed BlobProperties to BlobItemProperties and BlobContainerProperties to BlobContainerItemProperties
+- Renamed BlobProperties to BlobItemProperties and BlobContainerProperties to BlobContainerItemProperties
 - Removes StorageError and StorageErrorException from public API
 - Renamed StorageErrorCode to BlobErrorCode, SignedIdentifier to BlobSignedIdentifier, StorageServiceProperties to BlobServiceProperties, StorageServiceStats to BlobServiceStatistics, CorRules to BlobCorRules, AccessPolicy to BlobAccessPolicy, Logging to BlobAnalyticsLogging, Metrics to BlobMetrics, and RetentionPolicy to BlobRetentionPolicy
 - Renamed BlobHTTPHeaders to BlobHttpHeaders and removed Blob from getter names
@@ -27,11 +107,11 @@ and
 - Replaced URL parameters with String on appendBlockFromUrl, beginCopy, copyFromUrl, stageBlockFromUrl, uploadPagesFromUrl, and copyIncremental
 - Added support for emulator endpoints
 - Added support for additional connection string configurations and support for use development connection
-- Changed constructors for AppendBlobItem, BlockBlobItem, PageBlobItem, 
+- Changed constructors for AppendBlobItem, BlockBlobItem, PageBlobItem,
 - Renamed listBlobsFlat to listBlobs and listBlobHierarchy to listBlobsByHierarchy
 - Replaced startCopyFromUrl with beginCopy and return poller
 - Renamed BlobContainerSasPermission and BlobSasPermission getters to use has prefix
-- Replaced BlobAccessConditions, AppendBlobAccessConditions, and PageBlobAccessConditions with BlobRequestConditions, AppendBlobRequestConditions, and PageBlobRequestConditions. 
+- Replaced BlobAccessConditions, AppendBlobAccessConditions, and PageBlobAccessConditions with BlobRequestConditions, AppendBlobRequestConditions, and PageBlobRequestConditions.
 - Removed ModifiedAccessConditions and SourceModifiedAccessConditions in favor of RequestConditions, removed BlobContainerAccessConditions in favor of BlobRequestConditions.
 - Removed AppendPositionAccessConditions, LeaseAccessConditions, and SequenceNumberAccessConditions
 - Renamed LeaseClient, LeaseAsyncClient, and LeaseClientBuilder to BlobLeaseClient, BlobLeaseAsyncClient, and BlobLeaseClientBuilder
@@ -39,7 +119,7 @@ and
 - Added support for blob names with special characters
 - Changed return type for BlobClient.downloadWithProperties from Response<Void> to BlobDownloadResponse and BlobAsyncClient.downloadWithProperties from Mono<Response<Flux<ByteBuffer>>> to Mono<BlobDownloadAsyncResponse>
 
-## Version 12.0.0-preview.4 (2019-10-8)
+## 12.0.0-preview.4 (2019-10-8)
 For details on the Azure SDK for Java (October 2019 Preview) release, you can refer to the [release announcement](https://aka.ms/azure-sdk-preview4-java).
 
 This package's
@@ -59,15 +139,15 @@ and
 - Added `LeaseClient` and `LeaseAsyncClient` to the specialized package and removed the leasing methods from `BlobClient`, `BlobAsyncClient`, `ContainerClient`, and `ContainerAsyncClient`.
 - Added `blocksize` parameter to sync `blockBlobClient`.
 - Use Primitives for `exist` API return type.
-- Removed a `create` and `appendBlockFromUrl` overload API in `AppendBlob`. 
+- Removed a `create` and `appendBlockFromUrl` overload API in `AppendBlob`.
 - Fixed `create` method name in PageBlob.
 - Renamed `setTier` to `setAccessTier` from `BlobAsyncClientBase` and `BlobClientBase` classes.
 - Added `ParallelTransferOptions` to buffered upload, upload from file and download to file methods.
 - Removed `Metadata` class and uses Map<String, String> for `matadata` field of `BlobProperties` and `ContainerProperties`.
-- Removed SAS token generation APIs from clients, use BlobServiceSasSignatureValues to generate SAS tokens. 
+- Removed SAS token generation APIs from clients, use BlobServiceSasSignatureValues to generate SAS tokens.
 - Removed `SASTokenCredential`, `SASTokenCredentialPolicy` and the corresponding `credential(SASTokenCredential)` method in client builder, and added sasToken(String) instead.
 
-## Version 12.0.0-preview.3 (2019-09-10)
+## 12.0.0-preview.3 (2019-09-10)
 For details on the Azure SDK for Java (September 2019 Preview) release, you can refer to the [release announcement](https://aka.ms/azure-sdk-preview3-java).
 
 - Added tracing telemetry on maximum overload API.
@@ -91,7 +171,7 @@ and
 [samples](https://github.com/Azure/azure-sdk-for-java/blob/085c8570b411defff26860ef56ea189af07d3d6a/sdk/storage/azure-storage-blob/src/samples/java/com/azure/storage/blob)
 demonstrate the new API.
 
-## Version 12.0.0-preview.2 (2019-08-08)
+## 12.0.0-preview.2 (2019-08-08)
 For details on the Azure SDK for Java (August 2019 Preview) release refer to the [release announcement](https://aka.ms/azure-sdk-preview2-java).
 
 - Renamed `StorageClient`, `StorageAsyncClient`, and `StorageClientBuilder` to `BlobServiceClient`, `BlobServiceAsyncClient`, and `BlobServiceClientBuilder`.
@@ -111,7 +191,7 @@ and
 [samples](https://github.com/Azure/azure-sdk-for-java/blob/azure-storage-blob_12.0.0-preview.2/sdk/storage/azure-storage-blob/src/samples/java/com/azure/storage/blob)
 demonstrate the new API.
 
-## Version 12.0.0-preview.1 (2019-06-28)
+## 12.0.0-preview.1 (2019-06-28)
 Version 12.0.0-preview.1 is a preview of our efforts in creating a client library that is developer-friendly, idiomatic to the Java ecosystem, and as consistent across different languages and platforms as possible. The principles that guide our efforts can be found in the [Azure SDK Design Guidelines for Java](https://azure.github.io/azure-sdk/java_introduction.html).
 
 For details on the Azure SDK for Java (July 2019 Preview) release, you can refer to the [release announcement](https://aka.ms/azure-sdk-preview1-java).
@@ -131,10 +211,10 @@ For details on the Azure SDK for Java (July 2019 Preview) release, you can refer
 - Client and pipeline configuration is now available via keyword arguments at both the client level.
 - Authentication using `azure-identity` credentials.
 
-## 2019.04.30 Version 11.1.1
+## 11.1.1 (2019.04.30)
 - Upgraded to version 2.1.1 of the autorest-clientime which upgrades to a more secure version of jackson and fixes a NPE on unkown host errors.
 
-## 2019.03.22 Version 11.0.0
+## 11.0.0 (2019.03.22)
 - Upgraded to version 2.1.0 of the autorest-clientruntime which includes several important fixes to mitigate a commonly-seen "Connection reset by peer" error and other similar bugs.
 - Support for 2018-11-09 REST version. Please see our REST API documentation and blogs for information about the related added features.
 - Added appendBlockFromURL method. A block may be created with another blob as its source.
@@ -154,21 +234,21 @@ For details on the Azure SDK for Java (July 2019 Preview) release, you can refer
 - Added getUserDelegationKey to ServiceURL, the result of which can be used to generate a user-delegation SAS.
 - Made the max results field on listing responses Integer instead of int as it is an optional field only returned when specified in the request.
 
-## 2019.02.15 Version 10.5.0
+## 10.5.0 (2019.02.15)
 - Added uploadFromNonReplayableFlowable to support uploading arbitrary data sources (like network streams) to a block blob.
 
-## 2019.01.11 Version 10.4.0
+## 10.4.0 (2019.01.11)
 - Fixed a bug that caused errors when java.io.tempdir has no trailing separator.
 - Upgrade autorest-clientruntime dependency to include some bug fixes.
 
-## 2018.11.19 Version 10.3.0
+## 10.3.0 (2018.11.19)
 - Added support for SLF4J.
 - Included default logging to log warnings and errors to the temp directory by default.
 - Fixed a bug in hierarchical listings that would sometimes return incomplete results.
 - Included the whole HTTP Request in log statements (except for sensitive authorization information, which is redacted).
 - Fixed a bug that made the request property on the response object always null.
 
-## 2018.10.29 Version 10.2.0
+## 10.2.0 (2018.10.29)
 - Added overloads which only accept the required parameters.
 - Added CopyFromURL, which will do a synchronous server-side copy, meaning the service will not return an HTTP response until it has completed the copy.
 - Added support for IProgressReceiver in TransferManager operations. This parameter was previously ignored but is now supported.
@@ -176,13 +256,13 @@ For details on the Azure SDK for Java (July 2019 Preview) release, you can refer
 - Fixed a bug that would cause downloading large files with the TransferManager to fail.
 - Fixed a bug in BlobURL.download() logic for setting up reliable download. This had the potential to download the wrong range when a download stream was retried.
 
-## 2018.09.11 Version 10.1.0
+## 10.1.0 (2018.09.11)
 - Interfaces for helper types updated to be more consistent throughout the library. All types, with the exception of the options for pipeline factories, use a fluent pattern.
 - Removed RetryReader type as it's functionality was moved to be built into the DownloadResponse. RetryReaderOptions are now named DownloadRetryOptions.
 - Restructured the access conditions to be more logically adhere to their respective functions.
 - Added support for context parameter on each api to allow communication with the pipeline from the application level
 
-## 2018.08.22 Version 10.0.4-rc
+## 10.0.4-rc (2018.08.22)
 - Support for the 2017-11-09 REST version. Please see our REST api documentation and blogs for information about the related added features.
 - Support for 2018-03-28 REST version. Please see our REST api documentation and blogs for information about the related added features.
 - Support for the getAccountInfo api on ServiceURL, ContainerURL, and BlobURL.
@@ -195,10 +275,10 @@ For details on the Azure SDK for Java (July 2019 Preview) release, you can refer
 - Fixed retry policy.
 - Fixed logging policy.
 
-## 2018.08.08 Version 10.0.3-Preview
+## 10.0.3-Preview (2018.08.08)
 - Resolved dependency issues
 
-## 2018.08.07 Version 10.0.2-Preview
+## 10.0.2-Preview (2018.08.07)
 - Support for 2017-07-29 REST version. Please see our REST api documentation and blogs for information about the related added features.
 - Support for setting a block blob's tier.
 - Added support for soft delete feature. If a delete retention policy is enabled through the set service properties API, then blobs or snapshots can be deleted softly and retained for a specified number of days, before being permanently removed by garbage collection.
@@ -207,7 +287,7 @@ For details on the Azure SDK for Java (July 2019 Preview) release, you can refer
 - BlockBlobURL.MAX_PUT_BLOCK_BYTES renamed to BlockBlobURL.MAX_STAGE_BLOCK_BYTES.
 - Changed the accessConditions parameter to be HTTPAccessConditions instead of BlobAccessConditions, since only http access conditions are supported.
 
-## 2018.07.03 Version 10.0.1-Preview
+## 10.0.1-Preview (2018.07.03)
 - Added the RetryReader class to allow for more reliable streaming on large downloads. This is now the return type of blobURL.download
 - Fixed a bug that caused generation of signatures to fail at high levels of parallelism.
 - Created the StorageException type to give easy access to the ErrorCode, StatusCode, and Message as available for unsuccessful responses.
@@ -222,5 +302,5 @@ For details on the Azure SDK for Java (July 2019 Preview) release, you can refer
 - Fixed a bug that prevented proper reset of body stream upon retry.
 - Updated the defaults for RequestRetryOptions.
 
-## 2018.04.27 Version 10.0.0-preview
+## 10.0.0-preview (2018.04.27)
 - Initial Release. Please see the README and wiki for information on the new design.

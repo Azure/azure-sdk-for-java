@@ -9,6 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.implementation.util.ModelHelper;
 import com.azure.storage.blob.sas.BlobServiceSasQueryParameters;
 import com.azure.storage.common.Utility;
+import com.azure.storage.common.sas.CommonSasQueryParameters;
 import com.azure.storage.common.implementation.Constants;
 
 import java.net.MalformedURLException;
@@ -32,9 +33,10 @@ public final class BlobUrlParts {
     private String containerName;
     private String blobName;
     private String snapshot;
+    private String versionId;
     private String accountName;
     private boolean isIpUrl;
-    private BlobServiceSasQueryParameters blobServiceSasQueryParameters;
+    private CommonSasQueryParameters commonSasQueryParameters;
     private Map<String, String[]> unparsedParameters;
 
     /**
@@ -101,7 +103,12 @@ public final class BlobUrlParts {
      */
     public BlobUrlParts setHost(String host) {
         this.host = host;
-        this.isIpUrl = ModelHelper.IP_V4_URL_PATTERN.matcher(host).find();
+        try {
+            this.isIpUrl = ModelHelper.determineAuthorityIsIpStyle(host);
+        } catch (MalformedURLException e) {
+            throw logger.logExceptionAsError(new IllegalStateException("Authority is malformed. Host: "
+                + host));
+        }
         return this;
     }
 
@@ -166,24 +173,82 @@ public final class BlobUrlParts {
     }
 
     /**
-     * Gets the {@link BlobServiceSasQueryParameters} representing the SAS query parameters that will be used to
-     * generate the SAS token for this URL.
+     * Gets the version identifier that will be used as part of the query string if set.
      *
-     * @return the {@link BlobServiceSasQueryParameters} of the URL
+     * @return the version identifier.
      */
-    public BlobServiceSasQueryParameters getSasQueryParameters() {
-        return blobServiceSasQueryParameters;
+    public String getVersionId() {
+        return versionId;
     }
 
     /**
-     * Sets the {@link BlobServiceSasQueryParameters} representing the SAS query parameters that will be used to
-     * generate the SAS token for this URL.
+     * Sets the version identifier that will be used as part of the query string if set.
+     *
+     * @param versionId The version identifier.
+     * @return the updated BlobUrlParts object.
+     */
+    public BlobUrlParts setVersionId(String versionId) {
+        this.versionId = versionId;
+        return this;
+    }
+
+    /**
+     * Gets the {@link BlobServiceSasQueryParameters} representing the SAS query parameters
+     *
+     * @return the {@link BlobServiceSasQueryParameters} of the URL
+     * @deprecated Please use {@link #getCommonSasQueryParameters()}
+     */
+    @Deprecated
+    public BlobServiceSasQueryParameters getSasQueryParameters() {
+        String encodedSas = commonSasQueryParameters.encode();
+        return new BlobServiceSasQueryParameters(parseQueryString(encodedSas), true);
+    }
+
+    /**
+     * Sets the {@link BlobServiceSasQueryParameters} representing the SAS query parameters.
      *
      * @param blobServiceSasQueryParameters The SAS query parameters.
      * @return the updated BlobUrlParts object.
+     * @deprecated Please use {@link #setCommonSasQueryParameters(CommonSasQueryParameters)}
      */
+    @Deprecated
     public BlobUrlParts setSasQueryParameters(BlobServiceSasQueryParameters blobServiceSasQueryParameters) {
-        this.blobServiceSasQueryParameters = blobServiceSasQueryParameters;
+        String encodedBlobSas = blobServiceSasQueryParameters.encode();
+        this.commonSasQueryParameters = new CommonSasQueryParameters(parseQueryString(encodedBlobSas), true);
+        return this;
+    }
+
+    /**
+     * Gets the {@link CommonSasQueryParameters} representing the SAS query parameters that will be used to
+     * generate the SAS token for this URL.
+     *
+     * @return the {@link CommonSasQueryParameters} of the URL
+     */
+    public CommonSasQueryParameters getCommonSasQueryParameters() {
+        return commonSasQueryParameters;
+    }
+
+    /**
+     * Sets the {@link CommonSasQueryParameters} representing the SAS query parameters that will be used to
+     * generate the SAS token for this URL.
+     *
+     * @param commonSasQueryParameters The SAS query parameters.
+     * @return the updated BlobUrlParts object.
+     */
+    public BlobUrlParts setCommonSasQueryParameters(CommonSasQueryParameters commonSasQueryParameters) {
+        this.commonSasQueryParameters = commonSasQueryParameters;
+        return this;
+    }
+
+    /**
+     * Sets the {@link CommonSasQueryParameters} representing the SAS query parameters that will be used to
+     * generate the SAS token for this URL.
+     *
+     * @param queryParams The SAS query parameter string.
+     * @return the updated BlobUrlParts object.
+     */
+    public BlobUrlParts parseSasQueryParameters(String queryParams) {
+        this.commonSasQueryParameters = new CommonSasQueryParameters(parseQueryString(queryParams), true);
         return this;
     }
 
@@ -239,8 +304,11 @@ public final class BlobUrlParts {
         if (this.snapshot != null) {
             url.setQueryParameter(Constants.UrlConstants.SNAPSHOT_QUERY_PARAMETER, this.snapshot);
         }
-        if (this.blobServiceSasQueryParameters != null) {
-            String encodedSAS = this.blobServiceSasQueryParameters.encode();
+        if (this.versionId != null) {
+            url.setQueryParameter(Constants.UrlConstants.VERSIONID_QUERY_PARAMETER, this.versionId);
+        }
+        if (this.commonSasQueryParameters != null) {
+            String encodedSAS = this.commonSasQueryParameters.encode();
             if (encodedSAS.length() != 0) {
                 url.setQuery(encodedSAS);
             }
@@ -299,10 +367,15 @@ public final class BlobUrlParts {
     public static BlobUrlParts parse(URL url) {
         BlobUrlParts parts = new BlobUrlParts().setScheme(url.getProtocol());
 
-        if (ModelHelper.IP_V4_URL_PATTERN.matcher(url.getHost()).find()) {
-            parseIpUrl(url, parts);
-        } else {
-            parseNonIpUrl(url, parts);
+        try {
+            if (ModelHelper.determineAuthorityIsIpStyle(url.getAuthority())) {
+                parseIpUrl(url, parts);
+            } else {
+                parseNonIpUrl(url, parts);
+            }
+        } catch (MalformedURLException e) {
+            throw parts.logger.logExceptionAsError(new IllegalStateException("Authority is malformed. Host: "
+                + url.getAuthority()));
         }
 
         Map<String, String[]> queryParamsMap = parseQueryString(url.getQuery());
@@ -312,10 +385,14 @@ public final class BlobUrlParts {
             parts.setSnapshot(snapshotArray[0]);
         }
 
-        BlobServiceSasQueryParameters blobServiceSasQueryParameters =
-            new BlobServiceSasQueryParameters(queryParamsMap, true);
+        String[] versionIdArray = queryParamsMap.remove("versionid");
+        if (versionIdArray != null) {
+            parts.setVersionId(versionIdArray[0]);
+        }
 
-        return parts.setSasQueryParameters(blobServiceSasQueryParameters)
+        CommonSasQueryParameters commonSasQueryParameters = new CommonSasQueryParameters(queryParamsMap, true);
+
+        return parts.setCommonSasQueryParameters(commonSasQueryParameters)
             .setUnparsedParameters(queryParamsMap);
     }
 
@@ -386,7 +463,7 @@ public final class BlobUrlParts {
     }
 
     /**
-     * Parses a query string into a one to many hashmap.
+     * Parses a query string into a one to many TreeMap.
      *
      * @param queryParams The string of query params to parse.
      * @return A {@code HashMap<String, String[]>} of the key values.

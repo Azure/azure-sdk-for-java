@@ -10,11 +10,15 @@ import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.models.BlobProperties;
 import com.azure.storage.blob.specialized.BlockBlobClient;
+import com.azure.storage.common.StorageSharedKeyCredential;
+import com.azure.storage.common.Utility;
+import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.file.datalake.implementation.models.LeaseAccessConditions;
 import com.azure.storage.file.datalake.implementation.models.ModifiedAccessConditions;
 import com.azure.storage.file.datalake.implementation.models.PathRenameMode;
 import com.azure.storage.file.datalake.implementation.models.SourceModifiedAccessConditions;
+import com.azure.storage.file.datalake.implementation.util.DataLakeImplUtils;
 import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
 import com.azure.storage.file.datalake.models.PathAccessControl;
 import com.azure.storage.file.datalake.models.PathAccessControlEntry;
@@ -22,9 +26,12 @@ import com.azure.storage.file.datalake.models.PathHttpHeaders;
 import com.azure.storage.file.datalake.models.PathInfo;
 import com.azure.storage.file.datalake.models.PathPermissions;
 import com.azure.storage.file.datalake.models.PathProperties;
+import com.azure.storage.file.datalake.models.UserDelegationKey;
+import com.azure.storage.file.datalake.sas.DataLakeServiceSasSignatureValues;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
+import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
 
@@ -34,8 +41,8 @@ import java.util.Map;
 public class DataLakePathClient {
     private final ClientLogger logger = new ClientLogger(DataLakePathClient.class);
 
-    protected final DataLakePathAsyncClient dataLakePathAsyncClient;
-    protected final BlockBlobClient blockBlobClient;
+    final DataLakePathAsyncClient dataLakePathAsyncClient;
+    final BlockBlobClient blockBlobClient;
 
     DataLakePathClient(DataLakePathAsyncClient dataLakePathAsyncClient, BlockBlobClient blockBlobClient) {
         this.dataLakePathAsyncClient = dataLakePathAsyncClient;
@@ -106,7 +113,7 @@ public class DataLakePathClient {
     }
 
     /**
-     * Creates a resource.
+     * Creates a resource. By default this method will not overwrite an existing path.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -119,7 +126,30 @@ public class DataLakePathClient {
      * @return Information about the created resource.
      */
     public PathInfo create() {
-        return createWithResponse(null, null, null, null, null, null, Context.NONE).getValue();
+        return create(false);
+    }
+
+    /**
+     * Creates a resource.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.file.datalake.DataLakePathClient.create#boolean}
+     *
+     * <p>For more information see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/datalakestoragegen2/path/create">Azure
+     * Docs</a></p>
+     *
+     * @param overwrite Whether or not to overwrite, should data exist on the path.
+     *
+     * @return Information about the created resource.
+     */
+    public PathInfo create(boolean overwrite) {
+        DataLakeRequestConditions requestConditions = new DataLakeRequestConditions();
+        if (!overwrite) {
+            requestConditions.setIfNoneMatch(Constants.HeaderConstants.ETAG_WILDCARD);
+        }
+        return createWithResponse(null, null, null, null, requestConditions, null, Context.NONE).getValue();
     }
 
     /**
@@ -188,8 +218,9 @@ public class DataLakePathClient {
      */
     public Response<Void> setMetadataWithResponse(Map<String, String> metadata,
         DataLakeRequestConditions requestConditions, Duration timeout, Context context) {
-        return blockBlobClient.setMetadataWithResponse(metadata, Transforms.toBlobRequestConditions(requestConditions),
-            timeout, context);
+        return DataLakeImplUtils.returnOrConvertException(() ->
+            blockBlobClient.setMetadataWithResponse(metadata, Transforms.toBlobRequestConditions(requestConditions),
+                timeout, context), logger);
     }
 
     /**
@@ -228,8 +259,9 @@ public class DataLakePathClient {
      */
     public Response<Void> setHttpHeadersWithResponse(PathHttpHeaders headers,
         DataLakeRequestConditions requestConditions, Duration timeout, Context context) {
-        return blockBlobClient.setHttpHeadersWithResponse(Transforms.toBlobHttpHeaders(headers),
-            Transforms.toBlobRequestConditions(requestConditions), timeout, context);
+        return DataLakeImplUtils.returnOrConvertException(() ->
+            blockBlobClient.setHttpHeadersWithResponse(Transforms.toBlobHttpHeaders(headers),
+                Transforms.toBlobRequestConditions(requestConditions), timeout, context), logger);
     }
 
     /**
@@ -396,22 +428,61 @@ public class DataLakePathClient {
      */
     public Response<PathProperties> getPropertiesWithResponse(DataLakeRequestConditions requestConditions,
         Duration timeout, Context context) {
-        Response<BlobProperties> response = blockBlobClient.getPropertiesWithResponse(
-            Transforms.toBlobRequestConditions(requestConditions), timeout, context);
-        return new SimpleResponse<>(response, Transforms.toPathProperties(response.getValue()));
+        return DataLakeImplUtils.returnOrConvertException(() -> {
+            Response<BlobProperties> response = blockBlobClient.getPropertiesWithResponse(
+                Transforms.toBlobRequestConditions(requestConditions), timeout, context);
+            return new SimpleResponse<>(response, Transforms.toPathProperties(response.getValue()));
+        }, logger);
+    }
+
+    /**
+     * Gets if the path this client represents exists in the cloud.
+     * <p>Note that this method does not guarantee that the path type (file/directory) matches expectations.</p>
+     * <p>For example, a DataLakeFileClient representing a path to a datalake directory will return true, and vice
+     * versa.</p>
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.file.datalake.DataLakePathClient.exists}
+     *
+     * @return true if the path exists, false if it doesn't
+     */
+    public Boolean exists() {
+        return existsWithResponse(null, Context.NONE).getValue();
+    }
+
+    /**
+     * Gets if the path this client represents exists in the cloud.
+     * <p>Note that this method does not guarantee that the path type (file/directory) matches expectations.</p>
+     * <p>For example, a DataLakeFileClient representing a path to a datalake directory will return true, and vice
+     * versa.</p>
+     * 
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.file.datalake.DataLakePathClient.existsWithResponse#Duration-Context}
+     *
+     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return true if the path exists, false if it doesn't
+     */
+    public Response<Boolean> existsWithResponse(Duration timeout, Context context) {
+        return DataLakeImplUtils.returnOrConvertException(() ->
+            blockBlobClient.existsWithResponse(timeout, context), logger);
     }
 
     /**
      * Package-private rename method for use by {@link DataLakeFileClient} and {@link DataLakeDirectoryClient}
      *
-     * @param destinationPath The path of the destination relative to the file system name
+     * @param destinationFileSystem The file system of the destination within the account.
+     * {@code null} for the current file system.
+     * @param destinationPath The path of the destination relative to the file system name.
      * @param sourceRequestConditions {@link DataLakeRequestConditions} against the source.
      * @param destinationRequestConditions {@link DataLakeRequestConditions} against the destination.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains a {@link
      * DataLakePathClient} used to interact with the path created.
      */
-    Mono<Response<DataLakePathClient>> renameWithResponse(String destinationPath,
+    Mono<Response<DataLakePathClient>> renameWithResponse(String destinationFileSystem, String destinationPath,
         DataLakeRequestConditions sourceRequestConditions, DataLakeRequestConditions destinationRequestConditions,
         Context context) {
 
@@ -435,10 +506,10 @@ public class DataLakePathClient {
             .setIfModifiedSince(destinationRequestConditions.getIfModifiedSince())
             .setIfUnmodifiedSince(destinationRequestConditions.getIfUnmodifiedSince());
 
-        DataLakePathClient dataLakePathClient = getPathClient(destinationPath);
+        DataLakePathClient dataLakePathClient = getPathClient(destinationFileSystem, destinationPath);
 
         String renameSource = "/" + dataLakePathAsyncClient.getFileSystemName() + "/"
-            + dataLakePathAsyncClient.getObjectPath();
+            + Utility.urlEncode(dataLakePathAsyncClient.getObjectPath());
 
         return dataLakePathClient.dataLakePathAsyncClient.dataLakeStorage.paths().createWithRestResponseAsync(
             null /* pathResourceType */, null /* continuation */, PathRenameMode.LEGACY, renameSource,
@@ -447,13 +518,58 @@ public class DataLakePathClient {
             .map(response -> new SimpleResponse<>(response, dataLakePathClient));
     }
 
-    private DataLakePathClient getPathClient(String destinationPath) {
-        return new DataLakePathClient(dataLakePathAsyncClient.getPathAsyncClient(destinationPath),
-            dataLakePathAsyncClient.prepareBuilderReplacePath(destinationPath).buildBlockBlobClient());
+    private DataLakePathClient getPathClient(String destinationFileSystem, String destinationPath) {
+
+        if (destinationFileSystem == null) {
+            destinationFileSystem = dataLakePathAsyncClient.getFileSystemName();
+        }
+
+        return new DataLakePathClient(
+            dataLakePathAsyncClient.getPathAsyncClient(destinationFileSystem, destinationPath),
+            dataLakePathAsyncClient.prepareBuilderReplacePath(destinationFileSystem, destinationPath)
+                .buildBlockBlobClient());
     }
 
     BlockBlobClient getBlockBlobClient() {
         return blockBlobClient;
+    }
+
+    /**
+     * Generates a user delegation SAS for the path using the specified {@link DataLakeServiceSasSignatureValues}.
+     * <p>See {@link DataLakeServiceSasSignatureValues} for more information on how to construct a user delegation SAS.
+     * </p>
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.file.datalake.DataLakePathClient.generateUserDelegationSas#DataLakeServiceSasSignatureValues-UserDelegationKey}
+     *
+     * @param dataLakeServiceSasSignatureValues {@link DataLakeServiceSasSignatureValues}
+     * @param userDelegationKey A {@link UserDelegationKey} object used to sign the SAS values.
+     * @see DataLakeServiceClient#getUserDelegationKey(OffsetDateTime, OffsetDateTime) for more information on how to
+     * get a user delegation key.
+     *
+     * @return A {@code String} representing all SAS query parameters.
+     */
+    public String generateUserDelegationSas(DataLakeServiceSasSignatureValues dataLakeServiceSasSignatureValues,
+        UserDelegationKey userDelegationKey) {
+        return dataLakePathAsyncClient.generateUserDelegationSas(dataLakeServiceSasSignatureValues, userDelegationKey);
+    }
+
+    /**
+     * Generates a service SAS for the path using the specified {@link DataLakeServiceSasSignatureValues}
+     * Note : The client must be authenticated via {@link StorageSharedKeyCredential}
+     * <p>See {@link DataLakeServiceSasSignatureValues} for more information on how to construct a service SAS.</p>
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.file.datalake.DataLakePathClient.generateSas#DataLakeServiceSasSignatureValues}
+     *
+     * @param dataLakeServiceSasSignatureValues {@link DataLakeServiceSasSignatureValues}
+     *
+     * @return A {@code String} representing all SAS query parameters.
+     */
+    public String generateSas(DataLakeServiceSasSignatureValues dataLakeServiceSasSignatureValues) {
+        return dataLakePathAsyncClient.generateSas(dataLakeServiceSasSignatureValues);
     }
 
 }

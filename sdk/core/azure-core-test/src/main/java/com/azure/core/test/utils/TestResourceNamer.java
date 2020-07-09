@@ -3,12 +3,15 @@
 
 package com.azure.core.test.utils;
 
+import com.azure.core.test.TestContextManager;
 import com.azure.core.test.TestMode;
 import com.azure.core.test.models.RecordedData;
 
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.Objects;
+import java.util.function.Function;
+import java.util.function.Supplier;
 
 /**
  * Provides random string names. If the test mode is {@link TestMode#PLAYBACK}, then names are fetched from
@@ -16,21 +19,48 @@ import java.util.Objects;
  * persisted to {@link RecordedData}.
  */
 public class TestResourceNamer extends ResourceNamer {
-    private final TestMode testMode;
     private final RecordedData recordedData;
+    private final boolean allowedToReadRecordedValues;
+    private final boolean allowedToRecordValues;
 
     /**
      * Constructor of TestResourceNamer
      *
+     * @deprecated Use {@link #TestResourceNamer(TestContextManager, RecordedData)} instead.
      * @param name test name as prefix
-     * @param testMode the test mode {@link TestMode#PLAYBACK} or {@link TestMode#RECORD}
+     * @param testMode The {@link TestMode} which the test is running in.
      * @param recordedData the recorded data with list of network call
      */
+    @Deprecated
     public TestResourceNamer(String name, TestMode testMode, RecordedData recordedData) {
+        this(name, testMode, false, recordedData);
+    }
+
+    /**
+     * Constructor of TestResourceNamer
+     *
+     * @param testContextManager Contextual information about the test being ran, such as test name, {@link TestMode},
+     * and others.
+     * @param recordedData the recorded data with list of network call
+     * @throws NullPointerException If {@code testMode} isn't {@link TestMode#LIVE}, {@code doNotRecord} is
+     * {@code false}, and {@code recordedData} is {@code null}.
+     */
+    public TestResourceNamer(TestContextManager testContextManager, RecordedData recordedData) {
+        this(testContextManager.getTestName(), testContextManager.getTestMode(), testContextManager.doNotRecordTest(),
+            recordedData);
+    }
+
+    private TestResourceNamer(String name, TestMode testMode, boolean doNotRecord, RecordedData recordedData) {
         super(name);
-        Objects.requireNonNull(recordedData, "'recordedData' cannot be null.");
+
+        // Only need recordedData if the test is running in playback or record.
+        if (testMode != TestMode.LIVE && !doNotRecord) {
+            Objects.requireNonNull(recordedData, "'recordedData' cannot be null.");
+        }
+
         this.recordedData = recordedData;
-        this.testMode = testMode;
+        this.allowedToReadRecordedValues = (testMode == TestMode.PLAYBACK && !doNotRecord);
+        this.allowedToRecordValues = (testMode == TestMode.RECORD && !doNotRecord);
     }
 
     /**
@@ -42,13 +72,7 @@ public class TestResourceNamer extends ResourceNamer {
      */
     @Override
     public String randomName(String prefix, int maxLen) {
-        if (testMode == TestMode.PLAYBACK) {
-            return recordedData.removeVariable();
-        } else {
-            String name = super.randomName(prefix, maxLen);
-            recordedData.addVariable(name);
-            return name;
-        }
+        return getValue(readValue -> readValue, () -> super.randomName(prefix, maxLen));
     }
 
     /**
@@ -58,13 +82,7 @@ public class TestResourceNamer extends ResourceNamer {
      */
     @Override
     public String randomUuid() {
-        if (testMode == TestMode.PLAYBACK) {
-            return recordedData.removeVariable();
-        } else {
-            String uuid = super.randomUuid();
-            recordedData.addVariable(uuid);
-            return uuid;
-        }
+        return getValue(readValue -> readValue, super::randomUuid);
     }
 
     /**
@@ -73,13 +91,7 @@ public class TestResourceNamer extends ResourceNamer {
      * @return OffsetDateTime of UTC now.
      */
     public OffsetDateTime now() {
-        if (testMode == TestMode.PLAYBACK) {
-            return OffsetDateTime.parse(recordedData.removeVariable());
-        } else {
-            OffsetDateTime now = OffsetDateTime.now(ZoneOffset.UTC);
-            recordedData.addVariable(now.toString());
-            return now;
-        }
+        return getValue(OffsetDateTime::parse, () -> OffsetDateTime.now(ZoneOffset.UTC));
     }
 
     /**
@@ -89,10 +101,19 @@ public class TestResourceNamer extends ResourceNamer {
      * @return the recorded value.
      */
     public String recordValueFromConfig(String value) {
-        if (testMode == TestMode.PLAYBACK) {
-            return recordedData.removeVariable();
+        return getValue(readValue -> readValue, () -> value);
+    }
+
+    private <T> T getValue(Function<String, T> readHandler, Supplier<T> valueSupplier) {
+        if (allowedToReadRecordedValues) {
+            return readHandler.apply(recordedData.removeVariable());
         } else {
-            recordedData.addVariable(value);
+            T value = valueSupplier.get();
+
+            if (allowedToRecordValues) {
+                recordedData.addVariable(value.toString());
+            }
+
             return value;
         }
     }

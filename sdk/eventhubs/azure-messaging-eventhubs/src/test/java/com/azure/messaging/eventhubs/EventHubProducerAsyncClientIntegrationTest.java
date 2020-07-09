@@ -7,6 +7,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.models.CreateBatchOptions;
 import com.azure.messaging.eventhubs.models.SendOptions;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -17,12 +18,16 @@ import java.util.List;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 
-public class EventHubProducerAsyncClientIntegrationTest extends IntegrationTestBase {
-    private static final String PARTITION_ID = "1";
+/**
+ * Tests for asynchronous {@link EventHubProducerAsyncClient}.
+ */
+@Tag(TestUtils.INTEGRATION)
+class EventHubProducerAsyncClientIntegrationTest extends IntegrationTestBase {
+    private static final String PARTITION_ID = "2";
 
     private EventHubProducerAsyncClient producer;
 
-    public EventHubProducerAsyncClientIntegrationTest() {
+    EventHubProducerAsyncClientIntegrationTest() {
         super(new ClientLogger(EventHubProducerAsyncClientIntegrationTest.class));
     }
 
@@ -43,7 +48,7 @@ public class EventHubProducerAsyncClientIntegrationTest extends IntegrationTestB
      * Verifies that we can create and send a message to an Event Hub partition.
      */
     @Test
-    public void sendMessageToPartition() {
+    void sendMessageToPartition() {
         // Arrange
         final SendOptions sendOptions = new SendOptions().setPartitionId(PARTITION_ID);
         final List<EventData> events = Arrays.asList(
@@ -61,7 +66,7 @@ public class EventHubProducerAsyncClientIntegrationTest extends IntegrationTestB
      * the service distribute the events.
      */
     @Test
-    public void sendMessage() {
+    void sendMessage() {
         // Arrange
         final List<EventData> events = Arrays.asList(
             new EventData("Event 1".getBytes(UTF_8)),
@@ -77,7 +82,7 @@ public class EventHubProducerAsyncClientIntegrationTest extends IntegrationTestB
      * Verifies we can create an {@link EventDataBatch} and send it using our EventHubProducer.
      */
     @Test
-    public void sendBatch() {
+    void sendBatch() {
         // Arrange
         final List<EventData> events = Arrays.asList(
             new EventData("Event 1".getBytes(UTF_8)),
@@ -85,9 +90,7 @@ public class EventHubProducerAsyncClientIntegrationTest extends IntegrationTestB
             new EventData("Event 3".getBytes(UTF_8)));
 
         final Mono<EventDataBatch> createBatch = producer.createBatch().map(batch -> {
-            events.forEach(event -> {
-                Assertions.assertTrue(batch.tryAdd(event));
-            });
+            events.forEach(event -> Assertions.assertTrue(batch.tryAdd(event)));
 
             return batch;
         });
@@ -101,7 +104,7 @@ public class EventHubProducerAsyncClientIntegrationTest extends IntegrationTestB
      * Verifies we can create an {@link EventDataBatch} with a partition key and send it using our EventHubProducer.
      */
     @Test
-    public void sendBatchWithPartitionKey() {
+    void sendBatchWithPartitionKey() {
         // Arrange
         final List<EventData> events = Arrays.asList(
             new EventData("Event 1".getBytes(UTF_8)),
@@ -113,9 +116,7 @@ public class EventHubProducerAsyncClientIntegrationTest extends IntegrationTestB
             .map(batch -> {
                 Assertions.assertEquals(options.getPartitionKey(), batch.getPartitionKey());
 
-                events.forEach(event -> {
-                    Assertions.assertTrue(batch.tryAdd(event));
-                });
+                events.forEach(event -> Assertions.assertTrue(batch.tryAdd(event)));
 
                 return batch;
             });
@@ -129,7 +130,7 @@ public class EventHubProducerAsyncClientIntegrationTest extends IntegrationTestB
      * Verify that we can send to multiple partitions, round-robin, and with a partition key, using the same producer.
      */
     @Test
-    public void sendEventsWithKeyAndPartition() {
+    void sendEventsWithKeyAndPartition() {
         // Arrange
         final List<EventData> events = Arrays.asList(
             new EventData("Event 1".getBytes(UTF_8)),
@@ -139,8 +140,8 @@ public class EventHubProducerAsyncClientIntegrationTest extends IntegrationTestB
         // Act
         final Mono<Void> onComplete = Mono.when(producer.send(events),
             producer.send(Flux.just(events.get(0))),
-            producer.send(Flux.fromIterable(events), new SendOptions().setPartitionId("1")),
-            producer.send(Flux.fromIterable(events), new SendOptions().setPartitionId("0")),
+            producer.send(Flux.fromIterable(events), new SendOptions().setPartitionId("3")),
+            producer.send(Flux.fromIterable(events), new SendOptions().setPartitionId("4")),
             producer.send(Flux.fromIterable(events), new SendOptions().setPartitionKey("sandwiches")));
 
         // Assert
@@ -149,16 +150,18 @@ public class EventHubProducerAsyncClientIntegrationTest extends IntegrationTestB
     }
 
     @Test
-    public void sendAllPartitions() {
+    void sendAllPartitions() {
         final List<String> partitionIds = producer.getPartitionIds().collectList().block(TIMEOUT);
 
         Assertions.assertNotNull(partitionIds);
 
         for (String partitionId : partitionIds) {
-            final EventDataBatch batch = producer.createBatch(new CreateBatchOptions().setPartitionId(partitionId)).block(TIMEOUT);
+            final EventDataBatch batch =
+                producer.createBatch(new CreateBatchOptions().setPartitionId(partitionId)).block(TIMEOUT);
             Assertions.assertNotNull(batch);
 
-            Assertions.assertTrue(batch.tryAdd(TestUtils.getEvent("event", "test guid", Integer.parseInt(partitionId))));
+            Assertions.assertTrue(batch.tryAdd(TestUtils.getEvent("event", "test guid",
+                Integer.parseInt(partitionId))));
 
             // Act & Assert
             StepVerifier.create(producer.send(batch)).expectComplete().verify(TIMEOUT);
@@ -169,7 +172,7 @@ public class EventHubProducerAsyncClientIntegrationTest extends IntegrationTestB
      * Sending with credentials.
      */
     @Test
-    public void sendWithCredentials() {
+    void sendWithCredentials() {
         // Arrange
         final EventData event = new EventData("body");
         final SendOptions options = new SendOptions().setPartitionId(PARTITION_ID);
@@ -181,7 +184,7 @@ public class EventHubProducerAsyncClientIntegrationTest extends IntegrationTestB
             StepVerifier.create(client.getEventHubProperties())
                 .assertNext(properties -> {
                     Assertions.assertEquals(getEventHubName(), properties.getName());
-                    Assertions.assertEquals(2, properties.getPartitionIds().stream().count());
+                    Assertions.assertEquals(NUMBER_OF_PARTITIONS, properties.getPartitionIds().stream().count());
                 })
                 .expectComplete()
                 .verify(TIMEOUT);

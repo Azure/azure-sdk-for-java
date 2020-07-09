@@ -4,6 +4,8 @@
 package com.azure.core.http.rest;
 
 import com.azure.core.util.IterableStream;
+import com.azure.core.util.paging.ContinuablePagedIterable;
+
 import java.util.stream.Stream;
 
 /**
@@ -27,65 +29,13 @@ import java.util.stream.Stream;
  * @see PagedResponse
  * @see IterableStream
  */
-public class PagedIterableBase<T, P extends PagedResponse<T>> extends IterableStream<T> {
-    /*
-     * This is the default batch size that will be requested when using stream or iterable by page, this will indicate
-     * to Reactor how many elements should be prefetched before another batch is requested.
-     */
-    private static final int DEFAULT_BATCH_SIZE = 1;
-
-    private final PagedFluxBase<T, P> pagedFluxBase;
-
+public class PagedIterableBase<T, P extends PagedResponse<T>> extends ContinuablePagedIterable<String, T, P> {
     /**
      * Creates instance given {@link PagedFluxBase}.
+     *
      * @param pagedFluxBase to use as iterable
      */
     public PagedIterableBase(PagedFluxBase<T, P> pagedFluxBase) {
         super(pagedFluxBase);
-        this.pagedFluxBase = pagedFluxBase;
-    }
-
-    /**
-     * Retrieve the {@link Stream}, one page at a time.
-     * It will provide same {@link Stream} of T values from starting if called multiple times.
-     *
-     * @return {@link Stream} of a Response that extends {@link PagedResponse}
-     */
-    public Stream<P> streamByPage() {
-        return pagedFluxBase.byPage().toStream(DEFAULT_BATCH_SIZE);
-    }
-
-    /**
-     * Retrieve the {@link Stream}, one page at a time, starting from the next page associated with the given
-     * continuation token. To start from first page, use {@link #streamByPage()} instead.
-     *
-     * @param continuationToken The continuation token used to fetch the next page
-     * @return {@link Stream} of a Response that extends {@link PagedResponse}, starting from the page associated
-     * with the continuation token
-     */
-    public Stream<P> streamByPage(String continuationToken) {
-        return pagedFluxBase.byPage(continuationToken).toStream(DEFAULT_BATCH_SIZE);
-    }
-
-    /**
-     * Provides {@link Iterable} API for{ @link PagedResponse}
-     * It will provide same collection of {@code T} values from starting if called multiple times.
-     *
-     * @return {@link Iterable} interface
-     */
-    public Iterable<P> iterableByPage() {
-        return pagedFluxBase.byPage().toIterable(DEFAULT_BATCH_SIZE);
-    }
-
-    /**
-     * Provides {@link Iterable} API for {@link PagedResponse}, starting from the next page associated with the given
-     * continuation token. To start from first page, use {@link #streamByPage()} instead.
-     * It will provide same collection of T values from starting if called multiple times.
-     *
-     * @param continuationToken The continuation token used to fetch the next page
-     * @return {@link Iterable} interface
-     */
-    public Iterable<P> iterableByPage(String continuationToken) {
-        return pagedFluxBase.byPage(continuationToken).toIterable(DEFAULT_BATCH_SIZE);
     }
 }

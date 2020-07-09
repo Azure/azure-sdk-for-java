@@ -4,6 +4,7 @@
 package com.azure.storage.file.share;
 
 import com.azure.core.annotation.ServiceClient;
+import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.FluxUtil;
@@ -13,6 +14,8 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.StorageImplUtils;
+import com.azure.storage.file.share.models.CloseHandlesInfo;
+import com.azure.storage.file.share.models.PermissionCopyModeType;
 import com.azure.storage.file.share.models.ShareFileCopyInfo;
 import com.azure.storage.file.share.models.ShareFileDownloadResponse;
 import com.azure.storage.file.share.models.ShareFileHttpHeaders;
@@ -20,10 +23,12 @@ import com.azure.storage.file.share.models.ShareFileInfo;
 import com.azure.storage.file.share.models.ShareFileMetadataInfo;
 import com.azure.storage.file.share.models.ShareFileProperties;
 import com.azure.storage.file.share.models.ShareFileRange;
+import com.azure.storage.file.share.models.ShareRequestConditions;
 import com.azure.storage.file.share.models.ShareStorageException;
 import com.azure.storage.file.share.models.ShareFileUploadInfo;
 import com.azure.storage.file.share.models.ShareFileUploadRangeFromUrlInfo;
 import com.azure.storage.file.share.models.HandleItem;
+import com.azure.storage.file.share.sas.ShareServiceSasSignatureValues;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Mono;
 
@@ -35,6 +40,8 @@ import java.nio.file.FileAlreadyExistsException;
 import java.time.Duration;
 import java.util.Map;
 import java.util.Objects;
+
+import static com.azure.storage.common.implementation.StorageImplUtils.blockWithOptionalTimeout;
 
 /**
  * This class provides a client that contains all the operations for interacting files under Azure Storage File Service.
@@ -130,6 +137,36 @@ public class ShareFileClient {
     }
 
     /**
+     * Determines if the file this client represents exists in the cloud.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.file.share.ShareFileClient.exists}
+     *
+     * @return Flag indicating existence of the file.
+     */
+    public Boolean exists() {
+        return existsWithResponse(null, Context.NONE).getValue();
+    }
+
+    /**
+     * Determines if the file this client represents exists in the cloud.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.file.share.ShareFileClient.existsWithResponse#Duration-Context}
+     *
+     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return Flag indicating existence of the file.
+     */
+    public Response<Boolean> existsWithResponse(Duration timeout, Context context) {
+        Mono<Response<Boolean>> response = shareFileAsyncClient.existsWithResponse(context);
+
+        return blockWithOptionalTimeout(response, timeout);
+    }
+
+    /**
      * Creates a file in the storage account and returns a response of {@link ShareFileInfo} to interact with it.
      *
      * <p><strong>Code Samples</strong></p>
@@ -141,7 +178,7 @@ public class ShareFileClient {
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/create-file">Azure Docs</a>.</p>
      *
-     * @param maxSize The maximum size in bytes for the file, up to 1 TiB.
+     * @param maxSize The maximum size in bytes for the file.
      * @return The {@link ShareFileInfo file info}
      * @throws ShareStorageException If the file has already existed, the parent directory does not exist or fileName
      * is an invalid resource name.
@@ -162,7 +199,7 @@ public class ShareFileClient {
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/create-file">Azure Docs</a>.</p>
      *
-     * @param maxSize The maximum size in bytes for the file, up to 1 TiB.
+     * @param maxSize The maximum size in bytes for the file.
      * @param httpHeaders The user settable file http headers.
      * @param smbProperties The user settable file smb properties.
      * @param filePermission The file permission of the file.
@@ -179,8 +216,43 @@ public class ShareFileClient {
     public Response<ShareFileInfo> createWithResponse(long maxSize, ShareFileHttpHeaders httpHeaders,
         FileSmbProperties smbProperties, String filePermission, Map<String, String> metadata, Duration timeout,
         Context context) {
+        return this.createWithResponse(maxSize, httpHeaders, smbProperties, filePermission, metadata, null, timeout,
+            context);
+    }
+
+    /**
+     * Creates a file in the storage account and returns a response of ShareFileInfo to interact with it.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>Create the file with length of 1024 bytes, some headers, file smb properties and metadata.</p>
+     *
+     * {@codesnippet com.azure.storage.file.share.ShareFileClient.createWithResponse#long-ShareFileHttpHeaders-FileSmbProperties-String-Map-ShareRequestConditions-Duration-Context}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/create-file">Azure Docs</a>.</p>
+     *
+     * @param maxSize The maximum size in bytes for the file.
+     * @param httpHeaders The user settable file http headers.
+     * @param smbProperties The user settable file smb properties.
+     * @param filePermission The file permission of the file.
+     * @param metadata Optional name-value pairs associated with the file as metadata.
+     * @param requestConditions {@link ShareRequestConditions}
+     * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout
+     * concludes a {@link RuntimeException} will be thrown.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return A response containing the {@link ShareFileInfo file info} and the status of creating the file.
+     * @throws ShareStorageException If the directory has already existed, the parent directory does not exist or
+     * directory is an invalid resource name.
+     * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
+     * @see <a href="https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/">C# identifiers</a>
+     */
+    public Response<ShareFileInfo> createWithResponse(long maxSize, ShareFileHttpHeaders httpHeaders,
+        FileSmbProperties smbProperties, String filePermission, Map<String, String> metadata,
+        ShareRequestConditions requestConditions, Duration timeout, Context context) {
         Mono<Response<ShareFileInfo>> response = shareFileAsyncClient
-            .createWithResponse(maxSize, httpHeaders, smbProperties, filePermission, metadata, context);
+            .createWithResponse(maxSize, httpHeaders, smbProperties, filePermission, metadata, requestConditions,
+                context);
         return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
     }
 
@@ -205,8 +277,42 @@ public class ShareFileClient {
      * @see <a href="https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/">C# identifiers</a>
      */
     public SyncPoller<ShareFileCopyInfo, Void> beginCopy(String sourceUrl, Map<String, String> metadata,
-                                                         Duration pollInterval) {
-        return shareFileAsyncClient.beginCopy(sourceUrl, metadata, pollInterval)
+        Duration pollInterval) {
+        return this.beginCopy(sourceUrl, null, null, null, null, null, metadata, pollInterval, null);
+    }
+
+    /**
+     * Copies a blob or file to a destination file within the storage account.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>Copy file from source getDirectoryUrl to the {@code resourcePath} </p>
+     *
+     * {@codesnippet com.azure.storage.file.share.ShareFileClient.beginCopy#string-filesmbproperties-string-permissioncopymodetype-boolean-boolean-map-duration-ShareRequestConditions}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/copy-file">Azure Docs</a>.</p>
+     *
+     * @param sourceUrl Specifies the URL of the source file or blob, up to 2 KB in length.
+     * @param smbProperties The user settable file smb properties.
+     * @param filePermission The file permission of the file.
+     * @param filePermissionCopyMode Mode of file permission acquisition.
+     * @param ignoreReadOnly Whether or not to copy despite target being read only. (default is false)
+     * @param setArchiveAttribute Whether or not the archive attribute is to be set on the target. (default is true)
+     * @param metadata Optional name-value pairs associated with the file as metadata. Metadata names must adhere to the
+     * naming rules.
+     * @param pollInterval Duration between each poll for the copy status. If none is specified, a default of one second
+     * is used.
+     * @param destinationRequestConditions {@link ShareRequestConditions}
+     * @return A {@link SyncPoller} to poll the progress of copy operation.
+     * @see <a href="https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/">C# identifiers</a>
+     */
+    public SyncPoller<ShareFileCopyInfo, Void> beginCopy(String sourceUrl, FileSmbProperties smbProperties,
+        String filePermission, PermissionCopyModeType filePermissionCopyMode, Boolean ignoreReadOnly,
+        Boolean setArchiveAttribute, Map<String, String> metadata, Duration pollInterval,
+        ShareRequestConditions destinationRequestConditions) {
+        return shareFileAsyncClient.beginCopy(sourceUrl, smbProperties, filePermission, filePermissionCopyMode,
+            ignoreReadOnly, setArchiveAttribute, metadata, pollInterval, destinationRequestConditions)
                 .getSyncPoller();
     }
 
@@ -248,7 +354,32 @@ public class ShareFileClient {
      * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
     public Response<Void> abortCopyWithResponse(String copyId, Duration timeout, Context context) {
-        Mono<Response<Void>> response = shareFileAsyncClient.abortCopyWithResponse(copyId, context);
+        return this.abortCopyWithResponse(copyId, null, timeout, context);
+    }
+
+    /**
+     * Aborts a pending Copy File operation, and leaves a destination file with zero length and full metadata.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>Abort copy file from copy id("someCopyId") </p>
+     *
+     * {@codesnippet com.azure.storage.file.share.ShareFileClient.abortCopyWithResponse#string-ShareRequestConditions-duration-context}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/abort-copy-file">Azure Docs</a>.</p>
+     *
+     * @param copyId Specifies the copy id which has copying pending status associate with it.
+     * @param requestConditions {@link ShareRequestConditions}
+     * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout
+     * concludes a {@link RuntimeException} will be thrown.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return A response containing the status of aborting copy the file.
+     * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
+     */
+    public Response<Void> abortCopyWithResponse(String copyId, ShareRequestConditions requestConditions,
+        Duration timeout, Context context) {
+        Mono<Response<Void>> response = shareFileAsyncClient.abortCopyWithResponse(copyId, requestConditions, context);
         return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
     }
 
@@ -297,9 +428,37 @@ public class ShareFileClient {
      * @return The response of the file properties.
      */
     public Response<ShareFileProperties> downloadToFileWithResponse(String downloadFilePath, ShareFileRange range,
-                                                                    Duration timeout, Context context) {
+        Duration timeout, Context context) {
+        return this.downloadToFileWithResponse(downloadFilePath, range, null, timeout, context);
+    }
+
+    /**
+     * Downloads a file from the system, including its metadata and properties into a file specified by the path.
+     *
+     * <p>The file will be created and must not exist, if the file already exists a {@link FileAlreadyExistsException}
+     * will be thrown.</p>
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>Download the file from 1024 to 2048 bytes to current folder. </p>
+     *
+     * {@codesnippet com.azure.storage.file.share.ShareFileClient.downloadToFileWithResponse#String-ShareFileRange-ShareRequestConditions-Duration-Context}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-file">Azure Docs</a>.</p>
+     *
+     * @param downloadFilePath The path where store the downloaded file
+     * @param range Optional byte range which returns file data only from the specified range.
+     * @param requestConditions {@link ShareRequestConditions}
+     * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout
+     * concludes a {@link RuntimeException} will be thrown.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return The response of the file properties.
+     */
+    public Response<ShareFileProperties> downloadToFileWithResponse(String downloadFilePath, ShareFileRange range,
+        ShareRequestConditions requestConditions, Duration timeout, Context context) {
         Mono<Response<ShareFileProperties>> response = shareFileAsyncClient.downloadToFileWithResponse(downloadFilePath,
-            range, context);
+            range, requestConditions, context);
         return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
     }
 
@@ -347,10 +506,39 @@ public class ShareFileClient {
      */
     public ShareFileDownloadResponse downloadWithResponse(OutputStream stream, ShareFileRange range,
         Boolean rangeGetContentMD5, Duration timeout, Context context) {
+        return this.downloadWithResponse(stream, range, rangeGetContentMD5, null, timeout, context);
+    }
+
+    /**
+     * Downloads a file from the system, including its metadata and properties
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>Download the file from 1024 to 2048 bytes with its metadata and properties and without the contentMD5. </p>
+     *
+     * {@codesnippet com.azure.storage.file.share.ShareFileClient.downloadWithResponse#OutputStream-ShareFileRange-Boolean-ShareRequestConditions-Duration-Context}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-file">Azure Docs</a>.</p>
+     *
+     * @param stream A non-null {@link OutputStream} where the downloaded data will be written.
+     * @param range Optional byte range which returns file data only from the specified range.
+     * @param rangeGetContentMD5 Optional boolean which the service returns the MD5 hash for the range when it sets to
+     * true, as long as the range is less than or equal to 4 MB in size.
+     * @param requestConditions {@link ShareRequestConditions}
+     * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout
+     * concludes a {@link RuntimeException} will be thrown.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return A response containing the headers and response status code
+     * @throws NullPointerException If {@code stream} is {@code null}.
+     * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
+     */
+    public ShareFileDownloadResponse downloadWithResponse(OutputStream stream, ShareFileRange range,
+        Boolean rangeGetContentMD5, ShareRequestConditions requestConditions, Duration timeout, Context context) {
         Objects.requireNonNull(stream, "'stream' cannot be null.");
 
         Mono<ShareFileDownloadResponse> download = shareFileAsyncClient.downloadWithResponse(range, rangeGetContentMD5,
-            context)
+            requestConditions, context)
             .flatMap(response -> response.getValue().reduce(stream, (outputStream, buffer) -> {
                 try {
                     outputStream.write(FluxUtil.byteBufferToArray(buffer));
@@ -402,7 +590,32 @@ public class ShareFileClient {
      * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
     public Response<Void> deleteWithResponse(Duration timeout, Context context) {
-        Mono<Response<Void>> response = shareFileAsyncClient.deleteWithResponse(context);
+        return this.deleteWithResponse(null, timeout, context);
+    }
+
+    /**
+     * Deletes the file associate with the client.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>Delete the file</p>
+     *
+     * {@codesnippet com.azure.storage.file.share.ShareFileClient.deleteWithResponse#ShareRequestConditions-duration-context}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/delete-file2">Azure Docs</a>.</p>
+     *
+     * @param requestConditions {@link ShareRequestConditions}
+     * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout
+     * concludes a {@link RuntimeException} will be thrown.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return A response that only contains headers and response status code
+     * @throws ShareStorageException If the directory doesn't exist or the file doesn't exist.
+     * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
+     */
+    public Response<Void> deleteWithResponse(ShareRequestConditions requestConditions, Duration timeout,
+        Context context) {
+        Mono<Response<Void>> response = shareFileAsyncClient.deleteWithResponse(requestConditions, context);
         return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
     }
 
@@ -446,7 +659,34 @@ public class ShareFileClient {
      * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
     public Response<ShareFileProperties> getPropertiesWithResponse(Duration timeout, Context context) {
-        Mono<Response<ShareFileProperties>> response = shareFileAsyncClient.getPropertiesWithResponse(context);
+        return this.getPropertiesWithResponse(null, timeout, context);
+    }
+
+    /**
+     * Retrieves the properties of the storage account's file. The properties includes file metadata, last modified
+     * date, is server encrypted, and eTag.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>Retrieve file properties</p>
+     *
+     * {@codesnippet com.azure.storage.file.share.ShareFileClient.getPropertiesWithResponse#ShareRequestConditions-duration-context}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-file-properties">Azure Docs</a>.</p>
+     *
+     * @param requestConditions {@link ShareRequestConditions}
+     * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout
+     * concludes a {@link RuntimeException} will be thrown.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return A response containing the {@link ShareFileProperties Storage file properties} with headers and
+     * status code.
+     * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
+     */
+    public Response<ShareFileProperties> getPropertiesWithResponse(ShareRequestConditions requestConditions,
+        Duration timeout, Context context) {
+        Mono<Response<ShareFileProperties>> response = shareFileAsyncClient.getPropertiesWithResponse(requestConditions,
+            context);
         return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
     }
 
@@ -512,8 +752,46 @@ public class ShareFileClient {
      */
     public Response<ShareFileInfo> setPropertiesWithResponse(long newFileSize, ShareFileHttpHeaders httpHeaders,
         FileSmbProperties smbProperties, String filePermission, Duration timeout, Context context) {
+        return this.setPropertiesWithResponse(newFileSize, httpHeaders, smbProperties, filePermission, null,
+            timeout, context);
+    }
+
+    /**
+     * Sets the user-defined httpHeaders to associate to the file.
+     *
+     * <p>If {@code null} is passed for the httpHeaders it will clear the httpHeaders associated to the file.</p>
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>Set the httpHeaders of contentType of "text/plain"</p>
+     *
+     * {@codesnippet com.azure.storage.file.share.ShareFileClient.setPropertiesWithResponse#long-ShareFileHttpHeaders-FileSmbProperties-String-ShareRequestConditions-Duration-Context}
+     *
+     * <p>Clear the httpHeaders of the file and preserve the SMB properties</p>
+     *
+     * {@codesnippet com.azure.storage.file.share.ShareFileClient.setPropertiesWithResponse#long-ShareFileHttpHeaders-FileSmbProperties-String-ShareRequestConditions-Duration-Context.clearHttpHeaderspreserveSMBProperties}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/set-file-properties">Azure Docs</a>.</p>
+     *
+     * @param newFileSize New file size of the file
+     * @param httpHeaders The user settable file http headers.
+     * @param smbProperties The user settable file smb properties.
+     * @param filePermission The file permission of the file
+     * @param requestConditions {@link ShareRequestConditions}
+     * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout
+     * concludes a {@link RuntimeException} will be thrown.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return Response containing the {@link ShareFileInfo file info} with headers and status code
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
+     */
+    public Response<ShareFileInfo> setPropertiesWithResponse(long newFileSize, ShareFileHttpHeaders httpHeaders,
+        FileSmbProperties smbProperties, String filePermission, ShareRequestConditions requestConditions,
+        Duration timeout, Context context) {
         Mono<Response<ShareFileInfo>> response = shareFileAsyncClient
-            .setPropertiesWithResponse(newFileSize, httpHeaders, smbProperties, filePermission, context);
+            .setPropertiesWithResponse(newFileSize, httpHeaders, smbProperties, filePermission, requestConditions,
+                context);
         return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
     }
 
@@ -571,8 +849,40 @@ public class ShareFileClient {
      */
     public Response<ShareFileMetadataInfo> setMetadataWithResponse(Map<String, String> metadata, Duration timeout,
         Context context) {
+        return this.setMetadataWithResponse(metadata, null, timeout, context);
+    }
+
+    /**
+     * Sets the user-defined metadata to associate to the file.
+     *
+     * <p>If {@code null} is passed for the metadata it will clear the metadata associated to the file.</p>
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>Set the metadata to "file:updatedMetadata"</p>
+     *
+     * {@codesnippet com.azure.storage.file.share.ShareFileClient.setMetadataWithResponse#map-ShareRequestConditions-duration-context}
+     *
+     * <p>Clear the metadata of the file</p>
+     *
+     * {@codesnippet com.azure.storage.file.share.ShareFileClient.setMetadataWithResponse#map-ShareRequestConditions-duration-context.clearMetadata}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/set-file-metadata">Azure Docs</a>.</p>
+     *
+     * @param metadata Options.Metadata to set on the file, if null is passed the metadata for the file is cleared
+     * @param requestConditions {@link ShareRequestConditions}
+     * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout
+     * concludes a {@link RuntimeException} will be thrown.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return Response containing the {@link ShareFileMetadataInfo file meta info} with headers and status code
+     * @throws ShareStorageException If the file doesn't exist or the metadata contains invalid keys
+     * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
+     */
+    public Response<ShareFileMetadataInfo> setMetadataWithResponse(Map<String, String> metadata,
+        ShareRequestConditions requestConditions, Duration timeout, Context context) {
         Mono<Response<ShareFileMetadataInfo>> response = shareFileAsyncClient
-            .setMetadataWithResponse(metadata, context);
+            .setMetadataWithResponse(metadata, requestConditions, context);
         return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
     }
 
@@ -627,9 +937,40 @@ public class ShareFileClient {
      */
     public Response<ShareFileUploadInfo> uploadWithResponse(InputStream data, long length, Long offset,
         Duration timeout, Context context) {
+        return this.uploadWithResponse(data, length, offset, null, timeout, context);
+    }
+
+    /**
+     * Uploads a range of bytes to specific of a file in storage file service. Upload operations performs an in-place
+     * write on the specified file.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>Upload data "default" starting from 1024. </p>
+     *
+     * {@codesnippet com.azure.storage.file.share.ShareFileClient.uploadWithResponse#InputStream-long-Long-ShareRequestConditions-Duration-Context}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/put-range">Azure Docs</a>.</p>
+     *
+     * @param data The data which will upload to the storage file.
+     * @param length Specifies the number of bytes being transmitted in the request body.
+     * @param offset Starting point of the upload range, if {@code null} it will start from the beginning.
+     * @param requestConditions {@link ShareRequestConditions}
+     * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout
+     * concludes a {@link RuntimeException} will be thrown.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return A response containing the {@link ShareFileUploadInfo file upload info} with headers and response
+     * status code.
+     * @throws ShareStorageException If you attempt to upload a range that is larger than 4 MB, the service returns
+     * status code 413 (Request Entity Too Large)
+     * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
+     */
+    public Response<ShareFileUploadInfo> uploadWithResponse(InputStream data, long length, Long offset,
+        ShareRequestConditions requestConditions, Duration timeout, Context context) {
         return StorageImplUtils.blockWithOptionalTimeout(shareFileAsyncClient.uploadWithResponse(Utility
                 .convertStreamToByteBuffer(data, length, (int) ShareFileAsyncClient.FILE_DEFAULT_BLOCK_SIZE),
-            length, offset, context), timeout);
+            length, offset, requestConditions, context), timeout);
     }
 
     /**
@@ -683,8 +1024,40 @@ public class ShareFileClient {
     // TODO: (gapra) Fix put range from URL link. Service docs have not been updated to show this API
     public Response<ShareFileUploadRangeFromUrlInfo> uploadRangeFromUrlWithResponse(long length, long destinationOffset,
         long sourceOffset, String sourceUrl, Duration timeout, Context context) {
+        return this.uploadRangeFromUrlWithResponse(length, destinationOffset, sourceOffset, sourceUrl, null, timeout,
+            context);
+    }
+
+    /**
+     * Uploads a range of bytes from one file to another file.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>Upload a number of bytes from a file at defined source and destination offsets </p>
+     *
+     * {@codesnippet com.azure.storage.file.share.ShareFileClient.uploadRangeFromUrlWithResponse#long-long-long-String-ShareRequestConditions-Duration-Context}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/put-range">Azure Docs</a>.</p>
+     *
+     * @param length Specifies the number of bytes being transmitted in the request body.
+     * @param destinationOffset Starting point of the upload range on the destination.
+     * @param sourceOffset Starting point of the upload range on the source.
+     * @param sourceUrl Specifies the URL of the source file.
+     * @param requestConditions {@link ShareRequestConditions}
+     * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout
+     * concludes a {@link RuntimeException} will be thrown.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return A response containing the {@link ShareFileUploadRangeFromUrlInfo file upload range from url info} with
+     * headers and response status code.
+     * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
+     */
+    // TODO: (gapra) Fix put range from URL link. Service docs have not been updated to show this API
+    public Response<ShareFileUploadRangeFromUrlInfo> uploadRangeFromUrlWithResponse(long length, long destinationOffset,
+        long sourceOffset, String sourceUrl, ShareRequestConditions requestConditions, Duration timeout,
+        Context context) {
         Mono<Response<ShareFileUploadRangeFromUrlInfo>> response = shareFileAsyncClient.uploadRangeFromUrlWithResponse(
-            length, destinationOffset, sourceOffset, sourceUrl, context);
+            length, destinationOffset, sourceOffset, sourceUrl, requestConditions, context);
         return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
     }
 
@@ -732,8 +1105,36 @@ public class ShareFileClient {
      */
     public Response<ShareFileUploadInfo> clearRangeWithResponse(long length, long offset, Duration timeout,
         Context context) {
+        return this.clearRangeWithResponse(length, offset, null, timeout, context);
+    }
+
+    /**
+     * Clears a range of bytes to specific of a file in storage file service. Upload operations performs an in-place
+     * write on the specified file.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>Clear the range starting from 1024 with length of 1024. </p>
+     *
+     * {@codesnippet com.azure.storage.file.share.ShareFileClient.clearRangeWithResponse#long-long-ShareRequestConditions-Duration-Context}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/put-range">Azure Docs</a>.</p>
+     *
+     * @param length Specifies the number of bytes being transmitted in the request body.
+     * @param offset Starting point of the upload range, if {@code null} it will start from the beginning.
+     * @param requestConditions {@link ShareRequestConditions}
+     * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout
+     * concludes a {@link RuntimeException} will be thrown.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return A response containing the {@link ShareFileUploadInfo file upload info} with headers and response
+     * status code.
+     * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
+     */
+    public Response<ShareFileUploadInfo> clearRangeWithResponse(long length, long offset,
+        ShareRequestConditions requestConditions, Duration timeout, Context context) {
         Mono<Response<ShareFileUploadInfo>> response = shareFileAsyncClient
-            .clearRangeWithResponse(length, offset, context);
+            .clearRangeWithResponse(length, offset, requestConditions, context);
         return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
     }
 
@@ -754,7 +1155,28 @@ public class ShareFileClient {
      * @param uploadFilePath The path where store the source file to upload
      */
     public void uploadFromFile(String uploadFilePath) {
-        shareFileAsyncClient.uploadFromFile(uploadFilePath).block();
+        this.uploadFromFile(uploadFilePath, null);
+    }
+
+    /**
+     * Uploads file to storage file service.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>Upload the file from the source file path. </p>
+     *
+     * {@codesnippet com.azure.storage.file.share.ShareFileClient.uploadFromFile#string-ShareRequestConditions}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/create-file">Azure Docs Create File</a>
+     * and
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/put-range">Azure Docs Upload</a>.</p>
+     *
+     * @param uploadFilePath The path where store the source file to upload
+     * @param requestConditions {@link ShareRequestConditions}
+     */
+    public void uploadFromFile(String uploadFilePath, ShareRequestConditions requestConditions) {
+        shareFileAsyncClient.uploadFromFile(uploadFilePath, requestConditions).block();
     }
 
     /**
@@ -795,7 +1217,33 @@ public class ShareFileClient {
      * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
     public PagedIterable<ShareFileRange> listRanges(ShareFileRange range, Duration timeout, Context context) {
-        return new PagedIterable<>(shareFileAsyncClient.listRangesWithOptionalTimeout(range, timeout, context));
+        return this.listRanges(range, null, timeout, context);
+    }
+
+    /**
+     * List of valid ranges for a file.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>List all ranges within the file range from 1KB to 2KB.</p>
+     *
+     * {@codesnippet com.azure.storage.file.share.ShareFileClient.listRanges#ShareFileRange-ShareRequestConditions-Duration-Context}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/list-ranges">Azure Docs</a>.</p>
+     *
+     * @param range Optional byte range which returns file data only from the specified range.
+     * @param requestConditions {@link ShareRequestConditions}
+     * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout
+     * concludes a {@link RuntimeException} will be thrown.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return {@link ShareFileRange ranges} in the files that satisfy the requirements
+     * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
+     */
+    public PagedIterable<ShareFileRange> listRanges(ShareFileRange range, ShareRequestConditions requestConditions,
+        Duration timeout, Context context) {
+        return new PagedIterable<>(shareFileAsyncClient.listRangesWithOptionalTimeout(range, requestConditions, timeout,
+            context));
     }
 
     /**
@@ -853,9 +1301,10 @@ public class ShareFileClient {
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/force-close-handles">Azure Docs</a>.</p>
      *
      * @param handleId Handle ID to be closed.
+     * @return Information about the closed handles.
      */
-    public void forceCloseHandle(String handleId) {
-        forceCloseHandleWithResponse(handleId, null, Context.NONE);
+    public CloseHandlesInfo forceCloseHandle(String handleId) {
+        return forceCloseHandleWithResponse(handleId, null, Context.NONE).getValue();
     }
 
     /**
@@ -870,15 +1319,16 @@ public class ShareFileClient {
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/force-close-handles">Azure Docs</a>.</p>
      *
-     * @param handleId Handle ID to be clsoed.
+     * @param handleId Handle ID to be closed.
      * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout
      * concludes a {@link RuntimeException} will be thrown.
      * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @return A response that only contains headers and response status code.
+     * @return A response that contains information about the closed handles, headers and response status code.
      */
-    public Response<Void> forceCloseHandleWithResponse(String handleId, Duration timeout, Context context) {
-        return StorageImplUtils.blockWithOptionalTimeout(shareFileAsyncClient
-            .forceCloseHandleWithResponse(handleId, context), timeout);
+    public Response<CloseHandlesInfo> forceCloseHandleWithResponse(String handleId, Duration timeout, Context context) {
+        Mono<Response<CloseHandlesInfo>> response = shareFileAsyncClient
+            .forceCloseHandleWithResponse(handleId, context);
+        return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
     }
 
     /**
@@ -896,11 +1346,13 @@ public class ShareFileClient {
      * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout
      * concludes a {@link RuntimeException} will be thrown.
      * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @return The number of handles closed.
+     * @return Information about the closed handles
      */
-    public int forceCloseAllHandles(Duration timeout, Context context) {
+    public CloseHandlesInfo forceCloseAllHandles(Duration timeout, Context context) {
         return new PagedIterable<>(shareFileAsyncClient.forceCloseAllHandlesWithOptionalTimeout(timeout, context))
-            .stream().reduce(0, Integer::sum);
+            .stream().reduce(new CloseHandlesInfo(0, 0),
+                (accu, next) -> new CloseHandlesInfo(accu.getClosedHandles() + next.getClosedHandles(),
+                    accu.getFailedHandles() + next.getFailedHandles()));
     }
 
     /**
@@ -953,6 +1405,32 @@ public class ShareFileClient {
      */
     public String getAccountName() {
         return this.shareFileAsyncClient.getAccountName();
+    }
+
+    /**
+     * Gets the {@link HttpPipeline} powering this client.
+     *
+     * @return The pipeline.
+     */
+    public HttpPipeline getHttpPipeline() {
+        return this.shareFileAsyncClient.getHttpPipeline();
+    }
+
+    /**
+     * Generates a service SAS for the file using the specified {@link ShareServiceSasSignatureValues}
+     * Note : The client must be authenticated via {@link StorageSharedKeyCredential}
+     * <p>See {@link ShareServiceSasSignatureValues} for more information on how to construct a service SAS.</p>
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.file.share.ShareFileClient.generateSas#ShareServiceSasSignatureValues}
+     *
+     * @param shareServiceSasSignatureValues {@link ShareServiceSasSignatureValues}
+     *
+     * @return A {@code String} representing all SAS query parameters.
+     */
+    public String generateSas(ShareServiceSasSignatureValues shareServiceSasSignatureValues) {
+        return this.shareFileAsyncClient.generateSas(shareServiceSasSignatureValues);
     }
 }
 

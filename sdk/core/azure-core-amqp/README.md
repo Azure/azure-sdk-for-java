@@ -1,4 +1,4 @@
-# Azure Core AMQP client library for Java
+# Azure Core AMQP shared library for Java
 
 Azure Core AMQP client library is a collection of classes common to the AMQP protocol. It help developers create their
 own AMQP client library that abstracts from the underlying transport library's implementation.
@@ -9,14 +9,14 @@ own AMQP client library that abstracts from the underlying transport library's i
 
 - Java Development Kit (JDK) with version 8 or above
 
-### Adding the package to your product
+### Include the package
 
 [//]: # ({x-version-update-start;com.azure:azure-core-amqp;current})
 ```xml
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-core-amqp</artifactId>
-    <version>1.0.0-preview.7</version>
+    <version>1.3.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -30,6 +30,12 @@ The concepts for AMQP are well documented in [OASIS Advanced Messaging Queuing P
 
 ## Troubleshooting
 
+### Enabling Logging
+
+Azure SDKs for Java offer a consistent logging story to help aid in troubleshooting application errors and expedite
+their resolution. The logs produced will capture the flow of an application before reaching the terminal state to help
+locate the root issue. View the [logging][logging] wiki for guidance about enabling logging.
+
 ## Next steps
 
 ## Contributing
@@ -42,5 +48,8 @@ Azure Projects Contribution Guidelines](http://azure.github.io/guidelines.html).
 1. Commit your changes (`git commit -am 'Add some feature'`)
 1. Push to the branch (`git push origin my-new-feature`)
 1. Create new Pull Request
+
+<!-- Links -->
+[logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-with-Azure-SDK
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fcore%2Fazure-core-amqp%2FREADME.png)

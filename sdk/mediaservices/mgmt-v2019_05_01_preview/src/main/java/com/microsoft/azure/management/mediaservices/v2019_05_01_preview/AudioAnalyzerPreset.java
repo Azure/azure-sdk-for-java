@@ -18,7 +18,7 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
  * operations, including speech transcription. Currently, the preset supports
  * processing of content with a single audio track.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata\\.type")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata\\.type", defaultImpl = AudioAnalyzerPreset.class)
 @JsonTypeName("#Microsoft.Media.AudioAnalyzerPreset")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "#Microsoft.Media.VideoAnalyzerPreset", value = VideoAnalyzerPreset.class)

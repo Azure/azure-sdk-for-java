@@ -1,0 +1,121 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "baseName": {
+      "type": "string",
+      "defaultValue": "[resourceGroup().name]",
+      "metadata": {
+        "description": "The base resource name."
+      }
+    },
+    "searchEndpointSuffix": {
+      "type": "string",
+      "defaultValue": "search.windows.net",
+      "metadata": {
+        "description": "The Search service endpoint suffix."
+      }
+    },
+    "storageEndpointSuffix": {
+      "type": "string",
+      "defaultValue": "core.windows.net",
+      "metadata": {
+        "description": "The Storage account endpoint suffix."
+      }
+    },
+    "location": {
+      "type": "string",
+      "defaultValue": "[resourceGroup().location]",
+      "metadata": {
+        "description": "The location of the resource. By default, this is the same as the resource group."
+      }
+    },
+    "searchSku": {
+      "type": "string",
+      "defaultValue": "free",
+      "allowedValues": [
+        "free",
+        "basic",
+        "standard"
+      ],
+      "metadata": {
+        "description": "The Search service SKU to create."
+      }
+    }
+  },
+  "variables": {
+    "searchServiceName": "[concat('azs-java-', parameters('baseName'))]",
+    "searchApiVersion": "2020-03-13",
+    "storageAccountName": "[concat('azsstg', parameters('baseName'))]",
+    "storageContainerName": "[concat('azscontainer', parameters('baseName'))]",
+    "storageApiVersion": "2019-06-01"
+  },
+  "resources": [
+    {
+      "name": "[variables('searchServiceName')]",
+      "type": "Microsoft.Search/searchServices",
+      "apiVersion": "[variables('searchApiVersion')]",
+      "location": "[parameters('location')]",
+      "sku": {
+        "name": "[parameters('searchSku')]"
+      },
+      "properties": {
+        "replicaCount": 1,
+        "partitionCount": 1,
+        "hostingMode": "default",
+        "publicNetworkAccess": "Enabled",
+        "networkRuleSet": {
+          "ipRules": []
+        }
+      }
+    },
+    {
+      "name": "[variables('storageAccountName')]",
+      "type": "Microsoft.Storage/storageAccounts",
+      "apiVersion": "[variables('storageApiVersion')]",
+      "location": "[parameters('location')]",
+      "properties": {
+        "accessTier": "Hot",
+        "supportsHttpsTrafficOnly": true
+      },
+      "sku": {
+        "name": "Standard_LRS",
+        "tier": "Standard"
+      },
+      "kind": "StorageV2",
+      "resources": [
+        {
+          "type": "blobServices/containers",
+          "name": "[concat('default/', variables('storageContainerName'))]",
+          "apiVersion": "[variables('storageApiVersion')]",
+          "properties": {},
+          "dependsOn": [
+            "[variables('storageAccountName')]"
+          ]
+        }
+      ]
+    }
+  ],
+  "outputs": {
+    "SEARCH_SERVICE_ENDPOINT": {
+      "type": "string",
+      "value": "[concat('https://', variables('searchServiceName'), '.', parameters('searchEndpointSuffix'))]"
+    },
+    "SEARCH_SERVICE_API_KEY": {
+      "type": "string",
+      "value": "[listAdminKeys(variables('searchServiceName'), variables('searchApiVersion')).primaryKey]"
+    },
+    "SEARCH_QUERY_API_KEY": {
+      "type": "string",
+      "value": "[listQueryKeys(variables('searchServiceName'), variables('searchApiVersion')).value[0].key]"
+    },
+    "SEARCH_STORAGE_CONNECTION_STRING": {
+      "type": "string",
+      "value": "[concat('DefaultEndpointsProtocol=https;AccountName=', variables('storageAccountName'), ';AccountKey=', listKeys(variables('storageAccountName'), variables('storageApiVersion')).keys[0].value, ';EndpointSuffix=', parameters('storageEndpointSuffix'))]"
+    },
+    "SEARCH_STORAGE_CONTAINER_NAME": {
+      "type": "string",
+      "value": "[variables('storageContainerName')]"
+    }
+  }
+}

@@ -87,12 +87,18 @@ public abstract class SessionTests extends Tests {
         if (!this.shouldCreateEntityForEveryTest()) {
             this.drainSession();
         }
-
-        this.sender.close();
+        
+        if (this.sender != null) {
+        	this.sender.close();
+        }
+        
         if (this.session != null) {
             this.session.close();
         }
-        this.factory.close();
+        
+        if (this.factory != null) {
+        	this.factory.close();
+        }        
         
         if (this.shouldCreateEntityForEveryTest()) {
             managementClient.deleteQueueAsync(this.entityName).get();

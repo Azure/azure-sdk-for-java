@@ -9,7 +9,9 @@ import com.azure.core.util.ServiceVersion;
  * The versions of Azure Storage Blob supported by this client library.
  */
 public enum BlobServiceVersion implements ServiceVersion {
-    V2019_02_02("2019-02-02");
+    V2019_02_02("2019-02-02"),
+    V2019_07_07("2019-07-07"),
+    V2019_12_12("2019-12-12");
 
     private final String version;
 
@@ -31,6 +33,6 @@ public enum BlobServiceVersion implements ServiceVersion {
      * @return the latest {@link BlobServiceVersion}
      */
     public static BlobServiceVersion getLatest() {
-        return V2019_02_02;
+        return V2019_12_12;
     }
 }

@@ -1,22 +1,23 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/queueapitestscreatequeuewithsharedkey033844a5024431",
+    "Uri" : "https://REDACTED.queue.core.windows.net/queueapitestscreatequeuewithsharedkey47870b6a04a8cb",
     "Headers" : {
-      "x-ms-version" : "2018-03-28",
-      "User-Agent" : "azsdk-java-azure-storage-queue/12.0.0-preview.5 11.0.4; Windows 10 10.0",
-      "x-ms-client-request-id" : "739769f2-54c0-4fd8-8506-2817707cc697"
+      "x-ms-version" : "2019-12-12",
+      "User-Agent" : "azsdk-java-azure-storage-queue/12.6.0-beta.1 (11.0.6; Windows 10 10.0)",
+      "x-ms-client-request-id" : "391bdcfd-22ae-4feb-8971-45f4ccce8622"
     },
     "Response" : {
-      "x-ms-version" : "2018-03-28",
+      "x-ms-version" : "2019-12-12",
       "Server" : "Windows-Azure-Queue/1.0 Microsoft-HTTPAPI/2.0",
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "2f7e7c7d-f003-0082-2f8d-839126000000",
-      "Date" : "Tue, 15 Oct 2019 19:19:34 GMT"
+      "x-ms-request-id" : "37a39cd4-3003-009b-4603-3a8ca5000000",
+      "Date" : "Thu, 04 Jun 2020 00:04:53 GMT",
+      "x-ms-client-request-id" : "391bdcfd-22ae-4feb-8971-45f4ccce8622"
     },
     "Exception" : null
   } ],
-  "variables" : [ "queueapitestscreatequeuewithsharedkey033844a5024431" ]
+  "variables" : [ "queueapitestscreatequeuewithsharedkey47870b6a04a8cb" ]
 }

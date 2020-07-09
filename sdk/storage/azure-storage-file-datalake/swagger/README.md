@@ -3,23 +3,14 @@
 > see https://aka.ms/autorest
 
 ### Setup
-```ps
-cd C:\work
-git clone --recursive https://github.com/Azure/autorest.java/
-cd autorest.java
-git checkout v3
-npm install
-cd ..
-git clone --recursive https://github.com/jianghaolu/autorest.modeler/
-cd autorest.modeler
-git checkout headerprefixfix
-npm install
-```
+
+Increase max memory if you're using Autorest older than 3. Set the environment variable `NODE_OPTIONS` to `--max-old-space-size=8192`.
 
 ### Generation
 ```ps
 cd <swagger-folder>
-autorest --use=C:/work/autorest.java --use=C:/work/autorest.modeler --version=2.0.4280
+# You may need to repeat this command few times if you're getting "TypeError: Cannot read property 'filename' of undefined" error
+autorest --use=@microsoft.azure/autorest.java@3.0.4 --use=jianghaolu/autorest.modeler#440af3935c504cea4410133e1fd940b78f6af749  --version=2.0.4280
 ```
 
 ### Code generation settings
@@ -146,6 +137,56 @@ directive:
     $.ContentMD5["x-ms-client-name"] = "contentMd5";
     $.ContentType["x-ms-parameter-grouping"].name = "path-http-headers";
     $.TransactionalContentMD5["x-ms-parameter-grouping"].name = "path-http-headers";
+```
+
+### Make eTag in Path JsonProperty to etag
+``` yaml
+directive:
+- from: Path.java
+  where: $
+  transform: >
+    return $.replace('@JsonProperty(value = "eTag")\n    private String eTag;', '@JsonProperty(value = "etag")\n    private String eTag;');
+```
+
+### Change StorageErrorException to StorageException
+``` yaml
+directive:
+- from: ServicesImpl.java
+  where: $
+  transform: >
+    return $.
+      replace(
+        "com.azure.storage.file.datalake.implementation.models.StorageErrorException",
+        "com.azure.storage.file.datalake.models.DataLakeStorageException"
+      ).
+      replace(
+        /\@UnexpectedResponseExceptionType\(StorageErrorException\.class\)/g,
+        "@UnexpectedResponseExceptionType(DataLakeStorageException.class)"
+      );
+- from: FileSystemsImpl.java
+  where: $
+  transform: >
+    return $.
+      replace(
+        "com.azure.storage.file.datalake.implementation.models.StorageErrorException",
+        "com.azure.storage.file.datalake.models.DataLakeStorageException"
+      ).
+      replace(
+        /\@UnexpectedResponseExceptionType\(StorageErrorException\.class\)/g,
+        "@UnexpectedResponseExceptionType(DataLakeStorageException.class)"
+      );
+- from: PathsImpl.java
+  where: $
+  transform: >
+    return $.
+      replace(
+        "com.azure.storage.file.datalake.implementation.models.StorageErrorException",
+        "com.azure.storage.file.datalake.models.DataLakeStorageException"
+      ).
+      replace(
+        /\@UnexpectedResponseExceptionType\(StorageErrorException\.class\)/g,
+        "@UnexpectedResponseExceptionType(DataLakeStorageException.class)"
+      );
 ```
 
 

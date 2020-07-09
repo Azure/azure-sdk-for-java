@@ -15,12 +15,9 @@ import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.AzureServiceFuture;
 import com.microsoft.azure.ListOperationCallback;
-import com.microsoft.azure.management.cognitiveservices.v2017_04_18.CognitiveServicesAccountCreateParameters;
-import com.microsoft.azure.management.cognitiveservices.v2017_04_18.CognitiveServicesAccountUpdateParameters;
 import com.microsoft.azure.management.cognitiveservices.v2017_04_18.ErrorException;
 import com.microsoft.azure.management.cognitiveservices.v2017_04_18.KeyName;
 import com.microsoft.azure.management.cognitiveservices.v2017_04_18.RegenerateKeyParameters;
-import com.microsoft.azure.management.cognitiveservices.v2017_04_18.Sku;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
 import com.microsoft.rest.ServiceCallback;
@@ -29,7 +26,6 @@ import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.Validator;
 import java.io.IOException;
 import java.util.List;
-import java.util.Map;
 import okhttp3.ResponseBody;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
@@ -74,11 +70,11 @@ public class AccountsInner implements InnerSupportsGet<CognitiveServicesAccountI
     interface AccountsService {
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.cognitiveservices.v2017_04_18.Accounts create" })
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}")
-        Observable<Response<ResponseBody>> create(@Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("subscriptionId") String subscriptionId, @Body CognitiveServicesAccountCreateParameters parameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> create(@Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("subscriptionId") String subscriptionId, @Body CognitiveServicesAccountInner account, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.cognitiveservices.v2017_04_18.Accounts update" })
         @PATCH("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}")
-        Observable<Response<ResponseBody>> update(@Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body CognitiveServicesAccountUpdateParameters parameters, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> update(@Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("subscriptionId") String subscriptionId, @Body CognitiveServicesAccountInner account, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.cognitiveservices.v2017_04_18.Accounts delete" })
         @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}", method = "DELETE", hasBody = true)
@@ -125,43 +121,43 @@ public class AccountsInner implements InnerSupportsGet<CognitiveServicesAccountI
     /**
      * Create Cognitive Services Account. Accounts is a resource group wide resource type. It holds the keys for developer to access intelligent APIs. It's also the resource type for billing.
      *
-     * @param resourceGroupName The name of the resource group within the user's subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of Cognitive Services account.
-     * @param parameters The parameters to provide for the created account.
+     * @param account The parameters to provide for the created account.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the CognitiveServicesAccountInner object if successful.
      */
-    public CognitiveServicesAccountInner create(String resourceGroupName, String accountName, CognitiveServicesAccountCreateParameters parameters) {
-        return createWithServiceResponseAsync(resourceGroupName, accountName, parameters).toBlocking().single().body();
+    public CognitiveServicesAccountInner create(String resourceGroupName, String accountName, CognitiveServicesAccountInner account) {
+        return createWithServiceResponseAsync(resourceGroupName, accountName, account).toBlocking().single().body();
     }
 
     /**
      * Create Cognitive Services Account. Accounts is a resource group wide resource type. It holds the keys for developer to access intelligent APIs. It's also the resource type for billing.
      *
-     * @param resourceGroupName The name of the resource group within the user's subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of Cognitive Services account.
-     * @param parameters The parameters to provide for the created account.
+     * @param account The parameters to provide for the created account.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<CognitiveServicesAccountInner> createAsync(String resourceGroupName, String accountName, CognitiveServicesAccountCreateParameters parameters, final ServiceCallback<CognitiveServicesAccountInner> serviceCallback) {
-        return ServiceFuture.fromResponse(createWithServiceResponseAsync(resourceGroupName, accountName, parameters), serviceCallback);
+    public ServiceFuture<CognitiveServicesAccountInner> createAsync(String resourceGroupName, String accountName, CognitiveServicesAccountInner account, final ServiceCallback<CognitiveServicesAccountInner> serviceCallback) {
+        return ServiceFuture.fromResponse(createWithServiceResponseAsync(resourceGroupName, accountName, account), serviceCallback);
     }
 
     /**
      * Create Cognitive Services Account. Accounts is a resource group wide resource type. It holds the keys for developer to access intelligent APIs. It's also the resource type for billing.
      *
-     * @param resourceGroupName The name of the resource group within the user's subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of Cognitive Services account.
-     * @param parameters The parameters to provide for the created account.
+     * @param account The parameters to provide for the created account.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the CognitiveServicesAccountInner object
      */
-    public Observable<CognitiveServicesAccountInner> createAsync(String resourceGroupName, String accountName, CognitiveServicesAccountCreateParameters parameters) {
-        return createWithServiceResponseAsync(resourceGroupName, accountName, parameters).map(new Func1<ServiceResponse<CognitiveServicesAccountInner>, CognitiveServicesAccountInner>() {
+    public Observable<CognitiveServicesAccountInner> createAsync(String resourceGroupName, String accountName, CognitiveServicesAccountInner account) {
+        return createWithServiceResponseAsync(resourceGroupName, accountName, account).map(new Func1<ServiceResponse<CognitiveServicesAccountInner>, CognitiveServicesAccountInner>() {
             @Override
             public CognitiveServicesAccountInner call(ServiceResponse<CognitiveServicesAccountInner> response) {
                 return response.body();
@@ -172,13 +168,13 @@ public class AccountsInner implements InnerSupportsGet<CognitiveServicesAccountI
     /**
      * Create Cognitive Services Account. Accounts is a resource group wide resource type. It holds the keys for developer to access intelligent APIs. It's also the resource type for billing.
      *
-     * @param resourceGroupName The name of the resource group within the user's subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of Cognitive Services account.
-     * @param parameters The parameters to provide for the created account.
+     * @param account The parameters to provide for the created account.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the CognitiveServicesAccountInner object
      */
-    public Observable<ServiceResponse<CognitiveServicesAccountInner>> createWithServiceResponseAsync(String resourceGroupName, String accountName, CognitiveServicesAccountCreateParameters parameters) {
+    public Observable<ServiceResponse<CognitiveServicesAccountInner>> createWithServiceResponseAsync(String resourceGroupName, String accountName, CognitiveServicesAccountInner account) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -188,14 +184,14 @@ public class AccountsInner implements InnerSupportsGet<CognitiveServicesAccountI
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        if (parameters == null) {
-            throw new IllegalArgumentException("Parameter parameters is required and cannot be null.");
+        if (account == null) {
+            throw new IllegalArgumentException("Parameter account is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Validator.validate(parameters);
-        return service.create(resourceGroupName, accountName, this.client.subscriptionId(), parameters, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+        Validator.validate(account);
+        return service.create(resourceGroupName, accountName, this.client.subscriptionId(), account, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<CognitiveServicesAccountInner>>>() {
                 @Override
                 public Observable<ServiceResponse<CognitiveServicesAccountInner>> call(Response<ResponseBody> response) {
@@ -213,6 +209,7 @@ public class AccountsInner implements InnerSupportsGet<CognitiveServicesAccountI
         return this.client.restClient().responseBuilderFactory().<CognitiveServicesAccountInner, ErrorException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<CognitiveServicesAccountInner>() { }.getType())
                 .register(201, new TypeToken<CognitiveServicesAccountInner>() { }.getType())
+                .register(202, new TypeToken<CognitiveServicesAccountInner>() { }.getType())
                 .registerError(ErrorException.class)
                 .build(response);
     }
@@ -220,40 +217,43 @@ public class AccountsInner implements InnerSupportsGet<CognitiveServicesAccountI
     /**
      * Updates a Cognitive Services account.
      *
-     * @param resourceGroupName The name of the resource group within the user's subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of Cognitive Services account.
+     * @param account The parameters to provide for the created account.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the CognitiveServicesAccountInner object if successful.
      */
-    public CognitiveServicesAccountInner update(String resourceGroupName, String accountName) {
-        return updateWithServiceResponseAsync(resourceGroupName, accountName).toBlocking().single().body();
+    public CognitiveServicesAccountInner update(String resourceGroupName, String accountName, CognitiveServicesAccountInner account) {
+        return updateWithServiceResponseAsync(resourceGroupName, accountName, account).toBlocking().single().body();
     }
 
     /**
      * Updates a Cognitive Services account.
      *
-     * @param resourceGroupName The name of the resource group within the user's subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of Cognitive Services account.
+     * @param account The parameters to provide for the created account.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<CognitiveServicesAccountInner> updateAsync(String resourceGroupName, String accountName, final ServiceCallback<CognitiveServicesAccountInner> serviceCallback) {
-        return ServiceFuture.fromResponse(updateWithServiceResponseAsync(resourceGroupName, accountName), serviceCallback);
+    public ServiceFuture<CognitiveServicesAccountInner> updateAsync(String resourceGroupName, String accountName, CognitiveServicesAccountInner account, final ServiceCallback<CognitiveServicesAccountInner> serviceCallback) {
+        return ServiceFuture.fromResponse(updateWithServiceResponseAsync(resourceGroupName, accountName, account), serviceCallback);
     }
 
     /**
      * Updates a Cognitive Services account.
      *
-     * @param resourceGroupName The name of the resource group within the user's subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of Cognitive Services account.
+     * @param account The parameters to provide for the created account.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the CognitiveServicesAccountInner object
      */
-    public Observable<CognitiveServicesAccountInner> updateAsync(String resourceGroupName, String accountName) {
-        return updateWithServiceResponseAsync(resourceGroupName, accountName).map(new Func1<ServiceResponse<CognitiveServicesAccountInner>, CognitiveServicesAccountInner>() {
+    public Observable<CognitiveServicesAccountInner> updateAsync(String resourceGroupName, String accountName, CognitiveServicesAccountInner account) {
+        return updateWithServiceResponseAsync(resourceGroupName, accountName, account).map(new Func1<ServiceResponse<CognitiveServicesAccountInner>, CognitiveServicesAccountInner>() {
             @Override
             public CognitiveServicesAccountInner call(ServiceResponse<CognitiveServicesAccountInner> response) {
                 return response.body();
@@ -264,12 +264,13 @@ public class AccountsInner implements InnerSupportsGet<CognitiveServicesAccountI
     /**
      * Updates a Cognitive Services account.
      *
-     * @param resourceGroupName The name of the resource group within the user's subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of Cognitive Services account.
+     * @param account The parameters to provide for the created account.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the CognitiveServicesAccountInner object
      */
-    public Observable<ServiceResponse<CognitiveServicesAccountInner>> updateWithServiceResponseAsync(String resourceGroupName, String accountName) {
+    public Observable<ServiceResponse<CognitiveServicesAccountInner>> updateWithServiceResponseAsync(String resourceGroupName, String accountName, CognitiveServicesAccountInner account) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -279,107 +280,14 @@ public class AccountsInner implements InnerSupportsGet<CognitiveServicesAccountI
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        final Sku sku = null;
-        final Map<String, String> tags = null;
-        CognitiveServicesAccountUpdateParameters parameters = new CognitiveServicesAccountUpdateParameters();
-        parameters.withSku(null);
-        parameters.withTags(null);
-        return service.update(resourceGroupName, accountName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), parameters, this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<CognitiveServicesAccountInner>>>() {
-                @Override
-                public Observable<ServiceResponse<CognitiveServicesAccountInner>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<CognitiveServicesAccountInner> clientResponse = updateDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
-    }
-
-    /**
-     * Updates a Cognitive Services account.
-     *
-     * @param resourceGroupName The name of the resource group within the user's subscription.
-     * @param accountName The name of Cognitive Services account.
-     * @param sku Gets or sets the SKU of the resource.
-     * @param tags Gets or sets a list of key value pairs that describe the resource. These tags can be used in viewing and grouping this resource (across resource groups). A maximum of 15 tags can be provided for a resource. Each tag must have a key no greater than 128 characters and value no greater than 256 characters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the CognitiveServicesAccountInner object if successful.
-     */
-    public CognitiveServicesAccountInner update(String resourceGroupName, String accountName, Sku sku, Map<String, String> tags) {
-        return updateWithServiceResponseAsync(resourceGroupName, accountName, sku, tags).toBlocking().single().body();
-    }
-
-    /**
-     * Updates a Cognitive Services account.
-     *
-     * @param resourceGroupName The name of the resource group within the user's subscription.
-     * @param accountName The name of Cognitive Services account.
-     * @param sku Gets or sets the SKU of the resource.
-     * @param tags Gets or sets a list of key value pairs that describe the resource. These tags can be used in viewing and grouping this resource (across resource groups). A maximum of 15 tags can be provided for a resource. Each tag must have a key no greater than 128 characters and value no greater than 256 characters.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
-     */
-    public ServiceFuture<CognitiveServicesAccountInner> updateAsync(String resourceGroupName, String accountName, Sku sku, Map<String, String> tags, final ServiceCallback<CognitiveServicesAccountInner> serviceCallback) {
-        return ServiceFuture.fromResponse(updateWithServiceResponseAsync(resourceGroupName, accountName, sku, tags), serviceCallback);
-    }
-
-    /**
-     * Updates a Cognitive Services account.
-     *
-     * @param resourceGroupName The name of the resource group within the user's subscription.
-     * @param accountName The name of Cognitive Services account.
-     * @param sku Gets or sets the SKU of the resource.
-     * @param tags Gets or sets a list of key value pairs that describe the resource. These tags can be used in viewing and grouping this resource (across resource groups). A maximum of 15 tags can be provided for a resource. Each tag must have a key no greater than 128 characters and value no greater than 256 characters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the CognitiveServicesAccountInner object
-     */
-    public Observable<CognitiveServicesAccountInner> updateAsync(String resourceGroupName, String accountName, Sku sku, Map<String, String> tags) {
-        return updateWithServiceResponseAsync(resourceGroupName, accountName, sku, tags).map(new Func1<ServiceResponse<CognitiveServicesAccountInner>, CognitiveServicesAccountInner>() {
-            @Override
-            public CognitiveServicesAccountInner call(ServiceResponse<CognitiveServicesAccountInner> response) {
-                return response.body();
-            }
-        });
-    }
-
-    /**
-     * Updates a Cognitive Services account.
-     *
-     * @param resourceGroupName The name of the resource group within the user's subscription.
-     * @param accountName The name of Cognitive Services account.
-     * @param sku Gets or sets the SKU of the resource.
-     * @param tags Gets or sets a list of key value pairs that describe the resource. These tags can be used in viewing and grouping this resource (across resource groups). A maximum of 15 tags can be provided for a resource. Each tag must have a key no greater than 128 characters and value no greater than 256 characters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the CognitiveServicesAccountInner object
-     */
-    public Observable<ServiceResponse<CognitiveServicesAccountInner>> updateWithServiceResponseAsync(String resourceGroupName, String accountName, Sku sku, Map<String, String> tags) {
-        if (resourceGroupName == null) {
-            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
-        }
-        if (accountName == null) {
-            throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
-        }
-        if (this.client.subscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        if (account == null) {
+            throw new IllegalArgumentException("Parameter account is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Validator.validate(sku);
-        Validator.validate(tags);
-        CognitiveServicesAccountUpdateParameters parameters = new CognitiveServicesAccountUpdateParameters();
-        parameters.withSku(sku);
-        parameters.withTags(tags);
-        return service.update(resourceGroupName, accountName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), parameters, this.client.userAgent())
+        Validator.validate(account);
+        return service.update(resourceGroupName, accountName, this.client.subscriptionId(), account, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<CognitiveServicesAccountInner>>>() {
                 @Override
                 public Observable<ServiceResponse<CognitiveServicesAccountInner>> call(Response<ResponseBody> response) {
@@ -396,6 +304,7 @@ public class AccountsInner implements InnerSupportsGet<CognitiveServicesAccountI
     private ServiceResponse<CognitiveServicesAccountInner> updateDelegate(Response<ResponseBody> response) throws ErrorException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<CognitiveServicesAccountInner, ErrorException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<CognitiveServicesAccountInner>() { }.getType())
+                .register(202, new TypeToken<CognitiveServicesAccountInner>() { }.getType())
                 .registerError(ErrorException.class)
                 .build(response);
     }
@@ -403,7 +312,7 @@ public class AccountsInner implements InnerSupportsGet<CognitiveServicesAccountI
     /**
      * Deletes a Cognitive Services account from the resource group.
      *
-     * @param resourceGroupName The name of the resource group within the user's subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of Cognitive Services account.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorException thrown if the request is rejected by server
@@ -416,7 +325,7 @@ public class AccountsInner implements InnerSupportsGet<CognitiveServicesAccountI
     /**
      * Deletes a Cognitive Services account from the resource group.
      *
-     * @param resourceGroupName The name of the resource group within the user's subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of Cognitive Services account.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -429,7 +338,7 @@ public class AccountsInner implements InnerSupportsGet<CognitiveServicesAccountI
     /**
      * Deletes a Cognitive Services account from the resource group.
      *
-     * @param resourceGroupName The name of the resource group within the user's subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of Cognitive Services account.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
@@ -446,7 +355,7 @@ public class AccountsInner implements InnerSupportsGet<CognitiveServicesAccountI
     /**
      * Deletes a Cognitive Services account from the resource group.
      *
-     * @param resourceGroupName The name of the resource group within the user's subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of Cognitive Services account.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
@@ -481,6 +390,7 @@ public class AccountsInner implements InnerSupportsGet<CognitiveServicesAccountI
     private ServiceResponse<Void> deleteDelegate(Response<ResponseBody> response) throws ErrorException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<Void, ErrorException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<Void>() { }.getType())
+                .register(202, new TypeToken<Void>() { }.getType())
                 .register(204, new TypeToken<Void>() { }.getType())
                 .registerError(ErrorException.class)
                 .build(response);
@@ -489,7 +399,7 @@ public class AccountsInner implements InnerSupportsGet<CognitiveServicesAccountI
     /**
      * Returns a Cognitive Services account specified by the parameters.
      *
-     * @param resourceGroupName The name of the resource group within the user's subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of Cognitive Services account.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorException thrown if the request is rejected by server
@@ -503,7 +413,7 @@ public class AccountsInner implements InnerSupportsGet<CognitiveServicesAccountI
     /**
      * Returns a Cognitive Services account specified by the parameters.
      *
-     * @param resourceGroupName The name of the resource group within the user's subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of Cognitive Services account.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -516,7 +426,7 @@ public class AccountsInner implements InnerSupportsGet<CognitiveServicesAccountI
     /**
      * Returns a Cognitive Services account specified by the parameters.
      *
-     * @param resourceGroupName The name of the resource group within the user's subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of Cognitive Services account.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the CognitiveServicesAccountInner object
@@ -533,7 +443,7 @@ public class AccountsInner implements InnerSupportsGet<CognitiveServicesAccountI
     /**
      * Returns a Cognitive Services account specified by the parameters.
      *
-     * @param resourceGroupName The name of the resource group within the user's subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of Cognitive Services account.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the CognitiveServicesAccountInner object
@@ -575,7 +485,7 @@ public class AccountsInner implements InnerSupportsGet<CognitiveServicesAccountI
     /**
      * Returns all the resources of a particular type belonging to a resource group.
      *
-     * @param resourceGroupName The name of the resource group within the user's subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
@@ -594,7 +504,7 @@ public class AccountsInner implements InnerSupportsGet<CognitiveServicesAccountI
     /**
      * Returns all the resources of a particular type belonging to a resource group.
      *
-     * @param resourceGroupName The name of the resource group within the user's subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
@@ -614,7 +524,7 @@ public class AccountsInner implements InnerSupportsGet<CognitiveServicesAccountI
     /**
      * Returns all the resources of a particular type belonging to a resource group.
      *
-     * @param resourceGroupName The name of the resource group within the user's subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;CognitiveServicesAccountInner&gt; object
      */
@@ -631,7 +541,7 @@ public class AccountsInner implements InnerSupportsGet<CognitiveServicesAccountI
     /**
      * Returns all the resources of a particular type belonging to a resource group.
      *
-     * @param resourceGroupName The name of the resource group within the user's subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;CognitiveServicesAccountInner&gt; object
      */
@@ -652,7 +562,7 @@ public class AccountsInner implements InnerSupportsGet<CognitiveServicesAccountI
     /**
      * Returns all the resources of a particular type belonging to a resource group.
      *
-    ServiceResponse<PageImpl<CognitiveServicesAccountInner>> * @param resourceGroupName The name of the resource group within the user's subscription.
+    ServiceResponse<PageImpl<CognitiveServicesAccountInner>> * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;CognitiveServicesAccountInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
@@ -797,7 +707,7 @@ public class AccountsInner implements InnerSupportsGet<CognitiveServicesAccountI
     /**
      * Lists the account keys for the specified Cognitive Services account.
      *
-     * @param resourceGroupName The name of the resource group within the user's subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of Cognitive Services account.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorException thrown if the request is rejected by server
@@ -811,7 +721,7 @@ public class AccountsInner implements InnerSupportsGet<CognitiveServicesAccountI
     /**
      * Lists the account keys for the specified Cognitive Services account.
      *
-     * @param resourceGroupName The name of the resource group within the user's subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of Cognitive Services account.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -824,7 +734,7 @@ public class AccountsInner implements InnerSupportsGet<CognitiveServicesAccountI
     /**
      * Lists the account keys for the specified Cognitive Services account.
      *
-     * @param resourceGroupName The name of the resource group within the user's subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of Cognitive Services account.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the CognitiveServicesAccountKeysInner object
@@ -841,7 +751,7 @@ public class AccountsInner implements InnerSupportsGet<CognitiveServicesAccountI
     /**
      * Lists the account keys for the specified Cognitive Services account.
      *
-     * @param resourceGroupName The name of the resource group within the user's subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of Cognitive Services account.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the CognitiveServicesAccountKeysInner object
@@ -883,7 +793,7 @@ public class AccountsInner implements InnerSupportsGet<CognitiveServicesAccountI
     /**
      * Regenerates the specified account key for the specified Cognitive Services account.
      *
-     * @param resourceGroupName The name of the resource group within the user's subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of Cognitive Services account.
      * @param keyName key name to generate (Key1|Key2). Possible values include: 'Key1', 'Key2'
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -898,7 +808,7 @@ public class AccountsInner implements InnerSupportsGet<CognitiveServicesAccountI
     /**
      * Regenerates the specified account key for the specified Cognitive Services account.
      *
-     * @param resourceGroupName The name of the resource group within the user's subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of Cognitive Services account.
      * @param keyName key name to generate (Key1|Key2). Possible values include: 'Key1', 'Key2'
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
@@ -912,7 +822,7 @@ public class AccountsInner implements InnerSupportsGet<CognitiveServicesAccountI
     /**
      * Regenerates the specified account key for the specified Cognitive Services account.
      *
-     * @param resourceGroupName The name of the resource group within the user's subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of Cognitive Services account.
      * @param keyName key name to generate (Key1|Key2). Possible values include: 'Key1', 'Key2'
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -930,7 +840,7 @@ public class AccountsInner implements InnerSupportsGet<CognitiveServicesAccountI
     /**
      * Regenerates the specified account key for the specified Cognitive Services account.
      *
-     * @param resourceGroupName The name of the resource group within the user's subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of Cognitive Services account.
      * @param keyName key name to generate (Key1|Key2). Possible values include: 'Key1', 'Key2'
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -978,7 +888,7 @@ public class AccountsInner implements InnerSupportsGet<CognitiveServicesAccountI
     /**
      * List available SKUs for the requested Cognitive Services account.
      *
-     * @param resourceGroupName The name of the resource group within the user's subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of Cognitive Services account.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorException thrown if the request is rejected by server
@@ -992,7 +902,7 @@ public class AccountsInner implements InnerSupportsGet<CognitiveServicesAccountI
     /**
      * List available SKUs for the requested Cognitive Services account.
      *
-     * @param resourceGroupName The name of the resource group within the user's subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of Cognitive Services account.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -1005,7 +915,7 @@ public class AccountsInner implements InnerSupportsGet<CognitiveServicesAccountI
     /**
      * List available SKUs for the requested Cognitive Services account.
      *
-     * @param resourceGroupName The name of the resource group within the user's subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of Cognitive Services account.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the CognitiveServicesAccountEnumerateSkusResultInner object
@@ -1022,7 +932,7 @@ public class AccountsInner implements InnerSupportsGet<CognitiveServicesAccountI
     /**
      * List available SKUs for the requested Cognitive Services account.
      *
-     * @param resourceGroupName The name of the resource group within the user's subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of Cognitive Services account.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the CognitiveServicesAccountEnumerateSkusResultInner object
@@ -1064,7 +974,7 @@ public class AccountsInner implements InnerSupportsGet<CognitiveServicesAccountI
     /**
      * Get usages for the requested Cognitive Services account.
      *
-     * @param resourceGroupName The name of the resource group within the user's subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of Cognitive Services account.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorException thrown if the request is rejected by server
@@ -1078,7 +988,7 @@ public class AccountsInner implements InnerSupportsGet<CognitiveServicesAccountI
     /**
      * Get usages for the requested Cognitive Services account.
      *
-     * @param resourceGroupName The name of the resource group within the user's subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of Cognitive Services account.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -1091,7 +1001,7 @@ public class AccountsInner implements InnerSupportsGet<CognitiveServicesAccountI
     /**
      * Get usages for the requested Cognitive Services account.
      *
-     * @param resourceGroupName The name of the resource group within the user's subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of Cognitive Services account.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the UsagesResultInner object
@@ -1108,7 +1018,7 @@ public class AccountsInner implements InnerSupportsGet<CognitiveServicesAccountI
     /**
      * Get usages for the requested Cognitive Services account.
      *
-     * @param resourceGroupName The name of the resource group within the user's subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of Cognitive Services account.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the UsagesResultInner object
@@ -1144,7 +1054,7 @@ public class AccountsInner implements InnerSupportsGet<CognitiveServicesAccountI
     /**
      * Get usages for the requested Cognitive Services account.
      *
-     * @param resourceGroupName The name of the resource group within the user's subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of Cognitive Services account.
      * @param filter An OData filter expression that describes a subset of usages to return. The supported parameter is name.value (name of the metric, can have an or of multiple names).
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -1159,7 +1069,7 @@ public class AccountsInner implements InnerSupportsGet<CognitiveServicesAccountI
     /**
      * Get usages for the requested Cognitive Services account.
      *
-     * @param resourceGroupName The name of the resource group within the user's subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of Cognitive Services account.
      * @param filter An OData filter expression that describes a subset of usages to return. The supported parameter is name.value (name of the metric, can have an or of multiple names).
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
@@ -1173,7 +1083,7 @@ public class AccountsInner implements InnerSupportsGet<CognitiveServicesAccountI
     /**
      * Get usages for the requested Cognitive Services account.
      *
-     * @param resourceGroupName The name of the resource group within the user's subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of Cognitive Services account.
      * @param filter An OData filter expression that describes a subset of usages to return. The supported parameter is name.value (name of the metric, can have an or of multiple names).
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -1191,7 +1101,7 @@ public class AccountsInner implements InnerSupportsGet<CognitiveServicesAccountI
     /**
      * Get usages for the requested Cognitive Services account.
      *
-     * @param resourceGroupName The name of the resource group within the user's subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of Cognitive Services account.
      * @param filter An OData filter expression that describes a subset of usages to return. The supported parameter is name.value (name of the metric, can have an or of multiple names).
      * @throws IllegalArgumentException thrown if parameters fail the validation

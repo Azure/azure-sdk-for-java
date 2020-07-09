@@ -17,10 +17,12 @@ import reactor.core.publisher.Operators;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.lang.reflect.Type;
 import java.nio.ByteBuffer;
 import java.nio.channels.AsynchronousFileChannel;
 import java.nio.channels.CompletionHandler;
+import java.util.Collections;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.concurrent.atomic.AtomicIntegerFieldUpdater;
@@ -41,9 +43,7 @@ public final class FluxUtil {
     public static boolean isFluxByteBuffer(Type entityType) {
         if (TypeUtil.isTypeOrSubTypeOf(entityType, Flux.class)) {
             final Type innerType = TypeUtil.getTypeArguments(entityType)[0];
-            if (TypeUtil.isTypeOrSubTypeOf(innerType, ByteBuffer.class)) {
-                return true;
-            }
+            return TypeUtil.isTypeOrSubTypeOf(innerType, ByteBuffer.class);
         }
         return false;
     }
@@ -83,6 +83,74 @@ public final class FluxUtil {
     }
 
     /**
+     * Converts an {@link InputStream} into a {@link Flux} of {@link ByteBuffer} using a chunk size of 4096.
+     * <p>
+     * Given that {@link InputStream} is not guaranteed to be replayable the returned {@link Flux} should be considered
+     * non-replayable as well.
+     * <p>
+     * If the passed {@link InputStream} is {@code null} {@link Flux#empty()} will be returned.
+     *
+     * @param inputStream The {@link InputStream} to convert into a {@link Flux}.
+     * @return A {@link Flux} of {@link ByteBuffer ByteBuffers} that contains the contents of the stream.
+     */
+    public static Flux<ByteBuffer> toFluxByteBuffer(InputStream inputStream) {
+        return toFluxByteBuffer(inputStream, 4096);
+    }
+
+    /**
+     * Converts an {@link InputStream} into a {@link Flux} of {@link ByteBuffer}.
+     * <p>
+     * Given that {@link InputStream} is not guaranteed to be replayable the returned {@link Flux} should be considered
+     * non-replayable as well.
+     * <p>
+     * If the passed {@link InputStream} is {@code null} {@link Flux#empty()} will be returned.
+     *
+     * @param inputStream The {@link InputStream} to convert into a {@link Flux}.
+     * @param chunkSize The requested size for each {@link ByteBuffer}.
+     * @return A {@link Flux} of {@link ByteBuffer ByteBuffers} that contains the contents of the stream.
+     * @throws IllegalArgumentException If {@code chunkSize} is less than or equal to {@code 0}.
+     */
+    public static Flux<ByteBuffer> toFluxByteBuffer(InputStream inputStream, int chunkSize) {
+        if (chunkSize <= 0) {
+            return Flux.error(new IllegalArgumentException("'chunkSize' must be greater than 0."));
+        }
+
+        if (inputStream == null) {
+            return Flux.empty();
+        }
+
+        return Flux.<ByteBuffer, InputStream>generate(() -> inputStream, (stream, sink) -> {
+            byte[] buffer = new byte[chunkSize];
+
+            try {
+                int offset = 0;
+
+                while (offset < chunkSize) {
+                    int readCount = inputStream.read(buffer, offset, chunkSize - offset);
+
+                    // We have finished reading the stream, trigger onComplete.
+                    if (readCount == -1) {
+                        // If there were bytes read before reaching the end emit the buffer before completing.
+                        if (offset > 0) {
+                            sink.next(ByteBuffer.wrap(buffer, 0, offset));
+                        }
+                        sink.complete();
+                        return stream;
+                    }
+
+                    offset += readCount;
+                }
+
+                sink.next(ByteBuffer.wrap(buffer));
+            } catch (IOException ex) {
+                sink.error(ex);
+            }
+
+            return stream;
+        }).filter(ByteBuffer::hasRemaining);
+    }
+
+    /**
      * This method converts the incoming {@code subscriberContext} from {@link reactor.util.context.Context Reactor
      * Context} to {@link Context Azure Context} and calls the given lambda function with this context and returns a
      * single entity of type {@code T}
@@ -98,8 +166,40 @@ public final class FluxUtil {
      * @return The response from service call
      */
     public static <T> Mono<T> withContext(Function<Context, Mono<T>> serviceCall) {
+        return withContext(serviceCall, Collections.emptyMap());
+    }
+
+    /**
+     * This method converts the incoming {@code subscriberContext} from {@link reactor.util.context.Context Reactor
+     * Context} to {@link Context Azure Context}, adds the specified context attributes and calls the given lambda
+     * function with this context and returns a single entity of type {@code T}
+     * <p>
+     * If the reactor context is empty, {@link Context#NONE} will be used to call the lambda function
+     * </p>
+     *
+     * @param serviceCall serviceCall The lambda function that makes the service call into which azure context will be
+     * passed
+     * @param contextAttributes The map of attributes sent by the calling method to be set on {@link Context}.
+     * @param <T> The type of response returned from the service call
+     * @return The response from service call
+     */
+    public static <T> Mono<T> withContext(Function<Context, Mono<T>> serviceCall,
+        Map<String, String> contextAttributes) {
         return Mono.subscriberContext()
-            .map(FluxUtil::toAzureContext)
+            .map(context -> {
+                final Context[] azureContext = new Context[] { Context.NONE };
+
+                if (!CoreUtils.isNullOrEmpty(contextAttributes)) {
+                    contextAttributes.forEach((key, value) -> azureContext[0] = azureContext[0].addData(key, value));
+                }
+
+                if (!context.isEmpty()) {
+                    context.stream().forEach(entry ->
+                        azureContext[0] = azureContext[0].addData(entry.getKey(), entry.getValue()));
+                }
+
+                return azureContext[0];
+            })
             .flatMap(serviceCall);
     }
 
@@ -179,9 +279,14 @@ public final class FluxUtil {
      * @return The azure context
      */
     private static Context toAzureContext(reactor.util.context.Context context) {
-        Map<Object, Object> keyValues = context.stream().collect(Collectors.toMap(Entry::getKey, Entry::getValue));
+        final Context[] azureContext = new Context[] { Context.NONE };
 
-        return CoreUtils.isNullOrEmpty(keyValues) ? Context.NONE : Context.of(keyValues);
+        if (!context.isEmpty()) {
+            context.stream().forEach(entry ->
+                azureContext[0] = azureContext[0].addData(entry.getKey(), entry.getValue()));
+        }
+
+        return azureContext[0];
     }
 
     /**
@@ -196,7 +301,10 @@ public final class FluxUtil {
             return reactor.util.context.Context.empty();
         }
 
-        Map<Object, Object> contextValues = context.getValues();
+        // Filter out null value entries as Reactor's context doesn't allow null values.
+        Map<Object, Object> contextValues = context.getValues().entrySet().stream()
+            .filter(kvp -> kvp.getValue() != null)
+            .collect(Collectors.toMap(Entry::getKey, Entry::getValue));
 
         return CoreUtils.isNullOrEmpty(contextValues)
             ? reactor.util.context.Context.empty()
@@ -245,7 +353,7 @@ public final class FluxUtil {
             }
 
 
-            CompletionHandler<Integer, Object> onWriteCompleted = new CompletionHandler<Integer, Object>() {
+            final CompletionHandler<Integer, Object> onWriteCompleted = new CompletionHandler<Integer, Object>() {
                 @Override
                 public void completed(Integer bytesWritten, Object attachment) {
                     isWriting = false;
@@ -291,7 +399,7 @@ public final class FluxUtil {
      * @return the Flux.
      */
     public static Flux<ByteBuffer> readFile(AsynchronousFileChannel fileChannel, int chunkSize, long offset,
-                                            long length) {
+        long length) {
         return new FileReadFlux(fileChannel, chunkSize, offset, length);
     }
 
@@ -372,7 +480,7 @@ public final class FluxUtil {
             //
 
             FileReadSubscription(Subscriber<? super ByteBuffer> subscriber, AsynchronousFileChannel fileChannel,
-                                 int chunkSize, long offset, long length) {
+                int chunkSize, long offset, long length) {
                 this.subscriber = subscriber;
                 //
                 this.fileChannel = fileChannel;
@@ -448,7 +556,7 @@ public final class FluxUtil {
                     doRead();
                 }
                 int missed = 1;
-                for (;;) {
+                while (true) {
                     if (cancelled) {
                         return;
                     }
@@ -461,19 +569,16 @@ public final class FluxUtil {
                             next = null;
                             subscriber.onNext(bb);
                             emitted = true;
-                        } else {
-                            emitted = false;
                         }
                         if (d) {
                             if (error != null) {
                                 subscriber.onError(error);
-                                // exit without reducing wip so that further drains will be NOOP
-                                return;
                             } else {
                                 subscriber.onComplete();
-                                // exit without reducing wip so that further drains will be NOOP
-                                return;
                             }
+
+                            // exit without reducing wip so that further drains will be NOOP
+                            return;
                         }
                         if (emitted) {
                             // do this after checking d to avoid calling read

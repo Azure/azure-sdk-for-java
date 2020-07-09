@@ -2,25 +2,33 @@
 // Licensed under the MIT License.
 package com.azure.storage.blob.specialized;
 
+import com.azure.core.util.Context;
+import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.storage.blob.BlobAsyncClient;
+import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.AppendBlobRequestConditions;
+import com.azure.storage.blob.models.BlobHttpHeaders;
+import com.azure.storage.blob.options.BlobParallelUploadOptions;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.BlobStorageException;
+import com.azure.storage.blob.options.BlockBlobOutputStreamOptions;
 import com.azure.storage.blob.models.PageBlobRequestConditions;
 import com.azure.storage.blob.models.PageRange;
+import com.azure.storage.blob.models.ParallelTransferOptions;
 import com.azure.storage.common.StorageOutputStream;
 import com.azure.storage.common.implementation.Constants;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.FluxSink;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
-import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.Base64;
-import java.util.List;
-import java.util.UUID;
+import java.util.Map;
+import java.util.concurrent.locks.Condition;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * BlobOutputStream allows for the uploading of data to a blob using a stream-like approach.
@@ -36,9 +44,56 @@ public abstract class BlobOutputStream extends StorageOutputStream {
         return new AppendBlobOutputStream(client, appendBlobRequestConditions);
     }
 
-    static BlobOutputStream blockBlobOutputStream(final BlockBlobAsyncClient client,
-        final BlobRequestConditions requestConditions) {
-        return new BlockBlobOutputStream(client, requestConditions);
+    /**
+     * Creates a block blob output stream from a BlobAsyncClient
+     * @param client {@link BlobAsyncClient} The blob client.
+     * @param parallelTransferOptions {@link ParallelTransferOptions} used to configure buffered uploading.
+     * @param headers {@link BlobHttpHeaders}
+     * @param metadata Metadata to associate with the blob.
+     * @param tier {@link AccessTier} for the destination blob.
+     * @param requestConditions {@link BlobRequestConditions}
+     * @return {@link BlobOutputStream} associated with the blob.
+     */
+    public static BlobOutputStream blockBlobOutputStream(final BlobAsyncClient client,
+        final ParallelTransferOptions parallelTransferOptions, final BlobHttpHeaders headers,
+        final Map<String, String> metadata, final AccessTier tier, final BlobRequestConditions requestConditions) {
+        return blockBlobOutputStream(client, parallelTransferOptions, headers, metadata, tier, requestConditions,
+            Context.NONE);
+    }
+
+    /**
+     * Creates a block blob output stream from a BlobAsyncClient
+     * @param client {@link BlobAsyncClient} The blob client.
+     * @param parallelTransferOptions {@link ParallelTransferOptions} used to configure buffered uploading.
+     * @param headers {@link BlobHttpHeaders}
+     * @param metadata Metadata to associate with the blob.
+     * @param tier {@link AccessTier} for the destination blob.
+     * @param requestConditions {@link BlobRequestConditions}
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return {@link BlobOutputStream} associated with the blob.
+     */
+    public static BlobOutputStream blockBlobOutputStream(final BlobAsyncClient client,
+        final ParallelTransferOptions parallelTransferOptions, final BlobHttpHeaders headers,
+        final Map<String, String> metadata, final AccessTier tier,
+        final BlobRequestConditions requestConditions, Context context) {
+        return blockBlobOutputStream(client, new BlockBlobOutputStreamOptions()
+                .setParallelTransferOptions(parallelTransferOptions).setHeaders(headers).setMetadata(metadata)
+                .setTier(tier).setRequestConditions(requestConditions),
+            context);
+    }
+
+    /**
+     * Creates a block blob output stream from a BlobAsyncClient
+     * @param client {@link BlobAsyncClient} The blob client.
+     * @param options {@link BlockBlobOutputStreamOptions}
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return {@link BlobOutputStream} associated with the blob.
+     */
+    public static BlobOutputStream blockBlobOutputStream(final BlobAsyncClient client,
+        BlockBlobOutputStreamOptions options, Context context) {
+        options = options == null ? new BlockBlobOutputStreamOptions() : options;
+        return new BlockBlobOutputStream(client, options.getParallelTransferOptions(), options.getHeaders(),
+            options.getMetadata(), options.getTags(), options.getTier(), options.getRequestConditions(), context);
     }
 
     static BlobOutputStream pageBlobOutputStream(final PageBlobAsyncClient client, final PageRange pageRange,
@@ -69,6 +124,11 @@ public abstract class BlobOutputStream extends StorageOutputStream {
                 this.commit();
             } catch (final BlobStorageException e) {
                 throw new IOException(e);
+            }
+            /* Need this check because for block blob the buffered upload error only manifests itself after commit is
+               called */
+            if (this.lastError != null) {
+                throw lastError;
             }
         } finally {
             // if close() is called again, an exception will be thrown
@@ -134,62 +194,82 @@ public abstract class BlobOutputStream extends StorageOutputStream {
     }
 
     private static final class BlockBlobOutputStream extends BlobOutputStream {
-        private final BlobRequestConditions requestConditions;
-        private final String blockIdPrefix;
-        private final List<String> blockList;
-        private final BlockBlobAsyncClient client;
 
-        private BlockBlobOutputStream(final BlockBlobAsyncClient client,
-            final BlobRequestConditions requestConditions) {
-            super(BlockBlobClient.MAX_STAGE_BLOCK_BYTES);
-            this.client = client;
-            this.requestConditions = (requestConditions == null) ? new BlobRequestConditions() : requestConditions;
-            this.blockIdPrefix = UUID.randomUUID().toString() + '-';
-            this.blockList = new ArrayList<>();
-        }
+        private FluxSink<ByteBuffer> sink;
 
-        /**
-         * Generates a new block ID to be used for PutBlock.
-         *
-         * @return Base64 encoded block ID
-         */
-        private String getCurrentBlockId() {
-            String blockIdSuffix = String.format("%06d", this.blockList.size());
-            return Base64.getEncoder().encodeToString((this.blockIdPrefix + blockIdSuffix)
-                .getBytes(StandardCharsets.UTF_8));
-        }
+        private final Lock lock;
+        private final Condition transferComplete;
 
-        private Mono<Void> writeBlock(Flux<ByteBuffer> blockData, String blockId, long writeLength) {
-            return client.stageBlockWithResponse(blockId, blockData, writeLength, null,
-                this.requestConditions.getLeaseId())
-                .then()
+        boolean complete;
+
+        private BlockBlobOutputStream(final BlobAsyncClient client,
+            final ParallelTransferOptions parallelTransferOptions, final BlobHttpHeaders headers,
+            final Map<String, String> metadata, Map<String, String> tags, final AccessTier tier,
+            final BlobRequestConditions requestConditions, Context context) {
+            super(Integer.MAX_VALUE); // writeThreshold is effectively not used by BlockBlobOutputStream.
+            // There is a bug in reactor core that does not handle converting Context.NONE to a reactor context.
+            context = context == null || context.equals(Context.NONE) ? null : context;
+
+            this.lock = new ReentrantLock();
+            this.transferComplete = lock.newCondition();
+
+            Flux<ByteBuffer> fbb = Flux.create((FluxSink<ByteBuffer> sink) -> this.sink = sink);
+
+            /* Subscribe by upload takes too long. We need to subscribe so that the sink is actually created. Since
+             this subscriber doesn't do anything and no data has started flowing, there are no drawbacks to this extra
+             subscribe. */
+            fbb.subscribe();
+
+            client.uploadWithResponse(new BlobParallelUploadOptions(fbb).
+                setParallelTransferOptions(parallelTransferOptions).setHeaders(headers).setMetadata(metadata)
+                .setTags(tags).setTier(tier).setRequestConditions(requestConditions))
+                // This allows the operation to continue while maintaining the error that occurred.
                 .onErrorResume(BlobStorageException.class, e -> {
                     this.lastError = new IOException(e);
                     return Mono.empty();
-                });
+                })
+                .doOnTerminate(() -> {
+                    lock.lock();
+                    try {
+                        complete = true;
+                        transferComplete.signal();
+                    } finally {
+                        lock.unlock();
+                    }
+                })
+                .subscriberContext(FluxUtil.toReactorContext(context))
+                .subscribe();
         }
 
         @Override
-        protected Mono<Void> dispatchWrite(byte[] data, int writeLength, long offset) {
-            if (writeLength == 0) {
-                return Mono.empty();
+        void commit() {
+
+            // Need to wait until the uploadTask completes
+            lock.lock();
+            try {
+                sink.complete(); /* Allow upload task to try to complete. */
+
+                while (!complete) {
+                    transferComplete.await();
+                }
+            } catch (InterruptedException e) {
+                this.lastError = new IOException(e.getMessage());
+            } finally {
+                lock.unlock();
             }
 
-            final String blockID = this.getCurrentBlockId();
-            this.blockList.add(blockID);
-
-            Flux<ByteBuffer> fbb = Flux.range(0, 1)
-                .concatMap(pos -> Mono.fromCallable(() -> ByteBuffer.wrap(data, (int) offset, writeLength)));
-
-            return this.writeBlock(fbb.subscribeOn(Schedulers.elastic()), blockID, writeLength);
         }
 
-        /**
-         * Commits the blob, for block blob this uploads the block list.
-         */
         @Override
-        synchronized void commit() {
-            client.commitBlockListWithResponse(this.blockList, null, null, null, this.requestConditions).block();
+        protected void writeInternal(final byte[] data, int offset, int length) {
+            this.checkStreamState();
+            sink.next(ByteBuffer.wrap(data, offset, length));
+        }
+
+        // Never called
+        @Override
+        protected Mono<Void> dispatchWrite(byte[] data, int writeLength, long offset) {
+            return Mono.empty();
         }
     }
 

@@ -2,6 +2,8 @@
 // Licensed under the MIT License.
 package com.azure.messaging.eventhubs;
 
+import com.azure.core.amqp.AmqpRetryMode;
+import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.messaging.eventhubs.models.CreateBatchOptions;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
@@ -14,8 +16,13 @@ import java.util.concurrent.atomic.AtomicReference;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 /**
- * Sample demonstrates how to sent events to specific event hub by defining partition id using {@link
- * CreateBatchOptions#setPartitionId(String)}.
+ * Sample demonstrates how to:
+ *
+ * <ul>
+ * <li>Send events to specific event hub partition by defining partition id using
+ * {@link CreateBatchOptions#setPartitionId(String)}.</li>
+ * <li>Set a custom retry policy for Event Hub operations.</li>
+ * </ul>
  */
 public class PublishEventsToSpecificPartition {
     private static final Duration OPERATION_TIMEOUT = Duration.ofSeconds(30);
@@ -33,9 +40,16 @@ public class PublishEventsToSpecificPartition {
         // 4. Copying the connection string from the policy's properties.
         String connectionString = "Endpoint={endpoint};SharedAccessKeyName={sharedAccessKeyName};SharedAccessKey={sharedAccessKey};EntityPath={eventHubName}";
 
+        // Set some custom retry options other than the default set.
+        AmqpRetryOptions retryOptions = new AmqpRetryOptions()
+            .setDelay(Duration.ofSeconds(30))
+            .setMaxRetries(2)
+            .setMode(AmqpRetryMode.EXPONENTIAL);
+
         // Instantiate a client that will be used to call the service.
         EventHubProducerAsyncClient producer = new EventHubClientBuilder()
             .connectionString(connectionString)
+            .retry(retryOptions)
             .buildAsyncProducerClient();
 
         // To send our events, we need to know what partition to send it to. For the sake of this example, we take the
@@ -46,10 +60,10 @@ public class PublishEventsToSpecificPartition {
         String firstPartition = producer.getPartitionIds().blockFirst(OPERATION_TIMEOUT);
 
         // We will publish three events based on simple sentences.
-        Flux<EventData> data = Flux.just(
-            new EventData("EventData Sample 1".getBytes(UTF_8)),
-            new EventData("EventData Sample 2".getBytes(UTF_8)),
-            new EventData("EventData Sample 3".getBytes(UTF_8)));
+        Flux<EventData> events = Flux.just(
+            new EventData("This is the first event.".getBytes(UTF_8)),
+            new EventData("This is the second event.".getBytes(UTF_8)),
+            new EventData("This is the third event.".getBytes(UTF_8)));
 
         // Create a batch to send the events.
         final CreateBatchOptions options = new CreateBatchOptions()
@@ -60,7 +74,7 @@ public class PublishEventsToSpecificPartition {
         // We try to add as many events as a batch can fit based on the event size and send to Event Hub when
         // the batch can hold no more events. Create a new batch for next set of events and repeat until all events
         // are sent.
-        data.flatMap(event -> {
+        events.flatMap(event -> {
             final EventDataBatch batch = currentBatch.get();
             if (batch.tryAdd(event)) {
                 return Mono.empty();

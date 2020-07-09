@@ -17,27 +17,19 @@ import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import reactor.core.publisher.Signal;
 
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.ArgumentMatchers.isNull;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.Mockito.*;
 
 public class TracerProviderTest {
-    private static final String METHOD_NAME = "Azure.eventhubs.send";
+    private static final String METHOD_NAME = "EventHubs.send";
 
     @Mock
     private Tracer tracer;
-    @Mock
-    private Tracer tracer2;
 
     private List<Tracer> tracers;
     private TracerProvider tracerProvider;
@@ -46,7 +38,7 @@ public class TracerProviderTest {
     public void setup() {
         MockitoAnnotations.initMocks(this);
 
-        tracers = Arrays.asList(tracer, tracer2);
+        tracers = Collections.singletonList(tracer);
         tracerProvider = new TracerProvider(tracers);
     }
 
@@ -81,8 +73,6 @@ public class TracerProviderTest {
         // Arrange
         final String parentKey = "parent-key";
         final String parentValue = "parent-value";
-        final String childKey = "child-key";
-        final String childValue = "child-value";
         final Context startingContext = Context.NONE;
         when(tracer.start(METHOD_NAME, startingContext, ProcessKind.SEND)).thenAnswer(
             invocation -> {
@@ -90,25 +80,15 @@ public class TracerProviderTest {
                 return passed.addData(parentKey, parentValue);
             }
         );
-        when(tracer2.start(eq(METHOD_NAME), any(), eq(ProcessKind.SEND))).thenAnswer(
-            invocation -> {
-                Context passed = invocation.getArgument(1, Context.class);
-                return passed.addData(childKey, childValue);
-            }
-        );
 
         // Act
         final Context updatedContext = tracerProvider.startSpan(startingContext, ProcessKind.SEND);
 
         // Assert
-        // Want to ensure that the data added to the parent and child are available.
+        // Want to ensure that the data added to the parent are available.
         final Optional<Object> parentData = updatedContext.getData(parentKey);
         Assertions.assertTrue(parentData.isPresent());
         Assertions.assertEquals(parentValue, parentData.get());
-
-        final Optional<Object> childData = updatedContext.getData(childKey);
-        Assertions.assertTrue(childData.isPresent());
-        Assertions.assertEquals(childValue, childData.get());
     }
 
     @Test
@@ -193,5 +173,29 @@ public class TracerProviderTest {
     public void addSpanLinks() {
         // Act
         assertThrows(NullPointerException.class, () -> tracerProvider.addSpanLinks(null));
+    }
+
+    @Test
+    public void getSpanBuilderReturnsUpdatedContext() {
+        // Arrange
+        final String spanBuilderKey = "spanBuilder-key";
+        final String spanBuilderValue = "spanBuilder-value";
+
+        final Context startingContext = Context.NONE;
+
+        when(tracer.getSharedSpanBuilder(anyString(), any())).thenAnswer(
+            invocation -> {
+                Context passed = invocation.getArgument(1, Context.class);
+                return passed.addData(spanBuilderKey, spanBuilderValue);
+            }
+        );
+
+        // Act
+        final Context updatedContext = tracerProvider.getSharedSpanBuilder(startingContext);
+
+        // Assert
+        final Optional<Object> spanBuilderData = updatedContext.getData(spanBuilderKey);
+        Assertions.assertTrue(spanBuilderData.isPresent());
+        Assertions.assertEquals(spanBuilderValue, spanBuilderData.get());
     }
 }

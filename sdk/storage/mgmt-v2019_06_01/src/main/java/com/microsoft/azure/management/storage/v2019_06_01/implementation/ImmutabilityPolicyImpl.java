@@ -19,9 +19,11 @@ class ImmutabilityPolicyImpl extends CreatableUpdatableImpl<ImmutabilityPolicy, 
     private String accountName;
     private String containerName;
     private String cifMatch;
-    private int cimmutabilityPeriodSinceCreationInDays;
+    private Integer cimmutabilityPeriodSinceCreationInDays;
+    private Boolean callowProtectedAppendWrites;
     private String uifMatch;
-    private int uimmutabilityPeriodSinceCreationInDays;
+    private Integer uimmutabilityPeriodSinceCreationInDays;
+    private Boolean uallowProtectedAppendWrites;
 
     ImmutabilityPolicyImpl(String name, StorageManager manager) {
         super(name, new ImmutabilityPolicyInner());
@@ -51,14 +53,14 @@ class ImmutabilityPolicyImpl extends CreatableUpdatableImpl<ImmutabilityPolicy, 
     @Override
     public Observable<ImmutabilityPolicy> createResourceAsync() {
         BlobContainersInner client = this.manager().inner().blobContainers();
-        return client.createOrUpdateImmutabilityPolicyAsync(this.resourceGroupName, this.accountName, this.containerName, this.cimmutabilityPeriodSinceCreationInDays, this.cifMatch)
+        return client.createOrUpdateImmutabilityPolicyAsync(this.resourceGroupName, this.accountName, this.containerName, this.cifMatch, this.cimmutabilityPeriodSinceCreationInDays, this.callowProtectedAppendWrites)
             .map(innerToFluentMap(this));
     }
 
     @Override
     public Observable<ImmutabilityPolicy> updateResourceAsync() {
         BlobContainersInner client = this.manager().inner().blobContainers();
-        return client.createOrUpdateImmutabilityPolicyAsync(this.resourceGroupName, this.accountName, this.containerName, this.uimmutabilityPeriodSinceCreationInDays, this.uifMatch)
+        return client.createOrUpdateImmutabilityPolicyAsync(this.resourceGroupName, this.accountName, this.containerName, this.uifMatch, this.uimmutabilityPeriodSinceCreationInDays, this.uallowProtectedAppendWrites)
             .map(innerToFluentMap(this));
     }
 
@@ -75,6 +77,11 @@ class ImmutabilityPolicyImpl extends CreatableUpdatableImpl<ImmutabilityPolicy, 
 
 
     @Override
+    public Boolean allowProtectedAppendWrites() {
+        return this.inner().allowProtectedAppendWrites();
+    }
+
+    @Override
     public String etag() {
         return this.inner().etag();
     }
@@ -85,7 +92,7 @@ class ImmutabilityPolicyImpl extends CreatableUpdatableImpl<ImmutabilityPolicy, 
     }
 
     @Override
-    public int immutabilityPeriodSinceCreationInDays() {
+    public Integer immutabilityPeriodSinceCreationInDays() {
         return this.inner().immutabilityPeriodSinceCreationInDays();
     }
 
@@ -123,11 +130,21 @@ class ImmutabilityPolicyImpl extends CreatableUpdatableImpl<ImmutabilityPolicy, 
     }
 
     @Override
-    public ImmutabilityPolicyImpl withImmutabilityPeriodSinceCreationInDays(int immutabilityPeriodSinceCreationInDays) {
+    public ImmutabilityPolicyImpl withImmutabilityPeriodSinceCreationInDays(Integer immutabilityPeriodSinceCreationInDays) {
         if (isInCreateMode()) {
             this.cimmutabilityPeriodSinceCreationInDays = immutabilityPeriodSinceCreationInDays;
         } else {
             this.uimmutabilityPeriodSinceCreationInDays = immutabilityPeriodSinceCreationInDays;
+        }
+        return this;
+    }
+
+    @Override
+    public ImmutabilityPolicyImpl withAllowProtectedAppendWrites(Boolean allowProtectedAppendWrites) {
+        if (isInCreateMode()) {
+            this.callowProtectedAppendWrites = allowProtectedAppendWrites;
+        } else {
+            this.uallowProtectedAppendWrites = allowProtectedAppendWrites;
         }
         return this;
     }

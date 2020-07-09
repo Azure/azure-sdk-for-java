@@ -16,13 +16,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class ModelDescription {
     /**
-     * The name property.
+     * The name of the model.
      */
     @JsonProperty(value = "name")
     private String name;
 
     /**
-     * The categories property.
+     * Categories of the model.
      */
     @JsonProperty(value = "categories")
     private List<String> categories;

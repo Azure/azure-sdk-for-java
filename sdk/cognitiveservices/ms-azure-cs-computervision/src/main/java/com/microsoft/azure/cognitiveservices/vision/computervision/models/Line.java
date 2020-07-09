@@ -12,33 +12,60 @@ import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * The Line model.
+ * An object representing a recognized text line.
  */
 public class Line {
     /**
-     * The boundingBox property.
+     * The BCP-47 language code of the recognized text line. Only provided
+     * where the language of the line differs from the page's.
      */
-    @JsonProperty(value = "boundingBox")
-    private List<Integer> boundingBox;
+    @JsonProperty(value = "language")
+    private String language;
 
     /**
-     * The text property.
+     * Bounding box of a recognized line.
      */
-    @JsonProperty(value = "text")
+    @JsonProperty(value = "boundingBox", required = true)
+    private List<Double> boundingBox;
+
+    /**
+     * The text content of the line.
+     */
+    @JsonProperty(value = "text", required = true)
     private String text;
 
     /**
-     * The words property.
+     * List of words in the text line.
      */
-    @JsonProperty(value = "words")
+    @JsonProperty(value = "words", required = true)
     private List<Word> words;
+
+    /**
+     * Get the language value.
+     *
+     * @return the language value
+     */
+    public String language() {
+        return this.language;
+    }
+
+    /**
+     * Set the language value.
+     *
+     * @param language the language value to set
+     * @return the Line object itself.
+     */
+    public Line withLanguage(String language) {
+        this.language = language;
+        return this;
+    }
 
     /**
      * Get the boundingBox value.
      *
      * @return the boundingBox value
      */
-    public List<Integer> boundingBox() {
+    public List<Double> boundingBox() {
         return this.boundingBox;
     }
 
@@ -48,7 +75,7 @@ public class Line {
      * @param boundingBox the boundingBox value to set
      * @return the Line object itself.
      */
-    public Line withBoundingBox(List<Integer> boundingBox) {
+    public Line withBoundingBox(List<Double> boundingBox) {
         this.boundingBox = boundingBox;
         return this;
     }

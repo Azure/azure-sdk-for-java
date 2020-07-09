@@ -15,7 +15,7 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 /**
  * Describes the properties for an output image file.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata\\.type")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata\\.type", defaultImpl = ImageFormat.class)
 @JsonTypeName("#Microsoft.Media.ImageFormat")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "#Microsoft.Media.JpgFormat", value = JpgFormat.class),

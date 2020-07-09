@@ -6,6 +6,7 @@ package com.azure.core.amqp.implementation.handler;
 import com.azure.core.amqp.exception.AmqpErrorContext;
 import com.azure.core.amqp.implementation.ClientConstants;
 import com.azure.core.amqp.implementation.ExceptionUtil;
+import com.azure.core.util.UserAgentUtil;
 import com.azure.core.util.logging.ClientLogger;
 import org.apache.qpid.proton.Proton;
 import org.apache.qpid.proton.amqp.Symbol;
@@ -36,42 +37,28 @@ public class ConnectionHandler extends Handler {
     static final int MAX_FRAME_SIZE = 65536;
 
     private final Map<String, Object> connectionProperties;
-    protected final ClientLogger logger;
+    private final ClientLogger logger = new ClientLogger(ConnectionHandler.class);
 
     /**
      * Creates a handler that handles proton-j's connection events.
      *
      * @param connectionId Identifier for this connection.
      * @param hostname Hostname of the AMQP message broker to create a connection to.
+     * @param product The name of the product this connection handler is created for.
+     * @param clientVersion The version of the client library creating the connection handler.
      */
-    public ConnectionHandler(final String connectionId, final String hostname) {
-        this(connectionId, hostname, new ClientLogger(ConnectionHandler.class));
-    }
-
-    /**
-     * Creates a handler that handles proton-j's connection events.
-     *
-     * @param connectionId Identifier for this connection.
-     * @param hostname Hostname to use for socket creation. If there is a proxy configured, this could be a proxy's
-     *     IP address.
-     * @param logger The service logger to use.
-     */
-    protected ConnectionHandler(final String connectionId, final String hostname, final ClientLogger logger) {
+    public ConnectionHandler(final String connectionId, final String hostname, String product, String clientVersion) {
         super(connectionId, hostname);
 
         add(new Handshaker());
-        this.logger = logger;
 
         this.connectionProperties = new HashMap<>();
-        this.connectionProperties.put(PRODUCT.toString(), ClientConstants.PRODUCT_NAME);
-        this.connectionProperties.put(VERSION.toString(), ClientConstants.CURRENT_JAVA_CLIENT_VERSION);
+        this.connectionProperties.put(PRODUCT.toString(), product);
+        this.connectionProperties.put(VERSION.toString(), clientVersion);
         this.connectionProperties.put(PLATFORM.toString(), ClientConstants.PLATFORM_INFO);
         this.connectionProperties.put(FRAMEWORK.toString(), ClientConstants.FRAMEWORK_INFO);
 
-        final String userAgent = ClientConstants.USER_AGENT.length() <= MAX_USER_AGENT_LENGTH
-            ? ClientConstants.USER_AGENT
-            : ClientConstants.USER_AGENT.substring(0, MAX_USER_AGENT_LENGTH);
-
+        String userAgent = UserAgentUtil.toUserAgentString(null, product, clientVersion, null);
         this.connectionProperties.put(USER_AGENT.toString(), userAgent);
     }
 
@@ -267,8 +254,8 @@ public class ConnectionHandler extends Handler {
         }
 
         if (condition == null) {
-            throw logger.logExceptionAsError(new IllegalStateException(
-                "notifyErrorContext does not have an ErrorCondition."));
+            throw logger.logExceptionAsError(new IllegalStateException(String.format(
+                "connectionId[%s]: notifyErrorContext does not have an ErrorCondition.", getConnectionId())));
         }
 
         // if the remote-peer abruptly closes the connection without issuing close frame issue one

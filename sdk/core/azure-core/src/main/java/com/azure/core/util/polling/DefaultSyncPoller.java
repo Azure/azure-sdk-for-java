@@ -22,7 +22,7 @@ import java.util.function.Function;
  * it is possible to be so, e.g. by using volatile and copying context.
  *
  * @param <T> The type of poll response value
- * @param <U> The type of the final result of long-running operation
+ * @param <U> The type of the final result of the long running operation
  */
 final class DefaultSyncPoller<T, U> implements SyncPoller<T, U> {
     private final ClientLogger logger = new ClientLogger(DefaultSyncPoller.class);
@@ -37,42 +37,38 @@ final class DefaultSyncPoller<T, U> implements SyncPoller<T, U> {
     /**
      * Creates DefaultSyncPoller.
      *
-     * @param defaultPollInterval the default polling interval
-     * @param activationOperation the activation operation to be invoked at most once across all subscriptions,
-     *                            this parameter is required, if there is no specific activation work to be
-     *                            done then invocation should return Mono.empty(), this operation will be called
-     *                            with a new {@link PollingContext}.
+     * @param pollInterval the polling interval.
+     * @param syncActivationOperation the operation to synchronously activate (start) the long running operation,
+     *     this operation will be called with a new {@link PollingContext}.
      * @param pollOperation the operation to poll the current state of long running operation, this parameter
-     *                      is required and the operation will be called with current {@link PollingContext}.
-     * @param cancelOperation a {@link Function} that represents the operation to cancel the long-running operation
-     *                        if service supports cancellation, this parameter is required and if service does not
-     *                        support cancellation then the implementer should return Mono.error with an error message
-     *                        indicating absence of cancellation support, the operation will be called with current
-     *                        {@link PollingContext}.
+     *     is required and the operation will be called with current {@link PollingContext}.
+     * @param cancelOperation a {@link Function} that represents the operation to cancel the long running operation
+     *     if service supports cancellation, this parameter is required and if service does not support cancellation
+     *     then the implementer should return Mono.error with an error message indicating absence of cancellation
+     *     support, the operation will be called with current {@link PollingContext}.
      * @param fetchResultOperation a {@link Function} that represents the  operation to retrieve final result of
-     *                             the long-running operation if service support it, this parameter is required and
-     *                             operation will be called current {@link PollingContext}, if service does not have an
-     *                             api to fetch final result and if final result is same as final poll response value
-     *                             then implementer can choose to simply return value from provided final poll response.
+     *     the long running operation if service support it, this parameter is required and operation will be called
+     *     current {@link PollingContext}, if service does not have an api to fetch final result and if final result
+     *     is same as final poll response value then implementer can choose to simply return value from provided
+     *     final poll response.
      */
-    DefaultSyncPoller(Duration defaultPollInterval,
-                             Function<PollingContext<T>, Mono<T>> activationOperation,
+    DefaultSyncPoller(Duration pollInterval,
+                             Function<PollingContext<T>, PollResponse<T>> syncActivationOperation,
                              Function<PollingContext<T>, Mono<PollResponse<T>>> pollOperation,
                              BiFunction<PollingContext<T>, PollResponse<T>, Mono<T>> cancelOperation,
                              Function<PollingContext<T>, Mono<U>> fetchResultOperation) {
-        Objects.requireNonNull(defaultPollInterval, "'defaultPollInterval' cannot be null.");
-        if (defaultPollInterval.compareTo(Duration.ZERO) <= 0) {
+        Objects.requireNonNull(pollInterval, "'pollInterval' cannot be null.");
+        if (pollInterval.compareTo(Duration.ZERO) <= 0) {
             throw logger.logExceptionAsWarning(new IllegalArgumentException(
                 "Negative or zero value for 'defaultPollInterval' is not allowed."));
         }
-        this.defaultPollInterval = defaultPollInterval;
-        Objects.requireNonNull(activationOperation, "'activationOperation' cannot be null.");
+        this.defaultPollInterval = pollInterval;
+        Objects.requireNonNull(syncActivationOperation, "'syncActivationOperation' cannot be null.");
         this.pollOperation = Objects.requireNonNull(pollOperation, "'pollOperation' cannot be null.");
         this.cancelOperation = Objects.requireNonNull(cancelOperation, "'cancelOperation' cannot be null.");
         this.fetchResultOperation = Objects.requireNonNull(fetchResultOperation,
             "'fetchResultOperation' cannot be null.");
-        this.activationResponse = new PollResponse<>(LongRunningOperationStatus.NOT_STARTED,
-            activationOperation.apply(this.pollingContext).block());
+        this.activationResponse = syncActivationOperation.apply(this.pollingContext);
         //
         this.pollingContext.setOnetimeActivationResponse(this.activationResponse);
         this.pollingContext.setLatestResponse(this.activationResponse);

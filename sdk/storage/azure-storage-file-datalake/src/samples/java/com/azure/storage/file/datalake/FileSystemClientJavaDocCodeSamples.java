@@ -15,6 +15,9 @@ import com.azure.storage.file.datalake.models.FileSystemProperties;
 import com.azure.storage.file.datalake.models.ListPathsOptions;
 import com.azure.storage.file.datalake.models.PathHttpHeaders;
 import com.azure.storage.file.datalake.models.PublicAccessType;
+import com.azure.storage.file.datalake.models.UserDelegationKey;
+import com.azure.storage.file.datalake.sas.DataLakeServiceSasSignatureValues;
+import com.azure.storage.file.datalake.sas.FileSystemSasPermission;
 
 import java.time.Duration;
 import java.time.OffsetDateTime;
@@ -37,6 +40,7 @@ public class FileSystemClientJavaDocCodeSamples {
     private Duration timeout = Duration.ofSeconds(30);
     private String key1 = "key1";
     private String value1 = "value1";
+    private UserDelegationKey userDelegationKey = JavaDocCodeSnippetsHelpers.getUserDelegationKey();
 
     /**
      * Code snippet for {@link DataLakeFileSystemClient#getFileClient(String)}
@@ -54,6 +58,15 @@ public class FileSystemClientJavaDocCodeSamples {
         // BEGIN: com.azure.storage.file.datalake.DataLakeFileSystemClient.getDirectoryClient#String
         DataLakeDirectoryClient dataLakeDirectoryClient = client.getDirectoryClient(directoryName);
         // END: com.azure.storage.file.datalake.DataLakeFileSystemClient.getDirectoryClient#String
+    }
+
+    /**
+     * Code snippet for {@link DataLakeFileSystemClient#getRootDirectoryClient}
+     */
+    public void getRootDirectoryClient() {
+        // BEGIN: com.azure.storage.file.datalake.DataLakeFileSystemClient.getRootDirectoryClient
+        DataLakeDirectoryClient dataLakeDirectoryClient = client.getRootDirectoryClient();
+        // END: com.azure.storage.file.datalake.DataLakeFileSystemClient.getRootDirectoryClient
     }
 
     /**
@@ -188,13 +201,19 @@ public class FileSystemClientJavaDocCodeSamples {
     }
 
     /**
-     * Code snippets for {@link DataLakeFileSystemClient#createFile(String)} and
+     * Code snippets for {@link DataLakeFileSystemClient#createFile(String)},
+     * {@link DataLakeFileSystemClient#createFile(String, boolean)} and
      * {@link DataLakeFileSystemClient#createFileWithResponse(String, String, String, PathHttpHeaders, Map, DataLakeRequestConditions, Duration, Context)}
      */
     public void createFileCodeSnippets() {
         // BEGIN: com.azure.storage.file.datalake.DataLakeFileSystemClient.createFile#String
         DataLakeFileClient fileClient = client.createFile(fileName);
         // END: com.azure.storage.file.datalake.DataLakeFileSystemClient.createFile#String
+
+        // BEGIN: com.azure.storage.file.datalake.DataLakeFileSystemClient.createFile#String-boolean
+        boolean overwrite = false; /* Default value. */
+        DataLakeFileClient fClient = client.createFile(fileName, overwrite);
+        // END: com.azure.storage.file.datalake.DataLakeFileSystemClient.createFile#String-boolean
 
         // BEGIN: com.azure.storage.file.datalake.DataLakeFileSystemClient.createFileWithResponse#String-String-String-PathHttpHeaders-Map-DataLakeRequestConditions-Duration-Context
         PathHttpHeaders httpHeaders = new PathHttpHeaders()
@@ -230,13 +249,19 @@ public class FileSystemClientJavaDocCodeSamples {
     }
 
     /**
-     * Code snippets for {@link DataLakeFileSystemClient#createDirectory(String)} and
+     * Code snippets for {@link DataLakeFileSystemClient#createDirectory(String)},
+     * {@link DataLakeFileSystemClient#createDirectory(String, boolean)} and
      * {@link DataLakeFileSystemClient#createDirectoryWithResponse(String, String, String, PathHttpHeaders, Map, DataLakeRequestConditions, Duration, Context)}
      */
     public void createDirectoryCodeSnippets() {
         // BEGIN: com.azure.storage.file.datalake.DataLakeFileSystemClient.createDirectory#String
         DataLakeDirectoryClient directoryClient = client.createDirectory(directoryName);
         // END: com.azure.storage.file.datalake.DataLakeFileSystemClient.createDirectory#String
+
+        // BEGIN: com.azure.storage.file.datalake.DataLakeFileSystemClient.createDirectory#String-boolean
+        boolean overwrite = false; /* Default value. */
+        DataLakeDirectoryClient dClient = client.createDirectory(fileName, overwrite);
+        // END: com.azure.storage.file.datalake.DataLakeFileSystemClient.createDirectory#String-boolean
 
         // BEGIN: com.azure.storage.file.datalake.DataLakeFileSystemClient.createDirectoryWithResponse#String-String-String-PathHttpHeaders-Map-DataLakeRequestConditions-Duration-Context
         PathHttpHeaders httpHeaders = new PathHttpHeaders()
@@ -371,6 +396,32 @@ public class FileSystemClientJavaDocCodeSamples {
                 timeout,
                 context).getStatusCode());
         // END: com.azure.storage.file.datalake.DataLakeFileSystemClient.setAccessPolicyWithResponse#PublicAccessType-List-DataLakeRequestConditions-Duration-Context
+    }
+
+    /**
+     * Code snippet for {@link DataLakeFileSystemClient#generateUserDelegationSas(DataLakeServiceSasSignatureValues, UserDelegationKey)}
+     * and {@link DataLakeFileSystemClient#generateSas(DataLakeServiceSasSignatureValues)}
+     */
+    public void generateSas() {
+        // BEGIN: com.azure.storage.file.datalake.DataLakeFileSystemClient.generateSas#DataLakeServiceSasSignatureValues
+        OffsetDateTime expiryTime = OffsetDateTime.now().plusDays(1);
+        FileSystemSasPermission permission = new FileSystemSasPermission().setReadPermission(true);
+
+        DataLakeServiceSasSignatureValues values = new DataLakeServiceSasSignatureValues(expiryTime, permission)
+            .setStartTime(OffsetDateTime.now());
+
+        client.generateSas(values); // Client must be authenticated via StorageSharedKeyCredential
+        // END: com.azure.storage.file.datalake.DataLakeFileSystemClient.generateSas#DataLakeServiceSasSignatureValues
+
+        // BEGIN: com.azure.storage.file.datalake.DataLakeFileSystemClient.generateUserDelegationSas#DataLakeServiceSasSignatureValues-UserDelegationKey
+        OffsetDateTime myExpiryTime = OffsetDateTime.now().plusDays(1);
+        FileSystemSasPermission myPermission = new FileSystemSasPermission().setReadPermission(true);
+
+        DataLakeServiceSasSignatureValues myValues = new DataLakeServiceSasSignatureValues(expiryTime, permission)
+            .setStartTime(OffsetDateTime.now());
+
+        client.generateUserDelegationSas(values, userDelegationKey);
+        // END: com.azure.storage.file.datalake.DataLakeFileSystemClient.generateUserDelegationSas#DataLakeServiceSasSignatureValues-UserDelegationKey
     }
 
 }

@@ -9,6 +9,9 @@ import com.azure.core.annotation.HeaderCollection;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.DateTimeRfc1123;
 import com.azure.storage.file.share.models.CopyStatusType;
+import com.azure.storage.file.share.models.LeaseDurationType;
+import com.azure.storage.file.share.models.LeaseStateType;
+import com.azure.storage.file.share.models.LeaseStatusType;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import java.time.OffsetDateTime;
@@ -212,6 +215,27 @@ public final class FileGetPropertiesHeaders {
      */
     @JsonProperty(value = "x-ms-file-parent-id")
     private String fileParentId;
+
+    /*
+     * When a file is leased, specifies whether the lease is of infinite or
+     * fixed duration. Possible values include: 'infinite', 'fixed'
+     */
+    @JsonProperty(value = "x-ms-lease-duration")
+    private LeaseDurationType leaseDuration;
+
+    /*
+     * Lease state of the file. Possible values include: 'available', 'leased',
+     * 'expired', 'breaking', 'broken'
+     */
+    @JsonProperty(value = "x-ms-lease-state")
+    private LeaseStateType leaseState;
+
+    /*
+     * The current lease status of the file. Possible values include: 'locked',
+     * 'unlocked'
+     */
+    @JsonProperty(value = "x-ms-lease-status")
+    private LeaseStatusType leaseStatus;
 
     /*
      * The errorCode property.
@@ -871,6 +895,74 @@ public final class FileGetPropertiesHeaders {
      */
     public FileGetPropertiesHeaders setFileParentId(String fileParentId) {
         this.fileParentId = fileParentId;
+        return this;
+    }
+
+    /**
+     * Get the leaseDuration property: When a file is leased, specifies whether
+     * the lease is of infinite or fixed duration. Possible values include:
+     * 'infinite', 'fixed'.
+     *
+     * @return the leaseDuration value.
+     */
+    public LeaseDurationType getLeaseDuration() {
+        return this.leaseDuration;
+    }
+
+    /**
+     * Set the leaseDuration property: When a file is leased, specifies whether
+     * the lease is of infinite or fixed duration. Possible values include:
+     * 'infinite', 'fixed'.
+     *
+     * @param leaseDuration the leaseDuration value to set.
+     * @return the FileGetPropertiesHeaders object itself.
+     */
+    public FileGetPropertiesHeaders setLeaseDuration(LeaseDurationType leaseDuration) {
+        this.leaseDuration = leaseDuration;
+        return this;
+    }
+
+    /**
+     * Get the leaseState property: Lease state of the file. Possible values
+     * include: 'available', 'leased', 'expired', 'breaking', 'broken'.
+     *
+     * @return the leaseState value.
+     */
+    public LeaseStateType getLeaseState() {
+        return this.leaseState;
+    }
+
+    /**
+     * Set the leaseState property: Lease state of the file. Possible values
+     * include: 'available', 'leased', 'expired', 'breaking', 'broken'.
+     *
+     * @param leaseState the leaseState value to set.
+     * @return the FileGetPropertiesHeaders object itself.
+     */
+    public FileGetPropertiesHeaders setLeaseState(LeaseStateType leaseState) {
+        this.leaseState = leaseState;
+        return this;
+    }
+
+    /**
+     * Get the leaseStatus property: The current lease status of the file.
+     * Possible values include: 'locked', 'unlocked'.
+     *
+     * @return the leaseStatus value.
+     */
+    public LeaseStatusType getLeaseStatus() {
+        return this.leaseStatus;
+    }
+
+    /**
+     * Set the leaseStatus property: The current lease status of the file.
+     * Possible values include: 'locked', 'unlocked'.
+     *
+     * @param leaseStatus the leaseStatus value to set.
+     * @return the FileGetPropertiesHeaders object itself.
+     */
+    public FileGetPropertiesHeaders setLeaseStatus(LeaseStatusType leaseStatus) {
+        this.leaseStatus = leaseStatus;
         return this;
     }
 

@@ -66,7 +66,7 @@ public class KeyOperationsTest extends KeyVaultClientIntegrationTestBase {
         return idParts[idParts.length - 1];
     }
 
-    @Test
+    //@Test
     public void transparentAuthenticationForKeyOperationsTest() throws Exception {
 
         // Create a key on a vault.
@@ -162,7 +162,7 @@ public class KeyOperationsTest extends KeyVaultClientIntegrationTestBase {
         Assert.assertArrayEquals(plainText, result2.result());
     }
 
-    @Test
+    //@Test
     public void crudOperationsForKeyOperationsTest() throws Exception {
         KeyBundle createdBundle;
 
@@ -261,7 +261,7 @@ public class KeyOperationsTest extends KeyVaultClientIntegrationTestBase {
         SdkContext.sleep(40000);
     }
 
-    @Test
+    //@Test
     public void backupRestoreForKeyOperationsTest() throws Exception {
 
         KeyBundle createdBundle;
@@ -288,7 +288,7 @@ public class KeyOperationsTest extends KeyVaultClientIntegrationTestBase {
         compareKeyBundles(createdBundle, restoredBundle);
     }
 
-    @Test
+    //@Test
     public void listKeysForKeyOperationsTest() throws Exception {
 
         HashSet<String> keys = new HashSet<String>();
@@ -451,7 +451,7 @@ public class KeyOperationsTest extends KeyVaultClientIntegrationTestBase {
         Assert.assertArrayEquals(plainText, result.result());
     }
 
-    @Test
+    //@Test
     public void signVerifyOperationsForKeyOperationsTest() throws Exception {
 
         JsonWebKey testKey = importTestKey();

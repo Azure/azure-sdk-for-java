@@ -3,6 +3,7 @@
 
 package com.azure.core.http.policy;
 
+import com.azure.core.http.ContentType;
 import com.azure.core.http.HttpHeader;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipelineCallContext;
@@ -10,20 +11,20 @@ import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.util.CoreUtils;
-import com.azure.core.util.FluxUtil;
 import com.azure.core.util.UrlBuilder;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.logging.LogLevel;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import reactor.core.publisher.Mono;
 
+import java.io.ByteArrayOutputStream;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.util.Collections;
 import java.util.Locale;
-import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
 /**
@@ -31,126 +32,230 @@ import java.util.stream.Collectors;
  */
 public class HttpLoggingPolicy implements HttpPipelinePolicy {
     private static final ObjectMapper PRETTY_PRINTER = new ObjectMapper().enable(SerializationFeature.INDENT_OUTPUT);
-    private final HttpLogOptions httpLogOptions;
-    private final boolean prettyPrintJSON;
     private static final int MAX_BODY_LOG_SIZE = 1024 * 16;
     private static final String REDACTED_PLACEHOLDER = "REDACTED";
+
+    private final HttpLogDetailLevel httpLogDetailLevel;
+    private final Set<String> allowedHeaderNames;
+    private final Set<String> allowedQueryParameterNames;
+    private final boolean prettyPrintBody;
 
     /**
      * Creates an HttpLoggingPolicy with the given log configurations.
      *
-     * @param httpLogOptions The HTTP logging configurations.
+     * @param httpLogOptions The HTTP logging configuration options.
      */
     public HttpLoggingPolicy(HttpLogOptions httpLogOptions) {
-        this(httpLogOptions, false);
-    }
-
-    /**
-     * Creates an HttpLoggingPolicy with the given log configuration and pretty printing setting.
-     *
-     * @param httpLogOptions The HTTP logging configuration options.
-     * @param prettyPrintJSON If true, pretty prints JSON message bodies when logging. If the detailLevel does not
-     * include body logging, this flag does nothing.
-     */
-    HttpLoggingPolicy(HttpLogOptions httpLogOptions, boolean prettyPrintJSON) {
-        this.httpLogOptions = httpLogOptions;
-        this.prettyPrintJSON = prettyPrintJSON;
+        if (httpLogOptions == null) {
+            this.httpLogDetailLevel = HttpLogDetailLevel.NONE;
+            this.allowedHeaderNames = Collections.emptySet();
+            this.allowedQueryParameterNames = Collections.emptySet();
+            this.prettyPrintBody = false;
+        } else {
+            this.httpLogDetailLevel = httpLogOptions.getLogLevel();
+            this.allowedHeaderNames = httpLogOptions.getAllowedHeaderNames()
+                .stream()
+                .map(headerName -> headerName.toLowerCase(Locale.ROOT))
+                .collect(Collectors.toSet());
+            this.allowedQueryParameterNames = httpLogOptions.getAllowedQueryParamNames()
+                .stream()
+                .map(queryParamName -> queryParamName.toLowerCase(Locale.ROOT))
+                .collect(Collectors.toSet());
+            this.prettyPrintBody = httpLogOptions.isPrettyPrintBody();
+        }
     }
 
     @Override
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
-        //
-        if (httpLogOptions == null || httpLogOptions.getLogLevel() == HttpLogDetailLevel.NONE) {
-            // ideally, httpLogOptions should not be null but adding a null check now will be a breaking change
-            // nothing to log, continue with the next pipeline policy, if there is one
-            // "next" cannot be null here
+        // No logging will be performed, trigger a no-op.
+        if (httpLogDetailLevel == HttpLogDetailLevel.NONE) {
             return next.process();
         }
 
-        Optional<Object> data = context.getData("caller-method");
-        String callerMethod = (String) data.orElse("");
-
-        final ClientLogger logger = new ClientLogger(callerMethod);
+        final ClientLogger logger = new ClientLogger((String) context.getData("caller-method").orElse(""));
         final long startNs = System.nanoTime();
-        Mono<Void> logRequest = logRequest(logger, context.getHttpRequest());
-        Function<HttpResponse, Mono<HttpResponse>> logResponseDelegate =
-            logResponseDelegate(logger, context.getHttpRequest().getUrl(), startNs);
-        return logRequest.then(next.process()).flatMap(logResponseDelegate)
+
+        return logRequest(logger, context.getHttpRequest())
+            .then(next.process())
+            .flatMap(response -> logResponse(logger, response, startNs))
             .doOnError(throwable -> logger.warning("<-- HTTP FAILED: ", throwable));
     }
 
+    /*
+     * Logs the HTTP request.
+     *
+     * @param logger Logger used to log the request.
+     * @param request HTTP request being sent to Azure.
+     * @return A Mono which will emit the string to log.
+     */
     private Mono<Void> logRequest(final ClientLogger logger, final HttpRequest request) {
-        final HttpLogDetailLevel httpLogLevel = httpLogOptions.getLogLevel();
-        if (httpLogLevel.shouldLogUrl()) {
-            UrlBuilder requestUrl = UrlBuilder.parse(request.getUrl());
-            requestUrl.setQuery(getAllowedQueryString(request.getUrl().getQuery()));
-            logger.info("--> {} {}", request.getHttpMethod(), requestUrl.toString());
+
+        if (!logger.canLogAtLevel(LogLevel.INFORMATIONAL)) {
+            return Mono.empty();
         }
 
-        if (httpLogLevel.shouldLogHeaders()) {
-            formatAllowableHeaders(httpLogOptions.getAllowedHeaderNames(), request.getHeaders(), logger);
+        StringBuilder requestLogMessage = new StringBuilder();
+        if (httpLogDetailLevel.shouldLogUrl()) {
+            requestLogMessage.append("--> ")
+                .append(request.getHttpMethod())
+                .append(" ")
+                .append(getRedactedUrl(request.getUrl()))
+                .append(System.lineSeparator());
         }
 
-        //
-        Mono<Void> reqBodyLoggingMono = Mono.empty();
-        //
-        if (httpLogLevel.shouldLogBody()) {
-            if (request.getBody() == null) {
-                logger.info("(empty body)");
-                logger.info("--> END {}", request.getHttpMethod());
-            } else {
-                boolean isHumanReadableContentType =
-                    !"application/octet-stream".equalsIgnoreCase(request.getHeaders().getValue("Content-Type"));
-                final long contentLength = getContentLength(logger, request.getHeaders());
+        addHeadersToLogMessage(logger, request.getHeaders(), requestLogMessage);
 
-                if (contentLength < MAX_BODY_LOG_SIZE && isHumanReadableContentType) {
-                    try {
-                        Mono<byte[]> collectedBytes = FluxUtil.collectBytesInByteBufferStream(request.getBody());
-                        reqBodyLoggingMono = collectedBytes.flatMap(bytes -> {
-                            String bodyString = new String(bytes, StandardCharsets.UTF_8);
-                            bodyString = prettyPrintIfNeeded(
-                                logger,
-                                request.getHeaders().getValue("Content-Type"),
-                                bodyString);
-                            logger.info("{}-byte body:%n{}", contentLength, bodyString);
-                            logger.info("--> END {}", request.getHttpMethod());
-                            return Mono.empty();
-                        });
-                    } catch (Exception e) {
-                        reqBodyLoggingMono = Mono.error(e);
+        if (!httpLogDetailLevel.shouldLogBody()) {
+            return logAndReturn(logger, requestLogMessage, null);
+        }
+
+        if (request.getBody() == null) {
+            requestLogMessage.append("(empty body)")
+                .append(System.lineSeparator())
+                .append("--> END ")
+                .append(request.getHttpMethod())
+                .append(System.lineSeparator());
+
+            return logAndReturn(logger, requestLogMessage, null);
+        }
+
+        String contentType = request.getHeaders().getValue("Content-Type");
+        long contentLength = getContentLength(logger, request.getHeaders());
+
+        if (shouldBodyBeLogged(contentType, contentLength)) {
+            ByteArrayOutputStream outputStream = new ByteArrayOutputStream((int) contentLength);
+
+            // Add non-mutating operators to the data stream.
+            request.setBody(
+                request.getBody()
+                    .doOnNext(byteBuffer -> {
+                        for (int i = byteBuffer.position(); i < byteBuffer.limit(); i++) {
+                            outputStream.write(byteBuffer.get(i));
+                        }
+                    })
+                    .doFinally(ignored -> {
+                        requestLogMessage.append(contentLength)
+                            .append("-byte body:")
+                            .append(System.lineSeparator())
+                            .append(prettyPrintIfNeeded(logger, contentType,
+                                new String(outputStream.toByteArray(), StandardCharsets.UTF_8)))
+                            .append(System.lineSeparator())
+                            .append("--> END ")
+                            .append(request.getHttpMethod())
+                            .append(System.lineSeparator());
+
+                        logger.info(requestLogMessage.toString());
+                    }));
+
+            return Mono.empty();
+        } else {
+            requestLogMessage.append(contentLength)
+                .append("-byte body: (content not logged)")
+                .append(System.lineSeparator())
+                .append("--> END ")
+                .append(request.getHttpMethod())
+                .append(System.lineSeparator());
+
+            return logAndReturn(logger, requestLogMessage, null);
+        }
+    }
+
+    /*
+     * Logs thr HTTP response.
+     *
+     * @param logger Logger used to log the response.
+     * @param response HTTP response returned from Azure.
+     * @param startNs Nanosecond representation of when the request was sent.
+     * @return A Mono containing the HTTP response.
+     */
+    private Mono<HttpResponse> logResponse(final ClientLogger logger, final HttpResponse response, long startNs) {
+        if (!logger.canLogAtLevel(LogLevel.INFORMATIONAL)) {
+            return Mono.just(response);
+        }
+
+        long tookMs = TimeUnit.NANOSECONDS.toMillis(System.nanoTime() - startNs);
+
+        String contentLengthString = response.getHeaderValue("Content-Length");
+        String bodySize = (CoreUtils.isNullOrEmpty(contentLengthString))
+            ? "unknown-length body"
+            : contentLengthString + "-byte body";
+
+        StringBuilder responseLogMessage = new StringBuilder();
+        if (httpLogDetailLevel.shouldLogUrl()) {
+            responseLogMessage.append("<-- ")
+                .append(response.getStatusCode())
+                .append(" ")
+                .append(getRedactedUrl(response.getRequest().getUrl()))
+                .append(" (")
+                .append(tookMs)
+                .append(" ms, ")
+                .append(bodySize)
+                .append(")")
+                .append(System.lineSeparator());
+        }
+
+        addHeadersToLogMessage(logger, response.getHeaders(), responseLogMessage);
+
+        if (!httpLogDetailLevel.shouldLogBody()) {
+            responseLogMessage.append("<-- END HTTP");
+            return logAndReturn(logger, responseLogMessage, response);
+        }
+
+        String contentTypeHeader = response.getHeaderValue("Content-Type");
+        long contentLength = getContentLength(logger, response.getHeaders());
+
+        if (shouldBodyBeLogged(contentTypeHeader, contentLength)) {
+            HttpResponse bufferedResponse = response.buffer();
+            ByteArrayOutputStream outputStream = new ByteArrayOutputStream((int) contentLength);
+            return bufferedResponse.getBody()
+                .doOnNext(byteBuffer -> {
+                    for (int i = byteBuffer.position(); i < byteBuffer.limit(); i++) {
+                        outputStream.write(byteBuffer.get(i));
                     }
-                } else {
-                    logger.info("{}-byte body: (content not logged)", contentLength);
-                    logger.info("--> END {}", request.getHttpMethod());
-                }
-            }
+                })
+                .doFinally(ignored -> {
+                    responseLogMessage.append("Response body:")
+                        .append(System.lineSeparator())
+                        .append(prettyPrintIfNeeded(logger, contentTypeHeader,
+                            new String(outputStream.toByteArray(), StandardCharsets.UTF_8)))
+                        .append(System.lineSeparator())
+                        .append("<-- END HTTP");
+
+                    logger.info(responseLogMessage.toString());
+                }).then(Mono.just(bufferedResponse));
+        } else {
+            responseLogMessage.append("(body content not logged)")
+                .append(System.lineSeparator())
+                .append("<-- END HTTP");
+
+            return logAndReturn(logger, responseLogMessage, response);
         }
-        return reqBodyLoggingMono;
     }
 
-    private void formatAllowableHeaders(Set<String> allowedHeaderNames, HttpHeaders requestResponseHeaders,
-        ClientLogger logger) {
-        Set<String> lowerCasedAllowedHeaderNames = allowedHeaderNames.stream().map(String::toLowerCase)
-            .collect(Collectors.toSet());
-        StringBuilder sb = new StringBuilder();
-        for (HttpHeader header : requestResponseHeaders) {
-            String headerName = header.getName();
-            sb.append(headerName).append(":");
-            if (lowerCasedAllowedHeaderNames.contains(headerName.toLowerCase(Locale.ROOT))) {
-                sb.append(header.getValue());
-            } else {
-                sb.append(REDACTED_PLACEHOLDER);
-            }
-            sb.append(System.getProperty("line.separator"));
-        }
-        logger.info(sb.toString());
+    private <T> Mono<T> logAndReturn(ClientLogger logger, StringBuilder logMessageBuilder, T data) {
+        logger.info(logMessageBuilder.toString());
+        return Mono.justOrEmpty(data);
     }
 
+    /*
+     * Generates the redacted URL for logging.
+     *
+     * @param url URL where the request is being sent.
+     * @return A URL with query parameters redacted based on configurations in this policy.
+     */
+    private String getRedactedUrl(URL url) {
+        return UrlBuilder.parse(url)
+            .setQuery(getAllowedQueryString(url.getQuery()))
+            .toString();
+    }
+
+    /*
+     * Generates the logging safe query parameters string.
+     *
+     * @param queryString Query parameter string from the request URL.
+     * @return A query parameter string redacted based on the configurations in this policy.
+     */
     private String getAllowedQueryString(String queryString) {
-        Set<String> lowerCasedAllowedQueryParams = httpLogOptions.getAllowedQueryParamNames().stream()
-            .map(String::toLowerCase)
-            .collect(Collectors.toSet());
-
         if (CoreUtils.isNullOrEmpty(queryString)) {
             return "";
         }
@@ -165,7 +270,7 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
             String[] queryPair = queryParam.split("=", 2);
             if (queryPair.length == 2) {
                 String queryName = queryPair[0];
-                if (lowerCasedAllowedQueryParams.contains(queryName.toLowerCase(Locale.ROOT))) {
+                if (allowedQueryParameterNames.contains(queryName.toLowerCase(Locale.ROOT))) {
                     queryStringBuilder.append(queryParam);
                 } else {
                     queryStringBuilder.append(queryPair[0]).append("=").append(REDACTED_PLACEHOLDER);
@@ -178,57 +283,45 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
         return queryStringBuilder.toString();
     }
 
-    private Function<HttpResponse, Mono<HttpResponse>> logResponseDelegate(final ClientLogger logger, final URL url,
-        final long startNs) {
-        return (HttpResponse response) -> {
-            long tookMs = TimeUnit.NANOSECONDS.toMillis(System.nanoTime() - startNs);
-            //
-            String contentLengthString = response.getHeaderValue("Content-Length");
-            String bodySize;
-            if (contentLengthString == null || contentLengthString.isEmpty()) {
-                bodySize = "unknown-length";
-            } else {
-                bodySize = contentLengthString + "-byte";
-            }
-            HttpLogDetailLevel httpLogLevel = httpLogOptions.getLogLevel();
-            if (httpLogLevel.shouldLogUrl()) {
-                UrlBuilder requestUrl = UrlBuilder.parse(url);
-                requestUrl.setQuery(getAllowedQueryString(url.getQuery()));
-                logger.info("<-- {} {} ({} ms, {} body)", response.getStatusCode(), requestUrl.toString(), tookMs,
-                    bodySize);
-            }
+    /*
+     * Adds HTTP headers into the StringBuilder that is generating the log message.
+     *
+     * @param headers HTTP headers on the request or response.
+     * @param sb StringBuilder that is generating the log message.
+     * @param logLevel Log level the environment is configured to use.
+     */
+    private void addHeadersToLogMessage(ClientLogger logger, HttpHeaders headers, StringBuilder sb) {
+        // Either headers shouldn't be logged or the logging level isn't set to VERBOSE, don't add headers.
+        if (!httpLogDetailLevel.shouldLogHeaders() || logger.canLogAtLevel(LogLevel.VERBOSE)) {
+            return;
+        }
 
-            if (httpLogLevel.shouldLogHeaders()) {
-                formatAllowableHeaders(httpLogOptions.getAllowedHeaderNames(), response.getHeaders(), logger);
-            }
-
-            if (httpLogLevel.shouldLogBody()) {
-                long contentLength = getContentLength(logger, response.getHeaders());
-                final String contentTypeHeader = response.getHeaderValue("Content-Type");
-                if (!"application/octet-stream".equalsIgnoreCase(contentTypeHeader)
-                    && contentLength != 0 && contentLength < MAX_BODY_LOG_SIZE) {
-                    final HttpResponse bufferedResponse = response.buffer();
-                    return bufferedResponse.getBodyAsString().map(bodyStr -> {
-                        bodyStr = prettyPrintIfNeeded(logger, contentTypeHeader, bodyStr);
-                        logger.info("Response body:\n{}", bodyStr);
-                        logger.info("<-- END HTTP");
-                        return bufferedResponse;
-                    }).switchIfEmpty(Mono.defer(() -> Mono.just(bufferedResponse)));
-                } else {
-                    logger.info("(body content not logged)");
-                    logger.info("<-- END HTTP");
-                }
+        for (HttpHeader header : headers) {
+            String headerName = header.getName();
+            sb.append(headerName).append(":");
+            if (allowedHeaderNames.contains(headerName.toLowerCase(Locale.ROOT))) {
+                sb.append(header.getValue());
             } else {
-                logger.info("<-- END HTTP");
+                sb.append(REDACTED_PLACEHOLDER);
             }
-            return Mono.just(response);
-        };
+            sb.append(System.lineSeparator());
+        }
     }
 
+    /*
+     * Determines and attempts to pretty print the body if it is JSON.
+     *
+     * <p>The body is pretty printed if the Content-Type is JSON and the policy is configured to pretty print JSON.</p>
+     *
+     * @param logger Logger used to log a warning if the body fails to pretty print as JSON.
+     * @param contentType Content-Type header.
+     * @param body Body of the request or response.
+     * @return The body pretty printed if it is JSON, otherwise the unmodified body.
+     */
     private String prettyPrintIfNeeded(ClientLogger logger, String contentType, String body) {
         String result = body;
-        if (prettyPrintJSON && contentType != null
-            && (contentType.startsWith("application/json") || contentType.startsWith("text/json"))) {
+        if (prettyPrintBody && contentType != null
+            && (contentType.startsWith(ContentType.APPLICATION_JSON) || contentType.startsWith("text/json"))) {
             try {
                 final Object deserialized = PRETTY_PRINTER.readTree(body);
                 result = PRETTY_PRINTER.writeValueAsString(deserialized);
@@ -239,15 +332,44 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
         return result;
     }
 
+    /*
+     * Attempts to retrieve and parse the Content-Length header into a numeric representation.
+     *
+     * @param logger Logger used to log a warning if the Content-Length header is an invalid number.
+     * @param headers HTTP headers that are checked for containing Content-Length.
+     * @return
+     */
     private long getContentLength(ClientLogger logger, HttpHeaders headers) {
         long contentLength = 0;
+
+        String contentLengthString = headers.getValue("Content-Length");
+        if (CoreUtils.isNullOrEmpty(contentLengthString)) {
+            return contentLength;
+        }
+
         try {
-            contentLength = Long.parseLong(headers.getValue("content-length"));
+            contentLength = Long.parseLong(contentLengthString);
         } catch (NumberFormatException | NullPointerException e) {
             logger.warning("Could not parse the HTTP header content-length: '{}'.",
                 headers.getValue("content-length"), e);
         }
 
         return contentLength;
+    }
+
+    /*
+     * Determines if the request or response body should be logged.
+     *
+     * <p>The request or response body is logged if the Content-Type is not "application/octet-stream" and the body
+     * isn't empty and is less than 16KB in size.</p>
+     *
+     * @param contentTypeHeader Content-Type header value.
+     * @param contentLength Content-Length header represented as a numeric.
+     * @return A flag indicating if the request or response body should be logged.
+     */
+    private boolean shouldBodyBeLogged(String contentTypeHeader, long contentLength) {
+        return !ContentType.APPLICATION_OCTET_STREAM.equalsIgnoreCase(contentTypeHeader)
+            && contentLength != 0
+            && contentLength < MAX_BODY_LOG_SIZE;
     }
 }

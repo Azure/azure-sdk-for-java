@@ -1,11 +1,72 @@
 # Release History
 
+## 1.1.0-beta.6 (Unreleased)
+
+
+## 1.1.0-beta.5 (2020-06-09)
+
+### New Features
+- Added option to write to shared token cache from `ClientSecretCredential`, `ClientCertificateCredential`.
+- Added new developer credentials `IntelliJCredential`, `VsCodeCredential` and `AzureCliCredential`.
+- New APIs for authenticating users with `DeviceCodeCredential`,  `InteractiveBrowserCredential` and `UsernamePasswordCredential`.
+    - Added method `authenticate` which pro-actively interacts with the user to authenticate if necessary and returns a serializable `AuthenticationRecord`
+- Added following configurable options in classes `DeviceCodeCredentialBuilder` and `InteractiveBrowserCredentialBuilder`
+    - `authenticationRecord` enables initializing a credential with an `AuthenticationRecord` returned from a prior call to `Authenticate`
+    - `disableAutomaticAuthentication` disables automatic user interaction causing the credential to throw an `AuthenticationRequiredException` when interactive authentication is necessary.
+
+### Breaking Changes
+- Removed support to exclude specific credentials in `DefaultAzureCredential` authentication flow.
+
+
+## 1.1.0-beta.4 (2020-05-06)
+- Added `IntelliJCredential` support in `DefaultAzureCredential`.
+- Added `VsCodeCredential` support in `DefaultAzureCredential`.
+- Added support to disable specific credentials in `DefaultAzureCredential` authentication flow.
+- Added Shared Token cache support for MacOS Keychain, Gnome Keyring, and plain text for other Linux environments
+- Added option to write to shared token cache from `InteractiveBrowserCredential`, `AuthorizationCodeCredential`, `UsernamePasswordCredential`, and `DeviceCodeCredential`
+
+## 1.0.6 (2020-05-05)
+- Upgraded `azure-core` dependency to 1.5.0
+- Fix `MSIToken` expiry time parsing for Azure App Service platforms.
+
+## 1.1.0-beta.3 (2020-04-07)
+- Added `KnownAuthorityHosts` to enable quick references to public azure authority hosts.
+- Added methods to allow credential configuration in `DefaultAzureCredentialBuilder`
+- Added support for authority host to be read from `AZURE_AUTHORITY_HOST` environment variable.
+- Added support for `ClientCertificateCredential` and `UserNamePasswordCredential` in EnvironmentCredential.
+
+## 1.0.5 (2020-04-07)
+- Upgraded `azure-core` dependency to 1.4.0
+
+## 1.1.0-beta.2 (2020-03-11)
+
+### Added
+- Added 'authorityHost' set method in `DefaultAzureCredentialBuilder`
+- Added `executorService` set method in all the credential builders except `ManagedIdentityCredentialBuilder`
+- Added `authorityHost` set method to `DefaultAzureCredentialBuilder`
+- Added `tokenRefreshOffset` set method in all the credential builders.
+- Added `httpClient` set method in all the credential builders.
+- Updated `DefaultAzureCredential` to enable authenticating through the Azure CLI
+
+## 1.0.4 (2020-03-10)
+- Upgraded `azure-core` dependency to 1.0.4
+
+## 1.1.0-beta.1 (2020-02-12)
+- All credential builders support setting a pipeline via `httpPipeline` method.
+- SharedTokenCacheCredentialBuilder supports setting the tenant id via `tenantId` method.
+
+## 1.0.3 (2020-01-13)
+- Support datetime format `M/d/yyyy K:mm:ss a XXX` for token `expires_on` property on Windows App Services.
+
+## 1.0.2 (2020-01-07)
+- Fix MSI_ENDPOINT and MSI_SECRET environment variable lookup issue in `ManagedIdentityCredential` when running on App Service
+
 ## 1.0.0 (2019-10-25) - November 2019 SDK Release
 **Breaking changes**
 
 - The `getToken(TokenRequest tokenRequest)` methods on all the credentials are changed to `getToken(TokenRequestContext tokenRequestContext)`. 
 - All credentials are moved from `com.azure.identity.credential` package to `com.azure.identity` package
-- `DeviceCodeChallenge` is renamed to `DeviceCodeInfo`, with `int expiresIn()` replaced with `OffsetDateTime expiresOn()` returning the time of the device code expiration
+- `DeviceCodeChallenge` is renamed to r`DeviceCodeInfo`, with `int expiresIn()` replaced with `OffsetDateTime expiresOn()` returning the time of the device code expiration
 - All methods containing `uri` is renamed to contain `url` for consistency
 
 **Known issues**

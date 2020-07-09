@@ -3,12 +3,12 @@
 
 package com.azure.core.http.rest;
 
-import org.reactivestreams.Publisher;
+import com.azure.core.util.paging.ContinuablePagedFluxCore;
+import com.azure.core.util.paging.PageRetriever;
 import reactor.core.CoreSubscriber;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.util.Objects;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
@@ -37,30 +37,27 @@ import java.util.function.Supplier;
  * @see PagedResponse
  * @see Page
  * @see Flux
+ * @deprecated use {@link ContinuablePagedFluxCore}.
  */
-public class PagedFluxBase<T, P extends PagedResponse<T>> extends Flux<T> {
-
-    private final Supplier<Mono<P>> firstPageRetriever;
-
-    private final Function<String, Mono<P>> nextPageRetriever;
-
+@Deprecated
+public class PagedFluxBase<T, P extends PagedResponse<T>> extends ContinuablePagedFluxCore<String, T, P> {
     /**
-     * Creates an instance of {@link PagedFluxBase} that consists of only a single page of results. The only
-     * argument to this constructor therefore is a supplier that fetches the first (and known-only) page from {@code P}.
+     * Creates an instance of {@link PagedFluxBase} that consists of only a single page.
+     * This constructor takes a {@code Supplier} that return the single page of {@code T}.
      *
      * <p><strong>Code sample</strong></p>
      * {@codesnippet com.azure.core.http.rest.pagedfluxbase.singlepage.instantiation}
      *
-     * @param firstPageRetriever Supplier that retrieves the first page
+     * @param firstPageRetriever Supplier that retrieves the first page.
      */
     public PagedFluxBase(Supplier<Mono<P>> firstPageRetriever) {
         this(firstPageRetriever, token -> Mono.empty());
     }
 
     /**
-     * Creates an instance of {@link PagedFluxBase}. The constructor takes in two arguments. The first
-     * argument is a supplier that fetches the first page from {@code P}. The second argument is a
-     * function that fetches subsequent pages from {@code P}.
+     * Creates an instance of {@link PagedFluxBase}. The constructor takes a {@code Supplier} and
+     * {@code Function}. The {@code Supplier} returns the first page of {@code T},
+     * the {@code Function} retrieves subsequent pages of {@code T}.
      *
      * <p><strong>Code sample</strong></p>
      * {@codesnippet com.azure.core.http.rest.pagedfluxbase.instantiation}
@@ -70,22 +67,26 @@ public class PagedFluxBase<T, P extends PagedResponse<T>> extends Flux<T> {
      */
     public PagedFluxBase(Supplier<Mono<P>> firstPageRetriever,
                          Function<String, Mono<P>> nextPageRetriever) {
-        Objects.requireNonNull(firstPageRetriever, "'firstPageRetriever' cannot be null.");
-        Objects.requireNonNull(nextPageRetriever, "'nextPageRetriever' function cannot be null.");
-        this.firstPageRetriever = firstPageRetriever;
-        this.nextPageRetriever = nextPageRetriever;
-    }
-
-    Supplier<Mono<P>> getFirstPageRetriever() {
-        return firstPageRetriever;
-    }
-
-    Function<String, Mono<P>> getNextPageRetriever() {
-        return nextPageRetriever;
+        this(() -> (continuationToken, pageSize) -> continuationToken == null
+            ? firstPageRetriever.get().flux()
+            : nextPageRetriever.apply(continuationToken).flux(), true);
     }
 
     /**
-     * Creates a flux of {@link PagedResponse} starting from the first page.
+     * PACKAGE INTERNAL CONSTRUCTOR, exists only to support the PRIVATE PagedFlux.ctr(Supplier, boolean)
+     * use case.
+     *
+     * Create PagedFlux backed by Page Retriever Function Supplier.
+     *
+     * @param provider the Page Retrieval Provider
+     * @param ignored ignored
+     */
+    PagedFluxBase(Supplier<PageRetriever<String, P>> provider, boolean ignored) {
+        super(provider);
+    }
+
+    /**
+     * Creates a Flux of {@link PagedResponse} starting from the first page.
      *
      * <p><strong>Code sample</strong></p>
      * {@codesnippet com.azure.core.http.rest.pagedfluxbase.bypage}
@@ -93,11 +94,11 @@ public class PagedFluxBase<T, P extends PagedResponse<T>> extends Flux<T> {
      * @return A {@link PagedFluxBase} starting from the first page
      */
     public Flux<P> byPage() {
-        return firstPageRetriever.get().flatMapMany(this::extractAndFetchPage);
+        return super.byPage();
     }
 
     /**
-     * Creates a flux of {@link PagedResponse} starting from the next page associated with the given
+     * Creates a Flux of {@link PagedResponse} starting from the next page associated with the given
      * continuation token. To start from first page, use {@link #byPage()} instead.
      *
      * <p><strong>Code sample</strong></p>
@@ -107,7 +108,7 @@ public class PagedFluxBase<T, P extends PagedResponse<T>> extends Flux<T> {
      * @return A {@link PagedFluxBase} starting from the page associated with the continuation token
      */
     public Flux<P> byPage(String continuationToken) {
-        return nextPageRetriever.apply(continuationToken).flatMapMany(this::extractAndFetchPage);
+        return super.byPage(continuationToken);
     }
 
     /**
@@ -122,47 +123,6 @@ public class PagedFluxBase<T, P extends PagedResponse<T>> extends Flux<T> {
      */
     @Override
     public void subscribe(CoreSubscriber<? super T> coreSubscriber) {
-        byT(null).subscribe(coreSubscriber);
-    }
-
-    /**
-     * Helper method to return the flux of items starting from the page associated with the {@code continuationToken}
-     *
-     * @param continuationToken The continuation token that is used to fetch the next page
-     * @return A {@link Flux} of items in this page
-     */
-    private Flux<T> byT(String continuationToken) {
-        if (continuationToken == null) {
-            return firstPageRetriever.get().flatMapMany(this::extractAndFetchT);
-        }
-        return nextPageRetriever.apply(continuationToken).flatMapMany(this::extractAndFetchT);
-    }
-
-    /**
-     * Helper method to string together a flux of items transparently extracting items from
-     * next pages, if available.
-     * @param page Starting page
-     * @return A {@link Flux} of items
-     */
-    private Publisher<T> extractAndFetchT(PagedResponse<T> page) {
-        String nextPageLink = page.getContinuationToken();
-        if (nextPageLink == null) {
-            return Flux.fromIterable(page.getItems());
-        }
-        return Flux.fromIterable(page.getItems()).concatWith(Flux.defer(() -> byT(nextPageLink)));
-    }
-
-    /**
-     * Helper method to string together a flux of {@link PagedResponse} transparently
-     * fetching next pages, if available
-     * @param page Starting page
-     * @return A {@link Flux} of {@link PagedResponse}
-     */
-    private Publisher<? extends P> extractAndFetchPage(P page) {
-        String nextPageLink = page.getContinuationToken();
-        if (nextPageLink == null) {
-            return Flux.just(page);
-        }
-        return Flux.just(page).concatWith(Flux.defer(() -> byPage(page.getContinuationToken())));
+        super.subscribe(coreSubscriber);
     }
 }

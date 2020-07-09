@@ -1,9 +1,3 @@
-resources:
-  repositories:
-    - repository: azure-sdk-build-tools
-      type: git
-      name: internal/azure-sdk-build-tools
-
 trigger:
   branches:
     include:
@@ -15,8 +9,25 @@ trigger:
     include:
       - sdk/cognitiveservices/
     exclude:
-      - sdk/cognitiveservices/microsoft-azure
-      - sdk/cognitiveservices/ms-azure
+      - sdk/cognitiveservices/ms-azure-cs-autosuggest
+      - sdk/cognitiveservices/ms-azure-cs-computervision
+      - sdk/cognitiveservices/ms-azure-cs-contentmoderator
+      - sdk/cognitiveservices/ms-azure-cs-customimagesearch
+      - sdk/cognitiveservices/ms-azure-cs-customsearch
+      - sdk/cognitiveservices/ms-azure-cs-customvision-prediction
+      - sdk/cognitiveservices/ms-azure-cs-customvision-training
+      - sdk/cognitiveservices/ms-azure-cs-entitysearch
+      - sdk/cognitiveservices/ms-azure-cs-faceapi
+      - sdk/cognitiveservices/ms-azure-cs-imagesearch
+      - sdk/cognitiveservices/ms-azure-cs-luis-authoring
+      - sdk/cognitiveservices/ms-azure-cs-luis-runtime
+      - sdk/cognitiveservices/ms-azure-cs-newssearch
+      - sdk/cognitiveservices/ms-azure-cs-qnamaker
+      - sdk/cognitiveservices/ms-azure-cs-spellcheck
+      - sdk/cognitiveservices/ms-azure-cs-textanalytics
+      - sdk/cognitiveservices/ms-azure-cs-videosearch
+      - sdk/cognitiveservices/ms-azure-cs-visualsearch
+      - sdk/cognitiveservices/ms-azure-cs-websearch
 
 pr:
   branches:
@@ -29,48 +40,27 @@ pr:
     include:
       - sdk/cognitiveservices/
     exclude:
-      - sdk/cognitiveservices/microsoft-azure
-      - sdk/cognitiveservices/ms-azure
+      - sdk/cognitiveservices/ms-azure-cs-autosuggest
+      - sdk/cognitiveservices/ms-azure-cs-computervision
+      - sdk/cognitiveservices/ms-azure-cs-contentmoderator
+      - sdk/cognitiveservices/ms-azure-cs-customimagesearch
+      - sdk/cognitiveservices/ms-azure-cs-customsearch
+      - sdk/cognitiveservices/ms-azure-cs-customvision-prediction
+      - sdk/cognitiveservices/ms-azure-cs-customvision-training
+      - sdk/cognitiveservices/ms-azure-cs-entitysearch
+      - sdk/cognitiveservices/ms-azure-cs-faceapi
+      - sdk/cognitiveservices/ms-azure-cs-imagesearch
+      - sdk/cognitiveservices/ms-azure-cs-luis-authoring
+      - sdk/cognitiveservices/ms-azure-cs-luis-runtime
+      - sdk/cognitiveservices/ms-azure-cs-newssearch
+      - sdk/cognitiveservices/ms-azure-cs-qnamaker
+      - sdk/cognitiveservices/ms-azure-cs-spellcheck
+      - sdk/cognitiveservices/ms-azure-cs-textanalytics
+      - sdk/cognitiveservices/ms-azure-cs-videosearch
+      - sdk/cognitiveservices/ms-azure-cs-visualsearch
+      - sdk/cognitiveservices/ms-azure-cs-websearch
 
-
-variables:
-  BuildOptions: '--batch-mode -Dgpg.skip -Dmaven.wagon.http.pool=false'
-  ServiceDirectory: cognitiveservices
-  ProfileFlag: ''
-
-jobs:
-  - job: 'Build'
-
-    variables:
-      - template: ../../eng/pipelines/templates/variables/globals.yml
-
-    strategy:
-      matrix:
-        Java 8:
-          ArtifactName: 'packages'
-          JavaVersion: '1.8'
-        Java 7:
-          ArtifactName: 'packages'
-          JavaVersion: '1.7'
-
-    pool:
-      vmImage: 'ubuntu-16.04'
-
-    steps:
-      - task: Maven@3
-        displayName: 'Build'
-        inputs:
-          mavenPomFile: sdk/$(ServiceDirectory)/pom.mgmt.xml
-          goals: 'compile'
-          options: '$(BuildOptions) $(ProfileFlag) "-DpackageOutputDirectory=$(Build.ArtifactStagingDirectory)" -DskipTests'
-          mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
-          javaHomeOption: 'JDKVersion'
-          jdkVersionOption: $(JavaVersion)
-          jdkArchitectureOption: 'x64'
-          publishJUnitResults: false
-
-      - task: PublishTestResults@2
-        condition: succeededOrFailed()
-        inputs:
-          mergeTestResults: true
-          testRunTitle: 'On Java $(JavaVersion)'
+stages:
+  - template: ../../eng/pipelines/templates/stages/archetype-sdk-management.yml
+    parameters:
+      ServiceDirectory: cognitiveservices

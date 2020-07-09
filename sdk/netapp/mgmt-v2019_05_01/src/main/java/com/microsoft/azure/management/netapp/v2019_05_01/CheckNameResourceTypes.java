@@ -16,17 +16,17 @@ import com.microsoft.rest.ExpandableStringEnum;
  * Defines values for CheckNameResourceTypes.
  */
 public final class CheckNameResourceTypes extends ExpandableStringEnum<CheckNameResourceTypes> {
-    /** Static value Microsoft.NetApp/netAppAccount for CheckNameResourceTypes. */
-    public static final CheckNameResourceTypes MICROSOFT_NET_APPNET_APP_ACCOUNT = fromString("Microsoft.NetApp/netAppAccount");
+    /** Static value Microsoft.NetApp/netAppAccounts for CheckNameResourceTypes. */
+    public static final CheckNameResourceTypes MICROSOFT_NET_APPNET_APP_ACCOUNTS = fromString("Microsoft.NetApp/netAppAccounts");
 
-    /** Static value Microsoft.NetApp/netAppAccount/capacityPools for CheckNameResourceTypes. */
-    public static final CheckNameResourceTypes MICROSOFT_NET_APPNET_APP_ACCOUNTCAPACITY_POOLS = fromString("Microsoft.NetApp/netAppAccount/capacityPools");
+    /** Static value Microsoft.NetApp/netAppAccounts/capacityPools for CheckNameResourceTypes. */
+    public static final CheckNameResourceTypes MICROSOFT_NET_APPNET_APP_ACCOUNTSCAPACITY_POOLS = fromString("Microsoft.NetApp/netAppAccounts/capacityPools");
 
-    /** Static value Microsoft.NetApp/netAppAccount/capacityPools/volumes for CheckNameResourceTypes. */
-    public static final CheckNameResourceTypes MICROSOFT_NET_APPNET_APP_ACCOUNTCAPACITY_POOLSVOLUMES = fromString("Microsoft.NetApp/netAppAccount/capacityPools/volumes");
+    /** Static value Microsoft.NetApp/netAppAccounts/capacityPools/volumes for CheckNameResourceTypes. */
+    public static final CheckNameResourceTypes MICROSOFT_NET_APPNET_APP_ACCOUNTSCAPACITY_POOLSVOLUMES = fromString("Microsoft.NetApp/netAppAccounts/capacityPools/volumes");
 
-    /** Static value Microsoft.NetApp/netAppAccount/capacityPools/volumes/snapshots for CheckNameResourceTypes. */
-    public static final CheckNameResourceTypes MICROSOFT_NET_APPNET_APP_ACCOUNTCAPACITY_POOLSVOLUMESSNAPSHOTS = fromString("Microsoft.NetApp/netAppAccount/capacityPools/volumes/snapshots");
+    /** Static value Microsoft.NetApp/netAppAccounts/capacityPools/volumes/snapshots for CheckNameResourceTypes. */
+    public static final CheckNameResourceTypes MICROSOFT_NET_APPNET_APP_ACCOUNTSCAPACITY_POOLSVOLUMESSNAPSHOTS = fromString("Microsoft.NetApp/netAppAccounts/capacityPools/volumes/snapshots");
 
     /**
      * Creates or finds a CheckNameResourceTypes from its string representation.

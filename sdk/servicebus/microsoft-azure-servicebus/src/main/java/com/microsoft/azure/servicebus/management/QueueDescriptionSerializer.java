@@ -284,20 +284,11 @@ class QueueDescriptionSerializer {
 
     static void normalizeDescription(QueueDescription queueDescription, URI baseAddress) {
         if (queueDescription.getForwardTo() != null) {
-            queueDescription.setForwardTo(normalizeForwardToAddress(queueDescription.getForwardTo(), baseAddress));
+            queueDescription.setForwardTo(EntityNameHelper.normalizeForwardToAddress(queueDescription.getForwardTo(), baseAddress));
         }
 
         if (queueDescription.getForwardDeadLetteredMessagesTo() != null) {
-            queueDescription.setForwardDeadLetteredMessagesTo(normalizeForwardToAddress(queueDescription.getForwardDeadLetteredMessagesTo(), baseAddress));
-        }
-    }
-
-    private static String normalizeForwardToAddress(String forwardTo, URI baseAddress) {
-        try {
-            new URL(forwardTo);
-            return forwardTo;
-        } catch (MalformedURLException e) {
-            return baseAddress.resolve(forwardTo).toString();
+            queueDescription.setForwardDeadLetteredMessagesTo(EntityNameHelper.normalizeForwardToAddress(queueDescription.getForwardDeadLetteredMessagesTo(), baseAddress));
         }
     }
 }

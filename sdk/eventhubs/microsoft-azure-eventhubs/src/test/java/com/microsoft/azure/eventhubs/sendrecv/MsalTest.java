@@ -3,8 +3,8 @@
 
 package com.microsoft.azure.eventhubs.sendrecv;
 
+import com.microsoft.aad.msal4j.ClientCredentialFactory;
 import com.microsoft.aad.msal4j.ClientCredentialParameters;
-import com.microsoft.aad.msal4j.ClientSecret;
 import com.microsoft.aad.msal4j.ConfidentialClientApplication;
 import com.microsoft.aad.msal4j.IAuthenticationResult;
 import com.microsoft.azure.eventhubs.AzureActiveDirectoryTokenProvider;
@@ -61,7 +61,7 @@ public class MsalTest extends AadBase {
     @Override
     String tokenGet(final String authority, final String clientId, final String clientSecret, final String audience, final String extra)
             throws MalformedURLException, InterruptedException, ExecutionException {
-        ConfidentialClientApplication app = ConfidentialClientApplication.builder(clientId, new ClientSecret(clientSecret))
+        ConfidentialClientApplication app = ConfidentialClientApplication.builder(clientId, ClientCredentialFactory.createFromSecret(clientSecret))
                 .authority(authority)
                 .build();
         

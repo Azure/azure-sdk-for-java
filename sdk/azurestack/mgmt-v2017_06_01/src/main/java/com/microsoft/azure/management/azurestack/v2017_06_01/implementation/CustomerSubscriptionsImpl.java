@@ -64,10 +64,14 @@ class CustomerSubscriptionsImpl extends WrapperImpl<CustomerSubscriptionsInner> 
     public Observable<CustomerSubscription> getAsync(String resourceGroup, String registrationName, String customerSubscriptionName) {
         CustomerSubscriptionsInner client = this.inner();
         return client.getAsync(resourceGroup, registrationName, customerSubscriptionName)
-        .map(new Func1<CustomerSubscriptionInner, CustomerSubscription>() {
+        .flatMap(new Func1<CustomerSubscriptionInner, Observable<CustomerSubscription>>() {
             @Override
-            public CustomerSubscription call(CustomerSubscriptionInner inner) {
-                return wrapModel(inner);
+            public Observable<CustomerSubscription> call(CustomerSubscriptionInner inner) {
+                if (inner == null) {
+                    return Observable.empty();
+                } else {
+                    return Observable.just((CustomerSubscription)wrapModel(inner));
+                }
             }
        });
     }

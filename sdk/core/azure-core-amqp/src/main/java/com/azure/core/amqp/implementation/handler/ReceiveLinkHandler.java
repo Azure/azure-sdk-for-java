@@ -9,23 +9,27 @@ import org.apache.qpid.proton.engine.EndpointState;
 import org.apache.qpid.proton.engine.Event;
 import org.apache.qpid.proton.engine.Link;
 import org.apache.qpid.proton.engine.Receiver;
+import reactor.core.publisher.DirectProcessor;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.FluxSink;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class ReceiveLinkHandler extends LinkHandler {
-    private final String receiverName;
+    private final String linkName;
     private AtomicBoolean isFirstResponse = new AtomicBoolean(true);
-    private final Flux<Delivery> deliveries;
+    private final DirectProcessor<Delivery> deliveries;
     private FluxSink<Delivery> deliverySink;
 
-    public ReceiveLinkHandler(String connectionId, String hostname, String receiverName, String entityPath) {
+    public ReceiveLinkHandler(String connectionId, String hostname, String linkName, String entityPath) {
         super(connectionId, hostname, entityPath, new ClientLogger(ReceiveLinkHandler.class));
-        this.deliveries = Flux.create(sink -> {
-            deliverySink = sink;
-        });
-        this.receiverName = receiverName;
+        this.deliveries = DirectProcessor.create();
+        this.deliverySink = deliveries.sink(FluxSink.OverflowStrategy.BUFFER);
+        this.linkName = linkName;
+    }
+
+    public String getLinkName() {
+        return linkName;
     }
 
     public Flux<Delivery> getDeliveredMessages() {
@@ -42,8 +46,8 @@ public class ReceiveLinkHandler extends LinkHandler {
     public void onLinkLocalOpen(Event event) {
         final Link link = event.getLink();
         if (link instanceof Receiver) {
-            logger.verbose("onLinkLocalOpen receiverName[{}], linkName[{}], localSource[{}]",
-                receiverName, link.getName(), link.getSource());
+            logger.info("onLinkLocalOpen connectionId[{}], linkName[{}], localSource[{}]",
+                getConnectionId(), link.getName(), link.getSource());
         }
     }
 
@@ -52,15 +56,15 @@ public class ReceiveLinkHandler extends LinkHandler {
         final Link link = event.getLink();
         if (link instanceof Receiver) {
             if (link.getRemoteSource() != null) {
-                logger.info("onLinkRemoteOpen receiverName[{}], linkName[{}], remoteSource[{}]",
-                    receiverName, link.getName(), link.getRemoteSource());
+                logger.info("onLinkRemoteOpen connectionId[{}], linkName[{}], remoteSource[{}]",
+                    getConnectionId(), link.getName(), link.getRemoteSource());
 
                 if (isFirstResponse.getAndSet(false)) {
                     onNext(EndpointState.ACTIVE);
                 }
             } else {
-                logger.info("onLinkRemoteOpen receiverName[{}], linkName[{}], action[waitingForError]",
-                    receiverName, link.getName());
+                logger.info("onLinkRemoteOpen connectionId[{}], linkName[{}], action[waitingForError]",
+                    getConnectionId(), link.getName());
             }
         }
     }
@@ -84,12 +88,12 @@ public class ReceiveLinkHandler extends LinkHandler {
             // before we fix proton-j - this work around ensures that we ignore the duplicate Delivery event
             if (delivery.isSettled()) {
                 if (link != null) {
-                    logger.verbose("onDelivery receiverName[{}], linkName[{}], updatedLinkCredit[{}], remoteCredit[{}],"
+                    logger.verbose("onDelivery connectionId[{}], linkName[{}], updatedLinkCredit[{}], remoteCredit[{}],"
                             + " remoteCondition[{}], delivery.isSettled[{}]",
-                        receiverName, link.getName(), link.getCredit(), link.getRemoteCredit(),
+                        getConnectionId(), link.getName(), link.getCredit(), link.getRemoteCredit(),
                         link.getRemoteCondition(), delivery.isSettled());
                 } else {
-                    logger.warning("delivery.isSettled[{}]", delivery.isSettled());
+                    logger.warning("connectionId[{}], delivery.isSettled[{}]", getConnectionId(), delivery.isSettled());
                 }
             } else {
                 deliverySink.next(delivery);
@@ -97,9 +101,9 @@ public class ReceiveLinkHandler extends LinkHandler {
         }
 
         if (link != null) {
-            logger.verbose("onDelivery receiverName[{}], linkName[{}], updatedLinkCredit[{}], remoteCredit[{}], "
-                    + "remoteCondition[{}], delivery.isPartial[{}]",
-                receiverName, link.getName(), link.getCredit(), link.getRemoteCredit(), link.getRemoteCondition(),
+            logger.verbose("onDelivery connectionId[{}], linkName[{}], updatedLinkCredit[{}], remoteCredit[{}],"
+                    + " remoteCondition[{}], delivery.isPartial[{}]",
+                getConnectionId(), link.getName(), link.getCredit(), link.getRemoteCredit(), link.getRemoteCondition(),
                 delivery.isPartial());
         }
     }

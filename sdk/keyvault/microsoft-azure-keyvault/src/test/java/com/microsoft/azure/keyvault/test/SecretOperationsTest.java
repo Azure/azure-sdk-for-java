@@ -163,7 +163,7 @@ public class SecretOperationsTest extends KeyVaultClientIntegrationTestBase {
         keyVaultClient.purgeDeletedSecret(getVaultUri(), CRUD_SECRET_NAME);
     }
 
-    @Test
+    //@Test
     public void listSecretsForSecretOperationsTest() throws Exception {
         HashSet<String> secrets = new HashSet<String>();
         for (int i = 0; i < MAX_SECRETS; ++i) {

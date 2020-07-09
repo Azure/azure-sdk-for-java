@@ -3,7 +3,7 @@
 
 package com.azure.security.keyvault.certificates;
 
-import com.azure.security.keyvault.certificates.models.LifeTimeAction;
+import com.azure.security.keyvault.certificates.models.LifetimeAction;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -23,9 +23,9 @@ class LifetimeActionRequest {
     @JsonProperty(value = "action")
     private Action action;
 
-    LifetimeActionRequest(LifeTimeAction lifeTimeAction) {
+    LifetimeActionRequest(LifetimeAction lifeTimeAction) {
         action = new Action()
-            .setActionType(lifeTimeAction.getActionType());
+            .setActionType(lifeTimeAction.getAction());
         trigger = new Trigger()
             .daysBeforeExpiry(lifeTimeAction.getDaysBeforeExpiry())
             .lifetimePercentage(lifeTimeAction.getLifetimePercentage());

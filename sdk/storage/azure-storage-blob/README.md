@@ -15,67 +15,17 @@ definition, such as text or binary data.
 - [Azure Subscription][azure_subscription]
 - [Create Storage Account][storage_account]
 
-### Adding the package to your product
+### Include the package
 
 [//]: # ({x-version-update-start;com.azure:azure-storage-blob;current})
 ```xml
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-storage-blob</artifactId>
-    <version>12.0.0</version>
+    <version>12.8.0-beta.1</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
-
-### Default HTTP Client
-All client libraries, by default, use the Netty HTTP client. Adding the above dependency will automatically configure 
-Storage Blob to use the Netty HTTP client. 
-
-### Alternate HTTP client
-If, instead of Netty it is preferable to use OkHTTP, there is an HTTP client available for that too. Exclude the default
-Netty and include the OkHTTP client in your pom.xml.
-
-[//]: # ({x-version-update-start;com.azure:azure-storage-blob;current})
-```xml
-<!-- Add the Storage Blob dependency without the Netty HTTP client -->
-<dependency>
-    <groupId>com.azure</groupId>
-    <artifactId>azure-storage-blob</artifactId>
-    <version>12.0.0</version>
-    <exclusions>
-        <exclusion>
-            <groupId>com.azure</groupId>
-            <artifactId>azure-core-http-netty</artifactId>
-        </exclusion>
-    </exclusions>
-</dependency>
-```
-[//]: # ({x-version-update-end})
-[//]: # ({x-version-update-start;com.azure:azure-core-http-okhttp;current})
-```xml
-<!-- Add the OkHTTP client to use with Storage Blob -->
-<dependency>
-    <groupId>com.azure</groupId>
-    <artifactId>azure-core-http-okhttp</artifactId>
-    <version>1.0.0</version>
-</dependency>
-```
-[//]: # ({x-version-update-end})
-
-### Configuring HTTP Clients
-When an HTTP client is included on the classpath, as shown above, it is not necessary to specify it in the client library [builders](#create-blobserviceclient) unless you want to customize the HTTP client in some fashion. If this is desired, the `httpClient` builder method is often available to achieve just this by allowing users to provide custom (or customized) `com.azure.core.http.HttpClient` instances.
-
-For starters, by having the Netty or OkHTTP dependencies on your classpath, as shown above, you can create new instances of these `HttpClient` types using their builder APIs. For example, here is how you would create a Netty HttpClient instance:
-
-### Default SSL library
-All client libraries, by default, use the Tomcat-native Boring SSL library to enable native-level performance for SSL operations. The Boring SSL library is an uber jar containing native libraries for Linux / macOS / Windows, and provides better performance compared to the default SSL implementation within the JDK. For more information, including how to reduce the dependency size, refer to the [performance tuning][performance_tuning] section of the wiki.
-
-```java
-HttpClient client = new NettyAsyncHttpClientBuilder()
-        .port(8080)
-        .wiretap(true)
-        .build();
-```
 
 ### Create a Storage Account
 To create a Storage Account you can use the [Azure Portal][storage_account_create_portal] or [Azure CLI][storage_account_create_cli].
@@ -86,6 +36,9 @@ az storage account create \
     --name <storage-account-name> \
     --location <location>
 ```
+
+Your storage account URL, subsequently identified as <your-storage-account-url>, would be formatted as follows
+http(s)://<storage-account-name>.blob.core.windows.net
 
 ### Authenticate the client
 
@@ -155,6 +108,32 @@ Blob Storage is designed for:
 - Storing data for backup and restore, disaster recovery, and archiving
 - Storing data for analysis by an on-premises or Azure-hosted service
 
+### URL format
+Blobs are addressable using the following URL format:
+The following URL addresses a blob:
+https://myaccount.blob.core.windows.net/mycontainer/myblob
+
+#### Resource URI Syntax
+For the storage account, the base URI for blob operations includes the name of the account only:
+
+```
+https://myaccount.blob.core.windows.net
+```
+
+For a container, the base URI includes the name of the account and the name of the container:
+
+```
+https://myaccount.blob.core.windows.net/mycontainer
+```
+
+For a blob, the base URI includes the name of the account, the name of the container and the name of the blob:
+
+```
+https://myaccount.blob.core.windows.net/mycontainer/myblob
+```
+
+Note that the above URIs may not hold for more advanced scenarios such as custom domain names.
+
 ## Examples
 
 The following sections provide several code snippets covering some of the most common Azure Storage Blob tasks, including:
@@ -174,37 +153,57 @@ The following sections provide several code snippets covering some of the most c
 
 Create a `BlobServiceClient` using the [`sasToken`](#get-credentials) generated above.
 
+<!-- embedme ./src/samples/java/com/azure/storage/blob/ReadmeSamples.java#L27-L30 -->
 ```java
 BlobServiceClient blobServiceClient = new BlobServiceClientBuilder()
-        .endpoint("<your-storage-blob-url>")
-        .sasToken("<your-sasToken>")
-        .buildClient();
+    .endpoint("<your-storage-account-url>")
+    .sasToken("<your-sasToken>")
+    .buildClient();
+```
+
+or
+
+<!-- embedme ./src/samples/java/com/azure/storage/blob/ReadmeSamples.java#L34-L36 -->
+```java
+BlobServiceClient blobServiceClient = new BlobServiceClientBuilder()
+    .endpoint("<your-storage-account-url>" + "?" + "<your-sasToken>")
+    .buildClient();
 ```
 
 ### Create a `BlobContainerClient`
 
 Create a `BlobContainerClient` using a `BlobServiceClient`.
 
+<!-- embedme ./src/samples/java/com/azure/storage/blob/ReadmeSamples.java#L40-L40 -->
 ```java
 BlobContainerClient blobContainerClient = blobServiceClient.getBlobContainerClient("mycontainer");
 ```
 
-or
-
 Create a `BlobContainerClient` from the builder [`sasToken`](#get-credentials) generated above.
 
+<!-- embedme ./src/samples/java/com/azure/storage/blob/ReadmeSamples.java#L44-L48 -->
 ```java
 BlobContainerClient blobContainerClient = new BlobContainerClientBuilder()
-        .endpoint("<your-storage-blob-url>")
-        .sasToken("<your-sasToken>")
-        .containerName("mycontainer")
-        .buildClient();
+    .endpoint("<your-storage-account-url>")
+    .sasToken("<your-sasToken>")
+    .containerName("mycontainer")
+    .buildClient();
+```
+
+or
+
+<!-- embedme ./src/samples/java/com/azure/storage/blob/ReadmeSamples.java#L52-L54 -->
+```java
+BlobContainerClient blobContainerClient = new BlobContainerClientBuilder()
+    .endpoint("<your-storage-account-url>" + "/" + "mycontainer" + "?" + "<your-sasToken>")
+    .buildClient();
 ```
 
 ### Create a `BlobClient`
 
 Create a `BlobClient` using a `BlobContainerClient`.
 
+<!-- embedme ./src/samples/java/com/azure/storage/blob/ReadmeSamples.java#L58-L58 -->
 ```java
 BlobClient blobClient = blobContainerClient.getBlobClient("myblob");
 ```
@@ -213,19 +212,30 @@ or
 
 Create a `BlobClient` from the builder [`sasToken`](#get-credentials) generated above.
 
+<!-- embedme ./src/samples/java/com/azure/storage/blob/ReadmeSamples.java#L62-L67 -->
 ```java
 BlobClient blobClient = new BlobClientBuilder()
-        .endpoint("<your-storage-blob-url>")
-        .sasToken("<your-sasToken>")
-        .containerName("mycontainer")
-        .blobName("myblob")
-        .buildClient();
+    .endpoint("<your-storage-account-url>")
+    .sasToken("<your-sasToken>")
+    .containerName("mycontainer")
+    .blobName("myblob")
+    .buildClient();
+```
+
+or
+
+<!-- embedme ./src/samples/java/com/azure/storage/blob/ReadmeSamples.java#L71-L73 -->
+```java
+BlobClient blobClient = new BlobClientBuilder()
+    .endpoint("<your-storage-account-url>" + "/" + "mycontainer" + "/" + "myblob" + "?" + "<your-sasToken>")
+    .buildClient();
 ```
 
 ### Create a container
 
 Create a container using a `BlobServiceClient`.
 
+<!-- embedme ./src/samples/java/com/azure/storage/blob/ReadmeSamples.java#L77-L77 -->
 ```java
 blobServiceClient.createBlobContainer("mycontainer");
 ```
@@ -234,6 +244,7 @@ or
 
 Create a container using a `BlobContainerClient`.
 
+<!-- embedme ./src/samples/java/com/azure/storage/blob/ReadmeSamples.java#L81-L81 -->
 ```java
 blobContainerClient.create();
 ```
@@ -242,11 +253,14 @@ blobContainerClient.create();
 
 Upload from an `InputStream` to a blob using a `BlockBlobClient` generated from a `BlobContainerClient`.
 
+<!-- embedme ./src/samples/java/com/azure/storage/blob/ReadmeSamples.java#L85-L91 -->
 ```java
 BlockBlobClient blockBlobClient = blobContainerClient.getBlobClient("myblockblob").getBlockBlobClient();
 String dataSample = "samples";
 try (ByteArrayInputStream dataStream = new ByteArrayInputStream(dataSample.getBytes())) {
     blockBlobClient.upload(dataStream, dataSample.length());
+} catch (IOException e) {
+    e.printStackTrace();
 }
 ```
 
@@ -254,6 +268,7 @@ try (ByteArrayInputStream dataStream = new ByteArrayInputStream(dataSample.getBy
 
 Upload a file to a blob using a `BlobClient` generated from a `BlobContainerClient`.
 
+<!-- embedme ./src/samples/java/com/azure/storage/blob/ReadmeSamples.java#L95-L96 -->
 ```java
 BlobClient blobClient = blobContainerClient.getBlobClient("myblockblob");
 blobClient.uploadFromFile("local-file.jpg");
@@ -263,9 +278,12 @@ blobClient.uploadFromFile("local-file.jpg");
 
 Download a blob to an `OutputStream` using a `BlobClient`.
 
+<!-- embedme ./src/samples/java/com/azure/storage/blob/ReadmeSamples.java#L100-L104 -->
 ```java
-try(ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {
+try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {
     blobClient.download(outputStream);
+} catch (IOException e) {
+    e.printStackTrace();
 }
 ```
 
@@ -273,6 +291,7 @@ try(ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {
 
 Download blob to a local file using a `BlobClient`.
 
+<!-- embedme ./src/samples/java/com/azure/storage/blob/ReadmeSamples.java#L108-L108 -->
 ```java
 blobClient.downloadToFile("downloaded-file.jpg");
 ```
@@ -281,22 +300,23 @@ blobClient.downloadToFile("downloaded-file.jpg");
 
 Enumerating all blobs using a `BlobContainerClient`.
 
+<!-- embedme ./src/samples/java/com/azure/storage/blob/ReadmeSamples.java#L112-L114 -->
 ```java
-blobContainerClient.listBlobs()
-        .forEach(
-            blobItem -> System.out.println("This is the blob name: " + blobItem.getName())
-        );
+for (BlobItem blobItem : blobContainerClient.listBlobs()) {
+    System.out.println("This is the blob name: " + blobItem.getName());
+}
 ```
 
 ### Authenticate with Azure Identity
 
 The [Azure Identity library][identity] provides Azure Active Directory support for authenticating with Azure Storage.
 
+<!-- embedme ./src/samples/java/com/azure/storage/blob/ReadmeSamples.java#L118-L121 -->
 ```java
 BlobServiceClient blobStorageClient = new BlobServiceClientBuilder()
-        .endpoint(endpoint)
-        .credential(new DefaultAzureCredentialBuilder().build())
-        .buildClient();
+    .endpoint("<your-storage-account-url>")
+    .credential(new DefaultAzureCredentialBuilder().build())
+    .buildClient();
 ```
 
 ## Troubleshooting
@@ -304,6 +324,17 @@ BlobServiceClient blobStorageClient = new BlobServiceClientBuilder()
 When interacting with blobs using this Java client library, errors returned by the service correspond to the same HTTP
 status codes returned for [REST API][error_codes] requests. For example, if you try to retrieve a container or blob that
 doesn't exist in your Storage Account, a `404` error is returned, indicating `Not Found`.
+
+### Default HTTP Client
+All client libraries by default use the Netty HTTP client. Adding the above dependency will automatically configure
+the client library to use the Netty HTTP client. Configuring or changing the HTTP client is detailed in the
+[HTTP clients wiki](https://github.com/Azure/azure-sdk-for-java/wiki/HTTP-clients).
+
+### Default SSL library
+All client libraries, by default, use the Tomcat-native Boring SSL library to enable native-level performance for SSL
+operations. The Boring SSL library is an uber jar containing native libraries for Linux / macOS / Windows, and provides
+better performance compared to the default SSL implementation within the JDK. For more information, including how to
+reduce the dependency size, refer to the [performance tuning][performance_tuning] section of the wiki.
 
 ## Next steps
 

@@ -4,13 +4,9 @@ package com.azure.messaging.eventhubs;
 
 import com.azure.core.credential.TokenCredential;
 import com.azure.identity.DefaultAzureCredentialBuilder;
-import reactor.core.Exceptions;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
 
-import java.time.Duration;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicReference;
+import java.util.Arrays;
+import java.util.List;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 
@@ -18,15 +14,13 @@ import static java.nio.charset.StandardCharsets.UTF_8;
  * Sample demonstrates how to send an {@link EventDataBatch} to an Azure Event Hub using Azure Identity.
  */
 public class PublishEventsWithAzureIdentity {
-    private static final Duration OPERATION_TIMEOUT = Duration.ofSeconds(30);
-
     /**
      * Main method to invoke this demo on how to send an {@link EventDataBatch} to an Azure Event Hub.
      *
      * @param args Unused arguments to the program.
      */
     public static void main(String[] args) {
-        Flux<EventData> telemetryEvents = Flux.just(
+        List<EventData> telemetryEvents = Arrays.asList(
             new EventData("Roast beef".getBytes(UTF_8)),
             new EventData("Cheese".getBytes(UTF_8)),
             new EventData("Tofu".getBytes(UTF_8)),
@@ -37,7 +31,7 @@ public class PublishEventsWithAzureIdentity {
         // See https://docs.microsoft.com/azure/active-directory/develop/howto-create-service-principal-portal for
         // information on how to create a service principal.
         System.setProperty("AZURE_CLIENT_ID", "<<insert-service-principal-client-id>>");
-        System.setProperty("AZURE_CLIENT_ID", "<<insert-service-principal-client-application-secret>>");
+        System.setProperty("AZURE_CLIENT_SECRET", "<<insert-service-principal-client-application-secret>>");
         System.setProperty("AZURE_TENANT_ID", "<<insert-service-principal-tenant-id>>");
 
         // DefaultAzureCredentialBuilder exists inside the azure-identity package.
@@ -47,59 +41,36 @@ public class PublishEventsWithAzureIdentity {
         // Create a producer.
         // "<<fully-qualified-namespace>>" will look similar to "{your-namespace}.servicebus.windows.net"
         // "<<event-hub-name>>" will be the name of the Event Hub instance you created inside the Event Hubs namespace.
-        EventHubProducerAsyncClient producer = new EventHubClientBuilder()
+        EventHubProducerClient producer = new EventHubClientBuilder()
             .credential(
                 "<<fully-qualified-namespace>>",
                 "<<event-hub-name>>",
                 credential)
-            .buildAsyncProducerClient();
+            .buildProducerClient();
 
-        final AtomicReference<EventDataBatch> currentBatch = new AtomicReference<>(
-            producer.createBatch().block());
+        // Creates an EventDataBatch where the Event Hubs service will automatically load balance the events between all
+        // available partitions.
+        EventDataBatch currentBatch = producer.createBatch();
 
-        // The sample Flux contains three events, but it could be an infinite stream of telemetry events.
-        telemetryEvents.flatMap(event -> {
-            final EventDataBatch batch = currentBatch.get();
-            if (batch.tryAdd(event)) {
-                return Mono.empty();
+        // We try to add as many events as a batch can fit based on the event size and send to Event Hub when
+        // the batch can hold no more events. Create a new batch for next set of events and repeat until all events
+        // are sent.
+        for (EventData event : telemetryEvents) {
+            if (currentBatch.tryAdd(event)) {
+                continue;
             }
 
-            // The batch is full, so we create a new batch and send the batch. Mono.when completes when both operations
-            // have completed.
-            return Mono.when(
-                producer.send(batch),
-                producer.createBatch().map(newBatch -> {
-                    currentBatch.set(newBatch);
+            // The batch is full, so we create a new batch and send the batch.
+            producer.send(currentBatch);
+            currentBatch = producer.createBatch();
 
-                    // Add that event that we couldn't before.
-                    if (!newBatch.tryAdd(event)) {
-                        throw Exceptions.propagate(new IllegalArgumentException(String.format(
-                            "Event is too large for an empty batch. Max size: %s. Event: %s",
-                            newBatch.getMaxSizeInBytes(), event.getBodyAsString())));
-                    }
-
-                    return newBatch;
-                }));
-        }).then()
-            .doFinally(signal -> {
-                final EventDataBatch batch = currentBatch.getAndSet(null);
-                if (batch != null) {
-                    producer.send(batch).block(OPERATION_TIMEOUT);
-                }
-            })
-            .subscribe(unused -> System.out.println("Complete"),
-                error -> System.out.println("Error sending events: " + error),
-                () -> System.out.println("Completed sending events."));
-
-        // The .subscribe() creation and assignment is not a blocking call. For the purpose of this example, we sleep
-        // the thread so the program does not end before the send operation is complete. Using .block() instead of
-        // .subscribe() will turn this into a synchronous call.
-        try {
-            TimeUnit.SECONDS.sleep(5);
-        } catch (InterruptedException ignored) {
-        } finally {
-            // Disposing of our producer.
-            producer.close();
+            // Add that event that we couldn't before.
+            if (!currentBatch.tryAdd(event)) {
+                System.err.printf("Event is too large for an empty batch. Skipping. Max size: %s. Event: %s%n",
+                    currentBatch.getMaxSizeInBytes(), event.getBodyAsString());
+            }
         }
+
+        producer.send(currentBatch);
     }
 }

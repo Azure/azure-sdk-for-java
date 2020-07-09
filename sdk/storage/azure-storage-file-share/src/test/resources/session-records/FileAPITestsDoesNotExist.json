@@ -1,0 +1,44 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://gaprastg71.file.core.windows.net/fileapitestsdoesnotexistfileapitestsdoesnotexist24b2077934?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2019-07-07",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.3.0-beta.1 (11.0.4; Windows 10 10.0)",
+      "x-ms-client-request-id" : "0437c444-e0d4-4a6e-aec0-79e814c6bd48"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-07-07",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "0x8D7BA2CFD137A95",
+      "Last-Modified" : "Tue, 25 Feb 2020 19:57:48 GMT",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "ab77f685-f01a-0012-5c15-ece9eb000000",
+      "Date" : "Tue, 25 Feb 2020 19:57:47 GMT",
+      "x-ms-client-request-id" : "0437c444-e0d4-4a6e-aec0-79e814c6bd48"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "HEAD",
+    "Uri" : "https://gaprastg71.file.core.windows.net/fileapitestsdoesnotexistfileapitestsdoesnotexist24b2077934/fileapitestsdoesnotexistfileapitestsdoesnotexist24b19747c9",
+    "Headers" : {
+      "x-ms-version" : "2019-07-07",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.3.0-beta.1 (11.0.4; Windows 10 10.0)",
+      "x-ms-client-request-id" : "52dfbc7a-1dcf-41cb-bd7a-eef16908823b"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-07-07",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "ResourceNotFound",
+      "retry-after" : "0",
+      "StatusCode" : "404",
+      "x-ms-request-id" : "ab77f688-f01a-0012-5d15-ece9eb000000",
+      "Date" : "Tue, 25 Feb 2020 19:57:48 GMT",
+      "x-ms-client-request-id" : "52dfbc7a-1dcf-41cb-bd7a-eef16908823b"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "fileapitestsdoesnotexistfileapitestsdoesnotexist24b2077934", "fileapitestsdoesnotexistfileapitestsdoesnotexist24b19747c9" ]
+}

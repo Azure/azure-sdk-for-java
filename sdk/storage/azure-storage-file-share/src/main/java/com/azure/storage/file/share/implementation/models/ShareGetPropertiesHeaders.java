@@ -67,6 +67,30 @@ public final class ShareGetPropertiesHeaders {
     private Integer quota;
 
     /*
+     * Returns the current share provisioned ipos.
+     */
+    @JsonProperty(value = "x-ms-share-provisioned-iops")
+    private Integer provisionedIops;
+
+    /*
+     * Returns the current share provisioned ingress in megabytes per second.
+     */
+    @JsonProperty(value = "x-ms-share-provisioned-ingress-mbps")
+    private Integer provisionedIngressMBps;
+
+    /*
+     * Returns the current share provisioned egress in megabytes per second.
+     */
+    @JsonProperty(value = "x-ms-share-provisioned-egress-mbps")
+    private Integer provisionedEgressMBps;
+
+    /*
+     * Returns the current share next allowed quota downgrade time.
+     */
+    @JsonProperty(value = "x-ms-share-next-allowed-quota-downgrade-time")
+    private DateTimeRfc1123 nextAllowedQuotaDowngradeTime;
+
+    /*
      * The errorCode property.
      */
     @JsonProperty(value = "x-ms-error-code")
@@ -237,6 +261,102 @@ public final class ShareGetPropertiesHeaders {
      */
     public ShareGetPropertiesHeaders setQuota(Integer quota) {
         this.quota = quota;
+        return this;
+    }
+
+    /**
+     * Get the provisionedIops property: Returns the current share provisioned
+     * ipos.
+     *
+     * @return the provisionedIops value.
+     */
+    public Integer getProvisionedIops() {
+        return this.provisionedIops;
+    }
+
+    /**
+     * Set the provisionedIops property: Returns the current share provisioned
+     * ipos.
+     *
+     * @param provisionedIops the provisionedIops value to set.
+     * @return the ShareGetPropertiesHeaders object itself.
+     */
+    public ShareGetPropertiesHeaders setProvisionedIops(Integer provisionedIops) {
+        this.provisionedIops = provisionedIops;
+        return this;
+    }
+
+    /**
+     * Get the provisionedIngressMBps property: Returns the current share
+     * provisioned ingress in megabytes per second.
+     *
+     * @return the provisionedIngressMBps value.
+     */
+    public Integer getProvisionedIngressMBps() {
+        return this.provisionedIngressMBps;
+    }
+
+    /**
+     * Set the provisionedIngressMBps property: Returns the current share
+     * provisioned ingress in megabytes per second.
+     *
+     * @param provisionedIngressMBps the provisionedIngressMBps value to set.
+     * @return the ShareGetPropertiesHeaders object itself.
+     */
+    public ShareGetPropertiesHeaders setProvisionedIngressMBps(Integer provisionedIngressMBps) {
+        this.provisionedIngressMBps = provisionedIngressMBps;
+        return this;
+    }
+
+    /**
+     * Get the provisionedEgressMBps property: Returns the current share
+     * provisioned egress in megabytes per second.
+     *
+     * @return the provisionedEgressMBps value.
+     */
+    public Integer getProvisionedEgressMBps() {
+        return this.provisionedEgressMBps;
+    }
+
+    /**
+     * Set the provisionedEgressMBps property: Returns the current share
+     * provisioned egress in megabytes per second.
+     *
+     * @param provisionedEgressMBps the provisionedEgressMBps value to set.
+     * @return the ShareGetPropertiesHeaders object itself.
+     */
+    public ShareGetPropertiesHeaders setProvisionedEgressMBps(Integer provisionedEgressMBps) {
+        this.provisionedEgressMBps = provisionedEgressMBps;
+        return this;
+    }
+
+    /**
+     * Get the nextAllowedQuotaDowngradeTime property: Returns the current
+     * share next allowed quota downgrade time.
+     *
+     * @return the nextAllowedQuotaDowngradeTime value.
+     */
+    public OffsetDateTime getNextAllowedQuotaDowngradeTime() {
+        if (this.nextAllowedQuotaDowngradeTime == null) {
+            return null;
+        }
+        return this.nextAllowedQuotaDowngradeTime.getDateTime();
+    }
+
+    /**
+     * Set the nextAllowedQuotaDowngradeTime property: Returns the current
+     * share next allowed quota downgrade time.
+     *
+     * @param nextAllowedQuotaDowngradeTime the nextAllowedQuotaDowngradeTime
+     * value to set.
+     * @return the ShareGetPropertiesHeaders object itself.
+     */
+    public ShareGetPropertiesHeaders setNextAllowedQuotaDowngradeTime(OffsetDateTime nextAllowedQuotaDowngradeTime) {
+        if (nextAllowedQuotaDowngradeTime == null) {
+            this.nextAllowedQuotaDowngradeTime = null;
+        } else {
+            this.nextAllowedQuotaDowngradeTime = new DateTimeRfc1123(nextAllowedQuotaDowngradeTime);
+        }
         return this;
     }
 

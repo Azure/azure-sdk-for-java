@@ -1,0 +1,49 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://gaprastg71.file.core.windows.net/shareapitestsexistsshareapitestsexistsdb8302586e97016?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2019-07-07",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.3.0-beta.1 (11.0.4; Windows 10 10.0)",
+      "x-ms-client-request-id" : "0c28e99a-4e92-4432-a89c-f9b15e7d4a9c"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-07-07",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "0x8D7BA2CB9D97EC3",
+      "Last-Modified" : "Tue, 25 Feb 2020 19:55:55 GMT",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "ce12a15d-501a-000b-3d15-ec6950000000",
+      "Date" : "Tue, 25 Feb 2020 19:55:54 GMT",
+      "x-ms-client-request-id" : "0c28e99a-4e92-4432-a89c-f9b15e7d4a9c"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://gaprastg71.file.core.windows.net/shareapitestsexistsshareapitestsexistsdb8302586e97016?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2019-07-07",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.3.0-beta.1 (11.0.4; Windows 10 10.0)",
+      "x-ms-client-request-id" : "27e32149-05ea-4ce2-a5e6-211a338da0db"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-07-07",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "Last-Modified" : "Tue, 25 Feb 2020 19:55:55 GMT",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Date" : "Tue, 25 Feb 2020 19:55:54 GMT",
+      "x-ms-has-legal-hold" : "false",
+      "x-ms-share-quota" : "5120",
+      "ETag" : "0x8D7BA2CB9D97EC3",
+      "x-ms-has-immutability-policy" : "false",
+      "Content-Length" : "0",
+      "x-ms-request-id" : "ce12a161-501a-000b-3f15-ec6950000000",
+      "x-ms-client-request-id" : "27e32149-05ea-4ce2-a5e6-211a338da0db"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "shareapitestsexistsshareapitestsexistsdb8302586e97016" ]
+}

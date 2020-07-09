@@ -31,7 +31,6 @@ This section lists how-to guides for the most commonly used APIs and most common
 #### General How-To Guides
 - [How to create **Netty Http Client**](https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/core/azure-core-http-netty#examples)
 - [How to create **OK Http Client**](https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/core/azure-core-http-okhttp#examples)
-- [How to use **Azure Core Tracing Opencensus**](https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/core/azure-core-tracing-opencensus#examples)
 - [How to use **Azure Core Tracing Opentelemetry**](https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/core/azure-core-tracing-opentelemetry#examples)
 - How to configure, access, and analyze **logging** information (TODO)
 

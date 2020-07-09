@@ -3,62 +3,85 @@
 
 package com.azure.core.http.policy;
 
+import com.azure.core.http.ContentType;
+import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.HttpRequest;
+import com.azure.core.http.HttpResponse;
 import com.azure.core.http.clients.NoOpHttpClient;
 import com.azure.core.util.Configuration;
+import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
+import com.azure.core.util.FluxUtil;
+import com.azure.core.util.logging.LogLevel;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.parallel.ResourceLock;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.io.PrintStream;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.nio.ByteBuffer;
+import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Stream;
 
+import static com.azure.core.util.Configuration.PROPERTY_AZURE_LOG_LEVEL;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+
 /**
  * This class contains tests for {@link HttpLoggingPolicy}.
  */
 public class HttpLoggingPolicyTests {
     private static final String REDACTED = "REDACTED";
+    private static final Context CONTEXT = new Context("caller-method", HttpLoggingPolicyTests.class.getName());
 
     private String originalLogLevel;
-    private PrintStream originalErr;
+    private PrintStream originalSystemOut;
     private ByteArrayOutputStream logCaptureStream;
 
     @BeforeEach
     public void prepareForTest() {
         // Set the log level to information for the test.
-        originalLogLevel = System.getProperty(Configuration.PROPERTY_AZURE_LOG_LEVEL);
-        System.setProperty(Configuration.PROPERTY_AZURE_LOG_LEVEL, "2");
+        originalLogLevel = Configuration.getGlobalConfiguration().get(PROPERTY_AZURE_LOG_LEVEL);
+        Configuration.getGlobalConfiguration().put(PROPERTY_AZURE_LOG_LEVEL,
+            String.valueOf(LogLevel.INFORMATIONAL.getLogLevel()));
 
-        // Override System.err as that is where SLF4J will log by default.
-        originalErr = System.err;
+        /*
+         * DefaultLogger uses System.out to log. Inject a custom PrintStream to log into for the duration of the test to
+         * capture the log messages.
+         */
+        originalSystemOut = System.out;
         logCaptureStream = new ByteArrayOutputStream();
-        System.setErr(new PrintStream(logCaptureStream));
+        System.setOut(new PrintStream(logCaptureStream));
     }
 
     @AfterEach
-    public void cleanupAfterTest() {
+    public void cleanupAfterTest() throws IOException {
         // Reset or clear the log level after the test completes.
         if (CoreUtils.isNullOrEmpty(originalLogLevel)) {
-            System.clearProperty(Configuration.PROPERTY_AZURE_LOG_LEVEL);
+            Configuration.getGlobalConfiguration().remove(PROPERTY_AZURE_LOG_LEVEL);
         } else {
-            System.setProperty(Configuration.PROPERTY_AZURE_LOG_LEVEL, originalLogLevel);
+            Configuration.getGlobalConfiguration().put(PROPERTY_AZURE_LOG_LEVEL, originalLogLevel);
         }
 
         // Reset System.err to the original PrintStream.
-        System.setErr(originalErr);
+        System.setOut(originalSystemOut);
+        logCaptureStream.close();
     }
 
     /**
@@ -66,6 +89,7 @@ public class HttpLoggingPolicyTests {
      */
     @ParameterizedTest
     @MethodSource("redactQueryParametersSupplier")
+    @ResourceLock("SYSTEM_OUT")
     public void redactQueryParameters(String requestUrl, String expectedQueryString,
         Set<String> allowedQueryParameters) {
         HttpPipeline pipeline = new HttpPipelineBuilder()
@@ -75,7 +99,7 @@ public class HttpLoggingPolicyTests {
             .httpClient(new NoOpHttpClient())
             .build();
 
-        StepVerifier.create(pipeline.send(new HttpRequest(HttpMethod.POST, requestUrl)))
+        StepVerifier.create(pipeline.send(new HttpRequest(HttpMethod.POST, requestUrl), CONTEXT))
             .verifyComplete();
 
         String logString = new String(logCaptureStream.toByteArray(), StandardCharsets.UTF_8);
@@ -104,5 +128,148 @@ public class HttpLoggingPolicyTests {
             // No query parameters are redacted.
             Arguments.of(requestUrl, fullyAllowedQueryString, allQueryParameters)
         );
+    }
+
+    /**
+     * Tests that logging the request body doesn't consume the stream before it is sent over the network.
+     */
+    @ParameterizedTest(name = "[{index}] {displayName}")
+    @MethodSource("validateLoggingDoesNotConsumeSupplier")
+    @ResourceLock("SYSTEM_OUT")
+    public void validateLoggingDoesNotConsumeRequest(Flux<ByteBuffer> stream, byte[] data, int contentLength)
+        throws MalformedURLException {
+        URL requestUrl = new URL("https://test.com");
+        HttpHeaders requestHeaders = new HttpHeaders()
+            .put("Content-Type", ContentType.APPLICATION_JSON)
+            .put("Content-Length", Integer.toString(contentLength));
+
+        HttpPipeline pipeline = new HttpPipelineBuilder()
+            .policies(new HttpLoggingPolicy(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY)))
+            .httpClient(request -> FluxUtil.collectBytesInByteBufferStream(request.getBody())
+                .doOnSuccess(bytes -> assertArrayEquals(data, bytes))
+                .then(Mono.empty()))
+            .build();
+
+        StepVerifier.create(pipeline.send(new HttpRequest(HttpMethod.POST, requestUrl, requestHeaders, stream),
+            CONTEXT))
+            .verifyComplete();
+
+        String logString = new String(logCaptureStream.toByteArray(), StandardCharsets.UTF_8);
+        System.out.println(logString);
+        Assertions.assertTrue(logString.contains(new String(data, StandardCharsets.UTF_8)));
+    }
+
+    /**
+     * Tests that logging the response body doesn't consume the stream before it is returned from the service call.
+     */
+    @ParameterizedTest(name = "[{index}] {displayName}")
+    @MethodSource("validateLoggingDoesNotConsumeSupplier")
+    @ResourceLock("SYSTEM_OUT")
+    public void validateLoggingDoesNotConsumeResponse(Flux<ByteBuffer> stream, byte[] data, int contentLength) {
+        HttpRequest request = new HttpRequest(HttpMethod.GET, "https://test.com");
+        HttpHeaders responseHeaders = new HttpHeaders()
+            .put("Content-Type", ContentType.APPLICATION_JSON)
+            .put("Content-Length", Integer.toString(contentLength));
+
+        HttpPipeline pipeline = new HttpPipelineBuilder()
+            .policies(new HttpLoggingPolicy(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY)))
+            .httpClient(ignored -> Mono.just(new MockHttpResponse(ignored, responseHeaders, stream)))
+            .build();
+
+        StepVerifier.create(pipeline.send(request, CONTEXT))
+            .assertNext(response -> StepVerifier.create(FluxUtil.collectBytesInByteBufferStream(response.getBody()))
+                .assertNext(bytes -> assertArrayEquals(data, bytes))
+                .verifyComplete())
+            .verifyComplete();
+
+        String logString = new String(logCaptureStream.toByteArray(), StandardCharsets.UTF_8);
+        System.out.println(logString);
+        Assertions.assertTrue(logString.contains(new String(data, StandardCharsets.UTF_8)));
+    }
+
+    private static Stream<Arguments> validateLoggingDoesNotConsumeSupplier() {
+        byte[] data = "this is a test".getBytes(StandardCharsets.UTF_8);
+        byte[] repeatingData = new byte[data.length * 3];
+        for (int i = 0; i < 3; i++) {
+            System.arraycopy(data, 0, repeatingData, i * data.length, data.length);
+        }
+
+        return Stream.of(
+            // Single emission cold flux.
+            Arguments.of(Flux.just(ByteBuffer.wrap(data)), data, data.length),
+
+            // Single emission Stream based Flux.
+            Arguments.of(Flux.fromStream(Stream.of(ByteBuffer.wrap(data))), data, data.length),
+
+            // Single emission hot flux.
+            Arguments.of(Flux.just(ByteBuffer.wrap(data)).publish().autoConnect(), data, data.length),
+
+            // Multiple emission cold flux.
+            Arguments.of(Flux.fromArray(new ByteBuffer[]{
+                ByteBuffer.wrap(data),
+                ByteBuffer.wrap(data),
+                ByteBuffer.wrap(data)
+            }), repeatingData, repeatingData.length),
+
+            // Multiple emission Stream based flux.
+            Arguments.of(Flux.fromStream(Stream.of(
+                ByteBuffer.wrap(data),
+                ByteBuffer.wrap(data),
+                ByteBuffer.wrap(data)
+            )), repeatingData, repeatingData.length),
+
+            // Multiple emission hot flux.
+            Arguments.of(Flux.just(
+                ByteBuffer.wrap(data),
+                ByteBuffer.wrap(data),
+                ByteBuffer.wrap(data)
+            ).publish().autoConnect(), repeatingData, repeatingData.length)
+        );
+    }
+
+    private static class MockHttpResponse extends HttpResponse {
+        private final HttpHeaders headers;
+        private final Flux<ByteBuffer> body;
+
+        MockHttpResponse(HttpRequest request, HttpHeaders headers, Flux<ByteBuffer> body) {
+            super(request);
+            this.headers = headers;
+            this.body = body;
+        }
+
+        @Override
+        public int getStatusCode() {
+            return 200;
+        }
+
+        @Override
+        public String getHeaderValue(String name) {
+            return headers.getValue(name);
+        }
+
+        @Override
+        public HttpHeaders getHeaders() {
+            return headers;
+        }
+
+        @Override
+        public Flux<ByteBuffer> getBody() {
+            return body;
+        }
+
+        @Override
+        public Mono<byte[]> getBodyAsByteArray() {
+            return FluxUtil.collectBytesInByteBufferStream(body);
+        }
+
+        @Override
+        public Mono<String> getBodyAsString() {
+            return getBodyAsString(StandardCharsets.UTF_8);
+        }
+
+        @Override
+        public Mono<String> getBodyAsString(Charset charset) {
+            return getBodyAsByteArray().map(bytes -> new String(bytes, charset));
+        }
     }
 }

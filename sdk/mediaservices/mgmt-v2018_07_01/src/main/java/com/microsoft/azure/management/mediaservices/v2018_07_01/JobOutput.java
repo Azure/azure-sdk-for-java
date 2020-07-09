@@ -8,6 +8,7 @@
 
 package com.microsoft.azure.management.mediaservices.v2018_07_01;
 
+import org.joda.time.DateTime;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -65,6 +66,18 @@ public class JobOutput {
     private String label;
 
     /**
+     * The UTC date and time at which this Job Output began processing.
+     */
+    @JsonProperty(value = "startTime", access = JsonProperty.Access.WRITE_ONLY)
+    private DateTime startTime;
+
+    /**
+     * The UTC date and time at which this Job Output finished processing.
+     */
+    @JsonProperty(value = "endTime", access = JsonProperty.Access.WRITE_ONLY)
+    private DateTime endTime;
+
+    /**
      * Get if the JobOutput is in the Error state, it contains the details of the error.
      *
      * @return the error value
@@ -109,6 +122,24 @@ public class JobOutput {
     public JobOutput withLabel(String label) {
         this.label = label;
         return this;
+    }
+
+    /**
+     * Get the UTC date and time at which this Job Output began processing.
+     *
+     * @return the startTime value
+     */
+    public DateTime startTime() {
+        return this.startTime;
+    }
+
+    /**
+     * Get the UTC date and time at which this Job Output finished processing.
+     *
+     * @return the endTime value
+     */
+    public DateTime endTime() {
+        return this.endTime;
     }
 
 }

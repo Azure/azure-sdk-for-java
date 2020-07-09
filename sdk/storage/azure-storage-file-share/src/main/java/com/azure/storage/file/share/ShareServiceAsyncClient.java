@@ -4,6 +4,7 @@
 package com.azure.storage.file.share;
 
 import com.azure.core.annotation.ServiceClient;
+import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
@@ -14,7 +15,10 @@ import com.azure.core.util.CoreUtils;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.common.StorageSharedKeyCredential;
+import com.azure.storage.common.implementation.AccountSasImplUtil;
+import com.azure.storage.common.implementation.SasImplUtils;
 import com.azure.storage.common.implementation.StorageImplUtils;
+import com.azure.storage.common.sas.AccountSasSignatureValues;
 import com.azure.storage.file.share.implementation.AzureFileStorageImpl;
 import com.azure.storage.file.share.implementation.models.DeleteSnapshotsOptionType;
 import com.azure.storage.file.share.implementation.models.ListSharesIncludeType;
@@ -34,6 +38,9 @@ import java.util.function.Function;
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.pagedFluxError;
 import static com.azure.core.util.FluxUtil.withContext;
+import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
+import static com.azure.storage.common.Utility.STORAGE_TRACING_NAMESPACE_VALUE;
+
 
 /**
  * This class provides a azureFileStorageClient that contains all the operations for interacting with a file account in
@@ -192,6 +199,10 @@ public final class ShareServiceAsyncClient {
         List<ListSharesIncludeType> include = new ArrayList<>();
 
         if (options != null) {
+            if (options.isIncludeDeleted()) {
+                include.add(ListSharesIncludeType.DELETED);
+            }
+
             if (options.isIncludeMetadata()) {
                 include.add(ListSharesIncludeType.METADATA);
             }
@@ -263,7 +274,9 @@ public final class ShareServiceAsyncClient {
     }
 
     Mono<Response<ShareServiceProperties>> getPropertiesWithResponse(Context context) {
-        return azureFileStorageClient.services().getPropertiesWithRestResponseAsync(context)
+        context = context == null ? Context.NONE : context;
+        return azureFileStorageClient.services().getPropertiesWithRestResponseAsync(
+            context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(response -> new SimpleResponse<>(response, response.getValue()));
     }
 
@@ -354,7 +367,9 @@ public final class ShareServiceAsyncClient {
     }
 
     Mono<Response<Void>> setPropertiesWithResponse(ShareServiceProperties properties, Context context) {
-        return azureFileStorageClient.services().setPropertiesWithRestResponseAsync(properties, context)
+        context = context == null ? Context.NONE : context;
+        return azureFileStorageClient.services().setPropertiesWithRestResponseAsync(properties,
+            context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(response -> new SimpleResponse<>(response, null));
     }
 
@@ -481,8 +496,10 @@ public final class ShareServiceAsyncClient {
         if (CoreUtils.isNullOrEmpty(snapshot)) {
             deleteSnapshots = DeleteSnapshotsOptionType.INCLUDE;
         }
+        context = context == null ? Context.NONE : context;
         return azureFileStorageClient.shares()
-            .deleteWithRestResponseAsync(shareName, snapshot, null, deleteSnapshots, context)
+            .deleteWithRestResponseAsync(shareName, snapshot, null, deleteSnapshots,
+                context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(response -> new SimpleResponse<>(response, null));
     }
 
@@ -493,5 +510,102 @@ public final class ShareServiceAsyncClient {
      */
     public String getAccountName() {
         return this.accountName;
+    }
+
+    /**
+     * Gets the {@link HttpPipeline} powering this client.
+     *
+     * @return The pipeline.
+     */
+    public HttpPipeline getHttpPipeline() {
+        return this.azureFileStorageClient.getHttpPipeline();
+    }
+
+    /**
+     * Generates an account SAS for the Azure Storage account using the specified {@link AccountSasSignatureValues}.
+     * Note : The client must be authenticated via {@link StorageSharedKeyCredential}
+     * <p>See {@link AccountSasSignatureValues} for more information on how to construct an account SAS.</p>
+     *
+     * <p>The snippet below generates a SAS that lasts for two days and gives the user read and list access to blob
+     * containers and file shares.</p>
+     * {@codesnippet com.azure.storage.file.share.ShareServiceAsyncClient.generateAccountSas#AccountSasSignatureValues}
+     *
+     * @param accountSasSignatureValues {@link AccountSasSignatureValues}
+     *
+     * @return A {@code String} representing all SAS query parameters.
+     */
+    public String generateAccountSas(AccountSasSignatureValues accountSasSignatureValues) {
+        return new AccountSasImplUtil(accountSasSignatureValues)
+            .generateSas(SasImplUtils.extractSharedKeyCredential(getHttpPipeline()));
+    }
+
+    /**
+     * Restores a previously deleted share.
+     * <p>
+     * If the share associated with provided <code>deletedShareName</code>
+     * already exists, this call will result in a 409 (conflict).
+     * </p>
+     * <p>
+     * This API is only functional if Share Soft Delete is enabled
+     * for the storage account associated with the share.
+     * For more information, see the
+     * <a href="TBD">Azure Docs</a>.
+     * </p>
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.file.share.ShareServiceAsyncClient.undeleteShare#String-String}
+     *
+     * @param deletedShareName The name of the previously deleted share.
+     * @param deletedShareVersion The version of the previously deleted share.
+     * @return A {@link Mono} containing a {@link ShareAsyncClient} used
+     * to interact with the restored share.
+     */
+    // TODO (kasobol-msft) add link to REST API docs
+    public Mono<ShareAsyncClient> undeleteShare(
+        String deletedShareName, String deletedShareVersion) {
+        return this.undeleteShareWithResponse(deletedShareName, deletedShareVersion).flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Restores a previously deleted share.
+     * <p>
+     * If the share associated with provided <code>deletedShareName</code>
+     * already exists, this call will result in a 409 (conflict).
+     * </p>
+     * <p>
+     * This API is only functional if Share Soft Delete is enabled
+     * for the storage account associated with the share.
+     * For more information, see the
+     * <a href="TBD">Azure Docs</a>.
+     * </p>
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.file.share.ShareServiceAsyncClient.undeleteShareWithResponse#String-String}
+     *
+     * @param deletedShareName The name of the previously deleted share.
+     * @param deletedShareVersion The version of the previously deleted share.
+     * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains a {@link
+     * ShareAsyncClient} used to interact with the restored share.
+     */
+    // TODO (kasobol-msft) add link to REST API docs
+    public Mono<Response<ShareAsyncClient>> undeleteShareWithResponse(
+        String deletedShareName, String deletedShareVersion) {
+        try {
+            return withContext(context ->
+                undeleteShareWithResponse(
+                    deletedShareName, deletedShareVersion, context));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    Mono<Response<ShareAsyncClient>> undeleteShareWithResponse(
+        String deletedShareName, String deletedShareVersion, Context context) {
+        return this.azureFileStorageClient.shares().restoreWithRestResponseAsync(
+            deletedShareName, null, null, deletedShareName, deletedShareVersion,
+            context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
+        .map(response -> new SimpleResponse<>(response, getShareAsyncClient(deletedShareName)));
     }
 }

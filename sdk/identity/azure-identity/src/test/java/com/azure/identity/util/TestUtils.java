@@ -4,12 +4,13 @@
 package com.azure.identity.util;
 
 import com.azure.core.credential.AccessToken;
+import com.azure.identity.implementation.IdentityClientOptions;
 import com.azure.identity.implementation.MsalToken;
-import com.microsoft.aad.msal4j.Account;
 import com.microsoft.aad.msal4j.IAccount;
 import com.microsoft.aad.msal4j.IAuthenticationResult;
 import reactor.core.publisher.Mono;
 
+import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.Date;
 import java.util.UUID;
@@ -39,12 +40,27 @@ public final class TestUtils {
 
             @Override
             public IAccount account() {
-                return new Account(UUID.randomUUID().toString(), "http://login.microsoftonline.com", "testuser");
+                return new IAccount() {
+                    @Override
+                    public String homeAccountId() {
+                        return UUID.randomUUID().toString();
+                    }
+
+                    @Override
+                    public String environment() {
+                        return "http://login.microsoftonline.com";
+                    }
+
+                    @Override
+                    public String username() {
+                        return "testuser";
+                    }
+                };
             }
 
             @Override
             public String environment() {
-                return null;
+                return "http://login.microsoftonline.com";
             }
 
             @Override
@@ -68,7 +84,18 @@ public final class TestUtils {
      */
     public static Mono<MsalToken> getMockMsalToken(String accessToken, OffsetDateTime expiresOn) {
         return Mono.fromFuture(getMockAuthenticationResult(accessToken, expiresOn))
-            .map(MsalToken::new);
+            .map(ar -> new MsalToken(ar, new IdentityClientOptions()));
+    }
+
+    /**
+     * Creates a mock {@link IAccount} instance.
+     * @param accessToken the access token to return
+     * @param expiresOn the expiration time
+     * @return a Mono publisher of the result
+     */
+    public static Mono<IAccount> getMockMsalAccount(String accessToken, OffsetDateTime expiresOn) {
+        return Mono.fromFuture(getMockAuthenticationResult(accessToken, expiresOn))
+            .map(IAuthenticationResult::account);
     }
 
     /**
@@ -79,6 +106,17 @@ public final class TestUtils {
      */
     public static Mono<AccessToken> getMockAccessToken(String accessToken, OffsetDateTime expiresOn) {
         return Mono.just(new AccessToken(accessToken, expiresOn.plusMinutes(2)));
+    }
+
+    /**
+     * Creates a mock {@link AccessToken} instance.
+     * @param accessToken the access token to return
+     * @param expiresOn the expiration time
+     * @param tokenRefreshOffset how long before the actual expiry to refresh the token
+     * @return a Mono publisher of the result
+     */
+    public static Mono<AccessToken> getMockAccessToken(String accessToken, OffsetDateTime expiresOn, Duration tokenRefreshOffset) {
+        return Mono.just(new AccessToken(accessToken, expiresOn.plusMinutes(2).minus(tokenRefreshOffset)));
     }
 
     private TestUtils() {

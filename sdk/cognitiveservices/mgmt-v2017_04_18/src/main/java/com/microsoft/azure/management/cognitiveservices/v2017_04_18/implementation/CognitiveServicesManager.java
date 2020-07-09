@@ -19,7 +19,8 @@ import com.microsoft.rest.RestClient;
 import com.microsoft.azure.management.cognitiveservices.v2017_04_18.Accounts;
 import com.microsoft.azure.management.cognitiveservices.v2017_04_18.ResourceSkus;
 import com.microsoft.azure.management.cognitiveservices.v2017_04_18.Operations;
-import com.microsoft.azure.management.cognitiveservices.v2017_04_18.CheckSkuAvailabilitys;
+import com.microsoft.azure.management.cognitiveservices.v2017_04_18.PrivateEndpointConnections;
+import com.microsoft.azure.management.cognitiveservices.v2017_04_18.PrivateLinkResources;
 import com.microsoft.azure.arm.resources.implementation.AzureConfigurableCoreImpl;
 import com.microsoft.azure.arm.resources.implementation.ManagerCore;
 
@@ -30,7 +31,8 @@ public final class CognitiveServicesManager extends ManagerCore<CognitiveService
     private Accounts accounts;
     private ResourceSkus resourceSkus;
     private Operations operations;
-    private CheckSkuAvailabilitys checkSkuAvailabilitys;
+    private PrivateEndpointConnections privateEndpointConnections;
+    private PrivateLinkResources privateLinkResources;
     /**
     * Get a Configurable instance that can be used to create CognitiveServicesManager with optional configuration.
     *
@@ -109,13 +111,23 @@ public final class CognitiveServicesManager extends ManagerCore<CognitiveService
     }
 
     /**
-     * @return Entry point to manage CheckSkuAvailabilitys.
+     * @return Entry point to manage PrivateEndpointConnections.
      */
-    public CheckSkuAvailabilitys checkSkuAvailabilitys() {
-        if (this.checkSkuAvailabilitys == null) {
-            this.checkSkuAvailabilitys = new CheckSkuAvailabilitysImpl(this);
+    public PrivateEndpointConnections privateEndpointConnections() {
+        if (this.privateEndpointConnections == null) {
+            this.privateEndpointConnections = new PrivateEndpointConnectionsImpl(this);
         }
-        return this.checkSkuAvailabilitys;
+        return this.privateEndpointConnections;
+    }
+
+    /**
+     * @return Entry point to manage PrivateLinkResources.
+     */
+    public PrivateLinkResources privateLinkResources() {
+        if (this.privateLinkResources == null) {
+            this.privateLinkResources = new PrivateLinkResourcesImpl(this);
+        }
+        return this.privateLinkResources;
     }
 
     /**

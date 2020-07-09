@@ -4,22 +4,15 @@
 trigger:
   - master
 
-resources:
-  repositories:
-    - repository: azure-sdk-tools
-      type: github
-      name: Azure/azure-sdk-tools
-      endpoint: azure
-
 variables:
-  DefaultOptions: '--batch-mode -Dmaven.wagon.http.pool=false --settings eng/settings.xml'
+  DefaultOptions: '--batch-mode --fail-at-end -Dmaven.wagon.http.pool=false --settings eng/settings.xml'
   LoggingOptions: '-Dorg.slf4j.simpleLogger.defaultLogLevel=error -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn'
 
 jobs:
   - job: 'Build'
 
     pool:
-      vmImage: 'ubuntu-16.04'
+      vmImage: 'ubuntu-18.04'
 
     strategy:
       matrix:
@@ -54,7 +47,7 @@ jobs:
   - job: 'Analyze'
 
     pool:
-      vmImage: 'ubuntu-16.04'
+      vmImage: 'ubuntu-18.04'
 
     steps:
       - task: UsePythonVersion@0
@@ -89,29 +82,16 @@ jobs:
           goals: 'install'
 
       - task: Maven@3
-        displayName: 'Install all client libraries (for SpotBugs analysis)'
+        displayName: 'Install Module and Run SpotBugs, Checkstyle, and Javadoc'
         inputs:
-          mavenPomFile: pom.client.xml
-          options: '$(DefaultOptions) -DskipTests -Dgpg.skip -Dmaven.javadoc.skip=true -Dcheckstyle.skip=true -Dspotbugs.skip=true'
-          mavenOptions: '$(LoggingOptions)'
-          javaHomeOption: 'JDKVersion'
-          jdkVersionOption: '1.11'
-          jdkArchitectureOption: 'x64'
-          publishJUnitResults: false
-          goals: 'install'
-
-      # Run SpotBugs and CheckStyle tools to ensure high code quality - these will fail the build if issues are found
-      - task: Maven@3
-        displayName: 'Run SpotBugs and CheckStyle'
-        inputs:
-          mavenPomFile: pom.client.xml
-          options: '-DskipTests -Dgpg.skip'
+          mavenPomFile: $(pomFile)
+          options: '--no-transfer-progress -DskipTests -Dgpg.skip -Dverify-readme'
           mavenOptions: ''
           javaHomeOption: 'JDKVersion'
           jdkVersionOption: '1.11'
           jdkArchitectureOption: 'x64'
           publishJUnitResults: false
-          goals: 'spotbugs:check checkstyle:checkstyle-aggregate'
+          goals: 'install'
 
       # Generate the Maven site report, including SpotBugs, JavaDoc, CheckStyle, Jacoco, etc only when we are not
       # running as a PR check.
@@ -126,26 +106,11 @@ jobs:
           jdkVersionOption: '1.11'
           jdkArchitectureOption: 'x64'
           publishJUnitResults: false
-          goals: 'install site:site site:stage'
-
-      # We run a separate SpotBugs aggregate report step here to roll-up all the issues identified per-module in the
-      # previous step. This is only generated in non-PR builds (i.e. nightly runs, etc)
-      - task: Maven@3
-        displayName: 'Run SpotBugs'
-        condition: ne(variables['Build.Reason'], 'PullRequest')
-        inputs:
-          mavenPomFile: eng/spotbugs-aggregate-report/pom.xml
-          options: '--batch-mode -DskipTests -Dgpg.skip'
-          mavenOptions: '$(LoggingOptions)'
-          javaHomeOption: 'JDKVersion'
-          jdkVersionOption: '1.11'
-          jdkArchitectureOption: 'x64'
-          publishJUnitResults: false
-          goals: 'install'
+          goals: 'site:site site:stage'
 
       - script: |
           git clone https://github.com/JonathanGiles/DependencyChecker.git
-          mkdir input && cp dependencies.json input/
+          mkdir input && cp eng/DependencyChecker/client_dependencies.json input/dependencies.json
         displayName: 'Download dependency checker'
 
       - task: Maven@3
@@ -163,7 +128,7 @@ jobs:
       - task: Maven@3
         displayName: 'Analyze dependencies'
         inputs:
-          mavenPomFile: 'DependencyChecker/pom.xml'
+          mavenPomFile: 'DependencyChecker/core/pom.xml'
           options: '-Dexec.args="-showall -dependencymanagement"'
           mavenOptions: '$(LoggingOptions)'
           javaHomeOption: 'JDKVersion'
@@ -176,7 +141,6 @@ jobs:
       - pwsh: |
           copy -r target/staging $(Build.ArtifactStagingDirectory)
           copy eng/code-quality-reports/src/main/resources/index.html $(Build.ArtifactStagingDirectory)
-          copy eng/spotbugs-aggregate-report/target/spotbugs/spotbugsXml.html (Join-Path $(Build.ArtifactStagingDirectory) "staging")
           copy output/dependencies.html (Join-Path $(Build.ArtifactStagingDirectory) "staging")
         displayName: 'Copy reports to artifact staging'
         condition: ne(variables['Build.Reason'], 'PullRequest')
@@ -193,27 +157,21 @@ jobs:
     strategy:
       matrix:
         Linux - Java 8:
-          OSName: 'Linux'
-          OSVmImage: 'ubuntu-16.04'
+          OSVmImage: 'ubuntu-18.04'
           JavaVersion: '1.8'
         macOS - Java 8:
-          OSName: 'macOS'
-          OSVmImage: 'macOS-10.13'
+          OSVmImage: 'macOS-10.15'
           JavaVersion: '1.8'
         Windows - Java 8:
-          OSName: 'Windows'
           OSVmImage: 'windows-2019'
           JavaVersion: '1.8'
         Linux - Java 11:
-          OSName: 'Linux'
-          OSVmImage: 'ubuntu-16.04'
+          OSVmImage: 'ubuntu-18.04'
           JavaVersion: '1.11'
         macOS - Java 11:
-          OSName: 'macOS'
-          OSVmImage: 'macOS-10.13'
+          OSVmImage: 'macOS-10.15'
           JavaVersion: '1.11'
         Windows - Java 11:
-          OSName: 'Windows'
           OSVmImage: 'windows-2019'
           JavaVersion: '1.11'
 
@@ -221,9 +179,7 @@ jobs:
       vmImage: $(OSVmImage)
 
     steps:
-      - template: eng/pipelines/templates/scripts/verify-agent-os.yml@azure-sdk-tools
-        parameters:
-          OSName: $(OSVmImage)
+      - template: /eng/common/pipelines/templates/steps/verify-agent-os.yml
 
       - task: Maven@3
         displayName: 'Compile all code and run tests'

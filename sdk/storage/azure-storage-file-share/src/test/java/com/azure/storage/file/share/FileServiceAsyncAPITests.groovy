@@ -3,6 +3,8 @@
 
 package com.azure.storage.file.share
 
+import com.azure.core.test.TestMode
+import com.azure.core.util.Context
 import com.azure.storage.common.StorageSharedKeyCredential
 import com.azure.storage.file.share.models.ListSharesOptions
 import com.azure.storage.file.share.models.ShareCorsRule
@@ -12,8 +14,12 @@ import com.azure.storage.file.share.models.ShareMetrics
 import com.azure.storage.file.share.models.ShareProperties
 import com.azure.storage.file.share.models.ShareRetentionPolicy
 import com.azure.storage.file.share.models.ShareServiceProperties
+import com.azure.storage.file.share.models.ShareStorageException
+import reactor.core.publisher.Mono
 import reactor.test.StepVerifier
 import spock.lang.Unroll
+
+import java.time.Duration
 
 class FileServiceAsyncAPITests extends APISpec {
     String shareName
@@ -192,6 +198,24 @@ class FileServiceAsyncAPITests extends APISpec {
         new ListSharesOptions().setPrefix("fileserviceasyncapitestslistshareswithargs").setIncludeMetadata(true).setIncludeSnapshots(true) | 4      | true            | true
     }
 
+    def "List shares with premium share"() {
+        setup:
+        def premiumShareName = generateShareName()
+        premiumFileServiceAsyncClient.createShare(premiumShareName).block()
+
+        when:
+        def shares = premiumFileServiceAsyncClient.listShares().filter({ item -> item.getName() == premiumShareName })
+        def shareProperty = shares.blockFirst().getProperties()
+
+        then:
+        shareProperty.getETag()
+        shareProperty.getLastModified()
+        shareProperty.getNextAllowedQuotaDowngradeTime()
+        shareProperty.getProvisionedEgressMBps()
+        shareProperty.getProvisionedIngressMBps()
+        shareProperty.getProvisionedIops()
+    }
+
     def "Set and get properties"() {
         given:
         def originalProperties = primaryFileServiceAsyncClient.getProperties().block()
@@ -211,13 +235,14 @@ class FileServiceAsyncAPITests extends APISpec {
             assert FileTestHelper.assertResponseStatusCode(it, 200)
             assert FileTestHelper.assertFileServicePropertiesAreEqual(originalProperties, it.getValue())
         }.verifyComplete()
+
         setPropertiesVerifier.assertNext {
             assert FileTestHelper.assertResponseStatusCode(it, 202)
         }.verifyComplete()
 
         getPropertiesAfterVerifier.assertNext {
             assert FileTestHelper.assertResponseStatusCode(it, 200)
-            assert FileTestHelper.assertFileServicePropertiesAreEqual(originalProperties, it.getValue())
+            assert FileTestHelper.assertFileServicePropertiesAreEqual(updatedProperties, it.getValue())
         }.verifyComplete()
     }
 
@@ -246,5 +271,64 @@ class FileServiceAsyncAPITests extends APISpec {
         INVALID_ALLOWED_ORIGIN | 400        | ShareErrorCode.INVALID_XML_DOCUMENT
         INVALID_ALLOWED_METHOD | 400        | ShareErrorCode.INVALID_XML_NODE_VALUE
 
+    }
+
+    def "Restore share min"() {
+        given:
+        def shareClient = primaryFileServiceAsyncClient.getShareAsyncClient(generateShareName())
+        def fileName = generatePathName()
+        def shareItem = shareClient.create()
+            .then(shareClient.getFileClient(fileName).create(2))
+            .then(shareClient.delete())
+            .then(primaryFileServiceAsyncClient.listShares(
+                new ListSharesOptions()
+                    .setPrefix(shareClient.getShareName())
+                    .setIncludeDeleted(true)).next()).block()
+        sleepIfLive(30000)
+
+        when:
+        def restoredShareClientMono = primaryFileServiceAsyncClient.undeleteShare(shareItem.getName(), shareItem.getVersion())
+
+        then:
+        StepVerifier.create(restoredShareClientMono.flatMap { it.getFileClient(fileName).exists() })
+        .assertNext( {
+            assert it
+        })
+        .verifyComplete()
+    }
+
+    def "Restore share max"() {
+        given:
+        def shareClient = primaryFileServiceAsyncClient.getShareAsyncClient(generateShareName())
+        def fileName = generatePathName()
+        def shareItem = shareClient.create()
+            .then(shareClient.getFileClient(fileName).create(2))
+            .then(shareClient.delete())
+            .then(primaryFileServiceAsyncClient.listShares(
+                new ListSharesOptions()
+                    .setPrefix(shareClient.getShareName())
+                    .setIncludeDeleted(true)).next()).block()
+        sleepIfLive(30000)
+
+        when:
+        def restoredShareClientMono = primaryFileServiceAsyncClient.undeleteShareWithResponse(
+                shareItem.getName(), shareItem.getVersion()).map { it.getValue() }
+
+        then:
+        StepVerifier.create(restoredShareClientMono.flatMap { it.getFileClient(fileName).exists() })
+            .assertNext( {
+                assert it
+            })
+            .verifyComplete()
+    }
+
+    def "Restore share error"() {
+        when:
+        def setPropertyVerifier = StepVerifier.create(primaryFileServiceAsyncClient.undeleteShare(generateShareName(), "01D60F8BB59A4652"))
+
+        then:
+        setPropertyVerifier.verifyErrorSatisfies {
+            assert FileTestHelper.assertExceptionStatusCode(it, 404)
+        }
     }
 }

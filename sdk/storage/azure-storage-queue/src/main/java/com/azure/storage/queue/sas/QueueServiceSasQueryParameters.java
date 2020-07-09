@@ -19,7 +19,10 @@ import java.util.Map;
  * and appended to a URL directly (though caution should be taken here in case there are existing query parameters,
  * which might affect the appropriate means of appending these query parameters). NOTE: Instances of this class are
  * immutable to ensure thread safety.
+ * @deprecated Please use the generateSas method on the desired queue client after initializing
+ * {@link QueueServiceSasSignatureValues}.
  */
+@Deprecated
 public final class QueueServiceSasQueryParameters extends BaseSasQueryParameters {
 
     private final String identifier;
@@ -30,7 +33,9 @@ public final class QueueServiceSasQueryParameters extends BaseSasQueryParameters
      * @param queryParametersMap All query parameters for the request as key-value pairs
      * @param removeSasParametersFromMap When {@code true}, the SAS query parameters will be removed from
      * {@code queryParametersMap}
+     * @deprecated Please use {@link QueueServiceSasSignatureValues}
      */
+    @Deprecated
     public QueueServiceSasQueryParameters(Map<String, String[]> queryParametersMap,
            boolean removeSasParametersFromMap) {
         super(queryParametersMap, removeSasParametersFromMap);
@@ -53,7 +58,9 @@ public final class QueueServiceSasQueryParameters extends BaseSasQueryParameters
      * @param identifier A {@code String} representing the signed identifier (only for Service SAS) or {@code null}.
      * @param permissions A {@code String} representing the storage permissions or {@code null}.
      * @param signature A {@code String} representing the signature for the SAS token.
+     * @deprecated Please use {@link QueueServiceSasSignatureValues}
      */
+    @Deprecated
     QueueServiceSasQueryParameters(String version, SasProtocol protocol, OffsetDateTime startTime,
         OffsetDateTime expiryTime, SasIpRange sasIpRange, String identifier, String permissions, String signature) {
         super(version, protocol, startTime, expiryTime, sasIpRange, permissions, signature);
@@ -65,7 +72,9 @@ public final class QueueServiceSasQueryParameters extends BaseSasQueryParameters
      * @return The signed identifier (only for {@link QueueServiceSasSignatureValues}) or {@code null}. Please see
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/establishing-a-stored-access-policy">here</a>
      * for more information.
+     * @deprecated Please use {@link QueueServiceSasSignatureValues}
      */
+    @Deprecated
     public String getIdentifier() {
         return identifier;
     }
@@ -74,7 +83,10 @@ public final class QueueServiceSasQueryParameters extends BaseSasQueryParameters
      * Encodes all SAS query parameters into a string that can be appended to a URL.
      *
      * @return A {@code String} representing all SAS query parameters.
+     * @deprecated Please use the generateSas method on the desired queue client after initializing
+     * {@link QueueServiceSasSignatureValues}.
      */
+    @Deprecated
     public String encode() {
         /*
          We should be url-encoding each key and each value, but because we know all the keys and values will encode to

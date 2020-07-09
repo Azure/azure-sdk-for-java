@@ -39,7 +39,6 @@ class BlobOutputStreamTest extends APISpec {
         and:
         blockBlobClient.getBlobOutputStream()
 
-
         then:
         thrown(IllegalArgumentException)
     }

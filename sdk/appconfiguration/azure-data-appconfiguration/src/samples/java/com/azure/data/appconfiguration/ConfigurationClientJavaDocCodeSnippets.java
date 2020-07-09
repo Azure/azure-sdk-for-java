@@ -254,7 +254,7 @@ public final class ConfigurationClientJavaDocCodeSnippets {
     public void listConfigurationSettings() {
         ConfigurationClient configurationClient = createSyncConfigurationClient();
         // BEGIN: com.azure.data.applicationconfig.configurationclient.listConfigurationSettings#settingSelector
-        SettingSelector settingSelector = new SettingSelector().setKeys("prodDBConnection");
+        SettingSelector settingSelector = new SettingSelector().setKeyFilter("prodDBConnection");
         configurationClient.listConfigurationSettings(settingSelector).forEach(setting -> {
             System.out.printf("Key: %s, Value: %s", setting.getKey(), setting.getValue());
         });
@@ -267,7 +267,7 @@ public final class ConfigurationClientJavaDocCodeSnippets {
     public void listConfigurationSettingsContext() {
         ConfigurationClient configurationClient = createSyncConfigurationClient();
         // BEGIN: com.azure.data.applicationconfig.configurationclient.listConfigurationSettings#settingSelector-context
-        SettingSelector settingSelector = new SettingSelector().setKeys("prodDBConnection");
+        SettingSelector settingSelector = new SettingSelector().setKeyFilter("prodDBConnection");
         Context ctx = new Context(key2, value2);
         configurationClient.listConfigurationSettings(settingSelector, ctx).forEach(setting -> {
             System.out.printf("Key: %s, Value: %s", setting.getKey(), setting.getValue());
@@ -281,7 +281,7 @@ public final class ConfigurationClientJavaDocCodeSnippets {
     public void listRevisions() {
         ConfigurationClient client = createSyncConfigurationClient();
         // BEGIN: com.azure.data.applicationconfig.configurationclient.listRevisions#settingSelector
-        SettingSelector settingSelector = new SettingSelector().setKeys("prodDBConnection");
+        SettingSelector settingSelector = new SettingSelector().setKeyFilter("prodDBConnection");
         client.listRevisions(settingSelector).streamByPage().forEach(resp -> {
             System.out.printf("Response headers are %s. Url %s  and status code %d %n", resp.getHeaders(),
                 resp.getRequest().getUrl(), resp.getStatusCode());
@@ -298,7 +298,7 @@ public final class ConfigurationClientJavaDocCodeSnippets {
     public void listRevisionsContext() {
         ConfigurationClient configurationClient = createSyncConfigurationClient();
         // BEGIN: com.azure.data.applicationconfig.configurationclient.listRevisions#settingSelector-context
-        SettingSelector settingSelector = new SettingSelector().setKeys("prodDBConnection");
+        SettingSelector settingSelector = new SettingSelector().setKeyFilter("prodDBConnection");
         Context ctx = new Context(key2, value2);
         configurationClient.listRevisions(settingSelector, ctx).forEach(setting -> {
             System.out.printf("Key: %s, Value: %s", setting.getKey(), setting.getValue());

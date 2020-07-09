@@ -27,6 +27,6 @@ public interface RecoveryServices extends HasInner<RecoveryServicesInner> {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Observable<CheckNameAvailabilityResultResource> checkNameAvailabilityAsync(String resourceGroupName, String location, CheckNameAvailabilityParameters input);
+    Observable<CheckNameAvailabilityResult> checkNameAvailabilityAsync(String resourceGroupName, String location, CheckNameAvailabilityParameters input);
 
 }

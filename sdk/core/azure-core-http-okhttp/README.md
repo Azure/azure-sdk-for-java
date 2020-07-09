@@ -1,6 +1,6 @@
-# Azure Core OkHttp HTTP client library for Java
+# Azure Core OkHttp HTTP plugin library for Java
 
-Azure Core OkHttp HTTP client is a plugin for the azure-core HTTP client API. 
+Azure Core OkHttp HTTP client is a plugin for the `azure-core` HTTP client API.
 
 ## Getting started
 
@@ -8,14 +8,14 @@ Azure Core OkHttp HTTP client is a plugin for the azure-core HTTP client API.
 
 - Java Development Kit (JDK) with version 8 or above
 
-### Adding the package to your product
+### Include the package
 
 [//]: # ({x-version-update-start;com.azure:azure-core-http-okhttp;current})
 ```xml
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-core-http-okhttp</artifactId>
-    <version>1.0.0</version>
+    <version>1.2.4</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -33,6 +33,7 @@ The following sections provide several code snippets covering some of the most c
 
 Create an OkHttp client using a connection timeout of 60 seconds and a read timeout of 120 seconds.
 
+<!-- embedme ./src/samples/java/com/azure/core/http/okhttp/ReadmeSamples.java#L23-L23 -->
 ```java
 HttpClient client = new OkHttpAsyncHttpClientBuilder().build();
 ```
@@ -41,13 +42,20 @@ HttpClient client = new OkHttpAsyncHttpClientBuilder().build();
 
 Create an OkHttp client that is using a proxy.
 
+<!-- embedme ./src/samples/java/com/azure/core/http/okhttp/ReadmeSamples.java#L30-L32 -->
 ```java
 HttpClient client = new OkHttpAsyncHttpClientBuilder()
-    .proxy(new Proxy(Proxy.Type.HTTP, new InetSocketAddress("<proxy-host>", 8888)))
+    .proxy(new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("<proxy-host>", 8888)))
     .build();
 ```
 
 ## Troubleshooting
+
+### Enabling Logging
+
+Azure SDKs for Java offer a consistent logging story to help aid in troubleshooting application errors and expedite
+their resolution. The logs produced will capture the flow of an application before reaching the terminal state to help
+locate the root issue. View the [logging][logging] wiki for guidance about enabling logging.
 
 ## Next steps
 
@@ -61,5 +69,8 @@ Azure Projects Contribution Guidelines](http://azure.github.io/guidelines.html).
 1. Commit your changes (`git commit -am 'Add some feature'`)
 1. Push to the branch (`git push origin my-new-feature`)
 1. Create new Pull Request
+
+<!-- Links -->
+[logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-with-Azure-SDK
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fcore%2Fazure-core-http-okhttp%2FREADME.png)

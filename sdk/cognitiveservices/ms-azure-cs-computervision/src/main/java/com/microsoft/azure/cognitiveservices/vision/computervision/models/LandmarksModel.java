@@ -21,7 +21,8 @@ public class LandmarksModel {
     private String name;
 
     /**
-     * Confidence level for the landmark recognition.
+     * Confidence level for the landmark recognition as a value ranging from 0
+     * to 1.
      */
     @JsonProperty(value = "confidence")
     private double confidence;

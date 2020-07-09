@@ -4,25 +4,45 @@ jobs:
   - template: ../../eng/pipelines/templates/jobs/archetype-sdk-tests.yml
     parameters:
       ServiceDirectory: storage
+      Artifacts:
+        - name: azure-storage-common
+          groupId: com.azure
+          safeName: azurestoragecommon
+        - name: azure-storage-blob
+          groupId: com.azure
+          safeName: azurestorageblob
+        - name: azure-storage-blob-batch
+          groupId: com.azure
+          safeName: azurestorageblobbatch
+        - name: azure-storage-blob-changefeed
+          groupId: com.azure
+          safeName: azurestorageblobchangefeed
+        - name: azure-storage-blob-cryptography
+          groupId: com.azure
+          safeName: azurestorageblobcryptography
+        - name: azure-storage-blob-nio
+          groupId: com.azure
+          safeName: azurestorageblobnio
+        - name: azure-storage-file-share
+          groupId: com.azure
+          safeName: azurestoragefileshare
+        - name: azure-storage-file-datalake
+          groupId: com.azure
+          safeName: azurestoragefiledatalake
+        - name: azure-storage-internal-avro
+          groupId: com.azure
+          safeName: azurestorageinternalavro
+        - name: azure-storage-queue
+          groupId: com.azure
+          safeName: azurestoragequeue
+      TimeoutInMinutes: 120
+      Location: canadacentral
+      SubscriptionConfiguration: $(sub-config-azure-cloud-test-resources-preview)
       EnvVars:
-        AZURE_TEST_MODE: RECORD
+        AZURE_TEST_MODE: LIVE
         AZURE_TENANT_ID: $(aad-azure-sdk-test-tenant-id)
         AZURE_CLIENT_ID: $(aad-azure-sdk-test-client-id)
         AZURE_CLIENT_SECRET: $(aad-azure-sdk-test-client-secret)
-        PRIMARY_STORAGE_ACCOUNT_NAME: $(java-storage-test-primary-account-name)
-        PRIMARY_STORAGE_ACCOUNT_KEY: $(java-storage-test-primary-account-key)
-        SECONDARY_STORAGE_ACCOUNT_NAME: $(java-storage-test-secondary-account-name)
-        SECONDARY_STORAGE_ACCOUNT_KEY: $(java-storage-test-secondary-account-key)
-        BLOB_STORAGE_ACCOUNT_NAME: $(java-storage-test-blob-account-name)
-        BLOB_STORAGE_ACCOUNT_KEY: $(java-storage-test-blob-account-key)
-        PREMIUM_STORAGE_ACCOUNT_NAME: $(java-storage-test-premium-account-name)
-        PREMIUM_STORAGE_ACCOUNT_KEY: $(java-storage-test-premium-account-key)
-        AZURE_STORAGE_ACCESS_KEY: $(java-storage-test-access-key)
-        AZURE_STORAGE_FILE_ENDPOINT: $(java-storage-test-file-endpoint)
-        AZURE_STORAGE_FILE_CONNECTION_STRING: $(java-storage-test-file-connection-string)
-        AZURE_STORAGE_QUEUE_ENDPOINT: $(java-storage-test-queue-endpoint)
-        AZURE_STORAGE_QUEUE_CONNECTION_STRING: $(java-storage-test-queue-connection-string)
-        AZURE_STORAGE_BLOB_CONNECTION_STRING: $(java-storage-test-blob-connection-string)
-        STORAGE_DATA_LAKE_ACCOUNT_NAME: $(java-storage-data-lake-account-name)
-        STORAGE_DATA_LAKE_ACCOUNT_KEY: $(java-storage-data-lake-account-key)
-      TimeoutInMinutes: 120
+        VERSIONED_STORAGE_ACCOUNT_NAME: $(java-storage-versioned-account-name)
+        VERSIONED_STORAGE_ACCOUNT_KEY: $(java-storage-versioned-account-key)
+

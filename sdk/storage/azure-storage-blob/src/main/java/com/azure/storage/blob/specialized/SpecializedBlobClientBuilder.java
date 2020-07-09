@@ -9,32 +9,32 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
-import com.azure.core.util.CoreUtils;
 import com.azure.core.util.Configuration;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobContainerAsyncClient;
 import com.azure.storage.blob.BlobContainerClient;
 import com.azure.storage.blob.BlobServiceVersion;
 import com.azure.storage.blob.BlobUrlParts;
+import com.azure.storage.blob.implementation.models.EncryptionScope;
 import com.azure.storage.blob.implementation.util.BuilderHelper;
 import com.azure.storage.blob.models.CpkInfo;
 import com.azure.storage.blob.models.CustomerProvidedKey;
 import com.azure.storage.blob.models.PageRange;
-import com.azure.storage.common.Utility;
 import com.azure.storage.common.StorageSharedKeyCredential;
+import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.connectionstring.StorageAuthenticationSettings;
 import com.azure.storage.common.implementation.connectionstring.StorageConnectionString;
 import com.azure.storage.common.implementation.connectionstring.StorageEndpoint;
 import com.azure.storage.common.implementation.credentials.SasTokenCredential;
 import com.azure.storage.common.policy.RequestRetryOptions;
-import reactor.core.publisher.Flux;
-
 import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import reactor.core.publisher.Flux;
 
 /**
  * This class provides a fluent builder API to help aid the configuration and instantiation of specialized Storage Blob
@@ -62,8 +62,10 @@ public final class SpecializedBlobClientBuilder {
     private String containerName;
     private String blobName;
     private String snapshot;
+    private String versionId;
 
     private CpkInfo customerProvidedKey;
+    private EncryptionScope encryptionScope;
     private StorageSharedKeyCredential storageSharedKeyCredential;
     private TokenCredential tokenCredential;
     private SasTokenCredential sasTokenCredential;
@@ -102,7 +104,7 @@ public final class SpecializedBlobClientBuilder {
         String containerName = getContainerName();
 
         return new AppendBlobAsyncClient(getHttpPipeline(), getUrl(containerName), getServiceVersion(),
-            accountName, containerName, blobName, snapshot, customerProvidedKey);
+            accountName, containerName, blobName, snapshot, customerProvidedKey, encryptionScope, versionId);
     }
 
     /**
@@ -133,7 +135,7 @@ public final class SpecializedBlobClientBuilder {
         String containerName = getContainerName();
 
         return new BlockBlobAsyncClient(getHttpPipeline(), getUrl(containerName), getServiceVersion(),
-            accountName, containerName, blobName, snapshot, customerProvidedKey);
+            accountName, containerName, blobName, snapshot, customerProvidedKey, encryptionScope, versionId);
     }
 
     /**
@@ -163,7 +165,7 @@ public final class SpecializedBlobClientBuilder {
         String containerName = getContainerName();
 
         return new PageBlobAsyncClient(getHttpPipeline(), getUrl(containerName), getServiceVersion(),
-            accountName, containerName, blobName, snapshot, customerProvidedKey);
+            accountName, containerName, blobName, snapshot, customerProvidedKey, encryptionScope, versionId);
     }
 
     /*
@@ -174,6 +176,11 @@ public final class SpecializedBlobClientBuilder {
         Objects.requireNonNull(endpoint, "'endpoint' cannot be null");
 
         BuilderHelper.httpsValidation(customerProvidedKey, "customer provided key", endpoint, logger);
+
+        if (Objects.nonNull(customerProvidedKey) && Objects.nonNull(encryptionScope)) {
+            throw logger.logExceptionAsError(new IllegalArgumentException("Customer provided key and encryption"
+                + "scope cannot both be set"));
+        }
     }
 
     /*
@@ -212,7 +219,11 @@ public final class SpecializedBlobClientBuilder {
         endpoint(blobClient.getBlobUrl());
         serviceVersion(blobClient.getServiceVersion());
         this.snapshot = blobClient.getSnapshotId();
+        this.versionId = blobClient.getVersionId();
         this.customerProvidedKey = blobClient.getCustomerProvidedKey();
+        if (blobClient.getEncryptionScope() != null) {
+            this.encryptionScope = new EncryptionScope().setEncryptionScope(blobClient.getEncryptionScope());
+        }
         return this;
     }
 
@@ -227,7 +238,11 @@ public final class SpecializedBlobClientBuilder {
         endpoint(blobAsyncClient.getBlobUrl());
         serviceVersion(blobAsyncClient.getServiceVersion());
         this.snapshot = blobAsyncClient.getSnapshotId();
+        this.versionId = blobAsyncClient.getVersionId();
         this.customerProvidedKey = blobAsyncClient.getCustomerProvidedKey();
+        if (blobAsyncClient.getEncryptionScope() != null) {
+            this.encryptionScope = new EncryptionScope().setEncryptionScope(blobAsyncClient.getEncryptionScope());
+        }
         return this;
     }
 
@@ -244,6 +259,9 @@ public final class SpecializedBlobClientBuilder {
         serviceVersion(blobContainerClient.getServiceVersion());
         blobName(blobName);
         this.customerProvidedKey = blobContainerClient.getCustomerProvidedKey();
+        if (blobContainerClient.getEncryptionScope() != null) {
+            this.encryptionScope = new EncryptionScope().setEncryptionScope(blobContainerClient.getEncryptionScope());
+        }
         return this;
     }
 
@@ -262,6 +280,10 @@ public final class SpecializedBlobClientBuilder {
         serviceVersion(blobContainerAsyncClient.getServiceVersion());
         blobName(blobName);
         this.customerProvidedKey = blobContainerAsyncClient.getCustomerProvidedKey();
+        if (blobContainerAsyncClient.getEncryptionScope() != null) {
+            this.encryptionScope = new EncryptionScope().setEncryptionScope(
+                blobContainerAsyncClient.getEncryptionScope());
+        }
         return this;
     }
 
@@ -282,8 +304,9 @@ public final class SpecializedBlobClientBuilder {
             this.containerName = parts.getBlobContainerName();
             this.blobName = Utility.urlEncode(parts.getBlobName());
             this.snapshot = parts.getSnapshot();
+            this.versionId = parts.getVersionId();
 
-            String sasToken = parts.getSasQueryParameters().encode();
+            String sasToken = parts.getCommonSasQueryParameters().encode();
             if (!CoreUtils.isNullOrEmpty(sasToken)) {
                 this.sasToken(sasToken);
             }
@@ -313,10 +336,27 @@ public final class SpecializedBlobClientBuilder {
         return this;
     }
 
+
+    /**
+     * Sets the {@code encryption scope} that is used to encrypt blob contents on the server.
+     *
+     * @param encryptionScope Encryption scope containing the encryption key information.
+     * @return the updated BlobClientBuilder object
+     */
+    public SpecializedBlobClientBuilder encryptionScope(String encryptionScope) {
+        if (encryptionScope == null) {
+            this.encryptionScope = null;
+        } else {
+            this.encryptionScope = new EncryptionScope().setEncryptionScope(encryptionScope);
+        }
+
+        return this;
+    }
+
     /**
      * Sets the {@link StorageSharedKeyCredential} used to authorize requests sent to the service.
      *
-     * @param credential The credential to use for authenticating request.
+     * @param credential {@link StorageSharedKeyCredential}.
      * @return the updated SpecializedBlobClientBuilder
      * @throws NullPointerException If {@code credential} is {@code null}.
      */
@@ -330,7 +370,7 @@ public final class SpecializedBlobClientBuilder {
     /**
      * Sets the {@link TokenCredential} used to authorize requests sent to the service.
      *
-     * @param credential The credential to use for authenticating request.
+     * @param credential {@link TokenCredential}.
      * @return the updated SpecializedBlobClientBuilder
      * @throws NullPointerException If {@code credential} is {@code null}.
      */
@@ -441,6 +481,17 @@ public final class SpecializedBlobClientBuilder {
     }
 
     /**
+     * Sets the version identifier of the blob.
+     *
+     * @param versionId Version identifier for the blob, pass {@code null} to interact with the latest blob version.
+     * @return the updated SpecializedBlobClientBuilder object
+     */
+    public SpecializedBlobClientBuilder versionId(String versionId) {
+        this.versionId = versionId;
+        return this;
+    }
+
+    /**
      * Sets the {@link HttpClient} to use for sending a receiving requests to and from the service.
      *
      * @param httpClient HttpClient to use for requests.
@@ -503,7 +554,7 @@ public final class SpecializedBlobClientBuilder {
     /**
      * Sets the request retry options for all the requests made through the client.
      *
-     * @param retryOptions The options used to configure retry behavior.
+     * @param retryOptions {@link RequestRetryOptions}.
      * @return the updated SpecializedBlobClientBuilder object
      * @throws NullPointerException If {@code retryOptions} is {@code null}.
      */
@@ -534,7 +585,9 @@ public final class SpecializedBlobClientBuilder {
      * <p>
      * If a service version is not provided, the service version that will be used will be the latest known service
      * version based on the version of the client library being used. If no service version is specified, updating to a
-     * newer version the client library will have the result of potentially moving to a newer service version.
+     * newer version of the client library will have the result of potentially moving to a newer service version.
+     * <p>
+     * Targeting a specific service version may also mean that the service will return an error for newer APIs.
      *
      * @param version {@link BlobServiceVersion} of the service to be used when making requests.
      * @return the updated SpecializedBlobClientBuilder object

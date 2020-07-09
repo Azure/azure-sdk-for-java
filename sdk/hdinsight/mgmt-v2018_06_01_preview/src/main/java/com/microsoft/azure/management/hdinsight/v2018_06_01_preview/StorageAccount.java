@@ -34,8 +34,7 @@ public class StorageAccount {
     private String container;
 
     /**
-     * The filesystem, only to be specified for Azure Data Lake Storage type
-     * Gen 2.
+     * The filesystem, only to be specified for Azure Data Lake Storage Gen 2.
      */
     @JsonProperty(value = "fileSystem")
     private String fileSystem;
@@ -121,7 +120,7 @@ public class StorageAccount {
     }
 
     /**
-     * Get the filesystem, only to be specified for Azure Data Lake Storage type Gen 2.
+     * Get the filesystem, only to be specified for Azure Data Lake Storage Gen 2.
      *
      * @return the fileSystem value
      */
@@ -130,7 +129,7 @@ public class StorageAccount {
     }
 
     /**
-     * Set the filesystem, only to be specified for Azure Data Lake Storage type Gen 2.
+     * Set the filesystem, only to be specified for Azure Data Lake Storage Gen 2.
      *
      * @param fileSystem the fileSystem value to set
      * @return the StorageAccount object itself.

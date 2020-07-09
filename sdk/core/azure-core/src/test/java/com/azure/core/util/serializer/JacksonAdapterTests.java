@@ -4,6 +4,8 @@
 package com.azure.core.util.serializer;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
@@ -65,6 +67,16 @@ public class JacksonAdapterTests {
 
         public void map(Map<String, String> map) {
             this.map = map;
+        }
+    }
+
+    @JacksonXmlRootElement(localName = "XmlString")
+    private static class XmlString {
+        @JsonProperty("Value")
+        private String value;
+
+        public String getValue() {
+            return value;
         }
     }
 }

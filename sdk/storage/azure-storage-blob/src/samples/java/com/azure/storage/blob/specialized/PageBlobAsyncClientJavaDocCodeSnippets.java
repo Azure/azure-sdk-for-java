@@ -8,6 +8,7 @@ import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.CopyStatusType;
+import com.azure.storage.blob.options.PageBlobCreateOptions;
 import com.azure.storage.blob.models.PageBlobRequestConditions;
 import com.azure.storage.blob.models.PageRange;
 import com.azure.storage.blob.models.SequenceNumberActionType;
@@ -30,6 +31,7 @@ import java.util.Map;
 public class PageBlobAsyncClientJavaDocCodeSnippets {
     private PageBlobAsyncClient client = new SpecializedBlobClientBuilder().buildPageBlobAsyncClient();
     private Map<String, String> metadata = Collections.singletonMap("metadata", "value");
+    private Map<String, String> tags = Collections.singletonMap("tag", "value");
     private ByteBuffer[] bufferData = new ByteBuffer[]{
         ByteBuffer.wrap(new byte[]{1}),
         ByteBuffer.wrap(new byte[]{2})
@@ -79,6 +81,24 @@ public class PageBlobAsyncClientJavaDocCodeSnippets {
                 "Created page blob with sequence number %s%n", response.getValue().getBlobSequenceNumber()));
 
         // END: com.azure.storage.blob.specialized.PageBlobAsyncClient.createWithResponse#long-Long-BlobHttpHeaders-Map-BlobRequestConditions
+    }
+
+    /**
+     * Code snippets for {@link PageBlobAsyncClient#createWithResponse(PageBlobCreateOptions)}
+     */
+    public void createWithResponse2CodeSnippet() {
+        // BEGIN: com.azure.storage.blob.specialized.PageBlobAsyncClient.createWithResponse#PageBlobCreateOptions
+        BlobHttpHeaders headers = new BlobHttpHeaders()
+            .setContentLanguage("en-US")
+            .setContentType("binary");
+        BlobRequestConditions blobRequestConditions = new BlobRequestConditions().setLeaseId(leaseId);
+
+        client.createWithResponse(new PageBlobCreateOptions(size).setSequenceNumber(sequenceNumber)
+            .setHeaders(headers).setMetadata(metadata).setTags(tags).setRequestConditions(blobRequestConditions))
+            .subscribe(response -> System.out.printf(
+                "Created page blob with sequence number %s%n", response.getValue().getBlobSequenceNumber()));
+
+        // END: com.azure.storage.blob.specialized.PageBlobAsyncClient.createWithResponse#PageBlobCreateOptions
     }
 
     /**
@@ -251,6 +271,43 @@ public class PageBlobAsyncClientJavaDocCodeSnippets {
                 }
             });
         // END: com.azure.storage.blob.specialized.PageBlobAsyncClient.getPageRangesDiffWithResponse#BlobRange-String-BlobRequestConditions
+    }
+
+    /**
+     * Code snippets for {@link PageBlobAsyncClient#getManagedDiskPageRangesDiff(BlobRange, String)}
+     */
+    public void getPageRangesDiffFromUrlCodeSnippet() {
+        // BEGIN: com.azure.storage.blob.specialized.PageBlobAsyncClient.getManagedDiskPageRangesDiff#BlobRange-String
+        BlobRange blobRange = new BlobRange(offset);
+        final String prevSnapshotUrl = "previous snapshot url";
+
+        client.getPageRangesDiff(blobRange, prevSnapshotUrl).subscribe(response -> {
+            System.out.println("Valid Page Ranges are:");
+            for (PageRange pageRange : response.getPageRange()) {
+                System.out.printf("Start: %s, End: %s%n", pageRange.getStart(), pageRange.getEnd());
+            }
+        });
+        // END: com.azure.storage.blob.specialized.PageBlobAsyncClient.getManagedDiskPageRangesDiff#BlobRange-String
+    }
+
+    /**
+     * Code snippets for {@link PageBlobAsyncClient#getManagedDiskPageRangesDiffWithResponse(BlobRange, String,
+     * BlobRequestConditions)}
+     */
+    public void getPageRangesDiffFromUrlWithResponseCodeSnippet() {
+        // BEGIN: com.azure.storage.blob.specialized.PageBlobAsyncClient.getManagedDiskPageRangesDiffWithResponse#BlobRange-String-BlobRequestConditions
+        BlobRange blobRange = new BlobRange(offset);
+        final String prevSnapshotUrl = "previous snapshot url";
+        BlobRequestConditions blobRequestConditions = new BlobRequestConditions().setLeaseId(leaseId);
+
+        client.getPageRangesDiffWithResponse(blobRange, prevSnapshotUrl, blobRequestConditions)
+            .subscribe(response -> {
+                System.out.println("Valid Page Ranges are:");
+                for (PageRange pageRange : response.getValue().getPageRange()) {
+                    System.out.printf("Start: %s, End: %s%n", pageRange.getStart(), pageRange.getEnd());
+                }
+            });
+        // END: com.azure.storage.blob.specialized.PageBlobAsyncClient.getManagedDiskPageRangesDiffWithResponse#BlobRange-String-BlobRequestConditions
     }
 
     /**

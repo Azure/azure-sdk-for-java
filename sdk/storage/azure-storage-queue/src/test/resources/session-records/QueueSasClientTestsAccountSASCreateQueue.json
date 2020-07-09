@@ -1,0 +1,83 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.queue.core.windows.net/queuesasclienttestsaccountsascreatequeue704592d",
+    "Headers" : {
+      "x-ms-version" : "2019-12-12",
+      "User-Agent" : "azsdk-java-azure-storage-queue/12.6.0-beta.1 (11.0.6; Windows 10 10.0)",
+      "x-ms-client-request-id" : "fc66c285-4b76-44bd-a855-371c92741dd5"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-12-12",
+      "Server" : "Windows-Azure-Queue/1.0 Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "37a3a87a-3003-009b-6803-3a8ca5000000",
+      "Date" : "Thu, 04 Jun 2020 00:06:04 GMT",
+      "x-ms-client-request-id" : "fc66c285-4b76-44bd-a855-371c92741dd5"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.queue.core.windows.net/queuesasclienttestsaccountsascreatequeue704592d/messages",
+    "Headers" : {
+      "x-ms-version" : "2019-12-12",
+      "User-Agent" : "azsdk-java-azure-storage-queue/12.6.0-beta.1 (11.0.6; Windows 10 10.0)",
+      "x-ms-client-request-id" : "3243b9eb-e60e-4e25-b2e6-e0792c4319db",
+      "Content-Type" : "application/xml; charset=utf-8"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-ms-version" : "2019-12-12",
+      "Server" : "Windows-Azure-Queue/1.0 Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "37a3a881-3003-009b-6e03-3a8ca5000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><QueueMessagesList><QueueMessage><MessageId>2f9a3979-46bd-487e-b7cd-e919533d9745</MessageId><InsertionTime>Thu, 04 Jun 2020 00:06:05 GMT</InsertionTime><ExpirationTime>Thu, 11 Jun 2020 00:06:05 GMT</ExpirationTime><PopReceipt>AgAAAAMAAAAAAAAAlLjf8AM61gE=</PopReceipt><TimeNextVisible>Thu, 04 Jun 2020 00:06:05 GMT</TimeNextVisible></QueueMessage></QueueMessagesList>",
+      "Date" : "Thu, 04 Jun 2020 00:06:04 GMT",
+      "x-ms-client-request-id" : "3243b9eb-e60e-4e25-b2e6-e0792c4319db",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.queue.core.windows.net/queuesasclienttestsaccountsascreatequeue522507b?sv=2019-12-12&ss=q&srt=sco&se=2020-06-05T00%3A06%3A05Z&sp=rdc&sig=REDACTED",
+    "Headers" : {
+      "x-ms-version" : "2019-12-12",
+      "User-Agent" : "azsdk-java-azure-storage-queue/12.6.0-beta.1 (11.0.6; Windows 10 10.0)",
+      "x-ms-client-request-id" : "8218153b-90a5-4ea3-becc-2b77fe266d16"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-12-12",
+      "Server" : "Windows-Azure-Queue/1.0 Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "37a3a887-3003-009b-7403-3a8ca5000000",
+      "Date" : "Thu, 04 Jun 2020 00:06:04 GMT",
+      "x-ms-client-request-id" : "8218153b-90a5-4ea3-becc-2b77fe266d16"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://REDACTED.queue.core.windows.net/queuesasclienttestsaccountsascreatequeue522507b?sv=2019-12-12&ss=q&srt=sco&se=2020-06-05T00%3A06%3A05Z&sp=rdc&sig=REDACTED",
+    "Headers" : {
+      "x-ms-version" : "2019-12-12",
+      "User-Agent" : "azsdk-java-azure-storage-queue/12.6.0-beta.1 (11.0.6; Windows 10 10.0)",
+      "x-ms-client-request-id" : "adfa0249-0741-493f-a099-9534aee61ddc"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-12-12",
+      "Server" : "Windows-Azure-Queue/1.0 Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "204",
+      "x-ms-request-id" : "37a3a88a-3003-009b-7603-3a8ca5000000",
+      "Date" : "Thu, 04 Jun 2020 00:06:04 GMT",
+      "x-ms-client-request-id" : "adfa0249-0741-493f-a099-9534aee61ddc"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "queuesasclienttestsaccountsascreatequeue704592d", "2020-06-04T00:06:05.585625200Z", "queuesasclienttestsaccountsascreatequeue522507b" ]
+}

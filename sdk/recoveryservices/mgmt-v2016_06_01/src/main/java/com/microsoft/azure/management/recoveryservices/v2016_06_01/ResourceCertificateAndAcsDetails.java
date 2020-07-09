@@ -15,7 +15,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 /**
  * Certificate details representing the Vault credentials for ACS.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "authType")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "authType", defaultImpl = ResourceCertificateAndAcsDetails.class)
 @JsonTypeName("AccessControlService")
 public class ResourceCertificateAndAcsDetails extends ResourceCertificateDetails {
     /**

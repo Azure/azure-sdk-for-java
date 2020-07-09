@@ -1,25 +1,26 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/5c24820b345b4315",
+    "Uri" : "https://REDACTED.queue.core.windows.net/9ef1c32fb31846ec",
     "Headers" : {
-      "x-ms-version" : "2018-03-28",
-      "User-Agent" : "azsdk-java-azure-storage-queue/12.0.0-preview.5 11.0.4; Windows 10 10.0",
-      "x-ms-client-request-id" : "dce8d1a4-048c-4f4f-8734-64e26612dd75"
+      "x-ms-version" : "2019-12-12",
+      "User-Agent" : "azsdk-java-azure-storage-queue/12.6.0-beta.1 (11.0.6; Windows 10 10.0)",
+      "x-ms-client-request-id" : "6c3f19f0-15db-4063-934c-c53206650959"
     },
     "Response" : {
-      "x-ms-version" : "2018-03-28",
+      "x-ms-version" : "2019-12-12",
       "Server" : "Windows-Azure-Queue/1.0 Microsoft-HTTPAPI/2.0",
       "x-ms-error-code" : "InvalidMetadata",
       "retry-after" : "0",
       "Content-Length" : "260",
       "StatusCode" : "400",
-      "x-ms-request-id" : "2f7e9f20-f003-0082-168d-839126000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>InvalidMetadata</Code><Message>The metadata specified is invalid. It has characters that are not permitted.\nRequestId:2f7e9f20-f003-0082-168d-839126000000\nTime:2019-10-15T19:19:59.2776274Z</Message></Error>",
-      "Date" : "Tue, 15 Oct 2019 19:19:58 GMT",
+      "x-ms-request-id" : "37a3aeb1-3003-009b-0604-3a8ca5000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>InvalidMetadata</Code><Message>The metadata specified is invalid. It has characters that are not permitted.\nRequestId:37a3aeb1-3003-009b-0604-3a8ca5000000\nTime:2020-06-04T00:06:42.6644681Z</Message></Error>",
+      "Date" : "Thu, 04 Jun 2020 00:06:42 GMT",
+      "x-ms-client-request-id" : "6c3f19f0-15db-4063-934c-c53206650959",
       "Content-Type" : "application/xml"
     },
     "Exception" : null
   } ],
-  "variables" : [ "5c24820b345b4315" ]
+  "variables" : [ "9ef1c32fb31846ec" ]
 }

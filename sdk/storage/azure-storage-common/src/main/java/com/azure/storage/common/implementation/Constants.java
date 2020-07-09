@@ -25,6 +25,11 @@ public final class Constants {
     public static final int MB = 1024 * KB;
 
     /**
+     * Represents a non-SI gigabyte.
+     */
+    public static final int GB = 1024 * MB;
+
+    /**
      * Represents the value for {@link SasProtocol#HTTPS_ONLY}.
      */
     public static final String HTTPS = "https";
@@ -51,6 +56,14 @@ public final class Constants {
 
     public static final String BLOB_ALREADY_EXISTS =
         "Blob already exists. Specify overwrite to true to force update the blob.";
+
+    public static final String FILE_ALREADY_EXISTS =
+        "File already exists. Specify overwrite to true to force update the file.";
+
+    /**
+     * Buffer width used to copy data to output streams.
+     */
+    public static final int BUFFER_COPY_LENGTH = 8 * KB;
 
     private Constants() {
     }
@@ -176,7 +189,7 @@ public final class Constants {
         /**
          * The current storage version header value.
          */
-        public static final String TARGET_STORAGE_VERSION = "2019-02-02";
+        public static final String TARGET_STORAGE_VERSION = "2019-12-12";
 
         /**
          * Error code returned from the service.
@@ -200,6 +213,8 @@ public final class Constants {
 
         public static final String ETAG_WILDCARD = "*";
 
+        public static final String DIRECTORY_METADATA_KEY = "hdi_isfolder";
+
         private HeaderConstants() {
             // Private to prevent construction.
         }
@@ -216,6 +231,11 @@ public final class Constants {
          * The snapshot parameters.
          */
         public static final String SNAPSHOT_QUERY_PARAMETER = "snapshot";
+
+        /**
+         * The versionId parameters.
+         */
+        public static final String VERSIONID_QUERY_PARAMETER = "versionid";
 
         /**
          * The SAS service version parameter.

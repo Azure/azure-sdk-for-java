@@ -14,12 +14,12 @@ import java.util.Collection;
 public final class CertificateContentType extends ExpandableStringEnum<CertificateContentType> {
     
     /**
-     * Static value Encrypt for CertificateContentType.
+     * Static value PKCS12 for CertificateContentType.
      */
     public static final CertificateContentType PKCS12 = fromString("application/x-pkcs12");
 
     /**
-     * Static value Decrypt for CertificateContentType.
+     * Static value PEM for CertificateContentType.
      */
     public static final CertificateContentType PEM = fromString("application/x-pem-file");
     

@@ -3,17 +3,21 @@
 
 package com.azure.storage.file.share
 
+import com.azure.core.test.TestMode
+import com.azure.core.util.Context
 import com.azure.storage.common.StorageSharedKeyCredential
-import com.azure.storage.file.share.models.ShareMetrics
 import com.azure.storage.file.share.models.ListSharesOptions
 import com.azure.storage.file.share.models.ShareCorsRule
 import com.azure.storage.file.share.models.ShareErrorCode
 import com.azure.storage.file.share.models.ShareItem
+import com.azure.storage.file.share.models.ShareMetrics
 import com.azure.storage.file.share.models.ShareProperties
 import com.azure.storage.file.share.models.ShareRetentionPolicy
 import com.azure.storage.file.share.models.ShareServiceProperties
 import com.azure.storage.file.share.models.ShareStorageException
 import spock.lang.Unroll
+
+import java.time.OffsetDateTime
 
 class FileServiceAPITests extends APISpec {
     String shareName
@@ -108,7 +112,8 @@ class FileServiceAPITests extends APISpec {
     def "List shares with filter"() {
         given:
         LinkedList<ShareItem> testShares = new LinkedList<>()
-        for (int i = 0; i < 3; i++) {
+        options.setPrefix(shareName)
+        for (int i = 0; i < 4; i++) {
             ShareItem share = new ShareItem().setProperties(new ShareProperties().setQuota(i + 1)).setName(shareName + i)
             if (i == 2) {
                 share.setMetadata(testMetadata)
@@ -116,6 +121,11 @@ class FileServiceAPITests extends APISpec {
 
             testShares.add(share)
             primaryFileServiceClient.createShareWithResponse(share.getName(), share.getMetadata(), share.getProperties().getQuota(), null, null)
+
+            if (i == 3) {
+                share.getProperties().setDeletedTime(OffsetDateTime.now())
+                primaryFileServiceClient.deleteShare(share.getName())
+            }
         }
 
         when:
@@ -123,23 +133,25 @@ class FileServiceAPITests extends APISpec {
 
         then:
         for (int i = 0; i < limits; i++) {
-            FileTestHelper.assertSharesAreEqual(testShares.pop(), shares.next(), includeMetadata, includeSnapshot)
+            FileTestHelper.assertSharesAreEqual(testShares.pop(), shares.next(), includeMetadata, includeSnapshot, includeDeleted)
         }
-        !shares.hasNext()
+        includeDeleted || !shares.hasNext()
 
         where:
-        options                                                                                                | limits | includeMetadata | includeSnapshot
-        new ListSharesOptions().setPrefix("fileserviceapitestslistshareswithfilter")                           | 3      | false           | true
-        new ListSharesOptions().setPrefix("fileserviceapitestslistshareswithfilter").setIncludeMetadata(true)  | 3      | true            | true
-        new ListSharesOptions().setPrefix("fileserviceapitestslistshareswithfilter").setIncludeMetadata(false) | 3      | false           | true
-        new ListSharesOptions().setPrefix("fileserviceapitestslistshareswithfilter").setMaxResultsPerPage(2)   | 3      | false           | true
+        options                                           | limits | includeMetadata | includeSnapshot | includeDeleted
+        new ListSharesOptions()                           | 3      | false           | true            | false
+        new ListSharesOptions().setIncludeMetadata(true)  | 3      | true            | true            | false
+        new ListSharesOptions().setIncludeMetadata(false) | 3      | false           | true            | false
+        new ListSharesOptions().setMaxResultsPerPage(2)   | 3      | false           | true            | false
+        new ListSharesOptions().setIncludeDeleted(true)   | 4      | false           | true            | true
     }
 
     @Unroll
     def "List shares with args"() {
         given:
         LinkedList<ShareItem> testShares = new LinkedList<>()
-        for (int i = 0; i < 3; i++) {
+        options.setPrefix(shareName)
+        for (int i = 0; i < 4; i++) {
             ShareItem share = new ShareItem().setName(shareName + i).setProperties(new ShareProperties().setQuota(2))
                 .setMetadata(testMetadata)
             def shareClient = primaryFileServiceClient.getShareClient(share.getName())
@@ -148,6 +160,10 @@ class FileServiceAPITests extends APISpec {
                 def snapshot = shareClient.createSnapshot().getSnapshot()
                 testShares.add(new ShareItem().setName(share.getName()).setMetadata(share.getMetadata()).setProperties(share.getProperties()).setSnapshot(snapshot))
             }
+            if (i == 3) {
+                share.getProperties().setDeletedTime(OffsetDateTime.now())
+                primaryFileServiceClient.deleteShare(share.getName())
+            }
             testShares.add(share)
         }
 
@@ -156,15 +172,38 @@ class FileServiceAPITests extends APISpec {
 
         then:
         for (int i = 0; i < limits; i++) {
-            assert FileTestHelper.assertSharesAreEqual(testShares.pop(), shares.next(), includeMetadata, includeSnapshot)
+            assert FileTestHelper.assertSharesAreEqual(testShares.pop(), shares.next(), includeMetadata, includeSnapshot, includeDeleted)
         }
         !shares.hasNext()
 
         where:
-        options                                                                                                                        | limits | includeMetadata | includeSnapshot
-        new ListSharesOptions().setPrefix("fileserviceapitestslistshareswithargs")                                                     | 3      | false           | false
-        new ListSharesOptions().setPrefix("fileserviceapitestslistshareswithargs") .setIncludeMetadata(true)                           | 3      | true            | false
-        new ListSharesOptions().setPrefix("fileserviceapitestslistshareswithargs") .setIncludeMetadata(true).setIncludeSnapshots(true) | 4      | true            | true
+        options                                                                                            | limits | includeMetadata | includeSnapshot | includeDeleted
+        new ListSharesOptions()                                                                            | 3      | false           | false           | false
+        new ListSharesOptions().setIncludeMetadata(true)                                                   | 3      | true            | false           | false
+        new ListSharesOptions().setIncludeMetadata(true).setIncludeSnapshots(true)                         | 4      | true            | true            | false
+        new ListSharesOptions().setIncludeMetadata(true).setIncludeSnapshots(true).setIncludeDeleted(true) | 5      | true            | true            | true
+    }
+
+    def "List shares with premium share"() {
+        setup:
+        def premiumShareName = generateShareName()
+        premiumFileServiceClient.createShare(premiumShareName)
+
+        when:
+        def shares = premiumFileServiceClient.listShares().iterator()
+
+        then:
+        for (def shareItem : shares) {
+            if (shareItem.getName() == premiumShareName) {
+                shareItem.getProperties().getETag()
+                shareItem.getProperties().getMetadata()
+                shareItem.getProperties().getLastModified()
+                shareItem.getProperties().getNextAllowedQuotaDowngradeTime()
+                shareItem.getProperties().getProvisionedEgressMBps()
+                shareItem.getProperties().getProvisionedIngressMBps()
+                shareItem.getProperties().getProvisionedIops()
+            }
+        }
     }
 
     def "Set and get properties"() {
@@ -212,5 +251,57 @@ class FileServiceAPITests extends APISpec {
         INVALID_EXPOSED_HEADER | 400        | ShareErrorCode.INVALID_XML_DOCUMENT
         INVALID_ALLOWED_ORIGIN | 400        | ShareErrorCode.INVALID_XML_DOCUMENT
         INVALID_ALLOWED_METHOD | 400        | ShareErrorCode.INVALID_XML_NODE_VALUE
+    }
+
+    def "Restore share min"() {
+        given:
+        def shareClient = primaryFileServiceClient.getShareClient(generateShareName())
+        shareClient.create()
+        def fileName = generatePathName()
+        shareClient.getFileClient(fileName).create(2)
+        shareClient.delete()
+        sleepIfLive(30000)
+        def shareItem = primaryFileServiceClient.listShares(
+            new ListSharesOptions()
+                .setPrefix(shareClient.getShareName())
+                .setIncludeDeleted(true),
+            null, Context.NONE).first()
+
+        when:
+        def restoredShareClient = primaryFileServiceClient.undeleteShare(shareItem.getName(), shareItem.getVersion())
+
+        then:
+        restoredShareClient.getFileClient(fileName).exists()
+    }
+
+    def "Restore share max"() {
+        given:
+        def shareClient = primaryFileServiceClient.getShareClient(generateShareName())
+        shareClient.create()
+        def fileName = generatePathName()
+        shareClient.getFileClient(fileName).create(2)
+        shareClient.delete()
+        sleepIfLive(30000)
+        def shareItem = primaryFileServiceClient.listShares(
+            new ListSharesOptions()
+                .setPrefix(shareClient.getShareName())
+                .setIncludeDeleted(true),
+            null, Context.NONE).first()
+
+        when:
+        def restoredShareClient = primaryFileServiceClient.undeleteShareWithResponse(
+            shareItem.getName(), shareItem.getVersion(), null, Context.NONE)
+            .getValue()
+
+        then:
+        restoredShareClient.getFileClient(fileName).exists()
+    }
+
+    def "Restore share error"() {
+        when:
+        primaryFileServiceClient.undeleteShare(generateShareName(), "01D60F8BB59A4652")
+
+        then:
+        thrown(ShareStorageException.class)
     }
 }

@@ -33,7 +33,7 @@ public final class Path {
     /*
      * The eTag property.
      */
-    @JsonProperty(value = "eTag")
+    @JsonProperty(value = "etag")
     private String eTag;
 
     /*

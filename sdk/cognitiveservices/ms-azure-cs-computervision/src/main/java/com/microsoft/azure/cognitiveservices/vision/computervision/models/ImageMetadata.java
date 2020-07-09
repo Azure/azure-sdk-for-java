@@ -15,13 +15,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class ImageMetadata {
     /**
-     * Image width.
+     * Image width, in pixels.
      */
     @JsonProperty(value = "width")
     private int width;
 
     /**
-     * Image height.
+     * Image height, in pixels.
      */
     @JsonProperty(value = "height")
     private int height;

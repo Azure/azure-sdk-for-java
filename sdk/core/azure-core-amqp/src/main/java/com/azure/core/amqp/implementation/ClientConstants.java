@@ -5,20 +5,8 @@ package com.azure.core.amqp.implementation;
 
 public final class ClientConstants {
     public static final String NOT_APPLICABLE = "n/a";
-    public static final String PRODUCT_NAME = "azsdk-java-eventhubs";
-    // {x-version-update-start;com.azure:azure-messaging-eventhubs;current}
-    public static final String CURRENT_JAVA_CLIENT_VERSION = "5.0.0-beta.6";
-    // {x-version-update-end}
     public static final String PLATFORM_INFO = getOSInformation();
     public static final String FRAMEWORK_INFO = getFrameworkInfo();
-
-    /**
-     * Gets the USER AGENT string as defined in:
-     * $/core/azure-core/src/main/java/com/azure/core/http/policy/UserAgentPolicy.java
-     * TODO (conniey): Extract logic from UserAgentPolicy into something we can use here.
-     */
-    public static final String USER_AGENT = String.format("%s/%s %s;%s",
-        PRODUCT_NAME, CURRENT_JAVA_CLIENT_VERSION, System.getProperty("java.version"), PLATFORM_INFO);
 
     /**
      * The default maximum allowable size, in bytes, for a batch to be sent.

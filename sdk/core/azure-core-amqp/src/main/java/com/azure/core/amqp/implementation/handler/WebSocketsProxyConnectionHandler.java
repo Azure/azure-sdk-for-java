@@ -48,11 +48,14 @@ public class WebSocketsProxyConnectionHandler extends WebSocketsConnectionHandle
      * @param connectionId Identifier for this connection.
      * @param amqpHostname Hostname of the AMQP message broker. The hostname of the proxy is exposed in {@link
      *     #getHostname()}.
+     * @param proxyOptions The options to use for proxy.
+     * @param product The name of the product this connection handler is created for.
+     * @param clientVersion The version of the client library creating the connection handler.
      * @throws NullPointerException if {@code amqpHostname} or {@code proxyConfiguration} is null.
      */
     public WebSocketsProxyConnectionHandler(String connectionId, String amqpHostname,
-                                            ProxyOptions proxyOptions) {
-        super(connectionId, amqpHostname);
+                                            ProxyOptions proxyOptions, String product, String clientVersion) {
+        super(connectionId, amqpHostname, product, clientVersion);
         this.amqpHostname = Objects.requireNonNull(amqpHostname, "'amqpHostname' cannot be null.");
         this.proxyOptions = Objects.requireNonNull(proxyOptions, "'proxyConfiguration' cannot be null.");
         this.remoteHost = amqpHostname + ":" + HTTPS_PORT;
@@ -132,7 +135,7 @@ public class WebSocketsProxyConnectionHandler extends WebSocketsConnectionHandle
 
         final String[] hostNameParts = hostName.split(":");
         if (hostNameParts.length != 2) {
-            logger.warning("Invalid hostname: {}", hostName);
+            logger.warning("connectionId[{}] Invalid hostname: {}", getConnectionId(), hostName);
             return;
         }
 
@@ -140,7 +143,7 @@ public class WebSocketsProxyConnectionHandler extends WebSocketsConnectionHandle
         try {
             port = Integer.parseInt(hostNameParts[1]);
         } catch (NumberFormatException ignore) {
-            logger.warning("Invalid port number: {}", hostNameParts[1]);
+            logger.warning("connectionId[{}] Invalid port number: {}", getConnectionId(), hostNameParts[1]);
             return;
         }
 
@@ -151,8 +154,8 @@ public class WebSocketsProxyConnectionHandler extends WebSocketsConnectionHandle
         final URI url = createURI(amqpHostname, HTTPS_PORT);
         final InetSocketAddress address = new InetSocketAddress(hostNameParts[0], port);
 
-        logger.error(String.format("Failed to connect to url: '%s', proxy host: '%s'",
-            url, address.getHostString()), ioException);
+        logger.error("connectionId[{}] Failed to connect to url: '{}', proxy host: '{}'",
+            getConnectionId(), url, address.getHostString(), ioException);
 
         if (proxySelector != null) {
             proxySelector.connectFailed(url, address, ioException);
@@ -177,7 +180,7 @@ public class WebSocketsProxyConnectionHandler extends WebSocketsConnectionHandle
 
         transport.addTransportLayer(proxy);
 
-        logger.info("addProxyHandshake: hostname[{}]", hostname);
+        logger.info("connectionId[{}] addProxyHandshake: hostname[{}]", getConnectionId(), hostname);
     }
 
     private InetSocketAddress getProxyAddress() {
@@ -224,8 +227,8 @@ public class WebSocketsProxyConnectionHandler extends WebSocketsConnectionHandle
             case NONE:
                 return com.microsoft.azure.proton.transport.proxy.ProxyAuthenticationType.NONE;
             default:
-                throw logger.logExceptionAsError(new IllegalArgumentException(
-                    "This authentication type is unknown:" + type.name()));
+                throw logger.logExceptionAsError(new IllegalArgumentException(String.format(
+                    "connectionId[%s]: This authentication type is unknown: %s", getConnectionId(), type.name())));
         }
     }
 

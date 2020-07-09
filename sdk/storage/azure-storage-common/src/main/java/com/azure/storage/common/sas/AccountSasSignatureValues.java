@@ -11,19 +11,12 @@ import com.azure.storage.common.implementation.StorageImplUtils;
 import java.time.OffsetDateTime;
 
 /**
- * Used to generate a Shared Access Signature (SAS) for an Azure Storage account. Once all the values are set, call
- * {@link
- * #generateSasQueryParameters(StorageSharedKeyCredential) generateSASQueryParameters(StorageSharedKeyCredential)} to
- * obtain a representation of the SAS which can actually be applied to container, file, queue, and tables.
+ * Used to initialize parameters for a Shared Access Signature (SAS) for an Azure Storage account. Once all the
+ * values here are set, use the generateSas method on the desired service client to obtain a representation of the SAS
+ * which can then be applied to a new client using the .sasToken(String) method on the desired client builder.
  *
- * <p><strong>Generating an account SAS</strong></p>
- * <p>The snippet below generates an account SAS that lasts for two days and gives the user read and list access to
- * blob containers and file shares.</p>
- *
- * {@codesnippet com.azure.storage.common.sas.accountSasSignatureValues.generateSasQueryParameters#StorageSharedKeyCredential}
- *
+ * @see <a href=https://docs.microsoft.com/en-ca/azure/storage/common/storage-sas-overview>Storage SAS overview</a>
  * @see <a href=https://docs.microsoft.com/rest/api/storageservices/create-account-sas>Create an account SAS</a>
- * @see <a href=https://docs.microsoft.com/azure/storage/common/storage-sas-overview>Storage SAS overview</a>
  */
 public final class AccountSasSignatureValues {
     private String version;
@@ -44,8 +37,31 @@ public final class AccountSasSignatureValues {
 
     /**
      * Initializes a new {@link AccountSasSignatureValues} object.
+     * @deprecated Please use {@link #AccountSasSignatureValues(OffsetDateTime, AccountSasPermission, AccountSasService,
+     * AccountSasResourceType)}
      */
+    @Deprecated
     public AccountSasSignatureValues() {
+    }
+
+    /**
+     * Initializes a new {@link AccountSasSignatureValues} object.
+     * @param expiryTime The time after which the SAS will no longer work.
+     * @param permissions {@link AccountSasPermission} allowed by the SAS.
+     * @param services {@link AccountSasService} targeted by the SAS.
+     * @param resourceTypes {@link AccountSasResourceType} targeted by the SAS.
+     */
+    public AccountSasSignatureValues(OffsetDateTime expiryTime, AccountSasPermission permissions,
+        AccountSasService services, AccountSasResourceType resourceTypes) {
+        StorageImplUtils.assertNotNull("expiryTime", expiryTime);
+        StorageImplUtils.assertNotNull("services", services);
+        StorageImplUtils.assertNotNull("permissions", permissions);
+        StorageImplUtils.assertNotNull("resourceTypes", resourceTypes);
+
+        this.expiryTime = expiryTime;
+        this.services = services.toString();
+        this.resourceTypes = resourceTypes.toString();
+        this.permissions = permissions.toString();
     }
 
     /**
@@ -117,7 +133,10 @@ public final class AccountSasSignatureValues {
      *
      * @param expiryTime Expiry time to set
      * @return the updated AccountSasSignatureValues object.
+     * @deprecated Please use {@link #AccountSasSignatureValues(OffsetDateTime, AccountSasPermission, AccountSasService,
+     * AccountSasResourceType)} to specify the expiry time.
      */
+    @Deprecated
     public AccountSasSignatureValues setExpiryTime(OffsetDateTime expiryTime) {
         this.expiryTime = expiryTime;
         return this;
@@ -140,7 +159,10 @@ public final class AccountSasSignatureValues {
      * @param permissions Permissions to set.
      * @return the updated AccountSasSignatureValues object.
      * @throws NullPointerException if {@code permissions} is null.
+     * @deprecated Please use {@link #AccountSasSignatureValues(OffsetDateTime, AccountSasPermission, AccountSasService,
+     * AccountSasResourceType)} to specify the allowed permissions.
      */
+    @Deprecated
     public AccountSasSignatureValues setPermissions(AccountSasPermission permissions) {
         StorageImplUtils.assertNotNull("permissions", permissions);
         this.permissions = permissions.toString();
@@ -178,7 +200,10 @@ public final class AccountSasSignatureValues {
      *
      * @param services Allowed services string to set
      * @return the updated AccountSasSignatureValues object.
+     * @deprecated Please use {@link #AccountSasSignatureValues(OffsetDateTime, AccountSasPermission, AccountSasService,
+     * AccountSasResourceType)} to specify the services being targeted.
      */
+    @Deprecated
     public AccountSasSignatureValues setServices(String services) {
         this.services = services;
         return this;
@@ -198,7 +223,10 @@ public final class AccountSasSignatureValues {
      *
      * @param resourceTypes Allowed resource types string to set
      * @return the updated AccountSasSignatureValues object.
+     * @deprecated Please use {@link #AccountSasSignatureValues(OffsetDateTime, AccountSasPermission, AccountSasService,
+     * AccountSasResourceType)} to specify the resource types being targeted.
      */
+    @Deprecated
     public AccountSasSignatureValues setResourceTypes(String resourceTypes) {
         this.resourceTypes = resourceTypes;
         return this;
@@ -209,7 +237,6 @@ public final class AccountSasSignatureValues {
      * requests.
      *
      * <p><strong>Notes on SAS generation</strong></p>
-     * <p>
      * <ul>
      * <li>If {@link #setVersion(String) version} is not set, the latest service version is used.</li>
      * <li>The following parameters are required to generate a SAS:
@@ -232,7 +259,10 @@ public final class AccountSasSignatureValues {
      * @throws RuntimeException If the HMAC-SHA256 signature for {@code storageSharedKeyCredentials} fails to generate.
      * @throws NullPointerException If any of {@code storageSharedKeyCredentials}, {@code services},
      * {@code resourceTypes}, {@code expiryTime}, or {@code permissions} is null.
+     * @deprecated Please use the generateAccountSas(AccountSasSignatureValues) method on the desired service client
+     * after initializing {@link AccountSasSignatureValues}.
      */
+    @Deprecated
     public AccountSasQueryParameters generateSasQueryParameters(
         StorageSharedKeyCredential storageSharedKeyCredentials) {
         StorageImplUtils.assertNotNull("storageSharedKeyCredentials", storageSharedKeyCredentials);

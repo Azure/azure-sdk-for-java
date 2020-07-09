@@ -29,16 +29,15 @@ public final class KeyEncryptionKeyAsyncClient extends CryptographyAsyncClient i
         super(keyId, pipeline, version);
     }
 
+
     /**
-     * {@inheritDoc}
+     * Get the identifier of the key to use for cryptography operations.
+     *
+     * @return A {@link Mono} containing the key identifier.
      */
     @Override
     public Mono<String> getKeyId() {
-        try {
-            return Mono.just(key.getId());
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return super.getKeyId();
     }
 
     /**

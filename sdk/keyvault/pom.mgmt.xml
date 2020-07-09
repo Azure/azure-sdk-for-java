@@ -7,7 +7,7 @@
   <groupId>com.azure</groupId>
   <artifactId>azure-keyvault-management</artifactId>
   <packaging>pom</packaging>
-  <version>1.0.0</version> <!-- Need not change for every release-->
+  <version>1.0.0</version>  <!-- Need not change for every release-->
   <modules>
     <module>mgmt-v2015_06_01</module>
     <module>mgmt-v2016_10_01</module>

@@ -9,9 +9,14 @@ import com.azure.storage.blob.models.BlobContainerListDetails;
 import com.azure.storage.blob.models.BlobMetrics;
 import com.azure.storage.blob.models.BlobRetentionPolicy;
 import com.azure.storage.blob.models.BlobServiceProperties;
+import com.azure.storage.blob.options.FindBlobsOptions;
 import com.azure.storage.blob.models.ListBlobContainersOptions;
 import com.azure.storage.blob.models.PublicAccessType;
 import com.azure.storage.blob.models.StorageAccountInfo;
+import com.azure.storage.common.sas.AccountSasPermission;
+import com.azure.storage.common.sas.AccountSasResourceType;
+import com.azure.storage.common.sas.AccountSasService;
+import com.azure.storage.common.sas.AccountSasSignatureValues;
 
 import java.time.Duration;
 import java.time.OffsetDateTime;
@@ -101,6 +106,22 @@ public class BlobServiceClientJavaDocCodeSnippets {
 
         client.listBlobContainers(options, timeout).forEach(container -> System.out.printf("Name: %s%n", container.getName()));
         // END: com.azure.storage.blob.BlobServiceClient.listBlobContainers#ListBlobContainersOptions-Duration
+    }
+
+    /**
+     * Code snippets for {@link BlobServiceClient#findBlobsByTags(String)} and
+     * {@link BlobServiceClient#findBlobsByTags(FindBlobsOptions, Duration, Context)}
+     */
+    public void findBlobsByTag() {
+        // BEGIN: com.azure.storage.blob.BlobServiceClient.findBlobsByTag#String
+        client.findBlobsByTags("where=tag=value").forEach(blob -> System.out.printf("Name: %s%n", blob.getName()));
+        // END: com.azure.storage.blob.BlobServiceClient.findBlobsByTag#String
+
+        // BEGIN: com.azure.storage.blob.BlobServiceClient.findBlobsByTag#FindBlobsOptions-Duration
+        Context context = new Context("Key", "Value");
+        client.findBlobsByTags(new FindBlobsOptions("where=tag=value").setMaxResultsPerPage(10), timeout, context)
+            .forEach(blob -> System.out.printf("Name: %s%n", blob.getName()));
+        // END: com.azure.storage.blob.BlobServiceClient.findBlobsByTag#FindBlobsOptions-Duration
     }
 
     /**
@@ -241,4 +262,61 @@ public class BlobServiceClientJavaDocCodeSnippets {
         StorageAccountInfo accountInfo = client.getAccountInfoWithResponse(timeout, context).getValue();
         // END: com.azure.storage.blob.BlobServiceClient.getAccountInfoWithResponse#Duration-Context
     }
+
+    /**
+     * Code snippet for {@link BlobServiceClient#generateAccountSas(AccountSasSignatureValues)}
+     */
+    public void generateAccountSas() {
+        // BEGIN: com.azure.storage.blob.BlobServiceClient.generateAccountSas#AccountSasSignatureValues
+        AccountSasPermission permissions = new AccountSasPermission()
+            .setListPermission(true)
+            .setReadPermission(true);
+        AccountSasResourceType resourceTypes = new AccountSasResourceType().setContainer(true);
+        AccountSasService services = new AccountSasService().setBlobAccess(true).setFileAccess(true);
+        OffsetDateTime expiryTime = OffsetDateTime.now().plus(Duration.ofDays(2));
+
+        AccountSasSignatureValues sasValues =
+            new AccountSasSignatureValues(expiryTime, permissions, services, resourceTypes);
+
+        // Client must be authenticated via StorageSharedKeyCredential
+        String sas = client.generateAccountSas(sasValues);
+        // END: com.azure.storage.blob.BlobServiceClient.generateAccountSas#AccountSasSignatureValues
+    }
+
+    // Add back for container soft delete
+//    /**
+//     * Code snippet for {@link BlobServiceClient#undeleteBlobContainer(String, String)}.
+//     */
+//    public void undeleteBlobContainer() {
+//        // BEGIN: com.azure.storage.blob.BlobServiceClient.undeleteBlobContainer#String-String
+//        ListBlobContainersOptions listBlobContainersOptions = new ListBlobContainersOptions();
+//        listBlobContainersOptions.getDetails().setRetrieveDeleted(true);
+//        client.listBlobContainers(listBlobContainersOptions, null).forEach(
+//            deletedContainer -> {
+//                BlobContainerClient blobContainerClient = client.undeleteBlobContainer(
+//                    deletedContainer.getName(), deletedContainer.getVersion());
+//            }
+//        );
+//        // END: com.azure.storage.blob.BlobServiceClient.undeleteBlobContainer#String-String
+//    }
+//
+//    /**
+//     * Code snippet for {@link BlobServiceClient#undeleteBlobContainerWithResponse(UndeleteBlobContainerOptions,
+//     * Duration, Context)}.
+//     */
+//    public void undeleteBlobContainerWithResponseWithRename() {
+//        Context context = new Context("Key", "Value");
+//        // BEGIN: com.azure.storage.blob.BlobServiceClient.undeleteBlobContainerWithResponse#UndeleteBlobContainerOptions-Duration-Context
+//        ListBlobContainersOptions listBlobContainersOptions = new ListBlobContainersOptions();
+//        listBlobContainersOptions.getDetails().setRetrieveDeleted(true);
+//        client.listBlobContainers(listBlobContainersOptions, null).forEach(
+//            deletedContainer -> {
+//                BlobContainerClient blobContainerClient = client.undeleteBlobContainerWithResponse(
+//                    new UndeleteBlobContainerOptions(deletedContainer.getName(), deletedContainer.getVersion())
+//                        .setDestinationContainerName(deletedContainer.getName() + "V2"), timeout,
+//                    context).getValue();
+//            }
+//        );
+//        // END: com.azure.storage.blob.BlobServiceClient.undeleteBlobContainerWithResponse#UndeleteBlobContainerOptions-Duration-Context
+//    }
 }

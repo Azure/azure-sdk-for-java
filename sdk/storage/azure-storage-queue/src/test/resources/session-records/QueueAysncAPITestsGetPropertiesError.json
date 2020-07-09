@@ -1,25 +1,26 @@
 {
   "networkCallRecords" : [ {
     "Method" : "GET",
-    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/queueaysncapitestsgetpropertieserror4530287ae92dfc?comp=metadata",
+    "Uri" : "https://REDACTED.queue.core.windows.net/queueaysncapitestsgetpropertieserror99934c4402811b?comp=metadata",
     "Headers" : {
-      "x-ms-version" : "2018-03-28",
-      "User-Agent" : "azsdk-java-azure-storage-queue/12.0.0-preview.5 11.0.4; Windows 10 10.0",
-      "x-ms-client-request-id" : "e698b13c-bc2a-4dc4-a414-c928185aa897"
+      "x-ms-version" : "2019-12-12",
+      "User-Agent" : "azsdk-java-azure-storage-queue/12.6.0-beta.1 (11.0.6; Windows 10 10.0)",
+      "x-ms-client-request-id" : "a344c4a6-3165-47f8-b9a4-0855a5c6ecb4"
     },
     "Response" : {
-      "x-ms-version" : "2018-03-28",
+      "x-ms-version" : "2019-12-12",
       "Server" : "Windows-Azure-Queue/1.0 Microsoft-HTTPAPI/2.0",
       "x-ms-error-code" : "QueueNotFound",
       "retry-after" : "0",
       "Content-Length" : "217",
       "StatusCode" : "404",
-      "x-ms-request-id" : "2f7e8cb1-f003-0082-1c8d-839126000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>QueueNotFound</Code><Message>The specified queue does not exist.\nRequestId:2f7e8cb1-f003-0082-1c8d-839126000000\nTime:2019-10-15T19:19:47.0737616Z</Message></Error>",
-      "Date" : "Tue, 15 Oct 2019 19:19:46 GMT",
+      "x-ms-request-id" : "37a3a0ab-3003-009b-0203-3a8ca5000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>QueueNotFound</Code><Message>The specified queue does not exist.\nRequestId:37a3a0ab-3003-009b-0203-3a8ca5000000\nTime:2020-06-04T00:05:15.2360903Z</Message></Error>",
+      "Date" : "Thu, 04 Jun 2020 00:05:14 GMT",
+      "x-ms-client-request-id" : "a344c4a6-3165-47f8-b9a4-0855a5c6ecb4",
       "Content-Type" : "application/xml"
     },
     "Exception" : null
   } ],
-  "variables" : [ "queueaysncapitestsgetpropertieserror4530287ae92dfc" ]
+  "variables" : [ "queueaysncapitestsgetpropertieserror99934c4402811b" ]
 }

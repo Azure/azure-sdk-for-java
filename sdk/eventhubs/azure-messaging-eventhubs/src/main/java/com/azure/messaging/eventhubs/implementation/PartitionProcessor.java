@@ -5,12 +5,14 @@ package com.azure.messaging.eventhubs.implementation;
 
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.EventProcessorClient;
+import com.azure.messaging.eventhubs.EventProcessorClientBuilder;
 import com.azure.messaging.eventhubs.models.CloseContext;
 import com.azure.messaging.eventhubs.models.CloseReason;
 import com.azure.messaging.eventhubs.models.ErrorContext;
+import com.azure.messaging.eventhubs.models.EventBatchContext;
 import com.azure.messaging.eventhubs.models.EventContext;
-import com.azure.messaging.eventhubs.models.EventPosition;
 import com.azure.messaging.eventhubs.models.InitializationContext;
+import java.util.function.Consumer;
 
 /**
  * An abstract class defining all the operations that a partition processor can perform. Users of {@link
@@ -35,9 +37,7 @@ public abstract class PartitionProcessor {
 
     /**
      * This method is called when this {@link EventProcessorClient} takes ownership of a new partition and before any
-     * events from this partition are received. By default, each partition is processed from {@link
-     * EventPosition#earliest()}. To start processing from a different position, use {@link
-     * InitializationContext#setInitialPosition(EventPosition)} to
+     * events from this partition are received.
      *
      * @param initializationContext The initialization context before events from the partition are processed.
      */
@@ -47,12 +47,22 @@ public abstract class PartitionProcessor {
     }
 
     /**
-     * This method is called when a new event is received for this partition. Processing of this event can happen
-     * asynchronously.
+     * This method is called when a new event is received for this partition.
      *
      * @param eventContext The partition information and the next event data from this partition.
      */
     public abstract void processEvent(EventContext eventContext);
+
+    /**
+     * This method is called when a batch of events is received for this partition. To receive events in batches,
+     * {@link EventProcessorClientBuilder#processEventBatch(Consumer, int) processEventBatch} has to be
+     * setup when creating {@link EventProcessorClient} instance.
+     *
+     * @param eventBatchContext The event batch context containing the batch of events along with partition information.
+     */
+    public void processEventBatch(EventBatchContext eventBatchContext) {
+        throw logger.logExceptionAsError(new UnsupportedOperationException("Processing event batch not implemented"));
+    }
 
     /**
      * This method is called when an error occurs while receiving events from Event Hub. An error also marks the end of

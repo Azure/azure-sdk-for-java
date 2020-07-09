@@ -3,9 +3,6 @@
 
 package com.azure.messaging.eventhubs.models;
 
-import static com.azure.core.util.FluxUtil.monoError;
-
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.CheckpointStore;
 import com.azure.messaging.eventhubs.EventData;
 import com.azure.messaging.eventhubs.EventProcessorClientBuilder;
@@ -21,7 +18,6 @@ import reactor.core.publisher.Mono;
  */
 public class EventContext {
 
-    private final ClientLogger logger = new ClientLogger(EventContext.class);
     private final PartitionContext partitionContext;
     private final EventData eventData;
     private final CheckpointStore checkpointStore;
@@ -41,7 +37,7 @@ public class EventContext {
     public EventContext(PartitionContext partitionContext, EventData eventData,
         CheckpointStore checkpointStore, LastEnqueuedEventProperties lastEnqueuedEventProperties) {
         this.partitionContext = Objects.requireNonNull(partitionContext, "'partitionContext' cannot be null.");
-        this.eventData = Objects.requireNonNull(eventData, "'eventData' cannot be null.");
+        this.eventData = eventData;
         this.checkpointStore = Objects.requireNonNull(checkpointStore, "'checkpointStore' cannot be null.");
         this.lastEnqueuedEventProperties = lastEnqueuedEventProperties;
     }
@@ -70,23 +66,22 @@ public class EventContext {
      * return {@code null}.
      *
      * @return The properties of the last enqueued event in this partition. If
-     * {@link EventProcessorClientBuilder#trackLastEnqueuedEventProperties(boolean)}is set to {@code false}, this
-     * method will return {@code null}.
+     * {@link EventProcessorClientBuilder#trackLastEnqueuedEventProperties(boolean)} is
+     * set to {@code false}, this method will return {@code null}.
      */
     public LastEnqueuedEventProperties getLastEnqueuedEventProperties() {
         return lastEnqueuedEventProperties;
     }
 
     /**
-     * Updates the checkpoint asynchronously for this partition using the event data. This will serve as the last known
-     * successfully processed event in this partition if the update is successful.
+     * Updates the checkpoint asynchronously for this partition using the event data in this {@link EventContext}. This
+     * will serve as the last known successfully processed event in this partition if the update is successful.
      *
-     * @param eventData The event data to use for updating the checkpoint.
      * @return a representation of deferred execution of this call.
      */
-    public Mono<Void> updateCheckpointAsync(EventData eventData) {
+    public Mono<Void> updateCheckpointAsync() {
         if (eventData == null) {
-            return monoError(logger, new NullPointerException("'eventData' cannot be null"));
+            return Mono.empty();
         }
         Checkpoint checkpoint = new Checkpoint()
             .setFullyQualifiedNamespace(partitionContext.getFullyQualifiedNamespace())
@@ -103,6 +98,6 @@ public class EventContext {
      * successfully processed event in this partition if the update is successful.
      */
     public void updateCheckpoint() {
-        this.updateCheckpointAsync(eventData).block();
+        this.updateCheckpointAsync().block();
     }
 }

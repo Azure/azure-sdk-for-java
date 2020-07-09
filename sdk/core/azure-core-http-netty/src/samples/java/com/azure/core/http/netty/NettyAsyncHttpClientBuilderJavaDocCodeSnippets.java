@@ -4,12 +4,14 @@
 package com.azure.core.http.netty;
 
 import com.azure.core.http.HttpClient;
+import com.azure.core.http.HttpRequest;
 import com.azure.core.http.ProxyOptions;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.handler.logging.LogLevel;
 import io.netty.handler.logging.LoggingHandler;
 
 import java.net.InetSocketAddress;
+import java.nio.ByteBuffer;
 
 /**
  * Code snippets for {@link NettyAsyncHttpClientBuilder}
@@ -32,12 +34,12 @@ public class NettyAsyncHttpClientBuilderJavaDocCodeSnippets {
      * Code snippet for creating http client with fixed thread pool.
      */
     public void fixedThreadPoolSample() {
-        // BEGIN: com.azure.core.http.netty.NettyAsyncHttpClientBuilder#nioEventLoopGroup
+        // BEGIN: com.azure.core.http.netty.NettyAsyncHttpClientBuilder#eventLoopGroup
         int threadCount = 5;
         HttpClient client = new NettyAsyncHttpClientBuilder()
-            .nioEventLoopGroup(new NioEventLoopGroup(threadCount))
+            .eventLoopGroup(new NioEventLoopGroup(threadCount))
             .build();
-        // END: com.azure.core.http.netty.NettyAsyncHttpClientBuilder#nioEventLoopGroup
+        // END: com.azure.core.http.netty.NettyAsyncHttpClientBuilder#eventLoopGroup
     }
 
     /**
@@ -62,8 +64,30 @@ public class NettyAsyncHttpClientBuilderJavaDocCodeSnippets {
             .tcpConfiguration(tcp -> tcp.bootstrap(b -> b.handler(new LoggingHandler(LogLevel.INFO))));
         // Create an HttpClient based on above reactor-netty client and configure EventLoop count.
         HttpClient client = new NettyAsyncHttpClientBuilder(baseHttpClient)
-            .nioEventLoopGroup(new NioEventLoopGroup(5))
+            .eventLoopGroup(new NioEventLoopGroup(5))
             .build();
         // END: com.azure.core.http.netty.from-existing-http-client
+    }
+
+    /**
+     * Code snippet to demonstrate the use of a Netty based http client that disables buffer copy.
+     */
+    public void disabledBufferCopyClientSample() {
+        HttpRequest httpRequest = null;
+        // BEGIN: com.azure.core.http.netty.disabled-buffer-copy
+        HttpClient client = new NettyAsyncHttpClientBuilder()
+            .port(8080)
+            .disableBufferCopy(true)
+            .build();
+
+        client.send(httpRequest)
+            .flatMapMany(response -> response.getBody())
+            .map(byteBuffer -> completeProcessingByteBuffer(byteBuffer))
+            .subscribe();
+        // END: com.azure.core.http.netty.disabled-buffer-copy
+    }
+
+    private int completeProcessingByteBuffer(ByteBuffer byteBuffer) {
+        return byteBuffer.remaining();
     }
 }

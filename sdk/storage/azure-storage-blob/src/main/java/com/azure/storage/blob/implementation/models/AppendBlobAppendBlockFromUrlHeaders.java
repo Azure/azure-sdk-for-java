@@ -5,8 +5,8 @@
 package com.azure.storage.blob.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.DateTimeRfc1123;
 import com.azure.core.util.CoreUtils;
+import com.azure.core.util.DateTimeRfc1123;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import java.time.OffsetDateTime;
@@ -92,6 +92,14 @@ public final class AppendBlobAppendBlockFromUrlHeaders {
      */
     @JsonProperty(value = "x-ms-encryption-key-sha256")
     private String encryptionKeySha256;
+
+    /*
+     * Returns the name of the encryption scope used to encrypt the blob
+     * contents and application metadata.  Note that the absence of this header
+     * implies use of the default account encryption scope.
+     */
+    @JsonProperty(value = "x-ms-encryption-scope")
+    private String encryptionScope;
 
     /*
      * The value of this header is set to true if the contents of the request
@@ -356,6 +364,32 @@ public final class AppendBlobAppendBlockFromUrlHeaders {
      */
     public AppendBlobAppendBlockFromUrlHeaders setEncryptionKeySha256(String encryptionKeySha256) {
         this.encryptionKeySha256 = encryptionKeySha256;
+        return this;
+    }
+
+    /**
+     * Get the encryptionScope property: Returns the name of the encryption
+     * scope used to encrypt the blob contents and application metadata.  Note
+     * that the absence of this header implies use of the default account
+     * encryption scope.
+     *
+     * @return the encryptionScope value.
+     */
+    public String getEncryptionScope() {
+        return this.encryptionScope;
+    }
+
+    /**
+     * Set the encryptionScope property: Returns the name of the encryption
+     * scope used to encrypt the blob contents and application metadata.  Note
+     * that the absence of this header implies use of the default account
+     * encryption scope.
+     *
+     * @param encryptionScope the encryptionScope value to set.
+     * @return the AppendBlobAppendBlockFromUrlHeaders object itself.
+     */
+    public AppendBlobAppendBlockFromUrlHeaders setEncryptionScope(String encryptionScope) {
+        this.encryptionScope = encryptionScope;
         return this;
     }
 

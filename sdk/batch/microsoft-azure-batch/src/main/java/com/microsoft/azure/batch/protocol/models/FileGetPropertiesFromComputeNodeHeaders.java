@@ -85,7 +85,7 @@ public class FileGetPropertiesFromComputeNodeHeaders {
     /**
      * The length of the file.
      */
-    @JsonProperty(value = "content-length")
+    @JsonProperty(value = "Content-Length")
     private Long contentLength;
 
     /**

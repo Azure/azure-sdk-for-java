@@ -10,6 +10,9 @@ import com.azure.storage.file.datalake.models.DataLakeSignedIdentifier;
 import com.azure.storage.file.datalake.models.ListPathsOptions;
 import com.azure.storage.file.datalake.models.PathHttpHeaders;
 import com.azure.storage.file.datalake.models.PublicAccessType;
+import com.azure.storage.file.datalake.models.UserDelegationKey;
+import com.azure.storage.file.datalake.sas.DataLakeServiceSasSignatureValues;
+import com.azure.storage.file.datalake.sas.FileSystemSasPermission;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
@@ -30,6 +33,7 @@ public class FileSystemAsyncClientJavaDocCodeSamples {
     private String leaseId = "leaseId";
     private String proposedId = "proposedId";
     private int leaseDuration = (int) Duration.ofSeconds(30).getSeconds();
+    private UserDelegationKey userDelegationKey = JavaDocCodeSnippetsHelpers.getUserDelegationKey();
 
     /**
      * Code snippet for {@link DataLakeFileSystemAsyncClient#getFileAsyncClient(String)}
@@ -47,6 +51,15 @@ public class FileSystemAsyncClientJavaDocCodeSamples {
         // BEGIN: com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.getDirectoryAsyncClient#String
         DataLakeDirectoryAsyncClient dataLakeDirectoryAsyncClient = client.getDirectoryAsyncClient(directoryName);
         // END: com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.getDirectoryAsyncClient#String
+    }
+
+    /**
+     * Code snippet for {@link DataLakeFileSystemAsyncClient#getRootDirectoryAsyncClient}
+     */
+    public void getRootDirectoryAsyncClient() {
+        // BEGIN: com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.getRootDirectoryAsyncClient
+        DataLakeDirectoryAsyncClient dataLakeDirectoryAsyncClient = client.getRootDirectoryAsyncClient();
+        // END: com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.getRootDirectoryAsyncClient
     }
 
     /**
@@ -161,13 +174,19 @@ public class FileSystemAsyncClientJavaDocCodeSamples {
     }
 
     /**
-     * Code snippets for {@link DataLakeFileSystemAsyncClient#createFile(String)} and
+     * Code snippets for {@link DataLakeFileSystemAsyncClient#createFile(String)},
+     * {@link DataLakeFileSystemAsyncClient#createFile(String, boolean)} and
      * {@link DataLakeFileSystemAsyncClient#createFileWithResponse(String, String, String, PathHttpHeaders, Map, DataLakeRequestConditions)}
      */
     public void createFileCodeSnippets() {
         // BEGIN: com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.createFile#String
         Mono<DataLakeFileAsyncClient> fileClient = client.createFile(fileName);
         // END: com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.createFile#String
+
+        // BEGIN: com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.createFile#String-boolean
+        boolean overwrite = false; /* Default value. */
+        Mono<DataLakeFileAsyncClient> fClient = client.createFile(fileName, overwrite);
+        // END: com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.createFile#String-boolean
 
         // BEGIN: com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.createFileWithResponse#String-String-String-PathHttpHeaders-Map-DataLakeRequestConditions
         PathHttpHeaders httpHeaders = new PathHttpHeaders()
@@ -202,13 +221,19 @@ public class FileSystemAsyncClientJavaDocCodeSamples {
     }
 
     /**
-     * Code snippets for {@link DataLakeFileSystemAsyncClient#createDirectory(String)} and
+     * Code snippets for {@link DataLakeFileSystemAsyncClient#createDirectory(String)},
+     * {@link DataLakeFileSystemAsyncClient#createDirectory(String, boolean)} and
      * {@link DataLakeFileSystemAsyncClient#createDirectoryWithResponse(String, String, String, PathHttpHeaders, Map, DataLakeRequestConditions)}
      */
     public void createDirectoryCodeSnippets() {
         // BEGIN: com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.createDirectory#String
-        Mono<DataLakeDirectoryAsyncClient> directoryClient = client.createDirectory(fileName);
+        Mono<DataLakeDirectoryAsyncClient> directoryClient = client.createDirectory(directoryName);
         // END: com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.createDirectory#String
+
+        // BEGIN: com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.createDirectory#String-boolean
+        boolean overwrite = false; /* Default value. */
+        Mono<DataLakeDirectoryAsyncClient> dClient = client.createDirectory(directoryName, overwrite);
+        // END: com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.createDirectory#String-boolean
 
         // BEGIN: com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.createDirectoryWithResponse#String-String-String-PathHttpHeaders-Map-DataLakeRequestConditions
         PathHttpHeaders httpHeaders = new PathHttpHeaders()
@@ -218,8 +243,9 @@ public class FileSystemAsyncClientJavaDocCodeSamples {
             .setLeaseId(leaseId);
         String permissions = "permissions";
         String umask = "umask";
-        Mono<Response<DataLakeDirectoryAsyncClient>> newDirectoryClient = client.createDirectoryWithResponse(fileName,
-            permissions, umask, httpHeaders, Collections.singletonMap("metadata", "value"), requestConditions);
+        Mono<Response<DataLakeDirectoryAsyncClient>> newDirectoryClient = client.createDirectoryWithResponse(
+            directoryName, permissions, umask, httpHeaders, Collections.singletonMap("metadata", "value"),
+            requestConditions);
         // END: com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.createDirectoryWithResponse#String-String-String-PathHttpHeaders-Map-DataLakeRequestConditions
     }
 
@@ -333,6 +359,32 @@ public class FileSystemAsyncClientJavaDocCodeSamples {
             .subscribe(response ->
                 System.out.printf("Set access policy completed with status %d%n", response.getStatusCode()));
         // END: com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.setAccessPolicyWithResponse#PublicAccessType-List-DataLakeRequestConditions
+    }
+
+    /**
+     * Code snippet for {@link DataLakeFileSystemAsyncClient#generateUserDelegationSas(DataLakeServiceSasSignatureValues, UserDelegationKey)}
+     * and {@link DataLakeFileSystemAsyncClient#generateSas(DataLakeServiceSasSignatureValues)}
+     */
+    public void generateSas() {
+        // BEGIN: com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.generateSas#DataLakeServiceSasSignatureValues
+        OffsetDateTime expiryTime = OffsetDateTime.now().plusDays(1);
+        FileSystemSasPermission permission = new FileSystemSasPermission().setReadPermission(true);
+
+        DataLakeServiceSasSignatureValues values = new DataLakeServiceSasSignatureValues(expiryTime, permission)
+            .setStartTime(OffsetDateTime.now());
+
+        client.generateSas(values); // Client must be authenticated via StorageSharedKeyCredential
+        // END: com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.generateSas#DataLakeServiceSasSignatureValues
+
+        // BEGIN: com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.generateUserDelegationSas#DataLakeServiceSasSignatureValues-UserDelegationKey
+        OffsetDateTime myExpiryTime = OffsetDateTime.now().plusDays(1);
+        FileSystemSasPermission myPermission = new FileSystemSasPermission().setReadPermission(true);
+
+        DataLakeServiceSasSignatureValues myValues = new DataLakeServiceSasSignatureValues(expiryTime, permission)
+            .setStartTime(OffsetDateTime.now());
+
+        client.generateUserDelegationSas(values, userDelegationKey);
+        // END: com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.generateUserDelegationSas#DataLakeServiceSasSignatureValues-UserDelegationKey
     }
 
 }

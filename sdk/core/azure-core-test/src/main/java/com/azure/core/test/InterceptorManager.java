@@ -14,6 +14,7 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
@@ -21,14 +22,16 @@ import java.util.Objects;
 
 /**
  * A class that keeps track of network calls by either reading the data from an existing test session record or
- * recording the network calls in memory. Test session records are saved or read from:
- * "<i>session-records/{@code testName}.json</i>"
+ * recording the network calls in memory. Test session records are saved or read from: "<i>session-records/{@code
+ * testName}.json</i>"
  *
  * <ul>
  *     <li>If the {@code testMode} is {@link TestMode#PLAYBACK}, the manager tries to find an existing test session
  *     record to read network calls from.</li>
  *     <li>If the {@code testMode} is {@link TestMode#RECORD}, the manager creates a new test session record and saves
  *     all the network calls to it.</li>
+ *     <li>If the {@code testMode} is {@link TestMode#LIVE}, the manager won't attempt to read or create a test session
+ *     record.</li>
  * </ul>
  *
  * When the {@link InterceptorManager} is disposed, if the {@code testMode} is {@link TestMode#RECORD}, the network
@@ -41,6 +44,8 @@ public class InterceptorManager implements AutoCloseable {
     private final Map<String, String> textReplacementRules;
     private final String testName;
     private final TestMode testMode;
+    private final boolean allowedToReadRecordedValues;
+    private final boolean allowedToRecordValues;
 
     // Stores a map of all the HTTP properties in a session
     // A state machine ensuring a test is always reset before another one is setup
@@ -60,44 +65,104 @@ public class InterceptorManager implements AutoCloseable {
      *
      * @param testName Name of the test session record.
      * @param testMode The {@link TestMode} for this interceptor.
-     * @throws IOException If {@code testMode} is {@link TestMode#PLAYBACK} and an existing test session record could
-     * not be located or the data could not be deserialized into an instance of {@link RecordedData}.
+     * @throws UncheckedIOException If {@code testMode} is {@link TestMode#PLAYBACK} and an existing test session record
+     * could not be located or the data could not be deserialized into an instance of {@link RecordedData}.
+     * @throws NullPointerException If {@code testName} is {@code null}.
+     * @deprecated Use {@link #InterceptorManager(TestContextManager)} instead.
+     */
+    @Deprecated
+    public InterceptorManager(String testName, TestMode testMode) {
+        this(testName, testMode, false);
+    }
+
+    /**
+     * Creates a new InterceptorManager that either replays test-session records or saves them.
+     *
+     * <ul>
+     *     <li>If {@code testMode} is {@link TestMode#PLAYBACK}, the manager tries to find an existing test session
+     *     record to read network calls from.</li>
+     *     <li>If {@code testMode} is {@link TestMode#RECORD}, the manager creates a new test session record and saves
+     *     all the network calls to it.</li>
+     *     <li>If {@code testMode} is {@link TestMode#LIVE}, the manager won't attempt to read or create a test session
+     *     record.</li>
+     * </ul>
+     *
+     * The test session records are persisted in the path: "<i>session-records/{@code testName}.json</i>"
+     *
+     * @param testContextManager Contextual information about the test being ran, such as test name, {@link TestMode},
+     * and others.
+     * @throws UncheckedIOException If {@code testMode} is {@link TestMode#PLAYBACK} and an existing test session record
+     * could not be located or the data could not be deserialized into an instance of {@link RecordedData}.
      * @throws NullPointerException If {@code testName} is {@code null}.
      */
-    public InterceptorManager(String testName, TestMode testMode) throws IOException {
+    public InterceptorManager(TestContextManager testContextManager) {
+        this(testContextManager.getTestName(), testContextManager.getTestMode(), testContextManager.doNotRecordTest());
+    }
+
+    private InterceptorManager(String testName, TestMode testMode, boolean doNotRecord) {
         Objects.requireNonNull(testName, "'testName' cannot be null.");
 
         this.testName = testName;
         this.testMode = testMode;
         this.textReplacementRules = new HashMap<>();
 
-        this.recordedData = testMode == TestMode.PLAYBACK
-            ? readDataFromFile()
-            : new RecordedData();
+        this.allowedToReadRecordedValues = (testMode == TestMode.PLAYBACK && !doNotRecord);
+        this.allowedToRecordValues = (testMode == TestMode.RECORD && !doNotRecord);
+
+        if (allowedToReadRecordedValues) {
+            this.recordedData = readDataFromFile();
+        } else if (allowedToRecordValues) {
+            this.recordedData = new RecordedData();
+        } else {
+            this.recordedData = null;
+        }
     }
 
     /**
      * Creates a new InterceptorManager that replays test session records. It takes a set of
-     * {@code textReplacementRules}, that can be used by {@link PlaybackClient} to replace values in a
-     * {@link NetworkCallRecord#getResponse()}.
+     * {@code textReplacementRules}, that can be used by {@link PlaybackClient} to replace values in a {@link
+     * NetworkCallRecord#getResponse()}.
      *
      * The test session records are read from: "<i>session-records/{@code testName}.json</i>"
      *
      * @param testName Name of the test session record.
-     * @param textReplacementRules A set of rules to replace text in {@link NetworkCallRecord#getResponse()} when playing
-     * back network calls.
-     * @throws IOException An existing test session record could not be located or the data could not be deserialized
-     * into an instance of {@link RecordedData}.
+     * @param textReplacementRules A set of rules to replace text in {@link NetworkCallRecord#getResponse()} when
+     * playing back network calls.
+     * @throws UncheckedIOException An existing test session record could not be located or the data could not be
+     * deserialized into an instance of {@link RecordedData}.
+     * @throws NullPointerException If {@code testName} or {@code textReplacementRules} is {@code null}.
+     * @deprecated Use {@link #InterceptorManager(String, Map, boolean)} instead.
+     */
+    @Deprecated
+    public InterceptorManager(String testName, Map<String, String> textReplacementRules) {
+        this(testName, textReplacementRules, false);
+    }
+
+    /**
+     * Creates a new InterceptorManager that replays test session records. It takes a set of
+     * {@code textReplacementRules}, that can be used by {@link PlaybackClient} to replace values in a {@link
+     * NetworkCallRecord#getResponse()}.
+     *
+     * The test session records are read from: "<i>session-records/{@code testName}.json</i>"
+     *
+     * @param testName Name of the test session record.
+     * @param textReplacementRules A set of rules to replace text in {@link NetworkCallRecord#getResponse()} when
+     * playing back network calls.
+     * @param doNotRecord Flag indicating whether network calls should be record or played back.
+     * @throws UncheckedIOException An existing test session record could not be located or the data could not be
+     * deserialized into an instance of {@link RecordedData}.
      * @throws NullPointerException If {@code testName} or {@code textReplacementRules} is {@code null}.
      */
-    public InterceptorManager(String testName, Map<String, String> textReplacementRules) throws IOException {
+    public InterceptorManager(String testName, Map<String, String> textReplacementRules, boolean doNotRecord) {
         Objects.requireNonNull(testName, "'testName' cannot be null.");
         Objects.requireNonNull(textReplacementRules, "'textReplacementRules' cannot be null.");
 
         this.testName = testName;
         this.testMode = TestMode.PLAYBACK;
+        this.allowedToReadRecordedValues = !doNotRecord;
+        this.allowedToRecordValues = false;
 
-        this.recordedData = readDataFromFile();
+        this.recordedData = allowedToReadRecordedValues ? readDataFromFile() : null;
         this.textReplacementRules = textReplacementRules;
     }
 
@@ -111,6 +176,16 @@ public class InterceptorManager implements AutoCloseable {
     }
 
     /**
+     * Gets whether this InterceptorManager is in live mode.
+     *
+     * @return true if the InterceptorManager is in live mode and false otherwise.
+     */
+    public boolean isLiveMode() {
+        return testMode == TestMode.LIVE;
+    }
+
+
+    /**
      * Gets the recorded data InterceptorManager is keeping track of.
      *
      * @return The recorded data managed by InterceptorManager.
@@ -120,7 +195,8 @@ public class InterceptorManager implements AutoCloseable {
     }
 
     /**
-     * Gets a new HTTP pipeline policy that records network calls and its data is managed by {@link InterceptorManager}.
+     * Gets a new HTTP pipeline policy that records network calls and its data is managed by {@link
+     * InterceptorManager}.
      *
      * @return HttpPipelinePolicy to record network calls.
      */
@@ -145,27 +221,24 @@ public class InterceptorManager implements AutoCloseable {
      */
     @Override
     public void close() {
-        switch (testMode) {
-            case RECORD:
-                try {
-                    writeDataToFile();
-                } catch (IOException e) {
-                    logger.error("Unable to write data to playback file.", e);
-                }
-                break;
-            case PLAYBACK:
-                // Do nothing
-                break;
-            default:
-                logger.error("==> Unknown AZURE_TEST_MODE: {}", testMode);
-                break;
+        if (allowedToRecordValues) {
+            try {
+                writeDataToFile();
+            } catch (IOException e) {
+                logger.error("Unable to write data to playback file.", e);
+            }
         }
     }
 
-    private RecordedData readDataFromFile() throws IOException {
+    private RecordedData readDataFromFile() {
         File recordFile = getRecordFile(testName);
         ObjectMapper mapper = new ObjectMapper().enable(SerializationFeature.INDENT_OUTPUT);
-        return mapper.readValue(recordFile, RecordedData.class);
+
+        try {
+            return mapper.readValue(recordFile, RecordedData.class);
+        } catch (IOException ex) {
+            throw logger.logExceptionAsWarning(new UncheckedIOException(ex));
+        }
     }
 
     /*
@@ -183,10 +256,11 @@ public class InterceptorManager implements AutoCloseable {
         File playbackFile = new File(getRecordFolder(), testName + ".json");
 
         if (!playbackFile.exists()) {
-            throw  logger.logExceptionAsError(new RuntimeException(String.format(
-                "Missing playback file. File path:  %s. ", playbackFile)));
+            throw logger.logExceptionAsError(new RuntimeException(String.format(
+                "Missing playback file. File path: %s. ", playbackFile.getPath())));
         }
-        logger.info("==> Playback file path: " + playbackFile);
+
+        logger.info("==> Playback file path: " + playbackFile.getPath());
         return playbackFile;
     }
 
@@ -218,7 +292,8 @@ public class InterceptorManager implements AutoCloseable {
     }
 
     /**
-     * Add text replacement rule (regex as key, the replacement text as value) into {@link InterceptorManager#textReplacementRules}
+     * Add text replacement rule (regex as key, the replacement text as value) into {@link
+     * InterceptorManager#textReplacementRules}
      *
      * @param regex the pattern to locate the position of replacement
      * @param replacement the replacement text

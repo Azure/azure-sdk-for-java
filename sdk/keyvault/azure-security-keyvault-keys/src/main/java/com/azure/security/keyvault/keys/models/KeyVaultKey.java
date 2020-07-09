@@ -10,7 +10,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.List;
 import java.util.Map;
-
 /**
  *  Key is the resource consisting of name, {@link JsonWebKey} and its attributes specified in {@link KeyProperties}.
  *  It is managed by Key Service.
@@ -29,6 +28,16 @@ public class KeyVaultKey {
 
     KeyVaultKey() {
         properties = new KeyProperties();
+    }
+
+    /*
+     * Creates an instance of KeyVaultKey
+     * @param keyId the vault id name of the key
+     * @param jsonWebKey the json web key to be used for crypto operations
+     */
+    KeyVaultKey(KeyProperties keyProperties, JsonWebKey jsonWebKey) {
+        properties = keyProperties;
+        this.key = jsonWebKey;
     }
 
     /**

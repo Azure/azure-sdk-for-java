@@ -12,6 +12,7 @@ import com.azure.storage.blob.BlobContainerAsyncClient;
 import com.azure.storage.blob.specialized.BlockBlobAsyncClient;
 import com.azure.storage.blob.specialized.SpecializedBlobClientBuilder;
 import com.azure.storage.common.Utility;
+import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.file.datalake.implementation.models.PathResourceType;
 import com.azure.storage.file.datalake.implementation.util.DataLakeImplUtils;
@@ -25,7 +26,6 @@ import java.util.Objects;
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;
 
-
 /**
  * This class provides a client that contains directory operations for Azure Storage Data Lake. Operations provided by
  * this client include creating a directory, deleting a directory, renaming a directory, setting metadata and
@@ -37,7 +37,9 @@ import static com.azure.core.util.FluxUtil.withContext;
  * {@link DataLakeFileSystemAsyncClient#getDirectoryAsyncClient(String) getDirectoryAsyncClient}.
  *
  * <p>
- * Please refer to the <a href=https://docs.microsoft.com/en-us/azure/storage/blobs/data-lake-storage-introduction?toc=%2fazure%2fstorage%2fblobs%2ftoc.json>Azure
+ * Please refer to the
+ *
+ * <a href="https://docs.microsoft.com/en-us/azure/storage/blobs/data-lake-storage-introduction?toc=%2fazure%2fstorage%2fblobs%2ftoc.json">Azure
  * Docs</a> for more information.
  */
 public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient {
@@ -64,7 +66,7 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
     DataLakeDirectoryAsyncClient(DataLakePathAsyncClient dataLakePathAsyncClient) {
         super(dataLakePathAsyncClient.getHttpPipeline(), dataLakePathAsyncClient.getPathUrl(),
             dataLakePathAsyncClient.getServiceVersion(), dataLakePathAsyncClient.getAccountName(),
-            dataLakePathAsyncClient.getFileSystemName(), dataLakePathAsyncClient.getObjectPath(),
+            dataLakePathAsyncClient.getFileSystemName(), dataLakePathAsyncClient.pathName,
             PathResourceType.DIRECTORY, dataLakePathAsyncClient.getBlockBlobAsyncClient());
     }
 
@@ -166,8 +168,8 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
     }
 
     /**
-     * Creates a new file within a directory. If a file with the same name already exists, the file will be
-     * overwritten. For more information, see the
+     * Creates a new file within a directory. By default this method will not overwrite an existing file.
+     * For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/datalakestoragegen2/path/create">Azure
      * Docs</a>.
      *
@@ -179,8 +181,30 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
      * @return A {@link Mono} containing a {@link DataLakeFileAsyncClient} used to interact with the file created.
      */
     public Mono<DataLakeFileAsyncClient> createFile(String fileName) {
+        return createFile(fileName, false);
+    }
+
+    /**
+     * Creates a new file within a directory. For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/datalakestoragegen2/path/create">Azure
+     * Docs</a>.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.createFile#String-boolean}
+     *
+     * @param fileName Name of the file to create.
+     * @param overwrite Whether or not to overwrite, should the file exist.
+     * @return A {@link Mono} containing a {@link DataLakeFileAsyncClient} used to interact with the file created.
+     */
+    public Mono<DataLakeFileAsyncClient> createFile(String fileName, boolean overwrite) {
+        DataLakeRequestConditions requestConditions = new DataLakeRequestConditions();
+        if (!overwrite) {
+            requestConditions.setIfNoneMatch(Constants.HeaderConstants.ETAG_WILDCARD);
+        }
         try {
-            return createFileWithResponse(fileName, null, null, null, null, null).flatMap(FluxUtil::toMono);
+            return createFileWithResponse(fileName, null, null, null, null, requestConditions)
+                .flatMap(FluxUtil::toMono);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -285,8 +309,8 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
     }
 
     /**
-     * Creates a new sub-directory within a directory. If a sub-directory with the same name already exists, the
-     * sub-directory will be overwritten. For more information, see the
+     * Creates a new sub-directory within a directory. By default this method will not overwrite an existing
+     * sub-directory. For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/datalakestoragegen2/path/create">Azure Docs</a>.
      *
      * <p><strong>Code Samples</strong></p>
@@ -298,8 +322,29 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
      * created.
      */
     public Mono<DataLakeDirectoryAsyncClient> createSubdirectory(String subdirectoryName) {
+        return createSubdirectory(subdirectoryName, false);
+    }
+
+    /**
+     * Creates a new sub-directory within a directory. For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/datalakestoragegen2/path/create">Azure Docs</a>.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.createSubdirectory#String-boolean}
+     *
+     * @param subdirectoryName Name of the sub-directory to create.
+     * @param overwrite Whether or not to overwrite, should the sub directory exist.
+     * @return A {@link Mono} containing a {@link DataLakeDirectoryAsyncClient} used to interact with the directory
+     * created.
+     */
+    public Mono<DataLakeDirectoryAsyncClient> createSubdirectory(String subdirectoryName, boolean overwrite) {
+        DataLakeRequestConditions requestConditions = new DataLakeRequestConditions();
+        if (!overwrite) {
+            requestConditions.setIfNoneMatch(Constants.HeaderConstants.ETAG_WILDCARD);
+        }
         try {
-            return createSubdirectoryWithResponse(subdirectoryName, null, null, null, null, null)
+            return createSubdirectoryWithResponse(subdirectoryName, null, null, null, null, requestConditions)
                 .flatMap(FluxUtil::toMono);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -391,17 +436,19 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.rename#String}
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.rename#String-String}
      *
+     * @param destinationFileSystem The file system of the destination within the account.
+     * {@code null} for the current file system.
      * @param destinationPath Relative path from the file system to rename the directory to, excludes the file system
      * name. For example if you want to move a directory with fileSystem = "myfilesystem", path = "mydir/mysubdir" to
      * another path in myfilesystem (ex: newdir) then set the destinationPath = "newdir"
      * @return A {@link Mono} containing a {@link DataLakeDirectoryAsyncClient} used to interact with the new directory
      * created.
      */
-    public Mono<DataLakeDirectoryAsyncClient> rename(String destinationPath) {
+    public Mono<DataLakeDirectoryAsyncClient> rename(String destinationFileSystem, String destinationPath) {
         try {
-            return renameWithResponse(destinationPath, null, null).flatMap(FluxUtil::toMono);
+            return renameWithResponse(destinationFileSystem, destinationPath, null, null).flatMap(FluxUtil::toMono);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -414,8 +461,10 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.renameWithResponse#String-DataLakeRequestConditions-DataLakeRequestConditions}
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.renameWithResponse#String-String-DataLakeRequestConditions-DataLakeRequestConditions}
      *
+     * @param destinationFileSystem The file system of the destination within the account.
+     * {@code null} for the current file system.
      * @param destinationPath Relative path from the file system to rename the directory to, excludes the file system
      * name. For example if you want to move a directory with fileSystem = "myfilesystem", path = "mydir/mysubdir" to
      * another path in myfilesystem (ex: newdir) then set the destinationPath = "newdir"
@@ -424,12 +473,13 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains a {@link
      * DataLakeDirectoryAsyncClient} used to interact with the directory created.
      */
-    public Mono<Response<DataLakeDirectoryAsyncClient>> renameWithResponse(String destinationPath,
-        DataLakeRequestConditions sourceRequestConditions, DataLakeRequestConditions destinationRequestConditions) {
+    public Mono<Response<DataLakeDirectoryAsyncClient>> renameWithResponse(String destinationFileSystem,
+        String destinationPath, DataLakeRequestConditions sourceRequestConditions,
+        DataLakeRequestConditions destinationRequestConditions) {
         try {
-            return withContext(context -> renameWithResponse(destinationPath, sourceRequestConditions,
-                destinationRequestConditions, context)).map(response -> new SimpleResponse<>(response,
-                    new DataLakeDirectoryAsyncClient(response.getValue())));
+            return withContext(context -> renameWithResponse(destinationFileSystem, destinationPath,
+                sourceRequestConditions, destinationRequestConditions, context)).map(
+                    response -> new SimpleResponse<>(response, new DataLakeDirectoryAsyncClient(response.getValue())));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }

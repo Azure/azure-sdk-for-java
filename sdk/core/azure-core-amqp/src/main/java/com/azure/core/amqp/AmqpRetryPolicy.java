@@ -69,7 +69,7 @@ public abstract class AmqpRetryPolicy {
      * @return The amount of time to delay before retrying the associated operation; if {@code null}, then the operation
      * is no longer eligible to be retried.
      */
-    public Duration calculateRetryDelay(Exception lastException, int retryCount) {
+    public Duration calculateRetryDelay(Throwable lastException, int retryCount) {
         if (retryOptions.getDelay() == Duration.ZERO
             || retryOptions.getMaxDelay() == Duration.ZERO
             || retryCount > retryOptions.getMaxRetries()) {
@@ -138,7 +138,7 @@ public abstract class AmqpRetryPolicy {
      * @param exception An exception that was observed for the operation to be retried.
      * @return true if the exception is a retriable exception, otherwise false.
      */
-    private static boolean isRetriableException(Exception exception) {
+    private static boolean isRetriableException(Throwable exception) {
         return (exception instanceof AmqpException) && ((AmqpException) exception).isTransient();
     }
 }

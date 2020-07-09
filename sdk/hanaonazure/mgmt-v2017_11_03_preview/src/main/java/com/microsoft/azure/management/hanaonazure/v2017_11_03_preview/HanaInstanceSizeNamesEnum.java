@@ -43,11 +43,11 @@ public final class HanaInstanceSizeNamesEnum extends ExpandableStringEnum<HanaIn
     /** Static value S112 for HanaInstanceSizeNamesEnum. */
     public static final HanaInstanceSizeNamesEnum S112 = fromString("S112");
 
+    /** Static value S224 for HanaInstanceSizeNamesEnum. */
+    public static final HanaInstanceSizeNamesEnum S224 = fromString("S224");
+
     /** Static value S224m for HanaInstanceSizeNamesEnum. */
     public static final HanaInstanceSizeNamesEnum S224M = fromString("S224m");
-
-    /** Static value S224o for HanaInstanceSizeNamesEnum. */
-    public static final HanaInstanceSizeNamesEnum S224O = fromString("S224o");
 
     /** Static value S224om for HanaInstanceSizeNamesEnum. */
     public static final HanaInstanceSizeNamesEnum S224OM = fromString("S224om");
@@ -60,12 +60,6 @@ public final class HanaInstanceSizeNamesEnum extends ExpandableStringEnum<HanaIn
 
     /** Static value S224ooo for HanaInstanceSizeNamesEnum. */
     public static final HanaInstanceSizeNamesEnum S224OOO = fromString("S224ooo");
-
-    /** Static value S224oxm for HanaInstanceSizeNamesEnum. */
-    public static final HanaInstanceSizeNamesEnum S224OXM = fromString("S224oxm");
-
-    /** Static value S224oxxm for HanaInstanceSizeNamesEnum. */
-    public static final HanaInstanceSizeNamesEnum S224OXXM = fromString("S224oxxm");
 
     /** Static value S384 for HanaInstanceSizeNamesEnum. */
     public static final HanaInstanceSizeNamesEnum S384 = fromString("S384");

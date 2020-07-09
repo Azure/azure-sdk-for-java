@@ -2,8 +2,8 @@
 // Licensed under the MIT License.
 
 module com.azure.core.http.okhttp {
-
     requires transitive com.azure.core;
+
     requires okhttp3;
     requires okio;
 

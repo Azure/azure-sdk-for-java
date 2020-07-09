@@ -13,6 +13,7 @@ import com.azure.storage.blob.specialized.BlobLeaseAsyncClient;
 import com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient;
 import com.azure.storage.file.datalake.DataLakeFileAsyncClient;
 import com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient;
+import com.azure.storage.file.datalake.implementation.util.DataLakeImplUtils;
 import reactor.core.publisher.Mono;
 
 import java.net.URL;
@@ -101,7 +102,8 @@ public final class DataLakeLeaseAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<String>> acquireLeaseWithResponse(int duration,
         RequestConditions modifiedRequestConditions) {
-        return this.blobLeaseAsyncClient.acquireLeaseWithResponse(duration, modifiedRequestConditions);
+        return this.blobLeaseAsyncClient.acquireLeaseWithResponse(duration, modifiedRequestConditions)
+            .onErrorMap(DataLakeImplUtils::transformBlobStorageException);
     }
 
     /**
@@ -132,7 +134,8 @@ public final class DataLakeLeaseAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<String>> renewLeaseWithResponse(RequestConditions modifiedRequestConditions) {
-        return blobLeaseAsyncClient.renewLeaseWithResponse(modifiedRequestConditions);
+        return blobLeaseAsyncClient.renewLeaseWithResponse(modifiedRequestConditions)
+            .onErrorMap(DataLakeImplUtils::transformBlobStorageException);
     }
 
     /**
@@ -163,7 +166,8 @@ public final class DataLakeLeaseAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> releaseLeaseWithResponse(RequestConditions modifiedRequestConditions) {
-        return blobLeaseAsyncClient.releaseLeaseWithResponse(modifiedRequestConditions);
+        return blobLeaseAsyncClient.releaseLeaseWithResponse(modifiedRequestConditions)
+            .onErrorMap(DataLakeImplUtils::transformBlobStorageException);
     }
 
     /**
@@ -202,7 +206,8 @@ public final class DataLakeLeaseAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Integer>> breakLeaseWithResponse(Integer breakPeriodInSeconds,
         RequestConditions modifiedRequestConditions) {
-        return blobLeaseAsyncClient.breakLeaseWithResponse(breakPeriodInSeconds, modifiedRequestConditions);
+        return blobLeaseAsyncClient.breakLeaseWithResponse(breakPeriodInSeconds, modifiedRequestConditions)
+            .onErrorMap(DataLakeImplUtils::transformBlobStorageException);
     }
 
     /**
@@ -236,7 +241,8 @@ public final class DataLakeLeaseAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<String>> changeLeaseWithResponse(String proposedId,
         RequestConditions modifiedRequestConditions) {
-        return blobLeaseAsyncClient.changeLeaseWithResponse(proposedId, modifiedRequestConditions);
+        return blobLeaseAsyncClient.changeLeaseWithResponse(proposedId, modifiedRequestConditions)
+            .onErrorMap(DataLakeImplUtils::transformBlobStorageException);
     }
 
     /**

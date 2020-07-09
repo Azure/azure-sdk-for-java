@@ -34,7 +34,7 @@ public final class HttpTraceUtil {
      * mapping is defined in <a
      * href="https://github.com/googleapis/googleapis/blob/master/google/rpc/code.proto">Google API
      * canonical error code</a>, and the behavior is defined in <a
-     * href="https://github.com/census-instrumentation/opentelemetry-specs/blob/master/trace/HTTP.md">OpenTelemetry
+     * href="https://github.com/census-instrumentation/opencensus-specs/blob/master/trace/HTTP.md">OpenTelemetry
      * Specs</a>.
      *
      * @param statusCode the HTTP response status code. {@code 0} means invalid response.

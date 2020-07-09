@@ -9,6 +9,7 @@ import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.CopyStatusType;
+import com.azure.storage.blob.options.PageBlobCreateOptions;
 import com.azure.storage.blob.models.PageBlobItem;
 import com.azure.storage.blob.models.PageBlobRequestConditions;
 import com.azure.storage.blob.models.PageList;
@@ -32,6 +33,7 @@ import java.util.Map;
 public class PageBlobClientJavaDocCodeSnippets {
     private PageBlobClient client = new SpecializedBlobClientBuilder().buildPageBlobClient();
     private Map<String, String> metadata = Collections.singletonMap("metadata", "value");
+    private Map<String, String> tags = Collections.singletonMap("tag", "value");
     private String leaseId = "leaseId";
     private Duration timeout = Duration.ofSeconds(30);
     private long size = 1024;
@@ -81,6 +83,28 @@ public class PageBlobClientJavaDocCodeSnippets {
 
         System.out.printf("Created page blob with sequence number %s%n", pageBlob.getBlobSequenceNumber());
         // END: com.azure.storage.blob.specialized.PageBlobClient.createWithResponse#long-Long-BlobHttpHeaders-Map-BlobRequestConditions-Duration-Context
+    }
+
+    /**
+     * Code snippets for {@link PageBlobClient#createWithResponse(PageBlobCreateOptions, Duration, Context)}
+     */
+    public void createWithResponse2CodeSnippet() {
+        // BEGIN: com.azure.storage.blob.specialized.PageBlobClient.createWithResponse#PageBlobCreateOptions-Duration-Context
+        BlobHttpHeaders headers = new BlobHttpHeaders()
+            .setContentLanguage("en-US")
+            .setContentType("binary");
+        BlobRequestConditions blobRequestConditions = new BlobRequestConditions().setLeaseId(leaseId);
+        Context context = new Context(key, value);
+
+        PageBlobItem pageBlob = client
+            .createWithResponse(new PageBlobCreateOptions(size).setSequenceNumber(sequenceNumber)
+                    .setHeaders(headers).setMetadata(metadata).setTags(tags)
+                    .setRequestConditions(blobRequestConditions), timeout,
+                context)
+            .getValue();
+
+        System.out.printf("Created page blob with sequence number %s%n", pageBlob.getBlobSequenceNumber());
+        // END: com.azure.storage.blob.specialized.PageBlobClient.createWithResponse#PageBlobCreateOptions-Duration-Context
     }
 
     /**
@@ -264,6 +288,43 @@ public class PageBlobClientJavaDocCodeSnippets {
             System.out.printf("Start: %s, End: %s%n", pageRange.getStart(), pageRange.getEnd());
         }
         // END: com.azure.storage.blob.specialized.PageBlobClient.getPageRangesDiffWithResponse#BlobRange-String-BlobRequestConditions-Duration-Context
+    }
+
+    /**
+     * Code snippets for {@link PageBlobClient#getManagedDiskPageRangesDiff(BlobRange, String)}
+     */
+    public void getPageRangesDiffFromUrlCodeSnippet() {
+        // BEGIN: com.azure.storage.blob.specialized.PageBlobClient.getManagedDiskPageRangesDiff#BlobRange-String
+        BlobRange blobRange = new BlobRange(offset);
+        final String prevSnapshotUrl = "previous snapshot url";
+        PageList pageList = client.getPageRangesDiff(blobRange, prevSnapshotUrl);
+
+        System.out.println("Valid Page Ranges are:");
+        for (PageRange pageRange : pageList.getPageRange()) {
+            System.out.printf("Start: %s, End: %s%n", pageRange.getStart(), pageRange.getEnd());
+        }
+        // END: com.azure.storage.blob.specialized.PageBlobClient.getManagedDiskPageRangesDiff#BlobRange-String
+    }
+
+    /**
+     * Code snippets for {@link PageBlobClient#getManagedDiskPageRangesDiffWithResponse(BlobRange, String, BlobRequestConditions,
+     * Duration, Context)}
+     */
+    public void getPageRangesDiffFromUrlWithResponseCodeSnippet() {
+        // BEGIN: com.azure.storage.blob.specialized.PageBlobClient.getManagedDiskPageRangesDiffWithResponse#BlobRange-String-BlobRequestConditions-Duration-Context
+        BlobRange blobRange = new BlobRange(offset);
+        final String prevSnapshotUrl = "previous snapshot url";
+        BlobRequestConditions blobRequestConditions = new BlobRequestConditions().setLeaseId(leaseId);
+        Context context = new Context(key, value);
+
+        PageList pageList = client
+            .getPageRangesDiffWithResponse(blobRange, prevSnapshotUrl, blobRequestConditions, timeout, context).getValue();
+
+        System.out.println("Valid Page Ranges are:");
+        for (PageRange pageRange : pageList.getPageRange()) {
+            System.out.printf("Start: %s, End: %s%n", pageRange.getStart(), pageRange.getEnd());
+        }
+        // END: com.azure.storage.blob.specialized.PageBlobClient.getManagedDiskPageRangesDiffWithResponse#BlobRange-String-BlobRequestConditions-Duration-Context
     }
 
     /**

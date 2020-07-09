@@ -16,6 +16,8 @@ import rx.Observable;
 import com.microsoft.azure.arm.resources.collection.SupportsListingByResourceGroup;
 import com.microsoft.azure.arm.collection.SupportsListing;
 import rx.Completable;
+import org.joda.time.DateTime;
+import java.util.List;
 import com.microsoft.azure.management.storage.v2019_06_01.implementation.StorageAccountsInner;
 import com.microsoft.azure.arm.model.HasInner;
 
@@ -75,6 +77,18 @@ public interface StorageAccounts extends SupportsCreating<StorageAccount.Definit
      * @return the observable for the request
      */
     Completable failoverAsync(String resourceGroupName, String accountName);
+
+    /**
+     * Restore blobs in the specified blob ranges.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case insensitive.
+     * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * @param timeToRestore Restore blob to the specified time.
+     * @param blobRanges Blob ranges to restore.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<BlobRestoreStatus> restoreBlobRangesAsync(String resourceGroupName, String accountName, DateTime timeToRestore, List<BlobRestoreRange> blobRanges);
 
     /**
      * Revoke user delegation keys.

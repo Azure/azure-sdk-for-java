@@ -39,7 +39,7 @@ public final class FileReadHeaders {
     private String version;
     private String acceptRanges;
     private DateTimeRfc1123 dateProperty;
-    private Boolean isServerEncrypted;
+    private Boolean serverEncrypted;
     private String encryptionKeySha256;
     private byte[] fileContentMD5;
     private byte[] contentCrc64;
@@ -692,7 +692,7 @@ public final class FileReadHeaders {
      * @return the isServerEncrypted value.
      */
     public Boolean isServerEncrypted() {
-        return this.isServerEncrypted;
+        return this.serverEncrypted;
     }
 
     /**
@@ -702,11 +702,11 @@ public final class FileReadHeaders {
      * (when the file is unencrypted, or if only parts of the file/application
      * metadata are encrypted).
      *
-     * @param isServerEncrypted the isServerEncrypted value to set.
+     * @param serverEncrypted the isServerEncrypted value to set.
      * @return the FileReadHeaders object itself.
      */
-    public FileReadHeaders setIsServerEncrypted(Boolean isServerEncrypted) {
-        this.isServerEncrypted = isServerEncrypted;
+    public FileReadHeaders setServerEncrypted(Boolean serverEncrypted) {
+        this.serverEncrypted = serverEncrypted;
         return this;
     }
 

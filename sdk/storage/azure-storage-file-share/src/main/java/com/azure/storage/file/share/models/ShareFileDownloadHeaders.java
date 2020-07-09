@@ -230,6 +230,27 @@ public final class ShareFileDownloadHeaders {
     private String fileParentId;
 
     /*
+     * When a file is leased, specifies whether the lease is of infinite or
+     * fixed duration. Possible values include: 'infinite', 'fixed'
+     */
+    @JsonProperty(value = "x-ms-lease-duration")
+    private LeaseDurationType leaseDuration;
+
+    /*
+     * Lease state of the file. Possible values include: 'available', 'leased',
+     * 'expired', 'breaking', 'broken'
+     */
+    @JsonProperty(value = "x-ms-lease-state")
+    private LeaseStateType leaseState;
+
+    /*
+     * The current lease status of the file. Possible values include: 'locked',
+     * 'unlocked'
+     */
+    @JsonProperty(value = "x-ms-lease-status")
+    private LeaseStatusType leaseStatus;
+
+    /*
      * The errorCode property.
      */
     @JsonProperty(value = "x-ms-error-code")
@@ -943,6 +964,74 @@ public final class ShareFileDownloadHeaders {
      */
     public ShareFileDownloadHeaders setFileParentId(String fileParentId) {
         this.fileParentId = fileParentId;
+        return this;
+    }
+
+    /**
+     * Get the leaseDuration property: When a file is leased, specifies whether
+     * the lease is of infinite or fixed duration. Possible values include:
+     * 'infinite', 'fixed'.
+     *
+     * @return the leaseDuration value.
+     */
+    public LeaseDurationType getLeaseDuration() {
+        return this.leaseDuration;
+    }
+
+    /**
+     * Set the leaseDuration property: When a file is leased, specifies whether
+     * the lease is of infinite or fixed duration. Possible values include:
+     * 'infinite', 'fixed'.
+     *
+     * @param leaseDuration the leaseDuration value to set.
+     * @return the ShareFileDownloadHeaders object itself.
+     */
+    public ShareFileDownloadHeaders setLeaseDuration(LeaseDurationType leaseDuration) {
+        this.leaseDuration = leaseDuration;
+        return this;
+    }
+
+    /**
+     * Get the leaseState property: Lease state of the file. Possible values
+     * include: 'available', 'leased', 'expired', 'breaking', 'broken'.
+     *
+     * @return the leaseState value.
+     */
+    public LeaseStateType getLeaseState() {
+        return this.leaseState;
+    }
+
+    /**
+     * Set the leaseState property: Lease state of the file. Possible values
+     * include: 'available', 'leased', 'expired', 'breaking', 'broken'.
+     *
+     * @param leaseState the leaseState value to set.
+     * @return the ShareFileDownloadHeaders object itself.
+     */
+    public ShareFileDownloadHeaders setLeaseState(LeaseStateType leaseState) {
+        this.leaseState = leaseState;
+        return this;
+    }
+
+    /**
+     * Get the leaseStatus property: The current lease status of the file.
+     * Possible values include: 'locked', 'unlocked'.
+     *
+     * @return the leaseStatus value.
+     */
+    public LeaseStatusType getLeaseStatus() {
+        return this.leaseStatus;
+    }
+
+    /**
+     * Set the leaseStatus property: The current lease status of the file.
+     * Possible values include: 'locked', 'unlocked'.
+     *
+     * @param leaseStatus the leaseStatus value to set.
+     * @return the ShareFileDownloadHeaders object itself.
+     */
+    public ShareFileDownloadHeaders setLeaseStatus(LeaseStatusType leaseStatus) {
+        this.leaseStatus = leaseStatus;
         return this;
     }
 

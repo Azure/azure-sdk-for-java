@@ -45,7 +45,8 @@ public class ExportPolicyRule {
     private Boolean nfsv3;
 
     /**
-     * Allows NFSv4 protocol.
+     * Deprecated: Will use the NFSv4.1 protocol, please use swagger version
+     * 2019-07-01 or later.
      */
     @JsonProperty(value = "nfsv4")
     private Boolean nfsv4;
@@ -158,7 +159,7 @@ public class ExportPolicyRule {
     }
 
     /**
-     * Get allows NFSv4 protocol.
+     * Get deprecated: Will use the NFSv4.1 protocol, please use swagger version 2019-07-01 or later.
      *
      * @return the nfsv4 value
      */
@@ -167,7 +168,7 @@ public class ExportPolicyRule {
     }
 
     /**
-     * Set allows NFSv4 protocol.
+     * Set deprecated: Will use the NFSv4.1 protocol, please use swagger version 2019-07-01 or later.
      *
      * @param nfsv4 the nfsv4 value to set
      * @return the ExportPolicyRule object itself.

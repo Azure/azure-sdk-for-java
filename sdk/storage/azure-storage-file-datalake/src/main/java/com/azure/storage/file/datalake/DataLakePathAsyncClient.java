@@ -11,11 +11,12 @@ import com.azure.core.util.CoreUtils;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobContainerAsyncClient;
-import com.azure.storage.blob.BlobServiceVersion;
 import com.azure.storage.blob.BlobUrlParts;
 import com.azure.storage.blob.specialized.BlockBlobAsyncClient;
 import com.azure.storage.blob.specialized.SpecializedBlobClientBuilder;
+import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.Utility;
+import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.file.datalake.implementation.DataLakeStorageClientBuilder;
 import com.azure.storage.file.datalake.implementation.DataLakeStorageClientImpl;
 import com.azure.storage.file.datalake.implementation.models.LeaseAccessConditions;
@@ -25,6 +26,7 @@ import com.azure.storage.file.datalake.implementation.models.PathRenameMode;
 import com.azure.storage.file.datalake.implementation.models.PathResourceType;
 import com.azure.storage.file.datalake.implementation.models.SourceModifiedAccessConditions;
 import com.azure.storage.file.datalake.implementation.util.DataLakeImplUtils;
+import com.azure.storage.file.datalake.implementation.util.TransformUtils;
 import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
 import com.azure.storage.file.datalake.models.PathAccessControl;
 import com.azure.storage.file.datalake.models.PathAccessControlEntry;
@@ -33,9 +35,12 @@ import com.azure.storage.file.datalake.models.PathInfo;
 import com.azure.storage.file.datalake.models.PathItem;
 import com.azure.storage.file.datalake.models.PathPermissions;
 import com.azure.storage.file.datalake.models.PathProperties;
+import com.azure.storage.file.datalake.models.UserDelegationKey;
+import com.azure.storage.file.datalake.sas.DataLakeServiceSasSignatureValues;
 import reactor.core.publisher.Mono;
 
 import java.nio.charset.StandardCharsets;
+import java.time.OffsetDateTime;
 import java.util.Base64;
 import java.util.List;
 import java.util.Map;
@@ -43,6 +48,8 @@ import java.util.Objects;
 
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;
+import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
+import static com.azure.storage.common.Utility.STORAGE_TRACING_NAMESPACE_VALUE;
 
 /**
  * This class provides a client that contains all operations that apply to any path object.
@@ -51,15 +58,15 @@ public class DataLakePathAsyncClient {
 
     private final ClientLogger logger = new ClientLogger(DataLakePathAsyncClient.class);
 
-    protected final DataLakeStorageClientImpl dataLakeStorage;
+    final DataLakeStorageClientImpl dataLakeStorage;
     private final String accountName;
     private final String fileSystemName;
-    private final String pathName;
+    final String pathName;
     private final DataLakeServiceVersion serviceVersion;
 
-    protected PathResourceType pathResourceType;
+    final PathResourceType pathResourceType;
 
-    protected final BlockBlobAsyncClient blockBlobAsyncClient;
+    final BlockBlobAsyncClient blockBlobAsyncClient;
 
     /**
      * Package-private constructor for use by {@link DataLakePathClientBuilder}.
@@ -189,7 +196,7 @@ public class DataLakePathAsyncClient {
     }
 
     /**
-     * Creates a resource.
+     * Creates a resource. By default this method will not overwrite an existing path.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -203,7 +210,34 @@ public class DataLakePathAsyncClient {
      */
     public Mono<PathInfo> create() {
         try {
-            return createWithResponse(null, null, null, null, null).flatMap(FluxUtil::toMono);
+            return create(false);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    /**
+     * Creates a resource.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.file.datalake.DataLakePathAsyncClient.create#boolean}
+     *
+     * <p>For more information see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/datalakestoragegen2/path/create">Azure
+     * Docs</a></p>
+     *
+     * @param overwrite Whether or not to overwrite, should data exist on the file.
+     *
+     * @return A reactive response containing information about the created resource.
+     */
+    public Mono<PathInfo> create(boolean overwrite) {
+        try {
+            DataLakeRequestConditions requestConditions = new DataLakeRequestConditions();
+            if (!overwrite) {
+                requestConditions.setIfNoneMatch(Constants.HeaderConstants.ETAG_WILDCARD);
+            }
+            return createWithResponse(null, null, null, null, requestConditions).flatMap(FluxUtil::toMono);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -231,8 +265,8 @@ public class DataLakePathAsyncClient {
     public Mono<Response<PathInfo>> createWithResponse(String permissions, String umask, PathHttpHeaders headers,
         Map<String, String> metadata, DataLakeRequestConditions requestConditions) {
         try {
-            return withContext(context -> createWithResponse(permissions, umask, pathResourceType, headers, metadata,
-                requestConditions, context));
+            return withContext(context -> createWithResponse(permissions, umask, pathResourceType,
+                headers, metadata, requestConditions, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -250,8 +284,10 @@ public class DataLakePathAsyncClient {
             .setIfModifiedSince(requestConditions.getIfModifiedSince())
             .setIfUnmodifiedSince(requestConditions.getIfUnmodifiedSince());
 
+        context = context == null ? Context.NONE : context;
         return this.dataLakeStorage.paths().createWithRestResponseAsync(resourceType, null, null, null, null,
-            buildMetadataString(metadata), permissions, umask, null, null, headers, lac, mac, null, context)
+            buildMetadataString(metadata), permissions, umask, null, null, headers, lac, mac, null,
+            context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(response -> new SimpleResponse<>(response, new PathInfo(response.getDeserializedHeaders().getETag(),
                 response.getDeserializedHeaders().getLastModified())));
     }
@@ -275,7 +311,9 @@ public class DataLakePathAsyncClient {
             .setIfModifiedSince(requestConditions.getIfModifiedSince())
             .setIfUnmodifiedSince(requestConditions.getIfUnmodifiedSince());
 
-        return this.dataLakeStorage.paths().deleteWithRestResponseAsync(recursive, null, null, null, lac, mac, context)
+        context = context == null ? Context.NONE : context;
+        return this.dataLakeStorage.paths().deleteWithRestResponseAsync(recursive, null, null, null, lac, mac,
+            context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(response -> new SimpleResponse<>(response, null));
     }
 
@@ -320,7 +358,8 @@ public class DataLakePathAsyncClient {
         DataLakeRequestConditions requestConditions) {
         try {
             return this.blockBlobAsyncClient.setMetadataWithResponse(metadata,
-                Transforms.toBlobRequestConditions(requestConditions));
+                Transforms.toBlobRequestConditions(requestConditions))
+                .onErrorMap(DataLakeImplUtils::transformBlobStorageException);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -367,7 +406,8 @@ public class DataLakePathAsyncClient {
         DataLakeRequestConditions requestConditions) {
         try {
             return this.blockBlobAsyncClient.setHttpHeadersWithResponse(Transforms.toBlobHttpHeaders(headers),
-                Transforms.toBlobRequestConditions(requestConditions));
+                Transforms.toBlobRequestConditions(requestConditions))
+                .onErrorMap(DataLakeImplUtils::transformBlobStorageException);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -409,7 +449,49 @@ public class DataLakePathAsyncClient {
     public Mono<Response<PathProperties>> getPropertiesWithResponse(DataLakeRequestConditions requestConditions) {
         try {
             return blockBlobAsyncClient.getPropertiesWithResponse(Transforms.toBlobRequestConditions(requestConditions))
+                .onErrorMap(DataLakeImplUtils::transformBlobStorageException)
                 .map(response -> new SimpleResponse<>(response, Transforms.toPathProperties(response.getValue())));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    /**
+     * Determines if the path this client represents exists in the cloud.
+     * <p>Note that this method does not guarantee that the path type (file/directory) matches expectations.</p>
+     * <p>For example, a DataLakeFileClient representing a path to a datalake directory will return true, and vice
+     * versa.</p>
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.file.datalake.DataLakePathAsyncClient.exists}
+     *
+     * @return true if the path exists, false if it doesn't
+     */
+    public Mono<Boolean> exists() {
+        try {
+            return existsWithResponse().flatMap(FluxUtil::toMono);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    /**
+     * Determines if the path this client represents exists in the cloud.
+     * <p>Note that this method does not guarantee that the path type (file/directory) matches expectations.</p>
+     * <p>For example, a DataLakeFileClient representing a path to a datalake directory will return true, and vice
+     * versa.</p>
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.file.datalake.DataLakePathAsyncClient.existsWithResponse}
+     *
+     * @return true if the path exists, false if it doesn't
+     */
+    public Mono<Response<Boolean>> existsWithResponse() {
+        try {
+            return blockBlobAsyncClient.existsWithResponse()
+                .onErrorMap(DataLakeImplUtils::transformBlobStorageException);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -458,8 +540,8 @@ public class DataLakePathAsyncClient {
     public Mono<Response<PathInfo>> setAccessControlListWithResponse(List<PathAccessControlEntry> accessControlList,
         String group, String owner, DataLakeRequestConditions requestConditions) {
         try {
-            return withContext(context -> setAccessControlWithResponse(accessControlList, null, group, owner,
-                requestConditions, context));
+            return withContext(context -> setAccessControlWithResponse(accessControlList,
+                null, group, owner, requestConditions, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -533,8 +615,10 @@ public class DataLakePathAsyncClient {
             ? null
             : PathAccessControlEntry.serializeList(accessControlList);
 
+        context = context == null ? Context.NONE : context;
         return this.dataLakeStorage.paths().setAccessControlWithRestResponseAsync(null, owner, group, permissionsString,
-            accessControlListString, null, lac, mac, context)
+            accessControlListString, null, lac, mac,
+            context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(response -> new SimpleResponse<>(response, new PathInfo(response.getDeserializedHeaders().getETag(),
                 response.getDeserializedHeaders().getLastModified())));
     }
@@ -577,8 +661,8 @@ public class DataLakePathAsyncClient {
     public Mono<Response<PathAccessControl>> getAccessControlWithResponse(boolean userPrincipalNameReturned,
         DataLakeRequestConditions requestConditions) {
         try {
-            return withContext(context -> getAccessControlWithResponse(userPrincipalNameReturned, requestConditions,
-                context));
+            return withContext(context -> getAccessControlWithResponse(userPrincipalNameReturned,
+                requestConditions, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -595,8 +679,10 @@ public class DataLakePathAsyncClient {
             .setIfModifiedSince(requestConditions.getIfModifiedSince())
             .setIfUnmodifiedSince(requestConditions.getIfUnmodifiedSince());
 
+        context = context == null ? Context.NONE : context;
         return this.dataLakeStorage.paths().getPropertiesWithRestResponseAsync(
-            PathGetPropertiesAction.GET_ACCESS_CONTROL, userPrincipalNameReturned, null, null, lac, mac, context)
+            PathGetPropertiesAction.GET_ACCESS_CONTROL, userPrincipalNameReturned, null, null, lac, mac,
+            context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(response -> new SimpleResponse<>(response, new PathAccessControl(
                 PathAccessControlEntry.parseList(response.getDeserializedHeaders().getAcl()),
                 PathPermissions.parseSymbolic(response.getDeserializedHeaders().getPermissions()),
@@ -606,6 +692,8 @@ public class DataLakePathAsyncClient {
     /**
      * Package-private rename method for use by {@link DataLakeFileAsyncClient} and {@link DataLakeDirectoryAsyncClient}
      *
+     * @param destinationFileSystem The file system of the destination within the account.
+     * {@code null} for the current file system.
      * @param destinationPath The path of the destination relative to the file system name
      * @param sourceRequestConditions {@link DataLakeRequestConditions} against the source.
      * @param destinationRequestConditions {@link DataLakeRequestConditions} against the destination.
@@ -613,7 +701,7 @@ public class DataLakePathAsyncClient {
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains a {@link
      * DataLakePathAsyncClient} used to interact with the path created.
      */
-    Mono<Response<DataLakePathAsyncClient>> renameWithResponse(String destinationPath,
+    Mono<Response<DataLakePathAsyncClient>> renameWithResponse(String destinationFileSystem, String destinationPath,
         DataLakeRequestConditions sourceRequestConditions, DataLakeRequestConditions destinationRequestConditions,
         Context context) {
 
@@ -637,53 +725,101 @@ public class DataLakePathAsyncClient {
             .setIfModifiedSince(destinationRequestConditions.getIfModifiedSince())
             .setIfUnmodifiedSince(destinationRequestConditions.getIfUnmodifiedSince());
 
-        DataLakePathAsyncClient dataLakePathAsyncClient = getPathAsyncClient(destinationPath);
+        DataLakePathAsyncClient dataLakePathAsyncClient = getPathAsyncClient(destinationFileSystem, destinationPath);
 
-        String renameSource = "/" + fileSystemName + "/" + pathName;
+        String renameSource = "/" + this.fileSystemName + "/" + pathName;
 
         return dataLakePathAsyncClient.dataLakeStorage.paths().createWithRestResponseAsync(null /* pathResourceType */,
             null /* continuation */, PathRenameMode.LEGACY, renameSource, sourceRequestConditions.getLeaseId(),
             null /* metadata */, null /* permissions */, null /* umask */, null /* request id */, null /* timeout */,
-            null /* pathHttpHeaders */, destLac, destMac, sourceConditions, context)
+            null /* pathHttpHeaders */, destLac, destMac, sourceConditions,
+            context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(response -> new SimpleResponse<>(response, dataLakePathAsyncClient));
     }
 
     /**
-     * Takes in a destination path and creates a DataLakePathAsyncClient with a new path name
+     * Takes in a destination and creates a DataLakePathAsyncClient with a new path
+     * @param destinationFileSystem The destination file system
      * @param destinationPath The destination path
      * @return A DataLakePathAsyncClient
      */
-    DataLakePathAsyncClient getPathAsyncClient(String destinationPath) {
+    DataLakePathAsyncClient getPathAsyncClient(String destinationFileSystem, String destinationPath) {
+        if (destinationFileSystem == null) {
+            destinationFileSystem = getFileSystemName();
+        }
         if (CoreUtils.isNullOrEmpty(destinationPath)) {
             throw logger.logExceptionAsError(new IllegalArgumentException("'destinationPath' can not be set to null"));
         }
         // Get current Datalake URL and replace current path with user provided path
         String newDfsEndpoint = BlobUrlParts.parse(getPathUrl())
-            .setBlobName(destinationPath).toUrl().toString();
+            .setBlobName(destinationPath).setContainerName(destinationFileSystem).toUrl().toString();
 
         return new DataLakePathAsyncClient(getHttpPipeline(), newDfsEndpoint, serviceVersion, accountName,
-            fileSystemName, destinationPath, pathResourceType,
-            prepareBuilderReplacePath(destinationPath).buildBlockBlobAsyncClient());
+            destinationFileSystem, destinationPath, pathResourceType,
+            prepareBuilderReplacePath(destinationFileSystem, destinationPath).buildBlockBlobAsyncClient());
     }
 
     /**
      * Takes in a destination path and creates a SpecializedBlobClientBuilder with a new path name
+     * @param destinationFileSystem The destination file system
      * @param destinationPath The destination path
      * @return An updated SpecializedBlobClientBuilder
      */
-    SpecializedBlobClientBuilder prepareBuilderReplacePath(String destinationPath) {
+    SpecializedBlobClientBuilder prepareBuilderReplacePath(String destinationFileSystem, String destinationPath) {
+        if (destinationFileSystem == null) {
+            destinationFileSystem = getFileSystemName();
+        }
         // Get current Blob URL and replace current path with user provided path
         String newBlobEndpoint = BlobUrlParts.parse(DataLakeImplUtils.endpointToDesiredEndpoint(getPathUrl(),
-            "blob", "dfs")).setBlobName(destinationPath).toUrl().toString();
+            "blob", "dfs")).setBlobName(destinationPath).setContainerName(destinationFileSystem).toUrl().toString();
 
-        // TODO (gapra) : Investigate how to convert from datalake service version to blob service version
         return new SpecializedBlobClientBuilder()
             .pipeline(getHttpPipeline())
             .endpoint(newBlobEndpoint)
-            .serviceVersion(BlobServiceVersion.getLatest());
+            .serviceVersion(TransformUtils.toBlobServiceVersion(getServiceVersion()));
     }
 
     BlockBlobAsyncClient getBlockBlobAsyncClient() {
         return this.blockBlobAsyncClient;
+    }
+
+    /**
+     * Generates a user delegation SAS for the path using the specified {@link DataLakeServiceSasSignatureValues}.
+     * <p>See {@link DataLakeServiceSasSignatureValues} for more information on how to construct a user delegation SAS.
+     * </p>
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.file.datalake.DataLakePathAsyncClient.generateUserDelegationSas#DataLakeServiceSasSignatureValues-UserDelegationKey}
+     *
+     * @param dataLakeServiceSasSignatureValues {@link DataLakeServiceSasSignatureValues}
+     * @param userDelegationKey A {@link UserDelegationKey} object used to sign the SAS values.
+     * @see DataLakeServiceAsyncClient#getUserDelegationKey(OffsetDateTime, OffsetDateTime) for more information on how
+     * to get a user delegation key.
+     *
+     * @return A {@code String} representing all SAS query parameters.
+     */
+    public String generateUserDelegationSas(DataLakeServiceSasSignatureValues dataLakeServiceSasSignatureValues,
+        UserDelegationKey userDelegationKey) {
+        return blockBlobAsyncClient.generateUserDelegationSas(
+            Transforms.toBlobSasValues(dataLakeServiceSasSignatureValues),
+            Transforms.toBlobUserDelegationKey(userDelegationKey));
+    }
+
+    /**
+     * Generates a service SAS for the path using the specified {@link DataLakeServiceSasSignatureValues}
+     * Note : The client must be authenticated via {@link StorageSharedKeyCredential}
+     * <p>See {@link DataLakeServiceSasSignatureValues} for more information on how to construct a service SAS.</p>
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.file.datalake.DataLakePathAsyncClient.generateSas#DataLakeServiceSasSignatureValues}
+     *
+     * @param dataLakeServiceSasSignatureValues {@link DataLakeServiceSasSignatureValues}
+     *
+     * @return A {@code String} representing all SAS query parameters.
+     */
+    public String generateSas(DataLakeServiceSasSignatureValues dataLakeServiceSasSignatureValues) {
+        return blockBlobAsyncClient.generateSas(Transforms.toBlobSasValues(dataLakeServiceSasSignatureValues));
     }
 }

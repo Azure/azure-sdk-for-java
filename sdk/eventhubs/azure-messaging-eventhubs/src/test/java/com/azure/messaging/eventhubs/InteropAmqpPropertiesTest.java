@@ -17,6 +17,7 @@ import org.apache.qpid.proton.amqp.messaging.Data;
 import org.apache.qpid.proton.amqp.messaging.MessageAnnotations;
 import org.apache.qpid.proton.message.Message;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import reactor.test.StepVerifier;
 
@@ -26,23 +27,23 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
-import java.util.concurrent.atomic.AtomicReference;
 
 import static com.azure.core.amqp.AmqpMessageConstant.ENQUEUED_TIME_UTC_ANNOTATION_NAME;
 import static com.azure.core.amqp.AmqpMessageConstant.OFFSET_ANNOTATION_NAME;
 import static com.azure.core.amqp.AmqpMessageConstant.SEQUENCE_NUMBER_ANNOTATION_NAME;
+import static com.azure.messaging.eventhubs.EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME;
 import static com.azure.messaging.eventhubs.EventHubClientBuilder.DEFAULT_PREFETCH_COUNT;
-import static com.azure.messaging.eventhubs.TestUtils.MESSAGE_TRACKING_ID;
+import static com.azure.messaging.eventhubs.TestUtils.MESSAGE_ID;
 import static com.azure.messaging.eventhubs.TestUtils.getSymbol;
 import static com.azure.messaging.eventhubs.TestUtils.isMatchingEvent;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
+@Tag(TestUtils.INTEGRATION)
 public class InteropAmqpPropertiesTest extends IntegrationTestBase {
-    private static final String PARTITION_ID = "0";
+    private static final String PARTITION_ID = "4";
     private static final String PAYLOAD = "test-message";
 
     private final MessageSerializer serializer = new EventHubMessageSerializer();
-    private EventHubAsyncClient client;
     private EventHubProducerAsyncClient producer;
     private EventHubConsumerAsyncClient consumer;
     private SendOptions sendOptions;
@@ -55,15 +56,16 @@ public class InteropAmqpPropertiesTest extends IntegrationTestBase {
     protected void beforeTest() {
         sendOptions = new SendOptions().setPartitionId(PARTITION_ID);
 
-        client = createBuilder().shareConnection()
-            .buildAsyncClient();
-        producer = client.createProducer();
-        consumer = client.createConsumer(EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME, DEFAULT_PREFETCH_COUNT);
+        final EventHubClientBuilder builder = createBuilder().shareConnection()
+            .consumerGroup(DEFAULT_CONSUMER_GROUP_NAME)
+            .prefetchCount(DEFAULT_PREFETCH_COUNT);
+        producer = builder.buildAsyncProducerClient();
+        consumer = builder.buildAsyncConsumerClient();
     }
 
     @Override
     protected void afterTest() {
-        dispose(producer, consumer, client);
+        dispose(producer, consumer);
     }
 
     /**
@@ -72,11 +74,10 @@ public class InteropAmqpPropertiesTest extends IntegrationTestBase {
     @Test
     public void interoperableWithDirectProtonAmqpMessage() {
         // Arrange
-        final AtomicReference<EventData> receivedEventData = new AtomicReference<>();
         final String messageTrackingValue = UUID.randomUUID().toString();
 
         final HashMap<String, Object> applicationProperties = new HashMap<>();
-        applicationProperties.put(MESSAGE_TRACKING_ID, messageTrackingValue);
+        applicationProperties.put(MESSAGE_ID, messageTrackingValue);
         applicationProperties.put("first-property", "value-1");
 
         final Message message = Proton.message();
@@ -117,22 +118,6 @@ public class InteropAmqpPropertiesTest extends IntegrationTestBase {
         // receive the event we sent.
         StepVerifier.create(consumer.receiveFromPartition(PARTITION_ID, enqueuedTime)
             .filter(event -> isMatchingEvent(event, messageTrackingValue)).take(1).map(PartitionEvent::getData))
-            .assertNext(event -> {
-                validateAmqpProperties(message, expectedAnnotations, applicationProperties, event);
-                receivedEventData.set(event);
-            })
-            .expectComplete()
-            .verify(TIMEOUT);
-
-        Assertions.assertNotNull(receivedEventData.get());
-
-        System.out.println("Sending another event we received.");
-        final EventPosition enqueuedTime2 = EventPosition.fromEnqueuedTime(Instant.now());
-        producer.send(receivedEventData.get(), sendOptions).block(TIMEOUT);
-
-//        .filter(event -> isMatchingEvent(event, messageTrackingValue))
-        StepVerifier.create(consumer.receiveFromPartition(PARTITION_ID, enqueuedTime2)
-            .take(1).map(PartitionEvent::getData))
             .assertNext(event -> validateAmqpProperties(message, expectedAnnotations, applicationProperties, event))
             .expectComplete()
             .verify(TIMEOUT);

@@ -94,6 +94,11 @@ class JobImpl extends CreatableUpdatableImpl<Job, JobInner, JobImpl> implements 
     }
 
     @Override
+    public DateTime endTime() {
+        return this.inner().endTime();
+    }
+
+    @Override
     public String id() {
         return this.inner().id();
     }
@@ -121,6 +126,11 @@ class JobImpl extends CreatableUpdatableImpl<Job, JobInner, JobImpl> implements 
     @Override
     public Priority priority() {
         return this.inner().priority();
+    }
+
+    @Override
+    public DateTime startTime() {
+        return this.inner().startTime();
     }
 
     @Override

@@ -1,27 +1,27 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://azstoragesdkaccount.file.core.windows.net?restype=service&comp=properties",
+    "Uri" : "https://gaprastg71.file.core.windows.net?restype=service&comp=properties",
     "Headers" : {
-      "x-ms-version" : "2019-02-02",
-      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.5 11.0.4; Windows 10 10.0",
-      "x-ms-client-request-id" : "07919de8-1e86-4985-8f43-d0963f3f2d81",
+      "x-ms-version" : "2019-07-07",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.0.0 (11.0.4; Windows 10 10.0)",
+      "x-ms-client-request-id" : "81d93135-12ac-4aca-8db3-cd043b78fdaf",
       "Content-Type" : "application/xml; charset=utf-8"
     },
     "Response" : {
-      "x-ms-version" : "2019-02-02",
+      "x-ms-version" : "2019-07-07",
       "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
       "x-ms-error-code" : "InvalidXmlNodeValue",
       "retry-after" : "0",
       "Content-Length" : "340",
       "StatusCode" : "400",
-      "x-ms-request-id" : "83e48bcf-a01a-0116-7188-83b7bd000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>InvalidXmlNodeValue</Code><Message>The value for one of the XML nodes is not in the correct format.\nRequestId:83e48bcf-a01a-0116-7188-83b7bd000000\nTime:2019-10-15T18:43:18.0871710Z</Message><XmlNodeName>AllowedMethods</XmlNodeName><XmlNodeValue>NOTAREALHTTPMETHOD</XmlNodeValue></Error>",
-      "Date" : "Tue, 15 Oct 2019 18:43:17 GMT",
-      "x-ms-client-request-id" : "07919de8-1e86-4985-8f43-d0963f3f2d81",
+      "x-ms-request-id" : "9ba99e83-201a-0011-3afa-aa088f000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>InvalidXmlNodeValue</Code><Message>The value for one of the XML nodes is not in the correct format.\nRequestId:9ba99e83-201a-0011-3afa-aa088f000000\nTime:2019-12-04T23:30:40.2060559Z</Message><XmlNodeName>AllowedMethods</XmlNodeName><XmlNodeValue>NOTAREALHTTPMETHOD</XmlNodeValue></Error>",
+      "Date" : "Wed, 04 Dec 2019 23:30:39 GMT",
+      "x-ms-client-request-id" : "81d93135-12ac-4aca-8db3-cd043b78fdaf",
       "Content-Type" : "application/xml"
     },
     "Exception" : null
   } ],
-  "variables" : [ "4a0816bd0d064d7293e9afad8135f20cd5a78ee67a2b4e5ba640ce295c5a08c5" ]
+  "variables" : [ "c1362f52a321436b92c6e3587200b545c558938c9837494f92b0731d5b4d4eca" ]
 }

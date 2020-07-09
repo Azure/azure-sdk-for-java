@@ -1,43 +1,45 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/queueaysncapitestssetinvalidmeta1778180aafc4a0bde",
+    "Uri" : "https://REDACTED.queue.core.windows.net/queueaysncapitestssetinvalidmeta10604036161023d7d",
     "Headers" : {
-      "x-ms-version" : "2018-03-28",
-      "User-Agent" : "azsdk-java-azure-storage-queue/12.0.0-preview.5 11.0.4; Windows 10 10.0",
-      "x-ms-client-request-id" : "8711461a-d822-40fe-9730-9fd7629e26ac"
+      "x-ms-version" : "2019-12-12",
+      "User-Agent" : "azsdk-java-azure-storage-queue/12.6.0-beta.1 (11.0.6; Windows 10 10.0)",
+      "x-ms-client-request-id" : "f3baca7d-1769-4c80-9420-f0dc48606a7b"
     },
     "Response" : {
-      "x-ms-version" : "2018-03-28",
+      "x-ms-version" : "2019-12-12",
       "Server" : "Windows-Azure-Queue/1.0 Microsoft-HTTPAPI/2.0",
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "2f7e8e9b-f003-0082-658d-839126000000",
-      "Date" : "Tue, 15 Oct 2019 19:19:47 GMT"
+      "x-ms-request-id" : "37a3a13d-3003-009b-7303-3a8ca5000000",
+      "Date" : "Thu, 04 Jun 2020 00:05:17 GMT",
+      "x-ms-client-request-id" : "f3baca7d-1769-4c80-9420-f0dc48606a7b"
     },
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/queueaysncapitestssetinvalidmeta1778180aafc4a0bde?comp=metadata",
+    "Uri" : "https://REDACTED.queue.core.windows.net/queueaysncapitestssetinvalidmeta10604036161023d7d?comp=metadata",
     "Headers" : {
-      "x-ms-version" : "2018-03-28",
-      "User-Agent" : "azsdk-java-azure-storage-queue/12.0.0-preview.5 11.0.4; Windows 10 10.0",
-      "x-ms-client-request-id" : "e38cef1a-3901-4169-b9b9-946485dd0993"
+      "x-ms-version" : "2019-12-12",
+      "User-Agent" : "azsdk-java-azure-storage-queue/12.6.0-beta.1 (11.0.6; Windows 10 10.0)",
+      "x-ms-client-request-id" : "edc34dc5-18f4-461a-9b95-011d456fd14e"
     },
     "Response" : {
-      "x-ms-version" : "2018-03-28",
+      "x-ms-version" : "2019-12-12",
       "Server" : "Windows-Azure-Queue/1.0 Microsoft-HTTPAPI/2.0",
       "x-ms-error-code" : "InvalidMetadata",
       "retry-after" : "0",
       "Content-Length" : "260",
       "StatusCode" : "400",
-      "x-ms-request-id" : "2f7e8ea9-f003-0082-718d-839126000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>InvalidMetadata</Code><Message>The metadata specified is invalid. It has characters that are not permitted.\nRequestId:2f7e8ea9-f003-0082-718d-839126000000\nTime:2019-10-15T19:19:48.5151638Z</Message></Error>",
-      "Date" : "Tue, 15 Oct 2019 19:19:47 GMT",
+      "x-ms-request-id" : "37a3a141-3003-009b-7503-3a8ca5000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>InvalidMetadata</Code><Message>The metadata specified is invalid. It has characters that are not permitted.\nRequestId:37a3a141-3003-009b-7503-3a8ca5000000\nTime:2020-06-04T00:05:18.6085352Z</Message></Error>",
+      "Date" : "Thu, 04 Jun 2020 00:05:18 GMT",
+      "x-ms-client-request-id" : "edc34dc5-18f4-461a-9b95-011d456fd14e",
       "Content-Type" : "application/xml"
     },
     "Exception" : null
   } ],
-  "variables" : [ "queueaysncapitestssetinvalidmeta1778180aafc4a0bde" ]
+  "variables" : [ "queueaysncapitestssetinvalidmeta10604036161023d7d" ]
 }

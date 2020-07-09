@@ -42,7 +42,7 @@ public abstract class StorageOutputStream extends OutputStream {
      * @param offset An <code>int</code> which represents the start offset in the data.
      * @param length An <code>int</code> which represents the number of bytes to write.
      */
-    private void writeInternal(final byte[] data, int offset, int length) {
+    protected void writeInternal(final byte[] data, int offset, int length) {
         int chunks = (int) (Math.ceil((double) length / (double) this.writeThreshold));
         Flux.range(0, chunks).map(c -> offset + c * this.writeThreshold)
             .concatMap(pos -> processChunk(data, pos, offset, length))
@@ -125,7 +125,7 @@ public abstract class StorageOutputStream extends OutputStream {
      * <p>
      * <code>true</code> is acceptable for you.
      *
-     * @param byteVal An <code>int</code> which represents the bye value to write.
+     * @param byteVal An <code>int</code> which represents the byte value to write.
      */
     @Override
     public void write(final int byteVal) {

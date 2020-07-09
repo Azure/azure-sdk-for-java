@@ -19,7 +19,7 @@ import com.microsoft.azure.management.storage.v2019_06_01.BlobContainersExtendIm
 import com.microsoft.azure.management.storage.v2019_06_01.BlobContainersGetImmutabilityPolicyHeaders;
 import com.microsoft.azure.management.storage.v2019_06_01.BlobContainersLockImmutabilityPolicyHeaders;
 import com.microsoft.azure.management.storage.v2019_06_01.LeaseContainerRequest;
-import com.microsoft.azure.management.storage.v2019_06_01.PublicAccess;
+import com.microsoft.azure.management.storage.v2019_06_01.ListContainersInclude;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
 import com.microsoft.rest.ServiceCallback;
@@ -29,7 +29,6 @@ import com.microsoft.rest.ServiceResponseWithHeaders;
 import com.microsoft.rest.Validator;
 import java.io.IOException;
 import java.util.List;
-import java.util.Map;
 import okhttp3.ResponseBody;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
@@ -74,15 +73,15 @@ public class BlobContainersInner {
     interface BlobContainersService {
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.storage.v2019_06_01.BlobContainers list" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/blobServices/default/containers")
-        Observable<Response<ResponseBody>> list(@Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Query("$maxpagesize") String maxpagesize, @Query("$filter") String filter, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> list(@Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Query("$maxpagesize") String maxpagesize, @Query("$filter") String filter, @Query("$include") ListContainersInclude include, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.storage.v2019_06_01.BlobContainers create" })
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/blobServices/default/containers/{containerName}")
-        Observable<Response<ResponseBody>> create(@Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("containerName") String containerName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body BlobContainerInner blobContainer, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> create(@Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("containerName") String containerName, @Path("subscriptionId") String subscriptionId, @Body BlobContainerInner blobContainer, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.storage.v2019_06_01.BlobContainers update" })
         @PATCH("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/blobServices/default/containers/{containerName}")
-        Observable<Response<ResponseBody>> update(@Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("containerName") String containerName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body BlobContainerInner blobContainer, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> update(@Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("containerName") String containerName, @Path("subscriptionId") String subscriptionId, @Body BlobContainerInner blobContainer, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.storage.v2019_06_01.BlobContainers get" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/blobServices/default/containers/{containerName}")
@@ -234,7 +233,8 @@ public class BlobContainersInner {
         }
         final String maxpagesize = null;
         final String filter = null;
-        return service.list(resourceGroupName, accountName, this.client.subscriptionId(), this.client.apiVersion(), maxpagesize, filter, this.client.acceptLanguage(), this.client.userAgent())
+        final ListContainersInclude include = null;
+        return service.list(resourceGroupName, accountName, this.client.subscriptionId(), this.client.apiVersion(), maxpagesize, filter, include, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<ListContainerItemInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<ListContainerItemInner>>> call(Response<ResponseBody> response) {
@@ -255,13 +255,14 @@ public class BlobContainersInner {
      * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
      * @param maxpagesize Optional. Specified maximum number of containers that can be included in the list.
      * @param filter Optional. When specified, only container names starting with the filter will be listed.
+     * @param include Optional, used to include the properties for soft deleted blob containers. Possible values include: 'deleted'
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;ListContainerItemInner&gt; object if successful.
      */
-    public PagedList<ListContainerItemInner> list(final String resourceGroupName, final String accountName, final String maxpagesize, final String filter) {
-        ServiceResponse<Page<ListContainerItemInner>> response = listSinglePageAsync(resourceGroupName, accountName, maxpagesize, filter).toBlocking().single();
+    public PagedList<ListContainerItemInner> list(final String resourceGroupName, final String accountName, final String maxpagesize, final String filter, final ListContainersInclude include) {
+        ServiceResponse<Page<ListContainerItemInner>> response = listSinglePageAsync(resourceGroupName, accountName, maxpagesize, filter, include).toBlocking().single();
         return new PagedList<ListContainerItemInner>(response.body()) {
             @Override
             public Page<ListContainerItemInner> nextPage(String nextPageLink) {
@@ -277,13 +278,14 @@ public class BlobContainersInner {
      * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
      * @param maxpagesize Optional. Specified maximum number of containers that can be included in the list.
      * @param filter Optional. When specified, only container names starting with the filter will be listed.
+     * @param include Optional, used to include the properties for soft deleted blob containers. Possible values include: 'deleted'
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<List<ListContainerItemInner>> listAsync(final String resourceGroupName, final String accountName, final String maxpagesize, final String filter, final ListOperationCallback<ListContainerItemInner> serviceCallback) {
+    public ServiceFuture<List<ListContainerItemInner>> listAsync(final String resourceGroupName, final String accountName, final String maxpagesize, final String filter, final ListContainersInclude include, final ListOperationCallback<ListContainerItemInner> serviceCallback) {
         return AzureServiceFuture.fromPageResponse(
-            listSinglePageAsync(resourceGroupName, accountName, maxpagesize, filter),
+            listSinglePageAsync(resourceGroupName, accountName, maxpagesize, filter, include),
             new Func1<String, Observable<ServiceResponse<Page<ListContainerItemInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<ListContainerItemInner>>> call(String nextPageLink) {
@@ -300,11 +302,12 @@ public class BlobContainersInner {
      * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
      * @param maxpagesize Optional. Specified maximum number of containers that can be included in the list.
      * @param filter Optional. When specified, only container names starting with the filter will be listed.
+     * @param include Optional, used to include the properties for soft deleted blob containers. Possible values include: 'deleted'
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;ListContainerItemInner&gt; object
      */
-    public Observable<Page<ListContainerItemInner>> listAsync(final String resourceGroupName, final String accountName, final String maxpagesize, final String filter) {
-        return listWithServiceResponseAsync(resourceGroupName, accountName, maxpagesize, filter)
+    public Observable<Page<ListContainerItemInner>> listAsync(final String resourceGroupName, final String accountName, final String maxpagesize, final String filter, final ListContainersInclude include) {
+        return listWithServiceResponseAsync(resourceGroupName, accountName, maxpagesize, filter, include)
             .map(new Func1<ServiceResponse<Page<ListContainerItemInner>>, Page<ListContainerItemInner>>() {
                 @Override
                 public Page<ListContainerItemInner> call(ServiceResponse<Page<ListContainerItemInner>> response) {
@@ -320,11 +323,12 @@ public class BlobContainersInner {
      * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
      * @param maxpagesize Optional. Specified maximum number of containers that can be included in the list.
      * @param filter Optional. When specified, only container names starting with the filter will be listed.
+     * @param include Optional, used to include the properties for soft deleted blob containers. Possible values include: 'deleted'
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;ListContainerItemInner&gt; object
      */
-    public Observable<ServiceResponse<Page<ListContainerItemInner>>> listWithServiceResponseAsync(final String resourceGroupName, final String accountName, final String maxpagesize, final String filter) {
-        return listSinglePageAsync(resourceGroupName, accountName, maxpagesize, filter)
+    public Observable<ServiceResponse<Page<ListContainerItemInner>>> listWithServiceResponseAsync(final String resourceGroupName, final String accountName, final String maxpagesize, final String filter, final ListContainersInclude include) {
+        return listSinglePageAsync(resourceGroupName, accountName, maxpagesize, filter, include)
             .concatMap(new Func1<ServiceResponse<Page<ListContainerItemInner>>, Observable<ServiceResponse<Page<ListContainerItemInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<ListContainerItemInner>>> call(ServiceResponse<Page<ListContainerItemInner>> page) {
@@ -344,10 +348,11 @@ public class BlobContainersInner {
     ServiceResponse<PageImpl1<ListContainerItemInner>> * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
     ServiceResponse<PageImpl1<ListContainerItemInner>> * @param maxpagesize Optional. Specified maximum number of containers that can be included in the list.
     ServiceResponse<PageImpl1<ListContainerItemInner>> * @param filter Optional. When specified, only container names starting with the filter will be listed.
+    ServiceResponse<PageImpl1<ListContainerItemInner>> * @param include Optional, used to include the properties for soft deleted blob containers. Possible values include: 'deleted'
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;ListContainerItemInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public Observable<ServiceResponse<Page<ListContainerItemInner>>> listSinglePageAsync(final String resourceGroupName, final String accountName, final String maxpagesize, final String filter) {
+    public Observable<ServiceResponse<Page<ListContainerItemInner>>> listSinglePageAsync(final String resourceGroupName, final String accountName, final String maxpagesize, final String filter, final ListContainersInclude include) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -360,7 +365,7 @@ public class BlobContainersInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        return service.list(resourceGroupName, accountName, this.client.subscriptionId(), this.client.apiVersion(), maxpagesize, filter, this.client.acceptLanguage(), this.client.userAgent())
+        return service.list(resourceGroupName, accountName, this.client.subscriptionId(), this.client.apiVersion(), maxpagesize, filter, include, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<ListContainerItemInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<ListContainerItemInner>>> call(Response<ResponseBody> response) {
@@ -387,13 +392,14 @@ public class BlobContainersInner {
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
      * @param containerName The name of the blob container within the specified storage account. Blob container names must be between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every dash (-) character must be immediately preceded and followed by a letter or number.
+     * @param blobContainer Properties of the blob container to create.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the BlobContainerInner object if successful.
      */
-    public BlobContainerInner create(String resourceGroupName, String accountName, String containerName) {
-        return createWithServiceResponseAsync(resourceGroupName, accountName, containerName).toBlocking().single().body();
+    public BlobContainerInner create(String resourceGroupName, String accountName, String containerName, BlobContainerInner blobContainer) {
+        return createWithServiceResponseAsync(resourceGroupName, accountName, containerName, blobContainer).toBlocking().single().body();
     }
 
     /**
@@ -402,12 +408,13 @@ public class BlobContainersInner {
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
      * @param containerName The name of the blob container within the specified storage account. Blob container names must be between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every dash (-) character must be immediately preceded and followed by a letter or number.
+     * @param blobContainer Properties of the blob container to create.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<BlobContainerInner> createAsync(String resourceGroupName, String accountName, String containerName, final ServiceCallback<BlobContainerInner> serviceCallback) {
-        return ServiceFuture.fromResponse(createWithServiceResponseAsync(resourceGroupName, accountName, containerName), serviceCallback);
+    public ServiceFuture<BlobContainerInner> createAsync(String resourceGroupName, String accountName, String containerName, BlobContainerInner blobContainer, final ServiceCallback<BlobContainerInner> serviceCallback) {
+        return ServiceFuture.fromResponse(createWithServiceResponseAsync(resourceGroupName, accountName, containerName, blobContainer), serviceCallback);
     }
 
     /**
@@ -416,11 +423,12 @@ public class BlobContainersInner {
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
      * @param containerName The name of the blob container within the specified storage account. Blob container names must be between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every dash (-) character must be immediately preceded and followed by a letter or number.
+     * @param blobContainer Properties of the blob container to create.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the BlobContainerInner object
      */
-    public Observable<BlobContainerInner> createAsync(String resourceGroupName, String accountName, String containerName) {
-        return createWithServiceResponseAsync(resourceGroupName, accountName, containerName).map(new Func1<ServiceResponse<BlobContainerInner>, BlobContainerInner>() {
+    public Observable<BlobContainerInner> createAsync(String resourceGroupName, String accountName, String containerName, BlobContainerInner blobContainer) {
+        return createWithServiceResponseAsync(resourceGroupName, accountName, containerName, blobContainer).map(new Func1<ServiceResponse<BlobContainerInner>, BlobContainerInner>() {
             @Override
             public BlobContainerInner call(ServiceResponse<BlobContainerInner> response) {
                 return response.body();
@@ -434,10 +442,11 @@ public class BlobContainersInner {
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
      * @param containerName The name of the blob container within the specified storage account. Blob container names must be between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every dash (-) character must be immediately preceded and followed by a letter or number.
+     * @param blobContainer Properties of the blob container to create.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the BlobContainerInner object
      */
-    public Observable<ServiceResponse<BlobContainerInner>> createWithServiceResponseAsync(String resourceGroupName, String accountName, String containerName) {
+    public Observable<ServiceResponse<BlobContainerInner>> createWithServiceResponseAsync(String resourceGroupName, String accountName, String containerName, BlobContainerInner blobContainer) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -450,113 +459,14 @@ public class BlobContainersInner {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        final PublicAccess publicAccess = null;
-        final Map<String, String> metadata = null;
-        BlobContainerInner blobContainer = new BlobContainerInner();
-        blobContainer.withPublicAccess(null);
-        blobContainer.withMetadata(null);
-        return service.create(resourceGroupName, accountName, containerName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), blobContainer, this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<BlobContainerInner>>>() {
-                @Override
-                public Observable<ServiceResponse<BlobContainerInner>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<BlobContainerInner> clientResponse = createDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
-    }
-
-    /**
-     * Creates a new container under the specified account as described by request body. The container resource includes metadata and properties for that container. It does not include a list of the blobs contained by the container.
-     *
-     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case insensitive.
-     * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @param containerName The name of the blob container within the specified storage account. Blob container names must be between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every dash (-) character must be immediately preceded and followed by a letter or number.
-     * @param publicAccess Specifies whether data in the container may be accessed publicly and the level of access. Possible values include: 'Container', 'Blob', 'None'
-     * @param metadata A name-value pair to associate with the container as metadata.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the BlobContainerInner object if successful.
-     */
-    public BlobContainerInner create(String resourceGroupName, String accountName, String containerName, PublicAccess publicAccess, Map<String, String> metadata) {
-        return createWithServiceResponseAsync(resourceGroupName, accountName, containerName, publicAccess, metadata).toBlocking().single().body();
-    }
-
-    /**
-     * Creates a new container under the specified account as described by request body. The container resource includes metadata and properties for that container. It does not include a list of the blobs contained by the container.
-     *
-     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case insensitive.
-     * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @param containerName The name of the blob container within the specified storage account. Blob container names must be between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every dash (-) character must be immediately preceded and followed by a letter or number.
-     * @param publicAccess Specifies whether data in the container may be accessed publicly and the level of access. Possible values include: 'Container', 'Blob', 'None'
-     * @param metadata A name-value pair to associate with the container as metadata.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
-     */
-    public ServiceFuture<BlobContainerInner> createAsync(String resourceGroupName, String accountName, String containerName, PublicAccess publicAccess, Map<String, String> metadata, final ServiceCallback<BlobContainerInner> serviceCallback) {
-        return ServiceFuture.fromResponse(createWithServiceResponseAsync(resourceGroupName, accountName, containerName, publicAccess, metadata), serviceCallback);
-    }
-
-    /**
-     * Creates a new container under the specified account as described by request body. The container resource includes metadata and properties for that container. It does not include a list of the blobs contained by the container.
-     *
-     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case insensitive.
-     * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @param containerName The name of the blob container within the specified storage account. Blob container names must be between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every dash (-) character must be immediately preceded and followed by a letter or number.
-     * @param publicAccess Specifies whether data in the container may be accessed publicly and the level of access. Possible values include: 'Container', 'Blob', 'None'
-     * @param metadata A name-value pair to associate with the container as metadata.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the BlobContainerInner object
-     */
-    public Observable<BlobContainerInner> createAsync(String resourceGroupName, String accountName, String containerName, PublicAccess publicAccess, Map<String, String> metadata) {
-        return createWithServiceResponseAsync(resourceGroupName, accountName, containerName, publicAccess, metadata).map(new Func1<ServiceResponse<BlobContainerInner>, BlobContainerInner>() {
-            @Override
-            public BlobContainerInner call(ServiceResponse<BlobContainerInner> response) {
-                return response.body();
-            }
-        });
-    }
-
-    /**
-     * Creates a new container under the specified account as described by request body. The container resource includes metadata and properties for that container. It does not include a list of the blobs contained by the container.
-     *
-     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case insensitive.
-     * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @param containerName The name of the blob container within the specified storage account. Blob container names must be between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every dash (-) character must be immediately preceded and followed by a letter or number.
-     * @param publicAccess Specifies whether data in the container may be accessed publicly and the level of access. Possible values include: 'Container', 'Blob', 'None'
-     * @param metadata A name-value pair to associate with the container as metadata.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the BlobContainerInner object
-     */
-    public Observable<ServiceResponse<BlobContainerInner>> createWithServiceResponseAsync(String resourceGroupName, String accountName, String containerName, PublicAccess publicAccess, Map<String, String> metadata) {
-        if (resourceGroupName == null) {
-            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
-        }
-        if (accountName == null) {
-            throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
-        }
-        if (containerName == null) {
-            throw new IllegalArgumentException("Parameter containerName is required and cannot be null.");
-        }
-        if (this.client.subscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        if (blobContainer == null) {
+            throw new IllegalArgumentException("Parameter blobContainer is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Validator.validate(metadata);
-        BlobContainerInner blobContainer = new BlobContainerInner();
-        blobContainer.withPublicAccess(publicAccess);
-        blobContainer.withMetadata(metadata);
-        return service.create(resourceGroupName, accountName, containerName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), blobContainer, this.client.userAgent())
+        Validator.validate(blobContainer);
+        return service.create(resourceGroupName, accountName, containerName, this.client.subscriptionId(), blobContainer, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<BlobContainerInner>>>() {
                 @Override
                 public Observable<ServiceResponse<BlobContainerInner>> call(Response<ResponseBody> response) {
@@ -584,13 +494,14 @@ public class BlobContainersInner {
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
      * @param containerName The name of the blob container within the specified storage account. Blob container names must be between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every dash (-) character must be immediately preceded and followed by a letter or number.
+     * @param blobContainer Properties to update for the blob container.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the BlobContainerInner object if successful.
      */
-    public BlobContainerInner update(String resourceGroupName, String accountName, String containerName) {
-        return updateWithServiceResponseAsync(resourceGroupName, accountName, containerName).toBlocking().single().body();
+    public BlobContainerInner update(String resourceGroupName, String accountName, String containerName, BlobContainerInner blobContainer) {
+        return updateWithServiceResponseAsync(resourceGroupName, accountName, containerName, blobContainer).toBlocking().single().body();
     }
 
     /**
@@ -599,12 +510,13 @@ public class BlobContainersInner {
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
      * @param containerName The name of the blob container within the specified storage account. Blob container names must be between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every dash (-) character must be immediately preceded and followed by a letter or number.
+     * @param blobContainer Properties to update for the blob container.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<BlobContainerInner> updateAsync(String resourceGroupName, String accountName, String containerName, final ServiceCallback<BlobContainerInner> serviceCallback) {
-        return ServiceFuture.fromResponse(updateWithServiceResponseAsync(resourceGroupName, accountName, containerName), serviceCallback);
+    public ServiceFuture<BlobContainerInner> updateAsync(String resourceGroupName, String accountName, String containerName, BlobContainerInner blobContainer, final ServiceCallback<BlobContainerInner> serviceCallback) {
+        return ServiceFuture.fromResponse(updateWithServiceResponseAsync(resourceGroupName, accountName, containerName, blobContainer), serviceCallback);
     }
 
     /**
@@ -613,11 +525,12 @@ public class BlobContainersInner {
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
      * @param containerName The name of the blob container within the specified storage account. Blob container names must be between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every dash (-) character must be immediately preceded and followed by a letter or number.
+     * @param blobContainer Properties to update for the blob container.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the BlobContainerInner object
      */
-    public Observable<BlobContainerInner> updateAsync(String resourceGroupName, String accountName, String containerName) {
-        return updateWithServiceResponseAsync(resourceGroupName, accountName, containerName).map(new Func1<ServiceResponse<BlobContainerInner>, BlobContainerInner>() {
+    public Observable<BlobContainerInner> updateAsync(String resourceGroupName, String accountName, String containerName, BlobContainerInner blobContainer) {
+        return updateWithServiceResponseAsync(resourceGroupName, accountName, containerName, blobContainer).map(new Func1<ServiceResponse<BlobContainerInner>, BlobContainerInner>() {
             @Override
             public BlobContainerInner call(ServiceResponse<BlobContainerInner> response) {
                 return response.body();
@@ -631,10 +544,11 @@ public class BlobContainersInner {
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
      * @param containerName The name of the blob container within the specified storage account. Blob container names must be between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every dash (-) character must be immediately preceded and followed by a letter or number.
+     * @param blobContainer Properties to update for the blob container.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the BlobContainerInner object
      */
-    public Observable<ServiceResponse<BlobContainerInner>> updateWithServiceResponseAsync(String resourceGroupName, String accountName, String containerName) {
+    public Observable<ServiceResponse<BlobContainerInner>> updateWithServiceResponseAsync(String resourceGroupName, String accountName, String containerName, BlobContainerInner blobContainer) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -647,113 +561,14 @@ public class BlobContainersInner {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        final PublicAccess publicAccess = null;
-        final Map<String, String> metadata = null;
-        BlobContainerInner blobContainer = new BlobContainerInner();
-        blobContainer.withPublicAccess(null);
-        blobContainer.withMetadata(null);
-        return service.update(resourceGroupName, accountName, containerName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), blobContainer, this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<BlobContainerInner>>>() {
-                @Override
-                public Observable<ServiceResponse<BlobContainerInner>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<BlobContainerInner> clientResponse = updateDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
-    }
-
-    /**
-     * Updates container properties as specified in request body. Properties not mentioned in the request will be unchanged. Update fails if the specified container doesn't already exist.
-     *
-     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case insensitive.
-     * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @param containerName The name of the blob container within the specified storage account. Blob container names must be between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every dash (-) character must be immediately preceded and followed by a letter or number.
-     * @param publicAccess Specifies whether data in the container may be accessed publicly and the level of access. Possible values include: 'Container', 'Blob', 'None'
-     * @param metadata A name-value pair to associate with the container as metadata.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the BlobContainerInner object if successful.
-     */
-    public BlobContainerInner update(String resourceGroupName, String accountName, String containerName, PublicAccess publicAccess, Map<String, String> metadata) {
-        return updateWithServiceResponseAsync(resourceGroupName, accountName, containerName, publicAccess, metadata).toBlocking().single().body();
-    }
-
-    /**
-     * Updates container properties as specified in request body. Properties not mentioned in the request will be unchanged. Update fails if the specified container doesn't already exist.
-     *
-     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case insensitive.
-     * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @param containerName The name of the blob container within the specified storage account. Blob container names must be between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every dash (-) character must be immediately preceded and followed by a letter or number.
-     * @param publicAccess Specifies whether data in the container may be accessed publicly and the level of access. Possible values include: 'Container', 'Blob', 'None'
-     * @param metadata A name-value pair to associate with the container as metadata.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
-     */
-    public ServiceFuture<BlobContainerInner> updateAsync(String resourceGroupName, String accountName, String containerName, PublicAccess publicAccess, Map<String, String> metadata, final ServiceCallback<BlobContainerInner> serviceCallback) {
-        return ServiceFuture.fromResponse(updateWithServiceResponseAsync(resourceGroupName, accountName, containerName, publicAccess, metadata), serviceCallback);
-    }
-
-    /**
-     * Updates container properties as specified in request body. Properties not mentioned in the request will be unchanged. Update fails if the specified container doesn't already exist.
-     *
-     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case insensitive.
-     * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @param containerName The name of the blob container within the specified storage account. Blob container names must be between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every dash (-) character must be immediately preceded and followed by a letter or number.
-     * @param publicAccess Specifies whether data in the container may be accessed publicly and the level of access. Possible values include: 'Container', 'Blob', 'None'
-     * @param metadata A name-value pair to associate with the container as metadata.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the BlobContainerInner object
-     */
-    public Observable<BlobContainerInner> updateAsync(String resourceGroupName, String accountName, String containerName, PublicAccess publicAccess, Map<String, String> metadata) {
-        return updateWithServiceResponseAsync(resourceGroupName, accountName, containerName, publicAccess, metadata).map(new Func1<ServiceResponse<BlobContainerInner>, BlobContainerInner>() {
-            @Override
-            public BlobContainerInner call(ServiceResponse<BlobContainerInner> response) {
-                return response.body();
-            }
-        });
-    }
-
-    /**
-     * Updates container properties as specified in request body. Properties not mentioned in the request will be unchanged. Update fails if the specified container doesn't already exist.
-     *
-     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case insensitive.
-     * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @param containerName The name of the blob container within the specified storage account. Blob container names must be between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every dash (-) character must be immediately preceded and followed by a letter or number.
-     * @param publicAccess Specifies whether data in the container may be accessed publicly and the level of access. Possible values include: 'Container', 'Blob', 'None'
-     * @param metadata A name-value pair to associate with the container as metadata.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the BlobContainerInner object
-     */
-    public Observable<ServiceResponse<BlobContainerInner>> updateWithServiceResponseAsync(String resourceGroupName, String accountName, String containerName, PublicAccess publicAccess, Map<String, String> metadata) {
-        if (resourceGroupName == null) {
-            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
-        }
-        if (accountName == null) {
-            throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
-        }
-        if (containerName == null) {
-            throw new IllegalArgumentException("Parameter containerName is required and cannot be null.");
-        }
-        if (this.client.subscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        if (blobContainer == null) {
+            throw new IllegalArgumentException("Parameter blobContainer is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Validator.validate(metadata);
-        BlobContainerInner blobContainer = new BlobContainerInner();
-        blobContainer.withPublicAccess(publicAccess);
-        blobContainer.withMetadata(metadata);
-        return service.update(resourceGroupName, accountName, containerName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), blobContainer, this.client.userAgent())
+        Validator.validate(blobContainer);
+        return service.update(resourceGroupName, accountName, containerName, this.client.subscriptionId(), blobContainer, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<BlobContainerInner>>>() {
                 @Override
                 public Observable<ServiceResponse<BlobContainerInner>> call(Response<ResponseBody> response) {
@@ -1172,14 +987,13 @@ public class BlobContainersInner {
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
      * @param containerName The name of the blob container within the specified storage account. Blob container names must be between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every dash (-) character must be immediately preceded and followed by a letter or number.
-     * @param immutabilityPeriodSinceCreationInDays The immutability period for the blobs in the container since the policy creation, in days.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the ImmutabilityPolicyInner object if successful.
      */
-    public ImmutabilityPolicyInner createOrUpdateImmutabilityPolicy(String resourceGroupName, String accountName, String containerName, int immutabilityPeriodSinceCreationInDays) {
-        return createOrUpdateImmutabilityPolicyWithServiceResponseAsync(resourceGroupName, accountName, containerName, immutabilityPeriodSinceCreationInDays).toBlocking().single().body();
+    public ImmutabilityPolicyInner createOrUpdateImmutabilityPolicy(String resourceGroupName, String accountName, String containerName) {
+        return createOrUpdateImmutabilityPolicyWithServiceResponseAsync(resourceGroupName, accountName, containerName).toBlocking().single().body();
     }
 
     /**
@@ -1188,13 +1002,12 @@ public class BlobContainersInner {
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
      * @param containerName The name of the blob container within the specified storage account. Blob container names must be between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every dash (-) character must be immediately preceded and followed by a letter or number.
-     * @param immutabilityPeriodSinceCreationInDays The immutability period for the blobs in the container since the policy creation, in days.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<ImmutabilityPolicyInner> createOrUpdateImmutabilityPolicyAsync(String resourceGroupName, String accountName, String containerName, int immutabilityPeriodSinceCreationInDays, final ServiceCallback<ImmutabilityPolicyInner> serviceCallback) {
-        return ServiceFuture.fromHeaderResponse(createOrUpdateImmutabilityPolicyWithServiceResponseAsync(resourceGroupName, accountName, containerName, immutabilityPeriodSinceCreationInDays), serviceCallback);
+    public ServiceFuture<ImmutabilityPolicyInner> createOrUpdateImmutabilityPolicyAsync(String resourceGroupName, String accountName, String containerName, final ServiceCallback<ImmutabilityPolicyInner> serviceCallback) {
+        return ServiceFuture.fromHeaderResponse(createOrUpdateImmutabilityPolicyWithServiceResponseAsync(resourceGroupName, accountName, containerName), serviceCallback);
     }
 
     /**
@@ -1203,12 +1016,11 @@ public class BlobContainersInner {
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
      * @param containerName The name of the blob container within the specified storage account. Blob container names must be between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every dash (-) character must be immediately preceded and followed by a letter or number.
-     * @param immutabilityPeriodSinceCreationInDays The immutability period for the blobs in the container since the policy creation, in days.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ImmutabilityPolicyInner object
      */
-    public Observable<ImmutabilityPolicyInner> createOrUpdateImmutabilityPolicyAsync(String resourceGroupName, String accountName, String containerName, int immutabilityPeriodSinceCreationInDays) {
-        return createOrUpdateImmutabilityPolicyWithServiceResponseAsync(resourceGroupName, accountName, containerName, immutabilityPeriodSinceCreationInDays).map(new Func1<ServiceResponseWithHeaders<ImmutabilityPolicyInner, BlobContainersCreateOrUpdateImmutabilityPolicyHeaders>, ImmutabilityPolicyInner>() {
+    public Observable<ImmutabilityPolicyInner> createOrUpdateImmutabilityPolicyAsync(String resourceGroupName, String accountName, String containerName) {
+        return createOrUpdateImmutabilityPolicyWithServiceResponseAsync(resourceGroupName, accountName, containerName).map(new Func1<ServiceResponseWithHeaders<ImmutabilityPolicyInner, BlobContainersCreateOrUpdateImmutabilityPolicyHeaders>, ImmutabilityPolicyInner>() {
             @Override
             public ImmutabilityPolicyInner call(ServiceResponseWithHeaders<ImmutabilityPolicyInner, BlobContainersCreateOrUpdateImmutabilityPolicyHeaders> response) {
                 return response.body();
@@ -1222,11 +1034,10 @@ public class BlobContainersInner {
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
      * @param containerName The name of the blob container within the specified storage account. Blob container names must be between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every dash (-) character must be immediately preceded and followed by a letter or number.
-     * @param immutabilityPeriodSinceCreationInDays The immutability period for the blobs in the container since the policy creation, in days.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ImmutabilityPolicyInner object
      */
-    public Observable<ServiceResponseWithHeaders<ImmutabilityPolicyInner, BlobContainersCreateOrUpdateImmutabilityPolicyHeaders>> createOrUpdateImmutabilityPolicyWithServiceResponseAsync(String resourceGroupName, String accountName, String containerName, int immutabilityPeriodSinceCreationInDays) {
+    public Observable<ServiceResponseWithHeaders<ImmutabilityPolicyInner, BlobContainersCreateOrUpdateImmutabilityPolicyHeaders>> createOrUpdateImmutabilityPolicyWithServiceResponseAsync(String resourceGroupName, String accountName, String containerName) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -1244,8 +1055,11 @@ public class BlobContainersInner {
         }
         final String immutabilityPolicyName = "default";
         final String ifMatch = null;
+        final Integer immutabilityPeriodSinceCreationInDays = null;
+        final Boolean allowProtectedAppendWrites = null;
         ImmutabilityPolicyInner parameters = new ImmutabilityPolicyInner();
-        parameters.withImmutabilityPeriodSinceCreationInDays(immutabilityPeriodSinceCreationInDays);
+        parameters.withImmutabilityPeriodSinceCreationInDays(null);
+        parameters.withAllowProtectedAppendWrites(null);
         return service.createOrUpdateImmutabilityPolicy(resourceGroupName, accountName, containerName, immutabilityPolicyName, this.client.subscriptionId(), this.client.apiVersion(), ifMatch, this.client.acceptLanguage(), parameters, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<ImmutabilityPolicyInner, BlobContainersCreateOrUpdateImmutabilityPolicyHeaders>>>() {
                 @Override
@@ -1266,15 +1080,16 @@ public class BlobContainersInner {
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
      * @param containerName The name of the blob container within the specified storage account. Blob container names must be between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every dash (-) character must be immediately preceded and followed by a letter or number.
-     * @param immutabilityPeriodSinceCreationInDays The immutability period for the blobs in the container since the policy creation, in days.
      * @param ifMatch The entity state (ETag) version of the immutability policy to update. A value of "*" can be used to apply the operation only if the immutability policy already exists. If omitted, this operation will always be applied.
+     * @param immutabilityPeriodSinceCreationInDays The immutability period for the blobs in the container since the policy creation, in days.
+     * @param allowProtectedAppendWrites This property can only be changed for unlocked time-based retention policies. When enabled, new blocks can be written to an append blob while maintaining immutability protection and compliance. Only new blocks can be added and any existing blocks cannot be modified or deleted. This property cannot be changed with ExtendImmutabilityPolicy API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the ImmutabilityPolicyInner object if successful.
      */
-    public ImmutabilityPolicyInner createOrUpdateImmutabilityPolicy(String resourceGroupName, String accountName, String containerName, int immutabilityPeriodSinceCreationInDays, String ifMatch) {
-        return createOrUpdateImmutabilityPolicyWithServiceResponseAsync(resourceGroupName, accountName, containerName, immutabilityPeriodSinceCreationInDays, ifMatch).toBlocking().single().body();
+    public ImmutabilityPolicyInner createOrUpdateImmutabilityPolicy(String resourceGroupName, String accountName, String containerName, String ifMatch, Integer immutabilityPeriodSinceCreationInDays, Boolean allowProtectedAppendWrites) {
+        return createOrUpdateImmutabilityPolicyWithServiceResponseAsync(resourceGroupName, accountName, containerName, ifMatch, immutabilityPeriodSinceCreationInDays, allowProtectedAppendWrites).toBlocking().single().body();
     }
 
     /**
@@ -1283,14 +1098,15 @@ public class BlobContainersInner {
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
      * @param containerName The name of the blob container within the specified storage account. Blob container names must be between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every dash (-) character must be immediately preceded and followed by a letter or number.
-     * @param immutabilityPeriodSinceCreationInDays The immutability period for the blobs in the container since the policy creation, in days.
      * @param ifMatch The entity state (ETag) version of the immutability policy to update. A value of "*" can be used to apply the operation only if the immutability policy already exists. If omitted, this operation will always be applied.
+     * @param immutabilityPeriodSinceCreationInDays The immutability period for the blobs in the container since the policy creation, in days.
+     * @param allowProtectedAppendWrites This property can only be changed for unlocked time-based retention policies. When enabled, new blocks can be written to an append blob while maintaining immutability protection and compliance. Only new blocks can be added and any existing blocks cannot be modified or deleted. This property cannot be changed with ExtendImmutabilityPolicy API
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<ImmutabilityPolicyInner> createOrUpdateImmutabilityPolicyAsync(String resourceGroupName, String accountName, String containerName, int immutabilityPeriodSinceCreationInDays, String ifMatch, final ServiceCallback<ImmutabilityPolicyInner> serviceCallback) {
-        return ServiceFuture.fromHeaderResponse(createOrUpdateImmutabilityPolicyWithServiceResponseAsync(resourceGroupName, accountName, containerName, immutabilityPeriodSinceCreationInDays, ifMatch), serviceCallback);
+    public ServiceFuture<ImmutabilityPolicyInner> createOrUpdateImmutabilityPolicyAsync(String resourceGroupName, String accountName, String containerName, String ifMatch, Integer immutabilityPeriodSinceCreationInDays, Boolean allowProtectedAppendWrites, final ServiceCallback<ImmutabilityPolicyInner> serviceCallback) {
+        return ServiceFuture.fromHeaderResponse(createOrUpdateImmutabilityPolicyWithServiceResponseAsync(resourceGroupName, accountName, containerName, ifMatch, immutabilityPeriodSinceCreationInDays, allowProtectedAppendWrites), serviceCallback);
     }
 
     /**
@@ -1299,13 +1115,14 @@ public class BlobContainersInner {
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
      * @param containerName The name of the blob container within the specified storage account. Blob container names must be between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every dash (-) character must be immediately preceded and followed by a letter or number.
-     * @param immutabilityPeriodSinceCreationInDays The immutability period for the blobs in the container since the policy creation, in days.
      * @param ifMatch The entity state (ETag) version of the immutability policy to update. A value of "*" can be used to apply the operation only if the immutability policy already exists. If omitted, this operation will always be applied.
+     * @param immutabilityPeriodSinceCreationInDays The immutability period for the blobs in the container since the policy creation, in days.
+     * @param allowProtectedAppendWrites This property can only be changed for unlocked time-based retention policies. When enabled, new blocks can be written to an append blob while maintaining immutability protection and compliance. Only new blocks can be added and any existing blocks cannot be modified or deleted. This property cannot be changed with ExtendImmutabilityPolicy API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ImmutabilityPolicyInner object
      */
-    public Observable<ImmutabilityPolicyInner> createOrUpdateImmutabilityPolicyAsync(String resourceGroupName, String accountName, String containerName, int immutabilityPeriodSinceCreationInDays, String ifMatch) {
-        return createOrUpdateImmutabilityPolicyWithServiceResponseAsync(resourceGroupName, accountName, containerName, immutabilityPeriodSinceCreationInDays, ifMatch).map(new Func1<ServiceResponseWithHeaders<ImmutabilityPolicyInner, BlobContainersCreateOrUpdateImmutabilityPolicyHeaders>, ImmutabilityPolicyInner>() {
+    public Observable<ImmutabilityPolicyInner> createOrUpdateImmutabilityPolicyAsync(String resourceGroupName, String accountName, String containerName, String ifMatch, Integer immutabilityPeriodSinceCreationInDays, Boolean allowProtectedAppendWrites) {
+        return createOrUpdateImmutabilityPolicyWithServiceResponseAsync(resourceGroupName, accountName, containerName, ifMatch, immutabilityPeriodSinceCreationInDays, allowProtectedAppendWrites).map(new Func1<ServiceResponseWithHeaders<ImmutabilityPolicyInner, BlobContainersCreateOrUpdateImmutabilityPolicyHeaders>, ImmutabilityPolicyInner>() {
             @Override
             public ImmutabilityPolicyInner call(ServiceResponseWithHeaders<ImmutabilityPolicyInner, BlobContainersCreateOrUpdateImmutabilityPolicyHeaders> response) {
                 return response.body();
@@ -1319,12 +1136,13 @@ public class BlobContainersInner {
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
      * @param containerName The name of the blob container within the specified storage account. Blob container names must be between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every dash (-) character must be immediately preceded and followed by a letter or number.
-     * @param immutabilityPeriodSinceCreationInDays The immutability period for the blobs in the container since the policy creation, in days.
      * @param ifMatch The entity state (ETag) version of the immutability policy to update. A value of "*" can be used to apply the operation only if the immutability policy already exists. If omitted, this operation will always be applied.
+     * @param immutabilityPeriodSinceCreationInDays The immutability period for the blobs in the container since the policy creation, in days.
+     * @param allowProtectedAppendWrites This property can only be changed for unlocked time-based retention policies. When enabled, new blocks can be written to an append blob while maintaining immutability protection and compliance. Only new blocks can be added and any existing blocks cannot be modified or deleted. This property cannot be changed with ExtendImmutabilityPolicy API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ImmutabilityPolicyInner object
      */
-    public Observable<ServiceResponseWithHeaders<ImmutabilityPolicyInner, BlobContainersCreateOrUpdateImmutabilityPolicyHeaders>> createOrUpdateImmutabilityPolicyWithServiceResponseAsync(String resourceGroupName, String accountName, String containerName, int immutabilityPeriodSinceCreationInDays, String ifMatch) {
+    public Observable<ServiceResponseWithHeaders<ImmutabilityPolicyInner, BlobContainersCreateOrUpdateImmutabilityPolicyHeaders>> createOrUpdateImmutabilityPolicyWithServiceResponseAsync(String resourceGroupName, String accountName, String containerName, String ifMatch, Integer immutabilityPeriodSinceCreationInDays, Boolean allowProtectedAppendWrites) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -1341,8 +1159,12 @@ public class BlobContainersInner {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         final String immutabilityPolicyName = "default";
-        ImmutabilityPolicyInner parameters = new ImmutabilityPolicyInner();
-        parameters.withImmutabilityPeriodSinceCreationInDays(immutabilityPeriodSinceCreationInDays);
+        ImmutabilityPolicyInner parameters = null;
+        if (immutabilityPeriodSinceCreationInDays != null || allowProtectedAppendWrites != null) {
+            parameters = new ImmutabilityPolicyInner();
+            parameters.withImmutabilityPeriodSinceCreationInDays(immutabilityPeriodSinceCreationInDays);
+            parameters.withAllowProtectedAppendWrites(allowProtectedAppendWrites);
+        }
         return service.createOrUpdateImmutabilityPolicy(resourceGroupName, accountName, containerName, immutabilityPolicyName, this.client.subscriptionId(), this.client.apiVersion(), ifMatch, this.client.acceptLanguage(), parameters, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<ImmutabilityPolicyInner, BlobContainersCreateOrUpdateImmutabilityPolicyHeaders>>>() {
                 @Override
@@ -1758,14 +1580,13 @@ public class BlobContainersInner {
      * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
      * @param containerName The name of the blob container within the specified storage account. Blob container names must be between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every dash (-) character must be immediately preceded and followed by a letter or number.
      * @param ifMatch The entity state (ETag) version of the immutability policy to update. A value of "*" can be used to apply the operation only if the immutability policy already exists. If omitted, this operation will always be applied.
-     * @param immutabilityPeriodSinceCreationInDays The immutability period for the blobs in the container since the policy creation, in days.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the ImmutabilityPolicyInner object if successful.
      */
-    public ImmutabilityPolicyInner extendImmutabilityPolicy(String resourceGroupName, String accountName, String containerName, String ifMatch, int immutabilityPeriodSinceCreationInDays) {
-        return extendImmutabilityPolicyWithServiceResponseAsync(resourceGroupName, accountName, containerName, ifMatch, immutabilityPeriodSinceCreationInDays).toBlocking().single().body();
+    public ImmutabilityPolicyInner extendImmutabilityPolicy(String resourceGroupName, String accountName, String containerName, String ifMatch) {
+        return extendImmutabilityPolicyWithServiceResponseAsync(resourceGroupName, accountName, containerName, ifMatch).toBlocking().single().body();
     }
 
     /**
@@ -1775,13 +1596,12 @@ public class BlobContainersInner {
      * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
      * @param containerName The name of the blob container within the specified storage account. Blob container names must be between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every dash (-) character must be immediately preceded and followed by a letter or number.
      * @param ifMatch The entity state (ETag) version of the immutability policy to update. A value of "*" can be used to apply the operation only if the immutability policy already exists. If omitted, this operation will always be applied.
-     * @param immutabilityPeriodSinceCreationInDays The immutability period for the blobs in the container since the policy creation, in days.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<ImmutabilityPolicyInner> extendImmutabilityPolicyAsync(String resourceGroupName, String accountName, String containerName, String ifMatch, int immutabilityPeriodSinceCreationInDays, final ServiceCallback<ImmutabilityPolicyInner> serviceCallback) {
-        return ServiceFuture.fromHeaderResponse(extendImmutabilityPolicyWithServiceResponseAsync(resourceGroupName, accountName, containerName, ifMatch, immutabilityPeriodSinceCreationInDays), serviceCallback);
+    public ServiceFuture<ImmutabilityPolicyInner> extendImmutabilityPolicyAsync(String resourceGroupName, String accountName, String containerName, String ifMatch, final ServiceCallback<ImmutabilityPolicyInner> serviceCallback) {
+        return ServiceFuture.fromHeaderResponse(extendImmutabilityPolicyWithServiceResponseAsync(resourceGroupName, accountName, containerName, ifMatch), serviceCallback);
     }
 
     /**
@@ -1791,12 +1611,11 @@ public class BlobContainersInner {
      * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
      * @param containerName The name of the blob container within the specified storage account. Blob container names must be between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every dash (-) character must be immediately preceded and followed by a letter or number.
      * @param ifMatch The entity state (ETag) version of the immutability policy to update. A value of "*" can be used to apply the operation only if the immutability policy already exists. If omitted, this operation will always be applied.
-     * @param immutabilityPeriodSinceCreationInDays The immutability period for the blobs in the container since the policy creation, in days.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ImmutabilityPolicyInner object
      */
-    public Observable<ImmutabilityPolicyInner> extendImmutabilityPolicyAsync(String resourceGroupName, String accountName, String containerName, String ifMatch, int immutabilityPeriodSinceCreationInDays) {
-        return extendImmutabilityPolicyWithServiceResponseAsync(resourceGroupName, accountName, containerName, ifMatch, immutabilityPeriodSinceCreationInDays).map(new Func1<ServiceResponseWithHeaders<ImmutabilityPolicyInner, BlobContainersExtendImmutabilityPolicyHeaders>, ImmutabilityPolicyInner>() {
+    public Observable<ImmutabilityPolicyInner> extendImmutabilityPolicyAsync(String resourceGroupName, String accountName, String containerName, String ifMatch) {
+        return extendImmutabilityPolicyWithServiceResponseAsync(resourceGroupName, accountName, containerName, ifMatch).map(new Func1<ServiceResponseWithHeaders<ImmutabilityPolicyInner, BlobContainersExtendImmutabilityPolicyHeaders>, ImmutabilityPolicyInner>() {
             @Override
             public ImmutabilityPolicyInner call(ServiceResponseWithHeaders<ImmutabilityPolicyInner, BlobContainersExtendImmutabilityPolicyHeaders> response) {
                 return response.body();
@@ -1811,11 +1630,10 @@ public class BlobContainersInner {
      * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
      * @param containerName The name of the blob container within the specified storage account. Blob container names must be between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every dash (-) character must be immediately preceded and followed by a letter or number.
      * @param ifMatch The entity state (ETag) version of the immutability policy to update. A value of "*" can be used to apply the operation only if the immutability policy already exists. If omitted, this operation will always be applied.
-     * @param immutabilityPeriodSinceCreationInDays The immutability period for the blobs in the container since the policy creation, in days.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ImmutabilityPolicyInner object
      */
-    public Observable<ServiceResponseWithHeaders<ImmutabilityPolicyInner, BlobContainersExtendImmutabilityPolicyHeaders>> extendImmutabilityPolicyWithServiceResponseAsync(String resourceGroupName, String accountName, String containerName, String ifMatch, int immutabilityPeriodSinceCreationInDays) {
+    public Observable<ServiceResponseWithHeaders<ImmutabilityPolicyInner, BlobContainersExtendImmutabilityPolicyHeaders>> extendImmutabilityPolicyWithServiceResponseAsync(String resourceGroupName, String accountName, String containerName, String ifMatch) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -1834,8 +1652,118 @@ public class BlobContainersInner {
         if (ifMatch == null) {
             throw new IllegalArgumentException("Parameter ifMatch is required and cannot be null.");
         }
+        final Integer immutabilityPeriodSinceCreationInDays = null;
+        final Boolean allowProtectedAppendWrites = null;
         ImmutabilityPolicyInner parameters = new ImmutabilityPolicyInner();
-        parameters.withImmutabilityPeriodSinceCreationInDays(immutabilityPeriodSinceCreationInDays);
+        parameters.withImmutabilityPeriodSinceCreationInDays(null);
+        parameters.withAllowProtectedAppendWrites(null);
+        return service.extendImmutabilityPolicy(resourceGroupName, accountName, containerName, this.client.subscriptionId(), this.client.apiVersion(), ifMatch, this.client.acceptLanguage(), parameters, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<ImmutabilityPolicyInner, BlobContainersExtendImmutabilityPolicyHeaders>>>() {
+                @Override
+                public Observable<ServiceResponseWithHeaders<ImmutabilityPolicyInner, BlobContainersExtendImmutabilityPolicyHeaders>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponseWithHeaders<ImmutabilityPolicyInner, BlobContainersExtendImmutabilityPolicyHeaders> clientResponse = extendImmutabilityPolicyDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    /**
+     * Extends the immutabilityPeriodSinceCreationInDays of a locked immutabilityPolicy. The only action allowed on a Locked policy will be this action. ETag in If-Match is required for this operation.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case insensitive.
+     * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * @param containerName The name of the blob container within the specified storage account. Blob container names must be between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every dash (-) character must be immediately preceded and followed by a letter or number.
+     * @param ifMatch The entity state (ETag) version of the immutability policy to update. A value of "*" can be used to apply the operation only if the immutability policy already exists. If omitted, this operation will always be applied.
+     * @param immutabilityPeriodSinceCreationInDays The immutability period for the blobs in the container since the policy creation, in days.
+     * @param allowProtectedAppendWrites This property can only be changed for unlocked time-based retention policies. When enabled, new blocks can be written to an append blob while maintaining immutability protection and compliance. Only new blocks can be added and any existing blocks cannot be modified or deleted. This property cannot be changed with ExtendImmutabilityPolicy API
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the ImmutabilityPolicyInner object if successful.
+     */
+    public ImmutabilityPolicyInner extendImmutabilityPolicy(String resourceGroupName, String accountName, String containerName, String ifMatch, Integer immutabilityPeriodSinceCreationInDays, Boolean allowProtectedAppendWrites) {
+        return extendImmutabilityPolicyWithServiceResponseAsync(resourceGroupName, accountName, containerName, ifMatch, immutabilityPeriodSinceCreationInDays, allowProtectedAppendWrites).toBlocking().single().body();
+    }
+
+    /**
+     * Extends the immutabilityPeriodSinceCreationInDays of a locked immutabilityPolicy. The only action allowed on a Locked policy will be this action. ETag in If-Match is required for this operation.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case insensitive.
+     * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * @param containerName The name of the blob container within the specified storage account. Blob container names must be between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every dash (-) character must be immediately preceded and followed by a letter or number.
+     * @param ifMatch The entity state (ETag) version of the immutability policy to update. A value of "*" can be used to apply the operation only if the immutability policy already exists. If omitted, this operation will always be applied.
+     * @param immutabilityPeriodSinceCreationInDays The immutability period for the blobs in the container since the policy creation, in days.
+     * @param allowProtectedAppendWrites This property can only be changed for unlocked time-based retention policies. When enabled, new blocks can be written to an append blob while maintaining immutability protection and compliance. Only new blocks can be added and any existing blocks cannot be modified or deleted. This property cannot be changed with ExtendImmutabilityPolicy API
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<ImmutabilityPolicyInner> extendImmutabilityPolicyAsync(String resourceGroupName, String accountName, String containerName, String ifMatch, Integer immutabilityPeriodSinceCreationInDays, Boolean allowProtectedAppendWrites, final ServiceCallback<ImmutabilityPolicyInner> serviceCallback) {
+        return ServiceFuture.fromHeaderResponse(extendImmutabilityPolicyWithServiceResponseAsync(resourceGroupName, accountName, containerName, ifMatch, immutabilityPeriodSinceCreationInDays, allowProtectedAppendWrites), serviceCallback);
+    }
+
+    /**
+     * Extends the immutabilityPeriodSinceCreationInDays of a locked immutabilityPolicy. The only action allowed on a Locked policy will be this action. ETag in If-Match is required for this operation.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case insensitive.
+     * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * @param containerName The name of the blob container within the specified storage account. Blob container names must be between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every dash (-) character must be immediately preceded and followed by a letter or number.
+     * @param ifMatch The entity state (ETag) version of the immutability policy to update. A value of "*" can be used to apply the operation only if the immutability policy already exists. If omitted, this operation will always be applied.
+     * @param immutabilityPeriodSinceCreationInDays The immutability period for the blobs in the container since the policy creation, in days.
+     * @param allowProtectedAppendWrites This property can only be changed for unlocked time-based retention policies. When enabled, new blocks can be written to an append blob while maintaining immutability protection and compliance. Only new blocks can be added and any existing blocks cannot be modified or deleted. This property cannot be changed with ExtendImmutabilityPolicy API
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the ImmutabilityPolicyInner object
+     */
+    public Observable<ImmutabilityPolicyInner> extendImmutabilityPolicyAsync(String resourceGroupName, String accountName, String containerName, String ifMatch, Integer immutabilityPeriodSinceCreationInDays, Boolean allowProtectedAppendWrites) {
+        return extendImmutabilityPolicyWithServiceResponseAsync(resourceGroupName, accountName, containerName, ifMatch, immutabilityPeriodSinceCreationInDays, allowProtectedAppendWrites).map(new Func1<ServiceResponseWithHeaders<ImmutabilityPolicyInner, BlobContainersExtendImmutabilityPolicyHeaders>, ImmutabilityPolicyInner>() {
+            @Override
+            public ImmutabilityPolicyInner call(ServiceResponseWithHeaders<ImmutabilityPolicyInner, BlobContainersExtendImmutabilityPolicyHeaders> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Extends the immutabilityPeriodSinceCreationInDays of a locked immutabilityPolicy. The only action allowed on a Locked policy will be this action. ETag in If-Match is required for this operation.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case insensitive.
+     * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * @param containerName The name of the blob container within the specified storage account. Blob container names must be between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every dash (-) character must be immediately preceded and followed by a letter or number.
+     * @param ifMatch The entity state (ETag) version of the immutability policy to update. A value of "*" can be used to apply the operation only if the immutability policy already exists. If omitted, this operation will always be applied.
+     * @param immutabilityPeriodSinceCreationInDays The immutability period for the blobs in the container since the policy creation, in days.
+     * @param allowProtectedAppendWrites This property can only be changed for unlocked time-based retention policies. When enabled, new blocks can be written to an append blob while maintaining immutability protection and compliance. Only new blocks can be added and any existing blocks cannot be modified or deleted. This property cannot be changed with ExtendImmutabilityPolicy API
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the ImmutabilityPolicyInner object
+     */
+    public Observable<ServiceResponseWithHeaders<ImmutabilityPolicyInner, BlobContainersExtendImmutabilityPolicyHeaders>> extendImmutabilityPolicyWithServiceResponseAsync(String resourceGroupName, String accountName, String containerName, String ifMatch, Integer immutabilityPeriodSinceCreationInDays, Boolean allowProtectedAppendWrites) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (accountName == null) {
+            throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
+        }
+        if (containerName == null) {
+            throw new IllegalArgumentException("Parameter containerName is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        if (ifMatch == null) {
+            throw new IllegalArgumentException("Parameter ifMatch is required and cannot be null.");
+        }
+        ImmutabilityPolicyInner parameters = null;
+        if (immutabilityPeriodSinceCreationInDays != null || allowProtectedAppendWrites != null) {
+            parameters = new ImmutabilityPolicyInner();
+            parameters.withImmutabilityPeriodSinceCreationInDays(immutabilityPeriodSinceCreationInDays);
+            parameters.withAllowProtectedAppendWrites(allowProtectedAppendWrites);
+        }
         return service.extendImmutabilityPolicy(resourceGroupName, accountName, containerName, this.client.subscriptionId(), this.client.apiVersion(), ifMatch, this.client.acceptLanguage(), parameters, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<ImmutabilityPolicyInner, BlobContainersExtendImmutabilityPolicyHeaders>>>() {
                 @Override
