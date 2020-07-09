@@ -5,6 +5,7 @@ package com.azure.storage.blob.options;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.storage.blob.models.BlobLeaseRequestConditions;
+import com.azure.storage.common.implementation.StorageImplUtils;
 
 /**
  * Extended options that may be passed when changing a lease to a blob or container.
@@ -19,6 +20,7 @@ public class BlobChangeLeaseOptions {
      * @param proposedId A new lease ID in a valid GUID format.
      */
     public BlobChangeLeaseOptions(String proposedId) {
+        StorageImplUtils.assertNotNull("proposedId", proposedId);
         this.proposedId = proposedId;
     }
 

@@ -43,6 +43,7 @@ import com.azure.storage.blob.models.BlobDownloadAsyncResponse;
 import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.BlobProperties;
 import com.azure.storage.blob.models.BlobQueryAsyncResponse;
+import com.azure.storage.blob.options.BlobGetTagsOptions;
 import com.azure.storage.blob.options.BlobQueryOptions;
 import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.BlobRequestConditions;
@@ -55,6 +56,8 @@ import com.azure.storage.blob.models.ParallelTransferOptions;
 import com.azure.storage.blob.models.RehydratePriority;
 import com.azure.storage.blob.models.StorageAccountInfo;
 import com.azure.storage.blob.models.UserDelegationKey;
+import com.azure.storage.blob.options.BlobSetAccessTierOptions;
+import com.azure.storage.blob.options.BlobSetTagsOptions;
 import com.azure.storage.blob.sas.BlobServiceSasSignatureValues;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.Utility;
@@ -834,7 +837,7 @@ public class BlobAsyncClientBase {
         return azureBlobStorage.blobs().downloadWithRestResponseAsync(null, null, snapshot, versionId, null,
             range.toHeaderValue(), requestConditions.getLeaseId(), getMD5, null, requestConditions.getIfModifiedSince(),
             requestConditions.getIfUnmodifiedSince(), requestConditions.getIfMatch(),
-            requestConditions.getIfNoneMatch(), null, null, customerProvidedKey, context)
+            requestConditions.getIfNoneMatch(), requestConditions.getIfTags(), null, customerProvidedKey, context)
             .map(response -> {
                 info.setETag(response.getDeserializedHeaders().getETag());
                 return new ReliableDownload(response, options, info, updatedInfo ->
@@ -1150,7 +1153,7 @@ public class BlobAsyncClientBase {
         return this.azureBlobStorage.blobs().deleteWithRestResponseAsync(null, null, snapshot, versionId,
             null, requestConditions.getLeaseId(), deleteBlobSnapshotOptions, requestConditions.getIfModifiedSince(),
             requestConditions.getIfUnmodifiedSince(), requestConditions.getIfMatch(),
-            requestConditions.getIfNoneMatch(), null, null, context)
+            requestConditions.getIfNoneMatch(), requestConditions.getIfTags(), null, context)
             .map(response -> new SimpleResponse<>(response, null));
     }
 
@@ -1203,7 +1206,7 @@ public class BlobAsyncClientBase {
             null, null, snapshot, versionId, null, requestConditions.getLeaseId(),
             requestConditions.getIfModifiedSince(),
             requestConditions.getIfUnmodifiedSince(), requestConditions.getIfMatch(),
-            requestConditions.getIfNoneMatch(), null, null, customerProvidedKey,
+            requestConditions.getIfNoneMatch(), requestConditions.getIfTags(), null, customerProvidedKey,
             context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(rb -> {
                 BlobGetPropertiesHeaders hd = rb.getDeserializedHeaders();
@@ -1275,7 +1278,7 @@ public class BlobAsyncClientBase {
         return this.azureBlobStorage.blobs().setHTTPHeadersWithRestResponseAsync(
             null, null, null, requestConditions.getLeaseId(), requestConditions.getIfModifiedSince(),
             requestConditions.getIfUnmodifiedSince(), requestConditions.getIfMatch(),
-            requestConditions.getIfNoneMatch(), null, null, headers, context)
+            requestConditions.getIfNoneMatch(), requestConditions.getIfTags(), null, headers, context)
             .map(response -> new SimpleResponse<>(response, null));
     }
 
@@ -1333,8 +1336,8 @@ public class BlobAsyncClientBase {
         return this.azureBlobStorage.blobs().setMetadataWithRestResponseAsync(
             null, null, null, metadata, requestConditions.getLeaseId(), requestConditions.getIfModifiedSince(),
             requestConditions.getIfUnmodifiedSince(), requestConditions.getIfMatch(),
-            requestConditions.getIfNoneMatch(), null, null, customerProvidedKey, encryptionScope,
-            context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
+            requestConditions.getIfNoneMatch(), requestConditions.getIfTags(), null, customerProvidedKey,
+            encryptionScope, context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(response -> new SimpleResponse<>(response, null));
     }
 
@@ -1351,7 +1354,7 @@ public class BlobAsyncClientBase {
      * @return A reactive response containing the blob's tags.
      */
     public Mono<Map<String, String>> getTags() {
-        return this.getTagsWithResponse().map(Response::getValue);
+        return this.getTagsWithResponse(new BlobGetTagsOptions()).map(Response::getValue);
     }
 
     /**
@@ -1359,24 +1362,28 @@ public class BlobAsyncClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.getTagsWithResponse}
+     * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.getTagsWithResponse#BlobGetTagsOptions}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-blob-tags">Azure Docs</a></p>
      *
+     * @param options {@link BlobGetTagsOptions}
      * @return A reactive response containing the blob's tags.
      */
-    public Mono<Response<Map<String, String>>> getTagsWithResponse() {
+    public Mono<Response<Map<String, String>>> getTagsWithResponse(BlobGetTagsOptions options) {
         try {
-            return withContext(this::getTagsWithResponse);
+            return withContext(context -> getTagsWithResponse(options, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
 
-    Mono<Response<Map<String, String>>> getTagsWithResponse(Context context) {
+    Mono<Response<Map<String, String>>> getTagsWithResponse(BlobGetTagsOptions options, Context context) {
+        StorageImplUtils.assertNotNull("options", options);
+        BlobRequestConditions requestConditions = (options.getRequestConditions() == null)
+            ? new BlobRequestConditions() : options.getRequestConditions();
         return this.azureBlobStorage.blobs().getTagsWithRestResponseAsync(null, null, null, null, snapshot,
-            versionId, null, context)
+            versionId, requestConditions.getIfTags(), context)
             .map(response -> {
                 Map<String, String> tags = new HashMap<>();
                 for (BlobTag tag : response.getValue().getBlobTagSet()) {
@@ -1401,7 +1408,7 @@ public class BlobAsyncClientBase {
      * @return A reactive response signaling completion.
      */
     public Mono<Void> setTags(Map<String, String> tags) {
-        return this.setTagsWithResponse(tags).flatMap(FluxUtil::toMono);
+        return this.setTagsWithResponse(new BlobSetTagsOptions(tags)).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -1410,33 +1417,36 @@ public class BlobAsyncClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.setTagsWithResponse#Map}
+     * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.setTagsWithResponse#BlobSetTagsOptions}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/set-blob-tags">Azure Docs</a></p>
      *
-     * @param tags Tags to associate with the blob.
+     * @param options {@link BlobSetTagsOptions}
      * @return A reactive response signaling completion.
      */
-    public Mono<Response<Void>> setTagsWithResponse(Map<String, String> tags) {
+    public Mono<Response<Void>> setTagsWithResponse(BlobSetTagsOptions options) {
         try {
-            return withContext(context -> setTagsWithResponse(tags, context));
+            return withContext(context -> setTagsWithResponse(options, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
 
-    Mono<Response<Void>> setTagsWithResponse(Map<String, String> tags, Context context) {
+    Mono<Response<Void>> setTagsWithResponse(BlobSetTagsOptions options, Context context) {
+        StorageImplUtils.assertNotNull("options", options);
+        BlobRequestConditions requestConditions = (options.getRequestConditions() == null)
+            ? new BlobRequestConditions() : options.getRequestConditions();
         List<BlobTag> tagList = null;
-        if (tags != null) {
+        if (options.getTags() != null) {
             tagList = new ArrayList<>();
-            for (Map.Entry<String, String> entry : tags.entrySet()) {
+            for (Map.Entry<String, String> entry : options.getTags().entrySet()) {
                 tagList.add(new BlobTag().setKey(entry.getKey()).setValue(entry.getValue()));
             }
         }
         BlobTags t = new BlobTags().setBlobTagSet(tagList);
         return this.azureBlobStorage.blobs().setTagsWithRestResponseAsync(null, null, null, versionId, null, null, null,
-            null, t, context)
+            requestConditions.getIfTags(), t, context)
             .map(response -> new SimpleResponse<>(response, null));
     }
 
@@ -1492,8 +1502,8 @@ public class BlobAsyncClientBase {
         return this.azureBlobStorage.blobs().createSnapshotWithRestResponseAsync(
             null, null, null, metadata, requestConditions.getIfModifiedSince(),
             requestConditions.getIfUnmodifiedSince(), requestConditions.getIfMatch(),
-            requestConditions.getIfNoneMatch(), requestConditions.getLeaseId(), null, null, customerProvidedKey,
-            encryptionScope, context)
+            requestConditions.getIfNoneMatch(), requestConditions.getIfTags(), requestConditions.getLeaseId(), null,
+            customerProvidedKey, encryptionScope, context)
             .map(rb -> new SimpleResponse<>(rb, this.getSnapshotClient(rb.getDeserializedHeaders().getSnapshot())));
     }
 
@@ -1543,19 +1553,44 @@ public class BlobAsyncClientBase {
      */
     public Mono<Response<Void>> setAccessTierWithResponse(AccessTier tier, RehydratePriority priority, String leaseId) {
         try {
-            return withContext(context -> setTierWithResponse(tier, priority, leaseId, context));
+            return withContext(context -> setTierWithResponse(new BlobSetAccessTierOptions(tier).setPriority(priority)
+                .setLeaseId(leaseId), context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
 
-    Mono<Response<Void>> setTierWithResponse(AccessTier tier, RehydratePriority priority, String leaseId,
-        Context context) {
-        StorageImplUtils.assertNotNull("tier", tier);
+    /**
+     * Sets the tier on a blob. The operation is allowed on a page blob in a premium storage account or a block blob in
+     * a blob storage or GPV2 account. A premium page blob's tier determines the allowed size, IOPS, and bandwidth of
+     * the blob. A block blob's tier determines the Hot/Cool/Archive storage type. This does not update the blob's
+     * etag.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.setAccessTierWithResponse#BlobSetAccessTierOptions}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/set-blob-tier">Azure Docs</a></p>
+     *
+     * @param options {@link BlobSetAccessTierOptions}
+     * @return A reactive response signalling completion.
+     * @throws NullPointerException if {@code tier} is null.
+     */
+    public Mono<Response<Void>> setAccessTierWithResponse(BlobSetAccessTierOptions options) {
+        try {
+            return withContext(context -> setTierWithResponse(options, context));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    Mono<Response<Void>> setTierWithResponse(BlobSetAccessTierOptions options, Context context) {
+        StorageImplUtils.assertNotNull("options", options);
 
         return this.azureBlobStorage.blobs().setTierWithRestResponseAsync(
-            null, null, tier, null, null, null,
-            priority, null, leaseId, context)
+            null, null, options.getTier(), null, null, null,
+            options.getPriority(), null, options.getLeaseId(), options.getIfTags(), context)
             .map(response -> new SimpleResponse<>(response, null));
     }
 

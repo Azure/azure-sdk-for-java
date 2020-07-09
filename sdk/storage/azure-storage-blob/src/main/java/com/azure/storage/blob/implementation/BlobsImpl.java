@@ -198,7 +198,7 @@ public final class BlobsImpl {
         @Put("{containerName}/{blob}")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(BlobStorageException.class)
-        Mono<BlobsSetTierResponse> setTier(@PathParam("containerName") String containerName, @PathParam("blob") String blob, @HostParam("url") String url, @QueryParam("snapshot") String snapshot, @QueryParam("versionid") String versionId, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-access-tier") AccessTier tier, @HeaderParam("x-ms-rehydrate-priority") RehydratePriority rehydratePriority, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId, @HeaderParam("x-ms-lease-id") String leaseId, @QueryParam("comp") String comp, Context context);
+        Mono<BlobsSetTierResponse> setTier(@PathParam("containerName") String containerName, @PathParam("blob") String blob, @HostParam("url") String url, @QueryParam("snapshot") String snapshot, @QueryParam("versionid") String versionId, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-access-tier") AccessTier tier, @HeaderParam("x-ms-rehydrate-priority") RehydratePriority rehydratePriority, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId, @HeaderParam("x-ms-lease-id") String leaseId, @HeaderParam("x-ms-if-tags") String ifTags, @QueryParam("comp") String comp, Context context);
 
         @Get("{containerName}/{blob}")
         @ExpectedResponses({200})
@@ -1340,8 +1340,9 @@ public final class BlobsImpl {
         final RehydratePriority rehydratePriority = null;
         final String requestId = null;
         final String leaseId = null;
+        final String ifTags = null;
         final String comp = "tier";
-        return service.setTier(containerName, blob, this.client.getUrl(), snapshot, versionId, timeout, tier, rehydratePriority, this.client.getVersion(), requestId, leaseId, comp, context);
+        return service.setTier(containerName, blob, this.client.getUrl(), snapshot, versionId, timeout, tier, rehydratePriority, this.client.getVersion(), requestId, leaseId, ifTags, comp, context);
     }
 
     /**
@@ -1356,14 +1357,15 @@ public final class BlobsImpl {
      * @param rehydratePriority Optional: Indicates the priority with which to rehydrate an archived blob. Possible values include: 'High', 'Standard'.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
+     * @param ifTags Specify a SQL where clause on blob tags to operate only on blobs with a matching value.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<BlobsSetTierResponse> setTierWithRestResponseAsync(String containerName, String blob, AccessTier tier, String snapshot, String versionId, Integer timeout, RehydratePriority rehydratePriority, String requestId, String leaseId, Context context) {
+    public Mono<BlobsSetTierResponse> setTierWithRestResponseAsync(String containerName, String blob, AccessTier tier, String snapshot, String versionId, Integer timeout, RehydratePriority rehydratePriority, String requestId, String leaseId, String ifTags, Context context) {
         final String comp = "tier";
-        return service.setTier(containerName, blob, this.client.getUrl(), snapshot, versionId, timeout, tier, rehydratePriority, this.client.getVersion(), requestId, leaseId, comp, context);
+        return service.setTier(containerName, blob, this.client.getUrl(), snapshot, versionId, timeout, tier, rehydratePriority, this.client.getVersion(), requestId, leaseId, ifTags, comp, context);
     }
 
     /**

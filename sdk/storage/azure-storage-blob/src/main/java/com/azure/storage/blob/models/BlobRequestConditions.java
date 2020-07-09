@@ -15,7 +15,7 @@ import java.time.OffsetDateTime;
  * information on those particular access conditions.
  */
 @Fluent
-public class BlobRequestConditions extends RequestConditions {
+public class BlobRequestConditions extends BlobLeaseRequestConditions {
     private String leaseId;
 
     /**
@@ -65,6 +65,18 @@ public class BlobRequestConditions extends RequestConditions {
     @Override
     public BlobRequestConditions setIfUnmodifiedSince(OffsetDateTime ifUnmodifiedSince) {
         super.setIfUnmodifiedSince(ifUnmodifiedSince);
+        return this;
+    }
+
+    /**
+     * Optionally applies the SQL statement to the tags of the blob.
+     *
+     * @param ifTags The SQL statement that apply to the tags of the blob.
+     * @return The updated BlobRequestConditions object.
+     */
+    @Override
+    public BlobRequestConditions setIfTags(String ifTags) {
+        super.setIfTags(ifTags);
         return this;
     }
 

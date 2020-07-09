@@ -15,7 +15,6 @@ public class BlobBreakLeaseOptions {
     private Integer breakPeriodInSeconds;
     private BlobLeaseRequestConditions requestConditions;
 
-
     /**
      * @return An optional duration, between 0 and 60 seconds, that the lease should continue before
      * it is broken. If the break period is longer than the time remaining on the lease the remaining time on the lease
