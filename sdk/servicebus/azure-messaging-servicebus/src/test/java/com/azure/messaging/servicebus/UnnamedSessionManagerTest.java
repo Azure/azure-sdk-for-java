@@ -266,7 +266,7 @@ class UnnamedSessionManagerTest {
                     default:
                         return Mono.empty();
                 }
-        });
+            });
 
         when(messageSerializer.deserialize(message, ServiceBusReceivedMessage.class)).thenReturn(receivedMessage);
         when(messageSerializer.deserialize(message2, ServiceBusReceivedMessage.class)).thenReturn(receivedMessage2);
