@@ -27,18 +27,18 @@ public class TableAsyncClient {
      * @param queryOptions the odata query object
      * @return a paged flux of all the entity which fit this criteria
      */
-    public PagedFlux<TableEntity> queryEntity(QueryOptions queryOptions) {
+    public PagedFlux<TableEntity> queryEntities(QueryOptions queryOptions) {
         return null;
     }
 
     /**
-     * Queries and returns entities in the given table with the given rowKey and ParitionKey
+     * returns the entity with the given rowKey and ParitionKey
      *
      * @param rowKey the given row key
      * @param partitionKey the given partition key
-     * @return a list of the tables that fit the row and partition key
+     * @return an entity that fits the criteria
      */
-    public PagedFlux<TableEntity> queryEntitiesWithPartitionAndRowKey(String rowKey, String partitionKey) {
+    public Mono<TableEntity> get(String rowKey, String partitionKey) {
         return null;
     }
 

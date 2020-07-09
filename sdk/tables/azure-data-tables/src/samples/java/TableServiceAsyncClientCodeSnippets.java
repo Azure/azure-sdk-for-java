@@ -93,10 +93,10 @@ public class TableServiceAsyncClientCodeSnippets {
             .buildAsyncClient();
 
         TableAsyncClient tableAsyncClient = tableServiceAsyncClient.getTableAsyncClient("OfficeSupplies");
-        QueryOptions queryOptions = new QueryOptions();
-        queryOptions.setFilter("RowKey eq crayolaMarkers");
+        String rowKey = "crayolaMarkers";
+        String partitionKey = "markers";
 
-        tableAsyncClient.queryEntity(queryOptions).flatMap(tableEntity -> {
+        tableAsyncClient.get(rowKey, partitionKey).flatMap(tableEntity -> {
             logger.info("Table Entity: " + tableEntity);
             Mono<Void> deleteEntityMono = tableAsyncClient.deleteEntity(tableEntity);
             return deleteEntityMono;
@@ -118,10 +118,10 @@ public class TableServiceAsyncClientCodeSnippets {
             .buildAsyncClient();
 
         TableAsyncClient tableAsyncClient = tableServiceAsyncClient.getTableAsyncClient("OfficeSupplies");
-        QueryOptions queryOptions = new QueryOptions();
-        queryOptions.setFilter("RowKey eq crayolaMarkers");
+        String rowKey = "crayolaMarkers";
+        String partitionKey = "markers";
 
-        tableAsyncClient.queryEntity(queryOptions).flatMap(tableEntity -> {
+        tableAsyncClient.get(rowKey, partitionKey).flatMap(tableEntity -> {
             logger.info("Table Entity: " + tableEntity);
             tableEntity.addProperty("Price", "5");
             Mono<Void> updateEntityMono = tableAsyncClient.upsertEntity(UpdateMode.Merge, tableEntity);
@@ -144,10 +144,10 @@ public class TableServiceAsyncClientCodeSnippets {
             .buildAsyncClient();
 
         TableAsyncClient tableAsyncClient = tableServiceAsyncClient.getTableAsyncClient("OfficeSupplies");
-        QueryOptions queryOptions = new QueryOptions();
-        queryOptions.setFilter("RowKey eq crayolaMarkers");
+        String rowKey = "crayolaMarkers";
+        String partitionKey = "markers";
 
-        tableAsyncClient.queryEntity(queryOptions).flatMap(tableEntity -> {
+        tableAsyncClient.get(rowKey, partitionKey).flatMap(tableEntity -> {
             logger.info("Table Entity: " + tableEntity);
             tableEntity.addProperty("Price", "5");
             Mono<Void> updateEntityMono = tableAsyncClient.updateEntity(UpdateMode.Replace, tableEntity);
@@ -174,7 +174,7 @@ public class TableServiceAsyncClientCodeSnippets {
         queryOptions.setFilter("Product eq markers");
         queryOptions.setSelect("Seller, Price");
 
-        tableAsyncClient.queryEntity(queryOptions).subscribe(tableEntity -> {
+        tableAsyncClient.queryEntities(queryOptions).subscribe(tableEntity -> {
             logger.info("Table Entity: " + tableEntity);
         }, error -> {
             logger.error("There was an error querying the table. Error: " + error);
@@ -193,11 +193,11 @@ public class TableServiceAsyncClientCodeSnippets {
 
         TableAsyncClient tableAsyncClient = tableServiceAsyncClient.getTableAsyncClient("OfficeSupplies");
 
-        tableAsyncClient.queryEntitiesWithPartitionAndRowKey("crayolaMarkers", "markers")
+        tableAsyncClient.get("crayolaMarkers", "markers")
             .subscribe(tableEntity -> {
             logger.info("Table Entity exists: " + tableEntity);
         }, error -> {
-            logger.error("There was an error querying the table. Error: " + error);
+            logger.error("There was an error getting the entity. Error: " + error);
         });
     }
 

@@ -4,7 +4,6 @@ package com.azure.data.tables;
 
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.data.tables.implementation.models.TableServiceErrorException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -25,7 +24,7 @@ public class TableServiceClientCodeSnippets {
 
         try {
             AzureTable officeSuppliesTable = tableServiceClient.createTable("OfficeSupplies");
-        } catch (TableServiceErrorException e) {
+        } catch (Exception e) {
             logger.error("Create Table Unsuccessful. Error: " + e);
         }
     }
@@ -40,7 +39,7 @@ public class TableServiceClientCodeSnippets {
 
         try {
             tableServiceClient.deleteTable("OfficeSupplies");
-        } catch (TableServiceErrorException e) {
+        } catch (Exception e) {
             logger.error("Delete Table Unsuccessful. Error: " + e);
         }
     }
@@ -91,22 +90,18 @@ public class TableServiceClientCodeSnippets {
             .tableName("OfficeSupplies")
             .buildClient();
 
-        QueryOptions queryOptions = new QueryOptions();
-        queryOptions.setFilter("RowKey eq crayolaMarkers");
-        List<TableEntity> tableEntities = null;
+        String rowKey = "crayolaMarkers";
+        String partitionKey = "markers";
+        TableEntity tableEntity = null;
         try {
-            tableEntities = tableClient.queryEntity(queryOptions);
+            tableEntity = tableClient.get(rowKey, partitionKey);
         } catch (HttpResponseException e) {
-            logger.error("Query Table Entities Unsuccessful. Error: " + e);
+            logger.error("Get Entity Unsuccessful: " + e);
         }
-        if (tableEntities != null) {
-            TableEntity tableEntity = tableEntities.get(0);
-            tableEntity.addProperty("Seller", "Crayola");
-            try {
-                tableClient.updateEntity(UpdateMode.Replace, tableEntity);
-            } catch (HttpResponseException e) {
-                logger.error("Update Entity Unsuccessful. Error: " + e);
-            }
+        try {
+            tableClient.updateEntity(UpdateMode.Replace, tableEntity);
+        } catch (HttpResponseException e) {
+            logger.error("Update Entity Unsuccessful. Error: " + e);
         }
     }
 
@@ -119,22 +114,18 @@ public class TableServiceClientCodeSnippets {
             .tableName("OfficeSupplies")
             .buildClient();
 
-        QueryOptions queryOptions = new QueryOptions();
-        queryOptions.setFilter("RowKey eq crayolaMarkers");
-        List<TableEntity> tableEntities = null;
+        String rowKey = "crayolaMarkers";
+        String partitionKey = "markers";
+        TableEntity tableEntity = null;
         try {
-            tableEntities = tableClient.queryEntity(queryOptions);
+            tableEntity = tableClient.get(rowKey, partitionKey);
         } catch (HttpResponseException e) {
-            logger.error("Query Table Entities Unsuccessful. Error: " + e);
+            logger.error("Get Entity Unsuccessful: " + e);
         }
-        if (tableEntities != null) {
-            TableEntity tableEntity = tableEntities.get(0);
-            tableEntity.addProperty("Price", "5");
-            try {
-                tableClient.upsertEntity(UpdateMode.Replace, tableEntity);
-            } catch (HttpResponseException e) {
-                logger.error("Upsert Entity Unsuccessful. Error: " + e);
-            }
+        try {
+            tableClient.upsertEntity(UpdateMode.Replace, tableEntity);
+        } catch (HttpResponseException e) {
+            logger.error("Upsert Entity Unsuccessful. Error: " + e);
         }
     }
 
@@ -147,21 +138,18 @@ public class TableServiceClientCodeSnippets {
             .tableName("OfficeSupplies")
             .buildClient();
 
-        QueryOptions queryOptions = new QueryOptions();
-        queryOptions.setFilter("RowKey eq crayolaMarkers");
-        List<TableEntity> tableEntities = null;
+        String rowKey = "crayolaMarkers";
+        String partitionKey = "markers";
+        TableEntity tableEntity = null;
         try {
-            tableEntities = tableClient.queryEntity(queryOptions);
+            tableEntity = tableClient.get(rowKey, partitionKey);
         } catch (HttpResponseException e) {
-            logger.error("Query Table Entities Unsuccessful. Error: " + e);
+            logger.error("Get Entity Unsuccessful: " + e);
         }
-        if (tableEntities != null) {
-            TableEntity tableEntity = tableEntities.get(0);
-            try {
-                tableClient.deleteEntity(tableEntity);
-            } catch (HttpResponseException e) {
-                logger.error("Delete Entity Unsuccessful. Error: " + e);
-            }
+        try {
+            tableClient.deleteEntity(tableEntity);
+        } catch (HttpResponseException e) {
+            logger.error("Delete Entity Unsuccessful. Error: " + e);
         }
     }
 
@@ -178,7 +166,7 @@ public class TableServiceClientCodeSnippets {
         queryOptions.setFilter("Product eq markers");
         queryOptions.setSelect("Seller, Price");
         try {
-            List<TableEntity> tableEntities = tableClient.queryEntity(queryOptions);
+            List<TableEntity> tableEntities = tableClient.queryEntities(queryOptions);
         } catch (HttpResponseException e) {
             logger.error("Query Table Entities Unsuccessful. Error: " + e);
         }
@@ -193,17 +181,12 @@ public class TableServiceClientCodeSnippets {
             .tableName("OfficeSupplies")
             .buildClient();
 
-        QueryOptions queryOptions = new QueryOptions();
-        queryOptions.setFilter("TableName eq OfficeSupplies");
+        String rowKey = "crayolaMarkers";
+        String partitionKey = "markers";
         try {
-            List<TableEntity> responseTables =
-                tableClient.queryEntitiesWithPartitionAndRowKey("crayolaMarkers", "markers");
-            if (responseTables != null && responseTables.get(0) != null) {
-                logger.info("Entity with the rowKey = crayolaMarkers and partitionKey = markers exists.");
-            }
+            TableEntity tableEntity = tableClient.get(rowKey, partitionKey);
         } catch (HttpResponseException e) {
-            logger.error("Table Query Unsuccessful. Error: " + e);
+            logger.error("Get Entity Unsuccessful. Entity may not exist: " + e);
         }
-
     }
 }
