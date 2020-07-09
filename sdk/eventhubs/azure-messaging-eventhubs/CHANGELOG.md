@@ -1,5 +1,8 @@
 # Release History
 
+## 5.2.0-beta.2 (Unreleased)
+
+
 ## 5.2.0-beta.1 (2020-07-08)
 - Add option to control the load balancing cycle interval.
 - Add option to control the partition ownership expiration duration.
