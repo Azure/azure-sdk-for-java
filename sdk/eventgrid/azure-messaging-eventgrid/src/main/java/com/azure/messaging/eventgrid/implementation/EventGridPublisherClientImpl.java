@@ -29,10 +29,10 @@ import com.azure.messaging.eventgrid.models.EventGridEvent;
 import java.util.List;
 import reactor.core.publisher.Mono;
 
-/** Initializes a new instance of the EventGridClient type. */
-public final class EventGridClientImpl {
+/** Initializes a new instance of the EventGridPublisherClient type. */
+public final class EventGridPublisherClientImpl {
     /** The proxy service used to perform REST calls. */
-    private final EventGridClientService service;
+    private final EventGridPublisherClientService service;
 
     /** Api Version. */
     private final String apiVersion;
@@ -58,29 +58,29 @@ public final class EventGridClientImpl {
         return this.httpPipeline;
     }
 
-    /** Initializes an instance of EventGridClient client. */
-    EventGridClientImpl() {
+    /** Initializes an instance of EventGridPublisherClient client. */
+    EventGridPublisherClientImpl() {
         this(new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy()).build());
     }
 
     /**
-     * Initializes an instance of EventGridClient client.
+     * Initializes an instance of EventGridPublisherClient client.
      *
      * @param httpPipeline The HTTP pipeline to send requests through.
      */
-    EventGridClientImpl(HttpPipeline httpPipeline) {
+    EventGridPublisherClientImpl(HttpPipeline httpPipeline) {
         this.httpPipeline = httpPipeline;
         this.apiVersion = "2018-01-01";
-        this.service = RestProxy.create(EventGridClientService.class, this.httpPipeline);
+        this.service = RestProxy.create(EventGridPublisherClientService.class, this.httpPipeline);
     }
 
     /**
-     * The interface defining all the services for EventGridClient to be used by the proxy service to perform REST
-     * calls.
+     * The interface defining all the services for EventGridPublisherClient to be used by the proxy service to perform
+     * REST calls.
      */
     @Host("https://{topicHostname}")
-    @ServiceInterface(name = "EventGridClient")
-    private interface EventGridClientService {
+    @ServiceInterface(name = "EventGridPublisherCl")
+    private interface EventGridPublisherClientService {
         @Post("/api/events")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
@@ -95,7 +95,7 @@ public final class EventGridClientImpl {
         Mono<Response<Void>> publishCloudEventEvents(
                 @HostParam("topicHostname") String topicHostname,
                 @QueryParam("api-version") String apiVersion,
-                @BodyParam("application/json") List<CloudEvent> events);
+                @BodyParam("application/cloudevents-batch+json; charset=utf-8") List<CloudEvent> events);
 
         @Post("/api/events")
         @ExpectedResponses({200})

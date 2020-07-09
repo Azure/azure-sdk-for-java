@@ -1,11 +1,14 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License. See License.txt in the project root for
+// license information.
+
 package com.azure.messaging.eventgrid;
 
-import com.azure.core.credential.AzureKeyCredential;
+import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipelineBuilder;
-import com.azure.core.http.policy.AzureKeyCredentialPolicy;
-import com.azure.core.http.rest.Response;
-import com.azure.messaging.eventgrid.implementation.EventGridClientImpl;
-import com.azure.messaging.eventgrid.implementation.EventGridClientImplBuilder;
+import com.azure.core.http.policy.AddHeadersPolicy;
+import com.azure.messaging.eventgrid.implementation.EventGridPublisherClientImpl;
+import com.azure.messaging.eventgrid.implementation.EventGridPublisherClientImplBuilder;
 import com.azure.messaging.eventgrid.models.CloudEvent;
 import com.azure.messaging.eventgrid.models.EventGridEvent;
 import com.fasterxml.jackson.core.JsonParser;
@@ -22,6 +25,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -30,13 +34,13 @@ public class TestEventGridClient {
 
     @Test
     @Ignore
-    public void testPublishEventGridEvents() {
+    public void testPublishEventGridEvents() throws InterruptedException {
         // using @Ignore because it requires the correct environment variables
         String endpoint = System.getenv("EG_ENDPOINT");
         String key = System.getenv("EG_KEY");
-        EventGridClientImpl egClient = new EventGridClientImplBuilder()
+        EventGridPublisherClientImpl egClient = new EventGridPublisherClientImplBuilder()
             .pipeline(new HttpPipelineBuilder().policies(
-                new AzureKeyCredentialPolicy("EG_KEY", new AzureKeyCredential(key)))
+                new AddHeadersPolicy(new HttpHeaders().put("aeg-sas-key", key)))
                 .build())
             .buildClient();
 
@@ -52,20 +56,26 @@ public class TestEventGridClient {
             }})
             .setDataVersion("1.0")
             .setEventTime(OffsetDateTime.now()));
-        Response<Void> response = egClient.publishEventsWithResponseAsync(endpoint, events).block();
-        assertNotNull(response);
-        assertEquals(response.getStatusCode(), 200);
+        egClient.publishEventsWithResponseAsync(endpoint, events).
+            subscribe(response -> {
+                assertNotNull(response);
+                System.out.println("Got response " + response.getStatusCode());
+                assertEquals(response.getStatusCode(), 200);
+            }, Throwable::printStackTrace);
+
+        TimeUnit.SECONDS.sleep(3);
+
     }
 
     @Test
     @Ignore
-    public void testPublishCloudEvents() {
+    public void testPublishCloudEvents() throws InterruptedException {
         // using @Ignore because it requires the correct environment variables
-        String endpoint = System.getenv("EG_ENDPOINT");
-        String key = System.getenv("EG_KEY");
-        EventGridClientImpl egClient = new EventGridClientImplBuilder()
+        String endpoint = System.getenv("EG_CLOUD_ENDPOINT");
+        String key = System.getenv("EG_CLOUD_KEY");
+        EventGridPublisherClientImpl egClient = new EventGridPublisherClientImplBuilder()
             .pipeline(new HttpPipelineBuilder().policies(
-                new AzureKeyCredentialPolicy("EG_KEY", new AzureKeyCredential(key)))
+                new AddHeadersPolicy(new HttpHeaders().put("aeg-sas-key", key)))
                 .build())
             .buildClient();
 
@@ -81,9 +91,45 @@ public class TestEventGridClient {
             }})
             .setSpecversion("1.0")
             .setTime(OffsetDateTime.now()));
-        Response<Void> response = egClient.publishCloudEventEventsWithResponseAsync(endpoint, events).block();
-        assertNotNull(response);
-        assertEquals(response.getStatusCode(), 200);
+        egClient.publishCloudEventEventsWithResponseAsync(endpoint, events).
+            subscribe(response -> {
+                assertNotNull(response);
+                System.out.println("Got response " + response.getStatusCode());
+                assertEquals(response.getStatusCode(), 200);
+            }, Throwable::printStackTrace);
+
+        TimeUnit.SECONDS.sleep(3);
+    }
+
+    @Test
+    @Ignore
+    public void TestPublishCustomEvents() throws InterruptedException {
+        // using @Ignore because it requires the correct environment variables
+        String endpoint = System.getenv("EG_CUSTOM_ENDPOINT");
+        String key = System.getenv("EG_CUSTOM_KEY");
+        EventGridPublisherClientImpl egClient = new EventGridPublisherClientImplBuilder()
+            .pipeline(new HttpPipelineBuilder().policies(
+                new AddHeadersPolicy(new HttpHeaders().put("aeg-sas-key", key)))
+                .build())
+            .buildClient();
+
+        List<Object> events = new ArrayList<>();
+        for (int i = 0; i < 5; i++) {
+            events.add(new HashMap<String, String>() {{
+                put("id", UUID.randomUUID().toString());
+                put("subject", "Test");
+                put("foo", "bar");
+                put("type", "Microsoft.MockPublisher.TestEvent");
+            }});
+        }
+        egClient.publishCustomEventEventsWithResponseAsync(endpoint, events).
+            subscribe(response -> {
+                assertNotNull(response);
+                System.out.println("Got response " + response.getStatusCode());
+                assertEquals(response.getStatusCode(), 200);
+            }, Throwable::printStackTrace);
+
+        TimeUnit.SECONDS.sleep(3);
     }
 
     @Test
