@@ -34,11 +34,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 /**
  * Implementation of {@link SerializerAdapter} for Jackson.
  */
 public class JacksonAdapter implements SerializerAdapter {
+    private static final Pattern PATTERN = Pattern.compile("^\"*|\"*$");
+
     private final ClientLogger logger = new ClientLogger(JacksonAdapter.class);
 
     /**
@@ -131,7 +134,7 @@ public class JacksonAdapter implements SerializerAdapter {
             return null;
         }
         try {
-            return serialize(object, SerializerEncoding.JSON).replaceAll("^\"*", "").replaceAll("\"*$", "");
+            return PATTERN.matcher(serialize(object, SerializerEncoding.JSON)).replaceAll("");
         } catch (IOException ex) {
             logger.warning("Failed to serialize {} to JSON.", object.getClass(), ex);
             return null;

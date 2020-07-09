@@ -45,12 +45,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 /**
  * The type to parse details of a specific Swagger REST API call from a provided Swagger interface method.
  */
 class SwaggerMethodParser implements HttpResponseDecodeData {
+    private static final Pattern PATTERN_COLON_SLASH_SLASH = Pattern.compile("://");
+
     private final SerializerAdapter serializer;
     private final String rawHost;
     private final String fullyQualifiedMethodName;
@@ -244,7 +247,7 @@ class SwaggerMethodParser implements HttpResponseDecodeData {
     public String setScheme(Object[] swaggerMethodArguments) {
         final String substitutedHost =
             applySubstitutions(rawHost, hostSubstitutions, swaggerMethodArguments);
-        final String[] substitutedHostParts = substitutedHost.split("://");
+        final String[] substitutedHostParts = PATTERN_COLON_SLASH_SLASH.split(substitutedHost);
         return substitutedHostParts.length == 0 ? null : substitutedHostParts[0];
     }
 
@@ -257,8 +260,8 @@ class SwaggerMethodParser implements HttpResponseDecodeData {
     public String setHost(Object[] swaggerMethodArguments) {
         final String substitutedHost =
             applySubstitutions(rawHost, hostSubstitutions, swaggerMethodArguments);
-        final String[] substitutedHostParts = substitutedHost.split("://");
-        return substitutedHostParts.length < 2 ? substitutedHost : substitutedHost.split("://")[1];
+        final String[] substitutedHostParts = PATTERN_COLON_SLASH_SLASH.split(substitutedHost);
+        return substitutedHostParts.length < 2 ? substitutedHost : substitutedHostParts[1];
     }
 
     /**
