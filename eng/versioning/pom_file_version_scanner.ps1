@@ -37,8 +37,7 @@ $ValidParents = ("azure-sdk-parent", "azure-client-sdk-parent", "azure-data-sdk-
 # The problem with this is, it's a BOM file and the spring dependencies are pulled in through that which means any
 # dependencies may or may not have versions. Unfortunately, there are still version tags azure sdk client libraries
 # which means these files have to be "sort of" scanned.
-$SpringSampleParents = ("spring-boot-starter-parent", "azure-spring-boot-samples")
-$SpringBootStarterParent = "spring-boot-starter-parent"
+$SpringSampleParents = ("spring-boot-starter-parent")
 
 $Path = Resolve-Path ($PSScriptRoot + "/../../")
 
@@ -270,28 +269,24 @@ function Assert-Spring-Sample-Version-Tags {
     $xmlNsManagerSpring = New-Object -TypeName "Xml.XmlNamespaceManager" -ArgumentList $xmlPomFile.NameTable
     $xmlNsManagerSpring.AddNamespace("ns", $xmlPomFile.DocumentElement.NamespaceURI)
 
-    # The SpringBootStarterParent will be the only track external dependency and needs to have a tag
-    if ($xmlPomFile.project.parent.artifactId -eq $SpringBootStarterParent)
+    if (-not $xmlPomFile.project.parent.groupId)
     {
-        if (-not $xmlPomFile.project.parent.groupId)
-        {
-            $script:FoundError = $true
-            Write-Error-With-Color "Error: parent/groupId is missing."
-        }
+        $script:FoundError = $true
+        Write-Error-With-Color "Error: parent/groupId is missing."
+    }
 
-        $versionNode = $xmlPomFile.SelectSingleNode("/ns:project/ns:parent/ns:version", $xmlNsManagerSpring)
-        if (-not $versionNode)
+    $versionNode = $xmlPomFile.SelectSingleNode("/ns:project/ns:parent/ns:version", $xmlNsManagerSpring)
+    if (-not $versionNode)
+    {
+        $script:FoundError = $true
+        Write-Error-With-Color "Error: parent/version is missing."
+        Write-Error-With-ColorWrite-Error-With-Color "Error: Missing project/version update tag. The tag should be <!-- {x-version-update;$($groupId):$($artifactId);current} -->"
+    } else {
+        $retVal = Test-Dependency-Tag-And-Version $libHash $extDepHash $versionNode.InnerText.Trim() $versionNode.NextSibling.Value
+        if ($retVal)
         {
             $script:FoundError = $true
-            Write-Error-With-Color "Error: parent/version is missing."
-            Write-Error-With-ColorWrite-Error-With-Color "Error: Missing project/version update tag. The tag should be <!-- {x-version-update;$($groupId):$($artifactId);current} -->"
-        } else {
-            $retVal = Test-Dependency-Tag-And-Version $libHash $extDepHash $versionNode.InnerText.Trim() $versionNode.NextSibling.Value
-            if ($retVal)
-            {
-                $script:FoundError = $true
-                Write-Error-With-Color "$($retVal)"
-            }
+            Write-Error-With-Color "$($retVal)"
         }
     }
 
@@ -723,4 +718,3 @@ if ($script:FoundError)
     Write-Error-With-Color "This script can be run locally from the root of the repo. .\eng\versioning\pom_file_version_scanner.ps1"
     exit(1)
 }
-
