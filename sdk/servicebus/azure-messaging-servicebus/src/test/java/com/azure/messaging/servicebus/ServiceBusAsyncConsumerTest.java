@@ -61,8 +61,6 @@ class ServiceBusAsyncConsumerTest {
     @Mock
     private AmqpRetryPolicy retryPolicy;
     @Mock
-    private Disposable parentConnection;
-    @Mock
     private MessageSerializer serializer;
 
     @BeforeAll
@@ -84,7 +82,7 @@ class ServiceBusAsyncConsumerTest {
         when(link.getEndpointStates()).thenReturn(endpointStateFlux);
         when(link.receive()).thenReturn(messageFlux);
         linkProcessor = linkFlux.subscribeWith(new ServiceBusReceiveLinkProcessor(10, retryPolicy,
-            parentConnection, new AmqpErrorContext("a-namespace")));
+            new AmqpErrorContext("a-namespace")));
 
         when(connection.getEndpointStates()).thenReturn(Flux.create(sink -> sink.next(AmqpEndpointState.ACTIVE)));
         when(link.updateDisposition(anyString(), any(DeliveryState.class))).thenReturn(Mono.empty());
