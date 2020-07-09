@@ -37,7 +37,7 @@ def load_version_map_from_file(the_file, version_map):
             version_map[artifact.name] = artifact
 
 def set_versions_in_file(file, version_map):
-    version_update_marker = re.compile(r'\{x-version-update;([^;]+);([^}]+)\}')
+    version_update_marker = re.compile(r'\{(x-version-update|x-include-update);([^;]+);([^}]+)\}')
     newlines = []
     file_changed = False
     print('processing: ' + file)
@@ -46,13 +46,16 @@ def set_versions_in_file(file, version_map):
             for line in f:
                 match = version_update_marker.search(line)
                 if match:
-                    name = match.group(1)
+                    name = match.group(2)
                     if name not in version_map:
                         newlines.append(line)
                         continue
-                    new_version = version_map[name].version
-                    newline = re.sub(r'(?<=<version>).+?(?=</version>)', new_version, line)
-                    newlines.append(newline)
+                    new_artifact = version_map[name]
+                    new_version = new_artifact.version
+                    new_include_string = new_artifact.group_id + ":" + new_artifact.artifact_id + "[" + new_version + "]"
+                    line1 = re.sub(r'(?<=<version>).+?(?=</version>)', new_version, line)
+                    line2 = re.sub(r'(?<=<include>).+?(?=</include>)', new_include_string, line1)
+                    newlines.append(line2)
                     file_changed = True
                 else:
                     newlines.append(line)
