@@ -22,7 +22,6 @@ import com.fasterxml.jackson.dataformat.xml.ser.ToXmlGenerator;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.fasterxml.jackson.module.afterburner.AfterburnerModule;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.lang.reflect.Field;
@@ -55,7 +54,7 @@ public class JacksonAdapter implements SerializerAdapter {
      */
     private final ObjectMapper simpleMapper;
 
-    private final XmlMapper xmlMapper;
+    private final ObjectMapper xmlMapper;
 
     private final ObjectMapper headerMapper;
 
@@ -68,13 +67,18 @@ public class JacksonAdapter implements SerializerAdapter {
      * Creates a new JacksonAdapter instance with default mapper settings.
      */
     public JacksonAdapter() {
-        simpleMapper = initializeObjectMapper(new ObjectMapper());
-        xmlMapper = initializeObjectMapper(new XmlMapper());
-        xmlMapper.configure(ToXmlGenerator.Feature.WRITE_XML_DECLARATION, true);
-        xmlMapper.setDefaultUseWrapper(false);
+        simpleMapper = initializeObjectMapper(new ObjectMapper())
+           .registerModule(new AfterburnerModule());
+
+        xmlMapper = initializeObjectMapper(new XmlMapper())
+            .setDefaultUseWrapper(false)
+            .configure(ToXmlGenerator.Feature.WRITE_XML_DECLARATION, true)
+            .registerModule(new AfterburnerModule());
+
         ObjectMapper flatteningMapper = initializeObjectMapper(new ObjectMapper())
             .registerModule(FlatteningSerializer.getModule(simpleMapper()))
             .registerModule(FlatteningDeserializer.getModule(simpleMapper()));
+
         mapper = initializeObjectMapper(new ObjectMapper())
             // Order matters: must register in reverse order of hierarchy
             .registerModule(AdditionalPropertiesSerializer.getModule(flatteningMapper))
@@ -82,6 +86,7 @@ public class JacksonAdapter implements SerializerAdapter {
             .registerModule(FlatteningSerializer.getModule(simpleMapper()))
             .registerModule(FlatteningDeserializer.getModule(simpleMapper()))
             .registerModule(new AfterburnerModule());
+
         headerMapper = simpleMapper
             .copy()
             .configure(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES, true);

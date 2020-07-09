@@ -47,14 +47,12 @@ public class MockHttpResponse extends HttpResponse {
     }
 
     private static byte[] serialize(Object serializable) {
-        byte[] result = null;
         try {
-            final String serializedString = SERIALIZER.serialize(serializable, SerializerEncoding.JSON);
-            result = serializedString == null ? null : serializedString.getBytes();
+            return SERIALIZER.serializeToBytes(serializable, SerializerEncoding.JSON);
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return result;
+        return null;
     }
 
     @Override

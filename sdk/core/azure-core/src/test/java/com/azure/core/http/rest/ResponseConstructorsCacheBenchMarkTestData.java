@@ -254,8 +254,7 @@ class ResponseConstructorsCacheBenchMarkTestData {
 
     private static byte[] asJsonByteArray(Object object) {
         try {
-            String content = SERIALIZER_ADAPTER.serialize(object, SerializerEncoding.JSON);
-            return content.getBytes(StandardCharsets.UTF_8);
+            return SERIALIZER_ADAPTER.serializeToBytes(object, SerializerEncoding.JSON);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
