@@ -117,13 +117,13 @@ public class SkillsetManagementSyncTests extends SearchTestBase {
 
     @Test
     public void createSkillsetReturnsCorrectDefinitionOcrEntity() {
-        SearchIndexerSkillset expectedSkillset = createTestSkillsetOcrEntity((EntityCategory) null);
+        SearchIndexerSkillset expectedSkillset = createTestSkillsetOcrEntity(null);
         SearchIndexerSkillset actualSkillset = client.createSkillset(expectedSkillset);
         skillsetsToDelete.add(actualSkillset.getName());
         assertObjectEquals(expectedSkillset, actualSkillset, true, "etag");
 
-        expectedSkillset = createTestSkillsetOcrEntity(EntityCategory.LOCATION, EntityCategory.ORGANIZATION,
-            EntityCategory.PERSON);
+        expectedSkillset = createTestSkillsetOcrEntity(Arrays.asList(EntityCategory.LOCATION,
+            EntityCategory.ORGANIZATION, EntityCategory.PERSON));
         actualSkillset = client.createSkillset(expectedSkillset);
         skillsetsToDelete.add(actualSkillset.getName());
         assertObjectEquals(expectedSkillset, actualSkillset, true, "etag");
@@ -750,7 +750,7 @@ public class SkillsetManagementSyncTests extends SearchTestBase {
             .setContext(CONTEXT_VALUE));
     }
 
-    SearchIndexerSkillset createTestSkillsetOcrEntity(EntityCategory... categories) {
+    SearchIndexerSkillset createTestSkillsetOcrEntity(List<EntityCategory> categories) {
         List<SearchIndexerSkill> skills = new ArrayList<>();
         List<InputFieldMappingEntry> inputs = Arrays.asList(
             simpleInputFieldMappingEntry("url", "/document/url"),
