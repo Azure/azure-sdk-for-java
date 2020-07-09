@@ -21,6 +21,7 @@ org.springframework.security:spring-security-oauth2-jose:5.2.0.RELEASE
 org.springframework.security:spring-security-web:5.2.0.RELEASE
 org.springframework:spring-beans:5.2.5.RELEASE
 org.springframework:spring-core:5.2.5.RELEASE
+org.springframework:spring-context:5.2.5.RELEASE
 org.springframework:spring-expression:5.2.5.RELEASE
 org.springframework:spring-jms:5.2.5.RELEASE
 org.springframework:spring-tx:5.2.5.RELEASE

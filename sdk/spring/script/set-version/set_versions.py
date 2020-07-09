@@ -6,9 +6,10 @@
 # Use case: set all the versions in pom.xml files.
 #   Configuration:
 #     1. config/target_folder.txt: list all the folders need to set version.
-#     2. config/version_list.txt: the version list.
+#     2. config/version_list_*.txt: the version list.
 
 
+import argparse
 import os
 import re
 import time
@@ -56,9 +57,10 @@ def set_versions_in_file(file, version_map):
                     line1 = re.sub(r'(?<=<version>).+?(?=</version>)', new_version, line)
                     line2 = re.sub(r'(?<=<include>).+?(?=</include>)', new_include_string, line1)
                     newlines.append(line2)
-                    print('    Updated item:')
-                    print('        Original value: ' + line.strip())
-                    print('        New value:      ' + line2.strip())
+                    if line != line2:
+                        print('    Updated item:')
+                        print('        Original value: ' + line.strip())
+                        print('        New value:      ' + line2.strip())
                     file_changed = True
                 else:
                     newlines.append(line)
@@ -83,8 +85,8 @@ def load_folders_from_file(target_folder_list_file, folders):
                 continue
             folders.append(stripped_line)
 
-def set_versions_by_config():
-    version_list_file = os.path.normpath('sdk/spring/script/set-version/config/version_list.txt')
+def set_versions_by_config(version):
+    version_list_file = os.path.normpath('sdk/spring/script/set-version/config/version_list_'+ version + '.txt')
     version_map = {}
     load_version_map_from_file(version_list_file, version_map)
     target_folder_list_file = os.path.normpath('sdk/spring/script/set-version/config/target_folder_list.txt')
@@ -101,7 +103,10 @@ def change_to_root_dir():
 def main():
     start_time = time.time()
     change_to_root_dir()
-    set_versions_by_config()
+    parser = argparse.ArgumentParser(description='Set version in pom file.')
+    parser.add_argument('--version', '-v', default='1')
+    args = parser.parse_args()
+    set_versions_by_config(args.version)
     elapsed_time = time.time() - start_time
     print('elapsed_time={}'.format(elapsed_time))
 
