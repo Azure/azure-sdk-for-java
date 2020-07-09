@@ -45,12 +45,12 @@ import static com.azure.cosmos.implementation.Utils.setContinuationTokenAndMaxIt
 public final class CosmosAsyncClient implements Closeable {
 
     // Async Cosmos client wrapper
+    private final static String QUERY_DB_SPAN = "queryDatabases";
+    private final static String READ_ALL_DB_SPAN = "readAllDatabases";
     private final Configs configs;
     private final AsyncDocumentClient asyncDocumentClient;
     private final String serviceEndpoint;
     private final String keyOrResourceToken;
-    private final String queryDatabasesSpanName = "queryDatabases";
-    private final String readAllDatabasesSpanName = "readAllDatabases";
     private final ConnectionPolicy connectionPolicy;
     private final ConsistencyLevel desiredConsistencyLevel;
     private final List<CosmosPermissionProperties> permissions;
@@ -378,7 +378,7 @@ public final class CosmosAsyncClient implements Closeable {
      */
     CosmosPagedFlux<CosmosDatabaseProperties> readAllDatabases(CosmosQueryRequestOptions options) {
         return UtilBridgeInternal.createCosmosPagedFlux(pagedFluxOptions -> {
-            pagedFluxOptions.setTracerInformation(this.tracerProvider, readAllDatabasesSpanName, this.serviceEndpoint, null);
+            pagedFluxOptions.setTracerInformation(this.tracerProvider, READ_ALL_DB_SPAN, this.serviceEndpoint, null);
             setContinuationTokenAndMaxItemCount(pagedFluxOptions, options);
             return getDocClientWrapper().readDatabases(options)
                 .map(response ->
@@ -456,7 +456,7 @@ public final class CosmosAsyncClient implements Closeable {
 
     private CosmosPagedFlux<CosmosDatabaseProperties> queryDatabasesInternal(SqlQuerySpec querySpec, CosmosQueryRequestOptions options){
         return UtilBridgeInternal.createCosmosPagedFlux(pagedFluxOptions -> {
-            pagedFluxOptions.setTracerInformation(this.tracerProvider, queryDatabasesSpanName, this.serviceEndpoint, null);
+            pagedFluxOptions.setTracerInformation(this.tracerProvider, QUERY_DB_SPAN, this.serviceEndpoint, null);
             setContinuationTokenAndMaxItemCount(pagedFluxOptions, options);
             return getDocClientWrapper().queryDatabases(querySpec, options)
                 .map(response -> BridgeInternal.createFeedResponse(
