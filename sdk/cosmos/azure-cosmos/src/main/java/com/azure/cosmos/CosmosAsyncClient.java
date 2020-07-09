@@ -49,6 +49,8 @@ public final class CosmosAsyncClient implements Closeable {
     private final AsyncDocumentClient asyncDocumentClient;
     private final String serviceEndpoint;
     private final String keyOrResourceToken;
+    private final String queryDatabasesSpanName = "queryDatabases";
+    private final String readAllDatabasesSpanName = "readAllDatabases";
     private final ConnectionPolicy connectionPolicy;
     private final ConsistencyLevel desiredConsistencyLevel;
     private final List<CosmosPermissionProperties> permissions;
@@ -252,12 +254,9 @@ public final class CosmosAsyncClient implements Closeable {
      */
     public Mono<CosmosDatabaseResponse> createDatabase(CosmosDatabaseProperties databaseProperties,
                                                        CosmosDatabaseRequestOptions options) {
-        if (options == null) {
-            options = new CosmosDatabaseRequestOptions();
-        }
+        final CosmosDatabaseRequestOptions requestOptions = options == null ? new CosmosDatabaseRequestOptions() : options;
         Database wrappedDatabase = new Database();
         wrappedDatabase.setId(databaseProperties.getId());
-        final CosmosDatabaseRequestOptions requestOptions = options;
         return withContext(context -> createDatabaseInternal(wrappedDatabase, requestOptions, context));
     }
 
@@ -310,6 +309,7 @@ public final class CosmosAsyncClient implements Closeable {
         if (options == null) {
             options = new CosmosDatabaseRequestOptions();
         }
+
         ModelBridgeInternal.setThroughputProperties(options, throughputProperties);
         Database wrappedDatabase = new Database();
         wrappedDatabase.setId(databaseProperties.getId());
@@ -378,8 +378,7 @@ public final class CosmosAsyncClient implements Closeable {
      */
     CosmosPagedFlux<CosmosDatabaseProperties> readAllDatabases(CosmosQueryRequestOptions options) {
         return UtilBridgeInternal.createCosmosPagedFlux(pagedFluxOptions -> {
-            String spanName = "readAllDatabases";
-            pagedFluxOptions.setTracerInformation(this.tracerProvider, spanName, this.serviceEndpoint, null);
+            pagedFluxOptions.setTracerInformation(this.tracerProvider, readAllDatabasesSpanName, this.serviceEndpoint, null);
             setContinuationTokenAndMaxItemCount(pagedFluxOptions, options);
             return getDocClientWrapper().readDatabases(options)
                 .map(response ->
@@ -457,8 +456,7 @@ public final class CosmosAsyncClient implements Closeable {
 
     private CosmosPagedFlux<CosmosDatabaseProperties> queryDatabasesInternal(SqlQuerySpec querySpec, CosmosQueryRequestOptions options){
         return UtilBridgeInternal.createCosmosPagedFlux(pagedFluxOptions -> {
-            String spanName = "queryDatabases";
-            pagedFluxOptions.setTracerInformation(this.tracerProvider, spanName, this.serviceEndpoint, null);
+            pagedFluxOptions.setTracerInformation(this.tracerProvider, queryDatabasesSpanName, this.serviceEndpoint, null);
             setContinuationTokenAndMaxItemCount(pagedFluxOptions, options);
             return getDocClientWrapper().queryDatabases(querySpec, options)
                 .map(response -> BridgeInternal.createFeedResponse(

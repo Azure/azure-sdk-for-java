@@ -94,13 +94,9 @@ public class CosmosAsyncUser {
     public Mono<CosmosPermissionResponse> createPermission(
         CosmosPermissionProperties permissionProperties,
         CosmosPermissionRequestOptions options) {
-        if (options == null) {
-            options = new CosmosPermissionRequestOptions();
-        }
-
+        final CosmosPermissionRequestOptions requestOptions = options == null ? new CosmosPermissionRequestOptions() : options;
         Permission permission = ModelBridgeInternal.getPermission(permissionProperties, database.getId());
-        final CosmosPermissionRequestOptions requesOptions = options;
-        return withContext(context -> createPermissionInternal(permission, requesOptions, context));
+        return withContext(context -> createPermissionInternal(permission, requestOptions, context));
     }
 
     /**
@@ -118,11 +114,7 @@ public class CosmosAsyncUser {
         CosmosPermissionProperties permissionProperties,
         CosmosPermissionRequestOptions options) {
         Permission permission = ModelBridgeInternal.getPermission(permissionProperties, database.getId());
-        if (options == null) {
-            options = new CosmosPermissionRequestOptions();
-        }
-
-        final CosmosPermissionRequestOptions requestOptions = options;
+        final CosmosPermissionRequestOptions requestOptions = options == null ? new CosmosPermissionRequestOptions() : options;
         return withContext(context -> upsertPermissionInternal(permission, requestOptions, context));
     }
 

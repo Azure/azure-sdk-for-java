@@ -82,11 +82,7 @@ public class CosmosAsyncDatabase {
      * the read database or an error.
      */
     public Mono<CosmosDatabaseResponse> read(CosmosDatabaseRequestOptions options) {
-        if (options == null) {
-            options = new CosmosDatabaseRequestOptions();
-        }
-
-        final CosmosDatabaseRequestOptions requestOptions = options;
+        final CosmosDatabaseRequestOptions requestOptions = options == null ? new CosmosDatabaseRequestOptions() : options;
         return withContext(context -> readInternal(requestOptions, context));
     }
 
@@ -114,11 +110,7 @@ public class CosmosAsyncDatabase {
      * @return an {@link Mono} containing the single cosmos database response.
      */
     public Mono<CosmosDatabaseResponse> delete(CosmosDatabaseRequestOptions options) {
-        if (options == null) {
-            options = new CosmosDatabaseRequestOptions();
-        }
-
-        final CosmosDatabaseRequestOptions requestOptions = options;
+        final CosmosDatabaseRequestOptions requestOptions = options == null ? new CosmosDatabaseRequestOptions() : options;
         return withContext(context -> deleteInternal(requestOptions, context));
     }
 
@@ -199,11 +191,8 @@ public class CosmosAsyncDatabase {
         if (containerProperties == null) {
             throw new IllegalArgumentException("containerProperties");
         }
-        if (options == null) {
-            options = new CosmosContainerRequestOptions();
-        }
 
-        final CosmosContainerRequestOptions requestOptions = options;
+        final CosmosContainerRequestOptions requestOptions = options == null ? new CosmosContainerRequestOptions() : options;
         return withContext(context -> createContainerInternal(containerProperties, requestOptions, context));
     }
 

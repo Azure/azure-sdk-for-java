@@ -117,11 +117,7 @@ public class CosmosAsyncContainer {
      * the read container or an error.
      */
     public Mono<CosmosContainerResponse> read(CosmosContainerRequestOptions options) {
-        if (options == null) {
-            options = new CosmosContainerRequestOptions();
-        }
-
-        final CosmosContainerRequestOptions requestOptions = options;
+        final CosmosContainerRequestOptions requestOptions = options == null ? new CosmosContainerRequestOptions() : options;
         return withContext(context -> read(requestOptions, context));
     }
 
@@ -137,11 +133,7 @@ public class CosmosAsyncContainer {
      * the deleted database or an error.
      */
     public Mono<CosmosContainerResponse> delete(CosmosContainerRequestOptions options) {
-        if (options == null) {
-            options = new CosmosContainerRequestOptions();
-        }
-
-        final CosmosContainerRequestOptions requestOptions = options;
+        final CosmosContainerRequestOptions requestOptions = options == null ? new CosmosContainerRequestOptions() : options;
         return withContext(context -> deleteInternal(requestOptions, context));
     }
 
@@ -191,11 +183,7 @@ public class CosmosAsyncContainer {
     public Mono<CosmosContainerResponse> replace(
         CosmosContainerProperties containerProperties,
         CosmosContainerRequestOptions options) {
-        if (options == null) {
-            options = new CosmosContainerRequestOptions();
-        }
-
-        final CosmosContainerRequestOptions requestOptions = options;
+        final CosmosContainerRequestOptions requestOptions = options == null ? new CosmosContainerRequestOptions() : options;
         return withContext(context -> replaceInternal(containerProperties, requestOptions, context));
     }
 
@@ -308,11 +296,7 @@ public class CosmosAsyncContainer {
      * @return an {@link Mono} containing the single resource response with the upserted item or an error.
      */
     public <T> Mono<CosmosItemResponse<T>> upsertItem(T item, CosmosItemRequestOptions options) {
-        if (options == null) {
-            options = new CosmosItemRequestOptions();
-        }
-
-        final  CosmosItemRequestOptions requestOptions = options;
+        final CosmosItemRequestOptions requestOptions = options == null ? new CosmosItemRequestOptions() : options;
         return withContext(context -> upsertItemInternal(item, requestOptions, context));
     }
 
@@ -673,10 +657,10 @@ public class CosmosAsyncContainer {
     }
 
     /**
-     * Replace the throughput .
+     * Replace the throughput.
      *
-     * @param throughputProperties the throughput properties
-     * @return the mono containing throughput response
+     * @param throughputProperties the throughput properties.
+     * @return the mono containing throughput response.
      */
     public Mono<ThroughputResponse> replaceThroughput(ThroughputProperties throughputProperties) {
         return withContext(context -> replaceThroughputInternal(throughputProperties, context));
