@@ -246,6 +246,9 @@ foreach ($packageDetail in $packageDetails) {
     }
   }
 
+  $timelineRecordId = New-Guid
+  Write-Host "##vso[task.logdetail id=$(New-Guid);name=$($packageDetail.FullyQualifiedName);type=build;order=1]$($packageDetail.FullyQualifiedName)"
+
   if ($additionalAssociatedArtifacts -ne $null) {
     $commaDelimitedFileNames = ""
     $additionalAssociatedArtifacts | ForEach-Object { $commaDelimitedFileNames += ",$($_.File.FullName)" }
