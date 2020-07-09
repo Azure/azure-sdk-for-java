@@ -5,6 +5,7 @@ package com.azure.core.http.rest;
 
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.ServiceInterface;
+import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.CoreUtils;
 
@@ -67,7 +68,12 @@ class SwaggerInterfaceParser {
      * @return the SwaggerMethodParser associated with the provided swaggerMethod
      */
     SwaggerMethodParser getMethodParser(Method swaggerMethod) {
-        return METHOD_PARSERS.computeIfAbsent(swaggerMethod, sm -> new SwaggerMethodParser(sm, getHost()));
+        return getMethodParser(swaggerMethod, JacksonAdapter.createDefaultSerializerAdapter());
+    }
+
+    SwaggerMethodParser getMethodParser(Method swaggerMethod, SerializerAdapter serializer) {
+        return METHOD_PARSERS.computeIfAbsent(swaggerMethod, sm ->
+             new SwaggerMethodParser(sm, getHost(), serializer));
     }
 
     /**

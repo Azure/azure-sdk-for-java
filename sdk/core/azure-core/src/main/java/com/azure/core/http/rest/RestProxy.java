@@ -92,7 +92,7 @@ public final class RestProxy implements InvocationHandler {
      * @return the SwaggerMethodParser for the provided method
      */
     private SwaggerMethodParser getMethodParser(Method method) {
-        return interfaceParser.getMethodParser(method);
+        return interfaceParser.getMethodParser(method, serializer);
     }
 
     /**

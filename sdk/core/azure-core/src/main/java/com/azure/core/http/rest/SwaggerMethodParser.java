@@ -83,7 +83,11 @@ class SwaggerMethodParser implements HttpResponseDecodeData {
      * request, it must be processed through the possible host substitutions.
      */
     SwaggerMethodParser(Method swaggerMethod, String rawHost) {
-        this.serializer = JacksonAdapter.createDefaultSerializerAdapter();
+        this(swaggerMethod, rawHost, JacksonAdapter.createDefaultSerializerAdapter());
+    }
+
+    SwaggerMethodParser(Method swaggerMethod, String rawHost, SerializerAdapter serializer) {
+        this.serializer = serializer;
         this.rawHost = rawHost;
 
         final Class<?> swaggerInterface = swaggerMethod.getDeclaringClass();
@@ -234,7 +238,6 @@ class SwaggerMethodParser implements HttpResponseDecodeData {
      */
     @Override
     public int[] getExpectedStatusCodes() {
-//        return expectedStatusCodes;
         return expectedStatusCodes == null ? null : expectedStatusCodes.stream().toArray();
     }
 
