@@ -79,16 +79,19 @@ mvn -f sdk/{projectForlderDir}/pom.xml -Dgpg.skip clean install
 
 ### Workaround for Checkstyle error
 
-You may run across an error on checkstyle, something like:
+When building locally you might run into a Checkstyle such as the following:
 
 ```
-Failed to load suppressions file from: ./maven-java-parent/java-8-parent/target/checkstyle-suppressions.xml: 
-Unable to find: ./maven-java-parent/java-8-parent/target/checkstyle-suppressions.xml: 
-http://www.puppycrawl.com/dtds/suppressions_1_0.dtd
+Execution default of goal org.apache.maven.plugins:maven-checkstyle-plugin:3.1.0:check failed:
+Plugin org.apache.maven.plugins:maven-checkstyle-plugin:3.1.0 or one of its dependencies could not be resolved: 
+Could not find artifact com.azure:sdk-build-tools:jar:1.0.0 in ossrh (https://oss.sonatype.org/content/repositories/snapshots/)
 ```
 
-This is because the `sdk-build-tools` project doesn't currently get released to Maven.  To install it you'll need to have the `eng` folder copied locally and then run: 
-`mvn clean install eng/code-quality-reports/pom.xml`.
+This is because the `sdk-build-tools` project isn't released to Maven. To resolve this issue you'll need to copy the `eng` folder locally then install `sdk-build-tools`.
+
+`mvn clean install eng/code-quality-reports/pom.xml`
+
+All code in the Azure SDKs for Java repository must pass Checkstyle before being merged. The `azure-sdk-tools` is updated periodically, so if a new branch fails Checkstyle you'll need to reinstall `sdk-build-tools`.
 
 ## Versions and versioning
 
