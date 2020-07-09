@@ -90,4 +90,4 @@ steps:
           -RepositoryPassword $(azuresdk-sonatype-password)
           -GPGExecutablePath ${{ parameters.BuildToolsPath }}/tools/gpg/bin/gpg.exe
           -InformationAction Continue
-          -StageOnly:$([bool]::Parse('$(StageOnly)''))
+          -StageOnly:$([bool]::Parse('$(StageOnly)'))
