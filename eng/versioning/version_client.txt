@@ -49,6 +49,10 @@ com.azure:azure-storage-perf;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-storage-queue;12.6.0-beta.1;12.6.0-beta.2
 com.azure:perf-test-core;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-test-watcher;1.0.0-beta.1;1.0.0-beta.1
+com.azure:azure-spring-boot-test-aad;1.0.0;1.0.0
+com.azure:azure-spring-boot-test-core;1.0.0;1.0.0
+com.azure:azure-spring-boot-test-cosmosdb;1.0.0;1.0.0
+com.azure:azure-spring-boot-test-keyvault;1.0.0;1.0.0
 com.microsoft.azure:azure-spring-boot;2.3.2;2.3.3-beta.1
 com.microsoft.azure:azure-spring-boot-starter;2.3.2;2.3.3-beta.1
 com.microsoft.azure:azure-active-directory-spring-boot-starter;2.3.2;2.3.3-beta.1
@@ -58,8 +62,6 @@ com.microsoft.azure:azure-data-gremlin-spring-boot-starter;2.3.2;2.3.3-beta.1
 com.microsoft.azure:azure-keyvault-secrets-spring-boot-starter;2.3.2;2.3.3-beta.1
 com.microsoft.azure:azure-servicebus-jms-spring-boot-starter;2.3.2;2.3.3-beta.1
 com.microsoft.azure:azure-spring-boot-metrics-starter;2.3.2;2.3.3-beta.1
-com.microsoft.azure:azure-spring-boot-tests;2.3.2;2.3.3-beta.1
-com.microsoft.azure:azure-spring-boot-test-core;2.3.2;2.3.3-beta.1
 com.microsoft.azure:spring-data-cosmosdb;3.0.0-beta.1;3.0.0-beta.1
 
 # Unreleased dependencies: Copy the entry from above, prepend "unreleased_" and remove the current

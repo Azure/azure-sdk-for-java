@@ -3,14 +3,16 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <parent>
-    <artifactId>azure-spring-boot-tests</artifactId>
-    <groupId>com.microsoft.azure</groupId>
-    <version>2.3.3-beta.1</version> <!-- {x-version-update;com.microsoft.azure:azure-spring-boot-tests;current} -->
-    <relativePath>../pom.xml</relativePath>
+    <groupId>com.azure</groupId>
+    <artifactId>azure-client-sdk-parent</artifactId>
+    <version>1.7.0</version> <!-- {x-version-update;com.azure:azure-client-sdk-parent;current} -->
+    <relativePath>../../parents/azure-client-sdk-parent</relativePath>
   </parent>
   <modelVersion>4.0.0</modelVersion>
 
+  <groupId>com.azure</groupId>
   <artifactId>azure-spring-boot-test-core</artifactId>
+  <version>1.0.0</version> <!-- {x-version-update;com.azure:azure-spring-boot-test-core;current} -->
   <packaging>jar</packaging>
 
   <dependencies>
@@ -95,28 +97,20 @@
               <includes>
                 <include>com.azure:*</include>
                 <include>com.microsoft.azure:*</include>
-                <include>com.jcraft:jsch:[0.1.53]</include>
-                <include>com.github.cverges.expect4j:expect4j:[1.6]</include>
-                <include>org.apache.maven:maven-embedder:[3.6.2]</include>
-                <include>org.apache.maven:maven-compat:[3.6.2]</include>
-                <include>org.apache.maven.wagon:wagon-http:[3.3.4]</include>
-                <include>org.apache.maven.wagon:wagon-provider-api:[3.3.4]</include>
-                <include>org.eclipse.aether:aether-connector-basic:[1.1.0]</include>
-                <include>org.eclipse.aether:aether-transport-wagon:[1.1.0]</include>
+                <include>com.jcraft:jsch:[0.1.53]</include> <!-- {x-include-update;com.jcraft:jsch;external_dependency} -->
+                <include>com.github.cverges.expect4j:expect4j:[1.6]</include> <!-- {x-include-update;com.github.cverges.expect4j:expect4j;external_dependency} -->
+                <include>org.apache.maven:maven-embedder:[3.6.2]</include> <!-- {x-include-update;org.apache.maven:maven-embedder;external_dependency} -->
+                <include>org.apache.maven:maven-compat:[3.6.2]</include> <!-- {x-include-update;org.apache.maven:maven-compat;external_dependency} -->
+                <include>org.apache.maven.wagon:wagon-http:[3.3.4]</include> <!-- {x-include-update;org.apache.maven.wagon:wagon-http;external_dependency} -->
+                <include>org.apache.maven.wagon:wagon-provider-api:[3.3.4]</include> <!-- {x-include-update;org.apache.maven.wagon:wagon-provider-api;external_dependency} -->
+                <include>org.eclipse.aether:aether-connector-basic:[1.1.0]</include> <!-- {x-include-update;org.eclipse.aether:aether-connector-basic;external_dependency} -->
+                <include>org.eclipse.aether:aether-transport-wagon:[1.1.0]</include> <!-- {x-include-update;org.eclipse.aether:aether-transport-wagon;external_dependency} -->
                 <include>org.springframework.boot:spring-boot:[2.3.0.RELEASE]</include> <!-- {x-include-update;org.springframework.boot:spring-boot;external_dependency} -->
                 <include>org.springframework.boot:spring-boot-starter-web:[2.3.0.RELEASE]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-starter-web;external_dependency} -->
                 <include>org.springframework:spring-context:[5.2.6.RELEASE]</include> <!-- {x-include-update;org.springframework:spring-context;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>
-        </configuration>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-failsafe-plugin</artifactId>
-        <version>2.22.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-failsafe-plugin;external_dependency} -->
-        <configuration>
-          <skipITs>${skipSpringITs}</skipITs>
         </configuration>
       </plugin>
     </plugins>
