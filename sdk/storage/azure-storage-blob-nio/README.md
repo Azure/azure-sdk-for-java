@@ -171,7 +171,7 @@ Iterate over a directory using a `DirectoryStream`
 <!-- embedme ./src/samples/java/com/azure/storage/blob/nio/ReadmeSamples.java#L51-L53 -->
 ```java
 for (Path p : Files.newDirectoryStream(dirPath)) {
-   System.out.println(p.toString());
+    System.out.println(p.toString());
 }
 ```
 
