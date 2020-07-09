@@ -195,6 +195,10 @@ $packageDetails = Get-FilteredMavenPackageDetails -ArtifactDirectory $ArtifactDi
 Write-Host "Found $($packageDetails.Length) packages to publish:"
 $packageDetails | % { Write-Host $_.FullyQualifiedName }
 
+if ($packageDetails.Length -eq 0) {
+  throw "Aborting, no packages to publish."
+}
+
 Write-Host "Starting GPG signing and publishing"
 
 foreach ($packageDetail in $packageDetails) {
