@@ -1,23 +1,13 @@
 package com.azure.storage.blob.specialized.cryptography
 
 import com.azure.core.cryptography.AsyncKeyEncryptionKey
-import com.azure.core.test.TestMode
-import com.azure.core.util.Configuration
-import com.azure.identity.DefaultAzureCredentialBuilder
-import com.azure.identity.EnvironmentCredentialBuilder
-import com.azure.security.keyvault.keys.KeyClient
-import com.azure.security.keyvault.keys.KeyClientBuilder
-import com.azure.security.keyvault.keys.cryptography.KeyEncryptionKeyClientBuilder
 import com.azure.security.keyvault.keys.cryptography.LocalKeyEncryptionKeyClientBuilder
-import com.azure.security.keyvault.keys.models.CreateRsaKeyOptions
 import com.azure.security.keyvault.keys.models.JsonWebKey
 import com.azure.security.keyvault.keys.models.KeyOperation
-import com.azure.security.keyvault.keys.models.KeyVaultKey
 import com.azure.storage.blob.BlobContainerClient
 import com.azure.storage.common.implementation.Constants
 
 import javax.crypto.spec.SecretKeySpec
-import java.time.OffsetDateTime
 
 class LocalKeyTest extends APISpec {
 
