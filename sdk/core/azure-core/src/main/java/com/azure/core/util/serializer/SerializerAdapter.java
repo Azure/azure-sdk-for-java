@@ -35,6 +35,10 @@ public interface SerializerAdapter {
     // TODO (jogiles) JavaDoc
     ByteArrayOutputStream serializeToStream(Object object, SerializerEncoding encoding) throws IOException;
 
+
+    // TODO Javadoc
+    byte[] serializeToBytes(Object object, SerializerEncoding encoding) throws IOException;
+
     /**
      * Serializes an object into a raw string. The leading and trailing quotes will be trimmed.
      *

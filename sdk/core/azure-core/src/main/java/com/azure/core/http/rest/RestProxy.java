@@ -274,8 +274,7 @@ public final class RestProxy implements InvocationHandler {
             }
 
             if (isJson) {
-                // TODO (jogiles) can we have the ByteArrayOutputStream in the body instead of doing an array copy?
-                request.setBody(serializer.serializeToStream(bodyContentObject, SerializerEncoding.JSON).toByteArray());
+                request.setBody(serializer.serializeToBytes(bodyContentObject, SerializerEncoding.JSON));
             } else if (FluxUtil.isFluxByteBuffer(methodParser.getBodyJavaType())) {
                 // Content-Length or Transfer-Encoding: chunked must be provided by a user-specified header when a
                 // Flowable<byte[]> is given for the body.
