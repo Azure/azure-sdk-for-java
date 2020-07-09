@@ -56,8 +56,6 @@ extends:
         groupId: com.microsoft.azure
         safeName: azurespringbootstarterservicebusjms
     AdditionalModules:
-      - name: azure-spring-boot-samples
-        groupId: com.azure
       - name: azure-spring-boot-sample-active-directory
         groupId: com.azure
       - name: azure-spring-boot-sample-active-directory-b2c-oidc
