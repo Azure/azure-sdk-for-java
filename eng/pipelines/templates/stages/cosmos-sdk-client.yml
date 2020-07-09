@@ -86,6 +86,7 @@ stages:
         ServiceDirectory: cosmos
         Artifacts: ${{ parameters.Artifacts }}
         AdditionalModules: ${{ parameters.AdditionalModules }}
+        TimeoutInMinutes: 90
         Matrix:
           Tcp_Integration_Tests_Java8:
             OSVmImage: 'windows-2019'
