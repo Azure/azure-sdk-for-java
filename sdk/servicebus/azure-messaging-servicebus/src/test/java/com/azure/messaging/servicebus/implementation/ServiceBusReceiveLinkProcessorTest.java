@@ -21,12 +21,12 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.reactivestreams.Subscription;
-import reactor.core.Disposable;
 import reactor.core.publisher.DirectProcessor;
 import reactor.core.publisher.EmitterProcessor;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.FluxSink;
 import reactor.test.StepVerifier;
+import reactor.test.publisher.TestPublisher;
 
 import java.time.Duration;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -59,8 +59,6 @@ class ServiceBusReceiveLinkProcessorTest {
     private Message message1;
     @Mock
     private Message message2;
-    @Mock
-    private Disposable parentConnection;
 
     @Captor
     private ArgumentCaptor<Supplier<Integer>> creditSupplierCaptor;
@@ -85,7 +83,7 @@ class ServiceBusReceiveLinkProcessorTest {
     void setup() {
         MockitoAnnotations.initMocks(this);
 
-        linkProcessor = new ServiceBusReceiveLinkProcessor(PREFETCH, retryPolicy, parentConnection, amqpErrorContext);
+        linkProcessor = new ServiceBusReceiveLinkProcessor(PREFETCH, retryPolicy, amqpErrorContext);
 
         when(link1.getEndpointStates()).thenReturn(endpointProcessor);
         when(link1.receive()).thenReturn(messageProcessor);
@@ -99,11 +97,11 @@ class ServiceBusReceiveLinkProcessorTest {
     @Test
     void constructor() {
         Assertions.assertThrows(NullPointerException.class, () -> new ServiceBusReceiveLinkProcessor(PREFETCH, null,
-            parentConnection, amqpErrorContext));
-        Assertions.assertThrows(NullPointerException.class, () -> new ServiceBusReceiveLinkProcessor(PREFETCH, retryPolicy,
-            null, amqpErrorContext));
-        Assertions.assertThrows(IllegalArgumentException.class, () -> new ServiceBusReceiveLinkProcessor(-1, retryPolicy,
-            parentConnection, amqpErrorContext));
+            amqpErrorContext));
+        Assertions.assertThrows(NullPointerException.class, () -> new ServiceBusReceiveLinkProcessor(PREFETCH, null,
+            null));
+        Assertions.assertThrows(IllegalArgumentException.class, () -> new ServiceBusReceiveLinkProcessor(-1,
+            retryPolicy, amqpErrorContext));
     }
 
     /**
@@ -447,32 +445,34 @@ class ServiceBusReceiveLinkProcessorTest {
     }
 
     /**
-     * Does not request another link when parent connection is closed.
+     * Does not request another link when upstream is closed.
      */
     @Test
     void doNotRetryWhenParentConnectionIsClosed() {
         // Arrange
-        final ServiceBusReceiveLink[] connections = new ServiceBusReceiveLink[]{link1, link2};
+        final TestPublisher<ServiceBusReceiveLink> linkGenerator = TestPublisher.create();
+        final ServiceBusReceiveLinkProcessor processor = linkGenerator.flux().subscribeWith(linkProcessor);
+        final TestPublisher<AmqpEndpointState> endpointStates = TestPublisher.create();
+        final TestPublisher<Message> messages = TestPublisher.create();
 
-        final ServiceBusReceiveLinkProcessor processor = createSink(connections).subscribeWith(linkProcessor);
-        final FluxSink<AmqpEndpointState> endpointSink = endpointProcessor.sink();
+        when(link1.getEndpointStates()).thenReturn(endpointStates.flux());
+        when(link1.receive()).thenReturn(messages.flux());
 
-        final DirectProcessor<AmqpEndpointState> link2StateProcessor = DirectProcessor.create();
-
-        when(parentConnection.isDisposed()).thenReturn(true);
-
-        when(link2.getEndpointStates()).thenReturn(link2StateProcessor);
+        final TestPublisher<AmqpEndpointState> endpointStates2 = TestPublisher.create();
+        when(link2.getEndpointStates()).thenReturn(endpointStates2.flux());
         when(link2.receive()).thenReturn(Flux.never());
 
         // Act & Assert
         StepVerifier.create(processor)
             .then(() -> {
-                endpointSink.next(AmqpEndpointState.ACTIVE);
-                messageProcessorSink.next(message1);
+                linkGenerator.next(link1);
+                endpointStates.next(AmqpEndpointState.ACTIVE);
+                messages.next(message1);
             })
             .expectNext(message1)
-            .then(() -> endpointSink.complete())
-            .thenCancel()
+            .then(linkGenerator::complete)
+            .then(endpointStates::complete)
+            .expectComplete()
             .verify();
 
         Assertions.assertTrue(processor.isTerminated());
