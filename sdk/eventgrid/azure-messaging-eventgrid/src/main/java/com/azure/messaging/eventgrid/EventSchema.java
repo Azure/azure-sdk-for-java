@@ -4,32 +4,66 @@
 
 package com.azure.messaging.eventgrid;
 
+import com.azure.messaging.eventgrid.models.EventGridEvent;
+
+import java.util.Map;
+
 /**
- * Interface defining properties that all Event Schema must implement in order to be sent to EventGrid.
- * In addition, all EventSchema must be Json serializable.
+ * General class that contains common data from all event Schema, and that can be transformed into its proper strongly
+ * typed event object.
  */
-public interface EventSchema {
+public class EventSchema {
 
     /**
-     * Gives the event's data. All event schema must contain data that can be accessed this way.
-     * @return the event data.
+     * Gives the id of the event. All events must have an id.
+     * @return the id of the event.
      */
-    Object getData();
+    public String getId() {
+        // TODO: implement methods
+        return null;
+    }
 
     /**
-     * Sets the event's data. All event schema must have data that can be set.
+     * Sets the current id.
+     * @param id the id to set.
+     *
+     * @return The EventSchema object itself.
+     */
+    public EventSchema setId(String id) {
+        // TODO: implement methods
+        return null;
+    }
+
+    /**
+     * Gives the event's data. Can be used to try to access data before specific event checks.
+     * @return the event data, or null if there is no data.
+     */
+    Object getData() {
+        // TODO: implement methods
+        return null;
+    }
+
+    /**
+     * Sets the event's data. Events where the <code>eventType</code> corresponds to data must have non-null data,
+     * however <code>eventType</code> fields that correspond to no data can have null data.
      * @param data the data to set.
      *
      * @return the Event Object itself.
      */
-    EventSchema setData(Object data);
+    public EventSchema setData(Object data) {
+        // TODO: implement methods
+        return null;
+    }
 
     /**
      * Gives the event's data type, e.g. "Contoso.Items.ItemReceived". In the CloudEvent Schema this corresponds
-     * to the "type" field.
+     * to the <code>type</code> field. All events must have an event type field.
      * @return the event type string.
      */
-    String getEventType();
+    public String getEventType() {
+        // TODO: implement methods
+        return null;
+    }
 
     /**
      * Sets the event's data type, e.g. "Contoso.Items.ItemReceived". In the CloudEvent Schema this corresponds
@@ -38,5 +72,18 @@ public interface EventSchema {
      *
      * @return the Event Object itself.
      */
-    EventSchema setEventType(String eventType);
+    public EventSchema setEventType(String eventType) {
+        // TODO: implement methods
+        return null;
+    }
+
+    /**
+     * Gives all the additional fields in this event that cannot be accessed through the other methods.
+     * @return a map from the field's name to the value it holds.
+     */
+    public Map<String, Object> additionalFields() {
+        // TODO: implement methods
+        return null;
+    }
+
 }
