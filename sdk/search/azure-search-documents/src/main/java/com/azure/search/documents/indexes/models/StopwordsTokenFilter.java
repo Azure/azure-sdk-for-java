@@ -82,7 +82,7 @@ public final class StopwordsTokenFilter extends TokenFilter {
      * @return the StopwordsTokenFilter object itself.
      */
     public StopwordsTokenFilter setStopwords(String... stopwords) {
-        this.stopwords = Arrays.asList(stopwords);
+        this.stopwords = (stopwords == null) ? null : Arrays.asList(stopwords);
         return this;
     }
 

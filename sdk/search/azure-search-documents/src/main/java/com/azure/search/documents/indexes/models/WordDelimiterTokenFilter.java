@@ -333,7 +333,7 @@ public final class WordDelimiterTokenFilter extends TokenFilter {
      * @return the WordDelimiterTokenFilter object itself.
      */
     public WordDelimiterTokenFilter setProtectedWords(String... protectedWords) {
-        this.protectedWords = Arrays.asList(protectedWords);
+        this.protectedWords = (protectedWords == null) ? null : Arrays.asList(protectedWords);
         return this;
     }
 

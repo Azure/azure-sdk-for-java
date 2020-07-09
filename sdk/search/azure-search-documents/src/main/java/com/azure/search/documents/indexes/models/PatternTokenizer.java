@@ -93,7 +93,7 @@ public final class PatternTokenizer extends LexicalTokenizer {
      * @return the PatternTokenizer object itself.
      */
     public PatternTokenizer setFlags(RegexFlags... flags) {
-        this.flags = Arrays.asList(flags);
+        this.flags = (flags == null) ? null : Arrays.asList(flags);
         return this;
     }
 

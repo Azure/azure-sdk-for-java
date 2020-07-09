@@ -104,7 +104,7 @@ public final class ScoringProfile {
      * @return the ScoringProfile object itself.
      */
     public ScoringProfile setFunctions(ScoringFunction... functions) {
-        this.functions = Arrays.asList(functions);
+        this.functions = (functions == null) ? null : Arrays.asList(functions);
         return this;
     }
 

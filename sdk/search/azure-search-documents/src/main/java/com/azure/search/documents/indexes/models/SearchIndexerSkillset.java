@@ -114,7 +114,7 @@ public final class SearchIndexerSkillset {
      * @return the SearchIndexerSkillset object itself.
      */
     public SearchIndexerSkillset setSkills(SearchIndexerSkill... skills) {
-        this.skills = Arrays.asList(skills);
+        this.skills = (skills == null) ? null : Arrays.asList(skills);
         return this;
     }
 

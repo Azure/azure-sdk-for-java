@@ -110,7 +110,7 @@ public final class NGramTokenizer extends LexicalTokenizer {
      * @return the NGramTokenizer object itself.
      */
     public NGramTokenizer setTokenChars(TokenCharacterKind... tokenChars) {
-        this.tokenChars = Arrays.asList(tokenChars);
+        this.tokenChars = (tokenChars == null) ? null : Arrays.asList(tokenChars);
         return this;
     }
 

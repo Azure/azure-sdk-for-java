@@ -62,7 +62,7 @@ public final class CjkBigramTokenFilter extends TokenFilter {
      * @return the CjkBigramTokenFilter object itself.
      */
     public CjkBigramTokenFilter setIgnoreScripts(CjkBigramTokenFilterScripts... ignoreScripts) {
-        this.ignoreScripts = Arrays.asList(ignoreScripts);
+        this.ignoreScripts = (ignoreScripts == null) ? null : Arrays.asList(ignoreScripts);
         return this;
     }
 

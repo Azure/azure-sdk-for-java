@@ -156,7 +156,7 @@ public final class SearchIndex {
      * @return the SearchIndex object itself.
      */
     public SearchIndex setFields(SearchField... fields) {
-        this.fields = Arrays.asList(fields);
+        this.fields = (fields == null) ? null : Arrays.asList(fields);
         return this;
     }
 
@@ -188,7 +188,7 @@ public final class SearchIndex {
      * @return the SearchIndex object itself.
      */
     public SearchIndex setScoringProfiles(ScoringProfile... scoringProfiles) {
-        this.scoringProfiles = Arrays.asList(scoringProfiles);
+        this.scoringProfiles = (scoringProfiles == null) ? null : Arrays.asList(scoringProfiles);
         return this;
     }
 
@@ -268,7 +268,7 @@ public final class SearchIndex {
      * @return the SearchIndex object itself.
      */
     public SearchIndex setSuggesters(SearchSuggester... suggesters) {
-        this.suggesters = Arrays.asList(suggesters);
+        this.suggesters = (suggesters == null) ? null : Arrays.asList(suggesters);
         return this;
     }
 
@@ -300,7 +300,7 @@ public final class SearchIndex {
      * @return the SearchIndex object itself.
      */
     public SearchIndex setAnalyzers(LexicalAnalyzer... analyzers) {
-        this.analyzers = Arrays.asList(analyzers);
+        this.analyzers = (analyzers == null) ? null : Arrays.asList(analyzers);
         return this;
     }
 
@@ -332,7 +332,7 @@ public final class SearchIndex {
      * @return the SearchIndex object itself.
      */
     public SearchIndex setTokenizers(LexicalTokenizer... tokenizers) {
-        this.tokenizers = Arrays.asList(tokenizers);
+        this.tokenizers = (tokenizers == null) ? null : Arrays.asList(tokenizers);
         return this;
     }
 
@@ -364,7 +364,7 @@ public final class SearchIndex {
      * @return the SearchIndex object itself.
      */
     public SearchIndex setTokenFilters(TokenFilter... tokenFilters) {
-        this.tokenFilters = Arrays.asList(tokenFilters);
+        this.tokenFilters = (tokenFilters == null) ? null : Arrays.asList(tokenFilters);
         return this;
     }
 
@@ -396,7 +396,7 @@ public final class SearchIndex {
      * @return the SearchIndex object itself.
      */
     public SearchIndex setCharFilters(CharFilter... charFilters) {
-        this.charFilters = Arrays.asList(charFilters);
+        this.charFilters = (charFilters == null) ? null : Arrays.asList(charFilters);
         return this;
     }
 

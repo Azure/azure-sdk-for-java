@@ -204,7 +204,7 @@ public final class AnalyzeTextOptions {
      * @return the AnalyzeRequest object itself.
      */
     public AnalyzeTextOptions setTokenFilters(TokenFilterName... tokenFilters) {
-        this.tokenFilters = Arrays.asList(tokenFilters);
+        this.tokenFilters = (tokenFilters == null) ? null : Arrays.asList(tokenFilters);
         return this;
     }
 
@@ -228,7 +228,7 @@ public final class AnalyzeTextOptions {
      * @return the AnalyzeRequest object itself.
      */
     public AnalyzeTextOptions setCharFilters(CharFilterName... charFilters) {
-        this.charFilters = Arrays.asList(charFilters);
+        this.charFilters = (charFilters == null) ? null : Arrays.asList(charFilters);
         return this;
     }
 }

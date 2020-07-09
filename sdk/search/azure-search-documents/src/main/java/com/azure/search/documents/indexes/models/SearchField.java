@@ -687,7 +687,7 @@ public final class SearchField {
      * @return the SearchField object itself.
      */
     public SearchField setSynonymMapNames(String... synonymMapNames) {
-        this.synonymMapNames = Arrays.asList(synonymMapNames);
+        this.synonymMapNames = (synonymMapNames == null) ? null : Arrays.asList(synonymMapNames);
         return this;
     }
 
@@ -729,7 +729,7 @@ public final class SearchField {
      * @return the SearchField object itself.
      */
     public SearchField setFields(SearchField... fields) {
-        this.fields = Arrays.asList(fields);
+        this.fields = (fields == null) ? null : Arrays.asList(fields);
         return this;
     }
 

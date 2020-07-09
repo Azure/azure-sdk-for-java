@@ -87,7 +87,7 @@ public final class LuceneStandardAnalyzer extends LexicalAnalyzer {
      * @return the LuceneStandardAnalyzer object itself.
      */
     public LuceneStandardAnalyzer setStopwords(String... stopwords) {
-        this.stopwords = Arrays.asList(stopwords);
+        this.stopwords = (stopwords == null) ? null : Arrays.asList(stopwords);
         return this;
     }
 

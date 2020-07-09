@@ -119,7 +119,7 @@ public final class InputFieldMappingEntry {
      * @return the InputFieldMappingEntry object itself.
      */
     public InputFieldMappingEntry setInputs(InputFieldMappingEntry... inputs) {
-        this.inputs = Arrays.asList(inputs);
+        this.inputs = (inputs == null) ? null : Arrays.asList(inputs);
         return this;
     }
 

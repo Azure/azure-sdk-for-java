@@ -53,7 +53,7 @@ public final class StopAnalyzer extends LexicalAnalyzer {
      * @return the StopAnalyzer object itself.
      */
     public StopAnalyzer setStopwords(String... stopwords) {
-        this.stopwords = Arrays.asList(stopwords);
+        this.stopwords = (stopwords == null) ? null : Arrays.asList(stopwords);
         return this;
     }
 

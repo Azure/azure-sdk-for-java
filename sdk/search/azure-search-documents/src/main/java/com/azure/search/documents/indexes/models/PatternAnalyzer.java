@@ -118,7 +118,7 @@ public final class PatternAnalyzer extends LexicalAnalyzer {
      * @return the PatternAnalyzer object itself.
      */
     public PatternAnalyzer setFlags(RegexFlags... flags) {
-        this.flags = Arrays.asList(flags);
+        this.flags = (flags == null) ? null : Arrays.asList(flags);
         return this;
     }
 
@@ -150,7 +150,7 @@ public final class PatternAnalyzer extends LexicalAnalyzer {
      * @return the PatternAnalyzer object itself.
      */
     public PatternAnalyzer setStopwords(String... stopwords) {
-        this.stopwords = Arrays.asList(stopwords);
+        this.stopwords = (stopwords == null) ? null : Arrays.asList(stopwords);
         return this;
     }
 

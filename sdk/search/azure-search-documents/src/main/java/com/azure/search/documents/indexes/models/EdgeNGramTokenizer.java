@@ -110,7 +110,7 @@ public final class EdgeNGramTokenizer extends LexicalTokenizer {
      * @return the EdgeNGramTokenizer object itself.
      */
     public EdgeNGramTokenizer setTokenChars(TokenCharacterKind... tokenChars) {
-        this.tokenChars = Arrays.asList(tokenChars);
+        this.tokenChars = (tokenChars == null) ? null : Arrays.asList(tokenChars);
         return this;
     }
 

@@ -80,7 +80,7 @@ public final class EntityRecognitionSkill extends SearchIndexerSkill {
      * @return the EntityRecognitionSkill object itself.
      */
     public EntityRecognitionSkill setCategories(EntityCategory... categories) {
-        this.categories = Arrays.asList(categories);
+        this.categories = (categories == null) ? null : Arrays.asList(categories);
         return this;
     }
 

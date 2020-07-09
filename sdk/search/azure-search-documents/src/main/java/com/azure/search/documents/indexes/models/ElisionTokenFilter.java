@@ -53,7 +53,7 @@ public final class ElisionTokenFilter extends TokenFilter {
      * @return the ElisionTokenFilter object itself.
      */
     public ElisionTokenFilter setArticles(String... articles) {
-        this.articles = Arrays.asList(articles);
+        this.articles = (articles == null) ? null : Arrays.asList(articles);
         return this;
     }
 

@@ -253,8 +253,7 @@ public abstract class SearchTestBase extends TestBase {
                 .setFacetable(Boolean.TRUE)
                 .setHidden(Boolean.FALSE),
             new SearchField("Address", SearchFieldDataType.COMPLEX)
-                .setFields(Arrays.asList(
-                    new SearchField("StreetAddress", SearchFieldDataType.STRING)
+                .setFields(new SearchField("StreetAddress", SearchFieldDataType.STRING)
                         .setSearchable(Boolean.TRUE)
                         .setHidden(Boolean.FALSE),
                     new SearchField("City", SearchFieldDataType.STRING)
@@ -280,16 +279,13 @@ public abstract class SearchTestBase extends TestBase {
                         .setFilterable(Boolean.TRUE)
                         .setSortable(Boolean.TRUE)
                         .setFacetable(Boolean.TRUE)
-                        .setHidden(Boolean.FALSE)
-                    )
-                ),
+                        .setHidden(Boolean.FALSE)),
             new SearchField("Location", SearchFieldDataType.GEOGRAPHY_POINT)
                 .setFilterable(Boolean.TRUE)
                 .setSortable(Boolean.TRUE)
                 .setHidden(Boolean.FALSE),
             new SearchField("Rooms", SearchFieldDataType.collection(SearchFieldDataType.COMPLEX))
-                .setFields(Arrays.asList(
-                    new SearchField("Description", SearchFieldDataType.STRING)
+                .setFields(new SearchField("Description", SearchFieldDataType.STRING)
                         .setSearchable(Boolean.TRUE)
                         .setAnalyzerName(LexicalAnalyzerName.EN_LUCENE),
                     new SearchField("DescriptionFr", SearchFieldDataType.STRING)
@@ -323,16 +319,13 @@ public abstract class SearchTestBase extends TestBase {
                         .setSearchable(Boolean.TRUE)
                         .setFilterable(Boolean.TRUE)
                         .setFacetable(Boolean.TRUE)
-                        .setHidden(Boolean.FALSE)
-                    )
-                ),
+                        .setHidden(Boolean.FALSE)),
             new SearchField("TotalGuests", SearchFieldDataType.INT64)
                 .setFilterable(Boolean.TRUE)
                 .setSortable(Boolean.TRUE)
                 .setFacetable(Boolean.TRUE),
             new SearchField("ProfitMargin", SearchFieldDataType.DOUBLE)
-        )).setScoringProfiles(Arrays.asList(
-            new ScoringProfile("MyProfile")
+        )).setScoringProfiles(new ScoringProfile("MyProfile")
                 .setFunctionAggregation(ScoringFunctionAggregation.AVERAGE)
                 .setFunctions(new MagnitudeScoringFunction("Rating", 2.0,
                         new MagnitudeScoringParameters(1, 4)
@@ -362,7 +355,7 @@ public abstract class SearchTestBase extends TestBase {
                     new MagnitudeScoringParameters(1, 5)
                         .setShouldBoostBeyondRangeByConstant(false))
                     .setInterpolation(ScoringFunctionInterpolation.CONSTANT))
-        )).setDefaultScoringProfile("MyProfile")
+        ).setDefaultScoringProfile("MyProfile")
             .setCorsOptions(new CorsOptions(Arrays.asList("http://tempuri.org", "http://localhost:80"))
                 .setMaxAgeInSeconds(60L))
             .setSuggesters(new SearchSuggester("FancySuggester", Collections.singletonList("HotelName")));

@@ -91,7 +91,7 @@ public final class ImageAnalysisSkill extends SearchIndexerSkill {
      * @return the ImageAnalysisSkill object itself.
      */
     public ImageAnalysisSkill setVisualFeatures(VisualFeature... visualFeatures) {
-        this.visualFeatures = Arrays.asList(visualFeatures);
+        this.visualFeatures = (visualFeatures == null) ? null : Arrays.asList(visualFeatures);
         return this;
     }
 
@@ -125,7 +125,7 @@ public final class ImageAnalysisSkill extends SearchIndexerSkill {
      * @return the ImageAnalysisSkill object itself.
      */
     public ImageAnalysisSkill setDetails(ImageDetail... details) {
-        this.details = Arrays.asList(details);
+        this.details = (details == null) ? null : Arrays.asList(details);
         return this;
     }
 
