@@ -5,7 +5,6 @@ package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonSetter;
 
 import java.util.Arrays;
 import java.util.List;
@@ -210,20 +209,6 @@ public final class AnalyzeTextOptions {
     }
 
     /**
-     * Set the tokenFilters property: An optional list of token filters to use
-     * when breaking the given text. This parameter can only be set when using
-     * the tokenizer parameter.
-     *
-     * @param tokenFilters the tokenFilters value to set.
-     * @return the AnalyzeRequest object itself.
-     */
-    @JsonSetter
-    public AnalyzeTextOptions setTokenFilters(List<TokenFilterName> tokenFilters) {
-        this.tokenFilters = tokenFilters;
-        return this;
-    }
-
-    /**
      * Get the charFilters property: An optional list of character filters to
      * use when breaking the given text. This parameter can only be set when
      * using the tokenizer parameter.
@@ -244,20 +229,6 @@ public final class AnalyzeTextOptions {
      */
     public AnalyzeTextOptions setCharFilters(CharFilterName... charFilters) {
         this.charFilters = Arrays.asList(charFilters);
-        return this;
-    }
-
-    /**
-     * Set the charFilters property: An optional list of character filters to
-     * use when breaking the given text. This parameter can only be set when
-     * using the tokenizer parameter.
-     *
-     * @param charFilters the charFilters value to set.
-     * @return the AnalyzeRequest object itself.
-     */
-    @JsonSetter
-    public AnalyzeTextOptions setCharFilters(List<CharFilterName> charFilters) {
-        this.charFilters = charFilters;
         return this;
     }
 }

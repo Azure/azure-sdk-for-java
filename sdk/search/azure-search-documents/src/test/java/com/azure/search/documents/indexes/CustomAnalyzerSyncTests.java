@@ -226,8 +226,8 @@ public class CustomAnalyzerSyncTests extends SearchTestBase {
             .forEach(r -> searchIndexClient.analyzeText(index.getName(), r));
 
         AnalyzeTextOptions request = new AnalyzeTextOptions("One two", LexicalTokenizerName.WHITESPACE)
-            .setTokenFilters(new ArrayList<>(TokenFilterName.values()))
-            .setCharFilters(new ArrayList<>(CharFilterName.values()));
+            .setTokenFilters(TokenFilterName.values().toArray(TokenFilterName[]::new))
+            .setCharFilters(CharFilterName.values().toArray(CharFilterName[]::new));
         searchIndexClient.analyzeText(index.getName(), request);
     }
 
