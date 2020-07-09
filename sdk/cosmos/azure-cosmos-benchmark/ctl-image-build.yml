@@ -20,7 +20,7 @@ jobs:
         mavenPomFile: pom.xml
         goals: 'package'
         # The -Ppackage-assembly profile packages up both libraries into one package
-        options: '$(DefaultOptions) -Ppackage-assembly -DskipTests -Dgpg.skip -Dmaven.javadoc.skip=true -Dcheckstyle.skip=true -Dspotbugs.skip=true -Drevapi.skip=true -pl com.azure:azure-cosmos,com.azure:azure-cosmos-benchmark'
+        options: '$(DefaultOptions) -Ppackage-assembly -DskipTests -Dgpg.skip -Dmaven.javadoc.skip=true -Dcheckstyle.skip=true -Dspotbugs.skip=true -Drevapi.skip=true -pl com.azure:azure-cosmos,com.azure:azure-cosmos-benchmark -am'
         javaHomeOption: 'JDKVersion'
         jdkVersionOption: $(JavaBuildVersion)
         jdkArchitectureOption: 'x64'
