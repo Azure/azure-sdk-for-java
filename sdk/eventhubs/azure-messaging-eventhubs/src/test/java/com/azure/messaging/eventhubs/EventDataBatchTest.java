@@ -20,7 +20,7 @@ import java.util.Collections;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
 
-public class EventDataBatchBaseTest {
+public class EventDataBatchTest {
     private static final String PARTITION_KEY = "PartitionIDCopyFromProducerOption";
 
     @Mock
