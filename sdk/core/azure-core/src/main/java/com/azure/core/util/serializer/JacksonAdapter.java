@@ -132,22 +132,6 @@ public class JacksonAdapter implements SerializerAdapter {
     }
 
     @Override
-    public ByteArrayOutputStream serializeToStream(Object object, SerializerEncoding encoding) throws IOException {
-        if (object == null) {
-            return null;
-        }
-
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        if (encoding == SerializerEncoding.XML) {
-            xmlMapper.writeValue(baos, object);
-        } else {
-            serializer().writeValue(baos, object);
-        }
-
-        return baos;
-    }
-
-    @Override
     public byte[] serializeToBytes(Object object, SerializerEncoding encoding) throws IOException {
         if (object == null) {
             return null;
@@ -155,9 +139,9 @@ public class JacksonAdapter implements SerializerAdapter {
 
         if (encoding == SerializerEncoding.XML) {
             return xmlMapper.writeValueAsBytes(object);
+        } else {
+            return serializer().writeValueAsBytes(object);
         }
-
-        return serializer().writeValueAsBytes(object);
     }
 
     @Override

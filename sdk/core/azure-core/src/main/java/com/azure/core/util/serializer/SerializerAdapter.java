@@ -29,14 +29,9 @@ public interface SerializerAdapter {
      *
      * @param object the object to serialize
      * @param encoding the encoding to use for serialization
-     * @return the serialized string. Null if the object to serialize is null
+     * @return the serialized byte array. Null if the object to serialize is null
      * @throws IOException exception from serialization
      */
-    // TODO (jogiles) JavaDoc
-    ByteArrayOutputStream serializeToStream(Object object, SerializerEncoding encoding) throws IOException;
-
-
-    // TODO Javadoc
     byte[] serializeToBytes(Object object, SerializerEncoding encoding) throws IOException;
 
     /**
