@@ -176,7 +176,7 @@ class DataEncryptionKeyProperties {
         return result;
     }
 
-    private static boolean equals(byte[] x, byte[] y) {
+    public static boolean equals(byte[] x, byte[] y) {
         return (x == null && y == null)
             || (x != null && y != null && Arrays.equals(x, y));
     }

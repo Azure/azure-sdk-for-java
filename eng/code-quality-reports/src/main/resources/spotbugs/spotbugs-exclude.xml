@@ -790,6 +790,25 @@
     <Bug pattern="RCN_REDUNDANT_NULLCHECK_OF_NONNULL_VALUE"/>
   </Match>
 
+  <Match>
+    <Class name="com.azure.cosmos.implementation.encryption.AeadAes256CbcHmac256Algorithm"/>
+    <Method name="decryptData"/>
+    <Bug pattern="RCN_REDUNDANT_NULLCHECK_OF_NONNULL_VALUE"/>
+  </Match>
+
+  <Match>
+    <Class name="com.azure.cosmos.implementation.encryption.AeadAes256CbcHmac256Algorithm"/>
+    <Method name="encryptData"/>
+    <Bug pattern="RCN_REDUNDANT_NULLCHECK_OF_NONNULL_VALUE"/>
+  </Match>
+
+
+  <Match>
+    <Class name="com.azure.cosmos.implementation.encryption.SecurityUtility"/>
+    <Method name="getSHA256Hash"/>
+    <Bug pattern="RCN_REDUNDANT_NULLCHECK_OF_NONNULL_VALUE"/>
+  </Match>
+
   <!-- Suppress false positive, there is no null in the flagged code -->
   <Match>
     <Class name="com.azure.cosmos.implementation.TestConfigurations"/>
@@ -1452,6 +1471,12 @@
     <Bug pattern="DLS_DEAD_LOCAL_STORE_OF_NULL"/>
   </Match>
 
+  <Match>
+    <Class name="com.azure.cosmos.implementation.encryption.AeadAes256CbcHmac256Algorithm"/>
+    <Method name="encryptData"/>
+    <Bug pattern="DLS_DEAD_LOCAL_STORE"/>
+  </Match>
+
   <!-- Bug: https://github.com/Azure/azure-sdk-for-java/issues/9093 -->
   <Match>
     <Class name="com.azure.cosmos.implementation.QueryMetrics"/>
@@ -1649,7 +1674,50 @@
 
   <!-- Returning a new copy of the object is not necessary -->
   <Match>
+    <Class name="com.azure.cosmos.implementation.encryption.EncryptionKeyUnwrapResult"/>
+    <Method name="getDataEncryptionKey"/>
+    <Bug pattern="EI_EXPOSE_REP"/>
+  </Match>
+
+  <!-- Returning a new copy of the object is not necessary -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.encryption.EncryptionKeyUnwrapResult"/>
+    <Method name="getWrappedDataEncryptionKey"/>
+    <Bug pattern="EI_EXPOSE_REP"/>
+  </Match>
+
+
+  <!-- Returning a new copy of the object is not necessary -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.encryption.EncryptionKeyUnwrapResult"/>
+    <Method name="&lt;init&gt;"/>
+    <Bug pattern="EI_EXPOSE_REP2"/>
+  </Match>
+
+  <!-- Returning a new copy of the object is not necessary -->
+  <Match>
     <Class name="com.azure.cosmos.implementation.directconnectivity.StoreResponse"/>
+    <Method name="&lt;init&gt;"/>
+    <Bug pattern="EI_EXPOSE_REP2"/>
+  </Match>
+
+  <!-- Returning a new copy of the object is not necessary -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.encryption.EncryptionKeyWrapResult"/>
+    <Method name="getWrappedDataEncryptionKey"/>
+    <Bug pattern="EI_EXPOSE_REP2,EI_EXPOSE_REP"/>
+  </Match>
+
+  <!-- Returning a new copy of the object is not necessary -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.encryption.EncryptionKeyWrapResult"/>
+    <Method name="getEncryptionKeyWrapMetadata"/>
+    <Bug pattern="EI_EXPOSE_REP2,EI_EXPOSE_REP"/>
+  </Match>
+
+  <!-- Returning a new copy of the object is not necessary -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.encryption.EncryptionKeyWrapResult"/>
     <Method name="&lt;init&gt;"/>
     <Bug pattern="EI_EXPOSE_REP2"/>
   </Match>
@@ -1814,6 +1882,12 @@
   <Match>
     <Class name="com.azure.cosmos.implementation.routing.Range"/>
     <Method name="isMinInclusive"/>
+    <Bug pattern="NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE"/>
+  </Match>
+
+  <Match>
+    <Class name="com.azure.cosmos.implementation.encryption.CosmosDataEncryptionKeyProvider"/>
+    <Method name="initialize"/>
     <Bug pattern="NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE"/>
   </Match>
 

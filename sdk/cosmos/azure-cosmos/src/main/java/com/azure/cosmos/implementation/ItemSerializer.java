@@ -49,12 +49,10 @@ public interface ItemSerializer {
     class EncryptionSerializer implements ItemSerializer {
         private final EncryptionOptions encryptionOptions;
         private final DataEncryptionKeyProvider dataEncryptionKeyProvider;
-        private final JsonSerializer jsonSerializer;
 
         public EncryptionSerializer(DataEncryptionKeyProvider dataEncryptionKeyProvider, JsonSerializer jsonSerializer, EncryptionOptions encryptionOptions) {
             this.encryptionOptions = encryptionOptions;
             this.dataEncryptionKeyProvider = dataEncryptionKeyProvider;
-            this.jsonSerializer = jsonSerializer;
         }
 
         @Override

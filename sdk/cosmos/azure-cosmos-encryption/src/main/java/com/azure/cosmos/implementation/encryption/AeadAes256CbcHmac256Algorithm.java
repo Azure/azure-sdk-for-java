@@ -332,7 +332,6 @@ class AeadAes256CbcHmac256Algorithm implements DataEncryptionKey {
 
             try (AesCryptoServiceProvider.ICryptoTransform decryptor = aesAlg.createDecryptor()) {
                 plainText = decryptor.transformFinalBlock(cipherText, offset, count);
-
             }
         } finally {
             // Return the provider to the pool.

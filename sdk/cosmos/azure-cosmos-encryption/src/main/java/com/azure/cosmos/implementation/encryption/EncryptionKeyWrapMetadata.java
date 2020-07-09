@@ -9,6 +9,8 @@ import com.azure.cosmos.implementation.guava25.base.Preconditions;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.util.Objects;
+
 
 /**
  * Metadata that a key wrapping provider can use to wrap/unwrap data encryption keys.
@@ -71,11 +73,17 @@ public class EncryptionKeyWrapMetadata {
     public String value;
 
     @Override
-    public boolean equals(Object obj) {
-        EncryptionKeyWrapMetadata other = Utils.as(obj, EncryptionKeyWrapMetadata.class);
-        return other != null &&
-            StringUtils.equals(this.type, other.type) &&
-            StringUtils.equals(this.algorithm, other.algorithm) &&
-            StringUtils.equals(this.value, other.value);
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        EncryptionKeyWrapMetadata that = (EncryptionKeyWrapMetadata) o;
+        return Objects.equals(type, that.type) &&
+            Objects.equals(algorithm, that.algorithm) &&
+            Objects.equals(value, that.value);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(type, algorithm, value);
     }
 }

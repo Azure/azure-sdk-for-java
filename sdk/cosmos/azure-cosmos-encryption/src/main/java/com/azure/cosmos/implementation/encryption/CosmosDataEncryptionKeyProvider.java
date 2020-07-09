@@ -8,6 +8,7 @@ import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.encryption.api.DataEncryptionKey;
 import com.azure.cosmos.implementation.encryption.api.DataEncryptionKeyProvider;
+import com.azure.cosmos.implementation.guava25.base.Preconditions;
 import com.azure.cosmos.models.CosmosContainerResponse;
 import reactor.core.publisher.Mono;
 import reactor.util.function.Tuple2;
@@ -57,6 +58,9 @@ public class CosmosDataEncryptionKeyProvider implements DataEncryptionKeyProvide
     // TODO: @moderakh look into if this method needs to be async.
     void initialize(CosmosAsyncDatabase database,
                            String containerId) {
+        Preconditions.checkNotNull(database, "database");
+        Preconditions.checkNotNull(containerId, "containerId");
+
         if (this.container != null) {
             throw new IllegalStateException("CosmosDataEncryptionKeyProvider has already been initialized.");
         }
@@ -77,7 +81,7 @@ public class CosmosDataEncryptionKeyProvider implements DataEncryptionKeyProvide
     public DataEncryptionKey getDataEncryptionKey(String id,
                                                   String encryptionAlgorithm) {
         Mono<Tuple2<DataEncryptionKeyProperties, InMemoryRawDek>> fetchUnwrapMono = this
-            .dataEncryptionKeyContainerCore.FetchUnwrappedAsync(id);
+            .dataEncryptionKeyContainerCore.fetchUnwrappedAsync(id);
 
         return fetchUnwrapMono
             .map(fetchUnwrap -> fetchUnwrap.getT2().getDataEncryptionKey())

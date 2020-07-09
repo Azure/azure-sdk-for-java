@@ -5,6 +5,7 @@ package com.azure.cosmos.implementation.encryption;
 
 import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
+import com.azure.cosmos.implementation.guava25.base.Preconditions;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParseException;
@@ -119,6 +120,8 @@ class EncryptionProperties {
     }
 
     static final class JsonDeserializer extends StdDeserializer<EncryptionProperties> {
+        private static final long serialVersionUID = 4L;
+
         public JsonDeserializer() {
             super(EncryptionProperties.class);
         }
@@ -139,20 +142,23 @@ class EncryptionProperties {
             EncryptionProperties encryptionProperties = new EncryptionProperties();
 
             JsonNode node = root.get(Constants.Properties.EncryptionFormatVersion);
-
-            validateOrThrow(jsonParser,node != null && node.isInt(), Constants.Properties.EncryptionFormatVersion, "can't deserialize");
+            Preconditions.checkNotNull(node, Constants.Properties.EncryptionFormatVersion +  "can't deserialize");
+            validateOrThrow(jsonParser, node.isInt(), Constants.Properties.EncryptionFormatVersion, "can't deserialize");
             encryptionProperties.encryptionFormatVersion = node.asInt();
 
             node = root.get(Constants.Properties.EncryptionAlgorithm);
-            validateOrThrow(jsonParser, node != null && node.isTextual(), Constants.Properties.EncryptionAlgorithm, "can't deserialize");
+            Preconditions.checkNotNull(node, Constants.Properties.EncryptionAlgorithm +  "can't deserialize");
+            validateOrThrow(jsonParser, node.isTextual(), Constants.Properties.EncryptionAlgorithm, "can't deserialize");
             encryptionProperties.encryptionAlgorithm = node.asText();
 
             node = root.get(Constants.Properties.DataEncryptionKeyId);
-            validateOrThrow(jsonParser, node != null && node.isTextual(), Constants.Properties.DataEncryptionKeyId, "can't deserialize");
+            Preconditions.checkNotNull(node, Constants.Properties.DataEncryptionKeyId +  "can't deserialize");
+            validateOrThrow(jsonParser, node.isTextual(), Constants.Properties.DataEncryptionKeyId, "can't deserialize");
             encryptionProperties.dataEncryptionKeyId = node.asText();
 
             node = root.get(Constants.Properties.EncryptedData);
-            validateOrThrow(jsonParser, node != null && node.isBinary() || node.isTextual(), Constants.Properties.EncryptedData, "can't deserialize");
+            Preconditions.checkNotNull(node, Constants.Properties.EncryptedData +  "can't deserialize");
+            validateOrThrow(jsonParser, node.isBinary() || node.isTextual(), Constants.Properties.EncryptedData, "can't deserialize");
             encryptionProperties.encryptedData = node.binaryValue();
 
             return encryptionProperties;

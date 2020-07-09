@@ -126,7 +126,7 @@ public class EncryptionProcessor {
         return itemJObj;
     }
 
-    class SensitiveDataTransformer {
+    static class SensitiveDataTransformer {
         public <T> ObjectNode toObjectNode(byte[] plainText) {
             if (Utils.isEmpty(plainText)) {
                 return null;

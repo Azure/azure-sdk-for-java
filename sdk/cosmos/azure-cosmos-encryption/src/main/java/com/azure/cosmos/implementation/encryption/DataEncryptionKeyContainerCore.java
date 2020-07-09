@@ -9,7 +9,6 @@ import com.azure.cosmos.implementation.encryption.api.DataEncryptionKey;
 import com.azure.cosmos.implementation.guava25.base.Preconditions;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
-import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.PartitionKey;
 import reactor.core.publisher.Mono;
 import reactor.util.function.Tuple2;
@@ -37,7 +36,7 @@ class DataEncryptionKeyContainerCore implements DataEncryptionKeyContainer {
         byte[] rawDek = DataEncryptionKey.generate(encryptionAlgorithm);
 
         Tuple3<byte[], EncryptionKeyWrapMetadata, InMemoryRawDek> wrapResult =
-            this.WrapAsync(
+            this.wrapAsync(
                 id,
                 rawDek,
                 encryptionAlgorithm,
@@ -66,7 +65,7 @@ class DataEncryptionKeyContainerCore implements DataEncryptionKeyContainer {
     public Mono<CosmosItemResponse<DataEncryptionKeyProperties>> readDataEncryptionKeyAsync(
         String id,
         CosmosItemRequestOptions requestOptions) {
-        Mono<CosmosItemResponse<DataEncryptionKeyProperties>> responseMono = this.ReadInternalAsync(
+        Mono<CosmosItemResponse<DataEncryptionKeyProperties>> responseMono = this.readInternalAsync(
             id,
             requestOptions);
 
@@ -86,7 +85,7 @@ class DataEncryptionKeyContainerCore implements DataEncryptionKeyContainer {
         final CosmosItemRequestOptions requestOptions) {
 
         Preconditions.checkNotNull(newWrapMetadata, "newWrapMetadata is missing");
-        Mono<Tuple2<DataEncryptionKeyProperties, InMemoryRawDek>> resultMono = this.FetchUnwrappedAsync(
+        Mono<Tuple2<DataEncryptionKeyProperties, InMemoryRawDek>> resultMono = this.fetchUnwrappedAsync(
             id);
 
         return resultMono.flatMap(
@@ -95,7 +94,7 @@ class DataEncryptionKeyContainerCore implements DataEncryptionKeyContainer {
                 InMemoryRawDek inMemoryRawDek = result.getT2();
 
                 Tuple3<byte[], EncryptionKeyWrapMetadata, InMemoryRawDek> wrapResult =
-                    this.WrapAsync(
+                    this.wrapAsync(
                         id,
                         inMemoryRawDek.getDataEncryptionKey().getRawKey(),
                         dekProperties.encryptionAlgorithm,
@@ -132,17 +131,17 @@ class DataEncryptionKeyContainerCore implements DataEncryptionKeyContainer {
             });
     }
 
-    Mono<Tuple2<DataEncryptionKeyProperties, InMemoryRawDek>> FetchUnwrappedAsync(
+    Mono<Tuple2<DataEncryptionKeyProperties, InMemoryRawDek>> fetchUnwrappedAsync(
         String id) {
         Mono<DataEncryptionKeyProperties> dekPropertiesMono = this.DekProvider.getDekCache().getOrAddDekPropertiesAsync(
             id,
-            this::ReadResourceAsync);
+            this::readResourceAsync);
 
         return dekPropertiesMono.flatMap(
             dekProperties -> {
                 Mono<InMemoryRawDek> inMemoryRawDek = this.DekProvider.getDekCache().getOrAddRawDekAsync(
                     dekProperties,
-                    dp -> Mono.just(this.UnwrapAsync(dp)));
+                    dp -> Mono.just(this.unwrapAsync(dp)));
 
                 return Mono.zip(Mono.just(dekProperties), inMemoryRawDek);
             }
@@ -171,7 +170,7 @@ class DataEncryptionKeyContainerCore implements DataEncryptionKeyContainer {
         }
     }
 
-    Tuple3<byte[], EncryptionKeyWrapMetadata, InMemoryRawDek> WrapAsync(
+    Tuple3<byte[], EncryptionKeyWrapMetadata, InMemoryRawDek> wrapAsync(
         String id,
         byte[] key,
         String encryptionAlgorithm,
@@ -182,7 +181,7 @@ class DataEncryptionKeyContainerCore implements DataEncryptionKeyContainer {
 
         // Verify
         DataEncryptionKeyProperties tempDekProperties = new DataEncryptionKeyProperties(id, encryptionAlgorithm, keyWrapResponse.getWrappedDataEncryptionKey(), keyWrapResponse.getEncryptionKeyWrapMetadata(), Instant.now());
-        InMemoryRawDek roundTripResponse = this.UnwrapAsync(tempDekProperties);
+        InMemoryRawDek roundTripResponse = this.unwrapAsync(tempDekProperties);
         if (!Arrays.equals(roundTripResponse.getDataEncryptionKey().getRawKey(), key)) {
             throw new IllegalStateException("The key wrapping provider configured was unable to unwrap the wrapped key correctly.");
         }
@@ -190,7 +189,7 @@ class DataEncryptionKeyContainerCore implements DataEncryptionKeyContainer {
         return new Tuple3<>(keyWrapResponse.getWrappedDataEncryptionKey(), keyWrapResponse.getEncryptionKeyWrapMetadata(), roundTripResponse);
     }
 
-    InMemoryRawDek UnwrapAsync(
+    InMemoryRawDek unwrapAsync(
         DataEncryptionKeyProperties dekProperties) {
         EncryptionKeyUnwrapResult unwrapResult;
 
@@ -202,14 +201,14 @@ class DataEncryptionKeyContainerCore implements DataEncryptionKeyContainer {
         return new InMemoryRawDek(dek, unwrapResult.getClientCacheTimeToLive());
     }
 
-    private Mono<DataEncryptionKeyProperties> ReadResourceAsync(
+    private Mono<DataEncryptionKeyProperties> readResourceAsync(
         String id) {
-        return this.ReadInternalAsync(
+        return this.readInternalAsync(
             id,
             null).map(CosmosItemResponse::getItem);
     }
 
-    private Mono<CosmosItemResponse<DataEncryptionKeyProperties>> ReadInternalAsync(
+    private Mono<CosmosItemResponse<DataEncryptionKeyProperties>> readInternalAsync(
         String id,
         CosmosItemRequestOptions requestOptions) {
         return this.DekProvider.getContainer()

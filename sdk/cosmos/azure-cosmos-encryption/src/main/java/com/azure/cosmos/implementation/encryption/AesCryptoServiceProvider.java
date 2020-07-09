@@ -16,7 +16,7 @@ import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 
 class AesCryptoServiceProvider {
-    private final String ALGO_NAME = "AES";
+    private static final String ALGO_NAME = "AES";
 
     private final Cipher cipher;
     private final SecretKeySpec secretKeySpec;
