@@ -25,7 +25,7 @@ public class TableServiceClientCodeSnippets {
         try {
             AzureTable officeSuppliesTable = tableServiceClient.createTable("OfficeSupplies");
         } catch (Exception e) {
-            logger.error("Create Table Unsuccessful. Error: " + e);
+            System.err.println("Create Table Unsuccessful. Error: " + e);
         }
     }
 
@@ -40,7 +40,7 @@ public class TableServiceClientCodeSnippets {
         try {
             tableServiceClient.deleteTable("OfficeSupplies");
         } catch (Exception e) {
-            logger.error("Delete Table Unsuccessful. Error: " + e);
+            System.err.println("Delete Table Unsuccessful. Error: " + e);
         }
     }
 
@@ -52,13 +52,12 @@ public class TableServiceClientCodeSnippets {
             .connectionString("connectionString")
             .buildClient();
 
-        QueryOptions queryOptions = new QueryOptions();
-        queryOptions.setFilter("TableName eq OfficeSupplies");
+        QueryOptions queryOptions = new QueryOptions().setFilter("TableName eq OfficeSupplies");
 
         try {
             List<AzureTable> responseTables = tableServiceClient.queryTables(queryOptions);
         } catch (HttpResponseException e) {
-            logger.error("Table Query Unsuccessful. Error: " + e);
+            System.err.println("Table Query Unsuccessful. Error: " + e);
         }
     }
 
@@ -77,7 +76,7 @@ public class TableServiceClientCodeSnippets {
         try {
             TableEntity tableEntity = tableClient.createEntity(properties);
         } catch (HttpResponseException e) {
-            logger.error("Insert Entity Unsuccessful. Error: " + e);
+            System.err.println("Insert Entity Unsuccessful. Error: " + e);
         }
     }
 
@@ -96,12 +95,12 @@ public class TableServiceClientCodeSnippets {
         try {
             tableEntity = tableClient.get(rowKey, partitionKey);
         } catch (HttpResponseException e) {
-            logger.error("Get Entity Unsuccessful: " + e);
+            System.err.println("Get Entity Unsuccessful: " + e);
         }
         try {
-            tableClient.updateEntity(UpdateMode.Replace, tableEntity);
+            tableClient.updateEntity(UpdateMode.REPLACE, tableEntity);
         } catch (HttpResponseException e) {
-            logger.error("Update Entity Unsuccessful. Error: " + e);
+            System.err.println("Update Entity Unsuccessful. Error: " + e);
         }
     }
 
@@ -120,12 +119,12 @@ public class TableServiceClientCodeSnippets {
         try {
             tableEntity = tableClient.get(rowKey, partitionKey);
         } catch (HttpResponseException e) {
-            logger.error("Get Entity Unsuccessful: " + e);
+            System.err.println("Get Entity Unsuccessful: " + e);
         }
         try {
-            tableClient.upsertEntity(UpdateMode.Replace, tableEntity);
+            tableClient.upsertEntity(UpdateMode.REPLACE, tableEntity);
         } catch (HttpResponseException e) {
-            logger.error("Upsert Entity Unsuccessful. Error: " + e);
+            System.err.println("Upsert Entity Unsuccessful. Error: " + e);
         }
     }
 
@@ -144,12 +143,12 @@ public class TableServiceClientCodeSnippets {
         try {
             tableEntity = tableClient.get(rowKey, partitionKey);
         } catch (HttpResponseException e) {
-            logger.error("Get Entity Unsuccessful: " + e);
+            System.err.println("Get Entity Unsuccessful: " + e);
         }
         try {
             tableClient.deleteEntity(tableEntity);
         } catch (HttpResponseException e) {
-            logger.error("Delete Entity Unsuccessful. Error: " + e);
+            System.err.println("Delete Entity Unsuccessful. Error: " + e);
         }
     }
 
@@ -162,13 +161,13 @@ public class TableServiceClientCodeSnippets {
             .tableName("OfficeSupplies")
             .buildClient();
 
-        QueryOptions queryOptions = new QueryOptions();
-        queryOptions.setFilter("Product eq markers");
-        queryOptions.setSelect("Seller, Price");
+        QueryOptions queryOptions = new QueryOptions()
+            .setFilter("Product eq markers")
+            .setSelect("Seller, Price");
         try {
             List<TableEntity> tableEntities = tableClient.queryEntities(queryOptions);
         } catch (HttpResponseException e) {
-            logger.error("Query Table Entities Unsuccessful. Error: " + e);
+            System.err.println("Query Table Entities Unsuccessful. Error: " + e);
         }
     }
 
@@ -186,7 +185,7 @@ public class TableServiceClientCodeSnippets {
         try {
             TableEntity tableEntity = tableClient.get(rowKey, partitionKey);
         } catch (HttpResponseException e) {
-            logger.error("Get Entity Unsuccessful. Entity may not exist: " + e);
+            System.err.println("Get Entity Unsuccessful. Entity may not exist: " + e);
         }
     }
 }

@@ -3,9 +3,12 @@
 
 package com.azure.data.tables;
 
+import com.azure.core.annotation.Fluent;
+
 /**
  * helps construct a query
  */
+@Fluent
 public final class QueryOptions {
     private Integer top;
     private String select;

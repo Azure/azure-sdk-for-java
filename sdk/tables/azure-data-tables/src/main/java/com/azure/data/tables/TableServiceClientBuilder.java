@@ -113,7 +113,7 @@ public class TableServiceClientBuilder {
      */
     public TableServiceClientBuilder httpClient(HttpClient httpClient) {
         if (this.httpClient != null && httpClient == null) {
-            logger.info("'httpClient' is being set to 'null' when it was previously configured.");
+            System.out.println("'httpClient' is being set to 'null' when it was previously configured.");
         }
         this.httpClient = httpClient;
         return this;

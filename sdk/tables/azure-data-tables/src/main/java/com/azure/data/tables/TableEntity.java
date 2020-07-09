@@ -2,11 +2,13 @@
 // Licensed under the MIT License.
 package com.azure.data.tables;
 
+import com.azure.core.annotation.Fluent;
 import java.util.Map;
 
 /**
  * table entity class
  */
+@Fluent
 public class TableEntity {
     private Map<String, Object> properties;
     //tableName
@@ -34,17 +36,9 @@ public class TableEntity {
      *
      * @param key the key of the property
      * @param value the value of the property
+     * @return the updated entity
      */
-    public void addProperty(String key, Object value) {
-
-    }
-
-    /**
-     * set the properties
-     *
-     * @param properties properties to set to this entity
-     */
-    public void setProperties(Map<String, Object> properties) {
-        this.properties = properties;
+    public TableEntity addProperty(String key, Object value) {
+        return this;
     }
 }
