@@ -1,4 +1,4 @@
-﻿# Azure CosmosDB Encryption client library for Java
+﻿# Azure CosmosDB client library for Java
 TODO
 
 ## Getting started
