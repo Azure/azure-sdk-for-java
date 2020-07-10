@@ -1262,9 +1262,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
             new ServiceBusReceiveLinkProcessor(receiverOptions.getPrefetchCount(), retryPolicy, connectionProcessor,
                 context));
         final ServiceBusAsyncConsumer newConsumer = new ServiceBusAsyncConsumer(linkName, linkMessageProcessor,
-            messageSerializer, false, receiverOptions.autoLockRenewalEnabled(),
-            receiverOptions.getMaxAutoLockRenewalDuration(), connectionProcessor.getRetryOptions(),
-            (token, associatedLinkName) -> renewMessageLock(token, associatedLinkName));
+            messageSerializer);
 
         // There could have been multiple threads trying to create this async consumer when the result was null.
         // If another one had set the value while we were creating this resource, dispose of newConsumer.
@@ -1281,16 +1279,6 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      */
     ReceiverOptions getReceiverOptions() {
         return receiverOptions;
-    }
-
-    /**
-     * Renews the message lock, and updates its value in the container.
-     */
-    private Mono<Instant> renewMessageLock(String lockToken, String linkName) {
-        return connectionProcessor
-            .flatMap(connection -> connection.getManagementNode(entityPath, entityType))
-            .flatMap(serviceBusManagementNode ->
-                serviceBusManagementNode.renewMessageLock(lockToken, linkName));
     }
 
     /**

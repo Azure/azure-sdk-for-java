@@ -223,7 +223,8 @@
   "policy": {
     "dir": "../resources/mgmt",
     "source": "specification/resources/resource-manager/readme.md",
-    "package": "com.azure.resourcemanager.resources --tag=package-policy-2019-09"
+    "package": "com.azure.resourcemanager.resources",
+    "args": "--payload-flattening-threshold=1 --tag=package-policy-2019-09"	
   },
   "powerbi": {
     "dir": "../powerbi/mgmt",

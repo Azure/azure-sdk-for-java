@@ -245,3 +245,32 @@ jobs:
         options: '$(ProfileFlag) -Dgpg.skip $(AdditionalArgs) -pl $(ProjectList)'
 
       TestResultsFiles: '**/junitreports/TEST-*.xml'
+
+  - template: ../../eng/pipelines/templates/jobs/archetype-sdk-tests.yml
+    parameters:
+        TestName: Integration_Test_Spring_Data_Cosmosdb
+        ServiceDirectory: cosmos
+        Artifacts:
+            - name: azure-spring-data-cosmos
+              groupId: com.azure
+              safeName: azurespringdatacosmos
+        TimeoutInMinutes: 90
+        Matrix:
+          Session_Integration:
+            ArmTemplateParameters: "@{ enableMultipleWriteLocations = $false; defaultConsistencyLevel = 'Session' }"
+            DisplayName: Session Integration
+            OSVmImage: 'ubuntu-18.04'
+            ProfileFlag: '-P integration-test-azure'
+          Strong_Integration:
+            ArmTemplateParameters: "@{ enableMultipleWriteLocations = $false; defaultConsistencyLevel = 'Strong' }"
+            DisplayName: Strong Integration
+            OSVmImage: 'ubuntu-18.04'
+            ProfileFlag: '-P integration-test-azure'
+
+        EnvVars:
+            AZURE_TEST_MODE: LIVE
+        PreRunSteps:
+            - template: /eng/pipelines/templates/steps/install-reporting-tools.yml
+        TestStepMavenInputs:
+            goals: verify
+            options: '$(ProfileFlag) -Dgpg.skip -Dmaven.wagon.http.pool=false $(DefaultOptions) -Dmaven.javadoc.skip=true -Drevapi.skip=true -pl $(ProjectList)'

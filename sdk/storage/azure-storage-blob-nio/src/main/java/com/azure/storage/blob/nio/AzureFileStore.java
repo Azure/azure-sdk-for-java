@@ -114,7 +114,7 @@ public final class AzureFileStore extends FileStore {
      * <ul>
      *     <li>{@link java.nio.file.attribute.BasicFileAttributeView}</li>
      *     <li>{@link java.nio.file.attribute.UserDefinedFileAttributeView}</li>
-     *     <li>{@link AzureStorageFileAttributeView}</li>
+     *     <li>{@link AzureBasicFileAttributeView}</li>
      * </ul>
      *
      * {@inheritDoc}
@@ -129,7 +129,7 @@ public final class AzureFileStore extends FileStore {
      * <ul>
      *     <li>{@link java.nio.file.attribute.BasicFileAttributeView}</li>
      *     <li>{@link java.nio.file.attribute.UserDefinedFileAttributeView}</li>
-     *     <li>{@link AzureStorageFileAttributeView}</li>
+     *     <li>{@link AzureBasicFileAttributeView}</li>
      * </ul>
      *
      * {@inheritDoc}
