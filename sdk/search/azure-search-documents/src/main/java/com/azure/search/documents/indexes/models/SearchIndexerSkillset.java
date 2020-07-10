@@ -6,6 +6,9 @@ package com.azure.search.documents.indexes.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonSetter;
+
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -110,6 +113,18 @@ public final class SearchIndexerSkillset {
      * @param skills the skills value to set.
      * @return the SearchIndexerSkillset object itself.
      */
+    public SearchIndexerSkillset setSkills(SearchIndexerSkill... skills) {
+        this.skills = (skills == null) ? null : Arrays.asList(skills);
+        return this;
+    }
+
+    /**
+     * Set the skills property: A list of skills in the skillset.
+     *
+     * @param skills the skills value to set.
+     * @return the SearchIndexerSkillset object itself.
+     */
+    @JsonSetter
     public SearchIndexerSkillset setSkills(List<SearchIndexerSkill> skills) {
         this.skills = skills;
         return this;
