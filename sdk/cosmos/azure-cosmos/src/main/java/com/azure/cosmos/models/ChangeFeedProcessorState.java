@@ -16,7 +16,7 @@ public class ChangeFeedProcessorState {
     private String id;
     private String leaseToken;
     private String hostName;
-    private Instant lastUpdate;
+    private Instant lastUpdatedTime;
     private String continuationToken;
     private Instant continuationTokenTimestamp;
     private int estimatedLag;
@@ -94,18 +94,18 @@ public class ChangeFeedProcessorState {
      *
      * @return time when the lease item was last updated.
      */
-    public Instant getLastUpdate() {
-        return this.lastUpdate;
+    public Instant getLastUpdatedTime() {
+        return this.lastUpdatedTime;
     }
 
     /**
      * Sets time when the lease item was last updated.
      *
-     * @param lastUpdate a unique string.
+     * @param lastUpdatedTime a unique string.
      * @return the current ChangeFeedProcessorState instance.
      */
-    public ChangeFeedProcessorState setLastUpdate(Instant lastUpdate) {
-        this.lastUpdate = lastUpdate;
+    public ChangeFeedProcessorState setLastUpdatedTime(Instant lastUpdatedTime) {
+        this.lastUpdatedTime = lastUpdatedTime;
         return this;
     }
 
