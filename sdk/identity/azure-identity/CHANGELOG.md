@@ -1,7 +1,8 @@
 # Release History
 
-## 1.1.0-beta.6 (Unreleased)
-
+## 1.1.0-beta.6 (2020-07-10)
+- Added `.getCredentials()` method to `DefaultAzureCredential` and `ChainedTokenCredential` and added option `.addAll(List<TokenCredential>)` on `ChainedtokenCredentialBuilder`.
+- Added logging information in credentials and improved error messages in `DefaultAzureCredential`.
 
 ## 1.1.0-beta.5 (2020-06-09)
 
