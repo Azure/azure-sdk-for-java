@@ -179,7 +179,7 @@ final class GenericResourceImpl
                 GenericResourceInner.class,
                 inner -> new GenericResourceImpl(inner.id(), inner, this.manager()));
 
-            setInner(accepted.getAcceptedResult().getValue().inner());
+            setInner(accepted.getActivationResponse().getValue().inner());
             return accepted;
         }
     }

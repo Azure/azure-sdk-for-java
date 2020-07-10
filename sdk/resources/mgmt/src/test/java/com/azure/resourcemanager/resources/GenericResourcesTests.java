@@ -109,10 +109,10 @@ public class GenericResourcesTests extends ResourceManagerTestBase {
             .withProperties(new ObjectMapper().readTree("{\"SiteMode\":\"Limited\",\"ComputeMode\":\"Shared\"}"))
             .beginCreate();
 
-        LongRunningOperationStatus pollStatus = acceptedResource.getAcceptedResult().getStatus();
-        int delayInMills = acceptedResource.getAcceptedResult().getRetryAfter() == null
+        LongRunningOperationStatus pollStatus = acceptedResource.getActivationResponse().getStatus();
+        int delayInMills = acceptedResource.getActivationResponse().getRetryAfter() == null
             ? 0
-            : (int) acceptedResource.getAcceptedResult().getRetryAfter().toMillis();
+            : (int) acceptedResource.getActivationResponse().getRetryAfter().toMillis();
         while (!pollStatus.isComplete()) {
             SdkContext.sleep(delayInMills);
 

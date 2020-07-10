@@ -11,7 +11,7 @@ Fluent interface does the polling operations in background, and only returns the
 Azure Management Libraries supports fine control over the polling for certain important resources, via `Accepted` and `SyncPoller` class. Method verb is `beginCreate` and `beginDelete`.
 
 `Accepted` class provides following functionalities:
-- `ActivationResponse` via `getAcceptedResult` method provides the response of the first activation operation. Note that though it wraps a resource instance, some action on this resource instance will not work, since it is not provisioned yet.
+- `ActivationResponse` via `getActivationResponse` method provides the response of the first activation operation. Note that though it wraps a resource instance, some action on this resource instance will not work, since it is not provisioned yet.
 - `SyncPoller` via `getSyncPoller` method provides the control of the polling operations. `SyncPoller.poll` can be called at desired time.
 - Resource instance via `getFinalResult` method, after completion of the polling operations. The method will throw `ManagementException` if polling failed and resource cannot be provisioned.
 
