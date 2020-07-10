@@ -34,9 +34,9 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.appplatform.AppPlatformManagementClient;
-import com.azure.resourcemanager.appplatform.fluent.inner.NameAvailabilityInner;
 import com.azure.resourcemanager.appplatform.fluent.inner.ServiceResourceInner;
 import com.azure.resourcemanager.appplatform.fluent.inner.ServiceResourceListInner;
+import com.azure.resourcemanager.appplatform.models.NameAvailability;
 import com.azure.resourcemanager.appplatform.models.NameAvailabilityParameters;
 import com.azure.resourcemanager.appplatform.models.RegenerateTestKeyRequestPayload;
 import com.azure.resourcemanager.appplatform.models.TestKeyType;
@@ -199,7 +199,7 @@ public final class ServicesClient
                 + "/checkNameAvailability")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<NameAvailabilityInner>> checkNameAvailability(
+        Mono<Response<NameAvailability>> checkNameAvailability(
             @HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
@@ -1856,7 +1856,7 @@ public final class ServicesClient
      * @return name availability result payload.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<NameAvailabilityInner>> checkNameAvailabilityWithResponseAsync(
+    public Mono<Response<NameAvailability>> checkNameAvailabilityWithResponseAsync(
         String location, NameAvailabilityParameters availabilityParameters) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -1906,7 +1906,7 @@ public final class ServicesClient
      * @return name availability result payload.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<NameAvailabilityInner>> checkNameAvailabilityWithResponseAsync(
+    public Mono<Response<NameAvailability>> checkNameAvailabilityWithResponseAsync(
         String location, NameAvailabilityParameters availabilityParameters, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -1951,11 +1951,11 @@ public final class ServicesClient
      * @return name availability result payload.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<NameAvailabilityInner> checkNameAvailabilityAsync(
+    public Mono<NameAvailability> checkNameAvailabilityAsync(
         String location, NameAvailabilityParameters availabilityParameters) {
         return checkNameAvailabilityWithResponseAsync(location, availabilityParameters)
             .flatMap(
-                (Response<NameAvailabilityInner> res) -> {
+                (Response<NameAvailability> res) -> {
                     if (res.getValue() != null) {
                         return Mono.just(res.getValue());
                     } else {
@@ -1976,11 +1976,11 @@ public final class ServicesClient
      * @return name availability result payload.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<NameAvailabilityInner> checkNameAvailabilityAsync(
+    public Mono<NameAvailability> checkNameAvailabilityAsync(
         String location, NameAvailabilityParameters availabilityParameters, Context context) {
         return checkNameAvailabilityWithResponseAsync(location, availabilityParameters, context)
             .flatMap(
-                (Response<NameAvailabilityInner> res) -> {
+                (Response<NameAvailability> res) -> {
                     if (res.getValue() != null) {
                         return Mono.just(res.getValue());
                     } else {
@@ -2000,8 +2000,7 @@ public final class ServicesClient
      * @return name availability result payload.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public NameAvailabilityInner checkNameAvailability(
-        String location, NameAvailabilityParameters availabilityParameters) {
+    public NameAvailability checkNameAvailability(String location, NameAvailabilityParameters availabilityParameters) {
         return checkNameAvailabilityAsync(location, availabilityParameters).block();
     }
 
@@ -2017,7 +2016,7 @@ public final class ServicesClient
      * @return name availability result payload.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public NameAvailabilityInner checkNameAvailability(
+    public NameAvailability checkNameAvailability(
         String location, NameAvailabilityParameters availabilityParameters, Context context) {
         return checkNameAvailabilityAsync(location, availabilityParameters, context).block();
     }

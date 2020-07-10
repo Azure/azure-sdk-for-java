@@ -33,9 +33,9 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.appplatform.AppPlatformManagementClient;
 import com.azure.resourcemanager.appplatform.fluent.inner.CustomDomainResourceCollectionInner;
 import com.azure.resourcemanager.appplatform.fluent.inner.CustomDomainResourceInner;
-import com.azure.resourcemanager.appplatform.fluent.inner.CustomDomainValidateResultInner;
 import com.azure.resourcemanager.appplatform.models.CustomDomainProperties;
 import com.azure.resourcemanager.appplatform.models.CustomDomainValidatePayload;
+import com.azure.resourcemanager.appplatform.models.CustomDomainValidateResult;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in CustomDomains. */
@@ -153,7 +153,7 @@ public final class CustomDomainsClient {
                 + "/{serviceName}/apps/{appName}/domains/validate")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<CustomDomainValidateResultInner>> validate(
+        Mono<Response<CustomDomainValidateResult>> validate(
             @HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
@@ -1273,7 +1273,7 @@ public final class CustomDomainsClient {
      * @return validation result for custom domain.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<CustomDomainValidateResultInner>> validateWithResponseAsync(
+    public Mono<Response<CustomDomainValidateResult>> validateWithResponseAsync(
         String resourceGroupName, String serviceName, String appName, String name) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -1333,7 +1333,7 @@ public final class CustomDomainsClient {
      * @return validation result for custom domain.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<CustomDomainValidateResultInner>> validateWithResponseAsync(
+    public Mono<Response<CustomDomainValidateResult>> validateWithResponseAsync(
         String resourceGroupName, String serviceName, String appName, String name, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -1388,11 +1388,11 @@ public final class CustomDomainsClient {
      * @return validation result for custom domain.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<CustomDomainValidateResultInner> validateAsync(
+    public Mono<CustomDomainValidateResult> validateAsync(
         String resourceGroupName, String serviceName, String appName, String name) {
         return validateWithResponseAsync(resourceGroupName, serviceName, appName, name)
             .flatMap(
-                (Response<CustomDomainValidateResultInner> res) -> {
+                (Response<CustomDomainValidateResult> res) -> {
                     if (res.getValue() != null) {
                         return Mono.just(res.getValue());
                     } else {
@@ -1416,11 +1416,11 @@ public final class CustomDomainsClient {
      * @return validation result for custom domain.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<CustomDomainValidateResultInner> validateAsync(
+    public Mono<CustomDomainValidateResult> validateAsync(
         String resourceGroupName, String serviceName, String appName, String name, Context context) {
         return validateWithResponseAsync(resourceGroupName, serviceName, appName, name, context)
             .flatMap(
-                (Response<CustomDomainValidateResultInner> res) -> {
+                (Response<CustomDomainValidateResult> res) -> {
                     if (res.getValue() != null) {
                         return Mono.just(res.getValue());
                     } else {
@@ -1443,7 +1443,7 @@ public final class CustomDomainsClient {
      * @return validation result for custom domain.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CustomDomainValidateResultInner validate(
+    public CustomDomainValidateResult validate(
         String resourceGroupName, String serviceName, String appName, String name) {
         return validateAsync(resourceGroupName, serviceName, appName, name).block();
     }
@@ -1463,7 +1463,7 @@ public final class CustomDomainsClient {
      * @return validation result for custom domain.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CustomDomainValidateResultInner validate(
+    public CustomDomainValidateResult validate(
         String resourceGroupName, String serviceName, String appName, String name, Context context) {
         return validateAsync(resourceGroupName, serviceName, appName, name, context).block();
     }
