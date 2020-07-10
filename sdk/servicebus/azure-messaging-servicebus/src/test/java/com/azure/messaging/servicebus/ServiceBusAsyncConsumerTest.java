@@ -5,13 +5,12 @@ package com.azure.messaging.servicebus;
 
 import com.azure.core.amqp.AmqpEndpointState;
 import com.azure.core.amqp.AmqpRetryPolicy;
-import com.azure.core.amqp.exception.AmqpErrorContext;
 import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.implementation.ServiceBusAmqpConnection;
 import com.azure.messaging.servicebus.implementation.ServiceBusReceiveLink;
 import com.azure.messaging.servicebus.implementation.ServiceBusReceiveLinkProcessor;
-import org.apache.qpid.proton.amqp.messaging.Accepted;
+import com.azure.messaging.servicebus.models.ReceiveMode;
 import org.apache.qpid.proton.amqp.transport.DeliveryState;
 import org.apache.qpid.proton.message.Message;
 import org.junit.jupiter.api.AfterAll;
@@ -23,12 +22,10 @@ import org.junit.jupiter.api.TestInfo;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
-import reactor.core.Disposable;
-import reactor.core.publisher.EmitterProcessor;
 import reactor.core.publisher.Flux;
-import reactor.core.publisher.FluxSink;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
+import reactor.test.publisher.TestPublisher;
 
 import java.time.Duration;
 import java.util.UUID;
@@ -45,10 +42,13 @@ import static org.mockito.Mockito.when;
  */
 class ServiceBusAsyncConsumerTest {
     private static final String LINK_NAME = "some-link";
-    private final EmitterProcessor<Message> messageProcessor = EmitterProcessor.create();
-    private final FluxSink<Message> messageProcessorSink = messageProcessor.sink();
-    private final EmitterProcessor<AmqpEndpointState> endpointProcessor = EmitterProcessor.create();
-    private final FluxSink<AmqpEndpointState> endpointProcessorSink = endpointProcessor.sink();
+    private final TestPublisher<ServiceBusReceiveLink> linkPublisher = TestPublisher.create();
+    private final Flux<ServiceBusReceiveLink> linkFlux = linkPublisher.flux();
+    private final TestPublisher<Message> messagePublisher = TestPublisher.create();
+    private final Flux<Message> messageFlux = messagePublisher.flux();
+    private final TestPublisher<AmqpEndpointState> endpointPublisher = TestPublisher.create();
+    private final Flux<AmqpEndpointState> endpointStateFlux = endpointPublisher.flux();
+
     private final ClientLogger logger = new ClientLogger(ServiceBusAsyncConsumer.class);
 
     private ServiceBusReceiveLinkProcessor linkProcessor;
@@ -59,8 +59,6 @@ class ServiceBusAsyncConsumerTest {
     private ServiceBusReceiveLink link;
     @Mock
     private AmqpRetryPolicy retryPolicy;
-    @Mock
-    private Disposable parentConnection;
     @Mock
     private MessageSerializer serializer;
 
@@ -80,13 +78,10 @@ class ServiceBusAsyncConsumerTest {
 
         MockitoAnnotations.initMocks(this);
 
-        when(link.getEndpointStates()).thenReturn(endpointProcessor);
-        when(link.receive()).thenReturn(messageProcessor);
-        linkProcessor = Flux.<ServiceBusReceiveLink>create(sink -> sink.onRequest(requested -> {
-            logger.info("Requested link: {}", requested);
-            sink.next(link);
-        })).subscribeWith(new ServiceBusReceiveLinkProcessor(10, retryPolicy, parentConnection,
-            new AmqpErrorContext("a-namespace")));
+        when(link.getEndpointStates()).thenReturn(endpointStateFlux);
+        when(link.receive()).thenReturn(messageFlux);
+        linkProcessor = linkFlux.subscribeWith(new ServiceBusReceiveLinkProcessor(10, retryPolicy,
+            ReceiveMode.RECEIVE_AND_DELETE));
 
         when(connection.getEndpointStates()).thenReturn(Flux.create(sink -> sink.next(AmqpEndpointState.ACTIVE)));
         when(link.updateDisposition(anyString(), any(DeliveryState.class))).thenReturn(Mono.empty());
@@ -97,6 +92,11 @@ class ServiceBusAsyncConsumerTest {
         logger.info("[{}]: Tearing down.", testInfo.getDisplayName());
 
         Mockito.framework().clearInlineMocks();
+
+        linkProcessor.dispose();
+        linkPublisher.complete();
+        endpointPublisher.complete();
+        messagePublisher.complete();
     }
 
     /**
@@ -105,7 +105,9 @@ class ServiceBusAsyncConsumerTest {
     @Test
     void receiveNoAutoComplete() {
         // Arrange
-        final ServiceBusAsyncConsumer consumer = new ServiceBusAsyncConsumer(LINK_NAME, linkProcessor, serializer);
+        final int prefetch = 10;
+        final ServiceBusAsyncConsumer consumer = new ServiceBusAsyncConsumer(LINK_NAME, linkProcessor, serializer,
+            prefetch);
 
         final Message message1 = mock(Message.class);
         final Message message2 = mock(Message.class);
@@ -122,9 +124,13 @@ class ServiceBusAsyncConsumerTest {
 
         // Act and Assert
         StepVerifier.create(consumer.receive())
-            .then(() -> messageProcessorSink.next(message1))
+            .then(() -> {
+                linkPublisher.next(link);
+                endpointPublisher.next(AmqpEndpointState.ACTIVE);
+                messagePublisher.next(message1);
+            })
             .expectNext(receivedMessage1)
-            .then(() -> messageProcessorSink.next(message2))
+            .then(() -> messagePublisher.next(message2))
             .expectNext(receivedMessage2)
             .thenCancel()
             .verify();
@@ -138,11 +144,10 @@ class ServiceBusAsyncConsumerTest {
     @Test
     void canDispose() {
         // Arrange
+        final int prefetch = 10;
         final String lockToken = UUID.randomUUID().toString();
-        when(linkProcessor.updateDisposition(lockToken, Accepted.getInstance()))
-            .thenReturn(Mono.error(new IllegalArgumentException("Should not have called complete.")));
-
-        final ServiceBusAsyncConsumer consumer = new ServiceBusAsyncConsumer(LINK_NAME, linkProcessor, serializer);
+        final ServiceBusAsyncConsumer consumer = new ServiceBusAsyncConsumer(LINK_NAME, linkProcessor, serializer,
+            prefetch);
 
         final Message message1 = mock(Message.class);
         final ServiceBusReceivedMessage receivedMessage1 = mock(ServiceBusReceivedMessage.class);
@@ -153,11 +158,15 @@ class ServiceBusAsyncConsumerTest {
         // Act and Assert
         StepVerifier.create(consumer.receive())
             .then(() -> {
-                endpointProcessorSink.next(AmqpEndpointState.ACTIVE);
-                messageProcessorSink.next(message1);
+                linkPublisher.next(link);
+                endpointPublisher.next(AmqpEndpointState.ACTIVE);
+                messagePublisher.next(message1);
             })
             .expectNext(receivedMessage1)
-            .then(() -> consumer.close())
+            .then(() -> {
+                linkPublisher.complete();
+                endpointPublisher.complete();
+            })
             .verifyComplete();
 
         verify(link, never()).updateDisposition(anyString(), any(DeliveryState.class));
