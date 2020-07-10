@@ -19,7 +19,7 @@ public class UrlSigningParamIdentifier {
      * 'expires', 'keyId', 'signature'.
      */
     @JsonProperty(value = "paramIndicator", required = true)
-    private String paramIndicator;
+    private ParamIndicator paramIndicator;
 
     /**
      * Parameter name.
@@ -32,7 +32,7 @@ public class UrlSigningParamIdentifier {
      *
      * @return the paramIndicator value
      */
-    public String paramIndicator() {
+    public ParamIndicator paramIndicator() {
         return this.paramIndicator;
     }
 
@@ -42,7 +42,7 @@ public class UrlSigningParamIdentifier {
      * @param paramIndicator the paramIndicator value to set
      * @return the UrlSigningParamIdentifier object itself.
      */
-    public UrlSigningParamIdentifier withParamIndicator(String paramIndicator) {
+    public UrlSigningParamIdentifier withParamIndicator(ParamIndicator paramIndicator) {
         this.paramIndicator = paramIndicator;
         return this;
     }
