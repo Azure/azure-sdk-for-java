@@ -199,12 +199,13 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
     }
 
     /**
+     * @throws UnsupportedOperationException Operation is not supported.
      * {@inheritDoc}
      */
     @Override
     public SeekableByteChannel newByteChannel(Path path, Set<? extends OpenOption> set,
             FileAttribute<?>... fileAttributes) throws IOException {
-        return null;
+        throw new UnsupportedOperationException();
     }
 
     /**
@@ -611,19 +612,21 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
     }*/
 
     /**
+     * @throws UnsupportedOperationException Operation is not supported.
      * {@inheritDoc}
      */
     @Override
     public void move(Path path, Path path1, CopyOption... copyOptions) throws IOException {
-
+        throw new UnsupportedOperationException();
     }
 
     /**
+     * @throws UnsupportedOperationException Operation is not supported.
      * {@inheritDoc}
      */
     @Override
     public boolean isSameFile(Path path, Path path1) throws IOException {
-        return false;
+        throw new UnsupportedOperationException();
     }
 
     /**
@@ -635,19 +638,21 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
     }
 
     /**
+     * @throws UnsupportedOperationException Operation is not supported.
      * {@inheritDoc}
      */
     @Override
     public FileStore getFileStore(Path path) throws IOException {
-        return null;
+        throw new UnsupportedOperationException();
     }
 
     /**
+     * @throws UnsupportedOperationException Operation is not supported.
      * {@inheritDoc}
      */
     @Override
     public void checkAccess(Path path, AccessMode... accessModes) throws IOException {
-
+        throw new UnsupportedOperationException();
     }
 
     /**
