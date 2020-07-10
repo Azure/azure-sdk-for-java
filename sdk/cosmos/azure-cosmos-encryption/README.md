@@ -1,4 +1,4 @@
-﻿# Azure CosmosDB Client Library for Java
+﻿# Azure CosmosDB Client Encryption extension
 
 ## Getting started
 ### Include the package
@@ -15,17 +15,19 @@
 
 
 ### Prerequisites
-
+TODO
 
 ## Key Concepts
-
+TODO
 
 ## Examples
-
+TODO
 
 ## Troubleshooting
+TODO
 
 ## Next Steps
+TODO
 
 ## Contributing
 
