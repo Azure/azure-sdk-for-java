@@ -1,5 +1,8 @@
 # Release History
 
+## 7.0.0-beta.5 (Unreleased)
+
+
 ## 7.0.0-beta.4 (2020-07-10)
 - Add support for send messages via another entity.
 - Add support for management operations on a topic, subscription, or namespace.
