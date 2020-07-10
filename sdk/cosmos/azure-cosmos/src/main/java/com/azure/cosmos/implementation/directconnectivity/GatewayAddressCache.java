@@ -56,6 +56,8 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
+import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
+
 public class GatewayAddressCache implements IAddressCache {
     private final static Logger logger = LoggerFactory.getLogger(GatewayAddressCache.class);
     private final static String protocolFilterFormat = "%s eq %s";
@@ -506,6 +508,18 @@ public class GatewayAddressCache implements IAddressCache {
                     logAddressResolutionEnd(request, identifier);
                     return dsr.getQueryResponse(Address.class);
                 });
+    }
+
+    public Mono<AddressInformation[]> updateAsync(final PartitionKeyRangeIdentity partitionKeyRangeIdentity) {
+
+        checkNotNull(partitionKeyRangeIdentity, "expected non-null partitionKeyRangeIdentity");
+        final String collectionRid = partitionKeyRangeIdentity.getCollectionRid();
+        final String partitionKeyRangeId = partitionKeyRangeIdentity.getPartitionKeyRangeId();
+
+        return this.serverPartitionAddressCache.getAsync(
+            partitionKeyRangeIdentity,
+            null,
+            () -> this.getAddressesForRangeId(null, collectionRid, partitionKeyRangeId, true));
     }
 
     private Pair<PartitionKeyRangeIdentity, AddressInformation[]> toPartitionAddressAndRange(String collectionRid, List<Address> addresses) {

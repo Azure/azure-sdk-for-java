@@ -12,6 +12,7 @@ import java.util.UUID;
 
 import static com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdConstants.RntbdRequestHeader;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
+import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkState;
 
 public final class RntbdRequest {
 
@@ -78,13 +79,17 @@ public final class RntbdRequest {
     void encode(final ByteBuf out) {
 
         final int expectedLength = RntbdRequestFrame.LENGTH + this.headers.computeLength();
-        final int start = out.readerIndex();
+        checkState(out.readerIndex() == out.writerIndex());
+        final int start = out.writerIndex();
 
         out.writeIntLE(expectedLength);
         this.frame.encode(out);
         this.headers.encode(out);
 
-        assert out.writerIndex() - start == expectedLength;
+        checkState(out.writerIndex() - start == expectedLength,
+            "encoding error: {\"expectedLength\": %s, \"observedLength\": %s}",
+            expectedLength,
+            out.writerIndex() - expectedLength);
 
         if (this.payload.length > 0) {
             out.writeIntLE(this.payload.length);

@@ -98,15 +98,12 @@ public class GlobalAddressResolver implements IAddressResolver {
 
         for (RntbdAddressCacheToken token : tokens) {
             EndpointCache endpointCache = this.addressCacheByEndpoint.get(token.getRemoteURI());
-//            updates[i++] = endpointCache.addressCache.getServerAddressesViaGatewayAsync();
-//            if (endpointCache.)
-//            {
-//                tasks.Add(endpointCache.AddressCache.UpdateAsync(cacheToken.PartitionKeyRangeIdentity, cancellationToken));
-//            }
+            if (endpointCache != null) {
+                updates[i++] = endpointCache.addressCache.updateAsync(token.getPartitionKeyRangeIdentity()).toFuture();
+            }
         }
 
-//        await Task.WhenAll(tasks);
-        return Mono.error(new NotImplementedException("GlobalAddressResolver.updateAsync"));
+        return Mono.fromFuture(CompletableFuture.allOf(updates));
     }
 
     Mono<Void> openAsync(DocumentCollection collection) {
