@@ -13,7 +13,7 @@ import com.microsoft.azure.arm.model.implementation.CreatableUpdatableImpl;
 import rx.Observable;
 import com.microsoft.azure.management.cosmosdb.v2019_08_01.CassandraTableCreateUpdateParameters;
 import java.util.Map;
-import com.microsoft.azure.management.cosmosdb.v2019_08_01.CassandraSchema;
+import com.microsoft.azure.management.cosmosdb.v2019_08_01.CassandraTableGetPropertiesResource;
 import com.microsoft.azure.management.cosmosdb.v2019_08_01.CassandraTableResource;
 import rx.functions.Func1;
 
@@ -97,31 +97,6 @@ class CassandraTableGetResultsImpl extends CreatableUpdatableImpl<CassandraTable
     }
 
     @Override
-    public String _etag() {
-        return this.inner()._etag();
-    }
-
-    @Override
-    public String _rid() {
-        return this.inner()._rid();
-    }
-
-    @Override
-    public Object _ts() {
-        return this.inner()._ts();
-    }
-
-    @Override
-    public String cassandraTableGetResultsId() {
-        return this.inner().cassandraTableGetResultsId();
-    }
-
-    @Override
-    public Integer defaultTtl() {
-        return this.inner().defaultTtl();
-    }
-
-    @Override
     public String id() {
         return this.inner().id();
     }
@@ -137,8 +112,8 @@ class CassandraTableGetResultsImpl extends CreatableUpdatableImpl<CassandraTable
     }
 
     @Override
-    public CassandraSchema schema() {
-        return this.inner().schema();
+    public CassandraTableGetPropertiesResource resource() {
+        return this.inner().resource();
     }
 
     @Override

@@ -13,10 +13,7 @@ import com.microsoft.azure.arm.model.implementation.CreatableUpdatableImpl;
 import rx.Observable;
 import com.microsoft.azure.management.cosmosdb.v2019_08_01.SqlContainerCreateUpdateParameters;
 import java.util.Map;
-import com.microsoft.azure.management.cosmosdb.v2019_08_01.ConflictResolutionPolicy;
-import com.microsoft.azure.management.cosmosdb.v2019_08_01.IndexingPolicy;
-import com.microsoft.azure.management.cosmosdb.v2019_08_01.ContainerPartitionKey;
-import com.microsoft.azure.management.cosmosdb.v2019_08_01.UniqueKeyPolicy;
+import com.microsoft.azure.management.cosmosdb.v2019_08_01.SqlContainerGetPropertiesResource;
 import com.microsoft.azure.management.cosmosdb.v2019_08_01.SqlContainerResource;
 import rx.functions.Func1;
 
@@ -100,38 +97,8 @@ class SqlContainerGetResultsImpl extends CreatableUpdatableImpl<SqlContainerGetR
     }
 
     @Override
-    public String _etag() {
-        return this.inner()._etag();
-    }
-
-    @Override
-    public String _rid() {
-        return this.inner()._rid();
-    }
-
-    @Override
-    public Object _ts() {
-        return this.inner()._ts();
-    }
-
-    @Override
-    public ConflictResolutionPolicy conflictResolutionPolicy() {
-        return this.inner().conflictResolutionPolicy();
-    }
-
-    @Override
-    public Integer defaultTtl() {
-        return this.inner().defaultTtl();
-    }
-
-    @Override
     public String id() {
         return this.inner().id();
-    }
-
-    @Override
-    public IndexingPolicy indexingPolicy() {
-        return this.inner().indexingPolicy();
     }
 
     @Override
@@ -145,13 +112,8 @@ class SqlContainerGetResultsImpl extends CreatableUpdatableImpl<SqlContainerGetR
     }
 
     @Override
-    public ContainerPartitionKey partitionKey() {
-        return this.inner().partitionKey();
-    }
-
-    @Override
-    public String sqlContainerGetResultsId() {
-        return this.inner().sqlContainerGetResultsId();
+    public SqlContainerGetPropertiesResource resource() {
+        return this.inner().resource();
     }
 
     @Override
@@ -162,11 +124,6 @@ class SqlContainerGetResultsImpl extends CreatableUpdatableImpl<SqlContainerGetR
     @Override
     public String type() {
         return this.inner().type();
-    }
-
-    @Override
-    public UniqueKeyPolicy uniqueKeyPolicy() {
-        return this.inner().uniqueKeyPolicy();
     }
 
     @Override
