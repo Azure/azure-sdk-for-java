@@ -37,6 +37,7 @@ import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.TemporalAccessor;
 import java.time.temporal.TemporalQueries;
+import java.util.Map;
 
 /**
  * ServiceClient is the abstraction for accessing REST operations and their payload data types.
@@ -103,12 +104,15 @@ public abstract class AzureServiceClient {
     }
 
     /**
-     * Gets default client context.
+     * Merges default client context with provided context.
      *
-     * @param context context
-     * @return the default client context.
+     * @param context the context to be merged with default client context.
+     * @return the merged context.
      */
     public Context mergeContext(Context context) {
+        for (Map.Entry<Object, Object> entry : this.getContext().getValues().entrySet()) {
+            context = context.addData(entry.getKey(), entry.getValue());
+        }
         return context;
     }
 
