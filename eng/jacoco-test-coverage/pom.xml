@@ -39,7 +39,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-ai-formrecognizer</artifactId>
-      <version>1.0.0-beta.4</version> <!-- {x-version-update;com.azure:azure-ai-formrecognizer;current} -->
+      <version>1.0.0-beta.5</version> <!-- {x-version-update;com.azure:azure-ai-formrecognizer;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
@@ -79,7 +79,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-management</artifactId>
-      <version>1.0.0-beta.2</version> <!-- {x-version-update;com.azure:azure-core-management;current} -->
+      <version>1.0.0-beta.3</version> <!-- {x-version-update;com.azure:azure-core-management;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
@@ -174,27 +174,27 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-storage-common</artifactId>
-      <version>12.8.0-beta.1</version> <!-- {x-version-update;com.azure:azure-storage-common;current} -->
+      <version>12.8.0-beta.2</version> <!-- {x-version-update;com.azure:azure-storage-common;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-storage-blob</artifactId>
-      <version>12.8.0-beta.1</version> <!-- {x-version-update;com.azure:azure-storage-blob;current} -->
+      <version>12.8.0-beta.2</version> <!-- {x-version-update;com.azure:azure-storage-blob;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-storage-blob-batch</artifactId>
-      <version>12.6.0-beta.1</version> <!-- {x-version-update;com.azure:azure-storage-blob-batch;current} -->
+      <version>12.6.0-beta.2</version> <!-- {x-version-update;com.azure:azure-storage-blob-batch;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-storage-blob-changefeed</artifactId>
-      <version>12.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-storage-blob-changefeed;current} -->
+      <version>12.0.0-beta.2</version> <!-- {x-version-update;com.azure:azure-storage-blob-changefeed;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-storage-blob-cryptography</artifactId>
-      <version>12.8.0-beta.1</version> <!-- {x-version-update;com.azure:azure-storage-blob-cryptography;current} -->
+      <version>12.8.0-beta.2</version> <!-- {x-version-update;com.azure:azure-storage-blob-cryptography;current} -->
     </dependency>
     <!-- Uncomment this when blob-nio is added to sdk/storage/pom.service.xml -->
     <!--    <dependency>-->
@@ -205,22 +205,22 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-storage-file-share</artifactId>
-      <version>12.6.0-beta.1</version> <!-- {x-version-update;com.azure:azure-storage-file-share;current} -->
+      <version>12.6.0-beta.2</version> <!-- {x-version-update;com.azure:azure-storage-file-share;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-storage-file-datalake</artifactId>
-      <version>12.2.0-beta.1</version> <!-- {x-version-update;com.azure:azure-storage-file-datalake;current} -->
+      <version>12.2.0-beta.2</version> <!-- {x-version-update;com.azure:azure-storage-file-datalake;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-storage-internal-avro</artifactId>
-      <version>12.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-storage-internal-avro;current} -->
+      <version>12.0.0-beta.2</version> <!-- {x-version-update;com.azure:azure-storage-internal-avro;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-storage-queue</artifactId>
-      <version>12.6.0-beta.1</version> <!-- {x-version-update;com.azure:azure-storage-queue;current} -->
+      <version>12.6.0-beta.2</version> <!-- {x-version-update;com.azure:azure-storage-queue;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
@@ -274,9 +274,9 @@
       <version>2.3.3-beta.1</version> <!-- {x-version-update;com.microsoft.azure:azure-data-gremlin-spring-boot-starter;current} -->
     </dependency>
     <dependency>
-      <groupId>com.microsoft.azure</groupId>
-      <artifactId>spring-data-cosmosdb</artifactId>
-      <version>2.3.1-beta.1</version> <!-- {x-version-update;com.microsoft.azure:spring-data-cosmosdb;current} -->
+      <groupId>com.azure</groupId>
+      <artifactId>azure-spring-data-cosmos</artifactId>
+      <version>3.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-spring-data-cosmos;current} -->
     </dependency>
   </dependencies>
   <build>

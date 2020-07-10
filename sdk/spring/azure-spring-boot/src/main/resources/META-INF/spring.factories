@@ -6,4 +6,7 @@ com.microsoft.azure.spring.autoconfigure.cosmosdb.CosmosDbReactiveRepositoriesAu
 com.microsoft.azure.spring.autoconfigure.gremlin.GremlinAutoConfiguration,\
 com.microsoft.azure.spring.autoconfigure.gremlin.GremlinRepositoriesAutoConfiguration,\
 com.microsoft.azure.spring.autoconfigure.aad.AADAuthenticationFilterAutoConfiguration,\
-com.microsoft.azure.spring.autoconfigure.aad.AADOAuth2AutoConfiguration
+com.microsoft.azure.spring.autoconfigure.aad.AADOAuth2AutoConfiguration,\
+com.microsoft.azure.spring.autoconfigure.btoc.AADB2CAutoConfiguration,\
+com.microsoft.azure.spring.autoconfigure.metrics.AzureMonitorMetricsExportAutoConfiguration,\
+com.microsoft.azure.spring.autoconfigure.jms.ServiceBusJMSAutoConfiguration

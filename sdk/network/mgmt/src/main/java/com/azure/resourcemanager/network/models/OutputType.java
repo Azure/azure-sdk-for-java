@@ -4,41 +4,28 @@
 
 package com.azure.resourcemanager.network.models;
 
+import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
+import java.util.Collection;
 
 /** Defines values for OutputType. */
-public enum OutputType {
-    /** Enum value Workspace. */
-    WORKSPACE("Workspace");
-
-    /** The actual serialized value for a OutputType instance. */
-    private final String value;
-
-    OutputType(String value) {
-        this.value = value;
-    }
+public final class OutputType extends ExpandableStringEnum<OutputType> {
+    /** Static value Workspace for OutputType. */
+    public static final OutputType WORKSPACE = fromString("Workspace");
 
     /**
-     * Parses a serialized value to a OutputType instance.
+     * Creates or finds a OutputType from its string representation.
      *
-     * @param value the serialized value to parse.
-     * @return the parsed OutputType object, or null if unable to parse.
+     * @param name a name to look for.
+     * @return the corresponding OutputType.
      */
     @JsonCreator
-    public static OutputType fromString(String value) {
-        OutputType[] items = OutputType.values();
-        for (OutputType item : items) {
-            if (item.toString().equalsIgnoreCase(value)) {
-                return item;
-            }
-        }
-        return null;
+    public static OutputType fromString(String name) {
+        return fromString(name, OutputType.class);
     }
 
-    @JsonValue
-    @Override
-    public String toString() {
-        return this.value;
+    /** @return known OutputType values. */
+    public static Collection<OutputType> values() {
+        return values(OutputType.class);
     }
 }

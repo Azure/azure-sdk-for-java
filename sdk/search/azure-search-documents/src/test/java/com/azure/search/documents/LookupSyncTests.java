@@ -279,7 +279,7 @@ public class LookupSyncTests extends SearchTestBase {
 //        expectedDoc.put("Location", createPointGeometryString(40.760586, -73.975403));
         expectedDoc.put("Rooms", Collections.singletonList(new SearchDocument(Collections.singletonMap("BaseRate", "NaN"))));
 
-        client.indexDocuments(new IndexDocumentsBatch<>().addUploadActions(indexedDoc));
+        client.indexDocuments(new IndexDocumentsBatch<>().addUploadActions(Collections.singletonList(indexedDoc)));
 
         // Select only the fields set in the test case so we don't get superfluous data back.
         List<String> selectedFields = Arrays.asList("HotelId", "LastRenovationDate", "Location", "Rooms/BaseRate");
@@ -296,7 +296,7 @@ public class LookupSyncTests extends SearchTestBase {
         SearchDocument expectedDoc = new SearchDocument();
         expectedDoc.put("HotelId", complexKey);
 
-        client.indexDocuments(new IndexDocumentsBatch<>().addUploadActions(expectedDoc));
+        client.indexDocuments(new IndexDocumentsBatch<>().addUploadActions(Collections.singletonList(expectedDoc)));
         assertEquals(client.getDocumentWithResponse(complexKey, SearchDocument.class,
             new ArrayList<>(expectedDoc.keySet()), Context.NONE).getValue(), expectedDoc);
     }
@@ -314,7 +314,7 @@ public class LookupSyncTests extends SearchTestBase {
 
         expectedDoc.put("LastRenovationDate", OffsetDateTime.parse("2010-06-27T08:00Z"));
 
-        client.indexDocuments(new IndexDocumentsBatch<>().addUploadActions(indexedDoc));
+        client.indexDocuments(new IndexDocumentsBatch<>().addUploadActions(Collections.singletonList(indexedDoc)));
         SearchDocument actualDoc = client.getDocumentWithResponse("1", SearchDocument.class,
             new ArrayList<>(expectedDoc.keySet()), Context.NONE).getValue();
         assertMapEquals(expectedDoc, actualDoc, false);

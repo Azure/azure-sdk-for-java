@@ -23,7 +23,7 @@ from form documents. It includes the following main functionalities:
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-ai-formrecognizer</artifactId>
-    <version>1.0.0-beta.3</version>
+    <version>1.0.0-beta.4</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -121,7 +121,7 @@ Authentication with AAD requires some initial setup:
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-identity</artifactId>
-    <version>1.0.6</version>
+    <version>1.0.8</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -177,7 +177,7 @@ followed by polling the service at intervals to determine whether the operation 
 succeeded, to get the result.
 
 Methods that train models or recognize values from forms are modeled as long-running operations. The client exposes
-a `begin<method-name>` method that returns a `SyncPoller` or `PollerFlux` instance.
+a `begin<MethodName>` method that returns a `SyncPoller` or `PollerFlux` instance.
 Callers should wait for the operation to completed by calling `getFinalResult()` on the returned operation from the
 `begin<method-name>` method. Sample code snippets are provided to illustrate using long-running operations
 [below](#Examples).
@@ -195,7 +195,7 @@ The following section provides several code snippets covering some of the most c
 ### Recognize Forms Using a Custom Model
 Recognize name/value pairs and table data from forms. These models are trained with your own data,
 so they're tailored to your forms. You should only recognize forms of the same form type that the custom model was trained on.
-<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L89-L106 -->
+<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L89-L105 -->
 ```java
 String formUrl = "{form_url}";
 String modelId = "{custom_trained_model_id}";
@@ -206,20 +206,19 @@ List<RecognizedForm> recognizedForms = recognizeFormPoller.getFinalResult();
 
 for (int i = 0; i < recognizedForms.size(); i++) {
     RecognizedForm form = recognizedForms.get(i);
-    System.out.printf("----------- Recognized Form %d-----------%n", i);
+    System.out.printf("----------- Recognized Form %d -----------%n", i);
     System.out.printf("Form type: %s%n", form.getFormType());
-    form.getFields().forEach((label, formField) -> {
+    form.getFields().forEach((label, formField) ->
         System.out.printf("Field %s has value %s with confidence score of %f.%n", label,
             formField.getValueData().getText(),
-            formField.getConfidence());
-    });
-    System.out.print("-----------------------------------");
+            formField.getConfidence())
+    );
 }
 ```
 
 ### Recognize Content
 Recognize text and table structures, along with their bounding box coordinates, from documents.
-<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L115-L140 -->
+<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L114-L137 -->
 ```java
 // recognize form content using file input stream
 File form = new File("local/file_path/filename.png");
@@ -233,7 +232,7 @@ List<FormPage> contentPageResults = recognizeContentPoller.getFinalResult();
 
 for (int i = 0; i < contentPageResults.size(); i++) {
     FormPage formPage = contentPageResults.get(i);
-    System.out.printf("----Recognizing content for page %d----%n", i);
+    System.out.printf("----Recognizing content for page %d ----%n", i);
     // Table information
     System.out.printf("Has width: %f and height: %f, measured with unit: %s.%n", formPage.getWidth(),
         formPage.getHeight(),
@@ -241,64 +240,75 @@ for (int i = 0; i < contentPageResults.size(); i++) {
     formPage.getTables().forEach(formTable -> {
         System.out.printf("Table has %d rows and %d columns.%n", formTable.getRowCount(),
             formTable.getColumnCount());
-        formTable.getCells().forEach(formTableCell -> {
-            System.out.printf("Cell has text %s.%n", formTableCell.getText());
-        });
-        System.out.println();
+        formTable.getCells().forEach(formTableCell ->
+            System.out.printf("Cell has text %s.%n", formTableCell.getText()));
     });
 }
 ```
 
 ### Recognize receipts
-Recognize data from a USA sales receipts using a prebuilt model. [Here][service_recognize_receipt] are the fields the
-service returns for a recognized receipt.
-<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L144-L190-->
+Recognize data from a USA sales receipts using a prebuilt model. [Here][service_recognize_receipt] are the fields the service returns for a recognized receipt. See [StronglyTypedRecognizedForm.java][strongly_typed_sample] for a suggested approach to extract
+information from receipts.
+
+<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L141-L199-->
 ```java
 String receiptUrl = "https://docs.microsoft.com/en-us/azure/cognitive-services/form-recognizer/media"
     + "/contoso-allinone.jpg";
-SyncPoller<OperationResult, List<RecognizedReceipt>> syncPoller =
+SyncPoller<OperationResult, List<RecognizedForm>> syncPoller =
     formRecognizerClient.beginRecognizeReceiptsFromUrl(receiptUrl);
-List<RecognizedReceipt> receiptPageResults = syncPoller.getFinalResult();
+List<RecognizedForm> receiptPageResults = syncPoller.getFinalResult();
 
 for (int i = 0; i < receiptPageResults.size(); i++) {
-    RecognizedReceipt recognizedReceipt = receiptPageResults.get(i);
-    Map<String, FormField> recognizedFields = recognizedReceipt.getRecognizedForm().getFields();
+    RecognizedForm recognizedForm = receiptPageResults.get(i);
+    Map<String, FormField<?>> recognizedFields = recognizedForm.getFields();
     System.out.printf("----------- Recognized Receipt page %d -----------%n", i);
-    FormField merchantNameField = recognizedFields.get("MerchantName");
-    if (merchantNameField.getFieldValue().getType() == FieldValueType.STRING) {
-        System.out.printf("Merchant Name: %s, confidence: %.2f%n",
-            merchantNameField.getFieldValue().asString(),
-            merchantNameField.getConfidence());
+    FormField<?> merchantNameField = recognizedFields.get("MerchantName");
+    if (merchantNameField != null) {
+        if (FieldValueType.STRING.equals(merchantNameField.getValueType())) {
+            String merchantName = FieldValueType.STRING.cast(merchantNameField);
+            System.out.printf("Merchant Name: %s, confidence: %.2f%n",
+                merchantName, merchantNameField.getConfidence());
+        }
     }
-    FormField transactionDateField = recognizedFields.get("TransactionDate");
-    if (transactionDateField.getFieldValue().getType() == FieldValueType.DATE) {
-        System.out.printf("Transaction Date: %s, confidence: %.2f%n",
-            transactionDateField.getFieldValue().asDate(),
-            transactionDateField.getConfidence());
+
+    FormField<?> merchantPhoneNumberField = recognizedFields.get("MerchantPhoneNumber");
+    if (merchantPhoneNumberField != null) {
+        if (FieldValueType.PHONE_NUMBER.equals(merchantNameField.getValueType())) {
+            String merchantAddress = FieldValueType.PHONE_NUMBER.cast(merchantPhoneNumberField);
+            System.out.printf("Merchant Phone number: %s, confidence: %.2f%n",
+                merchantAddress, merchantPhoneNumberField.getConfidence());
+        }
     }
-    FormField receiptItemsField = recognizedFields.get("Items");
-    System.out.printf("Receipt Items: %n");
-    if (receiptItemsField.getFieldValue().getType() == FieldValueType.LIST) {
-        List<FormField> receiptItems = receiptItemsField.getFieldValue().asList();
-        receiptItems.forEach(receiptItem -> {
-            if (receiptItem.getFieldValue().getType() == FieldValueType.MAP) {
-                receiptItem.getFieldValue().asMap().forEach((key, formField) -> {
-                    if (key.equals("Name")) {
-                        if (formField.getFieldValue().getType() == FieldValueType.STRING) {
-                            System.out.printf("Name: %s, confidence: %.2fs%n",
-                                formField.getFieldValue().asString(),
-                                formField.getConfidence());
+
+    FormField<?> transactionDateField = recognizedFields.get("TransactionDate");
+    if (transactionDateField != null) {
+        if (FieldValueType.DATE.equals(transactionDateField.getValueType())) {
+            LocalDate transactionDate = FieldValueType.DATE.cast(transactionDateField);
+            System.out.printf("Transaction Date: %s, confidence: %.2f%n",
+                transactionDate, transactionDateField.getConfidence());
+        }
+    }
+
+    FormField<?> receiptItemsField = recognizedFields.get("Items");
+    if (receiptItemsField != null) {
+        System.out.printf("Receipt Items: %n");
+        if (FieldValueType.LIST.equals(receiptItemsField.getValueType())) {
+            List<FormField<?>> receiptItems = FieldValueType.LIST.cast(receiptItemsField);
+            receiptItems.forEach(receiptItem -> {
+                if (FieldValueType.MAP.equals(receiptItem.getValueType())) {
+                    Map<String, FormField<?>> formFieldMap = FieldValueType.MAP.cast(receiptItem);
+                    formFieldMap.forEach((key, formField) -> {
+                        if ("Quantity".equals(key)) {
+                            if (FieldValueType.DOUBLE.equals(formField.getValueType())) {
+                                Float quantity = FieldValueType.DOUBLE.cast(formField);
+                                System.out.printf("Quantity: %f, confidence: %.2f%n",
+                                    quantity, formField.getConfidence());
+                            }
                         }
-                    }
-                    if (key.equals("Quantity")) {
-                        if (formField.getFieldValue().getType() == FieldValueType.INTEGER) {
-                            System.out.printf("Quantity: %d, confidence: %.2f%n",
-                                formField.getFieldValue().asInteger(), formField.getConfidence());
-                        }
-                    }
-                });
-            }
-        });
+                    });
+                }
+            });
+        }
     }
 }
 ```
@@ -307,7 +317,7 @@ for (int i = 0; i < receiptPageResults.size(); i++) {
 Train a machine-learned model on your own form type. The resulting model will be able to recognize values from the types of forms it was trained on.
 Provide a container SAS url to your Azure Storage Blob container where you're storing the training documents. See details on setting this up
 in the [service quickstart documentation][quickstart_training].
-<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L194-L214 -->
+<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L203-L223 -->
 ```java
 String trainingFilesUrl = "{SAS-URL-of-your-container-in-blob-storage}";
 SyncPoller<OperationResult, CustomFormModel> trainingPoller =
@@ -334,7 +344,7 @@ customFormModel.getSubmodels().forEach(customFormSubmodel -> {
 
 ### Manage your models
 Manage the custom models attached to your account.
-<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L218-L247 -->
+<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L227-L256 -->
 ```java
 AtomicReference<String> modelId = new AtomicReference<>();
 // First, we see how many custom models we have, and what our limit is
@@ -376,7 +386,7 @@ to provide an invalid file source URL an `HttpResponseException` would be raised
 In the following code snippet, the error is handled
 gracefully by catching the exception and display the additional information about the error.
 
-<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L254-L258 -->
+<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L263-L267 -->
 ```java
 try {
     formRecognizerClient.beginRecognizeContentFromUrl("invalidSourceUrl");
@@ -414,7 +424,7 @@ These code samples show common scenario operations with the Azure Form Recognize
 #### Async APIs
 All the examples shown so far have been using synchronous APIs, but we provide full support for async APIs as well.
 You'll need to use `FormRecognizerAsyncClient`
-<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L265-L268 -->
+<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L274-L277 -->
 ```java
 FormRecognizerAsyncClient formRecognizerAsyncClient = new FormRecognizerClientBuilder()
     .credential(new AzureKeyCredential("{key}"))
@@ -498,7 +508,8 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [service_access]: https://docs.microsoft.com/azure/cognitive-services/cognitive-services-apis-create-account?tabs=multiservice%2Cwindows
 [service_doc_train_unlabeled]: https://docs.microsoft.com/azure/cognitive-services/form-recognizer/overview#train-without-labels
 [service_doc_train_labeled]: https://docs.microsoft.com/azure/cognitive-services/form-recognizer/overview#train-with-labels
-[service_recognize_receipt]: https://westus2.dev.cognitive.microsoft.com/docs/services/form-recognizer-api-v2-preview/operations/GetAnalyzeReceiptResult
+[service_recognize_receipt]: https://aka.ms/azsdk/python/formrecognizer/receiptfields
+[strongly_typed_sample]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/java/com/azure/ai/formrecognizer/StronglyTypedRecognizedForm.java
 [source_code]: src
 [quickstart_training]: https://docs.microsoft.com/azure/cognitive-services/form-recognizer/quickstarts/curl-train-extract#train-a-form-recognizer-model
 [wiki_identity]: https://github.com/Azure/azure-sdk-for-java/wiki/Identity-and-Authentication

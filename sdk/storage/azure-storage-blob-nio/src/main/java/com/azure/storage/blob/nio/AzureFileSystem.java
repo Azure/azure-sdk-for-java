@@ -22,7 +22,6 @@ import java.nio.file.PathMatcher;
 import java.nio.file.WatchService;
 import java.nio.file.attribute.BasicFileAttributeView;
 import java.nio.file.attribute.FileAttributeView;
-import java.nio.file.attribute.UserDefinedFileAttributeView;
 import java.nio.file.attribute.UserPrincipalLookupService;
 import java.nio.file.spi.FileSystemProvider;
 
@@ -129,8 +128,8 @@ public final class AzureFileSystem extends FileSystem {
     static {
         Map<Class<? extends FileAttributeView>, String> map = new HashMap<>();
         map.put(BasicFileAttributeView.class, "basic");
-        map.put(UserDefinedFileAttributeView.class, "user");
-        map.put(AzureStorageFileAttributeView.class, "azureStorage");
+        map.put(AzureBasicFileAttributeView.class, "azureBasic");
+        map.put(AzureBlobFileAttributeView.class, "azureBlob");
         SUPPORTED_ATTRIBUTE_VIEWS = Collections.unmodifiableMap(map);
     }
 
@@ -268,7 +267,7 @@ public final class AzureFileSystem extends FileSystem {
      * <ul>
      *     <li>{@link java.nio.file.attribute.BasicFileAttributeView}</li>
      *     <li>{@link java.nio.file.attribute.UserDefinedFileAttributeView}</li>
-     *     <li>{@link AzureStorageFileAttributeView}</li>
+     *     <li>{@link AzureBasicFileAttributeView}</li>
      * </ul>
      *
      * {@inheritDoc}

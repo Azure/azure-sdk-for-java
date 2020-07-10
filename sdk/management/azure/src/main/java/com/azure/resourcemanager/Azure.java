@@ -6,13 +6,15 @@ package com.azure.resourcemanager;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.management.AzureEnvironment;
+import com.azure.resourcemanager.appplatform.AppPlatformManager;
+import com.azure.resourcemanager.appplatform.models.SpringServices;
+import com.azure.resourcemanager.appservice.AppServiceManager;
 import com.azure.resourcemanager.appservice.models.AppServiceCertificateOrders;
 import com.azure.resourcemanager.appservice.models.AppServiceCertificates;
 import com.azure.resourcemanager.appservice.models.AppServiceDomains;
 import com.azure.resourcemanager.appservice.models.AppServicePlans;
 import com.azure.resourcemanager.appservice.models.FunctionApps;
 import com.azure.resourcemanager.appservice.models.WebApps;
-import com.azure.resourcemanager.appservice.AppServiceManager;
 import com.azure.resourcemanager.authorization.AuthorizationManager;
 import com.azure.resourcemanager.authorization.models.ActiveDirectoryApplications;
 import com.azure.resourcemanager.authorization.models.ActiveDirectoryGroups;
@@ -41,19 +43,20 @@ import com.azure.resourcemanager.containerservice.ContainerServiceManager;
 import com.azure.resourcemanager.containerservice.models.KubernetesClusters;
 import com.azure.resourcemanager.cosmos.CosmosManager;
 import com.azure.resourcemanager.cosmos.models.CosmosDBAccounts;
-import com.azure.resourcemanager.dns.models.DnsZones;
 import com.azure.resourcemanager.dns.DnsZoneManager;
-import com.azure.resourcemanager.keyvault.models.Vaults;
+import com.azure.resourcemanager.dns.models.DnsZones;
 import com.azure.resourcemanager.keyvault.KeyVaultManager;
+import com.azure.resourcemanager.keyvault.models.Vaults;
+import com.azure.resourcemanager.monitor.MonitorManager;
 import com.azure.resourcemanager.monitor.models.ActionGroups;
 import com.azure.resourcemanager.monitor.models.ActivityLogs;
 import com.azure.resourcemanager.monitor.models.AlertRules;
 import com.azure.resourcemanager.monitor.models.AutoscaleSettings;
 import com.azure.resourcemanager.monitor.models.DiagnosticSettings;
 import com.azure.resourcemanager.monitor.models.MetricDefinitions;
-import com.azure.resourcemanager.monitor.MonitorManager;
-import com.azure.resourcemanager.msi.models.Identities;
 import com.azure.resourcemanager.msi.MSIManager;
+import com.azure.resourcemanager.msi.models.Identities;
+import com.azure.resourcemanager.network.NetworkManager;
 import com.azure.resourcemanager.network.models.ApplicationGateways;
 import com.azure.resourcemanager.network.models.ApplicationSecurityGroups;
 import com.azure.resourcemanager.network.models.DdosProtectionPlans;
@@ -71,7 +74,6 @@ import com.azure.resourcemanager.network.models.PublicIpPrefixes;
 import com.azure.resourcemanager.network.models.RouteFilters;
 import com.azure.resourcemanager.network.models.RouteTables;
 import com.azure.resourcemanager.network.models.VirtualNetworkGateways;
-import com.azure.resourcemanager.network.NetworkManager;
 import com.azure.resourcemanager.resources.ResourceManager;
 import com.azure.resourcemanager.resources.fluentcore.arm.AzureConfigurable;
 import com.azure.resourcemanager.resources.fluentcore.arm.implementation.AzureConfigurableImpl;
@@ -124,6 +126,7 @@ public final class Azure {
     private final MSIManager msiManager;
     private final MonitorManager monitorManager;
     //    private final EventHubManager eventHubManager;
+    private final AppPlatformManager appPlatformManager;
     private final String subscriptionId;
     private final Authenticated authenticated;
     private final SdkContext sdkContext;
@@ -367,6 +370,7 @@ public final class Azure {
         this.msiManager = MSIManager.authenticate(httpPipeline, profile, sdkContext);
         this.monitorManager = MonitorManager.authenticate(httpPipeline, profile, sdkContext);
         //        this.eventHubManager = EventHubManager.authenticate(restClient, subscriptionId, sdkContext);
+        this.appPlatformManager = AppPlatformManager.authenticate(httpPipeline, profile, sdkContext);
         this.subscriptionId = profile.subscriptionId();
         this.authenticated = authenticated;
     }
@@ -806,5 +810,10 @@ public final class Azure {
     /** @return the blob service management API entry point */
     public ManagementPolicies storageManagementPolicies() {
         return this.storageManager.managementPolicies();
+    }
+
+    /** @return the spring service management API entry point */
+    public SpringServices springServices() {
+        return this.appPlatformManager.springServices();
     }
 }
