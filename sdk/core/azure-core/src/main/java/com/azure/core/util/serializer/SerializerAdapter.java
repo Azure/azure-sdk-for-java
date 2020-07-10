@@ -7,6 +7,7 @@ import com.azure.core.http.HttpHeaders;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 /**
@@ -63,7 +64,7 @@ public interface SerializerAdapter {
      * @throws IOException exception from deserialization
      */
     default <U> U deserialize(String value, Type type, SerializerEncoding encoding) throws IOException {
-        return deserialize(value.getBytes(), type, encoding);
+        return deserialize(value.getBytes(StandardCharsets.UTF_8), type, encoding);
     }
 
     /**

@@ -23,6 +23,7 @@ import reactor.core.publisher.Mono;
 import java.io.IOException;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
+import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
@@ -38,7 +39,8 @@ final class HttpResponseBodyDecoder {
                                final HttpResponse httpResponse,
                                final SerializerAdapter serializer,
                                final HttpResponseDecodeData decodeData) {
-        return decodeByteArray(body == null ? null : body.getBytes(), httpResponse, serializer, decodeData);
+        return decodeByteArray(body == null ? null : body.getBytes(StandardCharsets.UTF_8),
+            httpResponse, serializer, decodeData);
     }
 
     /**

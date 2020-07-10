@@ -43,6 +43,7 @@ import java.lang.reflect.Proxy;
 import java.lang.reflect.Type;
 import java.net.URL;
 import java.nio.ByteBuffer;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -244,19 +245,20 @@ public final class RestProxy implements InvocationHandler {
     }
 
     @SuppressWarnings("unchecked")
-    private HttpRequest configRequest(HttpRequest request, SwaggerMethodParser methodParser, Object[] args)
-        throws IOException {
+    private HttpRequest configRequest(final HttpRequest request,
+                                      final SwaggerMethodParser methodParser,
+                                      final Object[] args) throws IOException {
         final Object bodyContentObject = methodParser.setBody(args);
         if (bodyContentObject == null) {
             request.getHeaders().put("Content-Length", "0");
         } else {
             // We read the content type from the @BodyParam annotation
-            String contentType = methodParser.getBodyContentType();
+            final String contentType = methodParser.getBodyContentType();
 
             // If this is null or empty, the service interface definition is incomplete and should
             // be fixed to ensure correct definitions are applied
             if (contentType == null || contentType.isEmpty()) {
-                throw logger.logThrowableAsError(new IllegalStateException(
+                throw logger.logExceptionAsError(new IllegalStateException(
                     "The method " + methodParser.getFullyQualifiedMethodName() + " does does not have its content "
                         + "type correctly specified in its service interface"));
             }
@@ -266,7 +268,7 @@ public final class RestProxy implements InvocationHandler {
             // TODO(jogiles) this feels hacky
             boolean isJson = false;
             final String[] contentTypeParts = contentType.split(";");
-            for (String contentTypePart : contentTypeParts) {
+            for (final String contentTypePart : contentTypeParts) {
                 if (contentTypePart.trim().equalsIgnoreCase(ContentType.APPLICATION_JSON)) {
                     isJson = true;
                     break;
@@ -304,17 +306,19 @@ public final class RestProxy implements InvocationHandler {
             .flatMap(decodedHttpResponse -> ensureExpectedStatus(decodedHttpResponse, methodParser));
     }
 
-    private static Exception instantiateUnexpectedException(UnexpectedExceptionInformation exception,
-        HttpResponse httpResponse, byte[] responseContent, Object responseDecodedContent) {
+    private static Exception instantiateUnexpectedException(final UnexpectedExceptionInformation exception,
+                                                            final HttpResponse httpResponse,
+                                                            final byte[] responseContent,
+                                                            final Object responseDecodedContent) {
         final int responseStatusCode = httpResponse.getStatusCode();
-        String contentType = httpResponse.getHeaderValue("Content-Type");
-        String bodyRepresentation;
+        final String contentType = httpResponse.getHeaderValue("Content-Type");
+        final String bodyRepresentation;
         if ("application/octet-stream".equalsIgnoreCase(contentType)) {
             bodyRepresentation = "(" + httpResponse.getHeaderValue("Content-Length") + "-byte body)";
         } else {
             bodyRepresentation = responseContent == null || responseContent.length == 0
                                      ? "(empty body)"
-                                     : "\"" + new String(responseContent) + "\"";
+                                     : "\"" + new String(responseContent, StandardCharsets.UTF_8) + "\"";
         }
 
         Exception result;
