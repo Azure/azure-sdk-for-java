@@ -28,7 +28,7 @@ import java.util.List;
 
 /**
  * This class provides a client that contains the operations for querying an index and uploading, merging, or deleting
- * documents in an Azure Cognitive Search service index.
+ * documents in an Azure Cognitive Search service.
  *
  * @see SearchClientBuilder
  */
