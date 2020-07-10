@@ -139,14 +139,12 @@ public class JacksonAdapter implements SerializerAdapter {
     @Override
     public byte[] serializeToBytes(Object object, SerializerEncoding encoding) throws IOException {
         if (object == null) {
-            return null;
+            return new byte[0];
         }
 
-        if (encoding == SerializerEncoding.XML) {
-            return xmlMapper.writeValueAsBytes(object);
-        } else {
-            return serializer().writeValueAsBytes(object);
-        }
+        return (encoding == SerializerEncoding.XML)
+            ? xmlMapper.writeValueAsBytes(object)
+            : serializer().writeValueAsBytes(object);
     }
 
     @Override

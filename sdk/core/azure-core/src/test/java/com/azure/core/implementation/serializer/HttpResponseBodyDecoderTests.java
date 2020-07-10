@@ -210,6 +210,7 @@ public class HttpResponseBodyDecoderTests {
         HttpResponse response = new MockHttpResponse(GET_REQUEST, 200, (Object) null);
         HttpResponseDecodeData decodeData = mock(HttpResponseDecodeData.class);
         when(decodeData.getReturnType()).thenReturn(String.class);
+        when(decodeData.isExpectedResponseStatusCode(200)).thenReturn(true);
 
         StepVerifier.create(HttpResponseBodyDecoder.decode(null, response, new JacksonAdapter(), decodeData))
             .verifyComplete();
