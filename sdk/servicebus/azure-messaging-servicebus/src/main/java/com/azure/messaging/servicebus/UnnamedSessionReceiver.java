@@ -86,8 +86,12 @@ class UnnamedSessionReceiver implements AutoCloseable {
                 final ServiceBusReceivedMessage deserialized = messageSerializer.deserialize(message,
                     ServiceBusReceivedMessage.class);
 
+                //TODO (conniey): For session receivers, do they have a message lock token?
                 if (!CoreUtils.isNullOrEmpty(deserialized.getLockToken())) {
                     lockContainer.addOrUpdate(deserialized.getLockToken(), deserialized.getLockedUntil());
+                } else {
+                    logger.info("sessionId[{}] message[{}]. There is no lock token.",
+                        deserialized.getSessionId(), deserialized.getMessageId());
                 }
 
                 return new ServiceBusReceivedMessageContext(deserialized);
@@ -101,9 +105,12 @@ class UnnamedSessionReceiver implements AutoCloseable {
                     return;
                 }
 
-                final String token = CoreUtils.isNullOrEmpty(context.getMessage().getLockToken())
-                    ? context.getMessage().getLockToken()
+                final ServiceBusReceivedMessage message = context.getMessage();
+                final String token = !CoreUtils.isNullOrEmpty(message.getLockToken())
+                    ? message.getLockToken()
                     : "";
+
+                logger.verbose("Received sessionId[{}] messageId[{}]", context.getSessionId(), message.getMessageId());
                 messageReceivedSink.next(token);
             });
 

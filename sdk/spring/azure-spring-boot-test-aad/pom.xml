@@ -3,25 +3,27 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <parent>
-    <artifactId>azure-spring-boot-tests</artifactId>
-    <groupId>com.microsoft.azure</groupId>
-    <version>2.3.3-beta.1</version> <!-- {x-version-update;com.microsoft.azure:azure-spring-boot-tests;current} -->
-    <relativePath>../pom.xml</relativePath>
+    <groupId>com.azure</groupId>
+    <artifactId>azure-client-sdk-parent</artifactId>
+    <version>1.7.0</version> <!-- {x-version-update;com.azure:azure-client-sdk-parent;current} -->
+    <relativePath>../../parents/azure-client-sdk-parent</relativePath>
   </parent>
   <modelVersion>4.0.0</modelVersion>
 
-  <artifactId>azure-spring-boot-test-cosmosdb</artifactId>
+  <groupId>com.azure</groupId>
+  <artifactId>azure-spring-boot-test-aad</artifactId>
+  <version>1.0.0</version> <!-- {x-version-update;com.azure:azure-spring-boot-test-aad;current} -->
 
   <dependencies>
     <dependency>
-      <groupId>com.microsoft.azure</groupId>
-      <artifactId>azure-cosmosdb-spring-boot-starter</artifactId>
-      <version>2.3.3-beta.1</version> <!-- {x-version-update;com.microsoft.azure:azure-cosmosdb-spring-boot-starter;current} -->
+      <groupId>com.azure</groupId>
+      <artifactId>azure-spring-boot-test-core</artifactId>
+      <version>1.0.0</version> <!-- {x-version-update;com.azure:azure-spring-boot-test-core;current} -->
     </dependency>
     <dependency>
       <groupId>com.microsoft.azure</groupId>
-      <artifactId>azure-spring-boot-test-core</artifactId>
-      <version>2.3.3-beta.1</version> <!-- {x-version-update;com.microsoft.azure:azure-spring-boot-test-core;current} -->
+      <artifactId>azure-active-directory-spring-boot-starter</artifactId>
+      <version>2.3.3-beta.1</version> <!-- {x-version-update;com.microsoft.azure:azure-active-directory-spring-boot-starter;current} -->
     </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>
@@ -30,6 +32,10 @@
       <scope>test</scope>
     </dependency>
   </dependencies>
+
+  <properties>
+    <skipSpringITs>true</skipSpringITs>
+  </properties>
 
   <build>
     <plugins>
@@ -59,5 +65,4 @@
       </plugin>
     </plugins>
   </build>
-
 </project>
