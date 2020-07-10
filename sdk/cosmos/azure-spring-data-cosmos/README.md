@@ -22,16 +22,6 @@
 ## Examples
 Please refer to [sample project here](./samplecode).
 
-## Spring Data Version Support
-Version mapping between spring boot and spring-data-cosmosdb:
-
-| Spring boot version                                         | spring-data-cosmosdb version                                                                                                                                                                                        |
-| :----------------------------------------------------------:|:-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------:|
-| ![version](https://img.shields.io/badge/version-2.3.x-blue) | [![Maven Central](https://img.shields.io/maven-central/v/com.microsoft.azure/spring-data-cosmosdb/2.3.svg)](https://search.maven.org/search?q=g:com.microsoft.azure%20AND%20a:spring-data-cosmosdb%20AND%20v:2.3.*) |
-| ![version](https://img.shields.io/badge/version-2.2.x-blue) | [![Maven Central](https://img.shields.io/maven-central/v/com.microsoft.azure/spring-data-cosmosdb/2.2.svg)](https://search.maven.org/search?q=g:com.microsoft.azure%20AND%20a:spring-data-cosmosdb%20AND%20v:2.2.*) |
-| ![version](https://img.shields.io/badge/version-2.1.x-blue) | [![Maven Central](https://img.shields.io/maven-central/v/com.microsoft.azure/spring-data-cosmosdb/2.1.svg)](https://search.maven.org/search?q=g:com.microsoft.azure%20AND%20a:spring-data-cosmosdb%20AND%20v:2.1.*) |
-| ![version](https://img.shields.io/badge/version-2.0.x-blue) | [![Maven Central](https://img.shields.io/maven-central/v/com.microsoft.azure/spring-data-cosmosdb/2.0.svg)](https://search.maven.org/search?q=g:com.microsoft.azure%20AND%20a:spring-data-cosmosdb%20AND%20v:2.0.*) |
-
 ## Feature List
 - Spring Data ReactiveCrudRepository CrudRepository basic CRUD functionality
     - save
@@ -75,7 +65,7 @@ public class MyDocument {
     String _etag;
 }
 ```
-- Supports [Azure Cosmos DB partition](https://docs.microsoft.com/azure/cosmos-db/partition-data). To specify a field of domain class to be partition key field, just annotate it with `@PartitionKey`. When you do CRUD operation, pls specify your partition value. For more sample on partition CRUD, pls refer to [test here](./src/test/java/com/microsoft/azure/spring/data/cosmosdb/repository/integration/AddressRepositoryIT.java)
+- Supports [Azure Cosmos DB partition](https://docs.microsoft.com/azure/cosmos-db/partition-data). To specify a field of domain class to be partition key field, just annotate it with `@PartitionKey`. When you do CRUD operation, pls specify your partition value. For more sample on partition CRUD, pls refer to [test here](./src/test/java/com/azure/spring/data/cosmos/repository/integration/AddressRepositoryIT.java)
 - Supports [Spring Data custom query](https://docs.spring.io/spring-data/commons/docs/current/reference/html/#repositories.query-methods.details) find operation, e.g., `findByAFieldAndBField`
 - Supports [Spring Data pagable and sort](https://docs.spring.io/spring-data/commons/docs/current/reference/html/#repositories.special-parameters).
   - Based on available RUs on the database account, cosmosDB can return documents less than or equal to the requested size.
@@ -105,14 +95,14 @@ public ObjectMapper objectMapper() {
 ## Quick Start
 
 ### Add the dependency
-`spring-data-cosmosdb` is published on Maven Central Repository.  
+`azure-spring-data-cosmos` is published on Maven Central Repository.  
 If you are using Maven, add the following dependency. 
 
-[//]: # "{x-version-update-start;com.microsoft.azure:spring-data-cosmosdb;current}"
+[//]: # "{x-version-update-start;com.azure:azure-spring-data-cosmos;current}"
 ```xml
 <dependency>
-    <groupId>com.microsoft.azure</groupId>
-    <artifactId>spring-data-cosmosdb</artifactId>
+    <groupId>com.azure</groupId>
+    <artifactId>azure-spring-data-cosmos</artifactId>
     <version>3.0.0-beta.1</version>
 </dependency>
 ```
@@ -335,7 +325,7 @@ Beta version built from `master` branch are available, you can refer to the [ins
 
 ## Troubleshooting
 
-If you encounter any bug, please file an issue [here](https://github.com/Microsoft/spring-data-cosmosdb/issues/new).
+If you encounter any bug, please file an issue [here](https://github.com/Azure/azure-sdk-for-java/issues/new).
 
 To suggest a new feature or changes that could be made, file an issue the same way you would for a bug.
 
