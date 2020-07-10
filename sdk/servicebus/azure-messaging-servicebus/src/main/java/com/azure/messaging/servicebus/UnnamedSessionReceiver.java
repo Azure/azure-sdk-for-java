@@ -110,7 +110,7 @@ class UnnamedSessionReceiver implements AutoCloseable {
                     ? message.getLockToken()
                     : "";
 
-                logger.info("Received sessionId[{}] messageId[{}]", context.getSessionId(), message.getMessageId());
+                logger.verbose("Received sessionId[{}] messageId[{}]", context.getSessionId(), message.getMessageId());
                 messageReceivedSink.next(token);
             });
 

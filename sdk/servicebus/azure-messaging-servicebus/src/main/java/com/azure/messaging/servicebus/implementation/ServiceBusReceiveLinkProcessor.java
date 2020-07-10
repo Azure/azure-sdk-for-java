@@ -7,6 +7,7 @@ import com.azure.core.amqp.AmqpEndpointState;
 import com.azure.core.amqp.AmqpRetryPolicy;
 import com.azure.core.amqp.implementation.AmqpReceiveLink;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.messaging.servicebus.models.ReceiveMode;
 import org.apache.qpid.proton.amqp.transport.DeliveryState;
 import org.apache.qpid.proton.message.Message;
 import org.reactivestreams.Subscription;
@@ -59,6 +60,7 @@ public class ServiceBusReceiveLinkProcessor extends FluxProcessor<ServiceBusRece
     private final AtomicInteger wip = new AtomicInteger();
 
     private final AmqpRetryPolicy retryPolicy;
+    private final ReceiveMode receiveMode;
 
     private volatile Throwable lastError;
     private volatile boolean isCancelled;
@@ -85,8 +87,9 @@ public class ServiceBusReceiveLinkProcessor extends FluxProcessor<ServiceBusRece
      * @throws NullPointerException if {@code retryPolicy} is null.
      * @throws IllegalArgumentException if {@code prefetch} is less than 0.
      */
-    public ServiceBusReceiveLinkProcessor(int prefetch, AmqpRetryPolicy retryPolicy) {
+    public ServiceBusReceiveLinkProcessor(int prefetch, AmqpRetryPolicy retryPolicy, ReceiveMode receiveMode) {
         this.retryPolicy = Objects.requireNonNull(retryPolicy, "'retryPolicy' cannot be null.");
+        this.receiveMode = Objects.requireNonNull(receiveMode, "'receiveMode' cannot be null.");
 
         if (prefetch < 0) {
             throw logger.logExceptionAsError(
@@ -489,6 +492,12 @@ public class ServiceBusReceiveLinkProcessor extends FluxProcessor<ServiceBusRece
 
                 try {
                     subscriber.onNext(message);
+
+                    // These don't have to be settled because they're automatically settled by the link, so we
+                    // decrement the count.
+                    if (receiveMode != ReceiveMode.PEEK_LOCK) {
+                        pendingMessages.decrementAndGet();
+                    }
                 } catch (Exception e) {
                     logger.error("Exception occurred while handling downstream onNext operation.", e);
                     throw logger.logExceptionAsError(Exceptions.propagate(
