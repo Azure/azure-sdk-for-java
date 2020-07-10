@@ -1096,12 +1096,16 @@
                 --add-exports com.azure.core/com.azure.core.implementation.util=ALL-UNNAMED
                 --add-exports com.azure.core/com.azure.core.implementation.http=ALL-UNNAMED
 
+                <!-- Required for running tests with afterburner modules -->
+                --add-exports com.fasterxml.jackson.module.afterburner/com.fasterxml.jackson.module.afterburner.deser=ALL-UNNAMED
+
                 <!-- Needed for JUnit offline instrumentation -->
                 --add-reads com.azure.core=ALL-UNNAMED
                 --add-reads com.azure.core.test=ALL-UNNAMED
                 --add-reads com.azure.core.amqp=ALL-UNNAMED
 
                 <!-- JUnit5 and Mockito use reflection to create objects. -->
+
                 --add-opens com.azure.core/com.azure.core=ALL-UNNAMED
                 --add-opens com.azure.core/com.azure.core.http.rest=ALL-UNNAMED
                 --add-opens com.azure.core/com.azure.core.util.logging=ALL-UNNAMED
