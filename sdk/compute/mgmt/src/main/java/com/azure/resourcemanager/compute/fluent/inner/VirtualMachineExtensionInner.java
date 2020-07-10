@@ -36,7 +36,7 @@ public class VirtualMachineExtensionInner extends Resource {
      * "CustomScriptExtension".
      */
     @JsonProperty(value = "properties.type")
-    private String typePropertiesType;
+    private String virtualMachineExtensionType;
 
     /*
      * Specifies the version of the script handler.
@@ -121,22 +121,22 @@ public class VirtualMachineExtensionInner extends Resource {
     }
 
     /**
-     * Get the typePropertiesType property: Specifies the type of the extension; an example is "CustomScriptExtension".
+     * Get the virtualMachineExtensionType property: Specifies the type of the extension; an example is "CustomScriptExtension".
      *
-     * @return the typePropertiesType value.
+     * @return the virtualMachineExtensionType value.
      */
-    public String typePropertiesType() {
-        return this.typePropertiesType;
+    public String virtualMachineExtensionType() {
+        return this.virtualMachineExtensionType;
     }
 
     /**
-     * Set the typePropertiesType property: Specifies the type of the extension; an example is "CustomScriptExtension".
+     * Set the virtualMachineExtensionType property: Specifies the type of the extension; an example is "CustomScriptExtension".
      *
-     * @param typePropertiesType the typePropertiesType value to set.
+     * @param virtualMachineExtensionType the virtualMachineExtensionType value to set.
      * @return the VirtualMachineExtensionInner object itself.
      */
-    public VirtualMachineExtensionInner withTypePropertiesType(String typePropertiesType) {
-        this.typePropertiesType = typePropertiesType;
+    public VirtualMachineExtensionInner withVirtualMachineExtensionType(String virtualMachineExtensionType) {
+        this.virtualMachineExtensionType = virtualMachineExtensionType;
         return this;
     }
 
