@@ -335,24 +335,6 @@ public final class CosmosAsyncClient implements Closeable {
 
     /**
      * Creates a database.
-     * <p>
-     * After subscription the operation will be performed.
-     * The {@link Mono} upon successful completion will contain a single resource response with the
-     * created database.
-     * In case of failure the {@link Mono} will error.
-     *
-     * @param id id of the database.
-     * @param throughput the throughput for the database.
-     * @return a {@link Mono} containing the single cosmos database response with the created database or an error.
-     */
-    Mono<CosmosDatabaseResponse> createDatabase(String id, int throughput) {
-        CosmosDatabaseRequestOptions options = new CosmosDatabaseRequestOptions();
-        ModelBridgeInternal.setThroughputProperties(options, ThroughputProperties.createManualThroughput(throughput));
-        return createDatabase(new CosmosDatabaseProperties(id), options);
-    }
-
-    /**
-     * Creates a database.
      *
      * @param id the id.
      * @param throughputProperties the throughputProperties.
@@ -493,28 +475,6 @@ public final class CosmosAsyncClient implements Closeable {
             database.getId(),
             this.serviceEndpoint);
     }
-
-    private Mono<CosmosDatabaseResponse> createDatabaseIfNotExistsInternal(Mono<CosmosDatabaseResponse> responseMono, CosmosAsyncDatabase database, ThroughputProperties throughputProperties, Context context) {
-        return responseMono.onErrorResume(exception -> {
-            final Throwable unwrappedException = Exceptions.unwrap(exception);
-            if (unwrappedException instanceof CosmosException) {
-                final CosmosException cosmosException = (CosmosException) unwrappedException;
-                if (cosmosException.getStatusCode() == HttpConstants.StatusCodes.NOTFOUND) {
-                    CosmosDatabaseRequestOptions requestOptions = new CosmosDatabaseRequestOptions();
-                    if(throughputProperties != null) {
-                        ModelBridgeInternal.setThroughputProperties(requestOptions, throughputProperties);
-                    }
-
-                    Database wrappedDatabase = new Database();
-                    wrappedDatabase.setId(database.getId());
-                    return createDatabaseInternal(wrappedDatabase,
-                        requestOptions, context);
-                }
-            }
-            return Mono.error(unwrappedException);
-        });
-    }
-
 
     private Mono<CosmosDatabaseResponse> createDatabaseInternal(Database database, CosmosDatabaseRequestOptions options,
                                                              Context context) {
