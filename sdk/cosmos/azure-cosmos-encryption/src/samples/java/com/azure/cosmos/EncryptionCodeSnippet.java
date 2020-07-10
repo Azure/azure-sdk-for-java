@@ -71,15 +71,15 @@ public class EncryptionCodeSnippet {
 
     public static class Pojo {
         @JsonProperty
-        public String id;
+        private String id;
         @JsonProperty
-        public String mypk;
+        private String mypk;
         @JsonProperty
-        public String nonSensitive;
+        private String nonSensitive;
         @JsonProperty
-        public String sensitive1;
+        private String sensitive1;
         @JsonProperty
-        public String sensitive2;
+        private String sensitive2;
     }
 
     private DataEncryptionKey createDataEncryptionKey() {
