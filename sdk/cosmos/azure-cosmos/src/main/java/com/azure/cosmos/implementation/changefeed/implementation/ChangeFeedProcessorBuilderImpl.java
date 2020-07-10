@@ -7,6 +7,7 @@ import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.ChangeFeedOptions;
 import com.azure.cosmos.implementation.Strings;
+import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
 import com.azure.cosmos.implementation.guava25.collect.Streams;
 import com.azure.cosmos.models.ChangeFeedProcessorOptions;
@@ -175,7 +176,7 @@ public class ChangeFeedProcessorBuilderImpl implements ChangeFeedProcessor, Auto
                         String ownerValue = lease.getOwner();
                         String sessionTokenLsn = feedResponse.getSessionToken();
                         String parsedSessionToken = sessionTokenLsn.substring(sessionTokenLsn.indexOf(PK_RANGE_ID_SEPARATOR));
-                        String[] segments = parsedSessionToken.split(SEGMENT_SEPARATOR);
+                        String[] segments = StringUtils.split(parsedSessionToken, SEGMENT_SEPARATOR);
                         String latestLsn = segments[0];
 
                         if (segments.length >= 2) {
@@ -245,7 +246,7 @@ public class ChangeFeedProcessorBuilderImpl implements ChangeFeedProcessor, Auto
                     .map(feedResponse -> {
                         String sessionTokenLsn = feedResponse.getSessionToken();
                         String parsedSessionToken = sessionTokenLsn.substring(sessionTokenLsn.indexOf(PK_RANGE_ID_SEPARATOR));
-                        String[] segments = parsedSessionToken.split(SEGMENT_SEPARATOR);
+                        String[] segments = StringUtils.split(parsedSessionToken, SEGMENT_SEPARATOR);
                         String latestLsn = segments[0];
 
                         if (segments.length >= 2) {
