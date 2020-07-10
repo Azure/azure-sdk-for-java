@@ -49,3 +49,6 @@ extends:
     AdditionalModules:
       - name: azure-cosmos-benchmark
         groupId: com.azure
+      - name: azure-cosmos-encryption
+        groupId: com.azure
+        safeName: azurecosmosencryption
