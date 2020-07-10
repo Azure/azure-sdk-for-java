@@ -336,13 +336,20 @@ function Assert-Spring-Sample-Version-Tags {
         } else {
             # else, if there's a version tag verify it, otherwise just skip it since the version should be coming
             # from the bom
-            if ($versionNode -and $versionNode.NextSibling -and $versionNode.NextSibling.NodeType -eq "Comment")
+            if ($versionNode)
             {
-                $retVal = Test-Dependency-Tag-And-Version $libHash $extDepHash $versionNode.InnerText.Trim() $versionNode.NextSibling.Value
-                if ($retVal)
+                if  ($versionNode.NextSibling -and $versionNode.NextSibling.NodeType -eq "Comment")
                 {
+                    $retVal = Test-Dependency-Tag-And-Version $libHash $extDepHash $versionNode.InnerText.Trim() $versionNode.NextSibling.Value
+                    if ($retVal)
+                    {
+                        $script:FoundError = $true
+                        Write-Error-With-Color "$($retVal)"
+                    }
+                # If there's no version tag then error, if there's a version then it must be tagged
+                } else {
                     $script:FoundError = $true
-                    Write-Error-With-Color "$($retVal)"
+                    Write-Error-With-Color "Error: dependency is missing version tag groupId=$($groupId), artifactId=$($artifactId) tag should be <!-- {x-version-update;$($groupId):$($artifactId);current|dependency|external_dependency<select one>} -->"
                 }
             }
         }
