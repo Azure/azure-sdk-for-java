@@ -214,7 +214,7 @@ Licensed under the MIT License.
                 <include>io.projectreactor.netty:reactor-netty:[0.9.7.RELEASE]</include> <!-- {x-include-update;io.projectreactor.netty:reactor-netty;external_dependency} -->
                 <include>org.slf4j:slf4j-api:[1.7.28]</include> <!-- {x-include-update;org.slf4j:slf4j-api;external_dependency} -->
                 <include>org.slf4j:slf4j-api:[1.7.28]</include> <!-- {x-include-update;org.slf4j:slf4j-api;external_dependency} -->
-                <include>org.bouncycastle:bcprov-jdk15on:[1.63]</include> <!-- {x-include-update;org.bouncycastle:bcprov-jdk15on;external_dependency} -->
+                <include>org.bouncycastle:bcprov-jdk15on:[1.60]</include> <!-- {x-include-update;org.bouncycastle:bcprov-jdk15on;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>
