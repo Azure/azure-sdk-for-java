@@ -103,6 +103,16 @@ public abstract class AzureServiceClient {
     }
 
     /**
+     * Gets default client context.
+     *
+     * @param context context
+     * @return the default client context.
+     */
+    public Context mergeContext(Context context) {
+        return context;
+    }
+
+    /**
      * Gets long running operation result.
      *
      * @param lroInit the raw response of init operation.
