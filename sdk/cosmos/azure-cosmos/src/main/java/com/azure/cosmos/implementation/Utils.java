@@ -17,6 +17,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.fasterxml.jackson.module.afterburner.AfterburnerModule;
 import io.netty.buffer.ByteBuf;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -24,6 +26,7 @@ import java.io.ObjectOutputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
@@ -47,6 +50,9 @@ import java.util.UUID;
  * This is meant to be internally used only by our sdk.
  */
 public class Utils {
+
+    private final static Logger logger = LoggerFactory.getLogger(Utils.class);
+
     private static final int ONE_KB = 1024;
     private static final ZoneId GMT_ZONE_ID = ZoneId.of("GMT");
     public static final Base64.Encoder Base64Encoder = Base64.getEncoder();
@@ -97,6 +103,18 @@ public class Utils {
             encodedString = encodedString.substring(0, encodedString.length() - 2);
         }
         return encodedString;
+    }
+
+    public static String decodeAsUTF8String(String inputString) {
+        if (inputString == null || inputString.isEmpty()) {
+            return inputString;
+        }
+        try {
+            return URLDecoder.decode(inputString, StandardCharsets.UTF_8.toString());
+        } catch (UnsupportedEncodingException e) {
+            logger.warn("Error while decoding input string", e);
+            return inputString;
+        }
     }
 
     /**

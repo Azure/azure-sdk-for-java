@@ -7,7 +7,6 @@ import com.azure.search.documents.indexes.models.PatternTokenizer;
 import com.azure.search.documents.indexes.models.RegexFlags;
 
 import java.util.Arrays;
-import java.util.List;
 import java.util.stream.Collectors;
 
 /**
@@ -28,9 +27,9 @@ public final class PatternTokenizerConverter {
         patternTokenizer.setPattern(pattern);
 
         if (obj.getFlags() != null) {
-            List<RegexFlags> regexFlags =
-                Arrays.stream(obj.getFlags().toString().split("\\|")).map(RegexFlags::fromString).collect(Collectors.toList());
-            patternTokenizer.setFlags(regexFlags);
+            patternTokenizer.setFlags(Arrays.stream(obj.getFlags().toString().split("\\|"))
+                .map(RegexFlags::fromString)
+                .collect(Collectors.toList()));
         }
 
         Integer group = obj.getGroup();
