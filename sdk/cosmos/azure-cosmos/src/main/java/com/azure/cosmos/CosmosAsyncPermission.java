@@ -4,9 +4,9 @@ package com.azure.cosmos;
 
 import com.azure.core.util.Context;
 import com.azure.cosmos.implementation.Paths;
-import com.azure.cosmos.models.CosmosPermissionResponse;
 import com.azure.cosmos.models.CosmosPermissionProperties;
 import com.azure.cosmos.models.CosmosPermissionRequestOptions;
+import com.azure.cosmos.models.CosmosPermissionResponse;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import reactor.core.publisher.Mono;
 
@@ -125,20 +125,15 @@ public class CosmosAsyncPermission {
     private Mono<CosmosPermissionResponse> readInternal(CosmosPermissionRequestOptions options, Context context) {
 
         String spanName = "readPermission." + cosmosUser.getId();
-        Mono<CosmosPermissionResponse> responseMono = readInternal(options);
-        return cosmosUser.getDatabase().getClient().getTracerProvider().traceEnabledCosmosResponsePublisher(responseMono, context,
-            spanName,
-            cosmosUser.getDatabase().getId(),
-            cosmosUser.getDatabase().getClient().getServiceEndpoint());
-    }
-
-    private Mono<CosmosPermissionResponse> readInternal(CosmosPermissionRequestOptions options) {
-
-        return cosmosUser.getDatabase()
+        Mono<CosmosPermissionResponse> responseMono = cosmosUser.getDatabase()
             .getDocClientWrapper()
             .readPermission(getLink(), ModelBridgeInternal.toRequestOptions(options))
             .map(response -> ModelBridgeInternal.createCosmosPermissionResponse(response))
             .single();
+        return cosmosUser.getDatabase().getClient().getTracerProvider().traceEnabledCosmosResponsePublisher(responseMono, context,
+            spanName,
+            cosmosUser.getDatabase().getId(),
+            cosmosUser.getDatabase().getClient().getServiceEndpoint());
     }
 
     private Mono<CosmosPermissionResponse> replaceInternal(CosmosPermissionProperties permissionProperties,
