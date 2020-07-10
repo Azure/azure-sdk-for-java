@@ -6,6 +6,6 @@
  * {@link com.azure.search.documents.indexes.SearchIndexAsyncClient},
  * {@link com.azure.search.documents.indexes.SearchIndexerClient}, or
  * {@link com.azure.search.documents.indexes.SearchIndexerAsyncClient} used to perform resource management operations
- * on an Azure Search service.
+ * on an Azure Cognitive Search service.
  */
 package com.azure.search.documents.indexes;

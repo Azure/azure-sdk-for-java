@@ -493,9 +493,9 @@
   <!-- These suppressions were added due to limitations in our custom Checkstyle rules and should be addressed in the future. -->
   <!-- API naming is too restrictive -->
   <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files="com.azure.search.documents.indexes.SearchIndexerAsyncClient.java"
-            lines="651,668,696,713"/>
+            lines="654,671,699,716"/>
   <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files="com.azure.search.documents.indexes.SearchIndexerClient.java"
-            lines="492,510,526,544"/>
+            lines="495,513,529,547"/>
 
   <!-- ServiceMethod return type for Collection doesn't check for sub-types -->
 </suppressions>

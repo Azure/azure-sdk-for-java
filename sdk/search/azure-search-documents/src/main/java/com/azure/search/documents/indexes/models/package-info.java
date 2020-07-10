@@ -3,6 +3,6 @@
 
 /**
  * Package containing classes used for resource management operations that are being sent-to and received-from an
- * Azure Search service.
+ * Azure Cognitive Search service.
  */
 package com.azure.search.documents.indexes.models;

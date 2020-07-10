@@ -69,7 +69,10 @@ import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;
 
 /**
- * Cognitive Search Asynchronous Client to query an index and upload, merge, or delete documents
+ * This class provides a client that contains the operations for querying an index and uploading, merging, or deleting
+ * documents in an Azure Cognitive Search service index.
+ *
+ * @see SearchClientBuilder
  */
 @ServiceClient(builder = SearchClientBuilder.class, isAsync = true)
 public final class SearchAsyncClient {
@@ -535,7 +538,8 @@ public final class SearchAsyncClient {
                 .onErrorMap(DocumentResponseConversions::exceptionMapper)
                 .map(res -> {
                     if (SearchDocument.class == modelClass) {
-                        TypeReference<Map<String, Object>> typeReference = new TypeReference<Map<String, Object>>() { };
+                        TypeReference<Map<String, Object>> typeReference = new TypeReference<Map<String, Object>>() {
+                        };
                         SearchDocument doc = new SearchDocument(MAPPER.convertValue(res.getValue(), typeReference));
                         return new SimpleResponse<T>(res, (T) doc);
                     }
@@ -596,7 +600,7 @@ public final class SearchAsyncClient {
      * <p>
      * If {@code searchText} is set to {@code null} or {@code "*"} all documents will be matched, see
      * <a href="https://docs.microsoft.com/rest/api/searchservice/Simple-query-syntax-in-Azure-Search">simple query
-     * syntax in Azure Search</a> for more information about search query syntax.
+     * syntax in Azure Cognitive Search</a> for more information about search query syntax.
      *
      * <p><strong>Code Sample</strong></p>
      *
@@ -620,7 +624,7 @@ public final class SearchAsyncClient {
      * <p>
      * If {@code searchText} is set to {@code null} or {@code "*"} all documents will be matched, see
      * <a href="https://docs.microsoft.com/rest/api/searchservice/Simple-query-syntax-in-Azure-Search">simple query
-     * syntax in Azure Search</a> for more information about search query syntax.
+     * syntax in Azure Cognitive Search</a> for more information about search query syntax.
      *
      * <p><strong>Code Sample</strong></p>
      *

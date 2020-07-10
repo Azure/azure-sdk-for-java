@@ -3,6 +3,6 @@
 
 /**
  * Package containing classes used for document management, autocomplete, search, or suggestion operations that are
- * being sent-to and received-from an Azure Search service index.
+ * being sent-to and received-from an Azure Cognitive Search service index.
  */
 package com.azure.search.documents.models;

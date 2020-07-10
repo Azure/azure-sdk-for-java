@@ -16,7 +16,10 @@ import com.azure.search.documents.indexes.models.SearchIndexerSkillset;
 import com.azure.search.documents.indexes.models.SearchIndexerStatus;
 
 /**
- * Synchronous Client to manage and query indexers, as well as manage other resources, on a Cognitive Search service
+ * This class provides a client that contains the operations for creating, getting, listing, updating, or deleting data
+ * source connections, indexers, or skillsets and running or resetting indexers in an Azure Cognitive Search service.
+ *
+ * @see SearchIndexerClientBuilder
  */
 @ServiceClient(builder = SearchIndexerClientBuilder.class)
 public class SearchIndexerClient {

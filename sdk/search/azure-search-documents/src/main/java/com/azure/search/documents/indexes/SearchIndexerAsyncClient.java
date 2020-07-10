@@ -36,7 +36,10 @@ import static com.azure.core.util.FluxUtil.pagedFluxError;
 import static com.azure.core.util.FluxUtil.withContext;
 
 /**
- * Asynchronous Client to manage and query indexers, as well as manage other resources, on a Cognitive Search service
+ * This class provides a client that contains the operations for creating, getting, listing, updating, or deleting data
+ * source connections, indexers, or skillsets and running or resetting indexers in an Azure Cognitive Search service.
+ *
+ * @see SearchIndexerClientBuilder
  */
 @ServiceClient(builder = SearchIndexerClientBuilder.class, isAsync = true)
 public class SearchIndexerAsyncClient {
@@ -72,7 +75,7 @@ public class SearchIndexerAsyncClient {
 
         this.restClient = new SearchServiceClientImplBuilder()
             .endpoint(endpoint)
-          //  .apiVersion(serviceVersion.getVersion())
+            //  .apiVersion(serviceVersion.getVersion())
             .pipeline(httpPipeline)
             .buildClient();
     }

@@ -27,7 +27,10 @@ import com.azure.search.documents.util.SuggestPagedResponse;
 import java.util.List;
 
 /**
- * Cognitive Search Synchronous Client to query an index and upload, merge, or delete documents
+ * This class provides a client that contains the operations for querying an index and uploading, merging, or deleting
+ * documents in an Azure Cognitive Search service index.
+ *
+ * @see SearchClientBuilder
  */
 @ServiceClient(builder = SearchClientBuilder.class)
 public final class SearchClient {
@@ -443,7 +446,7 @@ public final class SearchClient {
      * <p>
      * If {@code searchText} is set to {@code null} or {@code "*"} all documents will be matched, see
      * <a href="https://docs.microsoft.com/rest/api/searchservice/Simple-query-syntax-in-Azure-Search">simple query
-     * syntax in Azure Search</a> for more information about search query syntax.
+     * syntax in Azure Cognitive Search</a> for more information about search query syntax.
      *
      * <p><strong>Code Sample</strong></p>
      *
@@ -467,7 +470,7 @@ public final class SearchClient {
      * <p>
      * If {@code searchText} is set to {@code null} or {@code "*"} all documents will be matched, see
      * <a href="https://docs.microsoft.com/rest/api/searchservice/Simple-query-syntax-in-Azure-Search">simple query
-     * syntax in Azure Search</a> for more information about search query syntax.
+     * syntax in Azure Cognitive Search</a> for more information about search query syntax.
      *
      * <p><strong>Code Sample</strong></p>
      *
