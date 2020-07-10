@@ -3,6 +3,7 @@
 
 package com.azure.identity.implementation;
 
+import com.azure.core.credential.TokenRefreshOptions;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.ProxyOptions;
@@ -46,7 +47,7 @@ public final class IdentityClientOptions {
     private ProxyOptions proxyOptions;
     private HttpPipeline httpPipeline;
     private ExecutorService executorService;
-    private Duration tokenRefreshOffset = Duration.ofMinutes(2);
+    private IdentityTokenRefreshOptions tokenRefreshOptions = new IdentityTokenRefreshOptions();
     private HttpClient httpClient;
     private boolean allowUnencryptedCache;
     private boolean sharedTokenCacheEnabled;
@@ -186,10 +187,10 @@ public final class IdentityClientOptions {
     }
 
     /**
-     * @return how long before the actual token expiry to refresh the token.
+     * @return the options to configure the token refresh behavior.
      */
-    public Duration getTokenRefreshOffset() {
-        return tokenRefreshOffset;
+    public TokenRefreshOptions getTokenRefreshOptions() {
+        return tokenRefreshOptions;
     }
 
     /**
@@ -206,7 +207,7 @@ public final class IdentityClientOptions {
      */
     public IdentityClientOptions setTokenRefreshOffset(Duration tokenRefreshOffset) {
         Objects.requireNonNull(tokenRefreshOffset, "The token refresh offset cannot be null.");
-        this.tokenRefreshOffset = tokenRefreshOffset;
+        this.tokenRefreshOptions.setOffset(tokenRefreshOffset);
         return this;
     }
 

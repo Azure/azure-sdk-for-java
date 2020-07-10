@@ -6,6 +6,7 @@ package com.azure.identity;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenCredential;
+import com.azure.core.credential.TokenRefreshOptions;
 import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.identity.implementation.IdentityClient;
@@ -21,6 +22,7 @@ import reactor.core.publisher.Mono;
 @Immutable
 public class AzureCliCredential implements TokenCredential {
     private final IdentityClient identityClient;
+    private final IdentityClientOptions identityClientOptions;
     private final ClientLogger logger = new ClientLogger(AzureCliCredential.class);
 
     /**
@@ -29,6 +31,7 @@ public class AzureCliCredential implements TokenCredential {
      */
     AzureCliCredential(IdentityClientOptions identityClientOptions) {
         identityClient = new IdentityClientBuilder().identityClientOptions(identityClientOptions).build();
+        this.identityClientOptions = identityClientOptions;
     }
 
     @Override
@@ -36,5 +39,10 @@ public class AzureCliCredential implements TokenCredential {
         return identityClient.authenticateWithAzureCli(request)
             .doOnNext(token -> LoggingUtil.logTokenSuccess(logger, request))
             .doOnError(error -> LoggingUtil.logTokenError(logger, request, error));
+    }
+
+    @Override
+    public TokenRefreshOptions getTokenRefreshOptions() {
+        return identityClientOptions.getTokenRefreshOptions();
     }
 }

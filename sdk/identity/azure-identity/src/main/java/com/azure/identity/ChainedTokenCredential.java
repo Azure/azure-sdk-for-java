@@ -6,6 +6,7 @@ package com.azure.identity;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenCredential;
+import com.azure.core.credential.TokenRefreshOptions;
 import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.exception.ClientAuthenticationException;
 import com.azure.core.util.logging.ClientLogger;
@@ -25,6 +26,7 @@ import java.util.List;
  */
 @Immutable
 public class ChainedTokenCredential implements TokenCredential {
+    private volatile TokenRefreshOptions tokenRefreshOptions;
     private final ClientLogger logger = new ClientLogger(getClass());
     private final List<TokenCredential> credentials;
     private final String unavailableError = this.getClass().getSimpleName() + " authentication failed. ---> ";
@@ -55,7 +57,7 @@ public class ChainedTokenCredential implements TokenCredential {
                     logger.info("Azure Identity => Attempted credential {} is unavailable.",
                         p.getClass().getSimpleName());
                     return Mono.empty();
-                }), 1)
+                }).doOnNext(t -> tokenRefreshOptions = p.getTokenRefreshOptions()), 1)
             .next()
             .switchIfEmpty(Mono.defer(() -> {
                 // Chain Exceptions.
@@ -67,6 +69,11 @@ public class ChainedTokenCredential implements TokenCredential {
                 }
                 return Mono.error(last);
             }));
+    }
+
+    @Override
+    public TokenRefreshOptions getTokenRefreshOptions() {
+        return tokenRefreshOptions;
     }
 
 
