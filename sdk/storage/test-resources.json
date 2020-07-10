@@ -9,6 +9,13 @@
             "type": "string",
             "defaultValue": "core.windows.net"
         },
+        "tenantId": {
+            "type": "string",
+            "defaultValue": "72f988bf-86f1-41af-91ab-2d7cd011db47",
+            "metadata": {
+                "description": "The tenant ID to which the application and resources belong."
+            }
+        },
         "testApplicationOid": {
             "type": "string",
             "metadata": {
@@ -18,6 +25,7 @@
     },
     "variables": {
         "storageApiVersion": "2019-06-01",
+        "keyVaultApiVersion": "2016-10-01",
         "authorizationApiVersion": "2018-09-01-preview",
         "blobDataContributorRoleId": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/ba92f5b4-2d11-453d-a403-e96b0029c9fe')]",
         "contributorRoleId": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/b24988ac-6180-42a0-ab88-20f7382dd24c')]",
@@ -26,6 +34,8 @@
         "premiumAccountName": "[concat('prem', parameters('baseName'))]",
         "dataLakeAccountName": "[concat('dtlk', parameters('baseName'))]",
         "premiumFileAccountName": "[concat('premf', parameters('baseName'))]",
+        "keyvaultName": "[concat(parameters('baseName'), 'kvlt')]",
+        "azureKeyVaultUrl": "[format('https://{0}.vault.azure.net', variables('keyvaultName'))]",
         "location": "[resourceGroup().location]"
     },
     "resources": [
@@ -239,6 +249,77 @@
                     "keySource": "Microsoft.Storage"
                 }
             }
+        },
+        {
+            "type": "Microsoft.KeyVault/vaults",
+            "apiVersion": "[variables('keyvaultApiVersion')]",
+            "name": "[variables('keyvaultName')]",
+            "location": "[variables('location')]",
+            "properties": {
+                "sku": {
+                    "family": "A",
+                    "name": "premium"
+                },
+                "tenantId": "[parameters('tenantId')]",
+                "accessPolicies": [
+                  {
+                      "tenantId": "[parameters('tenantId')]",
+                      "objectId": "[parameters('testApplicationOid')]",
+                      "permissions": {
+                        "keys": [
+                            "get",
+                            "list",
+                            "update",
+                            "create",
+                            "import",
+                            "delete",
+                            "recover",
+                            "backup",
+                            "restore",
+                            "decrypt",
+                            "encrypt",
+                            "unwrapKey",
+                            "wrapKey",
+                            "verify",
+                            "sign",
+                            "purge"
+                        ],
+                        "secrets": [
+                            "get",
+                            "list",
+                            "set",
+                            "delete",
+                            "recover",
+                            "backup",
+                            "restore",
+                            "purge"
+                        ],
+                        "certificates": [
+                            "get",
+                            "list",
+                            "update",
+                            "create",
+                            "import",
+                            "delete",
+                            "recover",
+                            "backup",
+                            "restore",
+                            "managecontacts",
+                            "manageissuers",
+                            "getissuers",
+                            "listissuers",
+                            "setissuers",
+                            "deleteissuers",
+                            "purge"
+                      ]
+                  }
+              }
+            ],
+            "enabledForDeployment": false,
+            "enabledForDiskEncryption": false,
+            "enabledForTemplateDeployment": false,
+            "enableSoftDelete": false
+          }
         }
     ],
     "outputs": {
@@ -326,7 +407,10 @@
         "AZURE_STORAGE_QUEUE_CONNECTION_STRING": {
             "type": "string",
             "value": "[concat('DefaultEndpointsProtocol=https;AccountName=', variables('primaryAccountName'), ';AccountKey=', listKeys(resourceId('Microsoft.Storage/storageAccounts', variables('primaryAccountName')), variables('storageApiVersion')).keys[0].value, ';EndpointSuffix=', parameters('endpointSuffix'))]"
+        },
+        "KEYVAULT_URL":{
+            "type": "string",
+            "value": "[variables('azureKeyVaultUrl')]"
         }
-
     }
 }
