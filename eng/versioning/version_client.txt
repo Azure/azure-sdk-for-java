@@ -49,7 +49,6 @@ com.azure:azure-storage-internal-avro;12.0.0-beta.1;12.0.0-beta.2
 com.azure:azure-storage-perf;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-storage-queue;12.6.0-beta.1;12.6.0-beta.2
 com.azure:perf-test-core;1.0.0-beta.1;1.0.0-beta.1
-com.azure:azure-test-watcher;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-spring-boot-test-aad;1.0.0;1.0.0
 com.azure:azure-spring-boot-test-core;1.0.0;1.0.0
 com.azure:azure-spring-boot-test-cosmosdb;1.0.0;1.0.0
