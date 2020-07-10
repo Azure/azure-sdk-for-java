@@ -99,7 +99,7 @@ public class TableResourcesInner {
     /**
      * Lists the Tables under an existing Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
@@ -113,7 +113,7 @@ public class TableResourcesInner {
     /**
      * Lists the Tables under an existing Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -126,7 +126,7 @@ public class TableResourcesInner {
     /**
      * Lists the Tables under an existing Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;TableGetResultsInner&gt; object
@@ -143,7 +143,7 @@ public class TableResourcesInner {
     /**
      * Lists the Tables under an existing Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;TableGetResultsInner&gt; object
@@ -188,7 +188,7 @@ public class TableResourcesInner {
     /**
      * Gets the Tables under an existing Azure Cosmos DB database account with the provided name.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param tableName Cosmos DB table name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -203,7 +203,7 @@ public class TableResourcesInner {
     /**
      * Gets the Tables under an existing Azure Cosmos DB database account with the provided name.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param tableName Cosmos DB table name.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
@@ -217,7 +217,7 @@ public class TableResourcesInner {
     /**
      * Gets the Tables under an existing Azure Cosmos DB database account with the provided name.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param tableName Cosmos DB table name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -235,7 +235,7 @@ public class TableResourcesInner {
     /**
      * Gets the Tables under an existing Azure Cosmos DB database account with the provided name.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param tableName Cosmos DB table name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -279,7 +279,7 @@ public class TableResourcesInner {
     /**
      * Create or update an Azure Cosmos DB Table.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param tableName Cosmos DB table name.
      * @param createUpdateTableParameters The parameters to provide for the current Table.
@@ -295,7 +295,7 @@ public class TableResourcesInner {
     /**
      * Create or update an Azure Cosmos DB Table.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param tableName Cosmos DB table name.
      * @param createUpdateTableParameters The parameters to provide for the current Table.
@@ -310,7 +310,7 @@ public class TableResourcesInner {
     /**
      * Create or update an Azure Cosmos DB Table.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param tableName Cosmos DB table name.
      * @param createUpdateTableParameters The parameters to provide for the current Table.
@@ -329,7 +329,7 @@ public class TableResourcesInner {
     /**
      * Create or update an Azure Cosmos DB Table.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param tableName Cosmos DB table name.
      * @param createUpdateTableParameters The parameters to provide for the current Table.
@@ -361,7 +361,7 @@ public class TableResourcesInner {
     /**
      * Create or update an Azure Cosmos DB Table.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param tableName Cosmos DB table name.
      * @param createUpdateTableParameters The parameters to provide for the current Table.
@@ -377,7 +377,7 @@ public class TableResourcesInner {
     /**
      * Create or update an Azure Cosmos DB Table.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param tableName Cosmos DB table name.
      * @param createUpdateTableParameters The parameters to provide for the current Table.
@@ -392,7 +392,7 @@ public class TableResourcesInner {
     /**
      * Create or update an Azure Cosmos DB Table.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param tableName Cosmos DB table name.
      * @param createUpdateTableParameters The parameters to provide for the current Table.
@@ -411,7 +411,7 @@ public class TableResourcesInner {
     /**
      * Create or update an Azure Cosmos DB Table.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param tableName Cosmos DB table name.
      * @param createUpdateTableParameters The parameters to provide for the current Table.
@@ -461,7 +461,7 @@ public class TableResourcesInner {
     /**
      * Deletes an existing Azure Cosmos DB Table.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param tableName Cosmos DB table name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -475,7 +475,7 @@ public class TableResourcesInner {
     /**
      * Deletes an existing Azure Cosmos DB Table.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param tableName Cosmos DB table name.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
@@ -489,7 +489,7 @@ public class TableResourcesInner {
     /**
      * Deletes an existing Azure Cosmos DB Table.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param tableName Cosmos DB table name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -507,7 +507,7 @@ public class TableResourcesInner {
     /**
      * Deletes an existing Azure Cosmos DB Table.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param tableName Cosmos DB table name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -534,7 +534,7 @@ public class TableResourcesInner {
     /**
      * Deletes an existing Azure Cosmos DB Table.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param tableName Cosmos DB table name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -548,7 +548,7 @@ public class TableResourcesInner {
     /**
      * Deletes an existing Azure Cosmos DB Table.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param tableName Cosmos DB table name.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
@@ -562,7 +562,7 @@ public class TableResourcesInner {
     /**
      * Deletes an existing Azure Cosmos DB Table.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param tableName Cosmos DB table name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -580,7 +580,7 @@ public class TableResourcesInner {
     /**
      * Deletes an existing Azure Cosmos DB Table.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param tableName Cosmos DB table name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -625,7 +625,7 @@ public class TableResourcesInner {
     /**
      * Gets the RUs per second of the Table under an existing Azure Cosmos DB database account with the provided name.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param tableName Cosmos DB table name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -640,7 +640,7 @@ public class TableResourcesInner {
     /**
      * Gets the RUs per second of the Table under an existing Azure Cosmos DB database account with the provided name.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param tableName Cosmos DB table name.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
@@ -654,7 +654,7 @@ public class TableResourcesInner {
     /**
      * Gets the RUs per second of the Table under an existing Azure Cosmos DB database account with the provided name.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param tableName Cosmos DB table name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -672,7 +672,7 @@ public class TableResourcesInner {
     /**
      * Gets the RUs per second of the Table under an existing Azure Cosmos DB database account with the provided name.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param tableName Cosmos DB table name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -716,7 +716,7 @@ public class TableResourcesInner {
     /**
      * Update RUs per second of an Azure Cosmos DB Table.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param tableName Cosmos DB table name.
      * @param updateThroughputParameters The parameters to provide for the RUs per second of the current Table.
@@ -732,7 +732,7 @@ public class TableResourcesInner {
     /**
      * Update RUs per second of an Azure Cosmos DB Table.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param tableName Cosmos DB table name.
      * @param updateThroughputParameters The parameters to provide for the RUs per second of the current Table.
@@ -747,7 +747,7 @@ public class TableResourcesInner {
     /**
      * Update RUs per second of an Azure Cosmos DB Table.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param tableName Cosmos DB table name.
      * @param updateThroughputParameters The parameters to provide for the RUs per second of the current Table.
@@ -766,7 +766,7 @@ public class TableResourcesInner {
     /**
      * Update RUs per second of an Azure Cosmos DB Table.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param tableName Cosmos DB table name.
      * @param updateThroughputParameters The parameters to provide for the RUs per second of the current Table.
@@ -798,7 +798,7 @@ public class TableResourcesInner {
     /**
      * Update RUs per second of an Azure Cosmos DB Table.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param tableName Cosmos DB table name.
      * @param updateThroughputParameters The parameters to provide for the RUs per second of the current Table.
@@ -814,7 +814,7 @@ public class TableResourcesInner {
     /**
      * Update RUs per second of an Azure Cosmos DB Table.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param tableName Cosmos DB table name.
      * @param updateThroughputParameters The parameters to provide for the RUs per second of the current Table.
@@ -829,7 +829,7 @@ public class TableResourcesInner {
     /**
      * Update RUs per second of an Azure Cosmos DB Table.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param tableName Cosmos DB table name.
      * @param updateThroughputParameters The parameters to provide for the RUs per second of the current Table.
@@ -848,7 +848,7 @@ public class TableResourcesInner {
     /**
      * Update RUs per second of an Azure Cosmos DB Table.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param tableName Cosmos DB table name.
      * @param updateThroughputParameters The parameters to provide for the RUs per second of the current Table.
