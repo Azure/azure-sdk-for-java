@@ -113,6 +113,11 @@
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
+      <artifactId>azure-cosmos</artifactId>
+      <version>0.9.0-beta.1</version> <!-- {x-version-update;com.azure:azure-cosmos-encryption;current} -->
+    </dependency>
+    <dependency>
+      <groupId>com.azure</groupId>
       <artifactId>azure-data-appconfiguration</artifactId>
       <version>1.2.0-beta.1</version> <!-- {x-version-update;com.azure:azure-data-appconfiguration;current} -->
     </dependency>
