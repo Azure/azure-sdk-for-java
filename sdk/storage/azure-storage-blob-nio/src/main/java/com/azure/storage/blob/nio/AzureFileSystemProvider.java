@@ -755,9 +755,9 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
         state that "basic" must be supported, so we funnel to azureBasic.
          */
         if (viewType.equals("basic")) {
-            viewType = "azureBasic";
+            viewType = AzureBasicFileAttributeView.NAME;
         }
-        if (!viewType.equals("azureBasic") && !viewType.equals("azureBlob")) {
+        if (!viewType.equals(AzureBasicFileAttributeView.NAME) && !viewType.equals(AzureBlobFileAttributeView.NAME)) {
             throw LoggingUtility.logError(logger,
                 new UnsupportedOperationException("Invalid attribute view: " + viewType));
         }
@@ -768,7 +768,7 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
             should at least validate that the attribute is available on a basic view.
              */
             // TODO: Put these strings in constants
-            if (viewType.equals("azureBasic")) {
+            if (viewType.equals(AzureBasicFileAttributeView.NAME)) {
                 if (!AzureBasicFileAttributes.ATTRIBUTE_STRINGS.contains(attributeName) && !attributeName.equals("*")) {
                     throw LoggingUtility.logError(logger,
                         new IllegalArgumentException("Invalid attribute. View: " + viewType
@@ -786,7 +786,7 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
             // If "*" is specified, add all of the attributes from the specified set.
             if (attributeName.equals("*")) {
                 Set<String> attributesToAdd;
-                if (viewType.equals("azureBasic")) {
+                if (viewType.equals(AzureBasicFileAttributeView.NAME)) {
                     for (String attr : AzureBasicFileAttributes.ATTRIBUTE_STRINGS) {
                         results.put(attr, attributeSuppliers.get(attr).get());
                     }
@@ -848,7 +848,7 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
         state that "basic" must be supported, so we funnel to azureBasic.
          */
         if (viewType.equals("basic")) {
-            viewType = "azureBasic";
+            viewType = AzureBasicFileAttributeView.NAME;
         }
 
         // We don't actually support any setters on the basic view.
@@ -856,7 +856,7 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
             throw LoggingUtility.logError(logger,
                 new IllegalArgumentException("Invalid attribute. View: " + viewType
                     + ". Attribute: " + attributeName));
-        } else if (viewType.equals("azureBlob")) {
+        } else if (viewType.equals(AzureBlobFileAttributeView.NAME)) {
             Map<String, Consumer<Object>> attributeConsumers = AzureBlobFileAttributeView.setAttributeConsumers(
                 this.getFileAttributeView(path, AzureBlobFileAttributeView.class, linkOptions));
             if (!attributeConsumers.containsKey(attributeName)) {
