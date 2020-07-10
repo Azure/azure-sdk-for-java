@@ -8,7 +8,26 @@ jobs:
         TestStepMavenInputs:
           options: '-Dmaven.wagon.http.pool=false $(DefaultOptions) -Dmaven.javadoc.skip=true -Drevapi.skip=true -DskipSpringITs=false -pl $(ProjectList)'
           goals: "verify"
-
+        Matrix:
+          Linux - Java 8 (AzureCloud):
+            OSVmImage: 'ubuntu-18.04'
+            JavaTestVersion: '1.8'
+            DisplayName: 'Linux - Java 8'
+            SubscriptionConfiguration: $(sub-config-azure-cloud-test-resources)
+            AZURE_TEST_HTTP_CLIENTS: netty
+        PostRunSteps:
+          - script: |
+              python3 --version
+              python3 sdk/spring/script/set-version/set_versions.py
+            displayName: Run set_versions.py
+          - task: Maven@3
+            displayName: 'Run tests after set_version: $(DisplayName)'
+            inputs:
+              mavenPomFile: pom.xml
+              options: '-Dmaven.wagon.http.pool=false $(DefaultOptions) -Dmaven.javadoc.skip=true -Drevapi.skip=true -DskipSpringITs=false -pl $(ProjectList)'
+              goals: "verify"
+            env:
+              AZURE_TEST_MODE: LIVE
         Artifacts:
           - name: azure-spring-boot-tests
             groupId: com.microsoft.azure
