@@ -182,7 +182,7 @@ public final class SearchClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<IndexDocumentsResult> mergeDocumentsWithResponse(Iterable<?> documents,
-            IndexDocumentsOptions options, Context context) {
+        IndexDocumentsOptions options, Context context) {
         return asyncClient.mergeDocumentsWithResponse(documents, options, context).block();
     }
 
@@ -249,7 +249,7 @@ public final class SearchClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<IndexDocumentsResult> mergeOrUploadDocumentsWithResponse(Iterable<?> documents,
-                IndexDocumentsOptions options, Context context) {
+        IndexDocumentsOptions options, Context context) {
         return asyncClient.mergeOrUploadDocumentsWithResponse(documents, options, context).block();
     }
 
@@ -457,6 +457,7 @@ public final class SearchClient {
      * information.
      * @see <a href="https://docs.microsoft.com/rest/api/searchservice/Search-Documents">Search documents</a>
      */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public SearchPagedIterable search(String searchText) {
         return search(searchText, null, Context.NONE);
     }
@@ -482,6 +483,7 @@ public final class SearchClient {
      * information.
      * @see <a href="https://docs.microsoft.com/rest/api/searchservice/Search-Documents">Search documents</a>
      */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public SearchPagedIterable search(String searchText, SearchOptions searchOptions, Context context) {
         return new SearchPagedIterable(asyncClient.search(searchText, searchOptions, context));
     }
@@ -502,6 +504,7 @@ public final class SearchClient {
      * the {@link SuggestPagedResponse} object for each page containing HTTP response and coverage information.
      * @see <a href="https://docs.microsoft.com/rest/api/searchservice/Suggestions">Suggestions</a>
      */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public SuggestPagedIterable suggest(String searchText, String suggesterName) {
         return suggest(searchText, suggesterName, null, Context.NONE);
     }
@@ -524,10 +527,10 @@ public final class SearchClient {
      * the {@link SuggestPagedResponse} object for each page containing HTTP response and coverage information.
      * @see <a href="https://docs.microsoft.com/rest/api/searchservice/Suggestions">Suggestions</a>
      */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public SuggestPagedIterable suggest(String searchText, String suggesterName, SuggestOptions suggestOptions,
         Context context) {
-        return new SuggestPagedIterable(asyncClient.suggest(searchText, suggesterName, suggestOptions,
-            context));
+        return new SuggestPagedIterable(asyncClient.suggest(searchText, suggesterName, suggestOptions, context));
     }
 
     /**
@@ -543,6 +546,7 @@ public final class SearchClient {
      * @param suggesterName suggester name
      * @return auto complete result.
      */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public AutocompletePagedIterable autocomplete(String searchText, String suggesterName) {
         return autocomplete(searchText, suggesterName, null, Context.NONE);
     }
@@ -562,6 +566,7 @@ public final class SearchClient {
      * @param context additional context that is passed through the HTTP pipeline during the service call
      * @return auto complete result.
      */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public AutocompletePagedIterable autocomplete(String searchText, String suggesterName,
         AutocompleteOptions autocompleteOptions, Context context) {
         return new AutocompletePagedIterable(asyncClient.autocomplete(searchText, suggesterName, autocompleteOptions,

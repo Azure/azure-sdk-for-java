@@ -490,4 +490,12 @@
   <suppress checks="MethodName|MemberName|ParameterName|VisibilityModifier" files="com.azure.spring.data.cosmos.domain|repository|config.*\.java"/>
   <suppress checks="ConstantName" files="com.azure.spring.data.cosmos.repository|common.*\.java" />
 
+  <!-- These suppressions were added due to limitations in our custom Checkstyle rules and should be addressed in the future. -->
+  <!-- API naming is too restrictive -->
+  <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files="com.azure.search.documents.indexes.SearchIndexerAsyncClient.java"
+            lines="651,668,696,713"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files="com.azure.search.documents.indexes.SearchIndexerClient.java"
+            lines="492,510,526,544"/>
+
+  <!-- ServiceMethod return type for Collection doesn't check for sub-types -->
 </suppressions>

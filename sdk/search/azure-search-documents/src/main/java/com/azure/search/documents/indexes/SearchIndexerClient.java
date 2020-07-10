@@ -4,6 +4,7 @@
 package com.azure.search.documents.indexes;
 
 import com.azure.core.annotation.ReturnType;
+import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedIterable;
@@ -17,6 +18,7 @@ import com.azure.search.documents.indexes.models.SearchIndexerStatus;
 /**
  * Synchronous Client to manage and query indexers, as well as manage other resources, on a Cognitive Search service
  */
+@ServiceClient(builder = SearchIndexerClientBuilder.class)
 public class SearchIndexerClient {
     private final SearchIndexerAsyncClient asyncClient;
 
@@ -57,8 +59,7 @@ public class SearchIndexerClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SearchIndexerDataSourceConnection createOrUpdateDataSourceConnection(
         SearchIndexerDataSourceConnection dataSourceConnection) {
-        return createOrUpdateDataSourceConnectionWithResponse(dataSourceConnection, false,
-            Context.NONE).getValue();
+        return createOrUpdateDataSourceConnectionWithResponse(dataSourceConnection, false, Context.NONE).getValue();
     }
 
     /**
@@ -236,7 +237,7 @@ public class SearchIndexerClient {
      *
      * @param dataSourceConnectionName the name of the data source to be deleted
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteDataSourceConnection(String dataSourceConnectionName) {
         deleteDataSourceConnectionWithResponse(new SearchIndexerDataSourceConnection(dataSourceConnectionName), false,
             Context.NONE);
@@ -262,8 +263,8 @@ public class SearchIndexerClient {
     public Response<Void> deleteDataSourceConnectionWithResponse(SearchIndexerDataSourceConnection dataSourceConnection,
         boolean onlyIfUnchanged, Context context) {
         String etag = onlyIfUnchanged ? dataSourceConnection.getETag() : null;
-        return asyncClient.deleteDataSourceConnectionWithResponse(dataSourceConnection.getName(), etag,
-            context).block();
+        return asyncClient.deleteDataSourceConnectionWithResponse(dataSourceConnection.getName(), etag, context)
+            .block();
     }
 
     /**
@@ -297,8 +298,7 @@ public class SearchIndexerClient {
      * @return a response containing the created Indexer.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<SearchIndexer> createIndexerWithResponse(SearchIndexer indexer,
-        Context context) {
+    public Response<SearchIndexer> createIndexerWithResponse(SearchIndexer indexer, Context context) {
         return asyncClient.createIndexerWithResponse(indexer, context).block();
     }
 
@@ -437,8 +437,7 @@ public class SearchIndexerClient {
      * @return a response containing the indexer.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<SearchIndexer> getIndexerWithResponse(String indexerName,
-        Context context) {
+    public Response<SearchIndexer> getIndexerWithResponse(String indexerName, Context context) {
         return asyncClient.getIndexerWithResponse(indexerName, context).block();
     }
 
@@ -474,8 +473,7 @@ public class SearchIndexerClient {
      * @return a response signalling completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteIndexerWithResponse(SearchIndexer indexer, boolean onlyIfUnchanged,
-        Context context) {
+    public Response<Void> deleteIndexerWithResponse(SearchIndexer indexer, boolean onlyIfUnchanged, Context context) {
         String etag = onlyIfUnchanged ? indexer.getETag() : null;
         return asyncClient.deleteIndexerWithResponse(indexer.getName(), etag, context).block();
     }
@@ -579,8 +577,7 @@ public class SearchIndexerClient {
      * @return a response with the indexer execution info.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<SearchIndexerStatus> getIndexerStatusWithResponse(String indexerName,
-        Context context) {
+    public Response<SearchIndexerStatus> getIndexerStatusWithResponse(String indexerName, Context context) {
         return asyncClient.getIndexerStatusWithResponse(indexerName, context).block();
     }
 
@@ -616,8 +613,7 @@ public class SearchIndexerClient {
      * @return a response containing the created SearchIndexerSkillset.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<SearchIndexerSkillset> createSkillsetWithResponse(SearchIndexerSkillset skillset,
-        Context context) {
+    public Response<SearchIndexerSkillset> createSkillsetWithResponse(SearchIndexerSkillset skillset, Context context) {
         return asyncClient.createSkillsetWithResponse(skillset, context).block();
     }
 
@@ -652,8 +648,7 @@ public class SearchIndexerClient {
      * @return a response containing the SearchIndexerSkillset.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<SearchIndexerSkillset> getSkillsetWithResponse(String skillsetName,
-        Context context) {
+    public Response<SearchIndexerSkillset> getSkillsetWithResponse(String skillsetName, Context context) {
         return asyncClient.getSkillsetWithResponse(skillsetName, context).block();
     }
 

@@ -213,8 +213,7 @@ public final class SearchAsyncClient {
 
     Mono<Response<IndexDocumentsResult>> uploadDocumentsWithResponse(Iterable<?> documents,
         IndexDocumentsOptions options, Context context) {
-        return indexDocumentsWithResponse(buildIndexBatch(documents, IndexActionType.UPLOAD), options,
-            context);
+        return indexDocumentsWithResponse(buildIndexBatch(documents, IndexActionType.UPLOAD), options, context);
     }
 
     /**
@@ -283,8 +282,7 @@ public final class SearchAsyncClient {
 
     Mono<Response<IndexDocumentsResult>> mergeDocumentsWithResponse(Iterable<?> documents,
         IndexDocumentsOptions options, Context context) {
-        return indexDocumentsWithResponse(buildIndexBatch(documents, IndexActionType.MERGE), options,
-            context);
+        return indexDocumentsWithResponse(buildIndexBatch(documents, IndexActionType.MERGE), options, context);
     }
 
     /**
@@ -411,8 +409,7 @@ public final class SearchAsyncClient {
 
     Mono<Response<IndexDocumentsResult>> deleteDocumentsWithResponse(Iterable<?> documents,
         IndexDocumentsOptions options, Context context) {
-        return indexDocumentsWithResponse(buildIndexBatch(documents, IndexActionType.DELETE), options,
-            context);
+        return indexDocumentsWithResponse(buildIndexBatch(documents, IndexActionType.DELETE), options, context);
     }
 
     /**
@@ -468,11 +465,9 @@ public final class SearchAsyncClient {
     Mono<Response<IndexDocumentsResult>> indexDocumentsWithResponse(IndexDocumentsBatch<?> batch,
         IndexDocumentsOptions options, Context context) {
         try {
-            IndexDocumentsOptions documentsOptions = (options == null)
-                ? new IndexDocumentsOptions() : options;
+            IndexDocumentsOptions documentsOptions = (options == null) ? new IndexDocumentsOptions() : options;
             return restClient.getDocuments()
-                .indexWithResponseAsync(IndexBatchBaseConverter.map(batch), null,
-                    context)
+                .indexWithResponseAsync(IndexBatchBaseConverter.map(batch), null, context)
                 .onErrorMap(MappingUtils::exceptionMapper)
                 .flatMap(response -> (response.getStatusCode() == MULTI_STATUS_CODE
                     && documentsOptions.throwOnAnyError())
@@ -527,15 +522,13 @@ public final class SearchAsyncClient {
      * @see <a href="https://docs.microsoft.com/rest/api/searchservice/Lookup-Document">Lookup document</a>
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public <T> Mono<Response<T>> getDocumentWithResponse(String key, Class<T> modelClass,
-        List<String> selectedFields) {
-        return withContext(context -> getDocumentWithResponse(key, modelClass,
-            selectedFields, context));
+    public <T> Mono<Response<T>> getDocumentWithResponse(String key, Class<T> modelClass, List<String> selectedFields) {
+        return withContext(context -> getDocumentWithResponse(key, modelClass, selectedFields, context));
     }
 
     @SuppressWarnings("unchecked")
-    <T> Mono<Response<T>> getDocumentWithResponse(String key, Class<T> modelClass,
-        List<String> selectedFields, Context context) {
+    <T> Mono<Response<T>> getDocumentWithResponse(String key, Class<T> modelClass, List<String> selectedFields,
+        Context context) {
         try {
             return restClient.getDocuments()
                 .getWithResponseAsync(key, selectedFields, null, context)
@@ -617,8 +610,9 @@ public final class SearchAsyncClient {
      * information.
      * @see <a href="https://docs.microsoft.com/rest/api/searchservice/Search-Documents">Search documents</a>
      */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public SearchPagedFlux search(String searchText) {
-        return this.search(searchText, null, null);
+        return this.search(searchText, null);
     }
 
     /**
@@ -641,6 +635,7 @@ public final class SearchAsyncClient {
      * information.
      * @see <a href="https://docs.microsoft.com/rest/api/searchservice/Search-Documents">Search documents</a>
      */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public SearchPagedFlux search(String searchText, SearchOptions searchOptions) {
         SearchRequest request = createSearchRequest(searchText, searchOptions);
         // The firstPageResponse shared among all fucntional calls below.
@@ -661,16 +656,16 @@ public final class SearchAsyncClient {
         return new SearchPagedFlux(() -> func.apply(null), func);
     }
 
-    private Mono<SearchPagedResponse> search(SearchRequest request,
-        String continuationToken, SearchFirstPageResponseWrapper firstPageResponseWrapper, Context context) {
+    private Mono<SearchPagedResponse> search(SearchRequest request, String continuationToken,
+        SearchFirstPageResponseWrapper firstPageResponseWrapper, Context context) {
         if (continuationToken == null && firstPageResponseWrapper.getFirstPageResponse() != null) {
             return Mono.just(firstPageResponseWrapper.getFirstPageResponse());
         }
-        SearchRequest requestToUse = (continuationToken == null) ? request
+        SearchRequest requestToUse = (continuationToken == null)
+            ? request
             : SearchContinuationToken.deserializeToken(serviceVersion.getVersion(), continuationToken);
 
-        return restClient.getDocuments().searchPostWithResponseAsync(requestToUse,
-            null, context)
+        return restClient.getDocuments().searchPostWithResponseAsync(requestToUse, null, context)
             .onErrorMap(MappingUtils::exceptionMapper)
             .map(response -> {
                 SearchDocumentsResult result = response.getValue();
@@ -726,6 +721,7 @@ public final class SearchAsyncClient {
      * {@link SuggestPagedResponse} object for each page containing HTTP response and coverage information.
      * @see <a href="https://docs.microsoft.com/rest/api/searchservice/Suggestions">Suggestions</a>
      */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public SuggestPagedFlux suggest(String searchText, String suggesterName) {
         return suggest(searchText, suggesterName, null);
     }
@@ -747,6 +743,7 @@ public final class SearchAsyncClient {
      * {@link SuggestPagedResponse} object for each page containing HTTP response and coverage information.
      * @see <a href="https://docs.microsoft.com/rest/api/searchservice/Suggestions">Suggestions</a>
      */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public SuggestPagedFlux suggest(String searchText, String suggesterName, SuggestOptions suggestOptions) {
         SuggestRequest suggestRequest = createSuggestRequest(searchText, suggesterName,
             SuggestOptionsHandler.ensureSuggestOptions(suggestOptions));
@@ -762,8 +759,7 @@ public final class SearchAsyncClient {
     }
 
     private Mono<SuggestPagedResponse> suggest(SuggestRequest suggestRequest, Context context) {
-        return restClient.getDocuments().suggestPostWithResponseAsync(suggestRequest,
-            null, context)
+        return restClient.getDocuments().suggestPostWithResponseAsync(suggestRequest, null, context)
             .onErrorMap(MappingUtils::exceptionMapper)
             .map(response -> {
                 SuggestDocumentsResult result = response.getValue();
@@ -792,8 +788,9 @@ public final class SearchAsyncClient {
      * @param suggesterName suggester name
      * @return auto complete result.
      */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public AutocompletePagedFlux autocomplete(String searchText, String suggesterName) {
-        return autocomplete(searchText, suggesterName, null, null);
+        return autocomplete(searchText, suggesterName, null);
     }
 
     /**
@@ -825,8 +822,7 @@ public final class SearchAsyncClient {
     }
 
     private Mono<AutocompletePagedResponse> autocomplete(AutocompleteRequest request, Context context) {
-        return restClient.getDocuments().autocompletePostWithResponseAsync(request,
-            null, context)
+        return restClient.getDocuments().autocompletePostWithResponseAsync(request, null, context)
             .onErrorMap(MappingUtils::exceptionMapper)
             .map(MappingUtils::mappingAutocompleteResponse);
     }
