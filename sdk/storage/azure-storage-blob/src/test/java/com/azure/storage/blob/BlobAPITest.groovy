@@ -30,8 +30,10 @@ import com.azure.storage.blob.models.ParallelTransferOptions
 import com.azure.storage.blob.models.PublicAccessType
 import com.azure.storage.blob.models.RehydratePriority
 import com.azure.storage.blob.models.SyncCopyStatusType
+import com.azure.storage.blob.options.BlobGetTagsOptions
 import com.azure.storage.blob.options.BlobParallelUploadOptions
 import com.azure.storage.blob.options.BlobSetAccessTierOptions
+import com.azure.storage.blob.options.BlobSetTagsOptions
 import com.azure.storage.blob.sas.BlobSasPermission
 import com.azure.storage.blob.sas.BlobServiceSasSignatureValues
 import com.azure.storage.blob.specialized.BlobClientBase
@@ -1282,7 +1284,7 @@ class BlobAPITest extends APISpec {
         }
 
         expect:
-        bc.setTagsWithResponse(tags, null, null).getStatusCode() == statusCode
+        bc.setTagsWithResponse(new BlobSetTagsOptions(tags), null, null).getStatusCode() == statusCode
         bc.getTags() == tags
 
         where:
@@ -1290,6 +1292,74 @@ class BlobAPITest extends APISpec {
         null                | null       | null   | null   || 204
         "foo"               | "bar"      | "fizz" | "buzz" || 204
         " +-./:=_  +-./:=_" | " +-./:=_" | null   | null   || 204
+    }
+
+    @Unroll
+    def "Set tags AC"() {
+        setup:
+        def t = new HashMap<String, String>()
+        t.put("foo", "bar")
+        bc.setTags(t)
+        t = new HashMap<String, String>()
+        t.put("fizz", "buzz")
+
+        expect:
+        bc.setTagsWithResponse(new BlobSetTagsOptions(t).setRequestConditions(new BlobRequestConditions().setIfTags(tags)), null, null).getStatusCode() == 204
+
+        where:
+        tags              || _
+        null              || _
+        "\"foo\" = 'bar'" || _
+    }
+
+    @Unroll
+    def "Set tags AC fail"() {
+        setup:
+        def t = new HashMap<String, String>()
+        t.put("fizz", "buzz")
+
+        when:
+        bc.setTagsWithResponse(new BlobSetTagsOptions(t).setRequestConditions(new BlobRequestConditions().setIfTags(tags)), null, null)
+
+        then:
+        thrown(BlobStorageException)
+
+        where:
+        tags              || _
+        "\"foo\" = 'bar'" || _
+    }
+
+    @Unroll
+    def "Get tags AC"() {
+        setup:
+        def t = new HashMap<String, String>()
+        t.put("foo", "bar")
+        bc.setTags(t)
+
+        expect:
+        bc.getTagsWithResponse(new BlobGetTagsOptions().setRequestConditions(new BlobRequestConditions().setIfTags(tags)), null, null).getStatusCode() == 200
+
+        where:
+        tags              || _
+        null              || _
+        "\"foo\" = 'bar'" || _
+    }
+
+    @Unroll
+    def "Get tags AC fail"() {
+        setup:
+        def t = new HashMap<String, String>()
+        t.put("fizz", "buzz")
+
+        when:
+        bc.getTagsWithResponse(new BlobGetTagsOptions().setRequestConditions(new BlobRequestConditions().setIfTags(tags)), null, null)
+
+        then:
+        thrown(BlobStorageException)
+
+        where:
+        tags              || _
+        "\"foo\" = 'bar'" || _
     }
 
     def "Set tags error"() {

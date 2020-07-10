@@ -21,6 +21,7 @@ import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.options.BlockBlobCommitBlockListOptions;
 import com.azure.storage.blob.models.BlockBlobItem;
+import com.azure.storage.blob.options.BlockBlobListBlocksOptions;
 import com.azure.storage.blob.options.BlockBlobSimpleUploadOptions;
 import com.azure.storage.blob.models.BlockList;
 import com.azure.storage.blob.models.BlockListType;
@@ -257,7 +258,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
             null, data, options.getLength(), null, options.getContentMd5(), options.getMetadata(),
             requestConditions.getLeaseId(), options.getTier(), requestConditions.getIfModifiedSince(),
             requestConditions.getIfUnmodifiedSince(), requestConditions.getIfMatch(),
-            requestConditions.getIfNoneMatch(), null, null, tagsToString(options.getTags()),
+            requestConditions.getIfNoneMatch(), requestConditions.getIfTags(), null, tagsToString(options.getTags()),
             options.getHeaders(), getCustomerProvidedKey(), encryptionScope,
             context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(rb -> {
@@ -464,16 +465,39 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
      */
     public Mono<Response<BlockList>> listBlocksWithResponse(BlockListType listType, String leaseId) {
         try {
-            return withContext(context -> listBlocksWithResponse(listType, leaseId, context));
+            return this.listBlocksWithResponse(new BlockBlobListBlocksOptions(listType).setLeaseId(leaseId));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
 
-    Mono<Response<BlockList>> listBlocksWithResponse(BlockListType listType, String leaseId, Context context) {
+    /**
+     * Returns the list of blocks that have been uploaded as part of a block blob using the specified block list
+     * filter.
+     * For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/get-block-list">Azure Docs</a>.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.specialized.BlockBlobAsyncClient.listBlocksWithResponse#BlockBlobListBlocksOptions}
+     *
+     * @param options {@link BlockBlobListBlocksOptions}
+     * @return A reactive response containing the list of blocks.
+     */
+    public Mono<Response<BlockList>> listBlocksWithResponse(BlockBlobListBlocksOptions options) {
+        try {
+            return withContext(context -> listBlocksWithResponse(options, context));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    Mono<Response<BlockList>> listBlocksWithResponse(BlockBlobListBlocksOptions options, Context context) {
+        StorageImplUtils.assertNotNull("options", options);
 
         return this.azureBlobStorage.blockBlobs().getBlockListWithRestResponseAsync(
-            null, null, listType, getSnapshotId(), null, leaseId, null, null, context)
+            null, null, options.getType(), getSnapshotId(), null, options.getLeaseId(),
+            options.getIfTags(), null, context)
             .map(response -> new SimpleResponse<>(response, response.getValue()));
     }
 
@@ -593,7 +617,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
             new BlockLookupList().setLatest(options.getBase64BlockIds()), null, null, null, options.getMetadata(),
             requestConditions.getLeaseId(), options.getTier(), requestConditions.getIfModifiedSince(),
             requestConditions.getIfUnmodifiedSince(), requestConditions.getIfMatch(),
-            requestConditions.getIfNoneMatch(), null, null, tagsToString(options.getTags()), options.getHeaders(),
+            requestConditions.getIfNoneMatch(), requestConditions.getIfTags(), null, tagsToString(options.getTags()), options.getHeaders(),
             getCustomerProvidedKey(), encryptionScope,
             context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(rb -> {

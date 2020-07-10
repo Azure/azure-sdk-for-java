@@ -36,6 +36,7 @@ import com.azure.storage.blob.implementation.util.ModelHelper;
 import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.ArchiveStatus;
 import com.azure.storage.blob.models.BlobDownloadHeaders;
+import com.azure.storage.blob.models.BlobLeaseRequestConditions;
 import com.azure.storage.blob.options.BlobBeginCopyOptions;
 import com.azure.storage.blob.options.BlobCopyFromUrlOptions;
 import com.azure.storage.blob.models.BlobCopyInfo;
@@ -486,18 +487,11 @@ public class BlobAsyncClientBase {
             ? new BlobRequestConditions()
             : options.getDestinationRequestConditions();
 
-        // We want to hide the SourceAccessConditions type from the user for consistency's sake, so we convert here.
-        final RequestConditions sourceConditions = new RequestConditions()
-            .setIfModifiedSince(sourceModifiedCondition.getIfModifiedSince())
-            .setIfUnmodifiedSince(sourceModifiedCondition.getIfUnmodifiedSince())
-            .setIfMatch(sourceModifiedCondition.getIfMatch())
-            .setIfNoneMatch(sourceModifiedCondition.getIfNoneMatch());
-
         return new PollerFlux<>(interval,
             (pollingContext) -> {
                 try {
                     return onStart(options.getSourceUrl(), options.getMetadata(), options.getTags(),
-                        options.getTier(), options.getRehydratePriority(), sourceConditions,
+                        options.getTier(), options.getRehydratePriority(), sourceModifiedCondition,
                         destinationRequestConditions);
                 } catch (RuntimeException ex) {
                     return monoError(logger, ex);
@@ -542,10 +536,10 @@ public class BlobAsyncClientBase {
             context -> azureBlobStorage.blobs().startCopyFromURLWithRestResponseAsync(null, null, url, null, metadata,
                 tier, priority, sourceModifiedRequestConditions.getIfModifiedSince(),
                 sourceModifiedRequestConditions.getIfUnmodifiedSince(), sourceModifiedRequestConditions.getIfMatch(),
-                sourceModifiedRequestConditions.getIfNoneMatch(), null, destinationRequestConditions.getIfModifiedSince(),
+                sourceModifiedRequestConditions.getIfNoneMatch(), destinationRequestConditions.getIfModifiedSince(),
                 destinationRequestConditions.getIfUnmodifiedSince(), destinationRequestConditions.getIfMatch(),
-                destinationRequestConditions.getIfNoneMatch(), destinationRequestConditions.getLeaseId(), null,
-                tagsToString(tags), null, null, context))
+                destinationRequestConditions.getIfNoneMatch(), destinationRequestConditions.getIfTags(), destinationRequestConditions.getLeaseId(), null,
+                tagsToString(tags), null, context))
             .map(response -> {
                 final BlobStartCopyFromURLHeaders headers = response.getDeserializedHeaders();
 
@@ -762,7 +756,7 @@ public class BlobAsyncClientBase {
             sourceModifiedRequestConditions.getIfUnmodifiedSince(), sourceModifiedRequestConditions.getIfMatch(),
             sourceModifiedRequestConditions.getIfNoneMatch(), destRequestConditions.getIfModifiedSince(),
             destRequestConditions.getIfUnmodifiedSince(), destRequestConditions.getIfMatch(),
-            destRequestConditions.getIfNoneMatch(), null, destRequestConditions.getLeaseId(), null, null,
+            destRequestConditions.getIfNoneMatch(), destRequestConditions.getIfTags(), destRequestConditions.getLeaseId(), null, null,
             tagsToString(options.getTags()), null, context)
             .map(rb -> new SimpleResponse<>(rb, rb.getDeserializedHeaders().getCopyId()));
     }
