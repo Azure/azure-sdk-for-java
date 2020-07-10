@@ -1413,6 +1413,9 @@ class BlobAPITest extends APISpec {
     @Unroll
     def "Snapshot AC"() {
         setup:
+        def t = new HashMap<String, String>()
+        t.put("foo", "bar")
+        bc.setTags(t)
         match = setupBlobMatchCondition(bc, match)
         leaseID = setupBlobLeaseCondition(bc, leaseID)
         def bac = new BlobRequestConditions()
@@ -1421,18 +1424,20 @@ class BlobAPITest extends APISpec {
             .setIfNoneMatch(noneMatch)
             .setIfModifiedSince(modified)
             .setIfUnmodifiedSince(unmodified)
+            .setIfTags(tags)
 
         expect:
         bc.createSnapshotWithResponse(null, bac, null, null).getStatusCode() == 201
 
         where:
-        modified | unmodified | match        | noneMatch   | leaseID
-        null     | null       | null         | null        | null
-        oldDate  | null       | null         | null        | null
-        null     | newDate    | null         | null        | null
-        null     | null       | receivedEtag | null        | null
-        null     | null       | null         | garbageEtag | null
-        null     | null       | null         | null        | receivedLeaseID
+        modified | unmodified | match        | noneMatch   | leaseID         | tags
+        null     | null       | null         | null        | null            | null
+        oldDate  | null       | null         | null        | null            | null
+        null     | newDate    | null         | null        | null            | null
+        null     | null       | receivedEtag | null        | null            | null
+        null     | null       | null         | garbageEtag | null            | null
+        null     | null       | null         | null        | receivedLeaseID | null
+        null     | null       | null         | null        | null            | "\"foo\" = 'bar'"
     }
 
     @Unroll
@@ -1446,7 +1451,7 @@ class BlobAPITest extends APISpec {
             .setIfNoneMatch(noneMatch)
             .setIfModifiedSince(modified)
             .setIfUnmodifiedSince(unmodified)
-
+            .setIfTags(tags)
 
         when:
         bc.createSnapshotWithResponse(null, bac, null, null)
@@ -1455,12 +1460,13 @@ class BlobAPITest extends APISpec {
         thrown(BlobStorageException)
 
         where:
-        modified | unmodified | match       | noneMatch    | leaseID
-        newDate  | null       | null        | null         | null
-        null     | oldDate    | null        | null         | null
-        null     | null       | garbageEtag | null         | null
-        null     | null       | null        | receivedEtag | null
-        null     | null       | null        | null         | garbageLeaseID
+        modified | unmodified | match       | noneMatch    | leaseID        | tags
+        newDate  | null       | null        | null         | null           | null
+        null     | oldDate    | null        | null         | null           | null
+        null     | null       | garbageEtag | null         | null           | null
+        null     | null       | null        | receivedEtag | null           | null
+        null     | null       | null        | null         | garbageLeaseID | null
+        null     | null       | null         | null        | null           | "\"notfoo\" = 'notbar'"
     }
 
     def "Snapshot error"() {
