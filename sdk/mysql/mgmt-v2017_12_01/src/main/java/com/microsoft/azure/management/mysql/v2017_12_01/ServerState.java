@@ -25,6 +25,9 @@ public final class ServerState extends ExpandableStringEnum<ServerState> {
     /** Static value Disabled for ServerState. */
     public static final ServerState DISABLED = fromString("Disabled");
 
+    /** Static value Inaccessible for ServerState. */
+    public static final ServerState INACCESSIBLE = fromString("Inaccessible");
+
     /**
      * Creates or finds a ServerState from its string representation.
      * @param name a name to look for
