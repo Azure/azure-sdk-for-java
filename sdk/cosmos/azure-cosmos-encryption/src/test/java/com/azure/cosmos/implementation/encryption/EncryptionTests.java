@@ -60,11 +60,9 @@ public class EncryptionTests extends TestSuiteBase {
     @Factory(dataProvider = "clientBuilders")
     public EncryptionTests(CosmosClientBuilder clientBuilder) {
         super(clientBuilder);
-
-        client = clientBuilder.buildAsyncClient();
     }
 
-    @BeforeTest(groups = "emulator")
+    @BeforeTest(groups = {"emulator"})
     public void beforeTest() {
         TestKeyWrapProvider keyWrapProvider = new TestKeyWrapProvider();
         dekProvider = new CosmosDataEncryptionKeyProvider(keyWrapProvider);
@@ -85,21 +83,21 @@ public class EncryptionTests extends TestSuiteBase {
         EncryptionTests.dekProperties = EncryptionTests.createDek(EncryptionTests.dekProvider, dekId);
     }
 
-    @BeforeClass(groups = "emulator")
+    @BeforeClass(groups = {"emulator"})
     public void beforeClass() {
         TestUtils.initialized();
+        client = getClientBuilder().buildAsyncClient();
     }
 
-    @AfterMethod(groups = "emulator")
+    @AfterMethod(groups = {"emulator"})
     public void afterTest() {
         safeClose(client);
     }
 
-    @AfterClass(groups = "emulator")
+    @AfterClass(groups = {"emulator"})
     public void afterClass() {
         safeDeleteDatabase(databaseCore);
     }
-
 
     static public class TestDoc {
 
@@ -139,7 +137,7 @@ public class EncryptionTests extends TestSuiteBase {
         }
     }
 
-    @Test(groups = "emulator")
+    @Test(groups = {"emulator"})
     public void encryptionCreateDek() {
         String dekId = "anotherDek";
         DataEncryptionKeyProperties dekProperties = EncryptionTests.createDek(EncryptionTests.dekProvider, dekId);

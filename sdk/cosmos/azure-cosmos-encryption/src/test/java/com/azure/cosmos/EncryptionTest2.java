@@ -135,7 +135,7 @@ public class EncryptionTest2 extends TestSuiteBase {
         assertThat(result.sensitive).isNull();
     }
 
-    @Test(groups = {"simple"}, timeOut = TIMEOUT)
+    @Test(groups = {"emulator"}, timeOut = TIMEOUT)
     public void readItem() throws Exception {
         Pojo properties = getItem(UUID.randomUUID().toString());
         CosmosItemResponse<Pojo> itemResponse = container.createItem(properties);
