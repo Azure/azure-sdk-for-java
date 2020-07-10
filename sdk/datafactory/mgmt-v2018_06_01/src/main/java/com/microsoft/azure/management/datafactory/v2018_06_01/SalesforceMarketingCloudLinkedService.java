@@ -22,10 +22,17 @@ import com.microsoft.azure.management.datafactory.v2018_06_01.implementation.Lin
 @JsonFlatten
 public class SalesforceMarketingCloudLinkedService extends LinkedServiceInner {
     /**
+     * Properties used to connect to Salesforce Marketing Cloud. It is mutually
+     * exclusive with any other properties in the linked service. Type: object.
+     */
+    @JsonProperty(value = "typeProperties.connectionProperties")
+    private Object connectionProperties;
+
+    /**
      * The client ID associated with the Salesforce Marketing Cloud
      * application. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "typeProperties.clientId", required = true)
+    @JsonProperty(value = "typeProperties.clientId")
     private Object clientId;
 
     /**
@@ -67,6 +74,26 @@ public class SalesforceMarketingCloudLinkedService extends LinkedServiceInner {
      */
     @JsonProperty(value = "typeProperties.encryptedCredential")
     private Object encryptedCredential;
+
+    /**
+     * Get properties used to connect to Salesforce Marketing Cloud. It is mutually exclusive with any other properties in the linked service. Type: object.
+     *
+     * @return the connectionProperties value
+     */
+    public Object connectionProperties() {
+        return this.connectionProperties;
+    }
+
+    /**
+     * Set properties used to connect to Salesforce Marketing Cloud. It is mutually exclusive with any other properties in the linked service. Type: object.
+     *
+     * @param connectionProperties the connectionProperties value to set
+     * @return the SalesforceMarketingCloudLinkedService object itself.
+     */
+    public SalesforceMarketingCloudLinkedService withConnectionProperties(Object connectionProperties) {
+        this.connectionProperties = connectionProperties;
+        return this;
+    }
 
     /**
      * Get the client ID associated with the Salesforce Marketing Cloud application. Type: string (or Expression with resultType string).
