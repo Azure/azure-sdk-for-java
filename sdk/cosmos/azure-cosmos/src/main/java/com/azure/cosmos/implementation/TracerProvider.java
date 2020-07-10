@@ -26,7 +26,6 @@ public class TracerProvider {
     public static final String DB_STATEMENT = "db.statement";
     public static final String ERROR_MSG = "error.msg";
     public static final String ERROR_TYPE = "error.type";
-    public static final String ERROR_STACK = "error.stack";
     public static final String COSMOS_CALL_DEPTH = "cosmosCallDepth";
     public static final String COSMOS_CALL_DEPTH_VAL = "nested";
     public static final int ERROR_CODE = 0;
