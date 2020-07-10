@@ -9,7 +9,6 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.implementation.annotation.Beta;
 import com.azure.resourcemanager.appplatform.AppPlatformManager;
 import com.azure.resourcemanager.appplatform.fluent.ServicesClient;
-import com.azure.resourcemanager.appplatform.fluent.inner.NameAvailabilityInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.Region;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsDeletingByResourceGroup;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsGettingById;
@@ -36,10 +35,10 @@ public interface SpringServices
         SupportsDeletingById,
         SupportsDeletingByResourceGroup {
     /** @return the service name is available or not. */
-    NameAvailabilityInner checkNameAvailability(String name, Region region);
+    NameAvailability checkNameAvailability(String name, Region region);
 
     /** @return the service name is available or not. */
-    Mono<NameAvailabilityInner> checkNameAvailabilityAsync(String name, Region region);
+    Mono<NameAvailability> checkNameAvailabilityAsync(String name, Region region);
 
     /** @return all available sku. */
     PagedIterable<ResourceSku> listSkus();

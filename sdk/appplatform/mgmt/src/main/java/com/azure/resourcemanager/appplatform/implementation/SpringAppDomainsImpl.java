@@ -8,8 +8,8 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.resourcemanager.appplatform.AppPlatformManager;
 import com.azure.resourcemanager.appplatform.fluent.CustomDomainsClient;
 import com.azure.resourcemanager.appplatform.fluent.inner.CustomDomainResourceInner;
-import com.azure.resourcemanager.appplatform.fluent.inner.CustomDomainValidateResultInner;
 import com.azure.resourcemanager.appplatform.models.CustomDomainProperties;
+import com.azure.resourcemanager.appplatform.models.CustomDomainValidateResult;
 import com.azure.resourcemanager.appplatform.models.SpringApp;
 import com.azure.resourcemanager.appplatform.models.SpringAppDomain;
 import com.azure.resourcemanager.appplatform.models.SpringAppDomains;
@@ -98,12 +98,12 @@ public class SpringAppDomainsImpl
     }
 
     @Override
-    public CustomDomainValidateResultInner validate(String domain) {
+    public CustomDomainValidateResult validate(String domain) {
         return validateAsync(domain).block();
     }
 
     @Override
-    public Mono<CustomDomainValidateResultInner> validateAsync(String domain) {
+    public Mono<CustomDomainValidateResult> validateAsync(String domain) {
         return inner().validateAsync(
             parent().parent().resourceGroupName(), parent().parent().name(), parent().name(), domain);
     }

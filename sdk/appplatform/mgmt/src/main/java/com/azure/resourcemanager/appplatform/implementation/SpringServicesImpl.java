@@ -7,8 +7,8 @@ import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.resourcemanager.appplatform.AppPlatformManager;
 import com.azure.resourcemanager.appplatform.fluent.ServicesClient;
-import com.azure.resourcemanager.appplatform.fluent.inner.NameAvailabilityInner;
 import com.azure.resourcemanager.appplatform.fluent.inner.ServiceResourceInner;
+import com.azure.resourcemanager.appplatform.models.NameAvailability;
 import com.azure.resourcemanager.appplatform.models.NameAvailabilityParameters;
 import com.azure.resourcemanager.appplatform.models.ResourceSku;
 import com.azure.resourcemanager.appplatform.models.SpringService;
@@ -47,12 +47,12 @@ public class SpringServicesImpl
     }
 
     @Override
-    public NameAvailabilityInner checkNameAvailability(String name, Region region) {
+    public NameAvailability checkNameAvailability(String name, Region region) {
         return checkNameAvailabilityAsync(name, region).block();
     }
 
     @Override
-    public Mono<NameAvailabilityInner> checkNameAvailabilityAsync(String name, Region region) {
+    public Mono<NameAvailability> checkNameAvailabilityAsync(String name, Region region) {
         return inner().checkNameAvailabilityAsync(
             region.toString(), new NameAvailabilityParameters().withName(name).withType(SPRING_TYPE));
     }
