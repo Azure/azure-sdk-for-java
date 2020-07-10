@@ -22,7 +22,7 @@ public final class MsalToken extends AccessToken {
      *
      * @param msalResult the raw authentication result returned by MSAL
      */
-    public MsalToken(IAuthenticationResult msalResult, IdentityClientOptions options) {
+    public MsalToken(IAuthenticationResult msalResult) {
         super(msalResult.accessToken(),
                 OffsetDateTime.ofInstant(msalResult.expiresOnDate().toInstant(), ZoneOffset.UTC));
         authenticationResult = msalResult;

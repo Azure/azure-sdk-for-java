@@ -6,6 +6,7 @@ package com.azure.identity;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenCredential;
+import com.azure.core.credential.TokenRefreshOptions;
 import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.identity.implementation.IdentityClient;
@@ -28,6 +29,7 @@ import java.util.Objects;
 @Immutable
 public class ClientSecretCredential implements TokenCredential {
     private final IdentityClient identityClient;
+    private final IdentityClientOptions identityClientOptions;
     private final ClientLogger logger = new ClientLogger(ClientSecretCredential.class);
 
     /**
@@ -48,6 +50,7 @@ public class ClientSecretCredential implements TokenCredential {
             .clientSecret(clientSecret)
             .identityClientOptions(identityClientOptions)
             .build();
+        this.identityClientOptions = identityClientOptions;
     }
 
     @Override
@@ -57,5 +60,10 @@ public class ClientSecretCredential implements TokenCredential {
             .switchIfEmpty(Mono.defer(() -> identityClient.authenticateWithConfidentialClient(request)))
             .doOnNext(token -> LoggingUtil.logTokenSuccess(logger, request))
             .doOnError(error -> LoggingUtil.logTokenError(logger, request, error));
+    }
+
+    @Override
+    public TokenRefreshOptions getTokenRefreshOptions() {
+        return identityClientOptions.getTokenRefreshOptions();
     }
 }

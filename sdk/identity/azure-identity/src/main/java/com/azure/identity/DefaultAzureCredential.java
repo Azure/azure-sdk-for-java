@@ -5,6 +5,8 @@ package com.azure.identity;
 
 import com.azure.core.annotation.Immutable;
 import com.azure.core.credential.TokenCredential;
+import com.azure.core.credential.TokenRefreshOptions;
+import com.azure.identity.implementation.IdentityClientOptions;
 
 import java.util.List;
 
@@ -22,6 +24,7 @@ import java.util.List;
  */
 @Immutable
 public final class DefaultAzureCredential extends ChainedTokenCredential {
+    private final IdentityClientOptions identityClientOptions;
 
     /**
      * Creates default DefaultAzureCredential instance to use. This will use AZURE_CLIENT_ID,
@@ -32,9 +35,16 @@ public final class DefaultAzureCredential extends ChainedTokenCredential {
      * token cache.
      *
      * @param tokenCredentials the list of credentials to execute for authentication.
+     * @param identityClientOptions the options for configuring the identity client.
      */
-    DefaultAzureCredential(List<TokenCredential> tokenCredentials) {
+    DefaultAzureCredential(List<TokenCredential> tokenCredentials, IdentityClientOptions identityClientOptions) {
         super(tokenCredentials);
+        this.identityClientOptions = identityClientOptions;
+    }
+
+    @Override
+    public TokenRefreshOptions getTokenRefreshOptions() {
+        return identityClientOptions.getTokenRefreshOptions();
     }
 
 
