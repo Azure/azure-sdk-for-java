@@ -36,6 +36,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 import java.util.function.Function;
+import java.util.function.Supplier;
 
 import static com.azure.ai.formrecognizer.Transforms.toRecognizedForm;
 import static com.azure.ai.formrecognizer.Transforms.toRecognizedLayout;
@@ -87,7 +88,7 @@ public final class FormRecognizerAsyncClient {
      * or has been cancelled. The completed operation returns a List of {@link RecognizedForm}.
      * @throws FormRecognizerException If recognize operation fails and the {@link AnalyzeOperationResult} returned with
      * an {@link OperationStatus#FAILED}.
-     * @throws NullPointerException If {@code formUrl}, {@code modelId} is {@code null}.
+     * @throws NullPointerException If {@code formUrl}, {@code modelId} is null.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PollerFlux<OperationResult, List<RecognizedForm>>
@@ -113,19 +114,28 @@ public final class FormRecognizerAsyncClient {
      * or has been cancelled. The completed operation returns a List of {@link RecognizedForm}.
      * @throws FormRecognizerException If recognize operation fails and the {@link AnalyzeOperationResult} returned with
      * an {@link OperationStatus#FAILED}.
-     * @throws NullPointerException If {@code formUrl}, {@code modelId} is {@code null}.
+     * @throws NullPointerException If {@code formUrl}, {@code modelId} is null.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PollerFlux<OperationResult, List<RecognizedForm>>
         beginRecognizeCustomFormsFromUrl(String formUrl, String modelId, RecognizeOptions recognizeOptions) {
         try {
+            Objects.requireNonNull(formUrl, "'formUrl' is required and cannot be null.");
+            Objects.requireNonNull(modelId, "'modelId' is required and cannot be null.");
+
             recognizeOptions = getRecognizeOptionsProperties(recognizeOptions);
-            return new PollerFlux<OperationResult, List<RecognizedForm>>(
+            final boolean isIncludeFieldElements = recognizeOptions.isIncludeFieldElements();
+            return new PollerFlux<>(
                 recognizeOptions.getPollInterval(),
-                analyzeFormActivationOperation(formUrl, modelId, recognizeOptions.isIncludeFieldElements()),
-                createAnalyzeFormPollOperation(modelId),
+                urlActivationOperation(() -> service.analyzeWithCustomModelWithResponseAsync(UUID.fromString(modelId),
+                    isIncludeFieldElements, new SourcePath().setSource(formUrl)).map(response ->
+                        new OperationResult(parseModelId(response.getDeserializedHeaders().getOperationLocation())))),
+                pollingOperation(resultUid ->
+                    service.getAnalyzeFormResultWithResponseAsync(UUID.fromString(modelId), resultUid)),
                 (activationResponse, context) -> Mono.error(new RuntimeException("Cancellation is not supported")),
-                fetchAnalyzeFormResultOperation(modelId, recognizeOptions.isIncludeFieldElements()));
+                fetchingOperation(
+                    resultId -> service.getAnalyzeFormResultWithResponseAsync(UUID.fromString(modelId), resultId),
+                    isIncludeFieldElements));
         } catch (RuntimeException ex) {
             return PollerFlux.error(ex);
         }
@@ -151,7 +161,7 @@ public final class FormRecognizerAsyncClient {
      * or has been cancelled. The completed operation returns a List of {@link RecognizedForm}.
      * @throws FormRecognizerException If recognize operation fails and the {@link AnalyzeOperationResult} returned with
      * an {@link OperationStatus#FAILED}.
-     * @throws NullPointerException If {@code form}, {@code modelId} is {@code null}.
+     * @throws NullPointerException If {@code form}, {@code modelId} is null.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PollerFlux<OperationResult, List<RecognizedForm>>
@@ -181,22 +191,30 @@ public final class FormRecognizerAsyncClient {
      * or has been cancelled. The completed operation returns a List of {@link RecognizedForm}.
      * @throws FormRecognizerException If recognize operation fails and the {@link AnalyzeOperationResult} returned with
      * an {@link OperationStatus#FAILED}.
-     * @throws NullPointerException If {@code recognizeOptions} is {@code null}.
+     * @throws NullPointerException If {@code form}, {@code modelId} is null.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PollerFlux<OperationResult, List<RecognizedForm>>
-        beginRecognizeCustomForms(Flux<ByteBuffer> form, long length, String modelId,
-        RecognizeOptions recognizeOptions) {
+    public PollerFlux<OperationResult, List<RecognizedForm>> beginRecognizeCustomForms(
+        Flux<ByteBuffer> form, long length, String modelId, RecognizeOptions recognizeOptions) {
         try {
+            Objects.requireNonNull(form, "'form' is required and cannot be null.");
+            Objects.requireNonNull(modelId, "'modelId' is required and cannot be null.");
+
             recognizeOptions = getRecognizeOptionsProperties(recognizeOptions);
-            return new PollerFlux<OperationResult, List<RecognizedForm>>(
+            final boolean isIncludeFieldElements = recognizeOptions.isIncludeFieldElements();
+            return new PollerFlux<>(
                 recognizeOptions.getPollInterval(),
-                analyzeFormStreamActivationOperation(form, modelId, length,
-                    recognizeOptions.getContentType(),
-                    recognizeOptions.isIncludeFieldElements()),
-                createAnalyzeFormPollOperation(modelId),
+                streamActivationOperation(
+                    contentType -> service.analyzeWithCustomModelWithResponseAsync(UUID.fromString(modelId),
+                        contentType, form, length, isIncludeFieldElements).map(response -> new OperationResult(
+                            parseModelId(response.getDeserializedHeaders().getOperationLocation()))),
+                    form, recognizeOptions.getContentType()),
+                pollingOperation(
+                    resultUid -> service.getAnalyzeFormResultWithResponseAsync(UUID.fromString(modelId), resultUid)),
                 (activationResponse, context) -> Mono.error(new RuntimeException("Cancellation is not supported")),
-                fetchAnalyzeFormResultOperation(modelId, recognizeOptions.isIncludeFieldElements()));
+                fetchingOperation(
+                    resultId -> service.getAnalyzeFormResultWithResponseAsync(UUID.fromString(modelId), resultId),
+                    isIncludeFieldElements));
         } catch (RuntimeException ex) {
             return PollerFlux.error(ex);
         }
@@ -216,7 +234,7 @@ public final class FormRecognizerAsyncClient {
      * has been cancelled. The completed operation returns a List of {@link FormPage}.
      * @throws FormRecognizerException If recognize operation fails and the {@link AnalyzeOperationResult} returned with
      * an {@link OperationStatus#FAILED}.
-     * @throws NullPointerException If {@code formUrl} is {@code null}.
+     * @throws NullPointerException If {@code formUrl} is null.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PollerFlux<OperationResult, List<FormPage>> beginRecognizeContentFromUrl(String formUrl) {
@@ -240,17 +258,22 @@ public final class FormRecognizerAsyncClient {
      * has failed, or has been cancelled. The completed operation returns a List of {@link FormPage}.
      * @throws FormRecognizerException If recognize operation fails and the {@link AnalyzeOperationResult} returned with
      * an {@link OperationStatus#FAILED}.
-     * @throws NullPointerException If {@code formUrl} is {@code null}.
+     * @throws NullPointerException If {@code formUrl} is null.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PollerFlux<OperationResult, List<FormPage>>
-        beginRecognizeContentFromUrl(String formUrl, RecognizeOptions recognizeOptions) {
+    public PollerFlux<OperationResult, List<FormPage>> beginRecognizeContentFromUrl(String formUrl,
+        RecognizeOptions recognizeOptions) {
         try {
+            Objects.requireNonNull(formUrl, "'formUrl' is required and cannot be null.");
+
             recognizeOptions = getRecognizeOptionsProperties(recognizeOptions);
-            return new PollerFlux<OperationResult, List<FormPage>>(
+            return new PollerFlux<>(
                 recognizeOptions.getPollInterval(),
-                contentAnalyzeActivationOperation(formUrl),
-                extractContentPollOperation(),
+                urlActivationOperation(
+                    () -> service.analyzeLayoutAsyncWithResponseAsync(new SourcePath().setSource(formUrl))
+                        .map(response -> new OperationResult(
+                            parseModelId(response.getDeserializedHeaders().getOperationLocation())))),
+                pollingOperation(service::getAnalyzeLayoutResultWithResponseAsync),
                 (activationResponse, context) ->
                     monoError(logger, new RuntimeException("Cancellation is not supported")),
                 fetchExtractContentResult());
@@ -277,7 +300,7 @@ public final class FormRecognizerAsyncClient {
      * been cancelled. The completed operation returns a List of {@link FormPage}.
      * @throws FormRecognizerException If recognize operation fails and the {@link AnalyzeOperationResult} returned with
      * an {@link OperationStatus#FAILED}.
-     * @throws NullPointerException If {@code form} is {@code null}.
+     * @throws NullPointerException If {@code form} is null.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PollerFlux<OperationResult, List<FormPage>> beginRecognizeContent(
@@ -305,17 +328,23 @@ public final class FormRecognizerAsyncClient {
      * been cancelled. The completed operation returns a List of {@link FormPage}.
      * @throws FormRecognizerException If recognize operation fails and the {@link AnalyzeOperationResult} returned with
      * an {@link OperationStatus#FAILED}.
-     * @throws NullPointerException If {@code recognizeOptions} is {@code null}.
+     * @throws NullPointerException If {@code form} is null.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PollerFlux<OperationResult, List<FormPage>> beginRecognizeContent(Flux<ByteBuffer> form, long length,
         RecognizeOptions recognizeOptions) {
         try {
+            Objects.requireNonNull(form, "'form' is required and cannot be null.");
+
             recognizeOptions = getRecognizeOptionsProperties(recognizeOptions);
             return new PollerFlux<>(
                 recognizeOptions.getPollInterval(),
-                contentStreamActivationOperation(form, length, recognizeOptions.getContentType()),
-                extractContentPollOperation(),
+                streamActivationOperation(
+                    contentType -> service.analyzeLayoutAsyncWithResponseAsync(contentType, form, length)
+                        .map(response -> new OperationResult(
+                            parseModelId(response.getDeserializedHeaders().getOperationLocation()))),
+                    form, recognizeOptions.getContentType()),
+                pollingOperation(service::getAnalyzeLayoutResultWithResponseAsync),
                 (activationResponse, context) ->
                     monoError(logger, new RuntimeException("Cancellation is not supported")),
                 fetchExtractContentResult());
@@ -340,7 +369,7 @@ public final class FormRecognizerAsyncClient {
      * or has been cancelled. The completed operation returns a List of {@link RecognizedForm}.
      * @throws FormRecognizerException If recognize operation fails and the {@link AnalyzeOperationResult} returned with
      * an {@link OperationStatus#FAILED}.
-     * @throws NullPointerException If {@code receiptUrl} is {@code null}.
+     * @throws NullPointerException If {@code receiptUrl} is null.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PollerFlux<OperationResult, List<RecognizedForm>>
@@ -365,20 +394,26 @@ public final class FormRecognizerAsyncClient {
      * or has been cancelled. The completed operation returns a List of {@link RecognizedForm}.
      * @throws FormRecognizerException If recognize operation fails and the {@link AnalyzeOperationResult} returned with
      * an {@link OperationStatus#FAILED}.
-     * @throws NullPointerException If {@code receiptUrl} is {@code null}.
+     * @throws NullPointerException If {@code receiptUrl} is null.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PollerFlux<OperationResult, List<RecognizedForm>>
         beginRecognizeReceiptsFromUrl(String receiptUrl, RecognizeOptions recognizeOptions) {
         try {
+            Objects.requireNonNull(receiptUrl, "'receiptUrl' is required and cannot be null.");
+
             recognizeOptions = getRecognizeOptionsProperties(recognizeOptions);
-            return new PollerFlux<OperationResult, List<RecognizedForm>>(
+            final boolean isIncludeFieldElements = recognizeOptions.isIncludeFieldElements();
+            return new PollerFlux<>(
                 recognizeOptions.getPollInterval(),
-                receiptAnalyzeActivationOperation(receiptUrl, recognizeOptions.isIncludeFieldElements()),
-                extractReceiptPollOperation(),
+                urlActivationOperation(
+                    () -> service.analyzeReceiptAsyncWithResponseAsync(isIncludeFieldElements,
+                        new SourcePath().setSource(receiptUrl)).map(response -> new OperationResult(
+                            parseModelId(response.getDeserializedHeaders().getOperationLocation())))),
+                pollingOperation(service::getAnalyzeReceiptResultWithResponseAsync),
                 (activationResponse, context) -> monoError(logger,
                     new RuntimeException("Cancellation is not supported")),
-                fetchExtractReceiptResult(recognizeOptions.isIncludeFieldElements()));
+                fetchingOperation(service::getAnalyzeReceiptResultWithResponseAsync, isIncludeFieldElements));
         } catch (RuntimeException ex) {
             return PollerFlux.error(ex);
         }
@@ -404,7 +439,7 @@ public final class FormRecognizerAsyncClient {
      * or has been cancelled. The completed operation returns a List of {@link RecognizedForm}.
      * @throws FormRecognizerException If recognize operation fails and the {@link AnalyzeOperationResult} returned with
      * an {@link OperationStatus#FAILED}.
-     * @throws NullPointerException If {@code receipt} is {@code null}.
+     * @throws NullPointerException If {@code receipt} is null.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PollerFlux<OperationResult, List<RecognizedForm>> beginRecognizeReceipts(
@@ -434,75 +469,42 @@ public final class FormRecognizerAsyncClient {
      * or has been cancelled. The completed operation returns a List of {@link RecognizedForm}.
      * @throws FormRecognizerException If recognize operation fails and the {@link AnalyzeOperationResult} returned with
      * an {@link OperationStatus#FAILED}.
-     * @throws NullPointerException If {@code recognizeOptions} is {@code null}.
+     * @throws NullPointerException If {@code receipt} is null.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PollerFlux<OperationResult, List<RecognizedForm>>
         beginRecognizeReceipts(Flux<ByteBuffer> receipt, long length, RecognizeOptions recognizeOptions) {
         try {
+            Objects.requireNonNull(receipt, "'receipt' is required and cannot be null.");
+
             recognizeOptions = getRecognizeOptionsProperties(recognizeOptions);
+            final boolean isIncludeFieldElements = recognizeOptions.isIncludeFieldElements();
             return new PollerFlux<>(
                 recognizeOptions.getPollInterval(),
-                receiptStreamActivationOperation(receipt, length,
-                    recognizeOptions.getContentType(), recognizeOptions.isIncludeFieldElements()),
-                extractReceiptPollOperation(),
+                streamActivationOperation(
+                    (contentType -> service.analyzeReceiptAsyncWithResponseAsync(
+                        contentType, receipt, length, isIncludeFieldElements).map(response -> new OperationResult(
+                            parseModelId(response.getDeserializedHeaders().getOperationLocation())))),
+                    receipt, recognizeOptions.getContentType()),
+                pollingOperation(service::getAnalyzeReceiptResultWithResponseAsync),
                 (activationResponse, context) -> monoError(logger,
                     new RuntimeException("Cancellation is not supported")),
-                fetchExtractReceiptResult(recognizeOptions.isIncludeFieldElements()));
+                fetchingOperation(service::getAnalyzeReceiptResultWithResponseAsync, isIncludeFieldElements));
         } catch (RuntimeException ex) {
             return PollerFlux.error(ex);
         }
     }
 
-    private Function<PollingContext<OperationResult>, Mono<OperationResult>> receiptAnalyzeActivationOperation(
-        String receiptUrl, boolean includeFieldElements) {
+    /*
+     * Poller's POLLING operation.
+     */
+    private Function<PollingContext<OperationResult>, Mono<PollResponse<OperationResult>>> pollingOperation(
+        Function<UUID, Mono<SimpleResponse<AnalyzeOperationResult>>> pollingFunction) {
         return (pollingContext) -> {
             try {
-                Objects.requireNonNull(receiptUrl, "'receiptUrl' is required and cannot be null.");
-                return service.analyzeReceiptAsyncWithResponseAsync(includeFieldElements,
-                    new SourcePath().setSource(receiptUrl))
-                    .map(response ->
-                        new OperationResult(parseModelId(response.getDeserializedHeaders().getOperationLocation())))
-                    .onErrorMap(Utility::mapToHttpResponseExceptionIfExist);
-            } catch (RuntimeException ex) {
-                return monoError(logger, ex);
-            }
-        };
-    }
-
-    private Function<PollingContext<OperationResult>, Mono<OperationResult>> receiptStreamActivationOperation(
-        Flux<ByteBuffer> form, long length, FormContentType contentType, boolean includeFieldElements) {
-        return pollingContext -> {
-            try {
-                Objects.requireNonNull(form, "'form' is required and cannot be null.");
-                if (contentType != null) {
-                    return service.analyzeReceiptAsyncWithResponseAsync(
-                        ContentType.fromString(contentType.toString()), form, length, includeFieldElements)
-                        .map(response -> new OperationResult(
-                            parseModelId(response.getDeserializedHeaders().getOperationLocation())))
-                        .onErrorMap(throwable -> throwable);
-                } else {
-                    return detectContentType(form)
-                        .flatMap(detectedContentType ->
-                            service.analyzeReceiptAsyncWithResponseAsync(detectedContentType, form, length,
-                                includeFieldElements)
-                                .map(response -> new OperationResult(
-                                    parseModelId(response.getDeserializedHeaders().getOperationLocation()))))
-                        .onErrorMap(Utility::mapToHttpResponseExceptionIfExist);
-                }
-            } catch (RuntimeException ex) {
-                return monoError(logger, ex);
-            }
-        };
-    }
-
-    private Function<PollingContext<OperationResult>, Mono<PollResponse<OperationResult>>>
-        extractReceiptPollOperation() {
-        return (pollingContext) -> {
-            try {
-                PollResponse<OperationResult> operationResultPollResponse = pollingContext.getLatestResponse();
-                UUID resultUid = UUID.fromString(operationResultPollResponse.getValue().getResultId());
-                return service.getAnalyzeReceiptResultWithResponseAsync(resultUid)
+                final PollResponse<OperationResult> operationResultPollResponse = pollingContext.getLatestResponse();
+                final UUID resultUid = UUID.fromString(operationResultPollResponse.getValue().getResultId());
+                return pollingFunction.apply(resultUid)
                     .flatMap(modelSimpleResponse -> processAnalyzeModelResponse(modelSimpleResponse,
                         operationResultPollResponse));
             } catch (HttpResponseException e) {
@@ -512,12 +514,17 @@ public final class FormRecognizerAsyncClient {
         };
     }
 
-    private Function<PollingContext<OperationResult>, Mono<List<RecognizedForm>>>
-        fetchExtractReceiptResult(boolean includeFieldElements) {
+    /*
+     * Poller's FETCHING operation that fetch a list of RecognizedForm.
+     */
+    private Function<PollingContext<OperationResult>, Mono<List<RecognizedForm>>> fetchingOperation(
+        Function<UUID, Mono<SimpleResponse<AnalyzeOperationResult>>> fetchingFunction,
+        boolean includeFieldElements) {
+
         return (pollingContext) -> {
             try {
                 final UUID resultUid = UUID.fromString(pollingContext.getLatestResponse().getValue().getResultId());
-                return service.getAnalyzeReceiptResultWithResponseAsync(resultUid)
+                return fetchingFunction.apply(resultUid)
                     .map(modelSimpleResponse -> {
                         throwIfAnalyzeStatusInvalid(modelSimpleResponse.getValue());
                         return toRecognizedForm(modelSimpleResponse.getValue().getAnalyzeResult(),
@@ -530,64 +537,10 @@ public final class FormRecognizerAsyncClient {
         };
     }
 
-    private Function<PollingContext<OperationResult>, Mono<OperationResult>> contentAnalyzeActivationOperation(
-        String formUrl) {
-        return (pollingContext) -> {
-            try {
-                Objects.requireNonNull(formUrl, "'formUrl' is required and cannot be null.");
-                return service.analyzeLayoutAsyncWithResponseAsync(new SourcePath().setSource(formUrl))
-                    .map(response ->
-                        new OperationResult(parseModelId(response.getDeserializedHeaders().getOperationLocation())))
-                    .onErrorMap(Utility::mapToHttpResponseExceptionIfExist);
-            } catch (RuntimeException ex) {
-                return monoError(logger, ex);
-            }
-        };
-    }
-
-    private Function<PollingContext<OperationResult>, Mono<OperationResult>> contentStreamActivationOperation(
-        Flux<ByteBuffer> form, long length, FormContentType contentType) {
-        return pollingContext -> {
-            try {
-                Objects.requireNonNull(form, "'form' is required and cannot be null.");
-                if (contentType != null) {
-                    return service.analyzeLayoutAsyncWithResponseAsync(
-                        ContentType.fromString(contentType.toString()), form, length)
-                        .map(response -> new OperationResult(parseModelId(
-                            response.getDeserializedHeaders().getOperationLocation())))
-                        .onErrorMap(Utility::mapToHttpResponseExceptionIfExist);
-                } else {
-                    return detectContentType(form)
-                        .flatMap(detectedContentType ->
-                            service.analyzeLayoutAsyncWithResponseAsync(detectedContentType, form, length)
-                                .map(response -> new OperationResult(
-                                    parseModelId(response.getDeserializedHeaders().getOperationLocation()))))
-                        .onErrorMap(Utility::mapToHttpResponseExceptionIfExist);
-                }
-            } catch (RuntimeException ex) {
-                return monoError(logger, ex);
-            }
-        };
-    }
-
-    private Function<PollingContext<OperationResult>, Mono<PollResponse<OperationResult>>>
-        extractContentPollOperation() {
-        return (pollingContext) -> {
-            try {
-                PollResponse<OperationResult> operationResultPollResponse = pollingContext.getLatestResponse();
-                UUID resultUid = UUID.fromString(operationResultPollResponse.getValue().getResultId());
-                return service.getAnalyzeLayoutResultWithResponseAsync(resultUid)
-                    .flatMap(modelSimpleResponse -> processAnalyzeModelResponse(modelSimpleResponse,
-                        operationResultPollResponse));
-            } catch (HttpResponseException e) {
-                logger.logExceptionAsError(e);
-                return Mono.just(new PollResponse<>(LongRunningOperationStatus.FAILED, null));
-            }
-        };
-    }
-
-    private Function<PollingContext<OperationResult>, Mono<List<FormPage>>>
-        fetchExtractContentResult() {
+    /*
+     * Poller's FETCHING operation that fetch a list of FormPage.
+     */
+    private Function<PollingContext<OperationResult>, Mono<List<FormPage>>> fetchExtractContentResult() {
         return (pollingContext) -> {
             try {
                 final UUID resultUid = UUID.fromString(pollingContext.getLatestResponse().getValue().getResultId());
@@ -603,101 +556,39 @@ public final class FormRecognizerAsyncClient {
         };
     }
 
-    private Function<PollingContext<OperationResult>, Mono<List<RecognizedForm>>>
-        fetchAnalyzeFormResultOperation(String modelId, boolean includeFieldElements) {
-        return (pollingContext) -> {
-            try {
-                Objects.requireNonNull(modelId, "'modelId' is required and cannot be null.");
-                UUID resultUid = UUID.fromString(pollingContext.getLatestResponse().getValue().getResultId());
-                UUID modelUid = UUID.fromString(modelId);
-                return service.getAnalyzeFormResultWithResponseAsync(modelUid, resultUid)
-                    .map(modelSimpleResponse -> {
-                        throwIfAnalyzeStatusInvalid(modelSimpleResponse.getValue());
-                        return toRecognizedForm(modelSimpleResponse.getValue().getAnalyzeResult(),
-                            includeFieldElements);
-                    })
-                    .onErrorMap(Utility::mapToHttpResponseExceptionIfExist);
-            } catch (RuntimeException ex) {
-                return monoError(logger, ex);
-            }
-        };
-    }
-
-    /**
-     * Helper method that throws a {@link FormRecognizerException} if {@link AnalyzeOperationResult#getStatus()} is
-     * {@link OperationStatus#FAILED}.
-     *
-     * @param analyzeResponse The response returned from the service.
+    /*
+     * Poller's ACTIVATION operation that takes stream as input.
      */
-    private void throwIfAnalyzeStatusInvalid(AnalyzeOperationResult analyzeResponse) {
-        if (OperationStatus.FAILED.equals(analyzeResponse.getStatus())) {
-            List<ErrorInformation> errorInformationList = analyzeResponse.getAnalyzeResult().getErrors();
-            if (!CoreUtils.isNullOrEmpty(errorInformationList)) {
-                throw logger.logExceptionAsError(new FormRecognizerException("Analyze operation failed",
-                    errorInformationList));
-            }
-        }
-    }
-
-    private Function<PollingContext<OperationResult>, Mono<PollResponse<OperationResult>>>
-        createAnalyzeFormPollOperation(String modelId) {
-        return (pollingContext) -> {
-            try {
-                PollResponse<OperationResult> operationResultPollResponse = pollingContext.getLatestResponse();
-                Objects.requireNonNull(modelId, "'modelId' is required and cannot be null.");
-                UUID resultUid = UUID.fromString(operationResultPollResponse.getValue().getResultId());
-                UUID modelUid = UUID.fromString(modelId);
-                return service.getAnalyzeFormResultWithResponseAsync(modelUid, resultUid)
-                    .flatMap(modelSimpleResponse -> processAnalyzeModelResponse(modelSimpleResponse,
-                        operationResultPollResponse))
-                    .onErrorMap(Utility::mapToHttpResponseExceptionIfExist);
-            } catch (HttpResponseException e) {
-                logger.logExceptionAsError(e);
-                return Mono.just(new PollResponse<>(LongRunningOperationStatus.FAILED, null));
-            }
-        };
-    }
-
-    private Function<PollingContext<OperationResult>, Mono<OperationResult>> analyzeFormActivationOperation(
-        String formUrl, String modelId, boolean includeFieldElements) {
-        return (pollingContext) -> {
-            try {
-                Objects.requireNonNull(formUrl, "'formUrl' is required and cannot be null.");
-                Objects.requireNonNull(modelId, "'modelId' is required and cannot be null.");
-                return service.analyzeWithCustomModelWithResponseAsync(UUID.fromString(modelId), includeFieldElements,
-                    new SourcePath().setSource(formUrl))
-                    .map(response ->
-                        new OperationResult(parseModelId(response.getDeserializedHeaders().getOperationLocation())))
-                    .onErrorMap(Utility::mapToHttpResponseExceptionIfExist);
-            } catch (RuntimeException ex) {
-                return monoError(logger, ex);
-            }
-        };
-    }
-
-    private Function<PollingContext<OperationResult>, Mono<OperationResult>> analyzeFormStreamActivationOperation(
-        Flux<ByteBuffer> form, String modelId, long length, FormContentType contentType,
-        boolean includeFieldElements) {
-
+    private Function<PollingContext<OperationResult>, Mono<OperationResult>> streamActivationOperation(
+        Function<ContentType, Mono<OperationResult>> activationOperation, Flux<ByteBuffer> form,
+        FormContentType contentType) {
         return pollingContext -> {
+            Mono<OperationResult> operationResultMono;
             try {
-                Objects.requireNonNull(form, "'form' is required and cannot be null.");
-                Objects.requireNonNull(modelId, "'modelId' is required and cannot be null.");
                 if (contentType != null) {
-                    return service.analyzeWithCustomModelWithResponseAsync(UUID.fromString(modelId),
-                        ContentType.fromString(contentType.toString()), form, length, includeFieldElements)
-                        .map(response -> new OperationResult(parseModelId(
-                            response.getDeserializedHeaders().getOperationLocation())))
-                        .onErrorMap(Utility::mapToHttpResponseExceptionIfExist);
+                    final ContentType givenContentType = ContentType.fromString(contentType.toString());
+                    operationResultMono = activationOperation.apply(givenContentType);
                 } else {
-                    return detectContentType(form)
-                        .flatMap(detectedContentType ->
-                            service.analyzeWithCustomModelWithResponseAsync(UUID.fromString(modelId),
-                                detectedContentType, form, length, includeFieldElements)
-                                .map(response -> new OperationResult(
-                                    parseModelId(response.getDeserializedHeaders().getOperationLocation()))))
-                        .onErrorMap(Utility::mapToHttpResponseExceptionIfExist);
+                    operationResultMono = detectContentType(form)
+                        .flatMap(detectedContentType -> activationOperation.apply(detectedContentType));
                 }
+                operationResultMono.onErrorMap(Utility::mapToHttpResponseExceptionIfExist);
+            } catch (RuntimeException ex) {
+                operationResultMono = monoError(logger, ex);
+            }
+
+            return operationResultMono;
+        };
+    }
+
+    /*
+     * Poller's ACTIVATION operation that takes URL as input.
+     */
+    private Function<PollingContext<OperationResult>, Mono<OperationResult>> urlActivationOperation(
+        Supplier<Mono<OperationResult>> activationOperation) {
+        return (pollingContext) -> {
+            try {
+                return activationOperation.get().onErrorMap(Utility::mapToHttpResponseExceptionIfExist);
             } catch (RuntimeException ex) {
                 return monoError(logger, ex);
             }
@@ -732,6 +623,22 @@ public final class FormRecognizerAsyncClient {
             return userProvidedOptions;
         } else {
             return new RecognizeOptions();
+        }
+    }
+
+    /**
+     * Helper method that throws a {@link FormRecognizerException} if {@link AnalyzeOperationResult#getStatus()} is
+     * {@link OperationStatus#FAILED}.
+     *
+     * @param analyzeResponse The response returned from the service.
+     */
+    private void throwIfAnalyzeStatusInvalid(AnalyzeOperationResult analyzeResponse) {
+        if (OperationStatus.FAILED.equals(analyzeResponse.getStatus())) {
+            List<ErrorInformation> errorInformationList = analyzeResponse.getAnalyzeResult().getErrors();
+            if (!CoreUtils.isNullOrEmpty(errorInformationList)) {
+                throw logger.logExceptionAsError(new FormRecognizerException("Analyze operation failed",
+                    errorInformationList));
+            }
         }
     }
 }

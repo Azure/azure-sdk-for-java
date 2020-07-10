@@ -241,7 +241,7 @@ public final class FormRecognizerClientBuilder {
      * @param apiKeyCredential {@link AzureKeyCredential} API key credential
      *
      * @return The updated FormRecognizerClientBuilder object.
-     * @throws NullPointerException If {@code apiKeyCredential} is {@code null}
+     * @throws NullPointerException If {@code apiKeyCredential} is null
      */
     public FormRecognizerClientBuilder credential(AzureKeyCredential apiKeyCredential) {
         this.credential = Objects.requireNonNull(apiKeyCredential, "'apiKeyCredential' cannot be null.");
@@ -281,7 +281,7 @@ public final class FormRecognizerClientBuilder {
      * @param policy The retry policy for service requests.
      *
      * @return The updated FormRecognizerClientBuilder object.
-     * @throws NullPointerException If {@code policy} is {@code null}.
+     * @throws NullPointerException If {@code policy} is null.
      */
     public FormRecognizerClientBuilder addPolicy(HttpPipelinePolicy policy) {
         policies.add(Objects.requireNonNull(policy, "'policy' cannot be null."));

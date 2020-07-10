@@ -138,7 +138,7 @@ public final class FormTrainingAsyncClient {
      * @return A {@link PollerFlux} that polls the training model operation until it has completed, has failed, or has
      * been cancelled. The completed operation returns the trained {@link CustomFormModel custom form model}.
      * @throws FormRecognizerException If training fails and a model with {@link ModelStatus#INVALID} is created.
-     * @throws NullPointerException If {@code trainingFilesUrl} is {@code null}.
+     * @throws NullPointerException If {@code trainingFilesUrl} is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<OperationResult, CustomFormModel> beginTraining(String trainingFilesUrl,
@@ -169,7 +169,7 @@ public final class FormTrainingAsyncClient {
      * @return A {@link PollerFlux} that polls the training model operation until it has completed, has failed, or has
      * been cancelled. The completed operation returns the trained {@link CustomFormModel custom form model}.
      * @throws FormRecognizerException If training fails and model with {@link ModelStatus#INVALID} is created.
-     * @throws NullPointerException If {@code trainingFilesUrl} is {@code null}.
+     * @throws NullPointerException If {@code trainingFilesUrl} is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<OperationResult, CustomFormModel> beginTraining(String trainingFilesUrl,
@@ -195,7 +195,7 @@ public final class FormTrainingAsyncClient {
      * @param modelId The UUID string format model identifier.
      *
      * @return The detailed information for the specified model.
-     * @throws IllegalArgumentException If {@code modelId} is {@code null} or empty.
+     * @throws IllegalArgumentException If {@code modelId} is null or empty.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CustomFormModel> getCustomModel(String modelId) {
@@ -211,7 +211,7 @@ public final class FormTrainingAsyncClient {
      * @param modelId The UUID string format model identifier.
      *
      * @return A {@link Response} containing the requested {@link CustomFormModel model}.
-     * @throws IllegalArgumentException If {@code modelId} is {@code null} or empty.
+     * @throws IllegalArgumentException If {@code modelId} is null or empty.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<CustomFormModel>> getCustomModelWithResponse(String modelId) {
@@ -279,7 +279,7 @@ public final class FormTrainingAsyncClient {
      * @param modelId The UUID string format model identifier.
      *
      * @return An empty Mono.
-     * @throws IllegalArgumentException If {@code modelId} is {@code null} or empty.
+     * @throws IllegalArgumentException If {@code modelId} is null or empty.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteModel(String modelId) {
@@ -295,7 +295,7 @@ public final class FormTrainingAsyncClient {
      * @param modelId The UUID string format model identifier.
      *
      * @return A {@link Response} containing the status code and HTTP headers.
-     * @throws IllegalArgumentException If {@code modelId} is {@code null} or empty.
+     * @throws IllegalArgumentException If {@code modelId} is null or empty.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteModelWithResponse(String modelId) {
@@ -368,7 +368,7 @@ public final class FormTrainingAsyncClient {
      * @return A {@link PollerFlux} that polls the copy model operation until it has completed, has failed,
      * or has been cancelled. The completed operation returns the copied model {@link CustomFormModelInfo}.
      * @throws FormRecognizerException If copy operation fails and model with {@link OperationStatus#FAILED} is created.
-     * @throws NullPointerException If {@code modelId}, {@code target} is {@code null}.
+     * @throws NullPointerException If {@code modelId}, {@code target} is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<OperationResult, CustomFormModelInfo> beginCopyModel(String modelId,
@@ -400,7 +400,7 @@ public final class FormTrainingAsyncClient {
      * or has been cancelled. The completed operation returns the copied model {@link CustomFormModelInfo}.
      * @throws FormRecognizerException If copy operation fails and model with {@link OperationStatus#FAILED}
      * is created.
-     * @throws NullPointerException If {@code modelId}, {@code target} is {@code null}.
+     * @throws NullPointerException If {@code modelId}, {@code target} is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<OperationResult, CustomFormModelInfo> beginCopyModel(String modelId,
@@ -425,7 +425,7 @@ public final class FormTrainingAsyncClient {
      * {@codesnippet com.azure.ai.formrecognizer.training.FormTrainingAsyncClient.getCopyAuthorization#string-string}
      *
      * @return The {@link CopyAuthorization} that could be used to authorize copying model between resources.
-     * @throws NullPointerException If {@code resourceId}, {@code resourceRegion} is {@code null}.
+     * @throws NullPointerException If {@code resourceId}, {@code resourceRegion} is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CopyAuthorization> getCopyAuthorization(String resourceId, String resourceRegion) {
@@ -446,7 +446,7 @@ public final class FormTrainingAsyncClient {
      *
      * @return A {@link Response} containing the {@link CopyAuthorization} that could be used to authorize copying
      * model between resources.
-     * @throws NullPointerException If {@code resourceId}, {@code resourceRegion} is {@code null}.
+     * @throws NullPointerException If {@code resourceId}, {@code resourceRegion} is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<CopyAuthorization>> getCopyAuthorizationWithResponse(String resourceId,

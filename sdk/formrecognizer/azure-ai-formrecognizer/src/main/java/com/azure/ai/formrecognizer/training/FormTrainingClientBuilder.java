@@ -244,7 +244,7 @@ public final class FormTrainingClientBuilder {
      * @param apiKeyCredential {@link AzureKeyCredential} API key credential
      *
      * @return The updated FormTrainingClientBuilder object.
-     * @throws NullPointerException If {@code apiKeyCredential} is {@code null}
+     * @throws NullPointerException If {@code apiKeyCredential} is null
      */
     public FormTrainingClientBuilder credential(AzureKeyCredential apiKeyCredential) {
         this.credential = Objects.requireNonNull(apiKeyCredential, "'apiKeyCredential' cannot be null.");
@@ -284,7 +284,7 @@ public final class FormTrainingClientBuilder {
      * @param policy The retry policy for service requests.
      *
      * @return The updated FormTrainingClientBuilder object.
-     * @throws NullPointerException If {@code policy} is {@code null}.
+     * @throws NullPointerException If {@code policy} is null.
      */
     public FormTrainingClientBuilder addPolicy(HttpPipelinePolicy policy) {
         policies.add(Objects.requireNonNull(policy, "'policy' cannot be null."));

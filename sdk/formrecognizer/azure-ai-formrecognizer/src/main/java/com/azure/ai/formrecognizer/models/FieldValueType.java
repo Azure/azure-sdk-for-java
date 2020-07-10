@@ -175,7 +175,7 @@ public enum FieldValueType {
      *
      * @return the converted value of the recognized field.
      * @throws UnsupportedOperationException if the {@code formField} type does not match the casting value type.
-     * @throws NullPointerException if {@code formField} is {@code null}
+     * @throws NullPointerException if {@code formField} is null
      */
     public abstract <T> T cast(FormField<?> formField);
 }
