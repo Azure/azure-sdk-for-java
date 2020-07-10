@@ -13,7 +13,7 @@ Licensed under the MIT License.
 
   <groupId>com.azure</groupId>
   <artifactId>azure-cosmos-encryption</artifactId>
-  <version>0.9.0-beta.1</version> <!-- {x-version-update;com.azure:azure-cosmos-encryption;current} -->
+  <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-cosmos-encryption;current} -->
   <name>Microsoft Azure SDK for SQL API of Azure Cosmos DB Service</name>
   <description>This Package contains Microsoft Azure Cosmos SDK (with Reactive Extension Reactor support) for Azure Cosmos DB SQL API</description>
   <packaging>jar</packaging>
@@ -138,10 +138,10 @@ Licensed under the MIT License.
 
     <dependency>
       <groupId>org.bouncycastle</groupId>
-      <artifactId>bcprov-ext-jdk15on</artifactId>
-      <version>1.63</version> <!-- {x-version-update;cosmos_org.bouncycastle:bcprov-ext-jdk15on;external_dependency} -->
-      <scope>test</scope>
+      <artifactId>bcprov-jdk15on</artifactId>
+      <version>1.60</version>  <!-- {x-version-update;org.bouncycastle:bcprov-jdk15on;external_dependency} -->
     </dependency>
+
 
   </dependencies>
 
@@ -214,7 +214,7 @@ Licensed under the MIT License.
                 <include>io.projectreactor.netty:reactor-netty:[0.9.7.RELEASE]</include> <!-- {x-include-update;io.projectreactor.netty:reactor-netty;external_dependency} -->
                 <include>org.slf4j:slf4j-api:[1.7.28]</include> <!-- {x-include-update;org.slf4j:slf4j-api;external_dependency} -->
                 <include>org.slf4j:slf4j-api:[1.7.28]</include> <!-- {x-include-update;org.slf4j:slf4j-api;external_dependency} -->
-                <include>org.bouncycastle:bcprov-ext-jdk15on:[1.63]</include> <!-- {x-version-update;cosmos_org.bouncycastle:bcprov-ext-jdk15on;external_dependency} -->
+                <include>org.bouncycastle:bcprov-jdk15on:[1.63]</include> <!-- {x-include-update;org.bouncycastle:bcprov-jdk15on;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>
