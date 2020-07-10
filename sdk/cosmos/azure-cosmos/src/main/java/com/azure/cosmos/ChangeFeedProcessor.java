@@ -65,12 +65,12 @@ public interface ChangeFeedProcessor {
     Mono<Map<String, Integer>> getEstimatedLag();
 
     /**
-     * Returns a list of states each representing one scoped worker item.
+     * Returns a read only list of states each representing one scoped worker item.
      * <p>
      * An empty list will be returned if the processor was not started or no lease items matching the current
      *   {@link ChangeFeedProcessor} instance's lease prefix could be found.
      *
-     * @return a list of states each representing one scoped worker item.
+     * @return a read only list of states each representing one scoped worker item.
      */
     @Beta(Beta.SinceVersion.V4_2_0)
     Mono<List<ChangeFeedProcessorState>> getCurrentState();

@@ -68,6 +68,11 @@ import static com.azure.cosmos.CosmosBridgeInternal.getContextClient;
  * </pre>
  */
 public class ChangeFeedProcessorBuilderImpl implements ChangeFeedProcessor, AutoCloseable {
+    private static final String PK_RANGE_ID_SEPARATOR = ":";
+    private static final String SEGMENT_SEPARATOR = "#";
+    private static final String PROPERTY_NAME_LSN = "_lsn";
+    private static final String PROPERTY_NAME_TS = "_ts";
+
     private final Logger logger = LoggerFactory.getLogger(ChangeFeedProcessorBuilderImpl.class);
     private static final long DefaultUnhealthinessDuration = Duration.ofMinutes(15).toMillis();
     private final Duration sleepTime = Duration.ofSeconds(15);
@@ -167,13 +172,10 @@ public class ChangeFeedProcessorBuilderImpl implements ChangeFeedProcessor, Auto
                 return this.feedContextClient.createDocumentChangeFeedQuery(this.feedContextClient.getContainerClient(), options)
                     .take(1)
                     .map(feedResponse -> {
-                        final String pkRangeIdSeparator = ":";
-                        final String segmentSeparator = "#";
-                        final String lsnPropertyName = "_lsn";
                         String ownerValue = lease.getOwner();
                         String sessionTokenLsn = feedResponse.getSessionToken();
-                        String parsedSessionToken = sessionTokenLsn.substring(sessionTokenLsn.indexOf(pkRangeIdSeparator));
-                        String[] segments = parsedSessionToken.split(segmentSeparator);
+                        String parsedSessionToken = sessionTokenLsn.substring(sessionTokenLsn.indexOf(PK_RANGE_ID_SEPARATOR));
+                        String[] segments = parsedSessionToken.split(SEGMENT_SEPARATOR);
                         String latestLsn = segments[0];
 
                         if (segments.length >= 2) {
@@ -193,7 +195,7 @@ public class ChangeFeedProcessorBuilderImpl implements ChangeFeedProcessor, Auto
                         Integer currentLsn = 0;
                         Integer estimatedLag = 0;
                         try {
-                            currentLsn = Integer.valueOf(feedResponse.getResults().get(0).get(lsnPropertyName).asText("0"));
+                            currentLsn = Integer.valueOf(feedResponse.getResults().get(0).get(PROPERTY_NAME_LSN).asText("0"));
                             estimatedLag = Integer.valueOf(latestLsn);
                             estimatedLag = estimatedLag - currentLsn + 1;
                         } catch (NumberFormatException ex) {
@@ -227,7 +229,7 @@ public class ChangeFeedProcessorBuilderImpl implements ChangeFeedProcessor, Auto
         List<ChangeFeedProcessorState> earlyResult = new ArrayList<>();
 
         if (this.leaseStoreManager == null || this.feedContextClient == null) {
-            return Mono.just(earlyResult);
+            return Mono.just(Collections.unmodifiableList(earlyResult));
         }
 
         return this.leaseStoreManager.getAllLeases()
@@ -241,14 +243,9 @@ public class ChangeFeedProcessorBuilderImpl implements ChangeFeedProcessor, Auto
                 return this.feedContextClient.createDocumentChangeFeedQuery(this.feedContextClient.getContainerClient(), options)
                     .take(1)
                     .map(feedResponse -> {
-                        final String pkRangeIdSeparator = ":";
-                        final String segmentSeparator = "#";
-                        final String lsnPropertyName = "_lsn";
-                        final String tsPropertyName = "_ts";
-
                         String sessionTokenLsn = feedResponse.getSessionToken();
-                        String parsedSessionToken = sessionTokenLsn.substring(sessionTokenLsn.indexOf(pkRangeIdSeparator));
-                        String[] segments = parsedSessionToken.split(segmentSeparator);
+                        String parsedSessionToken = sessionTokenLsn.substring(sessionTokenLsn.indexOf(PK_RANGE_ID_SEPARATOR));
+                        String[] segments = parsedSessionToken.split(SEGMENT_SEPARATOR);
                         String latestLsn = segments[0];
 
                         if (segments.length >= 2) {
@@ -265,17 +262,17 @@ public class ChangeFeedProcessorBuilderImpl implements ChangeFeedProcessor, Auto
 
                         // An empty list of documents returned means that we are current (zero lag)
                         if (feedResponse.getResults() == null || feedResponse.getResults().size() == 0) {
-                            changeFeedProcessorState.setEstimatedLag(0);
-                            changeFeedProcessorState.setContinuationToken(latestLsn);
+                            changeFeedProcessorState.setEstimatedLag(0)
+                                .setContinuationToken(latestLsn);
 
                             return changeFeedProcessorState;
                         }
 
-                        changeFeedProcessorState.setContinuationToken(feedResponse.getResults().get(0).get(lsnPropertyName).asText(null));
+                        changeFeedProcessorState.setContinuationToken(feedResponse.getResults().get(0).get(PROPERTY_NAME_LSN).asText(null));
 
                         try {
                             changeFeedProcessorState.setContinuationTokenTimestamp(Instant.ofEpochMilli(Long.valueOf(
-                                    feedResponse.getResults().get(0).get(tsPropertyName).asText("0"))));
+                                    feedResponse.getResults().get(0).get(PROPERTY_NAME_TS).asText("0"))));
                         } catch (NumberFormatException ex) {
                             logger.warn("Unexpected Cosmos _ts found", ex);
                             changeFeedProcessorState.setContinuationTokenTimestamp(null);
@@ -284,7 +281,7 @@ public class ChangeFeedProcessorBuilderImpl implements ChangeFeedProcessor, Auto
                         Integer currentLsn = 0;
                         Integer estimatedLag = 0;
                         try {
-                            currentLsn = Integer.valueOf(feedResponse.getResults().get(0).get(lsnPropertyName).asText("0"));
+                            currentLsn = Integer.valueOf(feedResponse.getResults().get(0).get(PROPERTY_NAME_LSN).asText("0"));
                             estimatedLag = Integer.valueOf(latestLsn);
                             estimatedLag = estimatedLag - currentLsn + 1;
                             changeFeedProcessorState.setEstimatedLag(estimatedLag);
