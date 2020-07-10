@@ -134,8 +134,12 @@ public final class FormRecognizerAsyncClient {
                     service.getAnalyzeFormResultWithResponseAsync(UUID.fromString(modelId), resultUid)),
                 (activationResponse, context) -> Mono.error(new RuntimeException("Cancellation is not supported")),
                 fetchingOperation(
-                    resultId -> service.getAnalyzeFormResultWithResponseAsync(UUID.fromString(modelId), resultId),
-                    isIncludeFieldElements));
+                    resultId -> service.getAnalyzeFormResultWithResponseAsync(UUID.fromString(modelId), resultId))
+                    .andThen(after -> after.map(modelSimpleResponse -> {
+                        throwIfAnalyzeStatusInvalid(modelSimpleResponse.getValue());
+                        return toRecognizedForm(modelSimpleResponse.getValue().getAnalyzeResult(),
+                            isIncludeFieldElements);
+                    }).onErrorMap(Utility::mapToHttpResponseExceptionIfExist)));
         } catch (RuntimeException ex) {
             return PollerFlux.error(ex);
         }
@@ -213,8 +217,12 @@ public final class FormRecognizerAsyncClient {
                     resultUid -> service.getAnalyzeFormResultWithResponseAsync(UUID.fromString(modelId), resultUid)),
                 (activationResponse, context) -> Mono.error(new RuntimeException("Cancellation is not supported")),
                 fetchingOperation(
-                    resultId -> service.getAnalyzeFormResultWithResponseAsync(UUID.fromString(modelId), resultId),
-                    isIncludeFieldElements));
+                    resultId -> service.getAnalyzeFormResultWithResponseAsync(UUID.fromString(modelId), resultId))
+                    .andThen(after -> after.map(modelSimpleResponse -> {
+                        throwIfAnalyzeStatusInvalid(modelSimpleResponse.getValue());
+                        return toRecognizedForm(modelSimpleResponse.getValue().getAnalyzeResult(),
+                            isIncludeFieldElements);
+                    }).onErrorMap(Utility::mapToHttpResponseExceptionIfExist)));
         } catch (RuntimeException ex) {
             return PollerFlux.error(ex);
         }
@@ -276,7 +284,11 @@ public final class FormRecognizerAsyncClient {
                 pollingOperation(service::getAnalyzeLayoutResultWithResponseAsync),
                 (activationResponse, context) ->
                     monoError(logger, new RuntimeException("Cancellation is not supported")),
-                fetchExtractContentResult());
+                fetchingOperation(service::getAnalyzeLayoutResultWithResponseAsync)
+                    .andThen(after -> after.map(modelSimpleResponse -> {
+                        throwIfAnalyzeStatusInvalid(modelSimpleResponse.getValue());
+                        return toRecognizedLayout(modelSimpleResponse.getValue().getAnalyzeResult(), true);
+                    }).onErrorMap(Utility::mapToHttpResponseExceptionIfExist)));
         } catch (RuntimeException ex) {
             return PollerFlux.error(ex);
         }
@@ -347,7 +359,11 @@ public final class FormRecognizerAsyncClient {
                 pollingOperation(service::getAnalyzeLayoutResultWithResponseAsync),
                 (activationResponse, context) ->
                     monoError(logger, new RuntimeException("Cancellation is not supported")),
-                fetchExtractContentResult());
+                fetchingOperation(service::getAnalyzeLayoutResultWithResponseAsync)
+                    .andThen(after -> after.map(modelSimpleResponse -> {
+                        throwIfAnalyzeStatusInvalid(modelSimpleResponse.getValue());
+                        return toRecognizedLayout(modelSimpleResponse.getValue().getAnalyzeResult(), true);
+                    }).onErrorMap(Utility::mapToHttpResponseExceptionIfExist)));
         } catch (RuntimeException ex) {
             return PollerFlux.error(ex);
         }
@@ -413,7 +429,12 @@ public final class FormRecognizerAsyncClient {
                 pollingOperation(service::getAnalyzeReceiptResultWithResponseAsync),
                 (activationResponse, context) -> monoError(logger,
                     new RuntimeException("Cancellation is not supported")),
-                fetchingOperation(service::getAnalyzeReceiptResultWithResponseAsync, isIncludeFieldElements));
+                fetchingOperation(service::getAnalyzeReceiptResultWithResponseAsync)
+                    .andThen(after -> after.map(modelSimpleResponse -> {
+                        throwIfAnalyzeStatusInvalid(modelSimpleResponse.getValue());
+                        return toRecognizedForm(modelSimpleResponse.getValue().getAnalyzeResult(),
+                            isIncludeFieldElements);
+                    }).onErrorMap(Utility::mapToHttpResponseExceptionIfExist)));
         } catch (RuntimeException ex) {
             return PollerFlux.error(ex);
         }
@@ -489,7 +510,12 @@ public final class FormRecognizerAsyncClient {
                 pollingOperation(service::getAnalyzeReceiptResultWithResponseAsync),
                 (activationResponse, context) -> monoError(logger,
                     new RuntimeException("Cancellation is not supported")),
-                fetchingOperation(service::getAnalyzeReceiptResultWithResponseAsync, isIncludeFieldElements));
+                fetchingOperation(service::getAnalyzeReceiptResultWithResponseAsync)
+                    .andThen(after -> after.map(modelSimpleResponse -> {
+                        throwIfAnalyzeStatusInvalid(modelSimpleResponse.getValue());
+                        return toRecognizedForm(modelSimpleResponse.getValue().getAnalyzeResult(),
+                            isIncludeFieldElements);
+                    }).onErrorMap(Utility::mapToHttpResponseExceptionIfExist)));
         } catch (RuntimeException ex) {
             return PollerFlux.error(ex);
         }
@@ -515,41 +541,15 @@ public final class FormRecognizerAsyncClient {
     }
 
     /*
-     * Poller's FETCHING operation that fetch a list of RecognizedForm.
+     * Poller's FETCHING operation.
      */
-    private Function<PollingContext<OperationResult>, Mono<List<RecognizedForm>>> fetchingOperation(
-        Function<UUID, Mono<SimpleResponse<AnalyzeOperationResult>>> fetchingFunction,
-        boolean includeFieldElements) {
+    private Function<PollingContext<OperationResult>, Mono<SimpleResponse<AnalyzeOperationResult>>> fetchingOperation(
+        Function<UUID, Mono<SimpleResponse<AnalyzeOperationResult>>> fetchingFunction) {
 
         return (pollingContext) -> {
             try {
                 final UUID resultUid = UUID.fromString(pollingContext.getLatestResponse().getValue().getResultId());
-                return fetchingFunction.apply(resultUid)
-                    .map(modelSimpleResponse -> {
-                        throwIfAnalyzeStatusInvalid(modelSimpleResponse.getValue());
-                        return toRecognizedForm(modelSimpleResponse.getValue().getAnalyzeResult(),
-                            includeFieldElements);
-                    })
-                    .onErrorMap(Utility::mapToHttpResponseExceptionIfExist);
-            } catch (RuntimeException ex) {
-                return monoError(logger, ex);
-            }
-        };
-    }
-
-    /*
-     * Poller's FETCHING operation that fetch a list of FormPage.
-     */
-    private Function<PollingContext<OperationResult>, Mono<List<FormPage>>> fetchExtractContentResult() {
-        return (pollingContext) -> {
-            try {
-                final UUID resultUid = UUID.fromString(pollingContext.getLatestResponse().getValue().getResultId());
-                return service.getAnalyzeLayoutResultWithResponseAsync(resultUid)
-                    .map(modelSimpleResponse -> {
-                        throwIfAnalyzeStatusInvalid(modelSimpleResponse.getValue());
-                        return toRecognizedLayout(modelSimpleResponse.getValue().getAnalyzeResult(), true);
-                    })
-                    .onErrorMap(Utility::mapToHttpResponseExceptionIfExist);
+                return fetchingFunction.apply(resultUid);
             } catch (RuntimeException ex) {
                 return monoError(logger, ex);
             }
