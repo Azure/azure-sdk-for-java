@@ -279,7 +279,7 @@ public class CosmosAsyncDatabase {
      * Creates a Cosmos container if it does not exist on the service.
      * <p>
      * The throughput setting will only be used if the specified container
-     * does not exist and therefor a new container will be created.
+     * does not exist and therefore a new container will be created.
      *
      * After subscription the operation will be performed. The {@link Mono} upon
      * successful completion will contain a cosmos container response with the
@@ -732,36 +732,23 @@ public class CosmosAsyncDatabase {
         Context context) {
         String spanName = "createContainerIfNotExistsInternal." + containerProperties.getId();
         Context nestedContext = context.addData(TracerProvider.COSMOS_CALL_DEPTH, TracerProvider.COSMOS_CALL_DEPTH_VAL);
-        if (options == null) {
-            options = new CosmosContainerRequestOptions();
-        }
-
-        Mono<CosmosContainerResponse> responseMono = createContainerIfNotExistsInternal(container.read(options, nestedContext), containerProperties, options, nestedContext);
-        return this.client.getTracerProvider().traceEnabledCosmosResponsePublisher(responseMono, context,
-            spanName,
-            getId(),
-            getClient().getServiceEndpoint());
-    }
-
-    private Mono<CosmosContainerResponse> createContainerIfNotExistsInternal(
-        Mono<CosmosContainerResponse> responseMono,
-        CosmosContainerProperties containerProperties,
-        CosmosContainerRequestOptions options,
-        Context context) {
-        return responseMono.onErrorResume(exception -> {
+        final CosmosContainerRequestOptions requestOptions = options == null ? new CosmosContainerRequestOptions() :
+            options;
+        Mono<CosmosContainerResponse> responseMono =
+            container.read(requestOptions, nestedContext).onErrorResume(exception -> {
             final Throwable unwrappedException = Exceptions.unwrap(exception);
             if (unwrappedException instanceof CosmosException) {
                 final CosmosException cosmosException = (CosmosException) unwrappedException;
                 if (cosmosException.getStatusCode() == HttpConstants.StatusCodes.NOTFOUND) {
-                    if(context != null) {
-                        return createContainerInternal(containerProperties, options, context);
-                    }
-
-                    return createContainer(containerProperties, options);
+                    return createContainerInternal(containerProperties, requestOptions, nestedContext);
                 }
             }
             return Mono.error(unwrappedException);
         });
+        return this.client.getTracerProvider().traceEnabledCosmosResponsePublisher(responseMono, context,
+            spanName,
+            getId(),
+            getClient().getServiceEndpoint());
     }
 
     private Mono<CosmosContainerResponse> createContainerInternal(

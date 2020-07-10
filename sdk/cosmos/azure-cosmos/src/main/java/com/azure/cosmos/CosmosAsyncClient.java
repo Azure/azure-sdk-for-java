@@ -468,7 +468,25 @@ public final class CosmosAsyncClient implements Closeable {
                                                                            ThroughputProperties throughputProperties, Context context) {
         String spanName = "createDatabaseIfNotExists." + database.getId();
         Context nestedContext = context.addData(TracerProvider.COSMOS_CALL_DEPTH, TracerProvider.COSMOS_CALL_DEPTH_VAL);
-        Mono<CosmosDatabaseResponse> responseMono = createDatabaseIfNotExistsInternal(database.readInternal(new CosmosDatabaseRequestOptions(), nestedContext), database, throughputProperties, nestedContext);
+        Mono<CosmosDatabaseResponse> responseMono = database.readInternal(new CosmosDatabaseRequestOptions(),
+            nestedContext).onErrorResume(exception -> {
+            final Throwable unwrappedException = Exceptions.unwrap(exception);
+            if (unwrappedException instanceof CosmosException) {
+                final CosmosException cosmosException = (CosmosException) unwrappedException;
+                if (cosmosException.getStatusCode() == HttpConstants.StatusCodes.NOTFOUND) {
+                    CosmosDatabaseRequestOptions requestOptions = new CosmosDatabaseRequestOptions();
+                    if (throughputProperties != null) {
+                        ModelBridgeInternal.setThroughputProperties(requestOptions, throughputProperties);
+                    }
+
+                    Database wrappedDatabase = new Database();
+                    wrappedDatabase.setId(database.getId());
+                    return createDatabaseInternal(wrappedDatabase,
+                        requestOptions, nestedContext);
+                }
+            }
+            return Mono.error(unwrappedException);
+        });
         return tracerProvider.traceEnabledCosmosResponsePublisher(responseMono,
             context,
             spanName,
@@ -487,15 +505,10 @@ public final class CosmosAsyncClient implements Closeable {
                         ModelBridgeInternal.setThroughputProperties(requestOptions, throughputProperties);
                     }
 
-                    if (context != null) {
-                        Database wrappedDatabase = new Database();
-                        wrappedDatabase.setId(database.getId());
-                        return createDatabaseInternal(wrappedDatabase,
-                            requestOptions, context);
-                    }
-
-                    return createDatabase(new CosmosDatabaseProperties(database.getId()),
-                        requestOptions);
+                    Database wrappedDatabase = new Database();
+                    wrappedDatabase.setId(database.getId());
+                    return createDatabaseInternal(wrappedDatabase,
+                        requestOptions, context);
                 }
             }
             return Mono.error(unwrappedException);
