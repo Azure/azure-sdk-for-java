@@ -167,8 +167,7 @@ public class LifecycleSetupExample {
         SearchIndex index = new SearchIndex(INDEX_NAME, fields);
 
         // Set Suggester
-        index.setSuggesters(Collections.singletonList(new SearchSuggester(SUGGESTER_NAME,
-            Collections.singletonList("Tags"))));
+        index.setSuggesters(new SearchSuggester(SUGGESTER_NAME, Collections.singletonList("Tags")));
 
         return client.createOrUpdateIndex(index);
     }
