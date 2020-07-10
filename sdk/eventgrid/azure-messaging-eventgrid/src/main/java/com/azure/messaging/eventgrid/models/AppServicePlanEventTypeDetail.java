@@ -22,18 +22,13 @@ public final class AppServicePlanEventTypeDetail {
      * Type of action on the app service plan.
      */
     @JsonProperty(value = "action")
-    private String action;
+    private AppServicePlanAction action;
 
     /*
      * Asynchronous operation status of the operation on the app service plan.
      */
     @JsonProperty(value = "status")
     private AsyncStatus status;
-
-    /** Creates an instance of AppServicePlanEventTypeDetail class. */
-    public AppServicePlanEventTypeDetail() {
-        action = "Updated";
-    }
 
     /**
      * Get the stampKind property: Kind of environment where app service plan is.
@@ -60,7 +55,7 @@ public final class AppServicePlanEventTypeDetail {
      *
      * @return the action value.
      */
-    public String getAction() {
+    public AppServicePlanAction getAction() {
         return this.action;
     }
 
@@ -70,7 +65,7 @@ public final class AppServicePlanEventTypeDetail {
      * @param action the action value to set.
      * @return the AppServicePlanEventTypeDetail object itself.
      */
-    public AppServicePlanEventTypeDetail setAction(String action) {
+    public AppServicePlanEventTypeDetail setAction(AppServicePlanAction action) {
         this.action = action;
         return this;
     }
