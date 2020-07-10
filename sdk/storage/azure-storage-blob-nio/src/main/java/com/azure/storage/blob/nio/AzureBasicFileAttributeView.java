@@ -21,6 +21,8 @@ import java.nio.file.attribute.FileTime;
  */
 public final class AzureBasicFileAttributeView implements BasicFileAttributeView {
 
+    static final String NAME = "azureBasic";
+
     private final Path path;
 
     AzureBasicFileAttributeView(Path path) {
@@ -33,7 +35,7 @@ public final class AzureBasicFileAttributeView implements BasicFileAttributeView
      */
     @Override
     public String name() {
-        return "azureBasic";
+        return NAME;
     }
 
     /**
