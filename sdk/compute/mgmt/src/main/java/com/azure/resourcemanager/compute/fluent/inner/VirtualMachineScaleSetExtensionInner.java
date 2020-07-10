@@ -178,7 +178,7 @@ public class VirtualMachineScaleSetExtensionInner extends SubResourceReadOnly {
      * @param type the type value to set.
      * @return the VirtualMachineScaleSetExtensionInner object itself.
      */
-    public VirtualMachineScaleSetExtensionInner withType (String type) {
+    public VirtualMachineScaleSetExtensionInner withType(String type) {
         this.type = type;
         return this;
     }

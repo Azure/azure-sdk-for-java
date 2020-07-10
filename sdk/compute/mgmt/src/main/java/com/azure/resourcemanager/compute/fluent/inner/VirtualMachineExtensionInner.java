@@ -121,7 +121,8 @@ public class VirtualMachineExtensionInner extends Resource {
     }
 
     /**
-     * Get the virtualMachineExtensionType property: Specifies the type of the extension; an example is "CustomScriptExtension".
+     * Get the virtualMachineExtensionType property:
+     * Specifies the type of the extension; an example is "CustomScriptExtension".
      *
      * @return the virtualMachineExtensionType value.
      */
@@ -130,7 +131,8 @@ public class VirtualMachineExtensionInner extends Resource {
     }
 
     /**
-     * Set the virtualMachineExtensionType property: Specifies the type of the extension; an example is "CustomScriptExtension".
+     * Set the virtualMachineExtensionType property:
+     * Specifies the type of the extension; an example is "CustomScriptExtension".
      *
      * @param virtualMachineExtensionType the virtualMachineExtensionType value to set.
      * @return the VirtualMachineExtensionInner object itself.
