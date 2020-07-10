@@ -241,9 +241,13 @@ public class ChangeFeedProcessorTest extends TestSuiteBase {
 
             // Test for "zero" lag
             Map<String, Integer> estimatedLagResult = changeFeedProcessor.getEstimatedLag()
-                .map(getEstimatedLag -> {
-                    System.out.println(getEstimatedLag);
-                    return getEstimatedLag;
+                .map(estimatedLag -> {
+                    try {
+                        log.info(OBJECT_MAPPER.writeValueAsString(estimatedLag));
+                    } catch (JsonProcessingException ex) {
+                        log.error("Unexpected", ex);
+                    }
+                    return estimatedLag;
                 }).block();
 
             int totalLag = 0;
@@ -251,15 +255,19 @@ public class ChangeFeedProcessorTest extends TestSuiteBase {
                 totalLag += lag;
             }
 
-            assertThat(totalLag == 0).as("Change Feed Processor estimated total lag at start").isTrue();
+            assertThat(totalLag).isEqualTo(0).as("Change Feed Processor estimated total lag at start");
 
             // Test for "FEED_COUNT total lag
             setupReadFeedDocuments(createdDocuments, receivedDocuments, createdFeedCollection, FEED_COUNT);
 
             estimatedLagResult = changeFeedProcessor.getEstimatedLag()
-                .map(getEstimatedLag -> {
-                    System.out.println(getEstimatedLag);
-                    return getEstimatedLag;
+                .map(estimatedLag -> {
+                    try {
+                        log.info(OBJECT_MAPPER.writeValueAsString(estimatedLag));
+                    } catch (JsonProcessingException ex) {
+                        log.error("Unexpected", ex);
+                    }
+                    return estimatedLag;
                 }).block();
 
             totalLag = 0;
@@ -267,8 +275,7 @@ public class ChangeFeedProcessorTest extends TestSuiteBase {
                 totalLag += lag;
             }
 
-            assertThat(totalLag == FEED_COUNT).as("Change Feed Processor estimated total lag").isTrue();
-
+            assertThat(totalLag).isEqualTo(FEED_COUNT).as("Change Feed Processor estimated total lag");
         } finally {
             safeDeleteCollection(createdFeedCollection);
             safeDeleteCollection(createdLeaseCollection);
@@ -332,7 +339,7 @@ public class ChangeFeedProcessorTest extends TestSuiteBase {
                 totalLag += item.getEstimatedLag();
             }
 
-            assertThat(totalLag == 0).as("Change Feed Processor estimated total lag at start").isTrue();
+            assertThat(totalLag).isEqualTo(0).as("Change Feed Processor estimated total lag at start");
 
             // Test for "FEED_COUNT total lag
             setupReadFeedDocuments(createdDocuments, receivedDocuments, createdFeedCollection, FEED_COUNT);
@@ -352,8 +359,7 @@ public class ChangeFeedProcessorTest extends TestSuiteBase {
                 totalLag += item.getEstimatedLag();
             }
 
-            assertThat(totalLag == FEED_COUNT).as("Change Feed Processor estimated total lag").isTrue();
-
+            assertThat(totalLag).isEqualTo(FEED_COUNT).as("Change Feed Processor estimated total lag");
         } finally {
             safeDeleteCollection(createdFeedCollection);
             safeDeleteCollection(createdLeaseCollection);
