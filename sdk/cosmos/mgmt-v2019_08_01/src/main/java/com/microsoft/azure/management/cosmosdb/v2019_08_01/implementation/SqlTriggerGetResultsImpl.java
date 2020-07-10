@@ -13,8 +13,7 @@ import com.microsoft.azure.arm.model.implementation.CreatableUpdatableImpl;
 import rx.Observable;
 import com.microsoft.azure.management.cosmosdb.v2019_08_01.SqlTriggerCreateUpdateParameters;
 import java.util.Map;
-import com.microsoft.azure.management.cosmosdb.v2019_08_01.TriggerOperation;
-import com.microsoft.azure.management.cosmosdb.v2019_08_01.TriggerType;
+import com.microsoft.azure.management.cosmosdb.v2019_08_01.SqlTriggerGetPropertiesResource;
 import com.microsoft.azure.management.cosmosdb.v2019_08_01.SqlTriggerResource;
 import rx.functions.Func1;
 
@@ -100,26 +99,6 @@ class SqlTriggerGetResultsImpl extends CreatableUpdatableImpl<SqlTriggerGetResul
     }
 
     @Override
-    public String _etag() {
-        return this.inner()._etag();
-    }
-
-    @Override
-    public String _rid() {
-        return this.inner()._rid();
-    }
-
-    @Override
-    public Object _ts() {
-        return this.inner()._ts();
-    }
-
-    @Override
-    public String body() {
-        return this.inner().body();
-    }
-
-    @Override
     public String id() {
         return this.inner().id();
     }
@@ -135,23 +114,13 @@ class SqlTriggerGetResultsImpl extends CreatableUpdatableImpl<SqlTriggerGetResul
     }
 
     @Override
-    public String sqlTriggerGetResultsId() {
-        return this.inner().sqlTriggerGetResultsId();
+    public SqlTriggerGetPropertiesResource resource() {
+        return this.inner().resource();
     }
 
     @Override
     public Map<String, String> tags() {
         return this.inner().getTags();
-    }
-
-    @Override
-    public TriggerOperation triggerOperation() {
-        return this.inner().triggerOperation();
-    }
-
-    @Override
-    public TriggerType triggerType() {
-        return this.inner().triggerType();
     }
 
     @Override
