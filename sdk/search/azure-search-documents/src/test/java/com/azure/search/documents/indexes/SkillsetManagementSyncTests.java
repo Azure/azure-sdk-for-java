@@ -122,10 +122,8 @@ public class SkillsetManagementSyncTests extends SearchTestBase {
         skillsetsToDelete.add(actualSkillset.getName());
         assertObjectEquals(expectedSkillset, actualSkillset, true, "etag");
 
-        List<EntityCategory> entityCategories = Arrays.asList(
-            EntityCategory.LOCATION, EntityCategory.ORGANIZATION, EntityCategory.PERSON);
-
-        expectedSkillset = createTestSkillsetOcrEntity(entityCategories);
+        expectedSkillset = createTestSkillsetOcrEntity(Arrays.asList(EntityCategory.LOCATION,
+            EntityCategory.ORGANIZATION, EntityCategory.PERSON));
         actualSkillset = client.createSkillset(expectedSkillset);
         skillsetsToDelete.add(actualSkillset.getName());
         assertObjectEquals(expectedSkillset, actualSkillset, true, "etag");
@@ -612,7 +610,7 @@ public class SkillsetManagementSyncTests extends SearchTestBase {
 
         skills.add(new ImageAnalysisSkill(inputs, outputs)
             .setVisualFeatures(new ArrayList<>(VisualFeature.values()))
-            .setDetails(new ArrayList<>((ImageDetail.values())))
+            .setDetails(new ArrayList<>(ImageDetail.values()))
             .setDefaultLanguageCode(ImageAnalysisSkillLanguage.EN)
             .setName("myimage")
             .setDescription("Tested image analysis skill")
@@ -743,15 +741,13 @@ public class SkillsetManagementSyncTests extends SearchTestBase {
     }
 
     SearchIndexerSkillset mutateSkillsInSkillset(SearchIndexerSkillset skillset) {
-        return skillset.setSkills(Collections.singletonList(
-            new KeyPhraseExtractionSkill(Collections
-                .singletonList(simpleInputFieldMappingEntry("text", "/document/mydescription/*/Tags/*")),
-                Collections.singletonList(createOutputFieldMappingEntry("keyPhrases", "myKeyPhrases")))
-                .setDefaultLanguageCode(KeyPhraseExtractionSkillLanguage.EN)
-                .setName("mykeyphrases")
-                .setDescription("Tested Key Phrase skill")
-                .setContext(CONTEXT_VALUE)
-        ));
+        return skillset.setSkills(new KeyPhraseExtractionSkill(Collections
+            .singletonList(simpleInputFieldMappingEntry("text", "/document/mydescription/*/Tags/*")),
+            Collections.singletonList(createOutputFieldMappingEntry("keyPhrases", "myKeyPhrases")))
+            .setDefaultLanguageCode(KeyPhraseExtractionSkillLanguage.EN)
+            .setName("mykeyphrases")
+            .setDescription("Tested Key Phrase skill")
+            .setContext(CONTEXT_VALUE));
     }
 
     SearchIndexerSkillset createTestSkillsetOcrEntity(List<EntityCategory> categories) {
@@ -945,7 +941,7 @@ public class SkillsetManagementSyncTests extends SearchTestBase {
         );
 
         return new SearchIndexerSkillset(testResourceNamer.randomName("key-phrase-extraction-skillset", 48),
-             skills).setDescription("Skillset for testing default configuration");
+            skills).setDescription("Skillset for testing default configuration");
     }
 
     SearchIndexerSkillset createSkillsetWithMergeDefaultSettings() {

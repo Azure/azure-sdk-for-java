@@ -338,7 +338,7 @@ public final class RntbdTransportClient extends TransportClient {
             this.bufferPageSize = 8192;
             this.connectionAcquisitionTimeout = Duration.ZERO;
             this.connectTimeout = connectionPolicy.getConnectTimeout();
-            this.idleChannelTimeout = connectionPolicy.getIdleConnectionTimeout();
+            this.idleChannelTimeout = connectionPolicy.getIdleTcpConnectionTimeout();
             this.idleEndpointTimeout = connectionPolicy.getIdleEndpointTimeout();
             this.maxBufferCapacity = 8192 << 10;
             this.maxChannelsPerEndpoint = connectionPolicy.getMaxConnectionsPerEndpoint();

@@ -28,7 +28,7 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.AzureServiceClient;
+import com.azure.resourcemanager.resources.fluentcore.AzureServiceClient;
 import com.azure.resourcemanager.resources.fluent.FeaturesClient;
 import com.azure.resourcemanager.resources.fluent.inner.OperationInner;
 import com.azure.resourcemanager.resources.fluent.inner.OperationListResultInner;
