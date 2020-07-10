@@ -7,6 +7,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.implementation.annotation.Beta;
 import com.azure.resourcemanager.appplatform.AppPlatformManager;
 import com.azure.resourcemanager.appplatform.fluent.CustomDomainsClient;
+import com.azure.resourcemanager.appplatform.fluent.inner.CustomDomainValidateResultInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsGettingById;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsGettingByName;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.HasManager;
@@ -30,8 +31,8 @@ public interface SpringAppDomains
     SupportsDeletingById,
     SupportsDeletingByName {
     /** @return the domain is validate for the parent app or not */
-    Boolean validate(String domain);
+    CustomDomainValidateResultInner validate(String domain);
 
     /** @return the domain is validate for the parent app or not */
-    Mono<Boolean> validateAsync(String domain);
+    Mono<CustomDomainValidateResultInner> validateAsync(String domain);
 }

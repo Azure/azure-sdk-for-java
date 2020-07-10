@@ -98,15 +98,14 @@ public class SpringAppDomainsImpl
     }
 
     @Override
-    public Boolean validate(String domain) {
+    public CustomDomainValidateResultInner validate(String domain) {
         return validateAsync(domain).block();
     }
 
     @Override
-    public Mono<Boolean> validateAsync(String domain) {
+    public Mono<CustomDomainValidateResultInner> validateAsync(String domain) {
         return inner().validateAsync(
-            parent().parent().resourceGroupName(), parent().parent().name(), parent().name(), domain)
-            .map(CustomDomainValidateResultInner::isValid);
+            parent().parent().resourceGroupName(), parent().parent().name(), parent().name(), domain);
     }
 
     Mono<SpringAppDomain> createOrUpdateAsync(String name, CustomDomainProperties properties) {

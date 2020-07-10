@@ -47,15 +47,14 @@ public class SpringServicesImpl
     }
 
     @Override
-    public Boolean checkNameAvailability(String name, Region region) {
+    public NameAvailabilityInner checkNameAvailability(String name, Region region) {
         return checkNameAvailabilityAsync(name, region).block();
     }
 
     @Override
-    public Mono<Boolean> checkNameAvailabilityAsync(String name, Region region) {
+    public Mono<NameAvailabilityInner> checkNameAvailabilityAsync(String name, Region region) {
         return inner().checkNameAvailabilityAsync(
-            region.toString(), new NameAvailabilityParameters().withName(name).withType(SPRING_TYPE))
-            .map(NameAvailabilityInner::nameAvailable);
+            region.toString(), new NameAvailabilityParameters().withName(name).withType(SPRING_TYPE));
     }
 
     @Override
