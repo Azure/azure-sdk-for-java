@@ -3,6 +3,7 @@
 Azure Cosmos DB is Microsoft’s globally distributed, multi-model database service for operational and analytics workloads. It offers multi-mastering feature by automatically scaling throughput, compute, and storage.
 This project provides SDK library in Java for interacting with [SQL API][sql_api_query] of [Azure Cosmos DB Database Service][cosmos_introduction].
 
+
 [Source code][source_code] | [Package (Maven)][cosmos_maven] | [API reference documentation][api_documentation] | [Product documentation][cosmos_docs] |
 [Samples][samples]
 
