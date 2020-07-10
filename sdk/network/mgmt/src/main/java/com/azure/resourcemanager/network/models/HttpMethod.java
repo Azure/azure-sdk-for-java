@@ -4,41 +4,28 @@
 
 package com.azure.resourcemanager.network.models;
 
+import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
+import java.util.Collection;
 
 /** Defines values for HttpMethod. */
-public enum HttpMethod {
-    /** Enum value Get. */
-    GET("Get");
-
-    /** The actual serialized value for a HttpMethod instance. */
-    private final String value;
-
-    HttpMethod(String value) {
-        this.value = value;
-    }
+public final class HttpMethod extends ExpandableStringEnum<HttpMethod> {
+    /** Static value Get for HttpMethod. */
+    public static final HttpMethod GET = fromString("Get");
 
     /**
-     * Parses a serialized value to a HttpMethod instance.
+     * Creates or finds a HttpMethod from its string representation.
      *
-     * @param value the serialized value to parse.
-     * @return the parsed HttpMethod object, or null if unable to parse.
+     * @param name a name to look for.
+     * @return the corresponding HttpMethod.
      */
     @JsonCreator
-    public static HttpMethod fromString(String value) {
-        HttpMethod[] items = HttpMethod.values();
-        for (HttpMethod item : items) {
-            if (item.toString().equalsIgnoreCase(value)) {
-                return item;
-            }
-        }
-        return null;
+    public static HttpMethod fromString(String name) {
+        return fromString(name, HttpMethod.class);
     }
 
-    @JsonValue
-    @Override
-    public String toString() {
-        return this.value;
+    /** @return known HttpMethod values. */
+    public static Collection<HttpMethod> values() {
+        return values(HttpMethod.class);
     }
 }

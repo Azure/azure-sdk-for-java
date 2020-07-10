@@ -2,7 +2,8 @@
 Copyright (c) Microsoft Corporation. All rights reserved.
 Licensed under the MIT License.
 -->
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>com.azure</groupId>
@@ -31,7 +32,6 @@ Licensed under the MIT License.
     <tag>HEAD</tag>
   </scm>
 
-  <!-- CosmosTableSkip - Needed temporary values to 10% not fail. -->
   <properties>
     <jacoco.skip.coverage.check>true</jacoco.skip.coverage.check>
   </properties>
@@ -40,7 +40,30 @@ Licensed under the MIT License.
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.6.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
+      <version>1.7.0-beta.1</version> <!-- {x-version-update;beta_com.azure:azure-core;dependency} -->
+    </dependency>
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-storage-common</artifactId>
+      <version>12.8.0-beta.1</version> <!-- {x-version-update;com.azure:azure-storage-common;dependency} -->
+    </dependency>
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter</artifactId>
+      <version>5.6.2</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>io.projectreactor</groupId>
+      <artifactId>reactor-test</artifactId>
+      <version>3.3.5.RELEASE</version>  <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-core-test</artifactId>
+      <version>1.3.1</version> <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
+      <scope>test</scope>
     </dependency>
   </dependencies>
 

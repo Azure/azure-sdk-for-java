@@ -3,6 +3,7 @@
 
 package com.azure.messaging.servicebus.implementation;
 
+import com.azure.messaging.servicebus.implementation.models.NamespacePropertiesEntry;
 import com.azure.messaging.servicebus.implementation.models.QueueDescriptionEntry;
 import com.azure.messaging.servicebus.implementation.models.QueueDescriptionEntryContent;
 import com.azure.messaging.servicebus.implementation.models.QueueDescriptionFeed;
@@ -13,6 +14,9 @@ import com.azure.messaging.servicebus.implementation.models.SubscriptionDescript
 import com.azure.messaging.servicebus.implementation.models.SubscriptionDescriptionFeed;
 import com.azure.messaging.servicebus.models.EntityStatus;
 import com.azure.messaging.servicebus.models.MessageCountDetails;
+import com.azure.messaging.servicebus.models.MessagingSku;
+import com.azure.messaging.servicebus.models.NamespaceProperties;
+import com.azure.messaging.servicebus.models.NamespaceType;
 import com.azure.messaging.servicebus.models.QueueDescription;
 import com.azure.messaging.servicebus.models.QueueRuntimeInfo;
 import com.azure.messaging.servicebus.models.SubscriptionDescription;
@@ -223,6 +227,39 @@ class ServiceBusManagementSerializerTest {
             assertQueueEquals(expectedEntry.getContent().getQueueDescription(), EntityStatus.ACTIVE,
                 actualEntry.getContent().getQueueDescription());
         }
+    }
+
+    /**
+     * Verify we can deserialize XML from a GET namespace request.
+     */
+    @Test
+    void deserializeNamespace() throws IOException {
+        // Arrange
+        final String contents = getContents("NamespaceEntry.xml");
+        final String name = "ShivangiServiceBus";
+        final String alias = "MyServiceBusFallback";
+        final OffsetDateTime createdTime = OffsetDateTime.parse("2020-04-09T08:38:55.807Z");
+        final OffsetDateTime modifiedTime = OffsetDateTime.parse("2020-06-12T06:34:38.383Z");
+        final MessagingSku sku = MessagingSku.PREMIUM;
+        final NamespaceType namespaceType = NamespaceType.MESSAGING;
+
+        // Act
+        final NamespacePropertiesEntry entry = serializer.deserialize(contents, NamespacePropertiesEntry.class);
+
+        // Assert
+        assertNotNull(entry);
+        assertNotNull(entry.getContent());
+
+        // The entry title is the name of the queue.
+        assertTitle(name, entry.getTitle());
+
+        final NamespaceProperties actual = entry.getContent().getNamespaceProperties();
+        assertEquals(name, actual.getName());
+        assertEquals(alias, actual.getAlias());
+        assertEquals(createdTime, actual.getCreatedTime());
+        assertEquals(modifiedTime, actual.getModifiedTime());
+        assertEquals(sku, actual.getMessagingSku());
+        assertEquals(namespaceType, actual.getNamespaceType());
     }
 
     /**

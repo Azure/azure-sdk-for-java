@@ -41,7 +41,9 @@ public class InvalidPartitionExceptionRetryPolicy extends DocumentClientRetryPol
     @Override
     public void onBeforeSendRequest(RxDocumentServiceRequest request) {
         this.request = request;
-        this.nextPolicy.onBeforeSendRequest(request);
+        if (this.nextPolicy != null) {
+            this.nextPolicy.onBeforeSendRequest(request);
+        }
     }
 
     @Override
@@ -56,7 +58,7 @@ public class InvalidPartitionExceptionRetryPolicy extends DocumentClientRetryPol
                 // TODO: this is blocking. is that fine?
                 if(this.cosmosQueryRequestOptions != null) {
                     this.clientCollectionCache.refresh(
-                        BridgeInternal.getMetaDataDiagnosticContext(this.request.requestContext.cosmosDiagnostics),
+                        this.request != null ? BridgeInternal.getMetaDataDiagnosticContext(this.request.requestContext.cosmosDiagnostics) : null,
                         collectionLink,
                         ModelBridgeInternal.getPropertiesFromQueryRequestOptions(this.cosmosQueryRequestOptions));
                 } else {
@@ -73,6 +75,9 @@ public class InvalidPartitionExceptionRetryPolicy extends DocumentClientRetryPol
             }
         }
 
-        return this.nextPolicy.shouldRetry(e);
+        if (this.nextPolicy != null) {
+            return this.nextPolicy.shouldRetry(e);
+        }
+        return Mono.just(ShouldRetryResult.error(e));
     }
 }

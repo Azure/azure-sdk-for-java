@@ -8,7 +8,7 @@ com.microsoft.azure:azure-applicationinsights-query;1.0.0-beta-2;1.0.0-beta-2
 com.microsoft.azure.cognitiveservices:azure-cognitiveservices-spellcheck;1.1.0-beta.1;1.1.0-beta.1
 com.microsoft.azure.cognitiveservices:azure-cognitiveservices-textanalytics;1.1.0-beta.1;1.1.0-beta.1
 com.microsoft.azure.cognitiveservices:azure-cognitiveservices-luis-runtime;1.1.0-beta.1;1.1.0-beta.1
-com.microsoft.azure.cognitiveservices:azure-cognitiveservices-luis-authoring;1.0.4-beta;1.0.4-beta
+com.microsoft.azure.cognitiveservices:azure-cognitiveservices-luis-authoring;1.0.5-beta;1.0.5-beta
 com.microsoft.azure.cognitiveservices:azure-cognitiveservices-autosuggest;1.1.0-beta.1;1.1.0-beta.1
 com.microsoft.azure.cognitiveservices:azure-cognitiveservices-customimagesearch;1.1.0-beta.1;1.1.0-beta.1
 com.microsoft.azure.cognitiveservices:azure-cognitiveservices-customsearch;1.1.0-beta.1;1.1.0-beta.1

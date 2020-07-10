@@ -11,7 +11,6 @@ import com.azure.ai.formrecognizer.models.FormRecognizerException;
 import com.azure.ai.formrecognizer.models.OperationResult;
 import com.azure.ai.formrecognizer.models.RecognizeOptions;
 import com.azure.ai.formrecognizer.models.RecognizedForm;
-import com.azure.ai.formrecognizer.models.RecognizedReceipt;
 import com.azure.ai.formrecognizer.training.FormTrainingAsyncClient;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
@@ -78,7 +77,7 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
     public void recognizeReceiptData(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
         client = getFormRecognizerAsyncClient(httpClient, serviceVersion);
         receiptDataRunner((data, dataLength) -> {
-            SyncPoller<OperationResult, List<RecognizedReceipt>> syncPoller =
+            SyncPoller<OperationResult, List<RecognizedForm>> syncPoller =
                 client.beginRecognizeReceipts(toFluxByteBuffer(data), dataLength, new RecognizeOptions()
                 .setContentType(FormContentType.IMAGE_JPEG).setPollInterval(durationTestMode))
                     .getSyncPoller();
@@ -108,7 +107,7 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
         FormRecognizerServiceVersion serviceVersion) {
         client = getFormRecognizerAsyncClient(httpClient, serviceVersion);
 
-        SyncPoller<OperationResult, List<RecognizedReceipt>> syncPoller = client.beginRecognizeReceipts(
+        SyncPoller<OperationResult, List<RecognizedForm>> syncPoller = client.beginRecognizeReceipts(
             getReplayableBufferData(RECEIPT_LOCAL_URL), RECEIPT_FILE_LENGTH, new RecognizeOptions()
                 .setPollInterval(durationTestMode)).getSyncPoller();
 
@@ -124,7 +123,7 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
     public void recognizeReceiptDataIncludeFieldElements(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
         client = getFormRecognizerAsyncClient(httpClient, serviceVersion);
         receiptDataRunnerFieldElements((data, includeFieldElements) -> {
-            SyncPoller<OperationResult, List<RecognizedReceipt>> syncPoller = client.beginRecognizeReceipts(
+            SyncPoller<OperationResult, List<RecognizedForm>> syncPoller = client.beginRecognizeReceipts(
                 toFluxByteBuffer(data), RECEIPT_FILE_LENGTH, new RecognizeOptions()
                     .setContentType(FormContentType.IMAGE_JPEG).setIncludeFieldElements(includeFieldElements)
                     .setPollInterval(durationTestMode)).getSyncPoller();
@@ -142,7 +141,7 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
         FormRecognizerServiceVersion serviceVersion) {
         client = getFormRecognizerAsyncClient(httpClient, serviceVersion);
         receiptPngDataRunnerFieldElements((data, includeFieldElements) -> {
-            SyncPoller<OperationResult, List<RecognizedReceipt>> syncPoller =
+            SyncPoller<OperationResult, List<RecognizedForm>> syncPoller =
                 client.beginRecognizeReceipts(toFluxByteBuffer(data), RECEIPT_PNG_FILE_LENGTH, new RecognizeOptions()
                     .setContentType(FormContentType.IMAGE_PNG).setIncludeFieldElements(includeFieldElements)
                     .setPollInterval(durationTestMode)).getSyncPoller();
@@ -160,7 +159,7 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
         FormRecognizerServiceVersion serviceVersion) {
         client = getFormRecognizerAsyncClient(httpClient, serviceVersion);
         blankPdfDataRunner((data, dataLength) -> {
-            SyncPoller<OperationResult, List<RecognizedReceipt>> syncPoller =
+            SyncPoller<OperationResult, List<RecognizedForm>> syncPoller =
                 client.beginRecognizeReceipts(toFluxByteBuffer(data), dataLength, new RecognizeOptions()
                     .setContentType(FormContentType.APPLICATION_PDF).setPollInterval(durationTestMode))
                     .getSyncPoller();
@@ -174,7 +173,7 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
     public void recognizeReceiptFromDataMultiPage(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
         client = getFormRecognizerAsyncClient(httpClient, serviceVersion);
         multipageFromDataRunner((data, dataLength) -> {
-            SyncPoller<OperationResult, List<RecognizedReceipt>> syncPoller = client.beginRecognizeReceipts(
+            SyncPoller<OperationResult, List<RecognizedForm>> syncPoller = client.beginRecognizeReceipts(
                 toFluxByteBuffer(data), dataLength, new RecognizeOptions()
                     .setContentType(FormContentType.APPLICATION_PDF).setPollInterval(durationTestMode))
                 .getSyncPoller();
@@ -193,7 +192,7 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
     public void recognizeReceiptSourceUrl(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
         client = getFormRecognizerAsyncClient(httpClient, serviceVersion);
         receiptSourceUrlRunner(sourceUrl -> {
-            SyncPoller<OperationResult, List<RecognizedReceipt>> syncPoller =
+            SyncPoller<OperationResult, List<RecognizedForm>> syncPoller =
                 client.beginRecognizeReceiptsFromUrl(sourceUrl).getSyncPoller();
             syncPoller.waitForCompletion();
             validateReceiptResultData(syncPoller.getFinalResult(), false);
@@ -227,7 +226,7 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
         FormRecognizerServiceVersion serviceVersion) {
         client = getFormRecognizerAsyncClient(httpClient, serviceVersion);
         receiptSourceUrlRunnerFieldElements((sourceUrl, includeFieldElements) -> {
-            SyncPoller<OperationResult, List<RecognizedReceipt>> syncPoller = client.beginRecognizeReceiptsFromUrl(
+            SyncPoller<OperationResult, List<RecognizedForm>> syncPoller = client.beginRecognizeReceiptsFromUrl(
                 sourceUrl, new RecognizeOptions().setIncludeFieldElements(includeFieldElements)
                     .setPollInterval(durationTestMode)).getSyncPoller();
             syncPoller.waitForCompletion();
@@ -245,7 +244,7 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
         FormRecognizerServiceVersion serviceVersion) {
         client = getFormRecognizerAsyncClient(httpClient, serviceVersion);
         receiptPngSourceUrlRunnerFieldElements((sourceUrl, includeFieldElements) -> {
-            SyncPoller<OperationResult, List<RecognizedReceipt>> syncPoller = client.beginRecognizeReceiptsFromUrl(
+            SyncPoller<OperationResult, List<RecognizedForm>> syncPoller = client.beginRecognizeReceiptsFromUrl(
                 sourceUrl, new RecognizeOptions().setIncludeFieldElements(includeFieldElements)
                     .setPollInterval(durationTestMode))
                 .getSyncPoller();
@@ -259,7 +258,7 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
     public void recognizeReceiptFromUrlMultiPage(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
         client = getFormRecognizerAsyncClient(httpClient, serviceVersion);
         multipageFromUrlRunner(fileUrl -> {
-            SyncPoller<OperationResult, List<RecognizedReceipt>> syncPoller = client.beginRecognizeReceiptsFromUrl(
+            SyncPoller<OperationResult, List<RecognizedForm>> syncPoller = client.beginRecognizeReceiptsFromUrl(
                 fileUrl, new RecognizeOptions().setPollInterval(durationTestMode)).getSyncPoller();
             syncPoller.waitForCompletion();
             validateMultipageReceiptData(syncPoller.getFinalResult());
