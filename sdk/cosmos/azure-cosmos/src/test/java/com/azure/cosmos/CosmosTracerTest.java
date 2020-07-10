@@ -24,7 +24,8 @@ import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
-import java.util.ServiceLoader;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 public class CosmosTracerTest extends TestSuiteBase {
@@ -47,26 +48,26 @@ public class CosmosTracerTest extends TestSuiteBase {
 
     @Test(groups = {"emulator"}, timeOut = TIMEOUT)
     public void cosmosAsyncClient() {
-        TracerProvider tracer = Mockito.spy(new TracerProvider(ServiceLoader.load(Tracer.class)));
-        ReflectionUtils.setTracerProvider(client, tracer);
+        TracerProvider tracerProvider = Mockito.spy(new TracerProvider(getMockTracer()));
+        ReflectionUtils.setTracerProvider(client, tracerProvider);
 
         client.createDatabaseIfNotExists(cosmosAsyncDatabase.getId()).block();
-        Mockito.verify(tracer, Mockito.times(1)).startSpan(Matchers.anyString(), Matchers.anyString(),
+        Mockito.verify(tracerProvider, Mockito.times(1)).startSpan(Matchers.anyString(), Matchers.anyString(),
             Matchers.anyString(), Matchers.any(Context.class));
 
         client.readAllDatabases(new CosmosQueryRequestOptions()).byPage().single().block();
-        Mockito.verify(tracer, Mockito.times(2)).startSpan(Matchers.anyString(), Matchers.anyString(),
+        Mockito.verify(tracerProvider, Mockito.times(2)).startSpan(Matchers.anyString(), Matchers.anyString(),
             Matchers.anyString(), Matchers.any(Context.class));
 
         String query = "select * from c where c.id = '" + cosmosAsyncDatabase.getId() + "'";
         client.queryDatabases(query, new CosmosQueryRequestOptions()).byPage().single().block();
-        Mockito.verify(tracer, Mockito.times(3)).startSpan(Matchers.anyString(), Matchers.anyString(),
+        Mockito.verify(tracerProvider, Mockito.times(3)).startSpan(Matchers.anyString(), Matchers.anyString(),
             Matchers.anyString(), Matchers.any(Context.class));
     }
 
     @Test(groups = {"emulator"}, timeOut = TIMEOUT)
     public void cosmosAsyncDatabase() {
-        TracerProvider tracer = Mockito.spy(new TracerProvider(ServiceLoader.load(Tracer.class)));
+        TracerProvider tracer = Mockito.spy(new TracerProvider(getMockTracer()));
         ReflectionUtils.setTracerProvider(client, tracer);
 
         cosmosAsyncDatabase.createContainerIfNotExists(cosmosAsyncContainer.getId(),
@@ -94,7 +95,7 @@ public class CosmosTracerTest extends TestSuiteBase {
 
     @Test(groups = {"emulator"}, timeOut = TIMEOUT)
     public void cosmosAsyncContainer() {
-        TracerProvider tracer = Mockito.spy(new TracerProvider(ServiceLoader.load(Tracer.class)));
+        TracerProvider tracer = Mockito.spy(new TracerProvider(getMockTracer()));
         ReflectionUtils.setTracerProvider(client, tracer);
 
         cosmosAsyncContainer.read().block();
@@ -140,7 +141,7 @@ public class CosmosTracerTest extends TestSuiteBase {
 
     @Test(groups = {"emulator"}, timeOut = TIMEOUT)
     public void cosmosAsyncScripts() {
-        TracerProvider tracer = Mockito.spy(new TracerProvider(ServiceLoader.load(Tracer.class)));
+        TracerProvider tracer = Mockito.spy(new TracerProvider(getMockTracer()));
         ReflectionUtils.setTracerProvider(client, tracer);
 
         cosmosAsyncContainer.getScripts().readAllStoredProcedures(new CosmosQueryRequestOptions()).byPage().single().block();
@@ -241,5 +242,13 @@ public class CosmosTracerTest extends TestSuiteBase {
     private static CosmosStoredProcedureProperties getCosmosStoredProcedureProperties() {
         CosmosStoredProcedureProperties storedProcedureDef = new CosmosStoredProcedureProperties(UUID.randomUUID().toString(), "function() {var x = 10;}");
         return storedProcedureDef;
+    }
+
+    private List<Tracer> getMockTracer() {
+        Tracer tracer = Mockito.mock(Tracer.class);
+        List<Tracer> tracerList = new ArrayList<>();
+        tracerList.add(tracer);
+        Mockito.when(tracer.start(Matchers.anyString(), Matchers.any(Context.class))).thenReturn(Context.NONE);
+        return tracerList;
     }
 }

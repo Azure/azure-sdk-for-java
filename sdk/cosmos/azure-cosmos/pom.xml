@@ -129,18 +129,6 @@ Licensed under the MIT License.
       </exclusions>
     </dependency>
     <dependency>
-      <groupId>com.azure</groupId>
-      <artifactId>azure-core-tracing-opentelemetry</artifactId>
-      <scope>test</scope>
-      <version>1.0.0-beta.5</version> <!-- {x-version-update;com.azure:azure-core-tracing-opentelemetry;dependency} -->
-      <exclusions>
-        <exclusion>
-          <groupId>io.netty</groupId>
-          <artifactId>netty-tcnative-boringssl-static</artifactId>
-        </exclusion>
-      </exclusions>
-    </dependency>
-    <dependency>
       <groupId>com.fasterxml.jackson.module</groupId>
       <artifactId>jackson-module-afterburner</artifactId>
       <version>2.10.1</version> <!-- {x-version-update;cosmos_com.fasterxml.jackson.module:jackson-module-afterburner;external_dependency} -->
