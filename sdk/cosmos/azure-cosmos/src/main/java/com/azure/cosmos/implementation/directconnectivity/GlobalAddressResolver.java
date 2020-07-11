@@ -65,8 +65,10 @@ public class GlobalAddressResolver implements IAddressResolver {
         this.routingMapProvider = routingMapProvider;
         this.serviceConfigReader = serviceConfigReader;
 
-        int maxBackupReadEndpoints = (connectionPolicy.isReadRequestsFallbackEnabled()) ?
-            GlobalAddressResolver.MaxBackupReadRegions : 0;
+        int maxBackupReadEndpoints = (connectionPolicy.isReadRequestsFallbackEnabled())
+            ? GlobalAddressResolver.MaxBackupReadRegions
+            : 0;
+
         this.maxEndpoints = maxBackupReadEndpoints + 2; // for write and alternate write getEndpoint (during failover)
         this.addressCacheByEndpoint = new ConcurrentHashMap<>();
 

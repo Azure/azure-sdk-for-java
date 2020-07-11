@@ -47,7 +47,7 @@ import java.util.concurrent.CompletionException;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicLong;
 
-import static com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdReporter.reportIssue;
+import static com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdReporter.reportIssueUnless;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkArgument;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkState;
@@ -254,16 +254,23 @@ public final class RntbdTransportClient extends TransportClient {
                     } else if (type == IOException.class) {
                         event = RntbdConnectionEvent.READ_FAILURE;
                     } else {
-                        reportIssue(logger, endpoint, "expected ClosedChannelException or IOException, not ", cause);
-                        event = RntbdConnectionEvent.READ_FAILURE;
+                        reportIssueUnless(logger, cause instanceof IOException, endpoint,
+                            "expected ClosedChannelException or IOException, not ",
+                            cause);
+                        logger.debug("request failed due to {}\n  {}\n  {}",
+                            type.getSimpleName(),
+                            RntbdObjectMapper.toString(error),
+                            RntbdObjectMapper.toString(cause));
+                        event = null;
                     }
 
-                    logger.info("Lost connection due to {}\n  {}\n  {}",
-                        type.getSimpleName(),
-                        RntbdObjectMapper.toString(error),
-                        RntbdObjectMapper.toString(cause));
-
-                    this.connectionStateListener.onConnectionEvent(event, Instant.now(), endpoint);
+                    if (event != null) {
+                        logger.info("Lost connection due to {}\n  {}\n  {}",
+                            type.getSimpleName(),
+                            RntbdObjectMapper.toString(error),
+                            RntbdObjectMapper.toString(cause));
+                        this.connectionStateListener.onConnectionEvent(event, Instant.now(), endpoint);
+                    }
                 }
             }
 
