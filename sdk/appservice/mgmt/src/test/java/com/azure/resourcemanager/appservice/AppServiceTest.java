@@ -34,11 +34,11 @@ import com.azure.resourcemanager.resources.ResourceManager;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
-import java.net.URL;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.temporal.ChronoUnit;
 
+import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
 import org.apache.commons.net.ftp.FTP;
 import org.apache.commons.net.ftp.FTPClient;
 import org.junit.jupiter.api.Assertions;
@@ -171,7 +171,7 @@ public class AppServiceTest extends TestBase {
 
     protected Response<String> curl(String urlString) throws IOException {
         try {
-            return stringResponse(httpClient.getString(getHost(urlString), getPathAndQuery(urlString))).block();
+            return stringResponse(httpClient.getString(Utils.getHost(urlString), Utils.getPathAndQuery(urlString))).block();
         } catch (MalformedURLException e) {
             Assertions.fail();
             return null;
@@ -180,7 +180,7 @@ public class AppServiceTest extends TestBase {
 
     protected String post(String urlString, String body) {
         try {
-            return stringResponse(httpClient.postString(getHost(urlString), getPathAndQuery(urlString), body))
+            return stringResponse(httpClient.postString(Utils.getHost(urlString), Utils.getPathAndQuery(urlString), body))
                 .block()
                 .getValue();
         } catch (Exception e) {
@@ -199,23 +199,6 @@ public class AppServiceTest extends TestBase {
                             str ->
                                 new SimpleResponse<>(
                                     response.getRequest(), response.getStatusCode(), response.getHeaders(), str)));
-    }
-
-    private static String getHost(String urlString) throws MalformedURLException {
-        URL url = new URL(urlString);
-        String protocol = url.getProtocol();
-        String host = url.getAuthority();
-        return protocol + "://" + host;
-    }
-
-    private static String getPathAndQuery(String urlString) throws MalformedURLException {
-        URL url = new URL(urlString);
-        String path = url.getPath();
-        String query = url.getQuery();
-        if (query != null && !query.isEmpty()) {
-            path = path + "?" + query;
-        }
-        return path;
     }
 
     protected WebAppTestClient httpClient =

@@ -3,8 +3,6 @@
 package com.azure.messaging.servicebus;
 
 import com.azure.core.amqp.AmqpRetryOptions;
-import com.azure.core.amqp.exception.AmqpErrorContext;
-import com.azure.core.amqp.exception.LinkErrorContext;
 import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
@@ -12,7 +10,6 @@ import com.azure.messaging.servicebus.implementation.MessageLockContainer;
 import com.azure.messaging.servicebus.implementation.MessageManagementOperations;
 import com.azure.messaging.servicebus.implementation.MessageUtils;
 import com.azure.messaging.servicebus.implementation.ServiceBusConstants;
-import com.azure.messaging.servicebus.implementation.ServiceBusMessageProcessor;
 import com.azure.messaging.servicebus.implementation.ServiceBusReceiveLink;
 import org.apache.qpid.proton.amqp.transport.DeliveryState;
 import reactor.core.Disposable;
@@ -75,10 +72,6 @@ class UnnamedSessionReceiver implements AutoCloseable {
         this.renewSessionLock = renewSessionLock;
         this.lockContainer = new MessageLockContainer(ServiceBusConstants.OPERATION_TIMEOUT);
 
-        final AmqpErrorContext errorContext = new LinkErrorContext(receiveLink.getHostname(),
-            receiveLink.getEntityPath(), null, null);
-        final SessionMessageManagement messageManagement = new SessionMessageManagement(receiveLink);
-
         receiveLink.setEmptyCreditListener(() -> 1);
 
         final Flux<ServiceBusReceivedMessageContext> receivedMessagesFlux = receiveLink
@@ -89,15 +82,19 @@ class UnnamedSessionReceiver implements AutoCloseable {
                 receiveLink.addCredits(prefetch);
             })
             .takeUntilOther(cancelReceiveProcessor)
-            .map(message -> messageSerializer.deserialize(message, ServiceBusReceivedMessage.class))
-            .subscribeWith(new ServiceBusMessageProcessor(receiveLink.getLinkName(), false, false,
-                Duration.ZERO, retryOptions, errorContext, messageManagement))
             .map(message -> {
-                if (!CoreUtils.isNullOrEmpty(message.getLockToken())) {
-                    lockContainer.addOrUpdate(message.getLockToken(), message.getLockedUntil());
+                final ServiceBusReceivedMessage deserialized = messageSerializer.deserialize(message,
+                    ServiceBusReceivedMessage.class);
+
+                //TODO (conniey): For session receivers, do they have a message lock token?
+                if (!CoreUtils.isNullOrEmpty(deserialized.getLockToken())) {
+                    lockContainer.addOrUpdate(deserialized.getLockToken(), deserialized.getLockedUntil());
+                } else {
+                    logger.info("sessionId[{}] message[{}]. There is no lock token.",
+                        deserialized.getSessionId(), deserialized.getMessageId());
                 }
 
-                return new ServiceBusReceivedMessageContext(message);
+                return new ServiceBusReceivedMessageContext(deserialized);
             })
             .onErrorResume(error -> {
                 logger.warning("sessionId[{}]. Error occurred. Ending session.", sessionId, error);
@@ -108,9 +105,12 @@ class UnnamedSessionReceiver implements AutoCloseable {
                     return;
                 }
 
-                final String token = CoreUtils.isNullOrEmpty(context.getMessage().getLockToken())
-                    ? context.getMessage().getLockToken()
+                final ServiceBusReceivedMessage message = context.getMessage();
+                final String token = !CoreUtils.isNullOrEmpty(message.getLockToken())
+                    ? message.getLockToken()
                     : "";
+
+                logger.verbose("Received sessionId[{}] messageId[{}]", context.getSessionId(), message.getMessageId());
                 messageReceivedSink.next(token);
             });
 

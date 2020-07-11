@@ -4,6 +4,7 @@
 package com.azure.cosmos.implementation.directconnectivity.rntbd;
 
 import com.azure.cosmos.implementation.apachecommons.collections.list.UnmodifiableList;
+import com.azure.cosmos.implementation.directconnectivity.AddressResolverExtension;
 import com.azure.cosmos.implementation.directconnectivity.IAddressResolver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,14 +24,14 @@ public class RntbdConnectionStateListener {
     // region Fields
 
     private static final Logger logger = LoggerFactory.getLogger(RntbdConnectionStateListener.class);
-    private final IAddressResolver addressResolver;
+    private final AddressResolverExtension addressResolver;
     private final ConcurrentHashMap<SocketAddress, Set<RntbdAddressCacheToken>> partitionAddressCache;
 
     // endregion
 
     // region Constructors
 
-    public RntbdConnectionStateListener(final IAddressResolver addressResolver) {
+    public RntbdConnectionStateListener(final AddressResolverExtension addressResolver) {
         checkNotNull(addressResolver, "expected non-null addressResolver");
         this.partitionAddressCache = new ConcurrentHashMap<>();
         this.addressResolver = addressResolver;

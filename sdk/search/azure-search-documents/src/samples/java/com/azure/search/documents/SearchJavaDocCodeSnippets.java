@@ -33,8 +33,6 @@ import com.azure.search.documents.indexes.models.SearchIndexerSkillset;
 import com.azure.search.documents.indexes.models.SearchIndexerStatus;
 import com.azure.search.documents.indexes.models.SearchServiceStatistics;
 import com.azure.search.documents.indexes.models.SearchSuggester;
-import com.azure.search.documents.indexes.models.SearchableFieldBuilder;
-import com.azure.search.documents.indexes.models.SimpleFieldBuilder;
 import com.azure.search.documents.indexes.models.SynonymMap;
 import com.azure.search.documents.models.AutocompleteItem;
 import com.azure.search.documents.models.AutocompleteMode;
@@ -220,8 +218,8 @@ public class SearchJavaDocCodeSnippets {
         searchDocument2.put("hotelId", "2");
         searchDocument2.put("hotelName", "test2");
         IndexDocumentsBatch<SearchDocument> indexDocumentsBatch = new IndexDocumentsBatch<>();
-        indexDocumentsBatch.addUploadActions(searchDocument1);
-        indexDocumentsBatch.addDeleteActions(searchDocument2);
+        indexDocumentsBatch.addUploadActions(Collections.singletonList(searchDocument1));
+        indexDocumentsBatch.addDeleteActions(Collections.singletonList(searchDocument2));
         IndexDocumentsResult result = searchClient.indexDocuments(indexDocumentsBatch);
         for (IndexingResult indexingResult : result.getResults()) {
             System.out.printf("Does document with key %s finish successfully? %b%n", indexingResult.getKey(),
@@ -242,8 +240,8 @@ public class SearchJavaDocCodeSnippets {
         searchDocument2.put("hotelId", "2");
         searchDocument2.put("hotelName", "test2");
         IndexDocumentsBatch<SearchDocument> indexDocumentsBatch = new IndexDocumentsBatch<>();
-        indexDocumentsBatch.addUploadActions(searchDocument1);
-        indexDocumentsBatch.addDeleteActions(searchDocument2);
+        indexDocumentsBatch.addUploadActions(Collections.singletonList(searchDocument1));
+        indexDocumentsBatch.addDeleteActions(Collections.singletonList(searchDocument2));
         Response<IndexDocumentsResult> resultResponse = searchClient.indexDocumentsWithResponse(indexDocumentsBatch,
             null, new Context(key1, value1));
         System.out.println("The status code of the response is " + resultResponse.getStatusCode());
@@ -561,8 +559,8 @@ public class SearchJavaDocCodeSnippets {
         searchDocument2.put("hotelId", "2");
         searchDocument2.put("hotelName", "test2");
         IndexDocumentsBatch<SearchDocument> indexDocumentsBatch = new IndexDocumentsBatch<>();
-        indexDocumentsBatch.addUploadActions(searchDocument1);
-        indexDocumentsBatch.addDeleteActions(searchDocument2);
+        indexDocumentsBatch.addUploadActions(Collections.singletonList(searchDocument1));
+        indexDocumentsBatch.addDeleteActions(Collections.singletonList(searchDocument2));
         searchAsyncClient.indexDocuments(indexDocumentsBatch)
             .subscribe(result -> {
                 for (IndexingResult indexingResult : result.getResults()) {
@@ -585,8 +583,8 @@ public class SearchJavaDocCodeSnippets {
         searchDocument2.put("hotelId", "2");
         searchDocument2.put("hotelName", "test2");
         IndexDocumentsBatch<SearchDocument> indexDocumentsBatch = new IndexDocumentsBatch<>();
-        indexDocumentsBatch.addUploadActions(searchDocument1);
-        indexDocumentsBatch.addDeleteActions(searchDocument2);
+        indexDocumentsBatch.addUploadActions(Collections.singletonList(searchDocument1));
+        indexDocumentsBatch.addDeleteActions(Collections.singletonList(searchDocument2));
         searchAsyncClient.indexDocumentsWithResponse(indexDocumentsBatch, null)
             .subscribe(resultResponse -> {
                 System.out.println("The status code of the response is " + resultResponse.getStatusCode());
@@ -789,8 +787,8 @@ public class SearchJavaDocCodeSnippets {
     public void createSearchIndex() {
         // BEGIN: com.azure.search.documents.indexes.SearchIndexClient.createIndex#SearchIndex
         List<SearchField> searchFields = Arrays.asList(
-            new SimpleFieldBuilder("hotelId", SearchFieldDataType.STRING, false).setKey(true).build(),
-            new SearchableFieldBuilder("hotelName", false).build()
+            new SearchField("hotelId", SearchFieldDataType.STRING).setKey(true),
+            new SearchField("hotelName", SearchFieldDataType.STRING).setSearchable(true)
         );
         SearchIndex searchIndex = new SearchIndex("searchIndex", searchFields);
         SearchIndex indexFromService = searchIndexClient.createIndex(searchIndex);
@@ -805,8 +803,8 @@ public class SearchJavaDocCodeSnippets {
     public void createSearchIndexWithResponse() {
         // BEGIN: com.azure.search.documents.indexes.SearchIndexClient.createIndexWithResponse#SearchIndex-Context
         List<SearchField> searchFields = Arrays.asList(
-            new SimpleFieldBuilder("hotelId", SearchFieldDataType.STRING, false).setKey(true).build(),
-            new SearchableFieldBuilder("hotelName", false).build()
+            new SearchField("hotelId", SearchFieldDataType.STRING).setKey(true),
+            new SearchField("hotelName", SearchFieldDataType.STRING).setSearchable(true)
         );
         SearchIndex searchIndex = new SearchIndex("searchIndex", searchFields);
 
@@ -1199,8 +1197,8 @@ public class SearchJavaDocCodeSnippets {
     public void createSearchIndexAsync() {
         // BEGIN: com.azure.search.documents.indexes.SearchIndexAsyncClient.createIndex#SearchIndex
         List<SearchField> searchFields = Arrays.asList(
-            new SimpleFieldBuilder("hotelId", SearchFieldDataType.STRING, false).setKey(true).build(),
-            new SearchableFieldBuilder("hotelName", false).build()
+            new SearchField("hotelId", SearchFieldDataType.STRING).setKey(true),
+            new SearchField("hotelName", SearchFieldDataType.STRING).setSearchable(true)
         );
         SearchIndex searchIndex = new SearchIndex("searchIndex", searchFields);
         searchIndexAsyncClient.createIndex(searchIndex)
@@ -1216,8 +1214,8 @@ public class SearchJavaDocCodeSnippets {
     public void createSearchIndexWithResponseAsync() {
         // BEGIN: com.azure.search.documents.indexes.SearchIndexAsyncClient.createIndexWithResponse#SearchIndex
         List<SearchField> searchFields = Arrays.asList(
-            new SimpleFieldBuilder("hotelId", SearchFieldDataType.STRING, false).setKey(true).build(),
-            new SearchableFieldBuilder("hotelName", false).build()
+            new SearchField("hotelId", SearchFieldDataType.STRING).setKey(true),
+            new SearchField("hotelName", SearchFieldDataType.STRING).setSearchable(true)
         );
         SearchIndex searchIndex = new SearchIndex("searchIndex", searchFields);
 

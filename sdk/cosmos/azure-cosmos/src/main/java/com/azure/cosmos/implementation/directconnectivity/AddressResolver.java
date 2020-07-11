@@ -87,11 +87,6 @@ public class AddressResolver implements IAddressResolver {
         });
     }
 
-    @Override
-    public Mono<Void> updateAsync(List<RntbdAddressCacheToken> tokens) {
-        return Mono.error(new NotImplementedException("AddressResolver.updateAsync"));
-    }
-
     private static void ensureRoutingMapPresent(
         RxDocumentServiceRequest request,
         CollectionRoutingMap routingMap,

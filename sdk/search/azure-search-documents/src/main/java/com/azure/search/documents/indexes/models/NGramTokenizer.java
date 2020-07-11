@@ -5,8 +5,11 @@ package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -106,6 +109,18 @@ public final class NGramTokenizer extends LexicalTokenizer {
      * @param tokenChars the tokenChars value to set.
      * @return the NGramTokenizer object itself.
      */
+    public NGramTokenizer setTokenChars(TokenCharacterKind... tokenChars) {
+        this.tokenChars = (tokenChars == null) ? null : Arrays.asList(tokenChars);
+        return this;
+    }
+
+    /**
+     * Set the tokenChars property: Character classes to keep in the tokens.
+     *
+     * @param tokenChars the tokenChars value to set.
+     * @return the NGramTokenizer object itself.
+     */
+    @JsonSetter
     public NGramTokenizer setTokenChars(List<TokenCharacterKind> tokenChars) {
         this.tokenChars = tokenChars;
         return this;

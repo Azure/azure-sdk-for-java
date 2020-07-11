@@ -16,7 +16,9 @@
             "com\\.microsoft\\.spring\\..+",
             "javax\\.jms(\\..+)?",
             "javax\\.servlet(\\..+)?",
-            "io\\.micrometer(\\..+)?"
+            "io\\.micrometer(\\..+)?",
+            "com\\.azure\\.data\\.cosmos(\\..+)?",
+            "com\\.azure\\.spring\\.data\\.cosmos\\..+"
           ]
         }
       }

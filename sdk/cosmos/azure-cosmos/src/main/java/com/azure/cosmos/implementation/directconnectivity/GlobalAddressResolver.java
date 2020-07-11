@@ -32,7 +32,8 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
-public class GlobalAddressResolver implements IAddressResolver {
+public class GlobalAddressResolver implements AddressResolverExtension {
+
     private final static int MaxBackupReadRegions = 3;
     final Map<URI, EndpointCache> addressCacheByEndpoint;
     private final RxCollectionCache collectionCache;

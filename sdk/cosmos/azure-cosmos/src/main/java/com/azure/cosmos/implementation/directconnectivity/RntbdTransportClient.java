@@ -47,6 +47,7 @@ import java.util.concurrent.CompletionException;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicLong;
 
+import static com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdReporter.reportIssue;
 import static com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdReporter.reportIssueUnless;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkArgument;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
@@ -86,7 +87,7 @@ public final class RntbdTransportClient extends TransportClient {
         final Configs configs,
         final ConnectionPolicy connectionPolicy,
         final UserAgentContainer userAgent,
-        final IAddressResolver addressResolver) {
+        final AddressResolverExtension addressResolver) {
 
         this(
             new Options.Builder(connectionPolicy).userAgent(userAgent).build(),
@@ -462,8 +463,8 @@ public final class RntbdTransportClient extends TransportClient {
             this.connectionAcquisitionTimeout = Duration.ZERO;
             this.connectionEndpointRediscovery = connectionPolicy.getEnableTcpConnectionEndpointRediscovery();
             this.connectTimeout = connectionPolicy.getConnectTimeout();
-            this.idleChannelTimeout = connectionPolicy.getIdleConnectionTimeout();
-            this.idleEndpointTimeout = connectionPolicy.getIdleEndpointTimeout();
+            this.idleChannelTimeout = connectionPolicy.getIdleTcpConnectionTimeout();
+            this.idleEndpointTimeout = connectionPolicy.getIdleTcpEndpointTimeout();
             this.maxBufferCapacity = 8192 << 10;
             this.maxChannelsPerEndpoint = connectionPolicy.getMaxConnectionsPerEndpoint();
             this.maxRequestsPerChannel = connectionPolicy.getMaxRequestsPerConnection();
@@ -699,7 +700,7 @@ public final class RntbdTransportClient extends TransportClient {
                 this.connectionAcquisitionTimeout = DEFAULT_OPTIONS.connectionAcquisitionTimeout;
                 this.connectionEndpointRediscovery = DEFAULT_OPTIONS.connectionEndpointRediscovery;
                 this.connectTimeout = connectionPolicy.getConnectTimeout();
-                this.idleChannelTimeout = connectionPolicy.getIdleConnectionTimeout();
+                this.idleChannelTimeout = connectionPolicy.getIdleTcpConnectionTimeout();
                 this.idleEndpointTimeout = DEFAULT_OPTIONS.idleEndpointTimeout;
                 this.maxBufferCapacity = DEFAULT_OPTIONS.maxBufferCapacity;
                 this.maxChannelsPerEndpoint = connectionPolicy.getMaxConnectionsPerEndpoint();
