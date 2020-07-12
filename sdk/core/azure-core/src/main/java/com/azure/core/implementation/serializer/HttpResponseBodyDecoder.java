@@ -159,12 +159,12 @@ final class HttpResponseBodyDecoder {
                                           final SerializerAdapter serializer,
                                           final SerializerEncoding encoding) throws IOException {
         if (wireType == null) {
-            return serializer.deserialize(value, resultType, encoding);
+            return serializer.deserializeFromBytes(value, resultType, encoding);
         } else if (TypeUtil.isTypeOrSubTypeOf(wireType, Page.class)) {
             return deserializePage(value, resultType, wireType, serializer, encoding);
         } else {
             final Type wireResponseType = constructWireResponseType(resultType, wireType);
-            final Object wireResponse = serializer.deserialize(value, wireResponseType, encoding);
+            final Object wireResponse = serializer.deserializeFromBytes(value, wireResponseType, encoding);
 
             return convertToResultType(wireResponse, resultType, wireType);
         }
@@ -235,7 +235,7 @@ final class HttpResponseBodyDecoder {
             ? TypeUtil.createParameterizedType(ItemPage.class, resultType)
             : wireType;
 
-        return serializer.deserialize(value, wireResponseType, encoding);
+        return serializer.deserializeFromBytes(value, wireResponseType, encoding);
     }
 
     /**

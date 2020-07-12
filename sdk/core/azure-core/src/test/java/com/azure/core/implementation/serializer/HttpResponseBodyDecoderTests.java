@@ -139,7 +139,7 @@ public class HttpResponseBodyDecoderTests {
     @Test
     public void ioExceptionInErrorDeserializationReturnsEmpty() throws IOException {
         JacksonAdapter ioExceptionThrower = mock(JacksonAdapter.class);
-        when(ioExceptionThrower.deserialize((byte[]) any(), any(), any())).thenThrow(IOException.class);
+        when(ioExceptionThrower.deserializeFromBytes((byte[]) any(), any(), any())).thenThrow(IOException.class);
 
         HttpResponseDecodeData noExpectedStatusCodes = mock(HttpResponseDecodeData.class);
         when(noExpectedStatusCodes.getUnexpectedException(anyInt()))
@@ -368,7 +368,7 @@ public class HttpResponseBodyDecoderTests {
         when(decodeData.isExpectedResponseStatusCode(200)).thenReturn(true);
 
         SerializerAdapter serializer = mock(SerializerAdapter.class);
-        when(serializer.deserialize((byte[]) any(), any(), any())).thenThrow(IOException.class);
+        when(serializer.deserializeFromBytes((byte[]) any(), any(), any())).thenThrow(IOException.class);
 
         StepVerifier.create(HttpResponseBodyDecoder.decode(null, response, serializer, decodeData))
             .verifyError(HttpResponseException.class);

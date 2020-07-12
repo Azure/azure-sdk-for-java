@@ -40,6 +40,7 @@ import java.util.regex.Pattern;
  * Implementation of {@link SerializerAdapter} for Jackson.
  */
 public class JacksonAdapter implements SerializerAdapter {
+    private static final byte[] EMPTY_BYTE_ARRAY = new byte[] { };
     private static final Pattern PATTERN = Pattern.compile("^\"*|\"*$");
 
     private final ClientLogger logger = new ClientLogger(JacksonAdapter.class);
@@ -139,7 +140,7 @@ public class JacksonAdapter implements SerializerAdapter {
     @Override
     public byte[] serializeToBytes(Object object, SerializerEncoding encoding) throws IOException {
         if (object == null) {
-            return new byte[0];
+            return EMPTY_BYTE_ARRAY;
         }
 
         return (encoding == SerializerEncoding.XML)
@@ -175,7 +176,7 @@ public class JacksonAdapter implements SerializerAdapter {
 
     @Override
     @SuppressWarnings("unchecked")
-    public <T> T deserialize(byte[] value, final Type type, SerializerEncoding encoding) throws IOException {
+    public <T> T deserializeFromBytes(byte[] value, final Type type, SerializerEncoding encoding) throws IOException {
         if (value == null || value.length == 0) {
             return null;
         }

@@ -14,6 +14,7 @@ import java.util.List;
  * An interface defining the behaviors of a serializer.
  */
 public interface SerializerAdapter {
+
     /**
      * Serializes an object into a string.
      *
@@ -29,7 +30,7 @@ public interface SerializerAdapter {
      *
      * @param object the object to serialize
      * @param encoding the encoding to use for serialization
-     * @return the serialized byte array. Null if the object to serialize is null
+     * @return the serialized byte array, or an empty byte array if the object to serialize is null.
      * @throws IOException exception from serialization
      */
     byte[] serializeToBytes(Object object, SerializerEncoding encoding) throws IOException;
@@ -64,7 +65,7 @@ public interface SerializerAdapter {
      * @throws IOException exception from deserialization
      */
     default <U> U deserialize(String value, Type type, SerializerEncoding encoding) throws IOException {
-        return deserialize(value.getBytes(StandardCharsets.UTF_8), type, encoding);
+        return deserializeFromBytes(value.getBytes(StandardCharsets.UTF_8), type, encoding);
     }
 
     /**
@@ -74,11 +75,12 @@ public interface SerializerAdapter {
      * @param <U> the type of the deserialized object
      * @param type the type to deserialize
      * @param encoding the encoding used in the serialized value
-     * @return the deserialized object
+     * @return the deserialized object, or null if it cannot be deserialized
      * @throws IOException exception from deserialization
      */
-    // TODO (jogiles) JavaDoc. Also, this overload will lead to compilation issues - might be best to rename
-    <U> U deserialize(byte[] value, Type type, SerializerEncoding encoding) throws IOException;
+    default <U> U deserializeFromBytes(byte[] value, Type type, SerializerEncoding encoding) throws IOException {
+        return null;
+    }
 
     /**
      * Deserialize the provided headers returned from a REST API to an entity instance declared as
