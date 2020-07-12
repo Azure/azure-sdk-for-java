@@ -20,6 +20,7 @@ import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdRequestArgs
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdRequestRecord;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdServiceEndpoint;
 import com.azure.cosmos.implementation.guava25.base.Strings;
+import com.azure.cosmos.implementation.routing.PartitionKeyRangeIdentity;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -205,8 +206,10 @@ public final class RntbdTransportClient extends TransportClient {
         final RntbdEndpoint endpoint = this.endpointProvider.get(address);
         final RntbdRequestRecord record = endpoint.request(requestArgs);
 
+        final PartitionKeyRangeIdentity partitionKeyRangeIdentity = request.getPartitionKeyRangeIdentity();
+
         this.connectionStateListener.updateConnectionState(new RntbdAddressCacheToken(
-            request.getPartitionKeyRangeIdentity(),
+            partitionKeyRangeIdentity,
             endpoint));
 
         final Mono<StoreResponse> result = Mono.fromFuture(record.whenComplete((response, throwable) -> {
@@ -258,18 +261,18 @@ public final class RntbdTransportClient extends TransportClient {
                         reportIssueUnless(logger, cause instanceof IOException, endpoint,
                             "expected ClosedChannelException or IOException, not ",
                             cause);
-                        logger.debug("request failed due to {}\n  {}\n  {}",
-                            type.getSimpleName(),
-                            RntbdObjectMapper.toString(error),
-                            RntbdObjectMapper.toString(cause));
                         event = null;
                     }
 
-                    if (event != null) {
-                        logger.info("Lost connection due to {}\n  {}\n  {}",
+                    if (logger.isDebugEnabled()) {
+                        logger.debug("{} failed due to {}\n  {}\n  {}",
+                            endpoint,
                             type.getSimpleName(),
                             RntbdObjectMapper.toString(error),
                             RntbdObjectMapper.toString(cause));
+                    }
+
+                    if (event != null) {
                         this.connectionStateListener.onConnectionEvent(event, Instant.now(), endpoint);
                     }
                 }

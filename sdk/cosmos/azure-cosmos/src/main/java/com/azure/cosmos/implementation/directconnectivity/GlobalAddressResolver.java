@@ -66,7 +66,7 @@ public class GlobalAddressResolver implements AddressResolverExtension {
         this.routingMapProvider = routingMapProvider;
         this.serviceConfigReader = serviceConfigReader;
 
-        int maxBackupReadEndpoints = (connectionPolicy.isReadRequestsFallbackEnabled())
+        int maxBackupReadEndpoints = connectionPolicy.isReadRequestsFallbackEnabled()
             ? GlobalAddressResolver.MaxBackupReadRegions
             : 0;
 

@@ -858,7 +858,7 @@ public class RxDocumentServiceRequest implements Cloneable {
     }
 
     public PartitionKeyRangeIdentity getPartitionKeyRangeIdentity() {
-        return partitionKeyRangeIdentity;
+        return this.partitionKeyRangeIdentity;
     }
 
     public void routeTo(PartitionKeyRangeIdentity partitionKeyRangeIdentity) {

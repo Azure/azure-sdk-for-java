@@ -5,7 +5,6 @@ package com.azure.cosmos.implementation.directconnectivity.rntbd;
 
 import com.azure.cosmos.implementation.apachecommons.collections.list.UnmodifiableList;
 import com.azure.cosmos.implementation.directconnectivity.AddressResolverExtension;
-import com.azure.cosmos.implementation.directconnectivity.IAddressResolver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Mono;
@@ -43,13 +42,19 @@ public class RntbdConnectionStateListener {
 
     public void onConnectionEvent(
         final RntbdConnectionEvent event,
-        final Instant instant,
+        final Instant time,
         final RntbdEndpoint endpoint) {
 
-        logger.debug("onConnectionEvent fired, connectionEvent: {}, eventTime: {}, serverKey: {}",
-            event,
-            instant,
-            endpoint);
+        checkNotNull(event, "expected non-null event");
+        checkNotNull(time,"expected non-null time" );
+        checkNotNull(endpoint, "expected non-null endpoint");
+
+        if (logger.isDebugEnabled()) {
+            logger.debug("onConnectionEvent({\"event\":{},\"time\":{},\"endpoint\":{})",
+                RntbdObjectMapper.toJson(event),
+                RntbdObjectMapper.toJson(time),
+                RntbdObjectMapper.toJson(endpoint));
+        }
 
         if (event == RntbdConnectionEvent.READ_EOF || event == RntbdConnectionEvent.READ_FAILURE) {
             this.updateAddressCacheAsync(endpoint).publishOn(Schedulers.parallel())
@@ -69,8 +74,6 @@ public class RntbdConnectionStateListener {
     // region Privates
 
     private Mono<Void> updateAddressCacheAsync(final RntbdEndpoint endpoint) {
-
-        checkNotNull(endpoint, "expected non-null endpoint");
 
         final Set<RntbdAddressCacheToken> tokens = this.partitionAddressCache.get(endpoint.remoteAddress());
         final Mono<Void> update;
