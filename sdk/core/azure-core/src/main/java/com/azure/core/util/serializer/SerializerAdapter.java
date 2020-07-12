@@ -33,7 +33,9 @@ public interface SerializerAdapter {
      * @return the serialized byte array, or an empty byte array if the object to serialize is null.
      * @throws IOException exception from serialization
      */
-    byte[] serializeToBytes(Object object, SerializerEncoding encoding) throws IOException;
+    default byte[] serializeToBytes(final Object object, final SerializerEncoding encoding) throws IOException {
+        return new byte[] { };
+    }
 
     /**
      * Serializes an object into a raw string. The leading and trailing quotes will be trimmed.
@@ -64,7 +66,9 @@ public interface SerializerAdapter {
      * @return the deserialized object
      * @throws IOException exception from deserialization
      */
-    default <U> U deserialize(String value, Type type, SerializerEncoding encoding) throws IOException {
+    default <U> U deserialize(final String value,
+                              final Type type,
+                              final SerializerEncoding encoding) throws IOException {
         return deserializeFromBytes(value.getBytes(StandardCharsets.UTF_8), type, encoding);
     }
 
@@ -78,7 +82,9 @@ public interface SerializerAdapter {
      * @return the deserialized object, or null if it cannot be deserialized
      * @throws IOException exception from deserialization
      */
-    default <U> U deserializeFromBytes(byte[] value, Type type, SerializerEncoding encoding) throws IOException {
+    default <U> U deserializeFromBytes(final byte[] value,
+                                       final Type type,
+                                       final SerializerEncoding encoding) throws IOException {
         return null;
     }
 

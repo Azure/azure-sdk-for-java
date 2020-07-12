@@ -68,13 +68,11 @@ public class JacksonAdapter implements SerializerAdapter {
      * Creates a new JacksonAdapter instance with default mapper settings.
      */
     public JacksonAdapter() {
-        simpleMapper = initializeObjectMapper(new ObjectMapper())
-           .registerModule(new AfterburnerModule());
+        simpleMapper = initializeObjectMapper(new ObjectMapper());
 
         xmlMapper = initializeObjectMapper(new XmlMapper())
             .setDefaultUseWrapper(false)
-            .configure(ToXmlGenerator.Feature.WRITE_XML_DECLARATION, true)
-            .registerModule(new AfterburnerModule());
+            .configure(ToXmlGenerator.Feature.WRITE_XML_DECLARATION, true);
 
         ObjectMapper flatteningMapper = initializeObjectMapper(new ObjectMapper())
             .registerModule(FlatteningSerializer.getModule(simpleMapper()))
@@ -85,8 +83,7 @@ public class JacksonAdapter implements SerializerAdapter {
             .registerModule(AdditionalPropertiesSerializer.getModule(flatteningMapper))
             .registerModule(AdditionalPropertiesDeserializer.getModule(flatteningMapper))
             .registerModule(FlatteningSerializer.getModule(simpleMapper()))
-            .registerModule(FlatteningDeserializer.getModule(simpleMapper()))
-            .registerModule(new AfterburnerModule());
+            .registerModule(FlatteningDeserializer.getModule(simpleMapper()));
 
         headerMapper = simpleMapper
             .copy()
@@ -276,7 +273,8 @@ public class JacksonAdapter implements SerializerAdapter {
             .registerModule(DateTimeRfc1123Serializer.getModule())
             .registerModule(DurationSerializer.getModule())
             .registerModule(HttpHeadersSerializer.getModule())
-            .registerModule(UnixTimeSerializer.getModule());
+            .registerModule(UnixTimeSerializer.getModule())
+            .registerModule(new AfterburnerModule());
         mapper.setVisibility(mapper.getSerializationConfig().getDefaultVisibilityChecker()
             .withFieldVisibility(JsonAutoDetect.Visibility.ANY)
             .withSetterVisibility(JsonAutoDetect.Visibility.NONE)
