@@ -46,7 +46,6 @@ import java.util.Map;
 import java.util.stream.Stream;
 
 import static com.azure.core.http.ContentType.APPLICATION_X_WWW_FORM_URLENCODED;
-import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
