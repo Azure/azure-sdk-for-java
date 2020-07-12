@@ -49,6 +49,7 @@ import static com.azure.core.http.ContentType.APPLICATION_X_WWW_FORM_URLENCODED;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class SwaggerMethodParserTests {
     interface OperationMethods {
@@ -497,7 +498,11 @@ public class SwaggerMethodParserTests {
         boolean matchesExpected) {
         SwaggerMethodParser swaggerMethodParser = new SwaggerMethodParser(method, "https://raw.host.com");
 
-        assertArrayEquals(expectedStatusCodes, swaggerMethodParser.getExpectedStatusCodes());
+        if (expectedStatusCodes != null) {
+            for (int expectedCode : expectedStatusCodes) {
+                assertTrue(swaggerMethodParser.isExpectedResponseStatusCode(expectedCode));
+            }
+        }
         assertEquals(matchesExpected, swaggerMethodParser.isExpectedResponseStatusCode(statusCode));
     }
 

@@ -7,6 +7,7 @@ import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
+import com.azure.core.implementation.serializer.HttpResponseDecodeData;
 import com.azure.core.implementation.serializer.HttpResponseDecoder;
 import com.azure.core.util.IterableStream;
 import com.azure.core.util.serializer.SerializerAdapter;
@@ -270,7 +271,17 @@ class ResponseConstructorsCacheBenchMarkTestData {
               Mono<HttpResponse> httpResponse,
               Object bodyAsObject) {
             this.returnType = findMethod(serviceClass, methodName).getGenericReturnType();
-            this.decodedResponse = decoder.decode(httpResponse, () -> returnType).block();
+            this.decodedResponse = decoder.decode(httpResponse, new HttpResponseDecodeData() {
+                @Override
+                public Type getReturnType() {
+                    return returnType;
+                }
+
+                @Override
+                public boolean isExpectedResponseStatusCode(int statusCode) {
+                    return false;
+                }
+            }).block();
             this.bodyAsObject = bodyAsObject;
         }
 

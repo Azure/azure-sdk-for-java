@@ -112,7 +112,7 @@ public class HttpResponseBodyDecoderTests {
         when(noExpectedStatusCodes.getUnexpectedException(anyInt())).thenReturn(exceptionInformation);
 
         HttpResponseDecodeData expectedStatusCodes = mock(HttpResponseDecodeData.class);
-        when(expectedStatusCodes.getExpectedStatusCodes()).thenReturn(new int[] { 202 });
+        when(expectedStatusCodes.isExpectedResponseStatusCode(202)).thenReturn(true);
         when(expectedStatusCodes.getUnexpectedException(anyInt())).thenReturn(exceptionInformation);
 
         HttpResponse emptyResponse = new MockHttpResponse(GET_REQUEST, 300, (Object) null);
@@ -153,7 +153,6 @@ public class HttpResponseBodyDecoderTests {
     @Test
     public void headRequestReturnsEmpty() {
         HttpResponseDecodeData decodeData = mock(HttpResponseDecodeData.class);
-        when(decodeData.getExpectedStatusCodes()).thenReturn(new int[] { 200 });
         when(decodeData.isExpectedResponseStatusCode(200)).thenReturn(true);
 
         HttpResponse response = new MockHttpResponse(HEAD_REQUEST, 200);

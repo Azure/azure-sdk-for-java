@@ -7,15 +7,15 @@ import java.lang.reflect.GenericDeclaration;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.WeakHashMap;
 
 /**
  * Utility type exposing methods to deal with {@link Type}.
  */
 public final class TypeUtil {
-    private static final Map<Type, Type> SUPER_TYPE_MAP = new WeakHashMap<>();
+    private static final Map<Type, Type> SUPER_TYPE_MAP = new HashMap<>();
 
     /**
      * Find all super classes including provided class.
@@ -82,8 +82,9 @@ public final class TypeUtil {
     public static Type getSuperType(final Type type) {
         return SUPER_TYPE_MAP.computeIfAbsent(type, _type -> {
             if (type instanceof ParameterizedType) {
-                ParameterizedType parameterizedType = (ParameterizedType) type;
-                Type genericSuperClass = ((Class<?>) parameterizedType.getRawType()).getGenericSuperclass();
+                final ParameterizedType parameterizedType = (ParameterizedType) type;
+                final Type genericSuperClass = ((Class<?>) parameterizedType.getRawType()).getGenericSuperclass();
+
                 if (genericSuperClass instanceof ParameterizedType) {
                     /*
                      * Find erased generic types for the super class and replace
@@ -93,31 +94,17 @@ public final class TypeUtil {
                     final Type[] typeParameters =
                         ((GenericDeclaration) parameterizedType.getRawType()).getTypeParameters();
                     int k = 0;
-                    outer:
+
                     for (int i = 0; i != superTypeArguments.length; i++) {
                         for (int j = 0; i < typeParameters.length; j++) {
                             if (typeParameters[j].equals(superTypeArguments[i])) {
                                 superTypeArguments[i] = parameterizedType.getActualTypeArguments()[k++];
-                                break outer;
+                                break;
                             }
                         }
                     }
-                    return new ParameterizedType() {
-                        @Override
-                        public Type[] getActualTypeArguments() {
-                            return superTypeArguments;
-                        }
-
-                        @Override
-                        public Type getRawType() {
-                            return ((ParameterizedType) genericSuperClass).getRawType();
-                        }
-
-                        @Override
-                        public Type getOwnerType() {
-                            return null;
-                        }
-                    };
+                    return createParameterizedType(((ParameterizedType) genericSuperClass).getRawType(),
+                        superTypeArguments);
                 } else {
                     return genericSuperClass;
                 }
@@ -160,7 +147,7 @@ public final class TypeUtil {
      * @param genericTypes the generic arguments
      * @return the parameterized type
      */
-    public static ParameterizedType createParameterizedType(Class<?> rawClass, Type... genericTypes) {
+    public static ParameterizedType createParameterizedType(Type rawClass, Type... genericTypes) {
         return new ParameterizedType() {
             @Override
             public Type[] getActualTypeArguments() {
