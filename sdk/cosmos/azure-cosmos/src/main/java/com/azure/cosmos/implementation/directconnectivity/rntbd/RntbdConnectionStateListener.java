@@ -3,6 +3,7 @@
 
 package com.azure.cosmos.implementation.directconnectivity.rntbd;
 
+import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.apachecommons.collections.list.UnmodifiableList;
 import com.azure.cosmos.implementation.directconnectivity.AddressResolverExtension;
 import org.slf4j.Logger;
@@ -31,9 +32,8 @@ public class RntbdConnectionStateListener {
     // region Constructors
 
     public RntbdConnectionStateListener(final AddressResolverExtension addressResolver) {
-        checkNotNull(addressResolver, "expected non-null addressResolver");
+        this.addressResolver = checkNotNull(addressResolver, "expected non-null addressResolver");
         this.partitionAddressCache = new ConcurrentHashMap<>();
-        this.addressResolver = addressResolver;
     }
 
     // endregion
@@ -63,10 +63,8 @@ public class RntbdConnectionStateListener {
         }
     }
 
-    public void updateConnectionState(final RntbdAddressCacheToken addressCacheToken) {
-        if (addressCacheToken != null) {
-            this.updatePartitionAddressCache(addressCacheToken);
-        }
+    public void updateConnectionState(final RntbdEndpoint endpoint, final RxDocumentServiceRequest request) {
+        this.updatePartitionAddressCache(new RntbdAddressCacheToken(this.addressResolver, endpoint, request));
     }
 
     // endregion

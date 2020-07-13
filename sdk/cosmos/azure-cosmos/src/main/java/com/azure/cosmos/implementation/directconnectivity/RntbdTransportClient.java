@@ -20,7 +20,6 @@ import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdRequestArgs
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdRequestRecord;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdServiceEndpoint;
 import com.azure.cosmos.implementation.guava25.base.Strings;
-import com.azure.cosmos.implementation.routing.PartitionKeyRangeIdentity;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -206,11 +205,7 @@ public final class RntbdTransportClient extends TransportClient {
         final RntbdEndpoint endpoint = this.endpointProvider.get(address);
         final RntbdRequestRecord record = endpoint.request(requestArgs);
 
-        final PartitionKeyRangeIdentity partitionKeyRangeIdentity = request.getPartitionKeyRangeIdentity();
-
-        this.connectionStateListener.updateConnectionState(new RntbdAddressCacheToken(
-            partitionKeyRangeIdentity,
-            endpoint));
+        this.connectionStateListener.updateConnectionState(endpoint, request);
 
         final Mono<StoreResponse> result = Mono.fromFuture(record.whenComplete((response, throwable) -> {
 

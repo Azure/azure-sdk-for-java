@@ -88,21 +88,33 @@ public class GlobalAddressResolver implements AddressResolverExtension {
     }
 
     @Override
+    public URI getAddressResolverURI(RxDocumentServiceRequest rxDocumentServiceRequest) {
+        return this.endpointManager.resolveServiceEndpoint(rxDocumentServiceRequest);
+    }
+
+    @Override
     public Mono<AddressInformation[]> resolveAsync(RxDocumentServiceRequest request, boolean forceRefresh) {
         IAddressResolver resolver = this.getAddressResolver(request);
         return resolver.resolveAsync(request, forceRefresh);
     }
 
     @Override
-    public Mono<Void> updateAsync(List<RntbdAddressCacheToken> tokens) {
+    public Mono<Void> updateAsync(final List<RntbdAddressCacheToken> tokens) {
 
-        CompletableFuture<?>[] updates = new CompletableFuture<?>[tokens.size()];
+        final CompletableFuture<?>[] updates = new CompletableFuture<?>[tokens.size()];
         int i = 0;
 
         for (RntbdAddressCacheToken token : tokens) {
-            EndpointCache endpointCache = this.addressCacheByEndpoint.get(token.getRemoteURI());
-            if (endpointCache != null) {
-                updates[i++] = endpointCache.addressCache.updateAsync(token.getPartitionKeyRangeIdentity()).toFuture();
+
+            final PartitionKeyRangeIdentity partitionKeyRangeIdentity = token.getPartitionKeyRangeIdentity();
+
+            // TODO (DANOBLE) when is partitionKeyRangeIdentity null? Should address cache tokens be created for them?
+
+            if (partitionKeyRangeIdentity != null) {
+                EndpointCache endpointCache = this.addressCacheByEndpoint.get(token.getAddressResolverURI());
+                if (endpointCache != null) {
+                    updates[i++] = endpointCache.addressCache.updateAsync(partitionKeyRangeIdentity).toFuture();
+                }
             }
         }
 
