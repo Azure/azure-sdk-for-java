@@ -19,7 +19,6 @@ import java.util.List;
  * programming.
  * @see EventGridEvent
  * @see CloudEvent
- * @see EventSchema
  */
 @ServiceClient(builder = EventGridPublisherClientBuilder.class, isAsync = true)
 public class EventGridPublisherAsyncClient {
@@ -56,7 +55,7 @@ public class EventGridPublisherAsyncClient {
      *
      * @return the completion.
      */
-    public Mono<Void> publishCustomEvents(List<EventSchema> events) {
+    public Mono<Void> publishCustomEvents(List<Object> events) {
         // TODO: implement method
         return null;
     }
@@ -89,7 +88,7 @@ public class EventGridPublisherAsyncClient {
      *
      * @return the response from the EventGrid service.
      */
-    public Mono<Response<Void>> publishCustomEventsWithResponse(List<EventSchema> events) {
+    public Mono<Response<Void>> publishCustomEventsWithResponse(List<Object> events) {
         // TODO: implement method
         return null;
     }

@@ -30,7 +30,7 @@ import java.util.concurrent.TimeUnit;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
-public class TestEventGridClient {
+public class EventGridClientTests {
 
     @Test
     @Ignore

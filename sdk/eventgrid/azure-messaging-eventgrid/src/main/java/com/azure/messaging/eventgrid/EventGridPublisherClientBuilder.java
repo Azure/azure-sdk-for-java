@@ -17,7 +17,6 @@ import com.azure.core.util.Configuration;
  * @see EventGridPublisherAsyncClient
  * @see com.azure.messaging.eventgrid.models.EventGridEvent
  * @see com.azure.messaging.eventgrid.models.CloudEvent
- * @see EventSchema
  */
 @ServiceClientBuilder(serviceClients = {EventGridPublisherClient.class, EventGridPublisherAsyncClient.class})
 public class EventGridPublisherClientBuilder {

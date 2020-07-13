@@ -18,7 +18,6 @@ import java.util.List;
  * {@link EventGridPublisherAsyncClient}, which has more efficient asynchronous functionality and is recommended.
  * @see EventGridEvent
  * @see CloudEvent
- * @see EventSchema
  */
 @ServiceClient(builder = EventGridPublisherClientBuilder.class)
 public class EventGridPublisherClient {
