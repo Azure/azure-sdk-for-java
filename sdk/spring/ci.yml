@@ -86,6 +86,6 @@ extends:
       - name: azure-spring-boot-sample-storage-blob
         groupId: com.azure
       - name: azure-spring-data-sample-gremlin
-        groupId: com.microsoft.azure
+        groupId: com.azure
       - name: azure-spring-data-sample-gremlin-web-service
-        groupId: com.microsoft.azure
+        groupId: com.azure
