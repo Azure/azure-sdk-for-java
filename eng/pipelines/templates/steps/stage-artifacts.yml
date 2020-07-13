@@ -6,7 +6,10 @@ parameters:
 steps:
   - pwsh: |
       New-Item -Force -Type Directory -Name ${{parameters.TargetFolder}} -Path $(Pipeline.Workspace)
-      $items = Get-ChildItem -Recurse -Path $(Pipeline.Workspace)/${{parameters.SourceFolder}} -Filter ${{parameters.PackageName}}-[0-9]*.[0-9]*.[0-9]*
-      $items | Copy-Item -Destination $(Pipeline.Workspace)/${{parameters.TargetFolder}}
+      $items = Get-ChildItem -Recurse -Path $(Pipeline.Workspace)/${{parameters.SourceFolder}} 
+      Write-Host "Found $($items.Count) total items in source folder"
+      $filteredItems = $items | Where-Object -FilterScript { $_.Name -like "azure-sdk-template-[0-9]*.[0-9]*.[0-9]*-*" }      
+      Write-Host "Found $($filteredItems.Count) items which match filter criteria"
+      $filteredItems | Copy-Item -Destination $(Pipeline.Workspace)/${{parameters.TargetFolder}}
       Get-ChildItem $(Pipeline.Workspace)/${{parameters.TargetFolder}}
     displayName: Stage artifacts
