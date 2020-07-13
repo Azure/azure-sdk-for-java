@@ -244,7 +244,7 @@ public final class BlobItem {
      * Set the objectReplicationSourcePolicies  property: The
      * objectReplicationSourcePolicies  property.
      *
-     * @param objectReplicationSourcePolicies  the objectReplicationSourcePolicies  value
+     * @param objectReplicationSourcePolicies the objectReplicationSourcePolicies  value
      * to set.
      * @return the BlobItem object itself.
      */
