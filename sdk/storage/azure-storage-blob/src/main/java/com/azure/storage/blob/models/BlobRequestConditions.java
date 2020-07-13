@@ -4,7 +4,6 @@
 package com.azure.storage.blob.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.http.RequestConditions;
 
 import java.time.OffsetDateTime;
 

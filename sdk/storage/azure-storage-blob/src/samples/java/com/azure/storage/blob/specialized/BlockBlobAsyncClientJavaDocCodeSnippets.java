@@ -211,12 +211,14 @@ public class BlockBlobAsyncClientJavaDocCodeSnippets {
         client.listBlocksWithResponse(new BlockBlobListBlocksOptions(BlockListType.ALL)
             .setLeaseId(leaseId)
             .setIfTags(tags)).subscribe(response -> {
-            BlockList block = response.getValue();
-            System.out.println("Committed Blocks:");
-            block.getCommittedBlocks().forEach(b -> System.out.printf("Name: %s, Size: %d", b.getName(), b.getSizeLong()));
+                BlockList block = response.getValue();
+                System.out.println("Committed Blocks:");
+                block.getCommittedBlocks().forEach(b -> System.out.printf("Name: %s, Size: %d", b.getName(),
+                    b.getSizeLong()));
 
-            System.out.println("Uncommitted Blocks:");
-            block.getUncommittedBlocks().forEach(b -> System.out.printf("Name: %s, Size: %d", b.getName(), b.getSizeLong()));
+                System.out.println("Uncommitted Blocks:");
+                block.getUncommittedBlocks().forEach(b -> System.out.printf("Name: %s, Size: %d", b.getName(),
+                    b.getSizeLong()));
         });
         // END: com.azure.storage.blob.specialized.BlockBlobAsyncClient.listBlocksWithResponse#BlockBlobListBlocksOptions
     }

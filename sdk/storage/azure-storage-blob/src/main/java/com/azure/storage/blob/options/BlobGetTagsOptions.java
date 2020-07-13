@@ -6,9 +6,6 @@ package com.azure.storage.blob.options;
 import com.azure.core.annotation.Fluent;
 import com.azure.storage.blob.models.BlobRequestConditions;
 
-import java.util.Collections;
-import java.util.Map;
-
 /**
  * Extended options that may be passed when setting tags for a blob.
  */

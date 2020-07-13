@@ -617,8 +617,8 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
             new BlockLookupList().setLatest(options.getBase64BlockIds()), null, null, null, options.getMetadata(),
             requestConditions.getLeaseId(), options.getTier(), requestConditions.getIfModifiedSince(),
             requestConditions.getIfUnmodifiedSince(), requestConditions.getIfMatch(),
-            requestConditions.getIfNoneMatch(), requestConditions.getIfTags(), null, tagsToString(options.getTags()), options.getHeaders(),
-            getCustomerProvidedKey(), encryptionScope,
+            requestConditions.getIfNoneMatch(), requestConditions.getIfTags(), null,
+            tagsToString(options.getTags()), options.getHeaders(), getCustomerProvidedKey(), encryptionScope,
             context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(rb -> {
                 BlockBlobCommitBlockListHeaders hd = rb.getDeserializedHeaders();

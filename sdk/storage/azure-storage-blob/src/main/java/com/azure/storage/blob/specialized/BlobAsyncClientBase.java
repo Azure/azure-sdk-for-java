@@ -36,7 +36,6 @@ import com.azure.storage.blob.implementation.util.ModelHelper;
 import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.ArchiveStatus;
 import com.azure.storage.blob.models.BlobDownloadHeaders;
-import com.azure.storage.blob.models.BlobLeaseRequestConditions;
 import com.azure.storage.blob.options.BlobBeginCopyOptions;
 import com.azure.storage.blob.options.BlobCopyFromUrlOptions;
 import com.azure.storage.blob.models.BlobCopyInfo;
@@ -538,8 +537,8 @@ public class BlobAsyncClientBase {
                 sourceModifiedRequestConditions.getIfUnmodifiedSince(), sourceModifiedRequestConditions.getIfMatch(),
                 sourceModifiedRequestConditions.getIfNoneMatch(), destinationRequestConditions.getIfModifiedSince(),
                 destinationRequestConditions.getIfUnmodifiedSince(), destinationRequestConditions.getIfMatch(),
-                destinationRequestConditions.getIfNoneMatch(), destinationRequestConditions.getIfTags(), destinationRequestConditions.getLeaseId(), null,
-                tagsToString(tags), null, context))
+                destinationRequestConditions.getIfNoneMatch(), destinationRequestConditions.getIfTags(),
+                destinationRequestConditions.getLeaseId(), null, tagsToString(tags), null, context))
             .map(response -> {
                 final BlobStartCopyFromURLHeaders headers = response.getDeserializedHeaders();
 
@@ -756,7 +755,8 @@ public class BlobAsyncClientBase {
             sourceModifiedRequestConditions.getIfUnmodifiedSince(), sourceModifiedRequestConditions.getIfMatch(),
             sourceModifiedRequestConditions.getIfNoneMatch(), destRequestConditions.getIfModifiedSince(),
             destRequestConditions.getIfUnmodifiedSince(), destRequestConditions.getIfMatch(),
-            destRequestConditions.getIfNoneMatch(), destRequestConditions.getIfTags(), destRequestConditions.getLeaseId(), null, null,
+            destRequestConditions.getIfNoneMatch(), destRequestConditions.getIfTags(),
+            destRequestConditions.getLeaseId(), null, null,
             tagsToString(options.getTags()), null, context)
             .map(rb -> new SimpleResponse<>(rb, rb.getDeserializedHeaders().getCopyId()));
     }
