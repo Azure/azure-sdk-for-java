@@ -753,7 +753,7 @@ public class SearchSyncTests extends SearchTestBase {
         SearchIndex hotelsIndex = searchIndexClient.getIndex(client.getIndexName());
         hotelsIndex.getFields().stream()
             .filter(f -> fieldName.equals(f.getName()))
-            .findFirst().get().setSynonymMapNames(Collections.singletonList(synonymMapToDelete));
+            .findFirst().get().setSynonymMapNames(synonymMapToDelete);
 
         // Update the index with the SynonymMap
         searchIndexClient.createOrUpdateIndex(hotelsIndex);

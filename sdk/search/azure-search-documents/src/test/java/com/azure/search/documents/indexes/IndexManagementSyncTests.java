@@ -99,11 +99,8 @@ public class IndexManagementSyncTests extends SearchTestBase {
     public void createIndexReturnsCorrectDefaultValues() {
         SearchIndex index = createTestIndex(null)
             .setCorsOptions(new CorsOptions(Collections.singletonList("*")))
-            .setScoringProfiles(Collections.singletonList(new ScoringProfile("MyProfile")
-                .setFunctions(Collections.singletonList(new MagnitudeScoringFunction("Rating", 2.0,
-                    new MagnitudeScoringParameters(1, 4)))
-                )
-            ));
+            .setScoringProfiles(new ScoringProfile("MyProfile")
+                .setFunctions(new MagnitudeScoringFunction("Rating", 2.0, new MagnitudeScoringParameters(1, 4))));
         SearchIndex indexResponse = client.createIndex(index);
         indexesToDelete.add(indexResponse.getName());
 
@@ -118,10 +115,7 @@ public class IndexManagementSyncTests extends SearchTestBase {
     public void createIndexFailsWithUsefulMessageOnUserError() {
         String indexName = HOTEL_INDEX_NAME;
         SearchIndex index = new SearchIndex(indexName)
-            .setFields(Collections.singletonList(
-                new SearchField("HotelId", SearchFieldDataType.STRING)
-                    .setKey(false)
-            ));
+            .setFields(new SearchField("HotelId", SearchFieldDataType.STRING).setKey(false));
         String expectedMessage = String.format("The request is invalid. Details: index : Found 0 key fields in index '%s'. "
             + "Each index must have exactly one key field.", indexName);
 
@@ -174,7 +168,7 @@ public class IndexManagementSyncTests extends SearchTestBase {
 
         // Update the resource, the eTag will be changed
         SearchIndex updatedIndex = client.createOrUpdateIndexWithResponse(originalIndex
-            .setCorsOptions(new CorsOptions(Collections.singletonList("https://test.com/"))), false, false,
+                .setCorsOptions(new CorsOptions(Collections.singletonList("https://test.com/"))), false, false,
             Context.NONE)
             .getValue();
 
@@ -207,10 +201,7 @@ public class IndexManagementSyncTests extends SearchTestBase {
     @Test
     public void deleteIndexIsIdempotent() {
         SearchIndex index = new SearchIndex(HOTEL_INDEX_NAME)
-            .setFields(Collections.singletonList(
-                new SearchField("HotelId", SearchFieldDataType.STRING)
-                    .setKey(true)
-            ));
+            .setFields(new SearchField("HotelId", SearchFieldDataType.STRING).setKey(true));
         Response<Void> deleteResponse = client.deleteIndexWithResponse(index, false, Context.NONE);
         assertEquals(HttpURLConnection.HTTP_NOT_FOUND, deleteResponse.getStatusCode());
 
@@ -288,8 +279,7 @@ public class IndexManagementSyncTests extends SearchTestBase {
                 new SearchField("HotelId", SearchFieldDataType.STRING)
                     .setKey(true),
                 new SearchField("HotelName", SearchFieldDataType.STRING)
-                    .setSynonymMapNames(Collections.singletonList(synonymMapName))
-            ));
+                    .setSynonymMapNames(synonymMapName)));
 
         SearchIndex createdIndex = client.createIndex(index);
         indexesToDelete.add(createdIndex.getName());
@@ -311,7 +301,7 @@ public class IndexManagementSyncTests extends SearchTestBase {
         // Create an index
         SearchIndex index = createTestIndex(null);
         SearchField hotelNameField = getFieldByName(index, "HotelName");
-        hotelNameField.setSynonymMapNames(Collections.singletonList(synonymMapName));
+        hotelNameField.setSynonymMapNames(synonymMapName);
         client.createIndex(index);
         indexesToDelete.add(index.getName());
 
@@ -361,7 +351,7 @@ public class IndexManagementSyncTests extends SearchTestBase {
         SearchField tagsField = getFieldByName(existingIndex, "Description_Custom");
         tagsField.setHidden(true)
             .setSearchAnalyzerName(LexicalAnalyzerName.WHITESPACE)
-            .setSynonymMapNames(Collections.singletonList(synonymMap.getName()));
+            .setSynonymMapNames(synonymMap.getName());
 
         SearchField hotelWebSiteField = new SearchField("HotelWebsite", SearchFieldDataType.STRING)
             .setSearchable(Boolean.TRUE)
@@ -388,9 +378,7 @@ public class IndexManagementSyncTests extends SearchTestBase {
         existingIndex.getFields().addAll(Arrays.asList(
             new SearchField("HotelAmenities", SearchFieldDataType.STRING),
             new SearchField("HotelRewards", SearchFieldDataType.STRING)));
-        existingIndex.setSuggesters(Collections.singletonList(new SearchSuggester("Suggestion",
-            Arrays.asList("HotelAmenities", "HotelRewards"))
-        ));
+        existingIndex.setSuggesters(new SearchSuggester("Suggestion", Arrays.asList("HotelAmenities", "HotelRewards")));
 
         SearchIndex updatedIndex = client.createOrUpdateIndexWithResponse(existingIndex,
             true, false, Context.NONE).getValue();
@@ -405,9 +393,7 @@ public class IndexManagementSyncTests extends SearchTestBase {
 
         SearchIndex existingIndex = client.getIndex(index.getName());
         String existingFieldName = "Category";
-        existingIndex.setSuggesters(Collections.singletonList(new SearchSuggester("Suggestion",
-            Collections.singletonList(existingFieldName))
-        ));
+        existingIndex.setSuggesters(new SearchSuggester("Suggestion", Collections.singletonList(existingFieldName)));
 
         assertHttpResponseException(
             () -> client.createOrUpdateIndex(existingIndex),

@@ -11,8 +11,8 @@
     <relativePath>../../parents/azure-client-sdk-parent</relativePath>
   </parent>
 
-  <name>Microsoft Azure Search client for Java</name>
-  <description>This package contains client functionality for Microsoft Azure Search</description>
+  <name>Microsoft Azure Cognitive Search client for Java</name>
+  <description>This package contains client functionality for Microsoft Azure Cognitive Search</description>
 
   <groupId>com.azure</groupId>
   <artifactId>azure-search-documents</artifactId>

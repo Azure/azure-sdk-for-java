@@ -235,6 +235,7 @@ public final class ResourceHealthMetadatasClient implements InnerSupportsListing
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .list(this.client.getEndpoint(), this.client.getSubscriptionId(), this.client.getApiVersion(), context)
             .map(
@@ -379,6 +380,7 @@ public final class ResourceHealthMetadatasClient implements InnerSupportsListing
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .listByResourceGroup(
                 this.client.getEndpoint(),
@@ -547,6 +549,7 @@ public final class ResourceHealthMetadatasClient implements InnerSupportsListing
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .listBySite(
                 this.client.getEndpoint(),
@@ -713,6 +716,7 @@ public final class ResourceHealthMetadatasClient implements InnerSupportsListing
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .getBySite(
                 this.client.getEndpoint(),
@@ -898,6 +902,7 @@ public final class ResourceHealthMetadatasClient implements InnerSupportsListing
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .listBySiteSlot(
                 this.client.getEndpoint(),
@@ -1080,6 +1085,7 @@ public final class ResourceHealthMetadatasClient implements InnerSupportsListing
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .getBySiteSlot(
                 this.client.getEndpoint(),
@@ -1218,6 +1224,7 @@ public final class ResourceHealthMetadatasClient implements InnerSupportsListing
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .listNext(nextLink, context)
             .map(
@@ -1275,6 +1282,7 @@ public final class ResourceHealthMetadatasClient implements InnerSupportsListing
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .listByResourceGroupNext(nextLink, context)
             .map(
@@ -1332,6 +1340,7 @@ public final class ResourceHealthMetadatasClient implements InnerSupportsListing
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .listBySiteNext(nextLink, context)
             .map(
@@ -1389,6 +1398,7 @@ public final class ResourceHealthMetadatasClient implements InnerSupportsListing
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .listBySiteSlotNext(nextLink, context)
             .map(

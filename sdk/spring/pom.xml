@@ -18,8 +18,27 @@
     <module>azure-spring-boot-starter-keyvault-secrets</module>
     <module>azure-spring-boot-starter-metrics</module>
     <module>azure-spring-boot-starter-servicebus-jms</module>
-    <module>azure-spring-boot-samples</module>
-    <module>azure-spring-boot-tests</module>
+    <module>azure-spring-boot-test-application</module>
+    <module>azure-spring-boot-test-core</module>
+    <module>azure-spring-boot-test-aad</module>
+    <module>azure-spring-boot-test-cosmosdb</module>
+    <module>azure-spring-boot-test-keyvault</module>
+    <module>azure-spring-boot-samples/azure-spring-boot-sample-active-directory</module>
+    <module>azure-spring-boot-samples/azure-spring-boot-sample-active-directory-b2c-oidc</module>
+    <module>azure-spring-boot-samples/azure-spring-boot-sample-active-directory-backend</module>
+    <module>azure-spring-boot-samples/azure-spring-boot-sample-active-directory-backend-v2</module>
+    <module>azure-spring-boot-samples/azure-spring-boot-sample-active-directory-stateless</module>
+    <module>azure-spring-boot-samples/azure-spring-boot-sample-cosmosdb</module>
+    <module>azure-spring-boot-samples/azure-spring-boot-sample-data-gremlin</module>
+    <module>azure-spring-boot-samples/azure-spring-boot-sample-keyvault-secrets</module>
+    <module>azure-spring-boot-samples/azure-spring-boot-sample-mediaservices</module>
+    <module>azure-spring-boot-samples/azure-spring-boot-sample-servicebus</module>
+    <module>azure-spring-boot-samples/azure-spring-boot-sample-servicebus-jms-queue</module>
+    <module>azure-spring-boot-samples/azure-spring-boot-sample-servicebus-jms-topic</module>
+    <module>azure-spring-boot-samples/azure-spring-boot-sample-storage-blob</module>
+    <module>azure-spring-boot-samples/azure-spring-data-sample-gremlin</module>
+    <module>azure-spring-boot-samples/azure-spring-data-sample-gremlin-web-service</module>
+    <module>azure-spring-boot-samples/azure-cloud-foundry-service-sample</module>
     <module>azure-spring-data-gremlin</module>
   </modules>
 
