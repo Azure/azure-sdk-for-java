@@ -253,14 +253,19 @@ public final class RestProxy implements InvocationHandler {
             request.getHeaders().put("Content-Length", "0");
         } else {
             // We read the content type from the @BodyParam annotation
-            final String contentType = methodParser.getBodyContentType();
+            String contentType = methodParser.getBodyContentType();
 
             // If this is null or empty, the service interface definition is incomplete and should
             // be fixed to ensure correct definitions are applied
             if (contentType == null || contentType.isEmpty()) {
-                throw logger.logExceptionAsError(new IllegalStateException(
-                    "The method " + methodParser.getFullyQualifiedMethodName() + " does does not have its content "
-                        + "type correctly specified in its service interface"));
+                if (bodyContentObject instanceof byte[] || bodyContentObject instanceof String) {
+                    contentType = ContentType.APPLICATION_OCTET_STREAM;
+                } else {
+                    contentType = ContentType.APPLICATION_JSON;
+                }
+//                throw logger.logExceptionAsError(new IllegalStateException(
+//                    "The method " + methodParser.getFullyQualifiedMethodName() + " does does not have its content "
+//                        + "type correctly specified in its service interface"));
             }
 
             request.getHeaders().put("Content-Type", contentType);
