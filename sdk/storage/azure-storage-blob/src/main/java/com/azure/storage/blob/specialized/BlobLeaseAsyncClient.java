@@ -173,9 +173,9 @@ public final class BlobLeaseAsyncClient {
                 context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
                 .map(rb -> new SimpleResponse<>(rb, rb.getDeserializedHeaders().getLeaseId()));
         } else {
-            return this.client.containers().acquireLeaseWithRestResponseAsync(null, null, options.getDuration(), this.leaseId,
-                requestConditions.getIfModifiedSince(), requestConditions.getIfUnmodifiedSince(),
-                null, context)
+            return this.client.containers().acquireLeaseWithRestResponseAsync(null, null,
+                options.getDuration(), this.leaseId, requestConditions.getIfModifiedSince(),
+                requestConditions.getIfUnmodifiedSince(), null, context)
                 .map(rb -> new SimpleResponse<>(rb, rb.getDeserializedHeaders().getLeaseId()));
         }
     }

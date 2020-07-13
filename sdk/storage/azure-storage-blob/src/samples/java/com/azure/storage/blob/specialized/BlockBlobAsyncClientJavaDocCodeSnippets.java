@@ -219,7 +219,7 @@ public class BlockBlobAsyncClientJavaDocCodeSnippets {
                 System.out.println("Uncommitted Blocks:");
                 block.getUncommittedBlocks().forEach(b -> System.out.printf("Name: %s, Size: %d", b.getName(),
                     b.getSizeLong()));
-        });
+            });
         // END: com.azure.storage.blob.specialized.BlockBlobAsyncClient.listBlocksWithResponse#BlockBlobListBlocksOptions
     }
 
