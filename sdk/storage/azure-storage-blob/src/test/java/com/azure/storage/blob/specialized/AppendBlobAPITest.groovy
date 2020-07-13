@@ -14,6 +14,7 @@ import com.azure.storage.blob.models.BlobRange
 import com.azure.storage.blob.models.BlobRequestConditions
 import com.azure.storage.blob.models.BlobStorageException
 import com.azure.storage.blob.models.PublicAccessType
+import com.azure.storage.blob.options.BlobGetTagsOptions
 import spock.lang.Unroll
 
 import java.security.MessageDigest
@@ -115,7 +116,7 @@ class AppendBlobAPITest extends APISpec {
 
         when:
         bc.createWithResponse(new AppendBlobCreateOptions().setTags(tags), null, Context.NONE)
-        def response = bc.getTagsWithResponse(null, null)
+        def response = bc.getTagsWithResponse(new BlobGetTagsOptions(), null, null)
 
         then:
         response.getValue() == tags

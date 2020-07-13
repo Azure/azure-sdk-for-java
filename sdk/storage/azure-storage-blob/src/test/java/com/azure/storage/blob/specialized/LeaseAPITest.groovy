@@ -3,7 +3,6 @@
 
 package com.azure.storage.blob.specialized
 
-import com.azure.core.http.RequestConditions
 import com.azure.storage.blob.APISpec
 import com.azure.storage.blob.models.BlobLeaseRequestConditions
 import com.azure.storage.blob.models.LeaseDurationType
@@ -15,7 +14,6 @@ import com.azure.storage.blob.options.BlobBreakLeaseOptions
 import com.azure.storage.blob.options.BlobChangeLeaseOptions
 import com.azure.storage.blob.options.BlobReleaseLeaseOptions
 import com.azure.storage.blob.options.BlobRenewLeaseOptions
-import groovyjarjarpicocli.CommandLine
 import spock.lang.Unroll
 
 class LeaseAPITest extends APISpec {

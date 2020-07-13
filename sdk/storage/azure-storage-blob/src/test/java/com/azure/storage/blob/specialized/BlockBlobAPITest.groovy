@@ -20,6 +20,7 @@ import com.azure.storage.blob.ProgressReceiver
 import com.azure.storage.blob.models.AccessTier
 import com.azure.storage.blob.models.BlobErrorCode
 import com.azure.storage.blob.models.BlobHttpHeaders
+import com.azure.storage.blob.options.BlobGetTagsOptions
 import com.azure.storage.blob.options.BlobParallelUploadOptions
 import com.azure.storage.blob.models.BlobRange
 import com.azure.storage.blob.models.BlobRequestConditions
@@ -475,7 +476,7 @@ class BlockBlobAPITest extends APISpec {
 
         when:
         blockBlobClient.commitBlockListWithResponse(new BlockBlobCommitBlockListOptions(null).setTags(tags), null, null)
-        def response = blockBlobClient.getTagsWithResponse(null, null)
+        def response = blockBlobClient.getTagsWithResponse(new BlobGetTagsOptions(), null, null)
 
         then:
         response.getStatusCode() == 200
@@ -1037,7 +1038,7 @@ class BlockBlobAPITest extends APISpec {
         when:
         blockBlobClient.uploadWithResponse(new BlockBlobSimpleUploadOptions(defaultInputStream.get(), defaultDataSize)
             .setTags(tags), null, null)
-        def response = blockBlobClient.getTagsWithResponse(null, null)
+        def response = blockBlobClient.getTagsWithResponse(new BlobGetTagsOptions(), null, null)
 
         then:
         response.getStatusCode() == 200

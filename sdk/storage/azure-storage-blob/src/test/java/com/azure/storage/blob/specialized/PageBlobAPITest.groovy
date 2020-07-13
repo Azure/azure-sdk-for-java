@@ -13,6 +13,7 @@ import com.azure.storage.blob.models.BlobRange
 import com.azure.storage.blob.models.BlobRequestConditions
 import com.azure.storage.blob.models.BlobStorageException
 import com.azure.storage.blob.models.CopyStatusType
+import com.azure.storage.blob.options.BlobGetTagsOptions
 import com.azure.storage.blob.options.PageBlobCreateOptions
 import com.azure.storage.blob.models.PageBlobRequestConditions
 import com.azure.storage.blob.models.PageRange
@@ -128,7 +129,7 @@ class PageBlobAPITest extends APISpec {
         when:
         bc.createWithResponse(new PageBlobCreateOptions(PageBlobClient.PAGE_BYTES).setTags(tags), null, null)
 
-        def response = bc.getTagsWithResponse(null, null)
+        def response = bc.getTagsWithResponse(new BlobGetTagsOptions(), null, null)
 
         then:
         response.getStatusCode() == 200

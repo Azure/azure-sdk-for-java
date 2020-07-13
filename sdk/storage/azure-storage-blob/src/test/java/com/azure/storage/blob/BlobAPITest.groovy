@@ -1280,7 +1280,7 @@ class BlobAPITest extends APISpec {
 
     def "Set tags all null"() {
         when:
-        def response = bc.setTagsWithResponse(null, null, null)
+        def response = bc.setTagsWithResponse(new BlobSetTagsOptions(new HashMap<String, String>()), null, null)
 
         then:
         bc.getTags().size() == 0
@@ -1394,7 +1394,7 @@ class BlobAPITest extends APISpec {
         bc = cc.getBlobClient(generateBlobName())
 
         when:
-        bc.setTags(null)
+        bc.setTags(new HashMap<String, String>())
 
         then:
         thrown(BlobStorageException)
