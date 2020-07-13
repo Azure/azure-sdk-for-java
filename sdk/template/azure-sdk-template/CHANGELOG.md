@@ -2,7 +2,6 @@
 
 ## 1.0.4-beta.25 (Unreleased)
 
-
 ## 1.0.4-beta.24 (2020-07-13)
 - Test Java Release Pipeline (normal docs, normal sources)
 
