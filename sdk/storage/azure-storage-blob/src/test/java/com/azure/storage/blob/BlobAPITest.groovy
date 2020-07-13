@@ -300,7 +300,7 @@ class BlobAPITest extends APISpec {
             .setIfNoneMatch(noneMatch)
             .setIfModifiedSince(modified)
             .setIfUnmodifiedSince(unmodified)
-            .setIfTags(tags)
+            .setIfTagsMatch(tags)
 
         when:
         def response = bc.downloadWithResponse(new ByteArrayOutputStream(), null, null, bac, false, null, null)
@@ -329,7 +329,7 @@ class BlobAPITest extends APISpec {
             .setIfNoneMatch(setupBlobMatchCondition(bc, noneMatch))
             .setIfModifiedSince(modified)
             .setIfUnmodifiedSince(unmodified)
-            .setIfTags(tags)
+            .setIfTagsMatch(tags)
 
         when:
         bc.downloadWithResponse(new ByteArrayOutputStream(), null, null, bac, false, null, null).getStatusCode()
@@ -943,7 +943,7 @@ class BlobAPITest extends APISpec {
             .setIfNoneMatch(noneMatch)
             .setIfModifiedSince(modified)
             .setIfUnmodifiedSince(unmodified)
-            .setIfTags(tags)
+            .setIfTagsMatch(tags)
 
         expect:
         bc.getPropertiesWithResponse(bac, null, null).getStatusCode() == 200
@@ -968,7 +968,7 @@ class BlobAPITest extends APISpec {
             .setIfNoneMatch(setupBlobMatchCondition(bc, noneMatch))
             .setIfModifiedSince(modified)
             .setIfUnmodifiedSince(unmodified)
-            .setIfTags(tags)
+            .setIfTagsMatch(tags)
 
         when:
         bc.getPropertiesWithResponse(bac, null, null)
@@ -1107,7 +1107,7 @@ class BlobAPITest extends APISpec {
             .setIfNoneMatch(noneMatch)
             .setIfModifiedSince(modified)
             .setIfUnmodifiedSince(unmodified)
-            .setIfTags(tags)
+            .setIfTagsMatch(tags)
 
         expect:
         bc.setHttpHeadersWithResponse(null, bac, null, null).getStatusCode() == 200
@@ -1134,7 +1134,7 @@ class BlobAPITest extends APISpec {
             .setIfNoneMatch(noneMatch)
             .setIfModifiedSince(modified)
             .setIfUnmodifiedSince(unmodified)
-            .setIfTags(tags)
+            .setIfTagsMatch(tags)
 
         when:
         bc.setHttpHeadersWithResponse(null, bac, null, null)
@@ -1249,7 +1249,7 @@ class BlobAPITest extends APISpec {
             .setIfNoneMatch(noneMatch)
             .setIfModifiedSince(modified)
             .setIfUnmodifiedSince(unmodified)
-            .setIfTags(tags)
+            .setIfTagsMatch(tags)
 
         when:
         bc.setMetadataWithResponse(null, bac, null, null)
@@ -1331,7 +1331,7 @@ class BlobAPITest extends APISpec {
         t.put("fizz", "buzz")
 
         expect:
-        bc.setTagsWithResponse(new BlobSetTagsOptions(t).setRequestConditions(new BlobRequestConditions().setIfTags(tags)), null, null).getStatusCode() == 204
+        bc.setTagsWithResponse(new BlobSetTagsOptions(t).setRequestConditions(new BlobRequestConditions().setIfTagsMatch(tags)), null, null).getStatusCode() == 204
 
         where:
         tags              || _
@@ -1346,7 +1346,7 @@ class BlobAPITest extends APISpec {
         t.put("fizz", "buzz")
 
         when:
-        bc.setTagsWithResponse(new BlobSetTagsOptions(t).setRequestConditions(new BlobRequestConditions().setIfTags(tags)), null, null)
+        bc.setTagsWithResponse(new BlobSetTagsOptions(t).setRequestConditions(new BlobRequestConditions().setIfTagsMatch(tags)), null, null)
 
         then:
         thrown(BlobStorageException)
@@ -1364,7 +1364,7 @@ class BlobAPITest extends APISpec {
         bc.setTags(t)
 
         expect:
-        bc.getTagsWithResponse(new BlobGetTagsOptions().setRequestConditions(new BlobRequestConditions().setIfTags(tags)), null, null).getStatusCode() == 200
+        bc.getTagsWithResponse(new BlobGetTagsOptions().setRequestConditions(new BlobRequestConditions().setIfTagsMatch(tags)), null, null).getStatusCode() == 200
 
         where:
         tags              || _
@@ -1379,7 +1379,7 @@ class BlobAPITest extends APISpec {
         t.put("fizz", "buzz")
 
         when:
-        bc.getTagsWithResponse(new BlobGetTagsOptions().setRequestConditions(new BlobRequestConditions().setIfTags(tags)), null, null)
+        bc.getTagsWithResponse(new BlobGetTagsOptions().setRequestConditions(new BlobRequestConditions().setIfTagsMatch(tags)), null, null)
 
         then:
         thrown(BlobStorageException)
@@ -1451,7 +1451,7 @@ class BlobAPITest extends APISpec {
             .setIfNoneMatch(noneMatch)
             .setIfModifiedSince(modified)
             .setIfUnmodifiedSince(unmodified)
-            .setIfTags(tags)
+            .setIfTagsMatch(tags)
 
         expect:
         bc.createSnapshotWithResponse(null, bac, null, null).getStatusCode() == 201
@@ -1478,7 +1478,7 @@ class BlobAPITest extends APISpec {
             .setIfNoneMatch(noneMatch)
             .setIfModifiedSince(modified)
             .setIfUnmodifiedSince(unmodified)
-            .setIfTags(tags)
+            .setIfTagsMatch(tags)
 
         when:
         bc.createSnapshotWithResponse(null, bac, null, null)
@@ -1701,7 +1701,7 @@ class BlobAPITest extends APISpec {
             .setIfNoneMatch(noneMatch)
             .setIfModifiedSince(modified)
             .setIfUnmodifiedSince(unmodified)
-            .setIfTags(tags)
+            .setIfTagsMatch(tags)
 
         when:
         def poller = bu2.beginCopy(bc.getBlobUrl(), null, null, null, null, bac, Duration.ofSeconds(1))
@@ -1734,7 +1734,7 @@ class BlobAPITest extends APISpec {
             .setIfNoneMatch(noneMatch)
             .setIfModifiedSince(modified)
             .setIfUnmodifiedSince(unmodified)
-            .setIfTags(tags)
+            .setIfTagsMatch(tags)
 
         when:
         bu2.copyFromUrlWithResponse(bc.getBlobUrl(), null, null, null, bac, null, null)
@@ -2018,7 +2018,7 @@ class BlobAPITest extends APISpec {
             .setIfNoneMatch(noneMatch)
             .setIfModifiedSince(modified)
             .setIfUnmodifiedSince(unmodified)
-            .setIfTags(tags)
+            .setIfTagsMatch(tags)
 
         expect:
         bu2.copyFromUrlWithResponse(bc.getBlobUrl(), null, null, null, bac, null, null).getStatusCode() == 202
@@ -2048,7 +2048,7 @@ class BlobAPITest extends APISpec {
             .setIfNoneMatch(noneMatch)
             .setIfModifiedSince(modified)
             .setIfUnmodifiedSince(unmodified)
-            .setIfTags(tags)
+            .setIfTagsMatch(tags)
 
         when:
         bu2.copyFromUrlWithResponse(bc.getBlobUrl(), null, null, null, bac, null, null)
@@ -2128,7 +2128,7 @@ class BlobAPITest extends APISpec {
             .setIfNoneMatch(noneMatch)
             .setIfModifiedSince(modified)
             .setIfUnmodifiedSince(unmodified)
-            .setIfTags(tags)
+            .setIfTagsMatch(tags)
 
         expect:
         bc.deleteWithResponse(DeleteSnapshotsOptionType.INCLUDE, bac, null, null).getStatusCode() == 202
@@ -2155,7 +2155,7 @@ class BlobAPITest extends APISpec {
             .setIfNoneMatch(noneMatch)
             .setIfModifiedSince(modified)
             .setIfUnmodifiedSince(unmodified)
-            .setIfTags(tags)
+            .setIfTagsMatch(tags)
 
         when:
         bc.deleteWithResponse(DeleteSnapshotsOptionType.INCLUDE, bac, null, null)
@@ -2367,7 +2367,7 @@ class BlobAPITest extends APISpec {
         bc.setTags(t)
 
         when:
-        bc.setAccessTierWithResponse(new BlobSetAccessTierOptions(AccessTier.HOT).setIfTags("\"foo\" = 'bar'"), null, null)
+        bc.setAccessTierWithResponse(new BlobSetAccessTierOptions(AccessTier.HOT).setIfTagsMatch("\"foo\" = 'bar'"), null, null)
 
         then:
         notThrown(BlobStorageException)
@@ -2383,7 +2383,7 @@ class BlobAPITest extends APISpec {
         bc.upload(defaultInputStream.get(), defaultDataSize)
 
         when:
-        bc.setAccessTierWithResponse(new BlobSetAccessTierOptions(AccessTier.HOT).setIfTags("\"foo\" = 'bar'"), null, null)
+        bc.setAccessTierWithResponse(new BlobSetAccessTierOptions(AccessTier.HOT).setIfTagsMatch("\"foo\" = 'bar'"), null, null)
 
         then:
         thrown(BlobStorageException)

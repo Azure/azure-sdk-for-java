@@ -14,7 +14,7 @@ public class BlockBlobListBlocksOptions {
 
     private final BlockListType type;
     private String leaseId;
-    private String ifTags;
+    private String ifTagsMatch;
 
     /**
      * @param type Specifies which type of blocks to return.
@@ -57,18 +57,18 @@ public class BlockBlobListBlocksOptions {
      *
      * @return The SQL statement that apply to the tags of the blob.
      */
-    public String getIfTags() {
-        return ifTags;
+    public String getIfTagsMatch() {
+        return ifTagsMatch;
     }
 
     /**
      * Optionally applies the SQL statement to the tags of the blob.
      *
-     * @param ifTags The SQL statement that apply to the tags of the blob.
+     * @param ifTagsMatch The SQL statement that apply to the tags of the blob.
      * @return The updated BlockBlobListBlocksOptions object.
      */
-    public BlockBlobListBlocksOptions setIfTags(String ifTags) {
-        this.ifTags = ifTags;
+    public BlockBlobListBlocksOptions setIfTagsMatch(String ifTagsMatch) {
+        this.ifTagsMatch = ifTagsMatch;
         return this;
     }
 

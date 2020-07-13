@@ -210,7 +210,7 @@ public class BlockBlobAsyncClientJavaDocCodeSnippets {
         // BEGIN: com.azure.storage.blob.specialized.BlockBlobAsyncClient.listBlocksWithResponse#BlockBlobListBlocksOptions
         client.listBlocksWithResponse(new BlockBlobListBlocksOptions(BlockListType.ALL)
             .setLeaseId(leaseId)
-            .setIfTags(tags)).subscribe(response -> {
+            .setIfTagsMatch(tags)).subscribe(response -> {
                 BlockList block = response.getValue();
                 System.out.println("Committed Blocks:");
                 block.getCommittedBlocks().forEach(b -> System.out.printf("Name: %s, Size: %d", b.getName(),

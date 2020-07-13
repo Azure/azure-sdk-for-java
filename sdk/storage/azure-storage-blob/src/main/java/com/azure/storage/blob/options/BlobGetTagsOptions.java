@@ -7,7 +7,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.storage.blob.models.BlobRequestConditions;
 
 /**
- * Extended options that may be passed when setting tags for a blob.
+ * Extended options that may be passed when getting tags for a blob.
  */
 @Fluent
 public class BlobGetTagsOptions {

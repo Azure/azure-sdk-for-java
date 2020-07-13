@@ -142,7 +142,7 @@ class AppendBlobAPITest extends APISpec {
             .setIfNoneMatch(noneMatch)
             .setIfModifiedSince(modified)
             .setIfUnmodifiedSince(unmodified)
-            .setIfTags(tags)
+            .setIfTagsMatch(tags)
 
         expect:
         bc.createWithResponse(null, null, bac, null, null).getStatusCode() == 201
@@ -169,7 +169,7 @@ class AppendBlobAPITest extends APISpec {
             .setIfNoneMatch(noneMatch)
             .setIfModifiedSince(modified)
             .setIfUnmodifiedSince(unmodified)
-            .setIfTags(tags)
+            .setIfTagsMatch(tags)
 
         when:
         bc.createWithResponse(null, null, bac, null, Context.NONE)
@@ -277,7 +277,7 @@ class AppendBlobAPITest extends APISpec {
             .setIfUnmodifiedSince(unmodified)
             .setAppendPosition(appendPosE)
             .setMaxSize(maxSizeLTE)
-            .setIfTags(tags)
+            .setIfTagsMatch(tags)
 
         expect:
         bc.appendBlockWithResponse(defaultInputStream.get(), defaultDataSize, null, bac, null, null)
@@ -310,7 +310,7 @@ class AppendBlobAPITest extends APISpec {
             .setIfUnmodifiedSince(unmodified)
             .setAppendPosition(appendPosE)
             .setMaxSize(maxSizeLTE)
-            .setIfTags(tags)
+            .setIfTagsMatch(tags)
 
         when:
         bc.appendBlockWithResponse(defaultInputStream.get(), defaultDataSize, null, bac, null, null)
@@ -433,7 +433,7 @@ class AppendBlobAPITest extends APISpec {
             .setIfUnmodifiedSince(unmodified)
             .setAppendPosition(appendPosE)
             .setMaxSize(maxSizeLTE)
-            .setIfTags(tags)
+            .setIfTagsMatch(tags)
 
         def sourceURL = cc.getBlobClient(generateBlobName()).getAppendBlobClient()
         sourceURL.create()
@@ -471,7 +471,7 @@ class AppendBlobAPITest extends APISpec {
             .setIfUnmodifiedSince(unmodified)
             .setAppendPosition(appendPosE)
             .setMaxSize(maxSizeLTE)
-            .setIfTags(tags)
+            .setIfTagsMatch(tags)
 
         def sourceURL = cc.getBlobClient(generateBlobName()).getAppendBlobClient()
         sourceURL.create()

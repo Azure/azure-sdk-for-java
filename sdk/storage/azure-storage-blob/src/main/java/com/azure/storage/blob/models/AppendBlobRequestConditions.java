@@ -85,12 +85,12 @@ public final class AppendBlobRequestConditions extends BlobRequestConditions {
     /**
      * Optionally applies the SQL statement to the tags of the blob.
      *
-     * @param ifTags The SQL statement that apply to the tags of the blob.
+     * @param ifTagsMatch The SQL statement that apply to the tags of the blob.
      * @return The updated BlobRequestConditions object.
      */
     @Override
-    public AppendBlobRequestConditions setIfTags(String ifTags) {
-        super.setIfTags(ifTags);
+    public AppendBlobRequestConditions setIfTagsMatch(String ifTagsMatch) {
+        super.setIfTagsMatch(ifTagsMatch);
         return this;
     }
 

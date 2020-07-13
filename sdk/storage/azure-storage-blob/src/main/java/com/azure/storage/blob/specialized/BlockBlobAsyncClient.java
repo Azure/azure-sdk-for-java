@@ -258,7 +258,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
             null, data, options.getLength(), null, options.getContentMd5(), options.getMetadata(),
             requestConditions.getLeaseId(), options.getTier(), requestConditions.getIfModifiedSince(),
             requestConditions.getIfUnmodifiedSince(), requestConditions.getIfMatch(),
-            requestConditions.getIfNoneMatch(), requestConditions.getIfTags(), null, tagsToString(options.getTags()),
+            requestConditions.getIfNoneMatch(), requestConditions.getIfTagsMatch(), null, tagsToString(options.getTags()),
             options.getHeaders(), getCustomerProvidedKey(), encryptionScope,
             context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(rb -> {
@@ -497,7 +497,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
 
         return this.azureBlobStorage.blockBlobs().getBlockListWithRestResponseAsync(
             null, null, options.getType(), getSnapshotId(), null, options.getLeaseId(),
-            options.getIfTags(), null, context)
+            options.getIfTagsMatch(), null, context)
             .map(response -> new SimpleResponse<>(response, response.getValue()));
     }
 
@@ -617,7 +617,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
             new BlockLookupList().setLatest(options.getBase64BlockIds()), null, null, null, options.getMetadata(),
             requestConditions.getLeaseId(), options.getTier(), requestConditions.getIfModifiedSince(),
             requestConditions.getIfUnmodifiedSince(), requestConditions.getIfMatch(),
-            requestConditions.getIfNoneMatch(), requestConditions.getIfTags(), null,
+            requestConditions.getIfNoneMatch(), requestConditions.getIfTagsMatch(), null,
             tagsToString(options.getTags()), options.getHeaders(), getCustomerProvidedKey(), encryptionScope,
             context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(rb -> {

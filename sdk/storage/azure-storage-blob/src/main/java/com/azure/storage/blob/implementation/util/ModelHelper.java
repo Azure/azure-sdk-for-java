@@ -287,6 +287,6 @@ public class ModelHelper {
             .setIfNoneMatch(requestConditions.getIfNoneMatch())
             .setIfModifiedSince(requestConditions.getIfModifiedSince())
             .setIfUnmodifiedSince(requestConditions.getIfUnmodifiedSince())
-            .setIfTags(null);
+            .setIfTagsMatch(null);
     }
 }

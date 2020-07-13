@@ -526,7 +526,7 @@ public class BlobAsyncClientBaseJavaDocCodeSnippets {
         client.setAccessTierWithResponse(new BlobSetAccessTierOptions(AccessTier.HOT)
             .setPriority(RehydratePriority.STANDARD)
             .setLeaseId(leaseId)
-            .setIfTags(tags))
+            .setIfTagsMatch(tags))
             .subscribe(response -> System.out.printf("Set tier completed with status code %d%n",
                 response.getStatusCode()));
         // END: com.azure.storage.blob.specialized.BlobAsyncClientBase.setAccessTierWithResponse#BlobSetAccessTierOptions

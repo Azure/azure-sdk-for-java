@@ -154,7 +154,7 @@ class PageBlobAPITest extends APISpec {
             .setIfNoneMatch(noneMatch)
             .setIfModifiedSince(modified)
             .setIfUnmodifiedSince(unmodified)
-            .setIfTags(tags)
+            .setIfTagsMatch(tags)
 
         expect:
 
@@ -180,7 +180,7 @@ class PageBlobAPITest extends APISpec {
             .setIfNoneMatch(setupBlobMatchCondition(bc, noneMatch))
             .setIfModifiedSince(modified)
             .setIfUnmodifiedSince(unmodified)
-            .setIfTags(tags)
+            .setIfTagsMatch(tags)
 
         when:
         bc.createWithResponse(PageBlobClient.PAGE_BYTES, null, null, null, bac, null, null)
@@ -278,7 +278,7 @@ class PageBlobAPITest extends APISpec {
             .setIfSequenceNumberLessThan(sequenceNumberLT)
             .setIfSequenceNumberLessThanOrEqualTo(sequenceNumberLTE)
             .setIfSequenceNumberEqualTo(sequenceNumberEqual)
-            .setIfTags(tags)
+            .setIfTagsMatch(tags)
 
         expect:
         bc.uploadPagesWithResponse(new PageRange().setStart(0).setEnd(PageBlobClient.PAGE_BYTES - 1),
@@ -313,7 +313,7 @@ class PageBlobAPITest extends APISpec {
             .setIfSequenceNumberLessThan(sequenceNumberLT)
             .setIfSequenceNumberLessThanOrEqualTo(sequenceNumberLTE)
             .setIfSequenceNumberEqualTo(sequenceNumberEqual)
-            .setIfTags(tags)
+            .setIfTagsMatch(tags)
 
         when:
         bc.uploadPagesWithResponse(new PageRange().setStart(0).setEnd(PageBlobClient.PAGE_BYTES - 1),
@@ -451,7 +451,7 @@ class PageBlobAPITest extends APISpec {
             .setIfSequenceNumberLessThan(sequenceNumberLT)
             .setIfSequenceNumberLessThanOrEqualTo(sequenceNumberLTE)
             .setIfSequenceNumberEqualTo(sequenceNumberEqual)
-            .setIfTags(tags)
+            .setIfTagsMatch(tags)
 
         expect:
         bc.uploadPagesFromUrlWithResponse(pageRange, sourceURL.getBlobUrl(), null, null, pac, null, null, null).getStatusCode() == 201
@@ -490,7 +490,7 @@ class PageBlobAPITest extends APISpec {
             .setIfSequenceNumberLessThan(sequenceNumberLT)
             .setIfSequenceNumberLessThanOrEqualTo(sequenceNumberLTE)
             .setIfSequenceNumberEqualTo(sequenceNumberEqual)
-            .setIfTags(tags)
+            .setIfTagsMatch(tags)
 
         when:
         bc.uploadPagesFromUrlWithResponse(pageRange, sourceURL.getBlobUrl(), null, null, pac, null, null, null)
@@ -706,7 +706,7 @@ class PageBlobAPITest extends APISpec {
             .setIfNoneMatch(noneMatch)
             .setIfModifiedSince(modified)
             .setIfUnmodifiedSince(unmodified)
-            .setIfTags(tags)
+            .setIfTagsMatch(tags)
 
         when:
         bc.getPageRangesWithResponse(new BlobRange(0, PageBlobClient.PAGE_BYTES), bac, null, null)
@@ -734,7 +734,7 @@ class PageBlobAPITest extends APISpec {
             .setIfNoneMatch(setupBlobMatchCondition(bc, noneMatch))
             .setIfModifiedSince(modified)
             .setIfUnmodifiedSince(unmodified)
-            .setIfTags(tags)
+            .setIfTagsMatch(tags)
 
         when:
         bc.getPageRangesWithResponse(new BlobRange(0, PageBlobClient.PAGE_BYTES), bac, null, null)
@@ -815,7 +815,7 @@ class PageBlobAPITest extends APISpec {
             .setIfNoneMatch(noneMatch)
             .setIfModifiedSince(modified)
             .setIfUnmodifiedSince(unmodified)
-            .setIfTags(tags)
+            .setIfTagsMatch(tags)
 
         when:
         bc.getPageRangesDiffWithResponse(new BlobRange(0, PageBlobClient.PAGE_BYTES), snapId, bac, null, null)
@@ -845,7 +845,7 @@ class PageBlobAPITest extends APISpec {
             .setIfNoneMatch(setupBlobMatchCondition(bc, noneMatch))
             .setIfModifiedSince(modified)
             .setIfUnmodifiedSince(unmodified)
-            .setIfTags(tags)
+            .setIfTagsMatch(tags)
 
         when:
         bc.getPageRangesDiffWithResponse(new BlobRange(0, PageBlobClient.PAGE_BYTES), snapId, bac, null, null)

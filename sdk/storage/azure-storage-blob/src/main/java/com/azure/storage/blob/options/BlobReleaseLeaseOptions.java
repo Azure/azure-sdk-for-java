@@ -7,7 +7,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.storage.blob.models.BlobLeaseRequestConditions;
 
 /**
- * Extended options that may be passed when renewing a lease to a blob or container.
+ * Extended options that may be passed when releasing a lease to a blob or container.
  */
 @Fluent
 public class BlobReleaseLeaseOptions {

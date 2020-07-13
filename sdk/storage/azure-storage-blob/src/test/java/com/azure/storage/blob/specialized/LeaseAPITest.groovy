@@ -91,7 +91,7 @@ class LeaseAPITest extends APISpec {
             .setIfUnmodifiedSince(unmodified)
             .setIfMatch(match)
             .setIfNoneMatch(noneMatch)
-            .setIfTags(tags)
+            .setIfTagsMatch(tags)
 
         expect:
         createLeaseClient(bc)
@@ -118,7 +118,7 @@ class LeaseAPITest extends APISpec {
             .setIfUnmodifiedSince(unmodified)
             .setIfMatch(match)
             .setIfNoneMatch(noneMatch)
-            .setIfTags(tags)
+            .setIfTagsMatch(tags)
 
         when:
         createLeaseClient(bc).acquireLeaseWithResponse(new BlobAcquireLeaseOptions(-1).setRequestConditions(mac), null, null)
@@ -186,7 +186,7 @@ class LeaseAPITest extends APISpec {
             .setIfUnmodifiedSince(unmodified)
             .setIfMatch(match)
             .setIfNoneMatch(noneMatch)
-            .setIfTags(tags)
+            .setIfTagsMatch(tags)
 
         expect:
         createLeaseClient(bc, leaseID)
@@ -214,7 +214,7 @@ class LeaseAPITest extends APISpec {
             .setIfUnmodifiedSince(unmodified)
             .setIfMatch(match)
             .setIfNoneMatch(noneMatch)
-            .setIfTags(tags)
+            .setIfTagsMatch(tags)
 
         when:
         createLeaseClient(bc, leaseID).renewLeaseWithResponse(new BlobRenewLeaseOptions().setRequestConditions(mac), null, null)
@@ -276,7 +276,7 @@ class LeaseAPITest extends APISpec {
             .setIfUnmodifiedSince(unmodified)
             .setIfMatch(match)
             .setIfNoneMatch(noneMatch)
-            .setIfTags(tags)
+            .setIfTagsMatch(tags)
 
         expect:
         createLeaseClient(bc, leaseID).releaseLeaseWithResponse(new BlobReleaseLeaseOptions().setRequestConditions(mac), null, null).getStatusCode() == 200
@@ -302,7 +302,7 @@ class LeaseAPITest extends APISpec {
             .setIfUnmodifiedSince(unmodified)
             .setIfMatch(match)
             .setIfNoneMatch(noneMatch)
-            .setIfTags(tags)
+            .setIfTagsMatch(tags)
 
         when:
         createLeaseClient(bc, leaseID).releaseLeaseWithResponse(new BlobReleaseLeaseOptions().setRequestConditions(mac), null, null)
@@ -376,7 +376,7 @@ class LeaseAPITest extends APISpec {
             .setIfUnmodifiedSince(unmodified)
             .setIfMatch(match)
             .setIfNoneMatch(noneMatch)
-            .setIfTags(tags)
+            .setIfTagsMatch(tags)
 
         expect:
         createLeaseClient(bc).breakLeaseWithResponse(new BlobBreakLeaseOptions().setRequestConditions(mac), null, null).getStatusCode() == 202
@@ -402,7 +402,7 @@ class LeaseAPITest extends APISpec {
             .setIfUnmodifiedSince(unmodified)
             .setIfMatch(match)
             .setIfNoneMatch(noneMatch)
-            .setIfTags(tags)
+            .setIfTagsMatch(tags)
 
         when:
         createLeaseClient(bc).breakLeaseWithResponse(new BlobBreakLeaseOptions().setRequestConditions(mac), null, null)
@@ -466,7 +466,7 @@ class LeaseAPITest extends APISpec {
             .setIfUnmodifiedSince(unmodified)
             .setIfMatch(match)
             .setIfNoneMatch(noneMatch)
-            .setIfTags(tags)
+            .setIfTagsMatch(tags)
 
         expect:
         createLeaseClient(bc, leaseID).changeLeaseWithResponse(new BlobChangeLeaseOptions(getRandomUUID()).setRequestConditions(mac), null, null).getStatusCode() == 200
@@ -492,7 +492,7 @@ class LeaseAPITest extends APISpec {
             .setIfUnmodifiedSince(unmodified)
             .setIfMatch(match)
             .setIfNoneMatch(noneMatch)
-            .setIfTags(tags)
+            .setIfTagsMatch(tags)
 
         when:
         createLeaseClient(bc, leaseID).changeLeaseWithResponse(new BlobChangeLeaseOptions(getRandomUUID()).setRequestConditions(mac), null, null)

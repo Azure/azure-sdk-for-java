@@ -503,7 +503,7 @@ class BlockBlobAPITest extends APISpec {
             .setIfNoneMatch(noneMatch)
             .setIfModifiedSince(modified)
             .setIfUnmodifiedSince(unmodified)
-            .setIfTags(tags)
+            .setIfTagsMatch(tags)
 
         expect:
         blockBlobClient.commitBlockListWithResponse(null, null, null, null, bac, null, null).getStatusCode() == 201
@@ -530,7 +530,7 @@ class BlockBlobAPITest extends APISpec {
             .setIfNoneMatch(noneMatch)
             .setIfModifiedSince(modified)
             .setIfUnmodifiedSince(unmodified)
-            .setIfTags(tags)
+            .setIfTagsMatch(tags)
 
         when:
         blockBlobClient.commitBlockListWithResponse(null, null, null, null, bac, null, null)
@@ -651,7 +651,7 @@ class BlockBlobAPITest extends APISpec {
         blockBlobClient.setTags(t)
 
         when:
-        blockBlobClient.listBlocksWithResponse(new BlockBlobListBlocksOptions(BlockListType.ALL).setIfTags("\"foo\" = 'bar'"), null, Context.NONE)
+        blockBlobClient.listBlocksWithResponse(new BlockBlobListBlocksOptions(BlockListType.ALL).setIfTagsMatch("\"foo\" = 'bar'"), null, Context.NONE)
 
         then:
         notThrown(BlobStorageException)
@@ -659,7 +659,7 @@ class BlockBlobAPITest extends APISpec {
 
     def "Get block list tags fail"() {
         when:
-        blockBlobClient.listBlocksWithResponse(new BlockBlobListBlocksOptions(BlockListType.ALL).setIfTags("\"notfoo\" = 'notbar'"), null, Context.NONE)
+        blockBlobClient.listBlocksWithResponse(new BlockBlobListBlocksOptions(BlockListType.ALL).setIfTagsMatch("\"notfoo\" = 'notbar'"), null, Context.NONE)
 
         then:
         def e = thrown(BlobStorageException)
@@ -1065,7 +1065,7 @@ class BlockBlobAPITest extends APISpec {
             .setIfNoneMatch(noneMatch)
             .setIfModifiedSince(modified)
             .setIfUnmodifiedSince(unmodified)
-            .setIfTags(tags)
+            .setIfTagsMatch(tags)
 
         expect:
         blockBlobClient.uploadWithResponse(defaultInputStream.get(), defaultDataSize, null, null, null, null, bac, null, null).getStatusCode() == 201
@@ -1092,7 +1092,7 @@ class BlockBlobAPITest extends APISpec {
             .setIfNoneMatch(noneMatch)
             .setIfModifiedSince(modified)
             .setIfUnmodifiedSince(unmodified)
-            .setIfTags(tags)
+            .setIfTagsMatch(tags)
 
         when:
         blockBlobClient.uploadWithResponse(defaultInputStream.get(), defaultDataSize, null, null, null, null, bac, null, null)

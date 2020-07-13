@@ -222,7 +222,7 @@ public class BlockBlobClientJavaDocCodeSnippets {
         Context context = new Context("key", "value");
         BlockList block = client.listBlocksWithResponse(new BlockBlobListBlocksOptions(BlockListType.ALL)
             .setLeaseId(leaseId)
-            .setIfTags(tags), timeout, context).getValue();
+            .setIfTagsMatch(tags), timeout, context).getValue();
 
         System.out.println("Committed Blocks:");
         block.getCommittedBlocks().forEach(b -> System.out.printf("Name: %s, Size: %d", b.getName(), b.getSizeLong()));
