@@ -116,7 +116,7 @@ fallback and retry options available.
 The view of the FileSystem from within an instance of the JVM will be consistent, but the AzureFileSystem makes no 
 guarantees on behavior or state should other processes operate on the same data. The AzureFileSystem will assume that it 
 has exclusive access to the resources stored in Azure Blob Storage and will behave without regard for potential 
-interfering applications
+interfering applications.
 
 Finally, this implementation has currently chosen to always read/write directly to/from Azure Storage without a local 
 cache. Our team has determined that with the tradeoffs of complexity, correctness, safety, performance, debuggability, 
@@ -149,8 +149,9 @@ Please see the docs for `AzureFileSystemProvider` for a full explanation of init
 <!-- embedme ./src/samples/java/com/azure/storage/blob/nio/ReadmeSamples.java#L39-L42 -->
 ```java
 Map<String, Object> config = new HashMap<>();
+String[] stores = {"<your_container_name", "another_container_name"}; // Any iterable is acceptable
 config.put(AzureFileSystem.AZURE_STORAGE_ACCOUNT_KEY, "<your_account_key>");
-config.put(AzureFileSystem.AZURE_STORAGE_FILE_STORES, "<container_names>");
+config.put(AzureFileSystem.AZURE_STORAGE_FILE_STORES, stores);
 FileSystem myFs = FileSystems.newFileSystem(new URI("azb://?account=<your_account_name"), config);
 ```
 
@@ -282,6 +283,7 @@ not be possible or otherwise may conflict with established design goals and ther
 - Hidden files
 - Random writes
 - File locks
+- Read only files or file stores
 - Watches on directory events
 - Support for other Azure Storage services such as ADLS Gen 2 (Datalake) and Azure Files (shares)
 - Token authentication

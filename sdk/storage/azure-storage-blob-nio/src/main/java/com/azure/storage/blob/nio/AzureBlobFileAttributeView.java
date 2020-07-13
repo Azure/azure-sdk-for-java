@@ -70,8 +70,9 @@ public final class AzureBlobFileAttributeView implements BasicFileAttributeView 
     }
 
     /**
-     * Returns "azureBlob".
-     * {@inheritDoc}
+     * Returns the name of the attribute view: {@code "azureBlob"}
+     *
+     * @return the name of the attribute view: {@code "azureBlob"}
      */
     @Override
     public String name() {
@@ -80,8 +81,9 @@ public final class AzureBlobFileAttributeView implements BasicFileAttributeView 
 
     /**
      * Reads the file attributes as a bulk operation.
-     *
-     * Gets a fresh copy every time it is called.
+     * <p>
+     * All file attributes are read as an atomic operation with respect to other file system operations. A fresh copy is
+     * retrieved every time this method is called.
      * @return {@link AzureBlobFileAttributes}
      * @throws IOException if an IOException occurs.
      */
@@ -122,7 +124,7 @@ public final class AzureBlobFileAttributeView implements BasicFileAttributeView 
 
     /**
      * Sets the {@link AccessTier} on the file.
-     *
+     * <p>
      * See {@link BlobClientBase#setAccessTier(AccessTier)} for more information.
      * @param tier {@link AccessTier}
      * @throws IOException if an IOException occurs.
@@ -139,7 +141,7 @@ public final class AzureBlobFileAttributeView implements BasicFileAttributeView 
      * Unsupported.
      *
      * @throws UnsupportedOperationException Operation not supported.
-     * {@inheritDoc}
+     * @throws IOException never
      */
     @Override
     public void setTimes(FileTime fileTime, FileTime fileTime1, FileTime fileTime2) throws IOException {
