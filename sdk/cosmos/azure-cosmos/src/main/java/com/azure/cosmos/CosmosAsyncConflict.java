@@ -5,8 +5,8 @@ package com.azure.cosmos;
 import com.azure.core.util.Context;
 import com.azure.cosmos.implementation.Paths;
 import com.azure.cosmos.implementation.RequestOptions;
-import com.azure.cosmos.models.CosmosConflictResponse;
 import com.azure.cosmos.models.CosmosConflictRequestOptions;
+import com.azure.cosmos.models.CosmosConflictResponse;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import reactor.core.publisher.Mono;
 
@@ -109,30 +109,24 @@ public final class CosmosAsyncConflict {
 
     private Mono<CosmosConflictResponse> readInternal(RequestOptions options, Context context) {
         String spanName = "readConflict." + getId();
-        Mono<CosmosConflictResponse> responseMono = this.readInternal(options);
+        Mono<CosmosConflictResponse> responseMono =
+            this.container.getDatabase().getDocClientWrapper().readConflict(getLink(), options)
+            .map(response -> ModelBridgeInternal.createCosmosConflictResponse(response)).single();
         return this.container.getDatabase().getClient().getTracerProvider().traceEnabledCosmosResponsePublisher(responseMono, context,
             spanName,
             this.container.getDatabase().getId(),
             this.container.getDatabase().getClient().getServiceEndpoint());
 
-    }
-
-    private Mono<CosmosConflictResponse> readInternal(RequestOptions options) {
-        return this.container.getDatabase().getDocClientWrapper().readConflict(getLink(), options)
-            .map(response -> ModelBridgeInternal.createCosmosConflictResponse(response)).single();
     }
 
     private Mono<CosmosConflictResponse> deleteInternal(RequestOptions options, Context context) {
         String spanName = "deleteConflict." + getId();
-        Mono<CosmosConflictResponse> responseMono = deleteInternal(options);
+        Mono<CosmosConflictResponse> responseMono =
+            this.container.getDatabase().getDocClientWrapper().deleteConflict(getLink(), options)
+            .map(response -> ModelBridgeInternal.createCosmosConflictResponse(response)).single();
         return this.container.getDatabase().getClient().getTracerProvider().traceEnabledCosmosResponsePublisher(responseMono, context,
             spanName,
             this.container.getDatabase().getId(),
             this.container.getDatabase().getClient().getServiceEndpoint());
-    }
-
-    private Mono<CosmosConflictResponse> deleteInternal(RequestOptions options) {
-        return this.container.getDatabase().getDocClientWrapper().deleteConflict(getLink(), options)
-            .map(response -> ModelBridgeInternal.createCosmosConflictResponse(response)).single();
     }
 }

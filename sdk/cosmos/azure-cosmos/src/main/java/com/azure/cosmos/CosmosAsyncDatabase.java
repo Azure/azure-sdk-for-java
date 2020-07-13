@@ -730,7 +730,7 @@ public class CosmosAsyncDatabase {
         CosmosAsyncContainer container,
         CosmosContainerRequestOptions options,
         Context context) {
-        String spanName = "createContainerIfNotExistsInternal." + containerProperties.getId();
+        String spanName = "createContainerIfNotExists." + containerProperties.getId();
         Context nestedContext = context.addData(TracerProvider.COSMOS_CALL_DEPTH, TracerProvider.COSMOS_CALL_DEPTH_VAL);
         final CosmosContainerRequestOptions requestOptions = options == null ? new CosmosContainerRequestOptions() :
             options;

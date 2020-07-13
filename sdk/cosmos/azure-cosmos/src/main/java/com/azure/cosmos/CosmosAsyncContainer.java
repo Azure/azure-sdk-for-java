@@ -531,7 +531,7 @@ public class CosmosAsyncContainer {
         @SuppressWarnings("unchecked")
         Class<T> itemType = (Class<T>) item.getClass();
         final CosmosItemRequestOptions requestOptions = options;
-        return withContext(context -> replaceItemInternal(itemType, itemId, doc, requestOptions,context));
+        return withContext(context -> replaceItemInternal(itemType, itemId, doc, requestOptions, context));
     }
 
     /**
