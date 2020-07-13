@@ -1,10 +1,24 @@
 # Release History
 
-## 11.0.0 (Unreleased)
+## 11.0.0 (2020-07-13)
+
 - Changed version to 11.0.0.
-- Removed preview version `SearchClientOptions.ServiceVersion.V2019_05_06_Preview`
-  and added version `SearchClientOptions.ServiceVersion.V2020_06_30`.
-- Added value constructors for required parameters.
+- Removed preview version `SearchClientOptions.ServiceVersion.V2019_05_06_Preview` and added version `SearchClientOptions.ServiceVersion.V2020_06_30`.
+
+### New Features
+
+- Added `IndexDocumentsOptions` used to configure document operations.
+
+### Breaking Changes
+
+- Moved search result metadata to `SearchPagedFlux` and `SearchPagedIterable` from `SearchPagedResponse`.
+- Changed many model classes from fluent setter pattern to immutable constructor pattern.
+- Removed `RequestOptions` from APIs, instead use pipeline context to pass per method contextual information.
+- Removed strongly type GeoJSON classes.
+
+### Bug Fixes
+
+- Removed `implementation` classes from APIs.
 
 ## 1.0.0-beta.4 (2020-06-09)
 - Split `SearchServiceClient` into two clients `SearchIndexClient`, `SearchIndexerClient`.

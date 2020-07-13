@@ -20,7 +20,10 @@ import com.azure.search.documents.indexes.models.SearchServiceStatistics;
 import com.azure.search.documents.indexes.models.SynonymMap;
 
 /**
- * Synchronous Client to manage and query indexes, as well as manage Synonym Map, on a Cognitive Search service
+ * This class provides a client that contains the operations for creating, getting, listing, updating, or deleting
+ * indexes or synonym map and analyzing text in an Azure Cognitive Search service.
+ *
+ * @see SearchIndexClientBuilder
  */
 @ServiceClient(builder = SearchIndexClientBuilder.class)
 public final class SearchIndexClient {

@@ -183,79 +183,6 @@ public final class DisksClient
             Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/disks"
-                + "/{diskName}")
-        @ExpectedResponses({200, 202})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<DiskInner>> beginCreateOrUpdateWithoutPolling(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("diskName") String diskName,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") DiskInner disk,
-            Context context);
-
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/disks"
-                + "/{diskName}")
-        @ExpectedResponses({200, 202})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<DiskInner>> beginUpdateWithoutPolling(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("diskName") String diskName,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") DiskUpdate disk,
-            Context context);
-
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/disks"
-                + "/{diskName}")
-        @ExpectedResponses({200, 202, 204})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> beginDeleteWithoutPolling(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("diskName") String diskName,
-            @QueryParam("api-version") String apiVersion,
-            Context context);
-
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/disks"
-                + "/{diskName}/beginGetAccess")
-        @ExpectedResponses({200, 202})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<AccessUriInner>> beginGrantAccessWithoutPolling(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("diskName") String diskName,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") GrantAccessData grantAccessData,
-            Context context);
-
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/disks"
-                + "/{diskName}/endGetAccess")
-        @ExpectedResponses({200, 202})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> beginRevokeAccessWithoutPolling(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("diskName") String diskName,
-            @QueryParam("api-version") String apiVersion,
-            Context context);
-
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -366,6 +293,7 @@ public final class DisksClient
             disk.validate();
         }
         final String apiVersion = "2019-11-01";
+        context = this.client.mergeContext(context);
         return service
             .createOrUpdate(
                 this.client.getEndpoint(),
@@ -476,7 +404,7 @@ public final class DisksClient
     public Mono<DiskInner> createOrUpdateAsync(String resourceGroupName, String diskName, DiskInner disk) {
         return beginCreateOrUpdateAsync(resourceGroupName, diskName, disk)
             .last()
-            .flatMap(client::getLroFinalResultOrError);
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -497,7 +425,7 @@ public final class DisksClient
         String resourceGroupName, String diskName, DiskInner disk, Context context) {
         return beginCreateOrUpdateAsync(resourceGroupName, diskName, disk, context)
             .last()
-            .flatMap(client::getLroFinalResultOrError);
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -631,6 +559,7 @@ public final class DisksClient
             disk.validate();
         }
         final String apiVersion = "2019-11-01";
+        context = this.client.mergeContext(context);
         return service
             .update(
                 this.client.getEndpoint(),
@@ -738,7 +667,9 @@ public final class DisksClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DiskInner> updateAsync(String resourceGroupName, String diskName, DiskUpdate disk) {
-        return beginUpdateAsync(resourceGroupName, diskName, disk).last().flatMap(client::getLroFinalResultOrError);
+        return beginUpdateAsync(resourceGroupName, diskName, disk)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -758,7 +689,7 @@ public final class DisksClient
     public Mono<DiskInner> updateAsync(String resourceGroupName, String diskName, DiskUpdate disk, Context context) {
         return beginUpdateAsync(resourceGroupName, diskName, disk, context)
             .last()
-            .flatMap(client::getLroFinalResultOrError);
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -878,6 +809,7 @@ public final class DisksClient
             return Mono.error(new IllegalArgumentException("Parameter diskName is required and cannot be null."));
         }
         final String apiVersion = "2019-11-01";
+        context = this.client.mergeContext(context);
         return service
             .getByResourceGroup(
                 this.client.getEndpoint(),
@@ -1052,6 +984,7 @@ public final class DisksClient
             return Mono.error(new IllegalArgumentException("Parameter diskName is required and cannot be null."));
         }
         final String apiVersion = "2019-11-01";
+        context = this.client.mergeContext(context);
         return service
             .delete(
                 this.client.getEndpoint(),
@@ -1144,7 +1077,7 @@ public final class DisksClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String diskName) {
-        return beginDeleteAsync(resourceGroupName, diskName).last().flatMap(client::getLroFinalResultOrError);
+        return beginDeleteAsync(resourceGroupName, diskName).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -1161,7 +1094,9 @@ public final class DisksClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String diskName, Context context) {
-        return beginDeleteAsync(resourceGroupName, diskName, context).last().flatMap(client::getLroFinalResultOrError);
+        return beginDeleteAsync(resourceGroupName, diskName, context)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -1275,6 +1210,7 @@ public final class DisksClient
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         final String apiVersion = "2019-11-01";
+        context = this.client.mergeContext(context);
         return service
             .listByResourceGroup(
                 this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, apiVersion, context)
@@ -1413,6 +1349,7 @@ public final class DisksClient
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2019-11-01";
+        context = this.client.mergeContext(context);
         return service
             .list(this.client.getEndpoint(), this.client.getSubscriptionId(), apiVersion, context)
             .map(
@@ -1576,6 +1513,7 @@ public final class DisksClient
             grantAccessData.validate();
         }
         final String apiVersion = "2019-11-01";
+        context = this.client.mergeContext(context);
         return service
             .grantAccess(
                 this.client.getEndpoint(),
@@ -1688,7 +1626,7 @@ public final class DisksClient
         String resourceGroupName, String diskName, GrantAccessData grantAccessData) {
         return beginGrantAccessAsync(resourceGroupName, diskName, grantAccessData)
             .last()
-            .flatMap(client::getLroFinalResultOrError);
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -1709,7 +1647,7 @@ public final class DisksClient
         String resourceGroupName, String diskName, GrantAccessData grantAccessData, Context context) {
         return beginGrantAccessAsync(resourceGroupName, diskName, grantAccessData, context)
             .last()
-            .flatMap(client::getLroFinalResultOrError);
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -1830,6 +1768,7 @@ public final class DisksClient
             return Mono.error(new IllegalArgumentException("Parameter diskName is required and cannot be null."));
         }
         final String apiVersion = "2019-11-01";
+        context = this.client.mergeContext(context);
         return service
             .revokeAccess(
                 this.client.getEndpoint(),
@@ -1923,7 +1862,9 @@ public final class DisksClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> revokeAccessAsync(String resourceGroupName, String diskName) {
-        return beginRevokeAccessAsync(resourceGroupName, diskName).last().flatMap(client::getLroFinalResultOrError);
+        return beginRevokeAccessAsync(resourceGroupName, diskName)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -1942,7 +1883,7 @@ public final class DisksClient
     public Mono<Void> revokeAccessAsync(String resourceGroupName, String diskName, Context context) {
         return beginRevokeAccessAsync(resourceGroupName, diskName, context)
             .last()
-            .flatMap(client::getLroFinalResultOrError);
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -1974,913 +1915,6 @@ public final class DisksClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void revokeAccess(String resourceGroupName, String diskName, Context context) {
         revokeAccessAsync(resourceGroupName, diskName, context).block();
-    }
-
-    /**
-     * Creates or updates a disk.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param diskName The name of the managed disk that is being created. The name can't be changed after the disk is
-     *     created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum name length is 80 characters.
-     * @param disk Disk resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return disk resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<DiskInner>> beginCreateOrUpdateWithoutPollingWithResponseAsync(
-        String resourceGroupName, String diskName, DiskInner disk) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (diskName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter diskName is required and cannot be null."));
-        }
-        if (disk == null) {
-            return Mono.error(new IllegalArgumentException("Parameter disk is required and cannot be null."));
-        } else {
-            disk.validate();
-        }
-        final String apiVersion = "2019-11-01";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .beginCreateOrUpdateWithoutPolling(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            diskName,
-                            apiVersion,
-                            disk,
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
-
-    /**
-     * Creates or updates a disk.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param diskName The name of the managed disk that is being created. The name can't be changed after the disk is
-     *     created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum name length is 80 characters.
-     * @param disk Disk resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return disk resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<DiskInner>> beginCreateOrUpdateWithoutPollingWithResponseAsync(
-        String resourceGroupName, String diskName, DiskInner disk, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (diskName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter diskName is required and cannot be null."));
-        }
-        if (disk == null) {
-            return Mono.error(new IllegalArgumentException("Parameter disk is required and cannot be null."));
-        } else {
-            disk.validate();
-        }
-        final String apiVersion = "2019-11-01";
-        return service
-            .beginCreateOrUpdateWithoutPolling(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                diskName,
-                apiVersion,
-                disk,
-                context);
-    }
-
-    /**
-     * Creates or updates a disk.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param diskName The name of the managed disk that is being created. The name can't be changed after the disk is
-     *     created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum name length is 80 characters.
-     * @param disk Disk resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return disk resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DiskInner> beginCreateOrUpdateWithoutPollingAsync(
-        String resourceGroupName, String diskName, DiskInner disk) {
-        return beginCreateOrUpdateWithoutPollingWithResponseAsync(resourceGroupName, diskName, disk)
-            .flatMap(
-                (Response<DiskInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Creates or updates a disk.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param diskName The name of the managed disk that is being created. The name can't be changed after the disk is
-     *     created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum name length is 80 characters.
-     * @param disk Disk resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return disk resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DiskInner> beginCreateOrUpdateWithoutPollingAsync(
-        String resourceGroupName, String diskName, DiskInner disk, Context context) {
-        return beginCreateOrUpdateWithoutPollingWithResponseAsync(resourceGroupName, diskName, disk, context)
-            .flatMap(
-                (Response<DiskInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Creates or updates a disk.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param diskName The name of the managed disk that is being created. The name can't be changed after the disk is
-     *     created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum name length is 80 characters.
-     * @param disk Disk resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return disk resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public DiskInner beginCreateOrUpdateWithoutPolling(String resourceGroupName, String diskName, DiskInner disk) {
-        return beginCreateOrUpdateWithoutPollingAsync(resourceGroupName, diskName, disk).block();
-    }
-
-    /**
-     * Creates or updates a disk.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param diskName The name of the managed disk that is being created. The name can't be changed after the disk is
-     *     created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum name length is 80 characters.
-     * @param disk Disk resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return disk resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public DiskInner beginCreateOrUpdateWithoutPolling(
-        String resourceGroupName, String diskName, DiskInner disk, Context context) {
-        return beginCreateOrUpdateWithoutPollingAsync(resourceGroupName, diskName, disk, context).block();
-    }
-
-    /**
-     * Updates (patches) a disk.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param diskName The name of the managed disk that is being created. The name can't be changed after the disk is
-     *     created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum name length is 80 characters.
-     * @param disk Disk update resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return disk resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<DiskInner>> beginUpdateWithoutPollingWithResponseAsync(
-        String resourceGroupName, String diskName, DiskUpdate disk) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (diskName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter diskName is required and cannot be null."));
-        }
-        if (disk == null) {
-            return Mono.error(new IllegalArgumentException("Parameter disk is required and cannot be null."));
-        } else {
-            disk.validate();
-        }
-        final String apiVersion = "2019-11-01";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .beginUpdateWithoutPolling(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            diskName,
-                            apiVersion,
-                            disk,
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
-
-    /**
-     * Updates (patches) a disk.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param diskName The name of the managed disk that is being created. The name can't be changed after the disk is
-     *     created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum name length is 80 characters.
-     * @param disk Disk update resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return disk resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<DiskInner>> beginUpdateWithoutPollingWithResponseAsync(
-        String resourceGroupName, String diskName, DiskUpdate disk, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (diskName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter diskName is required and cannot be null."));
-        }
-        if (disk == null) {
-            return Mono.error(new IllegalArgumentException("Parameter disk is required and cannot be null."));
-        } else {
-            disk.validate();
-        }
-        final String apiVersion = "2019-11-01";
-        return service
-            .beginUpdateWithoutPolling(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                diskName,
-                apiVersion,
-                disk,
-                context);
-    }
-
-    /**
-     * Updates (patches) a disk.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param diskName The name of the managed disk that is being created. The name can't be changed after the disk is
-     *     created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum name length is 80 characters.
-     * @param disk Disk update resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return disk resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DiskInner> beginUpdateWithoutPollingAsync(String resourceGroupName, String diskName, DiskUpdate disk) {
-        return beginUpdateWithoutPollingWithResponseAsync(resourceGroupName, diskName, disk)
-            .flatMap(
-                (Response<DiskInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Updates (patches) a disk.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param diskName The name of the managed disk that is being created. The name can't be changed after the disk is
-     *     created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum name length is 80 characters.
-     * @param disk Disk update resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return disk resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DiskInner> beginUpdateWithoutPollingAsync(
-        String resourceGroupName, String diskName, DiskUpdate disk, Context context) {
-        return beginUpdateWithoutPollingWithResponseAsync(resourceGroupName, diskName, disk, context)
-            .flatMap(
-                (Response<DiskInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Updates (patches) a disk.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param diskName The name of the managed disk that is being created. The name can't be changed after the disk is
-     *     created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum name length is 80 characters.
-     * @param disk Disk update resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return disk resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public DiskInner beginUpdateWithoutPolling(String resourceGroupName, String diskName, DiskUpdate disk) {
-        return beginUpdateWithoutPollingAsync(resourceGroupName, diskName, disk).block();
-    }
-
-    /**
-     * Updates (patches) a disk.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param diskName The name of the managed disk that is being created. The name can't be changed after the disk is
-     *     created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum name length is 80 characters.
-     * @param disk Disk update resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return disk resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public DiskInner beginUpdateWithoutPolling(
-        String resourceGroupName, String diskName, DiskUpdate disk, Context context) {
-        return beginUpdateWithoutPollingAsync(resourceGroupName, diskName, disk, context).block();
-    }
-
-    /**
-     * Deletes a disk.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param diskName The name of the managed disk that is being created. The name can't be changed after the disk is
-     *     created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum name length is 80 characters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> beginDeleteWithoutPollingWithResponseAsync(String resourceGroupName, String diskName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (diskName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter diskName is required and cannot be null."));
-        }
-        final String apiVersion = "2019-11-01";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .beginDeleteWithoutPolling(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            diskName,
-                            apiVersion,
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
-
-    /**
-     * Deletes a disk.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param diskName The name of the managed disk that is being created. The name can't be changed after the disk is
-     *     created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum name length is 80 characters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> beginDeleteWithoutPollingWithResponseAsync(
-        String resourceGroupName, String diskName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (diskName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter diskName is required and cannot be null."));
-        }
-        final String apiVersion = "2019-11-01";
-        return service
-            .beginDeleteWithoutPolling(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                diskName,
-                apiVersion,
-                context);
-    }
-
-    /**
-     * Deletes a disk.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param diskName The name of the managed disk that is being created. The name can't be changed after the disk is
-     *     created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum name length is 80 characters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> beginDeleteWithoutPollingAsync(String resourceGroupName, String diskName) {
-        return beginDeleteWithoutPollingWithResponseAsync(resourceGroupName, diskName)
-            .flatMap((Response<Void> res) -> Mono.empty());
-    }
-
-    /**
-     * Deletes a disk.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param diskName The name of the managed disk that is being created. The name can't be changed after the disk is
-     *     created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum name length is 80 characters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> beginDeleteWithoutPollingAsync(String resourceGroupName, String diskName, Context context) {
-        return beginDeleteWithoutPollingWithResponseAsync(resourceGroupName, diskName, context)
-            .flatMap((Response<Void> res) -> Mono.empty());
-    }
-
-    /**
-     * Deletes a disk.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param diskName The name of the managed disk that is being created. The name can't be changed after the disk is
-     *     created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum name length is 80 characters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void beginDeleteWithoutPolling(String resourceGroupName, String diskName) {
-        beginDeleteWithoutPollingAsync(resourceGroupName, diskName).block();
-    }
-
-    /**
-     * Deletes a disk.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param diskName The name of the managed disk that is being created. The name can't be changed after the disk is
-     *     created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum name length is 80 characters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void beginDeleteWithoutPolling(String resourceGroupName, String diskName, Context context) {
-        beginDeleteWithoutPollingAsync(resourceGroupName, diskName, context).block();
-    }
-
-    /**
-     * Grants access to a disk.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param diskName The name of the managed disk that is being created. The name can't be changed after the disk is
-     *     created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum name length is 80 characters.
-     * @param grantAccessData Data used for requesting a SAS.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a disk access SAS uri.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<AccessUriInner>> beginGrantAccessWithoutPollingWithResponseAsync(
-        String resourceGroupName, String diskName, GrantAccessData grantAccessData) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (diskName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter diskName is required and cannot be null."));
-        }
-        if (grantAccessData == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter grantAccessData is required and cannot be null."));
-        } else {
-            grantAccessData.validate();
-        }
-        final String apiVersion = "2019-11-01";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .beginGrantAccessWithoutPolling(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            diskName,
-                            apiVersion,
-                            grantAccessData,
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
-
-    /**
-     * Grants access to a disk.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param diskName The name of the managed disk that is being created. The name can't be changed after the disk is
-     *     created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum name length is 80 characters.
-     * @param grantAccessData Data used for requesting a SAS.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a disk access SAS uri.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<AccessUriInner>> beginGrantAccessWithoutPollingWithResponseAsync(
-        String resourceGroupName, String diskName, GrantAccessData grantAccessData, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (diskName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter diskName is required and cannot be null."));
-        }
-        if (grantAccessData == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter grantAccessData is required and cannot be null."));
-        } else {
-            grantAccessData.validate();
-        }
-        final String apiVersion = "2019-11-01";
-        return service
-            .beginGrantAccessWithoutPolling(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                diskName,
-                apiVersion,
-                grantAccessData,
-                context);
-    }
-
-    /**
-     * Grants access to a disk.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param diskName The name of the managed disk that is being created. The name can't be changed after the disk is
-     *     created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum name length is 80 characters.
-     * @param grantAccessData Data used for requesting a SAS.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a disk access SAS uri.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AccessUriInner> beginGrantAccessWithoutPollingAsync(
-        String resourceGroupName, String diskName, GrantAccessData grantAccessData) {
-        return beginGrantAccessWithoutPollingWithResponseAsync(resourceGroupName, diskName, grantAccessData)
-            .flatMap(
-                (Response<AccessUriInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Grants access to a disk.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param diskName The name of the managed disk that is being created. The name can't be changed after the disk is
-     *     created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum name length is 80 characters.
-     * @param grantAccessData Data used for requesting a SAS.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a disk access SAS uri.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AccessUriInner> beginGrantAccessWithoutPollingAsync(
-        String resourceGroupName, String diskName, GrantAccessData grantAccessData, Context context) {
-        return beginGrantAccessWithoutPollingWithResponseAsync(resourceGroupName, diskName, grantAccessData, context)
-            .flatMap(
-                (Response<AccessUriInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Grants access to a disk.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param diskName The name of the managed disk that is being created. The name can't be changed after the disk is
-     *     created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum name length is 80 characters.
-     * @param grantAccessData Data used for requesting a SAS.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a disk access SAS uri.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public AccessUriInner beginGrantAccessWithoutPolling(
-        String resourceGroupName, String diskName, GrantAccessData grantAccessData) {
-        return beginGrantAccessWithoutPollingAsync(resourceGroupName, diskName, grantAccessData).block();
-    }
-
-    /**
-     * Grants access to a disk.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param diskName The name of the managed disk that is being created. The name can't be changed after the disk is
-     *     created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum name length is 80 characters.
-     * @param grantAccessData Data used for requesting a SAS.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a disk access SAS uri.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public AccessUriInner beginGrantAccessWithoutPolling(
-        String resourceGroupName, String diskName, GrantAccessData grantAccessData, Context context) {
-        return beginGrantAccessWithoutPollingAsync(resourceGroupName, diskName, grantAccessData, context).block();
-    }
-
-    /**
-     * Revokes access to a disk.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param diskName The name of the managed disk that is being created. The name can't be changed after the disk is
-     *     created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum name length is 80 characters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> beginRevokeAccessWithoutPollingWithResponseAsync(
-        String resourceGroupName, String diskName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (diskName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter diskName is required and cannot be null."));
-        }
-        final String apiVersion = "2019-11-01";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .beginRevokeAccessWithoutPolling(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            diskName,
-                            apiVersion,
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
-
-    /**
-     * Revokes access to a disk.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param diskName The name of the managed disk that is being created. The name can't be changed after the disk is
-     *     created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum name length is 80 characters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> beginRevokeAccessWithoutPollingWithResponseAsync(
-        String resourceGroupName, String diskName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (diskName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter diskName is required and cannot be null."));
-        }
-        final String apiVersion = "2019-11-01";
-        return service
-            .beginRevokeAccessWithoutPolling(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                diskName,
-                apiVersion,
-                context);
-    }
-
-    /**
-     * Revokes access to a disk.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param diskName The name of the managed disk that is being created. The name can't be changed after the disk is
-     *     created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum name length is 80 characters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> beginRevokeAccessWithoutPollingAsync(String resourceGroupName, String diskName) {
-        return beginRevokeAccessWithoutPollingWithResponseAsync(resourceGroupName, diskName)
-            .flatMap((Response<Void> res) -> Mono.empty());
-    }
-
-    /**
-     * Revokes access to a disk.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param diskName The name of the managed disk that is being created. The name can't be changed after the disk is
-     *     created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum name length is 80 characters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> beginRevokeAccessWithoutPollingAsync(String resourceGroupName, String diskName, Context context) {
-        return beginRevokeAccessWithoutPollingWithResponseAsync(resourceGroupName, diskName, context)
-            .flatMap((Response<Void> res) -> Mono.empty());
-    }
-
-    /**
-     * Revokes access to a disk.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param diskName The name of the managed disk that is being created. The name can't be changed after the disk is
-     *     created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum name length is 80 characters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void beginRevokeAccessWithoutPolling(String resourceGroupName, String diskName) {
-        beginRevokeAccessWithoutPollingAsync(resourceGroupName, diskName).block();
-    }
-
-    /**
-     * Revokes access to a disk.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param diskName The name of the managed disk that is being created. The name can't be changed after the disk is
-     *     created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum name length is 80 characters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void beginRevokeAccessWithoutPolling(String resourceGroupName, String diskName, Context context) {
-        beginRevokeAccessWithoutPollingAsync(resourceGroupName, diskName, context).block();
     }
 
     /**
@@ -2926,6 +1960,7 @@ public final class DisksClient
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .listByResourceGroupNext(nextLink, context)
             .map(
@@ -2982,6 +2017,7 @@ public final class DisksClient
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .listNext(nextLink, context)
             .map(

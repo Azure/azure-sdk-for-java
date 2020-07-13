@@ -1,5 +1,6 @@
 package com.azure.storage.blob.changefeed
 
+import spock.lang.Ignore
 import reactor.test.StepVerifier
 import spock.lang.Requires
 import spock.lang.Unroll
@@ -73,6 +74,7 @@ class ChangefeedNetworkTest extends APISpec {
 
     @Unroll
     @Requires( { playbackMode() })
+    @Ignore("flaky in CI")
     def "get continuationToken"() {
         when:
         BlobChangefeedPagedIterable iterable = new BlobChangefeedClientBuilder(primaryBlobServiceClient)
@@ -101,6 +103,7 @@ class ChangefeedNetworkTest extends APISpec {
 
     @Unroll
     @Requires( { playbackMode() })
+    @Ignore("flaky in CI")
     def "resume continuationToken"() {
         when:
         BlobChangefeedPagedFlux flux = new BlobChangefeedClientBuilder(primaryBlobServiceAsyncClient)

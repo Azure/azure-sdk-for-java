@@ -584,6 +584,7 @@ public final class DiagnosticsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .listHostingEnvironmentDetectorResponses(
                 this.client.getEndpoint(),
@@ -781,6 +782,7 @@ public final class DiagnosticsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .getHostingEnvironmentDetectorResponse(
                 this.client.getEndpoint(),
@@ -1062,6 +1064,7 @@ public final class DiagnosticsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .listSiteDetectorResponses(
                 this.client.getEndpoint(),
@@ -1257,6 +1260,7 @@ public final class DiagnosticsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .getSiteDetectorResponse(
                 this.client.getEndpoint(),
@@ -1536,6 +1540,7 @@ public final class DiagnosticsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .listSiteDiagnosticCategories(
                 this.client.getEndpoint(),
@@ -1715,6 +1720,7 @@ public final class DiagnosticsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .getSiteDiagnosticCategory(
                 this.client.getEndpoint(),
@@ -1911,6 +1917,7 @@ public final class DiagnosticsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .listSiteAnalyses(
                 this.client.getEndpoint(),
@@ -2104,6 +2111,7 @@ public final class DiagnosticsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .getSiteAnalysis(
                 this.client.getEndpoint(),
@@ -2327,6 +2335,7 @@ public final class DiagnosticsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .executeSiteAnalysis(
                 this.client.getEndpoint(),
@@ -2630,6 +2639,7 @@ public final class DiagnosticsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .listSiteDetectors(
                 this.client.getEndpoint(),
@@ -2823,6 +2833,7 @@ public final class DiagnosticsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .getSiteDetector(
                 this.client.getEndpoint(),
@@ -3046,6 +3057,7 @@ public final class DiagnosticsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .executeSiteDetector(
                 this.client.getEndpoint(),
@@ -3347,6 +3359,7 @@ public final class DiagnosticsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .listSiteDetectorResponsesSlot(
                 this.client.getEndpoint(),
@@ -3560,6 +3573,7 @@ public final class DiagnosticsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .getSiteDetectorResponseSlot(
                 this.client.getEndpoint(),
@@ -3861,6 +3875,7 @@ public final class DiagnosticsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .listSiteDiagnosticCategoriesSlot(
                 this.client.getEndpoint(),
@@ -4054,6 +4069,7 @@ public final class DiagnosticsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .getSiteDiagnosticCategorySlot(
                 this.client.getEndpoint(),
@@ -4266,6 +4282,7 @@ public final class DiagnosticsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .listSiteAnalysesSlot(
                 this.client.getEndpoint(),
@@ -4479,6 +4496,7 @@ public final class DiagnosticsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .getSiteAnalysisSlot(
                 this.client.getEndpoint(),
@@ -4730,6 +4748,7 @@ public final class DiagnosticsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .executeSiteAnalysisSlot(
                 this.client.getEndpoint(),
@@ -5069,6 +5088,7 @@ public final class DiagnosticsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .listSiteDetectorsSlot(
                 this.client.getEndpoint(),
@@ -5282,6 +5302,7 @@ public final class DiagnosticsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .getSiteDetectorSlot(
                 this.client.getEndpoint(),
@@ -5533,6 +5554,7 @@ public final class DiagnosticsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .executeSiteDetectorSlot(
                 this.client.getEndpoint(),
@@ -5809,6 +5831,7 @@ public final class DiagnosticsClient {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .listHostingEnvironmentDetectorResponsesNext(nextLink, context)
             .map(
@@ -5866,6 +5889,7 @@ public final class DiagnosticsClient {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .listSiteDetectorResponsesNext(nextLink, context)
             .map(
@@ -5924,6 +5948,7 @@ public final class DiagnosticsClient {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .listSiteDiagnosticCategoriesNext(nextLink, context)
             .map(
@@ -5981,6 +6006,7 @@ public final class DiagnosticsClient {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .listSiteAnalysesNext(nextLink, context)
             .map(
@@ -6038,6 +6064,7 @@ public final class DiagnosticsClient {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .listSiteDetectorsNext(nextLink, context)
             .map(
@@ -6096,6 +6123,7 @@ public final class DiagnosticsClient {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .listSiteDetectorResponsesSlotNext(nextLink, context)
             .map(
@@ -6154,6 +6182,7 @@ public final class DiagnosticsClient {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .listSiteDiagnosticCategoriesSlotNext(nextLink, context)
             .map(
@@ -6211,6 +6240,7 @@ public final class DiagnosticsClient {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .listSiteAnalysesSlotNext(nextLink, context)
             .map(
@@ -6268,6 +6298,7 @@ public final class DiagnosticsClient {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .listSiteDetectorsSlotNext(nextLink, context)
             .map(
