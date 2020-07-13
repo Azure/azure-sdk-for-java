@@ -4,41 +4,28 @@
 
 package com.azure.resourcemanager.compute.models;
 
+import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
+import java.util.Collection;
 
 /** Defines values for ReplicationStatusTypes. */
-public enum ReplicationStatusTypes {
-    /** Enum value ReplicationStatus. */
-    REPLICATION_STATUS("ReplicationStatus");
-
-    /** The actual serialized value for a ReplicationStatusTypes instance. */
-    private final String value;
-
-    ReplicationStatusTypes(String value) {
-        this.value = value;
-    }
+public final class ReplicationStatusTypes extends ExpandableStringEnum<ReplicationStatusTypes> {
+    /** Static value ReplicationStatus for ReplicationStatusTypes. */
+    public static final ReplicationStatusTypes REPLICATION_STATUS = fromString("ReplicationStatus");
 
     /**
-     * Parses a serialized value to a ReplicationStatusTypes instance.
+     * Creates or finds a ReplicationStatusTypes from its string representation.
      *
-     * @param value the serialized value to parse.
-     * @return the parsed ReplicationStatusTypes object, or null if unable to parse.
+     * @param name a name to look for.
+     * @return the corresponding ReplicationStatusTypes.
      */
     @JsonCreator
-    public static ReplicationStatusTypes fromString(String value) {
-        ReplicationStatusTypes[] items = ReplicationStatusTypes.values();
-        for (ReplicationStatusTypes item : items) {
-            if (item.toString().equalsIgnoreCase(value)) {
-                return item;
-            }
-        }
-        return null;
+    public static ReplicationStatusTypes fromString(String name) {
+        return fromString(name, ReplicationStatusTypes.class);
     }
 
-    @JsonValue
-    @Override
-    public String toString() {
-        return this.value;
+    /** @return known ReplicationStatusTypes values. */
+    public static Collection<ReplicationStatusTypes> values() {
+        return values(ReplicationStatusTypes.class);
     }
 }

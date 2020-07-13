@@ -150,53 +150,6 @@ public final class VirtualMachineScaleSetExtensionsClient {
             Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute"
-                + "/virtualMachineScaleSets/{vmScaleSetName}/extensions/{vmssExtensionName}")
-        @ExpectedResponses({200, 201})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<VirtualMachineScaleSetExtensionInner>> beginCreateOrUpdateWithoutPolling(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("vmScaleSetName") String vmScaleSetName,
-            @PathParam("vmssExtensionName") String vmssExtensionName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @BodyParam("application/json") VirtualMachineScaleSetExtensionInner extensionParameters,
-            Context context);
-
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute"
-                + "/virtualMachineScaleSets/{vmScaleSetName}/extensions/{vmssExtensionName}")
-        @ExpectedResponses({200, 201})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<VirtualMachineScaleSetExtensionInner>> beginUpdateWithoutPolling(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("vmScaleSetName") String vmScaleSetName,
-            @PathParam("vmssExtensionName") String vmssExtensionName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @BodyParam("application/json") VirtualMachineScaleSetExtensionUpdate extensionParameters,
-            Context context);
-
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute"
-                + "/virtualMachineScaleSets/{vmScaleSetName}/extensions/{vmssExtensionName}")
-        @ExpectedResponses({200, 202, 204})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> beginDeleteWithoutPolling(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("vmScaleSetName") String vmScaleSetName,
-            @PathParam("vmssExtensionName") String vmssExtensionName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            Context context);
-
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -318,6 +271,7 @@ public final class VirtualMachineScaleSetExtensionsClient {
             extensionParameters.validate();
         }
         final String apiVersion = "2019-12-01";
+        context = this.client.mergeContext(context);
         return service
             .createOrUpdate(
                 this.client.getEndpoint(),
@@ -462,7 +416,7 @@ public final class VirtualMachineScaleSetExtensionsClient {
         VirtualMachineScaleSetExtensionInner extensionParameters) {
         return beginCreateOrUpdateAsync(resourceGroupName, vmScaleSetName, vmssExtensionName, extensionParameters)
             .last()
-            .flatMap(client::getLroFinalResultOrError);
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -488,7 +442,7 @@ public final class VirtualMachineScaleSetExtensionsClient {
         return beginCreateOrUpdateAsync(
                 resourceGroupName, vmScaleSetName, vmssExtensionName, extensionParameters, context)
             .last()
-            .flatMap(client::getLroFinalResultOrError);
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -650,6 +604,7 @@ public final class VirtualMachineScaleSetExtensionsClient {
             extensionParameters.validate();
         }
         final String apiVersion = "2019-12-01";
+        context = this.client.mergeContext(context);
         return service
             .update(
                 this.client.getEndpoint(),
@@ -792,7 +747,7 @@ public final class VirtualMachineScaleSetExtensionsClient {
         VirtualMachineScaleSetExtensionUpdate extensionParameters) {
         return beginUpdateAsync(resourceGroupName, vmScaleSetName, vmssExtensionName, extensionParameters)
             .last()
-            .flatMap(client::getLroFinalResultOrError);
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -817,7 +772,7 @@ public final class VirtualMachineScaleSetExtensionsClient {
         Context context) {
         return beginUpdateAsync(resourceGroupName, vmScaleSetName, vmssExtensionName, extensionParameters, context)
             .last()
-            .flatMap(client::getLroFinalResultOrError);
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -956,6 +911,7 @@ public final class VirtualMachineScaleSetExtensionsClient {
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2019-12-01";
+        context = this.client.mergeContext(context);
         return service
             .delete(
                 this.client.getEndpoint(),
@@ -1056,7 +1012,7 @@ public final class VirtualMachineScaleSetExtensionsClient {
     public Mono<Void> deleteAsync(String resourceGroupName, String vmScaleSetName, String vmssExtensionName) {
         return beginDeleteAsync(resourceGroupName, vmScaleSetName, vmssExtensionName)
             .last()
-            .flatMap(client::getLroFinalResultOrError);
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -1076,7 +1032,7 @@ public final class VirtualMachineScaleSetExtensionsClient {
         String resourceGroupName, String vmScaleSetName, String vmssExtensionName, Context context) {
         return beginDeleteAsync(resourceGroupName, vmScaleSetName, vmssExtensionName, context)
             .last()
-            .flatMap(client::getLroFinalResultOrError);
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -1205,6 +1161,7 @@ public final class VirtualMachineScaleSetExtensionsClient {
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2019-12-01";
+        context = this.client.mergeContext(context);
         return service
             .get(
                 this.client.getEndpoint(),
@@ -1443,6 +1400,7 @@ public final class VirtualMachineScaleSetExtensionsClient {
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2019-12-01";
+        context = this.client.mergeContext(context);
         return service
             .list(
                 this.client.getEndpoint(),
@@ -1531,649 +1489,6 @@ public final class VirtualMachineScaleSetExtensionsClient {
     }
 
     /**
-     * The operation to create or update an extension.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param vmScaleSetName The name of the VM scale set where the extension should be create or updated.
-     * @param vmssExtensionName The name of the VM scale set extension.
-     * @param extensionParameters Describes a Virtual Machine Scale Set Extension.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a Virtual Machine Scale Set Extension.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<VirtualMachineScaleSetExtensionInner>> beginCreateOrUpdateWithoutPollingWithResponseAsync(
-        String resourceGroupName,
-        String vmScaleSetName,
-        String vmssExtensionName,
-        VirtualMachineScaleSetExtensionInner extensionParameters) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (vmScaleSetName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter vmScaleSetName is required and cannot be null."));
-        }
-        if (vmssExtensionName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter vmssExtensionName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (extensionParameters == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter extensionParameters is required and cannot be null."));
-        } else {
-            extensionParameters.validate();
-        }
-        final String apiVersion = "2019-12-01";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .beginCreateOrUpdateWithoutPolling(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            vmScaleSetName,
-                            vmssExtensionName,
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            extensionParameters,
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
-
-    /**
-     * The operation to create or update an extension.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param vmScaleSetName The name of the VM scale set where the extension should be create or updated.
-     * @param vmssExtensionName The name of the VM scale set extension.
-     * @param extensionParameters Describes a Virtual Machine Scale Set Extension.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a Virtual Machine Scale Set Extension.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<VirtualMachineScaleSetExtensionInner>> beginCreateOrUpdateWithoutPollingWithResponseAsync(
-        String resourceGroupName,
-        String vmScaleSetName,
-        String vmssExtensionName,
-        VirtualMachineScaleSetExtensionInner extensionParameters,
-        Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (vmScaleSetName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter vmScaleSetName is required and cannot be null."));
-        }
-        if (vmssExtensionName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter vmssExtensionName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (extensionParameters == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter extensionParameters is required and cannot be null."));
-        } else {
-            extensionParameters.validate();
-        }
-        final String apiVersion = "2019-12-01";
-        return service
-            .beginCreateOrUpdateWithoutPolling(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                vmScaleSetName,
-                vmssExtensionName,
-                apiVersion,
-                this.client.getSubscriptionId(),
-                extensionParameters,
-                context);
-    }
-
-    /**
-     * The operation to create or update an extension.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param vmScaleSetName The name of the VM scale set where the extension should be create or updated.
-     * @param vmssExtensionName The name of the VM scale set extension.
-     * @param extensionParameters Describes a Virtual Machine Scale Set Extension.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a Virtual Machine Scale Set Extension.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<VirtualMachineScaleSetExtensionInner> beginCreateOrUpdateWithoutPollingAsync(
-        String resourceGroupName,
-        String vmScaleSetName,
-        String vmssExtensionName,
-        VirtualMachineScaleSetExtensionInner extensionParameters) {
-        return beginCreateOrUpdateWithoutPollingWithResponseAsync(
-                resourceGroupName, vmScaleSetName, vmssExtensionName, extensionParameters)
-            .flatMap(
-                (Response<VirtualMachineScaleSetExtensionInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * The operation to create or update an extension.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param vmScaleSetName The name of the VM scale set where the extension should be create or updated.
-     * @param vmssExtensionName The name of the VM scale set extension.
-     * @param extensionParameters Describes a Virtual Machine Scale Set Extension.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a Virtual Machine Scale Set Extension.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<VirtualMachineScaleSetExtensionInner> beginCreateOrUpdateWithoutPollingAsync(
-        String resourceGroupName,
-        String vmScaleSetName,
-        String vmssExtensionName,
-        VirtualMachineScaleSetExtensionInner extensionParameters,
-        Context context) {
-        return beginCreateOrUpdateWithoutPollingWithResponseAsync(
-                resourceGroupName, vmScaleSetName, vmssExtensionName, extensionParameters, context)
-            .flatMap(
-                (Response<VirtualMachineScaleSetExtensionInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * The operation to create or update an extension.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param vmScaleSetName The name of the VM scale set where the extension should be create or updated.
-     * @param vmssExtensionName The name of the VM scale set extension.
-     * @param extensionParameters Describes a Virtual Machine Scale Set Extension.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a Virtual Machine Scale Set Extension.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public VirtualMachineScaleSetExtensionInner beginCreateOrUpdateWithoutPolling(
-        String resourceGroupName,
-        String vmScaleSetName,
-        String vmssExtensionName,
-        VirtualMachineScaleSetExtensionInner extensionParameters) {
-        return beginCreateOrUpdateWithoutPollingAsync(
-                resourceGroupName, vmScaleSetName, vmssExtensionName, extensionParameters)
-            .block();
-    }
-
-    /**
-     * The operation to create or update an extension.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param vmScaleSetName The name of the VM scale set where the extension should be create or updated.
-     * @param vmssExtensionName The name of the VM scale set extension.
-     * @param extensionParameters Describes a Virtual Machine Scale Set Extension.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a Virtual Machine Scale Set Extension.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public VirtualMachineScaleSetExtensionInner beginCreateOrUpdateWithoutPolling(
-        String resourceGroupName,
-        String vmScaleSetName,
-        String vmssExtensionName,
-        VirtualMachineScaleSetExtensionInner extensionParameters,
-        Context context) {
-        return beginCreateOrUpdateWithoutPollingAsync(
-                resourceGroupName, vmScaleSetName, vmssExtensionName, extensionParameters, context)
-            .block();
-    }
-
-    /**
-     * The operation to update an extension.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param vmScaleSetName The name of the VM scale set where the extension should be updated.
-     * @param vmssExtensionName The name of the VM scale set extension.
-     * @param extensionParameters Describes a Virtual Machine Scale Set Extension.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a Virtual Machine Scale Set Extension.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<VirtualMachineScaleSetExtensionInner>> beginUpdateWithoutPollingWithResponseAsync(
-        String resourceGroupName,
-        String vmScaleSetName,
-        String vmssExtensionName,
-        VirtualMachineScaleSetExtensionUpdate extensionParameters) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (vmScaleSetName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter vmScaleSetName is required and cannot be null."));
-        }
-        if (vmssExtensionName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter vmssExtensionName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (extensionParameters == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter extensionParameters is required and cannot be null."));
-        } else {
-            extensionParameters.validate();
-        }
-        final String apiVersion = "2019-12-01";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .beginUpdateWithoutPolling(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            vmScaleSetName,
-                            vmssExtensionName,
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            extensionParameters,
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
-
-    /**
-     * The operation to update an extension.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param vmScaleSetName The name of the VM scale set where the extension should be updated.
-     * @param vmssExtensionName The name of the VM scale set extension.
-     * @param extensionParameters Describes a Virtual Machine Scale Set Extension.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a Virtual Machine Scale Set Extension.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<VirtualMachineScaleSetExtensionInner>> beginUpdateWithoutPollingWithResponseAsync(
-        String resourceGroupName,
-        String vmScaleSetName,
-        String vmssExtensionName,
-        VirtualMachineScaleSetExtensionUpdate extensionParameters,
-        Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (vmScaleSetName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter vmScaleSetName is required and cannot be null."));
-        }
-        if (vmssExtensionName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter vmssExtensionName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (extensionParameters == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter extensionParameters is required and cannot be null."));
-        } else {
-            extensionParameters.validate();
-        }
-        final String apiVersion = "2019-12-01";
-        return service
-            .beginUpdateWithoutPolling(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                vmScaleSetName,
-                vmssExtensionName,
-                apiVersion,
-                this.client.getSubscriptionId(),
-                extensionParameters,
-                context);
-    }
-
-    /**
-     * The operation to update an extension.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param vmScaleSetName The name of the VM scale set where the extension should be updated.
-     * @param vmssExtensionName The name of the VM scale set extension.
-     * @param extensionParameters Describes a Virtual Machine Scale Set Extension.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a Virtual Machine Scale Set Extension.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<VirtualMachineScaleSetExtensionInner> beginUpdateWithoutPollingAsync(
-        String resourceGroupName,
-        String vmScaleSetName,
-        String vmssExtensionName,
-        VirtualMachineScaleSetExtensionUpdate extensionParameters) {
-        return beginUpdateWithoutPollingWithResponseAsync(
-                resourceGroupName, vmScaleSetName, vmssExtensionName, extensionParameters)
-            .flatMap(
-                (Response<VirtualMachineScaleSetExtensionInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * The operation to update an extension.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param vmScaleSetName The name of the VM scale set where the extension should be updated.
-     * @param vmssExtensionName The name of the VM scale set extension.
-     * @param extensionParameters Describes a Virtual Machine Scale Set Extension.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a Virtual Machine Scale Set Extension.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<VirtualMachineScaleSetExtensionInner> beginUpdateWithoutPollingAsync(
-        String resourceGroupName,
-        String vmScaleSetName,
-        String vmssExtensionName,
-        VirtualMachineScaleSetExtensionUpdate extensionParameters,
-        Context context) {
-        return beginUpdateWithoutPollingWithResponseAsync(
-                resourceGroupName, vmScaleSetName, vmssExtensionName, extensionParameters, context)
-            .flatMap(
-                (Response<VirtualMachineScaleSetExtensionInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * The operation to update an extension.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param vmScaleSetName The name of the VM scale set where the extension should be updated.
-     * @param vmssExtensionName The name of the VM scale set extension.
-     * @param extensionParameters Describes a Virtual Machine Scale Set Extension.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a Virtual Machine Scale Set Extension.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public VirtualMachineScaleSetExtensionInner beginUpdateWithoutPolling(
-        String resourceGroupName,
-        String vmScaleSetName,
-        String vmssExtensionName,
-        VirtualMachineScaleSetExtensionUpdate extensionParameters) {
-        return beginUpdateWithoutPollingAsync(resourceGroupName, vmScaleSetName, vmssExtensionName, extensionParameters)
-            .block();
-    }
-
-    /**
-     * The operation to update an extension.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param vmScaleSetName The name of the VM scale set where the extension should be updated.
-     * @param vmssExtensionName The name of the VM scale set extension.
-     * @param extensionParameters Describes a Virtual Machine Scale Set Extension.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a Virtual Machine Scale Set Extension.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public VirtualMachineScaleSetExtensionInner beginUpdateWithoutPolling(
-        String resourceGroupName,
-        String vmScaleSetName,
-        String vmssExtensionName,
-        VirtualMachineScaleSetExtensionUpdate extensionParameters,
-        Context context) {
-        return beginUpdateWithoutPollingAsync(
-                resourceGroupName, vmScaleSetName, vmssExtensionName, extensionParameters, context)
-            .block();
-    }
-
-    /**
-     * The operation to delete the extension.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param vmScaleSetName The name of the VM scale set where the extension should be deleted.
-     * @param vmssExtensionName The name of the VM scale set extension.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> beginDeleteWithoutPollingWithResponseAsync(
-        String resourceGroupName, String vmScaleSetName, String vmssExtensionName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (vmScaleSetName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter vmScaleSetName is required and cannot be null."));
-        }
-        if (vmssExtensionName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter vmssExtensionName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2019-12-01";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .beginDeleteWithoutPolling(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            vmScaleSetName,
-                            vmssExtensionName,
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
-
-    /**
-     * The operation to delete the extension.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param vmScaleSetName The name of the VM scale set where the extension should be deleted.
-     * @param vmssExtensionName The name of the VM scale set extension.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> beginDeleteWithoutPollingWithResponseAsync(
-        String resourceGroupName, String vmScaleSetName, String vmssExtensionName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (vmScaleSetName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter vmScaleSetName is required and cannot be null."));
-        }
-        if (vmssExtensionName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter vmssExtensionName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2019-12-01";
-        return service
-            .beginDeleteWithoutPolling(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                vmScaleSetName,
-                vmssExtensionName,
-                apiVersion,
-                this.client.getSubscriptionId(),
-                context);
-    }
-
-    /**
-     * The operation to delete the extension.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param vmScaleSetName The name of the VM scale set where the extension should be deleted.
-     * @param vmssExtensionName The name of the VM scale set extension.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> beginDeleteWithoutPollingAsync(
-        String resourceGroupName, String vmScaleSetName, String vmssExtensionName) {
-        return beginDeleteWithoutPollingWithResponseAsync(resourceGroupName, vmScaleSetName, vmssExtensionName)
-            .flatMap((Response<Void> res) -> Mono.empty());
-    }
-
-    /**
-     * The operation to delete the extension.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param vmScaleSetName The name of the VM scale set where the extension should be deleted.
-     * @param vmssExtensionName The name of the VM scale set extension.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> beginDeleteWithoutPollingAsync(
-        String resourceGroupName, String vmScaleSetName, String vmssExtensionName, Context context) {
-        return beginDeleteWithoutPollingWithResponseAsync(resourceGroupName, vmScaleSetName, vmssExtensionName, context)
-            .flatMap((Response<Void> res) -> Mono.empty());
-    }
-
-    /**
-     * The operation to delete the extension.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param vmScaleSetName The name of the VM scale set where the extension should be deleted.
-     * @param vmssExtensionName The name of the VM scale set extension.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void beginDeleteWithoutPolling(String resourceGroupName, String vmScaleSetName, String vmssExtensionName) {
-        beginDeleteWithoutPollingAsync(resourceGroupName, vmScaleSetName, vmssExtensionName).block();
-    }
-
-    /**
-     * The operation to delete the extension.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param vmScaleSetName The name of the VM scale set where the extension should be deleted.
-     * @param vmssExtensionName The name of the VM scale set extension.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void beginDeleteWithoutPolling(
-        String resourceGroupName, String vmScaleSetName, String vmssExtensionName, Context context) {
-        beginDeleteWithoutPollingAsync(resourceGroupName, vmScaleSetName, vmssExtensionName, context).block();
-    }
-
-    /**
      * Get the next page of items.
      *
      * @param nextLink The nextLink parameter.
@@ -2217,6 +1532,7 @@ public final class VirtualMachineScaleSetExtensionsClient {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .listNext(nextLink, context)
             .map(

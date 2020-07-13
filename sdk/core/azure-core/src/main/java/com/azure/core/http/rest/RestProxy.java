@@ -7,7 +7,7 @@ import com.azure.core.annotation.ResumeOperation;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.UnexpectedLengthException;
 import com.azure.core.http.ContentType;
-import com.azure.core.http.HttpHeader;
+import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
@@ -228,18 +228,15 @@ public final class RestProxy implements InvocationHandler {
             }
         }
 
-        for (final EncodedParameter queryParameter : methodParser.setEncodedQueryParameters(args)) {
-            urlBuilder.setQueryParameter(queryParameter.getName(), queryParameter.getEncodedValue());
-        }
+        methodParser.setEncodedQueryParameters(args, urlBuilder);
 
         final URL url = urlBuilder.toUrl();
         final HttpRequest request = configRequest(new HttpRequest(methodParser.getHttpMethod(), url),
             methodParser, args);
 
         // Headers from Swagger method arguments always take precedence over inferred headers from body types
-        for (final HttpHeader header : methodParser.setHeaders(args)) {
-            request.setHeader(header.getName(), header.getValue());
-        }
+        HttpHeaders httpHeaders = request.getHeaders();
+        methodParser.setHeaders(args, httpHeaders);
 
         return request;
     }
