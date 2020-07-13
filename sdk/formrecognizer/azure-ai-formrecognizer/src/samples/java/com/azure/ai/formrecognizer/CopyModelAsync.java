@@ -43,6 +43,7 @@ public class CopyModelAsync {
             // Start copy operation from the source client
             // The Id of the model that needs to be copied to the target resource
             .subscribe(copyAuthorization -> sourceClient.beginCopyModel(copyModelId, copyAuthorization)
+                .filter(pollResponse -> pollResponse.getStatus().isComplete())
                 .flatMap(AsyncPollResponse::getFinalResult)
                     .subscribe(customFormModelInfo -> {
                         System.out.printf("Original model has model Id: %s, model status: %s, training started on: %s,"

@@ -8,7 +8,6 @@ import com.azure.ai.formrecognizer.models.FormField;
 import com.azure.ai.formrecognizer.models.OperationResult;
 import com.azure.ai.formrecognizer.models.RecognizedForm;
 import com.azure.core.credential.AzureKeyCredential;
-import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollerFlux;
 import reactor.core.publisher.Mono;
 
@@ -58,14 +57,14 @@ public class RecognizeReceiptsAsync {
 
         Mono<List<RecognizedForm>> receiptPageResultsMono = analyzeReceiptPoller
             .last()
-            .flatMap(recognizeReceiptPollOperation -> {
-                if (LongRunningOperationStatus.SUCCESSFULLY_COMPLETED == recognizeReceiptPollOperation.getStatus()) {
+            .flatMap(pollResponse -> {
+                if (pollResponse.getStatus().isComplete()) {
                     System.out.println("Polling completed successfully");
                     // training completed successfully, retrieving final result.
-                    return recognizeReceiptPollOperation.getFinalResult();
+                    return pollResponse.getFinalResult();
                 } else {
                     return Mono.error(new RuntimeException("Polling completed unsuccessfully with status:"
-                        + recognizeReceiptPollOperation.getStatus()));
+                        + pollResponse.getStatus()));
                 }
             });
 

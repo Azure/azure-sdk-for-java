@@ -125,27 +125,25 @@ public class Authentication {
                 System.out.printf("Receipt Items: %n");
                 if (FieldValueType.LIST == receiptItemsField.getValueType()) {
                     List<FormField<?>> receiptItems = FieldValueType.LIST.cast(receiptItemsField);
-                    receiptItems.forEach(receiptItem -> {
-                        if (FieldValueType.MAP == receiptItem.getValueType()) {
-                            Map<String, FormField<?>> formFieldMap = FieldValueType.MAP.cast(receiptItem);
-                            formFieldMap.forEach((key, formField) -> {
-                                if ("Name".equals(key)) {
-                                    if (FieldValueType.STRING == formField.getValueType()) {
-                                        String name = FieldValueType.STRING.cast(formField);
-                                        System.out.printf("Name: %s, confidence: %.2fs%n",
-                                            name, formField.getConfidence());
-                                    }
+                    receiptItems.stream()
+                        .filter(receiptItem -> FieldValueType.MAP == receiptItem.getValueType())
+                        .<Map<String, FormField<?>>>map(FieldValueType.MAP::cast)
+                        .forEach(formFieldMap -> formFieldMap.forEach((key, formField) -> {
+                            if ("Name".equals(key)) {
+                                if (FieldValueType.STRING == formField.getValueType()) {
+                                    String name = FieldValueType.STRING.cast(formField);
+                                    System.out.printf("Name: %s, confidence: %.2fs%n",
+                                        name, formField.getConfidence());
                                 }
-                                if ("Quantity".equals(key)) {
-                                    if (FieldValueType.DOUBLE == formField.getValueType()) {
-                                        Float quantity = FieldValueType.DOUBLE.cast(formField);
-                                        System.out.printf("Quantity: %f, confidence: %.2f%n",
-                                            quantity, formField.getConfidence());
-                                    }
+                            }
+                            if ("Quantity".equals(key)) {
+                                if (FieldValueType.DOUBLE == formField.getValueType()) {
+                                    Float quantity = FieldValueType.DOUBLE.cast(formField);
+                                    System.out.printf("Quantity: %f, confidence: %.2f%n",
+                                        quantity, formField.getConfidence());
                                 }
-                            });
-                        }
-                    });
+                            }
+                        }));
                 }
             }
             System.out.print("-----------------------------------");

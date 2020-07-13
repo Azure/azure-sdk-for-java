@@ -11,6 +11,7 @@ import com.azure.ai.formrecognizer.models.RecognizedForm;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
+import com.azure.core.util.polling.AsyncPollResponse;
 import reactor.core.publisher.Flux;
 
 import java.io.ByteArrayInputStream;
@@ -70,11 +71,11 @@ public class FormRecognizerAsyncClientJavaDocCodeSnippets {
         String formUrl = "{form_url}";
         String modelId = "{custom_trained_model_id}";
 
-        formRecognizerAsyncClient.beginRecognizeCustomFormsFromUrl(formUrl, modelId).flatMap(
-            recognizePollingOperation ->
-                // if training polling operation completed, retrieve the final result.
-                recognizePollingOperation.getFinalResult())
-            .flatMap(formPageResult -> Flux.fromIterable(formPageResult))
+        // if training polling operation completed, retrieve the final result.
+        formRecognizerAsyncClient.beginRecognizeCustomFormsFromUrl(formUrl, modelId)
+            // if training polling operation completed, retrieve the final result.
+            .flatMap(AsyncPollResponse::getFinalResult)
+            .flatMap(Flux::fromIterable)
             .subscribe(recognizedForm -> recognizedForm.getFields()
                 .forEach((fieldText, fieldValue) -> {
                     System.out.printf("Field text: %s%n", fieldText);
@@ -98,10 +99,9 @@ public class FormRecognizerAsyncClientJavaDocCodeSnippets {
             new RecognizeOptions()
                 .setIncludeFieldElements(includeTextContent)
                 .setPollInterval(Duration.ofSeconds(10)))
-            .flatMap(recognizePollingOperation ->
-                // if training polling operation completed, retrieve the final result.
-                recognizePollingOperation.getFinalResult())
-            .flatMap(formPageResult -> Flux.fromIterable(formPageResult))
+            // if training polling operation completed, retrieve the final result.
+            .flatMap(AsyncPollResponse::getFinalResult)
+            .flatMap(Flux::fromIterable)
             .subscribe(recognizedForm -> recognizedForm.getFields()
                 .forEach((fieldText, fieldValue) -> {
                     System.out.printf("Field text: %s%n", fieldText);
@@ -123,11 +123,11 @@ public class FormRecognizerAsyncClientJavaDocCodeSnippets {
         // Utility method to convert input stream to Byte buffer
         Flux<ByteBuffer> buffer = toFluxByteBuffer(new ByteArrayInputStream(Files.readAllBytes(form.toPath())));
 
+        // if training polling operation completed, retrieve the final result.
         formRecognizerAsyncClient.beginRecognizeCustomForms(buffer, form.length(), modelId)
-            .flatMap(recognizePollingOperation ->
-                // if training polling operation completed, retrieve the final result.
-                recognizePollingOperation.getFinalResult())
-            .flatMap(formPageResult -> Flux.fromIterable(formPageResult))
+            // if training polling operation completed, retrieve the final result.
+            .flatMap(AsyncPollResponse::getFinalResult)
+            .flatMap(Flux::fromIterable)
             .subscribe(recognizedForm -> recognizedForm.getFields()
                 .forEach((fieldText, fieldValue) -> {
                     System.out.printf("Field text: %s%n", fieldText);
@@ -152,15 +152,15 @@ public class FormRecognizerAsyncClientJavaDocCodeSnippets {
         // Utility method to convert input stream to Byte buffer
         Flux<ByteBuffer> buffer = toFluxByteBuffer(new ByteArrayInputStream(Files.readAllBytes(form.toPath())));
 
+        // if training polling operation completed, retrieve the final result.
         formRecognizerAsyncClient.beginRecognizeCustomForms(buffer, form.length(), modelId,
             new RecognizeOptions()
                 .setContentType(FormContentType.IMAGE_JPEG)
                 .setIncludeFieldElements(includeFieldElements)
                 .setPollInterval(Duration.ofSeconds(5)))
-            .flatMap(recognizePollingOperation ->
-                // if training polling operation completed, retrieve the final result.
-                recognizePollingOperation.getFinalResult())
-            .flatMap(formPageResult -> Flux.fromIterable(formPageResult))
+            // if training polling operation completed, retrieve the final result.
+            .flatMap(AsyncPollResponse::getFinalResult)
+            .flatMap(Flux::fromIterable)
             .subscribe(recognizedForm -> recognizedForm.getFields()
                 .forEach((fieldText, fieldValue) -> {
                     System.out.printf("Field text: %s%n", fieldText);
@@ -179,8 +179,9 @@ public class FormRecognizerAsyncClientJavaDocCodeSnippets {
         // BEGIN: com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeContentFromUrl#string
         String formUrl = "{formUrl}";
         formRecognizerAsyncClient.beginRecognizeContentFromUrl(formUrl)
-            .flatMap(recognizePollingOperation -> recognizePollingOperation.getFinalResult())
-            .flatMap(contentPageResult -> Flux.fromIterable(contentPageResult))
+            // if training polling operation completed, retrieve the final result.
+            .flatMap(AsyncPollResponse::getFinalResult)
+            .flatMap(Flux::fromIterable)
             .subscribe(formPage -> {
                 System.out.printf("Page Angle: %s%n", formPage.getTextAngle());
                 System.out.printf("Page Dimension unit: %s%n", formPage.getUnit());
@@ -200,12 +201,11 @@ public class FormRecognizerAsyncClientJavaDocCodeSnippets {
     public void beginRecognizeContentFromUrlWithOptions() {
         // BEGIN: com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeContentFromUrl#string-recognizeOptions
         String formUrl = "{formUrl}";
+        // if training polling operation completed, retrieve the final result.
         formRecognizerAsyncClient.beginRecognizeContentFromUrl(formUrl,
             new RecognizeOptions().setPollInterval(Duration.ofSeconds(5)))
-            .flatMap(recognizePollingOperation ->
-                // if training polling operation completed, retrieve the final result.
-                recognizePollingOperation.getFinalResult())
-            .flatMap(contentPageResult -> Flux.fromIterable(contentPageResult))
+            .flatMap(AsyncPollResponse::getFinalResult)
+            .flatMap(Flux::fromIterable)
             .subscribe(formPage -> {
                 System.out.printf("Page Angle: %s%n", formPage.getTextAngle());
                 System.out.printf("Page Dimension unit: %s%n", formPage.getUnit());
@@ -229,11 +229,10 @@ public class FormRecognizerAsyncClientJavaDocCodeSnippets {
         // Utility method to convert input stream to Byte buffer
         Flux<ByteBuffer> buffer = toFluxByteBuffer(new ByteArrayInputStream(Files.readAllBytes(form.toPath())));
 
+        // if training polling operation completed, retrieve the final result.
         formRecognizerAsyncClient.beginRecognizeContent(buffer, form.length())
-            .flatMap(recognizePollingOperation ->
-                // if training polling operation completed, retrieve the final result.
-                recognizePollingOperation.getFinalResult())
-            .flatMap(contentPageResult -> Flux.fromIterable(contentPageResult))
+            .flatMap(AsyncPollResponse::getFinalResult)
+            .flatMap(Flux::fromIterable)
             .subscribe(formPage -> {
                 System.out.printf("Page Angle: %s%n", formPage.getTextAngle());
                 System.out.printf("Page Dimension unit: %s%n", formPage.getUnit());
@@ -257,14 +256,13 @@ public class FormRecognizerAsyncClientJavaDocCodeSnippets {
         File form = new File("{local/file_path/fileName.jpg}");
         // Utility method to convert input stream to Byte buffer
         Flux<ByteBuffer> buffer = toFluxByteBuffer(new ByteArrayInputStream(Files.readAllBytes(form.toPath())));
+        // if training polling operation completed, retrieve the final result.
         formRecognizerAsyncClient.beginRecognizeContent(buffer, form.length(),
             new RecognizeOptions()
                 .setContentType(FormContentType.APPLICATION_PDF)
                 .setPollInterval(Duration.ofSeconds(5)))
-            .flatMap(recognizePollingOperation ->
-                // if training polling operation completed, retrieve the final result.
-                recognizePollingOperation.getFinalResult())
-            .flatMap(contentPageResult -> Flux.fromIterable(contentPageResult))
+            .flatMap(AsyncPollResponse::getFinalResult)
+            .flatMap(Flux::fromIterable)
             .subscribe(formPage -> {
                 System.out.printf("Page Angle: %s%n", formPage.getTextAngle());
                 System.out.printf("Page Dimension unit: %s%n", formPage.getUnit());
@@ -284,10 +282,10 @@ public class FormRecognizerAsyncClientJavaDocCodeSnippets {
     public void beginRecognizeReceiptsFromUrl() {
         // BEGIN: com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeReceiptsFromUrl#string
         String receiptUrl = "{receiptUrl}";
+        // if training polling operation completed, retrieve the final result.
         formRecognizerAsyncClient.beginRecognizeReceiptsFromUrl(receiptUrl)
-            .flatMap(recognizePollingOperation ->
-                // if training polling operation completed, retrieve the final result.
-                recognizePollingOperation.getFinalResult())
+            // if training polling operation completed, retrieve the final result.
+            .flatMap(AsyncPollResponse::getFinalResult)
             .subscribe(recognizedReceipts -> {
                 for (int i = 0; i < recognizedReceipts.size(); i++) {
                     RecognizedForm recognizedForm = recognizedReceipts.get(i);
@@ -304,7 +302,7 @@ public class FormRecognizerAsyncClientJavaDocCodeSnippets {
 
                     FormField<?> merchantPhoneNumberField = recognizedFields.get("MerchantPhoneNumber");
                     if (merchantPhoneNumberField != null) {
-                        if (FieldValueType.PHONE_NUMBER == merchantNameField.getValueType()) {
+                        if (FieldValueType.PHONE_NUMBER == merchantPhoneNumberField.getValueType()) {
                             String merchantAddress = FieldValueType.PHONE_NUMBER.cast(merchantPhoneNumberField);
                             System.out.printf("Merchant Phone number: %s, confidence: %.2f%n",
                                 merchantAddress, merchantPhoneNumberField.getConfidence());
@@ -325,21 +323,18 @@ public class FormRecognizerAsyncClientJavaDocCodeSnippets {
                         System.out.printf("Receipt Items: %n");
                         if (FieldValueType.LIST == receiptItemsField.getValueType()) {
                             List<FormField<?>> receiptItems = FieldValueType.LIST.cast(receiptItemsField);
-                            receiptItems.forEach(receiptItem -> {
-                                if (FieldValueType.MAP == receiptItem.getValueType()) {
-
-                                    Map<String, FormField<?>> formFieldMap = FieldValueType.MAP.cast(receiptItem);
-                                    formFieldMap.forEach((key, formField) -> {
-                                        if ("Quantity".equals(key)) {
-                                            if (FieldValueType.DOUBLE == formField.getValueType()) {
-                                                Float quantity = FieldValueType.DOUBLE.cast(formField);
-                                                System.out.printf("Quantity: %f, confidence: %.2f%n",
-                                                    quantity, formField.getConfidence());
-                                            }
+                            receiptItems.stream()
+                                .filter(receiptItem -> FieldValueType.MAP == receiptItem.getValueType())
+                                .<Map<String, FormField<?>>>map(FieldValueType.MAP::cast)
+                                .forEach(formFieldMap -> formFieldMap.forEach((key, formField) -> {
+                                    if ("Quantity".equals(key)) {
+                                        if (FieldValueType.DOUBLE == formField.getValueType()) {
+                                            Float quantity = FieldValueType.DOUBLE.cast(formField);
+                                            System.out.printf("Quantity: %f, confidence: %.2f%n",
+                                                quantity, formField.getConfidence());
                                         }
-                                    });
-                                }
-                            });
+                                    }
+                                }));
                         }
                     }
                 }
@@ -354,13 +349,12 @@ public class FormRecognizerAsyncClientJavaDocCodeSnippets {
         // BEGIN: com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeReceiptsFromUrl#string-recognizeOptions
         String receiptUrl = "{receiptUrl}";
         boolean includeTextContent = true;
+        // if training polling operation completed, retrieve the final result.
         formRecognizerAsyncClient.beginRecognizeReceiptsFromUrl(receiptUrl,
             new RecognizeOptions()
                 .setIncludeFieldElements(includeTextContent)
                 .setPollInterval(Duration.ofSeconds(5)))
-            .flatMap(recognizePollingOperation ->
-                // if training polling operation completed, retrieve the final result.
-                recognizePollingOperation.getFinalResult())
+            .flatMap(AsyncPollResponse::getFinalResult)
             .subscribe(recognizedReceipts -> {
                 for (int i = 0; i < recognizedReceipts.size(); i++) {
                     RecognizedForm recognizedReceipt = recognizedReceipts.get(i);
@@ -377,7 +371,7 @@ public class FormRecognizerAsyncClientJavaDocCodeSnippets {
 
                     FormField<?> merchantPhoneNumberField = recognizedFields.get("MerchantPhoneNumber");
                     if (merchantPhoneNumberField != null) {
-                        if (FieldValueType.PHONE_NUMBER == merchantNameField.getValueType()) {
+                        if (FieldValueType.PHONE_NUMBER == merchantPhoneNumberField.getValueType()) {
                             String merchantAddress = FieldValueType.PHONE_NUMBER.cast(merchantPhoneNumberField);
                             System.out.printf("Merchant Phone number: %s, confidence: %.2f%n",
                                 merchantAddress, merchantPhoneNumberField.getConfidence());
@@ -398,21 +392,18 @@ public class FormRecognizerAsyncClientJavaDocCodeSnippets {
                         System.out.printf("Receipt Items: %n");
                         if (FieldValueType.LIST == receiptItemsField.getValueType()) {
                             List<FormField<?>> receiptItems = FieldValueType.LIST.cast(receiptItemsField);
-                            receiptItems.forEach(receiptItem -> {
-                                if (FieldValueType.MAP == receiptItem.getValueType()) {
-
-                                    Map<String, FormField<?>> formFieldMap = FieldValueType.MAP.cast(receiptItem);
-                                    formFieldMap.forEach((key, formField) -> {
-                                        if ("Quantity".equals(key)) {
-                                            if (FieldValueType.DOUBLE == formField.getValueType()) {
-                                                Float quantity = FieldValueType.DOUBLE.cast(formField);
-                                                System.out.printf("Quantity: %f, confidence: %.2f%n",
-                                                    quantity, formField.getConfidence());
-                                            }
+                            receiptItems.stream()
+                                .filter(receiptItem -> FieldValueType.MAP == receiptItem.getValueType())
+                                .<Map<String, FormField<?>>>map(FieldValueType.MAP::cast)
+                                .forEach(formFieldMap -> formFieldMap.forEach((key, formField) -> {
+                                    if ("Quantity".equals(key)) {
+                                        if (FieldValueType.DOUBLE == formField.getValueType()) {
+                                            Float quantity = FieldValueType.DOUBLE.cast(formField);
+                                            System.out.printf("Quantity: %f, confidence: %.2f%n",
+                                                quantity, formField.getConfidence());
                                         }
-                                    });
-                                }
-                            });
+                                    }
+                                }));
                         }
                     }
                 }
@@ -429,10 +420,9 @@ public class FormRecognizerAsyncClientJavaDocCodeSnippets {
         // BEGIN: com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeReceipts#Flux-long
         File receipt = new File("{file_source_url}");
         Flux<ByteBuffer> buffer = toFluxByteBuffer(new ByteArrayInputStream(Files.readAllBytes(receipt.toPath())));
+        // if training polling operation completed, retrieve the final result.
         formRecognizerAsyncClient.beginRecognizeReceipts(buffer, receipt.length())
-            .flatMap(recognizePollingOperation ->
-                // if training polling operation completed, retrieve the final result.
-                recognizePollingOperation.getFinalResult())
+            .flatMap(AsyncPollResponse::getFinalResult)
                     .subscribe(recognizedReceipts -> {
                         for (int i = 0; i < recognizedReceipts.size(); i++) {
                             RecognizedForm recognizedForm = recognizedReceipts.get(i);
@@ -449,7 +439,7 @@ public class FormRecognizerAsyncClientJavaDocCodeSnippets {
 
                             FormField<?> merchantPhoneNumberField = recognizedFields.get("MerchantPhoneNumber");
                             if (merchantPhoneNumberField != null) {
-                                if (FieldValueType.PHONE_NUMBER == merchantNameField.getValueType()) {
+                                if (FieldValueType.PHONE_NUMBER == merchantPhoneNumberField.getValueType()) {
                                     String merchantAddress = FieldValueType.PHONE_NUMBER.cast(merchantPhoneNumberField);
                                     System.out.printf("Merchant Phone number: %s, confidence: %.2f%n",
                                         merchantAddress, merchantPhoneNumberField.getConfidence());
@@ -470,21 +460,18 @@ public class FormRecognizerAsyncClientJavaDocCodeSnippets {
                                 System.out.printf("Receipt Items: %n");
                                 if (FieldValueType.LIST == receiptItemsField.getValueType()) {
                                     List<FormField<?>> receiptItems = FieldValueType.LIST.cast(receiptItemsField);
-                                    receiptItems.forEach(receiptItem -> {
-                                        if (FieldValueType.MAP == receiptItem.getValueType()) {
-
-                                            Map<String, FormField<?>> formFieldMap = FieldValueType.MAP.cast(receiptItem);
-                                            formFieldMap.forEach((key, formField) -> {
-                                                if ("Quantity".equals(key)) {
-                                                    if (FieldValueType.DOUBLE == formField.getValueType()) {
-                                                        Float quantity = FieldValueType.DOUBLE.cast(formField);
-                                                        System.out.printf("Quantity: %f, confidence: %.2f%n",
-                                                            quantity, formField.getConfidence());
-                                                    }
+                                    receiptItems.stream()
+                                        .filter(receiptItem -> FieldValueType.MAP == receiptItem.getValueType())
+                                        .<Map<String, FormField<?>>>map(FieldValueType.MAP::cast)
+                                        .forEach(formFieldMap -> formFieldMap.forEach((key, formField) -> {
+                                            if ("Quantity".equals(key)) {
+                                                if (FieldValueType.DOUBLE == formField.getValueType()) {
+                                                    Float quantity = FieldValueType.DOUBLE.cast(formField);
+                                                    System.out.printf("Quantity: %f, confidence: %.2f%n",
+                                                        quantity, formField.getConfidence());
                                                 }
-                                            });
-                                        }
-                                    });
+                                            }
+                                        }));
                                 }
                             }
                         }
@@ -504,14 +491,13 @@ public class FormRecognizerAsyncClientJavaDocCodeSnippets {
         boolean includeFieldElements = true;
         // Utility method to convert input stream to Byte buffer
         Flux<ByteBuffer> buffer = toFluxByteBuffer(new ByteArrayInputStream(Files.readAllBytes(receipt.toPath())));
+        // if training polling operation completed, retrieve the final result.
         formRecognizerAsyncClient.beginRecognizeReceipts(buffer, receipt.length(),
             new RecognizeOptions()
                 .setContentType(FormContentType.IMAGE_JPEG)
                 .setIncludeFieldElements(includeFieldElements)
                 .setPollInterval(Duration.ofSeconds(5)))
-            .flatMap(recognizePollingOperation ->
-                // if training polling operation completed, retrieve the final result.
-                recognizePollingOperation.getFinalResult())
+            .flatMap(AsyncPollResponse::getFinalResult)
             .subscribe(recognizedReceipts -> {
                 for (int i = 0; i < recognizedReceipts.size(); i++) {
                     RecognizedForm recognizedForm = recognizedReceipts.get(i);
@@ -528,7 +514,7 @@ public class FormRecognizerAsyncClientJavaDocCodeSnippets {
 
                     FormField<?> merchantPhoneNumberField = recognizedFields.get("MerchantPhoneNumber");
                     if (merchantPhoneNumberField != null) {
-                        if (FieldValueType.PHONE_NUMBER == merchantNameField.getValueType()) {
+                        if (FieldValueType.PHONE_NUMBER == merchantPhoneNumberField.getValueType()) {
                             String merchantAddress = FieldValueType.PHONE_NUMBER.cast(merchantPhoneNumberField);
                             System.out.printf("Merchant Phone number: %s, confidence: %.2f%n",
                                 merchantAddress, merchantPhoneNumberField.getConfidence());
@@ -549,21 +535,18 @@ public class FormRecognizerAsyncClientJavaDocCodeSnippets {
                         System.out.printf("Receipt Items: %n");
                         if (FieldValueType.LIST == receiptItemsField.getValueType()) {
                             List<FormField<?>> receiptItems = FieldValueType.LIST.cast(receiptItemsField);
-                            receiptItems.forEach(receiptItem -> {
-                                if (FieldValueType.MAP == receiptItem.getValueType()) {
-
-                                    Map<String, FormField<?>> formFieldMap = FieldValueType.MAP.cast(receiptItem);
-                                    formFieldMap.forEach((key, formField) -> {
-                                        if ("Quantity".equals(key)) {
-                                            if (FieldValueType.DOUBLE == formField.getValueType()) {
-                                                Float quantity = FieldValueType.DOUBLE.cast(formField);
-                                                System.out.printf("Quantity: %f, confidence: %.2f%n",
-                                                    quantity, formField.getConfidence());
-                                            }
+                            receiptItems.stream()
+                                .filter(receiptItem -> FieldValueType.MAP == receiptItem.getValueType())
+                                .<Map<String, FormField<?>>>map(FieldValueType.MAP::cast)
+                                .forEach(formFieldMap -> formFieldMap.forEach((key, formField) -> {
+                                    if ("Quantity".equals(key)) {
+                                        if (FieldValueType.DOUBLE == formField.getValueType()) {
+                                            Float quantity = FieldValueType.DOUBLE.cast(formField);
+                                            System.out.printf("Quantity: %f, confidence: %.2f%n",
+                                                quantity, formField.getConfidence());
                                         }
-                                    });
-                                }
-                            });
+                                    }
+                                }));
                         }
                     }
                 }
