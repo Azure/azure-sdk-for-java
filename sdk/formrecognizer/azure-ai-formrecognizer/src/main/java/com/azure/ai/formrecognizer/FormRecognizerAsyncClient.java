@@ -563,21 +563,19 @@ public final class FormRecognizerAsyncClient {
         Function<ContentType, Mono<OperationResult>> activationOperation, Flux<ByteBuffer> form,
         FormContentType contentType) {
         return pollingContext -> {
-            Mono<OperationResult> operationResultMono;
             try {
                 if (contentType != null) {
                     final ContentType givenContentType = ContentType.fromString(contentType.toString());
-                    operationResultMono = activationOperation.apply(givenContentType);
+                    return activationOperation.apply(givenContentType)
+                        .onErrorMap(Utility::mapToHttpResponseExceptionIfExist);
                 } else {
-                    operationResultMono = detectContentType(form)
-                        .flatMap(detectedContentType -> activationOperation.apply(detectedContentType));
+                    return detectContentType(form)
+                        .flatMap(activationOperation::apply)
+                        .onErrorMap(Utility::mapToHttpResponseExceptionIfExist);
                 }
-                operationResultMono.onErrorMap(Utility::mapToHttpResponseExceptionIfExist);
             } catch (RuntimeException ex) {
-                operationResultMono = monoError(logger, ex);
+                return monoError(logger, ex);
             }
-
-            return operationResultMono;
         };
     }
 
