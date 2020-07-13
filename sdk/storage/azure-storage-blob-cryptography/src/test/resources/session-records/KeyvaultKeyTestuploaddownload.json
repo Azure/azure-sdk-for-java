@@ -1,7 +1,7 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.vault.azure.net/keys/keyiduploaddownload0keyvaultkeytestuploaddownload04194387713/create?api-version=7.1-preview",
+    "Uri" : "https://REDACTED.vault.azure.net/keys/keyiduploaddownload0keyvaultkeytestuploaddownload45979073192/create?api-version=7.1-preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-client_name/client_version (11.0.7; Windows 10; 10.0)",
       "Content-Type" : "application/json"
@@ -11,7 +11,7 @@
       "Pragma" : "no-cache",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "Date" : "Fri, 10 Jul 2020 16:26:44 GMT",
+      "Date" : "Mon, 13 Jul 2020 18:00:13 GMT",
       "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
       "Cache-Control" : "no-cache",
       "X-AspNet-Version" : "4.0.30319",
@@ -19,96 +19,37 @@
       "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=174.127.246.93;act_addr_fam=InterNetwork;",
       "Expires" : "-1",
       "Content-Length" : "734",
-      "x-ms-request-id" : "514f304a-2517-42f5-8eeb-3e083f219279",
+      "x-ms-request-id" : "9d8404d7-bd9e-47e6-bd01-d198122d503d",
       "x-ms-keyvault-service-version" : "1.1.8.0",
-      "Body" : "{\"key\":{\"kid\":\"https://ceciliakeys.vault.azure.net/keys/keyiduploaddownload0keyvaultkeytestuploaddownload04194387713/56430f58c9e741279a9babec08acdb5d\",\"kty\":\"RSA\",\"key_ops\":[\"encrypt\",\"decrypt\",\"sign\",\"verify\",\"wrapKey\",\"unwrapKey\"],\"n\":\"uLDWFdZVgMf0kPMeEHUdC8RNTxYc43UquPxEDE4q_oLa-pxAxBN08h8wdx8rpvHCHjHUtNabb_tDN1H56UHhXNbMBM5mLTEa3rlyXzePNgdk6s8nmmp69s5GdmZH9z3J8lBlcxv0dTPML9Jo52UEmCiTmpW7ZbB9Wnoi8cJjmjkjNYuR-lnKMKNoLvDHIks9GFc6hHIp3sldxEaEqYB0AuDSj1eQBhHPcFwBxs-bPAP_omBASXPE4eWG0qhSfJnauLjoafE3h_xaQtTL-fbOpme_YHtjt1bRK9vXrZZsWvDnlr3wtIKNjzJ6vwyf1BuffRc3tortggpI_wzKBxwcgQ\",\"e\":\"AQAB\"},\"attributes\":{\"enabled\":true,\"exp\":1625934400,\"created\":1594398405,\"updated\":1594398405,\"recoveryLevel\":\"Recoverable\",\"recoverableDays\":90}}",
+      "Body" : "{\"key\":{\"kid\":\"https://ceciliakeys.vault.azure.net/keys/keyiduploaddownload0keyvaultkeytestuploaddownload45979073192/67ed197f3f394b86a0c679ff27a1df06\",\"kty\":\"RSA\",\"key_ops\":[\"encrypt\",\"decrypt\",\"sign\",\"verify\",\"wrapKey\",\"unwrapKey\"],\"n\":\"tyu4Kv7CHRuYk_6IaEj-q-8wI4ck3b57WnvJlYYSiPoTUPFkW4Z7hdKNocG0qCN5s9_ULpcx6biyc25hIR5tq1fBhJdSptGZ1xqiBBxvleXg4F4a4pm56FP5XqJThfJtdHbyf7nkDDUat65xouV6BQrWSFWg53wBh1hWemUXzBvMEdAcV-Py0aqp_SrQTf1ie6cAV_0w27uU5Mmryq6aluvOSaDY9WBdwVFDlihugkGODNm7Kcfhb88LWVptvFduQvHYxnzOryGQ99ek63Uy1h3Bikaa40vO2xsRb8NcowLW8X8am38h_0pfhubcvldl00ueBmjvGJ_Rac7_nfNalw\",\"e\":\"AQAB\"},\"attributes\":{\"enabled\":true,\"exp\":1626199210,\"created\":1594663214,\"updated\":1594663214,\"recoveryLevel\":\"Recoverable\",\"recoverableDays\":90}}",
       "X-Powered-By" : "ASP.NET",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "https://REDACTED.blob.core.windows.net/jtcuploaddownload1keyvaultkeytestuploaddownload041055281dbc?restype=container",
+    "Uri" : "https://REDACTED.blob.core.windows.net/jtcuploaddownload1keyvaultkeytestuploaddownload459787768474?restype=container",
     "Headers" : {
       "x-ms-version" : "2019-12-12",
       "User-Agent" : "azsdk-java-azure-storage-blob/12.8.0-beta.2 (11.0.7; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "ed7ad9fc-dfa8-4d12-91bb-e5d0771761fa"
+      "x-ms-client-request-id" : "93f048e3-2827-4399-a1c5-55be8fd8cc1b"
     },
     "Response" : {
       "x-ms-version" : "2019-12-12",
       "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
-      "ETag" : "0x8D824EE09E939C7",
-      "Last-Modified" : "Fri, 10 Jul 2020 16:26:46 GMT",
+      "ETag" : "0x8D82756986EBB46",
+      "Last-Modified" : "Mon, 13 Jul 2020 18:00:15 GMT",
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "e0da6783-301e-0078-57d6-56327a000000",
-      "Date" : "Fri, 10 Jul 2020 16:26:46 GMT",
-      "x-ms-client-request-id" : "ed7ad9fc-dfa8-4d12-91bb-e5d0771761fa"
-    },
-    "Exception" : null
-  }, {
-    "Method" : "PUT",
-    "Uri" : "https://REDACTED.blob.core.windows.net/jtcuploaddownload1keyvaultkeytestuploaddownload041055281dbc/javablobuploaddownload2keyvaultkeytestuploaddownload04142958c",
-    "Headers" : {
-      "x-ms-version" : "2019-12-12",
-      "User-Agent" : "azsdk-java-azure-storage-blob/12.8.0-beta.2 (11.0.7; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "9aaf2c3f-9b7f-4085-af7d-2c92efa23225",
-      "Content-Type" : "application/octet-stream"
-    },
-    "Response" : {
-      "x-ms-version" : "2019-12-12",
-      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
-      "x-ms-content-crc64" : "1GgU3fun6KQ=",
-      "x-ms-version-id" : "2020-07-10T16:26:48.2343668Z",
-      "Last-Modified" : "Fri, 10 Jul 2020 16:26:48 GMT",
-      "retry-after" : "0",
-      "StatusCode" : "201",
-      "x-ms-request-server-encrypted" : "true",
-      "Date" : "Fri, 10 Jul 2020 16:26:47 GMT",
-      "Content-MD5" : "V+2EILvJvvPDBh80yP1V2w==",
-      "ETag" : "0x8D824EE0B3DD6F4",
-      "Content-Length" : "0",
-      "x-ms-request-id" : "fd9cb4ff-d01e-002d-17d6-5622f1000000",
-      "x-ms-client-request-id" : "9aaf2c3f-9b7f-4085-af7d-2c92efa23225"
+      "x-ms-request-id" : "40f612d2-e01e-0026-6f3f-59d99a000000",
+      "Date" : "Mon, 13 Jul 2020 18:00:14 GMT",
+      "x-ms-client-request-id" : "93f048e3-2827-4399-a1c5-55be8fd8cc1b"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.blob.core.windows.net/jtcuploaddownload1keyvaultkeytestuploaddownload041055281dbc/javablobuploaddownload2keyvaultkeytestuploaddownload04142958c",
-    "Headers" : {
-      "x-ms-version" : "2019-12-12",
-      "User-Agent" : "azsdk-java-azure-storage-blob/12.8.0-beta.2 (11.0.7; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "0dab6f3a-7475-407f-8b68-5d71f30e7867"
-    },
-    "Response" : {
-      "x-ms-is-current-version" : "true",
-      "x-ms-version" : "2019-12-12",
-      "x-ms-lease-status" : "unlocked",
-      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
-      "x-ms-lease-state" : "available",
-      "x-ms-version-id" : "2020-07-10T16:26:48.2343668Z",
-      "Last-Modified" : "Fri, 10 Jul 2020 16:26:48 GMT",
-      "retry-after" : "0",
-      "StatusCode" : "200",
-      "Date" : "Fri, 10 Jul 2020 16:26:48 GMT",
-      "x-ms-blob-type" : "BlockBlob",
-      "Content-MD5" : "V+2EILvJvvPDBh80yP1V2w==",
-      "Accept-Ranges" : "bytes",
-      "x-ms-meta-encryptiondata" : "{\"EncryptionMode\":\"FullBlob\",\"WrappedContentKey\":{\"KeyId\":\"https://ceciliakeys.vault.azure.net/keys/keyiduploaddownload0keyvaultkeytestuploaddownload04194387713/56430f58c9e741279a9babec08acdb5d\",\"EncryptedKey\":\"O/UFQvA/nOOVclo2luFFsjFTO1tIT6Y84dVAoGl66EAPsNEHrNPu7NEo90rkVKcN6bF7vKtWbGusZIGoGfg0r5Hw+P98YpELVulKNLJ8kpx7QmOABQJB9PTpGh7on4ITKCdxD0Ggt2qZ540Q1lCKfEUZJv924RA+2s2k3rgmuseMGapcODUKg5j/6OAFiYEMEn4jOYe7B5A//ZsJks8bS4mM3bvG7DRtbDu0I2regp0Sd0kppUL7YIwu/ld3nkElNuecbQIYniiLtfYvAv9ryXF8qYldE7kmhLx2/VwVH0laTuJMLka9b2K+v0S/GHtC3JMyEhnREEoNYDfs++L9+w==\",\"Algorithm\":\"RSA-OAEP-256\"},\"EncryptionAgent\":{\"Protocol\":\"1.0\",\"EncryptionAlgorithm\":\"AES_CBC_256\"},\"ContentEncryptionIV\":\"7186SQfQe3+hBK1nsrn9lg==\",\"KeyWrappingMetadata\":{\"EncryptionLibrary\":\"JavaTrack212.8.0-beta.2\"}}",
-      "x-ms-server-encrypted" : "true",
-      "ETag" : "0x8D824EE0B3DD6F4",
-      "x-ms-creation-time" : "Fri, 10 Jul 2020 16:26:48 GMT",
-      "Content-Length" : "1040",
-      "x-ms-request-id" : "e4d4b092-e01e-007b-20d6-56d31e000000",
-      "Body" : "[-33, 101, -11, 32, 62, -79, 13, 114, 29, 121, -106, 9, -85, -109, -21, -110, -72, -118, 76, 127, -86, -110, 48, 126, 36, -90, -60, 68, -97, -55, -87, -95, -10, -59, 35, 28, 20, -52, -77, 0, 47, 86, -13, 30, 125, -100, 73, -66, -42, 20, 65, 127, 123, 68, 82, 57, 55, -65, -71, 57, -30, -54, 23, 8, 34, -116, -84, 116, -57, 105, -59, -125, 59, 69, -9, 60, 106, 6, 45, 31, 53, -121, 120, -116, 28, 109, -24, -56, 24, 98, -5, -61, 59, 94, -29, 109, 31, -40, -34, -47, 113, 65, -30, -119, -102, -25, -110, -90, -87, -8, -35, 31, 115, -15, 108, -120, 21, -1, 7, -101, 22, 92, -7, -93, -81, -113, 103, -83, -75, 40, -115, -94, 55, -119, 127, -82, -21, 67, -87, 8, -60, -21, 22, 93, 19, -94, -29, -128, 78, -10, 45, -55, 73, 6, -32, 39, 105, 49, 111, -14, 31, 58, -112, 98, -82, -25, 48, 24, 78, 87, 75, -19, 87, -63, -54, -41, -31, -74, -90, -18, 43, -69, -2, 31, 94, -53, -112, -69, 55, 94, -86, 100, -47, 26, -70, -71, 81, 33, -18, 1, -19, 123, 108, -74, -73, -31, 55, 30, -77, 42, 13, 78, -48, -79, -22, -80, -33, -102, -103, -36, 109, -33, 18, -83, -59, 104, -118, -62, -29, 1, -3, -1, -15, -126, 111, -29, -125, -65, -127, -71, 59, -36, 6, 113, -35, 51, -122, -36, -124, 119, 99, -67, -51, 94, -126, -69, -94, -26, -102, 77, 57, -34, -90, -128, 6, 122, -73, 16, -121, -94, 53, -84, 63, -41, 47, -127, 106, 104, 122, -66, -127, -68, 15, -90, 47, -36, 27, -97, 11, 44, 23, 28, -20, -63, 118, 72, 28, -66, 76, 2, -51, 98, -97, -83, -5, -116, 25, 70, 15, 123, 49, -79, -104, -26, -68, 12, -77, 95, 39, -95, -46, 82, -99, -33, -88, -11, -66, 94, 60, 19, -86, -4, 63, 69, -14, 90, -82, -52, -76, -118, 127, -42, 65, 84, 118, -34, -90, 86, 18, -24, -38, 19, 27, 107, -122, -82, 78, -73, 90, 34, -69, -59, 105, -55, -106, -53, 3, 52, -71, -79, 11, -26, -67, 126, -16, 127, 113, -113, -76, 111, -46, -103, -40, 108, 18, 78, 81, -99, 71, -4, 127, 74, -52, -56, -100, -3, -101, -93, -77, 23, 102, -126, -83, 19, -35, -46, -93, 122, 12, -66, -43, 93, 85, -111, -1, -13, -34, 121, 76, 95, 62, -87, 9, 85, 34, -88, -75, -51, 59, 36, -66, 4, 52, 79, 109, -27, 64, 77, 74, 98, 30, -61, -80, -41, 6, 70, -46, -66, -116, -107, 40, 105, -75, 1, -96, 33, 53, 90, 121, 0, -90, -87, 43, 81, -102, 94, 113, -69, -100, -78, -41, 47, -19, 75, -46, -117, -84, -71, -4, 82, -5, -41, -43, -43, -94, 18, 20, -47, -30, 41, 92, -30, 48, 1, -29, 123, -27, 38, -119, -75, 39, -47, 88, -116, 46, -98, -120, 1, 39, 39, -91, -103, 87, -14, -122, 110, -52, -41, -6, -77, -65, 114, -77, 54, 114, 20, 37, -78, 105, 126, -74, -23, 43, -59, -27, -29, -33, 26, 36, 78, -105, -2, -14, 100, -97, -110, -102, 68, 101, 61, 72, 63, -17, -19, 53, 110, 110, 93, -119, 86, 42, -23, 19, -81, -60, 114, -56, 60, 43, 92, -9, -19, -52, 111, -14, 17, 55, -97, -125, -27, 111, 5, 68, 14, -64, 60, -86, -81, 56, 27, -68, -73, -39, 92, -127, 107, -62, -59, -55, -119, 92, -22, -2, 85, -36, -81, -52, 56, 20, 87, -92, 111, -86, -68, 79, -21, 125, -124, -128, 79, 38, -67, -51, -57, 59, 64, 96, 83, 59, -127, -116, -96, 102, -52, -35, -16, -27, -18, 67, -21, 86, -27, -62, 48, -31, 46, -81, 19, -20, -58, -127, 95, -49, -106, -65, 79, -17, 117, -103, 99, 99, -63, -99, 64, 14, 45, -87, -81, -57, -13, -20, -50, -78, -51, -10, -9, -47, 90, -111, 28, 96, 117, -83, 65, 94, -106, -49, -96, -109, 54, -59, -43, 17, 103, 114, -9, -105, 71, -3, 10, -72, 106, -4, 60, -116, -118, 114, -102, 101, -117, -26, 81, -59, 36, -21, -84, 14, -50, 1, 76, 61, 8, 117, 66, 101, 120, -56, -21, -11, 82, -39, -91, 94, 32, 55, -11, 87, -89, -2, 60, -35, -43, -94, 82, 26, 65, 79, -85, 64, 34, -8, 0, -127, 2, 127, -25, -24, 95, -3, 20, 120, 115, -73, 89, 105, -114, -70, 97, -55, -124, -36, -107, -96, -115, -83, -128, -90, -91, 60, 78, -103, 17, -120, -10, -75, 25, -64, -112, 25, 12, 43, -28, 111, 115, 59, 12, -103, 12, 52, -24, -87, 124, 38, 77, 60, -127, -126, -47, 43, 114, 103, 91, -64, -25, -96, -48, 32, -127, 5, -29, -92, 68, -15, -60, 31, -65, -107, -81, 58, -63, -105, -121, 120, -50, 85, 91, -61, 76, -22, 2, 17, 81, -107, -48, 73, 16, 127, 1, 2, -4, 83, -119, 63, -104, -52, -102, -1, 8, -64, -52, 32, -92, 109, 17, -109, -88, 75, -74, 77, -38, 54, 48, -99, -30, -113, 58, -8, -18, 69, -15, 68, -65, -80, 101, 2, 75, 89, 25, 51, 21, -51, 93, -61, -120, -111, -85, -53, -73, 98, -56, 79, 109, -112, -95, 28, -1, -120, 4, 70, 73, -27, -86, 103, -48, -115, 7, 72, 104, -38, 13, -44, 0, -103, 61, -27, -38, -78, 61, -30, 96, 62, -29, -91, 24, -115, 86, 37, -23, -13, -42, -108, -78, 78, 44, -22, 84, 38, -123, 89, 90, 12, 4, -125, 97, -60, 124, -116, -104, -25, -81, 42, -39, 28, 75, 113, -29, 87, -38, -1, 122, -113, -18, 82, 57, 21, -51, -14, 90, 62, 62, -92, 55, -23, -19, -114, -3, 17, -97, -33, -89, 5, 92, 122, -82, 25, -89, -93, 14, 22, -54, 40, -36, 54, 81, 37, -49, 121, 108, 45, -51, -27, 102, -63, 71, 87, 103, 20, -35, 18, -14, -18, 17, -48, -30, 45, -83, 3, 74, 88, -2, 126, -104, -6, 57, -7, 59, 45, -17, -22, 36]",
-      "x-ms-client-request-id" : "0dab6f3a-7475-407f-8b68-5d71f30e7867",
-      "Content-Type" : "application/octet-stream"
-    },
-    "Exception" : null
-  }, {
-    "Method" : "DELETE",
-    "Uri" : "https://REDACTED.vault.azure.net/keys/keyiduploaddownload0keyvaultkeytestuploaddownload04194387713?api-version=7.1-preview",
+    "Uri" : "https://REDACTED.vault.azure.net/keys/keyiduploaddownload0keyvaultkeytestuploaddownload45979073192/67ed197f3f394b86a0c679ff27a1df06?api-version=7.1-preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-client_name/client_version (11.0.7; Windows 10; 10.0)",
       "Content-Type" : "application/json"
@@ -118,7 +59,147 @@
       "Pragma" : "no-cache",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "Date" : "Fri, 10 Jul 2020 16:26:49 GMT",
+      "Date" : "Mon, 13 Jul 2020 18:00:15 GMT",
+      "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "X-AspNet-Version" : "4.0.30319",
+      "x-ms-keyvault-region" : "eastus",
+      "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=174.127.246.93;act_addr_fam=InterNetwork;",
+      "Expires" : "-1",
+      "Content-Length" : "734",
+      "x-ms-request-id" : "4fb6e3b4-28c1-4563-9a07-ebafbe1372d9",
+      "x-ms-keyvault-service-version" : "1.1.8.0",
+      "Body" : "{\"key\":{\"kid\":\"https://ceciliakeys.vault.azure.net/keys/keyiduploaddownload0keyvaultkeytestuploaddownload45979073192/67ed197f3f394b86a0c679ff27a1df06\",\"kty\":\"RSA\",\"key_ops\":[\"encrypt\",\"decrypt\",\"sign\",\"verify\",\"wrapKey\",\"unwrapKey\"],\"n\":\"tyu4Kv7CHRuYk_6IaEj-q-8wI4ck3b57WnvJlYYSiPoTUPFkW4Z7hdKNocG0qCN5s9_ULpcx6biyc25hIR5tq1fBhJdSptGZ1xqiBBxvleXg4F4a4pm56FP5XqJThfJtdHbyf7nkDDUat65xouV6BQrWSFWg53wBh1hWemUXzBvMEdAcV-Py0aqp_SrQTf1ie6cAV_0w27uU5Mmryq6aluvOSaDY9WBdwVFDlihugkGODNm7Kcfhb88LWVptvFduQvHYxnzOryGQ99ek63Uy1h3Bikaa40vO2xsRb8NcowLW8X8am38h_0pfhubcvldl00ueBmjvGJ_Rac7_nfNalw\",\"e\":\"AQAB\"},\"attributes\":{\"enabled\":true,\"exp\":1626199210,\"created\":1594663214,\"updated\":1594663214,\"recoveryLevel\":\"Recoverable\",\"recoverableDays\":90}}",
+      "X-Powered-By" : "ASP.NET",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.vault.azure.net/keys/keyiduploaddownload0keyvaultkeytestuploaddownload45979073192/67ed197f3f394b86a0c679ff27a1df06/wrapkey?api-version=7.1-preview",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-client_name/client_version (11.0.7; Windows 10; 10.0)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Date" : "Mon, 13 Jul 2020 18:00:16 GMT",
+      "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "X-AspNet-Version" : "4.0.30319",
+      "x-ms-keyvault-region" : "eastus",
+      "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=174.127.246.93;act_addr_fam=InterNetwork;",
+      "Expires" : "-1",
+      "Content-Length" : "497",
+      "x-ms-request-id" : "478204ba-9d5a-4485-8b6c-e25cb068c72c",
+      "x-ms-keyvault-service-version" : "1.1.8.0",
+      "Body" : "{\"kid\":\"https://ceciliakeys.vault.azure.net/keys/keyiduploaddownload0keyvaultkeytestuploaddownload45979073192/67ed197f3f394b86a0c679ff27a1df06\",\"value\":\"M8kBNLKvlbvPVWFw0T7kktnOmpLFUUWsHRi9TpfZpSfWj9-ZR2-rCF68nXTjuFOC_CuaCdvpD-3TlG6Ho5-fePtXVOx2DF764uCGNwbmBgVSpalVeLDmetKiaYv2KsFksoUNjaHzuEM4xIzQ0DOFUe6NlZOj-8mKOLRTWofsQoQ1GZB-sz7Gs7Ha8YaSZSOXX-hMVklNo9uIausCMhvvmXcaC4vKon3OaGYGXNuo1qayO9a9dfpTFe4GficRw_73YsPTqU-7q1mN_tG1aNTOnoYkw8OErx395_hPNc-3g49xumJFjp2m2i8UTbkuYb5a9BHIRkB9IaTB3ByHnjG3Fw\"}",
+      "X-Powered-By" : "ASP.NET",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.blob.core.windows.net/jtcuploaddownload1keyvaultkeytestuploaddownload459787768474/javablobuploaddownload2keyvaultkeytestuploaddownload459877433",
+    "Headers" : {
+      "x-ms-version" : "2019-12-12",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.8.0-beta.2 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "e0dd75f7-c1ed-44f5-9491-b995a61ac34c",
+      "Content-Type" : "application/octet-stream"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-12-12",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-content-crc64" : "wHFJUjOnMMI=",
+      "x-ms-version-id" : "2020-07-13T18:00:16.7847574Z",
+      "Last-Modified" : "Mon, 13 Jul 2020 18:00:16 GMT",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-server-encrypted" : "true",
+      "Date" : "Mon, 13 Jul 2020 18:00:15 GMT",
+      "Content-MD5" : "VbM8HcNSn56AgffJ1qC07w==",
+      "ETag" : "0x8D82756996FF696",
+      "Content-Length" : "0",
+      "x-ms-request-id" : "ebe90ccc-f01e-0048-3f3f-598cb5000000",
+      "x-ms-client-request-id" : "e0dd75f7-c1ed-44f5-9491-b995a61ac34c"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.blob.core.windows.net/jtcuploaddownload1keyvaultkeytestuploaddownload459787768474/javablobuploaddownload2keyvaultkeytestuploaddownload459877433",
+    "Headers" : {
+      "x-ms-version" : "2019-12-12",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.8.0-beta.2 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "7c129d65-939f-452d-8829-e5a49395d536"
+    },
+    "Response" : {
+      "x-ms-is-current-version" : "true",
+      "x-ms-version" : "2019-12-12",
+      "x-ms-lease-status" : "unlocked",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-lease-state" : "available",
+      "x-ms-version-id" : "2020-07-13T18:00:16.7847574Z",
+      "Last-Modified" : "Mon, 13 Jul 2020 18:00:16 GMT",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Date" : "Mon, 13 Jul 2020 18:00:16 GMT",
+      "x-ms-blob-type" : "BlockBlob",
+      "Content-MD5" : "VbM8HcNSn56AgffJ1qC07w==",
+      "Accept-Ranges" : "bytes",
+      "x-ms-meta-encryptiondata" : "{\"EncryptionMode\":\"FullBlob\",\"WrappedContentKey\":{\"KeyId\":\"https://ceciliakeys.vault.azure.net/keys/keyiduploaddownload0keyvaultkeytestuploaddownload45979073192/67ed197f3f394b86a0c679ff27a1df06\",\"EncryptedKey\":\"M8kBNLKvlbvPVWFw0T7kktnOmpLFUUWsHRi9TpfZpSfWj9+ZR2+rCF68nXTjuFOC/CuaCdvpD+3TlG6Ho5+fePtXVOx2DF764uCGNwbmBgVSpalVeLDmetKiaYv2KsFksoUNjaHzuEM4xIzQ0DOFUe6NlZOj+8mKOLRTWofsQoQ1GZB+sz7Gs7Ha8YaSZSOXX+hMVklNo9uIausCMhvvmXcaC4vKon3OaGYGXNuo1qayO9a9dfpTFe4GficRw/73YsPTqU+7q1mN/tG1aNTOnoYkw8OErx395/hPNc+3g49xumJFjp2m2i8UTbkuYb5a9BHIRkB9IaTB3ByHnjG3Fw==\",\"Algorithm\":\"RSA-OAEP-256\"},\"EncryptionAgent\":{\"Protocol\":\"1.0\",\"EncryptionAlgorithm\":\"AES_CBC_256\"},\"ContentEncryptionIV\":\"DINtkrRXlqGDXfjaOYhgnw==\",\"KeyWrappingMetadata\":{\"EncryptionLibrary\":\"JavaTrack212.8.0-beta.2\"}}",
+      "x-ms-server-encrypted" : "true",
+      "ETag" : "0x8D82756996FF696",
+      "x-ms-creation-time" : "Mon, 13 Jul 2020 18:00:16 GMT",
+      "Content-Length" : "1040",
+      "x-ms-request-id" : "5e0c33a7-501e-00a5-403f-59c7f8000000",
+      "Body" : "[-50, 33, -103, 106, -116, 67, 43, -23, 10, 97, 111, 20, 37, -67, 109, 99, -38, 92, -45, 48, 21, -118, 118, -81, -118, 36, -82, -101, 97, 69, -38, -110, 110, -123, 51, -24, 104, -46, -121, -110, 58, 105, 26, -78, -17, -95, -39, 18, 90, -32, -80, -20, -60, -7, -47, -65, 93, 18, 60, 19, 44, -62, 16, -33, 97, -48, -100, 47, -81, 86, 92, 101, -124, -34, 20, -86, -109, 45, -57, -126, -46, -126, -64, 46, -37, 73, -83, 71, -116, -125, 13, 12, 54, -87, -33, -86, 9, -47, -55, -87, -61, -5, -9, -34, -119, -67, -54, 56, 2, 82, 108, -110, -126, -18, -58, -37, -76, -81, 66, 93, -51, -28, -71, 81, -68, -108, -28, 117, -120, 92, -100, 105, 1, 21, 5, -70, -117, -15, 111, 56, 10, 46, -97, -108, -65, 11, 58, -69, 25, -86, 2, 69, 49, -102, 117, -56, -57, -12, -96, -83, -55, -28, 43, -124, 3, 92, -22, -71, -76, -107, 66, 27, -47, -7, -60, 87, 52, -53, -70, -126, -47, -9, -87, -113, 109, -81, 51, -8, -23, -100, -43, 103, -89, 77, 13, 109, 48, 119, 27, -112, -32, 45, -108, 23, -38, 118, -42, 14, -4, -28, 103, -22, 96, -25, 127, 38, -89, -111, -3, -120, 94, -3, 46, -113, -39, 77, -63, 25, -82, -46, -35, -64, -125, 121, 52, -51, -19, 97, 83, -56, -95, -44, -101, -53, -115, 29, -41, -118, -6, 37, 52, 10, -32, -99, 112, -38, -53, -85, -33, -51, 57, -73, -119, -93, -18, -99, 118, 114, -97, 114, -85, -126, 119, -63, -2, 19, 11, -75, -28, 85, -26, 73, -79, 37, -127, 40, 23, -23, -114, -111, 64, -109, -124, -71, -62, -44, 109, -71, 46, 83, -101, -106, 54, -9, -78, -91, 96, -46, 125, -51, 69, 29, -79, -37, 29, 98, 75, 44, -113, -120, 40, -37, -97, 105, 120, 7, -29, -55, 112, -49, 48, -103, -70, -92, 3, 85, -43, -44, -119, -77, -24, 57, 5, 75, 126, 7, -47, 101, 67, -48, -120, 1, 5, -60, -14, -71, 113, 82, -69, -79, 42, -101, 76, -111, -104, 88, -123, -66, 119, -32, 57, -14, 102, 2, -69, 122, 126, 27, 42, 106, -4, -89, 69, 68, 110, -27, -43, -102, 37, 105, -46, -101, 38, 70, -103, -3, 68, -66, -23, 48, 98, -24, -26, 118, 82, -110, 36, -7, -34, 1, -55, 60, 116, -39, 34, 111, -121, -23, 18, -87, -123, -33, -26, -10, -1, 31, -122, 60, 118, 127, -124, -20, 41, 66, -74, -91, -27, 44, 47, 7, 45, -25, -55, -11, 33, 62, 106, -15, -10, 43, -51, 111, -76, -46, -72, -53, 13, 100, 35, 42, 120, -22, -100, 123, -32, 31, 27, -56, -91, -6, -128, 29, -59, -127, -86, -126, 32, -37, -97, 127, 34, -117, 47, 15, -128, 8, -24, -64, 114, -109, 49, 23, 41, -11, -76, 84, 32, -43, 45, 111, -58, -75, 118, -41, 5, 61, -53, -46, -60, -120, 107, -122, 55, 126, 94, 95, -110, -101, -67, 100, -20, 93, 87, 125, -88, -127, 31, -83, 84, -121, -85, 6, 7, -11, 13, -117, -8, 91, 100, 91, 105, 102, 52, 6, -115, -24, -31, -3, -57, -28, 40, -87, -40, 102, 96, 55, 57, -61, 71, 73, 67, -55, 18, -49, 59, -112, 2, 7, -124, -126, -43, -108, -28, 74, -6, -125, 21, 1, -23, -44, -54, -89, 90, 30, 114, 126, -102, -101, -38, 54, -61, 0, -109, 100, 101, -53, -13, -24, -20, 3, 48, 26, 43, -51, -29, -71, -2, 52, -121, -6, -99, 125, -84, 56, -117, -5, -47, 125, -101, -115, 15, -66, -34, 48, 113, 16, -94, -49, -60, 29, 64, 92, -89, -111, 58, -30, -78, 58, 79, -69, 6, -128, -59, -127, -38, 11, -10, 0, 80, 67, -85, 86, 105, 5, -4, 25, -7, -11, 113, -22, 123, 95, 113, -71, 54, -3, -62, -119, 14, 6, 122, -35, 98, 42, 93, 80, -5, 98, 119, 9, 125, -80, -13, -25, 89, -61, -65, -79, -119, -78, -31, -13, 84, -56, 24, 42, -119, -41, 75, -94, -69, 47, 23, 5, 25, -60, -70, -44, 26, -54, -87, 11, 40, -114, 100, -55, -128, 47, -10, -75, 24, -22, 86, 6, 29, 118, 79, -67, 10, 9, -128, -54, -77, -69, -126, -5, 23, -40, -1, 100, 43, 74, -74, -77, 89, -71, -75, -75, -94, 109, -72, -61, -90, 83, -96, 97, -68, 17, 20, 44, 9, 74, -120, -2, 125, -29, 77, -96, 45, 18, 80, 85, 2, -65, -81, -28, -4, -105, -103, 39, -4, 109, 43, -64, 89, 55, -13, -45, -64, 127, 49, -15, -93, -45, -21, -66, 125, -112, 76, 1, 105, -69, -112, 11, 75, -122, 57, -54, -30, -41, -62, -99, 58, -36, 43, -56, 43, -68, 27, 54, -121, -106, 88, -93, 63, 100, -62, 20, -4, -23, 69, -97, 40, 40, -124, 97, -71, 42, -96, -97, 30, 53, 48, -73, 60, -94, 75, -91, 53, -110, 81, -81, -42, -45, 49, 122, 14, 87, -23, -7, -38, -92, 8, 126, 115, 101, -85, -27, 14, -7, 107, -23, -99, 6, 35, -21, -46, 17, -121, 105, -15, 69, 89, -93, 49, -117, 67, 74, -68, 57, -91, -107, -9, 0, -68, -79, 59, -39, -46, 90, -45, -87, 55, 25, -61, -17, 103, 31, -109, 79, -29, 72, -107, -59, 87, 97, -77, 83, 111, -78, -56, -5, -25, -19, -72, 59, 11, -31, 121, 88, 75, 88, 53, 93, 97, 75, -4, 82, -102, -23, -54, -13, -120, 113, -25, 98, -4, -120, 6, -105, -21, 15, 12, -52, -17, 54, 108, -103, 122, -37, 69, -48, -29, 102, 3, 99, -106, -29, -57, -32, -47, 127, -73, 70, -49, -43, 107, -24, -5, -111, -84, -18, 56, 121, -45, 38, -34, 104, -77, -55, -71, 115, -20, 19, 75, -113, 73, -55, -9, -110, 77, -97, 34, -3, 12, 68, -100, 97, 82, 65, 53, -107, -99, -127, -39, 33, -107, -74, -24, -89, 91, 102, -115, 114, 41, -117, -36, -83, -28, -117, -81, -23, -67, -73, 81, -119, -108, 24, 91, 99]",
+      "x-ms-client-request-id" : "7c129d65-939f-452d-8829-e5a49395d536",
+      "Content-Type" : "application/octet-stream"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.vault.azure.net/keys/keyiduploaddownload0keyvaultkeytestuploaddownload45979073192/67ed197f3f394b86a0c679ff27a1df06/unwrapkey?api-version=7.1-preview",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-client_name/client_version (11.0.7; Windows 10; 10.0)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Date" : "Mon, 13 Jul 2020 18:00:17 GMT",
+      "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "X-AspNet-Version" : "4.0.30319",
+      "x-ms-keyvault-region" : "eastus",
+      "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=174.127.246.93;act_addr_fam=InterNetwork;",
+      "Expires" : "-1",
+      "Content-Length" : "198",
+      "x-ms-request-id" : "bf6b6756-5d81-474d-a109-6426224a60e4",
+      "x-ms-keyvault-service-version" : "1.1.8.0",
+      "Body" : "{\"kid\":\"https://ceciliakeys.vault.azure.net/keys/keyiduploaddownload0keyvaultkeytestuploaddownload45979073192/67ed197f3f394b86a0c679ff27a1df06\",\"value\":\"T6mK_G9zSuAGykH-usvr3X5ZdNnEriBiT0VLZkEV_xs\"}",
+      "X-Powered-By" : "ASP.NET",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://REDACTED.vault.azure.net/keys/keyiduploaddownload0keyvaultkeytestuploaddownload45979073192?api-version=7.1-preview",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-client_name/client_version (11.0.7; Windows 10; 10.0)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Date" : "Mon, 13 Jul 2020 18:00:18 GMT",
       "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
       "Cache-Control" : "no-cache",
       "X-AspNet-Version" : "4.0.30319",
@@ -126,13 +207,13 @@
       "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=174.127.246.93;act_addr_fam=InterNetwork;",
       "Expires" : "-1",
       "Content-Length" : "915",
-      "x-ms-request-id" : "374652e8-a54d-46a7-a63d-9a69f7290d76",
+      "x-ms-request-id" : "b7761dd4-f5ee-4297-97a7-cd6e4df47fd3",
       "x-ms-keyvault-service-version" : "1.1.8.0",
-      "Body" : "{\"recoveryId\":\"https://ceciliakeys.vault.azure.net/deletedkeys/keyiduploaddownload0keyvaultkeytestuploaddownload04194387713\",\"deletedDate\":1594398409,\"scheduledPurgeDate\":1602174409,\"key\":{\"kid\":\"https://ceciliakeys.vault.azure.net/keys/keyiduploaddownload0keyvaultkeytestuploaddownload04194387713/56430f58c9e741279a9babec08acdb5d\",\"kty\":\"RSA\",\"key_ops\":[\"encrypt\",\"decrypt\",\"sign\",\"verify\",\"wrapKey\",\"unwrapKey\"],\"n\":\"uLDWFdZVgMf0kPMeEHUdC8RNTxYc43UquPxEDE4q_oLa-pxAxBN08h8wdx8rpvHCHjHUtNabb_tDN1H56UHhXNbMBM5mLTEa3rlyXzePNgdk6s8nmmp69s5GdmZH9z3J8lBlcxv0dTPML9Jo52UEmCiTmpW7ZbB9Wnoi8cJjmjkjNYuR-lnKMKNoLvDHIks9GFc6hHIp3sldxEaEqYB0AuDSj1eQBhHPcFwBxs-bPAP_omBASXPE4eWG0qhSfJnauLjoafE3h_xaQtTL-fbOpme_YHtjt1bRK9vXrZZsWvDnlr3wtIKNjzJ6vwyf1BuffRc3tortggpI_wzKBxwcgQ\",\"e\":\"AQAB\"},\"attributes\":{\"enabled\":true,\"exp\":1625934400,\"created\":1594398405,\"updated\":1594398405,\"recoveryLevel\":\"Recoverable\",\"recoverableDays\":90}}",
+      "Body" : "{\"recoveryId\":\"https://ceciliakeys.vault.azure.net/deletedkeys/keyiduploaddownload0keyvaultkeytestuploaddownload45979073192\",\"deletedDate\":1594663218,\"scheduledPurgeDate\":1602439218,\"key\":{\"kid\":\"https://ceciliakeys.vault.azure.net/keys/keyiduploaddownload0keyvaultkeytestuploaddownload45979073192/67ed197f3f394b86a0c679ff27a1df06\",\"kty\":\"RSA\",\"key_ops\":[\"encrypt\",\"decrypt\",\"sign\",\"verify\",\"wrapKey\",\"unwrapKey\"],\"n\":\"tyu4Kv7CHRuYk_6IaEj-q-8wI4ck3b57WnvJlYYSiPoTUPFkW4Z7hdKNocG0qCN5s9_ULpcx6biyc25hIR5tq1fBhJdSptGZ1xqiBBxvleXg4F4a4pm56FP5XqJThfJtdHbyf7nkDDUat65xouV6BQrWSFWg53wBh1hWemUXzBvMEdAcV-Py0aqp_SrQTf1ie6cAV_0w27uU5Mmryq6aluvOSaDY9WBdwVFDlihugkGODNm7Kcfhb88LWVptvFduQvHYxnzOryGQ99ek63Uy1h3Bikaa40vO2xsRb8NcowLW8X8am38h_0pfhubcvldl00ueBmjvGJ_Rac7_nfNalw\",\"e\":\"AQAB\"},\"attributes\":{\"enabled\":true,\"exp\":1626199210,\"created\":1594663214,\"updated\":1594663214,\"recoveryLevel\":\"Recoverable\",\"recoverableDays\":90}}",
       "X-Powered-By" : "ASP.NET",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
   } ],
-  "variables" : [ "keyiduploaddownload0keyvaultkeytestuploaddownload04194387713", "jtcuploaddownload1keyvaultkeytestuploaddownload041055281dbc", "javablobuploaddownload2keyvaultkeytestuploaddownload04142958c", "ff697614-4018-4d54-a7bf-e1ecae420df6" ]
+  "variables" : [ "keyiduploaddownload0keyvaultkeytestuploaddownload45979073192", "jtcuploaddownload1keyvaultkeytestuploaddownload459787768474", "javablobuploaddownload2keyvaultkeytestuploaddownload459877433", "24fe4abf-51c0-4a60-8c5c-a517487e0cac" ]
 }

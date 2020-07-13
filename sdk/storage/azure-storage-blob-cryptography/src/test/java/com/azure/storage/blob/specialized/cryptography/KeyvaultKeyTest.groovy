@@ -1,25 +1,15 @@
 package com.azure.storage.blob.specialized.cryptography
 
+
 import com.azure.core.credential.TokenCredential
 import com.azure.core.cryptography.AsyncKeyEncryptionKey
 import com.azure.core.http.HttpClient
 import com.azure.core.http.HttpPipeline
 import com.azure.core.http.HttpPipelineBuilder
-import com.azure.core.http.netty.NettyAsyncHttpClientBuilder
-import com.azure.core.http.policy.BearerTokenAuthenticationPolicy
-import com.azure.core.http.policy.ExponentialBackoff
-import com.azure.core.http.policy.HttpLogDetailLevel
-import com.azure.core.http.policy.HttpLogOptions
-import com.azure.core.http.policy.HttpLoggingPolicy
-import com.azure.core.http.policy.HttpPipelinePolicy
-import com.azure.core.http.policy.HttpPolicyProviders
-import com.azure.core.http.policy.RetryPolicy
-import com.azure.core.http.policy.RetryStrategy
-import com.azure.core.http.policy.UserAgentPolicy
+import com.azure.core.http.policy.*
 import com.azure.core.test.TestMode
 import com.azure.core.util.Configuration
 import com.azure.identity.ClientSecretCredentialBuilder
-import com.azure.identity.DefaultAzureCredentialBuilder
 import com.azure.security.keyvault.keys.KeyClient
 import com.azure.security.keyvault.keys.KeyClientBuilder
 import com.azure.security.keyvault.keys.KeyServiceVersion
@@ -45,10 +35,8 @@ class KeyvaultKeyTest extends APISpec {
             keyVaultUrl = Configuration.getGlobalConfiguration().get("KEYVAULT_URL")
         }
 
-        KeyClientBuilder builder = new KeyClientBuilder()
+        keyClient = new KeyClientBuilder()
             .pipeline(getHttpPipeline(getHttpClient(), KeyServiceVersion.V7_0))
-
-        keyClient = builder
             .httpClient(getHttpClient())
             .vaultUrl(keyVaultUrl)
             .buildClient()
@@ -60,7 +48,8 @@ class KeyvaultKeyTest extends APISpec {
             .setKeySize(2048))
 
         AsyncKeyEncryptionKey akek = new KeyEncryptionKeyClientBuilder()
-            .credential(new DefaultAzureCredentialBuilder().build())
+            .pipeline(getHttpPipeline(getHttpClient(), KeyServiceVersion.V7_0))
+            .httpClient(getHttpClient())
             .buildAsyncKeyEncryptionKey(keyVaultKey.getId())
             .block()
 
@@ -147,7 +136,7 @@ class KeyvaultKeyTest extends APISpec {
         HttpPipeline pipeline = new HttpPipelineBuilder()
             .policies(policies.toArray(new HttpPipelinePolicy[0]))
             .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient)
-            .build();
+            .build()
 
         return pipeline;
     }
