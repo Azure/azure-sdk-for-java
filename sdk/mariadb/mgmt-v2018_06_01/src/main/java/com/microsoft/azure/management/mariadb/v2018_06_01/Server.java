@@ -19,6 +19,7 @@ import com.microsoft.azure.arm.model.Creatable;
 import com.microsoft.azure.arm.resources.models.HasManager;
 import com.microsoft.azure.management.mariadb.v2018_06_01.implementation.MariaDBManager;
 import org.joda.time.DateTime;
+import java.util.List;
 import com.microsoft.azure.management.mariadb.v2018_06_01.implementation.ServerInner;
 
 /**
@@ -44,6 +45,16 @@ public interface Server extends HasInner<ServerInner>, Resource, GroupableResour
      * @return the masterServerId value.
      */
     String masterServerId();
+
+    /**
+     * @return the privateEndpointConnections value.
+     */
+    List<ServerPrivateEndpointConnection> privateEndpointConnections();
+
+    /**
+     * @return the publicNetworkAccess value.
+     */
+    PublicNetworkAccessEnum publicNetworkAccess();
 
     /**
      * @return the replicaCapacity value.
@@ -137,7 +148,7 @@ public interface Server extends HasInner<ServerInner>, Resource, GroupableResour
     /**
      * The template for a Server update operation, containing all the settings that can be modified.
      */
-    interface Update extends Appliable<Server>, Resource.UpdateWithTags<Update>, UpdateStages.WithAdministratorLoginPassword, UpdateStages.WithReplicationRole, UpdateStages.WithSku, UpdateStages.WithSslEnforcement, UpdateStages.WithStorageProfile, UpdateStages.WithVersion {
+    interface Update extends Appliable<Server>, Resource.UpdateWithTags<Update>, UpdateStages.WithAdministratorLoginPassword, UpdateStages.WithPublicNetworkAccess, UpdateStages.WithReplicationRole, UpdateStages.WithSku, UpdateStages.WithSslEnforcement, UpdateStages.WithStorageProfile, UpdateStages.WithVersion {
     }
 
     /**
@@ -154,6 +165,18 @@ public interface Server extends HasInner<ServerInner>, Resource, GroupableResour
              * @return the next update stage
              */
             Update withAdministratorLoginPassword(String administratorLoginPassword);
+        }
+
+        /**
+         * The stage of the server update allowing to specify PublicNetworkAccess.
+         */
+        interface WithPublicNetworkAccess {
+            /**
+             * Specifies publicNetworkAccess.
+             * @param publicNetworkAccess Whether or not public network access is allowed for this server. Value is optional but if passed in, must be 'Enabled' or 'Disabled'. Possible values include: 'Enabled', 'Disabled'
+             * @return the next update stage
+             */
+            Update withPublicNetworkAccess(PublicNetworkAccessEnum publicNetworkAccess);
         }
 
         /**
