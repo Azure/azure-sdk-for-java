@@ -1273,6 +1273,37 @@ class ContainerAPITest extends APISpec {
         secondPage.getContinuationToken() == null
     }
 
+    /*
+    This test requires two accounts that are configured in a very specific way. It is not feasible to setup that
+    relationship programmatically, so we have recorded a successful interaction and only test recordings.
+    */
+    @Requires( {playbackMode()})
+    def "List blobs hier ORS"() {
+        setup:
+        def sourceContainer = primaryBlobServiceClient.getBlobContainerClient("test1")
+        def destContainer = alternateBlobServiceClient.getBlobContainerClient("test2")
+
+        when:
+        def sourceBlobs = sourceContainer.listBlobsByHierarchy("/").stream().collect(Collectors.toList())
+        def destBlobs = destContainer.listBlobsByHierarchy("/").stream().collect(Collectors.toList())
+
+        then:
+        int i = 0
+        for (def blob : sourceBlobs) {
+            if (i == 1) {
+                assert blob.getObjectReplicationSourcePolicies() == null
+            } else {
+                assert validateOR(blob.getObjectReplicationSourcePolicies(), "fd2da1b9-56f5-45ff-9eb6-310e6dfc2c80", "105f9aad-f39b-4064-8e47-ccd7937295ca")
+            }
+            i++
+        }
+
+        /* Service specifies no ors metadata on the dest blobs. */
+        for (def blob : destBlobs) {
+            assert blob.getObjectReplicationSourcePolicies() == null
+        }
+    }
+
     def "List blobs flat simple"() {
         setup: "Create 10 page blobs in the container"
         def NUM_BLOBS = 10
