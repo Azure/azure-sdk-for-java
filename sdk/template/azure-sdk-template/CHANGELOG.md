@@ -1,7 +1,7 @@
 # Release History
 
-## 1.0.4-beta.23 (Unreleased)
-
+## 1.0.4-beta.23 (2020-07-13)
+- Test Java Release Pipeline (normal docs, normal sources)
 
 ## 1.0.4-beta.22 (2020-07-13)
 - Test Java Release Pipeline (normal docs, normal sources)
