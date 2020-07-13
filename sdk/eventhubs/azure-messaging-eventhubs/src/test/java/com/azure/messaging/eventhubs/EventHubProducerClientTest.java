@@ -105,7 +105,7 @@ public class EventHubProducerClientTest {
             .subscribeWith(new EventHubConnectionProcessor(connectionOptions.getFullyQualifiedNamespace(),
                 "event-hub-path", connectionOptions.getRetry()));
         asyncProducer = new EventHubProducerAsyncClient(HOSTNAME, EVENT_HUB_NAME, connectionProcessor, retryOptions,
-            tracerProvider, messageSerializer, Schedulers.parallel(), false, onClientClosed);
+            tracerProvider, messageSerializer, null, Schedulers.parallel(), false, onClientClosed);
 
         when(connection.getEndpointStates()).thenReturn(Flux.create(sink -> sink.next(AmqpEndpointState.ACTIVE)));
     }
@@ -157,7 +157,7 @@ public class EventHubProducerClientTest {
         final List<Tracer> tracers = Collections.singletonList(tracer1);
         final TracerProvider tracerProvider = new TracerProvider(tracers);
         final EventHubProducerAsyncClient asyncProducer = new EventHubProducerAsyncClient(HOSTNAME, EVENT_HUB_NAME,
-            connectionProcessor, retryOptions, tracerProvider, messageSerializer, Schedulers.parallel(),
+            connectionProcessor, retryOptions, tracerProvider, messageSerializer, null, Schedulers.parallel(),
             false, onClientClosed);
         final EventHubProducerClient producer = new EventHubProducerClient(asyncProducer, retryOptions.getTryTimeout());
         final EventData eventData = new EventData("hello-world".getBytes(UTF_8));
@@ -219,7 +219,7 @@ public class EventHubProducerClientTest {
             .thenReturn(Mono.just(sendLink));
 
         final EventHubProducerAsyncClient asyncProducer = new EventHubProducerAsyncClient(HOSTNAME, EVENT_HUB_NAME,
-            connectionProcessor, retryOptions, tracerProvider, messageSerializer, Schedulers.parallel(), false, onClientClosed);
+            connectionProcessor, retryOptions, tracerProvider, messageSerializer, null, Schedulers.parallel(), false, onClientClosed);
         final EventHubProducerClient producer = new EventHubProducerClient(asyncProducer, retryOptions.getTryTimeout());
         final EventData eventData = new EventData("hello-world".getBytes(UTF_8))
             .addContext(SPAN_CONTEXT_KEY, Context.NONE);
@@ -267,7 +267,7 @@ public class EventHubProducerClientTest {
         when(sendLink.getLinkSize()).thenReturn(Mono.just(1024));
         TracerProvider tracerProvider = new TracerProvider(Collections.emptyList());
         final EventHubProducerAsyncClient asyncProducer = new EventHubProducerAsyncClient(HOSTNAME, EVENT_HUB_NAME,
-            connectionProcessor, retryOptions, tracerProvider, messageSerializer, Schedulers.parallel(), false, onClientClosed);
+            connectionProcessor, retryOptions, tracerProvider, messageSerializer, null, Schedulers.parallel(), false, onClientClosed);
         final EventHubProducerClient producer = new EventHubProducerClient(asyncProducer, retryOptions.getTryTimeout());
 
         //Act & Assert
@@ -369,7 +369,7 @@ public class EventHubProducerClientTest {
         final List<Tracer> tracers = Collections.singletonList(tracer1);
         final TracerProvider tracerProvider = new TracerProvider(tracers);
         final EventHubProducerAsyncClient asyncProducer = new EventHubProducerAsyncClient(HOSTNAME, EVENT_HUB_NAME,
-            connectionProcessor, retryOptions, tracerProvider, messageSerializer, Schedulers.parallel(),
+            connectionProcessor, retryOptions, tracerProvider, messageSerializer, null, Schedulers.parallel(),
             false, onClientClosed);
         final EventHubProducerClient producer = new EventHubProducerClient(asyncProducer, retryOptions.getTryTimeout());
 
