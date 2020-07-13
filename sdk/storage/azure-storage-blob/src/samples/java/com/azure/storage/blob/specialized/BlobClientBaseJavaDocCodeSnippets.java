@@ -30,6 +30,7 @@ import com.azure.storage.blob.models.ParallelTransferOptions;
 import com.azure.storage.blob.models.RehydratePriority;
 import com.azure.storage.blob.models.StorageAccountInfo;
 import com.azure.storage.blob.models.UserDelegationKey;
+import com.azure.storage.blob.options.BlobSetAccessTierOptions;
 import com.azure.storage.blob.options.BlobSetTagsOptions;
 import com.azure.storage.blob.sas.BlobSasPermission;
 import com.azure.storage.blob.sas.BlobServiceSasSignatureValues;
@@ -57,6 +58,7 @@ import java.util.function.Consumer;
 public class BlobClientBaseJavaDocCodeSnippets {
     private BlobClientBase client = new BlobClientBase(null);
     private String leaseId = "leaseId";
+    private String tags = "tags";
     private String copyId = "copyId";
     private String url = "https://sample.com";
     private String file = "file";
@@ -443,12 +445,12 @@ public class BlobClientBaseJavaDocCodeSnippets {
      * Code snippets for {@link BlobClientBase#setTagsWithResponse(BlobSetTagsOptions, Duration, Context)}
      */
     public void setTagsWithResponse() {
-        // BEGIN: com.azure.storage.blob.specialized.BlobClientBase.setTagsWithResponse#BlobSetTagsOptions-Map-Duration-Context
+        // BEGIN: com.azure.storage.blob.specialized.BlobClientBase.setTagsWithResponse#BlobSetTagsOptions-Duration-Context
         System.out.printf("Set metadata completed with status %d%n",
             client.setTagsWithResponse(new BlobSetTagsOptions(Collections.singletonMap("tag", "value")), timeout,
                 new Context(key1, value1))
                 .getStatusCode());
-        // END: com.azure.storage.blob.specialized.BlobClientBase.setTagsWithResponse#BlobSetTagsOptions-Map-Duration-Context
+        // END: com.azure.storage.blob.specialized.BlobClientBase.setTagsWithResponse#BlobSetTagsOptions-Duration-Context
     }
 
     /**
@@ -476,6 +478,20 @@ public class BlobClientBaseJavaDocCodeSnippets {
             client.setAccessTierWithResponse(AccessTier.HOT, RehydratePriority.STANDARD, leaseId, timeout,
                 new Context(key2, value2)).getStatusCode());
         // END: com.azure.storage.blob.specialized.BlobClientBase.setAccessTierWithResponse#AccessTier-RehydratePriority-String-Duration-Context
+    }
+
+    /**
+     * Code snippets for {@link BlobClientBase#setAccessTierWithResponse(BlobSetAccessTierOptions, Duration, Context)}
+     */
+    public void setTierWithResponseCodeSnippets2() {
+        // BEGIN: com.azure.storage.blob.specialized.BlobClientBase.setAccessTierWithResponse#BlobSetAccessTierOptions-Duration-Context
+        System.out.printf("Set tier completed with status code %d%n",
+            client.setAccessTierWithResponse(new BlobSetAccessTierOptions(AccessTier.HOT)
+                .setPriority(RehydratePriority.STANDARD)
+                .setLeaseId(leaseId)
+                .setIfTags(tags),
+                timeout, new Context(key2, value2)).getStatusCode());
+        // END: com.azure.storage.blob.specialized.BlobClientBase.setAccessTierWithResponse#BlobSetAccessTierOptions-Duration-Context
     }
 
     /**

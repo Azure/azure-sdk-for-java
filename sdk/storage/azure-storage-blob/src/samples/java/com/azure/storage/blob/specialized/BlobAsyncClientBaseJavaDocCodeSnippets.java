@@ -25,6 +25,7 @@ import com.azure.storage.blob.models.DownloadRetryOptions;
 import com.azure.storage.blob.models.ParallelTransferOptions;
 import com.azure.storage.blob.models.RehydratePriority;
 import com.azure.storage.blob.models.UserDelegationKey;
+import com.azure.storage.blob.options.BlobSetAccessTierOptions;
 import com.azure.storage.blob.options.BlobSetTagsOptions;
 import com.azure.storage.blob.sas.BlobSasPermission;
 import com.azure.storage.blob.sas.BlobServiceSasSignatureValues;
@@ -52,6 +53,7 @@ public class BlobAsyncClientBaseJavaDocCodeSnippets {
     private BlobAsyncClientBase client = new BlobAsyncClientBase(null, null, BlobServiceVersion.getLatest(),
         null, null, null, null, null, null, null);
     private String leaseId = "leaseId";
+    private String tags = "tags";
     private String copyId = "copyId";
     private String url = "https://sample.com";
     private String file = "file";
@@ -485,10 +487,10 @@ public class BlobAsyncClientBaseJavaDocCodeSnippets {
      * Code snippets for {@link BlobAsyncClientBase#setTagsWithResponse(BlobSetTagsOptions)}
      */
     public void setTagsWithResponseCodeSnippet() {
-        // BEGIN: com.azure.storage.blob.specialized.BlobAsyncClientBase.setTagsWithResponse#Map
+        // BEGIN: com.azure.storage.blob.specialized.BlobAsyncClientBase.setTagsWithResponse#BlobSetTagsOptions
         client.setTagsWithResponse(new BlobSetTagsOptions(Collections.singletonMap("tag", "value")))
             .subscribe(response -> System.out.printf("Set tags completed with stats %d%n", response.getStatusCode()));
-        // END: com.azure.storage.blob.specialized.BlobAsyncClientBase.setTagsWithResponse#Map
+        // END: com.azure.storage.blob.specialized.BlobAsyncClientBase.setTagsWithResponse#BlobSetTagsOptions
     }
 
     /**
@@ -514,6 +516,20 @@ public class BlobAsyncClientBaseJavaDocCodeSnippets {
             .subscribe(response -> System.out.printf("Set tier completed with status code %d%n",
                 response.getStatusCode()));
         // END: com.azure.storage.blob.specialized.BlobAsyncClientBase.setAccessTierWithResponse#AccessTier-RehydratePriority-String
+    }
+
+    /**
+     * Code snippets for {@link BlobAsyncClientBase#setAccessTierWithResponse(BlobSetAccessTierOptions)}
+     */
+    public void setTierWithResponseCodeSnippets2() {
+        // BEGIN: com.azure.storage.blob.specialized.BlobAsyncClientBase.setAccessTierWithResponse#BlobSetAccessTierOptions
+        client.setAccessTierWithResponse(new BlobSetAccessTierOptions(AccessTier.HOT)
+            .setPriority(RehydratePriority.STANDARD)
+            .setLeaseId(leaseId)
+            .setIfTags(tags))
+            .subscribe(response -> System.out.printf("Set tier completed with status code %d%n",
+                response.getStatusCode()));
+        // END: com.azure.storage.blob.specialized.BlobAsyncClientBase.setAccessTierWithResponse#BlobSetAccessTierOptions
     }
 
     /**
