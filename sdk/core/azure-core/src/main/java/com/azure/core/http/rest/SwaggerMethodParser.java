@@ -32,6 +32,7 @@ import com.azure.core.util.Base64Url;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.DateTimeRfc1123;
+import com.azure.core.util.UrlBuilder;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
 
@@ -263,15 +264,15 @@ class SwaggerMethodParser implements HttpResponseDecodeData {
     }
 
     /**
-     * Get the encoded query parameters that have been added to this value based on the provided method arguments.
+     * Sets the encoded query parameters that have been added to this value based on the provided method arguments into
+     * the passed {@link UrlBuilder}.
      *
      * @param swaggerMethodArguments the arguments that will be used to create the query parameters' values
-     * @return an Iterable with the encoded query parameters
+     * @param urlBuilder The {@link UrlBuilder} where the encoded query parameters will be set.
      */
-    public Iterable<EncodedParameter> setEncodedQueryParameters(Object[] swaggerMethodArguments) {
-        final List<EncodedParameter> result = new ArrayList<>();
+    public void setEncodedQueryParameters(Object[] swaggerMethodArguments, UrlBuilder urlBuilder) {
         if (swaggerMethodArguments == null) {
-            return result;
+            return;
         }
 
         for (Substitution substitution : querySubstitutions) {
@@ -283,23 +284,26 @@ class SwaggerMethodParser implements HttpResponseDecodeData {
                     if (substitution.shouldEncode()) {
                         parameterValue = UrlEscapers.QUERY_ESCAPER.escape(parameterValue);
                     }
-                    result.add(new EncodedParameter(substitution.getUrlParameterName(), parameterValue));
+                    urlBuilder.setQueryParameter(substitution.getUrlParameterName(), parameterValue);
                 }
             }
         }
-        return result;
     }
 
     /**
-     * Get the headers that have been added to this value based on the provided method arguments.
+     * Sets the headers that have been added to this value based on the provided method arguments into the passed
+     * {@link HttpHeaders}.
      *
      * @param swaggerMethodArguments The arguments that will be used to create the headers' values.
-     * @return An Iterable with the headers.
+     * @param httpHeaders The {@link HttpHeaders} where the header values will be set.
      */
-    public Iterable<HttpHeader> setHeaders(Object[] swaggerMethodArguments) {
-        final HttpHeaders result = new HttpHeaders(headers);
+    public void setHeaders(Object[] swaggerMethodArguments, HttpHeaders httpHeaders) {
+        for (HttpHeader header : headers) {
+            httpHeaders.put(header.getName(), header.getValue());
+        }
+
         if (swaggerMethodArguments == null) {
-            return result;
+            return;
         }
 
         for (Substitution headerSubstitution : headerSubstitutions) {
@@ -314,20 +318,18 @@ class SwaggerMethodParser implements HttpResponseDecodeData {
                         final String headerName = headerCollectionPrefix + headerCollectionEntry.getKey();
                         final String headerValue = serialize(serializer, headerCollectionEntry.getValue());
                         if (headerValue != null) {
-                            result.put(headerName, headerValue);
+                            httpHeaders.put(headerName, headerValue);
                         }
                     }
                 } else {
                     final String headerName = headerSubstitution.getUrlParameterName();
                     final String headerValue = serialize(serializer, methodArgument);
                     if (headerValue != null) {
-                        result.put(headerName, headerValue);
+                        httpHeaders.put(headerName, headerValue);
                     }
                 }
             }
         }
-
-        return result;
     }
 
     /**

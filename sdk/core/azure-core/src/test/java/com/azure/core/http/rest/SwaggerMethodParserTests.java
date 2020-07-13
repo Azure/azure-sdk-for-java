@@ -30,6 +30,7 @@ import com.azure.core.implementation.UnixTime;
 import com.azure.core.util.Base64Url;
 import com.azure.core.util.Context;
 import com.azure.core.util.DateTimeRfc1123;
+import com.azure.core.util.UrlBuilder;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -176,7 +177,10 @@ public class SwaggerMethodParserTests {
     public void headers(Method method, HttpHeaders expectedHeaders) {
         SwaggerMethodParser swaggerMethodParser = new SwaggerMethodParser(method, "https://raw.host.com");
 
-        for (HttpHeader header : swaggerMethodParser.setHeaders(null)) {
+        HttpHeaders actual = new HttpHeaders();
+        swaggerMethodParser.setHeaders(null, actual);
+
+        for (HttpHeader header : actual) {
             assertEquals(expectedHeaders.getValue(header.getName()), header.getValue());
         }
     }
@@ -314,12 +318,13 @@ public class SwaggerMethodParserTests {
 
     @ParameterizedTest
     @MethodSource("querySubstitutionSupplier")
-    public void querySubstitution(Method method, Object[] arguments, Map<String, String> expectedParameters) {
+    public void querySubstitution(Method method, Object[] arguments, String expectedUrl) {
         SwaggerMethodParser swaggerMethodParser = new SwaggerMethodParser(method, "https://raw.host.com");
 
-        for (EncodedParameter encodedParameter : swaggerMethodParser.setEncodedQueryParameters(arguments)) {
-            assertEquals(expectedParameters.get(encodedParameter.getName()), encodedParameter.getEncodedValue());
-        }
+        UrlBuilder urlBuilder = UrlBuilder.parse("https://raw.host.com");
+        swaggerMethodParser.setEncodedQueryParameters(arguments, urlBuilder);
+
+        assertEquals(expectedUrl, urlBuilder.toString());
     }
 
     private static Stream<Arguments> querySubstitutionSupplier() throws NoSuchMethodException {
@@ -328,14 +333,16 @@ public class SwaggerMethodParserTests {
         Method encodedSubstitution = clazz.getDeclaredMethod("encodedSubstitutions", String.class, boolean.class);
 
         return Stream.of(
-            Arguments.of(substitution, null, null),
-            Arguments.of(substitution, toObjectArray("raw", true), createExpectedParameters("raw", true)),
-            Arguments.of(substitution, toObjectArray(null, true), createExpectedParameters(null, true)),
-            Arguments.of(substitution, toObjectArray("{sub1}", false), createExpectedParameters("%7Bsub1%7D", false)),
-            Arguments.of(encodedSubstitution, null, null),
-            Arguments.of(encodedSubstitution, toObjectArray("raw", true), createExpectedParameters("raw", true)),
-            Arguments.of(encodedSubstitution, toObjectArray(null, true), createExpectedParameters(null, true)),
-            Arguments.of(encodedSubstitution, toObjectArray("{sub1}", false), createExpectedParameters("{sub1}", false))
+            Arguments.of(substitution, null, "https://raw.host.com"),
+            Arguments.of(substitution, toObjectArray("raw", true), "https://raw.host.com?sub1=raw&sub2=true"),
+            Arguments.of(substitution, toObjectArray(null, true), "https://raw.host.com?sub2=true"),
+            Arguments.of(substitution, toObjectArray("{sub1}", false),
+                "https://raw.host.com?sub1=%7Bsub1%7D&sub2=false"),
+            Arguments.of(encodedSubstitution, null, "https://raw.host.com"),
+            Arguments.of(encodedSubstitution, toObjectArray("raw", true), "https://raw.host.com?sub1=raw&sub2=true"),
+            Arguments.of(encodedSubstitution, toObjectArray(null, true), "https://raw.host.com?sub2=true"),
+            Arguments.of(encodedSubstitution, toObjectArray("{sub1}", false),
+                "https://raw.host.com?sub1={sub1}&sub2=false")
         );
     }
 
@@ -356,7 +363,10 @@ public class SwaggerMethodParserTests {
     public void headerSubstitution(Method method, Object[] arguments, Map<String, String> expectedHeaders) {
         SwaggerMethodParser swaggerMethodParser = new SwaggerMethodParser(method, "https://raw.host.com");
 
-        for (HttpHeader header : swaggerMethodParser.setHeaders(arguments)) {
+        HttpHeaders actual = new HttpHeaders();
+        swaggerMethodParser.setHeaders(arguments, actual);
+
+        for (HttpHeader header : actual) {
             assertEquals(expectedHeaders.get(header.getName()), header.getValue());
         }
     }
