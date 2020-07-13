@@ -783,18 +783,14 @@ public class CosmosAsyncContainer {
     }
 
     Mono<CosmosContainerResponse> read(CosmosContainerRequestOptions options, Context context) {
-        Mono<CosmosContainerResponse> responseMono = readInternal(options);
+        Mono<CosmosContainerResponse> responseMono = database.getDocClientWrapper().readCollection(getLink(),
+            ModelBridgeInternal.toRequestOptions(options))
+            .map(response -> ModelBridgeInternal.createCosmosContainerResponse(response)).single();
         return database.getClient().getTracerProvider().traceEnabledCosmosResponsePublisher(responseMono,
             context,
             this.readContainerSpanName,
             database.getId(),
             database.getClient().getServiceEndpoint());
-    }
-
-    private Mono<CosmosContainerResponse> readInternal(CosmosContainerRequestOptions options) {
-       return database.getDocClientWrapper().readCollection(getLink(),
-            ModelBridgeInternal.toRequestOptions(options))
-            .map(response -> ModelBridgeInternal.createCosmosContainerResponse(response)).single();
     }
 
     private Mono<CosmosContainerResponse> deleteInternal(CosmosContainerRequestOptions options, Context context) {
