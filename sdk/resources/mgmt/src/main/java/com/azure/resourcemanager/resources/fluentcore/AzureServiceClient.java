@@ -12,7 +12,6 @@ import com.azure.core.management.polling.PollerFactory;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.management.serializer.AzureJacksonAdapter;
 import com.azure.core.util.Context;
-import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.AsyncPollResponse;
 import com.azure.core.util.polling.LongRunningOperationStatus;
@@ -50,19 +49,7 @@ public abstract class AzureServiceClient {
         ((AzureJacksonAdapter) serializerAdapter).serializer().registerModule(DateTimeDeserializer.getModule());
     }
 
-    private static final String OS;
-    private static final String OS_NAME;
-    private static final String OS_VERSION;
-    private static final String JAVA_VERSION;
     private static final String SDK_VERSION = "2.0.0-SNAPSHOT";
-
-    static {
-        OS_NAME = System.getProperty("os.name");
-        OS_VERSION = System.getProperty("os.version");
-        OS = OS_NAME + "/" + OS_VERSION;
-        String version = System.getProperty("java.version");
-        JAVA_VERSION = version != null ? version : "Unknown";
-    }
 
     private final SerializerAdapter serializerAdapter = new AzureJacksonAdapter();
 
@@ -83,20 +70,9 @@ public abstract class AzureServiceClient {
      * @return the default client context.
      */
     public Context getContext() {
-        Context context = new Context("java.version", JAVA_VERSION);
-        if (!CoreUtils.isNullOrEmpty(OS_NAME)) {
-            context = context.addData("os.name", OS_NAME);
-        }
-        if (!CoreUtils.isNullOrEmpty(OS_VERSION)) {
-            context = context.addData("os.version", OS_VERSION);
-        }
+        Context context = Context.NONE;
         if (sdkName == null) {
-            String packageName = this.getClass().getPackage().getName();
-            if (packageName.endsWith(".models")) {
-                sdkName = packageName.substring(0, packageName.length() - ".models".length());
-            } else {
-                sdkName = packageName;
-            }
+            sdkName = this.getClass().getPackage().getName();
         }
         context = context.addData("Sdk-Name", sdkName);
         context = context.addData("Sdk-Version", SDK_VERSION);

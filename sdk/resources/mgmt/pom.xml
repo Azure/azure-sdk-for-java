@@ -49,10 +49,6 @@
     <dependencies>
         <dependency>
             <groupId>com.azure</groupId>
-            <artifactId>azure-core</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.azure</groupId>
             <artifactId>azure-core-management</artifactId>
         </dependency>
         <dependency>

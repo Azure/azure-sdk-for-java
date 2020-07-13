@@ -10,6 +10,7 @@ import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
+import com.azure.core.util.UserAgentUtil;
 import reactor.core.publisher.Mono;
 
 /**
@@ -21,35 +22,11 @@ public class UserAgentPolicy implements HttpPipelinePolicy {
     private static final String SDK_VERSION_KEY = "Sdk-Version";
     private static final String APPLICATION_ID_KEY = "Application-Id";
 
-    private static final String OS_NAME = System.getProperty("os.name");
-    private static final String OS_VERSION = System.getProperty("os.version");
-    private static final String JAVA_VERSION = System.getProperty("java.version");
-
-    /*
-     * The base User-Agent header format is azsdk-java-<client_lib>/<sdk_version>. Additional information such as the
-     * application ID will be prepended and platform telemetry will be appended, a fully configured User-Agent header
-     * format is <application_id> azsdk-java-<client_lib>/<sdk_version> <platform_info>.
-     */
-    private static final String DEFAULT_USER_AGENT_FORMAT = "azsdk-java-%s/%s";
-
-    // From the design guidelines, the platform info format is:
-    // <language runtime>; <os name> <os version>
-    private static final String PLATFORM_INFO_FORMAT = "%s; %s %s";
-
     private final String defaultSdkName = this.getClass().getPackage().getName();
     private final String defaultSdkVersion = this.getClass().getPackage().getSpecificationVersion();
 
     private final HttpLogOptions httpLogOptions;
     private final Configuration configuration;
-
-    private static final UserAgentPolicy DEFAULT_USER_AGENT_POLICY = new UserAgentPolicy(null, null);
-
-    /**
-     * @return default user agent policy
-     */
-    public static UserAgentPolicy getDefaultUserAgentPolicy() {
-        return DEFAULT_USER_AGENT_POLICY;
-    }
 
     /**
      * @param httpLogOptions used for get application id
@@ -67,33 +44,6 @@ public class UserAgentPolicy implements HttpPipelinePolicy {
         } else {
             this.configuration = configuration;
         }
-    }
-
-    protected String buildUserAgent(String applicationId, String sdkName, String sdkVersion) {
-        StringBuilder userAgentBuilder = new StringBuilder();
-
-        // Only add the application ID if it is present as it is optional.
-        if (applicationId != null) {
-            userAgentBuilder.append(applicationId).append(" ");
-        }
-
-        // Add the required default User-Agent string.
-        userAgentBuilder.append(String.format(DEFAULT_USER_AGENT_FORMAT, sdkName, sdkVersion));
-
-        // Only add the platform telemetry if it is allowed as it is optional.
-        if (!telemetryDisabled()) {
-            String platformInfo = String.format(PLATFORM_INFO_FORMAT, JAVA_VERSION, OS_NAME, OS_VERSION);
-            userAgentBuilder.append(" ")
-                    .append("(")
-                    .append(platformInfo)
-                    .append(")");
-        }
-
-        return userAgentBuilder.toString();
-    }
-
-    private boolean telemetryDisabled() {
-        return configuration.get(Configuration.PROPERTY_AZURE_TELEMETRY_DISABLED, false);
     }
 
     @Override
@@ -124,7 +74,8 @@ public class UserAgentPolicy implements HttpPipelinePolicy {
             applicationId = httpLogOptions.getApplicationId();
         }
 
-        context.getHttpRequest().setHeader(USER_AGENT_KEY, buildUserAgent(applicationId, sdkName, sdkVersion));
+        context.getHttpRequest().setHeader(USER_AGENT_KEY,
+            UserAgentUtil.toUserAgentString(applicationId, sdkName, sdkVersion, configuration));
         return next.process();
     }
 }
