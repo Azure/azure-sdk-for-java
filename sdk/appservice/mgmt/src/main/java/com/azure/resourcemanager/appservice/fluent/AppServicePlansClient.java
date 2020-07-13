@@ -31,6 +31,7 @@ import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
+import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.appservice.WebSiteManagementClient;
 import com.azure.resourcemanager.appservice.fluent.inner.AppServicePlanCollectionInner;
 import com.azure.resourcemanager.appservice.fluent.inner.AppServicePlanInner;
@@ -494,21 +495,6 @@ public final class AppServicePlansClient
             Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms"
-                + "/{name}")
-        @ExpectedResponses({200, 202})
-        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<AppServicePlanInner>> beginCreateOrUpdateWithoutPolling(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("name") String name,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") AppServicePlanInner appServicePlan,
-            Context context);
-
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
@@ -624,6 +610,7 @@ public final class AppServicePlansClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .list(
                 this.client.getEndpoint(),
@@ -815,6 +802,7 @@ public final class AppServicePlansClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .listByResourceGroup(
                 this.client.getEndpoint(),
@@ -974,6 +962,7 @@ public final class AppServicePlansClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .getByResourceGroup(
                 this.client.getEndpoint(),
@@ -1154,6 +1143,7 @@ public final class AppServicePlansClient
         } else {
             appServicePlan.validate();
         }
+        context = this.client.mergeContext(context);
         return service
             .createOrUpdate(
                 this.client.getEndpoint(),
@@ -1177,7 +1167,7 @@ public final class AppServicePlansClient
      * @return app Service plan.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<AppServicePlanInner>, AppServicePlanInner> beginCreateOrUpdate(
+    public PollerFlux<PollResult<AppServicePlanInner>, AppServicePlanInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String name, AppServicePlanInner appServicePlan) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             createOrUpdateWithResponseAsync(resourceGroupName, name, appServicePlan);
@@ -1200,7 +1190,7 @@ public final class AppServicePlansClient
      * @return app Service plan.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<AppServicePlanInner>, AppServicePlanInner> beginCreateOrUpdate(
+    public PollerFlux<PollResult<AppServicePlanInner>, AppServicePlanInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String name, AppServicePlanInner appServicePlan, Context context) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             createOrUpdateWithResponseAsync(resourceGroupName, name, appServicePlan, context);
@@ -1222,16 +1212,46 @@ public final class AppServicePlansClient
      * @return app Service plan.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<AppServicePlanInner>, AppServicePlanInner> beginCreateOrUpdate(
+        String resourceGroupName, String name, AppServicePlanInner appServicePlan) {
+        return beginCreateOrUpdateAsync(resourceGroupName, name, appServicePlan).getSyncPoller();
+    }
+
+    /**
+     * Description for Creates or updates an App Service Plan.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service plan.
+     * @param appServicePlan App Service plan.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return app Service plan.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<AppServicePlanInner>, AppServicePlanInner> beginCreateOrUpdate(
+        String resourceGroupName, String name, AppServicePlanInner appServicePlan, Context context) {
+        return beginCreateOrUpdateAsync(resourceGroupName, name, appServicePlan, context).getSyncPoller();
+    }
+
+    /**
+     * Description for Creates or updates an App Service Plan.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service plan.
+     * @param appServicePlan App Service plan.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return app Service plan.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AppServicePlanInner> createOrUpdateAsync(
         String resourceGroupName, String name, AppServicePlanInner appServicePlan) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, name, appServicePlan);
-        return this
-            .client
-            .<AppServicePlanInner, AppServicePlanInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), AppServicePlanInner.class, AppServicePlanInner.class)
+        return beginCreateOrUpdateAsync(resourceGroupName, name, appServicePlan)
             .last()
-            .flatMap(client::getLroFinalResultOrError);
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -1249,14 +1269,9 @@ public final class AppServicePlansClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AppServicePlanInner> createOrUpdateAsync(
         String resourceGroupName, String name, AppServicePlanInner appServicePlan, Context context) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, name, appServicePlan, context);
-        return this
-            .client
-            .<AppServicePlanInner, AppServicePlanInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), AppServicePlanInner.class, AppServicePlanInner.class)
+        return beginCreateOrUpdateAsync(resourceGroupName, name, appServicePlan, context)
             .last()
-            .flatMap(client::getLroFinalResultOrError);
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -1371,6 +1386,7 @@ public final class AppServicePlansClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .delete(
                 this.client.getEndpoint(),
@@ -1533,6 +1549,7 @@ public final class AppServicePlansClient
         } else {
             appServicePlan.validate();
         }
+        context = this.client.mergeContext(context);
         return service
             .update(
                 this.client.getEndpoint(),
@@ -1709,6 +1726,7 @@ public final class AppServicePlansClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .listCapabilities(
                 this.client.getEndpoint(),
@@ -1894,6 +1912,7 @@ public final class AppServicePlansClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .getHybridConnection(
                 this.client.getEndpoint(),
@@ -2093,6 +2112,7 @@ public final class AppServicePlansClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .deleteHybridConnection(
                 this.client.getEndpoint(),
@@ -2275,6 +2295,7 @@ public final class AppServicePlansClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .listHybridConnectionKeys(
                 this.client.getEndpoint(),
@@ -2483,6 +2504,7 @@ public final class AppServicePlansClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .listWebAppsByHybridConnection(
                 this.client.getEndpoint(),
@@ -2665,6 +2687,7 @@ public final class AppServicePlansClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .getHybridConnectionPlanLimit(
                 this.client.getEndpoint(),
@@ -2843,6 +2866,7 @@ public final class AppServicePlansClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .listHybridConnections(
                 this.client.getEndpoint(),
@@ -3016,6 +3040,7 @@ public final class AppServicePlansClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .restartWebApps(
                 this.client.getEndpoint(),
@@ -3236,6 +3261,7 @@ public final class AppServicePlansClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .listWebApps(
                 this.client.getEndpoint(),
@@ -3466,6 +3492,7 @@ public final class AppServicePlansClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .getServerFarmSkus(
                 this.client.getEndpoint(),
@@ -3647,6 +3674,7 @@ public final class AppServicePlansClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .listUsages(
                 this.client.getEndpoint(),
@@ -3857,6 +3885,7 @@ public final class AppServicePlansClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .listVnets(
                 this.client.getEndpoint(),
@@ -4033,6 +4062,7 @@ public final class AppServicePlansClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .getVnetFromServerFarm(
                 this.client.getEndpoint(),
@@ -4225,6 +4255,7 @@ public final class AppServicePlansClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .getVnetGateway(
                 this.client.getEndpoint(),
@@ -4449,6 +4480,7 @@ public final class AppServicePlansClient
         } else {
             connectionEnvelope.validate();
         }
+        context = this.client.mergeContext(context);
         return service
             .updateVnetGateway(
                 this.client.getEndpoint(),
@@ -4668,6 +4700,7 @@ public final class AppServicePlansClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .listRoutesForVnet(
                 this.client.getEndpoint(),
@@ -4860,6 +4893,7 @@ public final class AppServicePlansClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .getRouteForVnet(
                 this.client.getEndpoint(),
@@ -5077,6 +5111,7 @@ public final class AppServicePlansClient
         } else {
             route.validate();
         }
+        context = this.client.mergeContext(context);
         return service
             .createOrUpdateVnetRoute(
                 this.client.getEndpoint(),
@@ -5291,6 +5326,7 @@ public final class AppServicePlansClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .deleteVnetRoute(
                 this.client.getEndpoint(),
@@ -5490,6 +5526,7 @@ public final class AppServicePlansClient
         } else {
             route.validate();
         }
+        context = this.client.mergeContext(context);
         return service
             .updateVnetRoute(
                 this.client.getEndpoint(),
@@ -5695,6 +5732,7 @@ public final class AppServicePlansClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .rebootWorker(
                 this.client.getEndpoint(),
@@ -5773,195 +5811,6 @@ public final class AppServicePlansClient
     }
 
     /**
-     * Description for Creates or updates an App Service Plan.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the App Service plan.
-     * @param appServicePlan App Service plan.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return app Service plan.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<AppServicePlanInner>> beginCreateOrUpdateWithoutPollingWithResponseAsync(
-        String resourceGroupName, String name, AppServicePlanInner appServicePlan) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (name == null) {
-            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (appServicePlan == null) {
-            return Mono.error(new IllegalArgumentException("Parameter appServicePlan is required and cannot be null."));
-        } else {
-            appServicePlan.validate();
-        }
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .beginCreateOrUpdateWithoutPolling(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            name,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            appServicePlan,
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
-
-    /**
-     * Description for Creates or updates an App Service Plan.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the App Service plan.
-     * @param appServicePlan App Service plan.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return app Service plan.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<AppServicePlanInner>> beginCreateOrUpdateWithoutPollingWithResponseAsync(
-        String resourceGroupName, String name, AppServicePlanInner appServicePlan, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (name == null) {
-            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (appServicePlan == null) {
-            return Mono.error(new IllegalArgumentException("Parameter appServicePlan is required and cannot be null."));
-        } else {
-            appServicePlan.validate();
-        }
-        return service
-            .beginCreateOrUpdateWithoutPolling(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                name,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                appServicePlan,
-                context);
-    }
-
-    /**
-     * Description for Creates or updates an App Service Plan.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the App Service plan.
-     * @param appServicePlan App Service plan.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return app Service plan.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AppServicePlanInner> beginCreateOrUpdateWithoutPollingAsync(
-        String resourceGroupName, String name, AppServicePlanInner appServicePlan) {
-        return beginCreateOrUpdateWithoutPollingWithResponseAsync(resourceGroupName, name, appServicePlan)
-            .flatMap(
-                (Response<AppServicePlanInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Description for Creates or updates an App Service Plan.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the App Service plan.
-     * @param appServicePlan App Service plan.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return app Service plan.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AppServicePlanInner> beginCreateOrUpdateWithoutPollingAsync(
-        String resourceGroupName, String name, AppServicePlanInner appServicePlan, Context context) {
-        return beginCreateOrUpdateWithoutPollingWithResponseAsync(resourceGroupName, name, appServicePlan, context)
-            .flatMap(
-                (Response<AppServicePlanInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Description for Creates or updates an App Service Plan.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the App Service plan.
-     * @param appServicePlan App Service plan.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return app Service plan.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public AppServicePlanInner beginCreateOrUpdateWithoutPolling(
-        String resourceGroupName, String name, AppServicePlanInner appServicePlan) {
-        return beginCreateOrUpdateWithoutPollingAsync(resourceGroupName, name, appServicePlan).block();
-    }
-
-    /**
-     * Description for Creates or updates an App Service Plan.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the App Service plan.
-     * @param appServicePlan App Service plan.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return app Service plan.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public AppServicePlanInner beginCreateOrUpdateWithoutPolling(
-        String resourceGroupName, String name, AppServicePlanInner appServicePlan, Context context) {
-        return beginCreateOrUpdateWithoutPollingAsync(resourceGroupName, name, appServicePlan, context).block();
-    }
-
-    /**
      * Get the next page of items.
      *
      * @param nextLink The nextLink parameter.
@@ -6004,6 +5853,7 @@ public final class AppServicePlansClient
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .listNext(nextLink, context)
             .map(
@@ -6061,6 +5911,7 @@ public final class AppServicePlansClient
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .listByResourceGroupNext(nextLink, context)
             .map(
@@ -6118,6 +5969,7 @@ public final class AppServicePlansClient
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .listWebAppsByHybridConnectionNext(nextLink, context)
             .map(
@@ -6175,6 +6027,7 @@ public final class AppServicePlansClient
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .listHybridConnectionsNext(nextLink, context)
             .map(
@@ -6231,6 +6084,7 @@ public final class AppServicePlansClient
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .listWebAppsNext(nextLink, context)
             .map(
@@ -6287,6 +6141,7 @@ public final class AppServicePlansClient
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .listUsagesNext(nextLink, context)
             .map(

@@ -166,6 +166,7 @@ public final class ProvidersClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .getAvailableStacks(this.client.getEndpoint(), osTypeSelected, this.client.getApiVersion(), context)
             .map(
@@ -322,6 +323,7 @@ public final class ProvidersClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .listOperations(this.client.getEndpoint(), this.client.getApiVersion(), context)
             .map(
@@ -464,6 +466,7 @@ public final class ProvidersClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .list(
                 this.client.getEndpoint(),
@@ -618,6 +621,7 @@ public final class ProvidersClient {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .getAvailableStacksNext(nextLink, context)
             .map(
@@ -675,6 +679,7 @@ public final class ProvidersClient {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .listOperationsNext(nextLink, context)
             .map(
@@ -733,6 +738,7 @@ public final class ProvidersClient {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .getAvailableStacksOnPremNext(nextLink, context)
             .map(
