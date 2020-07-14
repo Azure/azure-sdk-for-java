@@ -45,16 +45,35 @@ public class UserAgentPolicy implements HttpPipelinePolicy {
         }
     }
 
-    private static String toUserAgentString(String applicationId, String sdkName, String sdkVersion, Configuration configuration) {
+    // begin of UserAgentUtil.toUserAgentString
+    public static final String DEFAULT_USER_AGENT_HEADER = "azsdk-java";
+    private static final String PLATFORM_INFO_FORMAT = "%s; %s; %s";
+    private static final int MAX_APP_ID_LENGTH = 24;
+
+    private static String toUserAgentString(String applicationId, String sdkName, String sdkVersion,
+                                           Configuration configuration) {
         StringBuilder userAgentBuilder = new StringBuilder();
+
+        // Only add the application ID if it is present as it is optional.
         if (applicationId != null) {
-            applicationId = applicationId.length() > 24 ? applicationId.substring(0, 24) : applicationId;
+            applicationId = applicationId.length() > MAX_APP_ID_LENGTH ? applicationId.substring(0, MAX_APP_ID_LENGTH)
+                : applicationId;
             userAgentBuilder.append(applicationId).append(" ");
         }
 
-        userAgentBuilder.append("azsdk-java").append("-").append(sdkName).append("/").append(sdkVersion);
+        // Add the required default User-Agent string.
+        userAgentBuilder.append(DEFAULT_USER_AGENT_HEADER)
+            .append("-")
+            .append(sdkName)
+            .append("/")
+            .append(sdkVersion);
+
+        // Only add the platform telemetry if it is allowed as it is optional.
         if (!isTelemetryDisabled(configuration)) {
-            userAgentBuilder.append(" ").append("(").append(getPlatformInfo()).append(")");
+            userAgentBuilder.append(" ")
+                .append("(")
+                .append(getPlatformInfo())
+                .append(")");
         }
 
         return userAgentBuilder.toString();
@@ -64,12 +83,16 @@ public class UserAgentPolicy implements HttpPipelinePolicy {
         String javaVersion = Configuration.getGlobalConfiguration().get("java.version");
         String osName = Configuration.getGlobalConfiguration().get("os.name");
         String osVersion = Configuration.getGlobalConfiguration().get("os.version");
-        return String.format("%s; %s; %s", javaVersion, osName, osVersion);
+
+        return String.format(PLATFORM_INFO_FORMAT, javaVersion, osName, osVersion);
     }
 
     private static boolean isTelemetryDisabled(Configuration configuration) {
-        return configuration == null ? (Boolean)Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false) : (Boolean)configuration.get("AZURE_TELEMETRY_DISABLED", false);
+        return (configuration == null)
+            ? Configuration.getGlobalConfiguration().get(Configuration.PROPERTY_AZURE_TELEMETRY_DISABLED, false)
+            : configuration.get(Configuration.PROPERTY_AZURE_TELEMETRY_DISABLED, false);
     }
+    // end of UserAgentUtil.toUserAgentString
 
     @Override
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
