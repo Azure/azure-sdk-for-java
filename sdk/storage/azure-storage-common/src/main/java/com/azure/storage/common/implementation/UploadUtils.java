@@ -49,8 +49,9 @@ public class UploadUtils {
             .switchOnFirst((signal, flux) -> {
                 // If there is an error before the threshold is reached, propagate the error
                 if (signal.isOnError()) {
-                    if (signal.getThrowable() != null) {
-                        return Flux.error(signal.getThrowable());
+                    Throwable t = signal.getThrowable();
+                    if (t != null) {
+                        return Flux.error(t);
                     } else {
                         return Flux.error(new IllegalStateException("Source flux failed but cause is unretrievable"));
                     }
