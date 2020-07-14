@@ -266,7 +266,7 @@ public class CosmosEntityInformation<T, ID> extends AbstractEntityInformation<T,
     }
 
     private Integer getRequestUnit(Class<?> domainType) {
-        Integer ru = Integer.parseInt(Constants.DEFAULT_REQUEST_UNIT);
+        Integer ru = null;
         final Document annotation = domainType.getAnnotation(Document.class);
 
         if (annotation != null

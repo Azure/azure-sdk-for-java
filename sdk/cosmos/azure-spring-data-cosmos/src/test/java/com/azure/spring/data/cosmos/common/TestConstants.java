@@ -19,7 +19,6 @@ public final class TestConstants {
 
     public static final int DEFAULT_TIME_TO_LIVE = -1;
     public static final String DEFAULT_COLLECTION_NAME = "Person";
-    public static final int DEFAULT_REQUEST_UNIT = 4000;
     public static final boolean DEFAULT_INDEXINGPOLICY_AUTOMATIC = true;
     public static final IndexingMode DEFAULT_INDEXINGPOLICY_MODE = IndexingMode.CONSISTENT;
     public static final String[] DEFAULT_EXCLUDEDPATHS = {};
@@ -31,7 +30,6 @@ public final class TestConstants {
     };
 
     public static final String ROLE_COLLECTION_NAME = "RoleCollectionName";
-    public static final int REQUEST_UNIT = 4000;
     public static final int TIME_TO_LIVE = 5;
     public static final boolean INDEXINGPOLICY_AUTOMATIC = false;
     public static final IndexingMode INDEXINGPOLICY_MODE = IndexingMode.LAZY;

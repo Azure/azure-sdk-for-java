@@ -27,9 +27,9 @@ public @interface Document {
 
     /**
      * To set request unit
-     * @return default as 4000
+     * @return default as ""
      */
-    String ru() default Constants.DEFAULT_REQUEST_UNIT;
+    String ru() default "";
 
     /**
      * To set the ttl of container level
