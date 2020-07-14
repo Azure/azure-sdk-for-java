@@ -17,13 +17,13 @@ import java.util.Map;
  * @see com.azure.messaging.eventgrid.models.EventGridEvent
  * @see com.azure.messaging.eventgrid.models.CloudEvent
  */
-public class EventGridConsumer {
+public class EventConsumer {
 
     /**
      * Creates a new instance of the consumer, with default deserialization knowledge, i.e. it is capable of
      * deserializing all system event data.
      */
-    public EventGridConsumer() {
+    public EventConsumer() {
         // TODO: implement method
     }
 
