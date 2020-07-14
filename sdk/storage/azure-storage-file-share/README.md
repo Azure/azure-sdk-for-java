@@ -113,7 +113,7 @@ https://myaccount.file.core.windows.net/myshare/mydirectorypath/myfile
 ```
 
 ### Handling Exceptions
-Uses the `fileServiceClient` generated from [File Share Service Client](#share-service) section below.
+Uses the `shareServiceClient` generated from [shareSeviceClient](#share-service) section below.
 
 ```java
 try {
@@ -156,11 +156,11 @@ Note that metadata names preserve the case with which they were created, but are
 
 ### Share Services
 The File Share Service REST API provides operations on accounts and manage file service properties. It allows the operations of listing and deleting shares, getting and setting file service properties.
-Once you have the SASToken, you can construct the file service client with `${accountName}`, `${sasToken}`
+Once you have the SASToken, you can construct the `shareServiceClient` with `${accountName}`, `${sasToken}`
 
 ```java
 String shareServiceURL = String.format("https://%s.file.core.windows.net", accountName);
-ShareServiceClient shareServiceClient = new ShareServiceClientBuilder().endpoint(fileServiceURL)
+ShareServiceClient shareServiceClient = new ShareServiceClientBuilder().endpoint(shareServiceURL)
     .sasToken(sasToken).buildClient();
 ```
 
@@ -179,9 +179,8 @@ ShareClient shareClient = new ShareClientBuilder().endpoint(shareURL)
  Once you have the SASToken, you can construct the file service client with `${accountName}`, `${shareName}`, `${directoryPath}`, `${sasToken}`
 
 ```java
-String directoryURL = String.format("https://%s.file.core.windows.net/%s%s", accountName, shareName, directoryPath, sasToken);
-ShareDirectoryClient directoryClient = new ShareFileClientBuilder().endpoint(directoryURL)
-    .sasToken(sasToken).shareName(shareName).directoryName(directoryPath).buildDirectoryClient();
+String directoryURL = String.format("https://%s.file.core.windows.net", accountName); ShareDirectoryClient directoryClient = new ShareFileClientBuilder().endpoint(directoryURL)     
+    .sasToken(sasToken).shareName(shareName).resourcePath(directoryPath).buildDirectoryClient();
 ```
 
 ### File
@@ -190,8 +189,8 @@ ShareDirectoryClient directoryClient = new ShareFileClientBuilder().endpoint(dir
 
 ```java
 String fileURL = String.format("https://%s.file.core.windows.net", accountName);
-ShareFileClient fileClient = new ShareFileClientBuilder().endpoint(fileURL)
-    .sasToken(sasToken).shareName(shareName).filePath(directoryPath + "/" + fileName).buildFileClient();
+ShareFileClient fileClient = new ShareFileClientBuilder().endpoint(fileURL) 
+    .sasToken(sasToken).shareName(shareName).resourcePath(directoryPath + "/" + fileName).buildFileClient();
 ```
 
 ## Examples
@@ -215,8 +214,8 @@ The following sections provide several code snippets covering some of the most c
 - [Upload file to Storage File](#upload-file-to-storage)
 - [Download data from file range](#download-data-from-file-range)
 - [Download file from Storage File](#download-file-from-storage)
-- [Get a file service properties](#get-a-file-service-properties)
-- [Set a file service properties](#set-a-file-service-properties)
+- [Get a share service properties](#get-a-share-service-properties)
+- [Set a share service properties](#set-a-share-service-properties)
 - [Set a Share metadata](#Set-a-share-metadata)
 - [Get a Share access policy](#Get-a-share-access-policy)
 - [Set a Share access policy](#Set-a-share-access-policy)
@@ -227,7 +226,7 @@ The following sections provide several code snippets covering some of the most c
 
 ### Create a share
 Create a share in the Storage Account. Throws StorageException If the share fails to be created.
-Taking a ShareServiceClient in KeyConcept, [`${fileServiceClient}`](#share-services).
+Taking a ShareServiceClient in KeyConcept, [`${shareServiceClient}`](#share-services).
 
 ```Java
 String shareName = "testshare";
@@ -235,7 +234,7 @@ shareServiceClient.createShare(shareName);
 ```
 
 ### Create a snapshot on Share
-Taking a ShareServiceClient in KeyConcept, [`${fileServiceClient}`](#share-services).
+Taking a ShareServiceClient in KeyConcept, [`${shareServiceClient}`](#share-services).
 
 ```Java
 String shareName = "testshare";
@@ -244,7 +243,7 @@ shareClient.createSnapshot();
 ```
 
 ### Create a directory
-Taking the [`${shareClient}](#create-a-snapshot-on-share) initialized above, [`${shareClient}`](#share).
+Taking the [`${shareClient}`](#create-a-snapshot-on-share) initialized above, [`${shareClient}`](#share).
 
 ```Java
 String dirName = "testdir";
@@ -269,7 +268,7 @@ directoryClient.createFile(fileName, maxSize);
 ```
 
 ### List all Shares
-Taking the fileServiceClient in KeyConcept, [`${fileServiceClient}`](#share-services)
+Taking the shareServiceClient in KeyConcept, [`${shareServiceClient}`](#share-services)
 
 ```Java
 shareServiceClient.listShares();
@@ -348,39 +347,40 @@ fileClient.upload(data, uploadText.length());
 ### Upload file to storage
 Taking the fileClient in KeyConcept, [`${fileClient}`](#File) .
 ```Java
-String filePath = "/mydir/myfile";
+String filePath = ${myLocalFilePath};
 fileClient.uploadFromFile(filePath);
 ```
 
 ### Download data from file range
 Taking the fileClient in KeyConcept, [`${fileClient}`](#File) with the range from 1024 to 2048.
 ```Java
-FileRange fileRange = new FileRange(1024L, 2047L);
-fileClient.downloadWithPropertiesWithResponse(fileRange, false, null, Context.NONE);
+ShareFileRange fileRange = new ShareFileRange(0L, 2048L);         
+OutputStream stream = new ByteArrayOutputStream();         
+fileClient.downloadWithResponse(stream, fileRange, false, null, Context.NONE);
 ```
 
 ### Download file from storage
 Taking the fileClient in KeyConcept, [`${fileClient}`](#File) and download to the file of filePath.
 ```Java
-String filePath = "/mydir/myfile";
+String filePath = ${myLocalFilePath};
 fileClient.downloadToFile(filePath);
 ```
 
-### Get a file service properties
-Taking a FileServiceClient in KeyConcept, [`${fileServiceClient}`](#share-services) .
+### Get a share service properties
+Taking a ShareServiceClient in KeyConcept, [`${shareServiceClient}`](#share-services) .
 
 ```Java
 shareServiceClient.getProperties();
 ```
 
-### Set a file service properties
-Taking a FileServiceClient in KeyConcept, [`${fileServiceClient}`](#share-services) .
+### Set a share service properties
+Taking a ShareServiceClient in KeyConcept, [`${shareServiceClient}`](#share-services) .
 
 ```Java
 FileServiceProperties properties = shareServiceClient.getProperties();
 
-properties.getMinuteMetrics().setEnabled(true);
-properties.getHourMetrics().setEnabled(true);
+properties.getMinuteMetrics().setEnabled(true).setIncludeApis(true); 
+properties.getHourMetrics().setEnabled(true).setIncludeApis(true);
 
 shareServiceClient.setProperties(properties);
 ```
@@ -404,11 +404,10 @@ shareClient.getAccessPolicy();
 Taking the shareClient in KeyConcept, [`${shareClient}`](#Share) .
 
 ```java
-AccessPolicy accessPolicy = new AccessPolicy().setPermission("r")
-    .setStart(OffsetDateTime.now(ZoneOffset.UTC))
-    .setExpiry(OffsetDateTime.now(ZoneOffset.UTC).plusDays(10));
-
-SignedIdentifier permission = new SignedIdentifier().setId("mypolicy").setAccessPolicy(accessPolicy);
+ShareAccessPolicy accessPolicy = new ShareAccessPolicy().setPermissions("r")         
+        .setStartsOn(OffsetDateTime.now(ZoneOffset.UTC))         
+        .setExpiresOn(OffsetDateTime.now(ZoneOffset.UTC).plusDays(10));
+ShareSignedIdentifier permission = new ShareSignedIdentifier().setId("mypolicy").setAccessPolicy(accessPolicy);
 shareClient.setAccessPolicy(Collections.singletonList(permission));
 ```
 
@@ -424,7 +423,7 @@ Taking the directoryClient in KeyConcept, [`${directoryClient}`](#Directory) and
 
 ```Java
 String handleId = handleItems.iterator().next().getHandleId();
-directoryClient.forceCloseHandles(handleId, true, Duration.ofSeconds(30), Context.NONE);
+directoryClient.forceCloseHandleWithResponse(handleId, Duration.ofSeconds(30), Context.NONE);
 ```
 
 ### Set quota on share
@@ -439,9 +438,9 @@ shareClient.setQuota(quotaOnGB);
 Taking the fileClient in KeyConcept, [`${fileClient}`](#File) .
 
 ```Java
-FileHTTPHeaders httpHeaders = new FileHTTPHeaders().setFileContentType("text/plain");
-long newFileSize = 1024;
-fileClient.setHttpHeaders(newFileSize, httpHeaders);
+ShareFileHttpHeaders httpHeaders = new ShareFileHttpHeaders().setContentType("text/plain");
+long newFileSize = 1024;
+fileClient.setProperties(newFileSize, httpHeaders, null, null);
 ```
 
 ## Troubleshooting
