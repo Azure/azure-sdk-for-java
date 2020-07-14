@@ -6,7 +6,6 @@ package com.azure.identity;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenCredential;
-import com.azure.core.credential.TokenRefreshOptions;
 import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
@@ -31,7 +30,6 @@ import java.util.concurrent.atomic.AtomicReference;
 public class IntelliJCredential implements TokenCredential {
     private static final String AZURE_TOOLS_FOR_INTELLIJ_CLIENT_ID = "61d65f5a-6e3b-468b-af73-a033f5098c5c";
     private final IdentityClient identityClient;
-    private final IdentityClientOptions identityClientOptions;
     private final AtomicReference<MsalToken> cachedToken;
     private final ClientLogger logger = new ClientLogger(IntelliJCredential.class);
 
@@ -74,7 +72,6 @@ public class IntelliJCredential implements TokenCredential {
                              .build();
 
         this.cachedToken = new AtomicReference<>();
-        this.identityClientOptions = identityClientOptions;
     }
 
     @Override
@@ -94,10 +91,5 @@ public class IntelliJCredential implements TokenCredential {
                    })
             .doOnNext(token -> LoggingUtil.logTokenSuccess(logger, request))
             .doOnError(error -> LoggingUtil.logTokenError(logger, request, error));
-    }
-
-    @Override
-    public TokenRefreshOptions getTokenRefreshOptions() {
-        return identityClientOptions.getTokenRefreshOptions();
     }
 }

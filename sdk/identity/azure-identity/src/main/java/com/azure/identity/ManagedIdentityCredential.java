@@ -6,7 +6,6 @@ package com.azure.identity;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenCredential;
-import com.azure.core.credential.TokenRefreshOptions;
 import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
@@ -23,7 +22,6 @@ import reactor.core.publisher.Mono;
 public final class ManagedIdentityCredential implements TokenCredential {
     private final AppServiceMsiCredential appServiceMSICredential;
     private final VirtualMachineMsiCredential virtualMachineMSICredential;
-    private final IdentityClientOptions identityClientOptions;
     private final ClientLogger logger = new ClientLogger(ManagedIdentityCredential.class);
 
     /**
@@ -44,7 +42,6 @@ public final class ManagedIdentityCredential implements TokenCredential {
             virtualMachineMSICredential = new VirtualMachineMsiCredential(clientId, identityClient);
             appServiceMSICredential = null;
         }
-        this.identityClientOptions = identityClientOptions;
         LoggingUtil.logAvailableEnvironmentVariables(logger, configuration);
     }
 
@@ -71,10 +68,5 @@ public final class ManagedIdentityCredential implements TokenCredential {
         return accessTokenMono
             .doOnNext(token -> LoggingUtil.logTokenSuccess(logger, request))
             .doOnError(error -> LoggingUtil.logTokenError(logger, request, error));
-    }
-
-    @Override
-    public TokenRefreshOptions getTokenRefreshOptions() {
-        return identityClientOptions.getTokenRefreshOptions();
     }
 }

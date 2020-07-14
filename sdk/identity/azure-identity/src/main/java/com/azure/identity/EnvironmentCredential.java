@@ -6,7 +6,6 @@ package com.azure.identity;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenCredential;
-import com.azure.core.credential.TokenRefreshOptions;
 import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
@@ -38,7 +37,6 @@ import reactor.core.publisher.Mono;
 @Immutable
 public class EnvironmentCredential implements TokenCredential {
     private final Configuration configuration;
-    private final IdentityClientOptions identityClientOptions;
     private final ClientLogger logger = new ClientLogger(EnvironmentCredential.class);
     private final TokenCredential tokenCredential;
 
@@ -49,7 +47,6 @@ public class EnvironmentCredential implements TokenCredential {
      */
     EnvironmentCredential(IdentityClientOptions identityClientOptions) {
         this.configuration = Configuration.getGlobalConfiguration().clone();
-        this.identityClientOptions = identityClientOptions;
         TokenCredential targetCredential = null;
 
         String clientId = configuration.get(Configuration.PROPERTY_AZURE_CLIENT_ID);
@@ -127,11 +124,6 @@ public class EnvironmentCredential implements TokenCredential {
         } else {
             return tokenCredential.getToken(request);
         }
-    }
-
-    @Override
-    public TokenRefreshOptions getTokenRefreshOptions() {
-        return identityClientOptions.getTokenRefreshOptions();
     }
 
     private boolean verifyNotNull(String... configs) {

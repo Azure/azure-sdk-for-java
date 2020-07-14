@@ -6,7 +6,6 @@ package com.azure.identity;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenCredential;
-import com.azure.core.credential.TokenRefreshOptions;
 import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.identity.implementation.IdentityClient;
@@ -30,7 +29,6 @@ public class UsernamePasswordCredential implements TokenCredential {
     private final String username;
     private final String password;
     private final IdentityClient identityClient;
-    private final IdentityClientOptions identityClientOptions;
     private final String authorityHost;
     private final AtomicReference<MsalAuthenticationAccount> cachedToken;
     private final ClientLogger logger = new ClientLogger(UsernamePasswordCredential.class);
@@ -57,7 +55,6 @@ public class UsernamePasswordCredential implements TokenCredential {
                 .identityClientOptions(identityClientOptions)
                 .build();
         cachedToken = new AtomicReference<>();
-        this.identityClientOptions = identityClientOptions;
         this.authorityHost = identityClientOptions.getAuthorityHost();
     }
 
@@ -109,10 +106,5 @@ public class UsernamePasswordCredential implements TokenCredential {
                         new AuthenticationRecord(msalToken.getAuthenticationResult(),
                                 identityClient.getTenantId())));
         return msalToken;
-    }
-
-    @Override
-    public TokenRefreshOptions getTokenRefreshOptions() {
-        return identityClientOptions.getTokenRefreshOptions();
     }
 }

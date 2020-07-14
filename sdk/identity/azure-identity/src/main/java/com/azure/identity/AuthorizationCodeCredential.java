@@ -6,7 +6,6 @@ package com.azure.identity;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenCredential;
-import com.azure.core.credential.TokenRefreshOptions;
 import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.identity.implementation.IdentityClient;
@@ -28,7 +27,6 @@ public class AuthorizationCodeCredential implements TokenCredential {
     private final String authCode;
     private final URI redirectUri;
     private final IdentityClient identityClient;
-    private final IdentityClientOptions identityClientOptions;
     private final AtomicReference<MsalAuthenticationAccount> cachedToken;
     private final ClientLogger logger = new ClientLogger(AuthorizationCodeCredential.class);
 
@@ -48,7 +46,6 @@ public class AuthorizationCodeCredential implements TokenCredential {
             .clientId(clientId)
             .identityClientOptions(identityClientOptions)
             .build();
-        this.identityClientOptions = identityClientOptions;
         this.cachedToken = new AtomicReference<>();
         this.authCode = authCode;
         this.redirectUri = redirectUri;
@@ -73,10 +70,5 @@ public class AuthorizationCodeCredential implements TokenCredential {
                })
             .doOnNext(token -> LoggingUtil.logTokenSuccess(logger, request))
             .doOnError(error -> LoggingUtil.logTokenError(logger, request, error));
-    }
-
-    @Override
-    public TokenRefreshOptions getTokenRefreshOptions() {
-        return identityClientOptions.getTokenRefreshOptions();
     }
 }

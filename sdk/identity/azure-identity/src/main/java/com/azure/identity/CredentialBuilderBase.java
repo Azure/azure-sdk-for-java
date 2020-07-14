@@ -3,7 +3,6 @@
 
 package com.azure.identity;
 
-import com.azure.core.credential.SimpleTokenCache;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.ProxyOptions;
@@ -88,31 +87,6 @@ public abstract class CredentialBuilderBase<T extends CredentialBuilderBase<T>> 
     public T httpClient(HttpClient client) {
         Objects.requireNonNull(client);
         this.identityClientOptions.setHttpClient(client);
-        return (T) this;
-    }
-
-    /**
-     * Sets how long before the actual token expiry to refresh the token. The
-     * token will be considered expired at and after the time of (actual
-     * expiry - token refresh offset). The default offset is 2 minutes.
-     *
-     * This is used in {@link SimpleTokenCache} and {@link com.azure.core.http.policy.BearerTokenAuthenticationPolicy}
-     * to proactively retrieve a more up-to-date token before the cached token gets too close to its expiry.
-     *
-     * Extending this offset is recommended if it takes &gt; 2 minutes to reach the service (application is running on
-     * high load), or you would like to simply keep a more up-to-date token in the cache (more robust against token
-     * refresh API down times). The user is responsible for specifying a valid offset.
-     *
-     * When a proactive token refresh fails but the previously cached token is still valid,
-     * {@link com.azure.core.http.policy.BearerTokenAuthenticationPolicy} will NOT fail but return the previous valid
-     * token. Another proactive refresh will be attempted in 30 seconds.
-     *
-     * @param tokenRefreshOffset the duration before the actual expiry of a token to refresh it
-     * @return An updated instance of this builder with the token refresh offset set as specified.
-     */
-    @SuppressWarnings("unchecked")
-    public T tokenRefreshOffset(Duration tokenRefreshOffset) {
-        this.identityClientOptions.setTokenRefreshOffset(tokenRefreshOffset);
         return (T) this;
     }
 }

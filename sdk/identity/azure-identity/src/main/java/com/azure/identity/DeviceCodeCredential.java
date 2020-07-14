@@ -6,7 +6,6 @@ package com.azure.identity;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenCredential;
-import com.azure.core.credential.TokenRefreshOptions;
 import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.identity.implementation.IdentityClient;
@@ -27,7 +26,6 @@ import java.util.function.Consumer;
 public class DeviceCodeCredential implements TokenCredential {
     private final Consumer<DeviceCodeInfo> challengeConsumer;
     private final IdentityClient identityClient;
-    private final IdentityClientOptions identityClientOptions;
     private final AtomicReference<MsalAuthenticationAccount> cachedToken;
     private final String authorityHost;
     private final boolean automaticAuthentication;
@@ -52,7 +50,6 @@ public class DeviceCodeCredential implements TokenCredential {
             .identityClientOptions(identityClientOptions)
             .build();
         this.cachedToken = new AtomicReference<>();
-        this.identityClientOptions = identityClientOptions;
         this.authorityHost = identityClientOptions.getAuthorityHost();
         this.automaticAuthentication = automaticAuthentication;
         if (identityClientOptions.getAuthenticationRecord() != null) {
@@ -128,10 +125,5 @@ public class DeviceCodeCredential implements TokenCredential {
                         new AuthenticationRecord(msalToken.getAuthenticationResult(),
                                 identityClient.getTenantId())));
         return msalToken;
-    }
-
-    @Override
-    public TokenRefreshOptions getTokenRefreshOptions() {
-        return identityClientOptions.getTokenRefreshOptions();
     }
 }

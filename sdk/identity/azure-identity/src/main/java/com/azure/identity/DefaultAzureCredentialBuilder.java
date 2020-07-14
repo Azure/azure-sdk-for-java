@@ -95,7 +95,7 @@ public class DefaultAzureCredentialBuilder extends CredentialBuilderBase<Default
      * @return a {@link DefaultAzureCredential} with the current configurations.
      */
     public DefaultAzureCredential build() {
-        return new DefaultAzureCredential(getCredentialsChain(), identityClientOptions);
+        return new DefaultAzureCredential(getCredentialsChain());
     }
 
     private ArrayList<TokenCredential> getCredentialsChain() {

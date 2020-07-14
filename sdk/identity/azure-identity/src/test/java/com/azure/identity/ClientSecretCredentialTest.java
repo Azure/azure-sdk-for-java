@@ -17,7 +17,6 @@ import org.powermock.modules.junit4.PowerMockRunner;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
-import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.UUID;
@@ -64,41 +63,6 @@ public class ClientSecretCredentialTest {
             .expectNextMatches(accessToken -> token2.equals(accessToken.getToken())
                 && expiresAt.getSecond() == accessToken.getExpiresAt().getSecond())
             .verifyComplete();
-    }
-
-    @Test
-    public void testValidSecretsWithTokenRefreshOffset() throws Exception {
-        // setup
-        String secret = "secret";
-        String token1 = "token1";
-        String token2 = "token2";
-        TokenRequestContext request1 = new TokenRequestContext().addScopes("https://management.azure.com");
-        TokenRequestContext request2 = new TokenRequestContext().addScopes("https://vault.azure.net");
-        OffsetDateTime expiresAt = OffsetDateTime.now(ZoneOffset.UTC).plusHours(1);
-        Duration offset = Duration.ofMinutes(10);
-
-        // mock
-        IdentityClient identityClient = PowerMockito.mock(IdentityClient.class);
-        when(identityClient.authenticateWithConfidentialClientCache(any())).thenReturn(Mono.empty());
-        when(identityClient.authenticateWithConfidentialClient(request1)).thenReturn(TestUtils.getMockAccessToken(token1, expiresAt, offset));
-        when(identityClient.authenticateWithConfidentialClient(request2)).thenReturn(TestUtils.getMockAccessToken(token2, expiresAt, offset));
-        PowerMockito.whenNew(IdentityClient.class).withAnyArguments().thenReturn(identityClient);
-
-        // test
-        ClientSecretCredential credential = new ClientSecretCredentialBuilder()
-                .tenantId(tenantId)
-                .clientId(clientId)
-                .clientSecret(secret)
-                .tokenRefreshOffset(offset)
-                .build();
-        StepVerifier.create(credential.getToken(request1))
-                .expectNextMatches(accessToken -> token1.equals(accessToken.getToken())
-                        && expiresAt.getSecond() == accessToken.getExpiresAt().getSecond())
-                .verifyComplete();
-        StepVerifier.create(credential.getToken(request2))
-                .expectNextMatches(accessToken -> token2.equals(accessToken.getToken())
-                        && expiresAt.getSecond() == accessToken.getExpiresAt().getSecond())
-                .verifyComplete();
     }
 
     @Test
