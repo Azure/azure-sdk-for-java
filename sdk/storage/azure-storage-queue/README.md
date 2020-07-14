@@ -173,7 +173,8 @@ queueClient.createWithResponse(metadata, null, Duration.ofSeconds(30), Context.N
 or
 
 ```Java
-String queueAsyncURL = String.format("https://%s.queue.core.windows.net/%s%s", accountName, queueAsyncName, sasToken);
+// Only one "?" is needed here. If the sastoken starts with "?", please removing one "?".
+String queueAsyncURL = String.format("https://%s.queue.core.windows.net/%s?%s", accountName, queueAsyncName, sasToken);
 QueueAsyncClient queueAsyncClient = new QueueClientBuilder().endpoint(queueAsyncURL).buildAsyncClient();
 queueAsyncClient.createWithResponse(metadata).subscribe(
     result -> {
@@ -211,7 +212,8 @@ We have two ways of building QueueService or Queue Client. Here will take queueS
 First, build client from full URL/endpoint (e.g. with queueName, with SASToken and etc.)
 
 ```Java
-String queueServiceURL = String.format("https://%s.queue.core.windows.net/%s", accountName, sasToken);
+// Only one "?" is needed here. If the sastoken starts with "?", please removing one "?".
+String queueServiceURL = String.format("https://%s.queue.core.windows.net/?%s", accountName, sasToken);
 QueueServiceClient queueServiceClient = new QueueServiceClientBuilder().endpoint(queueServiceURL).buildClient();
 ```
 
