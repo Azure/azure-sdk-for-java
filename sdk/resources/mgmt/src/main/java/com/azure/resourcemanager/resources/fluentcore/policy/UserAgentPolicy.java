@@ -10,7 +10,6 @@ import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
-import com.azure.core.util.UserAgentUtil;
 import reactor.core.publisher.Mono;
 
 /**
@@ -46,6 +45,32 @@ public class UserAgentPolicy implements HttpPipelinePolicy {
         }
     }
 
+    private static String toUserAgentString(String applicationId, String sdkName, String sdkVersion, Configuration configuration) {
+        StringBuilder userAgentBuilder = new StringBuilder();
+        if (applicationId != null) {
+            applicationId = applicationId.length() > 24 ? applicationId.substring(0, 24) : applicationId;
+            userAgentBuilder.append(applicationId).append(" ");
+        }
+
+        userAgentBuilder.append("azsdk-java").append("-").append(sdkName).append("/").append(sdkVersion);
+        if (!isTelemetryDisabled(configuration)) {
+            userAgentBuilder.append(" ").append("(").append(getPlatformInfo()).append(")");
+        }
+
+        return userAgentBuilder.toString();
+    }
+
+    private static String getPlatformInfo() {
+        String javaVersion = Configuration.getGlobalConfiguration().get("java.version");
+        String osName = Configuration.getGlobalConfiguration().get("os.name");
+        String osVersion = Configuration.getGlobalConfiguration().get("os.version");
+        return String.format("%s; %s; %s", javaVersion, osName, osVersion);
+    }
+
+    private static boolean isTelemetryDisabled(Configuration configuration) {
+        return configuration == null ? (Boolean)Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false) : (Boolean)configuration.get("AZURE_TELEMETRY_DISABLED", false);
+    }
+
     @Override
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
         String userAgent = context.getHttpRequest().getHeaders().getValue(USER_AGENT_KEY);
@@ -75,7 +100,8 @@ public class UserAgentPolicy implements HttpPipelinePolicy {
         }
 
         context.getHttpRequest().setHeader(USER_AGENT_KEY,
-            UserAgentUtil.toUserAgentString(applicationId, sdkName, sdkVersion, configuration));
+            //UserAgentUtil.toUserAgentString(applicationId, sdkName, sdkVersion, configuration));
+            toUserAgentString(applicationId, sdkName, sdkVersion, configuration));
         return next.process();
     }
 }
