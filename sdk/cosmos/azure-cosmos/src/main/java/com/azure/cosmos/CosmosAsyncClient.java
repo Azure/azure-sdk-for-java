@@ -479,17 +479,13 @@ public final class CosmosAsyncClient implements Closeable {
     private Mono<CosmosDatabaseResponse> createDatabaseInternal(Database database, CosmosDatabaseRequestOptions options,
                                                              Context context) {
         String spanName = "createDatabase." + database.getId();
-        Mono<CosmosDatabaseResponse> responseMono = createDatabaseInternal(database, options);
+        Mono<CosmosDatabaseResponse> responseMono = asyncDocumentClient.createDatabase(database, ModelBridgeInternal.toRequestOptions(options))
+            .map(databaseResourceResponse -> ModelBridgeInternal.createCosmosDatabaseResponse(databaseResourceResponse))
+            .single();
         return tracerProvider.traceEnabledCosmosResponsePublisher(responseMono,
             context,
             spanName,
             database.getId(),
             this.serviceEndpoint);
-    }
-
-    private Mono<CosmosDatabaseResponse> createDatabaseInternal(Database database, CosmosDatabaseRequestOptions options) {
-        return asyncDocumentClient.createDatabase(database, ModelBridgeInternal.toRequestOptions(options))
-            .map(databaseResourceResponse -> ModelBridgeInternal.createCosmosDatabaseResponse(databaseResourceResponse))
-            .single();
     }
 }

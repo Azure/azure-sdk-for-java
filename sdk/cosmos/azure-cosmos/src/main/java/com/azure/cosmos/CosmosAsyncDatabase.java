@@ -756,76 +756,54 @@ public class CosmosAsyncDatabase {
         CosmosContainerRequestOptions options,
         Context context) {
         String spanName = "createContainer." + containerProperties.getId();
-        Mono<CosmosContainerResponse> responseMono = createContainerInternal(containerProperties, options);
+        Mono<CosmosContainerResponse> responseMono = getDocClientWrapper()
+            .createCollection(this.getLink(), ModelBridgeInternal.getV2Collection(containerProperties),
+                ModelBridgeInternal.toRequestOptions(options))
+            .map(response -> ModelBridgeInternal.createCosmosContainerResponse(response)).single();
         return this.client.getTracerProvider().traceEnabledCosmosResponsePublisher(responseMono, context,
             spanName,
             getId(),
             getClient().getServiceEndpoint());
-    }
-
-    private Mono<CosmosContainerResponse> createContainerInternal(
-        CosmosContainerProperties containerProperties,
-        CosmosContainerRequestOptions options) {
-        return getDocClientWrapper()
-            .createCollection(this.getLink(), ModelBridgeInternal.getV2Collection(containerProperties),
-                ModelBridgeInternal.toRequestOptions(options))
-            .map(response -> ModelBridgeInternal.createCosmosContainerResponse(response)).single();
     }
 
     Mono<CosmosDatabaseResponse> readInternal(CosmosDatabaseRequestOptions options, Context context) {
         String spanName = "readDatabase." + this.getId();
-        Mono<CosmosDatabaseResponse> responseMono = readInternal(options);
+        Mono<CosmosDatabaseResponse> responseMono = getDocClientWrapper().readDatabase(getLink(),
+            ModelBridgeInternal.toRequestOptions(options))
+            .map(response -> ModelBridgeInternal.createCosmosDatabaseResponse(response)).single();
         return this.client.getTracerProvider().traceEnabledCosmosResponsePublisher(responseMono, context,
             spanName,
             getId(),
             getClient().getServiceEndpoint());
-    }
-
-    private Mono<CosmosDatabaseResponse> readInternal(CosmosDatabaseRequestOptions options) {
-        return getDocClientWrapper().readDatabase(getLink(),
-            ModelBridgeInternal.toRequestOptions(options))
-            .map(response -> ModelBridgeInternal.createCosmosDatabaseResponse(response)).single();
     }
 
     private Mono<CosmosDatabaseResponse> deleteInternal(CosmosDatabaseRequestOptions options, Context context) {
         String spanName = "deleteDatabase." + this.getId();
-        Mono<CosmosDatabaseResponse> responseMono = deleteInternal(options);
+        Mono<CosmosDatabaseResponse> responseMono = getDocClientWrapper().deleteDatabase(getLink(),
+            ModelBridgeInternal.toRequestOptions(options))
+            .map(response -> ModelBridgeInternal.createCosmosDatabaseResponse(response)).single();
         return this.client.getTracerProvider().traceEnabledCosmosResponsePublisher(responseMono, context,
             spanName,
             getId(),
             getClient().getServiceEndpoint());
-    }
-
-    private Mono<CosmosDatabaseResponse> deleteInternal(CosmosDatabaseRequestOptions options) {
-        return getDocClientWrapper().deleteDatabase(getLink(),
-            ModelBridgeInternal.toRequestOptions(options))
-            .map(response -> ModelBridgeInternal.createCosmosDatabaseResponse(response)).single();
     }
 
     private Mono<CosmosUserResponse> createUserInternal(CosmosUserProperties userProperties, Context context) {
         String spanName = "createUser." + this.getId();
-        Mono<CosmosUserResponse> responseMono = createUserInternal(userProperties);
+        Mono<CosmosUserResponse> responseMono = getDocClientWrapper().createUser(this.getLink(), ModelBridgeInternal.getV2User(userProperties), null)
+            .map(response -> ModelBridgeInternal.createCosmosUserResponse(response)).single();
         return this.client.getTracerProvider().traceEnabledCosmosResponsePublisher(responseMono, context,
             spanName,
             getId(),
             getClient().getServiceEndpoint());
     }
 
-    private Mono<CosmosUserResponse> createUserInternal(CosmosUserProperties userProperties) {
-       return getDocClientWrapper().createUser(this.getLink(), ModelBridgeInternal.getV2User(userProperties), null)
-            .map(response -> ModelBridgeInternal.createCosmosUserResponse(response)).single();
-    }
-
     private Mono<CosmosUserResponse> upsertUserInternal(CosmosUserProperties userProperties, Context context) {
         String spanName = "upsertUser." + this.getId();
-        Mono<CosmosUserResponse> responseMono = upsertUserInternal(userProperties);
+        Mono<CosmosUserResponse> responseMono = getDocClientWrapper().upsertUser(this.getLink(), ModelBridgeInternal.getV2User(userProperties), null)
+            .map(response -> ModelBridgeInternal.createCosmosUserResponse(response)).single();
         return this.client.getTracerProvider().traceEnabledCosmosResponsePublisher(responseMono, context,
             spanName, getId(), getClient().getServiceEndpoint());
-    }
-
-    private Mono<CosmosUserResponse> upsertUserInternal(CosmosUserProperties userProperties) {
-        return getDocClientWrapper().upsertUser(this.getLink(), ModelBridgeInternal.getV2User(userProperties), null)
-            .map(response -> ModelBridgeInternal.createCosmosUserResponse(response)).single();
     }
 
     private Mono<ThroughputResponse> replaceThroughputInternal(ThroughputProperties throughputProperties, Context context){

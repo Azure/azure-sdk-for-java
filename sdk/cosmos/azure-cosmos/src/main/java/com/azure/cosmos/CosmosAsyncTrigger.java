@@ -105,25 +105,11 @@ public class CosmosAsyncTrigger {
 
     private Mono<CosmosTriggerResponse> readInternal(Context context) {
         String spanName = "readTrigger." + container.getId();
-        Mono<CosmosTriggerResponse> responseMono = readInternal();
-        return this.container.getDatabase().getClient().getTracerProvider().traceEnabledCosmosResponsePublisher(responseMono,
-            context,
-            spanName,
-            container.getDatabase().getId(),
-            container.getDatabase().getClient().getServiceEndpoint());
-    }
-
-    private Mono<CosmosTriggerResponse> readInternal() {
-        return container.getDatabase()
+        Mono<CosmosTriggerResponse> responseMono = container.getDatabase()
             .getDocClientWrapper()
             .readTrigger(getLink(), null)
             .map(response -> ModelBridgeInternal.createCosmosTriggerResponse(response))
             .single();
-    }
-
-    private Mono<CosmosTriggerResponse> replaceInternal(CosmosTriggerProperties triggerSettings, Context context) {
-        String spanName = "replaceTrigger." + container.getId();
-        Mono<CosmosTriggerResponse> responseMono = replaceInternal(triggerSettings);
         return this.container.getDatabase().getClient().getTracerProvider().traceEnabledCosmosResponsePublisher(responseMono,
             context,
             spanName,
@@ -131,18 +117,14 @@ public class CosmosAsyncTrigger {
             container.getDatabase().getClient().getServiceEndpoint());
     }
 
-    private Mono<CosmosTriggerResponse> replaceInternal(CosmosTriggerProperties triggerSettings) {
-        return container.getDatabase()
+    private Mono<CosmosTriggerResponse> replaceInternal(CosmosTriggerProperties triggerSettings, Context context) {
+        String spanName = "replaceTrigger." + container.getId();
+        Mono<CosmosTriggerResponse> responseMono = container.getDatabase()
             .getDocClientWrapper()
             .replaceTrigger(new Trigger(ModelBridgeInternal.toJsonFromJsonSerializable(
                 ModelBridgeInternal.getResource(triggerSettings))), null)
             .map(response -> ModelBridgeInternal.createCosmosTriggerResponse(response))
             .single();
-    }
-
-    private Mono<CosmosTriggerResponse> deleteInternal(Context context) {
-        String spanName = "deleteTrigger." + container.getId();
-        Mono<CosmosTriggerResponse> responseMono = deleteInternal();
         return this.container.getDatabase().getClient().getTracerProvider().traceEnabledCosmosResponsePublisher(responseMono,
             context,
             spanName,
@@ -150,11 +132,17 @@ public class CosmosAsyncTrigger {
             container.getDatabase().getClient().getServiceEndpoint());
     }
 
-    private Mono<CosmosTriggerResponse> deleteInternal() {
-       return container.getDatabase()
+    private Mono<CosmosTriggerResponse> deleteInternal(Context context) {
+        String spanName = "deleteTrigger." + container.getId();
+        Mono<CosmosTriggerResponse> responseMono = container.getDatabase()
             .getDocClientWrapper()
             .deleteTrigger(getLink(), null)
             .map(response -> ModelBridgeInternal.createCosmosTriggerResponse(response))
             .single();
+        return this.container.getDatabase().getClient().getTracerProvider().traceEnabledCosmosResponsePublisher(responseMono,
+            context,
+            spanName,
+            container.getDatabase().getId(),
+            container.getDatabase().getClient().getServiceEndpoint());
     }
 }
