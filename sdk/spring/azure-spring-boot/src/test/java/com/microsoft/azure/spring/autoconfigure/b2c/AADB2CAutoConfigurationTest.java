@@ -1,13 +1,13 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.microsoft.azure.spring.autoconfigure.btoc;
+package com.microsoft.azure.spring.autoconfigure.b2c;
 
 import org.junit.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.test.context.runner.WebApplicationContextRunner;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 
-import static com.microsoft.azure.spring.autoconfigure.btoc.AADB2CConstants.*;
+import static com.microsoft.azure.spring.autoconfigure.b2c.AADB2CConstants.*;
 import static org.assertj.core.api.Java6Assertions.assertThat;
 
 public class AADB2CAutoConfigurationTest {
