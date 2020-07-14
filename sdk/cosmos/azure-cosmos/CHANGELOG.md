@@ -10,7 +10,7 @@
 * Fixed issue in query and change feed when recreating the collection with same name.
 * Fixed issue with top query throwing ClassCastException.
 * Fixed issue with order by query throwing NullPointerException.
-* Fixed issue in handling of pending requests in direct mode causing `Operator called default onErrorDropped` being called.
+* Fixed issue in handling of cancelled requests in direct mode causing reactor onErrorDropped being called. 
 
 ## 4.1.0 (2020-06-25)
 ### New Features
