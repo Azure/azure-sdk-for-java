@@ -326,7 +326,8 @@ public class SpringCloudTest extends AppPlatformTest {
                     throw new IllegalStateException("Cannot create directory: " + parent.getAbsolutePath());
                 }
             }
+        } finally {
+            connection.disconnect();
         }
-        connection.disconnect();
     }
 }

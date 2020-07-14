@@ -308,7 +308,8 @@ public class ManageSpringCloud {
                     throw new IllegalStateException("Cannot create directory: " + parent.getAbsolutePath());
                 }
             }
+        } finally {
+            connection.disconnect();
         }
-        connection.disconnect();
     }
 }
