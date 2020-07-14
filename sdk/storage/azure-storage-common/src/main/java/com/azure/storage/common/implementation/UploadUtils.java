@@ -8,6 +8,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.common.ParallelTransferOptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.core.publisher.SignalType;
 
 import java.io.IOException;
 import java.io.UncheckedIOException;
@@ -47,6 +48,10 @@ public class UploadUtils {
             // First buffer is emitted after threshold is breached or there's no more data.
             // Therefore we can make a decision how to upload data on first element.
             .switchOnFirst((signal, flux) -> {
+                // If there is an error before the threshold is reached, propogate the error
+                if (signal.getType().equals(SignalType.ON_ERROR)) {
+                    return Flux.error(signal.getThrowable());
+                }
                 if (gate.isThresholdBreached()) {
                     // In this case we can pass a flux that can have just one subscriber because
                     // the chunked upload is going to cache the data downstream before sending chunks over the wire.
