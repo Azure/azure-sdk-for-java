@@ -150,7 +150,7 @@ public class AdvancedDiffLabeledUnlabeledDataAsync {
                     formField.getLabelData().getBoundingBox().getPoints().stream().map(point ->
                         String.format("[%.2f, %.2f]", point.getX(), point.getY())).forEach(boundingBoxStr::append);
 
-                    System.out.printf("Field %s has label %s  within bounding box %s with a confidence score "
+                    System.out.printf("Field %s has label %s within bounding box %s with a confidence score "
                             + "of %.2f.%n",
                         label, formField.getLabelData().getText(), "", formField.getConfidence());
                 }

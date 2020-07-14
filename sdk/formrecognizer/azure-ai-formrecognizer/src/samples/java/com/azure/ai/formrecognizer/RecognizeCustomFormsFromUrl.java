@@ -14,7 +14,7 @@ import java.util.List;
  * Sample to analyze a form from a document with a custom trained model. To learn how to train your own models,
  * look at TrainModelWithoutLabels.java and TrainModelWithLabels.java.
  */
-public class RecognizeCustomForms {
+public class RecognizeCustomFormsFromUrl {
 
     /**
      * Main method to invoke this demo.
@@ -29,21 +29,22 @@ public class RecognizeCustomForms {
             .endpoint("https://{endpoint}.cognitiveservices.azure.com/")
             .buildClient();
 
-        String analyzeFilePath = "{file_source_url}";
+        String formUrl = "{form_url}";
         String modelId = "{custom_trained_model_id}";
         SyncPoller<OperationResult, List<RecognizedForm>> recognizeFormPoller =
-            client.beginRecognizeCustomFormsFromUrl(analyzeFilePath, modelId);
+            client.beginRecognizeCustomFormsFromUrl(formUrl, modelId);
 
         List<RecognizedForm> recognizedForms = recognizeFormPoller.getFinalResult();
 
         for (int i = 0; i < recognizedForms.size(); i++) {
             final RecognizedForm form = recognizedForms.get(i);
-            System.out.printf("----------- Recognized Form page %d -----------%n", i);
+            System.out.printf("----------- Recognized custom form info for page %d -----------%n", i);
             System.out.printf("Form type: %s%n", form.getFormType());
             form.getFields().forEach((label, formField) ->
-                System.out.printf("Field %s has value %s with confidence "
-                    + "score of %.2f.%n", label, formField.getValueData().getText(), formField.getConfidence()));
-            System.out.print("-----------------------------------");
+                // label data is populated if you are using a model trained with unlabeled data,
+                // since the service needs to make predictions for labels if not explicitly given to it.
+                System.out.printf("Field '%s' has label '%s' with a confidence "
+                    + "score of %.2f.%n", label, formField.getLabelData().getText(), formField.getConfidence()));
         }
     }
 }

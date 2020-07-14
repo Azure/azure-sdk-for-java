@@ -56,17 +56,16 @@ public class FormTrainingAsyncClientJavaDocCodeSnippets {
         String trainingFilesUrl = "{SAS-URL-of-your-container-in-blob-storage}";
         boolean useTrainingLabels = true;
         formTrainingAsyncClient.beginTraining(trainingFilesUrl, useTrainingLabels)
-            .subscribe(trainingPollingOperation -> {
-                // if training polling operation completed, retrieve the final result.
-                trainingPollingOperation.getFinalResult().subscribe(customFormModel -> {
-                    System.out.printf("Model Id: %s%n", customFormModel.getModelId());
-                    System.out.printf("Model Status: %s%n", customFormModel.getModelStatus());
-                    customFormModel.getSubmodels()
-                        .forEach(customFormSubmodel -> customFormSubmodel.getFields()
-                            .forEach((key, customFormModelField) ->
-                                System.out.printf("Form type: %s Field Text: %s Field Accuracy: %f%n",
-                                    key, customFormModelField.getName(), customFormModelField.getAccuracy())));
-                });
+            // if training polling operation completed, retrieve the final result.
+            .flatMap(AsyncPollResponse::getFinalResult)
+            .subscribe(customFormModel -> {
+                System.out.printf("Model Id: %s%n", customFormModel.getModelId());
+                System.out.printf("Model Status: %s%n", customFormModel.getModelStatus());
+                customFormModel.getSubmodels()
+                    .forEach(customFormSubmodel -> customFormSubmodel.getFields()
+                        .forEach((key, customFormModelField) ->
+                            System.out.printf("Form type: %s Field Text: %s Field Accuracy: %f%n",
+                                key, customFormModelField.getName(), customFormModelField.getAccuracy())));
             });
         // END: com.azure.ai.formrecognizer.training.FormTrainingAsyncClient.beginTraining#string-boolean
     }
@@ -82,17 +81,15 @@ public class FormTrainingAsyncClientJavaDocCodeSnippets {
 
         formTrainingAsyncClient.beginTraining(trainingFilesUrl, true, trainingFileFilter,
             Duration.ofSeconds(5))
-            .subscribe(trainingPollingOperation -> {
-                // if training polling operation completed, retrieve the final result.
-                trainingPollingOperation.getFinalResult()
-                    .subscribe(customFormModel -> {
-                        System.out.printf("Model Id: %s%n", customFormModel.getModelId());
-                        System.out.printf("Model Status: %s%n", customFormModel.getModelStatus());
-                        customFormModel.getSubmodels().forEach(customFormSubmodel ->
-                            customFormSubmodel.getFields().forEach((key, customFormModelField) ->
-                                System.out.printf("Form Type: %s Field Text: %s Field Accuracy: %f%n",
-                                    key, customFormModelField.getName(), customFormModelField.getAccuracy())));
-                    });
+            // if training polling operation completed, retrieve the final result.
+            .flatMap(AsyncPollResponse::getFinalResult)
+            .subscribe(customFormModel -> {
+                System.out.printf("Model Id: %s%n", customFormModel.getModelId());
+                System.out.printf("Model Status: %s%n", customFormModel.getModelStatus());
+                customFormModel.getSubmodels().forEach(customFormSubmodel ->
+                    customFormSubmodel.getFields().forEach((key, customFormModelField) ->
+                        System.out.printf("Form Type: %s Field Text: %s Field Accuracy: %f%n",
+                            key, customFormModelField.getName(), customFormModelField.getAccuracy())));
             });
         // END: com.azure.ai.formrecognizer.training.FormTrainingAsyncClient.beginTraining#string-boolean-trainingFileFilter-Duration
     }

@@ -92,7 +92,7 @@ public class Authentication {
         for (int i = 0; i < receiptPageResults.size(); i++) {
             RecognizedForm recognizedForm = receiptPageResults.get(i);
             Map<String, FormField<?>> recognizedFields = recognizedForm.getFields();
-            System.out.printf("----------- Recognized Receipt page %d -----------%n", i);
+            System.out.printf("----------- Recognizing receipt info for page %d -----------%n", i);
             FormField<?> merchantNameField = recognizedFields.get("MerchantName");
             if (merchantNameField != null) {
                 if (FieldValueType.STRING == merchantNameField.getValueType()) {

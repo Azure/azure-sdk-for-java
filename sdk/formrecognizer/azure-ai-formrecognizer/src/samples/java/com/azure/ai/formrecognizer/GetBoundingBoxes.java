@@ -40,7 +40,6 @@ public class GetBoundingBoxes {
 
         List<RecognizedForm> recognizedForms = recognizeFormPoller.getFinalResult();
 
-        System.out.println("-------- RECOGNIZING FORM --------");
         for (int i = 0; i < recognizedForms.size(); i++) {
             final RecognizedForm recognizedForm = recognizedForms.get(i);
             System.out.printf("Form %d has type: %s%n", i, recognizedForm.getFormType());
@@ -57,8 +56,8 @@ public class GetBoundingBoxes {
             final List<FormPage> pages = recognizedForm.getPages();
             for (int i1 = 0; i1 < pages.size(); i1++) {
                 final FormPage formPage = pages.get(i1);
-                System.out.printf("-------Recognizing Page %d of Form -------%n", i1);
-                System.out.printf("Has width %f , angle %.2f, height %f %n", formPage.getWidth(),
+                System.out.printf("-------Recognizing info on page %s of Form -------%n", i1);
+                System.out.printf("Has width: %f, angle: %.2f, height: %f %n", formPage.getWidth(),
                     formPage.getTextAngle(), formPage.getHeight());
                 // Table information
                 System.out.println("Recognized Tables: ");
@@ -66,25 +65,27 @@ public class GetBoundingBoxes {
                 for (int i2 = 0; i2 < tables.size(); i2++) {
                     final FormTable formTable = tables.get(i2);
                     System.out.printf("Table %d%n", i2);
-                    formTable.getCells().forEach(formTableCell -> {
-                        System.out.printf("Cell text %s has following words: %n", formTableCell.getText());
-                        // textContent only exists if you set includeFieldElements to True in your
-                        // call to beginRecognizeCustomFormsFromUrl
-                        // It is also a list of FormWords and FormLines, but in this example, we only deal with
-                        // FormWords
-                        formTableCell.getFieldElements().forEach(formContent -> {
-                            if (formContent instanceof FormWord) {
-                                FormWord formWordElement = (FormWord) (formContent);
-                                StringBuilder boundingBoxStr = new StringBuilder();
-                                if (formWordElement.getBoundingBox() != null) {
-                                    formWordElement.getBoundingBox().getPoints().forEach(point -> boundingBoxStr.append(String.format("[%.2f, %.2f]", point.getX(),
-                                        point.getY())));
-                                }
-                                System.out.printf("Word '%s' within bounding box %s with a confidence of %.2f.%n",
-                                    formWordElement.getText(), boundingBoxStr, formWordElement.getConfidence());
-                            }
+                    formTable.getCells()
+                        .forEach(formTableCell -> {
+                            System.out.printf("Cell text %s has following words: %n", formTableCell.getText());
+                            // FormElements only exists if you set includeFieldElements to true in your
+                            // call to beginRecognizeCustomFormsFromUrl
+                            // It is also a list of FormWords and FormLines, but in this example, we only deal with
+                            // FormWords
+                            formTableCell.getFieldElements().stream()
+                                .filter(formContent -> formContent instanceof FormWord)
+                                .map(formContent -> (FormWord) (formContent))
+                                .forEach(formWordElement -> {
+                                    StringBuilder boundingBoxStr = new StringBuilder();
+                                    if (formWordElement.getBoundingBox() != null) {
+                                        formWordElement.getBoundingBox().getPoints()
+                                            .forEach(point -> boundingBoxStr.append(
+                                                String.format("[%.2f, %.2f]", point.getX(), point.getY())));
+                                    }
+                                    System.out.printf("Word '%s' within bounding box %s with a confidence of %.2f.%n",
+                                        formWordElement.getText(), boundingBoxStr.toString(), formWordElement.getConfidence());
+                                });
                         });
-                    });
                     System.out.println();
                 }
             }

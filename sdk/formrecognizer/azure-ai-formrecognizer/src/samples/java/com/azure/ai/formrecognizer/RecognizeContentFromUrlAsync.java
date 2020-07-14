@@ -16,7 +16,7 @@ import java.util.concurrent.TimeUnit;
 /**
  * Async sample for recognizing content information from a document given through a URL.
  */
-public class RecognizeContentAsync {
+public class RecognizeContentFromUrlAsync {
 
     /**
      * Main method to invoke this demo.
@@ -49,7 +49,7 @@ public class RecognizeContentAsync {
         contentPageResults.subscribe(formPages -> {
             for (int i = 0; i < formPages.size(); i++) {
                 final FormPage formPage = formPages.get(i);
-                System.out.printf("----Recognizing content for page %d ----%n", i);
+                System.out.printf("---- Recognized content info for page %d ----%n", i);
                 System.out.printf("Has width: %f and height: %f, measured with unit: %s%n", formPage.getWidth(),
                     formPage.getHeight(),
                     formPage.getUnit());
@@ -65,7 +65,7 @@ public class RecognizeContentAsync {
                             formTableCell.getBoundingBox().getPoints().forEach(point ->
                                 boundingBoxStr.append(String.format("[%.2f, %.2f]", point.getX(), point.getY())));
                         }
-                        System.out.printf("Cell has text %s, within bounding box %s.%n", formTableCell.getText(),
+                        System.out.printf("Cell has text '%s', within bounding box %s.%n", formTableCell.getText(),
                             boundingBoxStr);
                     });
                     System.out.println();

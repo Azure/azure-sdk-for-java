@@ -43,12 +43,11 @@ public class RecognizeCustomFormsAsync {
         File sourceFile = new File("../formrecognizer/azure-ai-formrecognizer/src/samples/java/sample-forms/"
             + "forms/Invoice_6.pdf");
         byte[] fileContent = Files.readAllBytes(sourceFile.toPath());
+        String modelId = "{modelId}";
         PollerFlux<OperationResult, List<RecognizedForm>> recognizeFormPoller;
         try (InputStream targetStream = new ByteArrayInputStream(fileContent)) {
-            String modelId = "{modelId}";
-
-            recognizeFormPoller = client.beginRecognizeCustomForms(toFluxByteBuffer(targetStream),
-                sourceFile.length(), modelId);
+            recognizeFormPoller = client.beginRecognizeCustomForms(toFluxByteBuffer(targetStream), sourceFile.length(),
+                modelId);
         }
 
         Mono<List<RecognizedForm>> recognizeFormResult = recognizeFormPoller
@@ -66,14 +65,13 @@ public class RecognizeCustomFormsAsync {
         recognizeFormResult.subscribe(recognizedForms -> {
             for (int i = 0; i < recognizedForms.size(); i++) {
                 final RecognizedForm form = recognizedForms.get(i);
-                System.out.printf("----------- Recognized Form page %d -----------%n", i);
+                System.out.printf("----------- Recognized custom form info for page %d -----------%n", i);
                 System.out.printf("Form type: %s%n", form.getFormType());
                 form.getFields().forEach((label, formField) -> {
-                    System.out.printf("Field %s has value %s with confidence score of %.2f.%n", label,
-                        formField.getValueData().getText(),
+                    System.out.printf("Field '%s' has label '%s' with confidence score of %.2f.%n", label,
+                        formField.getLabelData().getText(),
                         formField.getConfidence());
                 });
-                System.out.print("-----------------------------------");
             }
         });
 

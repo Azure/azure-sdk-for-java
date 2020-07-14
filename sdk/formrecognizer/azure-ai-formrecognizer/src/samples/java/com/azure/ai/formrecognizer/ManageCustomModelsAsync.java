@@ -60,7 +60,7 @@ public class ManageCustomModelsAsync {
         });
 
         // Delete Custom Model
-        client.deleteModelWithResponse(modelId.get());
+        client.deleteModel(modelId.get());
         System.out.printf("Deleted model with model Id: %s%n", modelId.get());
 
         // The .subscribe() creation and assignment is not a blocking call. For the purpose of this example, we sleep

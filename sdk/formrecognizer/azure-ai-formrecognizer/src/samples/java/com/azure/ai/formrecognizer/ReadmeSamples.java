@@ -28,7 +28,6 @@ import java.nio.file.Files;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * WARNING: MODIFYING THIS FILE WILL REQUIRE CORRESPONDING UPDATES TO README.md FILE. LINE NUMBERS ARE USED TO EXTRACT
@@ -95,7 +94,7 @@ public class ReadmeSamples {
 
         for (int i = 0; i < recognizedForms.size(); i++) {
             RecognizedForm form = recognizedForms.get(i);
-            System.out.printf("----------- Recognized Form %d -----------%n", i);
+            System.out.printf("----------- Recognized custom form info for page %d -----------%n", i);
             System.out.printf("Form type: %s%n", form.getFormType());
             form.getFields().forEach((label, formField) ->
                 System.out.printf("Field %s has value %s with confidence score of %f.%n", label,
@@ -123,7 +122,7 @@ public class ReadmeSamples {
 
         for (int i = 0; i < contentPageResults.size(); i++) {
             FormPage formPage = contentPageResults.get(i);
-            System.out.printf("----Recognizing content for page %d ----%n", i);
+            System.out.printf("----Recognizing content info for page %d ----%n", i);
             // Table information
             System.out.printf("Has width: %f and height: %f, measured with unit: %s.%n", formPage.getWidth(),
                 formPage.getHeight(),
@@ -147,7 +146,7 @@ public class ReadmeSamples {
         for (int i = 0; i < receiptPageResults.size(); i++) {
             RecognizedForm recognizedForm = receiptPageResults.get(i);
             Map<String, FormField<?>> recognizedFields = recognizedForm.getFields();
-            System.out.printf("----------- Recognized Receipt page %d -----------%n", i);
+            System.out.printf("----------- Recognizing receipt info for page %d -----------%n", i);
             FormField<?> merchantNameField = recognizedFields.get("MerchantName");
             if (merchantNameField != null) {
                 if (FieldValueType.STRING == merchantNameField.getValueType()) {
@@ -200,7 +199,7 @@ public class ReadmeSamples {
     }
 
     public void trainModel() {
-        String trainingFilesUrl = "{SAS-URL-of-your-container-in-blob-storage}";
+        String trainingFilesUrl = "{SAS_URL_of_your_container_in_blob_storage}";
         SyncPoller<OperationResult, CustomFormModel> trainingPoller =
             formTrainingClient.beginTraining(trainingFilesUrl, false);
 
@@ -213,7 +212,7 @@ public class ReadmeSamples {
         System.out.printf("Training completed on: %s%n%n", customFormModel.getTrainingCompletedOn());
 
         System.out.println("Recognized Fields:");
-        // looping through the sub-models, which contains the fields they were trained on
+        // looping through the subModels, which contains the fields they were trained on
         // Since the given training documents are unlabeled, we still group them but they do not have a label.
         customFormModel.getSubmodels().forEach(customFormSubmodel -> {
             // Since the training data is unlabeled, we are unable to return the accuracy of this model
@@ -224,7 +223,6 @@ public class ReadmeSamples {
     }
 
     public void manageModels() {
-        AtomicReference<String> modelId = new AtomicReference<>();
         // First, we see how many custom models we have, and what our limit is
         AccountProperties accountProperties = formTrainingClient.getAccountProperties();
         System.out.printf("The account has %d custom models, and we can have at most %d custom models",
@@ -235,8 +233,7 @@ public class ReadmeSamples {
         System.out.println("We have following models in the account:");
         customModels.forEach(customFormModelInfo -> {
             System.out.printf("Model Id: %s%n", customFormModelInfo.getModelId());
-            // get custom model info
-            modelId.set(customFormModelInfo.getModelId());
+            // get specific custom model info
             CustomFormModel customModel = formTrainingClient.getCustomModel(customFormModelInfo.getModelId());
             System.out.printf("Model Status: %s%n", customModel.getModelStatus());
             System.out.printf("Training started on: %s%n", customModel.getTrainingStartedOn());
@@ -252,8 +249,9 @@ public class ReadmeSamples {
                 }
             });
         });
+
         // Delete Custom Model
-        formTrainingClient.deleteModel(modelId.get());
+        formTrainingClient.deleteModel("{modelId}");
     }
 
     /**

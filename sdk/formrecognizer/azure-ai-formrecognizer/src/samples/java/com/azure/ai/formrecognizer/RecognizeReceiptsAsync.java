@@ -48,14 +48,12 @@ public class RecognizeReceiptsAsync {
         File sourceFile = new File("../formrecognizer/azure-ai-formrecognizer/src/samples/java/sample-forms/"
             + "receipts/contoso-allinone.jpg");
         byte[] fileContent = Files.readAllBytes(sourceFile.toPath());
-        PollerFlux<OperationResult, List<RecognizedForm>> analyzeReceiptPoller;
+        PollerFlux<OperationResult, List<RecognizedForm>> recognizeReceiptPoller;
         try (InputStream targetStream = new ByteArrayInputStream(fileContent)) {
-
-            analyzeReceiptPoller = client.beginRecognizeReceipts(toFluxByteBuffer(targetStream),
-                sourceFile.length());
+            recognizeReceiptPoller = client.beginRecognizeReceipts(toFluxByteBuffer(targetStream), sourceFile.length());
         }
 
-        Mono<List<RecognizedForm>> receiptPageResultsMono = analyzeReceiptPoller
+        Mono<List<RecognizedForm>> receiptPageResultsMono = recognizeReceiptPoller
             .last()
             .flatMap(pollResponse -> {
                 if (pollResponse.getStatus().isComplete()) {
@@ -72,7 +70,7 @@ public class RecognizeReceiptsAsync {
             for (int i = 0; i < receiptPageResults.size(); i++) {
                 RecognizedForm recognizedForm = receiptPageResults.get(i);
                 Map<String, FormField<?>> recognizedFields = recognizedForm.getFields();
-                System.out.printf("----------- Recognized Receipt page %d -----------%n", i);
+                System.out.printf("----------- Recognized receipt info for page %d -----------%n", i);
                 FormField<?> merchantNameField = recognizedFields.get("MerchantName");
                 if (merchantNameField != null) {
                     if (FieldValueType.STRING == merchantNameField.getValueType()) {
@@ -114,44 +112,41 @@ public class RecognizeReceiptsAsync {
                     System.out.printf("Receipt Items: %n");
                     if (FieldValueType.LIST == receiptItemsField.getValueType()) {
                         List<FormField<?>> receiptItems = FieldValueType.LIST.cast(receiptItemsField);
-                        receiptItems.forEach(receiptItem -> {
-                            if (FieldValueType.MAP == receiptItem.getValueType()) {
-                                Map<String, FormField<?>> formFieldMap = FieldValueType.MAP.cast(receiptItem);
-                                formFieldMap.forEach((key, formField) -> {
-                                    if ("Name".equals(key)) {
-                                        if (FieldValueType.STRING == formField.getValueType()) {
-                                            String name = FieldValueType.STRING.cast(formField);
-                                            System.out.printf("Name: %s, confidence: %.2fs%n",
-                                                name, formField.getConfidence());
-                                        }
+                        receiptItems.stream()
+                            .filter(receiptItem -> FieldValueType.MAP == receiptItem.getValueType())
+                            .<Map<String, FormField<?>>>map(FieldValueType.MAP::cast)
+                            .forEach(formFieldMap -> formFieldMap.forEach((key, formField) -> {
+                                if ("Name".equals(key)) {
+                                    if (FieldValueType.STRING == formField.getValueType()) {
+                                        String name = FieldValueType.STRING.cast(formField);
+                                        System.out.printf("Name: %s, confidence: %.2fs%n",
+                                            name, formField.getConfidence());
                                     }
-                                    if ("Quantity".equals(key)) {
-                                        if (FieldValueType.DOUBLE == formField.getValueType()) {
-                                            Float quantity = FieldValueType.DOUBLE.cast(formField);
-                                            System.out.printf("Quantity: %f, confidence: %.2f%n",
-                                                quantity, formField.getConfidence());
-                                        }
+                                }
+                                if ("Quantity".equals(key)) {
+                                    if (FieldValueType.DOUBLE == formField.getValueType()) {
+                                        Float quantity = FieldValueType.DOUBLE.cast(formField);
+                                        System.out.printf("Quantity: %f, confidence: %.2f%n",
+                                            quantity, formField.getConfidence());
                                     }
-                                    if ("Price".equals(key)) {
-                                        if (FieldValueType.DOUBLE == formField.getValueType()) {
-                                            Float price = FieldValueType.DOUBLE.cast(formField);
-                                            System.out.printf("Price: %f, confidence: %.2f%n",
-                                                price, formField.getConfidence());
-                                        }
+                                }
+                                if ("Price".equals(key)) {
+                                    if (FieldValueType.DOUBLE == formField.getValueType()) {
+                                        Float price = FieldValueType.DOUBLE.cast(formField);
+                                        System.out.printf("Price: %f, confidence: %.2f%n",
+                                            price, formField.getConfidence());
                                     }
-                                    if ("TotalPrice".equals(key)) {
-                                        if (FieldValueType.DOUBLE == formField.getValueType()) {
-                                            Float totalPrice = FieldValueType.DOUBLE.cast(formField);
-                                            System.out.printf("Total Price: %f, confidence: %.2f%n",
-                                                totalPrice, formField.getConfidence());
-                                        }
+                                }
+                                if ("TotalPrice".equals(key)) {
+                                    if (FieldValueType.DOUBLE == formField.getValueType()) {
+                                        Float totalPrice = FieldValueType.DOUBLE.cast(formField);
+                                        System.out.printf("Total Price: %f, confidence: %.2f%n",
+                                            totalPrice, formField.getConfidence());
                                     }
-                                });
-                            }
-                        });
+                                }
+                            }));
                     }
                 }
-                System.out.print("-----------------------------------");
             }
         });
 
