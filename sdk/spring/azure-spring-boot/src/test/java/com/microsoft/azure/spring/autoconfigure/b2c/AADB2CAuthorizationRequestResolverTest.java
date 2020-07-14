@@ -1,6 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.microsoft.azure.spring.autoconfigure.btoc;
+package com.microsoft.azure.spring.autoconfigure.b2c;
 
 import org.junit.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
@@ -12,7 +12,7 @@ import org.springframework.util.Assert;
 
 import javax.servlet.http.HttpServletRequest;
 
-import static com.microsoft.azure.spring.autoconfigure.btoc.AADB2CConstants.*;
+import static com.microsoft.azure.spring.autoconfigure.b2c.AADB2CConstants.*;
 import static org.assertj.core.api.Java6Assertions.assertThat;
 
 public class AADB2CAuthorizationRequestResolverTest {

@@ -1,6 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.microsoft.azure.spring.autoconfigure.btoc;
+package com.microsoft.azure.spring.autoconfigure.b2c;
 
 /**
  * Throw runtime exception for configuration.

@@ -485,6 +485,9 @@
   <!-- Checkstyle suppressions for resource manager package -->
   <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files="com.azure.resourcemanager.*"/>
 
+  <!-- Checkstyle suppressions for azure-spring AADB2C package name-->
+  <suppress checks="PackageName" files="com.microsoft.azure.spring.autoconfigure.*|com.azure.spring.*"/>
+
   <!-- Checkstyle suppressions for azure-spring-data-cosmos package -->
   <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck|ExternalDependencyExposedCheck|ThrowFromClientLoggerCheck" files="com.azure.spring.data.cosmos.*\.java"/>
   <suppress checks="MethodName|MemberName|ParameterName|VisibilityModifier" files="com.azure.spring.data.cosmos.domain|repository|config.*\.java"/>
