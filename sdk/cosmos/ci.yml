@@ -46,9 +46,10 @@ extends:
       - name: azure-spring-data-cosmos
         groupId: com.azure
         safeName: azurespringdatacosmos
-    AdditionalModules:
-      - name: azure-cosmos-benchmark
-        groupId: com.azure
       - name: azure-cosmos-encryption
         groupId: com.azure
         safeName: azurecosmosencryption
+    AdditionalModules:
+      - name: azure-cosmos-benchmark
+        groupId: com.azure
+
