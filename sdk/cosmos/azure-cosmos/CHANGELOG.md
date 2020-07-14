@@ -1,5 +1,8 @@
 # Release History
 
+## 4.3.0-beta.1 (Unreleased)
+
+
 ## 4.2.0 (2020-07-14)
 ### New Features
 * Added script logging enabled API to `CosmosStoredProcedureRequestOptions`.
