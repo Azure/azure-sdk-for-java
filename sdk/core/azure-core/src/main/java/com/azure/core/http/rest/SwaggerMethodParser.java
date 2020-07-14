@@ -231,29 +231,24 @@ class SwaggerMethodParser implements HttpResponseDecodeData {
     }
 
     /**
-     * Get the scheme to use for HTTP requests for this Swagger method.
+     * Sets the scheme and host to use for HTTP requests for this Swagger method.
      *
-     * @param swaggerMethodArguments the arguments to use for scheme/host substitutions.
-     * @return the final host to use for HTTP requests for this Swagger method.
+     * @param swaggerMethodArguments The arguments to use for scheme and host substitutions.
+     * @param urlBuilder The {@link UrlBuilder} that will have its scheme and host set.
      */
-    public String setScheme(Object[] swaggerMethodArguments) {
-        final String substitutedHost =
-            applySubstitutions(rawHost, hostSubstitutions, swaggerMethodArguments);
+    public void setSchemeAndHost(Object[] swaggerMethodArguments, UrlBuilder urlBuilder) {
+        final String substitutedHost = applySubstitutions(rawHost, hostSubstitutions, swaggerMethodArguments);
         final String[] substitutedHostParts = PATTERN_COLON_SLASH_SLASH.split(substitutedHost);
-        return substitutedHostParts.length == 0 ? null : substitutedHostParts[0];
-    }
 
-    /**
-     * Get the host to use for HTTP requests for this Swagger method.
-     *
-     * @param swaggerMethodArguments the arguments to use for host substitutions
-     * @return the final host to use for HTTP requests for this Swagger method
-     */
-    public String setHost(Object[] swaggerMethodArguments) {
-        final String substitutedHost =
-            applySubstitutions(rawHost, hostSubstitutions, swaggerMethodArguments);
-        final String[] substitutedHostParts = PATTERN_COLON_SLASH_SLASH.split(substitutedHost);
-        return substitutedHostParts.length < 2 ? substitutedHost : substitutedHostParts[1];
+        if (substitutedHostParts.length >= 2) {
+            urlBuilder.setScheme(substitutedHostParts[0]);
+            urlBuilder.setHost(substitutedHostParts[1]);
+        } else if (substitutedHostParts.length == 1) {
+            urlBuilder.setScheme(substitutedHostParts[0]);
+            urlBuilder.setHost(substitutedHost);
+        } else {
+            urlBuilder.setHost(substitutedHost);
+        }
     }
 
     /**

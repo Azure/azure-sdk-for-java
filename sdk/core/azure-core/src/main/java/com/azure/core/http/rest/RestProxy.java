@@ -210,11 +210,7 @@ public final class RestProxy implements InvocationHandler {
         } else {
             urlBuilder = new UrlBuilder();
 
-            final String scheme = methodParser.setScheme(args);
-            urlBuilder.setScheme(scheme);
-
-            final String host = methodParser.setHost(args);
-            urlBuilder.setHost(host);
+            methodParser.setSchemeAndHost(args, urlBuilder);
 
             // Set the path after host, concatenating the path
             // segment in the host.
