@@ -1,7 +1,16 @@
 # Release History
 
-## 4.2.0-beta.1 (Unreleased)
-
+## 4.2.0 (2020-07-14)
+### New Features
+* Added script logging enabled API to `CosmosStoredProcedureRequestOptions`.
+* Updated `DirectConnectionConfig` default `idleEndpointTimeout` to 1h and default `connectTimeout` to 5s.
+### Key Bug Fixes
+* Fixed issue where GatewayConnectionConfig was overriding DirectConnectionConfig `idleConnectionTimeout`.
+* Fixed `responseContinuationTokenLimitInKb` get and set APIs in `CosmosQueryRequestOptions`.
+* Fixed issue in query and change feed when recreating the collection with same name.
+* Fixed issue with top query throwing ClassCastException.
+* Fixed issue with order by query throwing NullPointerException.
+* Fixed `Operator called default onErrorDropped` when stream got cancelled.
 
 ## 4.1.0 (2020-06-25)
 ### New Features
