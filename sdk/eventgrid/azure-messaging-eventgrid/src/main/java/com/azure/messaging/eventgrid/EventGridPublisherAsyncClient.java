@@ -4,7 +4,9 @@
 
 package com.azure.messaging.eventgrid;
 
+import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
+import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.Response;
 import com.azure.messaging.eventgrid.models.CloudEvent;
@@ -33,6 +35,7 @@ public class EventGridPublisherAsyncClient {
      *
      * @return the completion.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> publishEvents(List<EventGridEvent> events) {
         // TODO: implement method
         return null;
@@ -44,6 +47,7 @@ public class EventGridPublisherAsyncClient {
      *
      * @return the completion.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> publishCloudEvents(List<CloudEvent> events) {
         // TODO: implement method
         return null;
@@ -55,6 +59,7 @@ public class EventGridPublisherAsyncClient {
      *
      * @return the completion.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> publishCustomEvents(List<Object> events) {
         // TODO: implement method
         return null;
@@ -66,6 +71,7 @@ public class EventGridPublisherAsyncClient {
      *
      * @return the response from the EventGrid service.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> publishEventsWithResponse(List<EventGridEvent> events) {
         // TODO: implement method
         return null;
@@ -77,6 +83,7 @@ public class EventGridPublisherAsyncClient {
      *
      * @return the response from the EventGrid service.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> publishCloudEventsWithResponse(List<CloudEvent> events) {
         // TODO: implement method
         return null;
@@ -88,6 +95,7 @@ public class EventGridPublisherAsyncClient {
      *
      * @return the response from the EventGrid service.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> publishCustomEventsWithResponse(List<Object> events) {
         // TODO: implement method
         return null;
