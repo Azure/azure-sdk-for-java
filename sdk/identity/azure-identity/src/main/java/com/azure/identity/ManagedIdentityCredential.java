@@ -6,7 +6,6 @@ package com.azure.identity;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenCredential;
-import com.azure.core.credential.TokenRefreshOptions;
 import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
@@ -71,10 +70,5 @@ public final class ManagedIdentityCredential implements TokenCredential {
         return accessTokenMono
             .doOnNext(token -> LoggingUtil.logTokenSuccess(logger, request))
             .doOnError(error -> LoggingUtil.logTokenError(logger, request, error));
-    }
-
-    @Override
-    public TokenRefreshOptions getTokenRefreshOptions() {
-        return identityClientOptions.getTokenRefreshOptions();
     }
 }

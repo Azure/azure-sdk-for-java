@@ -18,6 +18,7 @@ import java.util.function.Supplier;
  */
 public class SimpleTokenCache {
     private static final Duration REFRESH_TIMEOUT = Duration.ofSeconds(30);
+    private static final Duration REFRESH_OFFSET = Duration.ofMinutes(5);
     private final AtomicReference<MonoProcessor<AccessToken>> wip;
     private volatile AccessToken cache;
     private volatile OffsetDateTime nextTokenRefresh = OffsetDateTime.now();
@@ -31,20 +32,10 @@ public class SimpleTokenCache {
      * @param tokenSupplier a method to get a new token
      */
     public SimpleTokenCache(Supplier<Mono<AccessToken>> tokenSupplier) {
-        this(tokenSupplier, new TokenRefreshOptions());
-    }
-
-    /**
-     * Creates an instance of RefreshableTokenCredential with default scheme "Bearer".
-     *
-     * @param tokenSupplier a method to get a new token
-     * @param tokenRefreshOptions the options to configure the token refresh behavior
-     */
-    public SimpleTokenCache(Supplier<Mono<AccessToken>> tokenSupplier, TokenRefreshOptions tokenRefreshOptions) {
         this.wip = new AtomicReference<>();
         this.tokenSupplier = tokenSupplier;
-        this.shouldRefresh = accessToken -> OffsetDateTime.now().isAfter(accessToken.getExpiresAt()
-            .minus(tokenRefreshOptions.getOffset()));
+        this.shouldRefresh = accessToken -> OffsetDateTime.now()
+            .isAfter(accessToken.getExpiresAt().minus(REFRESH_OFFSET));
     }
 
     /**

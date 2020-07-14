@@ -92,6 +92,7 @@ public class IdentityClient {
     private static final String LINUX_MAC_PROCESS_ERROR_MESSAGE = "(.*)az:(.*)not found";
     private static final String DEFAULT_WINDOWS_SYSTEM_ROOT = System.getenv("SystemRoot");
     private static final String DEFAULT_MAC_LINUX_PATH = "/bin/";
+    private static final Duration REFRESH_OFFSET = Duration.ofMinutes(5);
     private final ClientLogger logger = new ClientLogger(IdentityClient.class);
 
     private final IdentityClientOptions options;
@@ -460,8 +461,7 @@ public class IdentityClient {
                     return getFailedCompletableFuture(logger.logExceptionAsError(new RuntimeException(e)));
                 }
             }).map(MsalToken::new)
-                .filter(t -> OffsetDateTime.now().isBefore(t.getExpiresAt().minus(
-                    options.getTokenRefreshOptions().getOffset())))
+                .filter(t -> OffsetDateTime.now().isBefore(t.getExpiresAt().minus(REFRESH_OFFSET)))
                 .switchIfEmpty(Mono.fromFuture(() -> {
                     SilentParameters.SilentParametersBuilder forceParametersBuilder = SilentParameters.builder(
                         new HashSet<>(request.getScopes())).forceRefresh(true);
@@ -493,8 +493,7 @@ public class IdentityClient {
                     return getFailedCompletableFuture(logger.logExceptionAsError(new RuntimeException(e)));
                 }
             }).map(ar -> (AccessToken) new MsalToken(ar))
-                .filter(t -> OffsetDateTime.now().isBefore(t.getExpiresAt().minus(
-                    options.getTokenRefreshOptions().getOffset()))));
+                .filter(t -> OffsetDateTime.now().isBefore(t.getExpiresAt().minus(REFRESH_OFFSET))));
     }
 
     /**

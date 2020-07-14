@@ -5,7 +5,6 @@ package com.azure.identity;
 
 import com.azure.core.annotation.Immutable;
 import com.azure.core.credential.TokenCredential;
-import com.azure.core.credential.TokenRefreshOptions;
 import com.azure.identity.implementation.IdentityClientOptions;
 
 import java.util.List;
@@ -41,12 +40,6 @@ public final class DefaultAzureCredential extends ChainedTokenCredential {
         super(tokenCredentials);
         this.identityClientOptions = identityClientOptions;
     }
-
-    @Override
-    public TokenRefreshOptions getTokenRefreshOptions() {
-        return identityClientOptions.getTokenRefreshOptions();
-    }
-
 
     /**
      * {@inheritDoc}
