@@ -631,7 +631,7 @@ public final class FormRecognizerAsyncClient {
      * @param analyzeResponse The response returned from the service.
      */
     private void throwIfAnalyzeStatusInvalid(AnalyzeOperationResult analyzeResponse) {
-        if (OperationStatus.FAILED.equals(analyzeResponse.getStatus())) {
+        if (OperationStatus.FAILED == analyzeResponse.getStatus()) {
             List<ErrorInformation> errorInformationList = analyzeResponse.getAnalyzeResult().getErrors();
             if (!CoreUtils.isNullOrEmpty(errorInformationList)) {
                 throw logger.logExceptionAsError(new FormRecognizerException("Analyze operation failed",
