@@ -317,30 +317,33 @@ public final class AzureFileSystem extends FileSystem {
     }
 
     /**
-     * Converts a path string, or a sequence of strings that when joined form a path string, to a Path.
+     * Converts a path string, or a sequence of more that when joined form a path string, to a Path.
      * <p>
      * If more does not specify any elements then the value of the first parameter is the path string to convert. If
      * more specifies one or more elements then each non-empty string, including first, is considered to be a sequence
-     * of name elements (see Path) and is joined to form a path string. The strings will be joined using the name
+     * of name elements (see Path) and is joined to form a path string. The more will be joined using the name
      * separator.
      * <p>
-     * Each name element will be {@code String}-joined to the other elements by this file system's path separator.
+     * Each name element will be {@code String}-joined to the other elements by this file system'first path separator.
      * Naming conventions and allowed characters are as
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/Naming-and-Referencing-Containers--Blobs--and-Metadata">defined</a>
      * by the Azure Blob Storage service. The root component is interpreted as the container name and all name elements
      * are interpreted as a part of the blob name. The character {@code ':'} is only allowed in the root component and
      * must be the last character of the root component.
      *
+     * @param first the path string or initial part of the path string
+     * @param more additional strings to be joined to form the path string
      * @throws InvalidPathException if the path string cannot be converted.
      */
     @Override
-    public Path getPath(String s, String... strings) {
-        return new AzurePath(this, s, strings);
+    public Path getPath(String first, String... more) {
+        return new AzurePath(this, first, more);
     }
 
     /**
      * Unsupported.
      *
+     * @param s the matcher
      * @throws UnsupportedOperationException unsupported.
      * @throws IllegalArgumentException never
      * @throws PatternSyntaxException never

@@ -140,11 +140,14 @@ public final class AzureBlobFileAttributeView implements BasicFileAttributeView 
     /**
      * Unsupported.
      *
+     * @param lastModifiedTime the new last modified time, or null to not change the value
+     * @param lastAccessTime the last access time, or null to not change the value
+     * @param createTime the file's create time, or null to not change the value
      * @throws UnsupportedOperationException Operation not supported.
      * @throws IOException never
      */
     @Override
-    public void setTimes(FileTime fileTime, FileTime fileTime1, FileTime fileTime2) throws IOException {
+    public void setTimes(FileTime lastModifiedTime, FileTime lastAccessTime, FileTime createTime) throws IOException {
         throw new UnsupportedOperationException();
     }
 }

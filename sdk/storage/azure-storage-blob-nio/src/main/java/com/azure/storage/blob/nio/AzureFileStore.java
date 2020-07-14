@@ -129,11 +129,12 @@ public final class AzureFileStore extends FileStore {
      *     <li>{@link AzureBlobFileAttributeView}</li>
      * </ul>
      *
+     * @param type the file attribute view type
      * @return Whether the file attribute view is supported.
      */
     @Override
-    public boolean supportsFileAttributeView(Class<? extends FileAttributeView> aClass) {
-        return AzureFileSystem.SUPPORTED_ATTRIBUTE_VIEWS.containsKey(aClass);
+    public boolean supportsFileAttributeView(Class<? extends FileAttributeView> type) {
+        return AzureFileSystem.SUPPORTED_ATTRIBUTE_VIEWS.containsKey(type);
     }
 
     /**
@@ -146,11 +147,12 @@ public final class AzureFileStore extends FileStore {
      *     <li>{@link AzureBlobFileAttributeView}</li>
      * </ul>
      *
+     * @param name the name of the file attribute view
      * @return whether the file attribute view is supported.
      */
     @Override
-    public boolean supportsFileAttributeView(String s) {
-        return AzureFileSystem.SUPPORTED_ATTRIBUTE_VIEWS.containsValue(s);
+    public boolean supportsFileAttributeView(String name) {
+        return AzureFileSystem.SUPPORTED_ATTRIBUTE_VIEWS.containsValue(name);
     }
 
     /**
@@ -158,6 +160,7 @@ public final class AzureFileStore extends FileStore {
      * <p>
      * This method always returns null as no {@link FileStoreAttributeView} is currently supported.
      *
+     * @param aClass a class
      * @return null
      */
     @Override
@@ -171,6 +174,7 @@ public final class AzureFileStore extends FileStore {
      * This method always throws an {@code UnsupportedOperationException} as no {@link FileStoreAttributeView} is
      * currently supported.
      *
+     * @param s a string
      * @return The attribute value.
      * @throws UnsupportedOperationException unsupported
      * @throws IOException never

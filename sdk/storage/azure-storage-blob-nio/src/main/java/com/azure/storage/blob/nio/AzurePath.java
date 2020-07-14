@@ -203,15 +203,16 @@ public final class AzurePath implements Path {
      * The index parameter is the index of the name element to return. The element that is closest to the root in the
      * directory hierarchy has index 0. The element that is farthest from the root has index {@code count-1}.
      *
+     * @param the index of the element
      * @return the name element
      * @throws IllegalArgumentException if index is negative, index is greater than or equal to the number of elements,
      * or this path has zero name elements
      */
     @Override
-    public Path getName(int i) {
-        if (i < 0 || i >= this.getNameCount()) {
+    public Path getName(int index) {
+        if (index < 0 || index >= this.getNameCount()) {
             throw LoggingUtility.logError(logger, new IllegalArgumentException(String.format("Index %d is out of "
-                + "bounds", i)));
+                + "bounds", index)));
         }
         // If the path is empty, the only valid option is also an empty path.
         if (this.pathString.isEmpty()) {
@@ -221,7 +222,7 @@ public final class AzurePath implements Path {
         if (this.pathString.isEmpty()) {
             return this;
         }
-        return this.parentFileSystem.getPath(this.splitToElements(this.withoutRoot())[i]);
+        return this.parentFileSystem.getPath(this.splitToElements(this.withoutRoot())[index]);
     }
 
     /**
@@ -232,6 +233,8 @@ public final class AzurePath implements Path {
      * The returned Path object has the name elements that begin at beginIndex and extend to the element at index
      * {@code endIndex-1}.
      *
+     * @param begin the index of the first element, inclusive
+     * @param end the index of the last element, exclusive
      * @return a new Path object that is a subsequence of the name elements in this Path
      */
     @Override
@@ -265,6 +268,7 @@ public final class AzurePath implements Path {
      * In this implementation, a root component starts with another root component if the two root components are
      * equivalent strings. In other words, if the files are stored in the same container.
      *
+     * @param path the given path
      * @return true if this path starts with the given path; otherwise false
      */
     @Override
@@ -296,12 +300,13 @@ public final class AzurePath implements Path {
      * Tests if this path starts with a Path, constructed by converting the given path string, in exactly the manner
      * specified by the startsWith(Path) method.
      *
+     * @param path the given path string
      * @return true if this path starts with the given path; otherwise false
      * @throws InvalidPathException If the path string cannot be converted to a Path.
      */
     @Override
-    public boolean startsWith(String s) {
-        return this.startsWith(this.parentFileSystem.getPath(s));
+    public boolean startsWith(String path) {
+        return this.startsWith(this.parentFileSystem.getPath(path));
     }
 
     /**
@@ -321,6 +326,7 @@ public final class AzurePath implements Path {
      * In this implementation, a root component ends with another root component if the two root components are
      * equivalent strings. In other words, if the files are stored in the same container.
      *
+     * @param path the given path
      * @return true if this path ends with the given path; otherwise false
      */
     @Override
@@ -360,12 +366,13 @@ public final class AzurePath implements Path {
      * Tests if this path ends with a Path, constructed by converting the given path string, in exactly the manner
      * specified by the endsWith(Path) method.
      *
+     * @param path the given path string
      * @return true if this path starts with the given path; otherwise false
      * @throws InvalidPathException If the path string cannot be converted to a Path.
      */
     @Override
-    public boolean endsWith(String s) {
-        return this.endsWith(this.parentFileSystem.getPath(s));
+    public boolean endsWith(String path) {
+        return this.endsWith(this.parentFileSystem.getPath(path));
     }
 
     /**
@@ -429,6 +436,7 @@ public final class AzurePath implements Path {
      * path. Where the given path has a root component then resolution is highly implementation dependent and therefore
      * unspecified.
      *
+     * @param path the path to resolve against this path
      * @return the resulting path
      */
     @Override
@@ -446,12 +454,13 @@ public final class AzurePath implements Path {
      * Converts a given path string to a Path and resolves it against this Path in exactly the manner specified by the
      * {@link #resolve(Path) resolve} method.
      *
+     * @param path the path string to resolve against this path
      * @return the resulting path
      * @throws InvalidPathException if the path string cannot be converted to a Path.
      */
     @Override
-    public Path resolve(String s) {
-        return this.resolve(this.parentFileSystem.getPath(s));
+    public Path resolve(String path) {
+        return this.resolve(this.parentFileSystem.getPath(path));
     }
 
     /**
@@ -461,6 +470,7 @@ public final class AzurePath implements Path {
      * path does not have a parent path, or other is absolute, then this method returns other. If other is an empty path
      * then this method returns this path's parent, or where this path doesn't have a parent, the empty path.
      *
+     * @param path the path to resolve against this path's parent
      * @return the resulting path
      */
     @Override
@@ -477,12 +487,13 @@ public final class AzurePath implements Path {
      * Converts a given path string to a Path and resolves it against this path's parent path in exactly the manner
      * specified by the resolveSibling method.
      *
+     * @param path the path string to resolve against this path's parent
      * @return the resulting path
      * @throws InvalidPathException if the path string cannot be converted to a Path.
      */
     @Override
-    public Path resolveSibling(String s) {
-        return this.resolveSibling(this.parentFileSystem.getPath(s));
+    public Path resolveSibling(String path) {
+        return this.resolveSibling(this.parentFileSystem.getPath(path));
     }
 
     /**
@@ -497,6 +508,7 @@ public final class AzurePath implements Path {
      * For any two normalized paths p and q, where q does not have a root component,
      *     {@code p.relativize(p.resolve(q)).equals(q)}
      *
+     * @param path the path to relativize against this path
      * @return the resulting relative path, or an empty path if both paths are equal
      * @throws IllegalArgumentException if other is not a Path that can be relativized against this path
      */
@@ -568,6 +580,7 @@ public final class AzurePath implements Path {
     /**
      * Unsupported.
      * <p>
+     * @param linkOptions options
      * @return the real path
      * @throws UnsupportedOperationException operation not suported.
      */
@@ -590,6 +603,9 @@ public final class AzurePath implements Path {
     /**
      * Unsupported.
      * <p>
+     * @param watchService watchService
+     * @param kinds kinds
+     * @param modifiers modifiers
      * @return the watch key
      * @throws UnsupportedOperationException operation not suported.
      */
@@ -602,6 +618,8 @@ public final class AzurePath implements Path {
     /**
      * Unsupported.
      * <p>
+     * @param watchService watchService
+     * @param kinds kinds
      * @return the watch key
      * @throws UnsupportedOperationException operation not suported.
      */
