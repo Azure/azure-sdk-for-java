@@ -165,6 +165,7 @@ or
 
 <!-- embedme ./src/samples/java/com/azure/storage/blob/ReadmeSamples.java#L34-L36 -->
 ```java
+// Only one "?" is needed here. If the sastoken starts with "?", please removing one "?".
 BlobServiceClient blobServiceClient = new BlobServiceClientBuilder()
     .endpoint("<your-storage-account-url>" + "?" + "<your-sasToken>")
     .buildClient();
@@ -194,6 +195,7 @@ or
 
 <!-- embedme ./src/samples/java/com/azure/storage/blob/ReadmeSamples.java#L52-L54 -->
 ```java
+// Only one "?" is needed here. If the sastoken starts with "?", please removing one "?".
 BlobContainerClient blobContainerClient = new BlobContainerClientBuilder()
     .endpoint("<your-storage-account-url>" + "/" + "mycontainer" + "?" + "<your-sasToken>")
     .buildClient();
@@ -226,6 +228,7 @@ or
 
 <!-- embedme ./src/samples/java/com/azure/storage/blob/ReadmeSamples.java#L71-L73 -->
 ```java
+// Only one "?" is needed here. If the sastoken starts with "?", please removing one "?".
 BlobClient blobClient = new BlobClientBuilder()
     .endpoint("<your-storage-account-url>" + "/" + "mycontainer" + "/" + "myblob" + "?" + "<your-sasToken>")
     .buildClient();
