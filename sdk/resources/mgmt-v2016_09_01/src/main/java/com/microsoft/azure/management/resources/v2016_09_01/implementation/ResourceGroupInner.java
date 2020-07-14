@@ -36,7 +36,7 @@ public class ResourceGroupInner {
 
     /**
      * The location of the resource group. It cannot be changed after the
-     * resource group has been created. It muct be one of the supported Azure
+     * resource group has been created. It must be one of the supported Azure
      * locations.
      */
     @JsonProperty(value = "location", required = true)
@@ -104,7 +104,7 @@ public class ResourceGroupInner {
     }
 
     /**
-     * Get the location of the resource group. It cannot be changed after the resource group has been created. It muct be one of the supported Azure locations.
+     * Get the location of the resource group. It cannot be changed after the resource group has been created. It must be one of the supported Azure locations.
      *
      * @return the location value
      */
@@ -113,7 +113,7 @@ public class ResourceGroupInner {
     }
 
     /**
-     * Set the location of the resource group. It cannot be changed after the resource group has been created. It muct be one of the supported Azure locations.
+     * Set the location of the resource group. It cannot be changed after the resource group has been created. It must be one of the supported Azure locations.
      *
      * @param location the location value to set
      * @return the ResourceGroupInner object itself.
