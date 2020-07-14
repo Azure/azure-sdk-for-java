@@ -11,7 +11,7 @@ definition, such as text or binary data.
 
 ### Prerequisites
 
--  Java Development Kit (JDK) with version 8 or above
+- [Java Development Kit (JDK)][java_development_kit] with version 8 or above
 - [Azure Subscription][azure_subscription]
 - [Create Storage Account][storage_account]
 
@@ -23,14 +23,14 @@ definition, such as text or binary data.
   <groupId>com.azure</groupId>
   <artifactId>azure-storage-blob-batch</artifactId>
   <version>12.6.0-beta.1</version>
-</dependency>
+</dependency> 
 ```
 [//]: # ({x-version-update-end})
 
 ### Create a Storage Account
-To create a Storage Account you can use the Azure Portal or [Azure CLI][storage_account_create_cli].
+To create a Storage Account you can use the [Azure Portal][azure_portal] or [Azure CLI][storage_account_create_cli].
 
-```Powershell
+```bash
 az storage account create \
     --resource-group <resource-group-name> \
     --name <storage-account-name> \
@@ -59,7 +59,7 @@ The following sections provide several code snippets covering some of the most c
 
 ### Creating BlobBatchClient
 
-Create a BlobBatchClient from a [`BlobServiceClient`]().
+Create a BlobBatchClient from a [BlobServiceClient][blob_service_client].
 
 <!-- embedme ./src/samples/java/com/azure/storage/blob/batch/ReadmeSamples.java#L42-L42 -->
 ```java
@@ -70,6 +70,10 @@ BlobBatchClient blobBatchClient = new BlobBatchClientBuilder(blobServiceClient).
 
 <!-- embedme ./src/samples/java/com/azure/storage/blob/batch/ReadmeSamples.java#L46-L48 -->
 ```java
+List blobUrls = new ArrayList<>();
+blobUrls.add(blobClient1.getBlobUrl());
+blobUrls.add(blobClient2.getBlobUrl());
+blobUrls.add(blobClient3.getBlobUrl());
 blobBatchClient.deleteBlobs(blobUrls, DeleteSnapshotsOptionType.INCLUDE).forEach(response ->
     System.out.printf("Deleting blob with URL %s completed with status code %d%n",
         response.getRequest().getUrl(), response.getStatusCode()));
@@ -79,6 +83,10 @@ blobBatchClient.deleteBlobs(blobUrls, DeleteSnapshotsOptionType.INCLUDE).forEach
 
 <!-- embedme ./src/samples/java/com/azure/storage/blob/batch/ReadmeSamples.java#L52-L54 -->
 ```java
+List blobUrls = new ArrayList<>();
+blobUrls.add(blobClient1.getBlobUrl());
+blobUrls.add(blobClient2.getBlobUrl());
+blobUrls.add(blobClient3.getBlobUrl());
 blobBatchClient.setBlobsAccessTier(blobUrls, AccessTier.HOT).forEach(response ->
     System.out.printf("Setting blob access tier with URL %s completed with status code %d%n",
         response.getRequest().getUrl(), response.getStatusCode()));
@@ -170,9 +178,12 @@ This project has adopted the [Microsoft Open Source Code of Conduct](https://ope
 [rest_docs]: https://docs.microsoft.com/rest/api/storageservices/blob-service-rest-api
 [product_docs]: https://docs.microsoft.com/azure/storage/blobs/storage-blobs-overview
 [samples]: src/samples
+[java_development_kit]: https://docs.microsoft.com/en-us/java/azure/jdk/?view=azure-java-stable
 [azure_subscription]: https://azure.microsoft.com/free/
 [storage_account]: https://docs.microsoft.com/azure/storage/common/storage-quickstart-create-account?tabs=azure-portal
+[azure_portal]: https://docs.microsoft.com/en-us/azure/storage/common/storage-account-create?tabs=azure-portal
 [storage_account_create_cli]: https://docs.microsoft.com/azure/storage/common/storage-quickstart-create-account?tabs=azure-cli
+[blob_service_client]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/storage/azure-storage-blob#create-a-storage-account
 [error_codes]: https://docs.microsoft.com/rest/api/storageservices/blob-service-error-codes
 [blob_samples]: src/samples/README.md
 [cla]: https://cla.microsoft.com
