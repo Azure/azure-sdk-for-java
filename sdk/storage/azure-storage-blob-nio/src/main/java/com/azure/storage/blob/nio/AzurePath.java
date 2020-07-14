@@ -503,7 +503,8 @@ public final class AzurePath implements Path {
      * against this path, yields a path that locates the same file as the given path.
      * <p>
      * A relative path cannot be constructed if only one of the paths have a root component. If both paths have a root
-     * component, it is still possible to relativize one against the other. If this path and the given path are equal then an empty path is returned.
+     * component, it is still possible to relativize one against the other. If this path and the given path are equal
+     * then an empty path is returned.
      * <p>
      * For any two normalized paths p and q, where q does not have a root component,
      *     {@code p.relativize(p.resolve(q)).equals(q)}

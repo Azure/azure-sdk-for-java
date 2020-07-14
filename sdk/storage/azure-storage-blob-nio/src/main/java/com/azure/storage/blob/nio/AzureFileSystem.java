@@ -267,7 +267,7 @@ public final class AzureFileSystem extends FileSystem {
      * deleted or otherwise becomes unavailable, its root directory will still be returned but operations to it will
      * fail.
      *
-     * @return  an object to iterate over the paths of the root directories
+     * @return an object to iterate over the paths of the root directories
      */
     @Override
     public Iterable<Path> getRootDirectories() {

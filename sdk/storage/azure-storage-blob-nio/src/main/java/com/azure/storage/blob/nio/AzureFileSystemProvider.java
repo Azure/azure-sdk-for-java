@@ -260,7 +260,7 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
      * @return a new seekable byte channel
      * @throws UnsupportedOperationException Operation is not supported.
      * @throws IllegalArgumentException if the set contains an invalid combination of options
-     * @throws FileAlreadyExistsException  if a file of that name already exists and the CREATE_NEW option is specified
+     * @throws FileAlreadyExistsException if a file of that name already exists and the CREATE_NEW option is specified
      * (optional specific exception)
      * @throws IOException If an I/O error occurs.
      * @throws SecurityException never
@@ -877,7 +877,8 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
      * @throws SecurityException never
      */
     @Override
-    public Map<String, Object> readAttributes(Path path, String attributes, LinkOption... linkOptions) throws IOException {
+    public Map<String, Object> readAttributes(Path path, String attributes, LinkOption... linkOptions)
+        throws IOException {
         if (attributes == null) {
             throw LoggingUtility.logError(logger, new IllegalArgumentException("Attribute string cannot be null."));
         }
