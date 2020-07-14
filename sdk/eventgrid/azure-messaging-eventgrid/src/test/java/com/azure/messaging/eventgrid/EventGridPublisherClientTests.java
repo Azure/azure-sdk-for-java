@@ -1,12 +1,7 @@
 package com.azure.messaging.eventgrid;
 
-import com.azure.core.credential.AzureKeyCredential;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpPipelineBuilder;
-import com.azure.core.http.policy.AddHeadersPolicy;
+
 import com.azure.core.http.rest.Response;
-import com.azure.messaging.eventgrid.implementation.EventGridPublisherClientImpl;
-import com.azure.messaging.eventgrid.implementation.EventGridPublisherClientImplBuilder;
 import com.azure.messaging.eventgrid.models.CloudEvent;
 import com.azure.messaging.eventgrid.models.EventGridEvent;
 import org.junit.Ignore;
@@ -31,7 +26,7 @@ public class EventGridPublisherClientTests {
         String endpoint = System.getenv("EG_ENDPOINT");
         String key = System.getenv("EG_KEY");
         EventGridPublisherAsyncClient egClient = new EventGridPublisherClientBuilder()
-            .credential(new AzureKeyCredential(key))
+            .credential(new EventGridSharedKeyCredential("Key 1", key))
             .endpoint(endpoint)
             .buildAsyncClient();
 
@@ -65,7 +60,7 @@ public class EventGridPublisherClientTests {
         String endpoint = System.getenv("EG_CLOUD_ENDPOINT");
         String key = System.getenv("EG_CLOUD_KEY");
         EventGridPublisherAsyncClient egClient = new EventGridPublisherClientBuilder()
-            .credential(new AzureKeyCredential(key))
+            .credential(new EventGridSharedKeyCredential("Key 1", key))
             .endpoint(endpoint)
             .buildAsyncClient();
 
@@ -98,7 +93,7 @@ public class EventGridPublisherClientTests {
         String endpoint = System.getenv("EG_CUSTOM_ENDPOINT");
         String key = System.getenv("EG_CUSTOM_KEY");
         EventGridPublisherAsyncClient egClient = new EventGridPublisherClientBuilder()
-            .credential(new AzureKeyCredential(key))
+            .credential(new EventGridSharedKeyCredential("Key 1", key))
             .endpoint(endpoint)
             .buildAsyncClient();
 
@@ -128,7 +123,7 @@ public class EventGridPublisherClientTests {
         String endpoint = System.getenv("EG_ENDPOINT");
         String key = System.getenv("EG_KEY");
         EventGridPublisherClient egClient = new EventGridPublisherClientBuilder()
-            .credential(new AzureKeyCredential(key))
+            .credential(new EventGridSharedKeyCredential("Key 1", key))
             .endpoint(endpoint)
             .buildClient();
 
@@ -159,7 +154,7 @@ public class EventGridPublisherClientTests {
         String endpoint = System.getenv("EG_CLOUD_ENDPOINT");
         String key = System.getenv("EG_CLOUD_KEY");
         EventGridPublisherClient egClient = new EventGridPublisherClientBuilder()
-            .credential(new AzureKeyCredential(key))
+            .credential(new EventGridSharedKeyCredential("Key 1", key))
             .endpoint(endpoint)
             .buildClient();
 
@@ -189,7 +184,7 @@ public class EventGridPublisherClientTests {
         String endpoint = System.getenv("EG_CUSTOM_ENDPOINT");
         String key = System.getenv("EG_CUSTOM_KEY");
         EventGridPublisherClient egClient = new EventGridPublisherClientBuilder()
-            .credential(new AzureKeyCredential(key))
+            .credential(new EventGridSharedKeyCredential("Key 1", key))
             .endpoint(endpoint)
             .buildClient();
 

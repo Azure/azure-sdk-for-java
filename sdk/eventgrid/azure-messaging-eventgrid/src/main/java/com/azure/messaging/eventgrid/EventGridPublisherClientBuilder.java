@@ -5,7 +5,7 @@
 package com.azure.messaging.eventgrid;
 
 import com.azure.core.annotation.ServiceClientBuilder;
-import com.azure.core.credential.AzureKeyCredential;
+import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.policy.HttpLogOptions;
@@ -22,7 +22,7 @@ import com.azure.core.util.Configuration;
 public class EventGridPublisherClientBuilder {
 
     /**
-     * Constructs a new instance with a default Http pipeline. The endpoint and credential must be set in order for the
+     * Construct a new instance with a default Http pipeline. The endpoint and credential must be set in order for the
      * client to be correctly built.
      */
     public EventGridPublisherClientBuilder() {
@@ -30,7 +30,7 @@ public class EventGridPublisherClientBuilder {
     }
 
     /**
-     * Adds a policy to the current pipeline.
+     * Add a policy to the current pipeline.
      * @param httpPipelinePolicy the policy to add.
      *
      * @return the builder itself.
@@ -41,7 +41,7 @@ public class EventGridPublisherClientBuilder {
     }
 
     /**
-     * Builds a publisher client with asynchronous publishing methods and the current settings. Endpoint and credential
+     * Build a publisher client with asynchronous publishing methods and the current settings. Endpoint and credential
      * must be set, all other settings have defaults and are optional.
      * @return a publisher client with asynchronous publishing methods.
      */
@@ -51,7 +51,7 @@ public class EventGridPublisherClientBuilder {
     }
 
     /**
-     * Builds a publisher client with synchronous publishing methods and the current settings. Endpoint and credential
+     * Build a publisher client with synchronous publishing methods and the current settings. Endpoint and credential
      * must be set, all other settings have defaults and are optional.
      * Note that currently the asynchronous client created by the method above is the recommended version for higher
      * performance, as the synchronous client simply blocks on the same asynchronous calls.
@@ -63,7 +63,7 @@ public class EventGridPublisherClientBuilder {
     }
 
     /**
-     * Sets the configuration of HTTP and Azure values. A default is already set.
+     * Set the configuration of HTTP and Azure values. A default is already set.
      * @param configuration the configuration to use.
      *
      * @return the builder itself.
@@ -74,18 +74,18 @@ public class EventGridPublisherClientBuilder {
     }
 
     /**
-     * Sets the domain or topic credentials. This must be set in order to build a client.
+     * Set the domain or topic credentials. This must be set in order to build a client.
      * @param credential the credential to authorize publishes to a specific topic/domain endpoint.
      *
      * @return the builder itself.
      */
-    public EventGridPublisherClientBuilder credential(AzureKeyCredential credential) {
+    public EventGridPublisherClientBuilder credential(TokenCredential credential) {
         // TODO: implement method
         return null;
     }
 
     /**
-     * Sets the domain or topic endpoint. This is the address to publish events to.
+     * Set the domain or topic endpoint. This is the address to publish events to.
      * @param endpoint the endpoint as a url.
      *
      * @return the builder itself.
@@ -96,7 +96,7 @@ public class EventGridPublisherClientBuilder {
     }
 
     /**
-     * Sets the HTTP Client that sends requests. Will use default if not set.
+     * Set the HTTP Client that sends requests. Will use default if not set.
      * @param httpClient the HTTP Client to use.
      *
      * @return the builder itself.
@@ -107,7 +107,7 @@ public class EventGridPublisherClientBuilder {
     }
 
     /**
-     * Configures the logging of the HTTP requests and pipeline.
+     * Configure the logging of the HTTP requests and pipeline.
      * @param httpLogOptions the log options to use.
      *
      * @return the builder itself.
@@ -118,12 +118,23 @@ public class EventGridPublisherClientBuilder {
     }
 
     /**
-     * Sets the HTTP pipeline to use. Note that this will reset all previously configured poicies and the client
-     * @param httpPipeline the pipeline to use
+     * Set the HTTP pipeline to use. Note that this will reset all previously configured policies and the client.
+     * @param httpPipeline the pipeline to use.
      *
-     * @return the builder itself
+     * @return the builder itself.
      */
-    public EventGridPublisherClient pipeline(HttpPipeline httpPipeline) {
+    public EventGridPublisherClientBuilder pipeline(HttpPipeline httpPipeline) {
+        // TODO: implement method
+        return null;
+    }
+
+    /**
+     * Set the service version to use.
+     * @param version the service version to set.
+     *
+     * @return the builder itself.
+     */
+    public EventGridPublisherClientBuilder serviceVersion(EventGridServiceVersion version) {
         // TODO: implement method
         return null;
     }
