@@ -7,7 +7,6 @@ package com.azure.messaging.eventgrid;
 import com.azure.messaging.eventgrid.models.CloudEvent;
 import com.azure.messaging.eventgrid.models.EventGridEvent;
 
-import java.lang.reflect.Type;
 import java.util.List;
 import java.util.Map;
 
@@ -31,10 +30,11 @@ public class EventConsumer {
      * Add a mapping from the event data type string to the object class for the deserializer to deserialize.
      * @param eventType the event data type identifier string, e.g. "Contoso.Items.ItemRecieved". In EventGridEvents,
      *                  this is the <code>eventType</code> field. In CloudEvents, this is the <code>type</code> field.
-     * @param dataType  the data type of the object to be decoded.This corresponds to the data field. The object must
+     * @param dataType  the data type class of the object to be decoded.
+     * @param <T>       the type of the data to be decoded. This corresponds to the data field. The object must
      *                  have proper JsonProperty annotations to allow for deserialization.
      */
-    public void putDataMapping(String eventType, Type dataType) {
+    public <T> void putDataMapping(String eventType, Class<T> dataType) {
         // TODO: implement method
     }
 
@@ -42,9 +42,9 @@ public class EventConsumer {
      * Gives the type currently mapped to this event data type string.
      * @param eventType the event data type identifier string, e.g. "Contoso.Items.ItemRecieved".
      *
-     * @return the data type mapped to this string.
+     * @return the class of the data type mapped to this string, null if not found.
      */
-    public Type getDataMapping(String eventType) {
+    public Class<?> getDataMapping(String eventType) {
         // TODO: implement method
         return null;
     }
@@ -53,7 +53,7 @@ public class EventConsumer {
      * Returns whether this event data type has a mapping.
      * @param eventType the event data type identifier string, e.g. "Contoso.Items.ItemRecieved".
      *
-     * @return the data type mapped to this string.
+     * @return true iff there is a mapping for this string.
      */
     public boolean containsDataMapping(String eventType) {
         // TODO: implement method
@@ -64,7 +64,7 @@ public class EventConsumer {
      * Gives all mappings of event data types to data type classes.
      * @return a mapping of all event data types to their respective data ype classes.
      */
-    public Map<String, Type> getAllDataMappings() {
+    public Map<String, Class<?>> getAllDataMappings() {
         // TODO: implement method
         return null;
     }

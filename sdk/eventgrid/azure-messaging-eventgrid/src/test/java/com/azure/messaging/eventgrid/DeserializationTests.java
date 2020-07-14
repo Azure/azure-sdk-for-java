@@ -190,7 +190,7 @@ public class DeserializationTests {
         // This should be all system event mappings as well as custom added ones
         //Assert.assertEquals(2, mappings.size());
 
-        Type mapping = consumer.getDataMapping("Contoso.Items.ItemSent");
+        Class<?> mapping = consumer.getDataMapping("Contoso.Items.ItemSent");
         Assert.assertNotNull(mapping);
         // Ensure lookup is case-insensitive
         mapping = consumer.getDataMapping("contoso.Items.Itemsent");
