@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.spring.data.cosmos.core.query;
 
+import org.springframework.data.repository.query.parser.Part;
 import org.springframework.lang.NonNull;
 
 import java.util.ArrayList;
@@ -16,6 +17,15 @@ public final class Criteria {
     private List<Object> subjectValues;
     private final CriteriaType type;
     private final List<Criteria> subCriteria;
+    private Part.IgnoreCaseType ignoreCase;
+
+    /**
+     * Ignore case flag
+     * @return ignore case flag
+     */
+    public Part.IgnoreCaseType getIgnoreCase() {
+        return ignoreCase;
+    }
 
     /**
      * To get subject
@@ -55,18 +65,20 @@ public final class Criteria {
     }
 
     /**
-     * To get a criteria instance with subject
+     * To get a criteria instance with subject and ignore case
      * @param type CriteriaType
      * @param subject subject
      * @param values subject value
+     * @param ignoreCase ignore case flag
      * @return Criteria instance
      */
-    public static Criteria getInstance(CriteriaType type, @NonNull String subject, @NonNull List<Object> values) {
+    public static Criteria getInstance(CriteriaType type, @NonNull String subject,
+                                       @NonNull List<Object> values, @NonNull Part.IgnoreCaseType ignoreCase) {
         final Criteria criteria = new Criteria(type);
 
         criteria.subject = subject;
         criteria.subjectValues = values;
-
+        criteria.ignoreCase = ignoreCase;
         return criteria;
     }
 
