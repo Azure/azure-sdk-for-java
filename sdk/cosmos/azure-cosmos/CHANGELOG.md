@@ -5,7 +5,7 @@
 * Added script logging enabled API to `CosmosStoredProcedureRequestOptions`.
 * Updated `DirectConnectionConfig` default `idleEndpointTimeout` to 1h and default `connectTimeout` to 5s.
 ### Key Bug Fixes
-* Fixed issue where GatewayConnectionConfig was overriding DirectConnectionConfig `idleConnectionTimeout`.
+* Fixed issue where `GatewayConnectionConfig` `idleConnectionTimeout` was overriding `DirectConnectionConfig` `idleConnectionTimeout`.
 * Fixed `responseContinuationTokenLimitInKb` get and set APIs in `CosmosQueryRequestOptions`.
 * Fixed issue in query and change feed when recreating the collection with same name.
 * Fixed issue with top query throwing ClassCastException.
