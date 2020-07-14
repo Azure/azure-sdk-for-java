@@ -203,7 +203,7 @@ public final class AzurePath implements Path {
      * The index parameter is the index of the name element to return. The element that is closest to the root in the
      * directory hierarchy has index 0. The element that is farthest from the root has index {@code count-1}.
      *
-     * @param the index of the element
+     * @param index the index of the element
      * @return the name element
      * @throws IllegalArgumentException if index is negative, index is greater than or equal to the number of elements,
      * or this path has zero name elements

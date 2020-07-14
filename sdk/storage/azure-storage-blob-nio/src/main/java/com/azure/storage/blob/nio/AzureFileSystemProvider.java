@@ -612,7 +612,7 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
      *
      * @param source the path to the file to copy
      * @param destination the path to the target file
-     * @param options specifying how the copy should be done
+     * @param copyOptions specifying how the copy should be done
      * @throws UnsupportedOperationException if the array contains a copy option that is not supported
      * @throws FileAlreadyExistsException if the target file exists but cannot be replaced because the REPLACE_EXISTING
      * option is not specified
