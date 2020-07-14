@@ -29,7 +29,6 @@ public class UsernamePasswordCredential implements TokenCredential {
     private final String username;
     private final String password;
     private final IdentityClient identityClient;
-    private final IdentityClientOptions identityClientOptions;
     private final String authorityHost;
     private final AtomicReference<MsalAuthenticationAccount> cachedToken;
     private final ClientLogger logger = new ClientLogger(UsernamePasswordCredential.class);
@@ -56,7 +55,6 @@ public class UsernamePasswordCredential implements TokenCredential {
                 .identityClientOptions(identityClientOptions)
                 .build();
         cachedToken = new AtomicReference<>();
-        this.identityClientOptions = identityClientOptions;
         this.authorityHost = identityClientOptions.getAuthorityHost();
     }
 

@@ -31,7 +31,6 @@ import java.util.concurrent.atomic.AtomicReference;
 public class InteractiveBrowserCredential implements TokenCredential {
     private final int port;
     private final IdentityClient identityClient;
-    private final IdentityClientOptions identityClientOptions;
     private final AtomicReference<MsalAuthenticationAccount> cachedToken;
     private final boolean automaticAuthentication;
     private final String authorityHost;
@@ -56,7 +55,6 @@ public class InteractiveBrowserCredential implements TokenCredential {
             .clientId(clientId)
             .identityClientOptions(identityClientOptions)
             .build();
-        this.identityClientOptions = identityClientOptions;
         cachedToken = new AtomicReference<>();
         this.authorityHost = identityClientOptions.getAuthorityHost();
         this.automaticAuthentication = automaticAuthentication;

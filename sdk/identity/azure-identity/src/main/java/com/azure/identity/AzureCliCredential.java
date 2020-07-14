@@ -21,7 +21,6 @@ import reactor.core.publisher.Mono;
 @Immutable
 public class AzureCliCredential implements TokenCredential {
     private final IdentityClient identityClient;
-    private final IdentityClientOptions identityClientOptions;
     private final ClientLogger logger = new ClientLogger(AzureCliCredential.class);
 
     /**
@@ -30,7 +29,6 @@ public class AzureCliCredential implements TokenCredential {
      */
     AzureCliCredential(IdentityClientOptions identityClientOptions) {
         identityClient = new IdentityClientBuilder().identityClientOptions(identityClientOptions).build();
-        this.identityClientOptions = identityClientOptions;
     }
 
     @Override

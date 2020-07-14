@@ -28,7 +28,6 @@ import java.util.Objects;
 @Immutable
 public class ClientCertificateCredential implements TokenCredential {
     private final IdentityClient identityClient;
-    private final IdentityClientOptions identityClientOptions;
     private final ClientLogger logger = new ClientLogger(ClientCertificateCredential.class);
 
     /**
@@ -49,7 +48,6 @@ public class ClientCertificateCredential implements TokenCredential {
             .certificatePassword(certificatePassword)
             .identityClientOptions(identityClientOptions)
             .build();
-        this.identityClientOptions = identityClientOptions;
     }
 
     @Override

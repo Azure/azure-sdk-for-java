@@ -27,7 +27,6 @@ public class AuthorizationCodeCredential implements TokenCredential {
     private final String authCode;
     private final URI redirectUri;
     private final IdentityClient identityClient;
-    private final IdentityClientOptions identityClientOptions;
     private final AtomicReference<MsalAuthenticationAccount> cachedToken;
     private final ClientLogger logger = new ClientLogger(AuthorizationCodeCredential.class);
 
@@ -47,7 +46,6 @@ public class AuthorizationCodeCredential implements TokenCredential {
             .clientId(clientId)
             .identityClientOptions(identityClientOptions)
             .build();
-        this.identityClientOptions = identityClientOptions;
         this.cachedToken = new AtomicReference<>();
         this.authCode = authCode;
         this.redirectUri = redirectUri;

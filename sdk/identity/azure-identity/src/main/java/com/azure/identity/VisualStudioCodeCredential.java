@@ -24,7 +24,6 @@ import java.util.concurrent.atomic.AtomicReference;
  */
 public class VisualStudioCodeCredential implements TokenCredential {
     private final IdentityClient identityClient;
-    private final IdentityClientOptions identityClientOptions;
     private final AtomicReference<MsalToken> cachedToken;
     private final String cloudInstance;
     private final ClientLogger logger = new ClientLogger(VisualStudioCodeCredential.class);
@@ -65,7 +64,6 @@ public class VisualStudioCodeCredential implements TokenCredential {
                 .build();
 
         this.cachedToken = new AtomicReference<>();
-        this.identityClientOptions = identityClientOptions;
     }
 
     @Override

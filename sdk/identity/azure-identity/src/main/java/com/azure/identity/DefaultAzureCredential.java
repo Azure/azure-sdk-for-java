@@ -23,8 +23,6 @@ import java.util.List;
  */
 @Immutable
 public final class DefaultAzureCredential extends ChainedTokenCredential {
-    private final IdentityClientOptions identityClientOptions;
-
     /**
      * Creates default DefaultAzureCredential instance to use. This will use AZURE_CLIENT_ID,
      * AZURE_CLIENT_SECRET, and AZURE_TENANT_ID environment variables to create a
@@ -34,11 +32,9 @@ public final class DefaultAzureCredential extends ChainedTokenCredential {
      * token cache.
      *
      * @param tokenCredentials the list of credentials to execute for authentication.
-     * @param identityClientOptions the options for configuring the identity client.
      */
-    DefaultAzureCredential(List<TokenCredential> tokenCredentials, IdentityClientOptions identityClientOptions) {
+    DefaultAzureCredential(List<TokenCredential> tokenCredentials) {
         super(tokenCredentials);
-        this.identityClientOptions = identityClientOptions;
     }
 
     /**
