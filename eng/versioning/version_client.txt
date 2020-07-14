@@ -31,7 +31,7 @@ com.azure:azure-identity-perf;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-messaging-eventhubs;5.1.2;5.2.0-beta.1
 com.azure:azure-messaging-eventhubs-checkpointstore-blob;1.1.2;1.2.0-beta.1
 com.azure:azure-messaging-servicebus;7.0.0-beta.3;7.0.0-beta.4
-com.azure:azure-search-documents;1.0.0-beta.4;11.0.0
+com.azure:azure-search-documents;11.0.0;11.1.0-beta.1
 com.azure:azure-security-keyvault-certificates;4.0.4;4.1.0-beta.4
 com.azure:azure-security-keyvault-keys;4.1.4;4.2.0-beta.5
 com.azure:azure-security-keyvault-secrets;4.1.4;4.2.0-beta.4
