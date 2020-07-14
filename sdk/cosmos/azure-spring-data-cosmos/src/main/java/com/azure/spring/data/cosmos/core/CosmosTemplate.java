@@ -14,6 +14,7 @@ import com.azure.data.cosmos.FeedOptions;
 import com.azure.data.cosmos.CosmosClient;
 import com.azure.data.cosmos.CosmosContainerProperties;
 import com.azure.data.cosmos.CosmosContainerResponse;
+import com.azure.data.cosmos.CosmosDatabase;
 import com.azure.data.cosmos.PartitionKey;
 import com.azure.spring.data.cosmos.common.CosmosdbUtils;
 import com.azure.spring.data.cosmos.common.Memoizer;
@@ -403,9 +404,17 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
                         + information.getPartitionKeyFieldName());
                 cosmosContainerProperties.defaultTimeToLive(information.getTimeToLive());
                 cosmosContainerProperties.indexingPolicy(information.getIndexingPolicy());
-                return cosmosDatabaseResponse
-                    .database()
-                    .createContainerIfNotExists(cosmosContainerProperties, information.getRequestUnit())
+                
+                CosmosDatabase database = cosmosDatabaseResponse.database();
+                Mono<CosmosContainerResponse> mono = null;
+                
+                if (information.getRequestUnit() == null) {
+                    mono = database.createContainerIfNotExists(cosmosContainerProperties);
+                } else {
+                    mono = database.createContainerIfNotExists(cosmosContainerProperties, information.getRequestUnit());
+                }
+                
+                return mono
                     .onErrorResume(throwable ->
                         CosmosDBExceptionUtils.exceptionHandler("Failed to create container", throwable))
                     .doOnNext(cosmosContainerResponse ->
