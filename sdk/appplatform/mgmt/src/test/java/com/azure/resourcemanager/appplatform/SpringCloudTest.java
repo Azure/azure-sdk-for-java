@@ -318,11 +318,12 @@ public class SpringCloudTest extends AppPlatformTest {
                 }
                 File file = new File(folder, entry.getName());
                 File parent = file.getParentFile();
-                if (!parent.exists()) {
-                    parent.mkdirs();
-                }
-                try (OutputStream outputStream = new FileOutputStream(file)) {
-                    IOUtils.copy(inputStream, outputStream);
+                if (parent.exists() || parent.mkdirs()) {
+                    try (OutputStream outputStream = new FileOutputStream(file)) {
+                        IOUtils.copy(inputStream, outputStream);
+                    }
+                } else {
+                    throw new IllegalStateException("Cannot create directory: " + parent.getAbsolutePath());
                 }
             }
         }

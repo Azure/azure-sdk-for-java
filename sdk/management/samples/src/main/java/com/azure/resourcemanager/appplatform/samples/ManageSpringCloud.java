@@ -65,6 +65,7 @@ public class ManageSpringCloud {
      * @param azure instance of the azure client
      * @param clientId the aad client id in azure instance
      * @return true if sample runs successfully
+     * @throws IllegalStateException unexcepted state
      */
     public static boolean runSample(Azure azure, String clientId) {
         final String rgName = azure.sdkContext().randomResourceName("rg", 24);
@@ -299,11 +300,12 @@ public class ManageSpringCloud {
                 }
                 File file = new File(folder, entry.getName());
                 File parent = file.getParentFile();
-                if (!parent.exists()) {
-                    parent.mkdirs();
-                }
-                try (OutputStream outputStream = new FileOutputStream(file)) {
-                    IOUtils.copy(inputStream, outputStream);
+                if (parent.exists() || parent.mkdirs()) {
+                    try (OutputStream outputStream = new FileOutputStream(file)) {
+                        IOUtils.copy(inputStream, outputStream);
+                    }
+                } else {
+                    throw new IllegalStateException("Cannot create directory: " + parent.getAbsolutePath());
                 }
             }
         }
