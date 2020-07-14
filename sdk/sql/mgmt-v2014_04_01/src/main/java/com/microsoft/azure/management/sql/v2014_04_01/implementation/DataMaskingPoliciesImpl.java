@@ -44,10 +44,14 @@ class DataMaskingPoliciesImpl extends WrapperImpl<DataMaskingPoliciesInner> impl
     public Observable<DataMaskingPolicy> getAsync(String resourceGroupName, String serverName, String databaseName) {
         DataMaskingPoliciesInner client = this.inner();
         return client.getAsync(resourceGroupName, serverName, databaseName)
-        .map(new Func1<DataMaskingPolicyInner, DataMaskingPolicy>() {
+        .flatMap(new Func1<DataMaskingPolicyInner, Observable<DataMaskingPolicy>>() {
             @Override
-            public DataMaskingPolicy call(DataMaskingPolicyInner inner) {
-                return wrapModel(inner);
+            public Observable<DataMaskingPolicy> call(DataMaskingPolicyInner inner) {
+                if (inner == null) {
+                    return Observable.empty();
+                } else {
+                    return Observable.just((DataMaskingPolicy)wrapModel(inner));
+                }
             }
        });
     }
