@@ -24,6 +24,10 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
+import com.azure.resourcemanager.appplatform.models.ConfigServerState;
+import com.azure.resourcemanager.appplatform.models.SpringApp;
+import com.azure.resourcemanager.appplatform.models.SpringService;
+import com.azure.resourcemanager.appplatform.models.TraceProxyState;
 import com.azure.resourcemanager.appservice.models.AppServiceCertificateOrder;
 import com.azure.resourcemanager.appservice.models.AppServiceDomain;
 import com.azure.resourcemanager.appservice.models.AppServicePlan;
@@ -72,6 +76,7 @@ import com.azure.resourcemanager.dns.models.SrvRecordSet;
 import com.azure.resourcemanager.dns.models.TxtRecord;
 import com.azure.resourcemanager.dns.models.TxtRecordSet;
 import com.azure.resourcemanager.keyvault.models.AccessPolicy;
+import com.azure.resourcemanager.keyvault.models.CertificatePermissions;
 import com.azure.resourcemanager.keyvault.models.KeyPermissions;
 import com.azure.resourcemanager.keyvault.models.SecretPermissions;
 import com.azure.resourcemanager.keyvault.models.Vault;
@@ -536,9 +541,18 @@ public final class Utils {
                 .append("\n\tVault URI: ").append(vault.vaultUri())
                 .append("\n\tAccess policies: ");
         for (AccessPolicy accessPolicy : vault.accessPolicies()) {
-            info.append("\n\t\tIdentity:").append(accessPolicy.objectId())
-                    .append("\n\t\tKey permissions: ").append(accessPolicy.permissions().keys().stream().map(KeyPermissions::toString).collect(Collectors.joining(", ")))
-                    .append("\n\t\tSecret permissions: ").append(accessPolicy.permissions().secrets().stream().map(SecretPermissions::toString).collect(Collectors.joining(", ")));
+            info.append("\n\t\tIdentity:").append(accessPolicy.objectId());
+            if (accessPolicy.permissions() != null) {
+                if (accessPolicy.permissions().keys() != null) {
+                    info.append("\n\t\tKey permissions: ").append(accessPolicy.permissions().keys().stream().map(KeyPermissions::toString).collect(Collectors.joining(", ")));
+                }
+                if (accessPolicy.permissions().secrets() != null) {
+                    info.append("\n\t\tSecret permissions: ").append(accessPolicy.permissions().secrets().stream().map(SecretPermissions::toString).collect(Collectors.joining(", ")));
+                }
+                if (accessPolicy.permissions().certificates() != null) {
+                    info.append("\n\t\tCertificate permissions: ").append(accessPolicy.permissions().certificates().stream().map(CertificatePermissions::toString).collect(Collectors.joining(", ")));
+                }
+            }
         }
         System.out.println(info.toString());
     }
@@ -2966,6 +2980,80 @@ public final class Utils {
                 }
             }
         }
+        System.out.println(info.toString());
+    }
+
+    /**
+     * Print spring service settings.
+     *
+     * @param springService spring service instance
+     */
+    public static void print(SpringService springService) {
+        StringBuilder info = new StringBuilder("Spring Service: ")
+            .append("\n\tId: ").append(springService.id())
+            .append("\n\tName: ").append(springService.name())
+            .append("\n\tResource Group: ").append(springService.resourceGroupName())
+            .append("\n\tRegion: ").append(springService.region())
+            .append("\n\tTags: ").append(springService.tags());
+
+        if (springService.serverProperties() != null && springService.serverProperties().state() == ConfigServerState.SUCCEEDED && springService.serverProperties().configServer() != null) {
+            info.append("\n\tProperties: ");
+            if (springService.serverProperties().configServer().gitProperty() != null) {
+                info.append("\n\t\tGit: ").append(springService.serverProperties().configServer().gitProperty().uri());
+            }
+        }
+
+        if (springService.sku() != null) {
+            info.append("\n\tSku: ")
+                .append("\n\t\tName: ").append(springService.sku().name())
+                .append("\n\t\tTier: ").append(springService.sku().tier())
+                .append("\n\t\tCapacity: ").append(springService.sku().capacity());
+        }
+
+        if (springService.traceProperties() != null && springService.traceProperties().state() == TraceProxyState.SUCCEEDED) {
+            info.append("\n\tTrace: ")
+                .append("\n\t\tEnabled: ").append(springService.traceProperties().enabled())
+                .append("\n\t\tApp Insight Instrumentation Key: ").append(springService.traceProperties().appInsightInstrumentationKey());
+        }
+
+        System.out.println(info.toString());
+    }
+
+    /**
+     * Print spring app settings.
+     *
+     * @param springApp spring app instance
+     */
+    public static void print(SpringApp springApp) {
+        StringBuilder info = new StringBuilder("Spring Service: ")
+            .append("\n\tId: ").append(springApp.id())
+            .append("\n\tName: ").append(springApp.name())
+            .append("\n\tCreated Time: ").append(springApp.createdTime())
+            .append("\n\tPublic Endpoint: ").append(springApp.isPublic())
+            .append("\n\tUrl: ").append(springApp.url())
+            .append("\n\tHttps Only: ").append(springApp.isHttpsOnly())
+            .append("\n\tFully Qualified Domain Name: ").append(springApp.fqdn())
+            .append("\n\tActive Deployment Name: ").append(springApp.activeDeployment());
+
+        if (springApp.temporaryDisk() != null) {
+            info.append("\n\tTemporary Disk:")
+                .append("\n\t\tSize In GB: ").append(springApp.temporaryDisk().sizeInGB())
+                .append("\n\t\tMount Path: ").append(springApp.temporaryDisk().mountPath());
+        }
+
+        if (springApp.persistentDisk() != null) {
+            info.append("\n\tPersistent Disk:")
+                .append("\n\t\tSize In GB: ").append(springApp.persistentDisk().sizeInGB())
+                .append("\n\t\tMount Path: ").append(springApp.persistentDisk().mountPath());
+        }
+
+        if (springApp.identity() != null) {
+            info.append("\n\tIdentity:")
+                .append("\n\t\tType: ").append(springApp.identity().type())
+                .append("\n\t\tPrincipal Id: ").append(springApp.identity().principalId())
+                .append("\n\t\tTenant Id: ").append(springApp.identity().tenantId());
+        }
+
         System.out.println(info.toString());
     }
 

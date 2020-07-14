@@ -149,7 +149,7 @@ public class SpringCloudTest extends AppPlatformTest {
         Assertions.assertTrue(requestSuccess(app.url()));
 
         app.update()
-            .withDefaultPublicEndpoint()
+            .withoutDefaultPublicEndpoint()
             .apply();
         Assertions.assertFalse(app.isPublic());
     }
