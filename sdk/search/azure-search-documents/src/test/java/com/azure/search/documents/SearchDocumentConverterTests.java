@@ -3,6 +3,7 @@
 
 package com.azure.search.documents;
 
+import com.azure.core.experimental.spatial.PointGeometry;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.search.documents.implementation.SerializationUtil;
@@ -20,6 +21,8 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import static com.azure.search.documents.TestHelpers.assertMapEquals;
+import static com.azure.search.documents.TestHelpers.assertObjectEquals;
+import static com.azure.search.documents.TestHelpers.createPointGeometry;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
@@ -124,32 +127,32 @@ public class SearchDocumentConverterTests {
     }
 
 
-//    @Test
-//    public void canReadGeoPoint() {
-//        String json = "{ \"field\": { \"type\": \"Point\", \"coordinates\": [-122.131577, 47.678581], "
-//            + "\"crs\":{\"type\":\"name\", \"properties\":{\"name\":\"EPSG:4326\"}}}}";
-//        SearchDocument expectedDoc = new SearchDocument(Collections.singletonMap("field",
-//            createPointGeometryString(47.678581, -122.131577)));
-//
-//        SearchDocument actualDoc = deserialize(json);
-//        expectedDoc.forEach((key, value) -> {
-//            assertObjectEquals(value, actualDoc.get(key), false, "properties");
-//        });
-//    }
+    @Test
+    public void canReadGeoPoint() {
+        String json = "{ \"field\": { \"type\": \"Point\", \"coordinates\": [-122.131577, 47.678581], "
+            + "\"crs\":{\"type\":\"name\", \"properties\":{\"name\":\"EPSG:4326\"}}}}";
+        SearchDocument expectedDoc = new SearchDocument(Collections.singletonMap("field",
+            createPointGeometry(47.678581, -122.131577)));
 
-//    @Test
-//    public void canReadGeoPointCollection() {
-//        String json = "{\"field\":[{\"type\":\"Point\", \"coordinates\":[-122.131577, 47.678581], "
-//            + "\"crs\":{\"type\":\"name\", \"properties\":{\"name\":\"EPSG:4326\"}}}, "
-//            + "{\"type\":\"Point\", \"coordinates\":[-121.0, 49.0], "
-//            + "\"crs\":{\"type\":\"name\", \"properties\":{\"name\":\"EPSG:4326\"}}}]}";
-//        SearchDocument expectedDoc = new SearchDocument(Collections.singletonMap("field",
-//            Arrays.asList(createPointGeometryString(47.678581, -122.131577), createPointGeometryString(49.0,
-//                -121.0))));
-//
-//        SearchDocument actualDoc = deserialize(json);
-//        assertMapEquals(expectedDoc, actualDoc, true, "properties");
-//    }
+        SearchDocument actualDoc = deserialize(json);
+        expectedDoc.forEach((key, value) -> {
+            assertObjectEquals(value, actualDoc.get(key), false, "properties");
+        });
+    }
+
+    @Test
+    public void canReadGeoPointCollection() {
+        String json = "{\"field\":[{\"type\":\"Point\", \"coordinates\":[-122.131577, 47.678581], "
+            + "\"crs\":{\"type\":\"name\", \"properties\":{\"name\":\"EPSG:4326\"}}}, "
+            + "{\"type\":\"Point\", \"coordinates\":[-121.0, 49.0], "
+            + "\"crs\":{\"type\":\"name\", \"properties\":{\"name\":\"EPSG:4326\"}}}]}";
+        SearchDocument expectedDoc = new SearchDocument(Collections.singletonMap("field",
+            Arrays.asList(createPointGeometry(47.678581, -122.131577), createPointGeometry(49.0,
+                -121.0))));
+
+        SearchDocument actualDoc = deserialize(json);
+        assertMapEquals(expectedDoc, actualDoc, true, "properties");
+    }
 
     @Test
     public void canReadComplexObject() {
@@ -202,26 +205,26 @@ public class SearchDocumentConverterTests {
         assertEquals(expectedDoc, actualDoc);
     }
 
-//    @Test
-//    public void canReadArraysOfMixedTypes() {
-//        // Azure Cognitive Search won't return payloads like this; This test is only for pinning purposes.
-//        String json =
-//            "{\"field\": [\"hello\", 123, 3.14, { \"type\": \"Point\", \"coordinates\": [-122.131577, 47.678581], "
-//            + "\"crs\":{\"type\":\"name\", \"properties\":{\"name\": \"EPSG:4326\"}}}, "
-//            + "{ \"name\": \"Arthur\", \"quest\": null }] }";
-//
-//        PointGeometry point = createPointGeometryString(47.678581, -122.131577);
-//        SearchDocument innerDoc = new SearchDocument();
-//        innerDoc.put("name", "Arthur");
-//        innerDoc.put("quest", null);
-//        List<Object> value = Arrays.asList("hello", 123, 3.14, point, innerDoc);
-//
-//        SearchDocument expectedDoc = new SearchDocument();
-//        expectedDoc.put("field", value);
-//
-//        SearchDocument actualDoc = deserialize(json);
-//        assertMapEquals(expectedDoc, actualDoc, true, "properties");
-//    }
+    @Test
+    public void canReadArraysOfMixedTypes() {
+        // Azure Cognitive Search won't return payloads like this; This test is only for pinning purposes.
+        String json =
+            "{\"field\": [\"hello\", 123, 3.14, { \"type\": \"Point\", \"coordinates\": [-122.131577, 47.678581], "
+            + "\"crs\":{\"type\":\"name\", \"properties\":{\"name\": \"EPSG:4326\"}}}, "
+            + "{ \"name\": \"Arthur\", \"quest\": null }] }";
+
+        PointGeometry point = createPointGeometry(47.678581, -122.131577);
+        SearchDocument innerDoc = new SearchDocument();
+        innerDoc.put("name", "Arthur");
+        innerDoc.put("quest", null);
+        List<Object> value = Arrays.asList("hello", 123, 3.14, point, innerDoc);
+
+        SearchDocument expectedDoc = new SearchDocument();
+        expectedDoc.put("field", value);
+
+        SearchDocument actualDoc = deserialize(json);
+        assertMapEquals(expectedDoc, actualDoc, true, "properties");
+    }
 
     @Test
     public void dateTimeStringsAreReadAsDateTime() {

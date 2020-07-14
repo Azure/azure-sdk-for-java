@@ -50,6 +50,7 @@ import java.util.stream.Stream;
 import static com.azure.search.documents.TestHelpers.assertHttpResponseException;
 import static com.azure.search.documents.TestHelpers.assertMapEquals;
 import static com.azure.search.documents.TestHelpers.assertObjectEquals;
+import static com.azure.search.documents.TestHelpers.createPointGeometry;
 import static com.azure.search.documents.TestHelpers.uploadDocuments;
 import static com.azure.search.documents.TestHelpers.uploadDocumentsJson;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
@@ -622,22 +623,22 @@ public class SearchSyncTests extends SearchTestBase {
         assertEquals(0, resultsList.size());
     }
 
-//    @Test
-//    public void searchWithScoringProfileBoostsScore() {
-//        client = setupClient(this::createHotelIndex);
-//
-//        uploadDocumentsJson(client, HOTELS_DATA_JSON);
-//        SearchOptions searchOptions = new SearchOptions()
-//            .setScoringProfile("nearest")
-//            .setScoringParameters(new ScoringParameter("myloc", createPointGeometry(49.0, -122.0)))
-//            .setFilter("Rating eq 5 or Rating eq 1");
-//
-//        List<Map<String, Object>> response = getSearchResults(client.search("hotel",
-//            searchOptions, Context.NONE));
-//        assertEquals(2, response.size());
-//        assertEquals(Arrays.asList("2", "1"),
-//            response.stream().map(res -> res.get("HotelId").toString()).collect(Collectors.toList()));
-//    }
+    @Test
+    public void searchWithScoringProfileBoostsScore() {
+        client = setupClient(this::createHotelIndex);
+
+        uploadDocumentsJson(client, HOTELS_DATA_JSON);
+        SearchOptions searchOptions = new SearchOptions()
+            .setScoringProfile("nearest")
+            .setScoringParameters(new ScoringParameter("myloc", createPointGeometry(49.0, -122.0)))
+            .setFilter("Rating eq 5 or Rating eq 1");
+
+        List<Map<String, Object>> response = getSearchResults(client.search("hotel",
+            searchOptions, Context.NONE));
+        assertEquals(2, response.size());
+        assertEquals(Arrays.asList("2", "1"),
+            response.stream().map(res -> res.get("HotelId").toString()).collect(Collectors.toList()));
+    }
 
     @Test
     public void searchWithScoringProfileEscaper() {

@@ -4,6 +4,8 @@
 package com.azure.search.documents;
 
 import com.azure.core.exception.HttpResponseException;
+import com.azure.core.experimental.spatial.GeometryPosition;
+import com.azure.core.experimental.spatial.PointGeometry;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.test.TestMode;
 import com.azure.core.util.Configuration;
@@ -27,6 +29,7 @@ import java.time.ZoneOffset;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -51,14 +54,15 @@ public final class TestHelpers {
     public static final String SQL_DATASOURCE_NAME = "azs-java-test-sql";
     public static final String ISO8601_FORMAT = "yyyy-MM-dd'T'HH:mm:ss'Z'";
 
-//    public static PointGeometry createPointGeometryString(Double latitude, Double longitude) {
-//        return new PointGeometry(new GeometryPosition(longitude, latitude), null, Collections.singletonMap("crs", new HashMap<String, Object>() {
-//            {
-//                put("type", "name");
-//                put("properties", Collections.singletonMap("name", "EPSG:4326"));
-//            }
-//        }));
-//    }
+    public static PointGeometry createPointGeometry(Double latitude, Double longitude) {
+        return new PointGeometry(new GeometryPosition(longitude, latitude), null,
+            Collections.singletonMap("crs", new HashMap<String, Object>() {
+            {
+                put("type", "name");
+                put("properties", Collections.singletonMap("name", "EPSG:4326"));
+            }
+        }));
+    }
 
     private static final ObjectMapper MAPPER;
 
