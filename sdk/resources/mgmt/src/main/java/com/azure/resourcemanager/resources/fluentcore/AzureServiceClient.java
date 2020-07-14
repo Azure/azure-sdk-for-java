@@ -70,13 +70,11 @@ public abstract class AzureServiceClient {
      * @return the default client context.
      */
     public Context getContext() {
-        Context context = Context.NONE;
         if (sdkName == null) {
             sdkName = this.getClass().getPackage().getName();
         }
-        context = context.addData("Sdk-Name", sdkName);
-        context = context.addData("Sdk-Version", SDK_VERSION);
-        return context;
+        return new Context("Sdk-Name", sdkName)
+            .addData("Sdk-Version", SDK_VERSION);
     }
 
     /**
