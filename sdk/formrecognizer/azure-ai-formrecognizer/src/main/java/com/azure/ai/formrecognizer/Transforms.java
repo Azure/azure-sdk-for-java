@@ -32,6 +32,7 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -199,7 +200,7 @@ final class Transforms {
      */
     private static Map<String, FormField<?>> getUnlabeledFieldMap(DocumentResult documentResultItem,
         List<ReadResult> readResults, boolean includeFieldElements) {
-        Map<String, FormField<?>> extractedFieldMap = new TreeMap<>();
+        Map<String, FormField<?>> extractedFieldMap = new LinkedHashMap<>();
         // add receipt fields
         if (!CoreUtils.isNullOrEmpty(documentResultItem.getFields())) {
             documentResultItem.getFields().forEach((key, fieldValue) -> {
@@ -367,7 +368,7 @@ final class Transforms {
     private static Map<String, FormField<?>> getLabeledFieldMap(boolean includeFieldElements,
         List<ReadResult> readResults,
         PageResult pageResultItem, Integer pageNumber) {
-        Map<String, FormField<?>> formFieldMap = new TreeMap<>();
+        Map<String, FormField<?>> formFieldMap = new LinkedHashMap<>();
         List<KeyValuePair> keyValuePairs = pageResultItem.getKeyValuePairs();
         forEachWithIndex(keyValuePairs, ((index, keyValuePair) -> {
             List<FormElement> formKeyContentList = null;

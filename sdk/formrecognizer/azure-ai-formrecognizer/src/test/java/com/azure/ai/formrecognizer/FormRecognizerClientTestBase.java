@@ -696,9 +696,10 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
     private void validateUnLabeledResult(RecognizedForm actualForm, boolean includeFieldElements,
         List<ReadResult> readResults, PageResult expectedPage) {
         validatePageRangeData(expectedPage.getPage(), actualForm.getFormPageRange());
-        for (int i = 0; i < expectedPage.getKeyValuePairs().size(); i++) {
-            final KeyValuePair expectedFormField = expectedPage.getKeyValuePairs().get(i);
-            final FormField<?> actualFormField = actualForm.getFields().get("field-" + i);
+        int i = 0;
+        for (Map.Entry<String, FormField<?>> entry : actualForm.getFields().entrySet()) {
+            FormField<?> actualFormField = entry.getValue();
+            final KeyValuePair expectedFormField = expectedPage.getKeyValuePairs().get(i++);
             assertEquals(expectedFormField.getConfidence(), actualFormField.getConfidence());
             assertEquals(expectedFormField.getKey().getText(), actualFormField.getLabelData().getText());
             validateBoundingBoxData(expectedFormField.getKey().getBoundingBox(),
@@ -720,6 +721,7 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
 
         assertEquals(documentResult.getPageRange().get(0), actualForm.getFormPageRange().getFirstPageNumber());
         assertEquals(documentResult.getPageRange().get(1), actualForm.getFormPageRange().getLastPageNumber());
+        assertEquals(documentResult.getFields().keySet(), actualForm.getFields().keySet());
         documentResult.getFields().forEach((label, expectedFieldValue) -> {
             final FormField<?> actualFormField = actualForm.getFields().get(label);
             assertEquals(label, actualFormField.getName());
