@@ -33,6 +33,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.nio.ByteBuffer;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
@@ -649,7 +650,7 @@ public final class FormRecognizerAsyncClient {
                 UUID modelUid = UUID.fromString(modelId);
                 return service.getAnalyzeFormResultWithResponseAsync(modelUid, resultUid, context)
                     .map(modelSimpleResponse -> {
-                        throwIfAnalyzeStatusInvalid(modelSimpleResponse.getValue());
+                        // throwIfAnalyzeStatusInvalid(modelSimpleResponse.getValue());
                         return toRecognizedForm(modelSimpleResponse.getValue().getAnalyzeResult(),
                             includeFieldElements);
                     })
@@ -688,9 +689,10 @@ public final class FormRecognizerAsyncClient {
                     .flatMap(modelSimpleResponse -> processAnalyzeModelResponse(modelSimpleResponse,
                         operationResultPollResponse))
                     .onErrorMap(Utility::mapToHttpResponseExceptionIfExist);
-            } catch (HttpResponseException e) {
-                logger.logExceptionAsError(e);
-                return Mono.just(new PollResponse<>(LongRunningOperationStatus.FAILED, null));
+            }
+            // have the ability to bubble this up
+            catch (RuntimeException ex) {
+                return monoError(logger, ex);
             }
         };
     }
@@ -741,7 +743,7 @@ public final class FormRecognizerAsyncClient {
         };
     }
 
-    private static Mono<PollResponse<OperationResult>> processAnalyzeModelResponse(
+    private Mono<PollResponse<OperationResult>> processAnalyzeModelResponse(
         SimpleResponse<AnalyzeOperationResult> analyzeOperationResultSimpleResponse,
         PollResponse<OperationResult> operationResultPollResponse) {
         LongRunningOperationStatus status;
@@ -755,7 +757,9 @@ public final class FormRecognizerAsyncClient {
                 break;
             case FAILED:
                 status = LongRunningOperationStatus.FAILED;
-                break;
+                // trying to throw from polling operation
+                throw logger.logExceptionAsError(new FormRecognizerException("Analyze operation failed",
+                    Collections.emptyList()));
             default:
                 status = LongRunningOperationStatus.fromString(
                     analyzeOperationResultSimpleResponse.getValue().getStatus().toString(), true);
