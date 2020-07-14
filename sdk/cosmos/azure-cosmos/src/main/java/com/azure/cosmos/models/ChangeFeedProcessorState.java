@@ -19,6 +19,7 @@ public class ChangeFeedProcessorState {
     private Instant lastUpdatedTime;
     private String continuationToken;
     private Instant continuationTokenTimestamp;
+    private String latestToken;
     private int estimatedLag;
 
     /**
@@ -119,7 +120,7 @@ public class ChangeFeedProcessorState {
     }
 
     /**
-     * Sets a marker representing the last item that was processed..
+     * Sets a marker representing the last item that was processed.
      *
      * @param continuationToken the marker representing the last item that was processed.
      * @return the current ChangeFeedProcessorState instance.
@@ -146,6 +147,26 @@ public class ChangeFeedProcessorState {
      */
     public ChangeFeedProcessorState setContinuationTokenTimestamp(Instant continuationTokenTimestamp) {
         this.continuationTokenTimestamp = continuationTokenTimestamp;
+        return this;
+    }
+
+    /**
+     * Gets a marker representing the latest item that will be processed.
+     *
+     * @return the marker representing the latest item that will be processed.
+     */
+    public String getLatestToken() {
+        return this.latestToken;
+    }
+
+    /**
+     * Sets a marker representing the latest item that will be processed.
+     *
+     * @param latestToken the marker representing the latest item that will be processed.
+     * @return the current ChangeFeedProcessorState instance.
+     */
+    public ChangeFeedProcessorState setLatestToken(String latestToken) {
+        this.latestToken = latestToken;
         return this;
     }
 
