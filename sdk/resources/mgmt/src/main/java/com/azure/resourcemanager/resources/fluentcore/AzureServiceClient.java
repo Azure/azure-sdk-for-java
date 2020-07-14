@@ -12,6 +12,7 @@ import com.azure.core.management.polling.PollerFactory;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.management.serializer.AzureJacksonAdapter;
 import com.azure.core.util.Context;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.AsyncPollResponse;
 import com.azure.core.util.polling.LongRunningOperationStatus;
@@ -45,15 +46,17 @@ public abstract class AzureServiceClient {
 
     private final ClientLogger logger = new ClientLogger(getClass());
 
+    private static final Map<String, String> PROPERTIES =
+        CoreUtils.getProperties("azure.properties");
+
     protected AzureServiceClient(HttpPipeline httpPipeline, AzureEnvironment environment) {
         ((AzureJacksonAdapter) serializerAdapter).serializer().registerModule(DateTimeDeserializer.getModule());
     }
 
-    private static final String SDK_VERSION = "2.0.0-SNAPSHOT";
-
     private final SerializerAdapter serializerAdapter = new AzureJacksonAdapter();
 
     private String sdkName;
+    private static String sdkVersion;
 
     /**
      * Gets serializer adapter for JSON serialization/de-serialization.
@@ -73,8 +76,11 @@ public abstract class AzureServiceClient {
         if (sdkName == null) {
             sdkName = this.getClass().getPackage().getName();
         }
+        if (sdkVersion == null) {
+            sdkVersion = PROPERTIES.getOrDefault("version", "UnknownVersion");
+        }
         return new Context("Sdk-Name", sdkName)
-            .addData("Sdk-Version", SDK_VERSION);
+            .addData("Sdk-Version", sdkVersion);
     }
 
     /**
