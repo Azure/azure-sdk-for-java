@@ -34,10 +34,22 @@ public interface SpringServices
         SupportsListingByResourceGroup<SpringService>,
         SupportsDeletingById,
         SupportsDeletingByResourceGroup {
-    /** @return the service name is available or not. */
+    /**
+     * Checks the name of the service is available in specific region or not.
+     *
+     * @param name the service name
+     * @param region the region of the service
+     * @return the service name is available or not.
+     */
     NameAvailability checkNameAvailability(String name, Region region);
 
-    /** @return the service name is available or not. */
+    /**
+     * Checks the name of the service is available in specific region or not.
+     *
+     * @param name the service name
+     * @param region the region of the service
+     * @return the service name is available or not.
+     */
     Mono<NameAvailability> checkNameAvailabilityAsync(String name, Region region);
 
     /** @return all available sku. */

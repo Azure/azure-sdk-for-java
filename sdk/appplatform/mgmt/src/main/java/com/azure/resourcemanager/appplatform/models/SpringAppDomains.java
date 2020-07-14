@@ -29,9 +29,19 @@ public interface SpringAppDomains
     SupportsListing<SpringAppDomain>,
     SupportsDeletingById,
     SupportsDeletingByName {
-    /** @return the domain is validate for the parent app or not */
+    /**
+     * Checks the domain is validate for the app or not.
+     *
+     * @param domain the domain name
+     * @return the domain is validate for the parent app or not
+     */
     CustomDomainValidateResult validate(String domain);
 
-    /** @return the domain is validate for the parent app or not */
+    /**
+     * Checks the domain is validate for the app or not.
+     *
+     * @param domain the domain name
+     * @return the domain is validate for the parent app or not
+     */
     Mono<CustomDomainValidateResult> validateAsync(String domain);
 }
