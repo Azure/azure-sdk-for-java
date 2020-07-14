@@ -65,7 +65,7 @@ public class SharedTokenCacheCredential implements TokenCredential {
                 .identityClientOptions(identityClientOptions)
                 .build();
         this.cachedToken = new AtomicReference<>();
-         LoggingUtil.logAvailableEnvironmentVariables(logger, configuration);
+        LoggingUtil.logAvailableEnvironmentVariables(logger, configuration);
     }
 
     /**
