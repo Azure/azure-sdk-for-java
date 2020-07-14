@@ -38,7 +38,8 @@ Note: To use data lake, your account must have hierarchical namespace enabled.
 az storage account create \
     --resource-group <resource-group-name> \
     --name <storage-account-name> \
-    --location <location>
+    --location <location> \
+    --enable-hierarchical-namespace true
 ```
 
 Your storage account URL, subsequently identified as <your-storage-account-url>, would be formatted as follows
@@ -136,25 +137,27 @@ Note: This client library does not support hierarchical namespace (HNS) disabled
 ### URL format
 Paths are addressable using the following URL format:
 The following URL addresses a file:
-https://myaccount.dfs.core.windows.net/myfilesystem/myfile
+```
+https://${myaccount}.dfs.core.windows.net/${myfilesystem}/${myfile}
+```
 
 #### Resource URI Syntax
 For the storage account, the base URI for datalake operations includes the name of the account only:
 
 ```
-https://myaccount.dfs.core.windows.net
+https://${myaccount}.dfs.core.windows.net
 ```
 
 For a file system, the base URI includes the name of the account and the name of the file system:
 
 ```
-https://myaccount.dfs.core.windows.net/myfilesystem
+https://${myaccount}.dfs.core.windows.net/${myfilesystem}
 ```
 
 For a file/directory, the base URI includes the name of the account, the name of the file system and the name of the path:
 
 ```
-https://myaccount.dfs.core.windows.net/myfilesystem/mypath
+https://${myaccount}.dfs.core.windows.net/${myfilesystem}/${mypath}
 ```
 
 Note that the above URIs may not hold for more advanced scenarios such as custom domain names.
@@ -164,13 +167,15 @@ Note that the above URIs may not hold for more advanced scenarios such as custom
 The following sections provide several code snippets covering some of the most common Azure Storage Blob tasks, including:
 
 - [Create a `DataLakeServiceClient`](#create-a-datalakeserviceclient)
-- [Create a `DataLakeFileSystemClient`](#create-a-filesystemclient)
-- [Create a `DataLakeFileClient`](#create-a-fileclient)
-- [Create a `DataLakeDirectoryClient`](#create-a-directoryclient)
-- [Create a file system](#create-a-filesystem)
-- [Upload a file from a stream](#upload-a-file-from-a-stream)
-- [Read a file to a stream](#read-a-file-to-a-stream)
+- [Create a `DataLakeFileSystemClient`](#create-a-datalakefilesystemclient)
+- [Create a `DataLakeFileClient`](#create-a-datalakefileclient)
+- [Create a `DataLakeDirectoryClient`](#create-a-datalakedirectoryclient)
+- [Create a file system](#create-a-file-system)
 - [Enumerate paths](#enumerate-paths)
+- [Rename a file](#rename-a-file)
+- [Rename a directory](#rename-a-directory)
+- [Get file properties](#get-file-properties)
+- [Get directory properties](#get-directory-properties)
 - [Authenticate with Azure Identity](#authenticate-with-azure-identity)
 
 ### Create a `DataLakeServiceClient`
@@ -189,6 +194,7 @@ or
 
 <!-- embedme ./src/samples/java/com/azure/storage/file/datalake/ReadmeSamples.java#L32-L34 -->
 ```java
+// Only one "?" is needed here. If the sastoken starts with "?", please removing one "?".
 DataLakeServiceClient dataLakeServiceClient = new DataLakeServiceClientBuilder()
     .endpoint("<your-storage-account-url>" + "?" + "<your-sasToken>")
     .buildClient();
@@ -220,6 +226,7 @@ or
 
 <!-- embedme ./src/samples/java/com/azure/storage/file/datalake/ReadmeSamples.java#L50-L52 -->
 ```java
+// Only one "?" is needed here. If the sastoken starts with "?", please removing one "?".
 DataLakeFileSystemClient dataLakeFileSystemClient = new DataLakeFileSystemClientBuilder()
     .endpoint("<your-storage-account-url>" + "/" + "myfilesystem" + "?" + "<your-sasToken>")
     .buildClient();
@@ -252,6 +259,7 @@ or
 
 <!-- embedme ./src/samples/java/com/azure/storage/file/datalake/ReadmeSamples.java#L69-L71 -->
 ```java
+// Only one "?" is needed here. If the sastoken starts with "?", please removing one "?".
 DataLakeFileClient fileClient = new DataLakePathClientBuilder()
     .endpoint("<your-storage-account-url>" + "/" + "myfilesystem" + "/" + "myfile" + "?" + "<your-sasToken>")
     .buildFileClient();
@@ -284,6 +292,7 @@ or
 
 <!-- embedme ./src/samples/java/com/azure/storage/file/datalake/ReadmeSamples.java#L88-L90 -->
 ```java
+// Only one "?" is needed here. If the sastoken starts with "?", please removing one "?".
 DataLakeDirectoryClient directoryClient = new DataLakePathClientBuilder()
     .endpoint("<your-storage-account-url>" + "/" + "myfilesystem" + "/" + "mydir" + "?" + "<your-sasToken>")
     .buildDirectoryClient();
@@ -324,6 +333,7 @@ Rename a file using a `DataLakeFileClient`.
 
 <!-- embedme ./src/samples/java/com/azure/storage/file/datalake/ReadmeSamples.java#L108-L110 -->
 ```java
+//Need to authenticate with azure identity and add role assignment "Storage Blob Data Contributor" to do the following operation.
 DataLakeFileClient fileClient = dataLakeFileSystemClient.getFileClient("myfile");
 fileClient.create();
 fileClient.rename("new-file-system-name", "new-file-name");
@@ -335,6 +345,7 @@ Rename a directory using a `DataLakeDirectoryClient`.
 
 <!-- embedme ./src/samples/java/com/azure/storage/file/datalake/ReadmeSamples.java#L114-L116 -->
 ```java
+//Need to authenticate with azure identity and add role assignment "Storage Blob Data Contributor" to do the following operation.
 DataLakeDirectoryClient directoryClient = dataLakeFileSystemClient.getDirectoryClient("mydir");
 directoryClient.create();
 directoryClient.rename("new-file-system-name", "new-directory-name");
