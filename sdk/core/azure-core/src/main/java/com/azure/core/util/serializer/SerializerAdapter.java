@@ -69,6 +69,10 @@ public interface SerializerAdapter {
     default <U> U deserialize(final String value,
                               final Type type,
                               final SerializerEncoding encoding) throws IOException {
+        if (value == null) {
+            return null;
+        }
+
         return deserializeFromBytes(value.getBytes(StandardCharsets.UTF_8), type, encoding);
     }
 

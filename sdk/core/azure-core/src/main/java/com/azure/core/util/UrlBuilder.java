@@ -303,18 +303,11 @@ public final class UrlBuilder {
         // instance returning one with a clean query string.
         if (PARSED_URLS.containsKey(url)) {
             final UrlBuilder cachedUrl = PARSED_URLS.get(url);
-
-            final UrlBuilder ub = new UrlBuilder();
-            ub.scheme = cachedUrl.scheme;
-            ub.host = cachedUrl.host;
-            ub.path = cachedUrl.path;
-            ub.port = cachedUrl.port;
-
-            return ub;
+            return cachedUrl.copy();
         } else {
             final UrlBuilder ub = new UrlBuilder().with(url, UrlTokenizerState.SCHEME_OR_HOST);
             PARSED_URLS.put(url, ub);
-            return ub;
+            return ub.copy();
         }
     }
 
@@ -359,5 +352,17 @@ public final class UrlBuilder {
 
     private static String emptyToNull(String value) {
         return value == null || value.isEmpty() ? null : value;
+    }
+
+    private UrlBuilder copy() {
+        UrlBuilder copy = new UrlBuilder();
+
+        copy.scheme = this.scheme;
+        copy.host = this.host;
+        copy.path = this.path;
+        copy.port = this.port;
+        copy.query.putAll(this.query);
+
+        return copy;
     }
 }
