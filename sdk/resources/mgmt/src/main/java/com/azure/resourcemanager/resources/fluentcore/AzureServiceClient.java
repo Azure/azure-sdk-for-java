@@ -49,14 +49,19 @@ public abstract class AzureServiceClient {
     private static final Map<String, String> PROPERTIES =
         CoreUtils.getProperties("azure.properties");
 
-    protected AzureServiceClient(HttpPipeline httpPipeline, AzureEnvironment environment) {
-        ((AzureJacksonAdapter) serializerAdapter).serializer().registerModule(DateTimeDeserializer.getModule());
+    private static final String SDK_VERSION;
+    static {
+        SDK_VERSION = PROPERTIES.getOrDefault("version", "UnknownVersion");
     }
 
     private final SerializerAdapter serializerAdapter = new AzureJacksonAdapter();
 
-    private String sdkName;
-    private static String sdkVersion;
+    private final String sdkName;
+
+    protected AzureServiceClient(HttpPipeline httpPipeline, AzureEnvironment environment) {
+        sdkName = this.getClass().getPackage().getName();
+        ((AzureJacksonAdapter) serializerAdapter).serializer().registerModule(DateTimeDeserializer.getModule());
+    }
 
     /**
      * Gets serializer adapter for JSON serialization/de-serialization.
@@ -73,14 +78,8 @@ public abstract class AzureServiceClient {
      * @return the default client context.
      */
     public Context getContext() {
-        if (sdkName == null) {
-            sdkName = this.getClass().getPackage().getName();
-        }
-        if (sdkVersion == null) {
-            sdkVersion = PROPERTIES.getOrDefault("version", "UnknownVersion");
-        }
         return new Context("Sdk-Name", sdkName)
-            .addData("Sdk-Version", sdkVersion);
+            .addData("Sdk-Version", SDK_VERSION);
     }
 
     /**
