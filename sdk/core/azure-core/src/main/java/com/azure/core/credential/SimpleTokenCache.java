@@ -17,7 +17,9 @@ import java.util.function.Supplier;
  * A token cache that supports caching a token and refreshing it.
  */
 public class SimpleTokenCache {
-    private static final Duration REFRESH_TIMEOUT = Duration.ofSeconds(30);
+    // The delay after a refresh to attempt another token refresh
+    private static final Duration REFRESH_DELAY = Duration.ofSeconds(30);
+    // the offset before token expiry to attempt proactive token refresh
     private static final Duration REFRESH_OFFSET = Duration.ofMinutes(5);
     private final AtomicReference<MonoProcessor<AccessToken>> wip;
     private volatile AccessToken cache;
@@ -88,11 +90,11 @@ public class SimpleTokenCache {
                                 cache = accessToken;
                                 monoProcessor.onNext(accessToken);
                                 monoProcessor.onComplete();
-                                nextTokenRefresh = OffsetDateTime.now().plus(REFRESH_TIMEOUT);
+                                nextTokenRefresh = OffsetDateTime.now().plus(REFRESH_DELAY);
                                 return Mono.just(accessToken);
                             } else if (signal.isOnError() && error != null) { // ERROR
                                 logger.error(refreshLog(cache, now, "Failed to acquire a new access token"));
-                                nextTokenRefresh = OffsetDateTime.now().plus(REFRESH_TIMEOUT);
+                                nextTokenRefresh = OffsetDateTime.now().plus(REFRESH_DELAY);
                                 return fallback.switchIfEmpty(Mono.error(error));
                             } else { // NO REFRESH
                                 monoProcessor.onComplete();
@@ -129,7 +131,7 @@ public class SimpleTokenCache {
             Duration tte = Duration.between(now, cache.getExpiresAt());
             info.append(" at ").append(tte.abs().getSeconds()).append(" seconds ")
                 .append(tte.isNegative() ? "after" : "before").append(" expiry. ")
-                .append("Retry may be attempted after ").append(REFRESH_TIMEOUT.getSeconds()).append(" seconds.");
+                .append("Retry may be attempted after ").append(REFRESH_DELAY.getSeconds()).append(" seconds.");
             if (!tte.isNegative()) {
                 info.append(" The token currently cached will be used.");
             }
