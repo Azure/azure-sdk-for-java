@@ -47,11 +47,6 @@ public interface FirewallPolicy extends HasInner<FirewallPolicyInner>, Resource,
     List<SubResource> firewalls();
 
     /**
-     * @return the intrusionSystemMode value.
-     */
-    FirewallPolicyIntrusionSystemMode intrusionSystemMode();
-
-    /**
      * @return the provisioningState value.
      */
     ProvisioningState provisioningState();
@@ -101,18 +96,6 @@ public interface FirewallPolicy extends HasInner<FirewallPolicyInner>, Resource,
         }
 
         /**
-         * The stage of the firewallpolicy definition allowing to specify IntrusionSystemMode.
-         */
-        interface WithIntrusionSystemMode {
-            /**
-             * Specifies intrusionSystemMode.
-             * @param intrusionSystemMode The operation mode for Intrusion system. Possible values include: 'Enabled', 'Disabled'
-             * @return the next definition stage
-             */
-            WithCreate withIntrusionSystemMode(FirewallPolicyIntrusionSystemMode intrusionSystemMode);
-        }
-
-        /**
          * The stage of the firewallpolicy definition allowing to specify ThreatIntelMode.
          */
         interface WithThreatIntelMode {
@@ -129,13 +112,13 @@ public interface FirewallPolicy extends HasInner<FirewallPolicyInner>, Resource,
          * the resource to be created (via {@link WithCreate#create()}), but also allows
          * for any other optional settings to be specified.
          */
-        interface WithCreate extends Creatable<FirewallPolicy>, Resource.DefinitionWithTags<WithCreate>, DefinitionStages.WithBasePolicy, DefinitionStages.WithIntrusionSystemMode, DefinitionStages.WithThreatIntelMode {
+        interface WithCreate extends Creatable<FirewallPolicy>, Resource.DefinitionWithTags<WithCreate>, DefinitionStages.WithBasePolicy, DefinitionStages.WithThreatIntelMode {
         }
     }
     /**
      * The template for a FirewallPolicy update operation, containing all the settings that can be modified.
      */
-    interface Update extends Appliable<FirewallPolicy>, Resource.UpdateWithTags<Update>, UpdateStages.WithBasePolicy, UpdateStages.WithIntrusionSystemMode, UpdateStages.WithThreatIntelMode {
+    interface Update extends Appliable<FirewallPolicy>, Resource.UpdateWithTags<Update>, UpdateStages.WithBasePolicy, UpdateStages.WithThreatIntelMode {
     }
 
     /**
@@ -152,18 +135,6 @@ public interface FirewallPolicy extends HasInner<FirewallPolicyInner>, Resource,
              * @return the next update stage
              */
             Update withBasePolicy(SubResource basePolicy);
-        }
-
-        /**
-         * The stage of the firewallpolicy update allowing to specify IntrusionSystemMode.
-         */
-        interface WithIntrusionSystemMode {
-            /**
-             * Specifies intrusionSystemMode.
-             * @param intrusionSystemMode The operation mode for Intrusion system. Possible values include: 'Enabled', 'Disabled'
-             * @return the next update stage
-             */
-            Update withIntrusionSystemMode(FirewallPolicyIntrusionSystemMode intrusionSystemMode);
         }
 
         /**
