@@ -31,6 +31,7 @@ public class ReadmeSamples {
     }
 
     public void getBlobServiceClient2() {
+        // Only one "?" is needed here. If the sastoken starts with "?", please removing one "?".
         BlobServiceClient blobServiceClient = new BlobServiceClientBuilder()
             .endpoint("<your-storage-account-url>" + "?" + "<your-sasToken>")
             .buildClient();
@@ -49,6 +50,7 @@ public class ReadmeSamples {
     }
 
     public void getBlobContainerClient3() {
+        // Only one "?" is needed here. If the sastoken starts with "?", please removing one "?".
         BlobContainerClient blobContainerClient = new BlobContainerClientBuilder()
             .endpoint("<your-storage-account-url>" + "/" + "mycontainer" + "?" + "<your-sasToken>")
             .buildClient();
@@ -68,6 +70,7 @@ public class ReadmeSamples {
     }
 
     public void getBlobClient3() {
+        // Only one "?" is needed here. If the sastoken starts with "?", please removing one "?".
         BlobClient blobClient = new BlobClientBuilder()
             .endpoint("<your-storage-account-url>" + "/" + "mycontainer" + "/" + "myblob" + "?" + "<your-sasToken>")
             .buildClient();
