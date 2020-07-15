@@ -20,14 +20,14 @@ documentation][event_hubs_product_docs] | [Samples][sample_examples]
 - Azure Storage account
     - Step-by-step guide for [creating a Storage account using the Azure Portal][storage_account]
 
-### Including the package
+### Include the package
 
 [//]: # ({x-version-update-start;com.azure:azure-messaging-eventhubs-checkpointstore-blob;current})
 ```xml
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-messaging-eventhubs-checkpointstore-blob</artifactId>
-    <version>1.1.1</version>
+    <version>1.1.2</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})

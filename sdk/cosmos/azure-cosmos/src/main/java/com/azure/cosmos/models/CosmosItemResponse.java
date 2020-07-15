@@ -4,7 +4,7 @@ package com.azure.cosmos.models;
 
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosDiagnostics;
-import com.azure.cosmos.implementation.CosmosItemProperties;
+import com.azure.cosmos.implementation.InternalObjectNode;
 import com.azure.cosmos.implementation.Document;
 import com.azure.cosmos.implementation.ResourceResponse;
 import com.azure.cosmos.implementation.SerializationDiagnosticsContext;
@@ -12,8 +12,6 @@ import com.azure.cosmos.implementation.Utils;
 
 import java.time.Duration;
 import java.time.Instant;
-import java.time.ZoneOffset;
-import java.time.ZonedDateTime;
 import java.util.Map;
 
 /**
@@ -26,7 +24,7 @@ public class CosmosItemResponse<T> {
     private final byte[] responseBodyAsByteArray;
     private T item;
     private final ResourceResponse<Document> resourceResponse;
-    private CosmosItemProperties props;
+    private InternalObjectNode props;
 
     CosmosItemResponse(ResourceResponse<Document> response, Class<T> classType) {
         this.itemClassType = classType;
@@ -39,14 +37,14 @@ public class CosmosItemResponse<T> {
      *
      * @return the resource
      */
-    @SuppressWarnings("unchecked") // Casting getProperties() to T is safe given T is of CosmosItemProperties.
+    @SuppressWarnings("unchecked") // Casting getProperties() to T is safe given T is of InternalObjectNode.
     public T getItem() {
         if (item != null) {
             return item;
         }
 
         SerializationDiagnosticsContext serializationDiagnosticsContext = BridgeInternal.getSerializationDiagnosticsContext(this.getDiagnostics());
-        if (item == null && this.itemClassType == CosmosItemProperties.class) {
+        if (item == null && this.itemClassType == InternalObjectNode.class) {
             Instant serializationStartTime = Instant.now();
             item =(T) getProperties();
             Instant serializationEndTime = Instant.now();
@@ -83,17 +81,17 @@ public class CosmosItemResponse<T> {
      *
      * @return the itemProperties
      */
-    CosmosItemProperties getProperties() {
-        ensureCosmosItemPropertiesInitialized();
+    InternalObjectNode getProperties() {
+        ensureInternalObjectNodeInitialized();
         return props;
     }
 
-    private void ensureCosmosItemPropertiesInitialized() {
+    private void ensureInternalObjectNodeInitialized() {
         synchronized (this) {
             if (Utils.isEmpty(responseBodyAsByteArray)) {
                 props = null;
             } else {
-                props = new CosmosItemProperties(responseBodyAsByteArray);
+                props = new InternalObjectNode(responseBodyAsByteArray);
             }
 
         }

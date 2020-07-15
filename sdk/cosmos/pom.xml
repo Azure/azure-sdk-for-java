@@ -11,7 +11,7 @@
   <modules>
     <module>azure-cosmos</module>
     <module>azure-cosmos-benchmark</module>
-    <module>azure-cosmos-examples</module>
+    <module>azure-spring-data-cosmos</module>
   </modules>
 
 </project>

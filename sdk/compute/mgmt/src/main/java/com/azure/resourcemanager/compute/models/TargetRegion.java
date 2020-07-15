@@ -34,6 +34,13 @@ public final class TargetRegion {
     @JsonProperty(value = "storageAccountType")
     private StorageAccountType storageAccountType;
 
+    /*
+     * Optional. Allows users to provide customer managed keys for encrypting
+     * the OS and data disks in the gallery artifact.
+     */
+    @JsonProperty(value = "encryption")
+    private EncryptionImages encryption;
+
     /**
      * Get the name property: The name of the region.
      *
@@ -99,6 +106,28 @@ public final class TargetRegion {
     }
 
     /**
+     * Get the encryption property: Optional. Allows users to provide customer managed keys for encrypting the OS and
+     * data disks in the gallery artifact.
+     *
+     * @return the encryption value.
+     */
+    public EncryptionImages encryption() {
+        return this.encryption;
+    }
+
+    /**
+     * Set the encryption property: Optional. Allows users to provide customer managed keys for encrypting the OS and
+     * data disks in the gallery artifact.
+     *
+     * @param encryption the encryption value to set.
+     * @return the TargetRegion object itself.
+     */
+    public TargetRegion withEncryption(EncryptionImages encryption) {
+        this.encryption = encryption;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -108,6 +137,9 @@ public final class TargetRegion {
             throw logger
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property name in model TargetRegion"));
+        }
+        if (encryption() != null) {
+            encryption().validate();
         }
     }
 }

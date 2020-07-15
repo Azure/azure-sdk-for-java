@@ -27,6 +27,12 @@ public final class ApplicationGatewayRewriteRuleActionSet {
     @JsonProperty(value = "responseHeaderConfigurations")
     private List<ApplicationGatewayHeaderConfiguration> responseHeaderConfigurations;
 
+    /*
+     * Url Configuration Action in the Action Set.
+     */
+    @JsonProperty(value = "urlConfiguration")
+    private ApplicationGatewayUrlConfiguration urlConfiguration;
+
     /**
      * Get the requestHeaderConfigurations property: Request Header Actions in the Action Set.
      *
@@ -70,6 +76,27 @@ public final class ApplicationGatewayRewriteRuleActionSet {
     }
 
     /**
+     * Get the urlConfiguration property: Url Configuration Action in the Action Set.
+     *
+     * @return the urlConfiguration value.
+     */
+    public ApplicationGatewayUrlConfiguration urlConfiguration() {
+        return this.urlConfiguration;
+    }
+
+    /**
+     * Set the urlConfiguration property: Url Configuration Action in the Action Set.
+     *
+     * @param urlConfiguration the urlConfiguration value to set.
+     * @return the ApplicationGatewayRewriteRuleActionSet object itself.
+     */
+    public ApplicationGatewayRewriteRuleActionSet withUrlConfiguration(
+        ApplicationGatewayUrlConfiguration urlConfiguration) {
+        this.urlConfiguration = urlConfiguration;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -80,6 +107,9 @@ public final class ApplicationGatewayRewriteRuleActionSet {
         }
         if (responseHeaderConfigurations() != null) {
             responseHeaderConfigurations().forEach(e -> e.validate());
+        }
+        if (urlConfiguration() != null) {
+            urlConfiguration().validate();
         }
     }
 }

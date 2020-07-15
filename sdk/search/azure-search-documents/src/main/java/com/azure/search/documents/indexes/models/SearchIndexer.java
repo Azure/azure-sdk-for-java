@@ -4,7 +4,11 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonSetter;
+
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -81,23 +85,38 @@ public final class SearchIndexer {
     private String eTag;
 
     /**
+     * Constructor of {@link SearchIndexer}.
+     *
+     * @param name The name of the indexer.
+     */
+    public SearchIndexer(String name) {
+        this.name = name;
+    }
+
+    /**
+     * Constructor of {@link SearchIndexer}.
+     *
+     * @param name The name of the indexer.
+     * @param dataSourceName The name of the datasource from which this indexer reads data.
+     * @param targetIndexName The name of the index to which this indexer writes data.
+     */
+    @JsonCreator
+    public SearchIndexer(
+        @JsonProperty(value = "name") String name,
+        @JsonProperty(value = "dataSourceName") String dataSourceName,
+        @JsonProperty(value = "targetIndexName") String targetIndexName) {
+        this.name = name;
+        this.dataSourceName = dataSourceName;
+        this.targetIndexName = targetIndexName;
+    }
+
+    /**
      * Get the name property: The name of the indexer.
      *
      * @return the name value.
      */
     public String getName() {
         return this.name;
-    }
-
-    /**
-     * Set the name property: The name of the indexer.
-     *
-     * @param name the name value to set.
-     * @return the SearchIndexer object itself.
-     */
-    public SearchIndexer setName(String name) {
-        this.name = name;
-        return this;
     }
 
     /**
@@ -134,7 +153,7 @@ public final class SearchIndexer {
      * Set the dataSourceName property: The name of the datasource from which
      * this indexer reads data.
      *
-     * @param dataSourceName the dataSourceName value to set.
+     * @param dataSourceName the dataSourceName value.
      * @return the SearchIndexer object itself.
      */
     public SearchIndexer setDataSourceName(String dataSourceName) {
@@ -178,7 +197,7 @@ public final class SearchIndexer {
      * Set the targetIndexName property: The name of the index to which this
      * indexer writes data.
      *
-     * @param targetIndexName the targetIndexName value to set.
+     * @param targetIndexName the targetIndexName value.
      * @return the SearchIndexer object itself.
      */
     public SearchIndexer setTargetIndexName(String targetIndexName) {
@@ -243,6 +262,19 @@ public final class SearchIndexer {
      * @param fieldMappings the fieldMappings value to set.
      * @return the SearchIndexer object itself.
      */
+    public SearchIndexer setFieldMappings(FieldMapping... fieldMappings) {
+        this.fieldMappings = (fieldMappings == null) ? null : Arrays.asList(fieldMappings);
+        return this;
+    }
+
+    /**
+     * Set the fieldMappings property: Defines mappings between fields in the
+     * data source and corresponding target fields in the index.
+     *
+     * @param fieldMappings the fieldMappings value to set.
+     * @return the SearchIndexer object itself.
+     */
+    @JsonSetter
     public SearchIndexer setFieldMappings(List<FieldMapping> fieldMappings) {
         this.fieldMappings = fieldMappings;
         return this;
@@ -265,6 +297,19 @@ public final class SearchIndexer {
      * @param outputFieldMappings the outputFieldMappings value to set.
      * @return the SearchIndexer object itself.
      */
+    public SearchIndexer setOutputFieldMappings(FieldMapping... outputFieldMappings) {
+        this.outputFieldMappings = (outputFieldMappings == null) ? null : Arrays.asList(outputFieldMappings);
+        return this;
+    }
+
+    /**
+     * Set the outputFieldMappings property: Output field mappings are applied
+     * after enrichment and immediately before indexing.
+     *
+     * @param outputFieldMappings the outputFieldMappings value to set.
+     * @return the SearchIndexer object itself.
+     */
+    @JsonSetter
     public SearchIndexer setOutputFieldMappings(List<FieldMapping> outputFieldMappings) {
         this.outputFieldMappings = outputFieldMappings;
         return this;

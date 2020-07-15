@@ -7,7 +7,6 @@ import com.azure.search.documents.indexes.models.PatternTokenizer;
 import com.azure.search.documents.indexes.models.RegexFlags;
 
 import java.util.Arrays;
-import java.util.List;
 import java.util.stream.Collectors;
 
 /**
@@ -22,18 +21,15 @@ public final class PatternTokenizerConverter {
         if (obj == null) {
             return null;
         }
-        PatternTokenizer patternTokenizer = new PatternTokenizer();
-
-        String name = obj.getName();
-        patternTokenizer.setName(name);
+        PatternTokenizer patternTokenizer = new PatternTokenizer(obj.getName());
 
         String pattern = obj.getPattern();
         patternTokenizer.setPattern(pattern);
 
         if (obj.getFlags() != null) {
-            List<RegexFlags> regexFlags =
-                Arrays.stream(obj.getFlags().toString().split("\\|")).map(RegexFlags::fromString).collect(Collectors.toList());
-            patternTokenizer.setFlags(regexFlags);
+            patternTokenizer.setFlags(Arrays.stream(obj.getFlags().toString().split("\\|"))
+                .map(RegexFlags::fromString)
+                .collect(Collectors.toList()));
         }
 
         Integer group = obj.getGroup();
@@ -49,10 +45,7 @@ public final class PatternTokenizerConverter {
             return null;
         }
         com.azure.search.documents.indexes.implementation.models.PatternTokenizer patternTokenizer =
-            new com.azure.search.documents.indexes.implementation.models.PatternTokenizer();
-
-        String name = obj.getName();
-        patternTokenizer.setName(name);
+            new com.azure.search.documents.indexes.implementation.models.PatternTokenizer(obj.getName());
 
         String pattern = obj.getPattern();
         patternTokenizer.setPattern(pattern);
@@ -64,6 +57,7 @@ public final class PatternTokenizerConverter {
 
         Integer group = obj.getGroup();
         patternTokenizer.setGroup(group);
+        patternTokenizer.validate();
         return patternTokenizer;
     }
 

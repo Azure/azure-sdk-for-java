@@ -75,6 +75,13 @@ stages:
                   $(Build.SourcesDirectory)/eng/versioning/scan_for_unreleased_dependencies.ps1 ${{artifact.groupId}} ${{artifact.name}} $(Build.SourcesDirectory)/sdk/${{parameters.ServiceDirectory}}
                 displayName: "Verify no unreleased dependencies"
 
+              - ${{if ne(parameters.SDKType, 'data')}}:
+                - template: /eng/common/pipelines/templates/steps/verify-changelog.yml
+                  parameters:
+                    PackageName: ${{artifact.name}}
+                    ServiceName: ${{parameters.ServiceDirectory}}
+                    ForRelease: true
+
 
           - deployment: TagRepository
             displayName: "Create release tag"
@@ -148,7 +155,6 @@ stages:
               displayName: "Publish Updates for Docs.MS"
               condition: and(succeeded(), ne(variables['Skip.PublishDocs'], 'true'))
               environment: github
-              timeoutInMinutes: 5
               dependsOn: PublishPackage
               variables:
                 - template: ../variables/globals.yml
@@ -176,8 +182,8 @@ stages:
                           PRBranchName: 'smoke-test-rdme'
                           ArtifactName: ${{parameters.ArtifactName}}
                           Language: 'java'
-                          DocRepoDestinationPath: 'docs-ref-services/' 
-                          
+                          DocRepoDestinationPath: 'docs-ref-services/'
+
           - ${{if ne(artifact.options.skipPublishDocs, 'true')}}:
             - deployment: PublishDocs
               displayName: Publish Docs to GitHubIO Blob Storage

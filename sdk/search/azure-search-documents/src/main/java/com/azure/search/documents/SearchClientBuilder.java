@@ -10,6 +10,7 @@ import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.policy.AddDatePolicy;
+import com.azure.core.http.policy.AddHeadersFromContextPolicy;
 import com.azure.core.http.policy.AddHeadersPolicy;
 import com.azure.core.http.policy.AzureKeyCredentialPolicy;
 import com.azure.core.http.policy.HttpLogOptions;
@@ -32,16 +33,26 @@ import java.util.Objects;
 
 /**
  * This class provides a fluent builder API to help aid the configuration and instantiation of {@link SearchClient
- * SearchClients} and {@link SearchAsyncClient SearchAsyncClients}. Call {@link #buildClient()
- * buildClient} and {@link #buildAsyncClient() buildAsyncClient} respectively to construct an instance of the desired
- * client.
+ * SearchClients} and {@link SearchAsyncClient SearchAsyncClients}. Call {@link #buildClient() buildClient} and {@link
+ * #buildAsyncClient() buildAsyncClient} respectively to construct an instance of the desired client.
  * <p>
- * The following information must be provided to successfully create a client.
+ * The following must be provided to construct a client instance.
  * <ul>
- *     <li>{@link #endpoint(String)}</li>
- *     <li>{@link #indexName(String)}</li>
- *     <li>{@link #credential(AzureKeyCredential)} or {@link #pipeline(HttpPipeline)}</li>
+ * <li>The Azure Cognitive Search service URL.</li>
+ * <li>An {@link AzureKeyCredential} that grants access to the Azure Cognitive Search service.</li>
+ * <li>The search index name.</li>
  * </ul>
+ *
+ * <p><strong>Instantiating an asynchronous Search Client</strong></p>
+ *
+ * {@codesnippet com.azure.search.documents.SearchAsyncClient.instantiation}
+ *
+ * <p><strong>Instantiating a synchronous Search Client</strong></p>
+ *
+ * {@codesnippet com.azure.search.documents.SearchClient.instantiation}
+ *
+ * @see SearchClient
+ * @see SearchAsyncClient
  */
 @ServiceClientBuilder(serviceClients = {SearchClient.class, SearchAsyncClient.class})
 public final class SearchClientBuilder {
@@ -76,8 +87,8 @@ public final class SearchClientBuilder {
 
 
     /**
-     * Creates a builder instance that is able to configure and construct {@link SearchClient SearchClients}
-     * and {@link SearchAsyncClient SearchAsyncClients}.
+     * Creates a builder instance that is able to configure and construct {@link SearchClient SearchClients} and {@link
+     * SearchAsyncClient SearchAsyncClients}.
      */
     public SearchClientBuilder() {
         Map<String, String> properties = CoreUtils.getProperties(SEARCH_PROPERTIES);
@@ -86,12 +97,12 @@ public final class SearchClientBuilder {
     }
 
     /**
-     * Creates a {@link SearchClient} based on options set in the Builder. Every time {@code buildClient()} is
-     * called a new instance of {@link SearchClient} is created.
+     * Creates a {@link SearchClient} based on options set in the builder. Every time {@code buildClient()} is called a
+     * new instance of {@link SearchClient} is created.
      * <p>
      * If {@link #pipeline(HttpPipeline) pipeline} is set, then only the {@code pipeline}, {@link #endpoint(String)
-     * endpoint}, and {@link #indexName(String) indexName} are used to create the {@link SearchClient client}.
-     * All other builder settings are ignored.
+     * endpoint}, and {@link #indexName(String) indexName} are used to create the {@link SearchClient client}. All other
+     * builder settings are ignored.
      *
      * @return A SearchClient with the options set from the builder.
      * @throws NullPointerException If {@code indexName} or {@code endpoint} are {@code null}.
@@ -101,12 +112,12 @@ public final class SearchClientBuilder {
     }
 
     /**
-     * Creates a {@link SearchAsyncClient} based on options set in the Builder. Every time
-     * {@code buildAsyncClient()} is called a new instance of {@link SearchAsyncClient} is created.
+     * Creates a {@link SearchAsyncClient} based on options set in the builder. Every time {@code buildAsyncClient()} is
+     * called a new instance of {@link SearchAsyncClient} is created.
      * <p>
      * If {@link #pipeline(HttpPipeline) pipeline} is set, then only the {@code pipeline}, {@link #endpoint(String)
-     * endpoint}, and {@link #indexName(String) indexName} are used to create the {@link SearchAsyncClient client}.
-     * All other builder settings are ignored.
+     * endpoint}, and {@link #indexName(String) indexName} are used to create the {@link SearchAsyncClient client}. All
+     * other builder settings are ignored.
      *
      * @return A SearchClient with the options set from the builder.
      * @throws NullPointerException If {@code indexName} or {@code endpoint} are {@code null}.
@@ -130,6 +141,7 @@ public final class SearchClientBuilder {
         // Closest to API goes first, closest to wire goes last.
         final List<HttpPipelinePolicy> httpPipelinePolicies = new ArrayList<>();
         httpPipelinePolicies.add(new AddHeadersPolicy(headers));
+        httpPipelinePolicies.add(new AddHeadersFromContextPolicy());
         httpPipelinePolicies.add(new UserAgentPolicy(httpLogOptions.getApplicationId(), clientName, clientVersion,
             buildConfiguration));
         httpPipelinePolicies.add(new RequestIdPolicy());
@@ -156,9 +168,9 @@ public final class SearchClientBuilder {
     }
 
     /**
-     * Sets the service endpoint for the Azure Search instance.
+     * Sets the service endpoint for the Azure Cognitive Search instance.
      *
-     * @param endpoint The URL of the Azure Search instance.
+     * @param endpoint The URL of the Azure Cognitive Search instance.
      * @return The updated SearchClientBuilder object.
      * @throws IllegalArgumentException If {@code endpoint} is null or it cannot be parsed into a valid URL.
      */
@@ -293,7 +305,7 @@ public final class SearchClientBuilder {
      * Sets the {@link SearchServiceVersion} that is used when making API requests.
      * <p>
      * If a service version is not provided, {@link SearchServiceVersion#getLatest()} will be used as a default. When
-     * this default is used updating to a newer client library may result in a newer version of the service being used.
+     * the default is used, updating to a newer client library may implicitly use a newer version of the service.
      *
      * @param serviceVersion The version of the service to be used when making requests.
      * @return The updated SearchClientBuilder object.

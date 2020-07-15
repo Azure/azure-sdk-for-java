@@ -4,9 +4,13 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -30,6 +34,18 @@ public final class LuceneStandardAnalyzer extends LexicalAnalyzer {
      */
     @JsonProperty(value = "stopwords")
     private List<String> stopwords;
+
+    /**
+     * Constructor of {@link LuceneStandardAnalyzer}.
+     *
+     * @param name The name of the analyzer. It must only contain letters, digits, spaces,
+     * dashes or underscores, can only start and end with alphanumeric
+     * characters, and is limited to 128 characters.
+     */
+    @JsonCreator
+    public LuceneStandardAnalyzer(@JsonProperty(value = "name") String name) {
+        super(name);
+    }
 
     /**
      * Get the maxTokenLength property: The maximum token length. Default is
@@ -70,6 +86,18 @@ public final class LuceneStandardAnalyzer extends LexicalAnalyzer {
      * @param stopwords the stopwords value to set.
      * @return the LuceneStandardAnalyzer object itself.
      */
+    public LuceneStandardAnalyzer setStopwords(String... stopwords) {
+        this.stopwords = (stopwords == null) ? null : Arrays.asList(stopwords);
+        return this;
+    }
+
+    /**
+     * Set the stopwords property: A list of stopwords.
+     *
+     * @param stopwords the stopwords value to set.
+     * @return the LuceneStandardAnalyzer object itself.
+     */
+    @JsonSetter
     public LuceneStandardAnalyzer setStopwords(List<String> stopwords) {
         this.stopwords = stopwords;
         return this;

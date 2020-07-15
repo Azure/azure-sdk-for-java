@@ -46,6 +46,13 @@ public class TestUtils {
     static final int USE_CASE_MULTIPLE_RECEIVE_ONE_TIMEOUT = 5;
     static final int USE_CASE_PEEK_BATCH_MESSAGES = 6;
     static final int USE_CASE_SEND_READ_BACK_MESSAGES = 7;
+    static final int USE_CASE_MULTIPLE_SESSION = 8;
+    static final int USE_CASE_PEEK_MESSAGE_FROM_SEQUENCE = 9;
+    static final int USE_CASE_PEEK_RECEIVE_AND_DEFER = 10;
+    static final int USE_CASE_PEEK_TRANSACTION_SENDRECEIVE_AND_COMPLETE = 11;
+    static final int USE_CASE_SINGLE_SESSION = 12;
+    static final int USE_CASE_SEND_VIA_1 = 13;
+    static final int USE_CASE_SEND_VIA_2 = 14;
 
     // An application property key to identify where in the stream this message was created.
     static final String MESSAGE_POSITION_ID = "message-position";
@@ -93,12 +100,12 @@ public class TestUtils {
     }
 
     /**
-     * The Service Bus topic name.
+     * Gets the Service Bus subscription name (NOT session enabled)
      *
-     * @return The Service bus topic name.
+     * @return The Service Bus subscription name.
      */
-    public static String getTopicName() {
-        return System.getenv("AZURE_SERVICEBUS_TOPIC_NAME");
+    public static String getSubscriptionBaseName() {
+        return System.getenv("AZURE_SERVICEBUS_SUBSCRIPTION_NAME");
     }
 
     /**
@@ -106,8 +113,8 @@ public class TestUtils {
      *
      * @return The Service Bus subscription name.
      */
-    public static String getSubscriptionBaseName() {
-        return System.getenv("AZURE_SERVICEBUS_SUBSCRIPTION_NAME");
+    public static String getTopicBaseName() {
+        return System.getenv("AZURE_SERVICEBUS_TOPIC_NAME");
     }
 
     /**

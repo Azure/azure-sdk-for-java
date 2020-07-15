@@ -9,11 +9,17 @@ import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.ConnectionMonitorDestination;
+import com.azure.resourcemanager.network.models.ConnectionMonitorEndpoint;
+import com.azure.resourcemanager.network.models.ConnectionMonitorOutput;
 import com.azure.resourcemanager.network.models.ConnectionMonitorSource;
+import com.azure.resourcemanager.network.models.ConnectionMonitorTestConfiguration;
+import com.azure.resourcemanager.network.models.ConnectionMonitorTestGroup;
+import com.azure.resourcemanager.network.models.ConnectionMonitorType;
 import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
+import java.util.List;
 
 /** The ConnectionMonitorResult model. */
 @JsonFlatten
@@ -24,7 +30,7 @@ public class ConnectionMonitorResultInner extends Resource {
     /*
      * A unique read-only string that changes whenever the resource is updated.
      */
-    @JsonProperty(value = "etag")
+    @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
 
     /*
@@ -53,6 +59,36 @@ public class ConnectionMonitorResultInner extends Resource {
     private Integer monitoringIntervalInSeconds;
 
     /*
+     * List of connection monitor endpoints.
+     */
+    @JsonProperty(value = "properties.endpoints")
+    private List<ConnectionMonitorEndpoint> endpoints;
+
+    /*
+     * List of connection monitor test configurations.
+     */
+    @JsonProperty(value = "properties.testConfigurations")
+    private List<ConnectionMonitorTestConfiguration> testConfigurations;
+
+    /*
+     * List of connection monitor test groups.
+     */
+    @JsonProperty(value = "properties.testGroups")
+    private List<ConnectionMonitorTestGroup> testGroups;
+
+    /*
+     * List of connection monitor outputs.
+     */
+    @JsonProperty(value = "properties.outputs")
+    private List<ConnectionMonitorOutput> outputs;
+
+    /*
+     * Optional notes to be associated with the connection monitor.
+     */
+    @JsonProperty(value = "properties.notes")
+    private String notes;
+
+    /*
      * The provisioning state of the connection monitor.
      */
     @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
@@ -61,14 +97,20 @@ public class ConnectionMonitorResultInner extends Resource {
     /*
      * The date and time when the connection monitor was started.
      */
-    @JsonProperty(value = "properties.startTime")
+    @JsonProperty(value = "properties.startTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime startTime;
 
     /*
      * The monitoring status of the connection monitor.
      */
-    @JsonProperty(value = "properties.monitoringStatus")
+    @JsonProperty(value = "properties.monitoringStatus", access = JsonProperty.Access.WRITE_ONLY)
     private String monitoringStatus;
+
+    /*
+     * Type of connection monitor.
+     */
+    @JsonProperty(value = "properties.connectionMonitorType", access = JsonProperty.Access.WRITE_ONLY)
+    private ConnectionMonitorType connectionMonitorType;
 
     /**
      * Get the etag property: A unique read-only string that changes whenever the resource is updated.
@@ -77,17 +119,6 @@ public class ConnectionMonitorResultInner extends Resource {
      */
     public String etag() {
         return this.etag;
-    }
-
-    /**
-     * Set the etag property: A unique read-only string that changes whenever the resource is updated.
-     *
-     * @param etag the etag value to set.
-     * @return the ConnectionMonitorResultInner object itself.
-     */
-    public ConnectionMonitorResultInner withEtag(String etag) {
-        this.etag = etag;
-        return this;
     }
 
     /**
@@ -171,6 +202,107 @@ public class ConnectionMonitorResultInner extends Resource {
     }
 
     /**
+     * Get the endpoints property: List of connection monitor endpoints.
+     *
+     * @return the endpoints value.
+     */
+    public List<ConnectionMonitorEndpoint> endpoints() {
+        return this.endpoints;
+    }
+
+    /**
+     * Set the endpoints property: List of connection monitor endpoints.
+     *
+     * @param endpoints the endpoints value to set.
+     * @return the ConnectionMonitorResultInner object itself.
+     */
+    public ConnectionMonitorResultInner withEndpoints(List<ConnectionMonitorEndpoint> endpoints) {
+        this.endpoints = endpoints;
+        return this;
+    }
+
+    /**
+     * Get the testConfigurations property: List of connection monitor test configurations.
+     *
+     * @return the testConfigurations value.
+     */
+    public List<ConnectionMonitorTestConfiguration> testConfigurations() {
+        return this.testConfigurations;
+    }
+
+    /**
+     * Set the testConfigurations property: List of connection monitor test configurations.
+     *
+     * @param testConfigurations the testConfigurations value to set.
+     * @return the ConnectionMonitorResultInner object itself.
+     */
+    public ConnectionMonitorResultInner withTestConfigurations(
+        List<ConnectionMonitorTestConfiguration> testConfigurations) {
+        this.testConfigurations = testConfigurations;
+        return this;
+    }
+
+    /**
+     * Get the testGroups property: List of connection monitor test groups.
+     *
+     * @return the testGroups value.
+     */
+    public List<ConnectionMonitorTestGroup> testGroups() {
+        return this.testGroups;
+    }
+
+    /**
+     * Set the testGroups property: List of connection monitor test groups.
+     *
+     * @param testGroups the testGroups value to set.
+     * @return the ConnectionMonitorResultInner object itself.
+     */
+    public ConnectionMonitorResultInner withTestGroups(List<ConnectionMonitorTestGroup> testGroups) {
+        this.testGroups = testGroups;
+        return this;
+    }
+
+    /**
+     * Get the outputs property: List of connection monitor outputs.
+     *
+     * @return the outputs value.
+     */
+    public List<ConnectionMonitorOutput> outputs() {
+        return this.outputs;
+    }
+
+    /**
+     * Set the outputs property: List of connection monitor outputs.
+     *
+     * @param outputs the outputs value to set.
+     * @return the ConnectionMonitorResultInner object itself.
+     */
+    public ConnectionMonitorResultInner withOutputs(List<ConnectionMonitorOutput> outputs) {
+        this.outputs = outputs;
+        return this;
+    }
+
+    /**
+     * Get the notes property: Optional notes to be associated with the connection monitor.
+     *
+     * @return the notes value.
+     */
+    public String notes() {
+        return this.notes;
+    }
+
+    /**
+     * Set the notes property: Optional notes to be associated with the connection monitor.
+     *
+     * @param notes the notes value to set.
+     * @return the ConnectionMonitorResultInner object itself.
+     */
+    public ConnectionMonitorResultInner withNotes(String notes) {
+        this.notes = notes;
+        return this;
+    }
+
+    /**
      * Get the provisioningState property: The provisioning state of the connection monitor.
      *
      * @return the provisioningState value.
@@ -189,17 +321,6 @@ public class ConnectionMonitorResultInner extends Resource {
     }
 
     /**
-     * Set the startTime property: The date and time when the connection monitor was started.
-     *
-     * @param startTime the startTime value to set.
-     * @return the ConnectionMonitorResultInner object itself.
-     */
-    public ConnectionMonitorResultInner withStartTime(OffsetDateTime startTime) {
-        this.startTime = startTime;
-        return this;
-    }
-
-    /**
      * Get the monitoringStatus property: The monitoring status of the connection monitor.
      *
      * @return the monitoringStatus value.
@@ -209,14 +330,12 @@ public class ConnectionMonitorResultInner extends Resource {
     }
 
     /**
-     * Set the monitoringStatus property: The monitoring status of the connection monitor.
+     * Get the connectionMonitorType property: Type of connection monitor.
      *
-     * @param monitoringStatus the monitoringStatus value to set.
-     * @return the ConnectionMonitorResultInner object itself.
+     * @return the connectionMonitorType value.
      */
-    public ConnectionMonitorResultInner withMonitoringStatus(String monitoringStatus) {
-        this.monitoringStatus = monitoringStatus;
-        return this;
+    public ConnectionMonitorType connectionMonitorType() {
+        return this.connectionMonitorType;
     }
 
     /**
@@ -230,6 +349,18 @@ public class ConnectionMonitorResultInner extends Resource {
         }
         if (destination() != null) {
             destination().validate();
+        }
+        if (endpoints() != null) {
+            endpoints().forEach(e -> e.validate());
+        }
+        if (testConfigurations() != null) {
+            testConfigurations().forEach(e -> e.validate());
+        }
+        if (testGroups() != null) {
+            testGroups().forEach(e -> e.validate());
+        }
+        if (outputs() != null) {
+            outputs().forEach(e -> e.validate());
         }
     }
 }

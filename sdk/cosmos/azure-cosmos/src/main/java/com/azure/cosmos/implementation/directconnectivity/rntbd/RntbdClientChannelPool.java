@@ -65,11 +65,11 @@ public final class RntbdClientChannelPool implements ChannelPool {
         new ClosedChannelException(), RntbdClientChannelPool.class, "acquire");
 
     private static final IllegalStateException POOL_CLOSED_ON_ACQUIRE = ThrowableUtil.unknownStackTrace(
-        new StacklessIllegalStateException("service endpoint was closed"),
+        new StacklessIllegalStateException("service endpoint was closed while acquiring a channel"),
         RntbdClientChannelPool.class, "acquire");
 
     private static final IllegalStateException POOL_CLOSED_ON_RELEASE = ThrowableUtil.unknownStackTrace(
-        new StacklessIllegalStateException("service endpoint was closed"),
+        new StacklessIllegalStateException("service endpoint was closed while releasing a channel"),
         RntbdClientChannelPool.class, "release");
 
     private static final AttributeKey<RntbdClientChannelPool> POOL_KEY = AttributeKey.newInstance(
@@ -623,6 +623,12 @@ public final class RntbdClientChannelPool implements ChannelPool {
         for (Channel channel : this.availableChannels) {
 
             final RntbdRequestManager manager = channel.pipeline().get(RntbdRequestManager.class);
+
+            if (manager == null) {
+                logger.debug("Channel({}) connection lost", channel);
+                continue;
+            }
+
             final long pendingRequestCount = manager.pendingRequestCount();
 
             if (pendingRequestCount < pendingRequestCountMin) {

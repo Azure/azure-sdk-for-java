@@ -9,7 +9,8 @@ import com.azure.core.annotation.Immutable;
  * The FormTable model.
  */
 @Immutable
-public final class FormWord extends FormContent {
+public final class FormWord extends FormElement {
+
     /*
      * The confidence value of the recognized word.
      */
@@ -17,7 +18,8 @@ public final class FormWord extends FormContent {
 
     /**
      * Creates raw OCR item.
-     *  @param text The text content of ExtractedField.
+     *
+     * @param text The text content of ExtractedField.
      * @param boundingBox The BoundingBox of ExtractedField.
      * @param pageNumber The 1 based page number.
      * @param confidence the confidence.

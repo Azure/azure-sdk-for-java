@@ -16,7 +16,7 @@ public final class FirewallPolicyRuleConditionApplicationProtocol {
     private final ClientLogger logger = new ClientLogger(FirewallPolicyRuleConditionApplicationProtocol.class);
 
     /*
-     * Protocol type
+     * Protocol type.
      */
     @JsonProperty(value = "protocolType")
     private FirewallPolicyRuleConditionApplicationProtocolType protocolType;

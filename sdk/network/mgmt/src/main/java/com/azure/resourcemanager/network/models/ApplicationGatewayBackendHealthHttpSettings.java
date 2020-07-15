@@ -17,7 +17,7 @@ public final class ApplicationGatewayBackendHealthHttpSettings {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ApplicationGatewayBackendHealthHttpSettings.class);
 
     /*
-     * Reference of an ApplicationGatewayBackendHttpSettings resource.
+     * Reference to an ApplicationGatewayBackendHttpSettings resource.
      */
     @JsonProperty(value = "backendHttpSettings")
     private ApplicationGatewayBackendHttpSettings backendHttpSettings;
@@ -29,7 +29,7 @@ public final class ApplicationGatewayBackendHealthHttpSettings {
     private List<ApplicationGatewayBackendHealthServerInner> servers;
 
     /**
-     * Get the backendHttpSettings property: Reference of an ApplicationGatewayBackendHttpSettings resource.
+     * Get the backendHttpSettings property: Reference to an ApplicationGatewayBackendHttpSettings resource.
      *
      * @return the backendHttpSettings value.
      */
@@ -38,7 +38,7 @@ public final class ApplicationGatewayBackendHealthHttpSettings {
     }
 
     /**
-     * Set the backendHttpSettings property: Reference of an ApplicationGatewayBackendHttpSettings resource.
+     * Set the backendHttpSettings property: Reference to an ApplicationGatewayBackendHttpSettings resource.
      *
      * @param backendHttpSettings the backendHttpSettings value to set.
      * @return the ApplicationGatewayBackendHealthHttpSettings object itself.

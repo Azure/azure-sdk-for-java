@@ -1,0 +1,29 @@
+<entry xmlns="http://www.w3.org/2005/Atom">
+  <id>https://sb-java-conniey-5.servicebus.windows.net/topic/subscriptions/sub46850f?api-version=2017-04</id>
+  <title type="text">sub46850f</title>
+  <published>2020-07-01T00:25:26Z</published>
+  <updated>2020-07-01T00:25:26Z</updated>
+  <link rel="self" href="https://sb-java-conniey-5.servicebus.windows.net/topic/subscriptions/sub46850f?api-version=2017-04"/>
+  <content type="application/xml">
+    <SubscriptionDescription
+        xmlns="http://schemas.microsoft.com/netservices/2010/10/servicebus/connect"
+    >
+      <LockDuration>PT45S</LockDuration>
+      <RequiresSession>false</RequiresSession>
+      <DefaultMessageTimeToLive>P10675199DT2H48M5.477S</DefaultMessageTimeToLive>
+      <DeadLetteringOnMessageExpiration>false</DeadLetteringOnMessageExpiration>
+      <DeadLetteringOnFilterEvaluationExceptions>true</DeadLetteringOnFilterEvaluationExceptions>
+      <MessageCount>0</MessageCount>
+      <MaxDeliveryCount>7</MaxDeliveryCount>
+      <EnableBatchedOperations>true</EnableBatchedOperations>
+      <Status>Active</Status>
+      <CreatedAt>2020-07-01T00:25:26.8819424Z</CreatedAt>
+      <UpdatedAt>2020-07-01T00:25:26.8819424Z</UpdatedAt>
+      <AccessedAt>0001-01-01T00:00:00</AccessedAt>
+      <UserMetadata>some-metadata-for-testing-subscriptions</UserMetadata>
+      <AutoDeleteOnIdle>P10675199DT2H48M5.477S</AutoDeleteOnIdle>
+      <EntityAvailabilityStatus>Available</EntityAvailabilityStatus>
+    </SubscriptionDescription>
+  </content>
+</entry>
+

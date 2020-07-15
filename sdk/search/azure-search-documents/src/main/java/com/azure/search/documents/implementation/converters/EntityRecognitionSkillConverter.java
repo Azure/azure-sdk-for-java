@@ -3,7 +3,6 @@
 
 package com.azure.search.documents.implementation.converters;
 
-import com.azure.search.documents.indexes.models.EntityCategory;
 import com.azure.search.documents.indexes.models.EntityRecognitionSkill;
 import com.azure.search.documents.indexes.models.EntityRecognitionSkillLanguage;
 import com.azure.search.documents.indexes.models.InputFieldMappingEntry;
@@ -25,19 +24,13 @@ public final class EntityRecognitionSkillConverter {
         if (obj == null) {
             return null;
         }
-        EntityRecognitionSkill entityRecognitionSkill = new EntityRecognitionSkill();
 
-        if (obj.getOutputs() != null) {
-            List<OutputFieldMappingEntry> outputs =
-                obj.getOutputs().stream().map(OutputFieldMappingEntryConverter::map).collect(Collectors.toList());
-            entityRecognitionSkill.setOutputs(outputs);
-        }
+        List<InputFieldMappingEntry> inputs = obj.getInputs() == null ? null
+            : obj.getInputs().stream().map(InputFieldMappingEntryConverter::map).collect(Collectors.toList());
+        List<OutputFieldMappingEntry> outputs = obj.getOutputs() == null ? null
+            : obj.getOutputs().stream().map(OutputFieldMappingEntryConverter::map).collect(Collectors.toList());
+        EntityRecognitionSkill entityRecognitionSkill = new EntityRecognitionSkill(inputs, outputs);
 
-        if (obj.getInputs() != null) {
-            List<InputFieldMappingEntry> inputs =
-                obj.getInputs().stream().map(InputFieldMappingEntryConverter::map).collect(Collectors.toList());
-            entityRecognitionSkill.setInputs(inputs);
-        }
 
         String name = obj.getName();
         entityRecognitionSkill.setName(name);
@@ -58,9 +51,9 @@ public final class EntityRecognitionSkillConverter {
         }
 
         if (obj.getCategories() != null) {
-            List<EntityCategory> categories =
-                obj.getCategories().stream().map(EntityCategoryConverter::map).collect(Collectors.toList());
-            entityRecognitionSkill.setCategories(categories);
+            entityRecognitionSkill.setCategories(obj.getCategories().stream()
+                .map(EntityCategoryConverter::map)
+                .collect(Collectors.toList()));
         }
 
         Double minimumPrecision = obj.getMinimumPrecision();
@@ -76,20 +69,16 @@ public final class EntityRecognitionSkillConverter {
         if (obj == null) {
             return null;
         }
+
+        List<com.azure.search.documents.indexes.implementation.models.OutputFieldMappingEntry> outputs =
+            obj.getOutputs() == null ? null
+                : obj.getOutputs().stream().map(OutputFieldMappingEntryConverter::map).collect(Collectors.toList());
+
+        List<com.azure.search.documents.indexes.implementation.models.InputFieldMappingEntry> inputs =
+            obj.getInputs() == null ? null
+                : obj.getInputs().stream().map(InputFieldMappingEntryConverter::map).collect(Collectors.toList());
         com.azure.search.documents.indexes.implementation.models.EntityRecognitionSkill entityRecognitionSkill =
-            new com.azure.search.documents.indexes.implementation.models.EntityRecognitionSkill();
-
-        if (obj.getOutputs() != null) {
-            List<com.azure.search.documents.indexes.implementation.models.OutputFieldMappingEntry> outputs =
-                obj.getOutputs().stream().map(OutputFieldMappingEntryConverter::map).collect(Collectors.toList());
-            entityRecognitionSkill.setOutputs(outputs);
-        }
-
-        if (obj.getInputs() != null) {
-            List<com.azure.search.documents.indexes.implementation.models.InputFieldMappingEntry> inputs =
-                obj.getInputs().stream().map(InputFieldMappingEntryConverter::map).collect(Collectors.toList());
-            entityRecognitionSkill.setInputs(inputs);
-        }
+            new com.azure.search.documents.indexes.implementation.models.EntityRecognitionSkill(inputs, outputs);
 
         String name = obj.getName();
         entityRecognitionSkill.setName(name);
@@ -117,6 +106,7 @@ public final class EntityRecognitionSkillConverter {
 
         Double minimumPrecision = obj.getMinimumPrecision();
         entityRecognitionSkill.setMinimumPrecision(minimumPrecision);
+        entityRecognitionSkill.validate();
         return entityRecognitionSkill;
     }
 
