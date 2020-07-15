@@ -3,29 +3,42 @@
 
 package com.azure.resourcemanager.dns;
 
+import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.policy.CookiePolicy;
+import com.azure.core.http.policy.HttpLogDetailLevel;
+import com.azure.core.http.policy.HttpLogOptions;
+import com.azure.core.http.policy.HttpPipelinePolicy;
+import com.azure.core.http.policy.RetryPolicy;
+import com.azure.core.http.policy.TimeoutPolicy;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.exception.ManagementError;
 import com.azure.core.management.exception.ManagementException;
+import com.azure.resourcemanager.base.profile.AzureProfile;
 import com.azure.resourcemanager.dns.models.ARecordSet;
 import com.azure.resourcemanager.dns.models.AaaaRecordSet;
 import com.azure.resourcemanager.dns.models.CNameRecordSet;
 import com.azure.resourcemanager.dns.models.CaaRecordSet;
 import com.azure.resourcemanager.dns.models.DnsZone;
 import com.azure.resourcemanager.dns.models.ZoneType;
-import com.azure.resourcemanager.resources.core.TestBase;
+import com.azure.resourcemanager.resources.core.ResourceGroupTaggingPolicy;
 import com.azure.resourcemanager.resources.core.TestUtilities;
 import com.azure.resourcemanager.resources.fluentcore.arm.Region;
-import com.azure.resourcemanager.resources.fluentcore.profile.AzureProfile;
 import com.azure.resourcemanager.resources.ResourceManager;
+import com.azure.resourcemanager.resources.fluentcore.utils.HttpPipelineProvider;
+import com.azure.resourcemanager.test.ResourceManagerTestBase;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-public class DnsZoneRecordSetETagTests extends TestBase {
+import java.time.Duration;
+import java.time.temporal.ChronoUnit;
+import java.util.List;
+
+public class DnsZoneRecordSetETagTests extends ResourceManagerTestBase {
     private String rgName = "";
 
     public DnsZoneRecordSetETagTests() {
-        super(TestBase.RunCondition.BOTH);
+        super(ResourceManagerTestBase.RunCondition.BOTH);
     }
 
     protected ResourceManager resourceManager;
@@ -37,6 +50,24 @@ public class DnsZoneRecordSetETagTests extends TestBase {
             ResourceManager.authenticate(httpPipeline, profile).withSdkContext(sdkContext).withDefaultSubscription();
         zoneManager = DnsZoneManager.authenticate(httpPipeline, profile, sdkContext);
         rgName = generateRandomResourceName("dnsetagtest", 15);
+    }
+
+    @Override
+    protected HttpPipeline buildHttpPipeline(TokenCredential credential, AzureProfile profile, List<HttpPipelinePolicy> policies) {
+        if (isPlaybackMode()) {
+            policies.add(new ResourceGroupTaggingPolicy());
+            policies.add(new CookiePolicy());
+            return HttpPipelineProvider.buildHttpPipeline(
+                null, profile, null, new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS),
+                null, new RetryPolicy("Retry-After", ChronoUnit.SECONDS), policies, null);
+        } else {
+            policies.add(new ResourceGroupTaggingPolicy());
+            policies.add(new TimeoutPolicy(Duration.ofMinutes(1)));
+            policies.add(new CookiePolicy());
+            return HttpPipelineProvider.buildHttpPipeline(
+                credential, profile, null, new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS),
+                null, new RetryPolicy("Retry-After", ChronoUnit.SECONDS), policies, generateHttpClientWithProxy(null));
+        }
     }
 
     @Override
@@ -102,7 +133,6 @@ public class DnsZoneRecordSetETagTests extends TestBase {
                 .zones()
                 .define(topLevelDomain)
                 .withNewResourceGroup(rgName, region)
-                .withPrivateAccess()
                 .defineARecordSet("www")
                 .withIPv4Address("23.96.104.40")
                 .withIPv4Address("24.97.105.41")
@@ -161,7 +191,7 @@ public class DnsZoneRecordSetETagTests extends TestBase {
                 .zones()
                 .define(topLevelDomain)
                 .withNewResourceGroup(rgName, region)
-                .withPrivateAccess()
+                .withPublicAccess()
                 .defineARecordSet("www")
                 .withIPv4Address("23.96.104.40")
                 .withIPv4Address("24.97.105.41")

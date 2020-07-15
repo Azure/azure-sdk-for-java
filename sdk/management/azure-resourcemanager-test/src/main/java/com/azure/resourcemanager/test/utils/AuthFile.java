@@ -4,7 +4,6 @@
 package com.azure.resourcemanager.test.utils;
 
 import com.azure.core.credential.TokenCredential;
-import com.azure.core.implementation.TypeUtil;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.serializer.AzureJacksonAdapter;
 import com.azure.core.util.logging.ClientLogger;

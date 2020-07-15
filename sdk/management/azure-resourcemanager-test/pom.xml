@@ -86,25 +86,6 @@
       <scope>compile</scope>
     </dependency>
   </dependencies>
-  <profiles>
-    <profile>
-      <id>azure-mgmt-sdk-test-jar</id>
-      <activation>
-        <property>
-          <name>!maven.test.skip</name>
-        </property>
-      </activation>
-      <dependencies>
-        <dependency>
-          <groupId>com.azure.resourcemanager</groupId>
-          <artifactId>azure-resourcemanager-resources</artifactId>
-          <version>2.0.0-SNAPSHOT</version>
-          <type>test-jar</type>
-          <scope>test</scope>
-        </dependency>
-      </dependencies>
-    </profile>
-  </profiles>
   <build>
     <plugins>
       <plugin>

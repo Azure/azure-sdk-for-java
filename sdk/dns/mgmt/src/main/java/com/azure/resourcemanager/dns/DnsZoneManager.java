@@ -5,14 +5,14 @@ package com.azure.resourcemanager.dns;
 
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpPipeline;
+import com.azure.resourcemanager.base.profile.AzureProfile;
+import com.azure.resourcemanager.base.utils.SdkContext;
 import com.azure.resourcemanager.dns.implementation.DnsZonesImpl;
 import com.azure.resourcemanager.dns.models.DnsZones;
 import com.azure.resourcemanager.resources.fluentcore.arm.AzureConfigurable;
 import com.azure.resourcemanager.resources.fluentcore.arm.implementation.AzureConfigurableImpl;
 import com.azure.resourcemanager.resources.fluentcore.arm.implementation.Manager;
-import com.azure.resourcemanager.resources.fluentcore.profile.AzureProfile;
 import com.azure.resourcemanager.resources.fluentcore.utils.HttpPipelineProvider;
-import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 
 /** Entry point to Azure DNS zone management. */
 public final class DnsZoneManager extends Manager<DnsZoneManager, DnsManagementClient> {

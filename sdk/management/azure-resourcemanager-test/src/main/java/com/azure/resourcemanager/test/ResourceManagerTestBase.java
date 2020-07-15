@@ -164,7 +164,7 @@ public abstract class ResourceManagerTestBase extends TestBase {
     }
 
     @BeforeEach
-    public void beforeTest(TestInfo testInfo) throws IOException {
+    public void beforeEachTest(TestInfo testInfo) throws IOException {
         this.testInfo = testInfo;
         String testMethodName = testInfo.getTestMethod().get().getName();
         printThreadInfo(String.format("%s: %s", "beforeTest", testMethodName));
@@ -255,7 +255,7 @@ public abstract class ResourceManagerTestBase extends TestBase {
     }
 
     @AfterEach
-    public void afterTest() {
+    public void afterEachTest() {
         if (shouldCancelTest(isPlaybackMode()) != null) {
             return;
         }
