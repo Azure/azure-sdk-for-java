@@ -104,6 +104,8 @@ Blob storage is designed for:
 - Storing data for backup and restore, disaster recovery, and archiving.
 - Storing data for analysis by an on-premises or Azure-hosted service.
 
+## Examples
+
 ## Troubleshooting
 
 When interacting with blobs using this Java client library, errors returned by the service correspond to the same HTTP
