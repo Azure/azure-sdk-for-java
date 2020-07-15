@@ -1,23 +1,23 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://westus2.ppe.cognitiveservices.azure.com/text/analytics/v3.0//sentiment",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/text/analytics/v3.1-preview.1//sentiment",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-textanalytics/1.0.0-beta.5 (11.0.4; Windows 10 10.0)",
-      "x-ms-client-request-id" : "c715c68e-bf05-43a7-92e6-152e7c0833d2",
+      "User-Agent" : "azsdk-java-azure-ai-textanalytics/1.1.0-beta.1 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "314fc550-6a3e-4b08-b0eb-6a78f5c43a7d",
       "Content-Type" : "application/json"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
-      "x-envoy-upstream-service-time" : "110",
+      "x-envoy-upstream-service-time" : "95",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
       "x-content-type-options" : "nosniff",
       "csp-billing-usage" : "CognitiveServices.TextAnalytics.BatchScoring=1",
-      "apim-request-id" : "7d859041-8a10-45dc-b769-662885e9ee7e",
+      "apim-request-id" : "80d8febf-8794-4f72-a306-103a88fb9088",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "Body" : "{\"documents\":[{\"id\":\"0\",\"sentiment\":\"neutral\",\"confidenceScores\":{\"positive\":0.06,\"neutral\":0.91,\"negative\":0.03},\"sentences\":[{\"sentiment\":\"neutral\",\"confidenceScores\":{\"positive\":0.06,\"neutral\":0.91,\"negative\":0.03},\"offset\":0,\"length\":1,\"text\":\"!\"},{\"sentiment\":\"neutral\",\"confidenceScores\":{\"positive\":0.06,\"neutral\":0.91,\"negative\":0.03},\"offset\":1,\"length\":4,\"text\":\"@#%%\"}],\"warnings\":[]}],\"errors\":[],\"modelVersion\":\"2019-10-01\"}",
-      "Date" : "Wed, 29 Apr 2020 17:12:20 GMT",
+      "Body" : "{\"documents\":[{\"id\":\"0\",\"sentiment\":\"neutral\",\"confidenceScores\":{\"positive\":0.06,\"neutral\":0.91,\"negative\":0.03},\"sentences\":[{\"sentiment\":\"neutral\",\"confidenceScores\":{\"positive\":0.06,\"neutral\":0.91,\"negative\":0.03},\"offset\":0,\"length\":1,\"text\":\"!\"},{\"sentiment\":\"neutral\",\"confidenceScores\":{\"positive\":0.06,\"neutral\":0.91,\"negative\":0.03},\"offset\":1,\"length\":4,\"text\":\"@#%%\"}],\"warnings\":[]}],\"errors\":[],\"modelVersion\":\"2020-04-01\"}",
+      "Date" : "Wed, 15 Jul 2020 04:14:36 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
