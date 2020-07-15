@@ -1451,19 +1451,6 @@ public class NetworkManagementClientImpl extends AzureServiceClient {
     }
 
     /**
-     * The WebApplicationFirewallPoliciesInner object to access its operations.
-     */
-    private WebApplicationFirewallPoliciesInner webApplicationFirewallPolicies;
-
-    /**
-     * Gets the WebApplicationFirewallPoliciesInner object to access its operations.
-     * @return the WebApplicationFirewallPoliciesInner object.
-     */
-    public WebApplicationFirewallPoliciesInner webApplicationFirewallPolicies() {
-        return this.webApplicationFirewallPolicies;
-    }
-
-    /**
      * Initializes an instance of NetworkManagementClient client.
      *
      * @param credentials the management credentials for Azure
@@ -1597,7 +1584,6 @@ public class NetworkManagementClientImpl extends AzureServiceClient {
         this.virtualHubBgpConnections = new VirtualHubBgpConnectionsInner(restClient().retrofit(), this);
         this.virtualHubIpConfigurations = new VirtualHubIpConfigurationsInner(restClient().retrofit(), this);
         this.hubRouteTables = new HubRouteTablesInner(restClient().retrofit(), this);
-        this.webApplicationFirewallPolicies = new WebApplicationFirewallPoliciesInner(restClient().retrofit(), this);
         this.azureClient = new AzureClient(this);
         initializeService();
     }

@@ -38,12 +38,6 @@ public class ApplicationRule extends FirewallPolicyRule {
     private List<FirewallPolicyRuleApplicationProtocol> protocols;
 
     /**
-     * List of Urls for this rule condition.
-     */
-    @JsonProperty(value = "targetUrls")
-    private List<String> targetUrls;
-
-    /**
      * List of FQDNs for this rule.
      */
     @JsonProperty(value = "targetFqdns")
@@ -60,12 +54,6 @@ public class ApplicationRule extends FirewallPolicyRule {
      */
     @JsonProperty(value = "sourceIpGroups")
     private List<String> sourceIpGroups;
-
-    /**
-     * Terminate TLS connections for this rule.
-     */
-    @JsonProperty(value = "terminateTLS")
-    private Boolean terminateTLS;
 
     /**
      * Get list of source IP addresses for this rule.
@@ -128,26 +116,6 @@ public class ApplicationRule extends FirewallPolicyRule {
     }
 
     /**
-     * Get list of Urls for this rule condition.
-     *
-     * @return the targetUrls value
-     */
-    public List<String> targetUrls() {
-        return this.targetUrls;
-    }
-
-    /**
-     * Set list of Urls for this rule condition.
-     *
-     * @param targetUrls the targetUrls value to set
-     * @return the ApplicationRule object itself.
-     */
-    public ApplicationRule withTargetUrls(List<String> targetUrls) {
-        this.targetUrls = targetUrls;
-        return this;
-    }
-
-    /**
      * Get list of FQDNs for this rule.
      *
      * @return the targetFqdns value
@@ -204,26 +172,6 @@ public class ApplicationRule extends FirewallPolicyRule {
      */
     public ApplicationRule withSourceIpGroups(List<String> sourceIpGroups) {
         this.sourceIpGroups = sourceIpGroups;
-        return this;
-    }
-
-    /**
-     * Get terminate TLS connections for this rule.
-     *
-     * @return the terminateTLS value
-     */
-    public Boolean terminateTLS() {
-        return this.terminateTLS;
-    }
-
-    /**
-     * Set terminate TLS connections for this rule.
-     *
-     * @param terminateTLS the terminateTLS value to set
-     * @return the ApplicationRule object itself.
-     */
-    public ApplicationRule withTerminateTLS(Boolean terminateTLS) {
-        this.terminateTLS = terminateTLS;
         return this;
     }
 
