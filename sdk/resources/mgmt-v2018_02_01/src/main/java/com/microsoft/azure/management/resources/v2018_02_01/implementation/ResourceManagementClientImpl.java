@@ -63,11 +63,11 @@ public class ResourceManagementClientImpl extends AzureServiceClient {
         return this.apiVersion;
     }
 
-    /** Gets or sets the preferred language for the response. */
+    /** The preferred language for the response. */
     private String acceptLanguage;
 
     /**
-     * Gets Gets or sets the preferred language for the response.
+     * Gets The preferred language for the response.
      *
      * @return the acceptLanguage value.
      */
@@ -76,7 +76,7 @@ public class ResourceManagementClientImpl extends AzureServiceClient {
     }
 
     /**
-     * Sets Gets or sets the preferred language for the response.
+     * Sets The preferred language for the response.
      *
      * @param acceptLanguage the acceptLanguage value.
      * @return the service client itself
@@ -86,11 +86,11 @@ public class ResourceManagementClientImpl extends AzureServiceClient {
         return this;
     }
 
-    /** Gets or sets the retry timeout in seconds for Long Running Operations. Default value is 30. */
+    /** The retry timeout in seconds for Long Running Operations. Default value is 30. */
     private int longRunningOperationRetryTimeout;
 
     /**
-     * Gets Gets or sets the retry timeout in seconds for Long Running Operations. Default value is 30.
+     * Gets The retry timeout in seconds for Long Running Operations. Default value is 30.
      *
      * @return the longRunningOperationRetryTimeout value.
      */
@@ -99,7 +99,7 @@ public class ResourceManagementClientImpl extends AzureServiceClient {
     }
 
     /**
-     * Sets Gets or sets the retry timeout in seconds for Long Running Operations. Default value is 30.
+     * Sets The retry timeout in seconds for Long Running Operations. Default value is 30.
      *
      * @param longRunningOperationRetryTimeout the longRunningOperationRetryTimeout value.
      * @return the service client itself
@@ -109,11 +109,11 @@ public class ResourceManagementClientImpl extends AzureServiceClient {
         return this;
     }
 
-    /** When set to true a unique x-ms-client-request-id value is generated and included in each request. Default is true. */
+    /** Whether a unique x-ms-client-request-id should be generated. When set to true a unique x-ms-client-request-id value is generated and included in each request. Default is true. */
     private boolean generateClientRequestId;
 
     /**
-     * Gets When set to true a unique x-ms-client-request-id value is generated and included in each request. Default is true.
+     * Gets Whether a unique x-ms-client-request-id should be generated. When set to true a unique x-ms-client-request-id value is generated and included in each request. Default is true.
      *
      * @return the generateClientRequestId value.
      */
@@ -122,7 +122,7 @@ public class ResourceManagementClientImpl extends AzureServiceClient {
     }
 
     /**
-     * Sets When set to true a unique x-ms-client-request-id value is generated and included in each request. Default is true.
+     * Sets Whether a unique x-ms-client-request-id should be generated. When set to true a unique x-ms-client-request-id value is generated and included in each request. Default is true.
      *
      * @param generateClientRequestId the generateClientRequestId value.
      * @return the service client itself
@@ -185,16 +185,16 @@ public class ResourceManagementClientImpl extends AzureServiceClient {
     }
 
     /**
-     * The TagsInner object to access its operations.
+     * The TagOperationsInner object to access its operations.
      */
-    private TagsInner tags;
+    private TagOperationsInner tagOperations;
 
     /**
-     * Gets the TagsInner object to access its operations.
-     * @return the TagsInner object.
+     * Gets the TagOperationsInner object to access its operations.
+     * @return the TagOperationsInner object.
      */
-    public TagsInner tags() {
-        return this.tags;
+    public TagOperationsInner tagOperations() {
+        return this.tagOperations;
     }
 
     /**
@@ -249,7 +249,7 @@ public class ResourceManagementClientImpl extends AzureServiceClient {
         this.providers = new ProvidersInner(restClient().retrofit(), this);
         this.resources = new ResourcesInner(restClient().retrofit(), this);
         this.resourceGroups = new ResourceGroupsInner(restClient().retrofit(), this);
-        this.tags = new TagsInner(restClient().retrofit(), this);
+        this.tagOperations = new TagOperationsInner(restClient().retrofit(), this);
         this.deploymentOperations = new DeploymentOperationsInner(restClient().retrofit(), this);
         this.azureClient = new AzureClient(this);
     }
@@ -261,6 +261,6 @@ public class ResourceManagementClientImpl extends AzureServiceClient {
      */
     @Override
     public String userAgent() {
-        return String.format("%s (%s, %s)", super.userAgent(), "ResourceManagementClient", "2018-02-01");
+        return String.format("%s (%s, %s, auto-generated)", super.userAgent(), "ResourceManagementClient", "2018-02-01");
     }
 }
