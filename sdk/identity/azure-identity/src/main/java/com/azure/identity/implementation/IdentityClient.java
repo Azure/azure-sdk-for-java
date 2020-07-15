@@ -125,15 +125,13 @@ public class IdentityClient {
         if (options == null) {
             options = new IdentityClientOptions();
         }
-        if (clientId == null) {
-            throw new IllegalArgumentException("clientId == null");
-        }
         this.tenantId = tenantId;
         this.clientId = clientId;
         this.clientSecret = clientSecret;
         this.certificatePath = certificatePath;
         this.certificatePassword = certificatePassword;
         this.options = options;
+
         this.publicClientApplicationAccessor = new SynchronizedAccessor<PublicClientApplication>(() ->
             getPublicClientApplication(isSharedTokenCacheCredential));
 
