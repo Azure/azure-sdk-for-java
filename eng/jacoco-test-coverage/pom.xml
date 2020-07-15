@@ -109,7 +109,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-cosmos</artifactId>
-      <version>4.2.0-beta.1</version> <!-- {x-version-update;com.azure:azure-cosmos;current} -->
+      <version>4.3.0-beta.1</version> <!-- {x-version-update;com.azure:azure-cosmos;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
@@ -154,7 +154,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-search-documents</artifactId>
-      <version>11.0.0</version> <!-- {x-version-update;com.azure:azure-search-documents;current} -->
+      <version>11.1.0-beta.1</version> <!-- {x-version-update;com.azure:azure-search-documents;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
@@ -225,7 +225,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-sdk-template</artifactId>
-      <version>1.0.4-beta.20</version> <!-- {x-version-update;com.azure:azure-sdk-template;current} -->
+      <version>1.0.4-beta.25</version> <!-- {x-version-update;com.azure:azure-sdk-template;current} -->
     </dependency>
 
     <dependency>
