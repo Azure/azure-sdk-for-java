@@ -274,7 +274,8 @@ class ServiceAPITest extends APISpec {
         blobClient.upload(defaultInputStream.get(), defaultDataSize)
 
         when:
-        def results = primaryBlobServiceClient.findBlobsByTags("\"bar\"='foo'")
+        def results = primaryBlobServiceClient.findBlobsByTags(String.format("@container='%s' AND \"bar\"='foo'",
+            containerClient.getBlobContainerName()))
 
         then:
         results.size() == 1
