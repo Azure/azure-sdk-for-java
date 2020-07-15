@@ -12,6 +12,7 @@ import com.microsoft.azure.arm.resources.models.implementation.GroupableResource
 import com.microsoft.azure.management.network.v2019_04_01.PrivateEndpoint;
 import rx.Observable;
 import java.util.List;
+import com.microsoft.azure.management.network.v2019_04_01.ProvisioningState;
 import com.microsoft.azure.management.network.v2019_04_01.PrivateLinkServiceConnection;
 import java.util.ArrayList;
 import com.microsoft.azure.management.network.v2019_04_01.NetworkInterface;
@@ -75,7 +76,7 @@ class PrivateEndpointImpl extends GroupableResourceCoreImpl<PrivateEndpoint, Pri
     }
 
     @Override
-    public String provisioningState() {
+    public ProvisioningState provisioningState() {
         return this.inner().provisioningState();
     }
 
