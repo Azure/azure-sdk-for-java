@@ -68,14 +68,4 @@ public class ChainedTokenCredential implements TokenCredential {
                 return Mono.error(last);
             }));
     }
-
-
-    /**
-     * Get the read-only list of credentials sequentially used to attempt authentication.
-     *
-     * @return The list of {@link TokenCredential}.
-     */
-    public List<TokenCredential> getCredentials() {
-        return credentials;
-    }
 }

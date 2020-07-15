@@ -41,14 +41,25 @@ public class ClientCertificateCredentialBuilder extends AadCredentialBuilderBase
     }
 
     /**
-     * Sets whether to enable using the shared token cache. This is disabled by default.
-     *
-     * @param enabled indicates whether to enable using the shared token cache.
+     * Allows to use an unprotected file specified by <code>cacheFileLocation()</code> instead of
+     * Gnome keyring on Linux. This is restricted by default.
      *
      * @return An updated instance of this builder.
      */
-    public ClientCertificateCredentialBuilder enablePersistentCache(boolean enabled) {
-        this.identityClientOptions.enablePersistentCache(enabled);
+    public ClientCertificateCredentialBuilder allowUnencryptedCache() {
+        this.identityClientOptions.allowUnencryptedCache();
+        return this;
+    }
+
+    /**
+     * Enables the shared token cache which is disabled by default. If enabled, the credential will store tokens
+     * in a cache persisted to the machine, protected to the current user, which can be shared by other credentials
+     * and processes.
+     *
+     * @return An updated instance of this builder.
+     */
+    public ClientCertificateCredentialBuilder enablePersistentCache() {
+        this.identityClientOptions.enablePersistentCache();
         return this;
     }
 
