@@ -30,7 +30,6 @@ public class RecognizeContent {
      */
     public static void main(final String[] args) throws IOException {
         // Instantiate a client that will be used to call the service.
-
         FormRecognizerClient client = new FormRecognizerClientBuilder()
             .credential(new AzureKeyCredential("{key}"))
             .endpoint("https://{endpoint}.cognitiveservices.azure.com/")
@@ -48,9 +47,9 @@ public class RecognizeContent {
 
         for (int i = 0; i < contentPageResults.size(); i++) {
             final FormPage formPage = contentPageResults.get(i);
-            System.out.printf("----Recognizing content for page %d ----%n", i);
+            System.out.printf("---- Recognized content info for page %d ----%n", i);
             // Table information
-            System.out.printf("Has width: %f and height: %f, measured with unit: %s%n", formPage.getWidth(),
+            System.out.printf("Has width: %.2f and height: %.2f, measured with unit: %s%n", formPage.getWidth(),
                 formPage.getHeight(),
                 formPage.getUnit());
             final List<FormTable> tables = formPage.getTables();
@@ -64,7 +63,7 @@ public class RecognizeContent {
                         formTableCell.getBoundingBox().getPoints().forEach(point ->
                             boundingBoxStr.append(String.format("[%.2f, %.2f]", point.getX(), point.getY())));
                     }
-                    System.out.printf("Cell has text %s, within bounding box %s.%n", formTableCell.getText(),
+                    System.out.printf("Cell has text '%s', within bounding box %s.%n", formTableCell.getText(),
                         boundingBoxStr);
                 });
                 System.out.println();

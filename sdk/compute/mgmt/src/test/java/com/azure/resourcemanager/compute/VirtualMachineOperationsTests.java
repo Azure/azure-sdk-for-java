@@ -211,17 +211,17 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
             .withOSDiskName("javatest")
             .withLicenseType("Windows_Server")
             .beginCreate();
-        VirtualMachine createdVirtualMachine = acceptedVirtualMachine.getAcceptedResult().getValue();
+        VirtualMachine createdVirtualMachine = acceptedVirtualMachine.getActivationResponse().getValue();
         Assertions.assertNotEquals("Succeeded", createdVirtualMachine.provisioningState());
 
-        LongRunningOperationStatus pollStatus = acceptedVirtualMachine.getAcceptedResult().getStatus();
-        int delayInMills = acceptedVirtualMachine.getAcceptedResult().getRetryAfter() == null
+        LongRunningOperationStatus pollStatus = acceptedVirtualMachine.getActivationResponse().getStatus();
+        int delayInMills = acceptedVirtualMachine.getActivationResponse().getRetryAfter() == null
             ? 0
-            : (int) acceptedVirtualMachine.getAcceptedResult().getRetryAfter().toMillis();
+            : (int) acceptedVirtualMachine.getActivationResponse().getRetryAfter().toMillis();
         while (!pollStatus.isComplete()) {
             SdkContext.sleep(delayInMills);
 
-            PollResponse<Void> pollResponse = acceptedVirtualMachine.getSyncPoller().poll();
+            PollResponse<?> pollResponse = acceptedVirtualMachine.getSyncPoller().poll();
             pollStatus = pollResponse.getStatus();
             delayInMills = pollResponse.getRetryAfter() == null
                 ? 10000
@@ -234,15 +234,15 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
         Accepted<Void> acceptedDelete = computeManager.virtualMachines()
             .beginDeleteByResourceGroup(virtualMachine.resourceGroupName(), virtualMachine.name());
 
-        pollStatus = acceptedDelete.getAcceptedResult().getStatus();
-        delayInMills = acceptedDelete.getAcceptedResult().getRetryAfter() == null
+        pollStatus = acceptedDelete.getActivationResponse().getStatus();
+        delayInMills = acceptedDelete.getActivationResponse().getRetryAfter() == null
             ? 0
-            : (int) acceptedDelete.getAcceptedResult().getRetryAfter().toMillis();
+            : (int) acceptedDelete.getActivationResponse().getRetryAfter().toMillis();
 
         while (!pollStatus.isComplete()) {
             SdkContext.sleep(delayInMills);
 
-            PollResponse<Void> pollResponse = acceptedDelete.getSyncPoller().poll();
+            PollResponse<?> pollResponse = acceptedDelete.getSyncPoller().poll();
             pollStatus = pollResponse.getStatus();
             delayInMills = pollResponse.getRetryAfter() == null
                 ? 10000

@@ -8,6 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -58,16 +59,10 @@ public final class BlobItem {
     private Boolean isCurrentVersion;
 
     /*
-     * The objectReplicationPolicyId property.
-     */
-    @JsonProperty(value = "ObjectReplicationPolicyId")
-    private String objectReplicationPolicyId;
-
-    /*
      * The objectReplicationRuleStatus property.
      */
     @JsonProperty(value = "BlobObjectReplicationRuleStatus")
-    private Map<String, String> objectReplicationRuleStatus;
+    private List<ObjectReplicationPolicy> objectReplicationSourcePolicies;
 
     /*
      * The isPrefix property.
@@ -236,48 +231,25 @@ public final class BlobItem {
     }
 
     /**
-     * Get the objectReplicationPolicyId property: The
-     * objectReplicationPolicyId property.
+     * Get the objectReplicationSourcePolicies  property: The
+     * objectReplicationSourcePolicies  property.
      *
-     * @return the objectReplicationPolicyId value.
+     * @return the objectReplicationSourcePolicies  value.
      */
-    public String getObjectReplicationPolicyId() {
-        return this.objectReplicationPolicyId;
+    public List<ObjectReplicationPolicy> getObjectReplicationSourcePolicies() {
+        return this.objectReplicationSourcePolicies;
     }
 
     /**
-     * Set the objectReplicationPolicyId property: The
-     * objectReplicationPolicyId property.
+     * Set the objectReplicationSourcePolicies  property: The
+     * objectReplicationSourcePolicies  property.
      *
-     * @param objectReplicationPolicyId the objectReplicationPolicyId value to
-     * set.
-     * @return the BlobItem object itself.
-     */
-    public BlobItem setObjectReplicationPolicyId(String objectReplicationPolicyId) {
-        this.objectReplicationPolicyId = objectReplicationPolicyId;
-        return this;
-    }
-
-    /**
-     * Get the objectReplicationRuleStatus property: The
-     * objectReplicationRuleStatus property.
-     *
-     * @return the objectReplicationRuleStatus value.
-     */
-    public Map<String, String> getObjectReplicationRuleStatus() {
-        return this.objectReplicationRuleStatus;
-    }
-
-    /**
-     * Set the objectReplicationRuleStatus property: The
-     * objectReplicationRuleStatus property.
-     *
-     * @param objectReplicationRuleStatus the objectReplicationRuleStatus value
+     * @param objectReplicationSourcePolicies the objectReplicationSourcePolicies  value
      * to set.
      * @return the BlobItem object itself.
      */
-    public BlobItem setObjectReplicationRuleStatus(Map<String, String> objectReplicationRuleStatus) {
-        this.objectReplicationRuleStatus = objectReplicationRuleStatus;
+    public BlobItem setObjectReplicationSourcePolicies(List<ObjectReplicationPolicy> objectReplicationSourcePolicies) {
+        this.objectReplicationSourcePolicies = objectReplicationSourcePolicies;
         return this;
     }
 

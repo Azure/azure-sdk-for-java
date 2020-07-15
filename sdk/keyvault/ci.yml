@@ -58,3 +58,8 @@ extends:
       - name: azure-security-keyvault-secrets
         groupId: com.azure
         safeName: azuresecuritykeyvaultsecrets
+    AdditionalModules:
+      - name: azure-storage-blob
+        groupId: com.azure
+      - name: perf-test-core
+        groupId: com.azure

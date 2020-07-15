@@ -17,6 +17,7 @@ module com.azure.search.documents {
     opens com.azure.search.documents.implementation.util to com.fasterxml.jackson.databind;
 
     exports com.azure.search.documents;
+    exports com.azure.search.documents.indexes;
     exports com.azure.search.documents.indexes.models;
     exports com.azure.search.documents.models;
     exports com.azure.search.documents.util;

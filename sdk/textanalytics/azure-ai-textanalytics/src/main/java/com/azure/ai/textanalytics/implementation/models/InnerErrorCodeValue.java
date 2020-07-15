@@ -7,58 +7,36 @@ package com.azure.ai.textanalytics.implementation.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/**
- * Defines values for InnerErrorCodeValue.
- */
+/** Defines values for InnerErrorCodeValue. */
 public enum InnerErrorCodeValue {
-    /**
-     * Enum value invalidParameterValue.
-     */
+    /** Enum value invalidParameterValue. */
     INVALID_PARAMETER_VALUE("invalidParameterValue"),
 
-    /**
-     * Enum value invalidRequestBodyFormat.
-     */
+    /** Enum value invalidRequestBodyFormat. */
     INVALID_REQUEST_BODY_FORMAT("invalidRequestBodyFormat"),
 
-    /**
-     * Enum value emptyRequest.
-     */
+    /** Enum value emptyRequest. */
     EMPTY_REQUEST("emptyRequest"),
 
-    /**
-     * Enum value missingInputRecords.
-     */
+    /** Enum value missingInputRecords. */
     MISSING_INPUT_RECORDS("missingInputRecords"),
 
-    /**
-     * Enum value invalidDocument.
-     */
+    /** Enum value invalidDocument. */
     INVALID_DOCUMENT("invalidDocument"),
 
-    /**
-     * Enum value modelVersionIncorrect.
-     */
+    /** Enum value modelVersionIncorrect. */
     MODEL_VERSION_INCORRECT("modelVersionIncorrect"),
 
-    /**
-     * Enum value invalidDocumentBatch.
-     */
+    /** Enum value invalidDocumentBatch. */
     INVALID_DOCUMENT_BATCH("invalidDocumentBatch"),
 
-    /**
-     * Enum value unsupportedLanguageCode.
-     */
+    /** Enum value unsupportedLanguageCode. */
     UNSUPPORTED_LANGUAGE_CODE("unsupportedLanguageCode"),
 
-    /**
-     * Enum value invalidCountryHint.
-     */
+    /** Enum value invalidCountryHint. */
     INVALID_COUNTRY_HINT("invalidCountryHint");
 
-    /**
-     * The actual serialized value for a InnerErrorCodeValue instance.
-     */
+    /** The actual serialized value for a InnerErrorCodeValue instance. */
     private final String value;
 
     InnerErrorCodeValue(String value) {
@@ -67,7 +45,7 @@ public enum InnerErrorCodeValue {
 
     /**
      * Parses a serialized value to a InnerErrorCodeValue instance.
-     * 
+     *
      * @param value the serialized value to parse.
      * @return the parsed InnerErrorCodeValue object, or null if unable to parse.
      */

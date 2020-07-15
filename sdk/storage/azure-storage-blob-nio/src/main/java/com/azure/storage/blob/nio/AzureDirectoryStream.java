@@ -26,7 +26,7 @@ import java.util.Set;
  *
  * {@inheritDoc}
  */
-public class AzureDirectoryStream implements DirectoryStream<Path> {
+public final class AzureDirectoryStream implements DirectoryStream<Path> {
     private final ClientLogger logger = new ClientLogger(AzureDirectoryStream.class);
 
     private final AzurePath path;

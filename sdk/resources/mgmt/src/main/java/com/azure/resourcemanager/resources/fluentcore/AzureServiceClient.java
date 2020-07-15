@@ -37,6 +37,7 @@ import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.TemporalAccessor;
 import java.time.temporal.TemporalQueries;
+import java.util.Map;
 
 /**
  * ServiceClient is the abstraction for accessing REST operations and their payload data types.
@@ -45,27 +46,22 @@ public abstract class AzureServiceClient {
 
     private final ClientLogger logger = new ClientLogger(getClass());
 
-    protected AzureServiceClient(HttpPipeline httpPipeline, AzureEnvironment environment) {
-        ((AzureJacksonAdapter) serializerAdapter).serializer().registerModule(DateTimeDeserializer.getModule());
-    }
+    private static final Map<String, String> PROPERTIES =
+        CoreUtils.getProperties("azure.properties");
 
-    private static final String OS;
-    private static final String OS_NAME;
-    private static final String OS_VERSION;
-    private static final String JAVA_VERSION;
-    private static final String SDK_VERSION = "2.0.0-SNAPSHOT";
-
+    private static final String SDK_VERSION;
     static {
-        OS_NAME = System.getProperty("os.name");
-        OS_VERSION = System.getProperty("os.version");
-        OS = OS_NAME + "/" + OS_VERSION;
-        String version = System.getProperty("java.version");
-        JAVA_VERSION = version != null ? version : "Unknown";
+        SDK_VERSION = PROPERTIES.getOrDefault("version", "UnknownVersion");
     }
 
     private final SerializerAdapter serializerAdapter = new AzureJacksonAdapter();
 
-    private String sdkName;
+    private final String sdkName;
+
+    protected AzureServiceClient(HttpPipeline httpPipeline, AzureEnvironment environment) {
+        sdkName = this.getClass().getPackage().getName();
+        ((AzureJacksonAdapter) serializerAdapter).serializer().registerModule(DateTimeDeserializer.getModule());
+    }
 
     /**
      * Gets serializer adapter for JSON serialization/de-serialization.
@@ -82,23 +78,20 @@ public abstract class AzureServiceClient {
      * @return the default client context.
      */
     public Context getContext() {
-        Context context = new Context("java.version", JAVA_VERSION);
-        if (!CoreUtils.isNullOrEmpty(OS_NAME)) {
-            context = context.addData("os.name", OS_NAME);
+        return new Context("Sdk-Name", sdkName)
+            .addData("Sdk-Version", SDK_VERSION);
+    }
+
+    /**
+     * Merges default client context with provided context.
+     *
+     * @param context the context to be merged with default client context.
+     * @return the merged context.
+     */
+    public Context mergeContext(Context context) {
+        for (Map.Entry<Object, Object> entry : this.getContext().getValues().entrySet()) {
+            context = context.addData(entry.getKey(), entry.getValue());
         }
-        if (!CoreUtils.isNullOrEmpty(OS_VERSION)) {
-            context = context.addData("os.version", OS_VERSION);
-        }
-        if (sdkName == null) {
-            String packageName = this.getClass().getPackage().getName();
-            if (packageName.endsWith(".models")) {
-                sdkName = packageName.substring(0, packageName.length() - ".models".length());
-            } else {
-                sdkName = packageName;
-            }
-        }
-        context = context.addData("Sdk-Name", sdkName);
-        context = context.addData("Sdk-Version", SDK_VERSION);
         return context;
     }
 

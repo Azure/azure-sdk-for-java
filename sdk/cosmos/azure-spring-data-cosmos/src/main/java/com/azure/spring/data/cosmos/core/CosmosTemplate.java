@@ -14,6 +14,7 @@ import com.azure.data.cosmos.FeedOptions;
 import com.azure.data.cosmos.CosmosClient;
 import com.azure.data.cosmos.CosmosContainerProperties;
 import com.azure.data.cosmos.CosmosContainerResponse;
+import com.azure.data.cosmos.CosmosDatabase;
 import com.azure.data.cosmos.PartitionKey;
 import com.azure.spring.data.cosmos.common.CosmosdbUtils;
 import com.azure.spring.data.cosmos.common.Memoizer;
@@ -35,6 +36,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.repository.query.parser.Part;
 import org.springframework.lang.NonNull;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
@@ -402,9 +404,17 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
                         + information.getPartitionKeyFieldName());
                 cosmosContainerProperties.defaultTimeToLive(information.getTimeToLive());
                 cosmosContainerProperties.indexingPolicy(information.getIndexingPolicy());
-                return cosmosDatabaseResponse
-                    .database()
-                    .createContainerIfNotExists(cosmosContainerProperties, information.getRequestUnit())
+                
+                CosmosDatabase database = cosmosDatabaseResponse.database();
+                Mono<CosmosContainerResponse> mono = null;
+                
+                if (information.getRequestUnit() == null) {
+                    mono = database.createContainerIfNotExists(cosmosContainerProperties);
+                } else {
+                    mono = database.createContainerIfNotExists(cosmosContainerProperties, information.getRequestUnit());
+                }
+                
+                return mono
                     .onErrorResume(throwable ->
                         CosmosDBExceptionUtils.exceptionHandler("Failed to create container", throwable))
                     .doOnNext(cosmosContainerResponse ->
@@ -453,7 +463,7 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
         Assert.hasText(containerName, "container should not be null, empty or only whitespaces");
 
         final DocumentQuery query = new DocumentQuery(Criteria.getInstance(CriteriaType.IN, "id",
-                Collections.singletonList(ids)));
+                Collections.singletonList(ids), Part.IgnoreCaseType.NEVER));
         return find(query, domainType, containerName);
     }
 

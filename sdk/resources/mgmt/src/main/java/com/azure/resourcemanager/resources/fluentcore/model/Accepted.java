@@ -14,11 +14,11 @@ import com.azure.resourcemanager.resources.fluentcore.rest.ActivationResponse;
 public interface Accepted<T> {
 
     /**
-     * Gets the accepted result of LRO.
+     * Gets the activation response of LRO.
      *
-     * @return the accepted result
+     * @return the activation response
      */
-    ActivationResponse<T> getAcceptedResult();
+    ActivationResponse<T> getActivationResponse();
 
     /**
      * Gets the {@link SyncPoller} of LRO.

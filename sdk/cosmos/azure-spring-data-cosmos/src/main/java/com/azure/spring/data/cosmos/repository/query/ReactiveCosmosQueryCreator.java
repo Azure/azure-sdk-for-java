@@ -72,7 +72,7 @@ public class ReactiveCosmosQueryCreator extends AbstractQueryCreator<DocumentQue
             values.add(parameters.next());
         }
 
-        return Criteria.getInstance(CriteriaType.toCriteriaType(type), subject, values);
+        return Criteria.getInstance(CriteriaType.toCriteriaType(type), subject, values, part.shouldIgnoreCase());
     }
 
     @Override

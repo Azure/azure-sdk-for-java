@@ -14,7 +14,7 @@ Maven dependency for the Azure Key Vault Key client library. Add it to your proj
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-security-keyvault-keys</artifactId>
-    <version>4.1.4</version>
+    <version>4.1.5</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -255,7 +255,7 @@ The following sections provide several code snippets covering some of the most c
 - [Update an existing key asynchronously](#update-an-existing-key-asynchronously)
 - [Delete a key asynchronously](#delete-a-key-asynchronously)
 - [List keys asynchronously](#list-keys-asynchronously)
-- [Encrypt asynchronously](#encryp-asynchronously)
+- [Encrypt asynchronously](#encrypt-asynchronously)
 - [Decrypt asynchronously](#decrypt-asynchronously)
 
 > Note : You should add `System.in.read()` or `Thread.sleep()` after the function calls in the main class/thread to allow async functions/operations to execute and finish before the main application/thread exits.
