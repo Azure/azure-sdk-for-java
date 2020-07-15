@@ -7,23 +7,15 @@ package com.azure.ai.textanalytics.implementation.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/**
- * Defines values for WarningCodeValue.
- */
+/** Defines values for WarningCodeValue. */
 public enum WarningCodeValue {
-    /**
-     * Enum value LongWordsInDocument.
-     */
+    /** Enum value LongWordsInDocument. */
     LONG_WORDS_IN_DOCUMENT("LongWordsInDocument"),
 
-    /**
-     * Enum value DocumentTruncated.
-     */
+    /** Enum value DocumentTruncated. */
     DOCUMENT_TRUNCATED("DocumentTruncated");
 
-    /**
-     * The actual serialized value for a WarningCodeValue instance.
-     */
+    /** The actual serialized value for a WarningCodeValue instance. */
     private final String value;
 
     WarningCodeValue(String value) {
@@ -32,7 +24,7 @@ public enum WarningCodeValue {
 
     /**
      * Parses a serialized value to a WarningCodeValue instance.
-     * 
+     *
      * @param value the serialized value to parse.
      * @return the parsed WarningCodeValue object, or null if unable to parse.
      */
