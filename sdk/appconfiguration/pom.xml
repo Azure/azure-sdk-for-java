@@ -10,5 +10,9 @@
   <version>1.0.0</version><!-- Need not change for every release-->
   <modules>
     <module>azure-data-appconfiguration</module>
+    <module>spring-cloud-azure-appconfiguration-config</module>
+    <module>spring-cloud-azure-appconfiguration-config-web</module>
+    <module>spring-cloud-azure-feature-management</module>
+    <module>spring-cloud-azure-feature-management-web</module>
   </modules>
 </project>
