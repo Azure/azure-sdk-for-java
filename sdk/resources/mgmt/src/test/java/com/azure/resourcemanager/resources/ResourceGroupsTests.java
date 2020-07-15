@@ -4,14 +4,14 @@
 package com.azure.resourcemanager.resources;
 
 import com.azure.core.http.HttpPipeline;
+import com.azure.resourcemanager.base.profile.AzureProfile;
 import com.azure.resourcemanager.resources.fluentcore.arm.Region;
-import com.azure.resourcemanager.resources.fluentcore.profile.AzureProfile;
 import com.azure.resourcemanager.resources.models.ResourceGroup;
 import com.azure.resourcemanager.resources.models.ResourceGroups;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-public class ResourceGroupsTests extends ResourceManagerTestBase {
+public class ResourceGroupsTests extends ResourceManagementTest {
     private ResourceGroups resourceGroups;
 
     @Override

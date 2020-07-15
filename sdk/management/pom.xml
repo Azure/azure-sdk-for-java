@@ -427,6 +427,52 @@
     </build>
     <profiles>
         <profile>
+            <id>java8</id>
+            <activation>
+                <jdk>[1.8,9)</jdk>
+            </activation>
+            <properties>
+                <maven.compiler.source>8</maven.compiler.source>
+                <maven.compiler.target>8</maven.compiler.target>
+            </properties>
+        </profile>
+        <profile>
+            <id>java-lts</id>
+            <activation>
+                <jdk>[11,)</jdk>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-compiler-plugin</artifactId>
+                        <version>3.8.1</version>
+                        <configuration>
+                            <testRelease>11</testRelease>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <id>default-compile</id>
+                                <configuration>
+                                    <release>11</release>
+                                </configuration>
+                            </execution>
+                            <execution>
+                                <id>base-compile</id>
+                                <configuration>
+                                    <release>8</release>
+                                    <excludes>
+                                        <exclude>module-info.java</exclude>
+                                    </excludes>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+        <profile>
             <id>run-shade-plugin</id>
             <activation>
                 <property>
@@ -472,6 +518,8 @@
     </profiles>
     <modules>
         <module>./azure</module>
+        <module>./azure-resourcemanager-base</module>
+        <module>./azure-resourcemanager-test</module>
         <module>../appservice/mgmt</module>
         <module>../appplatform/mgmt</module>
         <module>../compute/mgmt</module>

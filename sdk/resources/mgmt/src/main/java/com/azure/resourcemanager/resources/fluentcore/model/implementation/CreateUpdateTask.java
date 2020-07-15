@@ -3,8 +3,8 @@
 
 package com.azure.resourcemanager.resources.fluentcore.model.implementation;
 
+import com.azure.resourcemanager.base.utils.SdkContext;
 import com.azure.resourcemanager.resources.fluentcore.model.Indexable;
-import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 import com.azure.resourcemanager.resources.fluentcore.dag.TaskGroup;
 import com.azure.resourcemanager.resources.fluentcore.dag.TaskItem;
 import reactor.core.publisher.Mono;

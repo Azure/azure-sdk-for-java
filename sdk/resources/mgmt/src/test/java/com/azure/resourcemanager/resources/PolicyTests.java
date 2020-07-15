@@ -5,9 +5,8 @@ package com.azure.resourcemanager.resources;
 
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.resourcemanager.resources.core.TestBase;
+import com.azure.resourcemanager.base.profile.AzureProfile;
 import com.azure.resourcemanager.resources.core.TestUtilities;
-import com.azure.resourcemanager.resources.fluentcore.profile.AzureProfile;
 import com.azure.resourcemanager.resources.models.GenericResource;
 import com.azure.resourcemanager.resources.models.PolicyAssignment;
 import com.azure.resourcemanager.resources.models.PolicyDefinition;
@@ -18,7 +17,7 @@ import com.azure.resourcemanager.resources.fluentcore.arm.Region;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-public class PolicyTests extends TestBase {
+public class PolicyTests extends ResourceManagementTest {
     protected ResourceManager resourceManager;
     private String policyRule = "{\"if\":{\"not\":{\"field\":\"location\",\"in\":[\"southcentralus\",\"westeurope\"]}},\"then\":{\"effect\":\"deny\"}}";
 
@@ -36,7 +35,7 @@ public class PolicyTests extends TestBase {
     }
 
     @Test
-    public void canCRUDPolicyDefinition() throws Exception {
+    public void canCRUDPolicyDefinition() {
         String policyName = generateRandomResourceName("policy", 15);
         String displayName = generateRandomResourceName("mypolicy", 15);
         try {

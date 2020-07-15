@@ -4,8 +4,8 @@
 package com.azure.resourcemanager.resources.fluentcore.dag;
 
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.base.utils.SdkContext;
 import com.azure.resourcemanager.resources.fluentcore.model.Indexable;
-import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;

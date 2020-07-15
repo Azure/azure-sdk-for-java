@@ -5,10 +5,9 @@ package com.azure.resourcemanager.resources;
 
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.resourcemanager.resources.core.TestBase;
+import com.azure.resourcemanager.base.profile.AzureProfile;
+import com.azure.resourcemanager.base.utils.SdkContext;
 import com.azure.resourcemanager.resources.core.TestUtilities;
-import com.azure.resourcemanager.resources.fluentcore.profile.AzureProfile;
-import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 import com.azure.resourcemanager.resources.models.Provider;
 import com.azure.resourcemanager.resources.models.ProviderResourceType;
 import org.junit.jupiter.api.Assertions;
@@ -16,7 +15,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
-public class ProvidersTests extends TestBase {
+public class ProvidersTests extends ResourceManagementTest {
     protected ResourceManager resourceManager;
 
     @Override

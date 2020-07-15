@@ -5,8 +5,8 @@ package com.azure.resourcemanager.resources;
 
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedIterable;
+import com.azure.resourcemanager.base.profile.AzureProfile;
 import com.azure.resourcemanager.resources.fluentcore.arm.Region;
-import com.azure.resourcemanager.resources.fluentcore.profile.AzureProfile;
 import com.azure.resourcemanager.resources.models.GenericResource;
 import com.azure.resourcemanager.resources.models.GenericResources;
 import com.azure.resourcemanager.resources.models.ResourceGroups;
@@ -16,7 +16,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
 
-public class GenericResourcesTests extends ResourceManagerTestBase {
+public class GenericResourcesTests extends ResourceManagementTest {
     private ResourceGroups resourceGroups;
     private GenericResources genericResources;
 

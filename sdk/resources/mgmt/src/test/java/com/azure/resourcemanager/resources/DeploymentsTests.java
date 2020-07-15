@@ -9,11 +9,11 @@ import com.azure.core.management.exception.ManagementError;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollResponse;
+import com.azure.resourcemanager.base.profile.AzureProfile;
+import com.azure.resourcemanager.base.utils.SdkContext;
 import com.azure.resourcemanager.resources.core.TestUtilities;
 import com.azure.resourcemanager.resources.fluentcore.arm.Region;
 import com.azure.resourcemanager.resources.fluentcore.model.Accepted;
-import com.azure.resourcemanager.resources.fluentcore.profile.AzureProfile;
-import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 import com.azure.resourcemanager.resources.models.Deployment;
 import com.azure.resourcemanager.resources.models.DeploymentMode;
 import com.azure.resourcemanager.resources.models.DeploymentOperation;
@@ -28,7 +28,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.Optional;
 
-public class DeploymentsTests extends ResourceManagerTestBase {
+public class DeploymentsTests extends ResourceManagementTest {
     private ResourceGroups resourceGroups;
     private ResourceGroup resourceGroup;
 

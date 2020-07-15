@@ -9,7 +9,7 @@ import com.azure.resourcemanager.resources.fluentcore.profile.AzureProfile;
 import com.azure.resourcemanager.resources.ResourceManager;
 
 /** The base for storage manager tests. */
-public abstract class StorageManagementTest extends TestBase {
+public abstract class StorageManagementTest extends ResourceManagerTestBase {
     protected ResourceManager resourceManager;
     protected StorageManager storageManager;
 

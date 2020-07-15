@@ -16,10 +16,10 @@ import com.azure.core.http.policy.HttpPolicyProviders;
 import com.azure.core.http.policy.RequestIdPolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.util.Configuration;
+import com.azure.resourcemanager.base.profile.AzureProfile;
 import com.azure.resourcemanager.resources.fluentcore.policy.AuthenticationPolicy;
 import com.azure.resourcemanager.resources.fluentcore.policy.UserAgentPolicy;
 import com.azure.resourcemanager.resources.fluentcore.policy.ProviderRegistrationPolicy;
-import com.azure.resourcemanager.resources.fluentcore.profile.AzureProfile;
 
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;

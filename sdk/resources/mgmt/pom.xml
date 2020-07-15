@@ -56,6 +56,11 @@
             <artifactId>azure-core-management</artifactId>
         </dependency>
         <dependency>
+          <groupId>com.azure.resourcemanager</groupId>
+          <artifactId>azure-resourcemanager-base</artifactId>
+          <version>2.0.0-SNAPSHOT</version>
+        </dependency>
+        <dependency>
             <groupId>com.github.spotbugs</groupId>
             <artifactId>spotbugs-annotations</artifactId>
             <optional>true</optional>
@@ -90,6 +95,12 @@
             <artifactId>azure-core-http-netty</artifactId>
             <scope>test</scope>
         </dependency>
+        <dependency>
+          <groupId>com.azure.resourcemanager</groupId>
+          <artifactId>azure-resourcemanager-test</artifactId>
+          <version>2.0.0-SNAPSHOT</version>
+          <scope>test</scope>
+        </dependency>
     </dependencies>
     <build>
         <plugins>
@@ -115,22 +126,6 @@
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>build-helper-maven-plugin</artifactId>
-            </plugin>
-
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.8.1</version>
-                <configuration>
-                    <source>1.8</source>
-                    <target>1.8</target>
-                    <debug>true</debug>
-                    <optimize>true</optimize>
-                    <compilerArguments>
-                        <AaddGeneratedAnnotation>true</AaddGeneratedAnnotation>
-                        <Adebug>true</Adebug>
-                    </compilerArguments>
-                </configuration>
             </plugin>
         </plugins>
     </build>

@@ -10,7 +10,7 @@ import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.util.DateTimeRfc1123;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
+import com.azure.resourcemanager.base.utils.SdkContext;
 import reactor.core.publisher.Mono;
 
 import java.nio.charset.StandardCharsets;
