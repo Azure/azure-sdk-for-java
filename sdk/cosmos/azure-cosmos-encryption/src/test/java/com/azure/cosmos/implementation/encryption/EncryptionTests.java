@@ -79,6 +79,7 @@ public class EncryptionTests extends TestSuiteBase {
         databaseCore.createContainerIfNotExists(itemContainerId, "/PK", ThroughputProperties.createManualThroughput(400)).block();
         itemContainer = databaseCore.getContainer(itemContainerId);
 
+        dekProvider.initialize(databaseCore, EncryptionTests.keyContainer.getId());
 
         EncryptionTests.dekProperties = EncryptionTests.createDek(EncryptionTests.dekProvider, dekId);
     }
@@ -188,7 +189,7 @@ public class EncryptionTests extends TestSuiteBase {
     }
 
     private void validateWriteResponseIsValid(TestDoc originalItem, TestDoc result) {
-        assertThat(result.sensitive).isNull();
+        assertThat(result.sensitive).isEqualTo(originalItem.sensitive);
         assertThat(result.id).isEqualTo(originalItem.id);
         assertThat(result.pk).isEqualTo(originalItem.pk);
         assertThat(result.nonSensitive).isEqualTo(originalItem.nonSensitive);

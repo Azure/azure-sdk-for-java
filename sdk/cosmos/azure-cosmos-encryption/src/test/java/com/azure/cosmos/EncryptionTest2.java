@@ -115,7 +115,7 @@ public class EncryptionTest2 extends TestSuiteBase {
 
 
     private void validateWriteResponseIsValid(Pojo originalItem, Pojo result) {
-        assertThat(result.sensitive).isNull();
+        assertThat(result.sensitive).isEqualTo(originalItem.sensitive)
         assertThat(result.id).isEqualTo(originalItem.id);
         assertThat(result.mypk).isEqualTo(originalItem.mypk);
         assertThat(result.nonSensitive).isEqualTo(originalItem.nonSensitive);
