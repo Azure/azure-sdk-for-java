@@ -52,6 +52,11 @@ public interface BackendAddressPool extends HasInner<BackendAddressPoolInner>, I
     SubResource outboundRule();
 
     /**
+     * @return the outboundRules value.
+     */
+    List<SubResource> outboundRules();
+
+    /**
      * @return the provisioningState value.
      */
     String provisioningState();
