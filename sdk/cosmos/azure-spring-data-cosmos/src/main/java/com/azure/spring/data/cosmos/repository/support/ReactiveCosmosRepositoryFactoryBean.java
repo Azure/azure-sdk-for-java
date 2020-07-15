@@ -4,11 +4,7 @@ package com.azure.spring.data.cosmos.repository.support;
 
 import com.azure.spring.data.cosmos.core.ReactiveCosmosOperations;
 import com.azure.spring.data.cosmos.core.mapping.CosmosMappingContext;
-import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.FactoryBean;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationContextAware;
 import org.springframework.data.mapping.context.MappingContext;
 import org.springframework.data.repository.Repository;
 import org.springframework.data.repository.core.support.RepositoryFactoryBeanSupport;
@@ -22,10 +18,8 @@ import java.io.Serializable;
  */
 public class ReactiveCosmosRepositoryFactoryBean<T extends Repository<S, K>, S,
     K extends Serializable>
-    extends RepositoryFactoryBeanSupport<T, S, K>
-    implements ApplicationContextAware {
+    extends RepositoryFactoryBeanSupport<T, S, K> {
 
-    private ApplicationContext applicationContext;
     private ReactiveCosmosOperations cosmosOperations;
     private boolean mappingContextConfigured = false;
 
@@ -43,23 +37,17 @@ public class ReactiveCosmosRepositoryFactoryBean<T extends Repository<S, K>, S,
      *
      * @param operations contains cosmos operations
      */
-    @Autowired
     public void setReactiveCosmosOperations(ReactiveCosmosOperations operations) {
         this.cosmosOperations = operations;
     }
 
     @Override
     protected final RepositoryFactorySupport createRepositoryFactory() {
-        return getFactoryInstance(applicationContext);
+        return getFactoryInstance();
     }
 
-    protected RepositoryFactorySupport getFactoryInstance(ApplicationContext applicationContext) {
-        return new ReactiveCosmosRepositoryFactory(cosmosOperations, applicationContext);
-    }
-
-    @Override
-    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
-        this.applicationContext = applicationContext;
+    protected RepositoryFactorySupport getFactoryInstance() {
+        return new ReactiveCosmosRepositoryFactory(cosmosOperations);
     }
 
     @Override

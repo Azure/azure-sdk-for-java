@@ -81,6 +81,9 @@ stages:
         ServiceDirectory: cosmos
         Artifacts: ${{ parameters.Artifacts }}
         AdditionalModules: ${{ parameters.AdditionalModules }}
+        ACCOUNT_HOST: 'https://localhost:8081/'
+        ACCOUNT_KEY: 'C2y6yDjf5/R+ob0N8A7Cgv30VRDJIWEHLM+4QDU5DE2nQ9nDuVTqobD4b8mGGyPMbIZnqyMsEcaGQy67XIw/Jw=='
+        SECONDARY_ACCOUNT_KEY: 'C2y6yDjf5/R+ob0N8A7Cgv30VRDJIWEHLM+4QDU5DE2nQ9nDuVTqobD4b8mGGyPMbIZnqyMsEcaGQy67XIw/Jw=='
         # Increased timeout to 90 because of cosmos emulator taking 25-30 mins to download emulator
         # Issue filed to improve download speed: https://github.com/Azure/azure-sdk-for-java/issues/12970
         TimeoutInMinutes: 90
@@ -106,7 +109,7 @@ stages:
             JavaTestVersion: '1.8'
             ProfileFlag: '-P integration-test-emulator'
             DisplayName: 'Spring Emulator only Integration Tests'
-            AdditionalArgs: '-DargLine="-DACCOUNT_HOST=https://localhost:8081/ -DACCOUNT_KEY=C2y6yDjf5/R+ob0N8A7Cgv30VRDJIWEHLM+4QDU5DE2nQ9nDuVTqobD4b8mGGyPMbIZnqyMsEcaGQy67XIw/Jw== -DSECONDARY_ACCOUNT_KEY=C2y6yDjf5/R+ob0N8A7Cgv30VRDJIWEHLM+4QDU5DE2nQ9nDuVTqobD4b8mGGyPMbIZnqyMsEcaGQy67XIw/Jw=="'
+            AdditionalArgs: '-DargLine="-DACCOUNT_HOST=$(ACCOUNT_HOST) -DACCOUNT_KEY=$(ACCOUNT_KEY) -DSECONDARY_ACCOUNT_KEY=$(SECONDARY_ACCOUNT_KEY) -DNEW_ACCOUNT_HOST=$(ACCOUNT_HOST) -DNEW_ACCOUNT_KEY=$(ACCOUNT_KEY) -DNEW_SECONDARY_ACCOUNT_KEY=$(SECONDARY_ACCOUNT_KEY)"'
 
         TestStepMavenInputs:
           goals: 'verify'

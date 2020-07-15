@@ -74,6 +74,7 @@ public final class TestConstants {
     };
 
     public static final String DB_NAME = "testdb";
+    public static final String SECONDARY_DB_NAME = "second_testdb";
     public static final String FIRST_NAME = "first_name_li";
     public static final String LAST_NAME = "last_name_p";
     public static final String ID_1 = "id-1";
