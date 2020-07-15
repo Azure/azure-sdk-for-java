@@ -13,7 +13,6 @@ import com.azure.search.documents.indexes.models.SearchIndex;
 import com.azure.search.documents.indexes.models.SynonymMap;
 
 import java.util.Arrays;
-import java.util.Collections;
 
 /**
  * This example shows how to create an index with a synonym map
@@ -49,24 +48,17 @@ public class SynonymMapsCreateExample {
     }
 
     private static void createSynonymMap(SearchIndexClient serviceClient, String synonymMapName) {
-        SynonymMap synonymMap = new SynonymMap()
-            .setName(synonymMapName)
-            .setSynonyms("hotel, motel\ninternet,wifi\nfive star=>luxury\neconomy,inexpensive=>budget");
+        SynonymMap synonymMap = new SynonymMap(synonymMapName,
+            "hotel, motel\ninternet,wifi\nfive star=>luxury\neconomy,inexpensive=>budget");
         serviceClient.createSynonymMap(synonymMap);
     }
 
     private static void assignSynonymMapToIndex(String synonymMapName) {
-        SearchIndex index = new SearchIndex()
-            .setName("hotels")
-            .setFields(Arrays.asList(
-                new SearchField()
-                    .setName("HotelId")
-                    .setType(SearchFieldDataType.STRING)
+        SearchIndex index = new SearchIndex("hotels", Arrays.asList(
+                new SearchField("HotelId", SearchFieldDataType.STRING)
                     .setKey(true),
-                new SearchField()
-                    .setName("HotelName")
-                    .setType(SearchFieldDataType.STRING)
-                    .setSynonymMapNames(Collections.singletonList(synonymMapName))
+                new SearchField("HotelName", SearchFieldDataType.STRING)
+                    .setSynonymMapNames(synonymMapName)
             ));
     }
 }

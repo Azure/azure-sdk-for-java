@@ -3,8 +3,16 @@
 The Azure Management Libraries for Java is a higher-level, object-oriented API for *managing* Azure resources,
 that is optimized for ease of use, succinctness and consistency.
 
-- [API reference documentation][docs]
-- [Code snippets and samples][sample]
+## Documentation
+
+Various documentation is available to help you get started
+
+- **[API reference documentation][docs]**
+- **[Code snippets and samples][sample]**
+
+## Migration from older version of Azure management library 
+
+If you are an existing user of the older version of Azure management library for Java (the namespace of old packages contains ``com.microsoft.azure.management.**``) and you are looking for a migration guide to the new version of the SDK, please refer to [this migration guide here](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/management/docs/MIGRATION_GUIDE.md)
 
 ## Getting started
 
@@ -38,7 +46,7 @@ Azure Management Libraries require a `TokenCredential` implementation for authen
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-identity</artifactId>
-  <version>1.1.0-beta.5</version>
+  <version>1.0.8</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -50,7 +58,7 @@ Azure Management Libraries require a `TokenCredential` implementation for authen
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-core-http-netty</artifactId>
-  <version>1.5.2</version>
+  <version>1.5.3</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -95,6 +103,8 @@ The key concepts of Azure Management Libraries includes:
 - Integration with Azure role-based access control.
 - Asynchronous operations with [Reactor][reactor]. (Preview)
 - Configurable client, e.g. configuring HTTP client, retries, logging, etc.
+- [API design][design]
+- [API design (preview)][design_preview]
 
 ### Service features
 
@@ -317,4 +327,5 @@ If you would like to become an active contributor to this project please follow 
 [authenticate]: docs/AUTH.md
 [sample]: docs/SAMPLE.md
 [design]: docs/DESIGN.md
+[design_preview]: docs/DESIGN_PREVIEW.md
 [reactor]: https://projectreactor.io/

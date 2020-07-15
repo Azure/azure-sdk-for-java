@@ -59,7 +59,7 @@ You could check below articles to learn more on usage of specific starters.
 ## Contributing
 This project welcomes contributions and suggestions.  Most contributions require you to agree to a Contributor License Agreement (CLA) declaring that you have the right to, and actually do, grant us the rights to use your contribution. For details, visit https://cla.microsoft.com.
 
-Please follow [instructions here](https://github.com/Azure/azure-sdk-for-java/blob/master/CONTRIBUTING.md) to build from source or contribute.
+Please follow [instructions here](./CONTRIBUTING.md) to build from source or contribute.
 
 ### Filing Issues
 

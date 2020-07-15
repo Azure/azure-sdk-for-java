@@ -3,7 +3,6 @@
 package com.azure.search.documents;
 
 import com.azure.core.http.rest.Response;
-import com.azure.core.models.spatial.PointGeometry;
 import com.azure.core.util.Context;
 import com.azure.search.documents.indexes.SearchIndexClient;
 import com.azure.search.documents.indexes.models.IndexDocumentsBatch;
@@ -31,8 +30,6 @@ import java.util.function.Supplier;
 
 import static com.azure.search.documents.TestHelpers.assertMapEquals;
 import static com.azure.search.documents.TestHelpers.assertObjectEquals;
-import static com.azure.search.documents.TestHelpers.createPointGeometry;
-import static com.azure.search.documents.TestHelpers.generateRequestOptions;
 import static com.azure.search.documents.TestHelpers.uploadDocument;
 import static java.lang.Double.NEGATIVE_INFINITY;
 import static java.lang.Double.NaN;
@@ -57,7 +54,7 @@ public class LookupSyncTests extends SearchTestBase {
         String indexName = indexSupplier.get();
         indexesToDelete.add(indexName);
 
-        return getSearchIndexClientBuilder(indexName).buildClient();
+        return getSearchClientBuilder(indexName).buildClient();
     }
 
     @Test
@@ -120,7 +117,7 @@ public class LookupSyncTests extends SearchTestBase {
 
         List<String> selectedFields = Arrays.asList("Description", "HotelName", "Address/City", "Rooms/BaseRate");
         Response<Hotel> actual = client.getDocumentWithResponse(indexedDoc.hotelId(), Hotel.class,
-            selectedFields, generateRequestOptions(), Context.NONE);
+            selectedFields, Context.NONE);
         assertObjectEquals(expected, actual.getValue(), true);
     }
 
@@ -152,7 +149,7 @@ public class LookupSyncTests extends SearchTestBase {
         List<String> selectedFields = Arrays.asList("HotelId", "HotelName", "Tags", "ParkingIncluded", "LastRenovationDate", "Rating", "Location", "Address", "Rooms/BaseRate", "Rooms/BedOptions", "Rooms/SleepsCount", "Rooms/SmokingAllowed", "Rooms/Tags");
 
         Response<SearchDocument> response = client.getDocumentWithResponse("1", SearchDocument.class,
-            selectedFields, generateRequestOptions(), Context.NONE);
+            selectedFields, Context.NONE);
         assertEquals(expectedDoc, response.getValue());
     }
 
@@ -181,7 +178,7 @@ public class LookupSyncTests extends SearchTestBase {
         List<String> selectedFields = Arrays.asList("HotelId", "Address");
 
         Response<SearchDocument> response = client.getDocumentWithResponse("1", SearchDocument.class,
-            selectedFields, generateRequestOptions(), Context.NONE);
+            selectedFields, Context.NONE);
         assertEquals(expectedDoc, response.getValue());
     }
 
@@ -261,7 +258,7 @@ public class LookupSyncTests extends SearchTestBase {
         List<String> selectedFields = Arrays.asList("HotelId", "Rooms");
 
         Response<SearchDocument> response = client.getDocumentWithResponse("1", SearchDocument.class,
-            selectedFields, generateRequestOptions(), Context.NONE);
+            selectedFields, Context.NONE);
         assertEquals(expectedDoc, response.getValue());
     }
 
@@ -272,22 +269,22 @@ public class LookupSyncTests extends SearchTestBase {
         SearchDocument indexedDoc = new SearchDocument();
         indexedDoc.put("HotelId", "1");
         indexedDoc.put("LastRenovationDate", "2017-01-13T14:03:00.7552052-07:00");
-        indexedDoc.put("Location", createPointGeometry(40.760586, -73.975403)); // Test that we don't confuse Geo-JSON & complex types.
+//        indexedDoc.put("Location", createPointGeometryString(40.760586, -73.975403)); // Test that we don't confuse Geo-JSON & complex types.
         indexedDoc.put("Rooms", Collections.singletonList(new SearchDocument(Collections.singletonMap("BaseRate", NaN))));
 
         SearchDocument expectedDoc = new SearchDocument();
         expectedDoc.put("HotelId", "1");
         expectedDoc.put("LastRenovationDate", OffsetDateTime.of(2017, 1, 13, 21, 3,
             0, 755000000, ZoneOffset.UTC));
-        expectedDoc.put("Location", createPointGeometry(40.760586, -73.975403));
+//        expectedDoc.put("Location", createPointGeometryString(40.760586, -73.975403));
         expectedDoc.put("Rooms", Collections.singletonList(new SearchDocument(Collections.singletonMap("BaseRate", "NaN"))));
 
-        client.indexDocuments(new IndexDocumentsBatch<>().addUploadActions(indexedDoc));
+        client.indexDocuments(new IndexDocumentsBatch<>().addUploadActions(Collections.singletonList(indexedDoc)));
 
         // Select only the fields set in the test case so we don't get superfluous data back.
         List<String> selectedFields = Arrays.asList("HotelId", "LastRenovationDate", "Location", "Rooms/BaseRate");
         assertMapEquals(expectedDoc, client.getDocumentWithResponse("1", SearchDocument.class, selectedFields,
-            null, Context.NONE).getValue(), false, "properties");
+            Context.NONE).getValue(), false, "properties");
     }
 
     @Test
@@ -299,9 +296,9 @@ public class LookupSyncTests extends SearchTestBase {
         SearchDocument expectedDoc = new SearchDocument();
         expectedDoc.put("HotelId", complexKey);
 
-        client.indexDocuments(new IndexDocumentsBatch<>().addUploadActions(expectedDoc));
+        client.indexDocuments(new IndexDocumentsBatch<>().addUploadActions(Collections.singletonList(expectedDoc)));
         assertEquals(client.getDocumentWithResponse(complexKey, SearchDocument.class,
-            new ArrayList<>(expectedDoc.keySet()), null, Context.NONE).getValue(), expectedDoc);
+            new ArrayList<>(expectedDoc.keySet()), Context.NONE).getValue(), expectedDoc);
     }
 
     @Test
@@ -317,9 +314,9 @@ public class LookupSyncTests extends SearchTestBase {
 
         expectedDoc.put("LastRenovationDate", OffsetDateTime.parse("2010-06-27T08:00Z"));
 
-        client.indexDocuments(new IndexDocumentsBatch<>().addUploadActions(indexedDoc));
+        client.indexDocuments(new IndexDocumentsBatch<>().addUploadActions(Collections.singletonList(indexedDoc)));
         SearchDocument actualDoc = client.getDocumentWithResponse("1", SearchDocument.class,
-            new ArrayList<>(expectedDoc.keySet()), null, Context.NONE).getValue();
+            new ArrayList<>(expectedDoc.keySet()), Context.NONE).getValue();
         assertMapEquals(expectedDoc, actualDoc, false);
     }
 
@@ -353,7 +350,7 @@ public class LookupSyncTests extends SearchTestBase {
         List<String> selectedFields = Arrays.asList("HotelId", "Rooms/BaseRate", "Rooms/BedOptions", "Rooms/SleepsCount", "Rooms/SmokingAllowed", "Rooms/Tags");
 
         Response<SearchDocument> response = client.getDocumentWithResponse("1", SearchDocument.class,
-            selectedFields, generateRequestOptions(), Context.NONE);
+            selectedFields, Context.NONE);
         assertEquals(expectedDoc, response.getValue());
     }
 
@@ -363,7 +360,7 @@ public class LookupSyncTests extends SearchTestBase {
 
         String docKey = "1";
         OffsetDateTime dateTime = OffsetDateTime.parse("2019-08-13T14:30:00Z");
-        PointGeometry geoPoint = createPointGeometry(1.0, 100.0);
+//        String geoPoint = createPointGeometryString(1.0, 100.0);
 
         SearchDocument indexedDoc = new SearchDocument();
         indexedDoc.put("Key", docKey);
@@ -373,7 +370,7 @@ public class LookupSyncTests extends SearchTestBase {
         indexedDoc.put("Longs", new Long[]{9999999999999999L, 832372345832523L});
         indexedDoc.put("Strings", new String[]{"hello", "bye"});
         indexedDoc.put("Ints", new int[]{1, 2, 3, 4, -13, 5, 0});
-        indexedDoc.put("Points", new PointGeometry[]{geoPoint});
+//        indexedDoc.put("Points", new String[]{geoPoint});
 
         // This is the expected document when querying the document later
         SearchDocument expectedDoc = new SearchDocument();
@@ -383,7 +380,7 @@ public class LookupSyncTests extends SearchTestBase {
         expectedDoc.put("Longs", Arrays.asList(9999999999999999L, 832372345832523L));
         expectedDoc.put("Strings", Arrays.asList("hello", "bye"));
         expectedDoc.put("Ints", Arrays.asList(1, 2, 3, 4, -13, 5, 0));
-        expectedDoc.put("Points", Collections.singletonList(geoPoint));
+//        expectedDoc.put("Points", Collections.singletonList(geoPoint));
         expectedDoc.put("Dates", Collections.singletonList(dateTime));
 
         uploadDocument(client, indexedDoc);
@@ -410,7 +407,7 @@ public class LookupSyncTests extends SearchTestBase {
                 expectDate.getMonth(), expectDate.getDate(), expectDate.getHours(),
                 expectDate.getMinutes(), expectDate.getSeconds()))
             .rating(5)
-            .location(createPointGeometry(47.678581, -122.131577))
+//            .location(createPointGeometryString(47.678581, -122.131577))
             .rooms(new ArrayList<>());
     }
 
@@ -438,7 +435,7 @@ public class LookupSyncTests extends SearchTestBase {
             .smokingAllowed(true)
             .lastRenovationDate(new Date(2010 - 1900, Calendar.JUNE, 26, 13, 0, 0))
             .rating(3)
-            .location(createPointGeometry(35.904160, -78.940483))
+//            .location(createPointGeometryString(35.904160, -78.940483))
             .address(new HotelAddress().streetAddress("6910 Fayetteville Rd").city("Durham").stateProvince("NC").country("USA").postalCode("27713"))
             .rooms(Arrays.asList(
                 new HotelRoom()
@@ -471,48 +468,31 @@ public class LookupSyncTests extends SearchTestBase {
             .doubles(new Double[]{NEGATIVE_INFINITY, 0.0, 2.78, NaN, 3.14, POSITIVE_INFINITY})
             .ints(new int[]{1, 2, 3, 4, -13, 5, 0})
             .longs(new Long[]{-9_999_999_999_999_999L, 832_372_345_832_523L})
-            .points(new PointGeometry[]{
-                createPointGeometry(49.0, -67.0),
-                createPointGeometry(47.0, 21.0)})
+//            .points(new String[]{
+//                createPointGeometryString(49.0, -67.0),
+//                createPointGeometryString(47.0, 21.0)})
             .strings(new String[]{"hello", "2019-04-14T14:56:00-07:00"});
     }
 
     String setupIndexWithDataTypes() {
-        SearchIndex index = new SearchIndex()
-            .setName("data-types-tests-index")
+        SearchIndex index = new SearchIndex("data-types-tests-index")
             .setFields(Arrays.asList(
-                 new SearchField()
-                    .setName("Key")
-                    .setType(SearchFieldDataType.STRING)
+                 new SearchField("Key", SearchFieldDataType.STRING)
                     .setKey(true)
                     .setHidden(false),
-                 new SearchField()
-                    .setName("Bools")
-                    .setType(SearchFieldDataType.collection(SearchFieldDataType.BOOLEAN))
+                 new SearchField("Bools", SearchFieldDataType.collection(SearchFieldDataType.BOOLEAN))
                     .setHidden(false),
-                 new SearchField()
-                    .setName("Dates")
-                    .setType(SearchFieldDataType.collection(SearchFieldDataType.DATE_TIME_OFFSET))
+                 new SearchField("Dates", SearchFieldDataType.collection(SearchFieldDataType.DATE_TIME_OFFSET))
                     .setHidden(false),
-                 new SearchField()
-                    .setName("Doubles")
-                    .setType(SearchFieldDataType.collection(SearchFieldDataType.DOUBLE))
+                 new SearchField("Doubles", SearchFieldDataType.collection(SearchFieldDataType.DOUBLE))
                     .setHidden(false),
-                 new SearchField()
-                    .setName("Points")
-                    .setType(SearchFieldDataType.collection(SearchFieldDataType.GEOGRAPHY_POINT))
+                 new SearchField("Points", SearchFieldDataType.collection(SearchFieldDataType.GEOGRAPHY_POINT))
                     .setHidden(false),
-                 new SearchField()
-                    .setName("Ints")
-                    .setType(SearchFieldDataType.collection(SearchFieldDataType.INT32))
+                 new SearchField("Ints", SearchFieldDataType.collection(SearchFieldDataType.INT32))
                     .setHidden(false),
-                 new SearchField()
-                    .setName("Longs")
-                    .setType(SearchFieldDataType.collection(SearchFieldDataType.INT64))
+                 new SearchField("Longs", SearchFieldDataType.collection(SearchFieldDataType.INT64))
                     .setHidden(false),
-                 new SearchField()
-                    .setName("Strings")
-                    .setType(SearchFieldDataType.collection(SearchFieldDataType.STRING))
+                 new SearchField("Strings", SearchFieldDataType.collection(SearchFieldDataType.STRING))
                     .setHidden(false)
             ));
 

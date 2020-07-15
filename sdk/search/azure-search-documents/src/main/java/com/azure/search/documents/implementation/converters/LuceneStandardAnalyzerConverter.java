@@ -21,17 +21,13 @@ public final class LuceneStandardAnalyzerConverter {
         if (obj == null) {
             return null;
         }
-        LuceneStandardAnalyzer luceneStandardAnalyzer = new LuceneStandardAnalyzer();
-
-        String name = obj.getName();
-        luceneStandardAnalyzer.setName(name);
+        LuceneStandardAnalyzer luceneStandardAnalyzer = new LuceneStandardAnalyzer(obj.getName());
 
         Integer maxTokenLength = obj.getMaxTokenLength();
         luceneStandardAnalyzer.setMaxTokenLength(maxTokenLength);
 
         if (obj.getStopwords() != null) {
-            List<String> stopwords = new ArrayList<>(obj.getStopwords());
-            luceneStandardAnalyzer.setStopwords(stopwords);
+            luceneStandardAnalyzer.setStopwords(obj.getStopwords());
         }
         return luceneStandardAnalyzer;
     }

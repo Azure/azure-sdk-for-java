@@ -24,16 +24,10 @@ public final class SearchIndexerSkillsetConverter {
         if (obj == null) {
             return null;
         }
-        SearchIndexerSkillset searchIndexerSkillset = new SearchIndexerSkillset();
 
-        if (obj.getSkills() != null) {
-            List<SearchIndexerSkill> skills =
-                obj.getSkills().stream().map(SearchIndexerSkillConverter::map).collect(Collectors.toList());
-            searchIndexerSkillset.setSkills(skills);
-        }
-
-        String name = obj.getName();
-        searchIndexerSkillset.setName(name);
+        List<SearchIndexerSkill> skills = obj.getSkills() == null ? null
+            : obj.getSkills().stream().map(SearchIndexerSkillConverter::map).collect(Collectors.toList());
+        SearchIndexerSkillset searchIndexerSkillset = new SearchIndexerSkillset(obj.getName(), skills);
 
         if (obj.getCognitiveServicesAccount() != null) {
             CognitiveServicesAccount cognitiveServicesAccount =

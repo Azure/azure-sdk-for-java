@@ -23,8 +23,8 @@ import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.util.polling.AsyncPollResponse;
 import com.azure.core.util.polling.PollerFlux;
+import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.compute.ComputeManagementClient;
 import com.azure.resourcemanager.compute.fluent.inner.LogAnalyticsOperationResultInner;
 import com.azure.resourcemanager.compute.models.LogAnalyticsInputBase;
@@ -88,34 +88,6 @@ public final class LogAnalyticsClient {
             @PathParam("subscriptionId") String subscriptionId,
             @BodyParam("application/json") LogAnalyticsInputBase parameters,
             Context context);
-
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.Compute/locations/{location}/logAnalytics/apiAccess"
-                + "/getRequestRateByInterval")
-        @ExpectedResponses({200, 202})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<LogAnalyticsOperationResultInner>> beginExportRequestRateByIntervalWithoutPolling(
-            @HostParam("$host") String endpoint,
-            @PathParam("location") String location,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @BodyParam("application/json") RequestRateByIntervalInput parameters,
-            Context context);
-
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.Compute/locations/{location}/logAnalytics/apiAccess"
-                + "/getThrottledRequests")
-        @ExpectedResponses({200, 202})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<LogAnalyticsOperationResultInner>> beginExportThrottledRequestsWithoutPolling(
-            @HostParam("$host") String endpoint,
-            @PathParam("location") String location,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @BodyParam("application/json") LogAnalyticsInputBase parameters,
-            Context context);
     }
 
     /**
@@ -152,7 +124,7 @@ public final class LogAnalyticsClient {
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2019-03-01";
+        final String apiVersion = "2019-12-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -202,7 +174,8 @@ public final class LogAnalyticsClient {
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2019-03-01";
+        final String apiVersion = "2019-12-01";
+        context = this.client.mergeContext(context);
         return service
             .exportRequestRateByInterval(
                 this.client.getEndpoint(), location, apiVersion, this.client.getSubscriptionId(), parameters, context);
@@ -221,7 +194,7 @@ public final class LogAnalyticsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<LogAnalyticsOperationResultInner>, LogAnalyticsOperationResultInner>
-        beginExportRequestRateByInterval(String location, RequestRateByIntervalInput parameters) {
+        beginExportRequestRateByIntervalAsync(String location, RequestRateByIntervalInput parameters) {
         Mono<Response<Flux<ByteBuffer>>> mono = exportRequestRateByIntervalWithResponseAsync(location, parameters);
         return this
             .client
@@ -246,7 +219,7 @@ public final class LogAnalyticsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<LogAnalyticsOperationResultInner>, LogAnalyticsOperationResultInner>
-        beginExportRequestRateByInterval(String location, RequestRateByIntervalInput parameters, Context context) {
+        beginExportRequestRateByIntervalAsync(String location, RequestRateByIntervalInput parameters, Context context) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             exportRequestRateByIntervalWithResponseAsync(location, parameters, context);
         return this
@@ -270,18 +243,46 @@ public final class LogAnalyticsClient {
      * @return logAnalytics operation status response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<LogAnalyticsOperationResultInner>, LogAnalyticsOperationResultInner>
+        beginExportRequestRateByInterval(String location, RequestRateByIntervalInput parameters) {
+        return beginExportRequestRateByIntervalAsync(location, parameters).getSyncPoller();
+    }
+
+    /**
+     * Export logs that show Api requests made by this subscription in the given time window to show throttling
+     * activities.
+     *
+     * @param location The location upon which virtual-machine-sizes is queried.
+     * @param parameters Api request input for LogAnalytics getRequestRateByInterval Api.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return logAnalytics operation status response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<LogAnalyticsOperationResultInner>, LogAnalyticsOperationResultInner>
+        beginExportRequestRateByInterval(String location, RequestRateByIntervalInput parameters, Context context) {
+        return beginExportRequestRateByIntervalAsync(location, parameters, context).getSyncPoller();
+    }
+
+    /**
+     * Export logs that show Api requests made by this subscription in the given time window to show throttling
+     * activities.
+     *
+     * @param location The location upon which virtual-machine-sizes is queried.
+     * @param parameters Api request input for LogAnalytics getRequestRateByInterval Api.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return logAnalytics operation status response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<LogAnalyticsOperationResultInner> exportRequestRateByIntervalAsync(
         String location, RequestRateByIntervalInput parameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono = exportRequestRateByIntervalWithResponseAsync(location, parameters);
-        return this
-            .client
-            .<LogAnalyticsOperationResultInner, LogAnalyticsOperationResultInner>getLroResultAsync(
-                mono,
-                this.client.getHttpPipeline(),
-                LogAnalyticsOperationResultInner.class,
-                LogAnalyticsOperationResultInner.class)
+        return beginExportRequestRateByIntervalAsync(location, parameters)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -299,17 +300,9 @@ public final class LogAnalyticsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<LogAnalyticsOperationResultInner> exportRequestRateByIntervalAsync(
         String location, RequestRateByIntervalInput parameters, Context context) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            exportRequestRateByIntervalWithResponseAsync(location, parameters, context);
-        return this
-            .client
-            .<LogAnalyticsOperationResultInner, LogAnalyticsOperationResultInner>getLroResultAsync(
-                mono,
-                this.client.getHttpPipeline(),
-                LogAnalyticsOperationResultInner.class,
-                LogAnalyticsOperationResultInner.class)
+        return beginExportRequestRateByIntervalAsync(location, parameters, context)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -380,7 +373,7 @@ public final class LogAnalyticsClient {
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2019-03-01";
+        final String apiVersion = "2019-12-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -429,7 +422,8 @@ public final class LogAnalyticsClient {
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2019-03-01";
+        final String apiVersion = "2019-12-01";
+        context = this.client.mergeContext(context);
         return service
             .exportThrottledRequests(
                 this.client.getEndpoint(), location, apiVersion, this.client.getSubscriptionId(), parameters, context);
@@ -447,7 +441,7 @@ public final class LogAnalyticsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<LogAnalyticsOperationResultInner>, LogAnalyticsOperationResultInner>
-        beginExportThrottledRequests(String location, LogAnalyticsInputBase parameters) {
+        beginExportThrottledRequestsAsync(String location, LogAnalyticsInputBase parameters) {
         Mono<Response<Flux<ByteBuffer>>> mono = exportThrottledRequestsWithResponseAsync(location, parameters);
         return this
             .client
@@ -471,7 +465,7 @@ public final class LogAnalyticsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<LogAnalyticsOperationResultInner>, LogAnalyticsOperationResultInner>
-        beginExportThrottledRequests(String location, LogAnalyticsInputBase parameters, Context context) {
+        beginExportThrottledRequestsAsync(String location, LogAnalyticsInputBase parameters, Context context) {
         Mono<Response<Flux<ByteBuffer>>> mono = exportThrottledRequestsWithResponseAsync(location, parameters, context);
         return this
             .client
@@ -493,18 +487,44 @@ public final class LogAnalyticsClient {
      * @return logAnalytics operation status response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<LogAnalyticsOperationResultInner>, LogAnalyticsOperationResultInner>
+        beginExportThrottledRequests(String location, LogAnalyticsInputBase parameters) {
+        return beginExportThrottledRequestsAsync(location, parameters).getSyncPoller();
+    }
+
+    /**
+     * Export logs that show total throttled Api requests for this subscription in the given time window.
+     *
+     * @param location The location upon which virtual-machine-sizes is queried.
+     * @param parameters Api input base class for LogAnalytics Api.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return logAnalytics operation status response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<LogAnalyticsOperationResultInner>, LogAnalyticsOperationResultInner>
+        beginExportThrottledRequests(String location, LogAnalyticsInputBase parameters, Context context) {
+        return beginExportThrottledRequestsAsync(location, parameters, context).getSyncPoller();
+    }
+
+    /**
+     * Export logs that show total throttled Api requests for this subscription in the given time window.
+     *
+     * @param location The location upon which virtual-machine-sizes is queried.
+     * @param parameters Api input base class for LogAnalytics Api.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return logAnalytics operation status response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<LogAnalyticsOperationResultInner> exportThrottledRequestsAsync(
         String location, LogAnalyticsInputBase parameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono = exportThrottledRequestsWithResponseAsync(location, parameters);
-        return this
-            .client
-            .<LogAnalyticsOperationResultInner, LogAnalyticsOperationResultInner>getLroResultAsync(
-                mono,
-                this.client.getHttpPipeline(),
-                LogAnalyticsOperationResultInner.class,
-                LogAnalyticsOperationResultInner.class)
+        return beginExportThrottledRequestsAsync(location, parameters)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -521,16 +541,9 @@ public final class LogAnalyticsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<LogAnalyticsOperationResultInner> exportThrottledRequestsAsync(
         String location, LogAnalyticsInputBase parameters, Context context) {
-        Mono<Response<Flux<ByteBuffer>>> mono = exportThrottledRequestsWithResponseAsync(location, parameters, context);
-        return this
-            .client
-            .<LogAnalyticsOperationResultInner, LogAnalyticsOperationResultInner>getLroResultAsync(
-                mono,
-                this.client.getHttpPipeline(),
-                LogAnalyticsOperationResultInner.class,
-                LogAnalyticsOperationResultInner.class)
+        return beginExportThrottledRequestsAsync(location, parameters, context)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -563,353 +576,5 @@ public final class LogAnalyticsClient {
     public LogAnalyticsOperationResultInner exportThrottledRequests(
         String location, LogAnalyticsInputBase parameters, Context context) {
         return exportThrottledRequestsAsync(location, parameters, context).block();
-    }
-
-    /**
-     * Export logs that show Api requests made by this subscription in the given time window to show throttling
-     * activities.
-     *
-     * @param location The location upon which virtual-machine-sizes is queried.
-     * @param parameters Api request input for LogAnalytics getRequestRateByInterval Api.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return logAnalytics operation status response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<LogAnalyticsOperationResultInner>>
-        beginExportRequestRateByIntervalWithoutPollingWithResponseAsync(
-            String location, RequestRateByIntervalInput parameters) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (location == null) {
-            return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (parameters == null) {
-            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
-        } else {
-            parameters.validate();
-        }
-        final String apiVersion = "2019-03-01";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .beginExportRequestRateByIntervalWithoutPolling(
-                            this.client.getEndpoint(),
-                            location,
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            parameters,
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
-
-    /**
-     * Export logs that show Api requests made by this subscription in the given time window to show throttling
-     * activities.
-     *
-     * @param location The location upon which virtual-machine-sizes is queried.
-     * @param parameters Api request input for LogAnalytics getRequestRateByInterval Api.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return logAnalytics operation status response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<LogAnalyticsOperationResultInner>>
-        beginExportRequestRateByIntervalWithoutPollingWithResponseAsync(
-            String location, RequestRateByIntervalInput parameters, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (location == null) {
-            return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (parameters == null) {
-            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
-        } else {
-            parameters.validate();
-        }
-        final String apiVersion = "2019-03-01";
-        return service
-            .beginExportRequestRateByIntervalWithoutPolling(
-                this.client.getEndpoint(), location, apiVersion, this.client.getSubscriptionId(), parameters, context);
-    }
-
-    /**
-     * Export logs that show Api requests made by this subscription in the given time window to show throttling
-     * activities.
-     *
-     * @param location The location upon which virtual-machine-sizes is queried.
-     * @param parameters Api request input for LogAnalytics getRequestRateByInterval Api.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return logAnalytics operation status response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<LogAnalyticsOperationResultInner> beginExportRequestRateByIntervalWithoutPollingAsync(
-        String location, RequestRateByIntervalInput parameters) {
-        return beginExportRequestRateByIntervalWithoutPollingWithResponseAsync(location, parameters)
-            .flatMap(
-                (Response<LogAnalyticsOperationResultInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Export logs that show Api requests made by this subscription in the given time window to show throttling
-     * activities.
-     *
-     * @param location The location upon which virtual-machine-sizes is queried.
-     * @param parameters Api request input for LogAnalytics getRequestRateByInterval Api.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return logAnalytics operation status response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<LogAnalyticsOperationResultInner> beginExportRequestRateByIntervalWithoutPollingAsync(
-        String location, RequestRateByIntervalInput parameters, Context context) {
-        return beginExportRequestRateByIntervalWithoutPollingWithResponseAsync(location, parameters, context)
-            .flatMap(
-                (Response<LogAnalyticsOperationResultInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Export logs that show Api requests made by this subscription in the given time window to show throttling
-     * activities.
-     *
-     * @param location The location upon which virtual-machine-sizes is queried.
-     * @param parameters Api request input for LogAnalytics getRequestRateByInterval Api.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return logAnalytics operation status response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public LogAnalyticsOperationResultInner beginExportRequestRateByIntervalWithoutPolling(
-        String location, RequestRateByIntervalInput parameters) {
-        return beginExportRequestRateByIntervalWithoutPollingAsync(location, parameters).block();
-    }
-
-    /**
-     * Export logs that show Api requests made by this subscription in the given time window to show throttling
-     * activities.
-     *
-     * @param location The location upon which virtual-machine-sizes is queried.
-     * @param parameters Api request input for LogAnalytics getRequestRateByInterval Api.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return logAnalytics operation status response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public LogAnalyticsOperationResultInner beginExportRequestRateByIntervalWithoutPolling(
-        String location, RequestRateByIntervalInput parameters, Context context) {
-        return beginExportRequestRateByIntervalWithoutPollingAsync(location, parameters, context).block();
-    }
-
-    /**
-     * Export logs that show total throttled Api requests for this subscription in the given time window.
-     *
-     * @param location The location upon which virtual-machine-sizes is queried.
-     * @param parameters Api input base class for LogAnalytics Api.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return logAnalytics operation status response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<LogAnalyticsOperationResultInner>> beginExportThrottledRequestsWithoutPollingWithResponseAsync(
-        String location, LogAnalyticsInputBase parameters) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (location == null) {
-            return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (parameters == null) {
-            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
-        } else {
-            parameters.validate();
-        }
-        final String apiVersion = "2019-03-01";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .beginExportThrottledRequestsWithoutPolling(
-                            this.client.getEndpoint(),
-                            location,
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            parameters,
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
-
-    /**
-     * Export logs that show total throttled Api requests for this subscription in the given time window.
-     *
-     * @param location The location upon which virtual-machine-sizes is queried.
-     * @param parameters Api input base class for LogAnalytics Api.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return logAnalytics operation status response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<LogAnalyticsOperationResultInner>> beginExportThrottledRequestsWithoutPollingWithResponseAsync(
-        String location, LogAnalyticsInputBase parameters, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (location == null) {
-            return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (parameters == null) {
-            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
-        } else {
-            parameters.validate();
-        }
-        final String apiVersion = "2019-03-01";
-        return service
-            .beginExportThrottledRequestsWithoutPolling(
-                this.client.getEndpoint(), location, apiVersion, this.client.getSubscriptionId(), parameters, context);
-    }
-
-    /**
-     * Export logs that show total throttled Api requests for this subscription in the given time window.
-     *
-     * @param location The location upon which virtual-machine-sizes is queried.
-     * @param parameters Api input base class for LogAnalytics Api.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return logAnalytics operation status response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<LogAnalyticsOperationResultInner> beginExportThrottledRequestsWithoutPollingAsync(
-        String location, LogAnalyticsInputBase parameters) {
-        return beginExportThrottledRequestsWithoutPollingWithResponseAsync(location, parameters)
-            .flatMap(
-                (Response<LogAnalyticsOperationResultInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Export logs that show total throttled Api requests for this subscription in the given time window.
-     *
-     * @param location The location upon which virtual-machine-sizes is queried.
-     * @param parameters Api input base class for LogAnalytics Api.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return logAnalytics operation status response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<LogAnalyticsOperationResultInner> beginExportThrottledRequestsWithoutPollingAsync(
-        String location, LogAnalyticsInputBase parameters, Context context) {
-        return beginExportThrottledRequestsWithoutPollingWithResponseAsync(location, parameters, context)
-            .flatMap(
-                (Response<LogAnalyticsOperationResultInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Export logs that show total throttled Api requests for this subscription in the given time window.
-     *
-     * @param location The location upon which virtual-machine-sizes is queried.
-     * @param parameters Api input base class for LogAnalytics Api.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return logAnalytics operation status response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public LogAnalyticsOperationResultInner beginExportThrottledRequestsWithoutPolling(
-        String location, LogAnalyticsInputBase parameters) {
-        return beginExportThrottledRequestsWithoutPollingAsync(location, parameters).block();
-    }
-
-    /**
-     * Export logs that show total throttled Api requests for this subscription in the given time window.
-     *
-     * @param location The location upon which virtual-machine-sizes is queried.
-     * @param parameters Api input base class for LogAnalytics Api.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return logAnalytics operation status response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public LogAnalyticsOperationResultInner beginExportThrottledRequestsWithoutPolling(
-        String location, LogAnalyticsInputBase parameters, Context context) {
-        return beginExportThrottledRequestsWithoutPollingAsync(location, parameters, context).block();
     }
 }

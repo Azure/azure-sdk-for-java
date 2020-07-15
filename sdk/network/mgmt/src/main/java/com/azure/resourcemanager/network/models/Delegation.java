@@ -28,7 +28,7 @@ public class Delegation extends SubResource {
     /*
      * A unique read-only string that changes whenever the resource is updated.
      */
-    @JsonProperty(value = "etag")
+    @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
 
     /*
@@ -39,16 +39,16 @@ public class Delegation extends SubResource {
     private String serviceName;
 
     /*
-     * Describes the actions permitted to the service upon delegation.
+     * The actions permitted to the service upon delegation.
      */
-    @JsonProperty(value = "properties.actions")
+    @JsonProperty(value = "properties.actions", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> actions;
 
     /*
-     * The provisioning state of the resource.
+     * The provisioning state of the service delegation resource.
      */
     @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private String provisioningState;
+    private ProvisioningState provisioningState;
 
     /**
      * Get the name property: The name of the resource that is unique within a subnet. This name can be used to access
@@ -82,17 +82,6 @@ public class Delegation extends SubResource {
     }
 
     /**
-     * Set the etag property: A unique read-only string that changes whenever the resource is updated.
-     *
-     * @param etag the etag value to set.
-     * @return the Delegation object itself.
-     */
-    public Delegation withEtag(String etag) {
-        this.etag = etag;
-        return this;
-    }
-
-    /**
      * Get the serviceName property: The name of the service to whom the subnet should be delegated (e.g.
      * Microsoft.Sql/servers).
      *
@@ -115,7 +104,7 @@ public class Delegation extends SubResource {
     }
 
     /**
-     * Get the actions property: Describes the actions permitted to the service upon delegation.
+     * Get the actions property: The actions permitted to the service upon delegation.
      *
      * @return the actions value.
      */
@@ -124,22 +113,11 @@ public class Delegation extends SubResource {
     }
 
     /**
-     * Set the actions property: Describes the actions permitted to the service upon delegation.
-     *
-     * @param actions the actions value to set.
-     * @return the Delegation object itself.
-     */
-    public Delegation withActions(List<String> actions) {
-        this.actions = actions;
-        return this;
-    }
-
-    /**
-     * Get the provisioningState property: The provisioning state of the resource.
+     * Get the provisioningState property: The provisioning state of the service delegation resource.
      *
      * @return the provisioningState value.
      */
-    public String provisioningState() {
+    public ProvisioningState provisioningState() {
         return this.provisioningState;
     }
 

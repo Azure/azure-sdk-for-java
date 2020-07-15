@@ -30,8 +30,8 @@ import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.util.polling.AsyncPollResponse;
 import com.azure.core.util.polling.PollerFlux;
+import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.appservice.WebSiteManagementClient;
 import com.azure.resourcemanager.appservice.fluent.inner.DomainAvailabilityCheckResultInner;
 import com.azure.resourcemanager.appservice.fluent.inner.DomainCollectionInner;
@@ -284,21 +284,6 @@ public final class DomainsClient
             Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DomainRegistration"
-                + "/domains/{domainName}")
-        @ExpectedResponses({200, 202})
-        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<DomainInner>> beginCreateOrUpdateWithoutPolling(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("domainName") String domainName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") DomainInner domain,
-            Context context);
-
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
@@ -392,6 +377,7 @@ public final class DomainsClient
         }
         NameIdentifierInner identifier = new NameIdentifierInner();
         identifier.withName(name);
+        context = this.client.mergeContext(context);
         return service
             .checkAvailability(
                 this.client.getEndpoint(),
@@ -540,6 +526,7 @@ public final class DomainsClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .list(this.client.getEndpoint(), this.client.getSubscriptionId(), this.client.getApiVersion(), context)
             .map(
@@ -662,6 +649,7 @@ public final class DomainsClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .getControlCenterSsoRequest(
                 this.client.getEndpoint(), this.client.getSubscriptionId(), this.client.getApiVersion(), context);
@@ -816,6 +804,7 @@ public final class DomainsClient
         } else {
             parameters.validate();
         }
+        context = this.client.mergeContext(context);
         return service
             .listRecommendations(
                 this.client.getEndpoint(),
@@ -976,6 +965,7 @@ public final class DomainsClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .listByResourceGroup(
                 this.client.getEndpoint(),
@@ -1135,6 +1125,7 @@ public final class DomainsClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .getByResourceGroup(
                 this.client.getEndpoint(),
@@ -1315,6 +1306,7 @@ public final class DomainsClient
         } else {
             domain.validate();
         }
+        context = this.client.mergeContext(context);
         return service
             .createOrUpdate(
                 this.client.getEndpoint(),
@@ -1338,7 +1330,7 @@ public final class DomainsClient
      * @return information about a domain.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<DomainInner>, DomainInner> beginCreateOrUpdate(
+    public PollerFlux<PollResult<DomainInner>, DomainInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String domainName, DomainInner domain) {
         Mono<Response<Flux<ByteBuffer>>> mono = createOrUpdateWithResponseAsync(resourceGroupName, domainName, domain);
         return this
@@ -1360,7 +1352,7 @@ public final class DomainsClient
      * @return information about a domain.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<DomainInner>, DomainInner> beginCreateOrUpdate(
+    public PollerFlux<PollResult<DomainInner>, DomainInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String domainName, DomainInner domain, Context context) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             createOrUpdateWithResponseAsync(resourceGroupName, domainName, domain, context);
@@ -1382,14 +1374,45 @@ public final class DomainsClient
      * @return information about a domain.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<DomainInner>, DomainInner> beginCreateOrUpdate(
+        String resourceGroupName, String domainName, DomainInner domain) {
+        return beginCreateOrUpdateAsync(resourceGroupName, domainName, domain).getSyncPoller();
+    }
+
+    /**
+     * Description for Creates or updates a domain.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param domainName Name of the domain.
+     * @param domain Information about a domain.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information about a domain.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<DomainInner>, DomainInner> beginCreateOrUpdate(
+        String resourceGroupName, String domainName, DomainInner domain, Context context) {
+        return beginCreateOrUpdateAsync(resourceGroupName, domainName, domain, context).getSyncPoller();
+    }
+
+    /**
+     * Description for Creates or updates a domain.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param domainName Name of the domain.
+     * @param domain Information about a domain.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information about a domain.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DomainInner> createOrUpdateAsync(String resourceGroupName, String domainName, DomainInner domain) {
-        Mono<Response<Flux<ByteBuffer>>> mono = createOrUpdateWithResponseAsync(resourceGroupName, domainName, domain);
-        return this
-            .client
-            .<DomainInner, DomainInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), DomainInner.class, DomainInner.class)
+        return beginCreateOrUpdateAsync(resourceGroupName, domainName, domain)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -1407,14 +1430,9 @@ public final class DomainsClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DomainInner> createOrUpdateAsync(
         String resourceGroupName, String domainName, DomainInner domain, Context context) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, domainName, domain, context);
-        return this
-            .client
-            .<DomainInner, DomainInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), DomainInner.class, DomainInner.class)
+        return beginCreateOrUpdateAsync(resourceGroupName, domainName, domain, context)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -1535,6 +1553,7 @@ public final class DomainsClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .delete(
                 this.client.getEndpoint(),
@@ -1743,6 +1762,7 @@ public final class DomainsClient
         } else {
             domain.validate();
         }
+        context = this.client.mergeContext(context);
         return service
             .update(
                 this.client.getEndpoint(),
@@ -1926,6 +1946,7 @@ public final class DomainsClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .listOwnershipIdentifiers(
                 this.client.getEndpoint(),
@@ -2103,6 +2124,7 @@ public final class DomainsClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .getOwnershipIdentifier(
                 this.client.getEndpoint(),
@@ -2316,6 +2338,7 @@ public final class DomainsClient
         } else {
             domainOwnershipIdentifier.validate();
         }
+        context = this.client.mergeContext(context);
         return service
             .createOrUpdateOwnershipIdentifier(
                 this.client.getEndpoint(),
@@ -2529,6 +2552,7 @@ public final class DomainsClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .deleteOwnershipIdentifier(
                 this.client.getEndpoint(),
@@ -2723,6 +2747,7 @@ public final class DomainsClient
         } else {
             domainOwnershipIdentifier.validate();
         }
+        context = this.client.mergeContext(context);
         return service
             .updateOwnershipIdentifier(
                 this.client.getEndpoint(),
@@ -2923,6 +2948,7 @@ public final class DomainsClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .renew(
                 this.client.getEndpoint(),
@@ -2995,195 +3021,6 @@ public final class DomainsClient
     }
 
     /**
-     * Description for Creates or updates a domain.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param domainName Name of the domain.
-     * @param domain Information about a domain.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a domain.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<DomainInner>> beginCreateOrUpdateWithoutPollingWithResponseAsync(
-        String resourceGroupName, String domainName, DomainInner domain) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (domainName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter domainName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (domain == null) {
-            return Mono.error(new IllegalArgumentException("Parameter domain is required and cannot be null."));
-        } else {
-            domain.validate();
-        }
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .beginCreateOrUpdateWithoutPolling(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            domainName,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            domain,
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
-
-    /**
-     * Description for Creates or updates a domain.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param domainName Name of the domain.
-     * @param domain Information about a domain.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a domain.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<DomainInner>> beginCreateOrUpdateWithoutPollingWithResponseAsync(
-        String resourceGroupName, String domainName, DomainInner domain, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (domainName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter domainName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (domain == null) {
-            return Mono.error(new IllegalArgumentException("Parameter domain is required and cannot be null."));
-        } else {
-            domain.validate();
-        }
-        return service
-            .beginCreateOrUpdateWithoutPolling(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                domainName,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                domain,
-                context);
-    }
-
-    /**
-     * Description for Creates or updates a domain.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param domainName Name of the domain.
-     * @param domain Information about a domain.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a domain.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DomainInner> beginCreateOrUpdateWithoutPollingAsync(
-        String resourceGroupName, String domainName, DomainInner domain) {
-        return beginCreateOrUpdateWithoutPollingWithResponseAsync(resourceGroupName, domainName, domain)
-            .flatMap(
-                (Response<DomainInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Description for Creates or updates a domain.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param domainName Name of the domain.
-     * @param domain Information about a domain.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a domain.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DomainInner> beginCreateOrUpdateWithoutPollingAsync(
-        String resourceGroupName, String domainName, DomainInner domain, Context context) {
-        return beginCreateOrUpdateWithoutPollingWithResponseAsync(resourceGroupName, domainName, domain, context)
-            .flatMap(
-                (Response<DomainInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Description for Creates or updates a domain.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param domainName Name of the domain.
-     * @param domain Information about a domain.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a domain.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public DomainInner beginCreateOrUpdateWithoutPolling(
-        String resourceGroupName, String domainName, DomainInner domain) {
-        return beginCreateOrUpdateWithoutPollingAsync(resourceGroupName, domainName, domain).block();
-    }
-
-    /**
-     * Description for Creates or updates a domain.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param domainName Name of the domain.
-     * @param domain Information about a domain.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a domain.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public DomainInner beginCreateOrUpdateWithoutPolling(
-        String resourceGroupName, String domainName, DomainInner domain, Context context) {
-        return beginCreateOrUpdateWithoutPollingAsync(resourceGroupName, domainName, domain, context).block();
-    }
-
-    /**
      * Get the next page of items.
      *
      * @param nextLink The nextLink parameter.
@@ -3226,6 +3063,7 @@ public final class DomainsClient
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .listNext(nextLink, context)
             .map(
@@ -3283,6 +3121,7 @@ public final class DomainsClient
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .listRecommendationsNext(nextLink, context)
             .map(
@@ -3339,6 +3178,7 @@ public final class DomainsClient
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .listByResourceGroupNext(nextLink, context)
             .map(
@@ -3397,6 +3237,7 @@ public final class DomainsClient
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .listOwnershipIdentifiersNext(nextLink, context)
             .map(

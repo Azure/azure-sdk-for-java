@@ -3,7 +3,6 @@
 
 package com.azure.search.documents.indexes;
 
-import com.azure.core.models.spatial.PointGeometry;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.search.documents.indexes.models.LexicalAnalyzerName;
 import com.azure.search.documents.indexes.models.SearchField;
@@ -39,7 +38,7 @@ public final class FieldBuilder {
         SUPPORTED_NONE_PARAMETERIZED_TYPE.put(String.class, SearchFieldDataType.STRING);
         SUPPORTED_NONE_PARAMETERIZED_TYPE.put(Date.class, SearchFieldDataType.DATE_TIME_OFFSET);
         SUPPORTED_NONE_PARAMETERIZED_TYPE.put(OffsetDateTime.class, SearchFieldDataType.DATE_TIME_OFFSET);
-        SUPPORTED_NONE_PARAMETERIZED_TYPE.put(PointGeometry.class, SearchFieldDataType.GEOGRAPHY_POINT);
+//        SUPPORTED_NONE_PARAMETERIZED_TYPE.put(PointGeometry.class, SearchFieldDataType.GEOGRAPHY_POINT);
     }
 
     private static final List<Class<?>> UNSUPPORTED_TYPES = Arrays.asList(Byte.class,
@@ -153,10 +152,9 @@ public final class FieldBuilder {
 
     private static SearchField convertToBasicSearchField(java.lang.reflect.Field classField,
         ClientLogger logger) {
-        SearchField searchField = new SearchField();
-        searchField.setName(classField.getName());
+
         SearchFieldDataType dataType = covertToSearchFieldDataType(classField.getGenericType(), false, logger);
-        searchField.setType(dataType);
+        SearchField searchField = new SearchField(classField.getName(), dataType);
         return searchField;
     }
 

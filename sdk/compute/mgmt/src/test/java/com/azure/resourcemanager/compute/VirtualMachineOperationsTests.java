@@ -10,6 +10,8 @@ import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollResponse;
 import com.azure.resourcemanager.compute.models.AvailabilitySet;
 import com.azure.resourcemanager.compute.models.CachingTypes;
+import com.azure.resourcemanager.compute.models.Disk;
+import com.azure.resourcemanager.compute.models.DiskState;
 import com.azure.resourcemanager.compute.models.KnownLinuxVirtualMachineImage;
 import com.azure.resourcemanager.compute.models.KnownWindowsVirtualMachineImage;
 import com.azure.resourcemanager.compute.models.PowerState;
@@ -209,17 +211,17 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
             .withOSDiskName("javatest")
             .withLicenseType("Windows_Server")
             .beginCreate();
-        VirtualMachine createdVirtualMachine = acceptedVirtualMachine.getAcceptedResult().getValue();
+        VirtualMachine createdVirtualMachine = acceptedVirtualMachine.getActivationResponse().getValue();
         Assertions.assertNotEquals("Succeeded", createdVirtualMachine.provisioningState());
 
-        LongRunningOperationStatus pollStatus = acceptedVirtualMachine.getAcceptedResult().getStatus();
-        int delayInMills = acceptedVirtualMachine.getAcceptedResult().getRetryAfter() == null
+        LongRunningOperationStatus pollStatus = acceptedVirtualMachine.getActivationResponse().getStatus();
+        int delayInMills = acceptedVirtualMachine.getActivationResponse().getRetryAfter() == null
             ? 0
-            : (int) acceptedVirtualMachine.getAcceptedResult().getRetryAfter().toMillis();
-        while (pollStatus != LongRunningOperationStatus.SUCCESSFULLY_COMPLETED) {
+            : (int) acceptedVirtualMachine.getActivationResponse().getRetryAfter().toMillis();
+        while (!pollStatus.isComplete()) {
             SdkContext.sleep(delayInMills);
 
-            PollResponse<Void> pollResponse = acceptedVirtualMachine.getSyncPoller().poll();
+            PollResponse<?> pollResponse = acceptedVirtualMachine.getSyncPoller().poll();
             pollStatus = pollResponse.getStatus();
             delayInMills = pollResponse.getRetryAfter() == null
                 ? 10000
@@ -232,15 +234,15 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
         Accepted<Void> acceptedDelete = computeManager.virtualMachines()
             .beginDeleteByResourceGroup(virtualMachine.resourceGroupName(), virtualMachine.name());
 
-        pollStatus = acceptedDelete.getAcceptedResult().getStatus();
-        delayInMills = acceptedDelete.getAcceptedResult().getRetryAfter() == null
+        pollStatus = acceptedDelete.getActivationResponse().getStatus();
+        delayInMills = acceptedDelete.getActivationResponse().getRetryAfter() == null
             ? 0
-            : (int) acceptedDelete.getAcceptedResult().getRetryAfter().toMillis();
+            : (int) acceptedDelete.getActivationResponse().getRetryAfter().toMillis();
 
-        while (pollStatus != LongRunningOperationStatus.SUCCESSFULLY_COMPLETED) {
+        while (!pollStatus.isComplete()) {
             SdkContext.sleep(delayInMills);
 
-            PollResponse<Void> pollResponse = acceptedDelete.getSyncPoller().poll();
+            PollResponse<?> pollResponse = acceptedDelete.getSyncPoller().poll();
             pollStatus = pollResponse.getStatus();
             delayInMills = pollResponse.getRetryAfter() == null
                 ? 10000
@@ -816,6 +818,40 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
         Assertions.assertNotNull(runResult);
         Assertions.assertNotNull(runResult.value());
         Assertions.assertTrue(runResult.value().size() > 0);
+    }
+
+    @Test
+    public void canPerformSimulateEvictionOnSpotVirtualMachine() {
+        VirtualMachine virtualMachine = computeManager.virtualMachines()
+            .define(vmName)
+            .withRegion(region)
+            .withNewResourceGroup(rgName)
+            .withNewPrimaryNetwork("10.0.0.0/28")
+            .withPrimaryPrivateIPAddressDynamic()
+            .withoutPrimaryPublicIPAddress()
+            .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
+            .withRootUsername("firstuser")
+            .withRootPassword("afh123RVS!")
+            .withSpotPriority(VirtualMachineEvictionPolicyTypes.DEALLOCATE)
+            .withSize(VirtualMachineSizeTypes.STANDARD_D2_V3)
+            .create();
+
+        Assertions.assertNotNull(virtualMachine.osDiskStorageAccountType());
+        Assertions.assertTrue(virtualMachine.osDiskSize() > 0);
+        Disk disk = computeManager.disks().getById(virtualMachine.osDiskId());
+        Assertions.assertNotNull(disk);
+        Assertions.assertEquals(DiskState.ATTACHED, disk.inner().diskState());
+
+        // call simulate eviction
+        virtualMachine.simulateEviction();
+        SdkContext.sleep(30 * 60 * 1000);
+
+        virtualMachine = computeManager.virtualMachines().getById(virtualMachine.id());
+        Assertions.assertNotNull(virtualMachine);
+        Assertions.assertNull(virtualMachine.osDiskStorageAccountType());
+        Assertions.assertTrue(virtualMachine.osDiskSize() == 0);
+        disk = computeManager.disks().getById(virtualMachine.osDiskId());
+        Assertions.assertEquals(DiskState.RESERVED, disk.inner().diskState());
     }
 
     private CreatablesInfo prepareCreatableVirtualMachines(

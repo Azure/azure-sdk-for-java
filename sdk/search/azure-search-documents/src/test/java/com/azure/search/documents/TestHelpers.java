@@ -5,14 +5,11 @@ package com.azure.search.documents;
 
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpPipeline;
-import com.azure.core.models.spatial.GeometryPosition;
-import com.azure.core.models.spatial.PointGeometry;
 import com.azure.core.test.TestMode;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.search.documents.implementation.SerializationUtil;
-import com.azure.search.documents.models.RequestOptions;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -30,21 +27,19 @@ import java.time.ZoneOffset;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
-import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
 /**
- * This class contains helper methods for running Azure Search tests.
+ * This class contains helper methods for running Azure Cognitive Search tests.
  */
 public final class TestHelpers {
     private static final TestMode TEST_MODE = setupTestMode();
@@ -56,14 +51,14 @@ public final class TestHelpers {
     public static final String SQL_DATASOURCE_NAME = "azs-java-test-sql";
     public static final String ISO8601_FORMAT = "yyyy-MM-dd'T'HH:mm:ss'Z'";
 
-    public static PointGeometry createPointGeometry(Double latitude, Double longitude) {
-        return new PointGeometry(new GeometryPosition(longitude, latitude), null, Collections.singletonMap("crs", new HashMap<String, Object>() {
-            {
-                put("type", "name");
-                put("properties", Collections.singletonMap("name", "EPSG:4326"));
-            }
-        }));
-    }
+//    public static PointGeometry createPointGeometryString(Double latitude, Double longitude) {
+//        return new PointGeometry(new GeometryPosition(longitude, latitude), null, Collections.singletonMap("crs", new HashMap<String, Object>() {
+//            {
+//                put("type", "name");
+//                put("properties", Collections.singletonMap("name", "EPSG:4326"));
+//            }
+//        }));
+//    }
 
     private static final ObjectMapper MAPPER;
 
@@ -230,10 +225,6 @@ public final class TestHelpers {
         if (expectedMessage != null) {
             assertTrue(ex.getMessage().contains(expectedMessage));
         }
-    }
-
-    public static RequestOptions generateRequestOptions() {
-        return new RequestOptions().setClientRequestId(UUID.randomUUID());
     }
 
     public static void waitForIndexing() {

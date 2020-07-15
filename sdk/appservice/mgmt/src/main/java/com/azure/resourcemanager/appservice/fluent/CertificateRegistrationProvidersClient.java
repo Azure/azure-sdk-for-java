@@ -126,6 +126,7 @@ public final class CertificateRegistrationProvidersClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .listOperations(this.client.getEndpoint(), this.client.getApiVersion(), context)
             .map(
@@ -241,6 +242,7 @@ public final class CertificateRegistrationProvidersClient {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .listOperationsNext(nextLink, context)
             .map(

@@ -1,26 +1,26 @@
 {
   "networkCallRecords" : [ {
     "Method" : "DELETE",
-    "Uri" : "https://gapradev.queue.core.windows.net/queueapitestsclearmessageserror55772415c39a6338e/messages",
+    "Uri" : "https://REDACTED.queue.core.windows.net/queueapitestsclearmessageserror31492f471b99c5c51/messages",
     "Headers" : {
-      "x-ms-version" : "2019-07-07",
-      "User-Agent" : "azsdk-java-azure-storage-queue/12.3.0-beta.1 (11.0.4; Windows 10 10.0)",
-      "x-ms-client-request-id" : "3d3b4f08-7b54-46f7-9c54-0b7b96940f82"
+      "x-ms-version" : "2019-12-12",
+      "User-Agent" : "azsdk-java-azure-storage-queue/12.6.0-beta.1 (11.0.6; Windows 10 10.0)",
+      "x-ms-client-request-id" : "15fde8be-64fe-4acb-865d-a7e4b354163d"
     },
     "Response" : {
-      "x-ms-version" : "2019-07-07",
+      "x-ms-version" : "2019-12-12",
       "Server" : "Windows-Azure-Queue/1.0 Microsoft-HTTPAPI/2.0",
       "x-ms-error-code" : "QueueNotFound",
       "retry-after" : "0",
       "Content-Length" : "217",
       "StatusCode" : "404",
-      "x-ms-request-id" : "d25b826c-f003-0012-3271-e0e9eb000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>QueueNotFound</Code><Message>The specified queue does not exist.\nRequestId:d25b826c-f003-0012-3271-e0e9eb000000\nTime:2020-02-11T00:24:42.9833499Z</Message></Error>",
-      "Date" : "Tue, 11 Feb 2020 00:24:42 GMT",
-      "x-ms-client-request-id" : "3d3b4f08-7b54-46f7-9c54-0b7b96940f82",
+      "x-ms-request-id" : "37a39f35-3003-009b-0203-3a8ca5000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>QueueNotFound</Code><Message>The specified queue does not exist.\nRequestId:37a39f35-3003-009b-0203-3a8ca5000000\nTime:2020-06-04T00:05:06.8169902Z</Message></Error>",
+      "Date" : "Thu, 04 Jun 2020 00:05:06 GMT",
+      "x-ms-client-request-id" : "15fde8be-64fe-4acb-865d-a7e4b354163d",
       "Content-Type" : "application/xml"
     },
     "Exception" : null
   } ],
-  "variables" : [ "queueapitestsclearmessageserror55772415c39a6338e" ]
+  "variables" : [ "queueapitestsclearmessageserror31492f471b99c5c51" ]
 }

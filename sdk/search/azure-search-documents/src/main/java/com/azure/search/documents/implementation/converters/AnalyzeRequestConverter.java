@@ -29,24 +29,22 @@ public final class AnalyzeRequestConverter {
         if (obj.getTokenizer() != null) {
             LexicalTokenizerName tokenizer = LexicalTokenizerNameConverter.map(obj.getTokenizer());
             analyzeTextOptions = new AnalyzeTextOptions(obj.getText(), tokenizer);
-            analyzeTextOptions.setTokenizerName(tokenizer);
         } else {
             LexicalAnalyzerName analyzer = LexicalAnalyzerNameConverter.map(obj.getAnalyzer());
             analyzeTextOptions = new AnalyzeTextOptions(obj.getText(), analyzer);
-            analyzeTextOptions.setAnalyzerName(analyzer);
         }
 
         if (obj.getCharFilters() != null) {
-            List<CharFilterName> charFilters =
-                obj.getCharFilters().stream().map(CharFilterNameConverter::map).collect(Collectors.toList());
-            analyzeTextOptions.setCharFilters(charFilters);
+            analyzeTextOptions.setCharFilters(obj.getCharFilters().stream()
+                .map(CharFilterNameConverter::map)
+                .toArray(CharFilterName[]::new));
         }
 
 
         if (obj.getTokenFilters() != null) {
-            List<TokenFilterName> tokenFilters =
-                obj.getTokenFilters().stream().map(TokenFilterNameConverter::map).collect(Collectors.toList());
-            analyzeTextOptions.setTokenFilters(tokenFilters);
+            analyzeTextOptions.setTokenFilters(obj.getTokenFilters().stream()
+                .map(TokenFilterNameConverter::map)
+                .toArray(TokenFilterName[]::new));
         }
 
 

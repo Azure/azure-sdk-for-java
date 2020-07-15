@@ -21,17 +21,13 @@ public final class WordDelimiterTokenFilterConverter {
         if (obj == null) {
             return null;
         }
-        WordDelimiterTokenFilter wordDelimiterTokenFilter = new WordDelimiterTokenFilter();
-
-        String name = obj.getName();
-        wordDelimiterTokenFilter.setName(name);
+        WordDelimiterTokenFilter wordDelimiterTokenFilter = new WordDelimiterTokenFilter(obj.getName());
 
         Boolean catenateNumbers = obj.isCatenateNumbers();
         wordDelimiterTokenFilter.setNumbersCatenated(catenateNumbers);
 
         if (obj.getProtectedWords() != null) {
-            List<String> protectedWords = new ArrayList<>(obj.getProtectedWords());
-            wordDelimiterTokenFilter.setProtectedWords(protectedWords);
+            wordDelimiterTokenFilter.setProtectedWords(obj.getProtectedWords());
         }
 
         Boolean generateNumberParts = obj.isGenerateNumberParts();

@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.search.documents.test.environment.models;
 
-import com.azure.core.models.spatial.PointGeometry;
 import com.azure.search.documents.indexes.FieldIgnore;
 import com.azure.search.documents.indexes.SearchableFieldProperty;
 import com.azure.search.documents.indexes.SimpleFieldProperty;
@@ -49,9 +48,9 @@ public class Hotel {
     @JsonProperty(value = "Rating")
     private Integer rating;
 
-    @SimpleFieldProperty
-    @JsonProperty(value = "Location")
-    private PointGeometry location;
+//    @SimpleFieldProperty
+//    @JsonProperty(value = "Location")
+//    private PointGeometry location;
 
     @JsonProperty(value = "Address")
     private HotelAddress address;
@@ -155,14 +154,14 @@ public class Hotel {
         return this;
     }
 
-    public PointGeometry location() {
-        return this.location;
-    }
-
-    public Hotel location(PointGeometry location) {
-        this.location = location;
-        return this;
-    }
+//    public PointGeometry location() {
+//        return this.location;
+//    }
+//
+//    public Hotel location(PointGeometry location) {
+//        this.location = location;
+//        return this;
+//    }
 
     public HotelAddress address() {
         return this.address;

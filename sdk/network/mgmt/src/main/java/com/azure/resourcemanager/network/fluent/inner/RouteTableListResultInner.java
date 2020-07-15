@@ -16,7 +16,7 @@ public final class RouteTableListResultInner {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(RouteTableListResultInner.class);
 
     /*
-     * Gets a list of route tables in a resource group.
+     * A list of route tables in a resource group.
      */
     @JsonProperty(value = "value")
     private List<RouteTableInner> value;
@@ -28,7 +28,7 @@ public final class RouteTableListResultInner {
     private String nextLink;
 
     /**
-     * Get the value property: Gets a list of route tables in a resource group.
+     * Get the value property: A list of route tables in a resource group.
      *
      * @return the value value.
      */
@@ -37,7 +37,7 @@ public final class RouteTableListResultInner {
     }
 
     /**
-     * Set the value property: Gets a list of route tables in a resource group.
+     * Set the value property: A list of route tables in a resource group.
      *
      * @param value the value value to set.
      * @return the RouteTableListResultInner object itself.

@@ -19,10 +19,7 @@ public final class MicrosoftLanguageTokenizerConverter {
         if (obj == null) {
             return null;
         }
-        MicrosoftLanguageTokenizer microsoftLanguageTokenizer = new MicrosoftLanguageTokenizer();
-
-        String name = obj.getName();
-        microsoftLanguageTokenizer.setName(name);
+        MicrosoftLanguageTokenizer microsoftLanguageTokenizer = new MicrosoftLanguageTokenizer(obj.getName());
 
         Integer maxTokenLength = obj.getMaxTokenLength();
         microsoftLanguageTokenizer.setMaxTokenLength(maxTokenLength);

@@ -20,15 +20,9 @@ public final class KeepTokenFilterConverter {
         if (obj == null) {
             return null;
         }
-        KeepTokenFilter keepTokenFilter = new KeepTokenFilter();
 
-        String name = obj.getName();
-        keepTokenFilter.setName(name);
-
-        if (obj.getKeepWords() != null) {
-            List<String> keepWords = new ArrayList<>(obj.getKeepWords());
-            keepTokenFilter.setKeepWords(keepWords);
-        }
+        List<String> keepWords = new ArrayList<>(obj.getKeepWords());
+        KeepTokenFilter keepTokenFilter = new KeepTokenFilter(obj.getName(), keepWords);
 
         Boolean lowerCaseKeepWords = obj.isLowerCaseKeepWords();
         keepTokenFilter.setLowerCaseKeepWords(lowerCaseKeepWords);

@@ -5,6 +5,8 @@ package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -77,22 +79,53 @@ public final class AnalyzeTextOptions {
      * Constructor to {@link AnalyzeTextOptions} which takes analyzerName.
      *
      * @param text The text break into tokens.
-     * @param analyzerName The name of the analyze name.
+     * @param analyzerName The name of the analyzer to use to break the
+     * given text. If this parameter is not specified, you must specify a
+     * tokenizer instead. The tokenizer and analyzer parameters are mutually
+     * exclusive. Possible values include: 'ArMicrosoft', 'ArLucene',
+     * 'HyLucene', 'BnMicrosoft', 'EuLucene', 'BgMicrosoft', 'BgLucene',
+     * 'CaMicrosoft', 'CaLucene', 'ZhHansMicrosoft', 'ZhHansLucene',
+     * 'ZhHantMicrosoft', 'ZhHantLucene', 'HrMicrosoft', 'CsMicrosoft',
+     * 'CsLucene', 'DaMicrosoft', 'DaLucene', 'NlMicrosoft', 'NlLucene',
+     * 'EnMicrosoft', 'EnLucene', 'EtMicrosoft', 'FiMicrosoft', 'FiLucene',
+     * 'FrMicrosoft', 'FrLucene', 'GlLucene', 'DeMicrosoft', 'DeLucene',
+     * 'ElMicrosoft', 'ElLucene', 'GuMicrosoft', 'HeMicrosoft', 'HiMicrosoft',
+     * 'HiLucene', 'HuMicrosoft', 'HuLucene', 'IsMicrosoft', 'IdMicrosoft',
+     * 'IdLucene', 'GaLucene', 'ItMicrosoft', 'ItLucene', 'JaMicrosoft',
+     * 'JaLucene', 'KnMicrosoft', 'KoMicrosoft', 'KoLucene', 'LvMicrosoft',
+     * 'LvLucene', 'LtMicrosoft', 'MlMicrosoft', 'MsMicrosoft', 'MrMicrosoft',
+     * 'NbMicrosoft', 'NoLucene', 'FaLucene', 'PlMicrosoft', 'PlLucene',
+     * 'PtBrMicrosoft', 'PtBrLucene', 'PtPtMicrosoft', 'PtPtLucene',
+     * 'PaMicrosoft', 'RoMicrosoft', 'RoLucene', 'RuMicrosoft', 'RuLucene',
+     * 'SrCyrillicMicrosoft', 'SrLatinMicrosoft', 'SkMicrosoft', 'SlMicrosoft',
+     * 'EsMicrosoft', 'EsLucene', 'SvMicrosoft', 'SvLucene', 'TaMicrosoft',
+     * 'TeMicrosoft', 'ThMicrosoft', 'ThLucene', 'TrMicrosoft', 'TrLucene',
+     * 'UkMicrosoft', 'UrMicrosoft', 'ViMicrosoft', 'StandardLucene',
+     * 'StandardAsciiFoldingLucene', 'Keyword', 'Pattern', 'Simple', 'Stop',
+     * 'Whitespace'.
      */
     public AnalyzeTextOptions(String text, LexicalAnalyzerName analyzerName) {
         this.text = text;
         this.analyzerName = analyzerName;
+        this.tokenizerName = null;
     }
 
     /**
      * Constructor to {@link AnalyzeTextOptions} which takes tokenizerName.
      *
      * @param text The text break into tokens.
-     * @param tokenizerName The name of the tokenizer name.
+     * @param tokenizerName The name of the tokenizer to use to break
+     * the given text. If this parameter is not specified, you must specify an
+     * analyzer instead. The tokenizer and analyzer parameters are mutually
+     * exclusive. Possible values include: 'Classic', 'EdgeNGram', 'Keyword',
+     * 'Letter', 'Lowercase', 'MicrosoftLanguageTokenizer',
+     * 'MicrosoftLanguageStemmingTokenizer', 'NGram', 'PathHierarchy',
+     * 'Pattern', 'Standard', 'UaxUrlEmail', 'Whitespace'.
      */
     public AnalyzeTextOptions(String text, LexicalTokenizerName tokenizerName) {
         this.text = text;
         this.tokenizerName = tokenizerName;
+        this.analyzerName = null;
     }
 
     /**
@@ -137,41 +170,6 @@ public final class AnalyzeTextOptions {
     }
 
     /**
-     * Set the analyzer property: The name of the analyzer to use to break the
-     * given text. If this parameter is not specified, you must specify a
-     * tokenizer instead. The tokenizer and analyzer parameters are mutually
-     * exclusive. Possible values include: 'ArMicrosoft', 'ArLucene',
-     * 'HyLucene', 'BnMicrosoft', 'EuLucene', 'BgMicrosoft', 'BgLucene',
-     * 'CaMicrosoft', 'CaLucene', 'ZhHansMicrosoft', 'ZhHansLucene',
-     * 'ZhHantMicrosoft', 'ZhHantLucene', 'HrMicrosoft', 'CsMicrosoft',
-     * 'CsLucene', 'DaMicrosoft', 'DaLucene', 'NlMicrosoft', 'NlLucene',
-     * 'EnMicrosoft', 'EnLucene', 'EtMicrosoft', 'FiMicrosoft', 'FiLucene',
-     * 'FrMicrosoft', 'FrLucene', 'GlLucene', 'DeMicrosoft', 'DeLucene',
-     * 'ElMicrosoft', 'ElLucene', 'GuMicrosoft', 'HeMicrosoft', 'HiMicrosoft',
-     * 'HiLucene', 'HuMicrosoft', 'HuLucene', 'IsMicrosoft', 'IdMicrosoft',
-     * 'IdLucene', 'GaLucene', 'ItMicrosoft', 'ItLucene', 'JaMicrosoft',
-     * 'JaLucene', 'KnMicrosoft', 'KoMicrosoft', 'KoLucene', 'LvMicrosoft',
-     * 'LvLucene', 'LtMicrosoft', 'MlMicrosoft', 'MsMicrosoft', 'MrMicrosoft',
-     * 'NbMicrosoft', 'NoLucene', 'FaLucene', 'PlMicrosoft', 'PlLucene',
-     * 'PtBrMicrosoft', 'PtBrLucene', 'PtPtMicrosoft', 'PtPtLucene',
-     * 'PaMicrosoft', 'RoMicrosoft', 'RoLucene', 'RuMicrosoft', 'RuLucene',
-     * 'SrCyrillicMicrosoft', 'SrLatinMicrosoft', 'SkMicrosoft', 'SlMicrosoft',
-     * 'EsMicrosoft', 'EsLucene', 'SvMicrosoft', 'SvLucene', 'TaMicrosoft',
-     * 'TeMicrosoft', 'ThMicrosoft', 'ThLucene', 'TrMicrosoft', 'TrLucene',
-     * 'UkMicrosoft', 'UrMicrosoft', 'ViMicrosoft', 'StandardLucene',
-     * 'StandardAsciiFoldingLucene', 'Keyword', 'Pattern', 'Simple', 'Stop',
-     * 'Whitespace'.
-     *
-     * @param analyzerName the analyzer value to set.
-     * @return the AnalyzeRequest object itself.
-     */
-    public AnalyzeTextOptions setAnalyzerName(LexicalAnalyzerName analyzerName) {
-        this.analyzerName = analyzerName;
-        this.tokenizerName = null;
-        return this;
-    }
-
-    /**
      * Get the tokenizer property: The name of the tokenizer to use to break
      * the given text. If this parameter is not specified, you must specify an
      * analyzer instead. The tokenizer and analyzer parameters are mutually
@@ -184,24 +182,6 @@ public final class AnalyzeTextOptions {
      */
     public LexicalTokenizerName getTokenizerName() {
         return this.tokenizerName;
-    }
-
-    /**
-     * Set the tokenizer property: The name of the tokenizer to use to break
-     * the given text. If this parameter is not specified, you must specify an
-     * analyzer instead. The tokenizer and analyzer parameters are mutually
-     * exclusive. Possible values include: 'Classic', 'EdgeNGram', 'Keyword',
-     * 'Letter', 'Lowercase', 'MicrosoftLanguageTokenizer',
-     * 'MicrosoftLanguageStemmingTokenizer', 'NGram', 'PathHierarchy',
-     * 'Pattern', 'Standard', 'UaxUrlEmail', 'Whitespace'.
-     *
-     * @param tokenizerName the tokenizer value to set.
-     * @return the AnalyzeRequest object itself.
-     */
-    public AnalyzeTextOptions setTokenizerName(LexicalTokenizerName tokenizerName) {
-        this.tokenizerName = tokenizerName;
-        this.analyzerName = null;
-        return this;
     }
 
     /**
@@ -223,8 +203,8 @@ public final class AnalyzeTextOptions {
      * @param tokenFilters the tokenFilters value to set.
      * @return the AnalyzeRequest object itself.
      */
-    public AnalyzeTextOptions setTokenFilters(List<TokenFilterName> tokenFilters) {
-        this.tokenFilters = tokenFilters;
+    public AnalyzeTextOptions setTokenFilters(TokenFilterName... tokenFilters) {
+        this.tokenFilters = (tokenFilters == null) ? null : Arrays.asList(tokenFilters);
         return this;
     }
 
@@ -247,8 +227,8 @@ public final class AnalyzeTextOptions {
      * @param charFilters the charFilters value to set.
      * @return the AnalyzeRequest object itself.
      */
-    public AnalyzeTextOptions setCharFilters(List<CharFilterName> charFilters) {
-        this.charFilters = charFilters;
+    public AnalyzeTextOptions setCharFilters(CharFilterName... charFilters) {
+        this.charFilters = (charFilters == null) ? null : Arrays.asList(charFilters);
         return this;
     }
 }

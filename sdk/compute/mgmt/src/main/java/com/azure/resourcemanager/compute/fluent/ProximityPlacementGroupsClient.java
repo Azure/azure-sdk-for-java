@@ -125,6 +125,7 @@ public final class ProximityPlacementGroupsClient
             @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("proximityPlacementGroupName") String proximityPlacementGroupName,
+            @QueryParam("includeColocationStatus") String includeColocationStatus,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
             Context context);
@@ -208,7 +209,7 @@ public final class ProximityPlacementGroupsClient
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2019-03-01";
+        final String apiVersion = "2019-12-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -269,7 +270,8 @@ public final class ProximityPlacementGroupsClient
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2019-03-01";
+        final String apiVersion = "2019-12-01";
+        context = this.client.mergeContext(context);
         return service
             .createOrUpdate(
                 this.client.getEndpoint(),
@@ -409,7 +411,7 @@ public final class ProximityPlacementGroupsClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-03-01";
+        final String apiVersion = "2019-12-01";
         UpdateResource parameters = new UpdateResource();
         parameters.withTags(tags);
         return FluxUtil
@@ -464,9 +466,10 @@ public final class ProximityPlacementGroupsClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-03-01";
+        final String apiVersion = "2019-12-01";
         UpdateResource parameters = new UpdateResource();
         parameters.withTags(tags);
+        context = this.client.mergeContext(context);
         return service
             .update(
                 this.client.getEndpoint(),
@@ -598,7 +601,7 @@ public final class ProximityPlacementGroupsClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-03-01";
+        final String apiVersion = "2019-12-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -649,7 +652,8 @@ public final class ProximityPlacementGroupsClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-03-01";
+        final String apiVersion = "2019-12-01";
+        context = this.client.mergeContext(context);
         return service
             .delete(
                 this.client.getEndpoint(),
@@ -727,6 +731,8 @@ public final class ProximityPlacementGroupsClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param proximityPlacementGroupName The name of the proximity placement group.
+     * @param includeColocationStatus includeColocationStatus=true enables fetching the colocation status of all the
+     *     resources in the proximity placement group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -734,7 +740,7 @@ public final class ProximityPlacementGroupsClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ProximityPlacementGroupInner>> getByResourceGroupWithResponseAsync(
-        String resourceGroupName, String proximityPlacementGroupName) {
+        String resourceGroupName, String proximityPlacementGroupName, String includeColocationStatus) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -757,7 +763,7 @@ public final class ProximityPlacementGroupsClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-03-01";
+        final String apiVersion = "2019-12-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -766,6 +772,7 @@ public final class ProximityPlacementGroupsClient
                             this.client.getEndpoint(),
                             resourceGroupName,
                             proximityPlacementGroupName,
+                            includeColocationStatus,
                             apiVersion,
                             this.client.getSubscriptionId(),
                             context))
@@ -777,6 +784,8 @@ public final class ProximityPlacementGroupsClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param proximityPlacementGroupName The name of the proximity placement group.
+     * @param includeColocationStatus includeColocationStatus=true enables fetching the colocation status of all the
+     *     resources in the proximity placement group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -785,7 +794,7 @@ public final class ProximityPlacementGroupsClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ProximityPlacementGroupInner>> getByResourceGroupWithResponseAsync(
-        String resourceGroupName, String proximityPlacementGroupName, Context context) {
+        String resourceGroupName, String proximityPlacementGroupName, String includeColocationStatus, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -808,12 +817,14 @@ public final class ProximityPlacementGroupsClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-03-01";
+        final String apiVersion = "2019-12-01";
+        context = this.client.mergeContext(context);
         return service
             .getByResourceGroup(
                 this.client.getEndpoint(),
                 resourceGroupName,
                 proximityPlacementGroupName,
+                includeColocationStatus,
                 apiVersion,
                 this.client.getSubscriptionId(),
                 context);
@@ -824,6 +835,8 @@ public final class ProximityPlacementGroupsClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param proximityPlacementGroupName The name of the proximity placement group.
+     * @param includeColocationStatus includeColocationStatus=true enables fetching the colocation status of all the
+     *     resources in the proximity placement group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -831,8 +844,9 @@ public final class ProximityPlacementGroupsClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ProximityPlacementGroupInner> getByResourceGroupAsync(
-        String resourceGroupName, String proximityPlacementGroupName) {
-        return getByResourceGroupWithResponseAsync(resourceGroupName, proximityPlacementGroupName)
+        String resourceGroupName, String proximityPlacementGroupName, String includeColocationStatus) {
+        return getByResourceGroupWithResponseAsync(
+                resourceGroupName, proximityPlacementGroupName, includeColocationStatus)
             .flatMap(
                 (Response<ProximityPlacementGroupInner> res) -> {
                     if (res.getValue() != null) {
@@ -848,6 +862,8 @@ public final class ProximityPlacementGroupsClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param proximityPlacementGroupName The name of the proximity placement group.
+     * @param includeColocationStatus includeColocationStatus=true enables fetching the colocation status of all the
+     *     resources in the proximity placement group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -856,8 +872,9 @@ public final class ProximityPlacementGroupsClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ProximityPlacementGroupInner> getByResourceGroupAsync(
-        String resourceGroupName, String proximityPlacementGroupName, Context context) {
-        return getByResourceGroupWithResponseAsync(resourceGroupName, proximityPlacementGroupName, context)
+        String resourceGroupName, String proximityPlacementGroupName, String includeColocationStatus, Context context) {
+        return getByResourceGroupWithResponseAsync(
+                resourceGroupName, proximityPlacementGroupName, includeColocationStatus, context)
             .flatMap(
                 (Response<ProximityPlacementGroupInner> res) -> {
                     if (res.getValue() != null) {
@@ -879,9 +896,20 @@ public final class ProximityPlacementGroupsClient
      * @return specifies information about the proximity placement group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ProximityPlacementGroupInner getByResourceGroup(
+    public Mono<ProximityPlacementGroupInner> getByResourceGroupAsync(
         String resourceGroupName, String proximityPlacementGroupName) {
-        return getByResourceGroupAsync(resourceGroupName, proximityPlacementGroupName).block();
+        final String includeColocationStatus = null;
+        final Context context = null;
+        return getByResourceGroupWithResponseAsync(
+                resourceGroupName, proximityPlacementGroupName, includeColocationStatus)
+            .flatMap(
+                (Response<ProximityPlacementGroupInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
     }
 
     /**
@@ -889,6 +917,26 @@ public final class ProximityPlacementGroupsClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param proximityPlacementGroupName The name of the proximity placement group.
+     * @param includeColocationStatus includeColocationStatus=true enables fetching the colocation status of all the
+     *     resources in the proximity placement group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return specifies information about the proximity placement group.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ProximityPlacementGroupInner getByResourceGroup(
+        String resourceGroupName, String proximityPlacementGroupName, String includeColocationStatus) {
+        return getByResourceGroupAsync(resourceGroupName, proximityPlacementGroupName, includeColocationStatus).block();
+    }
+
+    /**
+     * Retrieves information about a proximity placement group .
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param proximityPlacementGroupName The name of the proximity placement group.
+     * @param includeColocationStatus includeColocationStatus=true enables fetching the colocation status of all the
+     *     resources in the proximity placement group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -897,8 +945,27 @@ public final class ProximityPlacementGroupsClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ProximityPlacementGroupInner getByResourceGroup(
-        String resourceGroupName, String proximityPlacementGroupName, Context context) {
-        return getByResourceGroupAsync(resourceGroupName, proximityPlacementGroupName, context).block();
+        String resourceGroupName, String proximityPlacementGroupName, String includeColocationStatus, Context context) {
+        return getByResourceGroupAsync(resourceGroupName, proximityPlacementGroupName, includeColocationStatus, context)
+            .block();
+    }
+
+    /**
+     * Retrieves information about a proximity placement group .
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param proximityPlacementGroupName The name of the proximity placement group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return specifies information about the proximity placement group.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ProximityPlacementGroupInner getByResourceGroup(
+        String resourceGroupName, String proximityPlacementGroupName) {
+        final String includeColocationStatus = null;
+        final Context context = null;
+        return getByResourceGroupAsync(resourceGroupName, proximityPlacementGroupName, includeColocationStatus).block();
     }
 
     /**
@@ -922,7 +989,7 @@ public final class ProximityPlacementGroupsClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-03-01";
+        final String apiVersion = "2019-12-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -962,7 +1029,8 @@ public final class ProximityPlacementGroupsClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-03-01";
+        final String apiVersion = "2019-12-01";
+        context = this.client.mergeContext(context);
         return service
             .list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), context)
             .map(
@@ -1058,7 +1126,7 @@ public final class ProximityPlacementGroupsClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-03-01";
+        final String apiVersion = "2019-12-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -1110,7 +1178,8 @@ public final class ProximityPlacementGroupsClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-03-01";
+        final String apiVersion = "2019-12-01";
+        context = this.client.mergeContext(context);
         return service
             .listByResourceGroup(
                 this.client.getEndpoint(), resourceGroupName, apiVersion, this.client.getSubscriptionId(), context)
@@ -1231,6 +1300,7 @@ public final class ProximityPlacementGroupsClient
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .listBySubscriptionNext(nextLink, context)
             .map(
@@ -1288,6 +1358,7 @@ public final class ProximityPlacementGroupsClient
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .listByResourceGroupNext(nextLink, context)
             .map(

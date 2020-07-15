@@ -49,8 +49,8 @@ public class ManageCustomModels {
             CustomFormModel customModel = client.getCustomModel(customFormModelInfo.getModelId());
             System.out.printf("Model Id: %s%n", customModel.getModelId());
             System.out.printf("Model Status: %s%n", customModel.getModelStatus());
-            System.out.printf("Created on: %s%n", customModel.getRequestedOn());
-            System.out.printf("Updated on: %s%n", customModel.getCompletedOn());
+            System.out.printf("Training started on: %s%n", customModel.getTrainingStartedOn());
+            System.out.printf("Training completed on: %s%n", customModel.getTrainingCompletedOn());
             customModel.getSubmodels().forEach(customFormSubmodel -> {
                 System.out.printf("Custom Model Form type: %s%n", customFormSubmodel.getFormType());
                 System.out.printf("Custom Model Accuracy: %.2f%n", customFormSubmodel.getAccuracy());
@@ -60,12 +60,11 @@ public class ManageCustomModels {
                         System.out.printf("Field Accuracy: %.2f%n", customFormModelField.getAccuracy());
                     });
                 }
-
             });
         });
 
         // Delete Custom Model
-        System.out.printf("Deleted model with model Id: %s operation completed with status: %s%n", modelId.get(),
+        System.out.printf("Deleted model with model Id: %s, operation completed with status: %s%n", modelId.get(),
             client.deleteModelWithResponse(modelId.get(), Context.NONE).getStatusCode());
     }
 }

@@ -22,11 +22,8 @@ public final class NGramTokenFilterConverter {
         if (obj == null) {
             return null;
         }
-        NGramTokenFilter nGramTokenFilter = new NGramTokenFilter();
+        NGramTokenFilter nGramTokenFilter = new NGramTokenFilter(obj.getName());
         PrivateFieldAccessHelper.set(nGramTokenFilter, ODATA_FIELD_NAME, V1_ODATA_TYPE);
-
-        String name = obj.getName();
-        nGramTokenFilter.setName(name);
 
         Integer maxGram = obj.getMaxGram();
         nGramTokenFilter.setMaxGram(maxGram);
@@ -43,11 +40,8 @@ public final class NGramTokenFilterConverter {
         if (obj == null) {
             return null;
         }
-        NGramTokenFilter nGramTokenFilter = new NGramTokenFilter();
+        NGramTokenFilter nGramTokenFilter = new NGramTokenFilter(obj.getName());
         PrivateFieldAccessHelper.set(nGramTokenFilter, ODATA_FIELD_NAME, V2_ODATA_TYPE);
-
-        String name = obj.getName();
-        nGramTokenFilter.setName(name);
 
         Integer maxGram = obj.getMaxGram();
         nGramTokenFilter.setMaxGram(maxGram);

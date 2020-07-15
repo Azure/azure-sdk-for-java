@@ -22,19 +22,13 @@ public final class OcrSkillConverter {
         if (obj == null) {
             return null;
         }
-        OcrSkill ocrSkill = new OcrSkill();
 
-        if (obj.getOutputs() != null) {
-            List<OutputFieldMappingEntry> outputs =
-                obj.getOutputs().stream().map(OutputFieldMappingEntryConverter::map).collect(Collectors.toList());
-            ocrSkill.setOutputs(outputs);
-        }
+        List<OutputFieldMappingEntry> outputs = obj.getOutputs() == null ? null
+            : obj.getOutputs().stream().map(OutputFieldMappingEntryConverter::map).collect(Collectors.toList());
 
-        if (obj.getInputs() != null) {
-            List<InputFieldMappingEntry> inputs =
-                obj.getInputs().stream().map(InputFieldMappingEntryConverter::map).collect(Collectors.toList());
-            ocrSkill.setInputs(inputs);
-        }
+        List<InputFieldMappingEntry> inputs = obj.getInputs() == null ? null
+            : obj.getInputs().stream().map(InputFieldMappingEntryConverter::map).collect(Collectors.toList());
+        OcrSkill ocrSkill = new OcrSkill(inputs, outputs);
 
         String name = obj.getName();
         ocrSkill.setName(name);
@@ -90,6 +84,7 @@ public final class OcrSkillConverter {
 
         Boolean shouldDetectOrientation = obj.setShouldDetectOrientation();
         ocrSkill.setShouldDetectOrientation(shouldDetectOrientation);
+        ocrSkill.validate();
         return ocrSkill;
     }
 

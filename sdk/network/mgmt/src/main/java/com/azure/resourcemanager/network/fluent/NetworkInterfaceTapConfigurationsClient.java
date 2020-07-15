@@ -29,8 +29,8 @@ import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.util.polling.AsyncPollResponse;
 import com.azure.core.util.polling.PollerFlux;
+import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.network.NetworkManagementClient;
 import com.azure.resourcemanager.network.fluent.inner.NetworkInterfaceTapConfigurationInner;
 import com.azure.resourcemanager.network.fluent.inner.NetworkInterfaceTapConfigurationListResultInner;
@@ -130,37 +130,6 @@ public final class NetworkInterfaceTapConfigurationsClient {
             @PathParam("subscriptionId") String subscriptionId,
             Context context);
 
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
-                + "/networkInterfaces/{networkInterfaceName}/tapConfigurations/{tapConfigurationName}")
-        @ExpectedResponses({200, 202, 204})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> beginDeleteWithoutPolling(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("networkInterfaceName") String networkInterfaceName,
-            @PathParam("tapConfigurationName") String tapConfigurationName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            Context context);
-
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
-                + "/networkInterfaces/{networkInterfaceName}/tapConfigurations/{tapConfigurationName}")
-        @ExpectedResponses({200, 201})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<NetworkInterfaceTapConfigurationInner>> beginCreateOrUpdateWithoutPolling(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("networkInterfaceName") String networkInterfaceName,
-            @PathParam("tapConfigurationName") String tapConfigurationName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @BodyParam("application/json") NetworkInterfaceTapConfigurationInner tapConfigurationParameters,
-            Context context);
-
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
@@ -207,7 +176,7 @@ public final class NetworkInterfaceTapConfigurationsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -262,7 +231,7 @@ public final class NetworkInterfaceTapConfigurationsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return service
             .delete(
                 this.client.getEndpoint(),
@@ -286,7 +255,7 @@ public final class NetworkInterfaceTapConfigurationsClient {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<Void>, Void> beginDelete(
+    public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String networkInterfaceName, String tapConfigurationName) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             deleteWithResponseAsync(resourceGroupName, networkInterfaceName, tapConfigurationName);
@@ -306,7 +275,7 @@ public final class NetworkInterfaceTapConfigurationsClient {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<Void>, Void> beginDelete(
+    public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String networkInterfaceName, String tapConfigurationName, Context context) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             deleteWithResponseAsync(resourceGroupName, networkInterfaceName, tapConfigurationName, context);
@@ -325,14 +294,45 @@ public final class NetworkInterfaceTapConfigurationsClient {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<Void>, Void> beginDelete(
+        String resourceGroupName, String networkInterfaceName, String tapConfigurationName) {
+        return beginDeleteAsync(resourceGroupName, networkInterfaceName, tapConfigurationName).getSyncPoller();
+    }
+
+    /**
+     * Deletes the specified tap configuration from the NetworkInterface.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param networkInterfaceName The name of the network interface.
+     * @param tapConfigurationName The name of the tap configuration.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<Void>, Void> beginDelete(
+        String resourceGroupName, String networkInterfaceName, String tapConfigurationName, Context context) {
+        return beginDeleteAsync(resourceGroupName, networkInterfaceName, tapConfigurationName, context).getSyncPoller();
+    }
+
+    /**
+     * Deletes the specified tap configuration from the NetworkInterface.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param networkInterfaceName The name of the network interface.
+     * @param tapConfigurationName The name of the tap configuration.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String networkInterfaceName, String tapConfigurationName) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, networkInterfaceName, tapConfigurationName);
-        return this
-            .client
-            .<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class)
+        return beginDeleteAsync(resourceGroupName, networkInterfaceName, tapConfigurationName)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -350,13 +350,9 @@ public final class NetworkInterfaceTapConfigurationsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(
         String resourceGroupName, String networkInterfaceName, String tapConfigurationName, Context context) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, networkInterfaceName, tapConfigurationName, context);
-        return this
-            .client
-            .<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class)
+        return beginDeleteAsync(resourceGroupName, networkInterfaceName, tapConfigurationName, context)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -429,7 +425,7 @@ public final class NetworkInterfaceTapConfigurationsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -484,7 +480,7 @@ public final class NetworkInterfaceTapConfigurationsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return service
             .get(
                 this.client.getEndpoint(),
@@ -632,7 +628,7 @@ public final class NetworkInterfaceTapConfigurationsClient {
         } else {
             tapConfigurationParameters.validate();
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -701,7 +697,7 @@ public final class NetworkInterfaceTapConfigurationsClient {
         } else {
             tapConfigurationParameters.validate();
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return service
             .createOrUpdate(
                 this.client.getEndpoint(),
@@ -728,7 +724,7 @@ public final class NetworkInterfaceTapConfigurationsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<NetworkInterfaceTapConfigurationInner>, NetworkInterfaceTapConfigurationInner>
-        beginCreateOrUpdate(
+        beginCreateOrUpdateAsync(
             String resourceGroupName,
             String networkInterfaceName,
             String tapConfigurationName,
@@ -760,7 +756,7 @@ public final class NetworkInterfaceTapConfigurationsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<NetworkInterfaceTapConfigurationInner>, NetworkInterfaceTapConfigurationInner>
-        beginCreateOrUpdate(
+        beginCreateOrUpdateAsync(
             String resourceGroupName,
             String networkInterfaceName,
             String tapConfigurationName,
@@ -791,23 +787,65 @@ public final class NetworkInterfaceTapConfigurationsClient {
      * @return tap configuration in a Network Interface.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<NetworkInterfaceTapConfigurationInner>, NetworkInterfaceTapConfigurationInner>
+        beginCreateOrUpdate(
+            String resourceGroupName,
+            String networkInterfaceName,
+            String tapConfigurationName,
+            NetworkInterfaceTapConfigurationInner tapConfigurationParameters) {
+        return beginCreateOrUpdateAsync(
+                resourceGroupName, networkInterfaceName, tapConfigurationName, tapConfigurationParameters)
+            .getSyncPoller();
+    }
+
+    /**
+     * Creates or updates a Tap configuration in the specified NetworkInterface.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param networkInterfaceName The name of the network interface.
+     * @param tapConfigurationName The name of the tap configuration.
+     * @param tapConfigurationParameters Tap configuration in a Network Interface.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return tap configuration in a Network Interface.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<NetworkInterfaceTapConfigurationInner>, NetworkInterfaceTapConfigurationInner>
+        beginCreateOrUpdate(
+            String resourceGroupName,
+            String networkInterfaceName,
+            String tapConfigurationName,
+            NetworkInterfaceTapConfigurationInner tapConfigurationParameters,
+            Context context) {
+        return beginCreateOrUpdateAsync(
+                resourceGroupName, networkInterfaceName, tapConfigurationName, tapConfigurationParameters, context)
+            .getSyncPoller();
+    }
+
+    /**
+     * Creates or updates a Tap configuration in the specified NetworkInterface.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param networkInterfaceName The name of the network interface.
+     * @param tapConfigurationName The name of the tap configuration.
+     * @param tapConfigurationParameters Tap configuration in a Network Interface.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return tap configuration in a Network Interface.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<NetworkInterfaceTapConfigurationInner> createOrUpdateAsync(
         String resourceGroupName,
         String networkInterfaceName,
         String tapConfigurationName,
         NetworkInterfaceTapConfigurationInner tapConfigurationParameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(
-                resourceGroupName, networkInterfaceName, tapConfigurationName, tapConfigurationParameters);
-        return this
-            .client
-            .<NetworkInterfaceTapConfigurationInner, NetworkInterfaceTapConfigurationInner>getLroResultAsync(
-                mono,
-                this.client.getHttpPipeline(),
-                NetworkInterfaceTapConfigurationInner.class,
-                NetworkInterfaceTapConfigurationInner.class)
+        return beginCreateOrUpdateAsync(
+                resourceGroupName, networkInterfaceName, tapConfigurationName, tapConfigurationParameters)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -830,18 +868,10 @@ public final class NetworkInterfaceTapConfigurationsClient {
         String tapConfigurationName,
         NetworkInterfaceTapConfigurationInner tapConfigurationParameters,
         Context context) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(
-                resourceGroupName, networkInterfaceName, tapConfigurationName, tapConfigurationParameters, context);
-        return this
-            .client
-            .<NetworkInterfaceTapConfigurationInner, NetworkInterfaceTapConfigurationInner>getLroResultAsync(
-                mono,
-                this.client.getHttpPipeline(),
-                NetworkInterfaceTapConfigurationInner.class,
-                NetworkInterfaceTapConfigurationInner.class)
+        return beginCreateOrUpdateAsync(
+                resourceGroupName, networkInterfaceName, tapConfigurationName, tapConfigurationParameters, context)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -925,7 +955,7 @@ public final class NetworkInterfaceTapConfigurationsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -983,7 +1013,7 @@ public final class NetworkInterfaceTapConfigurationsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return service
             .list(
                 this.client.getEndpoint(),
@@ -1071,424 +1101,6 @@ public final class NetworkInterfaceTapConfigurationsClient {
     public PagedIterable<NetworkInterfaceTapConfigurationInner> list(
         String resourceGroupName, String networkInterfaceName, Context context) {
         return new PagedIterable<>(listAsync(resourceGroupName, networkInterfaceName, context));
-    }
-
-    /**
-     * Deletes the specified tap configuration from the NetworkInterface.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param networkInterfaceName The name of the network interface.
-     * @param tapConfigurationName The name of the tap configuration.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> beginDeleteWithoutPollingWithResponseAsync(
-        String resourceGroupName, String networkInterfaceName, String tapConfigurationName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (networkInterfaceName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter networkInterfaceName is required and cannot be null."));
-        }
-        if (tapConfigurationName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter tapConfigurationName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2019-06-01";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .beginDeleteWithoutPolling(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            networkInterfaceName,
-                            tapConfigurationName,
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
-
-    /**
-     * Deletes the specified tap configuration from the NetworkInterface.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param networkInterfaceName The name of the network interface.
-     * @param tapConfigurationName The name of the tap configuration.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> beginDeleteWithoutPollingWithResponseAsync(
-        String resourceGroupName, String networkInterfaceName, String tapConfigurationName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (networkInterfaceName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter networkInterfaceName is required and cannot be null."));
-        }
-        if (tapConfigurationName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter tapConfigurationName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2019-06-01";
-        return service
-            .beginDeleteWithoutPolling(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                networkInterfaceName,
-                tapConfigurationName,
-                apiVersion,
-                this.client.getSubscriptionId(),
-                context);
-    }
-
-    /**
-     * Deletes the specified tap configuration from the NetworkInterface.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param networkInterfaceName The name of the network interface.
-     * @param tapConfigurationName The name of the tap configuration.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> beginDeleteWithoutPollingAsync(
-        String resourceGroupName, String networkInterfaceName, String tapConfigurationName) {
-        return beginDeleteWithoutPollingWithResponseAsync(resourceGroupName, networkInterfaceName, tapConfigurationName)
-            .flatMap((Response<Void> res) -> Mono.empty());
-    }
-
-    /**
-     * Deletes the specified tap configuration from the NetworkInterface.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param networkInterfaceName The name of the network interface.
-     * @param tapConfigurationName The name of the tap configuration.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> beginDeleteWithoutPollingAsync(
-        String resourceGroupName, String networkInterfaceName, String tapConfigurationName, Context context) {
-        return beginDeleteWithoutPollingWithResponseAsync(
-                resourceGroupName, networkInterfaceName, tapConfigurationName, context)
-            .flatMap((Response<Void> res) -> Mono.empty());
-    }
-
-    /**
-     * Deletes the specified tap configuration from the NetworkInterface.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param networkInterfaceName The name of the network interface.
-     * @param tapConfigurationName The name of the tap configuration.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void beginDeleteWithoutPolling(
-        String resourceGroupName, String networkInterfaceName, String tapConfigurationName) {
-        beginDeleteWithoutPollingAsync(resourceGroupName, networkInterfaceName, tapConfigurationName).block();
-    }
-
-    /**
-     * Deletes the specified tap configuration from the NetworkInterface.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param networkInterfaceName The name of the network interface.
-     * @param tapConfigurationName The name of the tap configuration.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void beginDeleteWithoutPolling(
-        String resourceGroupName, String networkInterfaceName, String tapConfigurationName, Context context) {
-        beginDeleteWithoutPollingAsync(resourceGroupName, networkInterfaceName, tapConfigurationName, context).block();
-    }
-
-    /**
-     * Creates or updates a Tap configuration in the specified NetworkInterface.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param networkInterfaceName The name of the network interface.
-     * @param tapConfigurationName The name of the tap configuration.
-     * @param tapConfigurationParameters Tap configuration in a Network Interface.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return tap configuration in a Network Interface.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<NetworkInterfaceTapConfigurationInner>> beginCreateOrUpdateWithoutPollingWithResponseAsync(
-        String resourceGroupName,
-        String networkInterfaceName,
-        String tapConfigurationName,
-        NetworkInterfaceTapConfigurationInner tapConfigurationParameters) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (networkInterfaceName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter networkInterfaceName is required and cannot be null."));
-        }
-        if (tapConfigurationName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter tapConfigurationName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (tapConfigurationParameters == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter tapConfigurationParameters is required and cannot be null."));
-        } else {
-            tapConfigurationParameters.validate();
-        }
-        final String apiVersion = "2019-06-01";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .beginCreateOrUpdateWithoutPolling(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            networkInterfaceName,
-                            tapConfigurationName,
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            tapConfigurationParameters,
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
-
-    /**
-     * Creates or updates a Tap configuration in the specified NetworkInterface.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param networkInterfaceName The name of the network interface.
-     * @param tapConfigurationName The name of the tap configuration.
-     * @param tapConfigurationParameters Tap configuration in a Network Interface.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return tap configuration in a Network Interface.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<NetworkInterfaceTapConfigurationInner>> beginCreateOrUpdateWithoutPollingWithResponseAsync(
-        String resourceGroupName,
-        String networkInterfaceName,
-        String tapConfigurationName,
-        NetworkInterfaceTapConfigurationInner tapConfigurationParameters,
-        Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (networkInterfaceName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter networkInterfaceName is required and cannot be null."));
-        }
-        if (tapConfigurationName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter tapConfigurationName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (tapConfigurationParameters == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter tapConfigurationParameters is required and cannot be null."));
-        } else {
-            tapConfigurationParameters.validate();
-        }
-        final String apiVersion = "2019-06-01";
-        return service
-            .beginCreateOrUpdateWithoutPolling(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                networkInterfaceName,
-                tapConfigurationName,
-                apiVersion,
-                this.client.getSubscriptionId(),
-                tapConfigurationParameters,
-                context);
-    }
-
-    /**
-     * Creates or updates a Tap configuration in the specified NetworkInterface.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param networkInterfaceName The name of the network interface.
-     * @param tapConfigurationName The name of the tap configuration.
-     * @param tapConfigurationParameters Tap configuration in a Network Interface.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return tap configuration in a Network Interface.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<NetworkInterfaceTapConfigurationInner> beginCreateOrUpdateWithoutPollingAsync(
-        String resourceGroupName,
-        String networkInterfaceName,
-        String tapConfigurationName,
-        NetworkInterfaceTapConfigurationInner tapConfigurationParameters) {
-        return beginCreateOrUpdateWithoutPollingWithResponseAsync(
-                resourceGroupName, networkInterfaceName, tapConfigurationName, tapConfigurationParameters)
-            .flatMap(
-                (Response<NetworkInterfaceTapConfigurationInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Creates or updates a Tap configuration in the specified NetworkInterface.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param networkInterfaceName The name of the network interface.
-     * @param tapConfigurationName The name of the tap configuration.
-     * @param tapConfigurationParameters Tap configuration in a Network Interface.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return tap configuration in a Network Interface.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<NetworkInterfaceTapConfigurationInner> beginCreateOrUpdateWithoutPollingAsync(
-        String resourceGroupName,
-        String networkInterfaceName,
-        String tapConfigurationName,
-        NetworkInterfaceTapConfigurationInner tapConfigurationParameters,
-        Context context) {
-        return beginCreateOrUpdateWithoutPollingWithResponseAsync(
-                resourceGroupName, networkInterfaceName, tapConfigurationName, tapConfigurationParameters, context)
-            .flatMap(
-                (Response<NetworkInterfaceTapConfigurationInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Creates or updates a Tap configuration in the specified NetworkInterface.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param networkInterfaceName The name of the network interface.
-     * @param tapConfigurationName The name of the tap configuration.
-     * @param tapConfigurationParameters Tap configuration in a Network Interface.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return tap configuration in a Network Interface.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public NetworkInterfaceTapConfigurationInner beginCreateOrUpdateWithoutPolling(
-        String resourceGroupName,
-        String networkInterfaceName,
-        String tapConfigurationName,
-        NetworkInterfaceTapConfigurationInner tapConfigurationParameters) {
-        return beginCreateOrUpdateWithoutPollingAsync(
-                resourceGroupName, networkInterfaceName, tapConfigurationName, tapConfigurationParameters)
-            .block();
-    }
-
-    /**
-     * Creates or updates a Tap configuration in the specified NetworkInterface.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param networkInterfaceName The name of the network interface.
-     * @param tapConfigurationName The name of the tap configuration.
-     * @param tapConfigurationParameters Tap configuration in a Network Interface.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return tap configuration in a Network Interface.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public NetworkInterfaceTapConfigurationInner beginCreateOrUpdateWithoutPolling(
-        String resourceGroupName,
-        String networkInterfaceName,
-        String tapConfigurationName,
-        NetworkInterfaceTapConfigurationInner tapConfigurationParameters,
-        Context context) {
-        return beginCreateOrUpdateWithoutPollingAsync(
-                resourceGroupName, networkInterfaceName, tapConfigurationName, tapConfigurationParameters, context)
-            .block();
     }
 
     /**

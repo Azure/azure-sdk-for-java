@@ -4,7 +4,11 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonSetter;
+
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -43,23 +47,35 @@ public final class SearchIndexerSkillset {
     private String eTag;
 
     /**
+     * Constructor of {@link SearchIndexerSkillset}.
+     *
+     * @param name The name of the skillset.
+     */
+    public SearchIndexerSkillset(String name) {
+        this.name = name;
+    }
+
+    /**
+     * Constructor of {@link SearchIndexerSkillset}.
+     *
+     * @param name The name of the skillset.
+     * @param skills A list of skills in the skillset.
+     */
+    @JsonCreator
+    public SearchIndexerSkillset(
+        @JsonProperty(value = "name") String name,
+        @JsonProperty(value = "skills") List<SearchIndexerSkill> skills) {
+        this.name = name;
+        this.skills = skills;
+    }
+
+    /**
      * Get the name property: The name of the skillset.
      *
      * @return the name value.
      */
     public String getName() {
         return this.name;
-    }
-
-    /**
-     * Set the name property: The name of the skillset.
-     *
-     * @param name the name value to set.
-     * @return the SearchIndexerSkillset object itself.
-     */
-    public SearchIndexerSkillset setName(String name) {
-        this.name = name;
-        return this;
     }
 
     /**
@@ -97,6 +113,18 @@ public final class SearchIndexerSkillset {
      * @param skills the skills value to set.
      * @return the SearchIndexerSkillset object itself.
      */
+    public SearchIndexerSkillset setSkills(SearchIndexerSkill... skills) {
+        this.skills = (skills == null) ? null : Arrays.asList(skills);
+        return this;
+    }
+
+    /**
+     * Set the skills property: A list of skills in the skillset.
+     *
+     * @param skills the skills value to set.
+     * @return the SearchIndexerSkillset object itself.
+     */
+    @JsonSetter
     public SearchIndexerSkillset setSkills(List<SearchIndexerSkill> skills) {
         this.skills = skills;
         return this;

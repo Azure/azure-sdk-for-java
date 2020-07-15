@@ -357,7 +357,7 @@ public class VirtualMachineManagedDiskOperationsTests extends ComputeManagementT
                 .withNewPrimaryNetwork("10.0.0.0/28")
                 .withPrimaryPrivateIPAddressDynamic()
                 .withoutPrimaryPublicIPAddress()
-                .withLinuxCustomImage(customImage.id())
+                .withGeneralizedLinuxCustomImage(customImage.id())
                 .withRootUsername(uname)
                 .withRootPassword(password)
                 // No explicit data disks, let CRP create it from the image's data disk images
@@ -391,7 +391,7 @@ public class VirtualMachineManagedDiskOperationsTests extends ComputeManagementT
                 .withNewPrimaryNetwork("10.0.0.0/28")
                 .withPrimaryPrivateIPAddressDynamic()
                 .withoutPrimaryPublicIPAddress()
-                .withLinuxCustomImage(customImage.id())
+                .withGeneralizedLinuxCustomImage(customImage.id())
                 .withRootUsername(uname)
                 .withRootPassword(password);
         for (ImageDataDisk dataDiskImage : customImage.dataDiskImages().values()) {

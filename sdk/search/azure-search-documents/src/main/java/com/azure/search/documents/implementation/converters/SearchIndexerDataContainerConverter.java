@@ -18,13 +18,11 @@ public final class SearchIndexerDataContainerConverter {
         if (obj == null) {
             return null;
         }
-        SearchIndexerDataContainer searchIndexerDataContainer = new SearchIndexerDataContainer();
+        SearchIndexerDataContainer searchIndexerDataContainer = new SearchIndexerDataContainer(obj.getName());
 
         String query = obj.getQuery();
         searchIndexerDataContainer.setQuery(query);
 
-        String name = obj.getName();
-        searchIndexerDataContainer.setName(name);
         return searchIndexerDataContainer;
     }
 

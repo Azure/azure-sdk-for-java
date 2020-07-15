@@ -20,13 +20,7 @@ public final class SynonymMapConverter {
         if (obj == null) {
             return null;
         }
-        SynonymMap synonymMap = new SynonymMap();
-
-        String synonyms = obj.getSynonyms();
-        synonymMap.setSynonyms(synonyms);
-
-        String name = obj.getName();
-        synonymMap.setName(name);
+        SynonymMap synonymMap = new SynonymMap(obj.getName(), obj.getSynonyms());
 
         String eTag = obj.getETag();
         synonymMap.setETag(eTag);

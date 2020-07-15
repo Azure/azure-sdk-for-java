@@ -4,7 +4,6 @@
 package com.azure.search.documents.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonUnwrapped;
@@ -25,11 +24,6 @@ public final class IndexAction<T> {
     @JsonIgnore
     private Map<String, Object> properties;
 
-    @JsonAnyGetter
-    public Map<String, Object> getParamMap() {
-        return properties;
-    }
-
     /*
      * The operation to perform on a document in an indexing batch. Possible
      * values include: 'Upload', 'Merge', 'MergeOrUpload', 'Delete'
@@ -42,7 +36,11 @@ public final class IndexAction<T> {
      *
      * @return the document value.
      */
+    @SuppressWarnings("unchecked")
     public T getDocument() {
+        if (this.properties != null) {
+            return (T) this.properties;
+        }
         return this.document;
     }
 
