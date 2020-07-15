@@ -13,8 +13,6 @@ import com.azure.messaging.eventgrid.models.CloudEvent;
 import com.azure.messaging.eventgrid.models.EventGridEvent;
 import reactor.core.publisher.Mono;
 
-import java.util.List;
-
 /**
  * A service client that publishes events to an EventGrid topic or domain. Use {@link EventGridPublisherClientBuilder}
  * to create an instance of this client. This uses Project Reactor (https://projectreactor.io/) to handle asynchronous
@@ -36,7 +34,7 @@ public class EventGridPublisherAsyncClient {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> publishEvents(List<EventGridEvent> events) {
+    public Mono<Void> publishEvents(Iterable<EventGridEvent> events) {
         // TODO: implement method
         return null;
     }
@@ -48,7 +46,7 @@ public class EventGridPublisherAsyncClient {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> publishCloudEvents(List<CloudEvent> events) {
+    public Mono<Void> publishCloudEvents(Iterable<CloudEvent> events) {
         // TODO: implement method
         return null;
     }
@@ -60,7 +58,7 @@ public class EventGridPublisherAsyncClient {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> publishCustomEvents(List<Object> events) {
+    public Mono<Void> publishCustomEvents(Iterable<Object> events) {
         // TODO: implement method
         return null;
     }
@@ -72,7 +70,7 @@ public class EventGridPublisherAsyncClient {
      * @return the response from the EventGrid service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> publishEventsWithResponse(List<EventGridEvent> events) {
+    public Mono<Response<Void>> publishEventsWithResponse(Iterable<EventGridEvent> events) {
         // TODO: implement method
         return null;
     }
@@ -84,7 +82,7 @@ public class EventGridPublisherAsyncClient {
      * @return the response from the EventGrid service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> publishCloudEventsWithResponse(List<CloudEvent> events) {
+    public Mono<Response<Void>> publishCloudEventsWithResponse(Iterable<CloudEvent> events) {
         // TODO: implement method
         return null;
     }
@@ -96,7 +94,7 @@ public class EventGridPublisherAsyncClient {
      * @return the response from the EventGrid service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> publishCustomEventsWithResponse(List<Object> events) {
+    public Mono<Response<Void>> publishCustomEventsWithResponse(Iterable<Object> events) {
         // TODO: implement method
         return null;
     }
