@@ -26,7 +26,7 @@ public class EventGridPublisherClientTests {
         String endpoint = System.getenv("EG_ENDPOINT");
         String key = System.getenv("EG_KEY");
         EventGridPublisherAsyncClient egClient = new EventGridPublisherClientBuilder()
-            .credential(new EventGridSharedKeyCredential("Key 1", key))
+            .credential(new EventGridSharedKeyCredential(key))
             .endpoint(endpoint)
             .buildAsyncClient();
 
@@ -60,7 +60,7 @@ public class EventGridPublisherClientTests {
         String endpoint = System.getenv("EG_CLOUD_ENDPOINT");
         String key = System.getenv("EG_CLOUD_KEY");
         EventGridPublisherAsyncClient egClient = new EventGridPublisherClientBuilder()
-            .credential(new EventGridSharedKeyCredential("Key 1", key))
+            .credential(new EventGridSharedKeyCredential(key))
             .endpoint(endpoint)
             .buildAsyncClient();
 
@@ -93,7 +93,7 @@ public class EventGridPublisherClientTests {
         String endpoint = System.getenv("EG_CUSTOM_ENDPOINT");
         String key = System.getenv("EG_CUSTOM_KEY");
         EventGridPublisherAsyncClient egClient = new EventGridPublisherClientBuilder()
-            .credential(new EventGridSharedKeyCredential("Key 1", key))
+            .credential(new EventGridSharedKeyCredential(key))
             .endpoint(endpoint)
             .buildAsyncClient();
 
@@ -123,7 +123,7 @@ public class EventGridPublisherClientTests {
         String endpoint = System.getenv("EG_ENDPOINT");
         String key = System.getenv("EG_KEY");
         EventGridPublisherClient egClient = new EventGridPublisherClientBuilder()
-            .credential(new EventGridSharedKeyCredential("Key 1", key))
+            .credential(new EventGridSharedKeyCredential(key))
             .endpoint(endpoint)
             .buildClient();
 
@@ -154,7 +154,7 @@ public class EventGridPublisherClientTests {
         String endpoint = System.getenv("EG_CLOUD_ENDPOINT");
         String key = System.getenv("EG_CLOUD_KEY");
         EventGridPublisherClient egClient = new EventGridPublisherClientBuilder()
-            .credential(new EventGridSharedKeyCredential("Key 1", key))
+            .credential(new EventGridSharedKeyCredential(key))
             .endpoint(endpoint)
             .buildClient();
 
@@ -184,7 +184,7 @@ public class EventGridPublisherClientTests {
         String endpoint = System.getenv("EG_CUSTOM_ENDPOINT");
         String key = System.getenv("EG_CUSTOM_KEY");
         EventGridPublisherClient egClient = new EventGridPublisherClientBuilder()
-            .credential(new EventGridSharedKeyCredential("Key 1", key))
+            .credential(new EventGridSharedKeyCredential(key))
             .endpoint(endpoint)
             .buildClient();
 

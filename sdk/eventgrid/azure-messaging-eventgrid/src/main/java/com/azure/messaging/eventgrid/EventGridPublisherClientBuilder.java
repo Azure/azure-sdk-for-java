@@ -74,8 +74,22 @@ public class EventGridPublisherClientBuilder {
     }
 
     /**
-     * Set the domain or topic credentials. This must be set in order to build a client.
-     * @param credential the credential to authorize publishes to a specific topic/domain endpoint.
+     * Set the domain or topic credentials using a key obtained from Azure CLI, Azure portal, or the ARM SDKs. This must
+     * be set in order to build the client and is the recommended method of authentication.
+     * @param credential the key credential to use to authorize the publisher client.
+     *
+     * @return the builder itself.
+     */
+    public EventGridPublisherClientBuilder credential(EventGridSharedKeyCredential credential) {
+        // TODO: implement method
+        return null;
+    }
+
+    /**
+     * Set the domain or topic credentials as a token credential. This must be set in order to build a client, either
+     * through the above method or this one. The above method is the recommended way to authenticate.
+     * @param credential the credential to authorize publishes to a specific topic/domain endpoint. This should
+     *                   be of type {@link EventGridTokenCredential}.
      *
      * @return the builder itself.
      */
