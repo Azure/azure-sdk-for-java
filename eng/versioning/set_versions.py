@@ -224,8 +224,9 @@ def prep_version_file_for_source_testing(build_type):
                 if hasattr(module, 'current') and not module.current == module.dependency:
                     module.dependency = module.current
                     file_changed = True
-                # In order to ensure that the From Source runs are effectively, ensure that
-                # the beta_ dependency's version is set
+                # In order to ensure that the From Source runs are effectively testing everything
+                # together using the latest source built libraries, ensure that the beta_ dependency's
+                # version is set
                 elif module.name.startswith('beta_'):
                     tempName = module.name[len('beta_'):]
                     if tempName in version_map:
