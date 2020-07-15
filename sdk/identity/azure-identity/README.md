@@ -11,32 +11,8 @@ The Azure Identity library provides Azure Active Directory token authentication 
 
   [Source code][source] | [API reference documentation][javadoc] | [Azure Active Directory documentation][aad_doc]
 
-## Table of contents
-- [Getting started](#getting-started)
-  - [Adding the package to your project](#adding-the-package-to-your-project)
-  - [Prerequisites](#prerequisites)
-    - [Creating a Service Principal with the Azure CLI](#creating-a-service-principal-with-the-azure-cli)
-    - [Enable applications for device code flow](#enable-applications-for-device-code-flow)
-    - [Enable applications for interactive browser oauth 2 flow](#enable-applications-for-interactive-browser-oauth-2-flow)
-    - [Enable applications for oauth 2 auth code flow](#enable-applications-for-oauth-2-auth-code-flow)
-    - [Enable applications for shared token cache credential](#enable-applications-for-shared-token-cache-credential)
-  - [Key concepts](#key-concepts)
-    - [Credentials](#credentials)
-    - [DefaultAzureCredential](#defaultazurecredential)
-    - [Environment variables](#environment-variables)
-- [Examples](#examples)
-  - [Authenticating with `DefaultAzureCredential`](#authenticating-with-defaultazurecredential)
-  - [Authenticating a service principal with a client secret](#authenticating-a-service-principal-with-a-client-secret)
-  - [Authenticating a user account with device code flow](#authenticating-a-user-account-with-device-code-flow)
-  - [Authenticating a user account with username and password](#authenticating-a-user-account-with-username-and-password)
-  - [Authenticating a user account with auth code flow](#authenticating-a-user-account-with-auth-code-flow)
-  - [Chaining credentials](#chaining-credentials)
-- [Troubleshooting](#troubleshooting)
-- [Next steps](#next-steps)
-- [Contributing](#contributing)
-
 ## Getting started
-### Adding the package to your project
+### Include the package
 
 Maven dependency for Azure Secret Client library. Add it to your project's pom file.
 
@@ -156,6 +132,14 @@ principal authentication with these environment variables:
 |`AZURE_CLIENT_SECRET`|one of the service principal's client secrets
 
 ## Examples
+
+### Table of contents
+  - [Authenticating with `DefaultAzureCredential`](#authenticating-with-defaultazurecredential)
+  - [Authenticating a service principal with a client secret](#authenticating-a-service-principal-with-a-client-secret)
+  - [Authenticating a user account with device code flow](#authenticating-a-user-account-with-device-code-flow)
+  - [Authenticating a user account with username and password](#authenticating-a-user-account-with-username-and-password)
+  - [Authenticating a user account with auth code flow](#authenticating-a-user-account-with-auth-code-flow)
+  - [Chaining credentials](#chaining-credentials)
 
 ### Authenticating with `DefaultAzureCredential`
 This example demonstrates authenticating the `SecretClient` from the [azure-security-keyvault-secrets][secrets_client_library] client library using the `DefaultAzureCredential`. There's also [a compilable sample](../../keyvault/azure-security-keyvault-secrets/src/samples/java/com/azure/security/keyvault/secrets/IdentitySamples.java) to create a Key Vault secret client you can copy-paste.
