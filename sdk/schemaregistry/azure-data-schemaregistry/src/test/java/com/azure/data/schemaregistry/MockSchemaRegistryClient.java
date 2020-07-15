@@ -43,7 +43,7 @@ public class MockSchemaRegistryClient implements SchemaRegistryClient {
     }
 
     @Override
-    public SchemaRegistryObject getSchemaByGuid(String schemaGuid)
+    public SchemaRegistryObject getSchemaById(String schemaGuid)
             throws SchemaRegistryClientException {
         if (guidCache.containsKey(schemaGuid)) {
             return guidCache.get(schemaGuid);

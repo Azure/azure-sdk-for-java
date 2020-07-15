@@ -3,16 +3,22 @@
 
 package com.azure.data.schemaregistry;
 
+import com.azure.core.exception.HttpResponseException;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.data.schemaregistry.client.SchemaRegistryObject;
 import com.azure.data.schemaregistry.client.SchemaRegistryClient;
 import com.azure.data.schemaregistry.client.SchemaRegistryClientException;
+import reactor.core.publisher.Mono;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.nio.BufferUnderflowException;
 import java.nio.ByteBuffer;
 import java.util.Arrays;
 import java.util.Map;
 import java.util.concurrent.ConcurrentSkipListMap;
+
+import static com.azure.core.util.FluxUtil.monoError;
 
 /**
  * Common implementation for all registry-based deserializers.
@@ -39,41 +45,59 @@ public abstract class AbstractDataDeserializer extends AbstractDataSerDe {
     /**
      * Fetches schema referenced by prefixed ID and deserializes the subsequent payload into Java object.
      *
-     * @param payload byte payload, produced by an Azure Schema Registry client producer
+     * @param s InputStream containing bytes encoded by an Azure Schema Registry producer
      * @return object, deserialized with the prefixed schema
      * @throws SerializationException if deserialization of registry schema or message payload fails.
      */
-    protected Object deserialize(byte[] payload) throws SerializationException {
-        if (payload == null) {
-            return null;
+    protected Mono<Object> deserialize(InputStream s) throws SerializationException {
+        if (s == null) {
+            return Mono.empty();
         }
 
-        ByteBuffer buffer = ByteBuffer.wrap(payload);
-        String schemaGuid = getSchemaGuidFromPayload(buffer);
-        SchemaRegistryObject registryObject;
-        Object payloadSchema;
+        return Mono.fromCallable(s::readAllBytes)
+            .onErrorResume(IOException.class, e -> monoError(logger, new SerializationException(e.getMessage(), e)))
+            .map(payload -> {
+                ByteBuffer buffer = ByteBuffer.wrap(payload);
+                String schemaId = getSchemaIdFromPayload(buffer);
+                return this.schemaRegistryClient.getSchemaById(schemaId).onErrorResume(e -> {
+                    if (e instanceof SchemaRegistryClientException) {
+                        StringBuilder builder = new StringBuilder(
+                            String.format("Failed to retrieve schema for id %s", schemaId));
 
-        try {
-            registryObject = this.schemaRegistryClient.getSchemaByGuid(schemaGuid);
-            payloadSchema = registryObject.deserialize();
-        } catch (SchemaRegistryClientException e) {
-            throw logger.logExceptionAsError(
-                new SerializationException(String.format("Failed to retrieve schema for id %s", schemaGuid), e));
-        }
+                        if (e.getCause() instanceof HttpResponseException) {
+                            HttpResponseException httpException = (HttpResponseException) e.getCause();
+                            builder.append("HTTP ")
+                                .append(httpException.getResponse().getStatusCode())
+                                .append(" ")
+                                .append(httpException.getResponse().getBodyAsString());
+                        }
+                        else {
+                            builder.append(e.getCause().getMessage());
+                        }
 
-        if (payloadSchema == null) {
-            throw logger.logExceptionAsError(
-             new SerializationException(
-                    String.format("Payload schema returned as null. Schema type: %s, Schema ID: %s",
-                            registryObject.getSchemaType(), registryObject.getSchemaId())));
-        }
+                        return monoError(logger, new SerializationException(builder.toString(), e));
+                    }
+                    else {
+                        return monoError(logger, new SerializationException(e.getMessage(), e));
+                    }})
+                    .map(registryObject -> {
+                        Object payloadSchema = registryObject.deserialize();
 
-        int start = buffer.position() + buffer.arrayOffset();
-        int length = buffer.limit() - AbstractDataSerDe.SCHEMA_ID_SIZE;
-        byte[] b = Arrays.copyOfRange(buffer.array(), start, start + length);
+                        if (payloadSchema == null) {
+                            throw logger.logExceptionAsError(
+                                new SerializationException(
+                                    String.format("Payload schema returned as null. Schema type: %s, Schema ID: %s",
+                                        registryObject.getSchemaType(), registryObject.getSchemaId())));
+                        }
 
-        ByteDecoder byteDecoder = getByteDecoder(registryObject);
-        return byteDecoder.decodeBytes(b, payloadSchema);
+                        int start = buffer.position() + buffer.arrayOffset();
+                        int length = buffer.limit() - AbstractDataSerDe.SCHEMA_ID_SIZE;
+                        byte[] b = Arrays.copyOfRange(buffer.array(), start, start + length);
+
+                        ByteDecoder byteDecoder = getByteDecoder(registryObject);
+                        return byteDecoder.decodeBytes(b, payloadSchema);
+                    });
+            });
     }
 
 
@@ -100,7 +124,7 @@ public abstract class AbstractDataDeserializer extends AbstractDataSerDe {
      * @return String representation of schema ID
      * @throws SerializationException if schema ID could not be extracted from payload
      */
-    private String getSchemaGuidFromPayload(ByteBuffer buffer) throws SerializationException {
+    private String getSchemaIdFromPayload(ByteBuffer buffer) throws SerializationException {
         byte[] schemaGuidByteArray = new byte[AbstractDataSerDe.SCHEMA_ID_SIZE];
         try {
             buffer.get(schemaGuidByteArray);

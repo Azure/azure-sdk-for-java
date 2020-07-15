@@ -4,6 +4,7 @@
 package com.azure.data.schemaregistry.client;
 
 import com.azure.data.schemaregistry.Codec;
+import reactor.core.publisher.Mono;
 
 import java.nio.charset.Charset;
 import java.util.List;
@@ -42,18 +43,18 @@ public interface SchemaRegistryClient {
      * @return SchemaRegistryObject containing information regarding registered schema.
      * @throws SchemaRegistryClientException if registration operation fails
      */
-    SchemaRegistryObject register(String schemaGroup, String schemaName, String schemaString, String schemaType);
+    Mono<SchemaRegistryObject> register(String schemaGroup, String schemaName, String schemaString, String schemaType);
 
     /**
      * Fetches schema specified by the GUID.
      * <p>
      * GUID can be assumed to be unique within a schema registry store.
      *
-     * @param schemaGuid GUID reference to specific schema within configured schema registry store.
+     * @param schemaId GUID reference to specific schema within configured schema registry store.
      * @return SchemaRegistryObject containing information regarding matching schema.
      * @throws SchemaRegistryClientException if fetch operation fails
      */
-    SchemaRegistryObject getSchemaByGuid(String schemaGuid);
+    Mono<SchemaRegistryObject> getSchemaById(String schemaId);
 
     /**
      * Fetches schema GUID given schema group, name, string representation, and serialization type
@@ -65,7 +66,7 @@ public interface SchemaRegistryClient {
      * @return SchemaRegistryObject containing information regarding requested schema.
      * @throws SchemaRegistryClientException if fetch operation fails
      */
-    String getSchemaId(String schemaGroup, String schemaName, String schemaString, String schemaType);
+    Mono<String> getSchemaId(String schemaGroup, String schemaName, String schemaString, String schemaType);
 
     /**
      * Not currently implemented.
@@ -76,7 +77,7 @@ public interface SchemaRegistryClient {
      * @return GUID of delete schema
      * @throws SchemaRegistryClientException deletion operation failed
      */
-    String deleteSchemaVersion(String schemaGroup, String schemaName, int version);
+    Mono<String> deleteSchemaVersion(String schemaGroup, String schemaName, int version);
 
     /**
      * Not currently implemented.
@@ -86,7 +87,7 @@ public interface SchemaRegistryClient {
      * @return GUID of deleted schema
      * @throws SchemaRegistryClientException deletion operation failed
      */
-    String deleteLatestSchemaVersion(String schemaGroup, String schemaName);
+    Mono<String> deleteLatestSchemaVersion(String schemaGroup, String schemaName);
 
     /**
      * Not currently implemented.
@@ -96,5 +97,5 @@ public interface SchemaRegistryClient {
      * @return list of GUID references to deleted schemas
      * @throws SchemaRegistryClientException deletion operation failed
      */
-    List<String> deleteSchema(String schemaGroup, String schemaName);
+    Mono<List<String>> deleteSchema(String schemaGroup, String schemaName);
 }

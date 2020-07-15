@@ -32,7 +32,7 @@ public class SchemaRegistryAvroSerializer extends AbstractDataSerializer {
     /**
      * Serializes object into byte array payload using the configured byte encoder.
      * @param object target of serialization
-     * @return byte array containing GUID reference to schema, then the object serialized into bytes
+     * @return byte array containing unique ID reference to schema, then the object serialized into bytes
      * @throws SerializationException Throws on serialization failure.
      */
     public byte[] serialize(Object object) throws SerializationException {

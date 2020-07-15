@@ -111,8 +111,8 @@ public class CachedSchemaRegistryClientTest {
                     MOCK_AVRO_SCHEMA,
                     mockHeaders)));
 
-        SchemaRegistryObject first = client.getSchemaByGuid(mockId.toString());
-        SchemaRegistryObject second = client.getSchemaByGuid(mockId.toString());
+        SchemaRegistryObject first = client.getSchemaById(mockId.toString());
+        SchemaRegistryObject second = client.getSchemaById(mockId.toString());
 
         assertTrue(first.equals(second));
         assertEquals(mockId.toString(), first.getSchemaId());
@@ -221,7 +221,7 @@ public class CachedSchemaRegistryClientTest {
                     null)));
 
         try {
-            client.getSchemaByGuid(mockId);
+            client.getSchemaById(mockId);
             fail("Should have thrown on 404 status code");
         } catch (SchemaRegistryClientException e) {
             assert true;

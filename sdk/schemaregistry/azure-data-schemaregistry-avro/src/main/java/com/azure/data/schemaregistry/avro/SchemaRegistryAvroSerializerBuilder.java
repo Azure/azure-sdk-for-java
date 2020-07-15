@@ -106,7 +106,7 @@ public final class SchemaRegistryAvroSerializerBuilder {
      * @throws IllegalArgumentException if credential is not set.
      */
     public SchemaRegistryAvroAsyncSerializer buildAsyncClient() {
-        return new SchemaRegistryAvroAsyncSerializer(this.buildSyncClient());
+        return new SchemaRegistryAvroAsyncSerializer(this.buildSyncClient(), deserializer);
     }
 
     /**

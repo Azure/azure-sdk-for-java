@@ -3,14 +3,21 @@
 
 package com.azure.data.schemaregistry;
 
+import com.azure.core.exception.HttpResponseException;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.data.schemaregistry.client.SchemaRegistryClient;
 import com.azure.data.schemaregistry.client.SchemaRegistryClientException;
+import com.azure.data.schemaregistry.client.SchemaRegistryObject;
+import reactor.core.publisher.Mono;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
+
+import static com.azure.core.util.FluxUtil.monoError;
 
 /**
  * Common implementation for all registry-based serializers.
@@ -62,15 +69,15 @@ public abstract class AbstractDataSerializer extends AbstractDataSerDe {
      * @return byte array containing encoded bytes with prefixed schema ID
      * @throws SerializationException if serialization operation fails during runtime.
      */
-    protected byte[] serializeImpl(Object object) {
+    protected <T extends OutputStream> Mono<T> serializeImpl(T s, Object object) {
         if (object == null) {
-            throw logger.logExceptionAsError(new SerializationException(
+            return monoError(logger, new SerializationException(
                 "Null object, behavior should be defined in concrete serializer implementation."));
         }
 
         if (byteEncoder == null) {
-            throw logger.logExceptionAsError(
-                new SerializationException("Byte encoder null, serializer must be initialized with a byte encoder."));
+            return monoError(logger, new SerializationException(
+                "Byte encoder null, serializer must be initialized with a byte encoder."));
         }
 
         if (schemaType == null) {
@@ -80,28 +87,49 @@ public abstract class AbstractDataSerializer extends AbstractDataSerDe {
         String schemaString = byteEncoder.getSchemaString(object);
         String schemaName = byteEncoder.getSchemaName(object);
 
-        try {
-            String schemaGuid = maybeRegisterSchema(
-                this.schemaGroup, schemaName, schemaString, this.schemaType);
-            ByteArrayOutputStream out = new ByteArrayOutputStream();
-            ByteBuffer guidBuffer = ByteBuffer.allocate(AbstractDataSerDe.SCHEMA_ID_SIZE)
-                .put(schemaGuid.getBytes(StandardCharsets.UTF_8));
-            out.write(guidBuffer.array());
-            byteEncoder.encode(object).writeTo(out);
-            return out.toByteArray();
-        } catch (SchemaRegistryClientException | IOException e) {
-            if (this.autoRegisterSchemas) {
-                throw logger.logExceptionAsError(
-                    new SerializationException(
-                        String.format("Error registering Avro schema. Group: %s, name: %s", schemaGroup, schemaName),
-                        e));
-            } else {
-                throw logger.logExceptionAsError(
-                    new SerializationException(
-                        String.format("Error retrieving Avro schema. Group: %s, name: %s", schemaGroup, schemaName),
-                        e));
-            }
-        }
+        return this.maybeRegisterSchema(this.schemaGroup, schemaName, schemaString, this.schemaType)
+            .onErrorResume(e -> {
+                if (e instanceof SchemaRegistryClientException) {
+                    StringBuilder builder = new StringBuilder();
+                    if (this.autoRegisterSchemas) {
+                        builder.append(String.format("Error registering Avro schema. Group: %s, name: %s. ",
+                            schemaGroup, schemaName));
+                    } else {
+                        builder.append(String.format("Error retrieving Avro schema. Group: %s, name: %s. ",
+                            schemaGroup, schemaName));
+                    }
+
+                    if (e.getCause() instanceof HttpResponseException) {
+                        HttpResponseException httpException = (HttpResponseException) e.getCause();
+                        builder.append("HTTP ")
+                            .append(httpException.getResponse().getStatusCode())
+                            .append(" ")
+                            .append(httpException.getResponse().getBodyAsString());
+                    }
+                    else {
+                        builder.append(e.getCause().getMessage());
+                    }
+
+                    return monoError(logger, new SerializationException(builder.toString(), e));
+                }
+                else {
+                    return monoError(logger, new SerializationException(e.getMessage(), e));
+                }
+            })
+            .map(id -> {
+                ByteBuffer idBuffer = ByteBuffer.allocate(AbstractDataSerDe.SCHEMA_ID_SIZE)
+                    .put(id.getBytes(StandardCharsets.UTF_8));
+                try {
+                    s.write(idBuffer.array());
+                    byteEncoder.encode(object).writeTo(s);
+                } catch (IOException e) {
+                    throw new SerializationException(e.getMessage(), e);
+                }
+                return s;
+            })
+            .onErrorResume(
+                SerializationException.class,
+                e -> Mono.error(logger.logExceptionAsError(e)));
     }
 
     /**
@@ -116,12 +144,11 @@ public abstract class AbstractDataSerializer extends AbstractDataSerDe {
      * @return string representation of schema ID
      * @throws SchemaRegistryClientException upon registry client operation failure
      */
-    private String maybeRegisterSchema(
-        String schemaGroup, String schemaName, String schemaString, String schemaType)
-        throws SchemaRegistryClientException {
+    private Mono<String> maybeRegisterSchema(
+        String schemaGroup, String schemaName, String schemaString, String schemaType) {
         if (this.autoRegisterSchemas) {
             return this.schemaRegistryClient.register(schemaGroup, schemaName, schemaString, schemaType)
-                .getSchemaId();
+                .map(SchemaRegistryObject::getSchemaId);
         } else {
             return this.schemaRegistryClient.getSchemaId(
                 schemaGroup, schemaName, schemaString, schemaType);

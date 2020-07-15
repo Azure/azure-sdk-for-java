@@ -44,7 +44,7 @@ public class AbstractDataDeserializerTest {
         mockRegistryClient.getGuidCache().put(MOCK_GUID, registered);
         TestDummyDeserializer deserializer = new TestDummyDeserializer(mockRegistryClient); // contains byte decoder
 
-        assertEquals(MOCK_GUID, deserializer.schemaRegistryClient.getSchemaByGuid(MOCK_GUID).getSchemaId());
+        assertEquals(MOCK_GUID, deserializer.schemaRegistryClient.getSchemaById(MOCK_GUID).getSchemaId());
         assertEquals(SampleByteDecoder.CONSTANT_PAYLOAD, deserializer.deserialize(getPayload()));
     }
 
