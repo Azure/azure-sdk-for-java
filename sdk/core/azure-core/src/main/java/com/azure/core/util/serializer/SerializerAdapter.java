@@ -67,7 +67,7 @@ public interface SerializerAdapter {
      * @return the deserialized object
      * @throws IOException exception from deserialization
      */
-    <U> U deserialize(final String value, final Type type, final SerializerEncoding encoding) throws IOException;
+    <U> U deserialize(String value, Type type, SerializerEncoding encoding) throws IOException;
 
     /**
      * Deserializes a byte[] into a {@code U} object.
