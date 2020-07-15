@@ -257,4 +257,24 @@ public class ReactiveCourseRepositoryIT {
                     })
                     .verifyComplete();
     }
+
+    @Test
+    public void testFindByNameIgnoreCase() {
+        final Flux<Course> findResult = repository.findByNameIgnoreCase(COURSE_NAME_1.toLowerCase());
+        StepVerifier.create(findResult).expectNext(COURSE_1).verifyComplete();
+    }
+
+    @Test
+    public void testFindByNameAndDepartmentAllIgnoreCase() {
+        final Flux<Course> findResult = repository.findByNameAndDepartmentAllIgnoreCase(
+            COURSE_NAME_1.toLowerCase(), DEPARTMENT_NAME_3.toLowerCase());
+        StepVerifier.create(findResult).expectNext(COURSE_1).verifyComplete();
+    }
+
+    @Test
+    public void testFindByNameOrDepartmentAllIgnoreCase() {
+        final Flux<Course> findResult = repository.findByNameOrDepartmentAllIgnoreCase(
+            COURSE_NAME_3.toLowerCase(), DEPARTMENT_NAME_3.toLowerCase());
+        StepVerifier.create(findResult).expectNext(COURSE_1, COURSE_3).verifyComplete();
+    }
 }
