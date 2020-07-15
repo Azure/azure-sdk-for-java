@@ -185,8 +185,20 @@ def load_version_map_from_file(the_file, version_map):
             if not stripped_line or stripped_line.startswith('#'):
                 continue
             module = CodeModule(stripped_line)
+            # verify no duplicate entries
             if (module.name in version_map):
                 raise ValueError('Version file: {0} contains a duplicate entry: {1}'.format(the_file, module.name))
+            # verify that if the module is beta_ or unreleased_ that there's a matching non-beta_ or non-unreleased_ entry
+            if (module.name.startswith('beta_') or module.name.startswith('unreleased_')):
+                tempName = module.name
+                if tempName.startswith('beta_'):
+                    tempName = module.name[len('beta_'):]
+                else:
+                    tempName = module.name[len('unreleased_'):]
+                # if there isn't a non beta or unreleased entry then raise an issue
+                if tempName not in version_map:
+                    raise ValueError('Version file: {0} does not contain a non-beta or non-unreleased entry for beta_/unreleased_ library: {1}'.format(the_file, module.name))
+
             version_map[module.name] = module
 
 def display_version_info(version_map):

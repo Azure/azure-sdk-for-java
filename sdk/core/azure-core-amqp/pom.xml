@@ -114,7 +114,6 @@
           <rules>
             <bannedDependencies>
               <includes>
-                <include>com.azure:*</include>
                 <include>com.microsoft.azure:qpid-proton-j-extensions:[1.2.3]</include> <!-- {x-include-update;com.microsoft.azure:qpid-proton-j-extensions;external_dependency} -->
                 <include>org.apache.qpid:proton-j:[0.33.4]</include> <!-- {x-include-update;org.apache.qpid:proton-j;external_dependency} -->
               </includes>

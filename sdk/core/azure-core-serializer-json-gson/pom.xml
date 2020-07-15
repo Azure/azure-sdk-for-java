@@ -114,7 +114,6 @@
           <rules>
             <bannedDependencies>
               <includes>
-                <include>com.azure:*</include>
                 <include>com.google.code.gson:gson:[2.8.5]</include> <!-- {x-include-update;com.google.code.gson:gson;external_dependency} -->
               </includes>
             </bannedDependencies>

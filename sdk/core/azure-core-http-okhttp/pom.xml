@@ -140,7 +140,6 @@
           <rules>
             <bannedDependencies>
               <includes>
-                <include>com.azure:*</include>
                 <include>com.squareup.okhttp3:okhttp:[4.2.2]</include> <!-- {x-include-update;com.squareup.okhttp3:okhttp;external_dependency} -->
               </includes>
             </bannedDependencies>

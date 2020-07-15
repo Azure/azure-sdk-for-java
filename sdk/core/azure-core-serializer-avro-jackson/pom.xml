@@ -108,7 +108,6 @@
           <rules>
             <bannedDependencies>
               <includes>
-                <include>com.azure:*</include>
                 <include>com.fasterxml.jackson.dataformat:jackson-dataformat-avro:[2.10.1]</include> <!-- {x-include-update;com.fasterxml.jackson.dataformat:jackson-dataformat-avro;external_dependency} -->
               </includes>
             </bannedDependencies>

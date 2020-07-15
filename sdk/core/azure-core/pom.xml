@@ -180,7 +180,6 @@
                 </include> <!-- {x-include-update;com.fasterxml.jackson.dataformat:jackson-dataformat-xml;external_dependency} -->
                 <include>com.fasterxml.jackson.datatype:jackson-datatype-jsr310:[2.10.1]
                 </include> <!-- {x-include-update;com.fasterxml.jackson.datatype:jackson-datatype-jsr310;external_dependency} -->
-                <include>com.google.code.findbugs:jsr305:[3.0.2]</include> <!-- {x-include-update;com.google.code.findbugs:jsr305;external_dependency} -->
                 <include>org.slf4j:slf4j-api:[1.7.28]</include> <!-- {x-include-update;org.slf4j:slf4j-api;external_dependency} -->
               </includes>
             </bannedDependencies>

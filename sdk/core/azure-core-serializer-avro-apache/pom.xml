@@ -108,7 +108,6 @@
           <rules>
             <bannedDependencies>
               <includes>
-                <include>com.azure:*</include>
                 <include>org.apache.avro:avro:[1.9.2]</include> <!-- {x-include-update;org.apache.avro:avro;external_dependency} -->
               </includes>
             </bannedDependencies>
