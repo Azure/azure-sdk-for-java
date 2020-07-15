@@ -484,6 +484,7 @@
         <module>../storage/mgmt</module>
         <module>../sql/mgmt</module>
         <module>../cosmos/mgmt</module>
+        <module>../containerinstance/mgmt</module>
         <module>../containerregistry/mgmt</module>
         <module>../containerservice/mgmt</module>
         <module>../monitor/mgmt</module>
