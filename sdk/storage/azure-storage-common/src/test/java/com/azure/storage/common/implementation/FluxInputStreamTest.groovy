@@ -66,7 +66,7 @@ class FluxInputStreamTest extends Specification {
     }
 
     @Unroll
-    def "FluxIS min with empty byte buffers"() {
+    def "FluxIS with empty byte buffers"() {
         setup:
         def num = Constants.KB
         List<ByteBuffer> buffers = new ArrayList<>()
