@@ -86,7 +86,6 @@
           <rules>
             <bannedDependencies>
               <includes>
-                <include>com.azure:*</include>
                 <include>org.slf4j:slf4j-api:[1.7.28]</include> <!-- {x-include-update;org.slf4j:slf4j-api;external_dependency} -->
               </includes>
             </bannedDependencies>

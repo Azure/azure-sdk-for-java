@@ -473,7 +473,7 @@
                 <exclude>*:*:*:*:compile</exclude>
                 <exclude>*:*:*:*:provided</exclude>
               </excludes>
-              <includes>
+              <includes combine.children="append">
                 <include>com.azure:*</include>
 
                 <!-- Used by many libraries to bring in annotations used by Reactor -->

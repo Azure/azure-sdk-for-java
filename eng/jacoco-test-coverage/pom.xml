@@ -316,7 +316,8 @@
           <rules>
             <bannedDependencies>
               <includes>
-                <include>com.azure:*</include>
+                <!--This is fine for in here but individual libraries need to list out everything. This mainly because
+                    com.microsoft.azure includes things that are not owned or built by the azure-sdk team. -->
                 <include>com.microsoft.azure:*</include>
               </includes>
             </bannedDependencies>
