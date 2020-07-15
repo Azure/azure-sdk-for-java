@@ -1,4 +1,4 @@
-module azure.resourcemanager.resources {
+module com.azure.resourcemanager.resources {
     exports com.azure.resourcemanager.resources.fluentcore.arm;
     exports com.azure.resourcemanager.resources.fluentcore.arm.implementation;
     exports com.azure.resourcemanager.resources.fluentcore.utils;
@@ -10,6 +10,6 @@ module azure.resourcemanager.resources {
     exports com.azure.resourcemanager.resources.fluentcore.arm.collection;
     exports com.azure.resourcemanager.resources.fluentcore;
 
-    requires transitive azure.resourcemanager.base;
+    requires transitive com.azure.resourcemanager.base;
     requires com.github.spotbugs.annotations;
 }

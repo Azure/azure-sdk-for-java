@@ -1,3 +1,3 @@
-module azure.resourcemanager.dns {
-    requires transitive azure.resourcemanager.resources;
+module com.azure.resourcemanager.dns {
+    requires transitive com.azure.resourcemanager.resources;
 }

@@ -120,7 +120,7 @@ public abstract class ResourceManagerTestBase extends TestBase {
     private static void initPlaybackUri() throws IOException {
         if (isPlaybackMode()) {
             Properties mavenProps = new Properties();
-            InputStream in = TestBase.class.getResourceAsStream("/maven.properties");
+            InputStream in = ResourceManagerTestBase.class.getResourceAsStream("/maven.properties");
             if (in == null) {
                 throw new IOException("The file \"maven.properties\" has not been generated yet. Please execute \"mvn compile\" to generate the file.");
             }
@@ -164,7 +164,7 @@ public abstract class ResourceManagerTestBase extends TestBase {
     }
 
     @BeforeEach
-    public void beforeEachTest(TestInfo testInfo) throws IOException {
+    public void beforeTest(TestInfo testInfo) throws IOException {
         this.testInfo = testInfo;
         String testMethodName = testInfo.getTestMethod().get().getName();
         printThreadInfo(String.format("%s: %s", "beforeTest", testMethodName));
@@ -255,7 +255,7 @@ public abstract class ResourceManagerTestBase extends TestBase {
     }
 
     @AfterEach
-    public void afterEachTest() {
+    public void afterTest() {
         if (shouldCancelTest(isPlaybackMode()) != null) {
             return;
         }
@@ -265,6 +265,10 @@ public abstract class ResourceManagerTestBase extends TestBase {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    @AfterEach
+    public void teardownTest(TestInfo testInfo) {
     }
 
     protected HttpClient generateHttpClientWithProxy(ProxyOptions proxyOptions) {
