@@ -173,6 +173,25 @@ public class JacksonAdapter implements SerializerAdapter {
 
     @Override
     @SuppressWarnings("unchecked")
+    public <U> U deserialize(String value, Type type, SerializerEncoding encoding) throws IOException {
+        if (value == null) {
+            return null;
+        }
+
+        final JavaType javaType = createJavaType(type);
+        try {
+            if (encoding == SerializerEncoding.XML) {
+                return (U) xmlMapper.readValue(value, javaType);
+            } else {
+                return (U) serializer().readValue(value, javaType);
+            }
+        } catch (JsonParseException jpe) {
+            throw logger.logExceptionAsError(new MalformedValueException(jpe.getMessage(), jpe));
+        }
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
     public <T> T deserializeFromBytes(byte[] value, final Type type, SerializerEncoding encoding) throws IOException {
         if (value == null || value.length == 0) {
             return null;

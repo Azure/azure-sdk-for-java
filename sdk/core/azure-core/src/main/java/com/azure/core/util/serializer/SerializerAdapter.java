@@ -34,7 +34,9 @@ public interface SerializerAdapter {
      * @throws IOException exception from serialization
      */
     default byte[] serializeToBytes(final Object object, final SerializerEncoding encoding) throws IOException {
-        return new byte[] { };
+        String serializedObject = serialize(object, encoding);
+
+        return (serializedObject == null) ? new byte[0] : serializedObject.getBytes(StandardCharsets.UTF_8);
     }
 
     /**
@@ -46,9 +48,8 @@ public interface SerializerAdapter {
     String serializeRaw(Object object);
 
     /**
-     * Serializes a list into a string with the delimiter specified with the
-     * Swagger collection format joining each individual serialized items in
-     * the list.
+     * Serializes a list into a string with the delimiter specified with the Swagger collection format joining each
+     * individual serialized items in the list.
      *
      * @param list the list to serialize
      * @param format the Swagger collection format
@@ -66,15 +67,7 @@ public interface SerializerAdapter {
      * @return the deserialized object
      * @throws IOException exception from deserialization
      */
-    default <U> U deserialize(final String value,
-                              final Type type,
-                              final SerializerEncoding encoding) throws IOException {
-        if (value == null) {
-            return null;
-        }
-
-        return deserializeFromBytes(value.getBytes(StandardCharsets.UTF_8), type, encoding);
-    }
+    <U> U deserialize(final String value, final Type type, final SerializerEncoding encoding) throws IOException;
 
     /**
      * Deserializes a byte[] into a {@code U} object.
@@ -86,15 +79,14 @@ public interface SerializerAdapter {
      * @return the deserialized object, or null if it cannot be deserialized
      * @throws IOException exception from deserialization
      */
-    default <U> U deserializeFromBytes(final byte[] value,
-                                       final Type type,
-                                       final SerializerEncoding encoding) throws IOException {
-        return null;
+    default <U> U deserializeFromBytes(final byte[] value, final Type type, final SerializerEncoding encoding)
+        throws IOException {
+        return deserialize(new String(value, StandardCharsets.UTF_8), type, encoding);
     }
 
     /**
-     * Deserialize the provided headers returned from a REST API to an entity instance declared as
-     * the model to hold 'Matching' headers.
+     * Deserialize the provided headers returned from a REST API to an entity instance declared as the model to hold
+     * 'Matching' headers.
      *
      * 'Matching' headers are the REST API returned headers those with:
      *
@@ -122,8 +114,8 @@ public interface SerializerAdapter {
      * @param headers the REST API returned headers
      * @param <U> the type of the deserialized object
      * @param type the type to deserialize
-     * @return instance of header entity type created based on provided {@code headers}, if header entity model does
-     *     not exists then return null
+     * @return instance of header entity type created based on provided {@code headers}, if header entity model does not
+     * not exists then return null
      * @throws IOException If an I/O error occurs
      */
     <U> U deserialize(HttpHeaders headers, Type type) throws IOException;
