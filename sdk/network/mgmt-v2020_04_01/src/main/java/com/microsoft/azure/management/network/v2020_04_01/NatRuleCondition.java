@@ -50,12 +50,6 @@ public class NatRuleCondition extends FirewallPolicyRuleCondition {
     private List<String> sourceIpGroups;
 
     /**
-     * Terminate TLS connections for this rule.
-     */
-    @JsonProperty(value = "terminateTLS")
-    private Boolean terminateTLS;
-
-    /**
      * Get array of FirewallPolicyRuleConditionNetworkProtocols.
      *
      * @return the ipProtocols value
@@ -152,26 +146,6 @@ public class NatRuleCondition extends FirewallPolicyRuleCondition {
      */
     public NatRuleCondition withSourceIpGroups(List<String> sourceIpGroups) {
         this.sourceIpGroups = sourceIpGroups;
-        return this;
-    }
-
-    /**
-     * Get terminate TLS connections for this rule.
-     *
-     * @return the terminateTLS value
-     */
-    public Boolean terminateTLS() {
-        return this.terminateTLS;
-    }
-
-    /**
-     * Set terminate TLS connections for this rule.
-     *
-     * @param terminateTLS the terminateTLS value to set
-     * @return the NatRuleCondition object itself.
-     */
-    public NatRuleCondition withTerminateTLS(Boolean terminateTLS) {
-        this.terminateTLS = terminateTLS;
         return this;
     }
 

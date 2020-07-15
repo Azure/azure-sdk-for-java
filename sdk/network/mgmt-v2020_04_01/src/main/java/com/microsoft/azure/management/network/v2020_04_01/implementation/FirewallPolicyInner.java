@@ -13,9 +13,6 @@ import com.microsoft.azure.SubResource;
 import com.microsoft.azure.management.network.v2020_04_01.ProvisioningState;
 import com.microsoft.azure.management.network.v2020_04_01.AzureFirewallThreatIntelMode;
 import com.microsoft.azure.management.network.v2020_04_01.FirewallPolicyThreatIntelWhitelist;
-import com.microsoft.azure.management.network.v2020_04_01.FirewallPolicyIntrusionSystemMode;
-import com.microsoft.azure.management.network.v2020_04_01.FirewallPolicyTransportSecurity;
-import com.microsoft.azure.management.network.v2020_04_01.ManagedServiceIdentity;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
 import com.microsoft.rest.SkipParentValidation;
@@ -73,29 +70,10 @@ public class FirewallPolicyInner extends Resource {
     private FirewallPolicyThreatIntelWhitelist threatIntelWhitelist;
 
     /**
-     * The operation mode for Intrusion system. Possible values include:
-     * 'Enabled', 'Disabled'.
-     */
-    @JsonProperty(value = "properties.intrusionSystemMode")
-    private FirewallPolicyIntrusionSystemMode intrusionSystemMode;
-
-    /**
-     * TLS Configuration definition.
-     */
-    @JsonProperty(value = "properties.transportSecurity")
-    private FirewallPolicyTransportSecurity transportSecurity;
-
-    /**
      * A unique read-only string that changes whenever the resource is updated.
      */
     @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
-
-    /**
-     * The identity of the firewall policy.
-     */
-    @JsonProperty(value = "identity")
-    private ManagedServiceIdentity identity;
 
     /**
      * Resource ID.
@@ -200,72 +178,12 @@ public class FirewallPolicyInner extends Resource {
     }
 
     /**
-     * Get the operation mode for Intrusion system. Possible values include: 'Enabled', 'Disabled'.
-     *
-     * @return the intrusionSystemMode value
-     */
-    public FirewallPolicyIntrusionSystemMode intrusionSystemMode() {
-        return this.intrusionSystemMode;
-    }
-
-    /**
-     * Set the operation mode for Intrusion system. Possible values include: 'Enabled', 'Disabled'.
-     *
-     * @param intrusionSystemMode the intrusionSystemMode value to set
-     * @return the FirewallPolicyInner object itself.
-     */
-    public FirewallPolicyInner withIntrusionSystemMode(FirewallPolicyIntrusionSystemMode intrusionSystemMode) {
-        this.intrusionSystemMode = intrusionSystemMode;
-        return this;
-    }
-
-    /**
-     * Get tLS Configuration definition.
-     *
-     * @return the transportSecurity value
-     */
-    public FirewallPolicyTransportSecurity transportSecurity() {
-        return this.transportSecurity;
-    }
-
-    /**
-     * Set tLS Configuration definition.
-     *
-     * @param transportSecurity the transportSecurity value to set
-     * @return the FirewallPolicyInner object itself.
-     */
-    public FirewallPolicyInner withTransportSecurity(FirewallPolicyTransportSecurity transportSecurity) {
-        this.transportSecurity = transportSecurity;
-        return this;
-    }
-
-    /**
      * Get a unique read-only string that changes whenever the resource is updated.
      *
      * @return the etag value
      */
     public String etag() {
         return this.etag;
-    }
-
-    /**
-     * Get the identity of the firewall policy.
-     *
-     * @return the identity value
-     */
-    public ManagedServiceIdentity identity() {
-        return this.identity;
-    }
-
-    /**
-     * Set the identity of the firewall policy.
-     *
-     * @param identity the identity value to set
-     * @return the FirewallPolicyInner object itself.
-     */
-    public FirewallPolicyInner withIdentity(ManagedServiceIdentity identity) {
-        this.identity = identity;
-        return this;
     }
 
     /**
