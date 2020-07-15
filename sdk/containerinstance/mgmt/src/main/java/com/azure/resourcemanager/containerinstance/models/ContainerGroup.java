@@ -6,7 +6,7 @@
 package com.azure.resourcemanager.containerinstance.models;
 
 import com.azure.resourcemanager.containerinstance.implementation.ContainerGroupInner;
-import com.azure.resourcemanager.containerinstance.implementation.ContainerInstanceManager;
+import com.azure.resourcemanager.containerinstance.ContainerInstanceManager;
 import com.microsoft.azure.management.apigeneration.Beta;
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.apigeneration.Method;

@@ -4,8 +4,9 @@
  * license information.
  */
 
-package com.azure.resourcemanager.containerinstance.implementation;
+package com.azure.resourcemanager.containerinstance;
 
+import com.azure.resourcemanager.containerinstance.implementation.ContainerGroupsImpl;
 import com.azure.resourcemanager.containerinstance.models.ContainerGroups;
 import com.microsoft.azure.AzureEnvironment;
 import com.microsoft.azure.AzureResponseBuilder;

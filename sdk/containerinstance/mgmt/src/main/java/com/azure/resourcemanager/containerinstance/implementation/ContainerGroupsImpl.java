@@ -7,6 +7,7 @@
 package com.azure.resourcemanager.containerinstance.implementation;
 
 
+import com.azure.resourcemanager.containerinstance.ContainerInstanceManager;
 import com.azure.resourcemanager.containerinstance.models.CachedImages;
 import com.azure.resourcemanager.containerinstance.models.ContainerGroups;
 import com.azure.resourcemanager.containerinstance.models.Operation;
@@ -38,7 +39,7 @@ public class ContainerGroupsImpl
                 ContainerGroupImpl,
                 ContainerGroupInner,
                 ContainerGroupsInner,
-                ContainerInstanceManager>
+            ContainerInstanceManager>
         implements ContainerGroups {
 
     private final StorageManager storageManager;

@@ -6,6 +6,7 @@
 
 package com.azure.resourcemanager.containerinstance.implementation;
 
+import com.azure.resourcemanager.containerinstance.ContainerInstanceManager;
 import com.azure.resourcemanager.containerinstance.models.Container;
 import com.azure.resourcemanager.containerinstance.models.ContainerExecRequest;
 import com.azure.resourcemanager.containerinstance.models.ContainerExecRequestTerminalSize;
@@ -72,7 +73,7 @@ public class ContainerGroupImpl
                 ContainerGroup,
                 ContainerGroupInner,
                 ContainerGroupImpl,
-                ContainerInstanceManager>
+            ContainerInstanceManager>
         implements ContainerGroup,
         ContainerGroup.Definition,
         ContainerGroup.Update {

@@ -8,7 +8,7 @@ package com.azure.resourcemanager.containerinstance.models;
 import com.microsoft.azure.management.apigeneration.Beta;
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.azure.resourcemanager.containerinstance.implementation.ContainerGroupsInner;
-import com.azure.resourcemanager.containerinstance.implementation.ContainerInstanceManager;
+import com.azure.resourcemanager.containerinstance.ContainerInstanceManager;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsBatchDeletion;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsDeletingByResourceGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingById;
