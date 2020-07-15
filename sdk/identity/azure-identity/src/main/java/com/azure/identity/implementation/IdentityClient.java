@@ -110,7 +110,7 @@ public class IdentityClient {
         String authorityUrl = options.getAuthorityHost().replaceAll("/+$", "") + "/" + tenantId;
         try {
             ConfidentialClientApplication.Builder applicationBuilder =
-                ConfidentialClientApplication.builder(clientId, ClientCredentialFactory.create(clientSecret))
+                ConfidentialClientApplication.builder(clientId, ClientCredentialFactory.createFromSecret(clientSecret))
                     .authority(authorityUrl);
             if (options.getProxyOptions() != null) {
                 applicationBuilder.proxy(proxyOptionsToJavaNetProxy(options.getProxyOptions()));
@@ -139,8 +139,8 @@ public class IdentityClient {
         String authorityUrl = options.getAuthorityHost().replaceAll("/+$", "") + "/" + tenantId;
         try {
             ConfidentialClientApplication.Builder applicationBuilder =
-                ConfidentialClientApplication.builder(clientId,
-                    ClientCredentialFactory.create(new FileInputStream(pfxCertificatePath), pfxCertificatePassword))
+                ConfidentialClientApplication.builder(clientId, ClientCredentialFactory.createFromCertificate(
+                    new FileInputStream(pfxCertificatePath), pfxCertificatePassword))
                     .authority(authorityUrl);
             if (options.getProxyOptions() != null) {
                 applicationBuilder.proxy(proxyOptionsToJavaNetProxy(options.getProxyOptions()));
@@ -174,7 +174,8 @@ public class IdentityClient {
             byte[] pemCertificateBytes = Files.readAllBytes(Paths.get(pemCertificatePath));
             ConfidentialClientApplication.Builder applicationBuilder =
                 ConfidentialClientApplication.builder(clientId,
-                    ClientCredentialFactory.create(CertificateUtil.privateKeyFromPem(pemCertificateBytes),
+                    ClientCredentialFactory.createFromCertificate(
+                        CertificateUtil.privateKeyFromPem(pemCertificateBytes),
                         CertificateUtil.publicKeyFromPem(pemCertificateBytes))).authority(authorityUrl);
             if (options.getProxyOptions() != null) {
                 applicationBuilder.proxy(proxyOptionsToJavaNetProxy(options.getProxyOptions()));
