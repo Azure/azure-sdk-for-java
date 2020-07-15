@@ -126,7 +126,7 @@
 
   <!-- Don't apply custom Checkstyle rules to files under samples package -->
   <suppress
-    checks="com\.azure\.tools\.checkstyle\.checks\.(ExternalDependencyExposedCheck|HttpPipelinePolicyCheck|EnforceFinalFieldsCheck|ThrowFromClientLoggerCheck|GoodLoggingCheck)"
+    checks="com\.azure\.tools\.checkstyle\.checks\.(ExternalDependencyExposedCheck|HttpPipelinePolicyCheck|EnforceFinalFieldsCheck|ThrowFromClientLoggerCheck|GoodLoggingCheck|JavadocThrowsChecks)"
     files=".*[/\\]samples[/\\].*\.java"/>
 
   <!-- Don't check for JavaDocPackage in samples or tests -->
@@ -485,9 +485,21 @@
   <!-- Checkstyle suppressions for resource manager package -->
   <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files="com.azure.resourcemanager.*"/>
 
+  <!-- Checkstyle suppressions for azure-spring AADB2C package name-->
+  <suppress checks="PackageName" files="com.microsoft.azure.spring.autoconfigure.*|com.azure.spring.*"/>
+
   <!-- Checkstyle suppressions for azure-spring-data-cosmos package -->
   <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck|ExternalDependencyExposedCheck|ThrowFromClientLoggerCheck" files="com.azure.spring.data.cosmos.*\.java"/>
   <suppress checks="MethodName|MemberName|ParameterName|VisibilityModifier" files="com.azure.spring.data.cosmos.domain|repository|config.*\.java"/>
   <suppress checks="ConstantName" files="com.azure.spring.data.cosmos.repository|common.*\.java" />
+  <suppress checks="ConstantName|MemberName" files="com.azure.cosmos.UserRepositoryConfiguration|AppConfiguration|MyDocument.java" />
 
+  <!-- These suppressions were added due to limitations in our custom Checkstyle rules and should be addressed in the future. -->
+  <!-- API naming is too restrictive -->
+  <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files="com.azure.search.documents.indexes.SearchIndexerAsyncClient.java"
+            lines="654,671,699,716"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files="com.azure.search.documents.indexes.SearchIndexerClient.java"
+            lines="495,513,529,547"/>
+
+  <!-- ServiceMethod return type for Collection doesn't check for sub-types -->
 </suppressions>

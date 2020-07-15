@@ -27,14 +27,14 @@ public class TrainModelWithoutLabels {
      */
     public static void main(String[] args) {
         // Instantiate a client that will be used to call the service.
-
         FormTrainingClient client = new FormTrainingClientBuilder()
-            .credential(new AzureKeyCredential("{api_Key}"))
+            .credential(new AzureKeyCredential("{key}"))
             .endpoint("https://{endpoint}.cognitiveservices.azure.com/")
             .buildClient();
 
         // Train custom model
-        String trainingFilesUrl = "{CONTAINER_SAS_URL}"; // The shared access signature (SAS) Url of your Azure Blob Storage container with your forms.
+        String trainingFilesUrl = "{SAS_URL_of_your_container_in_blob_storage}";
+        // The shared access signature (SAS) Url of your Azure Blob Storage container with your forms.
         SyncPoller<OperationResult, CustomFormModel> trainingPoller = client.beginTraining(trainingFilesUrl, false);
 
         CustomFormModel customFormModel = trainingPoller.getFinalResult();
@@ -46,12 +46,13 @@ public class TrainModelWithoutLabels {
         System.out.printf("Training completed on: %s%n%n", customFormModel.getTrainingCompletedOn());
 
         System.out.println("Recognized Fields:");
-        // looping through the sub-models, which contains the fields they were trained on
+        // looping through the subModels, which contains the fields they were trained on
         // Since the given training documents are unlabeled, we still group them but they do not have a label.
         customFormModel.getSubmodels().forEach(customFormSubmodel -> {
             // Since the training data is unlabeled, we are unable to return the accuracy of this model
+            System.out.printf("The subModel has form type %s%n", customFormSubmodel.getFormType());
             customFormSubmodel.getFields().forEach((field, customFormModelField) ->
-                System.out.printf("Field: %s Field Label: %s%n",
+                System.out.printf("The model found field '%s' with label: %s%n",
                     field, customFormModelField.getLabel()));
         });
         System.out.println();
@@ -59,7 +60,7 @@ public class TrainModelWithoutLabels {
         // Training result information
         customFormModel.getTrainingDocuments().forEach(trainingDocumentInfo -> {
             System.out.printf("Document name: %s%n", trainingDocumentInfo.getName());
-            System.out.printf("Document status: %s%n", trainingDocumentInfo.getName());
+            System.out.printf("Document status: %s%n", trainingDocumentInfo.getTrainingStatus());
             System.out.printf("Document page count: %d%n", trainingDocumentInfo.getPageCount());
             if (!trainingDocumentInfo.getDocumentErrors().isEmpty()) {
                 System.out.println("Document Errors:");

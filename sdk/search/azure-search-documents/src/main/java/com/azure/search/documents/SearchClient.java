@@ -27,7 +27,10 @@ import com.azure.search.documents.util.SuggestPagedResponse;
 import java.util.List;
 
 /**
- * Cognitive Search Synchronous Client to query an index and upload, merge, or delete documents
+ * This class provides a client that contains the operations for querying an index and uploading, merging, or deleting
+ * documents in an Azure Cognitive Search service.
+ *
+ * @see SearchClientBuilder
  */
 @ServiceClient(builder = SearchClientBuilder.class)
 public final class SearchClient {
@@ -182,7 +185,7 @@ public final class SearchClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<IndexDocumentsResult> mergeDocumentsWithResponse(Iterable<?> documents,
-            IndexDocumentsOptions options, Context context) {
+        IndexDocumentsOptions options, Context context) {
         return asyncClient.mergeDocumentsWithResponse(documents, options, context).block();
     }
 
@@ -249,7 +252,7 @@ public final class SearchClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<IndexDocumentsResult> mergeOrUploadDocumentsWithResponse(Iterable<?> documents,
-                IndexDocumentsOptions options, Context context) {
+        IndexDocumentsOptions options, Context context) {
         return asyncClient.mergeOrUploadDocumentsWithResponse(documents, options, context).block();
     }
 
@@ -443,7 +446,7 @@ public final class SearchClient {
      * <p>
      * If {@code searchText} is set to {@code null} or {@code "*"} all documents will be matched, see
      * <a href="https://docs.microsoft.com/rest/api/searchservice/Simple-query-syntax-in-Azure-Search">simple query
-     * syntax in Azure Search</a> for more information about search query syntax.
+     * syntax in Azure Cognitive Search</a> for more information about search query syntax.
      *
      * <p><strong>Code Sample</strong></p>
      *
@@ -457,6 +460,7 @@ public final class SearchClient {
      * information.
      * @see <a href="https://docs.microsoft.com/rest/api/searchservice/Search-Documents">Search documents</a>
      */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public SearchPagedIterable search(String searchText) {
         return search(searchText, null, Context.NONE);
     }
@@ -466,7 +470,7 @@ public final class SearchClient {
      * <p>
      * If {@code searchText} is set to {@code null} or {@code "*"} all documents will be matched, see
      * <a href="https://docs.microsoft.com/rest/api/searchservice/Simple-query-syntax-in-Azure-Search">simple query
-     * syntax in Azure Search</a> for more information about search query syntax.
+     * syntax in Azure Cognitive Search</a> for more information about search query syntax.
      *
      * <p><strong>Code Sample</strong></p>
      *
@@ -482,6 +486,7 @@ public final class SearchClient {
      * information.
      * @see <a href="https://docs.microsoft.com/rest/api/searchservice/Search-Documents">Search documents</a>
      */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public SearchPagedIterable search(String searchText, SearchOptions searchOptions, Context context) {
         return new SearchPagedIterable(asyncClient.search(searchText, searchOptions, context));
     }
@@ -502,6 +507,7 @@ public final class SearchClient {
      * the {@link SuggestPagedResponse} object for each page containing HTTP response and coverage information.
      * @see <a href="https://docs.microsoft.com/rest/api/searchservice/Suggestions">Suggestions</a>
      */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public SuggestPagedIterable suggest(String searchText, String suggesterName) {
         return suggest(searchText, suggesterName, null, Context.NONE);
     }
@@ -524,10 +530,10 @@ public final class SearchClient {
      * the {@link SuggestPagedResponse} object for each page containing HTTP response and coverage information.
      * @see <a href="https://docs.microsoft.com/rest/api/searchservice/Suggestions">Suggestions</a>
      */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public SuggestPagedIterable suggest(String searchText, String suggesterName, SuggestOptions suggestOptions,
         Context context) {
-        return new SuggestPagedIterable(asyncClient.suggest(searchText, suggesterName, suggestOptions,
-            context));
+        return new SuggestPagedIterable(asyncClient.suggest(searchText, suggesterName, suggestOptions, context));
     }
 
     /**
@@ -543,6 +549,7 @@ public final class SearchClient {
      * @param suggesterName suggester name
      * @return auto complete result.
      */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public AutocompletePagedIterable autocomplete(String searchText, String suggesterName) {
         return autocomplete(searchText, suggesterName, null, Context.NONE);
     }
@@ -562,6 +569,7 @@ public final class SearchClient {
      * @param context additional context that is passed through the HTTP pipeline during the service call
      * @return auto complete result.
      */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public AutocompletePagedIterable autocomplete(String searchText, String suggesterName,
         AutocompleteOptions autocompleteOptions, Context context) {
         return new AutocompletePagedIterable(asyncClient.autocomplete(searchText, suggesterName, autocompleteOptions,

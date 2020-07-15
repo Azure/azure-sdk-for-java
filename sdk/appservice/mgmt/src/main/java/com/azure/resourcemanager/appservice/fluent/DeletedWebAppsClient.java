@@ -172,6 +172,7 @@ public final class DeletedWebAppsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .list(this.client.getEndpoint(), this.client.getSubscriptionId(), this.client.getApiVersion(), context)
             .map(
@@ -312,6 +313,7 @@ public final class DeletedWebAppsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .listByLocation(
                 this.client.getEndpoint(),
@@ -468,6 +470,7 @@ public final class DeletedWebAppsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .getDeletedWebAppByLocation(
                 this.client.getEndpoint(),
@@ -600,6 +603,7 @@ public final class DeletedWebAppsClient {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .listNext(nextLink, context)
             .map(
@@ -656,6 +660,7 @@ public final class DeletedWebAppsClient {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .listByLocationNext(nextLink, context)
             .map(
