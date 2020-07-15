@@ -1,23 +1,22 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://westus2.ppe.cognitiveservices.azure.com/text/analytics/v3.0//languages",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/text/analytics/v3.1-preview.1//languages",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-textanalytics/1.0.0-beta.5 (11.0.4; Windows 10 10.0)",
-      "x-ms-client-request-id" : "b9cbba15-0057-4127-adf9-02a6573dbf20",
+      "User-Agent" : "azsdk-java-azure-ai-textanalytics/1.1.0-beta.1 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "9d69b921-32bd-4405-aca9-7735067f0c76",
       "Content-Type" : "application/json"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
-      "x-envoy-upstream-service-time" : "2",
+      "x-envoy-upstream-service-time" : "11",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
       "x-content-type-options" : "nosniff",
-      "csp-billing-usage" : "CognitiveServices.TextAnalytics.BatchScoring=0",
-      "apim-request-id" : "d3048c6a-f280-4303-a500-6fbe274e42de",
+      "apim-request-id" : "64b09a3d-d2df-42c6-9bee-099b1cb4d230",
       "retry-after" : "0",
       "StatusCode" : "200",
       "Body" : "{\"documents\":[],\"errors\":[{\"id\":\"0\",\"error\":{\"code\":\"InvalidArgument\",\"message\":\"Invalid Country Hint.\",\"innererror\":{\"code\":\"InvalidCountryHint\",\"message\":\"Country hint is not valid. Please specify an ISO 3166-1 alpha-2 two letter country code.\"}}}],\"modelVersion\":\"2019-10-01\"}",
-      "Date" : "Wed, 29 Apr 2020 17:12:20 GMT",
+      "Date" : "Wed, 15 Jul 2020 05:21:19 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null

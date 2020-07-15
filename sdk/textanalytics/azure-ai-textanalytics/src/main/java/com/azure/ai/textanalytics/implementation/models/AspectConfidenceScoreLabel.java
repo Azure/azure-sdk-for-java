@@ -7,20 +7,14 @@ package com.azure.ai.textanalytics.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The SentimentConfidenceScorePerLabel model. */
+/** The AspectConfidenceScoreLabel model. */
 @Fluent
-public final class SentimentConfidenceScorePerLabel {
+public final class AspectConfidenceScoreLabel {
     /*
      * The positive property.
      */
     @JsonProperty(value = "positive", required = true)
     private double positive;
-
-    /*
-     * The neutral property.
-     */
-    @JsonProperty(value = "neutral", required = true)
-    private double neutral;
 
     /*
      * The negative property.
@@ -41,30 +35,10 @@ public final class SentimentConfidenceScorePerLabel {
      * Set the positive property: The positive property.
      *
      * @param positive the positive value to set.
-     * @return the SentimentConfidenceScorePerLabel object itself.
+     * @return the AspectConfidenceScoreLabel object itself.
      */
-    public SentimentConfidenceScorePerLabel setPositive(double positive) {
+    public AspectConfidenceScoreLabel setPositive(double positive) {
         this.positive = positive;
-        return this;
-    }
-
-    /**
-     * Get the neutral property: The neutral property.
-     *
-     * @return the neutral value.
-     */
-    public double getNeutral() {
-        return this.neutral;
-    }
-
-    /**
-     * Set the neutral property: The neutral property.
-     *
-     * @param neutral the neutral value to set.
-     * @return the SentimentConfidenceScorePerLabel object itself.
-     */
-    public SentimentConfidenceScorePerLabel setNeutral(double neutral) {
-        this.neutral = neutral;
         return this;
     }
 
@@ -81,9 +55,9 @@ public final class SentimentConfidenceScorePerLabel {
      * Set the negative property: The negative property.
      *
      * @param negative the negative value to set.
-     * @return the SentimentConfidenceScorePerLabel object itself.
+     * @return the AspectConfidenceScoreLabel object itself.
      */
-    public SentimentConfidenceScorePerLabel setNegative(double negative) {
+    public AspectConfidenceScoreLabel setNegative(double negative) {
         this.negative = negative;
         return this;
     }

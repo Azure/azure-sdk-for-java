@@ -1,23 +1,23 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://westus2.ppe.cognitiveservices.azure.com/text/analytics/v3.0//keyPhrases",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/text/analytics/v3.1-preview.1//keyPhrases",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-textanalytics/1.0.0-beta.5 (11.0.4; Windows 10 10.0)",
-      "x-ms-client-request-id" : "d2a6d6de-e582-4584-87f8-129704d4a54a",
+      "User-Agent" : "azsdk-java-azure-ai-textanalytics/1.1.0-beta.1 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "e943340b-e07c-4c92-bed9-ed89b1f6e1ec",
       "Content-Type" : "application/json"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
-      "x-envoy-upstream-service-time" : "2",
+      "x-envoy-upstream-service-time" : "3",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
       "x-content-type-options" : "nosniff",
       "csp-billing-usage" : "CognitiveServices.TextAnalytics.BatchScoring=1",
-      "apim-request-id" : "39eb45d0-ea4e-4ed5-88b3-be834a3329b1",
+      "apim-request-id" : "e85d934d-38bb-42a2-a2dd-41512088953e",
       "retry-after" : "0",
       "StatusCode" : "200",
       "Body" : "{\"documents\":[{\"id\":\"0\",\"keyPhrases\":[\"Mondly\"],\"warnings\":[]}],\"errors\":[],\"modelVersion\":\"2019-10-01\"}",
-      "Date" : "Wed, 29 Apr 2020 17:12:18 GMT",
+      "Date" : "Wed, 15 Jul 2020 04:14:43 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
