@@ -91,7 +91,7 @@ public class InteractiveBrowserCredential implements TokenCredential {
      *
      * @return The {@link AuthenticationRecord} which can be used to silently authenticate the account
      * on future execution if persistent caching was enabled via
-     * {@link InteractiveBrowserCredentialBuilder#enablePersistentCache(boolean)} when credential was instantiated.
+     * {@link InteractiveBrowserCredentialBuilder#enablePersistentCache()} when credential was instantiated.
      */
     public Mono<AuthenticationRecord> authenticate(TokenRequestContext request) {
         return Mono.defer(() -> identityClient.authenticateWithBrowserInteraction(request, port))
@@ -104,7 +104,7 @@ public class InteractiveBrowserCredential implements TokenCredential {
      *
      * @return The {@link AuthenticationRecord} which can be used to silently authenticate the account
      * on future execution if persistent caching was enabled via
-     * {@link InteractiveBrowserCredentialBuilder#enablePersistentCache(boolean)} when credential was instantiated.
+     * {@link InteractiveBrowserCredentialBuilder#enablePersistentCache()} when credential was instantiated.
      */
     public Mono<AuthenticationRecord> authenticate() {
         String defaultScope = KnownAuthorityHosts.getDefaultScope(authorityHost);

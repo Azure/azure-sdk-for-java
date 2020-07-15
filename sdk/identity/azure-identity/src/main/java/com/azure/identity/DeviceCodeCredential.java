@@ -91,7 +91,7 @@ public class DeviceCodeCredential implements TokenCredential {
      *
      * @return The {@link AuthenticationRecord} which can be used to silently authenticate the account
      * on future execution if persistent caching was enabled via
-     * {@link DeviceCodeCredentialBuilder#enablePersistentCache(boolean)} when credential was instantiated.
+     * {@link DeviceCodeCredentialBuilder#enablePersistentCache()} when credential was instantiated.
      */
     public Mono<AuthenticationRecord> authenticate(TokenRequestContext request) {
         return Mono.defer(() -> identityClient.authenticateWithDeviceCode(request, challengeConsumer))
@@ -108,7 +108,7 @@ public class DeviceCodeCredential implements TokenCredential {
      *
      * @return The {@link AuthenticationRecord} which can be used to silently authenticate the account
      * on future execution if persistent caching was enabled via
-     * {@link DeviceCodeCredentialBuilder#enablePersistentCache(boolean)} when credential was instantiated.
+     * {@link DeviceCodeCredentialBuilder#enablePersistentCache()} when credential was instantiated.
      */
     public Mono<AuthenticationRecord> authenticate() {
         String defaultScope = KnownAuthorityHosts.getDefaultScope(authorityHost);
