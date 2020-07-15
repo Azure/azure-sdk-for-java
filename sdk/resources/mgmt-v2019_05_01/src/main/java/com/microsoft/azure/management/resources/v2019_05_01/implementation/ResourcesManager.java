@@ -21,7 +21,7 @@ import com.microsoft.azure.management.resources.v2019_05_01.Deployments;
 import com.microsoft.azure.management.resources.v2019_05_01.Providers;
 import com.microsoft.azure.management.resources.v2019_05_01.Resources;
 import com.microsoft.azure.management.resources.v2019_05_01.ResourceGroups;
-import com.microsoft.azure.management.resources.v2019_05_01.Tags;
+import com.microsoft.azure.management.resources.v2019_05_01.TagOperations;
 import com.microsoft.azure.management.resources.v2019_05_01.DeploymentOperations;
 import com.microsoft.azure.arm.resources.implementation.AzureConfigurableCoreImpl;
 import com.microsoft.azure.arm.resources.implementation.ManagerCore;
@@ -35,7 +35,7 @@ public final class ResourcesManager extends ManagerCore<ResourcesManager, Resour
     private Providers providers;
     private Resources resources;
     private ResourceGroups resourceGroups;
-    private Tags tags;
+    private TagOperations tagOperations;
     private DeploymentOperations deploymentOperations;
     /**
     * Get a Configurable instance that can be used to create ResourcesManager with optional configuration.
@@ -135,13 +135,13 @@ public final class ResourcesManager extends ManagerCore<ResourcesManager, Resour
     }
 
     /**
-     * @return Entry point to manage Tags.
+     * @return Entry point to manage TagOperations.
      */
-    public Tags tags() {
-        if (this.tags == null) {
-            this.tags = new TagsImpl(this);
+    public TagOperations tagOperations() {
+        if (this.tagOperations == null) {
+            this.tagOperations = new TagOperationsImpl(this);
         }
-        return this.tags;
+        return this.tagOperations;
     }
 
     /**
