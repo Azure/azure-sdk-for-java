@@ -3,10 +3,7 @@
 
 package com.azure.data.schemaregistry.avro;
 
-<<<<<<< Updated upstream
-=======
 import com.azure.core.experimental.serializer.ObjectSerializer;
->>>>>>> Stashed changes
 import com.azure.data.schemaregistry.AbstractDataSerializer;
 import com.azure.data.schemaregistry.SerializationException;
 import reactor.core.publisher.Mono;
