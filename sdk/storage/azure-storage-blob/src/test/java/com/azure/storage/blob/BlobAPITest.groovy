@@ -2267,6 +2267,7 @@ class BlobAPITest extends APISpec {
         String SLF4J_TEST_CACHED_STREAM = "false";
         System.setProperty(SLF4J_LOG_FILE_PROPERTY, SLF4J_TEST_LOG_FILE);
         System.setProperty(SLF4J_CACHED_STREAM_PROPERTY, SLF4J_TEST_CACHED_STREAM)
+        System.setProperty("org.slf4j.simpleLogger.log.reactor.netty", "debug")
         enableSoftDelete()
         System.out.println("Soft delete successfully enabled: " +
             primaryBlobServiceClient.getProperties().getDeleteRetentionPolicy().isEnabled())
