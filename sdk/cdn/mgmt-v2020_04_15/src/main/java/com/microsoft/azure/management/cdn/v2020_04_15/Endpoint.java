@@ -137,7 +137,7 @@ public interface Endpoint extends HasInner<EndpointInner>, Indexable, Refreshabl
     /**
      * @return the urlSigningKeys value.
      */
-    UrlSigningKey urlSigningKeys();
+    List<UrlSigningKey> urlSigningKeys();
 
     /**
      * @return the webApplicationFirewallPolicyLink value.
@@ -374,7 +374,7 @@ public interface Endpoint extends HasInner<EndpointInner>, Indexable, Refreshabl
              * @param urlSigningKeys List of keys used to validate the signed URL hashes
              * @return the next definition stage
              */
-            WithCreate withUrlSigningKeys(UrlSigningKey urlSigningKeys);
+            WithCreate withUrlSigningKeys(List<UrlSigningKey> urlSigningKeys);
         }
 
         /**
@@ -572,7 +572,7 @@ public interface Endpoint extends HasInner<EndpointInner>, Indexable, Refreshabl
              * @param urlSigningKeys List of keys used to validate the signed URL hashes
              * @return the next update stage
              */
-            Update withUrlSigningKeys(UrlSigningKey urlSigningKeys);
+            Update withUrlSigningKeys(List<UrlSigningKey> urlSigningKeys);
         }
 
         /**
