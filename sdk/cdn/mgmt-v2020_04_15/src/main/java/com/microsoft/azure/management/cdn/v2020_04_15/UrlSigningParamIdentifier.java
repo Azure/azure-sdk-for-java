@@ -16,10 +16,10 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class UrlSigningParamIdentifier {
     /**
      * Indicates the purpose of the parameter. Possible values include:
-     * 'expires', 'keyId', 'signature'.
+     * 'Expires', 'KeyId', 'Signature'.
      */
     @JsonProperty(value = "paramIndicator", required = true)
-    private String paramIndicator;
+    private ParamIndicator paramIndicator;
 
     /**
      * Parameter name.
@@ -28,21 +28,21 @@ public class UrlSigningParamIdentifier {
     private String paramName;
 
     /**
-     * Get indicates the purpose of the parameter. Possible values include: 'expires', 'keyId', 'signature'.
+     * Get indicates the purpose of the parameter. Possible values include: 'Expires', 'KeyId', 'Signature'.
      *
      * @return the paramIndicator value
      */
-    public String paramIndicator() {
+    public ParamIndicator paramIndicator() {
         return this.paramIndicator;
     }
 
     /**
-     * Set indicates the purpose of the parameter. Possible values include: 'expires', 'keyId', 'signature'.
+     * Set indicates the purpose of the parameter. Possible values include: 'Expires', 'KeyId', 'Signature'.
      *
      * @param paramIndicator the paramIndicator value to set
      * @return the UrlSigningParamIdentifier object itself.
      */
-    public UrlSigningParamIdentifier withParamIndicator(String paramIndicator) {
+    public UrlSigningParamIdentifier withParamIndicator(ParamIndicator paramIndicator) {
         this.paramIndicator = paramIndicator;
         return this;
     }
