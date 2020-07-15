@@ -2267,7 +2267,7 @@ class BlobAPITest extends APISpec {
         String SLF4J_TEST_CACHED_STREAM = "false";
         System.setProperty(SLF4J_LOG_FILE_PROPERTY, SLF4J_TEST_LOG_FILE);
         System.setProperty(SLF4J_CACHED_STREAM_PROPERTY, SLF4J_TEST_CACHED_STREAM)
-        System.setProperty("org.slf4j.simpleLogger.log.reactor.netty", "debug")
+        System.setProperty("org.slf4j.simpleLogger.log.reactor.netty", "DEBUG")
         enableSoftDelete()
         System.out.println("Soft delete successfully enabled: " +
             primaryBlobServiceClient.getProperties().getDeleteRetentionPolicy().isEnabled())
@@ -2278,6 +2278,8 @@ class BlobAPITest extends APISpec {
         when:
         System.out.println("Undeleting")
         def undeleteHeaders = bc.undeleteWithResponse(null, null).getHeaders()
+
+        sleepIfRecord(10 * 1000)
 
         System.out.println("Getting properties")
         bc.getProperties()
