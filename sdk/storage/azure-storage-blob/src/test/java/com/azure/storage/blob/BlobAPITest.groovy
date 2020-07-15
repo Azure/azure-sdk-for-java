@@ -2261,6 +2261,12 @@ class BlobAPITest extends APISpec {
 
     def "Undelete"() {
         setup:
+        String SLF4J_LOG_FILE_PROPERTY = "org.slf4j.simpleLogger.logFile";
+        String SLF4J_CACHED_STREAM_PROPERTY = "org.slf4j.simpleLogger.cacheOutputStream";
+        String SLF4J_TEST_LOG_FILE = "System.out";
+        String SLF4J_TEST_CACHED_STREAM = "false";
+        System.setProperty(SLF4J_LOG_FILE_PROPERTY, SLF4J_TEST_LOG_FILE);
+        System.setProperty(SLF4J_CACHED_STREAM_PROPERTY, SLF4J_TEST_CACHED_STREAM)
         enableSoftDelete()
         System.out.println("Soft delete successfully enabled: " +
             primaryBlobServiceClient.getProperties().getDeleteRetentionPolicy().isEnabled())
@@ -2274,6 +2280,7 @@ class BlobAPITest extends APISpec {
 
         System.out.println("Getting properties")
         bc.getProperties()
+        System.out.println("Got properties")
 
         then:
         notThrown(BlobStorageException)
@@ -2282,6 +2289,10 @@ class BlobAPITest extends APISpec {
         undeleteHeaders.getValue("Date") != null
 
         disableSoftDelete() == null
+
+        cleanup:
+        System.clearProperty(SLF4J_LOG_FILE_PROPERTY);
+        System.clearProperty(SLF4J_CACHED_STREAM_PROPERTY);
     }
 
     def "Undelete min"() {
