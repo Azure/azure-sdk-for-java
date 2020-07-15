@@ -7,7 +7,6 @@
   <groupId>com.azure</groupId>
   <artifactId>azure-identity</artifactId>
   <version>1.0.9</version> <!-- {x-version-update;com.azure:azure-identity;current} -->
-
   <name>Microsoft Azure client library for Identity</name>
   <description>This module contains client library for Microsoft Azure Identity.</description>
   <url>https://github.com/Azure/azure-sdk-for-java</url>
