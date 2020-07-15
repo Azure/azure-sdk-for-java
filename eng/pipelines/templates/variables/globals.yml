@@ -1,5 +1,5 @@
 variables:
-  DocWardenVersion: '0.5.0'
+  DocWardenVersion: '0.7.1'
   WagonOptions: '-Dmaven.wagon.rto=300000 -Dmaven.wagon.http.retryHandler.count=3'
   DefaultOptions: '--batch-mode --fail-at-end --settings eng/settings.xml $(WagonOptions)'
   LoggingOptions: '-Dorg.slf4j.simpleLogger.defaultLogLevel=error -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn'
