@@ -11,7 +11,7 @@ definition, such as text or binary data.
 
 ### Prerequisites
 
-- [Java Development Kit (JDK)][java_development_kit] with version 8 or above
+- [Java Development Kit (JDK)][jdk] with version 8 or above
 - [Azure Subscription][azure_subscription]
 - [Create Storage Account][storage_account]
 
@@ -70,10 +70,6 @@ BlobBatchClient blobBatchClient = new BlobBatchClientBuilder(blobServiceClient).
 
 <!-- embedme ./src/samples/java/com/azure/storage/blob/batch/ReadmeSamples.java#L46-L48 -->
 ```java
-List blobUrls = new ArrayList<>();
-blobUrls.add(blobClient1.getBlobUrl());
-blobUrls.add(blobClient2.getBlobUrl());
-blobUrls.add(blobClient3.getBlobUrl());
 blobBatchClient.deleteBlobs(blobUrls, DeleteSnapshotsOptionType.INCLUDE).forEach(response ->
     System.out.printf("Deleting blob with URL %s completed with status code %d%n",
         response.getRequest().getUrl(), response.getStatusCode()));
@@ -83,10 +79,6 @@ blobBatchClient.deleteBlobs(blobUrls, DeleteSnapshotsOptionType.INCLUDE).forEach
 
 <!-- embedme ./src/samples/java/com/azure/storage/blob/batch/ReadmeSamples.java#L52-L54 -->
 ```java
-List blobUrls = new ArrayList<>();
-blobUrls.add(blobClient1.getBlobUrl());
-blobUrls.add(blobClient2.getBlobUrl());
-blobUrls.add(blobClient3.getBlobUrl());
 blobBatchClient.setBlobsAccessTier(blobUrls, AccessTier.HOT).forEach(response ->
     System.out.printf("Setting blob access tier with URL %s completed with status code %d%n",
         response.getRequest().getUrl(), response.getStatusCode()));
@@ -178,7 +170,7 @@ This project has adopted the [Microsoft Open Source Code of Conduct](https://ope
 [rest_docs]: https://docs.microsoft.com/rest/api/storageservices/blob-service-rest-api
 [product_docs]: https://docs.microsoft.com/azure/storage/blobs/storage-blobs-overview
 [samples]: src/samples
-[java_development_kit]: https://docs.microsoft.com/en-us/java/azure/jdk/?view=azure-java-stable
+[jdk]: https://docs.microsoft.com/en-us/java/azure/jdk/?view=azure-java-stable
 [azure_subscription]: https://azure.microsoft.com/free/
 [storage_account]: https://docs.microsoft.com/azure/storage/common/storage-quickstart-create-account?tabs=azure-portal
 [azure_portal]: https://docs.microsoft.com/en-us/azure/storage/common/storage-account-create?tabs=azure-portal
