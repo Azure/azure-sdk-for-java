@@ -212,7 +212,7 @@ public class DeploymentsTests extends ResourceManagerTestBase {
             .withParametersLink(parametersUri, contentVersion)
             .withMode(DeploymentMode.COMPLETE)
             .beginCreate();
-        Deployment createdDeployment = acceptedDeployment.getAcceptedResult().getValue();
+        Deployment createdDeployment = acceptedDeployment.getActivationResponse().getValue();
         Deployment deployment = resourceClient.deployments().getByResourceGroup(rgName, dp);
         Assertions.assertEquals(createdDeployment.correlationId(), deployment.correlationId());
         Assertions.assertEquals(dp, deployment.name());
@@ -246,17 +246,17 @@ public class DeploymentsTests extends ResourceManagerTestBase {
             .withParametersLink(parametersUri, contentVersion)
             .withMode(DeploymentMode.COMPLETE)
             .beginCreate();
-        Deployment createdDeployment = acceptedDeployment.getAcceptedResult().getValue();
+        Deployment createdDeployment = acceptedDeployment.getActivationResponse().getValue();
         Assertions.assertNotEquals("Succeeded", createdDeployment.provisioningState());
 
-        LongRunningOperationStatus pollStatus = acceptedDeployment.getAcceptedResult().getStatus();
-        int delayInMills = acceptedDeployment.getAcceptedResult().getRetryAfter() == null
+        LongRunningOperationStatus pollStatus = acceptedDeployment.getActivationResponse().getStatus();
+        int delayInMills = acceptedDeployment.getActivationResponse().getRetryAfter() == null
             ? 0
-            : (int) acceptedDeployment.getAcceptedResult().getRetryAfter().toMillis();
+            : (int) acceptedDeployment.getActivationResponse().getRetryAfter().toMillis();
         while (!pollStatus.isComplete()) {
             SdkContext.sleep(delayInMills);
 
-            PollResponse<Void> pollResponse = acceptedDeployment.getSyncPoller().poll();
+            PollResponse<?> pollResponse = acceptedDeployment.getSyncPoller().poll();
             pollStatus = pollResponse.getStatus();
             delayInMills = pollResponse.getRetryAfter() == null
                 ? 10000
@@ -280,17 +280,17 @@ public class DeploymentsTests extends ResourceManagerTestBase {
             .withParameters("{}")
             .withMode(DeploymentMode.COMPLETE)
             .beginCreate();
-        Deployment createdDeployment = acceptedDeployment.getAcceptedResult().getValue();
+        Deployment createdDeployment = acceptedDeployment.getActivationResponse().getValue();
         Assertions.assertNotEquals("Succeeded", createdDeployment.provisioningState());
 
-        LongRunningOperationStatus pollStatus = acceptedDeployment.getAcceptedResult().getStatus();
-        int delayInMills = acceptedDeployment.getAcceptedResult().getRetryAfter() == null
+        LongRunningOperationStatus pollStatus = acceptedDeployment.getActivationResponse().getStatus();
+        int delayInMills = acceptedDeployment.getActivationResponse().getRetryAfter() == null
             ? 0
-            : (int) acceptedDeployment.getAcceptedResult().getRetryAfter().toMillis();
+            : (int) acceptedDeployment.getActivationResponse().getRetryAfter().toMillis();
         while (!pollStatus.isComplete()) {
             SdkContext.sleep(delayInMills);
 
-            PollResponse<Void> pollResponse = acceptedDeployment.getSyncPoller().poll();
+            PollResponse<?> pollResponse = acceptedDeployment.getSyncPoller().poll();
             pollStatus = pollResponse.getStatus();
             delayInMills = pollResponse.getRetryAfter() == null
                 ? 10000
@@ -312,17 +312,17 @@ public class DeploymentsTests extends ResourceManagerTestBase {
                 .withParameters("{}")
                 .withMode(DeploymentMode.COMPLETE)
                 .beginCreate();
-            createdDeployment = acceptedDeployment.getAcceptedResult().getValue();
+            createdDeployment = acceptedDeployment.getActivationResponse().getValue();
             Assertions.assertNotEquals("Succeeded", createdDeployment.provisioningState());
 
-            pollStatus = acceptedDeployment.getAcceptedResult().getStatus();
-            delayInMills = acceptedDeployment.getAcceptedResult().getRetryAfter() == null
+            pollStatus = acceptedDeployment.getActivationResponse().getStatus();
+            delayInMills = acceptedDeployment.getActivationResponse().getRetryAfter() == null
                 ? 0
-                : (int) acceptedDeployment.getAcceptedResult().getRetryAfter().toMillis();
+                : (int) acceptedDeployment.getActivationResponse().getRetryAfter().toMillis();
             while (!pollStatus.isComplete()) {
                 SdkContext.sleep(delayInMills);
 
-                PollResponse<Void> pollResponse = acceptedDeployment.getSyncPoller().poll();
+                PollResponse<?> pollResponse = acceptedDeployment.getSyncPoller().poll();
                 pollStatus = pollResponse.getStatus();
                 delayInMills = pollResponse.getRetryAfter() == null
                     ? 10000

@@ -103,6 +103,8 @@ The key concepts of Azure Management Libraries includes:
 - Integration with Azure role-based access control.
 - Asynchronous operations with [Reactor][reactor]. (Preview)
 - Configurable client, e.g. configuring HTTP client, retries, logging, etc.
+- [API design][design]
+- [API design (preview)][design_preview]
 
 ### Service features
 
@@ -325,4 +327,5 @@ If you would like to become an active contributor to this project please follow 
 [authenticate]: docs/AUTH.md
 [sample]: docs/SAMPLE.md
 [design]: docs/DESIGN.md
+[design_preview]: docs/DESIGN_PREVIEW.md
 [reactor]: https://projectreactor.io/
