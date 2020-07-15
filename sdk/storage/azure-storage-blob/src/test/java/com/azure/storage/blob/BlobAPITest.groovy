@@ -2262,11 +2262,17 @@ class BlobAPITest extends APISpec {
     def "Undelete"() {
         setup:
         enableSoftDelete()
+        System.out.println("Soft delete successfully enabled: " +
+            primaryBlobServiceClient.getProperties().getDeleteRetentionPolicy().isEnabled())
+
+        System.out.println("Deleting original")
         bc.delete()
 
         when:
+        System.out.println("Undeleting")
         def undeleteHeaders = bc.undeleteWithResponse(null, null).getHeaders()
 
+        System.out.println("Getting properties")
         bc.getProperties()
 
         then:
