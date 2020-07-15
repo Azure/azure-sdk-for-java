@@ -6,6 +6,7 @@ import com.azure.spring.data.cosmos.core.CosmosOperations;
 import com.azure.spring.data.cosmos.core.query.DocumentQuery;
 import org.springframework.data.repository.query.RepositoryQuery;
 import org.springframework.data.repository.query.ResultProcessor;
+import org.springframework.data.repository.query.ReturnedType;
 
 /**
  * Abstract class for cosmos query.
@@ -39,20 +40,24 @@ public abstract class AbstractCosmosQuery implements RepositoryQuery {
         final ResultProcessor processor = method.getResultProcessor().withDynamicProjection(accessor);
         final String container = ((CosmosEntityMetadata) method.getEntityInformation()).getContainerName();
 
-        final CosmosQueryExecution execution = getExecution(accessor);
+        final CosmosQueryExecution execution = getExecution(accessor, processor.getReturnedType());
+
         return execution.execute(query, processor.getReturnedType().getDomainType(), container);
     }
 
 
-    private CosmosQueryExecution getExecution(CosmosParameterAccessor accessor) {
+
+    private CosmosQueryExecution getExecution(CosmosParameterAccessor accessor, ReturnedType returnedType) {
         if (isDeleteQuery()) {
             return new CosmosQueryExecution.DeleteExecution(operations);
         } else if (method.isPageQuery()) {
             return new CosmosQueryExecution.PagedExecution(operations, accessor.getPageable());
         } else if (isExistsQuery()) {
             return new CosmosQueryExecution.ExistsExecution(operations);
-        } else {
+        } else if (method.isCollectionQuery()) {
             return new CosmosQueryExecution.MultiEntityExecution(operations);
+        } else {
+            return new CosmosQueryExecution.SingleEntityExecution(operations, returnedType);
         }
     }
 
