@@ -21,7 +21,8 @@ public class Constants {
     public static final List<String> TARGETED_GROUPS = Arrays.asList("group1", "group2", "group3");
 
     public static final String TOKEN_HEADER = "Authorization";
-    public static final String BEARER_TOKEN = "Bearer real_jtw_bearer_token";
+    public static final String ACCESS_TOKEN = "real_jwt_access_token";
+    public static final String BEARER_TOKEN = "Bearer real_jwt_bearer_token";
 
     /** Token from https://docs.microsoft.com/azure/active-directory/develop/v2-id-and-access-tokens */
     public static final String JWT_TOKEN = "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImtpZCI6Ik1uQ19WWmNBVGZNNXBPWWlKSE1"
