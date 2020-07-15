@@ -273,6 +273,8 @@ class ServiceAPITest extends APISpec {
         blobClient = containerClient.getBlobClient(generateBlobName())
         blobClient.upload(defaultInputStream.get(), defaultDataSize)
 
+        sleepIfRecord(10 * 1000)
+
         when:
         def results = primaryBlobServiceClient.findBlobsByTags(String.format("@container='%s' AND \"bar\"='foo'",
             containerClient.getBlobContainerName()))
