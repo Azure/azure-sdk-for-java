@@ -1064,7 +1064,7 @@ class AzureFileSystemProviderTest extends APISpec {
         "*"                                              || ["lastModifiedTime", "creationTime", "isRegularFile", "isDirectory", "isSymbolicLink", "isOther", "size"]
         "basic:*"                                        || ["lastModifiedTime", "creationTime", "isRegularFile", "isDirectory", "isSymbolicLink", "isOther", "size"]
         "azureBasic:*"                                   || ["lastModifiedTime", "creationTime", "isRegularFile", "isDirectory", "isSymbolicLink", "isOther", "size"]
-        "azureBlob:*"                                    || ["lastModifiedTime", "creationTime", "eTag", "blobHttpHeaders", "blobType", "copyId", "copyStatus", "copySource", "copyProgress", "copyCompletionTime", "copyStatusDescription", "isServerEncrypted", "accessTier", "isAccessTierInferred", "archiveStatus", "accessTierChangeTime", "metadata", "committedBlockCount", "isRegularFile", "isDirectory", "isSymbolicLink", "isOther", "size"]
+        "azureBlob:*"                                    || ["lastModifiedTime", "creationTime", "eTag", "blobHttpHeaders", "blobType", "copyId", "copyStatus", "copySource", "copyProgress", "copyCompletionTime", "copyStatusDescription", "isServerEncrypted", "accessTier", "isAccessTierInferred", "archiveStatus", "accessTierChangeTime", "metadata", "isRegularFile", "isDirectory", "isSymbolicLink", "isOther", "size"]
         "lastModifiedTime,creationTime"                  || ["lastModifiedTime", "creationTime"]
         "basic:isRegularFile,isDirectory"                || ["isRegularFile", "isDirectory"]
         "azureBasic:size"                                || ["size"]
