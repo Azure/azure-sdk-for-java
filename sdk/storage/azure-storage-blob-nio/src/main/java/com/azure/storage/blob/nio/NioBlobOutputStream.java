@@ -12,7 +12,7 @@ import java.io.OutputStream;
 /**
  * Provides an OutputStream to write to a file stored as an Azure Blob.
  */
-public class NioBlobOutputStream extends OutputStream {
+public final class NioBlobOutputStream extends OutputStream {
     private final ClientLogger logger = new ClientLogger(NioBlobOutputStream.class);
 
     private final BlobOutputStream blobOutputStream;
