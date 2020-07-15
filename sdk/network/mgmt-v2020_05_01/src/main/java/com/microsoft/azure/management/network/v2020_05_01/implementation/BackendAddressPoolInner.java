@@ -21,16 +21,16 @@ import com.microsoft.rest.serializer.JsonFlatten;
 @JsonFlatten
 public class BackendAddressPoolInner extends SubResource {
     /**
-     * An array of references to IP addresses defined in network interfaces.
-     */
-    @JsonProperty(value = "properties.backendIPConfigurations", access = JsonProperty.Access.WRITE_ONLY)
-    private List<NetworkInterfaceIPConfigurationInner> backendIPConfigurations;
-
-    /**
      * An array of backend addresses.
      */
     @JsonProperty(value = "properties.loadBalancerBackendAddresses")
     private List<LoadBalancerBackendAddress> loadBalancerBackendAddresses;
+
+    /**
+     * An array of references to IP addresses defined in network interfaces.
+     */
+    @JsonProperty(value = "properties.backendIPConfigurations", access = JsonProperty.Access.WRITE_ONLY)
+    private List<NetworkInterfaceIPConfigurationInner> backendIPConfigurations;
 
     /**
      * An array of references to load balancing rules that use this backend
@@ -80,15 +80,6 @@ public class BackendAddressPoolInner extends SubResource {
     private String type;
 
     /**
-     * Get an array of references to IP addresses defined in network interfaces.
-     *
-     * @return the backendIPConfigurations value
-     */
-    public List<NetworkInterfaceIPConfigurationInner> backendIPConfigurations() {
-        return this.backendIPConfigurations;
-    }
-
-    /**
      * Get an array of backend addresses.
      *
      * @return the loadBalancerBackendAddresses value
@@ -106,6 +97,15 @@ public class BackendAddressPoolInner extends SubResource {
     public BackendAddressPoolInner withLoadBalancerBackendAddresses(List<LoadBalancerBackendAddress> loadBalancerBackendAddresses) {
         this.loadBalancerBackendAddresses = loadBalancerBackendAddresses;
         return this;
+    }
+
+    /**
+     * Get an array of references to IP addresses defined in network interfaces.
+     *
+     * @return the backendIPConfigurations value
+     */
+    public List<NetworkInterfaceIPConfigurationInner> backendIPConfigurations() {
+        return this.backendIPConfigurations;
     }
 
     /**
