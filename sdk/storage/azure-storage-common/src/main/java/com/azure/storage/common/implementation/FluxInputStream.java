@@ -11,6 +11,7 @@ import reactor.core.publisher.Flux;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.Buffer;
 import java.nio.ByteBuffer;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
@@ -166,6 +167,7 @@ public class FluxInputStream extends InputStream {
      */
     private void subscribeToData() {
         this.data
+            .filter(Buffer::hasRemaining) /* Filter to make sure only non empty byte buffers are emitted. */
             .onBackpressureBuffer()
             .subscribe(
                 // ByteBuffer consumer
