@@ -40,7 +40,7 @@ public class ExpressRouteCircuitPeeringInner extends SubResource {
     /**
      * The Azure ASN.
      */
-    @JsonProperty(value = "properties.azureASN", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "properties.azureASN")
     private Integer azureASN;
 
     /**
@@ -64,13 +64,13 @@ public class ExpressRouteCircuitPeeringInner extends SubResource {
     /**
      * The primary port.
      */
-    @JsonProperty(value = "properties.primaryAzurePort", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "properties.primaryAzurePort")
     private String primaryAzurePort;
 
     /**
      * The secondary port.
      */
-    @JsonProperty(value = "properties.secondaryAzurePort", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "properties.secondaryAzurePort")
     private String secondaryAzurePort;
 
     /**
@@ -138,7 +138,7 @@ public class ExpressRouteCircuitPeeringInner extends SubResource {
      * The list of circuit connections associated with Azure Private Peering
      * for this circuit.
      */
-    @JsonProperty(value = "properties.connections", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "properties.connections")
     private List<ExpressRouteCircuitConnectionInner> connections;
 
     /**
@@ -217,6 +217,17 @@ public class ExpressRouteCircuitPeeringInner extends SubResource {
     }
 
     /**
+     * Set the Azure ASN.
+     *
+     * @param azureASN the azureASN value to set
+     * @return the ExpressRouteCircuitPeeringInner object itself.
+     */
+    public ExpressRouteCircuitPeeringInner withAzureASN(Integer azureASN) {
+        this.azureASN = azureASN;
+        return this;
+    }
+
+    /**
      * Get the peer ASN.
      *
      * @return the peerASN value
@@ -286,12 +297,34 @@ public class ExpressRouteCircuitPeeringInner extends SubResource {
     }
 
     /**
+     * Set the primary port.
+     *
+     * @param primaryAzurePort the primaryAzurePort value to set
+     * @return the ExpressRouteCircuitPeeringInner object itself.
+     */
+    public ExpressRouteCircuitPeeringInner withPrimaryAzurePort(String primaryAzurePort) {
+        this.primaryAzurePort = primaryAzurePort;
+        return this;
+    }
+
+    /**
      * Get the secondary port.
      *
      * @return the secondaryAzurePort value
      */
     public String secondaryAzurePort() {
         return this.secondaryAzurePort;
+    }
+
+    /**
+     * Set the secondary port.
+     *
+     * @param secondaryAzurePort the secondaryAzurePort value to set
+     * @return the ExpressRouteCircuitPeeringInner object itself.
+     */
+    public ExpressRouteCircuitPeeringInner withSecondaryAzurePort(String secondaryAzurePort) {
+        this.secondaryAzurePort = secondaryAzurePort;
+        return this;
     }
 
     /**
@@ -479,6 +512,17 @@ public class ExpressRouteCircuitPeeringInner extends SubResource {
      */
     public List<ExpressRouteCircuitConnectionInner> connections() {
         return this.connections;
+    }
+
+    /**
+     * Set the list of circuit connections associated with Azure Private Peering for this circuit.
+     *
+     * @param connections the connections value to set
+     * @return the ExpressRouteCircuitPeeringInner object itself.
+     */
+    public ExpressRouteCircuitPeeringInner withConnections(List<ExpressRouteCircuitConnectionInner> connections) {
+        this.connections = connections;
+        return this;
     }
 
     /**
