@@ -16,7 +16,7 @@ public interface ItemSerializer {
     class JsonSerializer implements ItemSerializer {
         @Override
         public <T> ByteBuffer serializeTo(T item) {
-            return Utils.serializeJsonToByteBuffer(Utils.getSimpleObjectMapper(), item);
+            return InternalObjectNode.serializeJsonToByteBuffer(item, Utils.getSimpleObjectMapper());
         }
     }
 
