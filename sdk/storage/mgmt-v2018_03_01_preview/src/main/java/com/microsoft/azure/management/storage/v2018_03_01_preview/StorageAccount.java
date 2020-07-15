@@ -144,7 +144,9 @@ public interface StorageAccount extends HasInner<StorageAccountInner>, Resource,
         interface WithKind {
            /**
             * Specifies kind.
-            */
+            * @param kind Required. Indicates the type of storage account. Possible values include: 'Storage', 'StorageV2', 'BlobStorage'
+            * @return the next definition stage
+*/
             WithSku withKind(Kind kind);
         }
 
@@ -154,76 +156,92 @@ public interface StorageAccount extends HasInner<StorageAccountInner>, Resource,
         interface WithSku {
            /**
             * Specifies sku.
-            */
+            * @param sku Required. Gets or sets the sku name
+            * @return the next definition stage
+*/
             WithCreate withSku(SkuInner sku);
         }
 
         /**
-         * The stage of the storageaccount update allowing to specify AccessTier.
+         * The stage of the storageaccount definition allowing to specify AccessTier.
          */
         interface WithAccessTier {
             /**
              * Specifies accessTier.
+             * @param accessTier Required for storage accounts where kind = BlobStorage. The access tier used for billing. Possible values include: 'Hot', 'Cool'
+             * @return the next definition stage
              */
             WithCreate withAccessTier(AccessTier accessTier);
         }
 
         /**
-         * The stage of the storageaccount update allowing to specify CustomDomain.
+         * The stage of the storageaccount definition allowing to specify CustomDomain.
          */
         interface WithCustomDomain {
             /**
              * Specifies customDomain.
+             * @param customDomain User domain assigned to the storage account. Name is the CNAME source. Only one custom domain is supported per storage account at this time. To clear the existing custom domain, use an empty string for the custom domain name property
+             * @return the next definition stage
              */
             WithCreate withCustomDomain(CustomDomain customDomain);
         }
 
         /**
-         * The stage of the storageaccount update allowing to specify EnableHttpsTrafficOnly.
+         * The stage of the storageaccount definition allowing to specify EnableHttpsTrafficOnly.
          */
         interface WithEnableHttpsTrafficOnly {
             /**
              * Specifies enableHttpsTrafficOnly.
+             * @param enableHttpsTrafficOnly Allows https traffic only to storage service if sets to true
+             * @return the next definition stage
              */
             WithCreate withEnableHttpsTrafficOnly(Boolean enableHttpsTrafficOnly);
         }
 
         /**
-         * The stage of the storageaccount update allowing to specify Encryption.
+         * The stage of the storageaccount definition allowing to specify Encryption.
          */
         interface WithEncryption {
             /**
              * Specifies encryption.
+             * @param encryption Provides the encryption settings on the account. If left unspecified the account encryption settings will remain the same. The default setting is unencrypted
+             * @return the next definition stage
              */
             WithCreate withEncryption(Encryption encryption);
         }
 
         /**
-         * The stage of the storageaccount update allowing to specify Identity.
+         * The stage of the storageaccount definition allowing to specify Identity.
          */
         interface WithIdentity {
             /**
              * Specifies identity.
+             * @param identity The identity of the resource
+             * @return the next definition stage
              */
             WithCreate withIdentity(Identity identity);
         }
 
         /**
-         * The stage of the storageaccount update allowing to specify IsHnsEnabled.
+         * The stage of the storageaccount definition allowing to specify IsHnsEnabled.
          */
         interface WithIsHnsEnabled {
             /**
              * Specifies isHnsEnabled.
+             * @param isHnsEnabled Account HierarchicalNamespace enabled if sets to true
+             * @return the next definition stage
              */
             WithCreate withIsHnsEnabled(Boolean isHnsEnabled);
         }
 
         /**
-         * The stage of the storageaccount update allowing to specify NetworkRuleSet.
+         * The stage of the storageaccount definition allowing to specify NetworkRuleSet.
          */
         interface WithNetworkRuleSet {
             /**
              * Specifies networkRuleSet.
+             * @param networkRuleSet Network rule set
+             * @return the next definition stage
              */
             WithCreate withNetworkRuleSet(NetworkRuleSet networkRuleSet);
         }
@@ -247,81 +265,97 @@ public interface StorageAccount extends HasInner<StorageAccountInner>, Resource,
      */
     interface UpdateStages {
         /**
-         * The stage of the storageaccount {0} allowing to specify AccessTier.
+         * The stage of the storageaccount update allowing to specify AccessTier.
          */
         interface WithAccessTier {
             /**
              * Specifies accessTier.
+             * @param accessTier Required for storage accounts where kind = BlobStorage. The access tier used for billing. Possible values include: 'Hot', 'Cool'
+             * @return the next update stage
              */
             Update withAccessTier(AccessTier accessTier);
         }
 
         /**
-         * The stage of the storageaccount {0} allowing to specify CustomDomain.
+         * The stage of the storageaccount update allowing to specify CustomDomain.
          */
         interface WithCustomDomain {
             /**
              * Specifies customDomain.
+             * @param customDomain Custom domain assigned to the storage account by the user. Name is the CNAME source. Only one custom domain is supported per storage account at this time. To clear the existing custom domain, use an empty string for the custom domain name property
+             * @return the next update stage
              */
             Update withCustomDomain(CustomDomain customDomain);
         }
 
         /**
-         * The stage of the storageaccount {0} allowing to specify EnableHttpsTrafficOnly.
+         * The stage of the storageaccount update allowing to specify EnableHttpsTrafficOnly.
          */
         interface WithEnableHttpsTrafficOnly {
             /**
              * Specifies enableHttpsTrafficOnly.
+             * @param enableHttpsTrafficOnly Allows https traffic only to storage service if sets to true
+             * @return the next update stage
              */
             Update withEnableHttpsTrafficOnly(Boolean enableHttpsTrafficOnly);
         }
 
         /**
-         * The stage of the storageaccount {0} allowing to specify Encryption.
+         * The stage of the storageaccount update allowing to specify Encryption.
          */
         interface WithEncryption {
             /**
              * Specifies encryption.
+             * @param encryption Provides the encryption settings on the account. The default setting is unencrypted
+             * @return the next update stage
              */
             Update withEncryption(Encryption encryption);
         }
 
         /**
-         * The stage of the storageaccount {0} allowing to specify Identity.
+         * The stage of the storageaccount update allowing to specify Identity.
          */
         interface WithIdentity {
             /**
              * Specifies identity.
+             * @param identity The identity of the resource
+             * @return the next update stage
              */
             Update withIdentity(Identity identity);
         }
 
         /**
-         * The stage of the storageaccount {0} allowing to specify Kind.
+         * The stage of the storageaccount update allowing to specify Kind.
          */
         interface WithKind {
             /**
              * Specifies kind.
+             * @param kind Optional. Indicates the type of storage account. Currently only StorageV2 value supported by server. Possible values include: 'Storage', 'StorageV2', 'BlobStorage'
+             * @return the next update stage
              */
             Update withKind(Kind kind);
         }
 
         /**
-         * The stage of the storageaccount {0} allowing to specify NetworkRuleSet.
+         * The stage of the storageaccount update allowing to specify NetworkRuleSet.
          */
         interface WithNetworkRuleSet {
             /**
              * Specifies networkRuleSet.
+             * @param networkRuleSet Network rule set
+             * @return the next update stage
              */
             Update withNetworkRuleSet(NetworkRuleSet networkRuleSet);
         }
 
         /**
-         * The stage of the storageaccount {0} allowing to specify Sku.
+         * The stage of the storageaccount update allowing to specify Sku.
          */
         interface WithSku {
             /**
              * Specifies sku.
+             * @param sku Gets or sets the SKU name. Note that the SKU name cannot be updated to Standard_ZRS or Premium_LRS, nor can accounts of those sku names be updated to any other value
+             * @return the next update stage
              */
             Update withSku(SkuInner sku);
         }
