@@ -9,7 +9,6 @@ import com.azure.ai.formrecognizer.implementation.models.AnalyzeOperationResult;
 import com.azure.ai.formrecognizer.implementation.models.ContentType;
 import com.azure.ai.formrecognizer.implementation.models.OperationStatus;
 import com.azure.ai.formrecognizer.implementation.models.SourcePath;
-import com.azure.ai.formrecognizer.models.ErrorInformation;
 import com.azure.ai.formrecognizer.models.FormContentType;
 import com.azure.ai.formrecognizer.models.FormPage;
 import com.azure.ai.formrecognizer.models.FormRecognizerException;
@@ -19,11 +18,9 @@ import com.azure.ai.formrecognizer.models.RecognizedForm;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
-import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
-import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollResponse;
@@ -33,7 +30,6 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.nio.ByteBuffer;
-import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
@@ -543,9 +539,8 @@ public final class FormRecognizerAsyncClient {
                 return service.getAnalyzeReceiptResultWithResponseAsync(resultUid, context)
                     .flatMap(modelSimpleResponse -> processAnalyzeModelResponse(modelSimpleResponse,
                         operationResultPollResponse));
-            } catch (HttpResponseException e) {
-                logger.logExceptionAsError(e);
-                return Mono.just(new PollResponse<>(LongRunningOperationStatus.FAILED, null));
+            } catch (RuntimeException ex) {
+                return monoError(logger, ex);
             }
         };
     }
@@ -556,11 +551,8 @@ public final class FormRecognizerAsyncClient {
             try {
                 final UUID resultUid = UUID.fromString(pollingContext.getLatestResponse().getValue().getResultId());
                 return service.getAnalyzeReceiptResultWithResponseAsync(resultUid, context)
-                    .map(modelSimpleResponse -> {
-                        throwIfAnalyzeStatusInvalid(modelSimpleResponse.getValue());
-                        return toRecognizedForm(modelSimpleResponse.getValue().getAnalyzeResult(),
-                            includeFieldElements);
-                    })
+                    .map(modelSimpleResponse -> toRecognizedForm(modelSimpleResponse.getValue().getAnalyzeResult(),
+                        includeFieldElements))
                     .onErrorMap(Utility::mapToHttpResponseExceptionIfExist);
             } catch (RuntimeException ex) {
                 return monoError(logger, ex);
@@ -617,9 +609,8 @@ public final class FormRecognizerAsyncClient {
                 return service.getAnalyzeLayoutResultWithResponseAsync(resultUid, context)
                     .flatMap(modelSimpleResponse -> processAnalyzeModelResponse(modelSimpleResponse,
                         operationResultPollResponse));
-            } catch (HttpResponseException e) {
-                logger.logExceptionAsError(e);
-                return Mono.just(new PollResponse<>(LongRunningOperationStatus.FAILED, null));
+            } catch (RuntimeException ex) {
+                return monoError(logger, ex);
             }
         };
     }
@@ -630,10 +621,8 @@ public final class FormRecognizerAsyncClient {
             try {
                 final UUID resultUid = UUID.fromString(pollingContext.getLatestResponse().getValue().getResultId());
                 return service.getAnalyzeLayoutResultWithResponseAsync(resultUid, context)
-                    .map(modelSimpleResponse -> {
-                        throwIfAnalyzeStatusInvalid(modelSimpleResponse.getValue());
-                        return toRecognizedLayout(modelSimpleResponse.getValue().getAnalyzeResult(), true);
-                    })
+                    .map(modelSimpleResponse -> toRecognizedLayout(modelSimpleResponse.getValue().getAnalyzeResult(),
+                        true))
                     .onErrorMap(Utility::mapToHttpResponseExceptionIfExist);
             } catch (RuntimeException ex) {
                 return monoError(logger, ex);
@@ -650,7 +639,6 @@ public final class FormRecognizerAsyncClient {
                 UUID modelUid = UUID.fromString(modelId);
                 return service.getAnalyzeFormResultWithResponseAsync(modelUid, resultUid, context)
                     .map(modelSimpleResponse -> {
-                        // throwIfAnalyzeStatusInvalid(modelSimpleResponse.getValue());
                         return toRecognizedForm(modelSimpleResponse.getValue().getAnalyzeResult(),
                             includeFieldElements);
                     })
@@ -659,22 +647,6 @@ public final class FormRecognizerAsyncClient {
                 return monoError(logger, ex);
             }
         };
-    }
-
-    /**
-     * Helper method that throws a {@link FormRecognizerException} if {@link AnalyzeOperationResult#getStatus()} is
-     * {@link OperationStatus#FAILED}.
-     *
-     * @param analyzeResponse The response returned from the service.
-     */
-    private void throwIfAnalyzeStatusInvalid(AnalyzeOperationResult analyzeResponse) {
-        if (OperationStatus.FAILED.equals(analyzeResponse.getStatus())) {
-            List<ErrorInformation> errorInformationList = analyzeResponse.getAnalyzeResult().getErrors();
-            if (!CoreUtils.isNullOrEmpty(errorInformationList)) {
-                throw logger.logExceptionAsError(new FormRecognizerException("Analyze operation failed",
-                    errorInformationList));
-            }
-        }
     }
 
     private Function<PollingContext<OperationResult>, Mono<PollResponse<OperationResult>>>
@@ -689,9 +661,7 @@ public final class FormRecognizerAsyncClient {
                     .flatMap(modelSimpleResponse -> processAnalyzeModelResponse(modelSimpleResponse,
                         operationResultPollResponse))
                     .onErrorMap(Utility::mapToHttpResponseExceptionIfExist);
-            }
-            // have the ability to bubble this up
-            catch (RuntimeException ex) {
+            } catch (RuntimeException ex) {
                 return monoError(logger, ex);
             }
         };
@@ -756,10 +726,8 @@ public final class FormRecognizerAsyncClient {
                 status = LongRunningOperationStatus.SUCCESSFULLY_COMPLETED;
                 break;
             case FAILED:
-                status = LongRunningOperationStatus.FAILED;
-                // trying to throw from polling operation
                 throw logger.logExceptionAsError(new FormRecognizerException("Analyze operation failed",
-                    Collections.emptyList()));
+                    analyzeOperationResultSimpleResponse.getValue().getAnalyzeResult().getErrors()));
             default:
                 status = LongRunningOperationStatus.fromString(
                     analyzeOperationResultSimpleResponse.getValue().getStatus().toString(), true);
