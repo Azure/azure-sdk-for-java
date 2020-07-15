@@ -247,7 +247,7 @@ public class IdentityClientTests {
         IdentityClient client = new IdentityClientBuilder().tenantId(tenantId).clientId(clientId).identityClientOptions(options).build();
         StepVerifier.create(client.authenticateWithAuthorizationCode(request, authCode1, redirectUri))
             .expectNextMatches(accessToken -> token1.equals(accessToken.getToken())
-                                                  && expiresAt.getSecond() == accessToken.getExpiresAt().getSecond())
+                && expiresAt.getSecond() == accessToken.getExpiresAt().getSecond())
             .verifyComplete();
     }
 
@@ -267,7 +267,7 @@ public class IdentityClientTests {
         IdentityClient client = new IdentityClientBuilder().tenantId(tenantId).clientId(clientId).identityClientOptions(options).build();
         StepVerifier.create(client.authenticateWithPublicClientCache(request2, TestUtils.getMockMsalAccount(token1, expiresAt).block()))
             .expectNextMatches(accessToken -> token2.equals(accessToken.getToken())
-                                                  && expiresAt.getSecond() == accessToken.getExpiresAt().getSecond())
+                && expiresAt.getSecond() == accessToken.getExpiresAt().getSecond())
             .verifyComplete();
     }
 
@@ -288,7 +288,7 @@ public class IdentityClientTests {
         IdentityClient client = new IdentityClientBuilder().tenantId(tenantId).clientId(clientId).identityClientOptions(options).build();
         StepVerifier.create(client.authenticateWithUsernamePassword(request, username, password))
             .expectNextMatches(accessToken -> token.equals(accessToken.getToken())
-                                                  && expiresOn.getSecond() == accessToken.getExpiresAt().getSecond())
+                && expiresOn.getSecond() == accessToken.getExpiresAt().getSecond())
             .verifyComplete();
     }
 
@@ -310,7 +310,7 @@ public class IdentityClientTests {
         IdentityClient client = new IdentityClientBuilder().tenantId(tenantId).clientId(clientId).identityClientOptions(options).build();
         StepVerifier.create(client.authenticateWithBrowserInteraction(request, 4567))
             .expectNextMatches(accessToken -> token.equals(accessToken.getToken())
-                                                  && expiresOn.getSecond() == accessToken.getExpiresAt().getSecond())
+                && expiresOn.getSecond() == accessToken.getExpiresAt().getSecond())
             .verifyComplete();
     }
 

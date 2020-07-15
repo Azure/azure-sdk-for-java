@@ -86,19 +86,19 @@ public class ClientSecretCredentialTest {
 
         // test
         ClientSecretCredential credential = new ClientSecretCredentialBuilder()
-                .tenantId(tenantId)
-                .clientId(clientId)
-                .clientSecret(secret)
-                .tokenRefreshOffset(offset)
-                .build();
+            .tenantId(tenantId)
+            .clientId(clientId)
+            .clientSecret(secret)
+            .tokenRefreshOffset(offset)
+            .build();
         StepVerifier.create(credential.getToken(request1))
-                .expectNextMatches(accessToken -> token1.equals(accessToken.getToken())
-                        && expiresAt.getSecond() == accessToken.getExpiresAt().getSecond())
-                .verifyComplete();
+            .expectNextMatches(accessToken -> token1.equals(accessToken.getToken())
+                && expiresAt.getSecond() == accessToken.getExpiresAt().getSecond())
+            .verifyComplete();
         StepVerifier.create(credential.getToken(request2))
-                .expectNextMatches(accessToken -> token2.equals(accessToken.getToken())
-                        && expiresAt.getSecond() == accessToken.getExpiresAt().getSecond())
-                .verifyComplete();
+            .expectNextMatches(accessToken -> token2.equals(accessToken.getToken())
+                && expiresAt.getSecond() == accessToken.getExpiresAt().getSecond())
+            .verifyComplete();
     }
 
     @Test

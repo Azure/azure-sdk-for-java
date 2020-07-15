@@ -71,7 +71,6 @@ public final class IdentityClientBuilder {
         return this;
     }
 
-
     /**
      * Sets the options for the client.
      * @param identityClientOptions the options for the client.

@@ -20,6 +20,7 @@ public class AuthorizationCodeCredentialBuilder extends AadCredentialBuilderBase
 
     private String authCode;
     private String redirectUrl;
+    private String clientSecret;
 
     /**
      * Sets the authorization code on the builder.
@@ -60,6 +61,16 @@ public class AuthorizationCodeCredentialBuilder extends AadCredentialBuilderBase
         return this;
     }
 
+    /*
+     * Sets the client secret for the authentication.
+     * @param clientSecret the secret value of the AAD application.
+     * @return the AuthorizationCodeCredentialBuilder itself
+     */
+    public AuthorizationCodeCredentialBuilder clientSecret(String clientSecret) {
+        this.clientSecret = clientSecret;
+        return this;
+    }
+
     /**
      * Sets whether to enable using the shared token cache. This is disabled by default.
      *
@@ -84,8 +95,8 @@ public class AuthorizationCodeCredentialBuilder extends AadCredentialBuilderBase
                 put("redirectUrl", redirectUrl);
             }});
         try {
-            return new AuthorizationCodeCredential(clientId, tenantId, authCode,
-                new URI(redirectUrl), identityClientOptions);
+            return new AuthorizationCodeCredential(clientId, clientSecret, tenantId, authCode, new URI(redirectUrl),
+                identityClientOptions);
         } catch (URISyntaxException e) {
             throw logger.logExceptionAsError(new RuntimeException(e));
         }
