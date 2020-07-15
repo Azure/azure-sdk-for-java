@@ -9,42 +9,22 @@
 package com.microsoft.azure.management.resources.v2016_06_01;
 
 import com.microsoft.azure.arm.model.HasInner;
-import com.microsoft.azure.management.resources.v2016_06_01.implementation.LocationInner;
 import com.microsoft.azure.arm.resources.models.HasManager;
 import com.microsoft.azure.management.resources.v2016_06_01.implementation.ResourcesManager;
+import com.microsoft.azure.management.resources.v2016_06_01.implementation.OperationInner;
 
 /**
- * Type representing Location.
+ * Type representing Operation.
  */
-public interface Location extends HasInner<LocationInner>, HasManager<ResourcesManager> {
+public interface Operation extends HasInner<OperationInner>, HasManager<ResourcesManager> {
     /**
-     * @return the displayName value.
+     * @return the display value.
      */
-    String displayName();
-
-    /**
-     * @return the id value.
-     */
-    String id();
-
-    /**
-     * @return the latitude value.
-     */
-    String latitude();
-
-    /**
-     * @return the longitude value.
-     */
-    String longitude();
+    OperationDisplay display();
 
     /**
      * @return the name value.
      */
     String name();
-
-    /**
-     * @return the subscriptionId value.
-     */
-    String subscriptionId();
 
 }
