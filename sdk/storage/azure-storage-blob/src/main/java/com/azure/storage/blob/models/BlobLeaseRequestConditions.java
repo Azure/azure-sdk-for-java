@@ -14,7 +14,7 @@ import java.time.OffsetDateTime;
  * field for more information on those particular access conditions.
  */
 public class BlobLeaseRequestConditions extends RequestConditions {
-    private String tagsCondition;
+    private String tagsConditions;
 
     /**
      * Optionally limit requests to resources that match the passed ETag.
@@ -71,18 +71,18 @@ public class BlobLeaseRequestConditions extends RequestConditions {
      *
      * @return The SQL statement that apply to the tags of the blob.
      */
-    public String getTagsCondition() {
-        return tagsCondition;
+    public String getTagsConditions() {
+        return tagsConditions;
     }
 
     /**
      * Optionally applies the SQL statement to the tags of the blob.
      *
-     * @param tagsCondition The SQL statement that apply to the tags of the blob.
+     * @param tagsConditions The SQL statement that apply to the tags of the blob.
      * @return The updated BlobLeaseRequestConditions object.
      */
-    public BlobLeaseRequestConditions setTagsCondition(String tagsCondition) {
-        this.tagsCondition = tagsCondition;
+    public BlobLeaseRequestConditions setTagsConditions(String tagsConditions) {
+        this.tagsConditions = tagsConditions;
         return this;
     }
 }

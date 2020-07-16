@@ -503,7 +503,7 @@ class BlockBlobAPITest extends APISpec {
             .setIfNoneMatch(noneMatch)
             .setIfModifiedSince(modified)
             .setIfUnmodifiedSince(unmodified)
-            .setTagsCondition(tags)
+            .setTagsConditions(tags)
 
         expect:
         blockBlobClient.commitBlockListWithResponse(null, null, null, null, bac, null, null).getStatusCode() == 201
@@ -530,7 +530,7 @@ class BlockBlobAPITest extends APISpec {
             .setIfNoneMatch(noneMatch)
             .setIfModifiedSince(modified)
             .setIfUnmodifiedSince(unmodified)
-            .setTagsCondition(tags)
+            .setTagsConditions(tags)
 
         when:
         blockBlobClient.commitBlockListWithResponse(null, null, null, null, bac, null, null)
@@ -1065,7 +1065,7 @@ class BlockBlobAPITest extends APISpec {
             .setIfNoneMatch(noneMatch)
             .setIfModifiedSince(modified)
             .setIfUnmodifiedSince(unmodified)
-            .setTagsCondition(tags)
+            .setTagsConditions(tags)
 
         expect:
         blockBlobClient.uploadWithResponse(defaultInputStream.get(), defaultDataSize, null, null, null, null, bac, null, null).getStatusCode() == 201
@@ -1092,7 +1092,7 @@ class BlockBlobAPITest extends APISpec {
             .setIfNoneMatch(noneMatch)
             .setIfModifiedSince(modified)
             .setIfUnmodifiedSince(unmodified)
-            .setTagsCondition(tags)
+            .setTagsConditions(tags)
 
         when:
         blockBlobClient.uploadWithResponse(defaultInputStream.get(), defaultDataSize, null, null, null, null, bac, null, null)

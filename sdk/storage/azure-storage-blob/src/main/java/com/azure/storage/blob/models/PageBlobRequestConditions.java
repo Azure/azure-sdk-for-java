@@ -85,12 +85,12 @@ public final class PageBlobRequestConditions extends BlobRequestConditions {
     /**
      * Optionally applies the SQL statement to the tags of the blob.
      *
-     * @param tagsCondition The SQL statement that apply to the tags of the blob.
+     * @param tagsConditions The SQL statement that apply to the tags of the blob.
      * @return The updated BlobRequestConditions object.
      */
     @Override
-    public PageBlobRequestConditions setTagsCondition(String tagsCondition) {
-        super.setTagsCondition(tagsCondition);
+    public PageBlobRequestConditions setTagsConditions(String tagsConditions) {
+        super.setTagsConditions(tagsConditions);
         return this;
     }
 

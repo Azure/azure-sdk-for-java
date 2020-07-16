@@ -70,12 +70,12 @@ public class BlobRequestConditions extends BlobLeaseRequestConditions {
     /**
      * Optionally applies the SQL statement to the tags of the blob.
      *
-     * @param tagsCondition The SQL statement that apply to the tags of the blob.
+     * @param tagsConditions The SQL statement that apply to the tags of the blob.
      * @return The updated BlobRequestConditions object.
      */
     @Override
-    public BlobRequestConditions setTagsCondition(String tagsCondition) {
-        super.setTagsCondition(tagsCondition);
+    public BlobRequestConditions setTagsConditions(String tagsConditions) {
+        super.setTagsConditions(tagsConditions);
         return this;
     }
 
