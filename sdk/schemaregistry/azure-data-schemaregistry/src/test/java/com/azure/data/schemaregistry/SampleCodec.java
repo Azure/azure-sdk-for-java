@@ -6,9 +6,9 @@ package com.azure.data.schemaregistry;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
-public class SampleByteEncoder implements ByteEncoder {
+public class SampleCodec implements Codec {
 
-    public SampleByteEncoder() { }
+    public SampleCodec() { }
 
     @Override
     public String getSchemaName(Object object) throws SerializationException {
@@ -42,5 +42,12 @@ public class SampleByteEncoder implements ByteEncoder {
     @Override
     public String parseSchemaString(String s) {
         return s;
+    }
+
+    public static final String CONSTANT_PAYLOAD = "sample payload!";
+
+    @Override
+    public Object decodeBytes(byte[] bytes, Object o) throws SerializationException {
+        return CONSTANT_PAYLOAD;
     }
 }

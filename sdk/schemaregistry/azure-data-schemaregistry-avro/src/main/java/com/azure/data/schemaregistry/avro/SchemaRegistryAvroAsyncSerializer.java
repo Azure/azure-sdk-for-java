@@ -4,58 +4,41 @@
 package com.azure.data.schemaregistry.avro;
 
 import com.azure.core.experimental.serializer.ObjectSerializer;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.data.schemaregistry.AbstractDataSerializer;
 import com.azure.data.schemaregistry.SerializationException;
+import com.azure.data.schemaregistry.client.CachedSchemaRegistryClient;
 import reactor.core.publisher.Mono;
-import reactor.core.scheduler.Scheduler;
-import reactor.core.scheduler.Schedulers;
-
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.util.concurrent.Executors;
 
 /**
  * Asynchronous registry-based serializer implementation.
  */
 public class SchemaRegistryAvroAsyncSerializer extends AbstractDataSerializer implements ObjectSerializer {
-    private static final int DEFAULT_THREAD_POOL_SIZE = 8;
-
-    private final SchemaRegistryAvroSerializer serializer;
-    private final SchemaRegistryAvroDeserializer deserializer;
-    private final Scheduler scheduler;
+    private final ClientLogger logger = new ClientLogger(SchemaRegistryAvroAsyncSerializer.class);
 
     /**
-     * @param serializer synchronous Avro serializer implementation
-     * @param deserializer
-     */
-    SchemaRegistryAvroAsyncSerializer(SchemaRegistryAvroSerializer serializer, SchemaRegistryAvroDeserializer deserializer) {
-        this.serializer = serializer;
-        this.deserializer = deserializer;
-        this.scheduler = Schedulers.fromExecutor(Executors.newFixedThreadPool(DEFAULT_THREAD_POOL_SIZE));
-    }
-
-    /**
-     * Async wrapper around sync serialization operation
      *
-     * @param o object to be serialized to bytes
-     * @return Avro byte representation of object
-     * @throws SerializationException upon serialization operation failure
+     * @param registryClient
+     * @param schemaGroup
+     * @param autoRegisterSchemas
+     * @param avroSpecificReader
      */
-    public Mono<byte[]> serialize(Object o) {
-        if (o == null) {
-            return Mono.empty();
-        }
+    SchemaRegistryAvroAsyncSerializer(CachedSchemaRegistryClient registryClient, String schemaGroup,
+                                 boolean autoRegisterSchemas, boolean avroSpecificReader) {
+        super(registryClient);
 
-        ByteArrayOutputStream s = new ByteArrayOutputStream();
+        AvroCodec avroCodec = new AvroCodec(avroSpecificReader);
+        setSerializerCodec(avroCodec);
+        loadDeserializerCodec(avroCodec);
 
-        return Mono.fromCallable(() -> {
-                this.serializeImpl(s, o);
-                return s.toByteArray();
-            });
+        // send configurations only
+        this.autoRegisterSchemas = autoRegisterSchemas;
+        this.schemaGroup = schemaGroup;
     }
 
+    @Override
     public <S extends OutputStream> Mono<S> serialize(S s, Object o) {
         if (o == null) {
             return Mono.empty();
@@ -64,30 +47,15 @@ public class SchemaRegistryAvroAsyncSerializer extends AbstractDataSerializer im
         return this.serializeImpl(s, o);
     }
 
-    /**
-     * Async wrapper around synchronous deserialization method
-     * @param data bytes containing schema ID and encoded byte representation of object
-     * @return Mono wrapper around deserialized object
-     * @throws SerializationException if deserialization operation fails
-     */
-    public Mono<Object> deserialize(byte[] data) throws SerializationException {
-        return Mono
-            .fromCallable(() -> this.deserializer.deserialize(data))
-            .subscribeOn(scheduler);
-    }
-
     @Override
     public <T> Mono<T> deserialize(InputStream stream, Class<T> clazz) {
-        try {
-            return this.deserialize(stream.readAllBytes()).map(o -> {
+        return this.deserialize(stream)
+            .map(o -> {
                 if (clazz.isInstance(o)) {
                     return clazz.cast(o);
                 }
-                throw new RuntimeException("Deserialized object not of class T!");
+                throw logger.logExceptionAsError(new SerializationException("Deserialized object not of class %s"));
             });
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 }
 

@@ -19,6 +19,7 @@ public final class SchemaRegistryAvroSerializerBuilder {
     private boolean autoRegisterSchemas;
     private String schemaGroup;
     private Integer maxSchemaMapSize;
+    private boolean avroSpecificReader;
 
     /**
      * Instantiates instance of Builder class.
@@ -30,6 +31,7 @@ public final class SchemaRegistryAvroSerializerBuilder {
         this.autoRegisterSchemas = AbstractDataSerializer.AUTO_REGISTER_SCHEMAS_DEFAULT;
         this.schemaGroup = AbstractDataSerializer.SCHEMA_GROUP_DEFAULT;
         this.maxSchemaMapSize = null;
+        this.avroSpecificReader = false;
     }
 
     /**
@@ -87,6 +89,16 @@ public final class SchemaRegistryAvroSerializerBuilder {
     }
 
     /**
+     * Specifies if objects should be deserialized into Avro SpecificRecords via Avro SpecificDatumReader
+     * @param avroSpecificReader specific reader flag
+     * @return updated {@link SchemaRegistryAvroSerializerBuilder} instance
+     */
+    public SchemaRegistryAvroSerializerBuilder avroSpecificReader(boolean avroSpecificReader) {
+        this.avroSpecificReader = avroSpecificReader;
+        return this;
+    }
+
+    /**
      * Specifies maximum schema object cache size for underlying CachedSchemaRegistryClient.  If specified cache
      * size is exceeded, all caches are recycled.
      *
@@ -99,17 +111,6 @@ public final class SchemaRegistryAvroSerializerBuilder {
     }
 
     /**
-     * Instantiates SchemaRegistry
-     * @return {@link SchemaRegistryAvroAsyncSerializer} instance
-     *
-     * @throws NullPointerException if parameters are incorrectly set.
-     * @throws IllegalArgumentException if credential is not set.
-     */
-    public SchemaRegistryAvroAsyncSerializer buildAsyncClient() {
-        return new SchemaRegistryAvroAsyncSerializer(this.buildSyncClient(), deserializer);
-    }
-
-    /**
      * Instantiates {@link SchemaRegistryAvroSerializer}
      * @return {@link SchemaRegistryAvroSerializer} instance
      *
@@ -117,6 +118,17 @@ public final class SchemaRegistryAvroSerializerBuilder {
      * @throws IllegalArgumentException if credential is not set.
      */
     public SchemaRegistryAvroSerializer buildSyncClient() {
+        return new SchemaRegistryAvroSerializer(this.buildClient());
+    }
+
+    /**
+     * Instantiates SchemaRegistry
+     * @return {@link SchemaRegistryAvroAsyncSerializer} instance
+     *
+     * @throws NullPointerException if parameters are incorrectly set.
+     * @throws IllegalArgumentException if credential is not set.
+     */
+    public SchemaRegistryAvroAsyncSerializer buildClient() {
         CachedSchemaRegistryClientBuilder builder = new CachedSchemaRegistryClientBuilder()
             .endpoint(registryUrl)
             .credential(credential);
@@ -127,6 +139,7 @@ public final class SchemaRegistryAvroSerializerBuilder {
 
         CachedSchemaRegistryClient client = builder.buildClient();
 
-        return new SchemaRegistryAvroSerializer(client, this.schemaGroup, this.autoRegisterSchemas);
+        return new SchemaRegistryAvroAsyncSerializer(client, this.schemaGroup,
+            this.autoRegisterSchemas, this.avroSpecificReader);
     }
 }

@@ -14,7 +14,7 @@ public class TestDummySerializer extends AbstractDataSerializer {
 
         // allows simulating improperly written serializer constructor that does not initialize byte encoder
         if (byteEncoder) {
-            setByteEncoder(new SampleByteEncoder());
+            setSerializerCodec(new SampleCodec());
         }
 
         this.autoRegisterSchemas = autoRegisterSchemas;
@@ -27,7 +27,7 @@ public class TestDummySerializer extends AbstractDataSerializer {
 
         // allows simulating improperly written serializer constructor that does not initialize byte encoder
         if (byteEncoder) {
-            setByteEncoder(new SampleByteEncoder());
+            setSerializerCodec(new SampleCodec());
         }
 
         // default auto register

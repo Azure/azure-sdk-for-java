@@ -7,6 +7,9 @@ import com.azure.data.schemaregistry.AbstractDataSerializer;
 import com.azure.data.schemaregistry.SerializationException;
 import com.azure.data.schemaregistry.client.CachedSchemaRegistryClient;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+
 /**
  * A serializer implementation capable of serializing objects and automatedly storing serialization schemas
  * in the Azure Schema Registry store.
@@ -17,16 +20,10 @@ import com.azure.data.schemaregistry.client.CachedSchemaRegistryClient;
  *
  * @see AbstractDataSerializer See AbstractDataSerializer for internal serialization implementation
  */
-public class SchemaRegistryAvroSerializer extends AbstractDataSerializer {
-    SchemaRegistryAvroSerializer(CachedSchemaRegistryClient registryClient,
-                                 String schemaGroup,
-                                 boolean autoRegisterSchemas) {
-        super(registryClient);
-
-        setByteEncoder(new AvroByteEncoder());
-
-        this.autoRegisterSchemas = autoRegisterSchemas;
-        this.schemaGroup = schemaGroup;
+public class SchemaRegistryAvroSerializer {
+    private final SchemaRegistryAvroAsyncSerializer serializer;
+    SchemaRegistryAvroSerializer(SchemaRegistryAvroAsyncSerializer serializer) {
+        this.serializer = serializer;
     }
 
     /**
@@ -39,7 +36,26 @@ public class SchemaRegistryAvroSerializer extends AbstractDataSerializer {
         if (object == null) {
             return null;
         }
-        return serializeImpl(object);
+
+        ByteArrayOutputStream s = serializer.serialize(new ByteArrayOutputStream(), object).block();
+        if (s != null){
+            s.toByteArray();
+        }
+
+        throw new SerializationException("Serialization failed, null output stream returned.");
+    }
+
+    /**
+     * Deserializes byte array into Java object using payload-specified schema.
+     *
+     * @param data Byte array containing serialized bytes
+     * @return decoded Java object
+     *
+     * @throws SerializationException Throws on deserialization failure.
+     * Exception may contain inner exceptions detailing failure condition.
+     */
+    public Object deserialize(byte[] data) throws SerializationException {
+        return serializer.deserialize(new ByteArrayInputStream(data), Object.class);
     }
 }
 

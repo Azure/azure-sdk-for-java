@@ -30,7 +30,7 @@ public class AbstractDataDeserializerTest {
     @Test
     public void testLoadDecoder() throws IOException, SchemaRegistryClientException, SerializationException {
         // add standard avro decoder class and test that it is used for decoding payload
-        SampleByteDecoder decoder = new SampleByteDecoder();
+        SampleCodec decoder = new SampleCodec();
 
         // manually add SchemaRegistryObject to cache
         SchemaRegistryObject registered = new SchemaRegistryObject(MOCK_GUID,
@@ -45,7 +45,7 @@ public class AbstractDataDeserializerTest {
         TestDummyDeserializer deserializer = new TestDummyDeserializer(mockRegistryClient); // contains byte decoder
 
         assertEquals(MOCK_GUID, deserializer.schemaRegistryClient.getSchemaById(MOCK_GUID).getSchemaId());
-        assertEquals(SampleByteDecoder.CONSTANT_PAYLOAD, deserializer.deserialize(getPayload()));
+        assertEquals(SampleCodec.CONSTANT_PAYLOAD, deserializer.deserialize(getPayload()));
     }
 
     @Test
