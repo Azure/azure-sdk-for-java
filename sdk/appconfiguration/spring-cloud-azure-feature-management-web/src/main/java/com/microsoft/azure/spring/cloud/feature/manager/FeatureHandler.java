@@ -4,6 +4,7 @@ package com.microsoft.azure.spring.cloud.feature.manager;
 
 import java.io.IOException;
 import java.lang.reflect.Method;
+import java.util.Optional;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
@@ -62,8 +63,9 @@ public class FeatureHandler extends HandlerInterceptorAdapter {
                 }
                 boolean isEnabled = false;
                 try {
-                    isEnabled = enabled.block();
-
+                    isEnabled = Optional.ofNullable(enabled)
+                        .map(Mono::block)
+                        .orElse(false);
                     if (!isEnabled && !featureOn.fallback().isEmpty()) {
                         response.sendRedirect(featureOn.fallback());
                     }
@@ -72,7 +74,7 @@ public class FeatureHandler extends HandlerInterceptorAdapter {
                     ReflectionUtils.rethrowRuntimeException(e);
                 }
                 if (!isEnabled && disabledFeaturesHandler != null) {
-                    response = disabledFeaturesHandler.handleDisabledFeatures(request, response);
+                    disabledFeaturesHandler.handleDisabledFeatures(request, response);
                 } else if (!isEnabled) {
                     try {
                         response.sendError(HttpServletResponse.SC_NOT_FOUND);

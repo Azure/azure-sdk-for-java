@@ -35,7 +35,7 @@ public class FeatureManagerSnapshot {
      */
     public Mono<Boolean> isEnabledAsync(String feature) {
         if (requestMap.get(feature) != null) {
-            return Mono.just((boolean) requestMap.get(feature));
+            return Mono.just(requestMap.get(feature));
         }
 
         return featureManager.isEnabledAsync(feature).doOnSuccess((enabled) -> requestMap.put(feature, enabled));
