@@ -32,16 +32,12 @@ public class KeyVaultClient {
     
     private TokenCredential tokenCredential;
 
-    /**
-     * Builds an Async client to a Key Vaults Secrets
-     * 
-     * @param uri Key Vault URI
-     * @param tokenCredentialProvider user created credentials for authenticating to Key
-     * Vault
-     * @param properties Azure Configuration Managed Identity credentials
-     */
-    public KeyVaultClient(AppConfigurationProperties properties, URI uri,
-            KeyVaultCredentialProvider tokenCredentialProvider, SecretClientBuilderSetup keyVaultClientProvider) {
+    public KeyVaultClient(
+            AppConfigurationProperties properties,
+            URI uri,
+            KeyVaultCredentialProvider tokenCredentialProvider,
+            SecretClientBuilderSetup keyVaultClientProvider
+    ) {
         this.properties = properties;
         this.uri = uri;
         if (tokenCredentialProvider != null) {
