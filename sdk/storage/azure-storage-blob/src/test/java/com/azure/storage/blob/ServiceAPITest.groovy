@@ -3,6 +3,7 @@
 
 package com.azure.storage.blob
 
+import com.azure.core.http.rest.Response
 import com.azure.core.util.paging.ContinuablePage
 import com.azure.core.util.Context
 import com.azure.identity.DefaultAzureCredentialBuilder
@@ -498,6 +499,29 @@ class ServiceAPITest extends APISpec {
 
         expect:
         primaryBlobServiceClient.setPropertiesWithResponse(serviceProperties, null, null).getStatusCode() == 202
+    }
+
+    def "Set props static website"() {
+        setup:
+        def serviceProperties = primaryBlobServiceClient.getProperties()
+        def errorDocument404Path = "error/404.html"
+        def defaultIndexDocumentPath = "index.html"
+
+        serviceProperties.setStaticWebsite(new StaticWebsite()
+            .setEnabled(true)
+            .setErrorDocument404Path(errorDocument404Path)
+            .setDefaultIndexDocumentPath(defaultIndexDocumentPath)
+            )
+
+        when:
+        Response<Void> resp = primaryBlobServiceClient.setPropertiesWithResponse(serviceProperties, null, null)
+
+        then:
+        resp.getStatusCode() == 202
+        def staticWebsite = primaryBlobServiceClient.getProperties().getStaticWebsite()
+        staticWebsite.isEnabled()
+        staticWebsite.getErrorDocument404Path() == errorDocument404Path
+        staticWebsite.getDefaultIndexDocumentPath() == defaultIndexDocumentPath
     }
 
     def "Set props error"() {
