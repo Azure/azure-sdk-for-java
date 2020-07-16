@@ -17,6 +17,7 @@ import com.azure.storage.common.policy.RetryPolicyType;
 import java.io.IOException;
 import java.nio.file.FileStore;
 import java.nio.file.FileSystem;
+import java.nio.file.InvalidPathException;
 import java.nio.file.Path;
 import java.nio.file.PathMatcher;
 import java.nio.file.WatchService;
@@ -31,16 +32,25 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
+import java.util.regex.PatternSyntaxException;
 import java.util.stream.Collectors;
 
 /**
+ * Implement's Java's {@link FileSystem} interface for Azure Blob Storage.
+ * <p>
+ * The following behavior is specific to this FileSystem:
+ * <p>
  * In the hierarchy of this file system, an {@code AzureFileSystem} corresponds to an Azure Blob Storage account. A
  * file store is represented by a container in the storage account. Each container has one root directory.
- *
+ * <p>
  * Closing the file system will not block on outstanding operations. Any operations in progress will be allowed to
  * terminate naturally after the file system is closed, though no further operations may be started after the parent
  * file system is closed.
- * {@inheritDoc}
+ * <p>
+ * All instance of {@code AzureFileSystem} are opened for read-write access.
+ * <p>
+ * For a more complete description of the uses for the constants described here, please see the instructions for opening
+ * and configuring a FileSystem in the docs of {@link FileSystemProvider}.
  */
 public final class AzureFileSystem extends FileSystem {
     private final ClientLogger logger = new ClientLogger(AzureFileSystem.class);
@@ -115,9 +125,13 @@ public final class AzureFileSystem extends FileSystem {
      * Expected type: Boolean
      */
     public static final String AZURE_STORAGE_USE_HTTPS = "AzureStorageUseHttps";
+
     static final String AZURE_STORAGE_HTTP_CLIENT = "AzureStorageHttpClient"; // undocumented; for test.
     static final String AZURE_STORAGE_HTTP_POLICIES = "AzureStorageHttpPolicies"; // undocumented; for test.
 
+    /**
+     * Expected type: String
+     */
     public static final String AZURE_STORAGE_FILE_STORES = "AzureStorageFileStores";
 
     static final String PATH_SEPARATOR = "/";
@@ -174,7 +188,9 @@ public final class AzureFileSystem extends FileSystem {
     }
 
     /**
-     * {@inheritDoc}
+     * Returns the provider that created this file system.
+     *
+     * @return the provider that created this file system.
      */
     @Override
     public FileSystemProvider provider() {
@@ -182,12 +198,19 @@ public final class AzureFileSystem extends FileSystem {
     }
 
     /**
+     * Closes this file system.
+     * <p>
+     * After a file system is closed then all subsequent access to the file system, either by methods defined by this
+     * class or on objects associated with this file system, throw ClosedFileSystemException. If the file system is
+     * already closed then invoking this method has no effect.
+     * <p>
      * Closing the file system will not block on outstanding operations. Any operations in progress will be allowed to
      * terminate naturally after the file system is closed, though no further operations may be started after the
      * parent file system is closed.
-     *
+     * <p>
      * Once closed, a file system with the same identifier as the one closed may be re-opened.
-     * {@inheritDoc}
+     *
+     * @throws IOException If an I/O error occurs.
      */
     @Override
     public void close() throws IOException {
@@ -196,7 +219,9 @@ public final class AzureFileSystem extends FileSystem {
     }
 
     /**
-     * {@inheritDoc}
+     * Tells whether or not this file system is open.
+     *
+     * @return whether or not this file system is open.
      */
     @Override
     public boolean isOpen() {
@@ -204,12 +229,14 @@ public final class AzureFileSystem extends FileSystem {
     }
 
     /**
+     * Tells whether or not this file system allows only read-only access to its file stores.
+     * <p>
      * Always returns false. It may be the case that the authentication method provided to this file system only
      * supports read operations and hence the file system is implicitly read only in this view, but that does not
      * imply the underlying account/file system is inherently read only. Creating/specifying read only file
      * systems is not supported.
      *
-     * {@inheritDoc}
+     * @return false
      */
     @Override
     public boolean isReadOnly() {
@@ -217,9 +244,11 @@ public final class AzureFileSystem extends FileSystem {
     }
 
     /**
+     * Returns the name separator, represented as a string.
+     * <p>
      * The separator used in this file system is {@code "/"}.
      *
-     * {@inheritDoc}
+     * @return "/"
      */
     @Override
     public String getSeparator() {
@@ -227,50 +256,60 @@ public final class AzureFileSystem extends FileSystem {
     }
 
     /**
+     * Returns an object to iterate over the paths of the root directories.
+     * <p>
      * The list of root directories corresponds to the list of available file stores and therefore containers specified
-     * upon initialization. A root directory always takes the form {@code "&lt;file-store-name&gt;:"}. This list will
+     * upon initialization. A root directory always takes the form {@code "<file-store-name>:"}. This list will
      * respect the parameters provided during initialization.
      * <p>
      * If a finite list of containers was provided on start up, this list will not change during the lifetime of this
      * object. If containers are added to the account after initialization, they will be ignored. If a container is
      * deleted or otherwise becomes unavailable, its root directory will still be returned but operations to it will
-     * fail. If the file system was set to use all containers in the account, the account will be re-queried and the
-     * list may grow or shrink if containers were added or deleted.
+     * fail.
      *
-     * {@inheritDoc}
+     * @return an object to iterate over the paths of the root directories
      */
     @Override
     public Iterable<Path> getRootDirectories() {
+        /*
+        Should we add different initialization options later:
+        If the file system was set to use all containers in the account, the account will be re-queried and the
+        list may grow or shrink if containers were added or deleted.
+         */
         return fileStores.keySet().stream()
             .map(name -> this.getPath(name + AzurePath.ROOT_DIR_SUFFIX))
             .collect(Collectors.toList());
     }
 
     /**
+     * Returns an object to iterate over the underlying file stores
+     * <p>
      * This list will respect the parameters provided during initialization.
      * <p>
      * If a finite list of containers was provided on start up, this list will not change during the lifetime of this
      * object. If containers are added to the account after initialization, they will be ignored. If a container is
      * deleted or otherwise becomes unavailable, its root directory will still be returned but operations to it will
-     * fail. If the file system was set to use all containers in the account, the account will be re-queried and the
-     * list may grow or shrink if containers were added or deleted.
-     *
-     * {@inheritDoc}
+     * fail.
      */
     @Override
     public Iterable<FileStore> getFileStores() {
+        /*
+        Should we add different intialization options later:
+        If the file system was set to use all containers in the account, the account will be re-queried and the
+        list may grow or shrink if containers were added or deleted.
+         */
         return this.fileStores.values();
     }
 
     /**
+     * Returns the set of the names of the file attribute views supported by this FileSystem.
+     * <p>
      * This file system supports the following views:
      * <ul>
      *     <li>{@link java.nio.file.attribute.BasicFileAttributeView}</li>
-     *     <li>{@link java.nio.file.attribute.UserDefinedFileAttributeView}</li>
      *     <li>{@link AzureBasicFileAttributeView}</li>
+     *     <li>{@link AzureBlobFileAttributeView}</li>
      * </ul>
-     *
-     * {@inheritDoc}
      */
     @Override
     public Set<String> supportedFileAttributeViews() {
@@ -278,33 +317,46 @@ public final class AzureFileSystem extends FileSystem {
     }
 
     /**
-     * Each name element will be {@code String}-joined to the other elements by this file system's path separator.
+     * Converts a path string, or a sequence of more that when joined form a path string, to a Path.
+     * <p>
+     * If more does not specify any elements then the value of the first parameter is the path string to convert. If
+     * more specifies one or more elements then each non-empty string, including first, is considered to be a sequence
+     * of name elements (see Path) and is joined to form a path string. The more will be joined using the name
+     * separator.
+     * <p>
+     * Each name element will be {@code String}-joined to the other elements by this file system'first path separator.
      * Naming conventions and allowed characters are as
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/Naming-and-Referencing-Containers--Blobs--and-Metadata">defined</a>
      * by the Azure Blob Storage service. The root component is interpreted as the container name and all name elements
      * are interpreted as a part of the blob name. The character {@code ':'} is only allowed in the root component and
      * must be the last character of the root component.
      *
-     * {@inheritDoc}
+     * @param first the path string or initial part of the path string
+     * @param more additional strings to be joined to form the path string
+     * @throws InvalidPathException if the path string cannot be converted.
      */
     @Override
-    public Path getPath(String s, String... strings) {
-        return new AzurePath(this, s, strings);
+    public Path getPath(String first, String... more) {
+        return new AzurePath(this, first, more);
     }
 
     /**
      * Unsupported.
      *
-     * {@inheritDoc}
+     * @param s the matcher
+     * @throws UnsupportedOperationException unsupported.
+     * @throws IllegalArgumentException never
+     * @throws PatternSyntaxException never
      */
     @Override
-    public PathMatcher getPathMatcher(String s) {
+    public PathMatcher getPathMatcher(String s) throws IllegalArgumentException, PatternSyntaxException {
         throw LoggingUtility.logError(logger, new UnsupportedOperationException());
     }
 
     /**
      * Unsupported.
-     * {@inheritDoc}
+     *
+     * @throws UnsupportedOperationException unsupported.
      */
     @Override
     public UserPrincipalLookupService getUserPrincipalLookupService() {
@@ -314,7 +366,8 @@ public final class AzureFileSystem extends FileSystem {
     /**
      * Unsupported.
      *
-     * {@inheritDoc}
+     * @throws UnsupportedOperationException unsupported.
+     * @throws IOException never.
      */
     @Override
     public WatchService newWatchService() throws IOException {

@@ -165,4 +165,53 @@ public class StudentRepositoryIT {
         assertTrue(repository.existsByLastNameContaining("N"));
         assertFalse(repository.existsByLastNameContaining("X"));
     }
+
+    @Test
+    public void testFindByLastNameIgnoreCase() {
+        List<Student> people = repository.findByLastNameIgnoreCase(LAST_NAME_0.toLowerCase());
+        assertPeopleEquals(people, Arrays.asList(STUDENT_0));
+        assertTrue(people.get(0).getLastName().equals(LAST_NAME_0));
+    }
+
+    @Test
+    public void testFindByLastNameAndFirstNameAllIgnoreCase() {
+        List<Student> people = repository
+            .findByLastNameAndFirstNameAllIgnoreCase(LAST_NAME_0.toLowerCase(), FIRST_NAME_0.toLowerCase());
+        assertPeopleEquals(people, Arrays.asList(STUDENT_0));
+        assertTrue(people.get(0).getFirstName().equals(FIRST_NAME_0));
+        assertTrue(people.get(0).getLastName().equals(LAST_NAME_0));
+    }
+
+    @Test
+    public void testFindByLastNameOrFirstNameAllIgnoreCase() {
+        List<Student> people = repository
+            .findByLastNameOrFirstNameAllIgnoreCase(LAST_NAME_0.toLowerCase(), FIRST_NAME_1.toLowerCase());
+        assertPeopleEquals(people, Arrays.asList(STUDENT_0, STUDENT_1));
+    }
+
+    @Test
+    public void testFindByFirstNameEndsWithIgnoreCase() {
+        List<Student> people = repository
+            .findByFirstNameEndsWithIgnoreCase(FIRST_NAME_0.toLowerCase().substring(2));
+        assertPeopleEquals(people, Arrays.asList(STUDENT_0));
+        assertTrue(people.get(0).getFirstName().equals(FIRST_NAME_0));
+    }
+
+    @Test
+    public void testFindByLastNameStartsWithAndFirstNameStartsWithAllIgnoreCase() {
+        List<Student> people = repository
+            .findByLastNameStartsWithAndFirstNameStartsWithAllIgnoreCase(
+                LAST_NAME_0.toLowerCase().substring(0, 2), FIRST_NAME_0.toLowerCase().substring(0, 2));
+        assertPeopleEquals(people, Arrays.asList(STUDENT_0));
+        assertTrue(people.get(0).getLastName().equals(LAST_NAME_0));
+        assertTrue(people.get(0).getFirstName().equals(FIRST_NAME_0));
+    }
+
+    @Test
+    public void testFindByLastNameStartsWithOrFirstNameStartsWithAllIgnoreCase() {
+        List<Student> people = repository
+            .findByLastNameStartsWithOrFirstNameStartsWithAllIgnoreCase(
+                LAST_NAME_0.toLowerCase().substring(0, 2), FIRST_NAME_1.toLowerCase().substring(0, 3));
+        assertPeopleEquals(people, Arrays.asList(STUDENT_0, STUDENT_1));
+    }
 }

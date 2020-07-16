@@ -74,7 +74,7 @@ public class CosmosQueryCreator extends AbstractQueryCreator<DocumentQuery, Crit
             values.add(parameters.next());
         }
 
-        return Criteria.getInstance(CriteriaType.toCriteriaType(type), subject, values);
+        return Criteria.getInstance(CriteriaType.toCriteriaType(type), subject, values, part.shouldIgnoreCase());
     }
 
     @Override

@@ -46,7 +46,7 @@ Azure Management Libraries require a `TokenCredential` implementation for authen
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-identity</artifactId>
-  <version>1.1.0-beta.5</version>
+  <version>1.0.8</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -58,7 +58,7 @@ Azure Management Libraries require a `TokenCredential` implementation for authen
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-core-http-netty</artifactId>
-  <version>1.5.2</version>
+  <version>1.5.3</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -103,6 +103,8 @@ The key concepts of Azure Management Libraries includes:
 - Integration with Azure role-based access control.
 - Asynchronous operations with [Reactor][reactor]. (Preview)
 - Configurable client, e.g. configuring HTTP client, retries, logging, etc.
+- [API design][design]
+- [API design (preview)][design_preview]
 
 ### Service features
 
@@ -325,4 +327,5 @@ If you would like to become an active contributor to this project please follow 
 [authenticate]: docs/AUTH.md
 [sample]: docs/SAMPLE.md
 [design]: docs/DESIGN.md
+[design_preview]: docs/DESIGN_PREVIEW.md
 [reactor]: https://projectreactor.io/

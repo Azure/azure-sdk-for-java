@@ -8,9 +8,12 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.resourcemanager.appplatform.AppPlatformManager;
 import com.azure.resourcemanager.appplatform.fluent.ServicesClient;
 import com.azure.resourcemanager.appplatform.fluent.inner.ServiceResourceInner;
+import com.azure.resourcemanager.appplatform.models.NameAvailability;
+import com.azure.resourcemanager.appplatform.models.NameAvailabilityParameters;
 import com.azure.resourcemanager.appplatform.models.ResourceSku;
 import com.azure.resourcemanager.appplatform.models.SpringService;
 import com.azure.resourcemanager.appplatform.models.SpringServices;
+import com.azure.resourcemanager.resources.fluentcore.arm.Region;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.GroupableResourcesImpl;
 import reactor.core.publisher.Mono;
 
@@ -18,6 +21,7 @@ public class SpringServicesImpl
     extends GroupableResourcesImpl<
         SpringService, SpringServiceImpl, ServiceResourceInner, ServicesClient, AppPlatformManager>
     implements SpringServices {
+    private static final String SPRING_TYPE = "Microsoft.AppPlatform/Spring";
     public SpringServicesImpl(AppPlatformManager manager) {
         super(manager.inner().getServices(), manager);
     }
@@ -40,6 +44,17 @@ public class SpringServicesImpl
     @Override
     protected SpringServiceImpl wrapModel(ServiceResourceInner inner) {
         return inner == null ? null : new SpringServiceImpl(inner.name(), inner, manager());
+    }
+
+    @Override
+    public NameAvailability checkNameAvailability(String name, Region region) {
+        return checkNameAvailabilityAsync(name, region).block();
+    }
+
+    @Override
+    public Mono<NameAvailability> checkNameAvailabilityAsync(String name, Region region) {
+        return inner().checkNameAvailabilityAsync(
+            region.toString(), new NameAvailabilityParameters().withName(name).withType(SPRING_TYPE));
     }
 
     @Override

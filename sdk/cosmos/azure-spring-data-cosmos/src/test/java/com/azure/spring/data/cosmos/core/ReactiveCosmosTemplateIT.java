@@ -27,6 +27,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.domain.EntityScanner;
 import org.springframework.context.ApplicationContext;
 import org.springframework.data.annotation.Persistent;
+import org.springframework.data.repository.query.parser.Part;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import reactor.core.publisher.Flux;
@@ -343,11 +344,19 @@ public class ReactiveCosmosTemplateIT {
     @Test
     public void testFind() {
         final Criteria criteria = Criteria.getInstance(CriteriaType.IS_EQUAL, "firstName",
-            Arrays.asList(TEST_PERSON.getFirstName()));
+            Arrays.asList(TEST_PERSON.getFirstName()), Part.IgnoreCaseType.NEVER);
         final DocumentQuery query = new DocumentQuery(criteria);
         final Flux<Person> personFlux = cosmosTemplate.find(query, Person.class,
             Person.class.getSimpleName());
         StepVerifier.create(personFlux).expectNextCount(1).verifyComplete();
+
+        // add ignore testing
+        final Criteria criteriaIgnoreCase = Criteria.getInstance(CriteriaType.IS_EQUAL, "firstName",
+            Arrays.asList(TEST_PERSON.getFirstName().toUpperCase()), Part.IgnoreCaseType.ALWAYS);
+        final DocumentQuery queryIgnoreCase = new DocumentQuery(criteriaIgnoreCase);
+        final Flux<Person> personFluxIgnoreCase = cosmosTemplate.find(queryIgnoreCase, Person.class,
+            Person.class.getSimpleName());
+        StepVerifier.create(personFluxIgnoreCase).expectNextCount(1).verifyComplete();
 
         assertThat(responseDiagnosticsTestUtils.getFeedResponseDiagnostics()).isNotNull();
         Assertions.assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics()).isNotNull();
@@ -358,10 +367,17 @@ public class ReactiveCosmosTemplateIT {
     @Test
     public void testExists() {
         final Criteria criteria = Criteria.getInstance(CriteriaType.IS_EQUAL, "firstName",
-            Arrays.asList(TEST_PERSON.getFirstName()));
+            Arrays.asList(TEST_PERSON.getFirstName()), Part.IgnoreCaseType.NEVER);
         final DocumentQuery query = new DocumentQuery(criteria);
         final Mono<Boolean> exists = cosmosTemplate.exists(query, Person.class, containerName);
         StepVerifier.create(exists).expectNext(true).verifyComplete();
+
+        // add ignore testing
+        final Criteria criteriaIgnoreCase = Criteria.getInstance(CriteriaType.IS_EQUAL, "firstName",
+            Arrays.asList(TEST_PERSON.getFirstName().toUpperCase()), Part.IgnoreCaseType.ALWAYS);
+        final DocumentQuery queryIgnoreCase = new DocumentQuery(criteriaIgnoreCase);
+        final Mono<Boolean> existsIgnoreCase = cosmosTemplate.exists(queryIgnoreCase, Person.class, containerName);
+        StepVerifier.create(existsIgnoreCase).expectNext(true).verifyComplete();
 
         assertThat(responseDiagnosticsTestUtils.getFeedResponseDiagnostics()).isNotNull();
         Assertions.assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics()).isNotNull();

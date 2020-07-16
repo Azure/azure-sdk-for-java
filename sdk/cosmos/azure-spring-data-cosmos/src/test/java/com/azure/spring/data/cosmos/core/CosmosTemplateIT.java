@@ -31,6 +31,7 @@ import org.springframework.data.annotation.Persistent;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.repository.query.parser.Part;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
@@ -287,11 +288,19 @@ public class CosmosTemplateIT {
         assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics()).isNull();
 
         final Criteria criteria = Criteria.getInstance(CriteriaType.IS_EQUAL, "firstName",
-                Collections.singletonList(TEST_PERSON_2.getFirstName()));
+                Collections.singletonList(TEST_PERSON_2.getFirstName()), Part.IgnoreCaseType.NEVER);
         final DocumentQuery query = new DocumentQuery(criteria);
 
         final long count = cosmosTemplate.count(query, Person.class, containerName);
         assertThat(count).isEqualTo(1);
+
+        // add ignoreCase testing
+        final Criteria criteriaIgnoreCase = Criteria.getInstance(CriteriaType.IS_EQUAL, "firstName",
+            Collections.singletonList(TEST_PERSON_2.getFirstName().toUpperCase()), Part.IgnoreCaseType.ALWAYS);
+        final DocumentQuery queryIgnoreCase = new DocumentQuery(criteriaIgnoreCase);
+
+        final long countIgnoreCase = cosmosTemplate.count(queryIgnoreCase, Person.class, containerName);
+        assertThat(countIgnoreCase).isEqualTo(1);
 
         assertThat(responseDiagnosticsTestUtils.getFeedResponseDiagnostics()).isNotNull();
         assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics()).isNotNull();
@@ -339,13 +348,22 @@ public class CosmosTemplateIT {
         assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics()).isNull();
 
         final Criteria criteria = Criteria.getInstance(CriteriaType.IS_EQUAL, "firstName",
-                Collections.singletonList(FIRST_NAME));
+                Collections.singletonList(FIRST_NAME), Part.IgnoreCaseType.NEVER);
         final PageRequest pageRequest = new CosmosPageRequest(0, PAGE_SIZE_2, null);
         final DocumentQuery query = new DocumentQuery(criteria).with(pageRequest);
 
         final Page<Person> page = cosmosTemplate.paginationQuery(query, Person.class, containerName);
         assertThat(page.getContent().size()).isEqualTo(1);
         PageTestUtils.validateLastPage(page, page.getContent().size());
+
+        // add ignore case testing
+        final Criteria criteriaIgnoreCase = Criteria.getInstance(CriteriaType.IS_EQUAL, "firstName",
+            Collections.singletonList(FIRST_NAME.toUpperCase()), Part.IgnoreCaseType.ALWAYS);
+        final DocumentQuery queryIgnoreCase = new DocumentQuery(criteriaIgnoreCase).with(pageRequest);
+
+        final Page<Person> pageIgnoreCase = cosmosTemplate.paginationQuery(queryIgnoreCase, Person.class, containerName);
+        assertThat(pageIgnoreCase.getContent().size()).isEqualTo(1);
+        PageTestUtils.validateLastPage(pageIgnoreCase, pageIgnoreCase.getContent().size());
 
         assertThat(responseDiagnosticsTestUtils.getCosmosResponseDiagnostics()).isNull();
         assertThat(responseDiagnosticsTestUtils.getFeedResponseDiagnostics()).isNotNull();
