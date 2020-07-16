@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.0-beta.2 (2020-07-15)
+## 1.0.0-beta.2 (2020-07-16)
 
 - `GsonJsonSerializer` implements `JsonSerializer` instead of `ObjectSerializer`.
 - Added implementations for `JsonNode` and its subclasses.
