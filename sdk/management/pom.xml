@@ -465,22 +465,4 @@
             </build>
         </profile>
     </profiles>
-    <modules>
-        <module>../appservice/mgmt</module>
-        <module>../appplatform/mgmt</module>
-        <module>../compute/mgmt</module>
-        <module>../dns/mgmt</module>
-        <module>../authorization/mgmt</module>
-        <module>../managedserviceidentity/mgmt</module>
-        <module>../network/mgmt</module>
-        <module>../keyvault/mgmt</module>
-        <module>../resources/mgmt</module>
-        <module>../storage/mgmt</module>
-        <module>../sql/mgmt</module>
-        <module>../cosmos/mgmt</module>
-        <module>../containerregistry/mgmt</module>
-        <module>../containerservice/mgmt</module>
-        <module>../monitor/mgmt</module>
-        <module>./samples</module>
-    </modules>
 </project>
