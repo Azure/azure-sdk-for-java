@@ -5,22 +5,20 @@
  */
 package com.azure.resourcemanager.containerinstance.models;
 
-import com.azure.resourcemanager.containerinstance.implementation.ContainerGroupInner;
+import com.azure.core.annotation.Fluent;
+import com.azure.core.implementation.annotation.Beta;
+import com.azure.resourcemanager.authorization.models.BuiltInRole;
 import com.azure.resourcemanager.containerinstance.ContainerInstanceManager;
-import com.microsoft.azure.management.apigeneration.Beta;
-import com.microsoft.azure.management.apigeneration.Fluent;
-import com.microsoft.azure.management.apigeneration.Method;
-import com.microsoft.azure.management.graphrbac.BuiltInRole;
-import com.microsoft.azure.management.msi.Identity;
-import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableResource;
-import com.microsoft.azure.management.resources.fluentcore.arm.models.Resource;
-import com.microsoft.azure.management.resources.fluentcore.model.Appliable;
-import com.microsoft.azure.management.resources.fluentcore.model.Attachable;
-import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
-import com.microsoft.azure.management.resources.fluentcore.model.Refreshable;
-import com.microsoft.azure.management.resources.fluentcore.model.Updatable;
-import rx.Completable;
-import rx.Observable;
+import com.azure.resourcemanager.containerinstance.fluent.inner.ContainerGroupInner;
+import com.azure.resourcemanager.msi.models.Identity;
+import com.azure.resourcemanager.resources.fluentcore.arm.models.GroupableResource;
+import com.azure.resourcemanager.resources.fluentcore.arm.models.Resource;
+import com.azure.resourcemanager.resources.fluentcore.model.Appliable;
+import com.azure.resourcemanager.resources.fluentcore.model.Attachable;
+import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
+import com.azure.resourcemanager.resources.fluentcore.model.Refreshable;
+import com.azure.resourcemanager.resources.fluentcore.model.Updatable;
+import reactor.core.publisher.Mono;
 
 import java.util.Collection;
 import java.util.List;
@@ -31,11 +29,11 @@ import java.util.Set;
  * An immutable client-side representation of an Azure Container Group.
  */
 @Fluent
-@Beta(Beta.SinceVersion.V1_23_0)
+@Beta
 public interface ContainerGroup extends
         GroupableResource<ContainerInstanceManager, ContainerGroupInner>,
-        Refreshable<ContainerGroup>,
-        Updatable<ContainerGroup.Update> {
+    Refreshable<ContainerGroup>,
+    Updatable<ContainerGroup.Update> {
 
     /***********************************************************
      * Getters
@@ -73,7 +71,6 @@ public interface ContainerGroup extends
 
     /**
      * @return the container group restart policy
-
      */
     ContainerGroupRestartPolicy restartPolicy();
 
@@ -172,7 +169,6 @@ public interface ContainerGroup extends
     /**
      * Restarts all containers in a container group in place. If container image has updates, new image will be downloaded.
      */
-    @Method
     void restart();
 
     /**
@@ -180,13 +176,11 @@ public interface ContainerGroup extends
      *
      * @return a representation of the deferred computation of this call
      */
-    @Method
-    Completable restartAsync();
+    Mono<Void> restartAsync();
 
     /**
      * Stops all containers in a container group. Compute resources will be de-allocated and billing will stop.
      */
-    @Method
     void stop();
 
     /**
@@ -194,8 +188,7 @@ public interface ContainerGroup extends
      *
      * @return a representation of the deferred computation of this call
      */
-    @Method
-    Completable stopAsync();
+    Mono<Void> stopAsync();
 
     /**
      * Get the log content for the specified container instance within the container group.
@@ -223,7 +216,7 @@ public interface ContainerGroup extends
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return a representation of the future computation of this call
      */
-    Observable<String> getLogContentAsync(String containerName);
+    Mono<String> getLogContentAsync(String containerName);
 
     /**
      * Get the log content for the specified container instance within the container group.
@@ -233,7 +226,7 @@ public interface ContainerGroup extends
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return a representation of the future computation of this call
      */
-    Observable<String> getLogContentAsync(String containerName, int tailLineCount);
+    Mono<String> getLogContentAsync(String containerName, int tailLineCount);
 
     /**
      * Starts the exec command for a specific container instance.
@@ -257,7 +250,7 @@ public interface ContainerGroup extends
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return a representation of the future computation of this call
      */
-    Observable<ContainerExecResponse> executeCommandAsync(String containerName, String command, int row, int column);
+    Mono<ContainerExecResponse> executeCommandAsync(String containerName, String command, int row, int column);
 
 
     /**
@@ -1138,7 +1131,7 @@ public interface ContainerGroup extends
                 WithDnsPrefix,
                 WithNetworkProfile,
                 WithLogAnalytics,
-                Creatable<ContainerGroup>,
+            Creatable<ContainerGroup>,
                 Resource.DefinitionWithTags<WithCreate> {
         }
     }
@@ -1148,7 +1141,7 @@ public interface ContainerGroup extends
      */
     interface Update extends
             Resource.UpdateWithTags<Update>,
-            Appliable<ContainerGroup> {
+        Appliable<ContainerGroup> {
     }
 
 }

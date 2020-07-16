@@ -5,16 +5,16 @@
  */
 package com.azure.resourcemanager.containerinstance.models;
 
-import com.azure.resourcemanager.containerinstance.implementation.ContainerExecResponseInner;
-import com.microsoft.azure.management.apigeneration.Beta;
-import com.microsoft.azure.management.apigeneration.Fluent;
-import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
+import com.azure.core.annotation.Fluent;
+import com.azure.core.implementation.annotation.Beta;
+import com.azure.resourcemanager.containerinstance.fluent.inner.ContainerExecResponseInner;
+import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
 
 /**
  * Response containing the container exec command.
  */
 @Fluent
-@Beta(Beta.SinceVersion.V1_11_0)
+@Beta
 public interface ContainerExecResponse extends HasInner<ContainerExecResponseInner> {
     /**
      * Get the webSocketUri value.

@@ -5,44 +5,44 @@
  */
 package com.azure.resourcemanager.containerinstance.models;
 
-import com.microsoft.azure.management.apigeneration.Beta;
-import com.microsoft.azure.management.apigeneration.Fluent;
-import com.azure.resourcemanager.containerinstance.implementation.ContainerGroupsInner;
+import com.azure.core.annotation.Fluent;
+import com.azure.core.http.rest.PagedFlux;
+import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.implementation.annotation.Beta;
 import com.azure.resourcemanager.containerinstance.ContainerInstanceManager;
-import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsBatchDeletion;
-import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsDeletingByResourceGroup;
-import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingById;
-import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingByResourceGroup;
-import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsListingByResourceGroup;
-import com.microsoft.azure.management.resources.fluentcore.arm.models.HasManager;
-import com.microsoft.azure.management.resources.fluentcore.collection.SupportsBatchCreation;
-import com.microsoft.azure.management.resources.fluentcore.collection.SupportsCreating;
-import com.microsoft.azure.management.resources.fluentcore.collection.SupportsDeletingById;
-import com.microsoft.azure.management.resources.fluentcore.collection.SupportsListing;
-import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
-import rx.Completable;
-import rx.Observable;
+import com.azure.resourcemanager.containerinstance.fluent.ContainerGroupsClient;
+import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsBatchDeletion;
+import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsDeletingByResourceGroup;
+import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsGettingById;
+import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsGettingByResourceGroup;
+import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsListingByResourceGroup;
+import com.azure.resourcemanager.resources.fluentcore.arm.models.HasManager;
+import com.azure.resourcemanager.resources.fluentcore.collection.SupportsBatchCreation;
+import com.azure.resourcemanager.resources.fluentcore.collection.SupportsCreating;
+import com.azure.resourcemanager.resources.fluentcore.collection.SupportsDeletingById;
+import com.azure.resourcemanager.resources.fluentcore.collection.SupportsListing;
+import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
+import reactor.core.publisher.Mono;
 
-import java.util.List;
 import java.util.Set;
 
 /**
  * Entry point to the container instance management API.
  */
-@Fluent()
-@Beta(Beta.SinceVersion.V1_23_0)
+@Fluent
+@Beta
 public interface ContainerGroups extends
-        SupportsCreating<ContainerGroup.DefinitionStages.Blank>,
-        HasManager<ContainerInstanceManager>,
-        HasInner<ContainerGroupsInner>,
-        SupportsBatchCreation<ContainerGroup>,
-        SupportsGettingByResourceGroup<ContainerGroup>,
-        SupportsGettingById<ContainerGroup>,
-        SupportsDeletingByResourceGroup,
-        SupportsDeletingById,
-        SupportsBatchDeletion,
-        SupportsListingByResourceGroup<ContainerGroup>,
-        SupportsListing<ContainerGroup> {
+    SupportsCreating<ContainerGroup.DefinitionStages.Blank>,
+    HasManager<ContainerInstanceManager>,
+    HasInner<ContainerGroupsClient>,
+    SupportsBatchCreation<ContainerGroup>,
+    SupportsGettingByResourceGroup<ContainerGroup>,
+    SupportsGettingById<ContainerGroup>,
+    SupportsDeletingByResourceGroup,
+    SupportsDeletingById,
+    SupportsBatchDeletion,
+    SupportsListingByResourceGroup<ContainerGroup>,
+    SupportsListing<ContainerGroup> {
 
     /**
      * Get the log content for the specified container instance within a container group.
@@ -76,7 +76,7 @@ public interface ContainerGroups extends
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return a representation of the future computation of this call
      */
-    Observable<String> getLogContentAsync(String resourceGroupName, String containerGroupName, String containerName);
+    Mono<String> getLogContentAsync(String resourceGroupName, String containerGroupName, String containerName);
 
     /**
      * Get the log content for the specified container instance within a container group.
@@ -88,7 +88,7 @@ public interface ContainerGroups extends
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return a representation of the future computation of this call
      */
-    Observable<String> getLogContentAsync(String resourceGroupName, String containerGroupName, String containerName, int tailLineCount);
+    Mono<String> getLogContentAsync(String resourceGroupName, String containerGroupName, String containerName, int tailLineCount);
 
     /**
      * Lists all operations for Azure Container Instance service.
@@ -102,7 +102,7 @@ public interface ContainerGroups extends
      *
      * @return a representation of the future computation of this call
      */
-    Observable<Set<Operation>> listOperationsAsync();
+    Mono<Set<Operation>> listOperationsAsync();
 
     /**
      * Lists cached images for a subscription in a region.
@@ -110,7 +110,7 @@ public interface ContainerGroups extends
      * @param location the identifier for the physical azure location.
      * @return all cached images from the specified location
      */
-    List<CachedImages> listCachedImages(String location);
+    PagedIterable<CachedImages> listCachedImages(String location);
 
     /**
      * Lists cached images for a subscription in a region.
@@ -118,7 +118,7 @@ public interface ContainerGroups extends
      * @param location the identifier for the physical azure location.
      * @return a representation of the future computation of this call
      */
-    Observable<CachedImages> listCachedImagesAsync(String location);
+    PagedFlux<CachedImages> listCachedImagesAsync(String location);
 
     /**
      * Lists the capabilities of a location.
@@ -126,7 +126,7 @@ public interface ContainerGroups extends
      * @param location the identifier for the physical azure location
      * @return a list of all of the capabilities of the given location
      */
-    List<Capabilities> listCapabilities(String location);
+    PagedIterable<Capabilities> listCapabilities(String location);
 
     /**
      * Lists the capabilities of a location.
@@ -134,7 +134,7 @@ public interface ContainerGroups extends
      * @param location the identifier for the physical azure location
      * @return a representation of the future computation of this call
      */
-    Observable<Capabilities> listCapabilitiesAsync(String location);
+    PagedFlux<Capabilities> listCapabilitiesAsync(String location);
 
     /**
      * Starts all containers in a container group.
@@ -151,5 +151,5 @@ public interface ContainerGroups extends
      * @param containerGroupName the name of the container group
      * @return a representation of the future computation of this call
      */
-    Completable startAsync(String resourceGroupName, String containerGroupName);
+    Mono<Void> startAsync(String resourceGroupName, String containerGroupName);
 }
