@@ -18,17 +18,17 @@ import java.lang.annotation.Target;
 public @interface FeatureGate {
 
     /**
-     * Name of the feature that is checked.
+     * @return Name of the feature that is checked.
      */
-    public String feature();
+    String feature();
 
     /**
-     * Endpoint to be fall backed on if feature is off.
+     * @return Endpoint to be fall backed on if feature is off.
      */
-    public String fallback() default "";
+    String fallback() default "";
 
     /**
-     * If true, feature will return the same value during the length of the request.
+     * @return If true, feature will return the same value during the length of the request.
      */
-    public boolean snapshot() default false;
+    boolean snapshot() default false;
 }
