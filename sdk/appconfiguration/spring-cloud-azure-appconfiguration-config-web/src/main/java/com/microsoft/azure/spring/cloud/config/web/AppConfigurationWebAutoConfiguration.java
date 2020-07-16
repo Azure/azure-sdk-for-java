@@ -31,9 +31,13 @@ public class AppConfigurationWebAutoConfiguration {
     // Pull based Refresh
 
     @Configuration
-    @ConditionalOnClass(name = {"org.springframework.boot.actuate.autoconfigure.endpoint.web.WebEndpointProperties",
-        "org.springframework.cloud.endpoint.RefreshEndpoint"})
-    public class AppConfigurationPushRefreshConfiguration {
+    @ConditionalOnClass(
+        name = {
+            "org.springframework.boot.actuate.autoconfigure.endpoint.web.WebEndpointProperties",
+            "org.springframework.cloud.endpoint.RefreshEndpoint"
+        }
+    )
+    public static class AppConfigurationPushRefreshConfiguration {
 
         @Bean
         public AppConfigurationRefreshEndpoint appConfigurationRefreshEndpoint(ContextRefresher contextRefresher,
