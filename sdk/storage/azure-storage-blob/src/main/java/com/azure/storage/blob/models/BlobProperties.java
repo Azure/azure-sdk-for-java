@@ -156,6 +156,7 @@ public final class BlobProperties {
      * @param isCurrentVersion Flag indicating if version identifier points to current version of the blob.
      * @param tagCount Number of tags associated with the blob.
      * @param objectReplicationStatus The object replication status map to parse.
+     * @param rehydratePriority The rehydrate priority
      */
     public BlobProperties(final OffsetDateTime creationTime, final OffsetDateTime lastModified, final String eTag,
         final long blobSize, final String contentType, final byte[] contentMd5, final String contentEncoding,
