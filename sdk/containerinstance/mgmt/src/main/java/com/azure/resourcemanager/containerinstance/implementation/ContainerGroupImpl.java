@@ -6,53 +6,39 @@
 
 package com.azure.resourcemanager.containerinstance.implementation;
 
+import com.azure.resourcemanager.authorization.implementation.RoleAssignmentHelper;
+import com.azure.resourcemanager.authorization.models.BuiltInRole;
 import com.azure.resourcemanager.containerinstance.ContainerInstanceManager;
+import com.azure.resourcemanager.containerinstance.fluent.inner.ContainerExecResponseInner;
+import com.azure.resourcemanager.containerinstance.fluent.inner.ContainerGroupInner;
 import com.azure.resourcemanager.containerinstance.models.Container;
 import com.azure.resourcemanager.containerinstance.models.ContainerExecRequest;
 import com.azure.resourcemanager.containerinstance.models.ContainerExecRequestTerminalSize;
+import com.azure.resourcemanager.containerinstance.models.ContainerExecResponse;
+import com.azure.resourcemanager.containerinstance.models.ContainerGroup;
 import com.azure.resourcemanager.containerinstance.models.ContainerGroupDiagnostics;
+import com.azure.resourcemanager.containerinstance.models.ContainerGroupIpAddressType;
 import com.azure.resourcemanager.containerinstance.models.ContainerGroupNetworkProfile;
 import com.azure.resourcemanager.containerinstance.models.ContainerGroupNetworkProtocol;
 import com.azure.resourcemanager.containerinstance.models.ContainerGroupRestartPolicy;
-import com.azure.resourcemanager.containerinstance.models.Event;
-import com.azure.resourcemanager.containerinstance.models.ImageRegistryCredential;
-import com.azure.resourcemanager.containerinstance.models.OperatingSystemTypes;
-import com.azure.resourcemanager.containerinstance.models.Port;
-import com.microsoft.azure.Resource;
-import com.microsoft.azure.management.apigeneration.LangDefinition;
-import com.azure.resourcemanager.containerinstance.models.ContainerExecResponse;
-import com.azure.resourcemanager.containerinstance.models.ContainerGroup;
-import com.azure.resourcemanager.containerinstance.models.ContainerGroupIpAddressType;
 import com.azure.resourcemanager.containerinstance.models.DnsConfiguration;
+import com.azure.resourcemanager.containerinstance.models.ImageRegistryCredential;
 import com.azure.resourcemanager.containerinstance.models.IpAddress;
 import com.azure.resourcemanager.containerinstance.models.LogAnalytics;
 import com.azure.resourcemanager.containerinstance.models.LogAnalyticsLogType;
-import com.azure.resourcemanager.containerinstance.models.ResourceIdentityType;
+import com.azure.resourcemanager.containerinstance.models.OperatingSystemTypes;
 import com.azure.resourcemanager.containerinstance.models.Volume;
-import com.microsoft.azure.management.graphrbac.BuiltInRole;
-import com.microsoft.azure.management.graphrbac.implementation.GraphRbacManager;
-import com.microsoft.azure.management.graphrbac.implementation.RoleAssignmentHelper;
-import com.microsoft.azure.management.msi.Identity;
-import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableParentResourceImpl;
-import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
-import com.microsoft.azure.management.resources.fluentcore.utils.SdkContext;
-import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
-import com.microsoft.azure.management.storage.StorageAccount;
-import com.microsoft.azure.management.storage.StorageAccountKey;
-import com.microsoft.azure.management.storage.implementation.StorageManager;
-import com.microsoft.azure.storage.CloudStorageAccount;
-import com.microsoft.azure.storage.file.CloudFileClient;
-import com.microsoft.azure.storage.file.CloudFileShare;
-import org.apache.commons.lang3.tuple.Triple;
-import rx.Completable;
-import rx.Observable;
-import rx.exceptions.Exceptions;
-import rx.functions.Action2;
-import rx.functions.Func0;
-import rx.functions.Func1;
+import com.azure.resourcemanager.msi.models.Identity;
+import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.GroupableParentResourceImpl;
+import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
+import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
+import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
+import com.azure.resourcemanager.storage.StorageManager;
+import com.azure.resourcemanager.storage.models.StorageAccount;
+import com.azure.resourcemanager.storage.models.StorageAccountKey;
+import reactor.core.Exceptions;
 
 import java.net.URISyntaxException;
-import java.security.InvalidKeyException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -61,20 +47,17 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.Callable;
 
 /**
  * Implementation for ContainerGroup and its create interfaces.
  */
-@LangDefinition
 public class ContainerGroupImpl
-        extends
-        GroupableParentResourceImpl<
-                ContainerGroup,
-                ContainerGroupInner,
-                ContainerGroupImpl,
-            ContainerInstanceManager>
-        implements ContainerGroup,
+    extends GroupableParentResourceImpl<
+        ContainerGroup,
+        ContainerGroupInner,
+        ContainerGroupImpl,
+        ContainerInstanceManager>
+    implements ContainerGroup,
         ContainerGroup.Definition,
         ContainerGroup.Update {
 

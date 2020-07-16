@@ -5,14 +5,13 @@
  */
 package com.azure.resourcemanager.containerinstance.implementation;
 
-import com.microsoft.azure.management.apigeneration.LangDefinition;
+import com.azure.resourcemanager.containerinstance.fluent.inner.ContainerExecResponseInner;
 import com.azure.resourcemanager.containerinstance.models.ContainerExecResponse;
-import com.microsoft.azure.management.resources.fluentcore.model.implementation.WrapperImpl;
+import com.azure.resourcemanager.resources.fluentcore.model.implementation.WrapperImpl;
 
 /**
  * Implementation for RegistryCredentials.
  */
-@LangDefinition
 public class ContainerExecResponseImpl extends WrapperImpl<ContainerExecResponseInner>
     implements ContainerExecResponse {
     protected ContainerExecResponseImpl(ContainerExecResponseInner innerObject) {

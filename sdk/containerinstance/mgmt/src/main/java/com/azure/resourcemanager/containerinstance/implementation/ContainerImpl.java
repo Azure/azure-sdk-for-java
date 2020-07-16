@@ -6,20 +6,19 @@
 package com.azure.resourcemanager.containerinstance.implementation;
 
 import com.azure.resourcemanager.containerinstance.models.Container;
+import com.azure.resourcemanager.containerinstance.models.ContainerGroup;
+import com.azure.resourcemanager.containerinstance.models.ContainerGroupIpAddressType;
 import com.azure.resourcemanager.containerinstance.models.ContainerGroupNetworkProtocol;
+import com.azure.resourcemanager.containerinstance.models.ContainerNetworkProtocol;
 import com.azure.resourcemanager.containerinstance.models.ContainerPort;
 import com.azure.resourcemanager.containerinstance.models.EnvironmentVariable;
 import com.azure.resourcemanager.containerinstance.models.GpuResource;
 import com.azure.resourcemanager.containerinstance.models.GpuSku;
-import com.azure.resourcemanager.containerinstance.models.Port;
-import com.azure.resourcemanager.containerinstance.models.VolumeMount;
-import com.microsoft.azure.management.apigeneration.LangDefinition;
-import com.azure.resourcemanager.containerinstance.models.ContainerGroup;
-import com.azure.resourcemanager.containerinstance.models.ContainerGroupIpAddressType;
-import com.azure.resourcemanager.containerinstance.models.ContainerNetworkProtocol;
 import com.azure.resourcemanager.containerinstance.models.IpAddress;
+import com.azure.resourcemanager.containerinstance.models.Port;
 import com.azure.resourcemanager.containerinstance.models.ResourceRequests;
 import com.azure.resourcemanager.containerinstance.models.ResourceRequirements;
+import com.azure.resourcemanager.containerinstance.models.VolumeMount;
 
 import java.util.ArrayList;
 import java.util.Map;
@@ -27,7 +26,6 @@ import java.util.Map;
 /**
  * Implementation for container group's container instance definition stages interface.
  */
-@LangDefinition
 class ContainerImpl implements
         ContainerGroup.DefinitionStages.ContainerInstanceDefinitionStages.ContainerInstanceDefinition<ContainerGroup.DefinitionStages.WithNextContainerInstance> {
     private Container innerContainer;

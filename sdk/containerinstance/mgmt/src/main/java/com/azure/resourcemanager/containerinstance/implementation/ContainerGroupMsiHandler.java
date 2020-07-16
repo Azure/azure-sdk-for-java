@@ -5,23 +5,16 @@
  */
 package com.azure.resourcemanager.containerinstance.implementation;
 
+import com.azure.resourcemanager.authorization.implementation.RoleAssignmentHelper;
+import com.azure.resourcemanager.containerinstance.fluent.inner.ContainerGroupInner;
 import com.azure.resourcemanager.containerinstance.models.ContainerGroupIdentity;
-import com.azure.resourcemanager.containerinstance.models.ContainerGroupIdentityUserAssignedIdentitiesValue;
-import com.azure.resourcemanager.containerinstance.models.ResourceIdentityType;
-import com.microsoft.azure.management.apigeneration.LangDefinition;
-import com.microsoft.azure.management.graphrbac.implementation.GraphRbacManager;
-import com.microsoft.azure.management.graphrbac.implementation.RoleAssignmentHelper;
-import com.microsoft.azure.management.resources.fluentcore.dag.TaskGroup;
-import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
-import com.microsoft.azure.management.msi.Identity;
+import com.azure.resourcemanager.resources.fluentcore.dag.TaskGroup;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 
-@LangDefinition
 class ContainerGroupMsiHandler extends RoleAssignmentHelper {
     private final ContainerGroupImpl containerGroup;
 

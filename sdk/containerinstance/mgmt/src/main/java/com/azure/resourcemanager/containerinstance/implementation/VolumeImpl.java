@@ -5,10 +5,9 @@
  */
 package com.azure.resourcemanager.containerinstance.implementation;
 
-import com.azure.resourcemanager.containerinstance.models.GitRepoVolume;
-import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.azure.resourcemanager.containerinstance.models.AzureFileVolume;
 import com.azure.resourcemanager.containerinstance.models.ContainerGroup;
+import com.azure.resourcemanager.containerinstance.models.GitRepoVolume;
 import com.azure.resourcemanager.containerinstance.models.Volume;
 
 import java.util.ArrayList;
@@ -17,7 +16,6 @@ import java.util.Map;
 /**
  * Implementation for container group's volume definition stages interface.
  */
-@LangDefinition
 class VolumeImpl implements ContainerGroup.DefinitionStages.VolumeDefinitionStages.VolumeDefinition<ContainerGroup.DefinitionStages.WithVolume> {
     private Volume innerVolume;
     private ContainerGroupImpl parent;

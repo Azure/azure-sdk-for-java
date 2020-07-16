@@ -6,49 +6,43 @@
 
 package com.azure.resourcemanager.containerinstance.implementation;
 
-
+import com.azure.resourcemanager.authorization.AuthorizationManager;
 import com.azure.resourcemanager.containerinstance.ContainerInstanceManager;
+import com.azure.resourcemanager.containerinstance.fluent.ContainerGroupsClient;
+import com.azure.resourcemanager.containerinstance.fluent.inner.CachedImagesListResultInner;
+import com.azure.resourcemanager.containerinstance.fluent.inner.CapabilitiesListResultInner;
+import com.azure.resourcemanager.containerinstance.fluent.inner.ContainerGroupInner;
+import com.azure.resourcemanager.containerinstance.fluent.inner.LogsInner;
 import com.azure.resourcemanager.containerinstance.models.CachedImages;
-import com.azure.resourcemanager.containerinstance.models.ContainerGroups;
-import com.azure.resourcemanager.containerinstance.models.Operation;
-import com.microsoft.azure.PagedList;
-import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.azure.resourcemanager.containerinstance.models.Capabilities;
 import com.azure.resourcemanager.containerinstance.models.ContainerGroup;
-import com.microsoft.azure.management.graphrbac.implementation.GraphRbacManager;
-import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.TopLevelModifiableResourcesImpl;
-import com.microsoft.azure.management.resources.fluentcore.utils.PagedListConverter;
-import com.microsoft.azure.management.storage.implementation.StorageManager;
-import rx.Completable;
-import rx.Observable;
-import rx.functions.Func1;
+import com.azure.resourcemanager.containerinstance.models.ContainerGroups;
+import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.TopLevelModifiableResourcesImpl;
+import com.azure.resourcemanager.resources.fluentcore.utils.PagedList;
+import com.azure.resourcemanager.storage.StorageManager;
 
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 /**
  * Implementation for ContainerGroups.
  */
-@LangDefinition
 public class ContainerGroupsImpl
-        extends
-        TopLevelModifiableResourcesImpl<
-                ContainerGroup,
-                ContainerGroupImpl,
-                ContainerGroupInner,
-                ContainerGroupsInner,
-            ContainerInstanceManager>
-        implements ContainerGroups {
+    extends TopLevelModifiableResourcesImpl<
+        ContainerGroup,
+        ContainerGroupImpl,
+        ContainerGroupInner,
+        ContainerGroupsClient,
+        ContainerInstanceManager>
+    implements ContainerGroups {
 
     private final StorageManager storageManager;
-    private final GraphRbacManager rbacManager;
+    private final AuthorizationManager authorizationManager;
 
-    protected ContainerGroupsImpl(final ContainerInstanceManager manager, final StorageManager storageManager, final GraphRbacManager rbacManager) {
-        super(manager.inner().containerGroups(), manager);
+    public ContainerGroupsImpl(final ContainerInstanceManager manager, final StorageManager storageManager, final AuthorizationManager authorizationManager) {
+        super(manager.inner().getContainerGroups(), manager);
         this.storageManager = storageManager;
-        this.rbacManager = rbacManager;
+        this.authorizationManager = authorizationManager;
     }
 
     @Override
