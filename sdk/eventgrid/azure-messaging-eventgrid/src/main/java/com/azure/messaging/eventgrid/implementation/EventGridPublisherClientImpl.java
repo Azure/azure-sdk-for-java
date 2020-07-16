@@ -24,11 +24,9 @@ import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
-import com.azure.messaging.eventgrid.models.CloudEvent;
-import com.azure.messaging.eventgrid.models.EventGridEvent;
-
+import com.azure.messaging.eventgrid.implementation.models.CloudEvent;
+import com.azure.messaging.eventgrid.implementation.models.EventGridEvent;
 import java.util.List;
-
 import reactor.core.publisher.Mono;
 
 /** Initializes a new instance of the EventGridPublisherClient type. */
@@ -41,6 +39,7 @@ public final class EventGridPublisherClientImpl {
 
     /**
      * Gets Api Version.
+     *
      * @return the apiVersion value.
      */
     public String getApiVersion() {
@@ -52,6 +51,7 @@ public final class EventGridPublisherClientImpl {
 
     /**
      * Gets The HTTP pipeline to send requests through.
+     *
      * @return the httpPipeline value.
      */
     public HttpPipeline getHttpPipeline() {
@@ -65,6 +65,7 @@ public final class EventGridPublisherClientImpl {
 
     /**
      * Initializes an instance of EventGridPublisherClient client.
+     *
      * @param httpPipeline The HTTP pipeline to send requests through.
      */
     EventGridPublisherClientImpl(HttpPipeline httpPipeline) {
@@ -78,42 +79,42 @@ public final class EventGridPublisherClientImpl {
      * REST calls.
      */
     @Host("https://{topicHostname}")
-    @ServiceInterface(name = "EventGridPublisherClient")
+    @ServiceInterface(name = "EventGridPublisherCl")
     private interface EventGridPublisherClientService {
         @Post("/api/events")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> publishEvents(
-            @HostParam("topicHostname") String topicHostname,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") List<EventGridEvent> events);
+                @HostParam("topicHostname") String topicHostname,
+                @QueryParam("api-version") String apiVersion,
+                @BodyParam("application/json") List<EventGridEvent> events);
 
         @Post("/api/events")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> publishCloudEventEvents(
-            @HostParam("topicHostname") String topicHostname,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/cloudevents-batch+json; charset=utf-8") List<CloudEvent> events);
+                @HostParam("topicHostname") String topicHostname,
+                @QueryParam("api-version") String apiVersion,
+                @BodyParam("application/cloudevents-batch+json; charset=utf-8") List<CloudEvent> events);
 
         @Post("/api/events")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> publishCustomEventEvents(
-            @HostParam("topicHostname") String topicHostname,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") List<Object> events);
+                @HostParam("topicHostname") String topicHostname,
+                @QueryParam("api-version") String apiVersion,
+                @BodyParam("application/json") List<Object> events);
     }
 
     /**
      * Publishes a batch of events to an Azure Event Grid topic.
-     * @param topicHostname simple string.
-     * @param events        Array of EventGridEvent.
      *
-     * @return the completion.
+     * @param topicHostname simple string.
+     * @param events Array of EventGridEvent.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException    thrown if the request is rejected by server.
-     * @throws RuntimeException         all other wrapped checked exceptions if the request fails to be sent.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> publishEventsWithResponseAsync(String topicHostname, List<EventGridEvent> events) {
@@ -122,13 +123,13 @@ public final class EventGridPublisherClientImpl {
 
     /**
      * Publishes a batch of events to an Azure Event Grid topic.
-     * @param topicHostname simple string.
-     * @param events        Array of EventGridEvent.
      *
-     * @return the completion.
+     * @param topicHostname simple string.
+     * @param events Array of EventGridEvent.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException    thrown if the request is rejected by server.
-     * @throws RuntimeException         all other wrapped checked exceptions if the request fails to be sent.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> publishEventsAsync(String topicHostname, List<EventGridEvent> events) {
@@ -137,45 +138,45 @@ public final class EventGridPublisherClientImpl {
 
     /**
      * Publishes a batch of events to an Azure Event Grid topic.
-     * @param topicHostname simple string.
-     * @param events        Array of CloudEventEvent.
      *
-     * @return the completion.
+     * @param topicHostname simple string.
+     * @param events Array of CloudEventEvent.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException    thrown if the request is rejected by server.
-     * @throws RuntimeException         all other wrapped checked exceptions if the request fails to be sent.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> publishCloudEventEventsWithResponseAsync(
-        String topicHostname, List<CloudEvent> events) {
+            String topicHostname, List<CloudEvent> events) {
         return service.publishCloudEventEvents(topicHostname, this.getApiVersion(), events);
     }
 
     /**
      * Publishes a batch of events to an Azure Event Grid topic.
-     * @param topicHostname simple string.
-     * @param events        Array of CloudEventEvent.
      *
-     * @return the completion.
+     * @param topicHostname simple string.
+     * @param events Array of CloudEventEvent.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException    thrown if the request is rejected by server.
-     * @throws RuntimeException         all other wrapped checked exceptions if the request fails to be sent.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> publishCloudEventEventsAsync(String topicHostname, List<CloudEvent> events) {
         return publishCloudEventEventsWithResponseAsync(topicHostname, events)
-            .flatMap((Response<Void> res) -> Mono.empty());
+                .flatMap((Response<Void> res) -> Mono.empty());
     }
 
     /**
      * Publishes a batch of events to an Azure Event Grid topic.
-     * @param topicHostname simple string.
-     * @param events        Array of any.
      *
-     * @return the completion.
+     * @param topicHostname simple string.
+     * @param events Array of any.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException    thrown if the request is rejected by server.
-     * @throws RuntimeException         all other wrapped checked exceptions if the request fails to be sent.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> publishCustomEventEventsWithResponseAsync(String topicHostname, List<Object> events) {
@@ -184,17 +185,17 @@ public final class EventGridPublisherClientImpl {
 
     /**
      * Publishes a batch of events to an Azure Event Grid topic.
-     * @param topicHostname simple string.
-     * @param events        Array of any.
      *
-     * @return the completion.
+     * @param topicHostname simple string.
+     * @param events Array of any.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException    thrown if the request is rejected by server.
-     * @throws RuntimeException         all other wrapped checked exceptions if the request fails to be sent.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> publishCustomEventEventsAsync(String topicHostname, List<Object> events) {
         return publishCustomEventEventsWithResponseAsync(topicHostname, events)
-            .flatMap((Response<Void> res) -> Mono.empty());
+                .flatMap((Response<Void> res) -> Mono.empty());
     }
 }
