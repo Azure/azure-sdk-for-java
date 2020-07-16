@@ -4,8 +4,8 @@
     <parent>
         <groupId>com.azure.resourcemanager</groupId>
         <artifactId>azure-resourcemanager-parent</artifactId>
-        <version>2.0.0-SNAPSHOT</version>
-        <relativePath>../../management/pom.xml</relativePath>
+        <version>2.0.0-beta.1</version>
+        <relativePath>../azure-resourcemanager-parent</relativePath>
     </parent>
 
     <artifactId>azure-resourcemanager-msi</artifactId>
@@ -45,12 +45,12 @@
         <dependency>
             <groupId>com.azure.resourcemanager</groupId>
             <artifactId>azure-resourcemanager-resources</artifactId>
-            <version>2.0.0-SNAPSHOT</version>
+            <version>2.0.0-beta.1</version>
         </dependency>
         <dependency>
             <groupId>com.azure.resourcemanager</groupId>
             <artifactId>azure-resourcemanager-authorization</artifactId>
-            <version>2.0.0-SNAPSHOT</version>
+            <version>2.0.0-beta.1</version>
         </dependency>
         <dependency>
             <groupId>org.junit.jupiter</groupId>
@@ -70,7 +70,7 @@
         <dependency>
             <groupId>com.azure.resourcemanager</groupId>
             <artifactId>azure-resourcemanager-storage</artifactId>
-            <version>2.0.0-SNAPSHOT</version>
+            <version>2.0.0-beta.1</version>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -91,7 +91,7 @@
                 <dependency>
                     <groupId>com.azure.resourcemanager</groupId>
                     <artifactId>azure-resourcemanager-resources</artifactId>
-                    <version>2.0.0-SNAPSHOT</version>
+                    <version>2.0.0-beta.1</version>
                     <type>test-jar</type>
                     <scope>test</scope>
                 </dependency>
