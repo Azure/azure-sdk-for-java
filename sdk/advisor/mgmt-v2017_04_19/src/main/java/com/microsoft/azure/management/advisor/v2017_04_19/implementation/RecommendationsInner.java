@@ -339,7 +339,7 @@ public class RecommendationsInner {
     /**
      * Obtains cached recommendations for a subscription. The recommendations are generated or computed by invoking generateRecommendations.
      *
-     * @param filter The filter to apply to the recommendations.
+     * @param filter The filter to apply to the recommendations.&lt;br&gt;Filter can be applied to properties ['ResourceId', 'ResourceGroup', 'RecommendationTypeGuid', '[Category](#category)'] with operators ['eq', 'and', 'or'].&lt;br&gt;Example:&lt;br&gt;- $filter=Category eq 'Cost' and ResourceGroup eq 'MyResourceGroup'
      * @param top The number of recommendations per page if a paged version of this API is being used.
      * @param skipToken The page-continuation token to use with a paged version of this API.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -360,7 +360,7 @@ public class RecommendationsInner {
     /**
      * Obtains cached recommendations for a subscription. The recommendations are generated or computed by invoking generateRecommendations.
      *
-     * @param filter The filter to apply to the recommendations.
+     * @param filter The filter to apply to the recommendations.&lt;br&gt;Filter can be applied to properties ['ResourceId', 'ResourceGroup', 'RecommendationTypeGuid', '[Category](#category)'] with operators ['eq', 'and', 'or'].&lt;br&gt;Example:&lt;br&gt;- $filter=Category eq 'Cost' and ResourceGroup eq 'MyResourceGroup'
      * @param top The number of recommendations per page if a paged version of this API is being used.
      * @param skipToken The page-continuation token to use with a paged version of this API.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
@@ -382,7 +382,7 @@ public class RecommendationsInner {
     /**
      * Obtains cached recommendations for a subscription. The recommendations are generated or computed by invoking generateRecommendations.
      *
-     * @param filter The filter to apply to the recommendations.
+     * @param filter The filter to apply to the recommendations.&lt;br&gt;Filter can be applied to properties ['ResourceId', 'ResourceGroup', 'RecommendationTypeGuid', '[Category](#category)'] with operators ['eq', 'and', 'or'].&lt;br&gt;Example:&lt;br&gt;- $filter=Category eq 'Cost' and ResourceGroup eq 'MyResourceGroup'
      * @param top The number of recommendations per page if a paged version of this API is being used.
      * @param skipToken The page-continuation token to use with a paged version of this API.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -401,7 +401,7 @@ public class RecommendationsInner {
     /**
      * Obtains cached recommendations for a subscription. The recommendations are generated or computed by invoking generateRecommendations.
      *
-     * @param filter The filter to apply to the recommendations.
+     * @param filter The filter to apply to the recommendations.&lt;br&gt;Filter can be applied to properties ['ResourceId', 'ResourceGroup', 'RecommendationTypeGuid', '[Category](#category)'] with operators ['eq', 'and', 'or'].&lt;br&gt;Example:&lt;br&gt;- $filter=Category eq 'Cost' and ResourceGroup eq 'MyResourceGroup'
      * @param top The number of recommendations per page if a paged version of this API is being used.
      * @param skipToken The page-continuation token to use with a paged version of this API.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -424,7 +424,7 @@ public class RecommendationsInner {
     /**
      * Obtains cached recommendations for a subscription. The recommendations are generated or computed by invoking generateRecommendations.
      *
-    ServiceResponse<PageImpl<ResourceRecommendationBaseInner>> * @param filter The filter to apply to the recommendations.
+    ServiceResponse<PageImpl<ResourceRecommendationBaseInner>> * @param filter The filter to apply to the recommendations.&lt;br&gt;Filter can be applied to properties ['ResourceId', 'ResourceGroup', 'RecommendationTypeGuid', '[Category](#category)'] with operators ['eq', 'and', 'or'].&lt;br&gt;Example:&lt;br&gt;- $filter=Category eq 'Cost' and ResourceGroup eq 'MyResourceGroup'
     ServiceResponse<PageImpl<ResourceRecommendationBaseInner>> * @param top The number of recommendations per page if a paged version of this API is being used.
     ServiceResponse<PageImpl<ResourceRecommendationBaseInner>> * @param skipToken The page-continuation token to use with a paged version of this API.
      * @throws IllegalArgumentException thrown if parameters fail the validation
