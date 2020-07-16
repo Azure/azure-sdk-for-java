@@ -34,12 +34,4 @@
     <module>sdk/textanalytics</module>
     <module>sdk/spring</module>
   </modules>
-    <dependencies>
-        <dependency>
-            <groupId>com.azure</groupId>
-            <artifactId>azure-core-experimental</artifactId>
-            <version>12.8.0-beta.2</version>
-            <scope>compile</scope>
-        </dependency>
-    </dependencies>
 </project>
