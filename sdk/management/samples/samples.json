@@ -850,6 +850,12 @@
       "filePath": "azure-samples/src/main/java/com/microsoft/azure/management/appservice/samples/ManageLinuxFunctionAppSourceControl.java",
       "githubPath": "Azure-Samples/app-service-java-configure-deployment-sources-for-functions-on-linux",
       "description": "Getting started on configuring deployment sources for Functions on Linux using Java"
+    },
+    {
+      "owner": "yaohaizh",
+      "filePath": "azure-samples/src/main/java/com/microsoft/azure/management/appplatform/samples/ManageSpringCloud.java",
+      "githubPath": "Azure-Samples/app-platform-java-manage-spring-cloud",
+      "description": "Getting started on managing spring cloud using Java"
     }
   ]
 }
