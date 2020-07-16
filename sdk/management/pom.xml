@@ -466,7 +466,6 @@
         </profile>
     </profiles>
     <modules>
-        <module>./azure</module>
         <module>../appservice/mgmt</module>
         <module>../appplatform/mgmt</module>
         <module>../compute/mgmt</module>
