@@ -1,8 +1,9 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.search.documents.implementation;
+package com.azure.search.documents.serializer.implementation;
 
+import com.azure.search.documents.serializer.jackson.implementation.Iso8601DateSerializer;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -17,7 +18,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.TimeZone;
 
-import static com.azure.search.documents.TestHelpers.assertDateEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class Iso8601DeserializerTests {
@@ -70,8 +70,8 @@ public class Iso8601DeserializerTests {
         Date actual1 = obj.get(0);
         Date actual2 = obj.get(1);
 
-        assertDateEquals(expected1, actual1);
-        assertDateEquals(expected2, actual2);
+        TestHelpers.assertDateEquals(expected1, actual1);
+        TestHelpers.assertDateEquals(expected2, actual2);
     }
 
     @Test

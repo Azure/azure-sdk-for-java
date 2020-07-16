@@ -286,7 +286,7 @@ public class LookupSyncTests extends SearchTestBase {
         // Select only the fields set in the test case so we don't get superfluous data back.
         List<String> selectedFields = Arrays.asList("HotelId", "LastRenovationDate", "Location", "Rooms/BaseRate");
         assertMapEquals(expectedDoc, client.getDocumentWithResponse("1", SearchDocument.class, selectedFields,
-            Context.NONE).getValue(), false, "properties");
+            Context.NONE).getValue(), true, "boundingBox", "properties");
     }
 
     @Test

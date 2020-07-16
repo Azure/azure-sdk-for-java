@@ -5,8 +5,6 @@ package com.azure.search.documents;
 
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
-import com.azure.core.util.serializer.JacksonAdapter;
-import com.azure.search.documents.implementation.SerializationUtil;
 import com.azure.search.documents.indexes.SearchIndexClient;
 import com.azure.search.documents.indexes.models.SearchField;
 import com.azure.search.documents.indexes.models.SearchFieldDataType;
@@ -25,7 +23,6 @@ import com.azure.search.documents.test.environment.models.Hotel;
 import com.azure.search.documents.test.environment.models.NonNullableModel;
 import com.azure.search.documents.util.SearchPagedIterable;
 import com.azure.search.documents.util.SearchPagedResponse;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 
 import java.net.HttpURLConnection;
@@ -47,6 +44,7 @@ import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import static com.azure.search.documents.TestHelpers.SERIALIZER;
 import static com.azure.search.documents.TestHelpers.assertHttpResponseException;
 import static com.azure.search.documents.TestHelpers.assertMapEquals;
 import static com.azure.search.documents.TestHelpers.assertObjectEquals;
@@ -234,9 +232,7 @@ public class SearchSyncTests extends SearchTestBase {
                 actualResults.add(hotel);
             });
         }
-        ObjectMapper mapper = new JacksonAdapter().serializer();
-        SerializationUtil.configureMapper(mapper);
-        List<Hotel> hotelsList = hotels.stream().map(hotel -> mapper.convertValue(hotel, Hotel.class))
+        List<Hotel> hotelsList = hotels.stream().map(hotel -> SERIALIZER.convertValue(hotel, Hotel.class))
             .collect(Collectors.toList());
 
         assertEquals(hotelsList.size(), actualResults.size());

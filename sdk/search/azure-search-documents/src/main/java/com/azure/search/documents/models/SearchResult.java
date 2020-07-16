@@ -4,13 +4,11 @@
 package com.azure.search.documents.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.search.documents.SearchDocument;
-import com.azure.search.documents.implementation.SerializationUtil;
+import com.azure.search.documents.serializer.SearchSerializer;
+import com.azure.search.documents.serializer.SearchSerializerProviders;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.util.List;
 import java.util.Map;
@@ -20,12 +18,7 @@ import java.util.Map;
  */
 @Fluent
 public final class SearchResult {
-    private static final ObjectMapper MAPPER;
-    static {
-        MAPPER = new JacksonAdapter().serializer();
-        SerializationUtil.configureMapper(MAPPER);
-        MAPPER.setSerializationInclusion(JsonInclude.Include.ALWAYS);
-    }
+    private static final SearchSerializer SERIALIZER = SearchSerializerProviders.createInstance();
 
     /*
      * Unmatched properties from the message are deserialized this collection
@@ -69,7 +62,7 @@ public final class SearchResult {
      * @return the additionalProperties value.
      */
     public <T> T getDocument(Class<T> modelClass) {
-        return MAPPER.convertValue(this.additionalProperties, modelClass);
+        return SERIALIZER.convertValue(this.additionalProperties, modelClass);
     }
 
     /**

@@ -6,20 +6,20 @@ package com.azure.core.serializer.json.jackson;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
- * Fluent builder class that configures and instantiates instances of {@link JacksonJsonSerializer}.
+ * Fluent builder class that configures and instantiates instances of {@link JacksonSearchSerializer}.
  */
 public final class JacksonJsonSerializerBuilder {
     private ObjectMapper objectMapper;
 
     /**
-     * Constructs a new instance of {@link JacksonJsonSerializer} with the configurations set in this builder.
+     * Constructs a new instance of {@link JacksonSearchSerializer} with the configurations set in this builder.
      *
-     * @return A new instance of {@link JacksonJsonSerializer}.
+     * @return A new instance of {@link JacksonSearchSerializer}.
      */
-    public JacksonJsonSerializer build() {
+    public JacksonSearchSerializer build() {
         return (objectMapper == null)
-            ? new JacksonJsonSerializer(new ObjectMapper())
-            : new JacksonJsonSerializer(objectMapper);
+            ? new JacksonSearchSerializer(new ObjectMapper())
+            : new JacksonSearchSerializer(objectMapper);
     }
 
     /**

@@ -20,7 +20,7 @@ import java.util.Map;
 /**
  * Deserializes a JSON object into a {@link Geometry}.
  */
-final class GeometryDeserializer extends JsonDeserializer<Geometry> {
+public final class GeometryDeserializer extends JsonDeserializer<Geometry> {
     private static final ClientLogger LOGGER = new ClientLogger(GeometryDeserializer.class);
 
     /*
@@ -58,6 +58,10 @@ final class GeometryDeserializer extends JsonDeserializer<Geometry> {
             .addDeserializer(MultiLineGeometry.class, geometrySubclassDeserializer(MultiLineGeometry.class))
             .addDeserializer(MultiPolygonGeometry.class, geometrySubclassDeserializer(MultiPolygonGeometry.class))
             .addDeserializer(CollectionGeometry.class, geometrySubclassDeserializer(CollectionGeometry.class));
+    }
+
+    public static SimpleModule getModule() {
+        return MODULE;
     }
 
     @Override

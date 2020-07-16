@@ -28,7 +28,7 @@ public class GeometrySerializerTests {
     private static final ObjectMapper MAPPER;
 
     static {
-        MAPPER = new ObjectMapper().registerModule(GeometrySerializer.MODULE);
+        MAPPER = new ObjectMapper().registerModule(GeometrySerializer.getModule());
     }
 
     @Test

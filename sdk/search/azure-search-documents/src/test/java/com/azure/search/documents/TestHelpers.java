@@ -11,8 +11,9 @@ import com.azure.core.test.TestMode;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
-import com.azure.search.documents.implementation.SerializationUtil;
-import com.fasterxml.jackson.core.type.TypeReference;
+import com.azure.search.documents.serializer.SearchSerializer;
+import com.azure.search.documents.serializer.SearchSerializerProviders;
+import com.azure.search.documents.serializer.SearchType;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -22,7 +23,6 @@ import reactor.test.StepVerifier;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
-import java.io.UncheckedIOException;
 import java.net.HttpURLConnection;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
@@ -53,6 +53,7 @@ public final class TestHelpers {
     public static final String BLOB_DATASOURCE_TEST_NAME = "azs-java-test-blob";
     public static final String SQL_DATASOURCE_NAME = "azs-java-test-sql";
     public static final String ISO8601_FORMAT = "yyyy-MM-dd'T'HH:mm:ss'Z'";
+    public static final SearchSerializer SERIALIZER = SearchSerializerProviders.createInstance();
 
     public static PointGeometry createPointGeometry(Double latitude, Double longitude) {
         return new PointGeometry(new GeometryPosition(longitude, latitude), null,
@@ -64,12 +65,6 @@ public final class TestHelpers {
         }));
     }
 
-    private static final ObjectMapper MAPPER;
-
-    static {
-        MAPPER = new JacksonAdapter().serializer();
-        SerializationUtil.configureMapper(MAPPER);
-    }
     /**
      * Assert whether two objects are equal.
      *
@@ -294,10 +289,6 @@ public final class TestHelpers {
     private static List<Map<String, Object>> readJsonFileToList(String filename) {
         Reader reader = new InputStreamReader(Objects.requireNonNull(TestHelpers.class.getClassLoader()
             .getResourceAsStream(filename)));
-        try {
-            return MAPPER.readValue(reader, new TypeReference<List<Map<String, Object>>>() { });
-        } catch (IOException e) {
-            throw new UncheckedIOException(e);
-        }
+        return SERIALIZER.readValue(reader, new SearchType<List<Map<String, Object>>>() { });
     }
 }

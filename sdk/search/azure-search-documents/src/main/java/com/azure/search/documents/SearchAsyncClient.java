@@ -12,10 +12,8 @@ import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.ServiceVersion;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.search.documents.implementation.SearchIndexClientImpl;
 import com.azure.search.documents.implementation.SearchIndexClientImplBuilder;
-import com.azure.search.documents.implementation.SerializationUtil;
 import com.azure.search.documents.implementation.converters.AutocompleteModeConverter;
 import com.azure.search.documents.implementation.converters.FacetResultConverter;
 import com.azure.search.documents.implementation.converters.IndexBatchBaseConverter;
@@ -47,15 +45,16 @@ import com.azure.search.documents.models.SearchOptions;
 import com.azure.search.documents.models.SearchResult;
 import com.azure.search.documents.models.SuggestOptions;
 import com.azure.search.documents.models.SuggestResult;
+import com.azure.search.documents.serializer.SearchSerializer;
+import com.azure.search.documents.serializer.SearchSerializerProviders;
+import com.azure.search.documents.serializer.SearchType;
+import com.azure.search.documents.serializer.SerializationInclusion;
 import com.azure.search.documents.util.AutocompletePagedFlux;
 import com.azure.search.documents.util.AutocompletePagedResponse;
 import com.azure.search.documents.util.SearchPagedFlux;
 import com.azure.search.documents.util.SearchPagedResponse;
 import com.azure.search.documents.util.SuggestPagedFlux;
 import com.azure.search.documents.util.SuggestPagedResponse;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
@@ -111,20 +110,11 @@ public final class SearchAsyncClient {
      */
     private final HttpPipeline httpPipeline;
 
-    private static final ObjectMapper MAPPER;
-
-    static {
-        MAPPER = new JacksonAdapter().serializer();
-        SerializationUtil.configureMapper(MAPPER);
-        MAPPER.setSerializationInclusion(JsonInclude.Include.ALWAYS);
-    }
-
     /**
      * Package private constructor to be used by {@link SearchClientBuilder}
      */
     SearchAsyncClient(String endpoint, String indexName, SearchServiceVersion serviceVersion,
         HttpPipeline httpPipeline) {
-
         this.endpoint = endpoint;
         this.indexName = indexName;
         this.serviceVersion = serviceVersion;
@@ -537,13 +527,14 @@ public final class SearchAsyncClient {
                 .getWithResponseAsync(key, selectedFields, null, context)
                 .onErrorMap(DocumentResponseConversions::exceptionMapper)
                 .map(res -> {
+                    SearchSerializer SERIALIZER = SearchSerializerProviders.createInstance();
                     if (SearchDocument.class == modelClass) {
-                        TypeReference<Map<String, Object>> typeReference = new TypeReference<Map<String, Object>>() {
-                        };
-                        SearchDocument doc = new SearchDocument(MAPPER.convertValue(res.getValue(), typeReference));
+                        SearchType<Map<String, Object>> typeReference = new SearchType<Map<String, Object>>() {};
+                        SearchDocument doc = new SearchDocument(SERIALIZER.convertValue(res.getValue(), typeReference,
+                            SerializationInclusion.ALWAYS));
                         return new SimpleResponse<T>(res, (T) doc);
                     }
-                    T document = MAPPER.convertValue(res.getValue(), modelClass);
+                    T document = SERIALIZER.convertValue(res.getValue(), modelClass, SerializationInclusion.ALWAYS);
                     return new SimpleResponse<>(res, document);
                 })
                 .map(Function.identity());

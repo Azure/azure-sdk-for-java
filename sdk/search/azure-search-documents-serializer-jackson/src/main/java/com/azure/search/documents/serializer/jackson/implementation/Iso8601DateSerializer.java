@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.search.documents.implementation;
+package com.azure.search.documents.serializer.jackson.implementation;
 
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.JsonSerializer;
@@ -16,7 +16,7 @@ import java.util.Date;
 /**
  * Custom serializer to serialize {@link java.util.Date} to Iso8601 standard date format "yyyy-MM-dd'T'hh:mm:ss.SSS'Z'".
  */
-final class Iso8601DateSerializer extends JsonSerializer<Date> {
+public final class Iso8601DateSerializer extends JsonSerializer<Date> {
 
     /**
      * Gets a module wrapping this serializer as an adapter for the Jackson

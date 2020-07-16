@@ -8,14 +8,12 @@ import com.azure.core.util.Context;
 import com.azure.search.documents.SearchClient;
 import com.azure.search.documents.SearchDocument;
 import com.azure.search.documents.SearchTestBase;
-import com.azure.search.documents.implementation.SerializationUtil;
 import com.azure.search.documents.indexes.models.SearchField;
 import com.azure.search.documents.indexes.models.SearchFieldDataType;
 import com.azure.search.documents.indexes.models.SearchIndex;
+import com.azure.search.documents.serializer.SearchType;
 import com.azure.search.documents.util.SearchPagedIterable;
 import com.azure.search.documents.util.SearchPagedResponse;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 
 import java.io.InputStreamReader;
@@ -28,6 +26,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
+import static com.azure.search.documents.TestHelpers.SERIALIZER;
 import static com.azure.search.documents.TestHelpers.assertObjectEquals;
 import static com.azure.search.documents.TestHelpers.createPointGeometry;
 import static com.azure.search.documents.TestHelpers.waitForIndexing;
@@ -39,15 +38,12 @@ public class GeoPointTests extends SearchTestBase {
 
     private SearchClient client;
 
-    private void uploadDocuments() throws Exception {
+    private void uploadDocuments() {
         Reader docsData = new InputStreamReader(Objects.requireNonNull(getClass().getClassLoader()
             .getResourceAsStream(GeoPointTests.DATA_JSON_HOTELS)));
 
-        ObjectMapper mapper = new ObjectMapper();
-        SerializationUtil.configureMapper(mapper);
-        List<Map<String, Object>> documents = mapper.readValue(docsData,
-            new TypeReference<List<Map<String, Object>>>() {
-            });
+        List<Map<String, Object>> documents = SERIALIZER.readValue(docsData,
+            new SearchType<List<Map<String, Object>>>() {});
         client.uploadDocuments(documents);
 
         waitForIndexing();

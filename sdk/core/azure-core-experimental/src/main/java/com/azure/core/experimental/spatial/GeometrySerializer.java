@@ -17,14 +17,19 @@ import java.util.Map;
 /**
  * Serializes a {@link Geometry} into JSON.
  */
-final class GeometrySerializer extends JsonSerializer<Geometry> {
+public final class GeometrySerializer extends JsonSerializer<Geometry> {
     private static final ClientLogger LOGGER = new ClientLogger(GeometrySerializer.class);
 
-    static final SimpleModule MODULE;
-
-    static {
-        MODULE = new SimpleModule();
-        MODULE.addSerializer(Geometry.class, new GeometrySerializer());
+    /**
+     * Gets a module wrapping this serializer as an adapter for the Jackson
+     * ObjectMapper.
+     *
+     * @return a simple module to be plugged onto Jackson ObjectMapper.
+     */
+    public static SimpleModule getModule() {
+        SimpleModule module = new SimpleModule();
+        module.addSerializer(Geometry.class, new GeometrySerializer());
+        return module;
     }
 
     @Override
