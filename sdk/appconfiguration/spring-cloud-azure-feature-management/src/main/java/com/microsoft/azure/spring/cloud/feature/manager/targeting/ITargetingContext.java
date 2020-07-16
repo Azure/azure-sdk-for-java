@@ -9,21 +9,21 @@ public interface ITargetingContext {
     /**
      * @return the userId
      */
-    public String getUserId();
+    String getUserId();
 
     /**
      * @param userId the userId to set
      */
-    public void setUserId(String userId);
+    void setUserId(String userId);
 
     /**
      * @return the groups
      */
-    public List<String> getGroups();
+    List<String> getGroups();
 
     /**
      * @param groups the groups to set
      */
-    public void setGroups(List<String> groups);
+    void setGroups(List<String> groups);
 
 }

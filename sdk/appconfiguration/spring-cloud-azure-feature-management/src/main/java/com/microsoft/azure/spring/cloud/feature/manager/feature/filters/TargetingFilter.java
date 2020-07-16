@@ -37,7 +37,7 @@ public class TargetingFilter implements FeatureFilter {
     private static final String OUT_OF_RANGE = "The value is out of the accepted range.";
 
     private static final String REQUIRED_PARAMETER = "Value cannot be null.";
-    private static final ObjectMapper mapper = new ObjectMapper()
+    private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper()
         .configure(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES, true);
     private final ITargetingContextAccessor contextAccessor;
     private final TargetingEvaluationOptions options;
@@ -79,16 +79,18 @@ public class TargetingFilter implements FeatureFilter {
             this.<String>updateValueFromMapToList(parameters, USERS);
             updateValueFromMapToList(parameters, GROUPS);
 
-            settings.setAudience(mapper.convertValue(parameters, Audience.class));
+            settings.setAudience(OBJECT_MAPPER.convertValue(parameters, Audience.class));
         }
 
         tryValidateSettings(settings);
 
         Audience audience = settings.getAudience();
 
-        if (targetingContext.getUserId() != null && audience.getUsers() != null &&
-            audience.getUsers().stream()
-                .anyMatch(user -> compairStrings(targetingContext.getUserId(), user))) {
+        if (targetingContext.getUserId() != null
+            && audience.getUsers() != null
+            && audience.getUsers().stream()
+                .anyMatch(user -> compairStrings(targetingContext.getUserId(), user))
+        ) {
             return true;
         }
 

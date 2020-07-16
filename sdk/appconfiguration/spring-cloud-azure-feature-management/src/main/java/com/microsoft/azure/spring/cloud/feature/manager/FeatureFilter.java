@@ -17,6 +17,6 @@ public interface FeatureFilter {
      * @param context The context for whether or not the filter is passed.
      * @return True if the feature is enabled, false otherwise.
      */
-    public boolean evaluate(FeatureFilterEvaluationContext context);
+    boolean evaluate(FeatureFilterEvaluationContext context);
 
 }
