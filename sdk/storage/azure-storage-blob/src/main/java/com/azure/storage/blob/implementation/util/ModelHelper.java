@@ -283,7 +283,7 @@ public class ModelHelper {
         }
         return objectReplicationSourcePolicies;
     }
-    
+
     /**
      * Transforms {@link RequestConditions} into a public {@link BlobLeaseRequestConditions}.
      *
@@ -300,6 +300,6 @@ public class ModelHelper {
             .setIfNoneMatch(requestConditions.getIfNoneMatch())
             .setIfModifiedSince(requestConditions.getIfModifiedSince())
             .setIfUnmodifiedSince(requestConditions.getIfUnmodifiedSince())
-            .setIfTagsMatch(null);
+            .setTagsCondition(null);
     }
 }
