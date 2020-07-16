@@ -214,7 +214,7 @@ public final class FormRecognizerAsyncClient {
                             parseModelId(response.getDeserializedHeaders().getOperationLocation()))),
                     form, recognizeOptions.getContentType()),
                 pollingOperation(
-                    resultUid -> service.getAnalyzeFormResultWithResponseAsync(UUID.fromString(modelId), resultUid)),
+                    resultUuid -> service.getAnalyzeFormResultWithResponseAsync(UUID.fromString(modelId), resultUuid)),
                 (activationResponse, context) -> Mono.error(new RuntimeException("Cancellation is not supported")),
                 fetchingOperation(
                     resultId -> service.getAnalyzeFormResultWithResponseAsync(UUID.fromString(modelId), resultId))
@@ -529,8 +529,8 @@ public final class FormRecognizerAsyncClient {
         return (pollingContext) -> {
             try {
                 final PollResponse<OperationResult> operationResultPollResponse = pollingContext.getLatestResponse();
-                final UUID resultUid = UUID.fromString(operationResultPollResponse.getValue().getResultId());
-                return pollingFunction.apply(resultUid)
+                final UUID resultUuid = UUID.fromString(operationResultPollResponse.getValue().getResultId());
+                return pollingFunction.apply(resultUuid)
                     .flatMap(modelSimpleResponse -> processAnalyzeModelResponse(modelSimpleResponse,
                         operationResultPollResponse));
             } catch (HttpResponseException e) {
@@ -548,8 +548,8 @@ public final class FormRecognizerAsyncClient {
 
         return (pollingContext) -> {
             try {
-                final UUID resultUid = UUID.fromString(pollingContext.getLatestResponse().getValue().getResultId());
-                return fetchingFunction.apply(resultUid);
+                final UUID resultUuid = UUID.fromString(pollingContext.getLatestResponse().getValue().getResultId());
+                return fetchingFunction.apply(resultUuid);
             } catch (RuntimeException ex) {
                 return monoError(logger, ex);
             }
