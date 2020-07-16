@@ -5,7 +5,7 @@ package com.microsoft.azure.spring.cloud.config.web;
 /**
  * Test constants which can be shared across different test classes
  */
-public class TestConstants {
+public final class TestConstants {
 
     // Store specific configuration
     public static final String CONFIG_ENABLED_PROP = "spring.cloud.azure.appconfiguration.enabled";

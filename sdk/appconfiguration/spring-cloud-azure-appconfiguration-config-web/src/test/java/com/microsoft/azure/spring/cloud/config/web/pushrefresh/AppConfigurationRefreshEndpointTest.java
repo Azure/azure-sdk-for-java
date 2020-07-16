@@ -101,21 +101,19 @@ public class AppConfigurationRefreshEndpointTest {
 
         AppConfigurationRefreshEndpoint endpoint = new AppConfigurationRefreshEndpoint(contextRefresher, properties);
 
-        when(lines.collect(Mockito.any())).thenReturn("[{\r\n" +
-            "  \"id\": \"2d1781af-3a4c-4d7c-bd0c-e34b19da4e66\",\r\n" +
-            "  \"topic\":" + TOPIC + ",\r\n"
-            +
-            "  \"subject\": \"\",\r\n" +
-            "  \"data\": {\r\n" +
-            "    \"validationCode\": \"512d38b6-c7b8-40c8-89fe-f46f9e9622b6\",\r\n" +
-            "    \"validationUrl\":" + VALIDATION_URL + "\r\n"
-            +
-            "  },\r\n" +
-            "  \"eventType\": \"Microsoft.EventGrid.SubscriptionValidationEvent\",\r\n" +
-            "  \"eventTime\": \"2018-01-25T22:12:19.4556811Z\",\r\n" +
-            "  \"metadataVersion\": \"1\",\r\n" +
-            "  \"dataVersion\": \"1\"\r\n" +
-            "}]");
+        when(lines.collect(Mockito.any())).thenReturn("[{\r\n"
+            + "  \"id\": \"2d1781af-3a4c-4d7c-bd0c-e34b19da4e66\",\r\n"
+            + "  \"topic\":" + TOPIC + ",\r\n"
+            + "  \"subject\": \"\",\r\n"
+            + "  \"data\": {\r\n"
+            + "    \"validationCode\": \"512d38b6-c7b8-40c8-89fe-f46f9e9622b6\",\r\n"
+            + "    \"validationUrl\":" + VALIDATION_URL + "\r\n"
+            + "  },\r\n"
+            + "  \"eventType\": \"Microsoft.EventGrid.SubscriptionValidationEvent\",\r\n"
+            + "  \"eventTime\": \"2018-01-25T22:12:19.4556811Z\",\r\n"
+            + "  \"metadataVersion\": \"1\",\r\n"
+            + "  \"dataVersion\": \"1\"\r\n"
+            + "}]");
 
         assertEquals("{ \"validationResponse\": \"512d38b6-c7b8-40c8-89fe-f46f9e9622b6\"}",
             endpoint.refresh(request, response, allRequestParams));
@@ -256,22 +254,20 @@ public class AppConfigurationRefreshEndpointTest {
     }
 
     private String getResetNotification() {
-        return " [ {\r\n" +
-            "  \"id\" : \"e2f7023c-b982-4050-80d9-8ed6bf24e183\",\r\n" +
-            "  \"topic\":" + TOPIC + ",\r\n"
-            +
-            "  \"subject\" : \"https://fake.test.azconfig.io/kv/%2Fapplication%2Fconfig.message?api-version=1.0\",\r\n"
-            +
-            "  \"data\" : {\r\n" +
-            "    \"key\" : \"trigger_key\",\r\n" +
-            "    \"label\" : \"trigger_label\",\r\n" +
-            "    \"etag\" : \"r05tB2hfMQs0vo6ITcXu7ScIOhR\"\r\n" +
-            "  },\r\n" +
-            "  \"eventType\" : \"Microsoft.AppConfiguration.KeyValueModified\",\r\n" +
-            "  \"dataVersion\" : \"1\",\r\n" +
-            "  \"metadataVersion\" : \"1\",\r\n" +
-            "  \"eventTime\" : \"2020-06-03T21:19:04.019421Z\"\r\n" +
-            "} ]";
+        return " [ {\r\n"
+            + "  \"id\" : \"e2f7023c-b982-4050-80d9-8ed6bf24e183\",\r\n"
+            + "  \"topic\":" + TOPIC + ",\r\n"
+            + "  \"subject\" : \"https://fake.test.azconfig.io/kv/%2Fapplication%2Fconfig.message?api-version=1.0\",\r\n"
+            + "  \"data\" : {\r\n"
+            + "    \"key\" : \"trigger_key\",\r\n"
+            + "    \"label\" : \"trigger_label\",\r\n"
+            + "    \"etag\" : \"r05tB2hfMQs0vo6ITcXu7ScIOhR\"\r\n"
+            + "  },\r\n"
+            + "  \"eventType\" : \"Microsoft.AppConfiguration.KeyValueModified\",\r\n"
+            + "  \"dataVersion\" : \"1\",\r\n"
+            + "  \"metadataVersion\" : \"1\",\r\n"
+            + "  \"eventTime\" : \"2020-06-03T21:19:04.019421Z\"\r\n"
+            + "} ]";
     }
 
 }

@@ -10,7 +10,7 @@ import java.util.List;
 /**
  * Utility methods which can be used across different test classes
  */
-public class TestUtils {
+public final class TestUtils {
 
     private TestUtils() {
     }
