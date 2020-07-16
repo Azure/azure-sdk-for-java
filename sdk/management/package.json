@@ -33,7 +33,8 @@
     "credcheck_storage": "node credcheck.js --path=../storage/mgmt/src/test/resources/session-records/",
     "credcheck_azure": "node credcheck.js --path=./azure/src/test/resources/session-records/",
     "credcheck_samples": "node credcheck.js --path=./samples/src/test/resources/session-records/",
-    "credcheck_all": "run-s credcheck_appservice credcheck_authorization credcheck_compute credcheck_containerregistry credcheck_containerservice credcheck_cosmos credcheck_dns credcheck_keyvault credcheck_msi credcheck_monitor credcheck_network credcheck_resources credcheck_sql credcheck_storage credcheck_azure credcheck_samples"
+    "credcheck_all": "run-s credcheck_appservice credcheck_authorization credcheck_compute credcheck_containerregistry credcheck_containerservice credcheck_cosmos credcheck_dns credcheck_keyvault credcheck_msi credcheck_monitor credcheck_network credcheck_resources credcheck_sql credcheck_storage credcheck_azure credcheck_samples",
+    "servcheck": "node servcheck.js"
   },
   "devDependencies": {
     "colors": "1.1.2",
@@ -45,6 +46,7 @@
     "gulp-shell": "^0.8.0",
     "p-all": "^1.0.0",
     "yargs": "3.31.0",
-    "npm-run-all": "4.1.5"
+    "npm-run-all": "4.1.5",
+    "pom-parser": "1.2.0"
   }
 }

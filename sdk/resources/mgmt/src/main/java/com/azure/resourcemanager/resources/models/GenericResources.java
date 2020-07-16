@@ -12,6 +12,7 @@ import com.azure.resourcemanager.resources.fluentcore.collection.SupportsCreatin
 import com.azure.resourcemanager.resources.fluentcore.collection.SupportsDeletingById;
 import com.azure.resourcemanager.resources.fluentcore.collection.SupportsListing;
 import com.azure.resourcemanager.resources.ResourceManager;
+import com.azure.resourcemanager.resources.fluentcore.model.Accepted;
 import reactor.core.publisher.Mono;
 
 import java.util.List;
@@ -136,4 +137,12 @@ public interface GenericResources extends
      */
     Mono<Void> deleteAsync(String resourceGroupName, String resourceProviderNamespace,
                            String parentResourcePath, String resourceType, String resourceName, String apiVersion);
+
+    /**
+     * Begins deleting a resource from Azure, identifying it by its resource ID.
+     *
+     * @param id the resource ID of the resource to delete
+     * @return the accepted deleting operation
+     */
+    Accepted<Void> beginDeleteById(String id);
 }

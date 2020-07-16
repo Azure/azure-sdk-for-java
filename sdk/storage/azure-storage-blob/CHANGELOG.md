@@ -1,7 +1,8 @@
 # Release History
 
 ## 12.8.0-beta.2 (Unreleased)
-
+- Fixed a bug that, when the data length parameter did not match the actual length of the data in BlobClient.upload, caused a zero length blob to be uploaded rather than throwing an exception.
+- Fixed a bug that ignored the customer's specified block size when determining buffer sizes in BlobClient.upload
 
 ## 12.8.0-beta.1 (2020-07-07)
 - Added support for the 2019-12-12 service version.
