@@ -44,7 +44,31 @@
     <dependency>
       <groupId>javax.xml.bind</groupId>
       <artifactId>jaxb-api</artifactId>
-      <version>2.2.7</version> <!-- {x-version-update;media_javax.xml.bind:jaxb-api;external_dependency} -->
+      <version>2.2.7</version> <!-- {x-version-update;javax.xml.bind:jaxb-api;external_dependency} -->
     </dependency>
   </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-enforcer-plugin</artifactId>
+        <version>3.0.0-M3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-enforcer-plugin;external_dependency} -->
+        <configuration>
+          <rules>
+            <bannedDependencies>
+              <includes>
+                <include>com.azure:*</include>
+                <include>com.microsoft.azure:spring-cloud-azure-appconfiguration-config:[1.2.8-beta.1]</include> <!-- {x-include-update;com.microsoft.azure:spring-cloud-azure-appconfiguration-config;current} -->
+                <include>javax.xml.bind:jaxb-api:[2.2.7]</include> <!-- {x-include-update;javax.xml.bind:jaxb-api;external_dependency} -->
+                <include>org.springframework.boot:spring-boot-starter-actuator:[2.3.0.RELEASE]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-starter-actuator;external_dependency} -->
+                <include>org.springframework.boot:spring-boot-starter-web:[2.3.0.RELEASE]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-starter-web;external_dependency} -->
+                <include>org.springframework.cloud:spring-cloud-bus:[2.2.0.RELEASE]</include> <!-- {x-include-update;org.springframework.cloud:spring-cloud-bus;external_dependency} -->
+              </includes>
+            </bannedDependencies>
+          </rules>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
 </project>
