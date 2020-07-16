@@ -91,8 +91,12 @@ public class ActiveDirectoryApplicationsImpl
                 Mono
                     .defer(
                         () -> {
-                            UUID.fromString(trimmed);
-                            return inner().listAsync(String.format("appId eq '%s'", trimmed)).singleOrEmpty();
+                            try {
+                                UUID.fromString(trimmed);
+                                return inner().listAsync(String.format("appId eq '%s'", trimmed)).singleOrEmpty();
+                            } catch (IllegalArgumentException e) {
+                                return Mono.empty();
+                            }
                         }))
             .map(applicationInner -> new ActiveDirectoryApplicationImpl(applicationInner, manager()))
             .flatMap(activeDirectoryApplication -> activeDirectoryApplication.refreshCredentialsAsync());
