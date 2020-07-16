@@ -14,6 +14,7 @@ import com.microsoft.azure.spring.cloud.feature.manager.targeting.TargetingConte
 import com.microsoft.azure.spring.cloud.feature.manager.targeting.TargetingEvaluationOptions;
 import com.microsoft.azure.spring.cloud.feature.manager.targeting.TargetingFilterSettings;
 import java.nio.ByteBuffer;
+import java.nio.charset.Charset;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.LinkedHashMap;
@@ -119,7 +120,7 @@ public class TargetingFilter implements FeatureFilter {
 
         try {
             MessageDigest digest = MessageDigest.getInstance("SHA-256");
-            hash = digest.digest(contextId.getBytes());
+            hash = digest.digest(contextId.getBytes(Charset.defaultCharset()));
         } catch (NoSuchAlgorithmException e) {
             throw new TargetingException("Unable to find SHA-256 for targeting.", e);
         }

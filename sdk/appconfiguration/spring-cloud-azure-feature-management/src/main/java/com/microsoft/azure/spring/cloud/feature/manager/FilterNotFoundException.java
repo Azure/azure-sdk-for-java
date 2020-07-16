@@ -12,7 +12,7 @@ public class FilterNotFoundException extends RuntimeException {
 
     private static final long serialVersionUID = 1L;
 
-    private final FeatureFilterEvaluationContext filter;
+    private final transient FeatureFilterEvaluationContext filter;
 
     private final String message;
 

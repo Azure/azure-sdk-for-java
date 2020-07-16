@@ -31,13 +31,14 @@ import reactor.core.publisher.Mono;
 public class FeatureManager extends HashMap<String, Object> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(FeatureManager.class);
+    private static final long serialVersionUID = -5941681857165566018L;
 
     @Autowired
-    private ApplicationContext context;
+    private transient ApplicationContext context;
 
-    private FeatureManagementConfigProperties properties;
+    private transient FeatureManagementConfigProperties properties;
 
-    private HashMap<String, Feature> featureManagement;
+    private transient HashMap<String, Feature> featureManagement;
 
     private HashMap<String, Boolean> onOff;
 
