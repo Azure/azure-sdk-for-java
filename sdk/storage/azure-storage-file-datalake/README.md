@@ -193,6 +193,7 @@ or
 
 <!-- embedme ./src/samples/java/com/azure/storage/file/datalake/ReadmeSamples.java#L32-L35 -->
 ```java
+// Only one "?" is needed here. If the sastoken starts with "?", please removing one "?".
 DataLakeServiceClient dataLakeServiceClient = new DataLakeServiceClientBuilder()
     .endpoint("<your-storage-account-url>" + "?" + "<your-sasToken>")
     .buildClient();
@@ -224,6 +225,7 @@ or
 
 <!-- embedme ./src/samples/java/com/azure/storage/file/datalake/ReadmeSamples.java#L51-L54 -->
 ```java
+// Only one "?" is needed here. If the sastoken starts with "?", please removing one "?".
 DataLakeFileSystemClient dataLakeFileSystemClient = new DataLakeFileSystemClientBuilder()
     .endpoint("<your-storage-account-url>" + "/" + "myfilesystem" + "?" + "<your-sasToken>")
     .buildClient();
@@ -256,6 +258,7 @@ or
 
 <!-- embedme ./src/samples/java/com/azure/storage/file/datalake/ReadmeSamples.java#L71-L74 -->
 ```java
+// Only one "?" is needed here. If the sastoken starts with "?", please removing one "?".
 DataLakeFileClient fileClient = new DataLakePathClientBuilder()
     .endpoint("<your-storage-account-url>" + "/" + "myfilesystem" + "/" + "myfile" + "?" + "<your-sasToken>")
     .buildFileClient();
@@ -288,6 +291,7 @@ or
 
 <!-- embedme ./src/samples/java/com/azure/storage/file/datalake/ReadmeSamples.java#L91-L94 -->
 ```java
+// Only one "?" is needed here. If the sastoken starts with "?", please removing one "?".
 DataLakeDirectoryClient directoryClient = new DataLakePathClientBuilder()
     .endpoint("<your-storage-account-url>" + "/" + "myfilesystem" + "/" + "mydir" + "?" + "<your-sasToken>")
     .buildDirectoryClient();
@@ -328,6 +332,7 @@ Rename a file using a `DataLakeFileClient`.
 
 <!-- embedme ./src/samples/java/com/azure/storage/file/datalake/ReadmeSamples.java#L112-L115 -->
 ```java
+//Need to authenticate with azure identity and add role assignment "Storage Blob Data Contributor" to do the following operation.
 DataLakeFileClient fileClient = dataLakeFileSystemClient.getFileClient("myfile");
 fileClient.create();
 fileClient.rename("new-file-system-name", "new-file-name");
@@ -339,6 +344,7 @@ Rename a directory using a `DataLakeDirectoryClient`.
 
 <!-- embedme ./src/samples/java/com/azure/storage/file/datalake/ReadmeSamples.java#L119-L122 -->
 ```java
+//Need to authenticate with azure identity and add role assignment "Storage Blob Data Contributor" to do the following operation.
 DataLakeDirectoryClient directoryClient = dataLakeFileSystemClient.getDirectoryClient("mydir");
 directoryClient.create();
 directoryClient.rename("new-file-system-name", "new-directory-name");
