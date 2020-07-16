@@ -1,0 +1,113 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.blob.core.windows.net/jtcaccountsascreatecontainerfails065168caf3fa67defc?restype=container",
+    "Headers" : {
+      "x-ms-version" : "2019-12-12",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.8.0-beta.2 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "57d96662-8b14-478c-91f4-03689716f8fe"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-12-12",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "0x8D829A8F99968E2",
+      "Last-Modified" : "Thu, 16 Jul 2020 16:54:59 GMT",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "23ef2dde-001e-005c-1191-5bc4da000000",
+      "Date" : "Thu, 16 Jul 2020 16:54:58 GMT",
+      "x-ms-client-request-id" : "57d96662-8b14-478c-91f4-03689716f8fe"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.blob.core.windows.net/jtcaccountsascreatecontainerfails065168caf3fa67defc/javablobaccountsascreatecontainerfails11980292d17a43a",
+    "Headers" : {
+      "x-ms-version" : "2019-12-12",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.8.0-beta.2 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "ac544587-7fe6-45ec-b7ed-11f4cc319948",
+      "Content-Type" : "application/octet-stream"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-12-12",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-content-crc64" : "6RYQPwaVsyQ=",
+      "x-ms-version-id" : "2020-07-16T16:54:59.5016089Z",
+      "Last-Modified" : "Thu, 16 Jul 2020 16:54:59 GMT",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-server-encrypted" : "true",
+      "Date" : "Thu, 16 Jul 2020 16:54:58 GMT",
+      "Content-MD5" : "wh+Wm18D0z1D4E+PE252gg==",
+      "ETag" : "0x8D829A8F9CB1684",
+      "Content-Length" : "0",
+      "x-ms-request-id" : "38887885-501e-0041-3891-5bc966000000",
+      "x-ms-client-request-id" : "ac544587-7fe6-45ec-b7ed-11f4cc319948"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.blob.core.windows.net/jtcaccountsascreatecontainerfails268575aef12172c3d3?restype=container&sv=2019-12-12&ss=b&srt=sco&se=2020-07-17T16%3A54%3A59Z&sp=r&sig=REDACTED",
+    "Headers" : {
+      "x-ms-version" : "2019-12-12",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.8.0-beta.2 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "7ae95f5f-6555-4bfb-8f78-50ce8a3772fc"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-12-12",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "AuthorizationPermissionMismatch",
+      "retry-after" : "0",
+      "Content-Length" : "279",
+      "StatusCode" : "403",
+      "x-ms-request-id" : "f6b3cd54-701e-009d-5191-5b6338000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>AuthorizationPermissionMismatch</Code><Message>This request is not authorized to perform this operation using this permission.\nRequestId:f6b3cd54-701e-009d-5191-5b6338000000\nTime:2020-07-16T16:54:59.8608514Z</Message></Error>",
+      "Date" : "Thu, 16 Jul 2020 16:54:58 GMT",
+      "x-ms-client-request-id" : "7ae95f5f-6555-4bfb-8f78-50ce8a3772fc",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.blob.core.windows.net?prefix=jtcaccountsascreatecontainerfails&comp=list",
+    "Headers" : {
+      "x-ms-version" : "2019-12-12",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.8.0-beta.2 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "aacf136e-ce9e-444b-8745-9c196a53409c"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-ms-version" : "2019-12-12",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "x-ms-request-id" : "d7e81042-501e-001c-7591-5bc3e2000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"https://seanmccprodca.blob.core.windows.net/\"><Prefix>jtcaccountsascreatecontainerfails</Prefix><Containers><Container><Name>jtcaccountsascreatecontainerfails065168caf3fa67defc</Name><Properties><Last-Modified>Thu, 16 Jul 2020 16:54:59 GMT</Last-Modified><Etag>\"0x8D829A8F99968E2\"</Etag><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><DefaultEncryptionScope>$account-encryption-key</DefaultEncryptionScope><DenyEncryptionScopeOverride>false</DenyEncryptionScopeOverride><HasImmutabilityPolicy>false</HasImmutabilityPolicy><HasLegalHold>false</HasLegalHold></Properties></Container></Containers><NextMarker /></EnumerationResults>",
+      "Date" : "Thu, 16 Jul 2020 16:54:59 GMT",
+      "x-ms-client-request-id" : "aacf136e-ce9e-444b-8745-9c196a53409c",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://REDACTED.blob.core.windows.net/jtcaccountsascreatecontainerfails065168caf3fa67defc?restype=container",
+    "Headers" : {
+      "x-ms-version" : "2019-12-12",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.8.0-beta.2 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "9b1efd27-c0db-4bf0-83db-019d821b92d9"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-12-12",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "202",
+      "x-ms-request-id" : "bd116b44-d01e-005f-0e91-5b25be000000",
+      "Date" : "Thu, 16 Jul 2020 16:55:00 GMT",
+      "x-ms-client-request-id" : "9b1efd27-c0db-4bf0-83db-019d821b92d9"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "jtcaccountsascreatecontainerfails065168caf3fa67defc", "javablobaccountsascreatecontainerfails11980292d17a43a", "2020-07-16T16:54:59.372117100Z", "jtcaccountsascreatecontainerfails268575aef12172c3d3" ]
+}

@@ -42,7 +42,7 @@ class SasClientTests extends APISpec {
         sasClient.upload(new ByteArrayInputStream(defaultData.array()), defaultDataSize)
     }
 
-    def "network test blob sas"() {
+    def "blob sas read permissions"() {
         setup:
         def permissions = new BlobSasPermission()
             .setReadPermission(true)
@@ -68,40 +68,7 @@ class SasClientTests extends APISpec {
         notThrown(BlobStorageException)
     }
 
-    def "network test blob snapshot"() {
-        setup:
-
-        def data = "test".getBytes()
-        def blobName = generateBlobName()
-        def bu = getBlobClient(primaryCredential, cc.getBlobContainerUrl(), blobName).getBlockBlobClient()
-        bu.upload(new ByteArrayInputStream(data), data.length)
-        def snapshotId = bu.createSnapshot().getSnapshotId()
-        def snapshotBlob = cc.getBlobClient(blobName, snapshotId).getBlockBlobClient()
-
-        def permissions = new BlobSasPermission()
-            .setReadPermission(true)
-            .setWritePermission(true)
-            .setCreatePermission(true)
-            .setDeletePermission(true)
-            .setAddPermission(true)
-
-        def sasValues = generateValues(permissions)
-
-        when:
-        def sas = snapshotBlob.generateSas(sasValues)
-
-        def client = getBlobClient(sas, cc.getBlobContainerUrl(), blobName, snapshotId).getBlockBlobClient()
-
-        def os = new ByteArrayOutputStream()
-        client.download(os)
-        def properties = client.getProperties()
-
-        then:
-        os.toString() == new String(data)
-        validateSasProperties(properties)
-    }
-
-    def "serviceSASSignatureValues network test container"() {
+    def "container sas identifier and permissions"() {
         setup:
         def identifier = new BlobSignedIdentifier()
             .setId("0000")
@@ -136,7 +103,7 @@ class SasClientTests extends APISpec {
         notThrown(BlobStorageException)
     }
 
-    def "network test blob user delegation"() {
+    def "blob sas user delegation"() {
         setup:
         def permissions = new BlobSasPermission()
             .setReadPermission(true)
@@ -162,7 +129,7 @@ class SasClientTests extends APISpec {
         notThrown(BlobStorageException)
     }
 
-    def "BlobServiceSAS network test blob snapshot"() {
+    def "blob sas snapshot"() {
         setup:
         def snapshotBlob = new SpecializedBlobClientBuilder().blobClient(sasClient.createSnapshot()).buildBlockBlobClient()
         def snapshotId = snapshotBlob.getSnapshotId()
@@ -201,7 +168,7 @@ class SasClientTests extends APISpec {
         validateSasProperties(properties)
     }
 
-    def "network test blob snapshot user delegation"() {
+    def "blob sas snapshot user delegation"() {
         setup:
         def snapshotBlob = new SpecializedBlobClientBuilder().blobClient(sasClient.createSnapshot()).buildBlockBlobClient()
         def snapshotId = snapshotBlob.getSnapshotId()
@@ -238,7 +205,7 @@ class SasClientTests extends APISpec {
         validateSasProperties(properties)
     }
 
-    def "network test container user delegation"() {
+    def "container sas user delegation"() {
         setup:
         def permissions = new BlobContainerSasPermission()
             .setReadPermission(true)
@@ -260,7 +227,215 @@ class SasClientTests extends APISpec {
         notThrown(BlobStorageException)
     }
 
-    def "accountSAS network test blob read"() {
+    def "blob sas tags"() {
+        setup:
+        def permissions = new BlobSasPermission()
+            .setReadPermission(true)
+            .setWritePermission(true)
+            .setCreatePermission(true)
+            .setDeletePermission(true)
+            .setAddPermission(true)
+            .setTagsPermission(true)
+
+        def sasValues = generateValues(permissions)
+        def sas = sasClient.generateSas(sasValues)
+        def client = getBlobClient(sas, cc.getBlobContainerUrl(), blobName)
+
+        when:
+        def tags = new HashMap<String, String>()
+        tags.put("foo", "bar")
+        client.setTags(tags)
+        def t = client.getTags()
+
+        then:
+        tags == t
+        notThrown(BlobStorageException)
+    }
+
+    def "blob sas tags fail"() {
+        setup:
+        def permissions = new BlobSasPermission()
+            .setReadPermission(true)
+            .setWritePermission(true)
+            .setCreatePermission(true)
+            .setDeletePermission(true)
+            .setAddPermission(true)
+            /* No tags permission */
+
+        def sasValues = generateValues(permissions)
+        def sas = sasClient.generateSas(sasValues)
+        def client = getBlobClient(sas, cc.getBlobContainerUrl(), blobName)
+
+        when:
+        def tags = new HashMap<String, String>()
+        tags.put("foo", "bar")
+        client.setTags(tags)
+
+        then:
+        thrown(BlobStorageException)
+    }
+
+    def "container sas tags"() {
+        setup:
+        def permissions = new BlobContainerSasPermission()
+            .setReadPermission(true)
+            .setWritePermission(true)
+            .setCreatePermission(true)
+            .setDeletePermission(true)
+            .setAddPermission(true)
+            .setListPermission(true)
+            .setDeleteVersionPermission(true)
+            .setTagsPermission(true)
+
+        def expiryTime = getUTCNow().plusDays(1)
+        def sasValues = new BlobServiceSasSignatureValues(expiryTime, permissions)
+        def sas = cc.generateSas(sasValues)
+        def client = getBlobClient(sas, cc.getBlobContainerUrl(), blobName)
+
+        when:
+        def tags = new HashMap<String, String>()
+        tags.put("foo", "bar")
+        client.setTags(tags)
+        def t = client.getTags()
+
+        then:
+        tags == t
+        notThrown(BlobStorageException)
+    }
+
+    def "container sas tags fail"() {
+        setup:
+        def permissions = new BlobContainerSasPermission()
+            .setReadPermission(true)
+            .setWritePermission(true)
+            .setCreatePermission(true)
+            .setDeletePermission(true)
+            .setAddPermission(true)
+            /* No tags permission. */
+
+        def expiryTime = getUTCNow().plusDays(1)
+        def sasValues = new BlobServiceSasSignatureValues(expiryTime, permissions)
+        def sas = sasClient.generateSas(sasValues)
+        def client = getBlobClient(sas, cc.getBlobContainerUrl(), blobName)
+
+        when:
+        def tags = new HashMap<String, String>()
+        tags.put("foo", "bar")
+        client.setTags(tags)
+
+        then:
+        thrown(BlobStorageException)
+    }
+
+    def "account sas tags and filter tags"() {
+        setup:
+        def service = new AccountSasService()
+            .setBlobAccess(true)
+        def resourceType = new AccountSasResourceType()
+            .setContainer(true)
+            .setService(true)
+            .setObject(true)
+        def permissions = new AccountSasPermission()
+            .setReadPermission(true)
+            .setWritePermission(true)
+            .setCreatePermission(true)
+            .setDeletePermission(true)
+            .setDeleteVersionPermission(true)
+            .setListPermission(true)
+            .setUpdatePermission(true)
+            .setProcessMessages(true)
+            .setFilterTagsPermission(true)
+            .setAddPermission(true)
+            .setTagsPermission(true)
+        def expiryTime = getUTCNow().plusDays(1)
+        def sasValues = new AccountSasSignatureValues(expiryTime, permissions, service, resourceType)
+        def sas = primaryBlobServiceClient.generateAccountSas(sasValues)
+        def client = getBlobClient(sas, cc.getBlobContainerUrl(), blobName).getBlockBlobClient()
+        def tags = new HashMap<String, String>()
+        tags.put("foo", "bar")
+
+        when:
+        client.setTags(tags)
+
+        and:
+        def t = client.getTags()
+
+        then:
+        tags == t
+        notThrown(BlobStorageException)
+
+        when:
+        client = getServiceClient(sas, primaryBlobServiceClient.getAccountUrl())
+        client.findBlobsByTags("\"foo\"='bar'").iterator().hasNext()
+
+        then:
+        notThrown(BlobStorageException)
+    }
+
+    def "account sas tags fail"() {
+        setup:
+        def service = new AccountSasService()
+            .setBlobAccess(true)
+        def resourceType = new AccountSasResourceType()
+            .setContainer(true)
+            .setService(true)
+            .setObject(true)
+        def permissions = new AccountSasPermission()
+            .setReadPermission(true)
+            .setWritePermission(true)
+            .setCreatePermission(true)
+            .setDeletePermission(true)
+            .setDeleteVersionPermission(true)
+            .setListPermission(true)
+            .setUpdatePermission(true)
+            .setProcessMessages(true)
+            .setFilterTagsPermission(true)
+            .setAddPermission(true)
+        def expiryTime = getUTCNow().plusDays(1)
+        def sasValues = new AccountSasSignatureValues(expiryTime, permissions, service, resourceType)
+        def sas = primaryBlobServiceClient.generateAccountSas(sasValues)
+        def client = getBlobClient(sas, cc.getBlobContainerUrl(), blobName).getBlockBlobClient()
+        def tags = new HashMap<String, String>()
+        tags.put("foo", "bar")
+
+        when:
+        client.setTags(tags)
+
+        then:
+        thrown(BlobStorageException)
+    }
+
+    def "account sas filter tags fail"() {
+        setup:
+        def service = new AccountSasService()
+            .setBlobAccess(true)
+        def resourceType = new AccountSasResourceType()
+            .setContainer(true)
+            .setService(true)
+            .setObject(true)
+        def permissions = new AccountSasPermission()
+            .setReadPermission(true)
+            .setWritePermission(true)
+            .setCreatePermission(true)
+            .setDeletePermission(true)
+            .setDeleteVersionPermission(true)
+            .setListPermission(true)
+            .setUpdatePermission(true)
+            .setProcessMessages(true)
+            .setAddPermission(true)
+        def expiryTime = getUTCNow().plusDays(1)
+        def sasValues = new AccountSasSignatureValues(expiryTime, permissions, service, resourceType)
+        def sas = primaryBlobServiceClient.generateAccountSas(sasValues)
+        def client = getServiceClient(sas, primaryBlobServiceClient.getAccountUrl())
+
+        when:
+        client.findBlobsByTags("\"foo\"='bar'").iterator().hasNext()
+
+        then:
+        thrown(BlobStorageException)
+    }
+
+    def "account sas blob read"() {
         setup:
         def service = new AccountSasService()
             .setBlobAccess(true)
@@ -283,7 +458,7 @@ class SasClientTests extends APISpec {
         os.toString() == new String(defaultData.array())
     }
 
-    def "accountSAS network test blob delete fails"() {
+    def "account sas blob delete fails"() {
         setup:
         def service = new AccountSasService()
             .setBlobAccess(true)
@@ -305,7 +480,7 @@ class SasClientTests extends APISpec {
         thrown(BlobStorageException)
     }
 
-    def "accountSAS network create container fails"() {
+    def "account sas create container fails"() {
         setup:
         def service = new AccountSasService()
             .setBlobAccess(true)
@@ -328,7 +503,7 @@ class SasClientTests extends APISpec {
         thrown(BlobStorageException)
     }
 
-    def "accountSAS network create container succeeds"() {
+    def "account sas create container succeeds"() {
         setup:
         def service = new AccountSasService()
             .setBlobAccess(true)
@@ -351,7 +526,7 @@ class SasClientTests extends APISpec {
         notThrown(BlobStorageException)
     }
 
-    def "accountSAS network on endpoint"() {
+    def "account sas on endpoint"() {
         setup:
         def service = new AccountSasService()
             .setBlobAccess(true)
