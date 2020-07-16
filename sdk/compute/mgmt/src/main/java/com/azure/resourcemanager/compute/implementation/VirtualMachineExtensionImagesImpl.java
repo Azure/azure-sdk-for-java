@@ -6,7 +6,6 @@ import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.resourcemanager.compute.models.VirtualMachineExtensionImage;
-import com.azure.resourcemanager.compute.models.VirtualMachineExtensionImageType;
 import com.azure.resourcemanager.compute.models.VirtualMachineExtensionImages;
 import com.azure.resourcemanager.compute.models.VirtualMachinePublishers;
 import com.azure.resourcemanager.resources.fluentcore.arm.Region;
@@ -46,31 +45,16 @@ public class VirtualMachineExtensionImagesImpl implements VirtualMachineExtensio
                     virtualMachinePublisher
                         .extensionTypes()
                         .listAsync()
-                        .onErrorResume(ManagementException.class, e -> {
-                            if (e.getResponse().getStatusCode() == 404) {
-                                return Flux.empty();
-                            } else {
-                                return Flux.error(e);
-                            }
-                        })
+                        .onErrorResume(ManagementException.class,
+                            e -> e.getResponse().getStatusCode() == 404 ? Flux.empty() : Flux.error(e))
                         .flatMap(virtualMachineExtensionImageType ->
                             virtualMachineExtensionImageType.versions().listAsync()
-                                .onErrorResume(ManagementException.class, e -> {
-                                    if (e.getResponse().getStatusCode() == 404) {
-                                        return Flux.empty();
-                                    } else {
-                                        return Flux.error(e);
-                                    }
-                                }))
+                                .onErrorResume(ManagementException.class,
+                                    e -> e.getResponse().getStatusCode() == 404 ? Flux.empty() : Flux.error(e)))
                         .flatMap(virtualMachineExtensionImageVersion ->
                             virtualMachineExtensionImageVersion.getImageAsync()
-                                .onErrorResume(ManagementException.class, e -> {
-                                    if (e.getResponse().getStatusCode() == 404) {
-                                        return Mono.empty();
-                                    } else {
-                                        return Mono.error(e);
-                                    }
-                                })));
+                                .onErrorResume(ManagementException.class,
+                                    e -> e.getResponse().getStatusCode() == 404 ? Mono.empty() : Mono.error(e))));
     }
 
     @Override
