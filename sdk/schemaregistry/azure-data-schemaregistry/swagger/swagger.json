@@ -484,7 +484,8 @@
               "type": "string"
             },
             "etag": {
-              "type": "string"
+              "type": "string",
+              "description": "Define an read-only identifier that uniquely describe an instance of the group. This is returned from get call for update purposes. Setting this on create or update has no effect."
             },
             "schemaCompatibility": {
               "type": "integer",
