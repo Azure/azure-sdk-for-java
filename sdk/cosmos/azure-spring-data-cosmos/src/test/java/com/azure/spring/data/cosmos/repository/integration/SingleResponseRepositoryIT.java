@@ -6,11 +6,14 @@
 
 package com.azure.spring.data.cosmos.repository.integration;
 
+import com.azure.spring.data.cosmos.core.CosmosTemplate;
 import com.azure.spring.data.cosmos.domain.Contact;
 import com.azure.spring.data.cosmos.exception.CosmosDBAccessException;
 import com.azure.spring.data.cosmos.repository.TestRepositoryConfig;
 import com.azure.spring.data.cosmos.repository.repository.ContactRepository;
+import com.azure.spring.data.cosmos.repository.support.CosmosEntityInformation;
 import org.junit.After;
+import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -29,17 +32,36 @@ public class SingleResponseRepositoryIT {
 
     private static final Contact TEST_CONTACT = new Contact("testId", "faketitle");
 
+    private static final CosmosEntityInformation<Contact, String> entityInformation =
+        new CosmosEntityInformation<>(Contact.class);
+
+    private static CosmosTemplate staticTemplate;
+    private static boolean isSetupDone;
+
     @Autowired
     private ContactRepository repository;
 
+    @Autowired
+    private CosmosTemplate template;
+
     @Before
     public void setUp() {
+        if (!isSetupDone) {
+            staticTemplate = template;
+            template.createContainerIfNotExists(entityInformation);
+        }
         repository.save(TEST_CONTACT);
+        isSetupDone = true;
     }
 
     @After
     public void cleanup() {
         repository.deleteAll();
+    }
+
+    @AfterClass
+    public static void afterClassCleanup() {
+        staticTemplate.deleteContainer(entityInformation.getContainerName());
     }
 
     @Test
