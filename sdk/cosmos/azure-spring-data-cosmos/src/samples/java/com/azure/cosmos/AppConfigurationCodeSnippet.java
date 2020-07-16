@@ -11,13 +11,21 @@ package com.azure.cosmos;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.spring.data.cosmos.config.AbstractCosmosConfiguration;
 import com.azure.spring.data.cosmos.config.CosmosConfig;
+import com.azure.spring.data.cosmos.core.ResponseDiagnostics;
+import com.azure.spring.data.cosmos.core.ResponseDiagnosticsProcessor;
 import com.azure.spring.data.cosmos.repository.config.EnableCosmosRepositories;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.lang.Nullable;
 
 @Configuration
 @EnableCosmosRepositories
 public class AppConfigurationCodeSnippet extends AbstractCosmosConfiguration {
+
+    private static final Logger logger = LoggerFactory.getLogger(AppConfigurationCodeSnippet.class);
+
     // configuration code
     @Value("${azure.cosmos.uri}")
     private String uri;
@@ -35,11 +43,24 @@ public class AppConfigurationCodeSnippet extends AbstractCosmosConfiguration {
     private boolean queryMetricsEnabled;
 
     public CosmosConfig getConfig() {
-        AzureKeyCredential azureKeyCredential = new AzureKeyCredential(key);
+        DirectConnectionConfig directConnectionConfig = new DirectConnectionConfig();
+        GatewayConnectionConfig gatewayConnectionConfig = new GatewayConnectionConfig();
+        CosmosClientBuilder cosmosClientBuilder = new CosmosClientBuilder()
+            .endpoint(uri)
+            .directMode(directConnectionConfig, gatewayConnectionConfig);
         return CosmosConfig.builder()
                            .database(dbName)
-                           .cosmosClientBuilder(new CosmosClientBuilder().credential(azureKeyCredential))
                            .enableQueryMetrics(queryMetricsEnabled)
+                           .cosmosClientBuilder(cosmosClientBuilder)
+                           .responseDiagnosticsProcessor(new ResponseDiagnosticsProcessorImplementation())
                            .build();
+    }
+
+    private static class ResponseDiagnosticsProcessorImplementation implements ResponseDiagnosticsProcessor {
+
+        @Override
+        public void processResponseDiagnostics(@Nullable ResponseDiagnostics responseDiagnostics) {
+            logger.info("Response Diagnostics {}", responseDiagnostics);
+        }
     }
 }

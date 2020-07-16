@@ -44,7 +44,12 @@ public class AppConfiguration extends AbstractCosmosConfiguration {
 
     public CosmosConfig getConfig() {
         this.azureKeyCredential = new AzureKeyCredential(key);
-        CosmosClientBuilder cosmosClientBuilder = new CosmosClientBuilder().endpoint(uri).credential(azureKeyCredential);
+        DirectConnectionConfig directConnectionConfig = new DirectConnectionConfig();
+        GatewayConnectionConfig gatewayConnectionConfig = new GatewayConnectionConfig();
+        CosmosClientBuilder cosmosClientBuilder = new CosmosClientBuilder()
+            .endpoint(uri)
+            .credential(azureKeyCredential)
+            .directMode(directConnectionConfig, gatewayConnectionConfig);
         return CosmosConfig.builder()
                            .database(dbName)
                            .enableQueryMetrics(queryMetricsEnabled)

@@ -11,7 +11,7 @@ package com.azure.cosmos;
 import com.azure.spring.data.cosmos.core.mapping.Document;
 import org.springframework.data.annotation.Id;
 
-@Document(container = "mycollection")
+@Document(container = "myContainer")
 public class UserSample {
     @Id
     private String emailAddress;
