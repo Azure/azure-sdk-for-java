@@ -28,5 +28,5 @@ extends:
     ServiceDirectory: resourcemanager
     Artifacts:
       - name: azure-resourcemanager
-        groupId: com.azure
+        groupId: com.azure.resourcemanager
         safeName: azureresourcemanager
