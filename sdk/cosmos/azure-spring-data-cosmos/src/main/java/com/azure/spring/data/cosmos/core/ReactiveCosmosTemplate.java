@@ -14,7 +14,7 @@ import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.models.ThroughputProperties;
 import com.azure.spring.data.cosmos.CosmosDBFactory;
-import com.azure.spring.data.cosmos.common.CosmosDBUtils;
+import com.azure.spring.data.cosmos.common.CosmosDbUtils;
 import com.azure.spring.data.cosmos.common.Memoizer;
 import com.azure.spring.data.cosmos.core.convert.MappingCosmosConverter;
 import com.azure.spring.data.cosmos.core.generator.CountQueryGenerator;
@@ -99,7 +99,7 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
             .onErrorResume(throwable ->
                 CosmosDBExceptionUtils.exceptionHandler("Failed to create database", throwable))
             .flatMap(cosmosDatabaseResponse -> {
-                CosmosDBUtils.fillAndProcessResponseDiagnostics(responseDiagnosticsProcessor,
+                CosmosDbUtils.fillAndProcessResponseDiagnostics(responseDiagnosticsProcessor,
                     cosmosDatabaseResponse.getDiagnostics(), null);
                 final CosmosContainerProperties cosmosContainerProperties =
                     new CosmosContainerProperties(
@@ -125,7 +125,7 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
 
                 return cosmosContainerResponseMono
                     .map(cosmosContainerResponse -> {
-                        CosmosDBUtils.fillAndProcessResponseDiagnostics(responseDiagnosticsProcessor,
+                        CosmosDbUtils.fillAndProcessResponseDiagnostics(responseDiagnosticsProcessor,
                             cosmosContainerResponse.getDiagnostics(), null);
                         return cosmosContainerResponse;
                     })
@@ -178,7 +178,7 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
             .queryItems("SELECT * FROM r", cosmosQueryRequestOptions, JsonNode.class)
             .byPage()
             .flatMap(cosmosItemFeedResponse -> {
-                CosmosDBUtils.fillAndProcessResponseDiagnostics(responseDiagnosticsProcessor,
+                CosmosDbUtils.fillAndProcessResponseDiagnostics(responseDiagnosticsProcessor,
                     cosmosItemFeedResponse.getCosmosDiagnostics(), cosmosItemFeedResponse);
                 return Flux.fromIterable(cosmosItemFeedResponse.getResults());
             })
@@ -225,7 +225,7 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
                                 .queryItems(query, options, JsonNode.class)
                                 .byPage()
                                 .flatMap(cosmosItemFeedResponse -> {
-                                    CosmosDBUtils.fillAndProcessResponseDiagnostics(responseDiagnosticsProcessor,
+                                    CosmosDbUtils.fillAndProcessResponseDiagnostics(responseDiagnosticsProcessor,
                                         cosmosItemFeedResponse.getCosmosDiagnostics(),
                                         cosmosItemFeedResponse);
                                     return Mono.justOrEmpty(cosmosItemFeedResponse
@@ -258,7 +258,7 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
                                 .getContainer(containerName)
                                 .readItem(id.toString(), partitionKey, JsonNode.class)
                                 .flatMap(cosmosItemResponse -> {
-                                    CosmosDBUtils.fillAndProcessResponseDiagnostics(responseDiagnosticsProcessor,
+                                    CosmosDbUtils.fillAndProcessResponseDiagnostics(responseDiagnosticsProcessor,
                                         cosmosItemResponse.getDiagnostics(), null);
                                     return Mono.justOrEmpty(toDomainObject(domainType,
                                         cosmosItemResponse.getItem()));
@@ -302,7 +302,7 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
                                     CosmosDBExceptionUtils.exceptionHandler("Failed to insert " +
                                         "item", throwable))
                                 .flatMap(cosmosItemResponse -> {
-                                    CosmosDBUtils.fillAndProcessResponseDiagnostics(responseDiagnosticsProcessor,
+                                    CosmosDbUtils.fillAndProcessResponseDiagnostics(responseDiagnosticsProcessor,
                                         cosmosItemResponse.getDiagnostics(), null);
                                     return Mono.just(toDomainObject(domainType,
                                         cosmosItemResponse.getItem()));
@@ -338,7 +338,7 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
                                     CosmosDBExceptionUtils.exceptionHandler("Failed to insert " +
                                         "item", throwable))
                                 .flatMap(cosmosItemResponse -> {
-                                    CosmosDBUtils.fillAndProcessResponseDiagnostics(responseDiagnosticsProcessor,
+                                    CosmosDbUtils.fillAndProcessResponseDiagnostics(responseDiagnosticsProcessor,
                                         cosmosItemResponse.getDiagnostics(), null);
                                     return Mono.just(toDomainObject(domainType,
                                         cosmosItemResponse.getItem()));
@@ -376,7 +376,7 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
                                 .getContainer(containerName)
                                 .upsertItem(originalItem, options)
                                 .flatMap(cosmosItemResponse -> {
-                                    CosmosDBUtils.fillAndProcessResponseDiagnostics(responseDiagnosticsProcessor,
+                                    CosmosDbUtils.fillAndProcessResponseDiagnostics(responseDiagnosticsProcessor,
                                         cosmosItemResponse.getDiagnostics(), null);
                                     return Mono.just(toDomainObject(domainType,
                                         cosmosItemResponse.getItem()));
@@ -408,7 +408,7 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
                                 .getContainer(containerName)
                                 .deleteItem(id.toString(), partitionKey)
                                 .doOnNext(cosmosItemResponse ->
-                                    CosmosDBUtils.fillAndProcessResponseDiagnostics(responseDiagnosticsProcessor,
+                                    CosmosDbUtils.fillAndProcessResponseDiagnostics(responseDiagnosticsProcessor,
                                         cosmosItemResponse.getDiagnostics(), null))
                                 .onErrorResume(throwable ->
                                     CosmosDBExceptionUtils.exceptionHandler("Failed to delete " +
@@ -530,7 +530,7 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
         options.setQueryMetricsEnabled(isPopulateQueryMetrics);
 
         return executeQuery(querySpec, containerName, options)
-            .doOnNext(feedResponse -> CosmosDBUtils.fillAndProcessResponseDiagnostics(responseDiagnosticsProcessor,
+            .doOnNext(feedResponse -> CosmosDbUtils.fillAndProcessResponseDiagnostics(responseDiagnosticsProcessor,
                 null, feedResponse))
             .onErrorResume(throwable ->
                 CosmosDBExceptionUtils.exceptionHandler("Failed to get count value", throwable))
@@ -563,7 +563,7 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
                          .getContainer(containerName)
                          .delete()
                          .doOnNext(cosmosContainerResponse ->
-                             CosmosDBUtils.fillAndProcessResponseDiagnostics(responseDiagnosticsProcessor,
+                             CosmosDbUtils.fillAndProcessResponseDiagnostics(responseDiagnosticsProcessor,
                                  cosmosContainerResponse.getDiagnostics(), null))
                          .onErrorResume(throwable ->
                              CosmosDBExceptionUtils.exceptionHandler("Failed to delete container"
@@ -593,7 +593,7 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
             .queryItems(sqlQuerySpec, cosmosQueryRequestOptions, JsonNode.class)
             .byPage()
             .flatMap(cosmosItemFeedResponse -> {
-                CosmosDBUtils.fillAndProcessResponseDiagnostics(responseDiagnosticsProcessor,
+                CosmosDbUtils.fillAndProcessResponseDiagnostics(responseDiagnosticsProcessor,
                     null, cosmosItemFeedResponse);
                 return Flux.fromIterable(cosmosItemFeedResponse.getResults());
             })
@@ -638,7 +638,7 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
                                 .getContainer(containerName)
                                 .deleteItem(jsonNode.get("id").asText(), partitionKey)
                                 .map(cosmosItemResponse -> {
-                                    CosmosDBUtils.fillAndProcessResponseDiagnostics(responseDiagnosticsProcessor,
+                                    CosmosDbUtils.fillAndProcessResponseDiagnostics(responseDiagnosticsProcessor,
                                         cosmosItemResponse.getDiagnostics(), null);
                                     return cosmosItemResponse;
                                 })

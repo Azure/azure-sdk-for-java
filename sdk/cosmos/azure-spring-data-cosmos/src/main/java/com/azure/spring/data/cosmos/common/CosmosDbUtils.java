@@ -12,9 +12,9 @@ import org.slf4j.LoggerFactory;
 /**
  * Util class to fill and process response diagnostics
  */
-public class CosmosDBUtils {
+public class CosmosDbUtils {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(CosmosDBUtils.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(CosmosDbUtils.class);
 
     /**
      * Generate ResponseDiagnostics with cosmos and feed response diagnostics
