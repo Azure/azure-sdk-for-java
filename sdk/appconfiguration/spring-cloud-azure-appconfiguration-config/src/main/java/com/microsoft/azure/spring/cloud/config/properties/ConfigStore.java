@@ -5,23 +5,21 @@ package com.microsoft.azure.spring.cloud.config.properties;
 
 import static com.microsoft.azure.spring.cloud.config.properties.AppConfigurationProperties.LABEL_SEPARATOR;
 
+import com.microsoft.azure.spring.cloud.config.resource.Connection;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
-
 import javax.annotation.PostConstruct;
 import javax.validation.constraints.Pattern;
-
 import org.springframework.lang.Nullable;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 
-import com.microsoft.azure.spring.cloud.config.resource.Connection;
-
 public class ConfigStore {
+
     private static final String EMPTY_LABEL = "\0";
     private static final String[] EMPTY_LABEL_ARRAY = {EMPTY_LABEL};
     private String endpoint; // Config store endpoint
@@ -113,13 +111,12 @@ public class ConfigStore {
                 throw new IllegalStateException("Endpoint in connection string is not a valid URI.", e);
             }
         }
-        
+
         monitoring.validateAndInit();
     }
 
     /**
-     * @return List of reversed label values, which are split by the separator, the latter
-     * label has higher priority
+     * @return List of reversed label values, which are split by the separator, the latter label has higher priority
      */
     public String[] getLabels() {
         if (!StringUtils.hasText(this.getLabel())) {
@@ -127,15 +124,15 @@ public class ConfigStore {
         }
 
         // The use of trim makes label= dev,prod and label= dev, prod equal.
-        List<String> labels =  Arrays.stream(this.getLabel().split(LABEL_SEPARATOR))
-                .map(label -> mapLabel(label))
-                .distinct()
-                .collect(Collectors.toList());
-        
+        List<String> labels = Arrays.stream(this.getLabel().split(LABEL_SEPARATOR))
+            .map(label -> mapLabel(label))
+            .distinct()
+            .collect(Collectors.toList());
+
         if (this.getLabel().endsWith(",")) {
             labels.add(EMPTY_LABEL);
         }
-        
+
         Collections.reverse(labels);
         if (labels.isEmpty()) {
             return EMPTY_LABEL_ARRAY;
@@ -144,7 +141,7 @@ public class ConfigStore {
             return labels.toArray(t);
         }
     }
-    
+
     private String mapLabel(String label) {
         if (label == null || label.equals("")) {
             return EMPTY_LABEL;

@@ -22,6 +22,16 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import com.azure.core.http.rest.PagedFlux;
+import com.azure.core.http.rest.PagedResponse;
+import com.azure.data.appconfiguration.ConfigurationAsyncClient;
+import com.azure.data.appconfiguration.models.ConfigurationSetting;
+import com.microsoft.azure.spring.cloud.config.properties.AppConfigurationProperties;
+import com.microsoft.azure.spring.cloud.config.properties.AppConfigurationProviderProperties;
+import com.microsoft.azure.spring.cloud.config.properties.AppConfigurationStoreMonitoring;
+import com.microsoft.azure.spring.cloud.config.properties.AppConfigurationStoreTrigger;
+import com.microsoft.azure.spring.cloud.config.properties.ConfigStore;
+import com.microsoft.azure.spring.cloud.config.stores.ClientStore;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -29,7 +39,6 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
-
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
@@ -42,18 +51,6 @@ import org.springframework.core.env.CompositePropertySource;
 import org.springframework.core.env.ConfigurableEnvironment;
 import org.springframework.core.env.Environment;
 import org.springframework.core.env.PropertySource;
-
-import com.azure.core.http.rest.PagedFlux;
-import com.azure.core.http.rest.PagedResponse;
-import com.azure.data.appconfiguration.ConfigurationAsyncClient;
-import com.azure.data.appconfiguration.models.ConfigurationSetting;
-import com.microsoft.azure.spring.cloud.config.properties.AppConfigurationProperties;
-import com.microsoft.azure.spring.cloud.config.properties.AppConfigurationProviderProperties;
-import com.microsoft.azure.spring.cloud.config.properties.AppConfigurationStoreMonitoring;
-import com.microsoft.azure.spring.cloud.config.properties.AppConfigurationStoreTrigger;
-import com.microsoft.azure.spring.cloud.config.properties.ConfigStore;
-import com.microsoft.azure.spring.cloud.config.stores.ClientStore;
-
 import reactor.core.publisher.Flux;
 
 public class AppConfigurationPropertySourceLocatorTest {
@@ -68,62 +65,42 @@ public class AppConfigurationPropertySourceLocatorTest {
 
     private static final ConfigurationSetting featureItem = createItem(".appconfig.featureflag/", "Alpha",
         FEATURE_VALUE, FEATURE_LABEL, FEATURE_FLAG_CONTENT_TYPE);
-
-    @Rule
-    public ExpectedException expected = ExpectedException.none();
-
-    @Mock
-    private ConfigurableEnvironment environment;
-
-    @Mock
-    private ClientStore clientStoreMock;
-
-    @Mock
-    private ConfigStore configStore;
-
-    @Mock
-    private ConfigurationAsyncClient configClientMock;
-
-    @Mock
-    private PagedFlux<ConfigurationSetting> settingsMock;
-
-    @Mock
-    private Iterable<PagedResponse<ConfigurationSetting>> iterableMock;
-
-    @Mock
-    private Iterator<PagedResponse<ConfigurationSetting>> iteratorMock;
-
-    @Mock
-    private Flux<PagedResponse<ConfigurationSetting>> pageMock;
-
-    @Mock
-    private PagedResponse<ConfigurationSetting> pagedMock;
-
-    @Mock
-    private List<ConfigStore> configStoresMock;
-
-    @Mock
-    private ConfigStore configStoreMock;
-
-    @Mock
-    private Iterator<ConfigStore> configStoreIterator;
-
-    @Mock
-    private AppConfigurationProviderProperties appPropertiesMock;
-
-    @Mock
-    private AppConfigurationProperties properties;
-
-    private AppConfigurationPropertySourceLocator locator;
-
-    private AppConfigurationProviderProperties appProperties;
-
-    private KeyVaultCredentialProvider tokenCredentialProvider = null;
-
     private static final String EMPTY_CONTENT_TYPE = "";
-
     private static final ConfigurationSetting item1 = createItem(TEST_CONTEXT, TEST_KEY_1, TEST_VALUE_1, TEST_LABEL_1,
         EMPTY_CONTENT_TYPE);
+    @Rule
+    public ExpectedException expected = ExpectedException.none();
+    @Mock
+    private ConfigurableEnvironment environment;
+    @Mock
+    private ClientStore clientStoreMock;
+    @Mock
+    private ConfigStore configStore;
+    @Mock
+    private ConfigurationAsyncClient configClientMock;
+    @Mock
+    private PagedFlux<ConfigurationSetting> settingsMock;
+    @Mock
+    private Iterable<PagedResponse<ConfigurationSetting>> iterableMock;
+    @Mock
+    private Iterator<PagedResponse<ConfigurationSetting>> iteratorMock;
+    @Mock
+    private Flux<PagedResponse<ConfigurationSetting>> pageMock;
+    @Mock
+    private PagedResponse<ConfigurationSetting> pagedMock;
+    @Mock
+    private List<ConfigStore> configStoresMock;
+    @Mock
+    private ConfigStore configStoreMock;
+    @Mock
+    private Iterator<ConfigStore> configStoreIterator;
+    @Mock
+    private AppConfigurationProviderProperties appPropertiesMock;
+    @Mock
+    private AppConfigurationProperties properties;
+    private AppConfigurationPropertySourceLocator locator;
+    private AppConfigurationProviderProperties appProperties;
+    private KeyVaultCredentialProvider tokenCredentialProvider = null;
 
     @Before
     public void setup() {

@@ -4,7 +4,6 @@
 package com.microsoft.azure.spring.cloud.config.properties;
 
 import javax.annotation.PostConstruct;
-
 import org.springframework.util.Assert;
 
 public class AppConfigurationStoreTrigger {

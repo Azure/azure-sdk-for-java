@@ -10,22 +10,6 @@ import static com.microsoft.azure.spring.cloud.config.Constants.KEY_VAULT_CONTEN
 import static java.util.Collections.emptyList;
 import static java.util.stream.Collectors.toMap;
 
-import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.stream.IntStream;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.core.env.EnumerablePropertySource;
-import org.springframework.util.ReflectionUtils;
-
 import com.azure.data.appconfiguration.ConfigurationClient;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.SettingSelector;
@@ -44,8 +28,23 @@ import com.microsoft.azure.spring.cloud.config.properties.AppConfigurationProvid
 import com.microsoft.azure.spring.cloud.config.properties.ConfigStore;
 import com.microsoft.azure.spring.cloud.config.stores.ClientStore;
 import com.microsoft.azure.spring.cloud.config.stores.KeyVaultClient;
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.stream.IntStream;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.core.env.EnumerablePropertySource;
+import org.springframework.util.ReflectionUtils;
 
 public class AppConfigurationPropertySource extends EnumerablePropertySource<ConfigurationClient> {
+
     private static final Logger LOGGER = LoggerFactory.getLogger(AppConfigurationPropertySource.class);
 
     private static final String USERS = "users";
@@ -63,20 +62,14 @@ public class AppConfigurationPropertySource extends EnumerablePropertySource<Con
     private static final String DEFAULT_ROLLOUT_PERCENTAGE = "defaultRolloutPercentage";
 
     private static final String DEFAULT_ROLLOUT_PERCENTAGE_CAPS = "DefaultRolloutPercentage";
-
-    private final String context;
-
-    private Map<String, Object> properties = new LinkedHashMap<>();
-
-    private final String label;
-
-    private AppConfigurationProperties appConfigurationProperties;
-
     private static final ObjectMapper MAPPER = new ObjectMapper();
-
     private static final ObjectMapper CASE_INSENSITIVE_MAPPER = new ObjectMapper()
-            .configure(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES, true);;
-
+        .configure(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES, true);
+    private final String context;
+    private final String label;
+    private Map<String, Object> properties = new LinkedHashMap<>();
+    private AppConfigurationProperties appConfigurationProperties;
+    ;
     private HashMap<String, KeyVaultClient> keyVaultClients;
 
     private ClientStore clients;
@@ -90,9 +83,9 @@ public class AppConfigurationPropertySource extends EnumerablePropertySource<Con
     private ConfigStore configStore;
 
     AppConfigurationPropertySource(String context, ConfigStore configStore, String label,
-            AppConfigurationProperties appConfigurationProperties, ClientStore clients,
-            AppConfigurationProviderProperties appProperties, KeyVaultCredentialProvider keyVaultCredentialProvider,
-            SecretClientBuilderSetup keyVaultClientProvider) {
+        AppConfigurationProperties appConfigurationProperties, ClientStore clients,
+        AppConfigurationProviderProperties appProperties, KeyVaultCredentialProvider keyVaultCredentialProvider,
+        SecretClientBuilderSetup keyVaultClientProvider) {
         // The context alone does not uniquely define a PropertySource, append storeName
         // and label to uniquely define a PropertySource
         super(context + configStore.getEndpoint() + "/" + label);
@@ -122,17 +115,16 @@ public class AppConfigurationPropertySource extends EnumerablePropertySource<Con
      * <p>
      * Gets settings from Azure/Cache to set as configurations. Updates the cache.
      * </p>
-     * 
+     *
      * <p>
      * <b>Note</b>: Doesn't update Feature Management, just stores values in cache. Call
-     * {@code initFeatures} to update Feature Management, but make sure its done in the
-     * last {@code AppConfigurationPropertySource}
+     * {@code initFeatures} to update Feature Management, but make sure its done in the last {@code
+     * AppConfigurationPropertySource}
      * </p>
-     * 
+     *
      * @param featureSet The set of Feature Management Flags from various config stores.
-     * @throws IOException Thrown when processing key/value failed when reading feature
-     * flags
      * @return Updated Feature Set from Property Source
+     * @throws IOException Thrown when processing key/value failed when reading feature flags
      */
     FeatureSet initProperties(FeatureSet featureSet) throws IOException {
         String storeName = configStore.getEndpoint();
@@ -172,11 +164,9 @@ public class AppConfigurationPropertySource extends EnumerablePropertySource<Con
     }
 
     /**
-     * Given a Setting's Key Vault Reference stored in the Settings value, it will get its
-     * entry in Key Vault.
-     * 
-     * @param value {"uri":
-     * "&lt;your-vault-url&gt;/secret/&lt;secret&gt;/&lt;version&gt;"}
+     * Given a Setting's Key Vault Reference stored in the Settings value, it will get its entry in Key Vault.
+     *
+     * @param value {"uri": "&lt;your-vault-url&gt;/secret/&lt;secret&gt;/&lt;version&gt;"}
      * @return Key Vault Secret Value
      */
     private String getKeyVaultEntry(String value) {
@@ -196,14 +186,14 @@ public class AppConfigurationPropertySource extends EnumerablePropertySource<Con
             // If no entry found don't connect to Key Vault
             if (uri == null) {
                 ReflectionUtils.rethrowRuntimeException(
-                        new IOException("Invaid URI when parsing Key Vault Reference."));
+                    new IOException("Invaid URI when parsing Key Vault Reference."));
             }
 
             // Check if we already have a client for this key vault, if not we will make
             // one
             if (!keyVaultClients.containsKey(uri.getHost())) {
                 KeyVaultClient client = new KeyVaultClient(appConfigurationProperties, uri, keyVaultCredentialProvider,
-                        keyVaultClientProvider);
+                    keyVaultClientProvider);
                 keyVaultClients.put(uri.getHost(), client);
             }
             KeyVaultSecret secret = keyVaultClients.get(uri.getHost()).getSecret(uri, appProperties.getMaxRetryTime());
@@ -219,28 +209,28 @@ public class AppConfigurationPropertySource extends EnumerablePropertySource<Con
     }
 
     /**
-     * Initializes Feature Management configurations. Only one
-     * {@code AppConfigurationPropertySource} can call this, and it needs to be done after
-     * the rest have run initProperties.
+     * Initializes Feature Management configurations. Only one {@code AppConfigurationPropertySource} can call this, and
+     * it needs to be done after the rest have run initProperties.
+     *
      * @param featureSet Feature Flag info to be set to this property source.
      */
     void initFeatures(FeatureSet featureSet) {
         ObjectMapper featureMapper = new ObjectMapper();
         featureMapper.setPropertyNamingStrategy(PropertyNamingStrategy.KEBAB_CASE);
         properties.put(FEATURE_MANAGEMENT_KEY,
-                featureMapper.convertValue(featureSet.getFeatureManagement(), LinkedHashMap.class));
+            featureMapper.convertValue(featureSet.getFeatureManagement(), LinkedHashMap.class));
     }
 
     /**
      * Adds items to a {@code FeatureSet} from a list of {@code KeyValueItem}.
-     * 
+     *
      * @param featureSet The parsed KeyValueItems will be added to this
-     * @param items New items read in from Azure
-     * @param date Cache timestamp
+     * @param items      New items read in from Azure
+     * @param date       Cache timestamp
      * @throws IOException
      */
     private FeatureSet addToFeatureSet(FeatureSet featureSet, List<ConfigurationSetting> settings, Date date)
-            throws IOException {
+        throws IOException {
         // Reading In Features
         for (ConfigurationSetting setting : settings) {
             Object feature = createFeature(setting);
@@ -253,9 +243,8 @@ public class AppConfigurationPropertySource extends EnumerablePropertySource<Con
 
     /**
      * Creates a {@code Feature} from a {@code KeyValueItem}
-     * 
-     * @param item Used to create Features before being converted to be set into
-     * properties.
+     *
+     * @param item Used to create Features before being converted to be set into properties.
      * @return Feature created from KeyValueItem
      * @throws IOException
      */
@@ -263,7 +252,7 @@ public class AppConfigurationPropertySource extends EnumerablePropertySource<Con
     private Object createFeature(ConfigurationSetting item) throws IOException {
         if (item.getContentType() == null || !item.getContentType().equals(FEATURE_FLAG_CONTENT_TYPE)) {
             String message = String.format("Found Feature Flag %s with invalid Content Type of %s", item.getKey(),
-                    item.getContentType());
+                item.getContentType());
             throw new IOException(message);
         }
         String key = getFeatureSimpleName(item);
@@ -302,7 +291,7 @@ public class AppConfigurationPropertySource extends EnumerablePropertySource<Con
                 switchKeyValues(parameters, USERS_CAPS, USERS, mapValuesByIndex(users));
                 switchKeyValues(parameters, GROUPS_CAPS, GROUPS, mapValuesByIndex(groupRollouts));
                 switchKeyValues(parameters, DEFAULT_ROLLOUT_PERCENTAGE_CAPS, DEFAULT_ROLLOUT_PERCENTAGE,
-                        parameters.get(DEFAULT_ROLLOUT_PERCENTAGE_CAPS));
+                    parameters.get(DEFAULT_ROLLOUT_PERCENTAGE_CAPS));
 
                 featureFilterEvaluationContext.setParameters(parameters);
                 featureEnabledFor.put(filter, featureFilterEvaluationContext);
@@ -326,8 +315,8 @@ public class AppConfigurationPropertySource extends EnumerablePropertySource<Con
 
     private List<Object> convertToListOrEmptyList(LinkedHashMap<String, Object> parameters, String key) {
         List<Object> listObjects = CASE_INSENSITIVE_MAPPER.convertValue(parameters.get(key),
-                new TypeReference<List<Object>>() {
-                });
+            new TypeReference<List<Object>>() {
+            });
         return listObjects == null ? emptyList() : listObjects;
     }
 

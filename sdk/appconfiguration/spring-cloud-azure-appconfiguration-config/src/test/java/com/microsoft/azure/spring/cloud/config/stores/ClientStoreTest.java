@@ -9,22 +9,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.when;
 
-import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
-
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.mockito.junit.MockitoJUnit;
-import org.mockito.junit.MockitoRule;
-
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpMethod;
@@ -42,27 +26,34 @@ import com.microsoft.azure.spring.cloud.config.pipline.policies.BaseAppConfigura
 import com.microsoft.azure.spring.cloud.config.properties.AppConfigurationProviderProperties;
 import com.microsoft.azure.spring.cloud.config.resource.Connection;
 import com.microsoft.azure.spring.cloud.config.resource.ConnectionPool;
-
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+import org.junit.Before;
+import org.junit.Rule;
+import org.junit.Test;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.junit.MockitoJUnit;
+import org.mockito.junit.MockitoRule;
 import reactor.core.publisher.Mono;
 
 public class ClientStoreTest {
 
-    private ClientStore clientStore;
-
     static TokenCredential tokenCredential;
-
-    @Mock
-    private ConfigurationClientBuilder builderMock;
-
-    @Mock
-    private ConfigurationAsyncClient clientMock;
-
-    @Mock
-    private TokenCredential credentialMock;
-
     @Rule
     public MockitoRule mockitoRule = MockitoJUnit.rule();
-
+    private ClientStore clientStore;
+    @Mock
+    private ConfigurationClientBuilder builderMock;
+    @Mock
+    private ConfigurationAsyncClient clientMock;
+    @Mock
+    private TokenCredential credentialMock;
     private List<PagedResponse<ConfigurationSetting>> pagedResponses;
 
     private AppConfigurationProviderProperties appProperties;

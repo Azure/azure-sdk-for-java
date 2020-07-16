@@ -13,6 +13,12 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import com.azure.data.appconfiguration.models.ConfigurationSetting;
+import com.microsoft.azure.spring.cloud.config.properties.AppConfigurationProperties;
+import com.microsoft.azure.spring.cloud.config.properties.AppConfigurationStoreMonitoring;
+import com.microsoft.azure.spring.cloud.config.properties.AppConfigurationStoreTrigger;
+import com.microsoft.azure.spring.cloud.config.properties.ConfigStore;
+import com.microsoft.azure.spring.cloud.config.stores.ClientStore;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -21,7 +27,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -31,39 +36,23 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.cloud.endpoint.event.RefreshEvent;
 import org.springframework.context.ApplicationEventPublisher;
 
-import com.azure.data.appconfiguration.models.ConfigurationSetting;
-import com.microsoft.azure.spring.cloud.config.properties.AppConfigurationProperties;
-import com.microsoft.azure.spring.cloud.config.properties.AppConfigurationStoreMonitoring;
-import com.microsoft.azure.spring.cloud.config.properties.AppConfigurationStoreTrigger;
-import com.microsoft.azure.spring.cloud.config.properties.ConfigStore;
-import com.microsoft.azure.spring.cloud.config.stores.ClientStore;
-
 public class AppConfigurationRefreshTest {
 
+    private static final String WATCHED_KEYS = "/application/*";
+    AppConfigurationRefresh configRefresh;
     @Mock
     private ApplicationEventPublisher eventPublisher;
-
     @Mock
     private AppConfigurationProperties properties;
-
     private ArrayList<ConfigurationSetting> keys;
-
     @Mock
     private Map<String, List<String>> contextsMap;
-
-    AppConfigurationRefresh configRefresh;
-
     private AppConfigurationStoreTrigger trigger;
-
     private AppConfigurationStoreMonitoring monitoring;
-
     @Mock
     private Date date;
-
     @Mock
     private ClientStore clientStoreMock;
-
-    private static final String WATCHED_KEYS = "/application/*";
 
     @Before
     public void setup() {
@@ -166,7 +155,7 @@ public class AppConfigurationRefreshTest {
         StateHolder.setState(TEST_STORE_NAME, watchKeys, monitoring);
 
         when(clientStoreMock.getRevison(Mockito.any(), Mockito.anyString()))
-                .thenReturn(null);
+            .thenReturn(null);
         configRefresh.setApplicationEventPublisher(eventPublisher);
 
         // The first time an action happens it can't update
@@ -209,7 +198,7 @@ public class AppConfigurationRefreshTest {
         propertiesLost.setStores(Arrays.asList(store));
 
         AppConfigurationRefresh configRefreshLost = new AppConfigurationRefresh(propertiesLost,
-                clientStoreMock);
+            clientStoreMock);
         StateHolder.setLoadState(TEST_STORE_NAME, true);
         when(clientStoreMock.getRevison(Mockito.any(), Mockito.anyString())).thenReturn(null);
         configRefreshLost.setApplicationEventPublisher(eventPublisher);

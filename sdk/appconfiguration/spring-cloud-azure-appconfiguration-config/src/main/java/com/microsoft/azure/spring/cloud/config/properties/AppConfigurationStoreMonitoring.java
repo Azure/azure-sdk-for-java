@@ -6,9 +6,7 @@ package com.microsoft.azure.spring.cloud.config.properties;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
-
 import javax.annotation.PostConstruct;
-
 import org.springframework.util.Assert;
 
 public class AppConfigurationStoreMonitoring {
@@ -43,9 +41,8 @@ public class AppConfigurationStoreMonitoring {
     }
 
     /**
-     * The minimum time between checks. The minimum valid cache time is 1s. The default
-     * cache time is 30s.
-     * 
+     * The minimum time between checks. The minimum valid cache time is 1s. The default cache time is 30s.
+     *
      * @param cacheExpiration minimum time between refresh checks
      */
     public void setCacheExpiration(Duration cacheExpiration) {
@@ -92,6 +89,7 @@ public class AppConfigurationStoreMonitoring {
     }
 
     public class PushNotification {
+
         private AccessToken primaryToken = new AccessToken();
 
         private AccessToken secondaryToken = new AccessToken();
@@ -158,7 +156,7 @@ public class AppConfigurationStoreMonitoring {
         public void setSecret(String secret) {
             this.secret = secret;
         }
-        
+
         public boolean isValid() {
             return this.name != null && this.secret != null;
         }

@@ -22,7 +22,7 @@ public enum RequestType {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see java.lang.Enum#toString()
      */
     @Override

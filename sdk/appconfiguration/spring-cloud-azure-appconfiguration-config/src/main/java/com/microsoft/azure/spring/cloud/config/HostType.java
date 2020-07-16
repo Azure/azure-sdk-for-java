@@ -7,14 +7,14 @@ package com.microsoft.azure.spring.cloud.config;
  * The Types of Hosts checked in request tracing.
  */
 public enum HostType {
-    
+
     UNIDENTIFIED(""),
     AZURE_WEB_APP("AzureWebApp"),
     AZURE_FUNCTION("AzureFunction"),
     KUBERNETES("Kubernetes");
-    
+
     private final String text;
-    
+
     /**
      * @param text
      */

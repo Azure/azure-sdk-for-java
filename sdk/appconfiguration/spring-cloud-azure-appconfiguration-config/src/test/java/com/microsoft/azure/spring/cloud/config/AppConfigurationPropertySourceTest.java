@@ -29,23 +29,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 import static org.mockito.Mockito.when;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
-import java.util.List;
-
-import org.apache.commons.lang3.ArrayUtils;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.ExpectedException;
-import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
-
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.data.appconfiguration.ConfigurationAsyncClient;
@@ -59,91 +42,84 @@ import com.microsoft.azure.spring.cloud.config.properties.AppConfigurationProper
 import com.microsoft.azure.spring.cloud.config.properties.AppConfigurationProviderProperties;
 import com.microsoft.azure.spring.cloud.config.properties.ConfigStore;
 import com.microsoft.azure.spring.cloud.config.stores.ClientStore;
-
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.List;
+import org.apache.commons.lang3.ArrayUtils;
+import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.rules.ExpectedException;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public class AppConfigurationPropertySourceTest {
-    private static final String EMPTY_CONTENT_TYPE = "";
-
-    private static final String USERS = "users";
-
-    private static final String GROUPS = "groups";
-
-    private static final String DEFAULT_ROLLOUT_PERCENTAGE = "defaultRolloutPercentage";
-
-    private static final AppConfigurationProperties TEST_PROPS = new AppConfigurationProperties();
 
     public static final List<ConfigurationSetting> FEATURE_ITEMS = new ArrayList<>();
-
     public static final List<ConfigurationSetting> FEATURE_ITEMS_TARGETING = new ArrayList<>();
-
+    private static final String EMPTY_CONTENT_TYPE = "";
+    private static final String USERS = "users";
+    private static final String GROUPS = "groups";
+    private static final String DEFAULT_ROLLOUT_PERCENTAGE = "defaultRolloutPercentage";
+    private static final AppConfigurationProperties TEST_PROPS = new AppConfigurationProperties();
     private static final ConfigurationSetting item1 = createItem(TEST_CONTEXT, TEST_KEY_1, TEST_VALUE_1, TEST_LABEL_1,
-            EMPTY_CONTENT_TYPE);
+        EMPTY_CONTENT_TYPE);
 
     private static final ConfigurationSetting item2 = createItem(TEST_CONTEXT, TEST_KEY_2, TEST_VALUE_2, TEST_LABEL_2,
-            EMPTY_CONTENT_TYPE);
+        EMPTY_CONTENT_TYPE);
 
     private static final ConfigurationSetting item3 = createItem(TEST_CONTEXT, TEST_KEY_3, TEST_VALUE_3, TEST_LABEL_3,
-            EMPTY_CONTENT_TYPE);
+        EMPTY_CONTENT_TYPE);
 
     private static final ConfigurationSetting item3Null = createItem(TEST_CONTEXT, TEST_KEY_3, TEST_VALUE_3,
-            TEST_LABEL_3,
-            null);
+        TEST_LABEL_3,
+        null);
 
     private static final ConfigurationSetting featureItem = createItem(".appconfig.featureflag/", "Alpha",
-            FEATURE_VALUE, FEATURE_LABEL, FEATURE_FLAG_CONTENT_TYPE);
+        FEATURE_VALUE, FEATURE_LABEL, FEATURE_FLAG_CONTENT_TYPE);
 
     private static final ConfigurationSetting featureItem2 = createItem(".appconfig.featureflag/", "Beta",
-            FEATURE_BOOLEAN_VALUE, FEATURE_LABEL, FEATURE_FLAG_CONTENT_TYPE);
+        FEATURE_BOOLEAN_VALUE, FEATURE_LABEL, FEATURE_FLAG_CONTENT_TYPE);
 
     private static final ConfigurationSetting featureItem3 = createItem(".appconfig.featureflag/", "Gamma",
-            FEATURE_VALUE_PARAMETERS, FEATURE_LABEL, FEATURE_FLAG_CONTENT_TYPE);
+        FEATURE_VALUE_PARAMETERS, FEATURE_LABEL, FEATURE_FLAG_CONTENT_TYPE);
 
     private static final ConfigurationSetting featureItemNull = createItem(".appconfig.featureflag/", "Alpha",
-            FEATURE_VALUE,
-            FEATURE_LABEL, null);
+        FEATURE_VALUE,
+        FEATURE_LABEL, null);
 
     private static final ConfigurationSetting featureItemTargeting = createItem(".appconfig.featureflag/", "target",
-            FEATURE_VALUE_TARGETING, FEATURE_LABEL, FEATURE_FLAG_CONTENT_TYPE);
-
-    public List<ConfigurationSetting> testItems = new ArrayList<>();
-
+        FEATURE_VALUE_TARGETING, FEATURE_LABEL, FEATURE_FLAG_CONTENT_TYPE);
     private static final String FEATURE_MANAGEMENT_KEY = "feature-management.featureManagement";
-
-    private AppConfigurationPropertySource propertySource;
-
     private static ObjectMapper mapper = new ObjectMapper();
-
-    private AppConfigurationProperties appConfigurationProperties;
-
-    @Mock
-    private ClientStore clientStoreMock;
-
-    @Mock
-    private ConfigurationAsyncClient configClientMock;
-
-    @Mock
-    private PagedFlux<ConfigurationSetting> settingsMock;
-
-    @Mock
-    private Flux<PagedResponse<ConfigurationSetting>> pageMock;
-
-    @Mock
-    private Mono<List<PagedResponse<ConfigurationSetting>>> collectionMock;
-
-    @Mock
-    private List<PagedResponse<ConfigurationSetting>> itemsMock;
-
-    @Mock
-    private Iterator<PagedResponse<ConfigurationSetting>> itemsIteratorMock;
-
-    @Mock
-    private PagedResponse<ConfigurationSetting> pagedResponseMock;
-
+    public List<ConfigurationSetting> testItems = new ArrayList<>();
     @Rule
     public ExpectedException expected = ExpectedException.none();
-
+    private AppConfigurationPropertySource propertySource;
+    private AppConfigurationProperties appConfigurationProperties;
+    @Mock
+    private ClientStore clientStoreMock;
+    @Mock
+    private ConfigurationAsyncClient configClientMock;
+    @Mock
+    private PagedFlux<ConfigurationSetting> settingsMock;
+    @Mock
+    private Flux<PagedResponse<ConfigurationSetting>> pageMock;
+    @Mock
+    private Mono<List<PagedResponse<ConfigurationSetting>>> collectionMock;
+    @Mock
+    private List<PagedResponse<ConfigurationSetting>> itemsMock;
+    @Mock
+    private Iterator<PagedResponse<ConfigurationSetting>> itemsIteratorMock;
+    @Mock
+    private PagedResponse<ConfigurationSetting> pagedResponseMock;
     private AppConfigurationProviderProperties appProperties;
 
     private KeyVaultCredentialProvider tokenCredentialProvider = null;
@@ -171,7 +147,7 @@ public class AppConfigurationPropertySourceTest {
         ArrayList<String> contexts = new ArrayList<String>();
         contexts.add("/application/*");
         propertySource = new AppConfigurationPropertySource(TEST_CONTEXT, configStore, "\0",
-                appConfigurationProperties, clientStoreMock, appProperties, tokenCredentialProvider, null);
+            appConfigurationProperties, clientStoreMock, appProperties, tokenCredentialProvider, null);
 
         testItems = new ArrayList<ConfigurationSetting>();
         testItems.add(item1);
@@ -189,7 +165,7 @@ public class AppConfigurationPropertySourceTest {
     @Test
     public void testPropCanBeInitAndQueried() throws IOException {
         when(clientStoreMock.listSettings(Mockito.any(), Mockito.anyString())).thenReturn(testItems)
-                .thenReturn(FEATURE_ITEMS);
+            .thenReturn(FEATURE_ITEMS);
 
         FeatureSet featureSet = new FeatureSet();
         try {
@@ -201,7 +177,7 @@ public class AppConfigurationPropertySourceTest {
 
         String[] keyNames = propertySource.getPropertyNames();
         String[] expectedKeyNames = testItems.stream()
-                .map(t -> t.getKey().substring(TEST_CONTEXT.length())).toArray(String[]::new);
+            .map(t -> t.getKey().substring(TEST_CONTEXT.length())).toArray(String[]::new);
         String[] allExpectedKeyNames = ArrayUtils.addAll(expectedKeyNames, FEATURE_MANAGEMENT_KEY);
 
         assertThat(keyNames).containsExactlyInAnyOrder(allExpectedKeyNames);
@@ -214,11 +190,11 @@ public class AppConfigurationPropertySourceTest {
     @Test
     public void testPropertyNameSlashConvertedToDots() throws IOException {
         ConfigurationSetting slashedProp = createItem(TEST_CONTEXT, TEST_SLASH_KEY, TEST_SLASH_VALUE, null,
-                EMPTY_CONTENT_TYPE);
+            EMPTY_CONTENT_TYPE);
         List<ConfigurationSetting> settings = new ArrayList<ConfigurationSetting>();
         settings.add(slashedProp);
         when(clientStoreMock.listSettings(Mockito.any(), Mockito.anyString())).thenReturn(settings)
-                .thenReturn(new ArrayList<ConfigurationSetting>());
+            .thenReturn(new ArrayList<ConfigurationSetting>());
         FeatureSet featureSet = new FeatureSet();
         try {
             propertySource.initProperties(featureSet);
@@ -238,7 +214,7 @@ public class AppConfigurationPropertySourceTest {
     @Test
     public void testFeatureFlagCanBeInitedAndQueried() throws IOException {
         when(clientStoreMock.listSettings(Mockito.any(), Mockito.anyString()))
-                .thenReturn(new ArrayList<ConfigurationSetting>()).thenReturn(FEATURE_ITEMS);
+            .thenReturn(new ArrayList<ConfigurationSetting>()).thenReturn(FEATURE_ITEMS);
 
         FeatureSet featureSet = new FeatureSet();
         try {
@@ -251,8 +227,8 @@ public class AppConfigurationPropertySourceTest {
         FeatureSet featureSetExpected = new FeatureSet();
         Feature feature = new Feature();
         feature.setKey("Alpha");
-        HashMap<Integer, FeatureFilterEvaluationContext> filters = 
-                new HashMap<Integer, FeatureFilterEvaluationContext>();
+        HashMap<Integer, FeatureFilterEvaluationContext> filters =
+            new HashMap<Integer, FeatureFilterEvaluationContext>();
         FeatureFilterEvaluationContext ffec = new FeatureFilterEvaluationContext();
         ffec.setName("TestFilter");
         filters.put(0, ffec);
@@ -271,7 +247,7 @@ public class AppConfigurationPropertySourceTest {
         featureSetExpected.addFeature("Beta", true);
         featureSetExpected.addFeature("Gamma", gamma);
         LinkedHashMap<?, ?> convertedValue = mapper.convertValue(featureSetExpected.getFeatureManagement(),
-                LinkedHashMap.class);
+            LinkedHashMap.class);
 
         assertEquals(convertedValue, propertySource.getProperty(FEATURE_MANAGEMENT_KEY));
     }
@@ -300,8 +276,8 @@ public class AppConfigurationPropertySourceTest {
 
         FeatureSet featureSetExpected = new FeatureSet();
 
-        HashMap<Integer, FeatureFilterEvaluationContext> filters = 
-                new HashMap<Integer, FeatureFilterEvaluationContext>();
+        HashMap<Integer, FeatureFilterEvaluationContext> filters =
+            new HashMap<Integer, FeatureFilterEvaluationContext>();
         FeatureFilterEvaluationContext ffec = new FeatureFilterEvaluationContext();
         ffec.setName("TestFilter");
 
@@ -311,8 +287,8 @@ public class AppConfigurationPropertySourceTest {
         alpha.setKey("Alpha");
         alpha.setEnabledFor(filters);
 
-        HashMap<Integer, FeatureFilterEvaluationContext> filters2 = 
-                new HashMap<Integer, FeatureFilterEvaluationContext>();
+        HashMap<Integer, FeatureFilterEvaluationContext> filters2 =
+            new HashMap<Integer, FeatureFilterEvaluationContext>();
         FeatureFilterEvaluationContext ffec2 = new FeatureFilterEvaluationContext();
         ffec2.setName("TestFilter");
 
@@ -331,7 +307,7 @@ public class AppConfigurationPropertySourceTest {
         featureSetExpected.addFeature("Beta", true);
         featureSetExpected.addFeature("Gamma", gamma);
         LinkedHashMap<?, ?> convertedValue = mapper.convertValue(featureSetExpected.getFeatureManagement(),
-                LinkedHashMap.class);
+            LinkedHashMap.class);
 
         assertEquals(convertedValue, propertySource.getProperty(FEATURE_MANAGEMENT_KEY));
     }
@@ -341,7 +317,7 @@ public class AppConfigurationPropertySourceTest {
         ArrayList<ConfigurationSetting> items = new ArrayList<ConfigurationSetting>();
         items.add(item3Null);
         when(clientStoreMock.listSettings(Mockito.any(), Mockito.anyString())).thenReturn(items)
-                .thenReturn(new ArrayList<ConfigurationSetting>());
+            .thenReturn(new ArrayList<ConfigurationSetting>());
 
         FeatureSet featureSet = new FeatureSet();
         try {
@@ -352,7 +328,7 @@ public class AppConfigurationPropertySourceTest {
 
         String[] keyNames = propertySource.getPropertyNames();
         String[] expectedKeyNames = items.stream()
-                .map(t -> t.getKey().substring(TEST_CONTEXT.length())).toArray(String[]::new);
+            .map(t -> t.getKey().substring(TEST_CONTEXT.length())).toArray(String[]::new);
 
         assertThat(keyNames).containsExactlyInAnyOrder(expectedKeyNames);
     }
@@ -362,7 +338,7 @@ public class AppConfigurationPropertySourceTest {
         ArrayList<ConfigurationSetting> items = new ArrayList<ConfigurationSetting>();
         items.add(featureItemNull);
         when(clientStoreMock.listSettings(Mockito.any(), Mockito.anyString()))
-                .thenReturn(new ArrayList<ConfigurationSetting>()).thenReturn(items);
+            .thenReturn(new ArrayList<ConfigurationSetting>()).thenReturn(items);
 
         FeatureSet featureSet = new FeatureSet();
         try {
@@ -380,7 +356,7 @@ public class AppConfigurationPropertySourceTest {
     @Test
     public void testFeatureFlagTargeting() throws IOException {
         when(clientStoreMock.listSettings(Mockito.any(), Mockito.anyString()))
-                .thenReturn(new ArrayList<ConfigurationSetting>()).thenReturn(FEATURE_ITEMS_TARGETING);
+            .thenReturn(new ArrayList<ConfigurationSetting>()).thenReturn(FEATURE_ITEMS_TARGETING);
 
         FeatureSet featureSet = new FeatureSet();
         try {
@@ -393,8 +369,8 @@ public class AppConfigurationPropertySourceTest {
         FeatureSet featureSetExpected = new FeatureSet();
         Feature feature = new Feature();
         feature.setKey("target");
-        HashMap<Integer, FeatureFilterEvaluationContext> filters = 
-                new HashMap<Integer, FeatureFilterEvaluationContext>();
+        HashMap<Integer, FeatureFilterEvaluationContext> filters =
+            new HashMap<Integer, FeatureFilterEvaluationContext>();
         FeatureFilterEvaluationContext ffec = new FeatureFilterEvaluationContext();
         ffec.setName("targetingFilter");
 
@@ -427,7 +403,7 @@ public class AppConfigurationPropertySourceTest {
 
         featureSetExpected.addFeature("target", feature);
         LinkedHashMap<?, ?> convertedValue = mapper.convertValue(featureSetExpected.getFeatureManagement(),
-                LinkedHashMap.class);
+            LinkedHashMap.class);
 
         assertEquals(convertedValue.toString(), propertySource.getProperty(FEATURE_MANAGEMENT_KEY).toString());
     }

@@ -43,22 +43,15 @@ import org.springframework.context.ApplicationContext;
 
 public class AppConfigurationPropertiesTest {
 
+    private static final String NO_ENDPOINT_CONN_STRING = "Id=fake-conn-id;Secret=ZmFrZS1jb25uLXNlY3JldA==";
+    private static final String NO_ID_CONN_STRING = "Endpoint=https://fake.test.config.io;Secret=ZmFrZS1jb25uLXNlY3JldA==";
+    private static final String NO_SECRET_CONN_STRING = "Endpoint=https://fake.test.config.io;Id=fake-conn-id;";
+    private static final String[] ILLEGAL_PREFIXES = {"/ config", "config"};
+    private static final String[] ILLEGAL_PROFILE_SEPARATOR = {"/", "\\", "."};
+    private static final String ILLEGAL_LABELS = "*,my-label";
     @InjectMocks
     private ApplicationContextRunner contextRunner = new ApplicationContextRunner()
         .withConfiguration(AutoConfigurations.of(AppConfigurationBootstrapConfiguration.class));
-
-    private static final String NO_ENDPOINT_CONN_STRING = "Id=fake-conn-id;Secret=ZmFrZS1jb25uLXNlY3JldA==";
-
-    private static final String NO_ID_CONN_STRING = "Endpoint=https://fake.test.config.io;Secret=ZmFrZS1jb25uLXNlY3JldA==";
-
-    private static final String NO_SECRET_CONN_STRING = "Endpoint=https://fake.test.config.io;Id=fake-conn-id;";
-
-    private static final String[] ILLEGAL_PREFIXES = {"/ config", "config"};
-
-    private static final String[] ILLEGAL_PROFILE_SEPARATOR = {"/", "\\", "."};
-
-    private static final String ILLEGAL_LABELS = "*,my-label";
-
     @Mock
     private HttpGet mockHttpGet;
 
