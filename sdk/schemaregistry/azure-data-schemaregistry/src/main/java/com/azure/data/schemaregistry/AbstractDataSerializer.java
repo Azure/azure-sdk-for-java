@@ -154,8 +154,13 @@ public abstract class AbstractDataSerializer extends AbstractDataSerDe {
         return Mono.fromCallable(s::readAllBytes)
             .onErrorResume(IOException.class, e -> monoError(logger, new SerializationException(e.getMessage(), e)))
             .map(payload -> {
+                if (payload == null || payload.length == 0) {
+                    return Mono.empty();
+                }
+
                 ByteBuffer buffer = ByteBuffer.wrap(payload);
                 String schemaId = getSchemaIdFromPayload(buffer);
+
                 return this.schemaRegistryClient.getSchemaById(schemaId).onErrorResume(e -> {
                     if (e instanceof SchemaRegistryClientException) {
                         StringBuilder builder = new StringBuilder(
