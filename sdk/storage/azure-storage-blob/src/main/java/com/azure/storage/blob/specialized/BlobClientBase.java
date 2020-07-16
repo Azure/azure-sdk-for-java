@@ -785,7 +785,6 @@ public class BlobClientBase {
         return blockWithOptionalTimeout(response, timeout);
     }
 
-    // TODO: (rickle-msft) docs link
     /**
      * Returns the blob's tags.
      *
@@ -794,7 +793,7 @@ public class BlobClientBase {
      * {@codesnippet com.azure.storage.blob.specialized.BlobClientBase.getTags}
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api">Azure Docs</a></p>
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-blob-tags">Azure Docs</a></p>
      *
      * @return The blob's tags.
      */
@@ -810,7 +809,7 @@ public class BlobClientBase {
      * {@codesnippet com.azure.storage.blob.specialized.BlobClientBase.getTagsWithResponse#Duration-Context}
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api">Azure Docs</a></p>
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-blob-tags">Azure Docs</a></p>
      *
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context Additional context that is passed through the Http pipeline during the service call.
@@ -831,7 +830,7 @@ public class BlobClientBase {
      * {@codesnippet com.azure.storage.blob.specialized.BlobClientBase.setTags#Map}
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api">Azure Docs</a></p>
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/set-blob-tags">Azure Docs</a></p>
      *
      * @param tags Tags to associate with the blob.
      */
@@ -848,7 +847,7 @@ public class BlobClientBase {
      * {@codesnippet com.azure.storage.blob.specialized.BlobClientBase.setTagsWithResponse#Map-Duration-Context}
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api">Azure Docs</a></p>
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/set-blob-tags">Azure Docs</a></p>
      *
      * @param tags Tags to associate with the blob.
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
@@ -1055,12 +1054,11 @@ public class BlobClientBase {
         return this.client.generateSas(blobServiceSasSignatureValues);
     }
 
-    /* TODO (gapra): Populate Rest Api docs for quick query. */
     /**
      * Opens a blob input stream to query the blob.
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/">Azure Docs</a></p>
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/query-blob-contents">Azure Docs</a></p>
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -1077,7 +1075,7 @@ public class BlobClientBase {
      * Opens a blob input stream to query the blob.
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/">Azure Docs</a></p>
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/query-blob-contents">Azure Docs</a></p>
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -1102,7 +1100,7 @@ public class BlobClientBase {
      * Queries an entire blob into an output stream.
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/">Azure Docs</a></p>
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/query-blob-contents">Azure Docs</a></p>
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -1121,7 +1119,7 @@ public class BlobClientBase {
      * Queries an entire blob into an output stream.
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/">Azure Docs</a></p>
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/query-blob-contents">Azure Docs</a></p>
      *
      * <p><strong>Code Samples</strong></p>
      *

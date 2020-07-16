@@ -66,7 +66,6 @@ public class ProviderRegistrationPolicy implements HttpPipelinePolicy {
                             }
 
                             if (cloudError != null && MISSING_SUBSCRIPTION_REGISTRATION.equals(cloudError.getCode())) {
-                                // TODO: add proxy in rest client
                                 ResourceManager resourceManager = ResourceManager.authenticate(credential, profile)
                                         .withDefaultSubscription();
                                 Pattern providerPattern = Pattern.compile(".*'(.*)'");

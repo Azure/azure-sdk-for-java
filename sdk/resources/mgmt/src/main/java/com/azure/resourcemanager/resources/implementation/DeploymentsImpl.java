@@ -106,7 +106,6 @@ public final class DeploymentsImpl
         deleteByIdAsync(id).block();
     }
 
-
     @Override
     public Mono<Void> deleteByIdAsync(String id) {
         return deleteByResourceGroupAsync(ResourceUtils.groupFromResourceId(id), ResourceUtils.nameFromResourceId(id));

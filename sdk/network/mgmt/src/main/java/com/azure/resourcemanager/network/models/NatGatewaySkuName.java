@@ -4,41 +4,28 @@
 
 package com.azure.resourcemanager.network.models;
 
+import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
+import java.util.Collection;
 
 /** Defines values for NatGatewaySkuName. */
-public enum NatGatewaySkuName {
-    /** Enum value Standard. */
-    STANDARD("Standard");
-
-    /** The actual serialized value for a NatGatewaySkuName instance. */
-    private final String value;
-
-    NatGatewaySkuName(String value) {
-        this.value = value;
-    }
+public final class NatGatewaySkuName extends ExpandableStringEnum<NatGatewaySkuName> {
+    /** Static value Standard for NatGatewaySkuName. */
+    public static final NatGatewaySkuName STANDARD = fromString("Standard");
 
     /**
-     * Parses a serialized value to a NatGatewaySkuName instance.
+     * Creates or finds a NatGatewaySkuName from its string representation.
      *
-     * @param value the serialized value to parse.
-     * @return the parsed NatGatewaySkuName object, or null if unable to parse.
+     * @param name a name to look for.
+     * @return the corresponding NatGatewaySkuName.
      */
     @JsonCreator
-    public static NatGatewaySkuName fromString(String value) {
-        NatGatewaySkuName[] items = NatGatewaySkuName.values();
-        for (NatGatewaySkuName item : items) {
-            if (item.toString().equalsIgnoreCase(value)) {
-                return item;
-            }
-        }
-        return null;
+    public static NatGatewaySkuName fromString(String name) {
+        return fromString(name, NatGatewaySkuName.class);
     }
 
-    @JsonValue
-    @Override
-    public String toString() {
-        return this.value;
+    /** @return known NatGatewaySkuName values. */
+    public static Collection<NatGatewaySkuName> values() {
+        return values(NatGatewaySkuName.class);
     }
 }

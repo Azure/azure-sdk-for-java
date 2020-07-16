@@ -60,12 +60,11 @@ public class ManageCustomModels {
                         System.out.printf("Field Accuracy: %.2f%n", customFormModelField.getAccuracy());
                     });
                 }
-
             });
         });
 
         // Delete Custom Model
-        System.out.printf("Deleted model with model Id: %s operation completed with status: %s%n", modelId.get(),
+        System.out.printf("Deleted model with model Id: %s, operation completed with status: %s%n", modelId.get(),
             client.deleteModelWithResponse(modelId.get(), Context.NONE).getStatusCode());
     }
 }

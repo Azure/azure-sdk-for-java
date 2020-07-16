@@ -4,41 +4,28 @@
 
 package com.azure.resourcemanager.network.models;
 
+import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
+import java.util.Collection;
 
 /** Defines values for FirewallPolicyNatRuleActionType. */
-public enum FirewallPolicyNatRuleActionType {
-    /** Enum value DNAT. */
-    DNAT("DNAT");
-
-    /** The actual serialized value for a FirewallPolicyNatRuleActionType instance. */
-    private final String value;
-
-    FirewallPolicyNatRuleActionType(String value) {
-        this.value = value;
-    }
+public final class FirewallPolicyNatRuleActionType extends ExpandableStringEnum<FirewallPolicyNatRuleActionType> {
+    /** Static value DNAT for FirewallPolicyNatRuleActionType. */
+    public static final FirewallPolicyNatRuleActionType DNAT = fromString("DNAT");
 
     /**
-     * Parses a serialized value to a FirewallPolicyNatRuleActionType instance.
+     * Creates or finds a FirewallPolicyNatRuleActionType from its string representation.
      *
-     * @param value the serialized value to parse.
-     * @return the parsed FirewallPolicyNatRuleActionType object, or null if unable to parse.
+     * @param name a name to look for.
+     * @return the corresponding FirewallPolicyNatRuleActionType.
      */
     @JsonCreator
-    public static FirewallPolicyNatRuleActionType fromString(String value) {
-        FirewallPolicyNatRuleActionType[] items = FirewallPolicyNatRuleActionType.values();
-        for (FirewallPolicyNatRuleActionType item : items) {
-            if (item.toString().equalsIgnoreCase(value)) {
-                return item;
-            }
-        }
-        return null;
+    public static FirewallPolicyNatRuleActionType fromString(String name) {
+        return fromString(name, FirewallPolicyNatRuleActionType.class);
     }
 
-    @JsonValue
-    @Override
-    public String toString() {
-        return this.value;
+    /** @return known FirewallPolicyNatRuleActionType values. */
+    public static Collection<FirewallPolicyNatRuleActionType> values() {
+        return values(FirewallPolicyNatRuleActionType.class);
     }
 }

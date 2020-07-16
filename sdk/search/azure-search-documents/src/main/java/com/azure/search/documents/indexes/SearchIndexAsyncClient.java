@@ -38,7 +38,10 @@ import static com.azure.core.util.FluxUtil.pagedFluxError;
 import static com.azure.core.util.FluxUtil.withContext;
 
 /**
- * Asynchronous Client to manage and query indexes, as well as Synonym Map, on a Cognitive Search service
+ * This class provides a client that contains the operations for creating, getting, listing, updating, or deleting
+ * indexes or synonym map and analyzing text in an Azure Cognitive Search service.
+ *
+ * @see SearchIndexClientBuilder
  */
 @ServiceClient(builder = SearchIndexClientBuilder.class, isAsync = true)
 public final class SearchIndexAsyncClient {
@@ -75,7 +78,7 @@ public final class SearchIndexAsyncClient {
 
         this.restClient = new SearchServiceClientImplBuilder()
             .endpoint(endpoint)
-          //  .apiVersion(serviceVersion.getVersion())
+            //  .apiVersion(serviceVersion.getVersion())
             .pipeline(httpPipeline)
             .buildClient();
     }
@@ -139,7 +142,7 @@ public final class SearchIndexAsyncClient {
      *
      * <p><strong>Code Sample</strong></p>
      *
-     * <p> Create search index named "searchIndex" with response. </p>
+     * <p> Create search index named "searchIndex". </p>
      *
      * {@codesnippet com.azure.search.documents.indexes.SearchIndexAsyncClient.createIndexWithResponse#SearchIndex}
      *
@@ -185,7 +188,7 @@ public final class SearchIndexAsyncClient {
      *
      * <p><strong>Code Sample</strong></p>
      *
-     * <p> Get search index response with "searchIndex. </p>
+     * <p> Get search index with "searchIndex. </p>
      *
      * {@codesnippet com.azure.search.documents.indexes.SearchIndexAsyncClient.getIndexWithResponse#String}
      *
@@ -230,7 +233,7 @@ public final class SearchIndexAsyncClient {
      *
      * <p><strong>Code Sample</strong></p>
      *
-     * <p> Get search index "searchIndex" statistics with response. </p>
+     * <p> Get search index "searchIndex" statistics. </p>
      *
      * {@codesnippet com.azure.search.documents.indexes.SearchIndexAsyncClient.getIndexStatisticsWithResponse#String}
      *
@@ -308,8 +311,7 @@ public final class SearchIndexAsyncClient {
     PagedFlux<String> listIndexNames(Context context) {
         try {
             return new PagedFlux<>(() -> this.listIndexesWithResponse("name", context)
-                .map(MappingUtils::mappingPagingSearchIndexNames)
-            );
+                .map(MappingUtils::mappingPagingSearchIndexNames));
         } catch (RuntimeException ex) {
             return pagedFluxError(logger, ex);
         }
@@ -344,7 +346,7 @@ public final class SearchIndexAsyncClient {
      *
      * <p><strong>Code Sample</strong></p>
      *
-     * <p> Create or update search index named "searchIndex" with response. </p>
+     * <p> Create or update search index named "searchIndex". </p>
      *
      * {@codesnippet com.azure.search.documents.indexes.SearchIndexClient.createOrUpdateIndexWithResponse#SearchIndex-boolean-boolean-Context}
      *
@@ -371,8 +373,7 @@ public final class SearchIndexAsyncClient {
             String ifMatch = onlyIfUnchanged ? index.getETag() : null;
             return restClient.getIndexes()
                 .createOrUpdateWithResponseAsync(index.getName(), SearchIndexConverter.map(index),
-                    allowIndexDowntime, ifMatch, null,
-                    null, context)
+                    allowIndexDowntime, ifMatch, null, null, context)
                 .onErrorMap(MappingUtils::exceptionMapper)
                 .map(MappingUtils::mappingExternalSearchIndex);
         } catch (RuntimeException ex) {
@@ -402,7 +403,7 @@ public final class SearchIndexAsyncClient {
      *
      * <p><strong>Code Sample</strong></p>
      *
-     * <p> Delete search index response with name "searchIndex". </p>
+     * <p> Delete search index with name "searchIndex". </p>
      *
      * {@codesnippet com.azure.search.documents.indexes.SearchIndexAsyncClient.deleteIndexWithResponse#SearchIndex-boolean}
      *
@@ -421,8 +422,7 @@ public final class SearchIndexAsyncClient {
     Mono<Response<Void>> deleteIndexWithResponse(String indexName, String etag, Context context) {
         try {
             return restClient.getIndexes()
-                .deleteWithResponseAsync(indexName, etag, null,
-                    null, context)
+                .deleteWithResponseAsync(indexName, etag, null, null, context)
                 .onErrorMap(MappingUtils::exceptionMapper)
                 .map(Function.identity());
         } catch (RuntimeException ex) {
@@ -465,8 +465,7 @@ public final class SearchIndexAsyncClient {
     private Mono<PagedResponse<AnalyzedTokenInfo>> analyzeTextWithResponse(String indexName,
         AnalyzeTextOptions analyzeTextOptions, Context context) {
         return restClient.getIndexes()
-            .analyzeWithResponseAsync(indexName, AnalyzeRequestConverter.map(analyzeTextOptions),
-                null, context)
+            .analyzeWithResponseAsync(indexName, AnalyzeRequestConverter.map(analyzeTextOptions), null, context)
             .onErrorMap(MappingUtils::exceptionMapper)
             .map(MappingUtils::mappingTokenInfo);
     }
@@ -493,7 +492,7 @@ public final class SearchIndexAsyncClient {
      *
      * <p><strong>Code Sample</strong></p>
      *
-     * <p> Create synonym map response named "synonymMap". </p>
+     * <p> Create synonym map named "synonymMap". </p>
      *
      * {@codesnippet com.azure.search.documents.indexes.SearchIndexAsyncClient.createSynonymMapWithResponse#SynonymMap}
      *
@@ -510,8 +509,7 @@ public final class SearchIndexAsyncClient {
         Objects.requireNonNull(synonymMap, "'SynonymMap' cannot be null.");
         try {
             return restClient.getSynonymMaps()
-                .createWithResponseAsync(SynonymMapConverter.map(synonymMap),
-                    null, context)
+                .createWithResponseAsync(SynonymMapConverter.map(synonymMap), null, context)
                 .onErrorMap(MappingUtils::exceptionMapper)
                 .map(MappingUtils::mappingExternalSynonymMap);
         } catch (RuntimeException ex) {
@@ -541,7 +539,7 @@ public final class SearchIndexAsyncClient {
      *
      * <p><strong>Code Sample</strong></p>
      *
-     * <p> Get synonym map response with name "synonymMap". </p>
+     * <p> Get synonym map with name "synonymMap". </p>
      *
      * {@codesnippet com.azure.search.documents.indexes.SearchIndexAsyncClient.getSynonymMap#String}
      *
@@ -553,8 +551,7 @@ public final class SearchIndexAsyncClient {
         return withContext(context -> getSynonymMapWithResponse(synonymMapName, context));
     }
 
-    Mono<Response<SynonymMap>> getSynonymMapWithResponse(String synonymMapName,
-        Context context) {
+    Mono<Response<SynonymMap>> getSynonymMapWithResponse(String synonymMapName, Context context) {
         try {
             return restClient.getSynonymMaps()
                 .getWithResponseAsync(synonymMapName, null, context)
@@ -627,8 +624,7 @@ public final class SearchIndexAsyncClient {
         }
     }
 
-    private Mono<Response<ListSynonymMapsResult>> listSynonymMapsWithResponse(String select,
-        Context context) {
+    private Mono<Response<ListSynonymMapsResult>> listSynonymMapsWithResponse(String select, Context context) {
         return restClient.getSynonymMaps()
             .listWithResponseAsync(select, null, context)
             .onErrorMap(MappingUtils::exceptionMapper);
@@ -656,7 +652,7 @@ public final class SearchIndexAsyncClient {
      *
      * <p><strong>Code Sample</strong></p>
      *
-     * <p> Create or update synonym map response named "synonymMap". </p>
+     * <p> Create or update synonym map named "synonymMap". </p>
      *
      * {@codesnippet com.azure.search.documents.indexes.SearchIndexAsyncClient.createOrUpdateSynonymMapWithResponse#SynonymMap-boolean-Context}
      *
@@ -679,9 +675,7 @@ public final class SearchIndexAsyncClient {
         try {
             return restClient.getSynonymMaps()
                 .createOrUpdateWithResponseAsync(synonymMap.getName(), SynonymMapConverter.map(synonymMap),
-                    ifMatch, null,
-                    null,
-                    context)
+                    ifMatch, null, null, context)
                 .onErrorMap(MappingUtils::exceptionMapper)
                 .map(MappingUtils::mappingExternalSynonymMap);
         } catch (RuntimeException ex) {
@@ -712,7 +706,7 @@ public final class SearchIndexAsyncClient {
      *
      * <p><strong>Code Sample</strong></p>
      *
-     * <p> Delete synonym map response with name "synonymMap". </p>
+     * <p> Delete synonym map with name "synonymMap". </p>
      *
      * {@codesnippet com.azure.search.documents.indexes.SearchIndexAsyncClient.deleteSynonymMapWithResponse#SynonymMap-boolean}
      *
@@ -725,16 +719,14 @@ public final class SearchIndexAsyncClient {
     public Mono<Response<Void>> deleteSynonymMapWithResponse(SynonymMap synonymMap, boolean onlyIfUnchanged) {
         Objects.requireNonNull(synonymMap, "'SynonymMap' cannot be null");
         String etag = onlyIfUnchanged ? synonymMap.getETag() : null;
-        return withContext(context ->
-            deleteSynonymMapWithResponse(synonymMap.getName(), etag, context));
+        return withContext(context -> deleteSynonymMapWithResponse(synonymMap.getName(), etag, context));
     }
 
     Mono<Response<Void>> deleteSynonymMapWithResponse(String synonymMapName, String etag,
         Context context) {
         try {
             return restClient.getSynonymMaps()
-                .deleteWithResponseAsync(synonymMapName, etag, null,
-                    null, context)
+                .deleteWithResponseAsync(synonymMapName, etag, null, null, context)
                 .onErrorMap(MappingUtils::exceptionMapper)
                 .map(Function.identity());
         } catch (RuntimeException ex) {
@@ -766,7 +758,7 @@ public final class SearchIndexAsyncClient {
      *
      * <p><strong>Code Sample</strong></p>
      *
-     * <p> Get service statistics with response. </p>
+     * <p> Get service statistics. </p>
      *
      * {@codesnippet com.azure.search.documents.indexes.SearchIndexAsyncClient.getServiceStatisticsWithResponse}
      *

@@ -6,7 +6,6 @@ package com.azure.messaging.servicebus;
 import com.azure.core.amqp.AmqpRetryPolicy;
 import com.azure.core.amqp.AmqpTransaction;
 import com.azure.core.amqp.exception.AmqpException;
-import com.azure.core.amqp.exception.LinkErrorContext;
 import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.amqp.implementation.RetryUtil;
 import com.azure.core.amqp.implementation.StringUtil;
@@ -55,10 +54,6 @@ import static com.azure.messaging.servicebus.implementation.Messages.INVALID_OPE
  * <p>This returns an infinite stream of messages from Service Bus. The stream ends when the subscription is disposed or
  * other terminal scenarios. See {@link #receiveMessages()} for more information.</p>
  * {@codesnippet com.azure.messaging.servicebus.servicebusasyncreceiverclient.receive#all}
- *
- * <p><strong>Receive a maximum number of messages or until max a Duration</strong></p>
- * <p>This receives at most 15 messages, or until a duration of 30 seconds elapses. Whichever occurs first.</p>
- * {@codesnippet com.azure.messaging.servicebus.servicebusasyncreceiverclient.receive#int-duration}
  *
  * <p><strong>Receive messages in {@link ReceiveMode#RECEIVE_AND_DELETE} mode from Service Bus resource</strong></p>
  * {@codesnippet com.azure.messaging.servicebus.servicebusasyncreceiverclient.receiveWithReceiveAndDeleteMode}
@@ -887,30 +882,6 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
     }
 
     /**
-     * Receives a bounded stream of {@link ServiceBusReceivedMessage messages} from the Service Bus entity. This stream
-     * receives either {@code maxNumberOfMessages} are received or the {@code maxWaitTime} has elapsed.
-     *
-     * @param maxNumberOfMessages Maximum number of messages to receive.
-     * @param maxWaitTime Maximum time to wait.
-     *
-     * @return A bounded {@link Flux} of messages.
-     * @throws NullPointerException if {@code maxWaitTime} is null.
-     * @throws IllegalArgumentException if {@code maxNumberOfMessages} is less than 1. {@code maxWaitTime} is zero
-     *     or a negative duration.
-     */
-    public Flux<ServiceBusReceivedMessageContext> receiveMessages(int maxNumberOfMessages, Duration maxWaitTime) {
-        if (maxNumberOfMessages < 1) {
-            return fluxError(logger, new IllegalArgumentException("'maxNumberOfMessages' cannot be less than 1."));
-        } else if (maxWaitTime == null) {
-            return fluxError(logger, new NullPointerException("'maxWaitTime' cannot be null."));
-        } else if (maxWaitTime.isNegative() || maxWaitTime.isZero()) {
-            return fluxError(logger, new NullPointerException("'maxWaitTime' cannot be negative or zero."));
-        }
-
-        return receiveMessages().take(maxNumberOfMessages).take(maxWaitTime);
-    }
-
-    /**
      * Receives a deferred {@link ServiceBusReceivedMessage message}. Deferred messages can only be received by using
      * sequence number.
      *
@@ -1283,16 +1254,12 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
             })
             .repeat();
 
-        final LinkErrorContext context = new LinkErrorContext(fullyQualifiedNamespace, entityPath, linkName,
-            null);
         final AmqpRetryPolicy retryPolicy = RetryUtil.getRetryPolicy(connectionProcessor.getRetryOptions());
         final ServiceBusReceiveLinkProcessor linkMessageProcessor = receiveLink.subscribeWith(
-            new ServiceBusReceiveLinkProcessor(receiverOptions.getPrefetchCount(), retryPolicy, connectionProcessor,
-                context));
+            new ServiceBusReceiveLinkProcessor(receiverOptions.getPrefetchCount(), retryPolicy,
+                receiverOptions.getReceiveMode()));
         final ServiceBusAsyncConsumer newConsumer = new ServiceBusAsyncConsumer(linkName, linkMessageProcessor,
-            messageSerializer, false, receiverOptions.autoLockRenewalEnabled(),
-            receiverOptions.getMaxAutoLockRenewalDuration(), connectionProcessor.getRetryOptions(),
-            (token, associatedLinkName) -> renewMessageLock(token, associatedLinkName));
+            messageSerializer, receiverOptions.getPrefetchCount());
 
         // There could have been multiple threads trying to create this async consumer when the result was null.
         // If another one had set the value while we were creating this resource, dispose of newConsumer.
@@ -1309,16 +1276,6 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      */
     ReceiverOptions getReceiverOptions() {
         return receiverOptions;
-    }
-
-    /**
-     * Renews the message lock, and updates its value in the container.
-     */
-    private Mono<Instant> renewMessageLock(String lockToken, String linkName) {
-        return connectionProcessor
-            .flatMap(connection -> connection.getManagementNode(entityPath, entityType))
-            .flatMap(serviceBusManagementNode ->
-                serviceBusManagementNode.renewMessageLock(lockToken, linkName));
     }
 
     /**

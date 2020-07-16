@@ -14,12 +14,14 @@ import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
+import com.azure.messaging.servicebus.models.NamespaceProperties;
 import com.azure.messaging.servicebus.models.QueueDescription;
 import com.azure.messaging.servicebus.models.QueueRuntimeInfo;
 import com.azure.messaging.servicebus.models.SubscriptionDescription;
 import com.azure.messaging.servicebus.models.SubscriptionRuntimeInfo;
 import com.azure.messaging.servicebus.models.TopicDescription;
 import com.azure.messaging.servicebus.models.TopicRuntimeInfo;
+import reactor.core.publisher.Mono;
 
 import java.time.Duration;
 import java.util.Objects;
@@ -382,7 +384,46 @@ public final class ServiceBusManagementClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<QueueDescription> getQueueWithResponse(String queueName, Context context) {
-        return asyncClient.getQueueWithResponse(queueName, context, Function.identity()).block();
+        return asyncClient.getQueueWithResponse(queueName, context != null ? context : Context.NONE,
+            Function.identity()).block();
+    }
+
+    /**
+     * Gets whether or not a queue with {@code queueName} exists in the Service Bus namespace.
+     *
+     * @param queueName Name of the queue.
+     *
+     * @return {@code true} if the queue exists; otherwise {@code false}.
+     * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
+     *     namespace.
+     * @throws HttpResponseException If error occurred processing the request.
+     * @throws IllegalArgumentException if {@code queueName} is an empty string.
+     * @throws NullPointerException if {@code queueName} is null.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public boolean getQueueExists(String queueName) {
+        final Boolean exists = asyncClient.getQueueExists(queueName).block();
+        return exists != null && exists;
+    }
+
+    /**
+     * Gets whether or not a queue with {@code queueName} exists in the Service Bus namespace.
+     *
+     * @param queueName Name of the queue.
+     * @param context Additional context that is passed through the HTTP pipeline during the service call.
+     *
+     * @return The HTTP response and {@code true} if the queue exists; otherwise {@code false}.
+     * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
+     *     namespace.
+     * @throws HttpResponseException If error occurred processing the request.
+     * @throws IllegalArgumentException if {@code queueName} is an empty string.
+     * @throws NullPointerException if {@code queueName} is null.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Boolean> getQueueExistsWithResponse(String queueName, Context context) {
+        final Mono<Response<QueueDescription>> queueWithResponse =
+            asyncClient.getQueueWithResponse(queueName, context != null ? context : Context.NONE, Function.identity());
+        return asyncClient.getEntityExistsWithResponse(queueWithResponse).block();
     }
 
     /**
@@ -421,7 +462,35 @@ public final class ServiceBusManagementClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<QueueRuntimeInfo> getQueueRuntimeInfoWithResponse(String queueName, Context context) {
-        return asyncClient.getQueueWithResponse(queueName, context, QueueRuntimeInfo::new).block();
+        return asyncClient.getQueueWithResponse(queueName, context != null ? context : Context.NONE,
+            QueueRuntimeInfo::new).block();
+    }
+
+    /**
+     * Gets information about the Service Bus namespace.
+     *
+     * @return A Mono that completes with information about the Service Bus namespace.
+     * @throws ClientAuthenticationException if the client's credentials do not have access to the namespace.
+     * @throws HttpResponseException If error occurred processing the request.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public NamespaceProperties getNamespaceProperties() {
+        return asyncClient.getNamespaceProperties().block();
+    }
+
+    /**
+     * Gets information about the Service Bus namespace along with its HTTP response.
+     *
+     * @param context Additional context that is passed through the HTTP pipeline during the service call.
+     *
+     * @return A Mono that completes with information about the namespace and the associated HTTP response.
+     * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
+     *     namespace.
+     * @throws HttpResponseException If error occurred processing the request.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<NamespaceProperties> getNamespacePropertiesWithResponse(Context context) {
+        return asyncClient.getNamespacePropertiesWithResponse(context).block();
     }
 
     /**
@@ -463,8 +532,50 @@ public final class ServiceBusManagementClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SubscriptionDescription> getSubscriptionWithResponse(String topicName,
         String subscriptionName, Context context) {
-        return asyncClient.getSubscriptionWithResponse(topicName, subscriptionName, context,
-            Function.identity()).block();
+        return asyncClient.getSubscriptionWithResponse(topicName, subscriptionName,
+            context != null ? context : Context.NONE, Function.identity()).block();
+    }
+
+    /**
+     * Gets whether or not a subscription within a topic exists.
+     *
+     * @param topicName Name of topic associated with subscription.
+     * @param subscriptionName Name of the subscription.
+     *
+     * @return {@code true} if the subscription exists.
+     * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
+     *     namespace.
+     * @throws HttpResponseException If error occurred processing the request.
+     * @throws IllegalArgumentException if {@code subscriptionName} is an empty string.
+     * @throws NullPointerException if {@code subscriptionName} is null.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public boolean getSubscriptionExists(String topicName, String subscriptionName) {
+        final Boolean exists = asyncClient.getSubscriptionExists(topicName, subscriptionName).block();
+        return exists != null && exists;
+    }
+
+    /**
+     * Gets whether or not a subscription within a topic exists.
+     *
+     * @param topicName Name of topic associated with subscription.
+     * @param subscriptionName Name of the subscription.
+     * @param context Additional context that is passed through the HTTP pipeline during the service call.
+     *
+     * @return The HTTP response and {@code true} if the subscription exists; otherwise {@code false}.
+     * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
+     *     namespace.
+     * @throws HttpResponseException If error occurred processing the request.
+     * @throws IllegalArgumentException if {@code subscriptionName} is an empty string.
+     * @throws NullPointerException if {@code subscriptionName} is null.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Boolean> getSubscriptionExistsWithResponse(String topicName, String subscriptionName,
+        Context context) {
+        final Mono<Response<SubscriptionDescription>> subscriptionWithResponse =
+            asyncClient.getSubscriptionWithResponse(topicName, subscriptionName,
+                context != null ? context : Context.NONE, Function.identity());
+        return asyncClient.getEntityExistsWithResponse(subscriptionWithResponse).block();
     }
 
     /**
@@ -506,8 +617,8 @@ public final class ServiceBusManagementClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SubscriptionRuntimeInfo> getSubscriptionRuntimeInfoWithResponse(String topicName,
         String subscriptionName, Context context) {
-        return asyncClient.getSubscriptionWithResponse(topicName, subscriptionName, context,
-            SubscriptionRuntimeInfo::new).block();
+        return asyncClient.getSubscriptionWithResponse(topicName, subscriptionName,
+            context != null ? context : Context.NONE, SubscriptionRuntimeInfo::new).block();
     }
 
     /**
@@ -546,7 +657,46 @@ public final class ServiceBusManagementClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<TopicDescription> getTopicWithResponse(String topicName, Context context) {
-        return asyncClient.getTopicWithResponse(topicName, context, Function.identity()).block();
+        return asyncClient.getTopicWithResponse(topicName, context != null ? context : Context.NONE,
+            Function.identity()).block();
+    }
+
+    /**
+     * Gets whether or not a topic with {@code topicName} exists in the Service Bus namespace.
+     *
+     * @param topicName Name of the topic.
+     *
+     * @return {@code true} if the topic exists.
+     * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
+     *     namespace.
+     * @throws HttpResponseException If error occurred processing the request.
+     * @throws IllegalArgumentException if {@code topicName} is an empty string.
+     * @throws NullPointerException if {@code topicName} is null.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public boolean getTopicExists(String topicName) {
+        final Boolean exists = asyncClient.getTopicExists(topicName).block();
+        return exists != null && exists;
+    }
+
+    /**
+     * Gets whether or not a topic with {@code topicName} exists in the Service Bus namespace.
+     *
+     * @param topicName Name of the topic.
+     * @param context Additional context that is passed through the HTTP pipeline during the service call.
+     *
+     * @return The HTTP response and {@code true} if the topic exists; otherwise {@code false}.
+     * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
+     *     namespace.
+     * @throws HttpResponseException If error occurred processing the request.
+     * @throws IllegalArgumentException if {@code topicName} is an empty string.
+     * @throws NullPointerException if {@code topicName} is null.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Boolean> getTopicExistsWithResponse(String topicName, Context context) {
+        final Mono<Response<TopicDescription>> topicWithResponse =
+            asyncClient.getTopicWithResponse(topicName, context != null ? context : Context.NONE, Function.identity());
+        return asyncClient.getEntityExistsWithResponse(topicWithResponse).block();
     }
 
     /**
@@ -585,7 +735,8 @@ public final class ServiceBusManagementClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<TopicRuntimeInfo> getTopicRuntimeInfoWithResponse(String topicName, Context context) {
-        return asyncClient.getTopicWithResponse(topicName, context, TopicRuntimeInfo::new).block();
+        return asyncClient.getTopicWithResponse(topicName, context != null ? context : Context.NONE,
+            TopicRuntimeInfo::new).block();
     }
 
     /**

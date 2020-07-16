@@ -4,41 +4,29 @@
 
 package com.azure.resourcemanager.network.models;
 
+import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
+import java.util.Collection;
 
 /** Defines values for ConnectionMonitorEndpointFilterType. */
-public enum ConnectionMonitorEndpointFilterType {
-    /** Enum value Include. */
-    INCLUDE("Include");
-
-    /** The actual serialized value for a ConnectionMonitorEndpointFilterType instance. */
-    private final String value;
-
-    ConnectionMonitorEndpointFilterType(String value) {
-        this.value = value;
-    }
+public final class ConnectionMonitorEndpointFilterType
+    extends ExpandableStringEnum<ConnectionMonitorEndpointFilterType> {
+    /** Static value Include for ConnectionMonitorEndpointFilterType. */
+    public static final ConnectionMonitorEndpointFilterType INCLUDE = fromString("Include");
 
     /**
-     * Parses a serialized value to a ConnectionMonitorEndpointFilterType instance.
+     * Creates or finds a ConnectionMonitorEndpointFilterType from its string representation.
      *
-     * @param value the serialized value to parse.
-     * @return the parsed ConnectionMonitorEndpointFilterType object, or null if unable to parse.
+     * @param name a name to look for.
+     * @return the corresponding ConnectionMonitorEndpointFilterType.
      */
     @JsonCreator
-    public static ConnectionMonitorEndpointFilterType fromString(String value) {
-        ConnectionMonitorEndpointFilterType[] items = ConnectionMonitorEndpointFilterType.values();
-        for (ConnectionMonitorEndpointFilterType item : items) {
-            if (item.toString().equalsIgnoreCase(value)) {
-                return item;
-            }
-        }
-        return null;
+    public static ConnectionMonitorEndpointFilterType fromString(String name) {
+        return fromString(name, ConnectionMonitorEndpointFilterType.class);
     }
 
-    @JsonValue
-    @Override
-    public String toString() {
-        return this.value;
+    /** @return known ConnectionMonitorEndpointFilterType values. */
+    public static Collection<ConnectionMonitorEndpointFilterType> values() {
+        return values(ConnectionMonitorEndpointFilterType.class);
     }
 }

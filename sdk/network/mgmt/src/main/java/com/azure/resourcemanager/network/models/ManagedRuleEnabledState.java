@@ -4,41 +4,28 @@
 
 package com.azure.resourcemanager.network.models;
 
+import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
+import java.util.Collection;
 
 /** Defines values for ManagedRuleEnabledState. */
-public enum ManagedRuleEnabledState {
-    /** Enum value Disabled. */
-    DISABLED("Disabled");
-
-    /** The actual serialized value for a ManagedRuleEnabledState instance. */
-    private final String value;
-
-    ManagedRuleEnabledState(String value) {
-        this.value = value;
-    }
+public final class ManagedRuleEnabledState extends ExpandableStringEnum<ManagedRuleEnabledState> {
+    /** Static value Disabled for ManagedRuleEnabledState. */
+    public static final ManagedRuleEnabledState DISABLED = fromString("Disabled");
 
     /**
-     * Parses a serialized value to a ManagedRuleEnabledState instance.
+     * Creates or finds a ManagedRuleEnabledState from its string representation.
      *
-     * @param value the serialized value to parse.
-     * @return the parsed ManagedRuleEnabledState object, or null if unable to parse.
+     * @param name a name to look for.
+     * @return the corresponding ManagedRuleEnabledState.
      */
     @JsonCreator
-    public static ManagedRuleEnabledState fromString(String value) {
-        ManagedRuleEnabledState[] items = ManagedRuleEnabledState.values();
-        for (ManagedRuleEnabledState item : items) {
-            if (item.toString().equalsIgnoreCase(value)) {
-                return item;
-            }
-        }
-        return null;
+    public static ManagedRuleEnabledState fromString(String name) {
+        return fromString(name, ManagedRuleEnabledState.class);
     }
 
-    @JsonValue
-    @Override
-    public String toString() {
-        return this.value;
+    /** @return known ManagedRuleEnabledState values. */
+    public static Collection<ManagedRuleEnabledState> values() {
+        return values(ManagedRuleEnabledState.class);
     }
 }

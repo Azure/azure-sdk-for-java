@@ -9,7 +9,6 @@ import com.azure.core.util.serializer.CollectionFormat;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
-import com.azure.messaging.servicebus.implementation.models.ServiceBusManagementError;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
@@ -66,12 +65,11 @@ public class ServiceBusManagementSerializer implements SerializerAdapter {
             return jacksonAdapter.deserialize(value, type, encoding);
         }
 
-        if (ServiceBusManagementError.class == type) {
-            final ServiceBusManagementError error = deserialize(value, type);
-            return (T) error;
+        if (Object.class == type) {
+            return (T) value;
+        } else {
+            return (T) deserialize(value, type);
         }
-
-        return (T) value;
     }
 
     @Override

@@ -1,5 +1,8 @@
 # Release History
 
+## 1.6.0-beta.1 (Unreleased)
+
+
 ## 1.5.3 (2020-07-02)
 
 - Updated Azure Core dependency.

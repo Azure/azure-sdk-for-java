@@ -4,41 +4,29 @@
 
 package com.azure.resourcemanager.network.models;
 
+import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
+import java.util.Collection;
 
 /** Defines values for ConnectionMonitorEndpointFilterItemType. */
-public enum ConnectionMonitorEndpointFilterItemType {
-    /** Enum value AgentAddress. */
-    AGENT_ADDRESS("AgentAddress");
-
-    /** The actual serialized value for a ConnectionMonitorEndpointFilterItemType instance. */
-    private final String value;
-
-    ConnectionMonitorEndpointFilterItemType(String value) {
-        this.value = value;
-    }
+public final class ConnectionMonitorEndpointFilterItemType
+    extends ExpandableStringEnum<ConnectionMonitorEndpointFilterItemType> {
+    /** Static value AgentAddress for ConnectionMonitorEndpointFilterItemType. */
+    public static final ConnectionMonitorEndpointFilterItemType AGENT_ADDRESS = fromString("AgentAddress");
 
     /**
-     * Parses a serialized value to a ConnectionMonitorEndpointFilterItemType instance.
+     * Creates or finds a ConnectionMonitorEndpointFilterItemType from its string representation.
      *
-     * @param value the serialized value to parse.
-     * @return the parsed ConnectionMonitorEndpointFilterItemType object, or null if unable to parse.
+     * @param name a name to look for.
+     * @return the corresponding ConnectionMonitorEndpointFilterItemType.
      */
     @JsonCreator
-    public static ConnectionMonitorEndpointFilterItemType fromString(String value) {
-        ConnectionMonitorEndpointFilterItemType[] items = ConnectionMonitorEndpointFilterItemType.values();
-        for (ConnectionMonitorEndpointFilterItemType item : items) {
-            if (item.toString().equalsIgnoreCase(value)) {
-                return item;
-            }
-        }
-        return null;
+    public static ConnectionMonitorEndpointFilterItemType fromString(String name) {
+        return fromString(name, ConnectionMonitorEndpointFilterItemType.class);
     }
 
-    @JsonValue
-    @Override
-    public String toString() {
-        return this.value;
+    /** @return known ConnectionMonitorEndpointFilterItemType values. */
+    public static Collection<ConnectionMonitorEndpointFilterItemType> values() {
+        return values(ConnectionMonitorEndpointFilterItemType.class);
     }
 }

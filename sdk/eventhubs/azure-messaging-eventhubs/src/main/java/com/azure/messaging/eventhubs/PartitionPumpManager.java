@@ -43,6 +43,7 @@ import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Signal;
+import reactor.core.scheduler.Schedulers;
 
 /**
  * The partition pump manager that keeps track of all the partition pumps started by this {@link EventProcessorClient}.
@@ -164,37 +165,30 @@ class PartitionPumpManager {
 
             partitionPumps.put(claimedOwnership.getPartitionId(), eventHubConsumer);
             //@formatter:off
+            Flux<Flux<PartitionEvent>> partitionEventFlux;
             if (maxWaitTime != null) {
-                eventHubConsumer
+                partitionEventFlux = eventHubConsumer
                     .receiveFromPartition(claimedOwnership.getPartitionId(), startFromEventPosition, receiveOptions)
-                    .windowTimeout(maxBatchSize, maxWaitTime)
-                    .flatMap(Flux::collectList)
-                    .subscribe(partitionEventBatch -> processEvents(partitionContext, partitionProcessor,
-                        eventHubConsumer, partitionEventBatch),
-                        /* EventHubConsumer receive() returned an error */
-                        ex -> handleError(claimedOwnership, eventHubConsumer, partitionProcessor, ex, partitionContext),
-                        () -> {
-                            partitionProcessor.close(new CloseContext(partitionContext,
-                                CloseReason.EVENT_PROCESSOR_SHUTDOWN));
-                            cleanup(claimedOwnership, eventHubConsumer);
-                        });
+                    .windowTimeout(maxBatchSize, maxWaitTime);
             } else {
-                eventHubConsumer
+                partitionEventFlux = eventHubConsumer
                     .receiveFromPartition(claimedOwnership.getPartitionId(), startFromEventPosition, receiveOptions)
-                    .window(maxBatchSize)
-                    .flatMap(Flux::collectList)
-                    .subscribe(partitionEventBatch -> {
-                        processEvents(partitionContext, partitionProcessor,
-                            eventHubConsumer, partitionEventBatch);
-                    },
-                        /* EventHubConsumer receive() returned an error */
-                        ex -> handleError(claimedOwnership, eventHubConsumer, partitionProcessor, ex, partitionContext),
-                        () -> {
-                            partitionProcessor.close(new CloseContext(partitionContext,
-                                CloseReason.EVENT_PROCESSOR_SHUTDOWN));
-                            cleanup(claimedOwnership, eventHubConsumer);
-                        });
+                    .window(maxBatchSize);
             }
+            partitionEventFlux
+                .flatMap(Flux::collectList)
+                .publishOn(Schedulers.boundedElastic())
+                .subscribe(partitionEventBatch -> {
+                    processEvents(partitionContext, partitionProcessor,
+                        eventHubConsumer, partitionEventBatch);
+                },
+                    /* EventHubConsumer receive() returned an error */
+                    ex -> handleError(claimedOwnership, eventHubConsumer, partitionProcessor, ex, partitionContext),
+                    () -> {
+                        partitionProcessor.close(new CloseContext(partitionContext,
+                            CloseReason.EVENT_PROCESSOR_SHUTDOWN));
+                        cleanup(claimedOwnership, eventHubConsumer);
+                    });
             //@formatter:on
         } catch (Exception ex) {
             if (partitionPumps.containsKey(claimedOwnership.getPartitionId())) {

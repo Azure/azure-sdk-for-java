@@ -11,6 +11,8 @@ import com.azure.resourcemanager.appservice.models.WebApp;
 import com.azure.resourcemanager.appservice.models.WebContainer;
 import com.azure.resourcemanager.resources.fluentcore.arm.Region;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
 
 import com.azure.resourcemanager.resources.fluentcore.profile.AzureProfile;
 import org.junit.jupiter.api.Assertions;
@@ -75,7 +77,9 @@ public class WarDeployTests extends AppServiceTest {
 
         if (!isPlaybackMode()) {
             webApp.warDeploy(new File(WarDeployTests.class.getResource("/helloworld.war").getPath()));
-            webApp.warDeploy(new File(WarDeployTests.class.getResource("/helloworld.war").getPath()), "app2");
+            try (InputStream is = new FileInputStream(new File(WarDeployTests.class.getResource("/helloworld.war").getPath()))) {
+                webApp.warDeploy(is, "app2");
+            }
 
             Response<String> response = curl("http://" + webappName + "." + "azurewebsites.net");
             Assertions.assertEquals(200, response.getStatusCode());

@@ -7,6 +7,7 @@ package com.azure.resourcemanager.network.fluent.inner;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.UsageName;
+import com.azure.resourcemanager.network.models.UsageUnit;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -25,7 +26,7 @@ public final class UsageInner {
      * An enum describing the unit of measurement.
      */
     @JsonProperty(value = "unit", required = true)
-    private String unit;
+    private UsageUnit unit;
 
     /*
      * The current value of the usage.
@@ -45,11 +46,6 @@ public final class UsageInner {
     @JsonProperty(value = "name", required = true)
     private UsageName name;
 
-    /** Creates an instance of UsageInner class. */
-    public UsageInner() {
-        unit = "Count";
-    }
-
     /**
      * Get the id property: Resource identifier.
      *
@@ -64,7 +60,7 @@ public final class UsageInner {
      *
      * @return the unit value.
      */
-    public String unit() {
+    public UsageUnit unit() {
         return this.unit;
     }
 
@@ -74,7 +70,7 @@ public final class UsageInner {
      * @param unit the unit value to set.
      * @return the UsageInner object itself.
      */
-    public UsageInner withUnit(String unit) {
+    public UsageInner withUnit(UsageUnit unit) {
         this.unit = unit;
         return this;
     }
@@ -145,6 +141,11 @@ public final class UsageInner {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (unit() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException("Missing required property unit in model UsageInner"));
+        }
         if (name() == null) {
             throw logger
                 .logExceptionAsError(

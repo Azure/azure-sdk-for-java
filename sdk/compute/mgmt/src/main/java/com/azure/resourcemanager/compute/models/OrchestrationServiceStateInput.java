@@ -18,7 +18,7 @@ public final class OrchestrationServiceStateInput {
      * The name of the service.
      */
     @JsonProperty(value = "serviceName", required = true)
-    private String serviceName;
+    private OrchestrationServiceNames serviceName;
 
     /*
      * The action to be performed.
@@ -26,17 +26,12 @@ public final class OrchestrationServiceStateInput {
     @JsonProperty(value = "action", required = true)
     private OrchestrationServiceStateAction action;
 
-    /** Creates an instance of OrchestrationServiceStateInput class. */
-    public OrchestrationServiceStateInput() {
-        serviceName = "AutomaticRepairs";
-    }
-
     /**
      * Get the serviceName property: The name of the service.
      *
      * @return the serviceName value.
      */
-    public String serviceName() {
+    public OrchestrationServiceNames serviceName() {
         return this.serviceName;
     }
 
@@ -46,7 +41,7 @@ public final class OrchestrationServiceStateInput {
      * @param serviceName the serviceName value to set.
      * @return the OrchestrationServiceStateInput object itself.
      */
-    public OrchestrationServiceStateInput withServiceName(String serviceName) {
+    public OrchestrationServiceStateInput withServiceName(OrchestrationServiceNames serviceName) {
         this.serviceName = serviceName;
         return this;
     }
@@ -77,6 +72,12 @@ public final class OrchestrationServiceStateInput {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (serviceName() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property serviceName in model OrchestrationServiceStateInput"));
+        }
         if (action() == null) {
             throw logger
                 .logExceptionAsError(

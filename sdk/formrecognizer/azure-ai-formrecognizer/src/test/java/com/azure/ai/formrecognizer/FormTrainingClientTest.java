@@ -13,7 +13,7 @@ import com.azure.ai.formrecognizer.models.FormContentType;
 import com.azure.ai.formrecognizer.models.FormRecognizerException;
 import com.azure.ai.formrecognizer.models.OperationResult;
 import com.azure.ai.formrecognizer.models.RecognizeOptions;
-import com.azure.ai.formrecognizer.models.RecognizedReceipt;
+import com.azure.ai.formrecognizer.models.RecognizedForm;
 import com.azure.ai.formrecognizer.models.TrainingFileFilter;
 import com.azure.ai.formrecognizer.training.FormTrainingClient;
 import com.azure.core.exception.HttpResponseException;
@@ -55,9 +55,9 @@ public class FormTrainingClientTest extends FormTrainingClientTestBase {
         FormRecognizerClient formRecognizerClient = getFormTrainingClient(httpClient, serviceVersion)
             .getFormRecognizerClient();
         blankPdfDataRunner(data -> {
-            SyncPoller<OperationResult, List<RecognizedReceipt>> syncPoller =
-                formRecognizerClient.beginRecognizeReceipts(new RecognizeOptions(data, BLANK_FORM_FILE_LENGTH)
-                        .setFormContentType(FormContentType.APPLICATION_PDF).setPollInterval(durationTestMode));
+            SyncPoller<OperationResult, List<RecognizedForm>> syncPoller =
+                formRecognizerClient.beginRecognizeReceipts(data, BLANK_FORM_FILE_LENGTH, new RecognizeOptions()
+                    .setContentType(FormContentType.APPLICATION_PDF).setPollInterval(durationTestMode));
             syncPoller.waitForCompletion();
             validateBlankPdfResultData(syncPoller.getFinalResult());
         });

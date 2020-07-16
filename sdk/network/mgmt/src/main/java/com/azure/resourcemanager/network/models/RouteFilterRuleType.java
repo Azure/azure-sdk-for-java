@@ -4,41 +4,28 @@
 
 package com.azure.resourcemanager.network.models;
 
+import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
+import java.util.Collection;
 
 /** Defines values for RouteFilterRuleType. */
-public enum RouteFilterRuleType {
-    /** Enum value Community. */
-    COMMUNITY("Community");
-
-    /** The actual serialized value for a RouteFilterRuleType instance. */
-    private final String value;
-
-    RouteFilterRuleType(String value) {
-        this.value = value;
-    }
+public final class RouteFilterRuleType extends ExpandableStringEnum<RouteFilterRuleType> {
+    /** Static value Community for RouteFilterRuleType. */
+    public static final RouteFilterRuleType COMMUNITY = fromString("Community");
 
     /**
-     * Parses a serialized value to a RouteFilterRuleType instance.
+     * Creates or finds a RouteFilterRuleType from its string representation.
      *
-     * @param value the serialized value to parse.
-     * @return the parsed RouteFilterRuleType object, or null if unable to parse.
+     * @param name a name to look for.
+     * @return the corresponding RouteFilterRuleType.
      */
     @JsonCreator
-    public static RouteFilterRuleType fromString(String value) {
-        RouteFilterRuleType[] items = RouteFilterRuleType.values();
-        for (RouteFilterRuleType item : items) {
-            if (item.toString().equalsIgnoreCase(value)) {
-                return item;
-            }
-        }
-        return null;
+    public static RouteFilterRuleType fromString(String name) {
+        return fromString(name, RouteFilterRuleType.class);
     }
 
-    @JsonValue
-    @Override
-    public String toString() {
-        return this.value;
+    /** @return known RouteFilterRuleType values. */
+    public static Collection<RouteFilterRuleType> values() {
+        return values(RouteFilterRuleType.class);
     }
 }

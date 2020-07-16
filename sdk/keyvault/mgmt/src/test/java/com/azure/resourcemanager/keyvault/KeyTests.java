@@ -14,6 +14,7 @@ import com.azure.security.keyvault.keys.cryptography.models.EncryptionAlgorithm;
 import com.azure.security.keyvault.keys.cryptography.models.KeyWrapAlgorithm;
 import com.azure.security.keyvault.keys.cryptography.models.SignatureAlgorithm;
 import com.azure.security.keyvault.keys.models.JsonWebKey;
+import com.azure.security.keyvault.keys.models.KeyCurveName;
 import com.azure.security.keyvault.keys.models.KeyOperation;
 import com.azure.security.keyvault.keys.models.KeyType;
 import java.security.KeyPair;
@@ -74,6 +75,33 @@ public class KeyTests extends KeyVaultManagementTest {
         // List versions
         Iterable<Key> keys = key.listVersions();
         Assertions.assertEquals(2, TestUtilities.getSize(keys));
+
+        // Create RSA key with size
+        key = vault
+            .keys()
+            .define(keyName)
+            .withKeyTypeToCreate(KeyType.RSA)
+            .withKeyOperations(KeyOperation.SIGN, KeyOperation.VERIFY)
+            .withKeySize(2048)
+            .create();
+
+        Assertions.assertNotNull(key);
+        Assertions.assertNotNull(key.id());
+        Assertions.assertEquals(KeyType.RSA, key.getJsonWebKey().getKeyType());
+
+        // Create EC key with curve
+        key = vault
+            .keys()
+            .define(keyName)
+            .withKeyTypeToCreate(KeyType.EC)
+            .withKeyOperations(KeyOperation.SIGN, KeyOperation.VERIFY)
+            .withKeyCurveName(KeyCurveName.P_521)
+            .create();
+
+        Assertions.assertNotNull(key);
+        Assertions.assertNotNull(key.id());
+        Assertions.assertEquals(KeyType.EC, key.getJsonWebKey().getKeyType());
+        Assertions.assertEquals(KeyCurveName.P_521, key.getJsonWebKey().getCurveName());
     }
 
     @Test

@@ -165,6 +165,7 @@ public final class VirtualMachineRunCommandsClient {
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2019-12-01";
+        context = this.client.mergeContext(context);
         return service
             .list(this.client.getEndpoint(), location, apiVersion, this.client.getSubscriptionId(), context)
             .map(
@@ -315,6 +316,7 @@ public final class VirtualMachineRunCommandsClient {
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2019-12-01";
+        context = this.client.mergeContext(context);
         return service
             .get(this.client.getEndpoint(), location, commandId, apiVersion, this.client.getSubscriptionId(), context);
     }
@@ -440,6 +442,7 @@ public final class VirtualMachineRunCommandsClient {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .listNext(nextLink, context)
             .map(

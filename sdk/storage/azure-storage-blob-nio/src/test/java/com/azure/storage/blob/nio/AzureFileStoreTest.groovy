@@ -66,8 +66,8 @@ class AzureFileStoreTest extends APISpec {
         where:
         view                                | viewName       || supports
         BasicFileAttributeView.class        | "basic"        || true
-        UserDefinedFileAttributeView.class  | "user"         || true
-        AzureStorageFileAttributeView.class | "azureStorage" || true
+        AzureBlobFileAttributeView.class    | "azureBlob"    || true
+        AzureBasicFileAttributeView.class   | "azureBasic"   || true
         PosixFileAttributeView.class        | "posix"        || false
     }
 

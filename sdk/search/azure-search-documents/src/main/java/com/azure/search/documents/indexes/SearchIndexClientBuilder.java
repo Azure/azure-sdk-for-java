@@ -32,16 +32,15 @@ import java.util.Map;
 import java.util.Objects;
 
 /**
- * This class provides a fluent builder API to help aid the configuration and instantiation of {@link
- * SearchIndexClient SearchIndexClients} and {@link SearchIndexAsyncClient SearchIndexAsyncClients}. Call {@link
- * #buildClient() buildClient} and {@link #buildAsyncClient() buildAsyncClient} respectively to construct an instance of
- * the desired client.
+ * This class provides a fluent builder API to help aid the configuration and instantiation of {@link SearchIndexClient
+ * SearchIndexClients} and {@link SearchIndexAsyncClient SearchIndexAsyncClients}. Call {@link #buildClient()
+ * buildClient} and {@link #buildAsyncClient() buildAsyncClient} respectively to construct an instance of the desired
+ * client.
  * <p>
- * The client needs to at least provide the following required fields
- * </p>
+ * The following must be provided to construct a client instance.
  * <ul>
- * <li>the service endpoint of the Azure Cognitive Search to access the resource service.</li>
- * <li>{@link #credential(AzureKeyCredential)} gives the builder access credential.</li>
+ * <li>The Azure Cognitive Search service URL.</li>
+ * <li>An {@link AzureKeyCredential} that grants access to the Azure Cognitive Search service.</li>
  * </ul>
  *
  * <p><strong>Instantiating an asynchronous Search Index Client</strong></p>
@@ -86,8 +85,8 @@ public final class SearchIndexClientBuilder {
     private RetryPolicy retryPolicy;
 
     /**
-     * Creates a builder instance that is able to configure and construct {@link SearchIndexClient
-     * SearchIndexClients} and {@link SearchIndexAsyncClient SearchIndexAsyncClients}.
+     * Creates a builder instance that is able to configure and construct {@link SearchIndexClient SearchIndexClients}
+     * and {@link SearchIndexAsyncClient SearchIndexAsyncClients}.
      */
     public SearchIndexClientBuilder() {
         Map<String, String> properties = CoreUtils.getProperties(SEARCH_PROPERTIES);
@@ -114,8 +113,7 @@ public final class SearchIndexClientBuilder {
      * buildAsyncClient()} is called a new instance of {@link SearchIndexAsyncClient} is created.
      * <p>
      * If {@link #pipeline(HttpPipeline) pipeline} is set, then only the {@code pipeline} and {@link #endpoint(String)
-     * endpoint} are used to create the {@link SearchIndexAsyncClient client}. All other builder settings are
-     * ignored.
+     * endpoint} are used to create the {@link SearchIndexAsyncClient client}. All other builder settings are ignored.
      *
      * @return A SearchIndexAsyncClient with the options set from the builder.
      * @throws NullPointerException If {@code endpoint} are {@code null}.
@@ -165,9 +163,9 @@ public final class SearchIndexClientBuilder {
     }
 
     /**
-     * Sets the service endpoint for the Azure Search instance.
+     * Sets the service endpoint for the Azure Cognitive Search instance.
      *
-     * @param endpoint The URL of the Azure Search instance.
+     * @param endpoint The URL of the Azure Cognitive Search instance.
      * @return The updated SearchIndexClientBuilder object.
      * @throws IllegalArgumentException If {@code endpoint} is null or it cannot be parsed into a valid URL.
      */
