@@ -26,7 +26,7 @@ extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
   parameters:
     ServiceDirectory: resourcemanager
-    # Artifacts:
-    #   - name: azure-identity
-    #     groupId: com.azure
-    #     safeName: azureidentity
+    Artifacts:
+      - name: azure-resourcemanager
+        groupId: com.azure
+        safeName: azureresourcemanager
