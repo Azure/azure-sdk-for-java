@@ -475,7 +475,7 @@ public class EventHubProducerAsyncClient implements Closeable {
      *
      * @param eventDataBatch The batch to send to the service.
      * @return A {@link Mono} that completes when the batch is pushed to the service.
-     * @throws NullPointerException if {@code batch} is {@code null}.
+     * @throws NullPointerException if {@code eventDataBatch} is {@code null}.
      * @see EventHubProducerAsyncClient#createBatch()
      * @see EventHubProducerAsyncClient#createBatch(CreateBatchOptions)
      */
