@@ -212,13 +212,6 @@ public final class BlobItemProperties {
     @JsonProperty(value = "AccessTierChangeTime")
     private OffsetDateTime accessTierChangeTime;
 
-    // TODO: (rickle-msft) uncomment when these are returned on lists.
-    /*
-    private Map<String, ObjectReplicationPolicy> objectReplicationSourcePolicies;
-
-    private String objectReplicationDestinationPolicyId;
-    */
-
     /*
      * The tagCount property.
      */

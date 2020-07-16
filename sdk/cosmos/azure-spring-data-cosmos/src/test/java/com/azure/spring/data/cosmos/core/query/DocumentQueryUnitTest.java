@@ -6,6 +6,7 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.repository.query.parser.Part;
 
 import java.util.Arrays;
 
@@ -17,12 +18,13 @@ public class DocumentQueryUnitTest {
     @Test
     public void testDocumentQueryCreate() {
         final Criteria criteria = Criteria.getInstance(CriteriaType.IS_EQUAL, CRITERIA_KEY,
-                Arrays.asList(CRITERIA_OBJECT));
+                Arrays.asList(CRITERIA_OBJECT), Part.IgnoreCaseType.NEVER);
 
         final DocumentQuery query = new DocumentQuery(criteria);
 
         Assert.assertEquals(criteria, query.getCriteria());
         Assert.assertEquals(Sort.unsorted(), query.getSort());
         Assert.assertEquals(Pageable.unpaged(), query.getPageable());
+        Assert.assertEquals(Part.IgnoreCaseType.NEVER, criteria.getIgnoreCase());
     }
 }

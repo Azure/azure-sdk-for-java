@@ -85,8 +85,9 @@ class BlobAPITest extends APISpec {
     }
 
     /* Tests an issue found where buffered upload would not deep copy buffers while determining what upload path to take. */
+
     @Unroll
-    def "Upload input stream single upload" () {
+    def "Upload input stream single upload"() {
         setup:
         def randomData = getRandomByteArray(20 * Constants.KB)
         def input = new ByteArrayInputStream(randomData)
@@ -100,15 +101,15 @@ class BlobAPITest extends APISpec {
         stream.toByteArray() == randomData
 
         where:
-        size                || _
-        1 * Constants.KB    || _  /* Less than copyToOutputStream buffer size, Less than maxSingleUploadSize */
-        8 * Constants.KB    || _  /* Equal to copyToOutputStream buffer size, Less than maxSingleUploadSize */
-        20 * Constants.KB   || _  /* Greater than copyToOutputStream buffer size, Less than maxSingleUploadSize */
+        size              || _
+        1 * Constants.KB  || _  /* Less than copyToOutputStream buffer size, Less than maxSingleUploadSize */
+        8 * Constants.KB  || _  /* Equal to copyToOutputStream buffer size, Less than maxSingleUploadSize */
+        20 * Constants.KB || _  /* Greater than copyToOutputStream buffer size, Less than maxSingleUploadSize */
     }
 
     /* TODO (gapra): Add more tests to test large data sizes. */
 
-    @Requires( { liveMode() } )
+    @Requires({ liveMode() })
     def "Upload input stream large data"() {
         setup:
         def randomData = getRandomByteArray(20 * Constants.MB)
@@ -122,6 +123,22 @@ class BlobAPITest extends APISpec {
 
         then:
         notThrown(BlobStorageException)
+    }
+
+    @Unroll
+    def "Upload incorrect size"() {
+        when:
+        bc.upload(defaultInputStream.get(), dataSize, true)
+
+        then:
+        thrown(IllegalStateException)
+
+        where:
+        dataSize            | threshold
+        defaultDataSize + 1 | null
+        defaultDataSize - 1 | null
+        defaultDataSize + 1 | 1 // Test the chunked case as well
+        defaultDataSize - 1 | 1
     }
 
     @Unroll
@@ -156,7 +173,8 @@ class BlobAPITest extends APISpec {
             .getValue().getETag() != null
     }
 
-    @Requires({ liveMode() }) // Reading from recordings will not allow for the timing of the test to work correctly.
+    @Requires({ liveMode() })
+    // Reading from recordings will not allow for the timing of the test to work correctly.
     def "Upload timeout"() {
         setup:
         def size = 1024
@@ -973,7 +991,8 @@ class BlobAPITest extends APISpec {
     This test requires two accounts that are configured in a very specific way. It is not feasible to setup that
     relationship programmatically, so we have recorded a successful interaction and only test recordings.
      */
-    @Requires( {playbackMode()})
+
+    @Requires({ playbackMode() })
     def "Get properties ORS"() {
         setup:
         def sourceBlob = primaryBlobServiceClient.getBlobContainerClient("test1")

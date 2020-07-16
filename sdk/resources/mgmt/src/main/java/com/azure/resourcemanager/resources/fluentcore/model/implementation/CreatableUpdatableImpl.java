@@ -269,13 +269,11 @@ public abstract class CreatableUpdatableImpl<
         }
     }
 
+    @SuppressWarnings("unchecked")
     protected Function<InnerModelT, FluentModelT> innerToFluentMap(final FluentModelImplT fluentModelImplT) {
-        return new Function<InnerModelT, FluentModelT>() {
-            @Override
-            public FluentModelT apply(InnerModelT innerModel) {
-                fluentModelImplT.setInner(innerModel);
-                return (FluentModelT) fluentModelImplT;
-            }
+        return innerModel -> {
+            fluentModelImplT.setInner(innerModel);
+            return (FluentModelT) fluentModelImplT;
         };
     }
 

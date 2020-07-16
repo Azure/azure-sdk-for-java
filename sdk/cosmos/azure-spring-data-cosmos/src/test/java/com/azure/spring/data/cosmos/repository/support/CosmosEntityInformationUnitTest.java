@@ -58,7 +58,7 @@ public class CosmosEntityInformationUnitTest {
                 new CosmosEntityInformation<VersionedVolunteer, String>(VersionedVolunteer.class);
 
         final String containerName = entityInformation.getContainerName();
-        assertThat(containerName).isEqualTo("testCollection");
+        assertThat(containerName).isEqualTo("testContainer");
     }
 
     @Test

@@ -15,7 +15,7 @@
   <groupId>com.azure</groupId>
   <artifactId>azure-core-serializer-avro-jackson</artifactId>
   <packaging>jar</packaging>
-  <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core-serializer-avro-jackson;current} -->
+  <version>1.0.0-beta.2</version> <!-- {x-version-update;com.azure:azure-core-serializer-avro-jackson;current} -->
 
   <name>Microsoft Azure Jackson Avro Serializer Library</name>
   <description>This package contains the Jackson Avro serializer client plugin for azure-core.</description>
@@ -108,7 +108,6 @@
           <rules>
             <bannedDependencies>
               <includes>
-                <include>com.azure:*</include>
                 <include>com.fasterxml.jackson.dataformat:jackson-dataformat-avro:[2.10.1]</include> <!-- {x-include-update;com.fasterxml.jackson.dataformat:jackson-dataformat-avro;external_dependency} -->
               </includes>
             </bannedDependencies>
