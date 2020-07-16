@@ -132,6 +132,7 @@ class LinuxDiskVolumeLegacyEncryptionMonitorImpl implements DiskVolumeEncryption
             .inner()
             .getVirtualMachines()
             .getByResourceGroupAsync(rgName, vmName)
+            // Exception if vm not found
             .flatMap(
                 virtualMachine -> {
                     if (virtualMachine.resources() != null) {

@@ -129,6 +129,7 @@ class LinuxDiskVolumeNoAADEncryptionMonitorImpl implements DiskVolumeEncryptionM
             .inner()
             .getVirtualMachines()
             .getByResourceGroupAsync(rgName, vmName);
+            // Exception if vm not found
     }
 
     private boolean hasEncryptionExtensionInstanceView() {

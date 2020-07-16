@@ -153,6 +153,7 @@ class WindowsVolumeLegacyEncryptionMonitorImpl implements DiskVolumeEncryptionMo
             .inner()
             .getVirtualMachines()
             .getByResourceGroupAsync(rgName, vmName);
+            // Exception if vm not found
     }
 
     private boolean hasEncryptionDetails() {

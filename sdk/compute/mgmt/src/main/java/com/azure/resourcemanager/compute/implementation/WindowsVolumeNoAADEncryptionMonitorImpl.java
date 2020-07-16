@@ -156,6 +156,7 @@ class WindowsVolumeNoAADEncryptionMonitorImpl implements DiskVolumeEncryptionMon
             .inner()
             .getVirtualMachines()
             .getByResourceGroupAsync(rgName, vmName);
+            // Exception if vm not found
     }
 
     /**
