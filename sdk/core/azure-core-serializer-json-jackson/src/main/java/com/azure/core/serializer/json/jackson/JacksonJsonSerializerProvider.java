@@ -9,7 +9,7 @@ import com.azure.core.experimental.serializer.JsonSerializerProvider;
 /**
  * Implementation of {@link JsonSerializerProvider}.
  */
-public class JacksonSearchJsonSerializerProvider implements JsonSerializerProvider {
+public class JacksonJsonSerializerProvider implements JsonSerializerProvider {
     @Override
     public JsonSerializer createInstance() {
         return new JacksonJsonSerializerBuilder().build();

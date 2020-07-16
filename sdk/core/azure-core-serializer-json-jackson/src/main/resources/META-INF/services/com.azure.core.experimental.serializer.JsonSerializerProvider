@@ -1,1 +1,1 @@
-com.azure.core.serializer.json.jackson.JacksonSearchJsonSerializerProvider
+com.azure.core.serializer.json.jackson.JacksonJsonSerializerProvider

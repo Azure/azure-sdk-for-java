@@ -14,7 +14,7 @@ import java.io.OutputStream;
 /**
  * Jackson based implementation of the {@link JsonSerializer} interface.
  */
-public final class JacksonSearchSerializer implements JsonSerializer {
+public final class JacksonJsonSerializer implements JsonSerializer {
     private final ObjectMapper mapper;
 
     /**
@@ -22,7 +22,7 @@ public final class JacksonSearchSerializer implements JsonSerializer {
      *
      * @param mapper Configured Jackson serializer.
      */
-    JacksonSearchSerializer(ObjectMapper mapper) {
+    JacksonJsonSerializer(ObjectMapper mapper) {
         this.mapper = mapper;
     }
 
