@@ -10,6 +10,7 @@ import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ConnectionMode;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.DirectConnectionConfig;
+import com.azure.cosmos.implementation.encryption.api.EncryptionOptions;
 import com.azure.cosmos.implementation.query.PipelinedDocumentQueryExecutionContext;
 import com.azure.cosmos.implementation.query.QueryInfo;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
@@ -1117,7 +1118,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         }
 
         Instant serializationStartTimeUTC = Instant.now();
-        ByteBuffer content = BridgeInternal.serializeJsonToByteBuffer(document, mapper, dataEncryptionKeyProvider, options.getEncryptionOptions());
+        ByteBuffer content = BridgeInternal.serializeJsonToByteBuffer(document, mapper, dataEncryptionKeyProvider, options == null ? null : options.getEncryptionOptions());
         Instant serializationEndTimeUTC = Instant.now();
 
         SerializationDiagnosticsContext.SerializationDiagnostics serializationDiagnostics = new SerializationDiagnosticsContext.SerializationDiagnostics(
