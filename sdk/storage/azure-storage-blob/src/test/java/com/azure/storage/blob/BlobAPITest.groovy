@@ -2278,11 +2278,17 @@ class BlobAPITest extends APISpec {
         when:
         System.out.println("Undeleting")
         def undeleteHeaders = bc.undeleteWithResponse(null, null).getHeaders()
+        System.out.println("Undelete request id: " + undeleteHeaders.getValue("x-ms-request-id"))
 
         sleepIfRecord(10 * 1000)
 
         System.out.println("Getting properties")
-        bc.getProperties()
+        try {
+            bc.getProperties()
+        } catch (BlobStorageException e) {
+            System.out.println("Get properties failed")
+            System.out.println("Get properties request id: " + e.getMessage())
+        }
         System.out.println("Got properties")
 
         then:

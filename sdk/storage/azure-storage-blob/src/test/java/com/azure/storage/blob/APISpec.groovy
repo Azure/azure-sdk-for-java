@@ -765,7 +765,7 @@ class APISpec extends Specification {
         primaryBlobServiceClient.setProperties(new BlobServiceProperties()
             .setDeleteRetentionPolicy(new BlobRetentionPolicy().setEnabled(true).setDays(2)))
 
-        sleepIfRecord(30000)
+        sleepIfRecord(31000)
     }
 
     def disableSoftDelete() {
