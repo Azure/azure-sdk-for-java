@@ -195,7 +195,7 @@ public class AppConfigurationPropertySourceLocatorTest {
         String[] expectedSourceNames = new String[] { "/foo_prod/store1/\0", "/foo_dev/store1/\0", "/foo/store1/\0",
                 "/application_prod/store1/\0", "/application_dev/store1/\0", "/application/store1/\0" };
         assertThat(sources.size()).isEqualTo(6);
-        assertThat(sources.stream().map(s -> s.getName()).toArray()).containsExactly(expectedSourceNames);
+        assertThat(sources.stream().map(s -> s.getName()).toArray()).containsExactly((Object[])expectedSourceNames);
     }
 
     @Test
@@ -220,7 +220,7 @@ public class AppConfigurationPropertySourceLocatorTest {
         String[] expectedSourceNames = new String[] { "/foo_prod/store1/\0", "/foo_dev/store1/\0", "/foo/store1/\0",
                 "/application_prod/store1/\0", "/application_dev/store1/\0", "/application/store1/\0" };
         assertThat(sources.size()).isEqualTo(6);
-        assertThat(sources.stream().map(s -> s.getName()).toArray()).containsExactly(expectedSourceNames);
+        assertThat(sources.stream().map(s -> s.getName()).toArray()).containsExactly((Object[])expectedSourceNames);
     }
 
     @Test
@@ -246,7 +246,7 @@ public class AppConfigurationPropertySourceLocatorTest {
                 "/config/foo/store1/\0", "/config/application_prod/store1/\0", "/config/application_dev/store1/\0",
                 "/config/application/store1/\0" };
         assertThat(sources.size()).isEqualTo(6);
-        assertThat(sources.stream().map(s -> s.getName()).toArray()).containsExactly(expectedSourceNames);
+        assertThat(sources.stream().map(s -> s.getName()).toArray()).containsExactly((Object[])expectedSourceNames);
     }
 
     @Test
@@ -270,7 +270,7 @@ public class AppConfigurationPropertySourceLocatorTest {
         // should construct composite Property Source: [/application/]
         String[] expectedSourceNames = new String[] { "/application/store1/\0" };
         assertThat(sources.size()).isEqualTo(1);
-        assertThat(sources.stream().map(s -> s.getName()).toArray()).containsExactly(expectedSourceNames);
+        assertThat(sources.stream().map(s -> s.getName()).toArray()).containsExactly((Object[])expectedSourceNames);
     }
 
     @Test
@@ -293,7 +293,7 @@ public class AppConfigurationPropertySourceLocatorTest {
         // should construct composite Property Source: [/application/]
         String[] expectedSourceNames = new String[] { "/application/store1/\0" };
         assertThat(sources.size()).isEqualTo(1);
-        assertThat(sources.stream().map(s -> s.getName()).toArray()).containsExactly(expectedSourceNames);
+        assertThat(sources.stream().map(s -> s.getName()).toArray()).containsExactly((Object[])expectedSourceNames);
     }
 
     @Test
@@ -369,7 +369,7 @@ public class AppConfigurationPropertySourceLocatorTest {
         String[] expectedSourceNames = new String[] { "/application/" + TEST_STORE_NAME_2 + "/\0",
                 "/application/" + TEST_STORE_NAME_1 + "/\0" };
         assertThat(sources.size()).isEqualTo(2);
-        assertThat(sources.stream().map(s -> s.getName()).toArray()).containsExactly(expectedSourceNames);
+        assertThat(sources.stream().map(s -> s.getName()).toArray()).containsExactly((Object[])expectedSourceNames);
     }
 
     @Test

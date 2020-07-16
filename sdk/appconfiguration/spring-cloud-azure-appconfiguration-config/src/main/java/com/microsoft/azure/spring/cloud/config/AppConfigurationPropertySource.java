@@ -261,6 +261,7 @@ public class AppConfigurationPropertySource extends EnumerablePropertySource<Con
      * @return Feature created from KeyValueItem
      * @throws IOException
      */
+    @SuppressWarnings("unchecked")
     private Object createFeature(ConfigurationSetting item) throws IOException {
         if (item.getContentType() == null || !item.getContentType().equals(FEATURE_FLAG_CONTENT_TYPE)) {
             String message = String.format("Found Feature Flag %s with invalid Content Type of %s", item.getKey(),
