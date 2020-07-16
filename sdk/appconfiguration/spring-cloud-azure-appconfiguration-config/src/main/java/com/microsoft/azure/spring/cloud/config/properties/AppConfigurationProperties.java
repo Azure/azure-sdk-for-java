@@ -23,8 +23,9 @@ import com.microsoft.azure.spring.cloud.config.resource.AppConfigManagedIdentity
 
 @Validated
 @ConfigurationProperties(prefix = AppConfigurationProperties.CONFIG_PREFIX)
-@Import({ AppConfigurationProviderProperties.class })
+@Import({AppConfigurationProviderProperties.class})
 public class AppConfigurationProperties {
+
     public static final String CONFIG_PREFIX = "spring.cloud.azure.appconfiguration";
 
     public static final String LABEL_SEPARATOR = ",";
@@ -48,7 +49,7 @@ public class AppConfigurationProperties {
     @NotEmpty
     @Pattern(regexp = "^[a-zA-Z0-9_@]+$")
     private String profileSeparator = "_";
-    
+
     private boolean pushRefresh = true;
 
     public boolean isEnabled() {
@@ -119,9 +120,10 @@ public class AppConfigurationProperties {
         Assert.notEmpty(this.stores, "At least one config store has to be configured.");
 
         this.stores.forEach(store -> {
-            Assert.isTrue(StringUtils.hasText(store.getEndpoint()) ||
-                    StringUtils.hasText(store.getConnectionString()),
-                    "Either configuration store name or connection string should be configured.");
+            Assert.isTrue(
+                    StringUtils.hasText(store.getEndpoint()) || StringUtils.hasText(store.getConnectionString()),
+                    "Either configuration store name or connection string should be configured."
+            );
             store.validateAndInit();
         });
 

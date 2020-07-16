@@ -25,6 +25,7 @@ import com.microsoft.azure.spring.cloud.config.stores.ClientStore;
 
 @Component
 public class AppConfigurationRefresh implements ApplicationEventPublisherAware {
+
     private static final Logger LOGGER = LoggerFactory.getLogger(AppConfigurationRefresh.class);
 
     private final AtomicBoolean running = new AtomicBoolean(false);
@@ -49,12 +50,10 @@ public class AppConfigurationRefresh implements ApplicationEventPublisherAware {
     }
 
     /**
-     * Checks configurations to see if they are no longer cached. If they are no longer
-     * cached they are updated.
-     * 
-     * @return Future with a boolean of if a RefreshEvent was published. If
-     * refreshConfigurations is currently being run elsewhere this method will return
-     * right away as <b>false</b>.
+     * Checks configurations to see if they are no longer cached. If they are no longer cached they are updated.
+     *
+     * @return Future with a boolean of if a RefreshEvent was published. If refreshConfigurations is currently being run
+     * elsewhere this method will return right away as <b>false</b>.
      */
     @Async
     public Future<Boolean> refreshConfigurations() {
@@ -72,9 +71,9 @@ public class AppConfigurationRefresh implements ApplicationEventPublisherAware {
     }
 
     /**
-     * Goes through each config store and checks if any of its keys need to be refreshed.
-     * If any store has a value that needs to be updated a refresh event is called after
-     * every store is checked.
+     * Goes through each config store and checks if any of its keys need to be refreshed. If any store has a value that
+     * needs to be updated a refresh event is called after every store is checked.
+     *
      * @return If a refresh event is called.
      */
     private boolean refreshStores() {
@@ -83,7 +82,7 @@ public class AppConfigurationRefresh implements ApplicationEventPublisherAware {
             try {
                 for (ConfigStore configStore : configStores) {
                     if (StateHolder.getLoadState(configStore.getEndpoint()) && configStore.getMonitoring().isEnabled()
-                            && refresh(configStore)) {
+                        && refresh(configStore)) {
                         // Only one refresh Event needs to be call to update all of the
                         // stores, not one for each.
                         if (eventDataInfo.equals("*")) {
@@ -109,9 +108,8 @@ public class AppConfigurationRefresh implements ApplicationEventPublisherAware {
     }
 
     /**
-     * Checks un-cached items for etag changes. If they have changed a RefreshEventData is
-     * published.
-     * 
+     * Checks un-cached items for etag changes. If they have changed a RefreshEventData is published.
+     *
      * @param store the {@code store} for which to composite watched key names
      * @return Refresh event was triggered. No other sources need to be checked.
      */
@@ -122,7 +120,7 @@ public class AppConfigurationRefresh implements ApplicationEventPublisherAware {
         if (date.after(state.getNotCachedTime())) {
             for (ConfigurationSetting watchKey : state.getWatchKeys()) {
                 SettingSelector settingSelector = new SettingSelector().setKeyFilter(watchKey.getKey())
-                        .setLabelFilter(watchKey.getLabel());
+                    .setLabelFilter(watchKey.getLabel());
 
                 ConfigurationSetting revision = clientStore.getRevison(settingSelector, store.getEndpoint());
 
@@ -136,9 +134,9 @@ public class AppConfigurationRefresh implements ApplicationEventPublisherAware {
                 LOGGER.error(etag + " - " + watchKey.getETag());
                 if (etag != null && !etag.equals(watchKey.getETag())) {
                     LOGGER.trace(
-                            "Some keys in store [{}] matching the key [{}] and label [{}] is updated, " +
-                                    "will send refresh event.",
-                            store.getEndpoint(), watchKey.getKey(), watchKey.getLabel());
+                        "Some keys in store [{}] matching the key [{}] and label [{}] is updated, "
+                            + "will send refresh event.",
+                        store.getEndpoint(), watchKey.getKey(), watchKey.getLabel());
 
                     this.eventDataInfo = watchKey.toString();
 
@@ -153,15 +151,15 @@ public class AppConfigurationRefresh implements ApplicationEventPublisherAware {
     }
 
     /**
-     * For each refresh, multiple etags can change, but even one etag is changed, refresh
-     * is required.
+     * For each refresh, multiple etags can change, but even one etag is changed, refresh is required.
      */
     class RefreshEventData {
+
         private static final String MSG_TEMPLATE = "Some keys matching %s has been updated since last check.";
 
         private final String message;
 
-        public RefreshEventData(String prefix) {
+        RefreshEventData(String prefix) {
             this.message = String.format(MSG_TEMPLATE, prefix);
         }
 

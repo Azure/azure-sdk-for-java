@@ -104,7 +104,7 @@ public class KeyVaultClientTest {
         Mockito.doReturn(builderMock).when(test).getBuilder();
         
         when(builderMock.vaultUrl(Mockito.any())).thenReturn(builderMock);
-        when(builderMock.buildAsyncClient()).thenReturn(clientMock);;
+        when(builderMock.buildAsyncClient()).thenReturn(clientMock);
 
         test.build();
         
@@ -132,7 +132,7 @@ public class KeyVaultClientTest {
         Mockito.doReturn(builderMock).when(test).getBuilder();
         
         when(builderMock.vaultUrl(Mockito.any())).thenReturn(builderMock);
-        when(builderMock.buildAsyncClient()).thenReturn(clientMock);;
+        when(builderMock.buildAsyncClient()).thenReturn(clientMock);
 
         test.build();
         
@@ -162,7 +162,7 @@ public class KeyVaultClientTest {
         Mockito.doReturn(builderMock).when(test).getBuilder();
         
         when(builderMock.vaultUrl(Mockito.any())).thenReturn(builderMock);
-        when(builderMock.buildAsyncClient()).thenReturn(clientMock);;
+        when(builderMock.buildAsyncClient()).thenReturn(clientMock);
 
         test.build();
         

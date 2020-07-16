@@ -93,7 +93,7 @@ public class ClientStoreTest {
         when(builderMock.buildAsyncClient()).thenReturn(clientMock);
 
         when(clientMock.listConfigurationSettings(Mockito.any(SettingSelector.class)))
-                .thenReturn(getConfigurationPagedFlux(1));
+            .thenReturn(getConfigurationPagedFlux(1));
 
         assertEquals(test.listSettings(selector, TEST_ENDPOINT).size(), 1);
     }
@@ -115,7 +115,7 @@ public class ClientStoreTest {
         when(builderMock.buildAsyncClient()).thenReturn(clientMock);
 
         when(clientMock.listConfigurationSettings(Mockito.any(SettingSelector.class)))
-                .thenReturn(getConfigurationPagedFlux(1));
+            .thenReturn(getConfigurationPagedFlux(1));
 
         assertEquals(test.listSettings(selector, TEST_ENDPOINT).size(), 1);
     }
@@ -137,7 +137,7 @@ public class ClientStoreTest {
         when(builderMock.buildAsyncClient()).thenReturn(clientMock);
 
         when(clientMock.listRevisions(Mockito.any(SettingSelector.class)))
-                .thenReturn(getConfigurationPagedFlux(1));
+            .thenReturn(getConfigurationPagedFlux(1));
 
         assertTrue(test.getRevison(selector, TEST_ENDPOINT) != null);
     }
@@ -183,7 +183,7 @@ public class ClientStoreTest {
         when(builderMock.buildAsyncClient()).thenReturn(clientMock);
 
         when(clientMock.listConfigurationSettings(Mockito.any(SettingSelector.class)))
-                .thenReturn(getConfigurationPagedFlux(1));
+            .thenReturn(getConfigurationPagedFlux(1));
 
         assertEquals(test.listSettings(selector, TEST_ENDPOINT).size(), 1);
     }
@@ -238,32 +238,32 @@ public class ClientStoreTest {
 
     private PagedFlux<ConfigurationSetting> getConfigurationPagedFlux(int noOfPages) throws MalformedURLException {
         HttpHeaders httpHeaders = new HttpHeaders().put("header1", "value1")
-                .put("header2", "value2");
+            .put("header2", "value2");
         HttpRequest httpRequest = new HttpRequest(HttpMethod.GET, new URL("http://localhost"));
 
         String deserializedHeaders = "header1,value1,header2,value2";
 
         pagedResponses = IntStream.range(0, noOfPages)
-                .boxed()
-                .map(i -> createPagedResponse(httpRequest, httpHeaders, deserializedHeaders, i, noOfPages))
-                .collect(Collectors.toList());
+            .boxed()
+            .map(i -> createPagedResponse(httpRequest, httpHeaders, deserializedHeaders, i, noOfPages))
+            .collect(Collectors.toList());
 
         return new PagedFlux<ConfigurationSetting>(
-                () -> pagedResponses.isEmpty() ? Mono.empty() : Mono.just(pagedResponses.get(0)),
-                continuationToken -> getNextPage(continuationToken, pagedResponses));
+            () -> pagedResponses.isEmpty() ? Mono.empty() : Mono.just(pagedResponses.get(0)),
+            continuationToken -> getNextPage(continuationToken, pagedResponses));
     }
 
     private PagedResponseBase<String, ConfigurationSetting> createPagedResponse(HttpRequest httpRequest,
-            HttpHeaders httpHeaders, String deserializedHeaders, int i, int noOfPages) {
+        HttpHeaders httpHeaders, String deserializedHeaders, int i, int noOfPages) {
         return new PagedResponseBase<>(httpRequest, 200,
-                httpHeaders,
-                getItems(i),
-                i < noOfPages - 1 ? String.valueOf(i + 1) : null,
-                deserializedHeaders);
+            httpHeaders,
+            getItems(i),
+            i < noOfPages - 1 ? String.valueOf(i + 1) : null,
+            deserializedHeaders);
     }
 
     private Mono<PagedResponse<ConfigurationSetting>> getNextPage(String continuationToken,
-            List<PagedResponse<ConfigurationSetting>> pagedResponses) {
+        List<PagedResponse<ConfigurationSetting>> pagedResponses) {
         if (continuationToken == null || continuationToken.isEmpty()) {
             return Mono.empty();
         }

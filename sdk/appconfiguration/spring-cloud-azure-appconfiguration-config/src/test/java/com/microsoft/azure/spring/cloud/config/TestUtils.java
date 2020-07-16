@@ -12,7 +12,7 @@ import com.microsoft.azure.spring.cloud.config.properties.ConfigStore;
 /**
  * Utility methods which can be used across different test classes
  */
-public class TestUtils {
+public final class TestUtils {
     private TestUtils() {
     }
 

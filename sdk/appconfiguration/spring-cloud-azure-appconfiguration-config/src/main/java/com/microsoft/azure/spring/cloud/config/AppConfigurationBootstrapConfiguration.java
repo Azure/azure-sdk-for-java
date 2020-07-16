@@ -28,7 +28,7 @@ import com.microsoft.azure.spring.cloud.config.resource.ConnectionPool;
 import com.microsoft.azure.spring.cloud.config.stores.ClientStore;
 
 @Configuration
-@EnableConfigurationProperties({ AppConfigurationProperties.class, AppConfigurationProviderProperties.class })
+@EnableConfigurationProperties({AppConfigurationProperties.class, AppConfigurationProviderProperties.class})
 @ConditionalOnClass(AppConfigurationPropertySourceLocator.class)
 @ConditionalOnProperty(prefix = AppConfigurationProperties.CONFIG_PREFIX, name = "enabled", matchIfMissing = true)
 public class AppConfigurationBootstrapConfiguration {
@@ -69,22 +69,22 @@ public class AppConfigurationBootstrapConfiguration {
             AppConfigurationProviderProperties appProperties, ClientStore clients, ApplicationContext context,
             Optional<KeyVaultCredentialProvider> keyVaultCredentialProviderOptional,
             Optional<SecretClientBuilderSetup> keyVaultClientProviderOptional) {
-        
+
         KeyVaultCredentialProvider keyVaultCredentialProvider = null;
         SecretClientBuilderSetup keyVaultClientProvider = null;
-        
+
         if (!keyVaultCredentialProviderOptional.isPresent()) {
             LOGGER.debug("No KeyVaultCredentialProvider found.");
         } else {
-           keyVaultCredentialProvider = keyVaultCredentialProviderOptional.get(); 
+            keyVaultCredentialProvider = keyVaultCredentialProviderOptional.get();
         }
 
         if (!keyVaultClientProviderOptional.isPresent()) {
             LOGGER.debug("No KeyVaultCredentialProvider found.");
         } else {
-           keyVaultClientProvider = keyVaultClientProviderOptional.get(); 
+            keyVaultClientProvider = keyVaultClientProviderOptional.get();
         }
-        
+
         return new AppConfigurationPropertySourceLocator(properties, appProperties, clients,
                 keyVaultCredentialProvider, keyVaultClientProvider);
     }
@@ -94,22 +94,22 @@ public class AppConfigurationBootstrapConfiguration {
             AppConfigurationProviderProperties appProperties, ConnectionPool pool, ApplicationContext context,
             Optional<AppConfigurationCredentialProvider> tokenCredentialProviderOptional,
             Optional<ConfigurationClientBuilderSetup> clientProviderOptional) {
-        
+
         AppConfigurationCredentialProvider tokenCredentialProvider = null;
         ConfigurationClientBuilderSetup clientProvider = null;
-        
+
         if (!tokenCredentialProviderOptional.isPresent()) {
             LOGGER.debug("No AppConfigurationCredentialProvider found.");
         } else {
             tokenCredentialProvider = tokenCredentialProviderOptional.get();
         }
-        
+
         if (!clientProviderOptional.isPresent()) {
             LOGGER.debug("No AppConfigurationClientProvider found.");
         } else {
             clientProvider = clientProviderOptional.get();
         }
-        
+
         return new ClientStore(appProperties, pool, tokenCredentialProvider, clientProvider);
     }
 }

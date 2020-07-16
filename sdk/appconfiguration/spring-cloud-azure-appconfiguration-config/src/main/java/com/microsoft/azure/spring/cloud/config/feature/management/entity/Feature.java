@@ -18,15 +18,16 @@ public class Feature {
 
     @JsonAlias("enabled-for")
     private HashMap<Integer, FeatureFilterEvaluationContext> enabledFor;
-    
-    public Feature() {}
-    
+
+    public Feature() {
+    }
+
     public Feature(String key, FeatureManagementItem featureItem) {
         this.key = key;
         List<FeatureFilterEvaluationContext> filterMapper = featureItem.getConditions().getClientFilters();
-        
+
         enabledFor = new HashMap<Integer, FeatureFilterEvaluationContext>();
-        
+
         for (int i = 0; i < filterMapper.size(); i++) {
             enabledFor.put(i, filterMapper.get(i));
         }

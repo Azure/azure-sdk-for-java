@@ -6,7 +6,8 @@ package com.microsoft.azure.spring.cloud.config;
 /**
  * Test constants which can be shared across different test classes
  */
-public class TestConstants {
+public final class TestConstants {
+
     private TestConstants() {
     }
 
@@ -15,8 +16,8 @@ public class TestConstants {
 
     public static final String CONN_STRING_PROP = "spring.cloud.azure.appconfiguration.stores[0].connection-string";
 
-    public static final String CONN_STRING_PROP_NEW = "spring.cloud.azure.appconfiguration.stores[1]" +
-            ".connection-string";
+    public static final String CONN_STRING_PROP_NEW =
+        "spring.cloud.azure.appconfiguration.stores[1].connection-string";
 
     public static final String STORE_ENDPOINT_PROP = "spring.cloud.azure.appconfiguration.stores[0].endpoint";
 
@@ -37,23 +38,23 @@ public class TestConstants {
 
     public static final String FAIL_FAST_PROP = "spring.cloud.azure.appconfiguration.failFast";
 
-    public static final String KEY_VAULT_STORE_1_CONNECTION = 
-            "spring.cloud.azure.appconfiguration.key_vault_stores[0].connection_url";
+    public static final String KEY_VAULT_STORE_1_CONNECTION =
+        "spring.cloud.azure.appconfiguration.key_vault_stores[0].connection_url";
 
-    public static final String KEY_VAULT_STORE_1_CLIENT = 
-            "spring.cloud.azure.appconfiguration.key_vault_stores[0].client_id";
+    public static final String KEY_VAULT_STORE_1_CLIENT =
+        "spring.cloud.azure.appconfiguration.key_vault_stores[0].client_id";
 
-    public static final String KEY_VAULT_STORE_1_DOMAIN = 
-            "spring.cloud.azure.appconfiguration.key_vault_stores[0].domain";
+    public static final String KEY_VAULT_STORE_1_DOMAIN =
+        "spring.cloud.azure.appconfiguration.key_vault_stores[0].domain";
 
-    public static final String KEY_VAULT_STORE_1_SECRET = 
-            "spring.cloud.azure.appconfiguration.key_vault_stores[0].secret";
+    public static final String KEY_VAULT_STORE_1_SECRET =
+        "spring.cloud.azure.appconfiguration.key_vault_stores[0].secret";
 
-    public static final String TEST_CONN_STRING = 
-            "Endpoint=https://fake.test.config.io;Id=fake-conn-id;Secret=ZmFrZS1jb25uLXNlY3JldA==";
+    public static final String TEST_CONN_STRING =
+        "Endpoint=https://fake.test.config.io;Id=fake-conn-id;Secret=ZmFrZS1jb25uLXNlY3JldA==";
 
-    public static final String TEST_CONN_STRING_2 = 
-            "Endpoint=https://fake2.test.config.io;Id=fake-conn-id;Secret=ZmFrZS1jb25uLXNlY3JldA==";
+    public static final String TEST_CONN_STRING_2 =
+        "Endpoint=https://fake2.test.config.io;Id=fake-conn-id;Secret=ZmFrZS1jb25uLXNlY3JldA==";
 
     public static final String LABEL_PARAM = "label";
 
@@ -64,8 +65,8 @@ public class TestConstants {
     public static final String TEST_ID = "fake-conn-id";
 
     public static final String TEST_SECRET = "ZmFrZS1jb25uLXNlY3JldA=="; // Base64 encoded
-                                                                         // from
-                                                                         // fake-conn-secret
+    // from
+    // fake-conn-secret
 
     public static final String TEST_ACCESS_TOKEN = "fake_token";
 
@@ -108,18 +109,18 @@ public class TestConstants {
     public static final String FEATURE_KEY = "feature-management.featureManagement";
 
     public static final String FEATURE_VALUE = "{\"id\":\"Alpha\",\"description\":\"\",\"enabled\":true,"
-            + "\"conditions\":{\"client_filters\":[{\"Name\":\"TestFilter\"}]}}";
+        + "\"conditions\":{\"client_filters\":[{\"Name\":\"TestFilter\"}]}}";
 
     public static final String FEATURE_BOOLEAN_VALUE = "{\"id\":\"Beta\",\"description\":\"\",\"enabled\":true,"
-            + "\"conditions\":{\"client_filters\":[]}}";
+        + "\"conditions\":{\"client_filters\":[]}}";
 
     public static final String FEATURE_VALUE_PARAMETERS = "{\"id\":\"Alpha\",\"description\":\"\",\"enabled\":true,"
-            + "\"conditions\":{\"client_filters\":[{\"Name\":\"TestFilter\",\"Parameters\":{\"key\":\"value\"}}]}}";
+        + "\"conditions\":{\"client_filters\":[{\"Name\":\"TestFilter\",\"Parameters\":{\"key\":\"value\"}}]}}";
 
     public static final String FEATURE_VALUE_TARGETING = "{\"id\":\"target\",\"description\":\"\",\"enabled\":true,"
-            + "\"conditions\":{\"client_filters\":[{\"Name\":\"targetingFilter\",\"Parameters\":{\"Users\":[\"Jeff\","
-            + "\"Alicia\"],\"Groups\":[{\"name\":\"Ring0\",\"rolloutPercentage\":100},{\"name\":\"Ring1\","
-            + "\"rolloutPercentage\":100}],\"DefaultRolloutPercentage\":50}}]}}]}}";
+        + "\"conditions\":{\"client_filters\":[{\"Name\":\"targetingFilter\",\"Parameters\":{\"Users\":[\"Jeff\","
+        + "\"Alicia\"],\"Groups\":[{\"name\":\"Ring0\",\"rolloutPercentage\":100},{\"name\":\"Ring1\","
+        + "\"rolloutPercentage\":100}],\"DefaultRolloutPercentage\":50}}]}}]}}";
 
     public static final String FEATURE_LABEL = "";
 
