@@ -5,13 +5,16 @@
  */
 package com.microsoft.azure.spring.cloud.feature.manager;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.PropertyNamingStrategy;
+import com.microsoft.azure.spring.cloud.feature.manager.entities.Feature;
+import com.microsoft.azure.spring.cloud.feature.manager.entities.FeatureFilterEvaluationContext;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
@@ -20,17 +23,10 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 import org.springframework.util.ReflectionUtils;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.PropertyNamingStrategy;
-import com.microsoft.azure.spring.cloud.feature.manager.entities.Feature;
-import com.microsoft.azure.spring.cloud.feature.manager.entities.FeatureFilterEvaluationContext;
-
 import reactor.core.publisher.Mono;
 
 /**
- * Holds information on Feature Management properties and can check if a given feature is
- * enabled.
+ * Holds information on Feature Management properties and can check if a given feature is enabled.
  */
 @SuppressWarnings("serial")
 @Component("FeatureManagement")
@@ -58,11 +54,10 @@ public class FeatureManager extends HashMap<String, Object> {
     }
 
     /**
-     * Checks to see if the feature is enabled. If enabled it check each filter, once a
-     * single filter returns true it returns true. If no filter returns true, it returns
-     * false. If there are no filters, it returns true. If feature isn't found it returns
-     * false.
-     * 
+     * Checks to see if the feature is enabled. If enabled it check each filter, once a single filter returns true it
+     * returns true. If no filter returns true, it returns false. If there are no filters, it returns true. If feature
+     * isn't found it returns false.
+     *
      * @param feature Feature being checked.
      * @return state of the feature
      * @throws FilterNotFoundException
@@ -88,8 +83,8 @@ public class FeatureManager extends HashMap<String, Object> {
         }
 
         return featureItem.getEnabledFor().values().stream().filter(Objects::nonNull)
-                .filter(featureFilter -> featureFilter.getName() != null)
-                .map(featureFilter -> isFeatureOn(featureFilter, feature)).findAny().orElse(false);
+            .filter(featureFilter -> featureFilter.getName() != null)
+            .map(featureFilter -> isFeatureOn(featureFilter, feature)).findAny().orElse(false);
     }
 
     private boolean isFeatureOn(FeatureFilterEvaluationContext filter, String feature) {
@@ -100,7 +95,7 @@ public class FeatureManager extends HashMap<String, Object> {
             return featureFilter.evaluate(filter);
         } catch (NoSuchBeanDefinitionException e) {
             LOGGER.error("Was unable to find Filter {}. Does the class exist and set as an @Component?",
-                    filter.getName());
+                filter.getName());
             if (properties.isFailFast()) {
                 String message = "Fail fast is set and a Filter was unable to be found";
                 ReflectionUtils.rethrowRuntimeException(new FilterNotFoundException(message, e, filter));
@@ -159,6 +154,7 @@ public class FeatureManager extends HashMap<String, Object> {
 
     /**
      * Returns the names of all features flags
+     *
      * @return a set of all feature names
      */
     public Set<String> getAllFeatureNames() {

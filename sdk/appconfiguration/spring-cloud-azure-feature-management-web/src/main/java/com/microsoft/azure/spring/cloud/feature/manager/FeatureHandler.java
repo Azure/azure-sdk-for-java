@@ -7,17 +7,14 @@ package com.microsoft.azure.spring.cloud.feature.manager;
 
 import java.io.IOException;
 import java.lang.reflect.Method;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.util.ReflectionUtils;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
-
 import reactor.core.publisher.Mono;
 
 /**
@@ -35,19 +32,18 @@ public class FeatureHandler extends HandlerInterceptorAdapter {
     private IDisabledFeaturesHandler disabledFeaturesHandler;
 
     public FeatureHandler(FeatureManager featureManager, FeatureManagerSnapshot featureManagerSnapshot,
-            IDisabledFeaturesHandler disabledFeaturesHandler) {
+        IDisabledFeaturesHandler disabledFeaturesHandler) {
         this.featureManager = featureManager;
         this.featureManagerSnapshot = featureManagerSnapshot;
         this.disabledFeaturesHandler = disabledFeaturesHandler;
     }
 
     /**
-     * Checks if the endpoint being called has the @FeatureOn annotation. Checks if the
-     * feature is on. Can redirect if feature is off, or can return the disabled feature
-     * handler.
-     * 
-     * @return true if the @FeatureOn annotation is on or the feature is enabled. Else, it
-     * returns false, or is redirected.
+     * Checks if the endpoint being called has the @FeatureOn annotation. Checks if the feature is on. Can redirect if
+     * feature is off, or can return the disabled feature handler.
+     *
+     * @return true if the @FeatureOn annotation is on or the feature is enabled. Else, it returns false, or is
+     * redirected.
      */
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {

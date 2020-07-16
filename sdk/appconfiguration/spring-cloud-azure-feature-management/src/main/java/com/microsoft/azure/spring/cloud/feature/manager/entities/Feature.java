@@ -5,17 +5,16 @@
  */
 package com.microsoft.azure.spring.cloud.feature.manager.entities;
 
-import java.util.HashMap;
-
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.HashMap;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Feature {
 
     @JsonProperty("key")
     private String key;
-    
+
     @JsonProperty("enabled-for")
     private HashMap<Integer, FeatureFilterEvaluationContext> enabledFor;
 

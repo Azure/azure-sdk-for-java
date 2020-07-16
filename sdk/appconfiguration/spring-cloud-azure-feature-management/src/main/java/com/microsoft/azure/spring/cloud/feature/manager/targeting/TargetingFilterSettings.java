@@ -6,9 +6,7 @@
 package com.microsoft.azure.spring.cloud.feature.manager.targeting;
 
 /**
- * 
  * The settings that are used to configure the TargetingFilter feature filter.
- *
  */
 public class TargetingFilterSettings {
 

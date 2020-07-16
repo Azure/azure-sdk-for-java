@@ -14,10 +14,8 @@ import static org.mockito.Mockito.when;
 
 import java.io.IOException;
 import java.lang.reflect.Method;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -25,8 +23,8 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.web.method.HandlerMethod;
-
 import reactor.core.publisher.Mono;
+
 /**
  * Unit test for simple App.
  */
@@ -53,7 +51,7 @@ public class FeatureHandlerTest {
 
     @Mock
     HandlerMethod handlerMethod;
-    
+
     @Mock
     FeatureHandler featureHandler2;
 
@@ -105,7 +103,7 @@ public class FeatureHandlerTest {
 
         assertFalse(featureHandler.preHandle(request, response, handlerMethod));
     }
-    
+
     @Test
     public void preHandleNoDisabledFeatures() throws NoSuchMethodException, SecurityException, IOException {
         featureHandler2 = new FeatureHandler(featureManager, featureManagerSnapshot, null);
@@ -116,14 +114,14 @@ public class FeatureHandlerTest {
         assertFalse(featureHandler2.preHandle(request, response, handlerMethod));
         verify(response, times(1)).sendError(Mockito.eq(HttpServletResponse.SC_NOT_FOUND));
     }
-    
+
     @Test
     public void preHandleNoDisabledFeaturesError() throws NoSuchMethodException, SecurityException, IOException {
         featureHandler2 = new FeatureHandler(featureManager, featureManagerSnapshot, null);
         Method method = TestClass.class.getMethod("featureOnAnnotaitonRedirected");
         when(handlerMethod.getMethod()).thenReturn(method);
         when(featureManager.isEnabledAsync(Mockito.matches("test"))).thenReturn(Mono.just(false));
-        
+
         doThrow(new IOException()).when(response).sendError(Mockito.eq(HttpServletResponse.SC_NOT_FOUND));
 
         assertFalse(featureHandler2.preHandle(request, response, handlerMethod));

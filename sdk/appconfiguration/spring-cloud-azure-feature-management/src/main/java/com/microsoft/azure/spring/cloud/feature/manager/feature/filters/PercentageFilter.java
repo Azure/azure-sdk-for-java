@@ -7,12 +7,11 @@ package com.microsoft.azure.spring.cloud.feature.manager.feature.filters;
 
 import static com.microsoft.azure.spring.cloud.feature.manager.FilterParameters.PERCENTAGE_FILTER_SETTING;
 
+import com.microsoft.azure.spring.cloud.feature.manager.FeatureFilter;
+import com.microsoft.azure.spring.cloud.feature.manager.entities.FeatureFilterEvaluationContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
-
-import com.microsoft.azure.spring.cloud.feature.manager.FeatureFilter;
-import com.microsoft.azure.spring.cloud.feature.manager.entities.FeatureFilterEvaluationContext;
 
 /**
  * A feature filter that can be used to activate a feature based on a random percentage.
@@ -24,6 +23,7 @@ public class PercentageFilter implements FeatureFilter {
 
     /**
      * Performs a percentage based evaluation to determine whether a feature is enabled.
+     *
      * @param context The feature evaluation context.
      * @return True if the feature is enabled, false otherwise.
      */
@@ -35,7 +35,7 @@ public class PercentageFilter implements FeatureFilter {
 
         if (value == null || Double.valueOf(value) < 0) {
             LOGGER.warn("The {} feature filter does not have a valid {} value for feature {}.",
-                    this.getClass().getSimpleName(), PERCENTAGE_FILTER_SETTING, context.getName());
+                this.getClass().getSimpleName(), PERCENTAGE_FILTER_SETTING, context.getName());
             result = false;
         } else {
             result = (Math.random() * 100) <= Double.valueOf(value);

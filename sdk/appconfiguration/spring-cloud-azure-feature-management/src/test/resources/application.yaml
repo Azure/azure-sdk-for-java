@@ -4,9 +4,7 @@ feature-management:
       FeatureU: false
       FeatureV:
         enabledFor:
-          -
-            name: Random
+          - name: Random
             parameters:
               chance: "50"
-          -
-            name: ClientFilter
+          - name: ClientFilter

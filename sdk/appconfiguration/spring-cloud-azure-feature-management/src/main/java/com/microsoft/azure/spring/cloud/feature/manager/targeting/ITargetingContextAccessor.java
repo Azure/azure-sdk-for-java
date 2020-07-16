@@ -8,7 +8,7 @@ package com.microsoft.azure.spring.cloud.feature.manager.targeting;
 import reactor.core.publisher.Mono;
 
 public interface ITargetingContextAccessor {
-    
+
     Mono<TargetingContext> getContextAsync();
 
 }

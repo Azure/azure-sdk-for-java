@@ -11,20 +11,17 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
 
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
-
 import com.microsoft.azure.spring.cloud.feature.manager.TargetingException;
 import com.microsoft.azure.spring.cloud.feature.manager.entities.FeatureFilterEvaluationContext;
 import com.microsoft.azure.spring.cloud.feature.manager.targeting.ITargetingContextAccessor;
 import com.microsoft.azure.spring.cloud.feature.manager.targeting.TargetingContext;
 import com.microsoft.azure.spring.cloud.feature.manager.targeting.TargetingEvaluationOptions;
-
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.junit.MockitoJUnitRunner;
 import reactor.core.publisher.Mono;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -344,7 +341,7 @@ public class TargetingFilterTest {
 
         assertTrue(filter.evaluate(context));
     }
-    
+
     @Test
     public void targetedNull() {
         TargetingEvaluationOptions options = new TargetingEvaluationOptions();

@@ -11,6 +11,7 @@ import org.springframework.validation.annotation.Validated;
 @Validated
 @ConfigurationProperties(prefix = FeatureManagementConfigProperties.CONFIG_PREFIX)
 public class FeatureManagementConfigProperties {
+
     public static final String CONFIG_PREFIX = "spring.cloud.azure.feature.management";
 
     private boolean failFast = true;

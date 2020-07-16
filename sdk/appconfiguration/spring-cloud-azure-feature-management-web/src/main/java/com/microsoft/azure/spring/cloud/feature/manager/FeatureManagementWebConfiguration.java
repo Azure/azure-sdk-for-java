@@ -16,19 +16,19 @@ import org.springframework.web.context.annotation.RequestScope;
 @EnableConfigurationProperties
 @ConditionalOnBean(FeatureManager.class)
 public class FeatureManagementWebConfiguration {
-    
+
     @Bean
     @RequestScope
     public FeatureManagerSnapshot featureManagerSnapshot(FeatureManager featureManager) {
         return new FeatureManagerSnapshot(featureManager);
     }
-    
+
     @Bean
     public FeatureHandler featureHandler(FeatureManager featureManager, FeatureManagerSnapshot snapshot,
-            @Autowired(required = false) IDisabledFeaturesHandler disabledFeaturesHandler) {
+        @Autowired(required = false) IDisabledFeaturesHandler disabledFeaturesHandler) {
         return new FeatureHandler(featureManager, snapshot, disabledFeaturesHandler);
     }
-    
+
     @Bean
     public FeatureConfig featureConfig(FeatureHandler featureHandler) {
         return new FeatureConfig(featureHandler);

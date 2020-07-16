@@ -9,13 +9,15 @@ import static com.microsoft.azure.spring.cloud.config.web.Constants.APPCONFIGURA
 import static com.microsoft.azure.spring.cloud.config.web.Constants.VALIDATION_CODE_FORMAT_START;
 import static com.microsoft.azure.spring.cloud.config.web.Constants.VALIDATION_CODE_KEY;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.microsoft.azure.spring.cloud.config.properties.AppConfigurationProperties;
+import com.microsoft.azure.spring.cloud.config.web.AppConfigurationEndpoint;
 import java.io.IOException;
 import java.util.Map;
 import java.util.stream.Collectors;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.actuate.endpoint.web.annotation.ControllerEndpoint;
@@ -27,13 +29,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.microsoft.azure.spring.cloud.config.properties.AppConfigurationProperties;
-import com.microsoft.azure.spring.cloud.config.web.AppConfigurationEndpoint;
-
 @ControllerEndpoint(id = APPCONFIGURATION_REFRESH)
 public class AppConfigurationRefreshEndpoint implements ApplicationEventPublisherAware {
+
     private static final Logger LOGGER = LoggerFactory.getLogger(AppConfigurationRefreshEndpoint.class);
 
     private ContextRefresher contextRefresher;
@@ -45,7 +43,7 @@ public class AppConfigurationRefreshEndpoint implements ApplicationEventPublishe
     private ApplicationEventPublisher publisher;
 
     public AppConfigurationRefreshEndpoint(ContextRefresher contextRefresher,
-            AppConfigurationProperties appConfiguration) {
+        AppConfigurationProperties appConfiguration) {
         this.contextRefresher = contextRefresher;
         this.appConfiguration = appConfiguration;
 
@@ -54,13 +52,13 @@ public class AppConfigurationRefreshEndpoint implements ApplicationEventPublishe
     @PostMapping(value = "/")
     @ResponseBody
     public String refresh(HttpServletRequest request, HttpServletResponse response,
-            @RequestParam Map<String, String> allRequestParams) throws IOException {
+        @RequestParam Map<String, String> allRequestParams) throws IOException {
 
         String reference = request.getReader().lines().collect(Collectors.joining(System.lineSeparator()));
 
         JsonNode kvReference = objectmapper.readTree(reference);
         AppConfigurationEndpoint validation = new AppConfigurationEndpoint(kvReference, appConfiguration.getStores(),
-                allRequestParams);
+            allRequestParams);
 
         if (!validation.authenticate()) {
             return HttpStatus.UNAUTHORIZED.getReasonPhrase();
@@ -76,7 +74,7 @@ public class AppConfigurationRefreshEndpoint implements ApplicationEventPublishe
                     // Will just refresh the local configurations
                     // contextRefresher.refresh();
                     publisher.publishEvent(
-                            new AppConfigurationRefreshEvent(validation.getEndpoint()));
+                        new AppConfigurationRefreshEvent(validation.getEndpoint()));
                     return HttpStatus.OK.getReasonPhrase();
                 } else {
                     LOGGER.debug("Non Refreshable notification");

@@ -5,18 +5,6 @@
  */
 package com.microsoft.azure.spring.cloud.feature.manager.feature.filters;
 
-import java.nio.ByteBuffer;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.stream.Collectors;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.microsoft.azure.spring.cloud.feature.manager.FeatureFilter;
@@ -28,8 +16,19 @@ import com.microsoft.azure.spring.cloud.feature.manager.targeting.ITargetingCont
 import com.microsoft.azure.spring.cloud.feature.manager.targeting.TargetingContext;
 import com.microsoft.azure.spring.cloud.feature.manager.targeting.TargetingEvaluationOptions;
 import com.microsoft.azure.spring.cloud.feature.manager.targeting.TargetingFilterSettings;
+import java.nio.ByteBuffer;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.stream.Collectors;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class TargetingFilter implements FeatureFilter {
+
     private static final Logger LOGGER = LoggerFactory.getLogger(TargetingFilter.class);
 
     private static final String USERS = "users";
@@ -41,13 +40,10 @@ public class TargetingFilter implements FeatureFilter {
     private static final String OUT_OF_RANGE = "The value is out of the accepted range.";
 
     private static final String REQUIRED_PARAMETER = "Value cannot be null.";
-
-    private final ITargetingContextAccessor contextAccessor;
-
-    private final TargetingEvaluationOptions options;
-
     private static final ObjectMapper mapper = new ObjectMapper()
-            .configure(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES, true);
+        .configure(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES, true);
+    private final ITargetingContextAccessor contextAccessor;
+    private final TargetingEvaluationOptions options;
 
     public TargetingFilter(ITargetingContextAccessor contextAccessor) {
         this.contextAccessor = contextAccessor;
@@ -93,15 +89,15 @@ public class TargetingFilter implements FeatureFilter {
         Audience audience = settings.getAudience();
 
         if (targetingContext.getUserId() != null && audience.getUsers() != null &&
-                audience.getUsers().stream()
-                        .anyMatch(user -> compairStrings(targetingContext.getUserId(), user))) {
+            audience.getUsers().stream()
+                .anyMatch(user -> compairStrings(targetingContext.getUserId(), user))) {
             return true;
         }
 
         if (targetingContext.getGroups() != null && audience.getGroups() != null) {
             for (String group : targetingContext.getGroups()) {
                 Optional<GroupRollout> groupRollout = audience.getGroups().stream()
-                        .filter(g -> compairStrings(g.getName(), group)).findFirst();
+                    .filter(g -> compairStrings(g.getName(), group)).findFirst();
 
                 if (groupRollout.isPresent()) {
                     String audienceContextId = targetingContext.getUserId() + "\n" + context.getName() + "\n" + group;
@@ -152,7 +148,7 @@ public class TargetingFilter implements FeatureFilter {
 
         Audience audience = settings.getAudience();
         if (audience.getDefaultRolloutPercentage() < 0
-                || audience.getDefaultRolloutPercentage() > 100) {
+            || audience.getDefaultRolloutPercentage() > 100) {
             paramName = AUDIENCE + "." + audience.getDefaultRolloutPercentage();
             reason = OUT_OF_RANGE;
 

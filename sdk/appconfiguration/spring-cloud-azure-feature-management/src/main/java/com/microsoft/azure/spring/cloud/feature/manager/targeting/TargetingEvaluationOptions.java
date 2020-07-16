@@ -6,7 +6,7 @@
 package com.microsoft.azure.spring.cloud.feature.manager.targeting;
 
 public class TargetingEvaluationOptions {
-    
+
     private boolean ignoreCase;
 
     public boolean isIgnoreCase() {

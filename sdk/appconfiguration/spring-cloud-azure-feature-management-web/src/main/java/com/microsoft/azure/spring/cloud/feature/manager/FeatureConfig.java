@@ -14,16 +14,16 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
  */
 @Configuration
 public class FeatureConfig implements WebMvcConfigurer {
- 
+
     private FeatureHandler featureHandler;
-    
-    public FeatureConfig (FeatureHandler featureHandler) {
+
+    public FeatureConfig(FeatureHandler featureHandler) {
         this.featureHandler = featureHandler;
     }
- 
+
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(featureHandler)
-          .addPathPatterns("/**");
+            .addPathPatterns("/**");
     }
 }

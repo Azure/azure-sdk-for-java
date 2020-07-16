@@ -9,14 +9,12 @@ import static com.microsoft.azure.spring.cloud.feature.manager.FilterParameters.
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import com.microsoft.azure.spring.cloud.feature.manager.entities.FeatureFilterEvaluationContext;
 import java.util.LinkedHashMap;
-
 import org.junit.Test;
 
-import com.microsoft.azure.spring.cloud.feature.manager.entities.FeatureFilterEvaluationContext;
-
 public class PercentageFilterTest {
-    
+
     @Test
     public void zeroPercentage() {
         PercentageFilter filter = new PercentageFilter();
@@ -26,7 +24,7 @@ public class PercentageFilterTest {
         context.setParameters(parameters);
         assertFalse(filter.evaluate(context));
     }
-    
+
     @Test
     public void hundredPercentage() {
         PercentageFilter filter = new PercentageFilter();
@@ -36,7 +34,7 @@ public class PercentageFilterTest {
         context.setParameters(parameters);
         assertTrue(filter.evaluate(context));
     }
-    
+
     @Test
     public void errorPercentage() {
         PercentageFilter filter = new PercentageFilter();
@@ -46,7 +44,7 @@ public class PercentageFilterTest {
         context.setParameters(parameters);
         assertFalse(filter.evaluate(context));
     }
-    
+
     @Test
     public void nullPercentage() {
         PercentageFilter filter = new PercentageFilter();

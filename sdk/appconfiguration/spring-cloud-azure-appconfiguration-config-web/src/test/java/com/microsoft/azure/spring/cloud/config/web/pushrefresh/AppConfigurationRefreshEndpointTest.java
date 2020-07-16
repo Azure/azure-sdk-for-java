@@ -12,16 +12,20 @@ import static com.microsoft.azure.spring.cloud.config.web.TestConstants.VALIDATI
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
 
+import com.microsoft.azure.spring.cloud.config.properties.AppConfigurationProperties;
+import com.microsoft.azure.spring.cloud.config.properties.AppConfigurationStoreMonitoring;
+import com.microsoft.azure.spring.cloud.config.properties.AppConfigurationStoreMonitoring.AccessToken;
+import com.microsoft.azure.spring.cloud.config.properties.AppConfigurationStoreMonitoring.PushNotification;
+import com.microsoft.azure.spring.cloud.config.properties.AppConfigurationStoreTrigger;
+import com.microsoft.azure.spring.cloud.config.properties.ConfigStore;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Stream;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
@@ -31,16 +35,8 @@ import org.springframework.cloud.context.refresh.ContextRefresher;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.HttpStatus;
 
-import com.microsoft.azure.spring.cloud.config.properties.AppConfigurationProperties;
-import com.microsoft.azure.spring.cloud.config.properties.AppConfigurationStoreMonitoring;
-import com.microsoft.azure.spring.cloud.config.properties.AppConfigurationStoreMonitoring.AccessToken;
-import com.microsoft.azure.spring.cloud.config.properties.AppConfigurationStoreMonitoring.PushNotification;
-import com.microsoft.azure.spring.cloud.config.properties.AppConfigurationStoreTrigger;
-import com.microsoft.azure.spring.cloud.config.properties.ConfigStore;
-
 public class AppConfigurationRefreshEndpointTest {
 
-    
 
     @Mock
     private HttpServletRequest request;
@@ -109,30 +105,30 @@ public class AppConfigurationRefreshEndpointTest {
         AppConfigurationRefreshEndpoint endpoint = new AppConfigurationRefreshEndpoint(contextRefresher, properties);
 
         when(lines.collect(Mockito.any())).thenReturn("[{\r\n" +
-                "  \"id\": \"2d1781af-3a4c-4d7c-bd0c-e34b19da4e66\",\r\n" +
-                "  \"topic\":" + TOPIC + ",\r\n"
-                +
-                "  \"subject\": \"\",\r\n" +
-                "  \"data\": {\r\n" +
-                "    \"validationCode\": \"512d38b6-c7b8-40c8-89fe-f46f9e9622b6\",\r\n" +
-                "    \"validationUrl\":" + VALIDATION_URL + "\r\n"
-                +
-                "  },\r\n" +
-                "  \"eventType\": \"Microsoft.EventGrid.SubscriptionValidationEvent\",\r\n" +
-                "  \"eventTime\": \"2018-01-25T22:12:19.4556811Z\",\r\n" +
-                "  \"metadataVersion\": \"1\",\r\n" +
-                "  \"dataVersion\": \"1\"\r\n" +
-                "}]");
+            "  \"id\": \"2d1781af-3a4c-4d7c-bd0c-e34b19da4e66\",\r\n" +
+            "  \"topic\":" + TOPIC + ",\r\n"
+            +
+            "  \"subject\": \"\",\r\n" +
+            "  \"data\": {\r\n" +
+            "    \"validationCode\": \"512d38b6-c7b8-40c8-89fe-f46f9e9622b6\",\r\n" +
+            "    \"validationUrl\":" + VALIDATION_URL + "\r\n"
+            +
+            "  },\r\n" +
+            "  \"eventType\": \"Microsoft.EventGrid.SubscriptionValidationEvent\",\r\n" +
+            "  \"eventTime\": \"2018-01-25T22:12:19.4556811Z\",\r\n" +
+            "  \"metadataVersion\": \"1\",\r\n" +
+            "  \"dataVersion\": \"1\"\r\n" +
+            "}]");
 
         assertEquals("{ \"validationResponse\": \"512d38b6-c7b8-40c8-89fe-f46f9e9622b6\"}",
-                endpoint.refresh(request, response, allRequestParams));
+            endpoint.refresh(request, response, allRequestParams));
     }
 
     @Test
     public void webHookRefresh() throws IOException {
         Map<String, String> allRequestParams = new HashMap<String, String>();
         AppConfigurationProperties properties = new AppConfigurationProperties();
-        
+
         properties.setStores(configStores);
         allRequestParams.put(tokenName, tokenSecret);
 
@@ -148,7 +144,7 @@ public class AppConfigurationRefreshEndpointTest {
     public void webHookRefreshNotFound() throws IOException {
         Map<String, String> allRequestParams = new HashMap<String, String>();
         AppConfigurationProperties properties = new AppConfigurationProperties();
-        
+
         properties.setStores(configStores);
         allRequestParams.put(tokenName, tokenSecret);
 
@@ -158,14 +154,14 @@ public class AppConfigurationRefreshEndpointTest {
         when(lines.collect(Mockito.any())).thenReturn(getResetNotification());
 
         assertEquals(HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase(),
-                endpoint.refresh(request, response, allRequestParams));
+            endpoint.refresh(request, response, allRequestParams));
     }
 
     @Test
     public void noTokenName() throws IOException {
         Map<String, String> allRequestParams = new HashMap<String, String>();
         AppConfigurationProperties properties = new AppConfigurationProperties();
-        
+
         String tokenName = "token";
         String tokenSecret = "secret";
         PushNotification pushNotification = monitoring.getPushNotification();
@@ -190,7 +186,7 @@ public class AppConfigurationRefreshEndpointTest {
     public void noTokenSecret() throws IOException {
         Map<String, String> allRequestParams = new HashMap<String, String>();
         AppConfigurationProperties properties = new AppConfigurationProperties();
-        
+
         String tokenName = "token";
         String tokenSecret = "secret";
         PushNotification pushNotification = monitoring.getPushNotification();
@@ -215,7 +211,7 @@ public class AppConfigurationRefreshEndpointTest {
     public void noPramToken() throws IOException {
         Map<String, String> allRequestParams = new HashMap<String, String>();
         AppConfigurationProperties properties = new AppConfigurationProperties();
-        
+
         String tokenName = "token";
         String tokenSecret = "secret";
         PushNotification pushNotification = monitoring.getPushNotification();
@@ -240,7 +236,7 @@ public class AppConfigurationRefreshEndpointTest {
     public void invalidParamToken() throws IOException {
         Map<String, String> allRequestParams = new HashMap<String, String>();
         AppConfigurationProperties properties = new AppConfigurationProperties();
-        
+
         String tokenName = "token";
         String tokenSecret = "secret";
         PushNotification pushNotification = monitoring.getPushNotification();
@@ -264,21 +260,21 @@ public class AppConfigurationRefreshEndpointTest {
 
     private String getResetNotification() {
         return " [ {\r\n" +
-                "  \"id\" : \"e2f7023c-b982-4050-80d9-8ed6bf24e183\",\r\n" +
-                "  \"topic\":" + TOPIC + ",\r\n"
-                +
-                "  \"subject\" : \"https://fake.test.azconfig.io/kv/%2Fapplication%2Fconfig.message?api-version=1.0\",\r\n"
-                +
-                "  \"data\" : {\r\n" +
-                "    \"key\" : \"trigger_key\",\r\n" +
-                "    \"label\" : \"trigger_label\",\r\n" +
-                "    \"etag\" : \"r05tB2hfMQs0vo6ITcXu7ScIOhR\"\r\n" +
-                "  },\r\n" +
-                "  \"eventType\" : \"Microsoft.AppConfiguration.KeyValueModified\",\r\n" +
-                "  \"dataVersion\" : \"1\",\r\n" +
-                "  \"metadataVersion\" : \"1\",\r\n" +
-                "  \"eventTime\" : \"2020-06-03T21:19:04.019421Z\"\r\n" +
-                "} ]";
+            "  \"id\" : \"e2f7023c-b982-4050-80d9-8ed6bf24e183\",\r\n" +
+            "  \"topic\":" + TOPIC + ",\r\n"
+            +
+            "  \"subject\" : \"https://fake.test.azconfig.io/kv/%2Fapplication%2Fconfig.message?api-version=1.0\",\r\n"
+            +
+            "  \"data\" : {\r\n" +
+            "    \"key\" : \"trigger_key\",\r\n" +
+            "    \"label\" : \"trigger_label\",\r\n" +
+            "    \"etag\" : \"r05tB2hfMQs0vo6ITcXu7ScIOhR\"\r\n" +
+            "  },\r\n" +
+            "  \"eventType\" : \"Microsoft.AppConfiguration.KeyValueModified\",\r\n" +
+            "  \"dataVersion\" : \"1\",\r\n" +
+            "  \"metadataVersion\" : \"1\",\r\n" +
+            "  \"eventTime\" : \"2020-06-03T21:19:04.019421Z\"\r\n" +
+            "} ]";
     }
 
 }

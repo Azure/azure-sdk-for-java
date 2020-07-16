@@ -7,7 +7,7 @@ package com.microsoft.azure.spring.cloud.feature.manager.targeting;
 
 import java.util.List;
 
-public class TargetingContext implements ITargetingContext{
+public class TargetingContext implements ITargetingContext {
 
     private String userId;
 

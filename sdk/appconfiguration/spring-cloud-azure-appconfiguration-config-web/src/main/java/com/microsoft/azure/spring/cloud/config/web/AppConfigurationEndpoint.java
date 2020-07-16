@@ -7,13 +7,12 @@ package com.microsoft.azure.spring.cloud.config.web;
 
 import static com.microsoft.azure.spring.cloud.config.web.Constants.VALIDATION_TOPIC;
 
-import java.util.List;
-import java.util.Map;
-
 import com.fasterxml.jackson.databind.JsonNode;
 import com.microsoft.azure.spring.cloud.config.properties.AppConfigurationStoreMonitoring.AccessToken;
 import com.microsoft.azure.spring.cloud.config.properties.AppConfigurationStoreMonitoring.PushNotification;
 import com.microsoft.azure.spring.cloud.config.properties.ConfigStore;
+import java.util.List;
+import java.util.Map;
 
 public class AppConfigurationEndpoint {
 
@@ -28,7 +27,7 @@ public class AppConfigurationEndpoint {
     private Map<String, String> allRequestParams;
 
     public AppConfigurationEndpoint(JsonNode request, List<ConfigStore> configStores,
-            Map<String, String> allRequestParams) {
+        Map<String, String> allRequestParams) {
         this.configStores = configStores;
         this.allRequestParams = allRequestParams;
 
@@ -50,7 +49,7 @@ public class AppConfigurationEndpoint {
 
                 // One of these need to be set
                 if (!(pushNotification.getPrimaryToken().isValid()
-                        || pushNotification.getSecondaryToken().isValid())) {
+                    || pushNotification.getSecondaryToken().isValid())) {
                     return false;
                 }
 
@@ -69,7 +68,7 @@ public class AppConfigurationEndpoint {
     private boolean isTokenMatch(AccessToken token) {
         // if token's secret is allowed to be null this will cause NPE as well.
         return token != null && allRequestParams.containsKey(token.getName())
-                && token.getSecret().equals(this.allRequestParams.get(token.getName()));
+            && token.getSecret().equals(this.allRequestParams.get(token.getName()));
 
     }
 

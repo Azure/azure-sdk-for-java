@@ -8,12 +8,11 @@ package com.microsoft.azure.spring.cloud.config.web.pullrefresh;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.when;
 
+import com.microsoft.azure.spring.cloud.config.AppConfigurationRefresh;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-
-import com.microsoft.azure.spring.cloud.config.AppConfigurationRefresh;
 
 public class AppConfigurationEventListenerTest {
 
@@ -29,7 +28,7 @@ public class AppConfigurationEventListenerTest {
     public void throwException() {
         AppConfigurationEventListener listener = new AppConfigurationEventListener(appConfigurationRefresh);
         doThrow(new RuntimeException("The listener should swallow all exceptions.")).when(appConfigurationRefresh)
-                .refreshConfigurations();
+            .refreshConfigurations();
         listener.onApplicationEvent(null);
     }
 

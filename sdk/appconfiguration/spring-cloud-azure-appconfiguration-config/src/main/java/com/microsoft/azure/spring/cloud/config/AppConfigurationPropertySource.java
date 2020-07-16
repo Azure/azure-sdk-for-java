@@ -94,6 +94,15 @@ public class AppConfigurationPropertySource extends EnumerablePropertySource<Con
         this.keyVaultClientProvider = keyVaultClientProvider;
     }
 
+    private static List<Object> convertToListOrEmptyList(LinkedHashMap<String, Object> parameters, String key) {
+        List<Object> listObjects = CASE_INSENSITIVE_MAPPER.convertValue(
+            parameters.get(key),
+            new TypeReference<List<Object>>() {
+            }
+        );
+        return listObjects == null ? emptyList() : listObjects;
+    }
+
     @Override
     public String[] getPropertyNames() {
         Set<String> keySet = properties.keySet();
@@ -291,15 +300,6 @@ public class AppConfigurationPropertySource extends EnumerablePropertySource<Con
 
     private Map<String, Object> mapValuesByIndex(List<Object> users) {
         return IntStream.range(0, users.size()).boxed().collect(toMap(String::valueOf, users::get));
-    }
-
-    private static List<Object> convertToListOrEmptyList(LinkedHashMap<String, Object> parameters, String key) {
-        List<Object> listObjects = CASE_INSENSITIVE_MAPPER.convertValue(
-            parameters.get(key),
-            new TypeReference<List<Object>>() {
-            }
-        );
-        return listObjects == null ? emptyList() : listObjects;
     }
 
     private void switchKeyValues(Map<String, Object> parameters, String oldKey, String newKey, Object value) {

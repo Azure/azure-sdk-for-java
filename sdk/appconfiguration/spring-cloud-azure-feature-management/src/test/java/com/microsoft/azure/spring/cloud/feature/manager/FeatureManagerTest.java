@@ -12,10 +12,11 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 import static org.mockito.Mockito.when;
 
+import com.microsoft.azure.spring.cloud.feature.manager.entities.Feature;
+import com.microsoft.azure.spring.cloud.feature.manager.entities.FeatureFilterEvaluationContext;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.concurrent.ExecutionException;
-
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -30,9 +31,6 @@ import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 
-import com.microsoft.azure.spring.cloud.feature.manager.entities.Feature;
-import com.microsoft.azure.spring.cloud.feature.manager.entities.FeatureFilterEvaluationContext;
-
 /**
  * Unit tests for FeatureManager.
  */
@@ -46,18 +44,14 @@ public class FeatureManagerTest {
     private static final String PARAM_1_NAME = "param1";
 
     private static final String PARAM_1_VALUE = "testParam";
-
-    @InjectMocks
-    private FeatureManager featureManager;
-
-    @Mock
-    private ApplicationContext context;
-
-    @Mock
-    private FeatureManagementConfigProperties properties;
-    
     @Rule
     public ExpectedException expectedEx = ExpectedException.none();
+    @InjectMocks
+    private FeatureManager featureManager;
+    @Mock
+    private ApplicationContext context;
+    @Mock
+    private FeatureManagementConfigProperties properties;
 
     @Before
     public void setup() {
@@ -66,14 +60,13 @@ public class FeatureManagerTest {
     }
 
     /**
-     * Tests the conversion that takes place when data comes from
-     * EnumerablePropertySource.
+     * Tests the conversion that takes place when data comes from EnumerablePropertySource.
      */
     @Test
     public void loadFeatureManagerWithLinkedHashSet() {
         Feature f = new Feature();
         f.setKey(FEATURE_KEY);
-        
+
         LinkedHashMap<String, Object> testMap = new LinkedHashMap<String, Object>();
         LinkedHashMap<String, Object> testFeature = new LinkedHashMap<String, Object>();
         LinkedHashMap<String, Object> enabledFor = new LinkedHashMap<String, Object>();
@@ -116,7 +109,7 @@ public class FeatureManagerTest {
 
     @Test
     public void isEnabledFeatureHasNoFilters()
-            throws InterruptedException, ExecutionException, FilterNotFoundException {
+        throws InterruptedException, ExecutionException, FilterNotFoundException {
         HashMap<String, Object> features = new HashMap<String, Object>();
         Feature noFilters = new Feature();
         noFilters.setKey("NoFilters");
@@ -132,8 +125,8 @@ public class FeatureManagerTest {
         HashMap<String, Object> features = new HashMap<String, Object>();
         Feature onFeature = new Feature();
         onFeature.setKey("On");
-        HashMap<Integer, FeatureFilterEvaluationContext> filters = 
-                new HashMap<Integer, FeatureFilterEvaluationContext>();
+        HashMap<Integer, FeatureFilterEvaluationContext> filters =
+            new HashMap<Integer, FeatureFilterEvaluationContext>();
         FeatureFilterEvaluationContext alwaysOn = new FeatureFilterEvaluationContext();
         alwaysOn.setName("AlwaysOn");
         filters.put(0, alwaysOn);
@@ -145,28 +138,28 @@ public class FeatureManagerTest {
 
         assertTrue(featureManager.isEnabledAsync("On").block());
     }
-    
+
     @Test
     public void isEnabledPeriodSplit() throws InterruptedException, ExecutionException, FilterNotFoundException {
         LinkedHashMap<String, Object> features = new LinkedHashMap<String, Object>();
         LinkedHashMap<String, Object> featuresOn = new LinkedHashMap<String, Object>();
-        
+
         featuresOn.put("A", true);
         features.put("Beta", featuresOn);
-        
+
         featureManager.putAll(features);
 
         assertTrue(featureManager.isEnabledAsync("Beta.A").block());
     }
-    
+
     @Test
     public void isEnabledInvalid() throws InterruptedException, ExecutionException, FilterNotFoundException {
         LinkedHashMap<String, Object> features = new LinkedHashMap<String, Object>();
         LinkedHashMap<String, Object> featuresOn = new LinkedHashMap<String, Object>();
-        
+
         featuresOn.put("A", 5);
         features.put("Beta", featuresOn);
-        
+
         featureManager.putAll(features);
 
         assertFalse(featureManager.isEnabledAsync("Beta.A").block());
@@ -184,7 +177,7 @@ public class FeatureManagerTest {
 
     @Test
     public void featureManagerNotEnabledCorrectly()
-            throws InterruptedException, ExecutionException, FilterNotFoundException {
+        throws InterruptedException, ExecutionException, FilterNotFoundException {
         FeatureManager featureManager = new FeatureManager(null);
         assertFalse(featureManager.isEnabledAsync("").block());
     }
@@ -194,8 +187,8 @@ public class FeatureManagerTest {
         HashMap<String, Object> features = new HashMap<String, Object>();
         features.put("FeatureU", false);
         Feature featureV = new Feature();
-        HashMap<Integer, FeatureFilterEvaluationContext> filterMapper = 
-                new HashMap<Integer, FeatureFilterEvaluationContext>();
+        HashMap<Integer, FeatureFilterEvaluationContext> filterMapper =
+            new HashMap<Integer, FeatureFilterEvaluationContext>();
 
         FeatureFilterEvaluationContext enabledFor = new FeatureFilterEvaluationContext();
         enabledFor.setName("Random");
@@ -229,8 +222,8 @@ public class FeatureManagerTest {
         HashMap<String, Object> features = new HashMap<String, Object>();
         Feature onFeature = new Feature();
         onFeature.setKey("Off");
-        HashMap<Integer, FeatureFilterEvaluationContext> filters = 
-                new HashMap<Integer, FeatureFilterEvaluationContext>();
+        HashMap<Integer, FeatureFilterEvaluationContext> filters =
+            new HashMap<Integer, FeatureFilterEvaluationContext>();
         FeatureFilterEvaluationContext alwaysOn = new FeatureFilterEvaluationContext();
         alwaysOn.setName("AlwaysOff");
         filters.put(0, alwaysOn);

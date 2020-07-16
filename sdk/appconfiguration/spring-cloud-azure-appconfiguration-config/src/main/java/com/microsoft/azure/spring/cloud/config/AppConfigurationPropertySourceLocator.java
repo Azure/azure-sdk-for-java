@@ -40,7 +40,6 @@ public class AppConfigurationPropertySourceLocator implements PropertySourceLoca
     private static final String PROPERTY_SOURCE_NAME = "azure-config-store";
 
     private static final String PATH_SPLITTER = "/";
-    private Boolean startup = true;
     private final AppConfigurationProperties properties;
     private final String profileSeparator;
     private final List<ConfigStore> configStores;
@@ -49,6 +48,7 @@ public class AppConfigurationPropertySourceLocator implements PropertySourceLoca
     private final ClientStore clients;
     private final KeyVaultCredentialProvider keyVaultCredentialProvider;
     private final SecretClientBuilderSetup keyVaultClientProvider;
+    private Boolean startup = true;
 
     public AppConfigurationPropertySourceLocator(AppConfigurationProperties properties,
         AppConfigurationProviderProperties appProperties, ClientStore clients,

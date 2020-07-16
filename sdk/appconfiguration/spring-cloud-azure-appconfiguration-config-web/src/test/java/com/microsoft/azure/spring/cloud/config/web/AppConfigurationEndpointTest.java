@@ -9,23 +9,21 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.ExpectedException;
-
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.microsoft.azure.spring.cloud.config.properties.ConfigStore;
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.rules.ExpectedException;
 
 public class AppConfigurationEndpointTest {
 
@@ -82,64 +80,64 @@ public class AppConfigurationEndpointTest {
         endpoint = new AppConfigurationEndpoint(request, configStores, allRequestParams);
         // There is a config Store, but not the right one
         assertFalse(endpoint.authenticate());
-        
+
         ConfigStore validConfigStore = new ConfigStore();
         validConfigStore.setEndpoint("https://testConfig.azconfig.io");
         configStores.add(validConfigStore);
         endpoint = new AppConfigurationEndpoint(request, configStores, allRequestParams);
         // Valid Config Store, no secrets
         assertFalse(endpoint.authenticate());
-        
+
         validConfigStore.getMonitoring().getPushNotification().getPrimaryToken().setName("token");
         validConfigStore.getMonitoring().getPushNotification().getPrimaryToken().setSecret("secret");
         endpoint = new AppConfigurationEndpoint(request, configStores, allRequestParams);
         // Valid Config Store, no authentication secrets
         assertFalse(endpoint.authenticate());
-        
+
         allRequestParams.put("token", "bad");
         endpoint = new AppConfigurationEndpoint(request, configStores, allRequestParams);
         // Valid Config Store, invalid secret
         assertFalse(endpoint.authenticate());
-        
+
         allRequestParams.put("token", "secret");
         endpoint = new AppConfigurationEndpoint(request, configStores, allRequestParams);
         // Valid Config Store, invalid secret
         assertTrue(endpoint.authenticate());
-        
+
         // Reseting Primary
         allRequestParams.remove("token");
         validConfigStore.getMonitoring().getPushNotification().getPrimaryToken().setName("");
         validConfigStore.getMonitoring().getPushNotification().getPrimaryToken().setSecret("");
-        
+
         validConfigStore.getMonitoring().getPushNotification().getSecondaryToken().setName("token");
         validConfigStore.getMonitoring().getPushNotification().getSecondaryToken().setSecret("secret");
         endpoint = new AppConfigurationEndpoint(request, configStores, allRequestParams);
         // Valid Config Store, no authentication secrets
         assertFalse(endpoint.authenticate());
-        
+
         allRequestParams.put("token", "bad");
         endpoint = new AppConfigurationEndpoint(request, configStores, allRequestParams);
         // Valid Config Store, invalid secret
         assertFalse(endpoint.authenticate());
-        
+
         allRequestParams.put("token", "secret");
         endpoint = new AppConfigurationEndpoint(request, configStores, allRequestParams);
         // Valid Config Store, invalid secret
         assertTrue(endpoint.authenticate());
-        
+
         validConfigStore.getMonitoring().getPushNotification().getPrimaryToken().setName("token");
         validConfigStore.getMonitoring().getPushNotification().getPrimaryToken().setSecret("primary");
         endpoint = new AppConfigurationEndpoint(request, configStores, allRequestParams);
         // Both Primary and Secondary Set
         assertTrue(endpoint.authenticate());
     }
-    
+
     @Test
     public void triggerRefresh() throws JsonParseException, JsonMappingException, IOException {
         JsonNode request = mapper.readValue(new File(GET_TEST_VALIDATION), JsonNode.class);
         List<ConfigStore> configStores = new ArrayList<ConfigStore>();
         Map<String, String> allRequestParams = new HashMap<String, String>();
-        
+
         ConfigStore invalidConfigStore = new ConfigStore();
         invalidConfigStore.setEndpoint("https://invalidConfigStore.azconfig.io");
         configStores.add(invalidConfigStore);
@@ -149,12 +147,12 @@ public class AppConfigurationEndpointTest {
 
         ConfigStore validConfigStore = new ConfigStore();
         validConfigStore.setEndpoint("https://testConfig.azconfig.io");
-        
+
         configStores.add(validConfigStore);
         endpoint = new AppConfigurationEndpoint(request, configStores, allRequestParams);
         // Monitoring Disabled
         assertFalse(endpoint.triggerRefresh());
-        
+
         validConfigStore.getMonitoring().setEnabled(true);
         configStores.add(validConfigStore);
         endpoint = new AppConfigurationEndpoint(request, configStores, allRequestParams);
