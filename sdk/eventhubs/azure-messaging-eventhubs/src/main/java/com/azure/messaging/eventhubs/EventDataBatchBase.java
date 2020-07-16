@@ -108,7 +108,7 @@ abstract class EventDataBatchBase {
      */
     boolean tryAdd(final EventData eventData) {
         if (eventData == null) {
-            throw logger.logExceptionAsWarning(new IllegalArgumentException("eventData cannot be null"));
+            throw logger.logExceptionAsWarning(new NullPointerException("eventData cannot be null"));
         }
         EventData event = tracerProvider.isEnabled() ? traceMessageSpan(eventData) : eventData;
 
