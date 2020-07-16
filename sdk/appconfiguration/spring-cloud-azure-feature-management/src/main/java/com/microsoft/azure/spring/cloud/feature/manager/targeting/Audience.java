@@ -37,7 +37,7 @@ public class Audience {
     }
 
     /**
-     * @param audiences the audiences to set
+     * @param groups the audiences to set
      */
     public void setGroups(List<GroupRollout> groups) {
         this.groups = groups;

@@ -60,7 +60,7 @@ public class FeatureManager extends HashMap<String, Object> {
      *
      * @param feature Feature being checked.
      * @return state of the feature
-     * @throws FilterNotFoundException
+     * @throws FilterNotFoundException file not found
      */
     public Mono<Boolean> isEnabledAsync(String feature) throws FilterNotFoundException {
         return Mono.just(checkFeatures(feature));
