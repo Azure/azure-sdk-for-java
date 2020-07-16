@@ -28,11 +28,11 @@ public class ObjectBatchTest {
     @Test
     public void nullObject() {
         assertThrows(IllegalArgumentException.class, () -> {
-            final ObjectBatch<Object> batch = new ObjectBatch<>(
+            final ObjectBatch<Integer> batch = new ObjectBatch<Integer>(
                 1024,
                 null,
                 null,
-                Object.class,
+                Integer.class,
                 errorContextProvider,
                 null,
                 new ObjectSerializer() {
@@ -48,7 +48,7 @@ public class ObjectBatchTest {
                 },
                 null,
                 null);
-            batch.tryAdd(null);
+            batch.tryAdd((Integer)null).block();
         });
     }
 }
