@@ -12,6 +12,8 @@
     <relativePath>../azure-resourcemanager-parent</relativePath>
   </parent>
 
+  <groupId>com.azure.resourcemanager</groupId>
+  <version>2.0.0-beta.1</version>
   <artifactId>azure-resourcemanager</artifactId>
   <packaging>jar</packaging>
 

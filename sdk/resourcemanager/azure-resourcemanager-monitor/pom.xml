@@ -8,8 +8,8 @@
         <relativePath>../azure-resourcemanager-parent</relativePath>
     </parent>
 
+    <version>2.0.0-beta.1</version>
     <artifactId>azure-resourcemanager-monitor</artifactId>
-  <version>2.0.0-beta.1</version>
     <packaging>jar</packaging>
 
     <name>Microsoft Azure SDK for Monitor Management</name>
