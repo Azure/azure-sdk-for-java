@@ -184,7 +184,7 @@ public class AppConfiguration extends AbstractCosmosConfiguration {
 }
 ```
 Or if you want to customize your config:
-<!-- embedme src/samples/java/com/azure/cosmos/AppConfigurationCodeSnippet.java#L45-L57 -->
+<!-- embedme src/samples/java/com/azure/cosmos/AppConfigurationCodeSnippet.java#L44-L56 -->
 ```java
 public CosmosConfig getConfig() {
     DirectConnectionConfig directConnectionConfig = new DirectConnectionConfig();
