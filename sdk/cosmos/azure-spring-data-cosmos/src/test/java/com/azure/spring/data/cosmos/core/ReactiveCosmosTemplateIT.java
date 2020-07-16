@@ -5,17 +5,17 @@ package com.azure.spring.data.cosmos.core;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.models.PartitionKey;
-import com.azure.spring.data.cosmos.CosmosDBFactory;
+import com.azure.spring.data.cosmos.CosmosFactory;
 import com.azure.spring.data.cosmos.common.ResponseDiagnosticsTestUtils;
 import com.azure.spring.data.cosmos.common.TestConstants;
-import com.azure.spring.data.cosmos.config.CosmosDBConfig;
+import com.azure.spring.data.cosmos.config.CosmosConfig;
 import com.azure.spring.data.cosmos.core.convert.MappingCosmosConverter;
 import com.azure.spring.data.cosmos.core.mapping.CosmosMappingContext;
 import com.azure.spring.data.cosmos.core.query.Criteria;
 import com.azure.spring.data.cosmos.core.query.CriteriaType;
 import com.azure.spring.data.cosmos.core.query.DocumentQuery;
 import com.azure.spring.data.cosmos.domain.Person;
-import com.azure.spring.data.cosmos.exception.CosmosDBAccessException;
+import com.azure.spring.data.cosmos.exception.CosmosAccessException;
 import com.azure.spring.data.cosmos.repository.TestRepositoryConfig;
 import com.azure.spring.data.cosmos.repository.support.CosmosEntityInformation;
 import org.assertj.core.api.Assertions;
@@ -38,7 +38,7 @@ import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Collections;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.equalTo;
@@ -67,10 +67,10 @@ public class ReactiveCosmosTemplateIT {
     private static final String PRECONDITION_IS_NOT_MET = "is not met";
     private static final String WRONG_ETAG = "WRONG_ETAG";
 
-    @Value("${cosmosdb.secondaryKey}")
+    @Value("${cosmos.secondaryKey}")
     private String cosmosDbSecondaryKey;
 
-    @Value("${cosmosdb.key}")
+    @Value("${cosmos.key}")
     private String cosmosDbKey;
 
     private static ReactiveCosmosTemplate cosmosTemplate;
@@ -85,7 +85,7 @@ public class ReactiveCosmosTemplateIT {
     @Autowired
     private ApplicationContext applicationContext;
     @Autowired
-    private CosmosDBConfig dbConfig;
+    private CosmosConfig cosmosConfig;
     @Autowired
     private ResponseDiagnosticsTestUtils responseDiagnosticsTestUtils;
 
@@ -93,8 +93,8 @@ public class ReactiveCosmosTemplateIT {
     public void setUp() throws ClassNotFoundException {
         if (!initialized) {
             azureKeyCredential = new AzureKeyCredential(cosmosDbKey);
-            dbConfig.getCosmosClientBuilder().credential(azureKeyCredential);
-            final CosmosDBFactory dbFactory = new CosmosDBFactory(dbConfig);
+            cosmosConfig.getCosmosClientBuilder().credential(azureKeyCredential);
+            final CosmosFactory dbFactory = new CosmosFactory(cosmosConfig);
 
             final CosmosMappingContext mappingContext = new CosmosMappingContext();
             personInfo = new CosmosEntityInformation<>(Person.class);
@@ -105,7 +105,7 @@ public class ReactiveCosmosTemplateIT {
             final MappingCosmosConverter dbConverter =
                 new MappingCosmosConverter(mappingContext, null);
             cosmosTemplate = new ReactiveCosmosTemplate(dbFactory, dbConverter,
-                dbConfig.getDatabase());
+                cosmosConfig.getDatabase());
             cosmosTemplate.createContainerIfNotExists(personInfo).block();
             initialized = true;
         }
@@ -131,7 +131,7 @@ public class ReactiveCosmosTemplateIT {
         final Mono<Person> insertMono = cosmosTemplate.insert(TEST_PERSON,
             new PartitionKey(personInfo.getPartitionKeyFieldValue(TEST_PERSON)));
         StepVerifier.create(insertMono)
-                    .expectError(CosmosDBAccessException.class)
+                    .expectError(CosmosAccessException.class)
                     .verify();
     }
 
@@ -245,9 +245,9 @@ public class ReactiveCosmosTemplateIT {
 
         try {
             cosmosTemplate.upsert(updated).block();
-        } catch (CosmosDBAccessException cosmosDbAccessException) {
-            assertThat(cosmosDbAccessException.getCosmosException()).isNotNull();
-            final Throwable cosmosClientException = cosmosDbAccessException.getCosmosException();
+        } catch (CosmosAccessException cosmosAccessException) {
+            assertThat(cosmosAccessException.getCosmosException()).isNotNull();
+            final Throwable cosmosClientException = cosmosAccessException.getCosmosException();
             assertThat(cosmosClientException).isInstanceOf(CosmosException.class);
             assertThat(cosmosClientException.getMessage()).contains(PRECONDITION_IS_NOT_MET);
 
@@ -343,7 +343,7 @@ public class ReactiveCosmosTemplateIT {
     @Test
     public void testFind() {
         final Criteria criteria = Criteria.getInstance(CriteriaType.IS_EQUAL, "firstName",
-            Arrays.asList(TEST_PERSON.getFirstName()), Part.IgnoreCaseType.NEVER);
+            Collections.singletonList(TEST_PERSON.getFirstName()), Part.IgnoreCaseType.NEVER);
         final DocumentQuery query = new DocumentQuery(criteria);
         final Flux<Person> personFlux = cosmosTemplate.find(query, Person.class,
             Person.class.getSimpleName());
@@ -351,7 +351,7 @@ public class ReactiveCosmosTemplateIT {
 
         // add ignore testing
         final Criteria criteriaIgnoreCase = Criteria.getInstance(CriteriaType.IS_EQUAL, "firstName",
-            Arrays.asList(TEST_PERSON.getFirstName().toUpperCase()), Part.IgnoreCaseType.ALWAYS);
+            Collections.singletonList(TEST_PERSON.getFirstName().toUpperCase()), Part.IgnoreCaseType.ALWAYS);
         final DocumentQuery queryIgnoreCase = new DocumentQuery(criteriaIgnoreCase);
         final Flux<Person> personFluxIgnoreCase = cosmosTemplate.find(queryIgnoreCase, Person.class,
             Person.class.getSimpleName());
@@ -365,14 +365,14 @@ public class ReactiveCosmosTemplateIT {
     @Test
     public void testExists() {
         final Criteria criteria = Criteria.getInstance(CriteriaType.IS_EQUAL, "firstName",
-            Arrays.asList(TEST_PERSON.getFirstName()), Part.IgnoreCaseType.NEVER);
+            Collections.singletonList(TEST_PERSON.getFirstName()), Part.IgnoreCaseType.NEVER);
         final DocumentQuery query = new DocumentQuery(criteria);
         final Mono<Boolean> exists = cosmosTemplate.exists(query, Person.class, containerName);
         StepVerifier.create(exists).expectNext(true).verifyComplete();
 
         // add ignore testing
         final Criteria criteriaIgnoreCase = Criteria.getInstance(CriteriaType.IS_EQUAL, "firstName",
-            Arrays.asList(TEST_PERSON.getFirstName().toUpperCase()), Part.IgnoreCaseType.ALWAYS);
+            Collections.singletonList(TEST_PERSON.getFirstName().toUpperCase()), Part.IgnoreCaseType.ALWAYS);
         final DocumentQuery queryIgnoreCase = new DocumentQuery(criteriaIgnoreCase);
         final Mono<Boolean> existsIgnoreCase = cosmosTemplate.exists(queryIgnoreCase, Person.class, containerName);
         StepVerifier.create(existsIgnoreCase).expectNext(true).verifyComplete();
@@ -385,7 +385,7 @@ public class ReactiveCosmosTemplateIT {
     @Test
     public void testCount() {
         final Mono<Long> count = cosmosTemplate.count(containerName);
-        StepVerifier.create(count).expectNext((long)1).verifyComplete();
+        StepVerifier.create(count).expectNext((long) 1).verifyComplete();
 
         assertThat(responseDiagnosticsTestUtils.getCosmosDiagnostics()).isNull();
         Assertions.assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics()).isNotNull();
@@ -396,7 +396,7 @@ public class ReactiveCosmosTemplateIT {
     public void testCountBySecondaryKey() {
         azureKeyCredential.update(cosmosDbSecondaryKey);
         final Mono<Long> count = cosmosTemplate.count(containerName);
-        StepVerifier.create(count).expectNext((long)1).verifyComplete();
+        StepVerifier.create(count).expectNext((long) 1).verifyComplete();
     }
 
     @Test
@@ -406,7 +406,7 @@ public class ReactiveCosmosTemplateIT {
             TEST_PERSON.getId(),
             Person.class);
         StepVerifier.create(findById)
-                    .expectError(CosmosDBAccessException.class)
+                    .expectError(CosmosAccessException.class)
                     .verify();
     }
 

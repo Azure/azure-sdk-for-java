@@ -12,12 +12,12 @@ import org.springframework.lang.Nullable;
  * Public class extending DataAccessException, exposes innerException.
  * Every API in {@link CosmosRepository}
  * and {@link ReactiveCosmosRepository}
- * should throw {@link CosmosDBAccessException}.
+ * should throw {@link CosmosAccessException}.
  * innerException refers to the exception thrown by CosmosDB SDK. Callers of repository APIs can
  * rely on innerException for any retriable logic, or for more details on the failure of
  * the operation.
  */
-public class CosmosDBAccessException extends DataAccessException {
+public class CosmosAccessException extends DataAccessException {
 
     protected final CosmosException cosmosException;
 
@@ -25,7 +25,7 @@ public class CosmosDBAccessException extends DataAccessException {
      * Construct a {@code CosmosDBAccessException} with the specified detail message.
      * @param msg the detail message
      */
-    public CosmosDBAccessException(String msg) {
+    public CosmosAccessException(String msg) {
         super(msg);
         this.cosmosException = null;
     }
@@ -36,7 +36,7 @@ public class CosmosDBAccessException extends DataAccessException {
      * @param msg the detail message
      * @param cause the nested Throwable
      */
-    public CosmosDBAccessException(@Nullable String msg, @Nullable Throwable cause) {
+    public CosmosAccessException(@Nullable String msg, @Nullable Throwable cause) {
         super(msg, cause);
         if (cause instanceof CosmosException) {
             this.cosmosException = (CosmosException) cause;
@@ -52,7 +52,7 @@ public class CosmosDBAccessException extends DataAccessException {
      * @param msg the detail message
      * @param cause the nested exception
      */
-    public CosmosDBAccessException(@Nullable String msg, @Nullable Exception cause) {
+    public CosmosAccessException(@Nullable String msg, @Nullable Exception cause) {
         super(msg, cause);
         this.cosmosException = cause instanceof CosmosException
             ? (CosmosException) cause

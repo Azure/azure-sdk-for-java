@@ -105,10 +105,10 @@ public class SdkService {
 
         final Iterator<FeedResponse<PerfPerson>> feedResponseIterator =
             cosmosClient.getDatabase(dbName)
-                                                                                    .getContainer(containerName)
-                                                                                    .queryItems(sql, new CosmosQueryRequestOptions(), PerfPerson.class)
-                                                                                    .iterableByPage()
-                                                                                    .iterator();
+                        .getContainer(containerName)
+                        .queryItems(sql, new CosmosQueryRequestOptions(), PerfPerson.class)
+                        .iterableByPage()
+                        .iterator();
         while (feedResponseIterator.hasNext()) {
             final FeedResponse<PerfPerson> next = feedResponseIterator.next();
             docs.addAll(next.getResults());
@@ -172,12 +172,10 @@ public class SdkService {
         final String sql = "SELECT VALUE COUNT(1) FROM " + containerName;
         final Iterator<FeedResponse<JsonNode>> feedResponseIterator =
             cosmosClient.getDatabase(dbName)
-                                                                                  .getContainer(containerName)
-                                                                                  .queryItems(sql
-                                                                                      ,
-                                                                                      new CosmosQueryRequestOptions(), JsonNode.class)
-                                                                                  .iterableByPage()
-                                                                                  .iterator();
+                        .getContainer(containerName)
+                        .queryItems(sql, new CosmosQueryRequestOptions(), JsonNode.class)
+                        .iterableByPage()
+                        .iterator();
 
         return feedResponseIterator.next().getResults().get(0).get("_aggregate").asLong();
     }

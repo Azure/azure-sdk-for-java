@@ -9,7 +9,7 @@ package com.azure.cosmos;
 
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.spring.data.cosmos.config.AbstractCosmosConfiguration;
-import com.azure.spring.data.cosmos.config.CosmosDBConfig;
+import com.azure.spring.data.cosmos.config.CosmosConfig;
 import com.azure.spring.data.cosmos.core.ResponseDiagnostics;
 import com.azure.spring.data.cosmos.core.ResponseDiagnosticsProcessor;
 import com.azure.spring.data.cosmos.repository.config.EnableCosmosRepositories;
@@ -25,32 +25,32 @@ public class AppConfiguration extends AbstractCosmosConfiguration {
 
     private static final Logger logger = LoggerFactory.getLogger(AppConfiguration.class);
 
-    @Value("${azure.cosmosdb.uri}")
+    @Value("${azure.cosmos.uri}")
     private String uri;
 
-    @Value("${azure.cosmosdb.key}")
+    @Value("${azure.cosmos.key}")
     private String key;
 
-    @Value("${azure.cosmosdb.secondaryKey}")
+    @Value("${azure.cosmos.secondaryKey}")
     private String secondaryKey;
 
-    @Value("${azure.cosmosdb.database}")
+    @Value("${azure.cosmos.database}")
     private String dbName;
 
-    @Value("${azure.cosmosdb.queryMetricsEnabled}")
+    @Value("${azure.cosmos.queryMetricsEnabled}")
     private boolean queryMetricsEnabled;
 
     private AzureKeyCredential azureKeyCredential;
 
-    public CosmosDBConfig getConfig() {
+    public CosmosConfig getConfig() {
         this.azureKeyCredential = new AzureKeyCredential(key);
         CosmosClientBuilder cosmosClientBuilder = new CosmosClientBuilder().endpoint(uri).credential(azureKeyCredential);
-        return CosmosDBConfig.builder()
-                             .database(dbName)
-                             .enableQueryMetrics(queryMetricsEnabled)
-                             .cosmosClientBuilder(cosmosClientBuilder)
-                             .responseDiagnosticsProcessor(new ResponseDiagnosticsProcessorImplementation())
-                             .build();
+        return CosmosConfig.builder()
+                           .database(dbName)
+                           .enableQueryMetrics(queryMetricsEnabled)
+                           .cosmosClientBuilder(cosmosClientBuilder)
+                           .responseDiagnosticsProcessor(new ResponseDiagnosticsProcessorImplementation())
+                           .build();
     }
 
     public void switchToSecondaryKey() {

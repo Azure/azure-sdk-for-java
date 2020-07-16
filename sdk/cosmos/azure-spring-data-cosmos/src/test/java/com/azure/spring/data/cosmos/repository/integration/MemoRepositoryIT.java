@@ -7,7 +7,7 @@ import com.azure.spring.data.cosmos.common.TestUtils;
 import com.azure.spring.data.cosmos.core.CosmosTemplate;
 import com.azure.spring.data.cosmos.domain.Importance;
 import com.azure.spring.data.cosmos.domain.Memo;
-import com.azure.spring.data.cosmos.exception.CosmosDBAccessException;
+import com.azure.spring.data.cosmos.exception.CosmosAccessException;
 import com.azure.spring.data.cosmos.repository.TestRepositoryConfig;
 import com.azure.spring.data.cosmos.repository.repository.MemoRepository;
 import com.azure.spring.data.cosmos.repository.support.CosmosEntityInformation;
@@ -246,7 +246,7 @@ public class MemoRepositoryIT {
         Assert.assertEquals(reference, memos);
     }
 
-    @Test(expected = CosmosDBAccessException.class)
+    @Test(expected = CosmosAccessException.class)
     @Ignore // TODO(pan): Ignore this test case for now, will update this from service update.
     public void testFindByStartsWithWithException() {
         repository.findByMessageStartsWith(testMemo1.getMessage());

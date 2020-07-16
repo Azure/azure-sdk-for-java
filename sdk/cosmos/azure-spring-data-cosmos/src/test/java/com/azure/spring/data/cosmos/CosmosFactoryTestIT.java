@@ -4,7 +4,7 @@ package com.azure.spring.data.cosmos;
 
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.spring.data.cosmos.common.TestConstants;
-import com.azure.spring.data.cosmos.config.CosmosDBConfig;
+import com.azure.spring.data.cosmos.config.CosmosConfig;
 import com.azure.spring.data.cosmos.repository.TestRepositoryConfig;
 import org.apache.commons.lang3.reflect.FieldUtils;
 import org.junit.Test;
@@ -19,56 +19,56 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = TestRepositoryConfig.class)
-public class CosmosDBFactoryTestIT {
+public class CosmosFactoryTestIT {
 
-    @Value("${cosmosdb.uri:}")
+    @Value("${cosmos.uri:}")
     private String cosmosDbUri;
 
-    @Value("${cosmosdb.key:}")
+    @Value("${cosmos.key:}")
     private String cosmosDbKey;
 
     @Test(expected = IllegalArgumentException.class)
     public void testEmptyKey() {
-        final CosmosDBConfig dbConfig = CosmosDBConfig.builder()
+        final CosmosConfig cosmosConfig = CosmosConfig.builder()
                                                       .database(TestConstants.DB_NAME)
                                                       .cosmosClientBuilder(new CosmosClientBuilder()
                                                           .endpoint(TestConstants.COSMOSDB_FAKE_HOST)
                                                           .key(""))
                                                       .build();
-        new CosmosDBFactory(dbConfig).getCosmosSyncClient();
+        new CosmosFactory(cosmosConfig).getCosmosSyncClient();
     }
 
     @Test
     public void testInvalidEndpoint() {
-        final CosmosDBConfig dbConfig = CosmosDBConfig.builder()
+        final CosmosConfig cosmosConfig = CosmosConfig.builder()
                                                       .database(TestConstants.DB_NAME)
                                                       .cosmosClientBuilder(new CosmosClientBuilder()
                                                           .endpoint(TestConstants.COSMOSDB_FAKE_HOST)
                                                           .key(TestConstants.COSMOSDB_FAKE_KEY))
                                                       .build();
-        final CosmosDBFactory factory = new CosmosDBFactory(dbConfig);
+        final CosmosFactory factory = new CosmosFactory(cosmosConfig);
 
         assertThat(factory).isNotNull();
     }
 
     @Test
     public void testConnectionPolicyUserAgentKept() throws IllegalAccessException {
-        final CosmosDBConfig dbConfig = CosmosDBConfig.builder()
+        final CosmosConfig cosmosConfig = CosmosConfig.builder()
                                                       .database(TestConstants.DB_NAME)
                                                       .cosmosClientBuilder(new CosmosClientBuilder()
                                                           .endpoint(cosmosDbUri)
                                                           .key(cosmosDbKey))
                                                       .build();
 
-        new CosmosDBFactory(dbConfig).getCosmosAsyncClient();
+        new CosmosFactory(cosmosConfig).getCosmosAsyncClient();
 
-        final String uaSuffix = getUserAgentSuffixValue(dbConfig.getCosmosClientBuilder());
+        final String uaSuffix = getUserAgentSuffixValue(cosmosConfig.getCosmosClientBuilder());
         assertThat(uaSuffix).contains("spring-data");
     }
 
     private String getUserAgentSuffixValue(CosmosClientBuilder cosmosClientBuilder) throws IllegalAccessException {
         final Field userAgentSuffix = FieldUtils.getDeclaredField(CosmosClientBuilder.class,
             "userAgentSuffix", true);
-        return (String)userAgentSuffix.get(cosmosClientBuilder);
+        return (String) userAgentSuffix.get(cosmosClientBuilder);
     }
 }

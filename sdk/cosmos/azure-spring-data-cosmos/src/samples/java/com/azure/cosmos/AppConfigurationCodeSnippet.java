@@ -10,7 +10,7 @@ package com.azure.cosmos;
 
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.spring.data.cosmos.config.AbstractCosmosConfiguration;
-import com.azure.spring.data.cosmos.config.CosmosDBConfig;
+import com.azure.spring.data.cosmos.config.CosmosConfig;
 import com.azure.spring.data.cosmos.repository.config.EnableCosmosRepositories;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
@@ -19,27 +19,27 @@ import org.springframework.context.annotation.Configuration;
 @EnableCosmosRepositories
 public class AppConfigurationCodeSnippet extends AbstractCosmosConfiguration {
     // configuration code
-    @Value("${azure.cosmosdb.uri}")
+    @Value("${azure.cosmos.uri}")
     private String uri;
 
-    @Value("${azure.cosmosdb.key}")
+    @Value("${azure.cosmos.key}")
     private String key;
 
-    @Value("${azure.cosmosdb.secondaryKey}")
+    @Value("${azure.cosmos.secondaryKey}")
     private String secondaryKey;
 
-    @Value("${azure.cosmosdb.database}")
+    @Value("${azure.cosmos.database}")
     private String dbName;
 
-    @Value("${azure.cosmosdb.queryMetricsEnabled}")
+    @Value("${azure.cosmos.queryMetricsEnabled}")
     private boolean queryMetricsEnabled;
 
-    public CosmosDBConfig getConfig() {
+    public CosmosConfig getConfig() {
         AzureKeyCredential azureKeyCredential = new AzureKeyCredential(key);
-        return CosmosDBConfig.builder()
-                             .database(dbName)
-                             .cosmosClientBuilder(new CosmosClientBuilder().credential(azureKeyCredential))
-                             .enableQueryMetrics(queryMetricsEnabled)
-                             .build();
+        return CosmosConfig.builder()
+                           .database(dbName)
+                           .cosmosClientBuilder(new CosmosClientBuilder().credential(azureKeyCredential))
+                           .enableQueryMetrics(queryMetricsEnabled)
+                           .build();
     }
 }

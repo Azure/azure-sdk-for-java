@@ -18,8 +18,8 @@ public final class Constants {
 
     public static final String ID_PROPERTY_NAME = "id";
 
-    public static final String COSMOS_MODULE_NAME = "cosmosDb";
-    public static final String COSMOS_MODULE_PREFIX = "cosmosDb";
+    public static final String COSMOS_MODULE_NAME = "cosmos";
+    public static final String COSMOS_MODULE_PREFIX = "cosmos";
     public static final String COSMOS_MAPPING_CONTEXT = "cosmosMappingContext";
 
     public static final String USER_AGENT_SUFFIX = "spring-data/";

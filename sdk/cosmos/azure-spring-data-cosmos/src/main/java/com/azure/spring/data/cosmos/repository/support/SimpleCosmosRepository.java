@@ -35,7 +35,7 @@ public class SimpleCosmosRepository<T, ID extends Serializable> implements Cosmo
     /**
      * Initialization
      *
-     * @param metadata           for cosmos entity information
+     * @param metadata for cosmos entity information
      * @param applicationContext to get bean of CosmosOperations class
      */
     public SimpleCosmosRepository(CosmosEntityInformation<T, ID> metadata,
@@ -51,7 +51,7 @@ public class SimpleCosmosRepository<T, ID extends Serializable> implements Cosmo
     /**
      * Initialization
      *
-     * @param metadata     for cosmos entity information
+     * @param metadata for cosmos entity information
      * @param dbOperations for cosmosDB operation
      */
     public SimpleCosmosRepository(CosmosEntityInformation<T, ID> metadata,
@@ -72,7 +72,7 @@ public class SimpleCosmosRepository<T, ID extends Serializable> implements Cosmo
      * save entity without partition
      *
      * @param entity to be saved
-     * @param <S>    type of entity
+     * @param <S> type of entity
      * @return entity
      */
     @Override
@@ -101,7 +101,7 @@ public class SimpleCosmosRepository<T, ID extends Serializable> implements Cosmo
      * batch save entities
      *
      * @param entities Batch entities
-     * @param <S>      type of entities
+     * @param <S> type of entities
      * @return return the saved entities
      */
     @Override
@@ -151,7 +151,7 @@ public class SimpleCosmosRepository<T, ID extends Serializable> implements Cosmo
         Assert.notNull(id, "id must not be null");
 
         if (id instanceof String
-            && !StringUtils.hasText((String)id)) {
+            && !StringUtils.hasText((String) id)) {
             return Optional.empty();
         }
 
@@ -164,7 +164,7 @@ public class SimpleCosmosRepository<T, ID extends Serializable> implements Cosmo
         Assert.notNull(id, "id must not be null");
 
         if (id instanceof String
-            && !StringUtils.hasText((String)id)) {
+            && !StringUtils.hasText((String) id)) {
             return Optional.empty();
         }
 

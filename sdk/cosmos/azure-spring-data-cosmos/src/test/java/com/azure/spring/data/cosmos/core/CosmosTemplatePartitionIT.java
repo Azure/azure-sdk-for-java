@@ -4,9 +4,9 @@
 package com.azure.spring.data.cosmos.core;
 
 import com.azure.cosmos.models.PartitionKey;
-import com.azure.spring.data.cosmos.CosmosDBFactory;
+import com.azure.spring.data.cosmos.CosmosFactory;
 import com.azure.spring.data.cosmos.common.PageTestUtils;
-import com.azure.spring.data.cosmos.config.CosmosDBConfig;
+import com.azure.spring.data.cosmos.config.CosmosConfig;
 import com.azure.spring.data.cosmos.core.convert.MappingCosmosConverter;
 import com.azure.spring.data.cosmos.core.mapping.CosmosMappingContext;
 import com.azure.spring.data.cosmos.core.query.CosmosPageRequest;
@@ -69,12 +69,12 @@ public class CosmosTemplatePartitionIT {
     @Autowired
     private ApplicationContext applicationContext;
     @Autowired
-    private CosmosDBConfig dbConfig;
+    private CosmosConfig cosmosConfig;
 
     @Before
     public void setUp() throws ClassNotFoundException {
         if (!initialized) {
-            final CosmosDBFactory cosmosDbFactory = new CosmosDBFactory(dbConfig);
+            final CosmosFactory cosmosFactory = new CosmosFactory(cosmosConfig);
             final CosmosMappingContext mappingContext = new CosmosMappingContext();
 
             personInfo = new CosmosEntityInformation<>(PartitionPerson.class);
@@ -82,7 +82,7 @@ public class CosmosTemplatePartitionIT {
 
             final MappingCosmosConverter dbConverter = new MappingCosmosConverter(mappingContext, null);
 
-            cosmosTemplate = new CosmosTemplate(cosmosDbFactory, dbConverter, dbConfig.getDatabase());
+            cosmosTemplate = new CosmosTemplate(cosmosFactory, dbConverter, cosmosConfig.getDatabase());
             containerName = personInfo.getContainerName();
 
             cosmosTemplate.createContainerIfNotExists(personInfo);

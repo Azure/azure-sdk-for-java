@@ -17,7 +17,7 @@ public class ResponseDiagnostics {
     /**
      * Initialization
      *
-     * @param cosmosDiagnostics        cannot be null
+     * @param cosmosDiagnostics cannot be null
      * @param cosmosResponseStatistics cannot be null
      */
     public ResponseDiagnostics(CosmosDiagnostics cosmosDiagnostics,
@@ -93,7 +93,7 @@ public class ResponseDiagnostics {
          * Initialization
          *
          * @param feedResponse response from feed
-         * @param <T>          type of cosmosResponse
+         * @param <T> type of cosmosResponse
          */
         public <T> CosmosResponseStatistics(FeedResponse<T> feedResponse) {
             this.requestCharge = feedResponse.getRequestCharge();

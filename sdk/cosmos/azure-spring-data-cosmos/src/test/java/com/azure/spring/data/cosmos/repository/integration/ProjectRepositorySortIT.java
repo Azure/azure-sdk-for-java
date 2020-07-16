@@ -5,7 +5,7 @@ package com.azure.spring.data.cosmos.repository.integration;
 import com.azure.spring.data.cosmos.core.CosmosTemplate;
 import com.azure.spring.data.cosmos.core.query.CosmosPageRequest;
 import com.azure.spring.data.cosmos.domain.SortedProject;
-import com.azure.spring.data.cosmos.exception.CosmosDBAccessException;
+import com.azure.spring.data.cosmos.exception.CosmosAccessException;
 import com.azure.spring.data.cosmos.repository.TestRepositoryConfig;
 import com.azure.spring.data.cosmos.repository.repository.SortedProjectRepository;
 import com.azure.spring.data.cosmos.repository.support.CosmosEntityInformation;
@@ -145,7 +145,7 @@ public class ProjectRepositorySortIT {
         Assert.assertEquals(PROJECTS, projects);
     }
 
-    @Test(expected = CosmosDBAccessException.class)
+    @Test(expected = CosmosAccessException.class)
     public void testFindAllSortMoreThanOneOrderException() {
         final Sort sort = Sort.by(Sort.Direction.ASC, "name", "creator");
 
@@ -160,7 +160,7 @@ public class ProjectRepositorySortIT {
         this.repository.findAll(sort);
     }
 
-    @Test(expected = CosmosDBAccessException.class)
+    @Test(expected = CosmosAccessException.class)
     public void testFindAllSortMissMatchException() {
         final Sort sort = Sort.by(Sort.Direction.ASC, "fake-name");
 

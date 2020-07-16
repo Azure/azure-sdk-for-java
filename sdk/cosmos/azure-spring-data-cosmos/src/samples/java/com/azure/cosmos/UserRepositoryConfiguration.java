@@ -8,7 +8,7 @@ package com.azure.cosmos;
  */
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.spring.data.cosmos.config.AbstractCosmosConfiguration;
-import com.azure.spring.data.cosmos.config.CosmosDBConfig;
+import com.azure.spring.data.cosmos.config.CosmosConfig;
 import com.azure.spring.data.cosmos.core.ResponseDiagnostics;
 import com.azure.spring.data.cosmos.core.ResponseDiagnosticsProcessor;
 import com.azure.spring.data.cosmos.repository.config.EnableReactiveCosmosRepositories;
@@ -22,26 +22,26 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.lang.Nullable;
 
 @Configuration
-@EnableConfigurationProperties(CosmosDBProperties.class)
+@EnableConfigurationProperties(CosmosProperties.class)
 @EnableReactiveCosmosRepositories
 @PropertySource("classpath:application.properties")
 public class UserRepositoryConfiguration extends AbstractCosmosConfiguration {
     private static final Logger logger = LoggerFactory.getLogger(AppConfiguration.class);
 
     @Autowired
-    private CosmosDBProperties properties;
+    private CosmosProperties properties;
 
     private AzureKeyCredential azureKeyCredential;
 
     @Bean
-    public CosmosDBConfig cosmosDbConfig() {
+    public CosmosConfig cosmosConfig() {
         this.azureKeyCredential = new AzureKeyCredential(properties.getKey());
-        return CosmosDBConfig.builder()
-                             .database(properties.getDatabase())
-                             .cosmosClientBuilder(new CosmosClientBuilder().credential(azureKeyCredential))
-                             .enableQueryMetrics(properties.isQueryMetricsEnabled())
-                             .responseDiagnosticsProcessor(new ResponseDiagnosticsProcessorImplementation())
-                             .build();
+        return CosmosConfig.builder()
+                           .database(properties.getDatabase())
+                           .cosmosClientBuilder(new CosmosClientBuilder().credential(azureKeyCredential))
+                           .enableQueryMetrics(properties.isQueryMetricsEnabled())
+                           .responseDiagnosticsProcessor(new ResponseDiagnosticsProcessorImplementation())
+                           .build();
     }
 
     public void switchToSecondaryKey() {

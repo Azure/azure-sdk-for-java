@@ -5,7 +5,7 @@ package com.azure.spring.data.cosmos.core.convert;
 import com.azure.spring.data.cosmos.Constants;
 import com.azure.spring.data.cosmos.core.mapping.CosmosPersistentEntity;
 import com.azure.spring.data.cosmos.core.mapping.CosmosPersistentProperty;
-import com.azure.spring.data.cosmos.exception.CosmosDBAccessException;
+import com.azure.spring.data.cosmos.exception.CosmosAccessException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -46,7 +46,7 @@ public class MappingCosmosConverter
      * Initialization
      *
      * @param mappingContext must not be {@literal null}
-     * @param objectMapper   must not be {@literal null}
+     * @param objectMapper must not be {@literal null}
      */
     public MappingCosmosConverter(
         MappingContext<? extends CosmosPersistentEntity<?>, CosmosPersistentProperty> mappingContext,
@@ -96,8 +96,8 @@ public class MappingCosmosConverter
      *
      * @param sourceEntity must not be {@literal null}
      * @return CosmosItemProperties
-     * @throws MappingException        no mapping metadata for entity type
-     * @throws CosmosDBAccessException fail to map document value
+     * @throws MappingException no mapping metadata for entity type
+     * @throws CosmosAccessException fail to map document value
      */
     public JsonNode writeJsonNode(Object sourceEntity) {
         if (sourceEntity == null) {
@@ -117,10 +117,9 @@ public class MappingCosmosConverter
         final ObjectNode cosmosObjectNode;
 
         try {
-            cosmosObjectNode =
-                (ObjectNode)objectMapper.readTree(objectMapper.writeValueAsString(sourceEntity));
+            cosmosObjectNode = (ObjectNode) objectMapper.readTree(objectMapper.writeValueAsString(sourceEntity));
         } catch (JsonProcessingException e) {
-            throw new CosmosDBAccessException("Failed to map document value.", e);
+            throw new CosmosAccessException("Failed to map document value.", e);
         }
 
         if (idProperty != null) {
@@ -186,9 +185,9 @@ public class MappingCosmosConverter
         // Date and Enum correctly
 
         if (fromPropertyValue instanceof Date) {
-            fromPropertyValue = ((Date)fromPropertyValue).getTime();
+            fromPropertyValue = ((Date) fromPropertyValue).getTime();
         } else if (fromPropertyValue instanceof ZonedDateTime) {
-            fromPropertyValue = ((ZonedDateTime)fromPropertyValue)
+            fromPropertyValue = ((ZonedDateTime) fromPropertyValue)
                 .format(DateTimeFormatter.ofPattern(ISO_8601_COMPATIBLE_DATE_PATTERN));
         } else if (fromPropertyValue instanceof Enum) {
             fromPropertyValue = fromPropertyValue.toString();

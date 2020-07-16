@@ -3,9 +3,9 @@
 package com.azure.spring.data.cosmos.repository.integration;
 
 import com.azure.cosmos.CosmosClientBuilder;
-import com.azure.spring.data.cosmos.CosmosDBFactory;
+import com.azure.spring.data.cosmos.CosmosFactory;
 import com.azure.spring.data.cosmos.common.TestConstants;
-import com.azure.spring.data.cosmos.config.CosmosDBConfig;
+import com.azure.spring.data.cosmos.config.CosmosConfig;
 import com.azure.spring.data.cosmos.core.CosmosTemplate;
 import com.azure.spring.data.cosmos.core.convert.MappingCosmosConverter;
 import com.azure.spring.data.cosmos.core.convert.ObjectMapperFactory;
@@ -32,15 +32,15 @@ import static org.junit.Assert.assertNotNull;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = TestRepositoryConfig.class)
-public class SpELCosmosDBAnnotationIT {
+public class SpELCosmosAnnotationIT {
     private static final SpELPropertyStudent TEST_PROPERTY_STUDENT =
             new SpELPropertyStudent(TestConstants.ID_1, TestConstants.FIRST_NAME,
             TestConstants.LAST_NAME);
 
-    @Value("${cosmosdb.uri}")
+    @Value("${cosmos.uri}")
     private String dbUri;
 
-    @Value("${cosmosdb.key}")
+    @Value("${cosmos.key}")
     private String dbKey;
 
     @Autowired
@@ -84,13 +84,13 @@ public class SpELCosmosDBAnnotationIT {
 
     @Test
     public void testDatabaseOperationsOnDynamicallyNamedCollection() throws ClassNotFoundException {
-        final CosmosDBConfig dbConfig = CosmosDBConfig.builder()
-                                                      .cosmosClientBuilder(new CosmosClientBuilder()
+        final CosmosConfig cosmosConfig = CosmosConfig.builder()
+                                                  .cosmosClientBuilder(new CosmosClientBuilder()
                                                           .endpoint(dbUri)
                                                           .key(dbKey))
-                                                      .database(TestConstants.DB_NAME)
-                                                      .build();
-        final CosmosDBFactory dbFactory = new CosmosDBFactory(dbConfig);
+                                                  .database(TestConstants.DB_NAME)
+                                                  .build();
+        final CosmosFactory dbFactory = new CosmosFactory(cosmosConfig);
 
         cosmosEntityInformation = new CosmosEntityInformation<>(SpELPropertyStudent.class);
         final CosmosMappingContext dbContext = new CosmosMappingContext();

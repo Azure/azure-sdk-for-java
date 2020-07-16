@@ -3,9 +3,9 @@
 package com.azure.spring.data.cosmos.core;
 
 import com.azure.cosmos.models.PartitionKey;
-import com.azure.spring.data.cosmos.CosmosDBFactory;
+import com.azure.spring.data.cosmos.CosmosFactory;
 import com.azure.spring.data.cosmos.common.TestConstants;
-import com.azure.spring.data.cosmos.config.CosmosDBConfig;
+import com.azure.spring.data.cosmos.config.CosmosConfig;
 import com.azure.spring.data.cosmos.core.convert.MappingCosmosConverter;
 import com.azure.spring.data.cosmos.core.mapping.CosmosMappingContext;
 import com.azure.spring.data.cosmos.core.query.Criteria;
@@ -56,12 +56,12 @@ public class ReactiveCosmosTemplatePartitionIT {
     @Autowired
     private ApplicationContext applicationContext;
     @Autowired
-    private CosmosDBConfig dbConfig;
+    private CosmosConfig cosmosConfig;
 
     @Before
     public void setUp() throws ClassNotFoundException {
         if (!initialized) {
-            final CosmosDBFactory dbFactory = new CosmosDBFactory(dbConfig);
+            final CosmosFactory dbFactory = new CosmosFactory(cosmosConfig);
 
             final CosmosMappingContext mappingContext = new CosmosMappingContext();
             personInfo =
@@ -72,7 +72,7 @@ public class ReactiveCosmosTemplatePartitionIT {
 
             final MappingCosmosConverter dbConverter = new MappingCosmosConverter(mappingContext,
                 null);
-            cosmosTemplate = new ReactiveCosmosTemplate(dbFactory, dbConverter, dbConfig.getDatabase());
+            cosmosTemplate = new ReactiveCosmosTemplate(dbFactory, dbConverter, cosmosConfig.getDatabase());
             cosmosTemplate.createContainerIfNotExists(personInfo).block();
 
             initialized = true;

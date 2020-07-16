@@ -4,10 +4,10 @@ package com.azure.spring.data.cosmos.core;
 
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.models.PartitionKey;
-import com.azure.spring.data.cosmos.CosmosDBFactory;
+import com.azure.spring.data.cosmos.CosmosFactory;
 import com.azure.spring.data.cosmos.common.PageTestUtils;
 import com.azure.spring.data.cosmos.common.ResponseDiagnosticsTestUtils;
-import com.azure.spring.data.cosmos.config.CosmosDBConfig;
+import com.azure.spring.data.cosmos.config.CosmosConfig;
 import com.azure.spring.data.cosmos.core.convert.MappingCosmosConverter;
 import com.azure.spring.data.cosmos.core.mapping.CosmosMappingContext;
 import com.azure.spring.data.cosmos.core.query.CosmosPageRequest;
@@ -15,7 +15,7 @@ import com.azure.spring.data.cosmos.core.query.Criteria;
 import com.azure.spring.data.cosmos.core.query.CriteriaType;
 import com.azure.spring.data.cosmos.core.query.DocumentQuery;
 import com.azure.spring.data.cosmos.domain.Person;
-import com.azure.spring.data.cosmos.exception.CosmosDBAccessException;
+import com.azure.spring.data.cosmos.exception.CosmosAccessException;
 import com.azure.spring.data.cosmos.repository.TestRepositoryConfig;
 import com.azure.spring.data.cosmos.repository.support.CosmosEntityInformation;
 import org.assertj.core.util.Lists;
@@ -85,14 +85,14 @@ public class CosmosTemplateIT {
     @Autowired
     private ApplicationContext applicationContext;
     @Autowired
-    private CosmosDBConfig dbConfig;
+    private CosmosConfig cosmosConfig;
     @Autowired
     private ResponseDiagnosticsTestUtils responseDiagnosticsTestUtils;
 
     @Before
     public void setUp() throws ClassNotFoundException {
         if (!initialized) {
-            final CosmosDBFactory cosmosDbFactory = new CosmosDBFactory(dbConfig);
+            final CosmosFactory cosmosFactory = new CosmosFactory(cosmosConfig);
 
             final CosmosMappingContext mappingContext = new CosmosMappingContext();
             personInfo = new CosmosEntityInformation<>(Person.class);
@@ -102,7 +102,7 @@ public class CosmosTemplateIT {
 
             final MappingCosmosConverter cosmosConverter = new MappingCosmosConverter(mappingContext,
                 null);
-            cosmosTemplate = new CosmosTemplate(cosmosDbFactory, cosmosConverter, dbConfig.getDatabase());
+            cosmosTemplate = new CosmosTemplate(cosmosFactory, cosmosConverter, cosmosConfig.getDatabase());
             cosmosTemplate.createContainerIfNotExists(personInfo);
             initialized = true;
         }
@@ -120,7 +120,7 @@ public class CosmosTemplateIT {
         cosmosTemplate.deleteContainer(personInfo.getContainerName());
     }
 
-    @Test(expected = CosmosDBAccessException.class)
+    @Test(expected = CosmosAccessException.class)
     public void testInsertDuplicateId() {
         cosmosTemplate.insert(Person.class.getSimpleName(), TEST_PERSON,
                 new PartitionKey(personInfo.getPartitionKeyFieldValue(TEST_PERSON)));
@@ -226,7 +226,7 @@ public class CosmosTemplateIT {
 
         try {
             cosmosTemplate.upsert(Person.class.getSimpleName(), updated);
-        } catch (CosmosDBAccessException e) {
+        } catch (CosmosAccessException e) {
             assertThat(e.getCosmosException()).isNotNull();
             final Throwable cosmosClientException = e.getCosmosException();
             assertThat(cosmosClientException).isInstanceOf(CosmosException.class);

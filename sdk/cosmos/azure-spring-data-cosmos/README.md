@@ -133,30 +133,30 @@ public class AppConfiguration extends AbstractCosmosConfiguration {
 
     private static final Logger logger = LoggerFactory.getLogger(AppConfiguration.class);
 
-    @Value("${azure.cosmosdb.uri}")
+    @Value("${azure.cosmos.uri}")
     private String uri;
 
-    @Value("${azure.cosmosdb.key}")
+    @Value("${azure.cosmos.key}")
     private String key;
 
-    @Value("${azure.cosmosdb.secondaryKey}")
+    @Value("${azure.cosmos.secondaryKey}")
     private String secondaryKey;
 
-    @Value("${azure.cosmosdb.database}")
+    @Value("${azure.cosmos.database}")
     private String dbName;
 
-    @Value("${azure.cosmosdb.queryMetricsEnabled}")
+    @Value("${azure.cosmos.queryMetricsEnabled}")
     private boolean queryMetricsEnabled;
 
     private CosmosKeyCredential cosmosKeyCredential;
 
-    public CosmosDBConfig getConfig() {
+    public CosmosConfig getConfig() {
         this.cosmosKeyCredential = new CosmosKeyCredential(key);
-        CosmosDBConfig cosmosdbConfig = CosmosDBConfig.builder(uri,
+        CosmosConfig cosmosConfig = CosmosConfig.builder(uri,
             this.cosmosKeyCredential, dbName).build();
-        cosmosdbConfig.setQueryMetricEnabled(queryMetricsEnabled);
-        cosmosdbConfig.setResponseDiagnosticsProcessor(new ResponseDiagnosticsProcessorImplementation());
-        return cosmosdbConfig;
+        cosmosConfig.setQueryMetricEnabled(queryMetricsEnabled);
+        cosmosConfig.setResponseDiagnosticsProcessor(new ResponseDiagnosticsProcessorImplementation());
+        return cosmosConfig;
     }
 
     public void switchToSecondaryKey() {
@@ -176,12 +176,12 @@ public class AppConfiguration extends AbstractCosmosConfiguration {
 Or if you want to customize your config:
 <!-- embedme src/samples/java/com/azure/cosmos/AppConfigurationCodeSnippet.java#L40-L46 -->
 ```java
-public CosmosDBConfig getConfig() {
+public CosmosConfig getConfig() {
     this.cosmosKeyCredential = new CosmosKeyCredential(key);
-    CosmosDBConfig cosmosDbConfig = CosmosDBConfig.builder(uri, this.cosmosKeyCredential, dbName).build();
-    cosmosDbConfig.getConnectionPolicy().connectionMode(ConnectionMode.DIRECT);
-    cosmosDbConfig.getConnectionPolicy().maxPoolSize(1000);
-    return cosmosDbConfig;
+    CosmosConfig cosmosConfig = CosmosConfig.builder(uri, this.cosmosKeyCredential, dbName).build();
+    cosmosConfig.getConnectionPolicy().connectionMode(ConnectionMode.DIRECT);
+    cosmosConfig.getConnectionPolicy().maxPoolSize(1000);
+    return cosmosConfig;
 }
 ```
 By default, `@EnableCosmosRepositories` will scan the current package for any interfaces that extend one of Spring Data's repository interfaces. Using it to annotate your Configuration class to scan a different root package by `@EnableCosmosRepositories(basePackageClass=UserRepository.class)` if your project layout has multiple projects and it's not finding your repositories.

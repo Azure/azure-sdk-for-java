@@ -7,7 +7,7 @@ import com.azure.spring.data.cosmos.common.DynamicContainer;
 import com.azure.spring.data.cosmos.common.ResponseDiagnosticsTestUtils;
 import com.azure.spring.data.cosmos.common.TestConstants;
 import com.azure.spring.data.cosmos.config.AbstractCosmosConfiguration;
-import com.azure.spring.data.cosmos.config.CosmosDBConfig;
+import com.azure.spring.data.cosmos.config.CosmosConfig;
 import com.azure.spring.data.cosmos.repository.config.EnableCosmosRepositories;
 import com.azure.spring.data.cosmos.repository.config.EnableReactiveCosmosRepositories;
 import org.springframework.beans.factory.annotation.Value;
@@ -21,16 +21,16 @@ import org.springframework.util.StringUtils;
 @EnableCosmosRepositories
 @EnableReactiveCosmosRepositories
 public class TestRepositoryConfig extends AbstractCosmosConfiguration {
-    @Value("${cosmosdb.uri:}")
+    @Value("${cosmos.uri:}")
     private String cosmosDbUri;
 
-    @Value("${cosmosdb.key:}")
+    @Value("${cosmos.key:}")
     private String cosmosDbKey;
 
-    @Value("${cosmosdb.database:}")
+    @Value("${cosmos.database:}")
     private String database;
 
-    @Value("${cosmosdb.queryMetricsEnabled}")
+    @Value("${cosmos.queryMetricsEnabled}")
     private boolean queryMetricsEnabled;
 
     @Bean
@@ -39,18 +39,17 @@ public class TestRepositoryConfig extends AbstractCosmosConfiguration {
     }
 
     @Bean
-    public CosmosDBConfig getConfig() {
-        final String dbName = StringUtils.hasText(this.database) ? this.database :
-            TestConstants.DB_NAME;
-        return CosmosDBConfig.builder()
-                             .cosmosClientBuilder(new CosmosClientBuilder()
-                                 .key(cosmosDbKey)
-                                 .endpoint(cosmosDbUri)
-                                 .contentResponseOnWriteEnabled(true))
-                             .database(dbName)
-                             .enableQueryMetrics(queryMetricsEnabled)
-                             .responseDiagnosticsProcessor(responseDiagnosticsTestUtils().getResponseDiagnosticsProcessor())
-                             .build();
+    public CosmosConfig getConfig() {
+        final String dbName = StringUtils.hasText(this.database) ? this.database : TestConstants.DB_NAME;
+        return CosmosConfig.builder()
+                           .cosmosClientBuilder(new CosmosClientBuilder()
+                               .key(cosmosDbKey)
+                               .endpoint(cosmosDbUri)
+                               .contentResponseOnWriteEnabled(true))
+                           .database(dbName)
+                           .enableQueryMetrics(queryMetricsEnabled)
+                           .responseDiagnosticsProcessor(responseDiagnosticsTestUtils().getResponseDiagnosticsProcessor())
+                           .build();
     }
 
     @Bean

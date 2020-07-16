@@ -10,7 +10,7 @@ import reactor.core.publisher.Mono;
 /**
  * To handle and throw a cosmos db exception when access the database
  */
-public class CosmosDBExceptionUtils {
+public class CosmosExceptionUtils {
 
     /**
      * To throw a CosmosDBAccessException
@@ -19,7 +19,7 @@ public class CosmosDBExceptionUtils {
      * @param throwable exception
      * @param <T> type class of Mono
      * @return Mono instance
-     * @throws CosmosDBAccessException for operations on cosmos db
+     * @throws CosmosAccessException for operations on cosmos db
      */
     public static <T> Mono<T> exceptionHandler(String message, Throwable throwable) {
         if (StringUtils.isEmpty(message)) {
@@ -27,7 +27,7 @@ public class CosmosDBExceptionUtils {
         }
         //  Unwrap the exception in case if it is a reactive exception
         final Throwable unwrappedThrowable = Exceptions.unwrap(throwable);
-        throw new CosmosDBAccessException(message, unwrappedThrowable);
+        throw new CosmosAccessException(message, unwrappedThrowable);
     }
 
     /**

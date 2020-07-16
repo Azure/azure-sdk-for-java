@@ -10,7 +10,7 @@ import java.beans.ConstructorProperties;
 /**
  * Config properties of CosmosDB
  */
-public class CosmosDBConfig {
+public class CosmosConfig {
 
     private final CosmosClientBuilder cosmosClientBuilder;
 
@@ -24,16 +24,17 @@ public class CosmosDBConfig {
 
     /**
      * Initialization
+     *
      * @param cosmosClientBuilder must not be {@literal null}
      * @param database must not be {@literal null}
      * @param allowTelemetry must not be {@literal null}
      * @param responseDiagnosticsProcessor must not be {@literal null}
      * @param queryMetricsEnabled must not be {@literal null}
      */
-    @ConstructorProperties({"cosmosClientBuilder", "database", "allowTelemetry",
-        "responseDiagnosticsProcessor", "queryMetricsEnabled"})
-    public CosmosDBConfig(CosmosClientBuilder cosmosClientBuilder, String database, boolean allowTelemetry,
-                          ResponseDiagnosticsProcessor responseDiagnosticsProcessor, boolean queryMetricsEnabled) {
+    @ConstructorProperties({ "cosmosClientBuilder", "database", "allowTelemetry",
+        "responseDiagnosticsProcessor", "queryMetricsEnabled" })
+    public CosmosConfig(CosmosClientBuilder cosmosClientBuilder, String database, boolean allowTelemetry,
+                        ResponseDiagnosticsProcessor responseDiagnosticsProcessor, boolean queryMetricsEnabled) {
         this.cosmosClientBuilder = cosmosClientBuilder;
         this.database = database;
         this.allowTelemetry = allowTelemetry;
@@ -43,6 +44,7 @@ public class CosmosDBConfig {
 
     /**
      * Gets the cosmos client builder used to build cosmos client
+     *
      * @return cosmosClientBuilder
      */
     public CosmosClientBuilder getCosmosClientBuilder() {
@@ -51,6 +53,7 @@ public class CosmosDBConfig {
 
     /**
      * Checks if telemetry is allowed
+     *
      * @return boolean
      */
     public boolean isAllowTelemetry() {
@@ -59,6 +62,7 @@ public class CosmosDBConfig {
 
     /**
      * Gets response diagnostics processor
+     *
      * @return ResponseDiagnosticsProcessor
      */
     public ResponseDiagnosticsProcessor getResponseDiagnosticsProcessor() {
@@ -67,6 +71,7 @@ public class CosmosDBConfig {
 
     /**
      * Gets the option to enable query metrics
+     *
      * @return boolean, whether to enable query metrics
      */
     public boolean isQueryMetricsEnabled() {
@@ -75,6 +80,7 @@ public class CosmosDBConfig {
 
     /**
      * Gets the database name
+     *
      * @return database name
      */
     public String getDatabase() {
@@ -82,32 +88,34 @@ public class CosmosDBConfig {
     }
 
     /**
-     * Create a CosmosDBConfigBuilder instance
-     * @return CosmosDBConfigBuilder
+     * Create a CosmosConfigBuilder instance
+     *
+     * @return CosmosConfigBuilder
      */
-    public static CosmosDBConfigBuilder builder() {
-        return new CosmosDBConfigBuilder();
+    public static CosmosConfigBuilder builder() {
+        return new CosmosConfigBuilder();
     }
 
     /**
-     * Builder class for cosmos db config
+     * Builder class for cosmos config
      */
-    public static class CosmosDBConfigBuilder {
+    public static class CosmosConfigBuilder {
         private String database;
         private CosmosClientBuilder cosmosClientBuilder;
         private boolean allowTelemetry;
         private ResponseDiagnosticsProcessor responseDiagnosticsProcessor;
         private boolean queryMetricsEnabled;
 
-        CosmosDBConfigBuilder() {
+        CosmosConfigBuilder() {
         }
 
         /**
          * Set cosmosClientBuilder to use to build cosmos client
+         *
          * @param cosmosClientBuilder cosmos client builder
-         * @return CosmosDBConfigBuilder
+         * @return CosmosConfigBuilder
          */
-        public CosmosDBConfigBuilder cosmosClientBuilder(CosmosClientBuilder cosmosClientBuilder) {
+        public CosmosConfigBuilder cosmosClientBuilder(CosmosClientBuilder cosmosClientBuilder) {
             this.cosmosClientBuilder = cosmosClientBuilder;
             return this;
         }
@@ -116,9 +124,9 @@ public class CosmosDBConfig {
          * Set allowTelemetry
          *
          * @param allowTelemetry value to initialize
-         * @return CosmosDBConfigBuilder
+         * @return CosmosConfigBuilder
          */
-        public CosmosDBConfigBuilder allowTelemetry(boolean allowTelemetry) {
+        public CosmosConfigBuilder allowTelemetry(boolean allowTelemetry) {
             this.allowTelemetry = allowTelemetry;
             return this;
         }
@@ -127,10 +135,10 @@ public class CosmosDBConfig {
          * Set responseDiagnosticsProcessor
          *
          * @param responseDiagnosticsProcessor value to initialize
-         * @return CosmosDBConfigBuilder
+         * @return CosmosConfigBuilder
          */
-        public CosmosDBConfigBuilder responseDiagnosticsProcessor(ResponseDiagnosticsProcessor
-                                                                      responseDiagnosticsProcessor) {
+        public CosmosConfigBuilder responseDiagnosticsProcessor(ResponseDiagnosticsProcessor
+                                                                    responseDiagnosticsProcessor) {
             this.responseDiagnosticsProcessor = responseDiagnosticsProcessor;
             return this;
         }
@@ -139,9 +147,9 @@ public class CosmosDBConfig {
          * Set queryMetricsEnabled
          *
          * @param queryMetricsEnabled value to initialize
-         * @return CosmosDBConfigBuilder
+         * @return CosmosConfigBuilder
          */
-        public CosmosDBConfigBuilder enableQueryMetrics(boolean queryMetricsEnabled) {
+        public CosmosConfigBuilder enableQueryMetrics(boolean queryMetricsEnabled) {
             this.queryMetricsEnabled = queryMetricsEnabled;
             return this;
         }
@@ -150,32 +158,32 @@ public class CosmosDBConfig {
          * Sets the database
          *
          * @param database database name
-         * @return CosmosDBConfigBuilder
+         * @return CosmosConfigBuilder
          */
-        public CosmosDBConfigBuilder database(String database) {
+        public CosmosConfigBuilder database(String database) {
             this.database = database;
             return this;
         }
 
         /**
-         * Build a CosmosDBConfig instance
+         * Build a CosmosConfig instance
          *
-         * @return CosmosDBConfig
+         * @return CosmosConfig
          */
-        public CosmosDBConfig build() {
-            return new CosmosDBConfig(this.cosmosClientBuilder, this.database, this.allowTelemetry,
+        public CosmosConfig build() {
+            return new CosmosConfig(this.cosmosClientBuilder, this.database, this.allowTelemetry,
                 this.responseDiagnosticsProcessor, this.queryMetricsEnabled);
         }
 
         @Override
         public String toString() {
-            return "CosmosDBConfigBuilder{" +
-                "database='" + database + '\'' +
-                ", cosmosClientBuilder=" + cosmosClientBuilder +
-                ", allowTelemetry=" + allowTelemetry +
-                ", responseDiagnosticsProcessor=" + responseDiagnosticsProcessor +
-                ", queryMetricsEnabled=" + queryMetricsEnabled +
-                '}';
+            return "CosmosConfigBuilder{"
+                + "database='" + database + '\''
+                + ", cosmosClientBuilder=" + cosmosClientBuilder
+                + ", allowTelemetry=" + allowTelemetry
+                + ", responseDiagnosticsProcessor=" + responseDiagnosticsProcessor
+                + ", queryMetricsEnabled=" + queryMetricsEnabled
+                + '}';
         }
     }
 }

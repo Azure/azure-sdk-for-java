@@ -7,7 +7,7 @@ import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.spring.data.cosmos.common.TestConstants;
 import com.azure.spring.data.cosmos.common.TestUtils;
-import com.azure.spring.data.cosmos.config.CosmosDBConfig;
+import com.azure.spring.data.cosmos.config.CosmosConfig;
 import com.azure.spring.data.cosmos.core.CosmosTemplate;
 import com.azure.spring.data.cosmos.core.query.CosmosPageRequest;
 import com.azure.spring.data.cosmos.domain.PageableAddress;
@@ -64,7 +64,7 @@ public class PageableAddressRepositoryIT {
     private ApplicationContext applicationContext;
 
     @Autowired
-    private CosmosDBConfig dbConfig;
+    private CosmosConfig cosmosConfig;
 
     @Before
     public void setUp() {
@@ -173,7 +173,7 @@ public class PageableAddressRepositoryIT {
 
         final CosmosAsyncClient cosmosClient = applicationContext.getBean(CosmosAsyncClient.class);
         final Flux<FeedResponse<PageableAddress>> feedResponseFlux =
-            cosmosClient.getDatabase(dbConfig.getDatabase())
+            cosmosClient.getDatabase(cosmosConfig.getDatabase())
                         .getContainer(entityInformation.getContainerName())
                         .queryItems(query, options, PageableAddress.class)
                         .byPage();

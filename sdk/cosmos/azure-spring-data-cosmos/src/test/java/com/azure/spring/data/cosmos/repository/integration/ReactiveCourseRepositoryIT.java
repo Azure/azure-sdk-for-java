@@ -5,7 +5,7 @@ package com.azure.spring.data.cosmos.repository.integration;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.spring.data.cosmos.core.ReactiveCosmosTemplate;
 import com.azure.spring.data.cosmos.domain.Course;
-import com.azure.spring.data.cosmos.exception.CosmosDBAccessException;
+import com.azure.spring.data.cosmos.exception.CosmosAccessException;
 import com.azure.spring.data.cosmos.repository.TestRepositoryConfig;
 import com.azure.spring.data.cosmos.repository.repository.ReactiveCourseRepository;
 import com.azure.spring.data.cosmos.repository.support.CosmosEntityInformation;
@@ -151,7 +151,7 @@ public class ReactiveCourseRepositoryIT {
     @Test
     public void testDeleteByIdWithoutPartitionKey() {
         final Mono<Void> deleteMono = repository.deleteById(COURSE_1.getCourseId());
-        StepVerifier.create(deleteMono).expectError(CosmosDBAccessException.class).verify();
+        StepVerifier.create(deleteMono).expectError(CosmosAccessException.class).verify();
     }
 
     @Test
@@ -179,13 +179,13 @@ public class ReactiveCourseRepositoryIT {
     @Test
     public void testDeleteByIdNotFound() {
         final Mono<Void> deleteMono = repository.deleteById(COURSE_ID_5);
-        StepVerifier.create(deleteMono).expectError(CosmosDBAccessException.class).verify();
+        StepVerifier.create(deleteMono).expectError(CosmosAccessException.class).verify();
     }
 
     @Test
     public void testDeleteByEntityNotFound() {
         final Mono<Void> deleteMono = repository.delete(COURSE_5);
-        StepVerifier.create(deleteMono).expectError(CosmosDBAccessException.class).verify();
+        StepVerifier.create(deleteMono).expectError(CosmosAccessException.class).verify();
     }
 
     @Test

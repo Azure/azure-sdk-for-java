@@ -15,8 +15,8 @@ import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.models.ThroughputProperties;
-import com.azure.spring.data.cosmos.CosmosDBFactory;
-import com.azure.spring.data.cosmos.common.CosmosDbUtils;
+import com.azure.spring.data.cosmos.CosmosFactory;
+import com.azure.spring.data.cosmos.common.CosmosUtils;
 import com.azure.spring.data.cosmos.common.Memoizer;
 import com.azure.spring.data.cosmos.core.convert.MappingCosmosConverter;
 import com.azure.spring.data.cosmos.core.generator.CountQueryGenerator;
@@ -26,7 +26,7 @@ import com.azure.spring.data.cosmos.core.query.CosmosPageRequest;
 import com.azure.spring.data.cosmos.core.query.Criteria;
 import com.azure.spring.data.cosmos.core.query.CriteriaType;
 import com.azure.spring.data.cosmos.core.query.DocumentQuery;
-import com.azure.spring.data.cosmos.exception.CosmosDBExceptionUtils;
+import com.azure.spring.data.cosmos.exception.CosmosExceptionUtils;
 import com.azure.spring.data.cosmos.repository.support.CosmosEntityInformation;
 import com.fasterxml.jackson.databind.JsonNode;
 import org.slf4j.Logger;
@@ -69,23 +69,23 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
     /**
      * Initialization
      *
-     * @param cosmosDbFactory        must not be {@literal null}
+     * @param cosmosFactory must not be {@literal null}
      * @param mappingCosmosConverter must not be {@literal null}
-     * @param dbName                 must not be {@literal null}
+     * @param dbName must not be {@literal null}
      */
-    public CosmosTemplate(CosmosDBFactory cosmosDbFactory,
+    public CosmosTemplate(CosmosFactory cosmosFactory,
                           MappingCosmosConverter mappingCosmosConverter,
                           String dbName) {
-        Assert.notNull(cosmosDbFactory, "CosmosDbFactory must not be null!");
+        Assert.notNull(cosmosFactory, "CosmosDbFactory must not be null!");
         Assert.notNull(mappingCosmosConverter, "MappingCosmosConverter must not be null!");
 
         this.mappingCosmosConverter = mappingCosmosConverter;
 
         this.databaseName = dbName;
-        this.cosmosAsyncClient = cosmosDbFactory.getCosmosAsyncClient();
+        this.cosmosAsyncClient = cosmosFactory.getCosmosAsyncClient();
         this.responseDiagnosticsProcessor =
-            cosmosDbFactory.getConfig().getResponseDiagnosticsProcessor();
-        this.enableQueryMetrics = cosmosDbFactory.getConfig().isQueryMetricsEnabled();
+            cosmosFactory.getConfig().getResponseDiagnosticsProcessor();
+        this.enableQueryMetrics = cosmosFactory.getConfig().isQueryMetricsEnabled();
     }
 
     /**
@@ -102,7 +102,7 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
      *
      * @param objectToSave must not be {@literal null}
      * @param partitionKey must not be {@literal null}
-     * @param <T>          type class of domain type
+     * @param <T> type class of domain type
      * @return the inserted item
      */
     public <T> T insert(T objectToSave, PartitionKey partitionKey) {
@@ -115,36 +115,33 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
      * Inserts item into the given container
      *
      * @param containerName must not be {@literal null}
-     * @param objectToSave  must not be {@literal null}
-     * @param partitionKey  must not be {@literal null}
-     * @param <T>           type class of domain type
+     * @param objectToSave must not be {@literal null}
+     * @param partitionKey must not be {@literal null}
+     * @param <T> type class of domain type
      * @return the inserted item
      */
     public <T> T insert(String containerName, T objectToSave, PartitionKey partitionKey) {
-        Assert.hasText(containerName, "containerName should not be null, empty or only " +
-            "whitespaces");
+        Assert.hasText(containerName, "containerName should not be null, empty or only whitespaces");
         Assert.notNull(objectToSave, "objectToSave should not be null");
 
-        final JsonNode originalItem =
-            mappingCosmosConverter.writeJsonNode(objectToSave);
+        final JsonNode originalItem = mappingCosmosConverter.writeJsonNode(objectToSave);
 
         LOGGER.debug("execute createItem in database {} container {}", this.databaseName,
             containerName);
 
         final CosmosItemRequestOptions options = new CosmosItemRequestOptions();
 
-        @SuppressWarnings("unchecked") final Class<T> domainType =
-            (Class<T>)objectToSave.getClass();
+        @SuppressWarnings("unchecked") final Class<T> domainType = (Class<T>) objectToSave.getClass();
 
         final CosmosItemResponse<JsonNode> response = cosmosAsyncClient
             .getDatabase(this.databaseName)
             .getContainer(containerName)
             .createItem(originalItem, partitionKey, options)
             .doOnNext(cosmosItemResponse ->
-                CosmosDbUtils.fillAndProcessResponseDiagnostics(responseDiagnosticsProcessor,
+                CosmosUtils.fillAndProcessResponseDiagnostics(responseDiagnosticsProcessor,
                     cosmosItemResponse.getDiagnostics(), null))
             .onErrorResume(throwable ->
-                CosmosDBExceptionUtils.exceptionHandler("Failed to insert item", throwable))
+                CosmosExceptionUtils.exceptionHandler("Failed to insert item", throwable))
             .block();
 
         assert response != null;
@@ -154,9 +151,9 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
     /**
      * Finds item by id
      *
-     * @param id         must not be {@literal null}
+     * @param id must not be {@literal null}
      * @param domainType must not be {@literal null}
-     * @param <T>        type class of domain type
+     * @param <T> type class of domain type
      * @return found item
      */
     public <T> T findById(Object id, Class<T> domainType) {
@@ -177,12 +174,12 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
             .getContainer(containerName)
             .readItem(id.toString(), partitionKey, JsonNode.class)
             .flatMap(cosmosItemResponse -> {
-                CosmosDbUtils.fillAndProcessResponseDiagnostics(responseDiagnosticsProcessor,
+                CosmosUtils.fillAndProcessResponseDiagnostics(responseDiagnosticsProcessor,
                     cosmosItemResponse.getDiagnostics(), null);
                 return Mono.justOrEmpty(toDomainObject(domainType, cosmosItemResponse.getItem()));
             })
             .onErrorResume(throwable ->
-                CosmosDBExceptionUtils.findAPIExceptionHandler("Failed to find item", throwable))
+                CosmosExceptionUtils.findAPIExceptionHandler("Failed to find item", throwable))
             .block();
     }
 
@@ -190,14 +187,13 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
      * Finds item by id
      *
      * @param containerName must not be {@literal null}
-     * @param id            must not be {@literal null}
-     * @param domainType    must not be {@literal null}
-     * @param <T>           type class of domain type
+     * @param id must not be {@literal null}
+     * @param domainType must not be {@literal null}
+     * @param <T> type class of domain type
      * @return found item
      */
     public <T> T findById(String containerName, Object id, Class<T> domainType) {
-        Assert.hasText(containerName, "containerName should not be null, empty or only " +
-            "whitespaces");
+        Assert.hasText(containerName, "containerName should not be null, empty or only whitespaces");
         Assert.notNull(domainType, "domainType should not be null");
         assertValidId(id);
 
@@ -211,7 +207,7 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
             .queryItems(query, options, JsonNode.class)
             .byPage()
             .flatMap(cosmosItemFeedResponse -> {
-                CosmosDbUtils.fillAndProcessResponseDiagnostics(responseDiagnosticsProcessor,
+                CosmosUtils.fillAndProcessResponseDiagnostics(responseDiagnosticsProcessor,
                     cosmosItemFeedResponse.getCosmosDiagnostics(), cosmosItemFeedResponse);
                 return Mono.justOrEmpty(cosmosItemFeedResponse
                     .getResults()
@@ -220,7 +216,7 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
                     .findFirst());
             })
             .onErrorResume(throwable ->
-                CosmosDBExceptionUtils.findAPIExceptionHandler("Failed to find item", throwable))
+                CosmosExceptionUtils.findAPIExceptionHandler("Failed to find item", throwable))
             .blockFirst();
     }
 
@@ -228,7 +224,7 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
      * Upserts an item with partition key
      *
      * @param object upsert object
-     * @param <T>    type of upsert object
+     * @param <T> type of upsert object
      */
     public <T> void upsert(T object) {
         Assert.notNull(object, "Upsert object should not be null");
@@ -240,8 +236,8 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
      * Upserts an item into container with partition key
      *
      * @param containerName the container name
-     * @param object        upsert object
-     * @param <T>           type of upsert object
+     * @param object upsert object
+     * @param <T> type of upsert object
      */
     public <T> void upsert(String containerName, T object) {
         upsertAndReturnEntity(containerName, object);
@@ -251,13 +247,12 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
      * Upserts an item and return item properties
      *
      * @param containerName the container name
-     * @param object        upsert object
-     * @param <T>           type of upsert object
+     * @param object upsert object
+     * @param <T> type of upsert object
      * @return upsert object entity
      */
     public <T> T upsertAndReturnEntity(String containerName, T object) {
-        Assert.hasText(containerName, "containerName should not be null, empty or only " +
-            "whitespaces");
+        Assert.hasText(containerName, "containerName should not be null, empty or only whitespaces");
         Assert.notNull(object, "Upsert object should not be null");
 
         final JsonNode originalItem = mappingCosmosConverter.writeJsonNode(object);
@@ -265,7 +260,7 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
         LOGGER.debug("execute upsert item in database {} container {}", this.databaseName,
             containerName);
 
-        @SuppressWarnings("unchecked") final Class<T> domainType = (Class<T>)object.getClass();
+        @SuppressWarnings("unchecked") final Class<T> domainType = (Class<T>) object.getClass();
 
         final CosmosItemRequestOptions options = new CosmosItemRequestOptions();
         applyVersioning(domainType, originalItem, options);
@@ -274,10 +269,10 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
             .getDatabase(this.databaseName)
             .getContainer(containerName)
             .upsertItem(originalItem, options)
-            .doOnNext(response -> CosmosDbUtils.fillAndProcessResponseDiagnostics(responseDiagnosticsProcessor,
+            .doOnNext(response -> CosmosUtils.fillAndProcessResponseDiagnostics(responseDiagnosticsProcessor,
                 response.getDiagnostics(), null))
-            .onErrorResume(throwable -> CosmosDBExceptionUtils.exceptionHandler("Failed to upsert" +
-                " item", throwable))
+            .onErrorResume(throwable ->
+                CosmosExceptionUtils.exceptionHandler("Failed to upsert item", throwable))
             .block();
 
         assert cosmosItemResponse != null;
@@ -288,7 +283,7 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
      * Find the DocumentQuery, find all the items specified by domain type.
      *
      * @param domainType the domain type
-     * @param <T>        class type of domain
+     * @param <T> class type of domain
      * @return found results in a List
      */
     public <T> List<T> findAll(Class<T> domainType) {
@@ -301,13 +296,12 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
      * Find the DocumentQuery, find all the items specified by domain type in the given container.
      *
      * @param containerName the container name
-     * @param domainType    the domain type
-     * @param <T>           class type of domain
+     * @param domainType the domain type
+     * @param <T> class type of domain
      * @return found results in a List
      */
     public <T> List<T> findAll(String containerName, final Class<T> domainType) {
-        Assert.hasText(containerName, "containerName should not be null, empty or only " +
-            "whitespaces");
+        Assert.hasText(containerName, "containerName should not be null, empty or only whitespaces");
         Assert.notNull(domainType, "domainType should not be null");
 
         final DocumentQuery query = new DocumentQuery(Criteria.getInstance(CriteriaType.ALL));
@@ -335,13 +329,13 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
             .queryItems("SELECT * FROM r", cosmosQueryRequestOptions, JsonNode.class)
             .byPage()
             .flatMap(cosmosItemFeedResponse -> {
-                CosmosDbUtils.fillAndProcessResponseDiagnostics(responseDiagnosticsProcessor,
+                CosmosUtils.fillAndProcessResponseDiagnostics(responseDiagnosticsProcessor,
                     null, cosmosItemFeedResponse);
                 return Flux.fromIterable(cosmosItemFeedResponse.getResults());
             })
             .map(jsonNode -> toDomainObject(domainType, jsonNode))
             .onErrorResume(throwable ->
-                CosmosDBExceptionUtils.exceptionHandler("Failed to find items", throwable))
+                CosmosExceptionUtils.exceptionHandler("Failed to find items", throwable))
             .collectList()
             .block();
     }
@@ -350,11 +344,10 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
      * Delete the DocumentQuery, delete all the items in the given container.
      *
      * @param containerName Container name of database
-     * @param domainType    the domain type
+     * @param domainType the domain type
      */
     public void deleteAll(@NonNull String containerName, @NonNull Class<?> domainType) {
-        Assert.hasText(containerName, "containerName should not be null, empty or only " +
-            "whitespaces");
+        Assert.hasText(containerName, "containerName should not be null, empty or only whitespaces");
 
         final DocumentQuery query = new DocumentQuery(Criteria.getInstance(CriteriaType.ALL));
 
@@ -368,12 +361,11 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
                          .getContainer(containerName)
                          .delete()
                          .doOnNext(response -> {
-                             CosmosDbUtils.fillAndProcessResponseDiagnostics(responseDiagnosticsProcessor,
+                             CosmosUtils.fillAndProcessResponseDiagnostics(responseDiagnosticsProcessor,
                                  response.getDiagnostics(), null);
                          })
-                         .onErrorResume(throwable -> CosmosDBExceptionUtils.exceptionHandler("Failed to delete " +
-                                 "container",
-                             throwable))
+                         .onErrorResume(throwable ->
+                             CosmosExceptionUtils.exceptionHandler("Failed to delete container", throwable))
                          .block();
     }
 
@@ -389,9 +381,9 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
         final CosmosContainerResponse response = cosmosAsyncClient
             .createDatabaseIfNotExists(this.databaseName)
             .onErrorResume(throwable ->
-                CosmosDBExceptionUtils.exceptionHandler("Failed to create database", throwable))
+                CosmosExceptionUtils.exceptionHandler("Failed to create database", throwable))
             .flatMap(cosmosDatabaseResponse -> {
-                CosmosDbUtils.fillAndProcessResponseDiagnostics(responseDiagnosticsProcessor,
+                CosmosUtils.fillAndProcessResponseDiagnostics(responseDiagnosticsProcessor,
                     cosmosDatabaseResponse.getDiagnostics(), null);
                 final CosmosContainerProperties cosmosContainerProperties =
                     new CosmosContainerProperties(
@@ -417,10 +409,10 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
 
                 return cosmosContainerResponseMono
                     .onErrorResume(throwable ->
-                        CosmosDBExceptionUtils.exceptionHandler("Failed to create container",
+                        CosmosExceptionUtils.exceptionHandler("Failed to create container",
                             throwable))
                     .doOnNext(cosmosContainerResponse ->
-                        CosmosDbUtils.fillAndProcessResponseDiagnostics(responseDiagnosticsProcessor,
+                        CosmosUtils.fillAndProcessResponseDiagnostics(responseDiagnosticsProcessor,
                             cosmosContainerResponse.getDiagnostics(), null));
             })
             .block();
@@ -429,16 +421,14 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
     }
 
     /**
-     * Delete the DocumentQuery, need to query by id at first, then delete the item
-     * from the result.
+     * Delete the DocumentQuery, need to query by id at first, then delete the item from the result.
      *
      * @param containerName Container name of database
-     * @param id            item id
-     * @param partitionKey  the partition key
+     * @param id item id
+     * @param partitionKey the partition key
      */
     public void deleteById(String containerName, Object id, PartitionKey partitionKey) {
-        Assert.hasText(containerName, "containerName should not be null, empty or only " +
-            "whitespaces");
+        Assert.hasText(containerName, "containerName should not be null, empty or only whitespaces");
         assertValidId(id);
 
         LOGGER.debug("execute deleteById in database {} container {}", this.databaseName,
@@ -450,10 +440,11 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
         cosmosAsyncClient.getDatabase(this.databaseName)
                          .getContainer(containerName)
                          .deleteItem(id.toString(), partitionKey)
-                         .doOnNext(response -> CosmosDbUtils.fillAndProcessResponseDiagnostics(responseDiagnosticsProcessor,
-                             response.getDiagnostics(), null))
+                         .doOnNext(response ->
+                             CosmosUtils.fillAndProcessResponseDiagnostics(responseDiagnosticsProcessor,
+                                 response.getDiagnostics(), null))
                          .onErrorResume(throwable ->
-                             CosmosDBExceptionUtils.exceptionHandler("Failed to delete item",
+                             CosmosExceptionUtils.exceptionHandler("Failed to delete item",
                                  throwable))
                          .block();
     }
@@ -472,10 +463,10 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
     /**
      * Finds the document query items
      *
-     * @param query         The representation for query method.
-     * @param domainType    Class of domain
+     * @param query The representation for query method.
+     * @param domainType Class of domain
      * @param containerName Container name of database
-     * @param <T>           class of domainType
+     * @param <T> class of domainType
      * @return All the found items as List.
      */
     public <T> List<T> find(@NonNull DocumentQuery query, @NonNull Class<T> domainType,
@@ -493,10 +484,10 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
     /**
      * Checks if document query items exist
      *
-     * @param query         The representation for query method.
-     * @param domainType    Class of domain
+     * @param query The representation for query method.
+     * @param domainType Class of domain
      * @param containerName Container name of database
-     * @param <T>           class of domainType
+     * @param <T> class of domainType
      * @return if items exist
      */
     public <T> Boolean exists(@NonNull DocumentQuery query, @NonNull Class<T> domainType,
@@ -505,14 +496,13 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
     }
 
     /**
-     * Delete the DocumentQuery, need to query the domains at first, then delete the item
-     * from the result.
-     * The cosmos db Sql API do _NOT_ support DELETE query, we cannot add one DeleteQueryGenerator.
+     * Delete the DocumentQuery, need to query the domains at first, then delete the item from the result. The cosmos db
+     * Sql API do _NOT_ support DELETE query, we cannot add one DeleteQueryGenerator.
      *
-     * @param query         The representation for query method.
-     * @param domainType    Class of domain
+     * @param query The representation for query method.
+     * @param domainType Class of domain
      * @param containerName Container name of database
-     * @param <T>           class of domainType
+     * @param <T> class of domainType
      * @return All the deleted items as List.
      */
     @Override
@@ -544,8 +534,8 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
     @Override
     public <T> Page<T> paginationQuery(DocumentQuery query, Class<T> domainType,
                                        String containerName) {
-        Assert.isTrue(query.getPageable().getPageSize() > 0, "pageable should have page size " +
-            "larger than 0");
+        Assert.isTrue(query.getPageable().getPageSize() > 0,
+            "pageable should have page size larger than 0");
         Assert.hasText(containerName, "container should not be null, empty or only whitespaces");
 
         final Pageable pageable = query.getPageable();
@@ -560,7 +550,7 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
         if (pageable instanceof CosmosPageRequest) {
             feedResponseFlux = container
                 .queryItems(sqlQuerySpec, cosmosQueryRequestOptions, JsonNode.class)
-                .byPage(((CosmosPageRequest)pageable).getRequestContinuation(),
+                .byPage(((CosmosPageRequest) pageable).getRequestContinuation(),
                     pageable.getPageSize());
         } else {
             feedResponseFlux = container
@@ -570,10 +560,10 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
 
         final FeedResponse<JsonNode> feedResponse = feedResponseFlux
             .doOnNext(propertiesFeedResponse ->
-                CosmosDbUtils.fillAndProcessResponseDiagnostics(responseDiagnosticsProcessor,
+                CosmosUtils.fillAndProcessResponseDiagnostics(responseDiagnosticsProcessor,
                     propertiesFeedResponse.getCosmosDiagnostics(), propertiesFeedResponse))
             .onErrorResume(throwable ->
-                CosmosDBExceptionUtils.exceptionHandler("Failed to query items", throwable))
+                CosmosExceptionUtils.exceptionHandler("Failed to query items", throwable))
             .next()
             .block();
 
@@ -650,8 +640,8 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
 
         return executeQuery(querySpec, containerName, options)
             .onErrorResume(throwable ->
-                CosmosDBExceptionUtils.exceptionHandler("Failed to get count value", throwable))
-            .doOnNext(response -> CosmosDbUtils.fillAndProcessResponseDiagnostics(responseDiagnosticsProcessor,
+                CosmosExceptionUtils.exceptionHandler("Failed to get count value", throwable))
+            .doOnNext(response -> CosmosUtils.fillAndProcessResponseDiagnostics(responseDiagnosticsProcessor,
                 null, response))
             .next()
             .map(r -> r.getResults().get(0).asLong())
@@ -666,8 +656,8 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
                                 .queryItems(sqlQuerySpec, options, JsonNode.class)
                                 .byPage()
                                 .onErrorResume(throwable ->
-                                    CosmosDBExceptionUtils.exceptionHandler("Failed to execute " +
-                                        "query", throwable));
+                                    CosmosExceptionUtils.exceptionHandler("Failed to execute query",
+                                        throwable));
     }
 
     private List<String> getPartitionKeyNames(Class<?> domainType) {
@@ -699,12 +689,12 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
             .queryItems(sqlQuerySpec, cosmosQueryRequestOptions, JsonNode.class)
             .byPage()
             .flatMap(cosmosItemFeedResponse -> {
-                CosmosDbUtils.fillAndProcessResponseDiagnostics(responseDiagnosticsProcessor,
+                CosmosUtils.fillAndProcessResponseDiagnostics(responseDiagnosticsProcessor,
                     cosmosItemFeedResponse.getCosmosDiagnostics(), cosmosItemFeedResponse);
                 return Flux.fromIterable(cosmosItemFeedResponse.getResults());
             })
             .onErrorResume(throwable ->
-                CosmosDBExceptionUtils.exceptionHandler("Failed to find items", throwable))
+                CosmosExceptionUtils.exceptionHandler("Failed to find items", throwable))
             .collectList()
             .block();
     }
@@ -733,10 +723,10 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
             .getDatabase(this.databaseName)
             .getContainer(containerName)
             .deleteItem(jsonNode.get("id").asText(), partitionKey)
-            .doOnNext(response -> CosmosDbUtils.fillAndProcessResponseDiagnostics(responseDiagnosticsProcessor,
+            .doOnNext(response -> CosmosUtils.fillAndProcessResponseDiagnostics(responseDiagnosticsProcessor,
                 response.getDiagnostics(), null))
             .onErrorResume(throwable ->
-                CosmosDBExceptionUtils.exceptionHandler("Failed to delete item", throwable))
+                CosmosExceptionUtils.exceptionHandler("Failed to delete item", throwable))
             .flatMap(objectCosmosItemResponse -> Mono.just(toDomainObject(domainType, jsonNode)))
             .block();
     }
