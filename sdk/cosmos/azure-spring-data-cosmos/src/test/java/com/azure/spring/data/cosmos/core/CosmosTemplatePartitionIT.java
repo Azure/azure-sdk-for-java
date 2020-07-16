@@ -27,6 +27,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.data.annotation.Persistent;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.repository.query.parser.Part;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
@@ -91,7 +92,8 @@ public class CosmosTemplatePartitionIT {
 
     @Test
     public void testFindWithPartition() {
-        Criteria criteria = Criteria.getInstance(CriteriaType.IS_EQUAL, PROPERTY_LAST_NAME, Arrays.asList(LAST_NAME));
+        Criteria criteria = Criteria.getInstance(CriteriaType.IS_EQUAL, PROPERTY_LAST_NAME,
+            Arrays.asList(LAST_NAME), Part.IgnoreCaseType.NEVER);
         DocumentQuery query = new DocumentQuery(criteria);
         List<PartitionPerson> result = cosmosTemplate.find(query, PartitionPerson.class,
                 PartitionPerson.class.getSimpleName());
@@ -99,9 +101,23 @@ public class CosmosTemplatePartitionIT {
         assertThat(result.size()).isEqualTo(1);
         assertEquals(TEST_PERSON, result.get(0));
 
-        criteria = Criteria.getInstance(CriteriaType.IS_EQUAL, PROPERTY_ID, Arrays.asList(ID_1));
+        criteria = Criteria.getInstance(CriteriaType.IS_EQUAL, PROPERTY_ID,
+            Arrays.asList(ID_1), Part.IgnoreCaseType.NEVER);
         query = new DocumentQuery(criteria);
-        result = cosmosTemplate.find(query, PartitionPerson.class, PartitionPerson.class.getSimpleName());
+        result = cosmosTemplate.find(query, PartitionPerson.class,
+            PartitionPerson.class.getSimpleName());
+
+        assertThat(result.size()).isEqualTo(1);
+        assertEquals(TEST_PERSON, result.get(0));
+    }
+
+    @Test
+    public void testFindIgnoreCaseWithPartition() {
+        Criteria criteria = Criteria.getInstance(CriteriaType.IS_EQUAL, PROPERTY_LAST_NAME,
+            Arrays.asList(LAST_NAME.toUpperCase()), Part.IgnoreCaseType.ALWAYS);
+        DocumentQuery query = new DocumentQuery(criteria);
+        List<PartitionPerson> result = cosmosTemplate.find(query, PartitionPerson.class,
+            PartitionPerson.class.getSimpleName());
 
         assertThat(result.size()).isEqualTo(1);
         assertEquals(TEST_PERSON, result.get(0));
@@ -119,7 +135,8 @@ public class CosmosTemplatePartitionIT {
 
     @Test
     public void testFindByNonExistIdWithPartition() {
-        final Criteria criteria = Criteria.getInstance(CriteriaType.IS_EQUAL, PROPERTY_ID, Arrays.asList(NOT_EXIST_ID));
+        final Criteria criteria = Criteria.getInstance(CriteriaType.IS_EQUAL, PROPERTY_ID,
+            Arrays.asList(NOT_EXIST_ID), Part.IgnoreCaseType.NEVER);
         final DocumentQuery query = new DocumentQuery(criteria);
 
         final List<PartitionPerson> result = cosmosTemplate.find(query, PartitionPerson.class,
@@ -191,7 +208,7 @@ public class CosmosTemplatePartitionIT {
         cosmosTemplate.insert(TEST_PERSON_2, new PartitionKey(TEST_PERSON_2.getLastName()));
 
         final Criteria criteria = Criteria.getInstance(CriteriaType.IS_EQUAL, "firstName",
-                Arrays.asList(TEST_PERSON_2.getFirstName()));
+                Arrays.asList(TEST_PERSON_2.getFirstName()), Part.IgnoreCaseType.NEVER);
         final DocumentQuery query = new DocumentQuery(criteria);
 
         final long count = cosmosTemplate.count(query, PartitionPerson.class, containerName);
@@ -199,9 +216,21 @@ public class CosmosTemplatePartitionIT {
     }
 
     @Test
+    public void testCountIgnoreCaseForPartitionedCollectionByQuery() {
+        cosmosTemplate.insert(TEST_PERSON_2, new PartitionKey(TEST_PERSON_2.getLastName()));
+        final Criteria criteriaIgnoreCase = Criteria.getInstance(CriteriaType.IS_EQUAL, "firstName",
+            Arrays.asList(TEST_PERSON_2.getFirstName().toUpperCase()), Part.IgnoreCaseType.ALWAYS);
+        final DocumentQuery queryIgnoreCase = new DocumentQuery(criteriaIgnoreCase);
+
+        final long countIgnoreCase = cosmosTemplate.count(queryIgnoreCase,
+            PartitionPerson.class, containerName);
+        assertThat(countIgnoreCase).isEqualTo(1);
+    }
+
+    @Test
     public void testNonExistFieldValue() {
         final Criteria criteria = Criteria.getInstance(CriteriaType.IS_EQUAL, "firstName",
-                Arrays.asList("non-exist-first-name"));
+                Arrays.asList("non-exist-first-name"), Part.IgnoreCaseType.NEVER);
         final DocumentQuery query = new DocumentQuery(criteria);
 
         final long count = cosmosTemplate.count(query, PartitionPerson.class, containerName);
@@ -229,12 +258,26 @@ public class CosmosTemplatePartitionIT {
         cosmosTemplate.insert(TEST_PERSON_2, new PartitionKey(TEST_PERSON_2.getLastName()));
 
         final Criteria criteria = Criteria.getInstance(CriteriaType.IS_EQUAL, "firstName",
-                Arrays.asList(FIRST_NAME));
+                Arrays.asList(FIRST_NAME), Part.IgnoreCaseType.NEVER);
         final PageRequest pageRequest = new CosmosPageRequest(0, PAGE_SIZE_2, null);
         final DocumentQuery query = new DocumentQuery(criteria).with(pageRequest);
 
         final Page<PartitionPerson> page = cosmosTemplate.paginationQuery(query, PartitionPerson.class, containerName);
         assertThat(page.getContent().size()).isEqualTo(1);
         PageTestUtils.validateLastPage(page, page.getContent().size());
+    }
+
+    @Test
+    public void testPartitionedPaginationQueryIgnoreCase() {
+        cosmosTemplate.insert(TEST_PERSON_2, new PartitionKey(TEST_PERSON_2.getLastName()));
+        final Criteria criteriaIgnoreCase = Criteria.getInstance(CriteriaType.IS_EQUAL, "firstName",
+            Arrays.asList(FIRST_NAME.toUpperCase()), Part.IgnoreCaseType.ALWAYS);
+        final PageRequest pageRequest = new CosmosPageRequest(0, PAGE_SIZE_2, null);
+        final DocumentQuery queryIgnoreCase = new DocumentQuery(criteriaIgnoreCase).with(pageRequest);
+
+        final Page<PartitionPerson> pageIgnoreCase = cosmosTemplate
+            .paginationQuery(queryIgnoreCase, PartitionPerson.class, containerName);
+        assertThat(pageIgnoreCase.getContent().size()).isEqualTo(1);
+        PageTestUtils.validateLastPage(pageIgnoreCase, pageIgnoreCase.getContent().size());
     }
 }

@@ -80,7 +80,6 @@
           <rules>
             <bannedDependencies>
               <includes>
-                <include>com.azure:*</include>
                 <include>io.opentelemetry:opentelemetry-api:[0.2.4]</include> <!-- {x-include-update;io.opentelemetry:opentelemetry-api;external_dependency} -->
               </includes>
             </bannedDependencies>

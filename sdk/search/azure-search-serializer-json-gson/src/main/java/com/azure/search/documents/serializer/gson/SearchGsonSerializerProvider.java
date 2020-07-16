@@ -3,7 +3,10 @@
 
 package com.azure.search.documents.serializer.gson;
 
-public class SearchGsonSerializerProvider {
+import com.azure.search.documents.serializer.SearchSerializer;
+import com.azure.search.documents.serializer.SearchSerializerProvider;
+
+public class SearchGsonSerializerProvider implements SearchSerializerProvider {
     @Override
     public SearchSerializer createInstance() {
         return new SearchGsonSerializerBuilder().build();

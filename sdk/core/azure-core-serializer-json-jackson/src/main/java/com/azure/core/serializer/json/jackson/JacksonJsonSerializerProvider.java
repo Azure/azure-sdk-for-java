@@ -14,4 +14,9 @@ public class JacksonJsonSerializerProvider implements JsonSerializerProvider {
     public JsonSerializer createInstance() {
         return new JacksonJsonSerializerBuilder().build();
     }
+
+    @Override
+    public JsonSerializer createInstance(JsonOptions jsonOptions) {
+        return new JacksonJsonSerializerBuilder().options(jsonOptions).build();
+    }
 }

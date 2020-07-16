@@ -14,6 +14,7 @@ import org.junit.runner.RunWith;
 import org.mockito.Answers;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.data.repository.query.parser.Part;
 import org.springframework.util.Assert;
 
 import java.lang.reflect.InvocationTargetException;
@@ -42,8 +43,10 @@ public class CosmosTemplateIllegalTest {
 
     @Test
     public void deleteIllegalShouldFail() throws NoSuchMethodException {
-        final Method method = dbTemplateClass.getMethod("delete", DocumentQuery.class, Class.class, String.class);
-        final Criteria criteria = Criteria.getInstance(CriteriaType.IS_EQUAL, "faker", Arrays.asList("faker-value"));
+        final Method method = dbTemplateClass.getMethod("delete",
+            DocumentQuery.class, Class.class, String.class);
+        final Criteria criteria = Criteria.getInstance(CriteriaType.IS_EQUAL,
+            "faker", Arrays.asList("faker-value"), Part.IgnoreCaseType.NEVER);
         final DocumentQuery query = new DocumentQuery(criteria);
 
         checkIllegalArgument(method, null, Person.class, DUMMY_COLL);

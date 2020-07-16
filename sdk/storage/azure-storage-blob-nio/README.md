@@ -116,7 +116,7 @@ fallback and retry options available.
 The view of the FileSystem from within an instance of the JVM will be consistent, but the AzureFileSystem makes no 
 guarantees on behavior or state should other processes operate on the same data. The AzureFileSystem will assume that it 
 has exclusive access to the resources stored in Azure Blob Storage and will behave without regard for potential 
-interfering applications
+interfering applications.
 
 Finally, this implementation has currently chosen to always read/write directly to/from Azure Storage without a local 
 cache. Our team has determined that with the tradeoffs of complexity, correctness, safety, performance, debuggability, 
@@ -146,11 +146,12 @@ Create a `FileSystem` using the [`shared key`](#get-credentials) retrieved above
 Note that you can further configure the file system using constants available in `AzureFileSystem`.
 Please see the docs for `AzureFileSystemProvider` for a full explanation of initializing and configuring a filesystem
 
-<!-- embedme ./src/samples/java/com/azure/storage/blob/nio/ReadmeSamples.java#L39-L42 -->
+<!-- embedme ./src/samples/java/com/azure/storage/blob/nio/ReadmeSamples.java#L39-L43 -->
 ```java
 Map<String, Object> config = new HashMap<>();
+String[] stores = {"<your_container_name", "another_container_name"}; // Any iterable is acceptable
 config.put(AzureFileSystem.AZURE_STORAGE_ACCOUNT_KEY, "<your_account_key>");
-config.put(AzureFileSystem.AZURE_STORAGE_FILE_STORES, "<container_names>");
+config.put(AzureFileSystem.AZURE_STORAGE_FILE_STORES, stores);
 FileSystem myFs = FileSystems.newFileSystem(new URI("azb://?account=<your_account_name"), config);
 ```
 
@@ -158,7 +159,7 @@ FileSystem myFs = FileSystems.newFileSystem(new URI("azb://?account=<your_accoun
 
 Create a directory using the `Files` api
 
-<!-- embedme ./src/samples/java/com/azure/storage/blob/nio/ReadmeSamples.java#L46-L47 -->
+<!-- embedme ./src/samples/java/com/azure/storage/blob/nio/ReadmeSamples.java#L47-L48 -->
 ```java
 Path dirPath = myFs.getPath("dir");
 Files.createDirectory(dirPath);
@@ -168,7 +169,7 @@ Files.createDirectory(dirPath);
 
 Iterate over a directory using a `DirectoryStream`
 
-<!-- embedme ./src/samples/java/com/azure/storage/blob/nio/ReadmeSamples.java#L51-L53 -->
+<!-- embedme ./src/samples/java/com/azure/storage/blob/nio/ReadmeSamples.java#L52-L54 -->
 ```java
 for (Path p : Files.newDirectoryStream(dirPath)) {
     System.out.println(p.toString());
@@ -179,7 +180,7 @@ for (Path p : Files.newDirectoryStream(dirPath)) {
 
 Read the contents of a file using an `InputStream`. Skipping, marking, and resetting are all supported.
 
-<!-- embedme ./src/samples/java/com/azure/storage/blob/nio/ReadmeSamples.java#L57-L60 -->
+<!-- embedme ./src/samples/java/com/azure/storage/blob/nio/ReadmeSamples.java#L58-L61 -->
 ```java
 Path filePath = myFs.getPath("file");
 InputStream is = Files.newInputStream(filePath);
@@ -192,7 +193,7 @@ is.close();
 Write to a file. Only writing whole files is supported. Random IO is not supported. The stream must be closed in order 
 to guarantee that the data is available to be read.
 
-<!-- embedme ./src/samples/java/com/azure/storage/blob/nio/ReadmeSamples.java#L64-L66 -->
+<!-- embedme ./src/samples/java/com/azure/storage/blob/nio/ReadmeSamples.java#L65-L67 -->
 ```java
 OutputStream os = Files.newOutputStream(filePath);
 os.write(0);
@@ -201,7 +202,7 @@ os.close();
 
 ### Copy a file
 
-<!-- embedme ./src/samples/java/com/azure/storage/blob/nio/ReadmeSamples.java#L70-L71 -->
+<!-- embedme ./src/samples/java/com/azure/storage/blob/nio/ReadmeSamples.java#L71-L72 -->
 ```java
 Path destinationPath = myFs.getPath("destinationFile");
 Files.copy(filePath, destinationPath, StandardCopyOption.COPY_ATTRIBUTES);
@@ -209,7 +210,7 @@ Files.copy(filePath, destinationPath, StandardCopyOption.COPY_ATTRIBUTES);
 
 ### Delete a file
 
-<!-- embedme ./src/samples/java/com/azure/storage/blob/nio/ReadmeSamples.java#L75-L75 -->
+<!-- embedme ./src/samples/java/com/azure/storage/blob/nio/ReadmeSamples.java#L76-L76 -->
 ```java
 Files.delete(filePath);
 ```
@@ -218,7 +219,7 @@ Files.delete(filePath);
 
 Read attributes of a file through the `AzureBlobFileAttributes`.
 
-<!-- embedme ./src/samples/java/com/azure/storage/blob/nio/ReadmeSamples.java#L79-L80 -->
+<!-- embedme ./src/samples/java/com/azure/storage/blob/nio/ReadmeSamples.java#L80-L81 -->
 ```java
 AzureBlobFileAttributes attr = Files.readAttributes(filePath, AzureBlobFileAttributes.class);
 BlobHttpHeaders headers = attr.blobHttpHeaders();
@@ -228,7 +229,7 @@ Or read attributes dynamically by specifying a string of desired attributes. Thi
 to retrieve any attribute will always retrieve all of them as an atomic bulk operation. You may specify "*" instead of a 
 list of specific attributes to have all attributes returned in the map.
 
-<!-- embedme ./src/samples/java/com/azure/storage/blob/nio/ReadmeSamples.java#L84-L84 -->
+<!-- embedme ./src/samples/java/com/azure/storage/blob/nio/ReadmeSamples.java#L85-L85 -->
 ```java
 Map<String, Object> attributes = Files.readAttributes(filePath, "azureBlob:metadata,headers");
 ```
@@ -237,7 +238,7 @@ Map<String, Object> attributes = Files.readAttributes(filePath, "azureBlob:metad
 
 Set attributes of a file through the `AzureBlobFileAttributeView`.
 
-<!-- embedme ./src/samples/java/com/azure/storage/blob/nio/ReadmeSamples.java#L88-L89 -->
+<!-- embedme ./src/samples/java/com/azure/storage/blob/nio/ReadmeSamples.java#L89-L90 -->
 ```java
 AzureBlobFileAttributeView view = Files.getFileAttributeView(filePath, AzureBlobFileAttributeView.class);
 view.setMetadata(Collections.EMPTY_MAP);
@@ -245,7 +246,7 @@ view.setMetadata(Collections.EMPTY_MAP);
 
 Or set an attribute dynamically by specifying the attribute as a string.
 
-<!-- embedme ./src/samples/java/com/azure/storage/blob/nio/ReadmeSamples.java#L93-L93 -->
+<!-- embedme ./src/samples/java/com/azure/storage/blob/nio/ReadmeSamples.java#L94-L94 -->
 ```java
 Files.setAttribute(filePath, "azureBlob:blobHttpHeaders", new BlobHttpHeaders());
 ```
@@ -282,6 +283,7 @@ not be possible or otherwise may conflict with established design goals and ther
 - Hidden files
 - Random writes
 - File locks
+- Read only files or file stores
 - Watches on directory events
 - Support for other Azure Storage services such as ADLS Gen 2 (Datalake) and Azure Files (shares)
 - Token authentication

@@ -36,6 +36,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.repository.query.parser.Part;
 import org.springframework.lang.NonNull;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
@@ -462,7 +463,7 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
         Assert.hasText(containerName, "container should not be null, empty or only whitespaces");
 
         final DocumentQuery query = new DocumentQuery(Criteria.getInstance(CriteriaType.IN, "id",
-                Collections.singletonList(ids)));
+                Collections.singletonList(ids), Part.IgnoreCaseType.NEVER));
         return find(query, domainType, containerName);
     }
 

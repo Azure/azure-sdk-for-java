@@ -6,17 +6,22 @@ package com.azure.resourcemanager.appplatform.implementation;
 import com.azure.resourcemanager.appplatform.AppPlatformManager;
 import com.azure.resourcemanager.appplatform.fluent.inner.AppResourceInner;
 import com.azure.resourcemanager.appplatform.models.AppResourceProperties;
+import com.azure.resourcemanager.appplatform.models.BindingResourceProperties;
+import com.azure.resourcemanager.appplatform.models.CustomDomainProperties;
 import com.azure.resourcemanager.appplatform.models.ManagedIdentityProperties;
 import com.azure.resourcemanager.appplatform.models.PersistentDisk;
 import com.azure.resourcemanager.appplatform.models.ResourceUploadDefinition;
 import com.azure.resourcemanager.appplatform.models.SpringApp;
 import com.azure.resourcemanager.appplatform.models.SpringAppDeployment;
 import com.azure.resourcemanager.appplatform.models.SpringAppDeployments;
+import com.azure.resourcemanager.appplatform.models.SpringAppDomains;
+import com.azure.resourcemanager.appplatform.models.SpringAppServiceBindings;
 import com.azure.resourcemanager.appplatform.models.SpringService;
 import com.azure.resourcemanager.appplatform.models.TemporaryDisk;
 import com.azure.resourcemanager.appplatform.models.UserSourceType;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.ExternalChildResourceImpl;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
+import com.azure.resourcemanager.resources.fluentcore.model.Indexable;
 import reactor.core.publisher.Mono;
 
 import java.io.File;
@@ -26,6 +31,9 @@ public class SpringAppImpl
     extends ExternalChildResourceImpl<SpringApp, AppResourceInner, SpringServiceImpl, SpringService>
     implements SpringApp, SpringApp.Definition, SpringApp.Update {
     private Creatable<SpringAppDeployment> springAppDeploymentToCreate = null;
+    private final SpringAppDeploymentsImpl deployments = new SpringAppDeploymentsImpl(this);
+    private final SpringAppServiceBindingsImpl serviceBindings = new SpringAppServiceBindingsImpl(this);
+    private final SpringAppDomainsImpl domains = new SpringAppDomainsImpl(this);
 
     SpringAppImpl(String name, SpringServiceImpl parent, AppResourceInner innerObject) {
         super(name, parent, innerObject);
@@ -53,6 +61,14 @@ public class SpringAppImpl
             return null;
         }
         return inner().properties().url();
+    }
+
+    @Override
+    public String fqdn() {
+        if (inner().properties() == null) {
+            return null;
+        }
+        return inner().properties().fqdn();
     }
 
     @Override
@@ -94,7 +110,17 @@ public class SpringAppImpl
 
     @Override
     public SpringAppDeployments deployments() {
-        return new SpringAppDeploymentsImpl(this);
+        return deployments;
+    }
+
+    @Override
+    public SpringAppServiceBindings serviceBindings() {
+        return serviceBindings;
+    }
+
+    @Override
+    public SpringAppDomains customDomains() {
+        return domains;
     }
 
     @Override
@@ -115,14 +141,14 @@ public class SpringAppImpl
     }
 
     @Override
-    public SpringAppImpl withPublicEndpoint() {
+    public SpringAppImpl withDefaultPublicEndpoint() {
         ensureProperty();
         inner().properties().withPublicProperty(true);
         return this;
     }
 
     @Override
-    public SpringAppImpl withoutPublicEndpoint() {
+    public SpringAppImpl withoutDefaultPublicEndpoint() {
         ensureProperty();
         inner().properties().withPublicProperty(false);
         return this;
@@ -130,15 +156,27 @@ public class SpringAppImpl
 
     @Override
     public SpringAppImpl withCustomDomain(String domain) {
-        ensureProperty();
-        inner().properties().withFqdn(domain);
+        this.addPostRunDependent(
+            context -> domains.createOrUpdateAsync(domain, new CustomDomainProperties())
+                .cast(Indexable.class)
+        );
         return this;
     }
 
     @Override
-    public SpringAppImpl withoutCustomDomain() {
-        ensureProperty();
-        inner().properties().withFqdn(null);
+    public SpringAppImpl withCustomDomain(String domain, String certThumbprint) {
+        this.addPostRunDependent(
+            context -> domains.createOrUpdateAsync(domain, new CustomDomainProperties().withThumbprint(certThumbprint))
+                .cast(Indexable.class)
+        );
+        return this;
+    }
+
+    @Override
+    public Update withoutCustomDomain(String domain) {
+        this.addPostRunDependent(
+            context -> domains.deleteByNameAsync(domain).then(context.voidMono())
+        );
         return this;
     }
 
@@ -278,5 +316,21 @@ public class SpringAppImpl
 
     public AppPlatformManager manager() {
         return parent().manager();
+    }
+
+    @Override
+    public SpringAppImpl withServiceBinding(String name, BindingResourceProperties bindingProperties) {
+        this.addPostRunDependent(
+            context -> serviceBindings.createOrUpdateAsync(name, bindingProperties).cast(Indexable.class)
+        );
+        return this;
+    }
+
+    @Override
+    public SpringAppImpl withoutServiceBinding(String name) {
+        this.addPostRunDependent(
+            context -> serviceBindings.deleteByNameAsync(name).then(context.voidMono())
+        );
+        return this;
     }
 }

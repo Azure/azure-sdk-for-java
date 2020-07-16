@@ -20,6 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.domain.EntityScanner;
 import org.springframework.context.ApplicationContext;
 import org.springframework.data.annotation.Persistent;
+import org.springframework.data.repository.query.parser.Part;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import reactor.core.publisher.Flux;
@@ -89,7 +90,21 @@ public class ReactiveCosmosTemplatePartitionIT {
     @Test
     public void testFindWithPartition() {
         final Criteria criteria = Criteria.getInstance(CriteriaType.IS_EQUAL, TestConstants.PROPERTY_LAST_NAME,
-            Arrays.asList(TestConstants.LAST_NAME));
+            Arrays.asList(TestConstants.LAST_NAME), Part.IgnoreCaseType.NEVER);
+        final DocumentQuery query = new DocumentQuery(criteria);
+        final Flux<PartitionPerson> partitionPersonFlux = cosmosTemplate.find(query,
+            PartitionPerson.class,
+            PartitionPerson.class.getSimpleName());
+        StepVerifier.create(partitionPersonFlux).consumeNextWith(actual -> {
+            Assert.assertThat(actual.getFirstName(), is(equalTo(TEST_PERSON.getFirstName())));
+            Assert.assertThat(actual.getLastName(), is(equalTo(TEST_PERSON.getLastName())));
+        }).verifyComplete();
+    }
+
+    @Test
+    public void testFindIgnoreCaseWithPartition() {
+        final Criteria criteria = Criteria.getInstance(CriteriaType.IS_EQUAL, TestConstants.PROPERTY_LAST_NAME,
+            Arrays.asList(TestConstants.LAST_NAME.toUpperCase()), Part.IgnoreCaseType.ALWAYS);
         final DocumentQuery query = new DocumentQuery(criteria);
         final Flux<PartitionPerson> partitionPersonFlux = cosmosTemplate.find(query,
             PartitionPerson.class,
@@ -181,11 +196,20 @@ public class ReactiveCosmosTemplatePartitionIT {
     public void testCountForPartitionedCollectionByQuery() {
         cosmosTemplate.insert(TEST_PERSON_2, new PartitionKey(TEST_PERSON_2.getLastName())).block();
         final Criteria criteria = Criteria.getInstance(CriteriaType.IS_EQUAL, "firstName",
-            Arrays.asList(TEST_PERSON_2.getFirstName()));
+            Arrays.asList(TEST_PERSON_2.getFirstName()), Part.IgnoreCaseType.NEVER);
         final DocumentQuery query = new DocumentQuery(criteria);
         StepVerifier.create(cosmosTemplate.count(query, containerName))
                     .expectNext((long) 1).verifyComplete();
+    }
 
+    @Test
+    public void testCountIgnoreCaseForPartitionedCollectionByQuery() {
+        cosmosTemplate.insert(TEST_PERSON_2, new PartitionKey(TEST_PERSON_2.getLastName())).block();
+        final Criteria criteriaIgnoreCase = Criteria.getInstance(CriteriaType.IS_EQUAL, "firstName",
+            Arrays.asList(TEST_PERSON_2.getFirstName().toUpperCase()), Part.IgnoreCaseType.ALWAYS);
+        final DocumentQuery queryIgnoreCase = new DocumentQuery(criteriaIgnoreCase);
+        StepVerifier.create(cosmosTemplate.count(queryIgnoreCase, containerName))
+            .expectNext((long) 1).verifyComplete();
     }
 }
 

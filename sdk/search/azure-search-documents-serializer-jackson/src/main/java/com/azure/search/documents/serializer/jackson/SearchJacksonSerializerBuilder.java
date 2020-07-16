@@ -9,7 +9,6 @@ import com.azure.search.documents.serializer.jackson.implementation.Serializatio
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class SearchJacksonSerializerBuilder {
-    private ObjectMapper objectMapper;
 
     /**
      * Constructs a new instance of {@link SearchSerializer} with the configurations set in this builder.
