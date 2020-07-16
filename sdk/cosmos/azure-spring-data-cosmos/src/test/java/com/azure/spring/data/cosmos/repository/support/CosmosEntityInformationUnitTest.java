@@ -2,9 +2,9 @@
 // Licensed under the MIT License.
 package com.azure.spring.data.cosmos.repository.support;
 
+import com.azure.spring.data.cosmos.common.TestConstants;
 import com.azure.spring.data.cosmos.core.mapping.Document;
 import com.azure.spring.data.cosmos.core.mapping.PartitionKey;
-import com.azure.spring.data.cosmos.common.TestConstants;
 import com.azure.spring.data.cosmos.domain.Address;
 import com.azure.spring.data.cosmos.domain.Person;
 import com.azure.spring.data.cosmos.domain.Student;
@@ -124,7 +124,7 @@ public class CosmosEntityInformationUnitTest {
         assertThat(isVersioned).isFalse();
     }
 
-    @Document(collection = "testCollection")
+    @Document(container = "testContainer")
     private static class Volunteer {
         String id;
         String name;
@@ -176,7 +176,7 @@ public class CosmosEntityInformationUnitTest {
         }
     }
 
-    @Document(collection = "testCollection")
+    @Document(container = "testContainer")
     private static class VersionedVolunteer {
         private String id;
         private String name;

@@ -6,17 +6,18 @@ package com.azure.cosmos;
  * ARE USED TO EXTRACT APPROPRIATE CODE SEGMENTS FROM THIS FILE. ADD NEW CODE AT THE BOTTOM TO AVOID CHANGING
  * LINE NUMBERS OF EXISTING CODE SAMPLES.
  */
-import com.azure.data.cosmos.CosmosKeyCredential;
+
+import com.azure.core.credential.AzureKeyCredential;
 import com.azure.spring.data.cosmos.config.AbstractCosmosConfiguration;
 import com.azure.spring.data.cosmos.config.CosmosDBConfig;
 import com.azure.spring.data.cosmos.core.ResponseDiagnostics;
 import com.azure.spring.data.cosmos.core.ResponseDiagnosticsProcessor;
 import com.azure.spring.data.cosmos.repository.config.EnableCosmosRepositories;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Configuration;
 import io.micrometer.core.lang.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Configuration;
 
 @Configuration
 @EnableCosmosRepositories
@@ -36,22 +37,24 @@ public class AppConfiguration extends AbstractCosmosConfiguration {
     @Value("${azure.cosmosdb.database}")
     private String dbName;
 
-    @Value("${azure.cosmosdb.populateQueryMetrics}")
-    private boolean populateQueryMetrics;
+    @Value("${azure.cosmosdb.queryMetricsEnabled}")
+    private boolean queryMetricsEnabled;
 
-    private CosmosKeyCredential cosmosKeyCredential;
+    private AzureKeyCredential azureKeyCredential;
 
     public CosmosDBConfig getConfig() {
-        this.cosmosKeyCredential = new CosmosKeyCredential(key);
-        CosmosDBConfig cosmosdbConfig = CosmosDBConfig.builder(uri,
-            this.cosmosKeyCredential, dbName).build();
-        cosmosdbConfig.setPopulateQueryMetrics(populateQueryMetrics);
-        cosmosdbConfig.setResponseDiagnosticsProcessor(new ResponseDiagnosticsProcessorImplementation());
-        return cosmosdbConfig;
+        this.azureKeyCredential = new AzureKeyCredential(key);
+        CosmosClientBuilder cosmosClientBuilder = new CosmosClientBuilder().endpoint(uri).credential(azureKeyCredential);
+        return CosmosDBConfig.builder()
+                             .database(dbName)
+                             .enableQueryMetrics(queryMetricsEnabled)
+                             .cosmosClientBuilder(cosmosClientBuilder)
+                             .responseDiagnosticsProcessor(new ResponseDiagnosticsProcessorImplementation())
+                             .build();
     }
 
     public void switchToSecondaryKey() {
-        this.cosmosKeyCredential.key(secondaryKey);
+        this.azureKeyCredential.update(secondaryKey);
     }
 
     private static class ResponseDiagnosticsProcessorImplementation implements ResponseDiagnosticsProcessor {

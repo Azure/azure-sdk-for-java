@@ -2,14 +2,13 @@
 // Licensed under the MIT License.
 package com.azure.spring.data.cosmos.exception;
 
-import com.azure.data.cosmos.CosmosClientException;
-import com.azure.data.cosmos.internal.HttpConstants;
+import com.azure.cosmos.CosmosException;
 import org.springframework.util.StringUtils;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Mono;
 
 /**
- * To handle and throw a cosmosdb exception when access the database
+ * To handle and throw a cosmos db exception when access the database
  */
 public class CosmosDBExceptionUtils {
 
@@ -20,11 +19,11 @@ public class CosmosDBExceptionUtils {
      * @param throwable exception
      * @param <T> type class of Mono
      * @return Mono instance
-     * @throws CosmosDBAccessException for operations on cosmosdb
+     * @throws CosmosDBAccessException for operations on cosmos db
      */
     public static <T> Mono<T> exceptionHandler(String message, Throwable throwable) {
         if (StringUtils.isEmpty(message)) {
-            message = "Failed to access cosmosdb database";
+            message = "Failed to access cosmos db database";
         }
         //  Unwrap the exception in case if it is a reactive exception
         final Throwable unwrappedThrowable = Exceptions.unwrap(throwable);
@@ -32,7 +31,7 @@ public class CosmosDBExceptionUtils {
     }
 
     /**
-     * To find an exceptionHandler for a excetption and return empty Mono if the exception status code is not found
+     * To find an exceptionHandler for a exception and return empty Mono if the exception status code is not found
      *
      * @param message the detail message
      * @param throwable exception
@@ -42,9 +41,9 @@ public class CosmosDBExceptionUtils {
     public static <T> Mono<T> findAPIExceptionHandler(String message, Throwable throwable) {
         //  Unwrap the exception in case if it is a reactive exception
         final Throwable unwrappedThrowable = Exceptions.unwrap(throwable);
-        if (unwrappedThrowable instanceof CosmosClientException) {
-            final CosmosClientException cosmosClientException = (CosmosClientException) unwrappedThrowable;
-            if (cosmosClientException.statusCode() == HttpConstants.StatusCodes.NOTFOUND) {
+        if (unwrappedThrowable instanceof CosmosException) {
+            final CosmosException cosmosClientException = (CosmosException) unwrappedThrowable;
+            if (cosmosClientException.getStatusCode() == 404) {
                 return Mono.empty();
             }
         }

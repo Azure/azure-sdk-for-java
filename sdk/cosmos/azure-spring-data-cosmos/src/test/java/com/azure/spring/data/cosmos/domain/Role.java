@@ -2,29 +2,20 @@
 // Licensed under the MIT License.
 package com.azure.spring.data.cosmos.domain;
 
-import com.azure.data.cosmos.IndexingMode;
+import com.azure.cosmos.models.IndexingMode;
+import com.azure.spring.data.cosmos.common.TestConstants;
 import com.azure.spring.data.cosmos.core.mapping.Document;
 import com.azure.spring.data.cosmos.core.mapping.DocumentIndexingPolicy;
 import com.azure.spring.data.cosmos.core.mapping.PartitionKey;
-import com.azure.spring.data.cosmos.common.TestConstants;
 import org.springframework.data.annotation.Id;
 
 import java.util.Objects;
 
 @DocumentIndexingPolicy(
-        mode = IndexingMode.LAZY,
-        automatic = TestConstants.INDEXINGPOLICY_AUTOMATIC,
-        includePaths = {
-                TestConstants.INCLUDEDPATH_0,
-                TestConstants.INCLUDEDPATH_1,
-                TestConstants.INCLUDEDPATH_2,
-        },
-        excludePaths = {
-                TestConstants.EXCLUDEDPATH_0,
-                TestConstants.EXCLUDEDPATH_1,
-        })
-@Document(collection = TestConstants.ROLE_COLLECTION_NAME,
-    autoCreateCollection = false)
+        mode = IndexingMode.CONSISTENT,
+        automatic = TestConstants.INDEXING_POLICY_AUTOMATIC)
+@Document(container = TestConstants.ROLE_COLLECTION_NAME,
+    autoCreateContainer = false)
 public class Role {
     @Id
     String id;

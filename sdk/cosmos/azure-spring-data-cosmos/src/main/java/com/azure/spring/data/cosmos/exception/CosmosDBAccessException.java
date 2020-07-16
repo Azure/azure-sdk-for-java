@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.spring.data.cosmos.exception;
 
-import com.azure.data.cosmos.CosmosClientException;
+import com.azure.cosmos.CosmosException;
 import com.azure.spring.data.cosmos.repository.CosmosRepository;
 import com.azure.spring.data.cosmos.repository.ReactiveCosmosRepository;
 import org.springframework.dao.DataAccessException;
@@ -19,7 +19,7 @@ import org.springframework.lang.Nullable;
  */
 public class CosmosDBAccessException extends DataAccessException {
 
-    protected final CosmosClientException cosmosClientException;
+    protected final CosmosException cosmosException;
 
     /**
      * Construct a {@code CosmosDBAccessException} with the specified detail message.
@@ -27,7 +27,7 @@ public class CosmosDBAccessException extends DataAccessException {
      */
     public CosmosDBAccessException(String msg) {
         super(msg);
-        this.cosmosClientException = null;
+        this.cosmosException = null;
     }
 
     /**
@@ -38,10 +38,10 @@ public class CosmosDBAccessException extends DataAccessException {
      */
     public CosmosDBAccessException(@Nullable String msg, @Nullable Throwable cause) {
         super(msg, cause);
-        if (cause instanceof CosmosClientException) {
-            this.cosmosClientException = (CosmosClientException) cause;
+        if (cause instanceof CosmosException) {
+            this.cosmosException = (CosmosException) cause;
         } else {
-            this.cosmosClientException = null;
+            this.cosmosException = null;
         }
     }
 
@@ -54,16 +54,16 @@ public class CosmosDBAccessException extends DataAccessException {
      */
     public CosmosDBAccessException(@Nullable String msg, @Nullable Exception cause) {
         super(msg, cause);
-        this.cosmosClientException = cause instanceof CosmosClientException
-            ? (CosmosClientException) cause
+        this.cosmosException = cause instanceof CosmosException
+            ? (CosmosException) cause
             : null;
     }
 
     /**
      * To get exception object for cosmos client
-     * @return CosmosClientException
+     * @return CosmosException
      */
-    public CosmosClientException getCosmosClientException() {
-        return cosmosClientException;
+    public CosmosException getCosmosException() {
+        return cosmosException;
     }
 }

@@ -3,8 +3,8 @@
 
 package com.azure.spring.data.cosmos.core;
 
-import com.azure.data.cosmos.PartitionKey;
-import com.azure.spring.data.cosmos.CosmosDbFactory;
+import com.azure.cosmos.models.PartitionKey;
+import com.azure.spring.data.cosmos.CosmosDBFactory;
 import com.azure.spring.data.cosmos.common.PageTestUtils;
 import com.azure.spring.data.cosmos.config.CosmosDBConfig;
 import com.azure.spring.data.cosmos.core.convert.MappingCosmosConverter;
@@ -34,7 +34,20 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
-import static com.azure.spring.data.cosmos.common.TestConstants.*;
+import static com.azure.spring.data.cosmos.common.TestConstants.ADDRESSES;
+import static com.azure.spring.data.cosmos.common.TestConstants.FIRST_NAME;
+import static com.azure.spring.data.cosmos.common.TestConstants.HOBBIES;
+import static com.azure.spring.data.cosmos.common.TestConstants.ID_1;
+import static com.azure.spring.data.cosmos.common.TestConstants.ID_2;
+import static com.azure.spring.data.cosmos.common.TestConstants.LAST_NAME;
+import static com.azure.spring.data.cosmos.common.TestConstants.NEW_FIRST_NAME;
+import static com.azure.spring.data.cosmos.common.TestConstants.NEW_LAST_NAME;
+import static com.azure.spring.data.cosmos.common.TestConstants.NOT_EXIST_ID;
+import static com.azure.spring.data.cosmos.common.TestConstants.PAGE_SIZE_1;
+import static com.azure.spring.data.cosmos.common.TestConstants.PAGE_SIZE_2;
+import static com.azure.spring.data.cosmos.common.TestConstants.PROPERTY_ID;
+import static com.azure.spring.data.cosmos.common.TestConstants.PROPERTY_LAST_NAME;
+import static com.azure.spring.data.cosmos.common.TestConstants.UPDATED_FIRST_NAME;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
 
@@ -60,7 +73,7 @@ public class CosmosTemplatePartitionIT {
     @Before
     public void setUp() throws ClassNotFoundException {
         if (!initialized) {
-            final CosmosDbFactory cosmosDbFactory = new CosmosDbFactory(dbConfig);
+            final CosmosDBFactory cosmosDbFactory = new CosmosDBFactory(dbConfig);
             final CosmosMappingContext mappingContext = new CosmosMappingContext();
 
             personInfo = new CosmosEntityInformation<>(PartitionPerson.class);
@@ -137,8 +150,7 @@ public class CosmosTemplatePartitionIT {
 
         final String partitionKeyValue = newPerson.getLastName();
         final PartitionPerson partitionPerson =
-            cosmosTemplate.upsertAndReturnEntity(PartitionPerson.class.getSimpleName(), newPerson,
-                new PartitionKey(partitionKeyValue));
+            cosmosTemplate.upsertAndReturnEntity(PartitionPerson.class.getSimpleName(), newPerson);
 
         final List<PartitionPerson> result = cosmosTemplate.findAll(PartitionPerson.class);
 
@@ -151,8 +163,7 @@ public class CosmosTemplatePartitionIT {
         final PartitionPerson updated = new PartitionPerson(TEST_PERSON.getId(), UPDATED_FIRST_NAME,
                 TEST_PERSON.getLastName(), TEST_PERSON.getHobbies(), TEST_PERSON.getShippingAddresses());
         final PartitionPerson partitionPerson =
-            cosmosTemplate.upsertAndReturnEntity(PartitionPerson.class.getSimpleName(), updated,
-                new PartitionKey(updated.getLastName()));
+            cosmosTemplate.upsertAndReturnEntity(PartitionPerson.class.getSimpleName(), updated);
 
         assertEquals(partitionPerson, updated);
     }
@@ -194,7 +205,7 @@ public class CosmosTemplatePartitionIT {
                 Arrays.asList(TEST_PERSON_2.getFirstName()));
         final DocumentQuery query = new DocumentQuery(criteria);
 
-        final long count = cosmosTemplate.count(query, PartitionPerson.class, containerName);
+        final long count = cosmosTemplate.count(query, containerName);
         assertThat(count).isEqualTo(1);
     }
 
@@ -204,7 +215,7 @@ public class CosmosTemplatePartitionIT {
                 Arrays.asList("non-exist-first-name"));
         final DocumentQuery query = new DocumentQuery(criteria);
 
-        final long count = cosmosTemplate.count(query, PartitionPerson.class, containerName);
+        final long count = cosmosTemplate.count(query, containerName);
         assertThat(count).isEqualTo(0);
     }
 

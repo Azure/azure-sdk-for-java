@@ -8,8 +8,7 @@ package com.azure.cosmos;
  * LINE NUMBERS OF EXISTING CODE SAMPLES.
  */
 
-import com.azure.data.cosmos.ConnectionMode;
-import com.azure.data.cosmos.CosmosKeyCredential;
+import com.azure.core.credential.AzureKeyCredential;
 import com.azure.spring.data.cosmos.config.AbstractCosmosConfiguration;
 import com.azure.spring.data.cosmos.config.CosmosDBConfig;
 import com.azure.spring.data.cosmos.repository.config.EnableCosmosRepositories;
@@ -32,16 +31,15 @@ public class AppConfigurationCodeSnippet extends AbstractCosmosConfiguration {
     @Value("${azure.cosmosdb.database}")
     private String dbName;
 
-    @Value("${azure.cosmosdb.populateQueryMetrics}")
-    private boolean populateQueryMetrics;
-
-    private CosmosKeyCredential cosmosKeyCredential;
+    @Value("${azure.cosmosdb.queryMetricsEnabled}")
+    private boolean queryMetricsEnabled;
 
     public CosmosDBConfig getConfig() {
-        this.cosmosKeyCredential = new CosmosKeyCredential(key);
-        CosmosDBConfig cosmosDbConfig = CosmosDBConfig.builder(uri, this.cosmosKeyCredential, dbName).build();
-        cosmosDbConfig.getConnectionPolicy().connectionMode(ConnectionMode.DIRECT);
-        cosmosDbConfig.getConnectionPolicy().maxPoolSize(1000);
-        return cosmosDbConfig;
+        AzureKeyCredential azureKeyCredential = new AzureKeyCredential(key);
+        return CosmosDBConfig.builder()
+                             .database(dbName)
+                             .cosmosClientBuilder(new CosmosClientBuilder().credential(azureKeyCredential))
+                             .enableQueryMetrics(queryMetricsEnabled)
+                             .build();
     }
 }

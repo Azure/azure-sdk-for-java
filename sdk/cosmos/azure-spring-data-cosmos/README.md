@@ -122,7 +122,7 @@ For reactive repository support, use `@EnableReactiveCosmosRepositories`
 
 ### Response Diagnostics String and Query Metrics
 2.2.x supports Response Diagnostics String and Query Metrics. 
-Set `populateQueryMetrics` flag to true in application.properties to enable query metrics.
+Set `queryMetricsEnabled` flag to true in application.properties to enable query metrics.
 In addition to setting the flag, implement `ResponseDiagnosticsProcessor` to log diagnostics information. 
 <!-- embedme src/samples/java/com/azure/cosmos/AppConfiguration.java#L21-L65 -->
 
@@ -145,8 +145,8 @@ public class AppConfiguration extends AbstractCosmosConfiguration {
     @Value("${azure.cosmosdb.database}")
     private String dbName;
 
-    @Value("${azure.cosmosdb.populateQueryMetrics}")
-    private boolean populateQueryMetrics;
+    @Value("${azure.cosmosdb.queryMetricsEnabled}")
+    private boolean queryMetricsEnabled;
 
     private CosmosKeyCredential cosmosKeyCredential;
 
@@ -154,7 +154,7 @@ public class AppConfiguration extends AbstractCosmosConfiguration {
         this.cosmosKeyCredential = new CosmosKeyCredential(key);
         CosmosDBConfig cosmosdbConfig = CosmosDBConfig.builder(uri,
             this.cosmosKeyCredential, dbName).build();
-        cosmosdbConfig.setPopulateQueryMetrics(populateQueryMetrics);
+        cosmosdbConfig.setQueryMetricEnabled(queryMetricsEnabled);
         cosmosdbConfig.setResponseDiagnosticsProcessor(new ResponseDiagnosticsProcessorImplementation());
         return cosmosdbConfig;
     }
