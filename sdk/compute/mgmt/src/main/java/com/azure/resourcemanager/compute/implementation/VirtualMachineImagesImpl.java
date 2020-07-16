@@ -13,7 +13,6 @@ import com.azure.resourcemanager.compute.fluent.VirtualMachineImagesClient;
 import com.azure.resourcemanager.resources.fluentcore.arm.Region;
 import com.azure.resourcemanager.resources.fluentcore.utils.PagedConverter;
 import java.util.List;
-import reactor.core.publisher.Mono;
 
 /** The implementation for {@link VirtualMachineImages}. */
 public class VirtualMachineImagesImpl implements VirtualMachineImages {
@@ -85,7 +84,6 @@ public class VirtualMachineImagesImpl implements VirtualMachineImages {
                     virtualMachinePublisher
                         .offers()
                         .listAsync()
-                        .onErrorResume(e -> Mono.empty())
                         .flatMap(virtualMachineOffer -> virtualMachineOffer.skus().listAsync())
                         .flatMap(virtualMachineSku -> virtualMachineSku.images().listAsync()));
     }

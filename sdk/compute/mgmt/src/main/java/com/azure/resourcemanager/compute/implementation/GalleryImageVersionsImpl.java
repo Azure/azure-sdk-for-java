@@ -58,7 +58,6 @@ public class GalleryImageVersionsImpl extends WrapperImpl<GalleryImageVersionsCl
         String resourceGroupName, String galleryName, String galleryImageName, String galleryImageVersionName) {
         return inner()
             .getAsync(resourceGroupName, galleryName, galleryImageName, galleryImageVersionName)
-            .onErrorResume(e -> Mono.empty())
             .map(this::wrapModel);
     }
 

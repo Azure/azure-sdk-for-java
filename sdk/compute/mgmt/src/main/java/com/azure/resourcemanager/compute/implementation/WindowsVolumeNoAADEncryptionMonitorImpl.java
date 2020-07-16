@@ -155,13 +155,7 @@ class WindowsVolumeNoAADEncryptionMonitorImpl implements DiskVolumeEncryptionMon
             .computeManager
             .inner()
             .getVirtualMachines()
-            .getByResourceGroupAsync(rgName, vmName)
-            .onErrorResume(
-                e ->
-                    Mono
-                        .error(
-                            new Exception(
-                                String.format("VM with name '%s' not found (resource group '%s')", vmName, rgName))));
+            .getByResourceGroupAsync(rgName, vmName);
     }
 
     /**
