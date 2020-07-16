@@ -62,7 +62,8 @@ public class AuthorizationCodeCredentialBuilder extends AadCredentialBuilderBase
     }
 
     /**
-     * Sets the client secret for the authentication.
+     * Sets the client secret for the authentication. This is required for AAD web apps. Do not set this for AAD native
+     * apps.
      * @param clientSecret the secret value of the AAD application.
      * @return the AuthorizationCodeCredentialBuilder itself
      */
