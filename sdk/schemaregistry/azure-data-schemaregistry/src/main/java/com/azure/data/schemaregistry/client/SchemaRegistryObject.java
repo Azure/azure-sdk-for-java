@@ -62,7 +62,7 @@ public class SchemaRegistryObject {
     public Object deserialize() {
         if (this.deserialized == null) {
             String schemaString = new String(
-                this.schemaBytes, CachedSchemaRegistryClient.SCHEMA_REGISTRY_SERVICE_ENCODING);
+                this.schemaBytes, CachedSchemaRegistryAsyncClient.SCHEMA_REGISTRY_SERVICE_ENCODING);
 
             logger.verbose("Deserializing schema, id: '{}', schema string '{}'", this.schemaId, schemaString);
 

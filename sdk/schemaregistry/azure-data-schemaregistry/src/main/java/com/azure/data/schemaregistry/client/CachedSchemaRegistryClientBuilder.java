@@ -38,9 +38,9 @@ import java.util.concurrent.ConcurrentSkipListMap;
 import java.util.function.Function;
 
 /**
- * Builder implementation for {@link CachedSchemaRegistryClient}.
+ * Builder implementation for {@link CachedSchemaRegistryAsyncClient}.
  */
-@ServiceClientBuilder(serviceClients = CachedSchemaRegistryClient.class)
+@ServiceClientBuilder(serviceClients = CachedSchemaRegistryAsyncClient.class)
 public class CachedSchemaRegistryClientBuilder {
     private final ClientLogger logger = new ClientLogger(CachedSchemaRegistryClientBuilder.class);
 
@@ -115,15 +115,15 @@ public class CachedSchemaRegistryClientBuilder {
     /**
      * Sets schema cache size limit.  If limit is exceeded on any cache, all caches are recycled.
      *
-     * @param maxSchemaMapSize max size for internal schema caches in {@link CachedSchemaRegistryClient}
+     * @param maxSchemaMapSize max size for internal schema caches in {@link CachedSchemaRegistryAsyncClient}
      * @return The updated {@link CachedSchemaRegistryClientBuilder} object.
      * @throws IllegalArgumentException on invalid maxSchemaMapSize value
      */
     public CachedSchemaRegistryClientBuilder maxSchemaMapSize(int maxSchemaMapSize) {
-        if (maxSchemaMapSize < CachedSchemaRegistryClient.MAX_SCHEMA_MAP_SIZE_MINIMUM) {
+        if (maxSchemaMapSize < CachedSchemaRegistryAsyncClient.MAX_SCHEMA_MAP_SIZE_MINIMUM) {
             throw logger.logExceptionAsError(new IllegalArgumentException(
                 String.format("Schema map size must be greater than %s entries",
-                    CachedSchemaRegistryClient.MAX_SCHEMA_MAP_SIZE_MINIMUM)));
+                    CachedSchemaRegistryAsyncClient.MAX_SCHEMA_MAP_SIZE_MINIMUM)));
         }
 
         this.maxSchemaMapSize = maxSchemaMapSize;
@@ -144,7 +144,7 @@ public class CachedSchemaRegistryClientBuilder {
     /**
      * Sets the HTTP pipeline to use for the service client.
      * <p>
-     * If {@code pipeline} is set, all other HTTP settings are ignored to build {@link CachedSchemaRegistryClient}.
+     * If {@code pipeline} is set, all other HTTP settings are ignored to build {@link CachedSchemaRegistryAsyncClient}.
      *
      * @param httpPipeline The HTTP pipeline to use for sending service requests and receiving responses.
      * @return The updated {@link CachedSchemaRegistryClientBuilder} object.
@@ -161,7 +161,7 @@ public class CachedSchemaRegistryClientBuilder {
 
     /**
      * Sets the {@link TokenCredential} to use when authenticating HTTP requests for this
-     * {@link CachedSchemaRegistryClient}.
+     * {@link CachedSchemaRegistryAsyncClient}.
      *
      * @param credential {@link TokenCredential}
      * @return The updated {@link CachedSchemaRegistryClientBuilder} object.
@@ -188,7 +188,7 @@ public class CachedSchemaRegistryClientBuilder {
     /**
      * Sets the {@link RetryPolicy} that is used when each request is sent.
      * <p>
-     * The default retry policy will be used if not provided to build {@link CachedSchemaRegistryClient} .
+     * The default retry policy will be used if not provided to build {@link CachedSchemaRegistryAsyncClient} .
      *
      * @param retryPolicy user's retry policy applied to each request.
      * @return The updated {@link CachedSchemaRegistryClientBuilder} object.
@@ -238,17 +238,17 @@ public class CachedSchemaRegistryClientBuilder {
     }
 
     /**
-     * Creates a {@link CachedSchemaRegistryClient} based on options set in the builder.
-     * Every time {@code buildClient()} is called a new instance of {@link CachedSchemaRegistryClient} is created.
+     * Creates a {@link CachedSchemaRegistryAsyncClient} based on options set in the builder.
+     * Every time {@code buildClient()} is called a new instance of {@link CachedSchemaRegistryAsyncClient} is created.
      *
      * If {@link #pipeline(HttpPipeline) pipeline} is set, then all HTTP pipeline related settings are ignored
-     * endpoint} are when creating the {@link CachedSchemaRegistryClient client}.
+     * endpoint} are when creating the {@link CachedSchemaRegistryAsyncClient client}.
      *
-     * @return A {@link CachedSchemaRegistryClient} with the options set from the builder.
+     * @return A {@link CachedSchemaRegistryAsyncClient} with the options set from the builder.
      * @throws NullPointerException if parameters are incorrectly set.
      * @throws IllegalArgumentException if credential is not set.
      */
-    public CachedSchemaRegistryClient buildClient() {
+    public CachedSchemaRegistryAsyncClient buildAsyncClient() {
         // Authentications
         if (credential == null) {
             // Throw exception that credential and tokenCredential cannot be null
@@ -292,8 +292,18 @@ public class CachedSchemaRegistryClientBuilder {
 
         this.maxSchemaMapSize = this.maxSchemaMapSize != null
             ? this.maxSchemaMapSize
-            : CachedSchemaRegistryClient.MAX_SCHEMA_MAP_SIZE_DEFAULT;
+            : CachedSchemaRegistryAsyncClient.MAX_SCHEMA_MAP_SIZE_DEFAULT;
 
-        return new CachedSchemaRegistryClient(restService, maxSchemaMapSize, typeParserMap);
+        return new CachedSchemaRegistryAsyncClient(restService, maxSchemaMapSize, typeParserMap);
     }
+
+    /**
+     * Creates synchronous {@link CachedSchemaRegistryClient} instance.
+     * See async builder method for options validation.
+     *
+     * @return {@link CachedSchemaRegistryClient} with the options set from the builder.
+     */
+     public CachedSchemaRegistryClient buildClient() {
+        return new CachedSchemaRegistryClient(this.buildAsyncClient());
+     }
 }

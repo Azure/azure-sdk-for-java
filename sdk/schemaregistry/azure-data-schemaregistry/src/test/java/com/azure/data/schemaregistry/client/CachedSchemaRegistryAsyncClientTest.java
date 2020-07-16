@@ -18,7 +18,7 @@ import java.util.function.Function;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-public class CachedSchemaRegistryClientTest {
+public class CachedSchemaRegistryAsyncClientTest {
     private static final String MOCK_SERIALIZATION = "mock_serialization_type";
     private static final String MOCK_ID = "mock_guid";
     private static final SchemaId MOCK_SCHEMA_ID = new SchemaId();
@@ -26,7 +26,7 @@ public class CachedSchemaRegistryClientTest {
     private static final String MOCK_SCHEMA_NAME = "mockname";
     private static final String MOCK_AVRO_SCHEMA = "{\"namespace\":\"example2.avro\",\"type\":\"record\",\"name\":\"User\",\"fields\":[{\"name\":\"name\",\"type\":\"string\"},{\"name\":\"favorite_number\",\"type\": [\"int\", \"null\"]}]}";
 
-    private CachedSchemaRegistryClient client;
+    private CachedSchemaRegistryAsyncClient client;
     private AzureSchemaRegistryRestService restService;
     private HashMap<String, SchemaRegistryObject> guidCache;
     private HashMap<String, SchemaRegistryObject> schemaStringCache;
@@ -41,7 +41,7 @@ public class CachedSchemaRegistryClientTest {
         this.typeParserDictionary.put(MOCK_SERIALIZATION, (s) -> s);
 
         this.restService = mock(AzureSchemaRegistryRestService.class);
-        this.client = new CachedSchemaRegistryClient(
+        this.client = new CachedSchemaRegistryAsyncClient(
             this.restService,
             this.guidCache,
             this.schemaStringCache,
@@ -111,8 +111,8 @@ public class CachedSchemaRegistryClientTest {
                     MOCK_AVRO_SCHEMA,
                     mockHeaders)));
 
-        SchemaRegistryObject first = client.getSchemaById(mockId.toString());
-        SchemaRegistryObject second = client.getSchemaById(mockId.toString());
+        SchemaRegistryObject first = client.getSchemaById(mockId.toString()).block();
+        SchemaRegistryObject second = client.getSchemaById(mockId.toString()).block();
 
         assertTrue(first.equals(second));
         assertEquals(mockId.toString(), first.getSchemaId());

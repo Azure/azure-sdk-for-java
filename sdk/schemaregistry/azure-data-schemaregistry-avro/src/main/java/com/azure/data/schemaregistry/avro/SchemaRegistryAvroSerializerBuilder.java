@@ -5,7 +5,7 @@ package com.azure.data.schemaregistry.avro;
 
 import com.azure.core.credential.TokenCredential;
 import com.azure.data.schemaregistry.AbstractDataSerializer;
-import com.azure.data.schemaregistry.client.CachedSchemaRegistryClient;
+import com.azure.data.schemaregistry.client.CachedSchemaRegistryAsyncClient;
 import com.azure.data.schemaregistry.client.CachedSchemaRegistryClientBuilder;
 
 import java.util.Objects;
@@ -99,7 +99,7 @@ public final class SchemaRegistryAvroSerializerBuilder {
     }
 
     /**
-     * Specifies maximum schema object cache size for underlying CachedSchemaRegistryClient.  If specified cache
+     * Specifies maximum schema object cache size for underlying CachedSchemaRegistryAsyncClient.  If specified cache
      * size is exceeded, all caches are recycled.
      *
      * @param maxSchemaMapSize maximum number of schemas per cache
@@ -117,8 +117,8 @@ public final class SchemaRegistryAvroSerializerBuilder {
      * @throws NullPointerException if parameters are incorrectly set.
      * @throws IllegalArgumentException if credential is not set.
      */
-    public SchemaRegistryAvroSerializer buildSyncClient() {
-        return new SchemaRegistryAvroSerializer(this.buildClient());
+    public SchemaRegistryAvroSerializer buildClient() {
+        return new SchemaRegistryAvroSerializer(this.buildAsyncClient());
     }
 
     /**
@@ -128,7 +128,7 @@ public final class SchemaRegistryAvroSerializerBuilder {
      * @throws NullPointerException if parameters are incorrectly set.
      * @throws IllegalArgumentException if credential is not set.
      */
-    public SchemaRegistryAvroAsyncSerializer buildClient() {
+    public SchemaRegistryAvroAsyncSerializer buildAsyncClient() {
         CachedSchemaRegistryClientBuilder builder = new CachedSchemaRegistryClientBuilder()
             .endpoint(registryUrl)
             .credential(credential);
@@ -137,9 +137,13 @@ public final class SchemaRegistryAvroSerializerBuilder {
             builder.maxSchemaMapSize(maxSchemaMapSize);
         }
 
-        CachedSchemaRegistryClient client = builder.buildClient();
+        AvroCodec codec = new AvroCodec(this.avroSpecificReader);
 
-        return new SchemaRegistryAvroAsyncSerializer(client, this.schemaGroup,
-            this.autoRegisterSchemas, this.avroSpecificReader);
+        CachedSchemaRegistryAsyncClient client = builder
+            .addSchemaParser(codec)
+            .buildAsyncClient();
+
+        return new SchemaRegistryAvroAsyncSerializer(client, codec, this.schemaGroup,
+            this.autoRegisterSchemas);
     }
 }

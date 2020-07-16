@@ -5,7 +5,6 @@ package com.azure.data.schemaregistry.avro;
 
 import com.azure.data.schemaregistry.AbstractDataSerializer;
 import com.azure.data.schemaregistry.SerializationException;
-import com.azure.data.schemaregistry.client.CachedSchemaRegistryClient;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;

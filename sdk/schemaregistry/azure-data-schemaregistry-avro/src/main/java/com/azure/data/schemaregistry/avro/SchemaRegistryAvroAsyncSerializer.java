@@ -7,7 +7,7 @@ import com.azure.core.experimental.serializer.ObjectSerializer;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.data.schemaregistry.AbstractDataSerializer;
 import com.azure.data.schemaregistry.SerializationException;
-import com.azure.data.schemaregistry.client.CachedSchemaRegistryClient;
+import com.azure.data.schemaregistry.client.CachedSchemaRegistryAsyncClient;
 import reactor.core.publisher.Mono;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -21,17 +21,16 @@ public class SchemaRegistryAvroAsyncSerializer extends AbstractDataSerializer im
     /**
      *
      * @param registryClient
+     * @param codec
      * @param schemaGroup
      * @param autoRegisterSchemas
-     * @param avroSpecificReader
      */
-    SchemaRegistryAvroAsyncSerializer(CachedSchemaRegistryClient registryClient, String schemaGroup,
-                                 boolean autoRegisterSchemas, boolean avroSpecificReader) {
+    SchemaRegistryAvroAsyncSerializer(CachedSchemaRegistryAsyncClient registryClient, AvroCodec codec,
+                                      String schemaGroup, boolean autoRegisterSchemas) {
         super(registryClient);
 
-        AvroCodec avroCodec = new AvroCodec(avroSpecificReader);
-        setSerializerCodec(avroCodec);
-        loadDeserializerCodec(avroCodec);
+        setSerializerCodec(codec);
+        addDeserializerCodec(codec);
 
         // send configurations only
         this.autoRegisterSchemas = autoRegisterSchemas;

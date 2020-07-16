@@ -5,6 +5,7 @@ package com.azure.data.schemaregistry;
 
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.data.schemaregistry.client.CachedSchemaRegistryAsyncClient;
 import com.azure.data.schemaregistry.client.SchemaRegistryClient;
 import com.azure.data.schemaregistry.client.SchemaRegistryClientException;
 import com.azure.data.schemaregistry.client.SchemaRegistryObject;
@@ -30,10 +31,11 @@ public abstract class AbstractDataSerializer extends AbstractDataSerDe {
 
     public static final Boolean AUTO_REGISTER_SCHEMAS_DEFAULT = false;
     public static final String SCHEMA_GROUP_DEFAULT = "$default";
+    public static final int SCHEMA_ID_SIZE = 32;
 
+    protected CachedSchemaRegistryAsyncClient schemaRegistryClient;
     protected Codec serializerCodec = null;
     private final Map<String, Codec> deserializerCodecMap = new ConcurrentSkipListMap<>(String.CASE_INSENSITIVE_ORDER);
-
     protected String schemaType;
     protected Boolean autoRegisterSchemas = AbstractDataSerializer.AUTO_REGISTER_SCHEMAS_DEFAULT;
     protected String schemaGroup = AbstractDataSerializer.SCHEMA_GROUP_DEFAULT;
@@ -41,8 +43,12 @@ public abstract class AbstractDataSerializer extends AbstractDataSerDe {
     /**
      * @param schemaRegistryClient registry client to be used for storing schemas.  Not null.
      */
-    public AbstractDataSerializer(SchemaRegistryClient schemaRegistryClient) {
-        super(schemaRegistryClient);
+    public AbstractDataSerializer(CachedSchemaRegistryAsyncClient schemaRegistryClient) {
+        if (schemaRegistryClient == null) {
+            throw logger.logExceptionAsError(
+                new IllegalArgumentException("Schema registry client must be initialized and passed into builder."));
+        }
+        this.schemaRegistryClient = schemaRegistryClient;
     }
 
     /**
@@ -62,7 +68,6 @@ public abstract class AbstractDataSerializer extends AbstractDataSerDe {
         }
         this.serializerCodec = codec;
         this.schemaType = codec.schemaType();
-        this.schemaRegistryClient.addSchemaParser(codec);
     }
 
     /**
@@ -242,13 +247,12 @@ public abstract class AbstractDataSerializer extends AbstractDataSerDe {
      * Loads Codec to be used for decoding message payloads of specified schema type.
      * @param codec Codec class instance to be loaded
      */
-    protected void loadDeserializerCodec(Codec codec) {
+    protected void addDeserializerCodec(Codec codec) {
         if (codec == null) {
             throw logger.logExceptionAsError(new SerializationException("ByteDecoder cannot be null"));
         }
 
         this.deserializerCodecMap.put(codec.schemaType(), codec);
-        this.schemaRegistryClient.addSchemaParser(codec);
     }
 
     /**

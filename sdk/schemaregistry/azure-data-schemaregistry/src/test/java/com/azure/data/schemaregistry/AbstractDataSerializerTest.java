@@ -3,22 +3,38 @@
 
 package com.azure.data.schemaregistry;
 
+import com.azure.data.schemaregistry.client.CachedSchemaRegistryAsyncClient;
+import com.azure.data.schemaregistry.client.SchemaRegistryClientException;
 import com.azure.data.schemaregistry.client.SchemaRegistryObject;
+import org.apache.avro.Schema;
+import org.apache.avro.generic.GenericData;
+import org.apache.avro.generic.GenericDatumWriter;
+import org.apache.avro.generic.GenericRecord;
+import org.apache.avro.io.BinaryEncoder;
+import org.apache.avro.io.EncoderFactory;
 import org.junit.jupiter.api.Test;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.nio.BufferUnderflowException;
 import java.nio.ByteBuffer;
+import java.nio.charset.Charset;
 import java.util.Arrays;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.mock;
 
 public class AbstractDataSerializerTest {
     private static final String MOCK_GUID = new String(new char[AbstractDataSerDe.SCHEMA_ID_SIZE]).replace("\0", "a");
+    private static final String MOCK_AVRO_SCHEMA_STRING = "{\"namespace\":\"example2.avro\",\"type\":\"record\",\"name\":\"User\",\"fields\":[{\"name\":\"name\",\"type\":\"string\"},{\"name\":\"favorite_number\",\"type\": [\"int\", \"null\"]}]}";
+    private final EncoderFactory encoderFactory = EncoderFactory.get();
+    private static final Schema MOCK_AVRO_SCHEMA = (new Schema.Parser()).parse(MOCK_AVRO_SCHEMA_STRING);
 
     @Test
     public void testRegistryGuidPrefixedToPayload() {
         // manually add SchemaRegistryObject into mock registry client cache
-        SampleByteEncoder encoder = new SampleByteEncoder();
+        SampleCodec encoder = new SampleCodec();
         SchemaRegistryObject registered = new SchemaRegistryObject(MOCK_GUID,
             encoder.schemaType(),
             encoder.getSchemaString(null).getBytes(), // always returns same schema string
@@ -100,5 +116,86 @@ public class AbstractDataSerializerTest {
     public void testDefaultAutoRegister() {
         TestDummySerializer serializer = new TestDummySerializer(new MockSchemaRegistryClient(), true);
         assertEquals(false, (boolean) serializer.autoRegisterSchemas);
+    }
+
+
+    @Test
+    public void testAddDeserializerCodec() throws IOException, SchemaRegistryClientException, SerializationException {
+        // add sample codec impl and test that it is used for decoding payload
+        SampleCodec decoder = new SampleCodec();
+
+        // manually add SchemaRegistryObject to cache
+        SchemaRegistryObject registered = new SchemaRegistryObject(MOCK_GUID,
+            decoder.schemaType(),
+            MOCK_AVRO_SCHEMA_STRING.getBytes(),
+            decoder::parseSchemaString);
+
+        assertTrue(registered.deserialize() != null);
+
+        CachedSchemaRegistryAsyncClient mockClient = getMockClient();
+        mockClient.getGuidCache().put(MOCK_GUID, registered);
+
+        // constructor loads deserializer codec
+        TestDummySerializer serializer = new TestDummySerializer(mockClient, true, true);
+
+        assertEquals(MOCK_GUID,
+            serializer.schemaRegistryClient.getSchemaById(MOCK_GUID).block().getSchemaId());
+        assertEquals(SampleCodec.CONSTANT_PAYLOAD,
+            serializer.deserialize(new ByteArrayInputStream(getPayload())));
+    }
+
+    @Test
+    public void testNullPayload() throws SchemaRegistryClientException, SerializationException {
+        TestDummySerializer deserializer = new TestDummySerializer(new MockSchemaRegistryClient(), true, true);
+        assertNull(deserializer.deserialize(null));
+    }
+
+    @Test
+    public void testIfTooShortPayloadThrow() {
+        TestDummySerializer serializer = new TestDummySerializer(new MockSchemaRegistryClient(), true, true);
+
+        try {
+            serializer.deserialize(new ByteArrayInputStream("bad payload".getBytes()));
+            fail("Too short payload did not throw SerializationException");
+        } catch (SerializationException e) {
+            assertTrue(true);
+        }
+    }
+
+    // TODO: add for non-existing guid
+
+    @Test
+    public void testIfRegistryClientNullOnBuildThrow() {
+        try {
+            TestDummySerializer deserializer = new TestDummySerializer(null, true, true);
+            fail("should not get here.");
+        } catch (IllegalArgumentException e) {
+            // good
+        }
+    }
+
+    private CachedSchemaRegistryAsyncClient getMockClient() {
+        return mock(CachedSchemaRegistryAsyncClient.class);
+    }
+
+    private byte[] getPayload() throws IOException {
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        out.write(ByteBuffer.allocate(AbstractDataSerDe.SCHEMA_ID_SIZE)
+            .put(MOCK_GUID.getBytes(Charset.forName("UTF-8")))
+            .array());
+        GenericRecord record = getAvroRecord();
+        BinaryEncoder encoder = encoderFactory.directBinaryEncoder(out, null);
+        GenericDatumWriter<GenericRecord> writer = new GenericDatumWriter<>(MOCK_AVRO_SCHEMA);
+        writer.write(record, encoder);
+        encoder.flush();
+        byte[] bytes = out.toByteArray();
+        return bytes;
+    }
+
+    private GenericRecord getAvroRecord() {
+        GenericRecord avroRecord = new GenericData.Record(MOCK_AVRO_SCHEMA);
+        avroRecord.put("name", "arthur");
+        avroRecord.put("favorite_number", 23);
+        return avroRecord;
     }
 }
