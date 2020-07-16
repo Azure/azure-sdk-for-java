@@ -14,6 +14,7 @@ import com.azure.storage.blob.models.CopyStatusType;
 import com.azure.storage.blob.models.LeaseDurationType;
 import com.azure.storage.blob.models.LeaseStateType;
 import com.azure.storage.blob.models.LeaseStatusType;
+import com.azure.storage.blob.models.RehydratePriority;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import java.time.OffsetDateTime;
@@ -236,6 +237,12 @@ public final class BlobItemPropertiesInternal {
      */
     @JsonProperty(value = "IsSealed")
     private Boolean isSealed;
+
+    /*
+     * Possible values include: 'High', 'Standard'
+     */
+    @JsonProperty(value = "RehydratePriority")
+    private RehydratePriority rehydratePriority;
 
     /**
      * Get the creationTime property: The creationTime property.
@@ -1003,6 +1010,28 @@ public final class BlobItemPropertiesInternal {
      */
     public BlobItemPropertiesInternal setIsSealed(Boolean isSealed) {
         this.isSealed = isSealed;
+        return this;
+    }
+
+    /**
+     * Get the rehydratePriority property: Possible values include: 'High',
+     * 'Standard'.
+     *
+     * @return the rehydratePriority value.
+     */
+    public RehydratePriority getRehydratePriority() {
+        return this.rehydratePriority;
+    }
+
+    /**
+     * Set the rehydratePriority property: Possible values include: 'High',
+     * 'Standard'.
+     *
+     * @param rehydratePriority the rehydratePriority value to set.
+     * @return the BlobItemPropertiesInternal object itself.
+     */
+    public BlobItemPropertiesInternal setRehydratePriority(RehydratePriority rehydratePriority) {
+        this.rehydratePriority = rehydratePriority;
         return this;
     }
 }
