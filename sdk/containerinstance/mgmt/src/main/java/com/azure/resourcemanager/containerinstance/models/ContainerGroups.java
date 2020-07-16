@@ -53,7 +53,6 @@ public interface ContainerGroups extends
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return all available log lines
      */
-    @Beta(Beta.SinceVersion.V1_5_0)
     String getLogContent(String resourceGroupName, String containerGroupName, String containerName);
 
     /**
@@ -66,7 +65,6 @@ public interface ContainerGroups extends
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the log lines from the end, up to the number specified
      */
-    @Beta(Beta.SinceVersion.V1_5_0)
     String getLogContent(String resourceGroupName, String containerGroupName, String containerName, int tailLineCount);
 
     /**
@@ -78,7 +76,6 @@ public interface ContainerGroups extends
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return a representation of the future computation of this call
      */
-    @Beta(Beta.SinceVersion.V1_5_0)
     Observable<String> getLogContentAsync(String resourceGroupName, String containerGroupName, String containerName);
 
     /**
@@ -91,7 +88,6 @@ public interface ContainerGroups extends
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return a representation of the future computation of this call
      */
-    @Beta(Beta.SinceVersion.V1_5_0)
     Observable<String> getLogContentAsync(String resourceGroupName, String containerGroupName, String containerName, int tailLineCount);
 
     /**
@@ -99,7 +95,6 @@ public interface ContainerGroups extends
      *
      * @return all operations for Azure Container Instance service
      */
-    @Beta(Beta.SinceVersion.V1_5_0)
     Set<Operation> listOperations();
 
     /**
@@ -107,7 +102,6 @@ public interface ContainerGroups extends
      *
      * @return a representation of the future computation of this call
      */
-    @Beta(Beta.SinceVersion.V1_23_0)
     Observable<Set<Operation>> listOperationsAsync();
 
     /**
@@ -116,7 +110,6 @@ public interface ContainerGroups extends
      * @param location the identifier for the physical azure location.
      * @return all cached images from the specified location
      */
-    @Beta(Beta.SinceVersion.V1_23_0)
     List<CachedImages> listCachedImages(String location);
 
     /**
@@ -125,7 +118,6 @@ public interface ContainerGroups extends
      * @param location the identifier for the physical azure location.
      * @return a representation of the future computation of this call
      */
-    @Beta(Beta.SinceVersion.V1_23_0)
     Observable<CachedImages> listCachedImagesAsync(String location);
 
     /**
@@ -134,7 +126,6 @@ public interface ContainerGroups extends
      * @param location the identifier for the physical azure location
      * @return a list of all of the capabilities of the given location
      */
-    @Beta(Beta.SinceVersion.V1_23_0)
     List<Capabilities> listCapabilities(String location);
 
     /**
@@ -143,7 +134,6 @@ public interface ContainerGroups extends
      * @param location the identifier for the physical azure location
      * @return a representation of the future computation of this call
      */
-    @Beta(Beta.SinceVersion.V1_23_0)
     Observable<Capabilities> listCapabilitiesAsync(String location);
 
     /**
@@ -152,7 +142,6 @@ public interface ContainerGroups extends
      * @param resourceGroupName the name of the resource group of the container group
      * @param containerGroupName the name of the container group
      */
-    @Beta(Beta.SinceVersion.V1_23_0)
     void start(String resourceGroupName, String containerGroupName);
 
     /**
@@ -162,6 +151,5 @@ public interface ContainerGroups extends
      * @param containerGroupName the name of the container group
      * @return a representation of the future computation of this call
      */
-    @Beta(Beta.SinceVersion.V1_23_0)
     Completable startAsync(String resourceGroupName, String containerGroupName);
 }

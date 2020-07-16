@@ -49,7 +49,6 @@ public interface ContainerGroup extends
     /**
      * @return all the ports publicly exposed for this container group
      */
-    @Beta(Beta.SinceVersion.V1_5_0)
     Set<Port> externalPorts();
 
     /**
@@ -76,19 +75,16 @@ public interface ContainerGroup extends
      * @return the container group restart policy
 
      */
-    @Beta(Beta.SinceVersion.V1_5_0)
     ContainerGroupRestartPolicy restartPolicy();
 
     /**
      * @return the DNS prefix which was specified at creation time
      */
-    @Beta(Beta.SinceVersion.V1_7_0)
     String dnsPrefix();
 
     /**
      * @return the FQDN for the container group
      */
-    @Beta(Beta.SinceVersion.V1_7_0)
     String fqdn();
 
     /**
@@ -124,52 +120,44 @@ public interface ContainerGroup extends
     /**
      * @return the container group events
      */
-    @Beta(Beta.SinceVersion.V1_5_0)
     Set<Event> events();
 
     /**
      * @return the DNS configuration for the container group
      */
-    @Beta(Beta.SinceVersion.V1_23_0)
     DnsConfiguration dnsConfig();
 
     /**
      * @return the id of the network profile for the container group
      */
-    @Beta(Beta.SinceVersion.V1_23_0)
     String networkProfileId();
 
     /**
      * @return whether managed service identity is enabled for the container group
      */
-    @Beta(Beta.SinceVersion.V1_23_0)
     boolean isManagedServiceIdentityEnabled();
 
     /**
      * @return the tenant id of the system assigned managed service identity. Null if managed
      * service identity is not configured.
      */
-    @Beta(Beta.SinceVersion.V1_23_0)
     String systemAssignedManagedServiceIdentityTenantId();
 
     /**
      * @return the principal id of the system assigned managed service identity. Null if managed
      * service identity is not configured.
      */
-    @Beta(Beta.SinceVersion.V1_23_0)
     String systemAssignedManagedServiceIdentityPrincipalId();
 
     /**
      * @return whether managed service identity is system assigned, user assigned, both, or neither
      */
-    @Beta(Beta.SinceVersion.V1_23_0)
     ResourceIdentityType managedServiceIdentityType();
 
     /**
      * @return the ids of the user assigned managed service identities. Returns an empty set if no
      * MSIs are set.
      */
-    @Beta(Beta.SinceVersion.V1_23_0)
     Set<String> userAssignedManagedServiceIdentityIds();
 
     /**
@@ -184,7 +172,6 @@ public interface ContainerGroup extends
     /**
      * Restarts all containers in a container group in place. If container image has updates, new image will be downloaded.
      */
-    @Beta(Beta.SinceVersion.V1_15_0)
     @Method
     void restart();
 
@@ -193,14 +180,12 @@ public interface ContainerGroup extends
      *
      * @return a representation of the deferred computation of this call
      */
-    @Beta(Beta.SinceVersion.V1_15_0)
     @Method
     Completable restartAsync();
 
     /**
      * Stops all containers in a container group. Compute resources will be de-allocated and billing will stop.
      */
-    @Beta(Beta.SinceVersion.V1_15_0)
     @Method
     void stop();
 
@@ -209,7 +194,6 @@ public interface ContainerGroup extends
      *
      * @return a representation of the deferred computation of this call
      */
-    @Beta(Beta.SinceVersion.V1_15_0)
     @Method
     Completable stopAsync();
 
@@ -261,7 +245,6 @@ public interface ContainerGroup extends
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the log lines from the end, up to the number specified
      */
-    @Beta(Beta.SinceVersion.V1_11_0)
     ContainerExecResponse executeCommand(String containerName, String command, int row, int column);
 
     /**
@@ -274,7 +257,6 @@ public interface ContainerGroup extends
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return a representation of the future computation of this call
      */
-    @Beta(Beta.SinceVersion.V1_11_0)
     Observable<ContainerExecResponse> executeCommandAsync(String containerName, String command, int row, int column);
 
 
@@ -394,7 +376,6 @@ public interface ContainerGroup extends
              * @param name the name of the empty directory volume
              * @return the next stage of the definition
              */
-            @Beta(Beta.SinceVersion.V1_7_0)
             WithFirstContainerInstance withEmptyDirectoryVolume(String name);
 
             /**
@@ -502,7 +483,6 @@ public interface ContainerGroup extends
                  * @param secrets the new volume secrets map; value must be in Base64 encoding
                  * @return the next stage of the definition
                  */
-                @Beta(Beta.SinceVersion.V1_7_0)
                 WithVolumeAttach<ParentT> withSecrets(Map<String, String> secrets);
             }
 
@@ -518,7 +498,6 @@ public interface ContainerGroup extends
                  * @param gitUrl the Git URL for the new volume
                  * @return the next stage of the definition
                  */
-                @Beta(Beta.SinceVersion.V1_7_0)
                 WithGitDirectoryName<ParentT> withGitUrl(String gitUrl);
             }
 
@@ -538,7 +517,6 @@ public interface ContainerGroup extends
                  * @param gitDirectoryName the Git target directory name for the new volume
                  * @return the next stage of the definition
                  */
-                @Beta(Beta.SinceVersion.V1_7_0)
                 WithGitRevision<ParentT> withGitDirectoryName(String gitDirectoryName);
             }
 
@@ -554,7 +532,6 @@ public interface ContainerGroup extends
                  * @param gitRevision the Git revision for the new volume
                  * @return the next stage of the definition
                  */
-                @Beta(Beta.SinceVersion.V1_7_0)
                 WithVolumeAttach<ParentT> withGitRevision(String gitRevision);
             }
 
@@ -693,7 +670,6 @@ public interface ContainerGroup extends
              *
              * @param <ParentT> the stage of the parent definition to return to after attaching this definition
              */
-            @Beta(Beta.SinceVersion.V1_8_0)
             interface WithPorts<ParentT> {
                 /**
                  * Specifies the container's TCP ports available to external clients.
@@ -756,7 +732,6 @@ public interface ContainerGroup extends
                  * @param ports array of TCP ports to be exposed internally
                  * @return the next stage of the definition
                  */
-                @Beta(Beta.SinceVersion.V1_8_0)
                 WithPortsOrContainerInstanceAttach<ParentT> withInternalTcpPorts(int... ports);
 
                 /**
@@ -768,7 +743,6 @@ public interface ContainerGroup extends
                  * @param ports array of UDP ports to be exposed internally
                  * @return the next stage of the definition
                  */
-                @Beta(Beta.SinceVersion.V1_8_0)
                 WithPortsOrContainerInstanceAttach<ParentT> withInternalUdpPorts(int... ports);
 
                 /**
@@ -780,7 +754,6 @@ public interface ContainerGroup extends
                  * @param port TCP port to be exposed internally
                  * @return the next stage of the definition
                  */
-                @Beta(Beta.SinceVersion.V1_8_0)
                 WithPortsOrContainerInstanceAttach<ParentT> withInternalTcpPort(int port);
 
                 /**
@@ -792,7 +765,6 @@ public interface ContainerGroup extends
                  * @param port UDP port to be exposed internally
                  * @return the next stage of the definition
                  */
-                @Beta(Beta.SinceVersion.V1_8_0)
                 WithPortsOrContainerInstanceAttach<ParentT> withInternalUdpPort(int port);
             }
 
@@ -848,7 +820,6 @@ public interface ContainerGroup extends
                  * @param parameters the parameter list for the executable to be called
                  * @return the next stage of the definition
                  */
-                @Beta(Beta.SinceVersion.V1_11_0)
                 WithContainerInstanceAttach<ParentT> withStartingCommandLine(String executable, String... parameters);
 
                 /**
@@ -865,7 +836,6 @@ public interface ContainerGroup extends
              *
              * @param <ParentT> the stage of the parent definition to return to after attaching this definition
              */
-            @Beta(Beta.SinceVersion.V1_15_0)
             interface WithEnvironmentVariables<ParentT> {
                 /**
                  * Specifies the environment variables.
@@ -890,7 +860,6 @@ public interface ContainerGroup extends
                  * @param environmentVariables the environment variables in a name and value pair to be set after the container gets initialized
                  * @return the next stage of the definition
                  */
-                @Beta(Beta.SinceVersion.V1_15_0)
                 WithContainerInstanceAttach<ParentT> withEnvironmentVariableWithSecuredValue(Map<String, String> environmentVariables);
 
                 /**
@@ -900,7 +869,6 @@ public interface ContainerGroup extends
                  * @param securedValue the environment variable secured value
                  * @return the next stage of the definition
                  */
-                @Beta(Beta.SinceVersion.V1_15_0)
                 WithContainerInstanceAttach<ParentT> withEnvironmentVariableWithSecuredValue(String envName, String securedValue);
             }
 
@@ -1002,7 +970,6 @@ public interface ContainerGroup extends
              *
              * @return the next stage of the definition
              */
-            @Beta(Beta.SinceVersion.V1_23_0)
             WithSystemAssignedIdentityBasedAccessOrCreate withSystemAssignedManagedServiceIdentity();
         }
 
@@ -1018,7 +985,6 @@ public interface ContainerGroup extends
              * @param role access role to be assigned to the identity
              * @return the next stage of the definition
              */
-            @Beta(Beta.SinceVersion.V1_23_0)
             WithSystemAssignedIdentityBasedAccessOrCreate withSystemAssignedIdentityBasedAccessTo(String resourceId, BuiltInRole role);
 
             /**
@@ -1027,7 +993,6 @@ public interface ContainerGroup extends
              * @param role access role to be assigned to the identity
              * @return the next stage of the definition
              */
-            @Beta(Beta.SinceVersion.V1_23_0)
             WithSystemAssignedIdentityBasedAccessOrCreate withSystemAssignedIdentityBasedAccessToCurrentResourceGroup(BuiltInRole role);
 
             /**
@@ -1037,7 +1002,6 @@ public interface ContainerGroup extends
              * @param roleDefinitionId id of the access role to be assigned to the identity
              * @return the next stage of the definition
              */
-            @Beta(Beta.SinceVersion.V1_23_0)
             WithSystemAssignedIdentityBasedAccessOrCreate withSystemAssignedIdentityBasedAccessTo(String resourceId, String roleDefinitionId);
 
             /**
@@ -1046,7 +1010,6 @@ public interface ContainerGroup extends
              * @param roleDefinitionId id of the access role to be assigned to the identity
              * @return the next stage of the definition
              */
-            @Beta(Beta.SinceVersion.V1_23_0)
             WithSystemAssignedIdentityBasedAccessOrCreate withSystemAssignedIdentityBasedAccessToCurrentResourceGroup(String roleDefinitionId);
         }
 
@@ -1060,7 +1023,6 @@ public interface ContainerGroup extends
              * @param creatableIdentity a creatable identity definition
              * @return the next stage of the definition
              */
-            @Beta(Beta.SinceVersion.V1_23_0)
             WithCreate withNewUserAssignedManagedServiceIdentity(Creatable<Identity> creatableIdentity);
 
             /**
@@ -1069,7 +1031,6 @@ public interface ContainerGroup extends
              * @param identity the identity
              * @return the next stage of the definition
              */
-            @Beta(Beta.SinceVersion.V1_23_0)
             WithCreate withExistingUserAssignedManagedServiceIdentity(Identity identity);
         }
 
@@ -1083,7 +1044,6 @@ public interface ContainerGroup extends
              * @param restartPolicy the restart policy for all the container instances within the container group
              * @return the next stage of the definition
              */
-            @Beta(Beta.SinceVersion.V1_5_0)
             WithCreate withRestartPolicy(ContainerGroupRestartPolicy restartPolicy);
         }
 
@@ -1112,7 +1072,6 @@ public interface ContainerGroup extends
              * @param networkProfileName the name of the network profile
              * @return the next stage of the definition
              */
-            @Beta(Beta.SinceVersion.V1_23_0)
             DnsConfigFork withNetworkProfileId(String subscriptionId, String resourceGroupName, String networkProfileName);
         }
 
@@ -1130,7 +1089,6 @@ public interface ContainerGroup extends
              * @param dnsServerNames the names of the DNS servers
              * @return the next stage of the definition
              */
-            @Beta(Beta.SinceVersion.V1_23_0)
             WithCreate withDnsServerNames(List<String> dnsServerNames);
 
             /**
@@ -1141,7 +1099,6 @@ public interface ContainerGroup extends
              * @param dnsOptions the DNS options for the container group
              * @return the next stage of the definition
              */
-            @Beta(Beta.SinceVersion.V1_23_0)
             WithCreate withDnsConfiguration(List<String> dnsServerNames, String dnsSearchDomains, String dnsOptions);
         }
 
@@ -1156,7 +1113,6 @@ public interface ContainerGroup extends
              * @param workspaceKey the key of the previously-created log analytics workspace
              * @return the next stage of the definition
              */
-            @Beta(Beta.SinceVersion.V1_23_0)
             WithCreate withLogAnalytics(String workspaceId, String workspaceKey);
 
             /**
@@ -1168,7 +1124,6 @@ public interface ContainerGroup extends
              * @param metadata the metadata for log analytics
              * @return the next stage of the definition
              */
-            @Beta(Beta.SinceVersion.V1_23_0)
             WithCreate withLogAnalytics(String workspaceId, String workspaceKey, LogAnalyticsLogType logType, Map<String, String> metadata);
         }
 
