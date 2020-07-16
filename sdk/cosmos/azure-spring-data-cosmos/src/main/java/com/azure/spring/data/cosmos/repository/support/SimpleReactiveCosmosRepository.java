@@ -2,8 +2,8 @@
 // Licensed under the MIT License.
 package com.azure.spring.data.cosmos.repository.support;
 
-import com.azure.data.cosmos.CosmosContainerResponse;
-import com.azure.data.cosmos.PartitionKey;
+import com.azure.cosmos.models.CosmosContainerResponse;
+import com.azure.cosmos.models.PartitionKey;
 import com.azure.spring.data.cosmos.core.ReactiveCosmosOperations;
 import com.azure.spring.data.cosmos.core.query.Criteria;
 import com.azure.spring.data.cosmos.core.query.CriteriaType;
@@ -90,8 +90,7 @@ public class SimpleReactiveCosmosRepository<T, K extends Serializable> implement
                 entity,
                 createKey(entityInformation.getPartitionKeyFieldValue(entity)));
         } else {
-            return cosmosOperations.upsert(entityInformation.getContainerName(),
-                entity, createKey(entityInformation.getPartitionKeyFieldValue(entity)));
+            return cosmosOperations.upsert(entityInformation.getContainerName(), entity);
         }
     }
 
@@ -228,8 +227,7 @@ public class SimpleReactiveCosmosRepository<T, K extends Serializable> implement
 
     @Override
     public Mono<Void> deleteAll() {
-        return cosmosOperations.deleteAll(entityInformation.getContainerName(),
-            entityInformation.getPartitionKeyFieldName());
+        return cosmosOperations.deleteAll(entityInformation.getContainerName(), entityInformation.getJavaType());
     }
 
     private PartitionKey createKey(String partitionKeyValue) {

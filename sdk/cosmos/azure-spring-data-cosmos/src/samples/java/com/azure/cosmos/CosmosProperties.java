@@ -9,8 +9,8 @@ package com.azure.cosmos;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
-@ConfigurationProperties(prefix = "azure.cosmosdb")
-public class CosmosDbProperties {
+@ConfigurationProperties(prefix = "azure.cosmos")
+public class CosmosProperties {
 
     private String uri;
 
@@ -20,7 +20,7 @@ public class CosmosDbProperties {
 
     private String database;
 
-    private boolean populateQueryMetrics;
+    private boolean queryMetricsEnabled;
 
     public String getUri() {
         return uri;
@@ -54,11 +54,11 @@ public class CosmosDbProperties {
         this.database = database;
     }
 
-    public boolean isPopulateQueryMetrics() {
-        return populateQueryMetrics;
+    public boolean isQueryMetricsEnabled() {
+        return queryMetricsEnabled;
     }
 
-    public void setPopulateQueryMetrics(boolean populateQueryMetrics) {
-        this.populateQueryMetrics = populateQueryMetrics;
+    public void setQueryMetricsEnabled(boolean enableQueryMetrics) {
+        this.queryMetricsEnabled = enableQueryMetrics;
     }
 }

@@ -2,12 +2,12 @@
 // Licensed under the MIT License.
 package com.azure.spring.data.cosmos.repository.query;
 
-import com.azure.spring.data.cosmos.repository.support.CosmosEntityInformation;
 import com.azure.spring.data.cosmos.Constants;
 import com.azure.spring.data.cosmos.core.mapping.CosmosPersistentProperty;
 import com.azure.spring.data.cosmos.core.query.Criteria;
 import com.azure.spring.data.cosmos.core.query.CriteriaType;
 import com.azure.spring.data.cosmos.core.query.DocumentQuery;
+import com.azure.spring.data.cosmos.repository.support.CosmosEntityInformation;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mapping.context.MappingContext;
 import org.springframework.data.repository.query.parser.AbstractQueryCreator;
@@ -20,7 +20,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 /**
- * TODO: String based query, based on how cosmosdb provides.
+ * TODO: String based query, based on how cosmosDB provides.
  *  StringCosmosQuery class,
  *  How to bind values to the query. if CosmosDb already has binding capability, if not we would have to do it here in
  *  some creative way.query creator are associated with part tree queries,

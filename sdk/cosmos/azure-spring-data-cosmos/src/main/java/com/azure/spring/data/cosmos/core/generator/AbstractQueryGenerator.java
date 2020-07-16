@@ -2,8 +2,8 @@
 // Licensed under the MIT License.
 package com.azure.spring.data.cosmos.core.generator;
 
-import com.azure.data.cosmos.SqlParameterList;
-import com.azure.data.cosmos.SqlQuerySpec;
+import com.azure.cosmos.models.SqlParameter;
+import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.spring.data.cosmos.core.query.Criteria;
 import com.azure.spring.data.cosmos.core.query.CriteriaType;
 import com.azure.spring.data.cosmos.core.query.DocumentQuery;
@@ -244,19 +244,15 @@ public abstract class AbstractQueryGenerator {
 
 
     protected SqlQuerySpec generateCosmosQuery(@NonNull DocumentQuery query,
-                                                                            @NonNull String queryHead) {
+                                               @NonNull String queryHead) {
         final Pair<String, List<Pair<String, Object>>> queryBody = generateQueryBody(query);
         final String queryString = String.join(" ", queryHead, queryBody.getValue0(), generateQueryTail(query));
         final List<Pair<String, Object>> parameters = queryBody.getValue1();
-        final SqlParameterList sqlParameters =
-                new SqlParameterList();
 
-        sqlParameters.addAll(
-                parameters.stream()
-                        .map(p -> new com.azure.data.cosmos.SqlParameter("@"
-                                + p.getValue0(), toCosmosDbValue(p.getValue1())))
-                        .collect(Collectors.toList())
-        );
+        List<SqlParameter> sqlParameters = parameters.stream()
+                                               .map(p -> new SqlParameter("@" + p.getValue0(),
+                                                   toCosmosDbValue(p.getValue1())))
+                                               .collect(Collectors.toList());
 
         return new SqlQuerySpec(queryString, sqlParameters);
     }

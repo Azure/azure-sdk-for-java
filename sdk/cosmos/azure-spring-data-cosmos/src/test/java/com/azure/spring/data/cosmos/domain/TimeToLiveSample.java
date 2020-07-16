@@ -2,8 +2,8 @@
 // Licensed under the MIT License.
 package com.azure.spring.data.cosmos.domain;
 
-import com.azure.spring.data.cosmos.core.mapping.Document;
 import com.azure.spring.data.cosmos.common.TestConstants;
+import com.azure.spring.data.cosmos.core.mapping.Document;
 
 @Document(timeToLive = TestConstants.TIME_TO_LIVE)
 public class TimeToLiveSample {
