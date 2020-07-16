@@ -6,7 +6,7 @@ package com.azure.search.documents.serializer;
 import java.io.Reader;
 
 public interface SearchSerializer {
-    public <T> T convertValue(Object fromValue, SearchType<T> type);
+    public <T> T convertValue(Object fromValue, SearchType<T> clazz);
     public <T> T convertValue(Object fromValue, SearchType<T> type, SerializationInclusion inclusion);
     public <T> T convertValue(Object fromValue, Class<T> clazz);
     public <T> T convertValue(Object fromValue, Class<T> clazz, SerializationInclusion inclusion);

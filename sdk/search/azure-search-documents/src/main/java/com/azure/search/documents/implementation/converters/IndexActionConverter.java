@@ -17,7 +17,6 @@ import java.util.Map;
  * A converter between {@link com.azure.search.documents.implementation.models.IndexAction} and {@link IndexAction}.
  */
 public final class IndexActionConverter {
-    private static final SearchSerializer SERIALIZER = SearchSerializerProviders.createInstance();
 
     /**
      * Maps from {@link com.azure.search.documents.implementation.models.IndexAction} to {@link IndexAction}.
@@ -62,10 +61,12 @@ public final class IndexActionConverter {
 
         Map<String, Object> mapProperties = PrivateFieldAccessHelper.get(obj, "properties", Map.class);
         if (mapProperties != null) {
-            additionalProperties = SERIALIZER.convertValue(mapProperties, typeRef, SerializationInclusion.ALWAYS);
+            SearchSerializer searchSerializer = SearchSerializerProviders.createInstance();
+            additionalProperties = searchSerializer.convertValue(mapProperties, typeRef, SerializationInclusion.ALWAYS);
         } else {
             T properties = obj.getDocument();
-            additionalProperties = SERIALIZER.convertValue(properties, typeRef);
+            SearchSerializer searchSerializer = SearchSerializerProviders.createInstance();
+            additionalProperties = searchSerializer.convertValue(properties, typeRef);
         }
 
         indexAction.setAdditionalProperties(additionalProperties);

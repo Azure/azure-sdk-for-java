@@ -14,7 +14,7 @@ import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class Iso8601DateDeserializer extends UntypedObjectDeserializer {
+class Iso8601DateDeserializer extends UntypedObjectDeserializer {
     private static final long serialVersionUID = 1L;
     private final UntypedObjectDeserializer defaultDeserializer;
     private static final String ISO8601_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";

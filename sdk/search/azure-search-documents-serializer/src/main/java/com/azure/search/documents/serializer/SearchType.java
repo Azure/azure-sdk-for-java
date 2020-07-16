@@ -10,7 +10,7 @@ public abstract class SearchType<T> implements Comparable<SearchType<T>>{
     private final Type _type;
 
     public SearchType() {
-        java.lang.reflect.Type superClass = getClass().getGenericSuperclass();
+        Type superClass = getClass().getGenericSuperclass();
         if (superClass instanceof Class) {
             throw new IllegalArgumentException(
                 "Internal error: TypeReference constructed without actual type information");

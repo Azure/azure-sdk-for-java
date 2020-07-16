@@ -27,7 +27,6 @@ public class SerializationUtil {
         module.addDeserializer(Object.class, geoPointDeserializer);
         mapper.registerModule(Iso8601DateSerializer.getModule());
         mapper.registerModule(GeometrySerializer.getModule());
-        //mapper.registerModule(GeometryDeserializer.getModule());
 
         mapper.registerModule(module);
     }

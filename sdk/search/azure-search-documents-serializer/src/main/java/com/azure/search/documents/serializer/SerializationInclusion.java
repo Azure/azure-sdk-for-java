@@ -5,4 +5,5 @@ package com.azure.search.documents.serializer;
 
 public enum SerializationInclusion {
     ALWAYS,
+    DEFAULT,
 }
