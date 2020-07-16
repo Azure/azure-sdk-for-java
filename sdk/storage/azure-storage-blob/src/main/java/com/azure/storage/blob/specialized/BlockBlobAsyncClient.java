@@ -258,8 +258,8 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
             null, data, options.getLength(), null, options.getContentMd5(), options.getMetadata(),
             requestConditions.getLeaseId(), options.getTier(), requestConditions.getIfModifiedSince(),
             requestConditions.getIfUnmodifiedSince(), requestConditions.getIfMatch(),
-            requestConditions.getIfNoneMatch(), requestConditions.getTagsConditions(), null, tagsToString(options.getTags()),
-            options.getHeaders(), getCustomerProvidedKey(), encryptionScope,
+            requestConditions.getIfNoneMatch(), requestConditions.getTagsConditions(), null,
+            tagsToString(options.getTags()), options.getHeaders(), getCustomerProvidedKey(), encryptionScope,
             context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(rb -> {
                 BlockBlobUploadHeaders hd = rb.getDeserializedHeaders();

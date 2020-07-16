@@ -831,7 +831,8 @@ public class BlobAsyncClientBase {
         return azureBlobStorage.blobs().downloadWithRestResponseAsync(null, null, snapshot, versionId, null,
             range.toHeaderValue(), requestConditions.getLeaseId(), getMD5, null, requestConditions.getIfModifiedSince(),
             requestConditions.getIfUnmodifiedSince(), requestConditions.getIfMatch(),
-            requestConditions.getIfNoneMatch(), requestConditions.getTagsConditions(), null, customerProvidedKey, context)
+            requestConditions.getIfNoneMatch(), requestConditions.getTagsConditions(), null,
+            customerProvidedKey, context)
             .map(response -> {
                 info.setETag(response.getDeserializedHeaders().getETag());
                 return new ReliableDownload(response, options, info, updatedInfo ->
@@ -1496,8 +1497,8 @@ public class BlobAsyncClientBase {
         return this.azureBlobStorage.blobs().createSnapshotWithRestResponseAsync(
             null, null, null, metadata, requestConditions.getIfModifiedSince(),
             requestConditions.getIfUnmodifiedSince(), requestConditions.getIfMatch(),
-            requestConditions.getIfNoneMatch(), requestConditions.getTagsConditions(), requestConditions.getLeaseId(), null,
-            customerProvidedKey, encryptionScope, context)
+            requestConditions.getIfNoneMatch(), requestConditions.getTagsConditions(), requestConditions.getLeaseId(),
+            null, customerProvidedKey, encryptionScope, context)
             .map(rb -> new SimpleResponse<>(rb, this.getSnapshotClient(rb.getDeserializedHeaders().getSnapshot())));
     }
 

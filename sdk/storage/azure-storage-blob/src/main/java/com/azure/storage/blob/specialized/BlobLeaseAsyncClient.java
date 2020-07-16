@@ -248,7 +248,8 @@ public final class BlobLeaseAsyncClient {
         if (this.isBlob) {
             return this.client.blobs().renewLeaseWithRestResponseAsync(null, null, this.leaseId, null,
                 requestConditions.getIfModifiedSince(), requestConditions.getIfUnmodifiedSince(),
-                requestConditions.getIfMatch(), requestConditions.getIfNoneMatch(), requestConditions.getTagsConditions(), null,
+                requestConditions.getIfMatch(), requestConditions.getIfNoneMatch(),
+                requestConditions.getTagsConditions(), null,
                 context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
                 .map(rb -> new SimpleResponse<>(rb, rb.getDeserializedHeaders().getLeaseId()));
         } else {
@@ -328,7 +329,8 @@ public final class BlobLeaseAsyncClient {
         if (this.isBlob) {
             return this.client.blobs().releaseLeaseWithRestResponseAsync(null, null, this.leaseId, null,
                 requestConditions.getIfModifiedSince(), requestConditions.getIfUnmodifiedSince(),
-                requestConditions.getIfMatch(), requestConditions.getIfNoneMatch(), requestConditions.getTagsConditions(), null,
+                requestConditions.getIfMatch(), requestConditions.getIfNoneMatch(),
+                requestConditions.getTagsConditions(), null,
                 context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
                 .map(response -> new SimpleResponse<>(response, null));
         } else {

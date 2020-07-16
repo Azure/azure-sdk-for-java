@@ -240,8 +240,8 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
         return this.azureBlobStorage.pageBlobs().createWithRestResponseAsync(null, null, 0, options.getSize(), null,
             null, options.getMetadata(), requestConditions.getLeaseId(), requestConditions.getIfModifiedSince(),
             requestConditions.getIfUnmodifiedSince(), requestConditions.getIfMatch(),
-            requestConditions.getIfNoneMatch(), requestConditions.getTagsConditions(), options.getSequenceNumber(), null,
-            tagsToString(options.getTags()), options.getHeaders(), getCustomerProvidedKey(), encryptionScope,
+            requestConditions.getIfNoneMatch(), requestConditions.getTagsConditions(), options.getSequenceNumber(),
+            null, tagsToString(options.getTags()), options.getHeaders(), getCustomerProvidedKey(), encryptionScope,
                 context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(rb -> {
                 PageBlobCreateHeaders hd = rb.getDeserializedHeaders();
@@ -727,8 +727,8 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
         return this.azureBlobStorage.pageBlobs().getPageRangesDiffWithRestResponseAsync(null, null, getSnapshotId(),
             null, prevSnapshot, url, blobRange.toHeaderValue(), requestConditions.getLeaseId(),
             requestConditions.getIfModifiedSince(), requestConditions.getIfUnmodifiedSince(),
-            requestConditions.getIfMatch(), requestConditions.getIfNoneMatch(), requestConditions.getTagsConditions(), null,
-            context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
+            requestConditions.getIfMatch(), requestConditions.getIfNoneMatch(), requestConditions.getTagsConditions(),
+            null, context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(response -> new SimpleResponse<>(response, response.getValue()));
     }
 
