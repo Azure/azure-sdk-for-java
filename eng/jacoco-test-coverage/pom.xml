@@ -94,7 +94,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-serializer-json-gson</artifactId>
-      <version>1.0.0-beta.2</version> <!-- {x-version-update;com.azure:azure-core-serializer-json-gson;current} -->
+      <version>1.0.0-beta.3</version> <!-- {x-version-update;com.azure:azure-core-serializer-json-gson;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
