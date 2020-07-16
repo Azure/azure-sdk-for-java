@@ -41,7 +41,7 @@ import static com.azure.messaging.eventhubs.implementation.ClientConstants.AZ_NA
  *
  * Implemented by {@link ObjectBatch} and {@link EventDataBatch}.
  */
-public abstract class EventDataBatchBase {
+abstract class EventDataBatchBase {
     private final ClientLogger logger = new ClientLogger(this.getClass());
     private final Object lock = new Object();
     private final int maxMessageSize;
