@@ -41,7 +41,7 @@ import static com.azure.messaging.eventhubs.implementation.ClientConstants.AZ_NA
  *
  * Implemented by {@link ObjectBatch} and {@link EventDataBatch}.
  */
-abstract class EventDataBatchBase {
+public abstract class EventDataBatchBase {
     private final ClientLogger logger = new ClientLogger(this.getClass());
     private final Object lock = new Object();
     private final int maxMessageSize;
@@ -106,7 +106,7 @@ abstract class EventDataBatchBase {
      * @throws IllegalArgumentException if {@code eventData} is {@code null}.
      * @throws AmqpException if {@code eventData} is larger than the maximum size of the {@link EventDataBatch}.
      */
-    public boolean tryAdd(final EventData eventData) {
+    boolean tryAdd(final EventData eventData) {
         if (eventData == null) {
             throw logger.logExceptionAsWarning(new IllegalArgumentException("eventData cannot be null"));
         }

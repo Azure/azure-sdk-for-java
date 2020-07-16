@@ -457,15 +457,40 @@ public class EventHubProducerAsyncClient implements Closeable {
     }
 
     /**
-     * Sends the batch to the associated Event Hub.
+     * Sends the object batch to the associated Event Hub.
      *
-     * @param batch The batch to send to the service.
+     * @param objectBatch The batch to send to the service.
+     * @param <T> object type
+     * @return A {@link Mono} that completes when the batch is pushed to the service.
+     * @throws NullPointerException if {@code batch} is {@code null}.
+     * @see EventHubProducerAsyncClient#createBatch(Class)
+     * @see EventHubProducerAsyncClient#createBatch(Class, CreateBatchOptions)
+     */
+    public <T> Mono<Void> send(ObjectBatch<T> objectBatch) {
+        return this.sendInternal(objectBatch);
+    }
+
+    /**
+     * Sends the event data batch to the associated Event Hub.
+     *
+     * @param eventDataBatch The batch to send to the service.
      * @return A {@link Mono} that completes when the batch is pushed to the service.
      * @throws NullPointerException if {@code batch} is {@code null}.
      * @see EventHubProducerAsyncClient#createBatch()
      * @see EventHubProducerAsyncClient#createBatch(CreateBatchOptions)
      */
-    public Mono<Void> send(EventDataBatch batch) {
+    public Mono<Void> send(EventDataBatch eventDataBatch) {
+        return this.sendInternal(eventDataBatch);
+    }
+
+    /**
+     * Internal batch send for EventDataBatchBase implementations.
+     *
+     * @param batch The batch to send to the service.
+     * @return A {@link Mono} that completes when the batch is pushed to the service.
+     * @throws NullPointerException if {@code batch} is {@code null}.
+     */
+    private Mono<Void> sendInternal(EventDataBatchBase batch) {
         if (batch == null) {
             return monoError(logger, new NullPointerException("'batch' cannot be null."));
         } else if (batch.getEvents().isEmpty()) {
