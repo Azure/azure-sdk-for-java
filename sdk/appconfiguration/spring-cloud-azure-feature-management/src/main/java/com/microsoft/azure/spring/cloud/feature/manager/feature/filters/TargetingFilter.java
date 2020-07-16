@@ -56,6 +56,7 @@ public class TargetingFilter implements FeatureFilter {
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public boolean evaluate(FeatureFilterEvaluationContext context) {
         if (context == null) {
             throw new IllegalArgumentException("Targeting Context not configured.");
@@ -176,6 +177,7 @@ public class TargetingFilter implements FeatureFilter {
         return s1.equals(s2);
     }
 
+    @SuppressWarnings("unchecked")
     private <T> void updateValueFromMapToList(LinkedHashMap<String, Object> parameters, String key) {
         Object objectMap = parameters.get(key);
         if (objectMap instanceof Map) {

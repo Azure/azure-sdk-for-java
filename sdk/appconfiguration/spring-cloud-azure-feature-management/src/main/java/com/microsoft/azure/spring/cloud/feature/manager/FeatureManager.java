@@ -138,6 +138,7 @@ public class FeatureManager extends HashMap<String, Object> {
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public void putAll(Map<? extends String, ? extends Object> m) {
         if (m == null) {
             return;
