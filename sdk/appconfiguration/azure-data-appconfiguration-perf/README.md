@@ -1,6 +1,6 @@
-# Azure Storage Performance test client library for Java
+# Azure App Configuration Performance test client library for Java
 
-Represents Performance tests for Azure Storage SDK for Java.
+Represents Performance tests for Azure App Configuration SDK for Java.
 
 ## Getting started
 
@@ -31,4 +31,4 @@ Azure Projects Contribution Guidelines](http://azure.github.io/guidelines.html).
 1. Push to the branch (`git push origin my-new-feature`)
 1. Create new Pull Request
 
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fstorage%2Fperf-test-core%2FREADME.png)
+![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fappconfiguration%2Fazure-data-appconfiguration-perf%2FREADME.png)
