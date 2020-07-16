@@ -40,15 +40,15 @@ public class AppConfigurationPropertySourceLocator implements PropertySourceLoca
     private static final String PROPERTY_SOURCE_NAME = "azure-config-store";
 
     private static final String PATH_SPLITTER = "/";
-    private static Boolean startup = true;
+    private Boolean startup = true;
     private final AppConfigurationProperties properties;
     private final String profileSeparator;
     private final List<ConfigStore> configStores;
     private final Map<String, List<String>> storeContextsMap = new ConcurrentHashMap<>();
-    private AppConfigurationProviderProperties appProperties;
-    private ClientStore clients;
-    private KeyVaultCredentialProvider keyVaultCredentialProvider;
-    private SecretClientBuilderSetup keyVaultClientProvider;
+    private final AppConfigurationProviderProperties appProperties;
+    private final ClientStore clients;
+    private final KeyVaultCredentialProvider keyVaultCredentialProvider;
+    private final SecretClientBuilderSetup keyVaultClientProvider;
 
     public AppConfigurationPropertySourceLocator(AppConfigurationProperties properties,
         AppConfigurationProviderProperties appProperties, ClientStore clients,
@@ -84,16 +84,14 @@ public class AppConfigurationPropertySourceLocator implements PropertySourceLoca
         // Feature Management needs to be set in the last config store.
         while (configStoreIterator.hasNext()) {
             ConfigStore configStore = configStoreIterator.next();
-            if (startup || (!startup && StateHolder.getLoadState(configStore.getEndpoint()))) {
+            if (startup || StateHolder.getLoadState(configStore.getEndpoint())) {
                 addPropertySource(composite, configStore, applicationName, profiles, storeContextsMap,
                     !configStoreIterator.hasNext());
             } else {
                 LOGGER.warn("Not loading configurations from {} as it failed on startup.", configStore.getEndpoint());
             }
         }
-
         startup = false;
-
         return composite;
     }
 

@@ -67,20 +67,14 @@ public class AppConfigurationPropertySource extends EnumerablePropertySource<Con
         .configure(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES, true);
     private final String context;
     private final String label;
-    private Map<String, Object> properties = new LinkedHashMap<>();
-    private AppConfigurationProperties appConfigurationProperties;
-    ;
-    private HashMap<String, KeyVaultClient> keyVaultClients;
-
-    private ClientStore clients;
-
-    private KeyVaultCredentialProvider keyVaultCredentialProvider;
-
-    private SecretClientBuilderSetup keyVaultClientProvider;
-
-    private AppConfigurationProviderProperties appProperties;
-
-    private ConfigStore configStore;
+    private final Map<String, Object> properties = new LinkedHashMap<>();
+    private final AppConfigurationProperties appConfigurationProperties;
+    private final HashMap<String, KeyVaultClient> keyVaultClients;
+    private final ClientStore clients;
+    private final KeyVaultCredentialProvider keyVaultCredentialProvider;
+    private final SecretClientBuilderSetup keyVaultClientProvider;
+    private final AppConfigurationProviderProperties appProperties;
+    private final ConfigStore configStore;
 
     AppConfigurationPropertySource(String context, ConfigStore configStore, String label,
         AppConfigurationProperties appConfigurationProperties, ClientStore clients,
@@ -183,12 +177,6 @@ public class AppConfigurationPropertySource extends EnumerablePropertySource<Con
                 ReflectionUtils.rethrowRuntimeException(e);
             }
 
-            // If no entry found don't connect to Key Vault
-            if (uri == null) {
-                ReflectionUtils.rethrowRuntimeException(
-                    new IOException("Invaid URI when parsing Key Vault Reference."));
-            }
-
             // Check if we already have a client for this key vault, if not we will make
             // one
             if (!keyVaultClients.containsKey(uri.getHost())) {
@@ -221,14 +209,6 @@ public class AppConfigurationPropertySource extends EnumerablePropertySource<Con
             featureMapper.convertValue(featureSet.getFeatureManagement(), LinkedHashMap.class));
     }
 
-    /**
-     * Adds items to a {@code FeatureSet} from a list of {@code KeyValueItem}.
-     *
-     * @param featureSet The parsed KeyValueItems will be added to this
-     * @param items      New items read in from Azure
-     * @param date       Cache timestamp
-     * @throws IOException
-     */
     private FeatureSet addToFeatureSet(FeatureSet featureSet, List<ConfigurationSetting> settings, Date date)
         throws IOException {
         // Reading In Features
@@ -313,10 +293,12 @@ public class AppConfigurationPropertySource extends EnumerablePropertySource<Con
         return IntStream.range(0, users.size()).boxed().collect(toMap(String::valueOf, users::get));
     }
 
-    private List<Object> convertToListOrEmptyList(LinkedHashMap<String, Object> parameters, String key) {
-        List<Object> listObjects = CASE_INSENSITIVE_MAPPER.convertValue(parameters.get(key),
+    private static List<Object> convertToListOrEmptyList(LinkedHashMap<String, Object> parameters, String key) {
+        List<Object> listObjects = CASE_INSENSITIVE_MAPPER.convertValue(
+            parameters.get(key),
             new TypeReference<List<Object>>() {
-            });
+            }
+        );
         return listObjects == null ? emptyList() : listObjects;
     }
 

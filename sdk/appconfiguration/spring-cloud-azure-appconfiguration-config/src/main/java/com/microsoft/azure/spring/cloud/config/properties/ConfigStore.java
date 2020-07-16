@@ -39,6 +39,7 @@ public class ConfigStore {
     private AppConfigurationStoreMonitoring monitoring = new AppConfigurationStoreMonitoring();
 
     public ConfigStore() {
+        label = null;
     }
 
     public String getEndpoint() {

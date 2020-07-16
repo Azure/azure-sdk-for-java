@@ -148,7 +148,7 @@ public class AppConfigurationRefresh implements ApplicationEventPublisherAware {
     /**
      * For each refresh, multiple etags can change, but even one etag is changed, refresh is required.
      */
-    class RefreshEventData {
+    static class RefreshEventData {
 
         private static final String MSG_TEMPLATE = "Some keys matching %s has been updated since last check.";
 

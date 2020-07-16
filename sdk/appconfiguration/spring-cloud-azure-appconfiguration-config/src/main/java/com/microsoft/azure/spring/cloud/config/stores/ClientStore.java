@@ -17,9 +17,9 @@ import com.microsoft.azure.spring.cloud.config.pipline.policies.BaseAppConfigura
 import com.microsoft.azure.spring.cloud.config.properties.AppConfigurationProviderProperties;
 import com.microsoft.azure.spring.cloud.config.resource.Connection;
 import com.microsoft.azure.spring.cloud.config.resource.ConnectionPool;
-import java.io.IOException;
 import java.time.Duration;
 import java.util.List;
+import java.util.Optional;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -46,27 +46,42 @@ public class ClientStore {
     }
 
     private ConfigurationAsyncClient buildClient(String store) throws IllegalArgumentException {
-        ConfigurationClientBuilder builder = getBuilder();
         ExponentialBackoff retryPolicy = new ExponentialBackoff(appProperties.getMaxRetries(),
             Duration.ofMillis(800), Duration.ofSeconds(8));
-        builder = builder.addPolicy(new BaseAppConfigurationPolicy()).retryPolicy(new RetryPolicy(
-            retryPolicy));
+        ConfigurationClientBuilder builder = getBuilder()
+            .addPolicy(new BaseAppConfigurationPolicy())
+            .retryPolicy(new RetryPolicy(retryPolicy));
 
         TokenCredential tokenCredential = null;
         Connection connection = pool.get(store);
 
-        String endpoint = connection.getEndpoint();
+        String endpoint = Optional.ofNullable(connection)
+            .map(Connection::getEndpoint)
+            .orElse(null);
 
         if (tokenCredentialProvider != null) {
             tokenCredential = tokenCredentialProvider.getAppConfigCredential(endpoint);
         }
-        if ((tokenCredential != null
-            || (connection.getClientId() != null && StringUtils.isNotEmpty(connection.getClientId())))
-            && (connection != null && StringUtils.isNotEmpty(connection.getConnectionString()))) {
+
+        String clientId = Optional.ofNullable(connection)
+            .map(Connection::getClientId)
+            .orElse(null);
+        boolean clientIdIsPresent = StringUtils.isNotEmpty(clientId);
+        boolean tokenCredentialIsPresent = tokenCredential != null;
+        boolean connectionStringIsPresent = Optional.ofNullable(connection)
+            .map(Connection::getConnectionString)
+            .filter(StringUtils::isNotEmpty)
+            .isPresent();
+        boolean endPointIsPresent = Optional.ofNullable(connection)
+            .map(Connection::getEndpoint)
+            .filter(StringUtils::isNotEmpty)
+            .isPresent();
+        if ((tokenCredentialIsPresent || clientIdIsPresent)
+            && connectionStringIsPresent
+        ) {
             throw new IllegalArgumentException(
                 "More than 1 Conncetion method was set for connecting to App Configuration.");
-        } else if (tokenCredential != null && connection != null && connection.getClientId() != null
-            && StringUtils.isNotEmpty(connection.getClientId())) {
+        } else if (tokenCredential != null && clientIdIsPresent) {
             throw new IllegalArgumentException(
                 "More than 1 Conncetion method was set for connecting to App Configuration.");
         }
@@ -75,18 +90,17 @@ public class ClientStore {
             // User Provided Token Credential
             LOGGER.debug("Connecting to " + endpoint + " using AppConfigurationCredentialProvider.");
             builder.credential(tokenCredential);
-        } else if ((connection.getClientId() != null && StringUtils.isNotEmpty(connection.getClientId()))
-            && connection.getEndpoint() != null) {
+        } else if (clientIdIsPresent && endPointIsPresent) {
             // User Assigned Identity - Client ID through configuration file.
             LOGGER.debug("Connecting to " + endpoint + " using Client ID from configuration file.");
             ManagedIdentityCredentialBuilder micBuilder = new ManagedIdentityCredentialBuilder()
-                .clientId(connection.getClientId());
+                .clientId(clientId);
             builder.credential(micBuilder.build());
-        } else if (StringUtils.isNotEmpty(connection.getConnectionString())) {
+        } else if (connectionStringIsPresent) {
             // Connection String
             LOGGER.debug("Connecting to " + endpoint + " using Connecting String.");
             builder.connectionString(connection.getConnectionString());
-        } else if (connection.getEndpoint() != null) {
+        } else if (endPointIsPresent) {
             // System Assigned Identity. Needs to be checked last as all of the above
             // should have a Endpoint.
             LOGGER.debug("Connecting to " + endpoint
@@ -125,10 +139,8 @@ public class ClientStore {
      * @param settingSelector Information on which setting to pull. i.e. number of results, key value...
      * @param storeName       Name of the App Configuration store to query against.
      * @return List of Configuration Settings.
-     * @throws IOException thrown when failed to retrieve values.
      */
-    public final List<ConfigurationSetting> listSettings(SettingSelector settingSelector, String storeName)
-        throws IOException {
+    public final List<ConfigurationSetting> listSettings(SettingSelector settingSelector, String storeName) {
         ConfigurationAsyncClient client = buildClient(storeName);
 
         return client.listConfigurationSettings(settingSelector).collectList().block();

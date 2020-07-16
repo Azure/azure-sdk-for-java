@@ -23,7 +23,7 @@ public class BaseAppConfigurationPolicy implements HttpPipelinePolicy {
     public static final String USER_AGENT = String.format("%s/%s", StringUtils.remove(PACKAGE_NAME, " "),
         BaseAppConfigurationPolicy.class.getPackage().getImplementationVersion());
 
-    public static Boolean watchRequests = false;
+    static Boolean watchRequests = false;
 
     /**
      * Checks if Azure App Configuration Tracing is disabled, and if not gets tracing information.

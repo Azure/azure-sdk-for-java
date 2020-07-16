@@ -88,7 +88,7 @@ public class AppConfigurationStoreMonitoring {
         Assert.isTrue(cacheExpiration.getSeconds() >= 1, "Minimum Watch time is 1 Second.");
     }
 
-    public class PushNotification {
+    public static class PushNotification {
 
         private AccessToken primaryToken = new AccessToken();
 
@@ -123,7 +123,7 @@ public class AppConfigurationStoreMonitoring {
         }
     }
 
-    public class AccessToken {
+    public static class AccessToken {
 
         private String name;
 

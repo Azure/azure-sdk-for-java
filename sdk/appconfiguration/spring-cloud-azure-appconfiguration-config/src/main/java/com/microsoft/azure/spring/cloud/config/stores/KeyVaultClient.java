@@ -54,10 +54,10 @@ public class KeyVaultClient {
         if (tokenCredential != null) {
             // User Provided Token Credential
             builder.credential(tokenCredential);
-        } else if (tokenCredential == null && msiProps != null && StringUtils.isNotEmpty(msiProps.getClientId())) {
+        } else if (msiProps != null && StringUtils.isNotEmpty(msiProps.getClientId())) {
             // User Assigned Identity - Client ID through configuration file.
             builder.credential(new ManagedIdentityCredentialBuilder().clientId(msiProps.getClientId()).build());
-        } else if (tokenCredential == null) {
+        } else {
             // System Assigned Identity.
             builder.credential(new ManagedIdentityCredentialBuilder().build());
         }
