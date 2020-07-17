@@ -18,8 +18,8 @@ Fork and clone the autorest.java repo (https://github.com/Azure/autorest.java)
 and checkout the v4 branch. Then run `mvn package -Dlocal` to generate build files.
 
 Then fork and clone the Azure rest API specs from the repo 
-(https://github.com/Azure/azure-rest-api-specs) and run `autorest --java` in this folder,
-with the following tags:
+(https://github.com/Azure/azure-rest-api-specs) and run `autorest --java readme.md` 
+in this folder, with the following tags:
 
 `--use=<path to autorest clone>`
 
@@ -33,6 +33,7 @@ output-folder: ../
 namespace: com.azure.messaging.eventgrid
 license-header: MICROSOFT_MIT_NO_CODEGEN
 generate-client-as-impl: true
+context-client-method-parameter: true
 custom-types-subpackage: implementation.models
 custom-types: CloudEvent,EventGridEvent
 input-file:

@@ -24,6 +24,8 @@ import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
+import com.azure.core.util.Context;
+import com.azure.core.util.FluxUtil;
 import com.azure.messaging.eventgrid.implementation.models.CloudEvent;
 import com.azure.messaging.eventgrid.implementation.models.EventGridEvent;
 import java.util.List;
@@ -87,7 +89,8 @@ public final class EventGridPublisherClientImpl {
         Mono<Response<Void>> publishEvents(
                 @HostParam("topicHostname") String topicHostname,
                 @QueryParam("api-version") String apiVersion,
-                @BodyParam("application/json") List<EventGridEvent> events);
+                @BodyParam("application/json") List<EventGridEvent> events,
+                Context context);
 
         @Post("/api/events")
         @ExpectedResponses({200})
@@ -95,7 +98,8 @@ public final class EventGridPublisherClientImpl {
         Mono<Response<Void>> publishCloudEventEvents(
                 @HostParam("topicHostname") String topicHostname,
                 @QueryParam("api-version") String apiVersion,
-                @BodyParam("application/cloudevents-batch+json; charset=utf-8") List<CloudEvent> events);
+                @BodyParam("application/cloudevents-batch+json; charset=utf-8") List<CloudEvent> events,
+                Context context);
 
         @Post("/api/events")
         @ExpectedResponses({200})
@@ -103,7 +107,8 @@ public final class EventGridPublisherClientImpl {
         Mono<Response<Void>> publishCustomEventEvents(
                 @HostParam("topicHostname") String topicHostname,
                 @QueryParam("api-version") String apiVersion,
-                @BodyParam("application/json") List<Object> events);
+                @BodyParam("application/json") List<Object> events,
+                Context context);
     }
 
     /**
@@ -118,7 +123,25 @@ public final class EventGridPublisherClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> publishEventsWithResponseAsync(String topicHostname, List<EventGridEvent> events) {
-        return service.publishEvents(topicHostname, this.getApiVersion(), events);
+        return FluxUtil.withContext(
+                context -> service.publishEvents(topicHostname, this.getApiVersion(), events, context));
+    }
+
+    /**
+     * Publishes a batch of events to an Azure Event Grid topic.
+     *
+     * @param topicHostname simple string.
+     * @param events Array of EventGridEvent.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> publishEventsWithResponseAsync(
+            String topicHostname, List<EventGridEvent> events, Context context) {
+        return service.publishEvents(topicHostname, this.getApiVersion(), events, context);
     }
 
     /**
@@ -140,6 +163,23 @@ public final class EventGridPublisherClientImpl {
      * Publishes a batch of events to an Azure Event Grid topic.
      *
      * @param topicHostname simple string.
+     * @param events Array of EventGridEvent.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> publishEventsAsync(String topicHostname, List<EventGridEvent> events, Context context) {
+        return publishEventsWithResponseAsync(topicHostname, events, context)
+                .flatMap((Response<Void> res) -> Mono.empty());
+    }
+
+    /**
+     * Publishes a batch of events to an Azure Event Grid topic.
+     *
+     * @param topicHostname simple string.
      * @param events Array of CloudEventEvent.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -149,7 +189,25 @@ public final class EventGridPublisherClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> publishCloudEventEventsWithResponseAsync(
             String topicHostname, List<CloudEvent> events) {
-        return service.publishCloudEventEvents(topicHostname, this.getApiVersion(), events);
+        return FluxUtil.withContext(
+                context -> service.publishCloudEventEvents(topicHostname, this.getApiVersion(), events, context));
+    }
+
+    /**
+     * Publishes a batch of events to an Azure Event Grid topic.
+     *
+     * @param topicHostname simple string.
+     * @param events Array of CloudEventEvent.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> publishCloudEventEventsWithResponseAsync(
+            String topicHostname, List<CloudEvent> events, Context context) {
+        return service.publishCloudEventEvents(topicHostname, this.getApiVersion(), events, context);
     }
 
     /**
@@ -172,6 +230,23 @@ public final class EventGridPublisherClientImpl {
      * Publishes a batch of events to an Azure Event Grid topic.
      *
      * @param topicHostname simple string.
+     * @param events Array of CloudEventEvent.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> publishCloudEventEventsAsync(String topicHostname, List<CloudEvent> events, Context context) {
+        return publishCloudEventEventsWithResponseAsync(topicHostname, events, context)
+                .flatMap((Response<Void> res) -> Mono.empty());
+    }
+
+    /**
+     * Publishes a batch of events to an Azure Event Grid topic.
+     *
+     * @param topicHostname simple string.
      * @param events Array of any.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -180,7 +255,25 @@ public final class EventGridPublisherClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> publishCustomEventEventsWithResponseAsync(String topicHostname, List<Object> events) {
-        return service.publishCustomEventEvents(topicHostname, this.getApiVersion(), events);
+        return FluxUtil.withContext(
+                context -> service.publishCustomEventEvents(topicHostname, this.getApiVersion(), events, context));
+    }
+
+    /**
+     * Publishes a batch of events to an Azure Event Grid topic.
+     *
+     * @param topicHostname simple string.
+     * @param events Array of any.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> publishCustomEventEventsWithResponseAsync(
+            String topicHostname, List<Object> events, Context context) {
+        return service.publishCustomEventEvents(topicHostname, this.getApiVersion(), events, context);
     }
 
     /**
@@ -196,6 +289,23 @@ public final class EventGridPublisherClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> publishCustomEventEventsAsync(String topicHostname, List<Object> events) {
         return publishCustomEventEventsWithResponseAsync(topicHostname, events)
+                .flatMap((Response<Void> res) -> Mono.empty());
+    }
+
+    /**
+     * Publishes a batch of events to an Azure Event Grid topic.
+     *
+     * @param topicHostname simple string.
+     * @param events Array of any.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> publishCustomEventEventsAsync(String topicHostname, List<Object> events, Context context) {
+        return publishCustomEventEventsWithResponseAsync(topicHostname, events, context)
                 .flatMap((Response<Void> res) -> Mono.empty());
     }
 }
