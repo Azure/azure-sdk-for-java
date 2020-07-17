@@ -86,7 +86,7 @@ public class CosmosDataEncryptionKeyProvider implements DataEncryptionKeyProvide
         Preconditions.checkNotNull(database, "database");
         Preconditions.checkNotNull(containerId, "containerId");
 
-        Preconditions.checkState(this.container != null, "CosmosDataEncryptionKeyProvider has already been initialized.");
+        Preconditions.checkState(this.container == null, "CosmosDataEncryptionKeyProvider has already been initialized.");
         Preconditions.checkNotNull(database, "database is null");
 
         CosmosContainerResponse containerResponse = database.createContainerIfNotExists(containerId, CosmosDataEncryptionKeyProvider.ContainerPartitionKeyPath).block();

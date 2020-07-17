@@ -4,9 +4,9 @@
 package com.azure.cosmos.implementation.encryption.api;
 
 public class Constants {
-    public static final String DocumentResourcePropertyName = "Documents";
-    public static final String EncryptionFormatVersion = "_ef";
-    public static final String EncryptionAlgorithm = "_ea";
-    public static final String DataEncryptionKeyId = "_en";
-    public static final String EncryptedData = "_ed";
+    public static final String DOCUMENT_RESOURCE_PROPERTY_NAME = "Documents";
+    public static final String ENCRYPTION_FORMAT_VERSION = "_ef";
+    public static final String ENCRYPTION_ALGORITHM = "_ea";
+    public static final String DATA_ENCRYPTION_KEY_ID = "_en";
+    public static final String ENCRYPTED_DATA = "_ed";
 }
