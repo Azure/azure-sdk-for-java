@@ -4,43 +4,20 @@
 
 package com.azure.resourcemanager.containerinstance;
 
-import com.azure.core.annotation.ExpectedResponses;
-import com.azure.core.annotation.Get;
-import com.azure.core.annotation.Headers;
-import com.azure.core.annotation.Host;
-import com.azure.core.annotation.HostParam;
-import com.azure.core.annotation.PathParam;
-import com.azure.core.annotation.QueryParam;
-import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
-import com.azure.core.annotation.ServiceInterface;
-import com.azure.core.annotation.ServiceMethod;
-import com.azure.core.annotation.UnexpectedResponseExceptionType;
 import com.azure.core.http.HttpPipeline;
-import com.azure.core.http.rest.Response;
-import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.AzureEnvironment;
-import com.azure.core.management.exception.ManagementException;
-import com.azure.core.util.Context;
-import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.containerinstance.fluent.ContainerGroupUsagesClient;
 import com.azure.resourcemanager.containerinstance.fluent.ContainerGroupsClient;
 import com.azure.resourcemanager.containerinstance.fluent.ContainersClient;
+import com.azure.resourcemanager.containerinstance.fluent.LocationsClient;
 import com.azure.resourcemanager.containerinstance.fluent.OperationsClient;
-import com.azure.resourcemanager.containerinstance.fluent.ServiceAssociationLinksClient;
-import com.azure.resourcemanager.containerinstance.fluent.inner.CachedImagesListResultInner;
-import com.azure.resourcemanager.containerinstance.fluent.inner.CapabilitiesListResultInner;
 import com.azure.resourcemanager.resources.fluentcore.AzureServiceClient;
-import reactor.core.publisher.Mono;
 
 /** Initializes a new instance of the ContainerInstanceManagementClient type. */
 @ServiceClient(builder = ContainerInstanceManagementClientBuilder.class)
 public final class ContainerInstanceManagementClient extends AzureServiceClient {
     private final ClientLogger logger = new ClientLogger(ContainerInstanceManagementClient.class);
-
-    /** The proxy service used to perform REST calls. */
-    private final ContainerInstanceManagementClientService service;
 
     /**
      * Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms part of
@@ -118,16 +95,16 @@ public final class ContainerInstanceManagementClient extends AzureServiceClient 
         return this.operations;
     }
 
-    /** The ContainerGroupUsagesClient object to access its operations. */
-    private final ContainerGroupUsagesClient containerGroupUsages;
+    /** The LocationsClient object to access its operations. */
+    private final LocationsClient locations;
 
     /**
-     * Gets the ContainerGroupUsagesClient object to access its operations.
+     * Gets the LocationsClient object to access its operations.
      *
-     * @return the ContainerGroupUsagesClient object.
+     * @return the LocationsClient object.
      */
-    public ContainerGroupUsagesClient getContainerGroupUsages() {
-        return this.containerGroupUsages;
+    public LocationsClient getLocations() {
+        return this.locations;
     }
 
     /** The ContainersClient object to access its operations. */
@@ -142,18 +119,6 @@ public final class ContainerInstanceManagementClient extends AzureServiceClient 
         return this.containers;
     }
 
-    /** The ServiceAssociationLinksClient object to access its operations. */
-    private final ServiceAssociationLinksClient serviceAssociationLinks;
-
-    /**
-     * Gets the ServiceAssociationLinksClient object to access its operations.
-     *
-     * @return the ServiceAssociationLinksClient object.
-     */
-    public ServiceAssociationLinksClient getServiceAssociationLinks() {
-        return this.serviceAssociationLinks;
-    }
-
     /**
      * Initializes an instance of ContainerInstanceManagementClient client.
      *
@@ -166,316 +131,10 @@ public final class ContainerInstanceManagementClient extends AzureServiceClient 
         this.httpPipeline = httpPipeline;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2018-10-01";
+        this.apiVersion = "2019-12-01";
         this.containerGroups = new ContainerGroupsClient(this);
         this.operations = new OperationsClient(this);
-        this.containerGroupUsages = new ContainerGroupUsagesClient(this);
+        this.locations = new LocationsClient(this);
         this.containers = new ContainersClient(this);
-        this.serviceAssociationLinks = new ServiceAssociationLinksClient(this);
-        this.service =
-            RestProxy
-                .create(ContainerInstanceManagementClientService.class, this.httpPipeline, this.getSerializerAdapter());
-    }
-
-    /**
-     * The interface defining all the services for ContainerInstanceManagementClient to be used by the proxy service to
-     * perform REST calls.
-     */
-    @Host("{$host}")
-    @ServiceInterface(name = "ContainerInstanceMan")
-    private interface ContainerInstanceManagementClientService {
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Get("/subscriptions/{subscriptionId}/providers/Microsoft.ContainerInstance/locations/{location}/cachedImages")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<CachedImagesListResultInner>> listCachedImages(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("location") String location,
-            @QueryParam("api-version") String apiVersion,
-            Context context);
-
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Get("/subscriptions/{subscriptionId}/providers/Microsoft.ContainerInstance/locations/{location}/capabilities")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<CapabilitiesListResultInner>> listCapabilities(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("location") String location,
-            @QueryParam("api-version") String apiVersion,
-            Context context);
-    }
-
-    /**
-     * Get the list of cached images on specific OS type for a subscription in a region.
-     *
-     * @param location The identifier for the physical azure location.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of cached images on specific OS type for a subscription in a region.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<CachedImagesListResultInner>> listCachedImagesWithResponseAsync(String location) {
-        if (this.getEndpoint() == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter this.getEndpoint() is required and cannot be null."));
-        }
-        if (this.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter this.getSubscriptionId() is required and cannot be null."));
-        }
-        if (location == null) {
-            return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
-        }
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listCachedImages(
-                            this.getEndpoint(), this.getSubscriptionId(), location, this.getApiVersion(), context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.getContext())));
-    }
-
-    /**
-     * Get the list of cached images on specific OS type for a subscription in a region.
-     *
-     * @param location The identifier for the physical azure location.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of cached images on specific OS type for a subscription in a region.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<CachedImagesListResultInner>> listCachedImagesWithResponseAsync(
-        String location, Context context) {
-        if (this.getEndpoint() == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter this.getEndpoint() is required and cannot be null."));
-        }
-        if (this.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter this.getSubscriptionId() is required and cannot be null."));
-        }
-        if (location == null) {
-            return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
-        }
-        context = this.mergeContext(context);
-        return service
-            .listCachedImages(this.getEndpoint(), this.getSubscriptionId(), location, this.getApiVersion(), context);
-    }
-
-    /**
-     * Get the list of cached images on specific OS type for a subscription in a region.
-     *
-     * @param location The identifier for the physical azure location.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of cached images on specific OS type for a subscription in a region.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<CachedImagesListResultInner> listCachedImagesAsync(String location) {
-        return listCachedImagesWithResponseAsync(location)
-            .flatMap(
-                (Response<CachedImagesListResultInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Get the list of cached images on specific OS type for a subscription in a region.
-     *
-     * @param location The identifier for the physical azure location.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of cached images on specific OS type for a subscription in a region.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<CachedImagesListResultInner> listCachedImagesAsync(String location, Context context) {
-        return listCachedImagesWithResponseAsync(location, context)
-            .flatMap(
-                (Response<CachedImagesListResultInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Get the list of cached images on specific OS type for a subscription in a region.
-     *
-     * @param location The identifier for the physical azure location.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of cached images on specific OS type for a subscription in a region.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public CachedImagesListResultInner listCachedImages(String location) {
-        return listCachedImagesAsync(location).block();
-    }
-
-    /**
-     * Get the list of cached images on specific OS type for a subscription in a region.
-     *
-     * @param location The identifier for the physical azure location.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of cached images on specific OS type for a subscription in a region.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public CachedImagesListResultInner listCachedImages(String location, Context context) {
-        return listCachedImagesAsync(location, context).block();
-    }
-
-    /**
-     * Get the list of CPU/memory/GPU capabilities of a region.
-     *
-     * @param location The identifier for the physical azure location.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of CPU/memory/GPU capabilities of a region.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<CapabilitiesListResultInner>> listCapabilitiesWithResponseAsync(String location) {
-        if (this.getEndpoint() == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter this.getEndpoint() is required and cannot be null."));
-        }
-        if (this.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter this.getSubscriptionId() is required and cannot be null."));
-        }
-        if (location == null) {
-            return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
-        }
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listCapabilities(
-                            this.getEndpoint(), this.getSubscriptionId(), location, this.getApiVersion(), context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.getContext())));
-    }
-
-    /**
-     * Get the list of CPU/memory/GPU capabilities of a region.
-     *
-     * @param location The identifier for the physical azure location.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of CPU/memory/GPU capabilities of a region.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<CapabilitiesListResultInner>> listCapabilitiesWithResponseAsync(
-        String location, Context context) {
-        if (this.getEndpoint() == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter this.getEndpoint() is required and cannot be null."));
-        }
-        if (this.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter this.getSubscriptionId() is required and cannot be null."));
-        }
-        if (location == null) {
-            return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
-        }
-        context = this.mergeContext(context);
-        return service
-            .listCapabilities(this.getEndpoint(), this.getSubscriptionId(), location, this.getApiVersion(), context);
-    }
-
-    /**
-     * Get the list of CPU/memory/GPU capabilities of a region.
-     *
-     * @param location The identifier for the physical azure location.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of CPU/memory/GPU capabilities of a region.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<CapabilitiesListResultInner> listCapabilitiesAsync(String location) {
-        return listCapabilitiesWithResponseAsync(location)
-            .flatMap(
-                (Response<CapabilitiesListResultInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Get the list of CPU/memory/GPU capabilities of a region.
-     *
-     * @param location The identifier for the physical azure location.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of CPU/memory/GPU capabilities of a region.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<CapabilitiesListResultInner> listCapabilitiesAsync(String location, Context context) {
-        return listCapabilitiesWithResponseAsync(location, context)
-            .flatMap(
-                (Response<CapabilitiesListResultInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Get the list of CPU/memory/GPU capabilities of a region.
-     *
-     * @param location The identifier for the physical azure location.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of CPU/memory/GPU capabilities of a region.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public CapabilitiesListResultInner listCapabilities(String location) {
-        return listCapabilitiesAsync(location).block();
-    }
-
-    /**
-     * Get the list of CPU/memory/GPU capabilities of a region.
-     *
-     * @param location The identifier for the physical azure location.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of CPU/memory/GPU capabilities of a region.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public CapabilitiesListResultInner listCapabilities(String location, Context context) {
-        return listCapabilitiesAsync(location, context).block();
     }
 }

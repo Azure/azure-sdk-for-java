@@ -6,7 +6,6 @@ package com.azure.resourcemanager.containerinstance.fluent.inner;
 
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.containerinstance.models.Usage;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -17,17 +16,17 @@ public final class UsageListResultInner {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(UsageListResultInner.class);
 
     /*
-     * The value property.
+     * The usage data.
      */
     @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
-    private List<Usage> value;
+    private List<UsageInner> value;
 
     /**
-     * Get the value property: The value property.
+     * Get the value property: The usage data.
      *
      * @return the value value.
      */
-    public List<Usage> value() {
+    public List<UsageInner> value() {
         return this.value;
     }
 

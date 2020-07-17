@@ -9,11 +9,16 @@ import com.azure.core.annotation.Get;
 import com.azure.core.annotation.Headers;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
+import com.azure.core.annotation.PathParam;
 import com.azure.core.annotation.QueryParam;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceInterface;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.annotation.UnexpectedResponseExceptionType;
+import com.azure.core.http.rest.PagedFlux;
+import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.http.rest.PagedResponse;
+import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
@@ -21,6 +26,7 @@ import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.containerinstance.ContainerInstanceManagementClient;
+import com.azure.resourcemanager.containerinstance.fluent.inner.OperationInner;
 import com.azure.resourcemanager.containerinstance.fluent.inner.OperationListResultInner;
 import reactor.core.publisher.Mono;
 
@@ -58,6 +64,13 @@ public final class OperationsClient {
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<OperationListResultInner>> list(
             @HostParam("$host") String endpoint, @QueryParam("api-version") String apiVersion, Context context);
+
+        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Get("{nextLink}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<OperationListResultInner>> listNext(
+            @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
 
     /**
@@ -68,7 +81,7 @@ public final class OperationsClient {
      * @return the operation list response that contains all operations for Azure Container Instance service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<OperationListResultInner>> listWithResponseAsync() {
+    public Mono<PagedResponse<OperationInner>> listSinglePageAsync() {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -77,6 +90,15 @@ public final class OperationsClient {
         }
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), this.client.getApiVersion(), context))
+            .<PagedResponse<OperationInner>>map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
@@ -90,7 +112,7 @@ public final class OperationsClient {
      * @return the operation list response that contains all operations for Azure Container Instance service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<OperationListResultInner>> listWithResponseAsync(Context context) {
+    public Mono<PagedResponse<OperationInner>> listSinglePageAsync(Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -98,7 +120,17 @@ public final class OperationsClient {
                         "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         context = this.client.mergeContext(context);
-        return service.list(this.client.getEndpoint(), this.client.getApiVersion(), context);
+        return service
+            .list(this.client.getEndpoint(), this.client.getApiVersion(), context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null));
     }
 
     /**
@@ -108,51 +140,9 @@ public final class OperationsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the operation list response that contains all operations for Azure Container Instance service.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<OperationListResultInner> listAsync() {
-        return listWithResponseAsync()
-            .flatMap(
-                (Response<OperationListResultInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * List the operations for Azure Container Instance service.
-     *
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the operation list response that contains all operations for Azure Container Instance service.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<OperationListResultInner> listAsync(Context context) {
-        return listWithResponseAsync(context)
-            .flatMap(
-                (Response<OperationListResultInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * List the operations for Azure Container Instance service.
-     *
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the operation list response that contains all operations for Azure Container Instance service.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public OperationListResultInner list() {
-        return listAsync().block();
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<OperationInner> listAsync() {
+        return new PagedFlux<>(() -> listSinglePageAsync(), nextLink -> listNextSinglePageAsync(nextLink));
     }
 
     /**
@@ -164,8 +154,91 @@ public final class OperationsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the operation list response that contains all operations for Azure Container Instance service.
      */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<OperationInner> listAsync(Context context) {
+        return new PagedFlux<>(() -> listSinglePageAsync(context), nextLink -> listNextSinglePageAsync(nextLink));
+    }
+
+    /**
+     * List the operations for Azure Container Instance service.
+     *
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the operation list response that contains all operations for Azure Container Instance service.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<OperationInner> list() {
+        return new PagedIterable<>(listAsync());
+    }
+
+    /**
+     * List the operations for Azure Container Instance service.
+     *
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the operation list response that contains all operations for Azure Container Instance service.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<OperationInner> list(Context context) {
+        return new PagedIterable<>(listAsync(context));
+    }
+
+    /**
+     * Get the next page of items.
+     *
+     * @param nextLink The nextLink parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the operation list response that contains all operations for Azure Container Instance service.
+     */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public OperationListResultInner list(Context context) {
-        return listAsync(context).block();
+    public Mono<PagedResponse<OperationInner>> listNextSinglePageAsync(String nextLink) {
+        if (nextLink == null) {
+            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        return FluxUtil
+            .withContext(context -> service.listNext(nextLink, context))
+            .<PagedResponse<OperationInner>>map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+    }
+
+    /**
+     * Get the next page of items.
+     *
+     * @param nextLink The nextLink parameter.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the operation list response that contains all operations for Azure Container Instance service.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PagedResponse<OperationInner>> listNextSinglePageAsync(String nextLink, Context context) {
+        if (nextLink == null) {
+            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        context = this.client.mergeContext(context);
+        return service
+            .listNext(nextLink, context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null));
     }
 }

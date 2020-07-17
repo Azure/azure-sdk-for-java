@@ -4,51 +4,51 @@
 
 package com.azure.resourcemanager.containerinstance.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** The Event model. */
-@Fluent
+@Immutable
 public final class Event {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(Event.class);
 
     /*
      * The count of the event.
      */
-    @JsonProperty(value = "count")
+    @JsonProperty(value = "count", access = JsonProperty.Access.WRITE_ONLY)
     private Integer count;
 
     /*
      * The date-time of the earliest logged event.
      */
-    @JsonProperty(value = "firstTimestamp")
+    @JsonProperty(value = "firstTimestamp", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime firstTimestamp;
 
     /*
      * The date-time of the latest logged event.
      */
-    @JsonProperty(value = "lastTimestamp")
+    @JsonProperty(value = "lastTimestamp", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime lastTimestamp;
 
     /*
      * The event name.
      */
-    @JsonProperty(value = "name")
+    @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
     /*
      * The event message.
      */
-    @JsonProperty(value = "message")
+    @JsonProperty(value = "message", access = JsonProperty.Access.WRITE_ONLY)
     private String message;
 
     /*
      * The event type.
      */
-    @JsonProperty(value = "type")
+    @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
     /**
@@ -61,34 +61,12 @@ public final class Event {
     }
 
     /**
-     * Set the count property: The count of the event.
-     *
-     * @param count the count value to set.
-     * @return the Event object itself.
-     */
-    public Event withCount(Integer count) {
-        this.count = count;
-        return this;
-    }
-
-    /**
      * Get the firstTimestamp property: The date-time of the earliest logged event.
      *
      * @return the firstTimestamp value.
      */
     public OffsetDateTime firstTimestamp() {
         return this.firstTimestamp;
-    }
-
-    /**
-     * Set the firstTimestamp property: The date-time of the earliest logged event.
-     *
-     * @param firstTimestamp the firstTimestamp value to set.
-     * @return the Event object itself.
-     */
-    public Event withFirstTimestamp(OffsetDateTime firstTimestamp) {
-        this.firstTimestamp = firstTimestamp;
-        return this;
     }
 
     /**
@@ -101,34 +79,12 @@ public final class Event {
     }
 
     /**
-     * Set the lastTimestamp property: The date-time of the latest logged event.
-     *
-     * @param lastTimestamp the lastTimestamp value to set.
-     * @return the Event object itself.
-     */
-    public Event withLastTimestamp(OffsetDateTime lastTimestamp) {
-        this.lastTimestamp = lastTimestamp;
-        return this;
-    }
-
-    /**
      * Get the name property: The event name.
      *
      * @return the name value.
      */
     public String name() {
         return this.name;
-    }
-
-    /**
-     * Set the name property: The event name.
-     *
-     * @param name the name value to set.
-     * @return the Event object itself.
-     */
-    public Event withName(String name) {
-        this.name = name;
-        return this;
     }
 
     /**
@@ -141,34 +97,12 @@ public final class Event {
     }
 
     /**
-     * Set the message property: The event message.
-     *
-     * @param message the message value to set.
-     * @return the Event object itself.
-     */
-    public Event withMessage(String message) {
-        this.message = message;
-        return this;
-    }
-
-    /**
      * Get the type property: The event type.
      *
      * @return the type value.
      */
     public String type() {
         return this.type;
-    }
-
-    /**
-     * Set the type property: The event type.
-     *
-     * @param type the type value to set.
-     * @return the Event object itself.
-     */
-    public Event withType(String type) {
-        this.type = type;
-        return this;
     }
 
     /**

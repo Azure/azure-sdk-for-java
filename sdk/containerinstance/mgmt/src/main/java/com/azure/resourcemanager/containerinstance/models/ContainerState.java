@@ -4,46 +4,46 @@
 
 package com.azure.resourcemanager.containerinstance.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** The ContainerState model. */
-@Fluent
+@Immutable
 public final class ContainerState {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ContainerState.class);
 
     /*
      * The state of the container instance.
      */
-    @JsonProperty(value = "state")
+    @JsonProperty(value = "state", access = JsonProperty.Access.WRITE_ONLY)
     private String state;
 
     /*
      * The date-time when the container instance state started.
      */
-    @JsonProperty(value = "startTime")
+    @JsonProperty(value = "startTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime startTime;
 
     /*
      * The container instance exit codes correspond to those from the `docker
      * run` command.
      */
-    @JsonProperty(value = "exitCode")
+    @JsonProperty(value = "exitCode", access = JsonProperty.Access.WRITE_ONLY)
     private Integer exitCode;
 
     /*
      * The date-time when the container instance state finished.
      */
-    @JsonProperty(value = "finishTime")
+    @JsonProperty(value = "finishTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime finishTime;
 
     /*
      * The human-readable status of the container instance state.
      */
-    @JsonProperty(value = "detailStatus")
+    @JsonProperty(value = "detailStatus", access = JsonProperty.Access.WRITE_ONLY)
     private String detailStatus;
 
     /**
@@ -56,34 +56,12 @@ public final class ContainerState {
     }
 
     /**
-     * Set the state property: The state of the container instance.
-     *
-     * @param state the state value to set.
-     * @return the ContainerState object itself.
-     */
-    public ContainerState withState(String state) {
-        this.state = state;
-        return this;
-    }
-
-    /**
      * Get the startTime property: The date-time when the container instance state started.
      *
      * @return the startTime value.
      */
     public OffsetDateTime startTime() {
         return this.startTime;
-    }
-
-    /**
-     * Set the startTime property: The date-time when the container instance state started.
-     *
-     * @param startTime the startTime value to set.
-     * @return the ContainerState object itself.
-     */
-    public ContainerState withStartTime(OffsetDateTime startTime) {
-        this.startTime = startTime;
-        return this;
     }
 
     /**
@@ -96,17 +74,6 @@ public final class ContainerState {
     }
 
     /**
-     * Set the exitCode property: The container instance exit codes correspond to those from the `docker run` command.
-     *
-     * @param exitCode the exitCode value to set.
-     * @return the ContainerState object itself.
-     */
-    public ContainerState withExitCode(Integer exitCode) {
-        this.exitCode = exitCode;
-        return this;
-    }
-
-    /**
      * Get the finishTime property: The date-time when the container instance state finished.
      *
      * @return the finishTime value.
@@ -116,34 +83,12 @@ public final class ContainerState {
     }
 
     /**
-     * Set the finishTime property: The date-time when the container instance state finished.
-     *
-     * @param finishTime the finishTime value to set.
-     * @return the ContainerState object itself.
-     */
-    public ContainerState withFinishTime(OffsetDateTime finishTime) {
-        this.finishTime = finishTime;
-        return this;
-    }
-
-    /**
      * Get the detailStatus property: The human-readable status of the container instance state.
      *
      * @return the detailStatus value.
      */
     public String detailStatus() {
         return this.detailStatus;
-    }
-
-    /**
-     * Set the detailStatus property: The human-readable status of the container instance state.
-     *
-     * @param detailStatus the detailStatus value to set.
-     * @return the ContainerState object itself.
-     */
-    public ContainerState withDetailStatus(String detailStatus) {
-        this.detailStatus = detailStatus;
-        return this;
     }
 
     /**

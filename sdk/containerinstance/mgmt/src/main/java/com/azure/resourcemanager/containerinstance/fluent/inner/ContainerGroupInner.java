@@ -14,8 +14,11 @@ import com.azure.resourcemanager.containerinstance.models.ContainerGroupIdentity
 import com.azure.resourcemanager.containerinstance.models.ContainerGroupNetworkProfile;
 import com.azure.resourcemanager.containerinstance.models.ContainerGroupPropertiesInstanceView;
 import com.azure.resourcemanager.containerinstance.models.ContainerGroupRestartPolicy;
+import com.azure.resourcemanager.containerinstance.models.ContainerGroupSku;
 import com.azure.resourcemanager.containerinstance.models.DnsConfiguration;
+import com.azure.resourcemanager.containerinstance.models.EncryptionProperties;
 import com.azure.resourcemanager.containerinstance.models.ImageRegistryCredential;
+import com.azure.resourcemanager.containerinstance.models.InitContainerDefinition;
 import com.azure.resourcemanager.containerinstance.models.IpAddress;
 import com.azure.resourcemanager.containerinstance.models.OperatingSystemTypes;
 import com.azure.resourcemanager.containerinstance.models.Volume;
@@ -108,6 +111,24 @@ public class ContainerGroupInner extends Resource {
      */
     @JsonProperty(value = "properties.dnsConfig")
     private DnsConfiguration dnsConfig;
+
+    /*
+     * The SKU for a container group.
+     */
+    @JsonProperty(value = "properties.sku")
+    private ContainerGroupSku sku;
+
+    /*
+     * The encryption properties for a container group.
+     */
+    @JsonProperty(value = "properties.encryptionProperties")
+    private EncryptionProperties encryptionProperties;
+
+    /*
+     * The init containers for a container group.
+     */
+    @JsonProperty(value = "properties.initContainers")
+    private List<InitContainerDefinition> initContainers;
 
     /**
      * Get the identity property: The identity of the container group, if configured.
@@ -333,6 +354,66 @@ public class ContainerGroupInner extends Resource {
     }
 
     /**
+     * Get the sku property: The SKU for a container group.
+     *
+     * @return the sku value.
+     */
+    public ContainerGroupSku sku() {
+        return this.sku;
+    }
+
+    /**
+     * Set the sku property: The SKU for a container group.
+     *
+     * @param sku the sku value to set.
+     * @return the ContainerGroupInner object itself.
+     */
+    public ContainerGroupInner withSku(ContainerGroupSku sku) {
+        this.sku = sku;
+        return this;
+    }
+
+    /**
+     * Get the encryptionProperties property: The encryption properties for a container group.
+     *
+     * @return the encryptionProperties value.
+     */
+    public EncryptionProperties encryptionProperties() {
+        return this.encryptionProperties;
+    }
+
+    /**
+     * Set the encryptionProperties property: The encryption properties for a container group.
+     *
+     * @param encryptionProperties the encryptionProperties value to set.
+     * @return the ContainerGroupInner object itself.
+     */
+    public ContainerGroupInner withEncryptionProperties(EncryptionProperties encryptionProperties) {
+        this.encryptionProperties = encryptionProperties;
+        return this;
+    }
+
+    /**
+     * Get the initContainers property: The init containers for a container group.
+     *
+     * @return the initContainers value.
+     */
+    public List<InitContainerDefinition> initContainers() {
+        return this.initContainers;
+    }
+
+    /**
+     * Set the initContainers property: The init containers for a container group.
+     *
+     * @param initContainers the initContainers value to set.
+     * @return the ContainerGroupInner object itself.
+     */
+    public ContainerGroupInner withInitContainers(List<InitContainerDefinition> initContainers) {
+        this.initContainers = initContainers;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -373,6 +454,12 @@ public class ContainerGroupInner extends Resource {
         }
         if (dnsConfig() != null) {
             dnsConfig().validate();
+        }
+        if (encryptionProperties() != null) {
+            encryptionProperties().validate();
+        }
+        if (initContainers() != null) {
+            initContainers().forEach(e -> e.validate());
         }
     }
 }

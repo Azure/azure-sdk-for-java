@@ -6,7 +6,6 @@ package com.azure.resourcemanager.containerinstance.fluent.inner;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.containerinstance.models.Operation;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -20,7 +19,7 @@ public final class OperationListResultInner {
      * The list of operations.
      */
     @JsonProperty(value = "value")
-    private List<Operation> value;
+    private List<OperationInner> value;
 
     /*
      * The URI to fetch the next page of operations.
@@ -33,7 +32,7 @@ public final class OperationListResultInner {
      *
      * @return the value value.
      */
-    public List<Operation> value() {
+    public List<OperationInner> value() {
         return this.value;
     }
 
@@ -43,7 +42,7 @@ public final class OperationListResultInner {
      * @param value the value value to set.
      * @return the OperationListResultInner object itself.
      */
-    public OperationListResultInner withValue(List<Operation> value) {
+    public OperationListResultInner withValue(List<OperationInner> value) {
         this.value = value;
         return this;
     }

@@ -30,7 +30,7 @@ public final class ContainerHttpGet {
      * The scheme.
      */
     @JsonProperty(value = "scheme")
-    private ContainerHttpGetScheme scheme;
+    private Scheme scheme;
 
     /**
      * Get the path property: The path to probe.
@@ -77,7 +77,7 @@ public final class ContainerHttpGet {
      *
      * @return the scheme value.
      */
-    public ContainerHttpGetScheme scheme() {
+    public Scheme scheme() {
         return this.scheme;
     }
 
@@ -87,7 +87,7 @@ public final class ContainerHttpGet {
      * @param scheme the scheme value to set.
      * @return the ContainerHttpGet object itself.
      */
-    public ContainerHttpGet withScheme(ContainerHttpGetScheme scheme) {
+    public ContainerHttpGet withScheme(Scheme scheme) {
         this.scheme = scheme;
         return this;
     }

@@ -146,9 +146,9 @@ public final class ContainerGroupsClient
         @Delete(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerInstance"
                 + "/containerGroups/{containerGroupName}")
-        @ExpectedResponses({200, 204})
+        @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ContainerGroupInner>> delete(
+        Mono<Response<Flux<ByteBuffer>>> delete(
             @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
@@ -1170,7 +1170,7 @@ public final class ContainerGroupsClient
      * @return a container group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ContainerGroupInner>> deleteWithResponseAsync(
+    public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
         String resourceGroupName, String containerGroupName) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -1219,7 +1219,7 @@ public final class ContainerGroupsClient
      * @return a container group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ContainerGroupInner>> deleteWithResponseAsync(
+    public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
         String resourceGroupName, String containerGroupName, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -1264,16 +1264,88 @@ public final class ContainerGroupsClient
      * @return a container group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
+    public PollerFlux<PollResult<ContainerGroupInner>, ContainerGroupInner> beginDeleteAsync(
+        String resourceGroupName, String containerGroupName) {
+        Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, containerGroupName);
+        return this
+            .client
+            .<ContainerGroupInner, ContainerGroupInner>getLroResultAsync(
+                mono, this.client.getHttpPipeline(), ContainerGroupInner.class, ContainerGroupInner.class);
+    }
+
+    /**
+     * Delete the specified container group in the specified subscription and resource group. The operation does not
+     * delete other resources provided by the user, such as volumes.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param containerGroupName The name of the container group.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a container group.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PollerFlux<PollResult<ContainerGroupInner>, ContainerGroupInner> beginDeleteAsync(
+        String resourceGroupName, String containerGroupName, Context context) {
+        Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, containerGroupName, context);
+        return this
+            .client
+            .<ContainerGroupInner, ContainerGroupInner>getLroResultAsync(
+                mono, this.client.getHttpPipeline(), ContainerGroupInner.class, ContainerGroupInner.class);
+    }
+
+    /**
+     * Delete the specified container group in the specified subscription and resource group. The operation does not
+     * delete other resources provided by the user, such as volumes.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param containerGroupName The name of the container group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a container group.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<ContainerGroupInner>, ContainerGroupInner> beginDelete(
+        String resourceGroupName, String containerGroupName) {
+        return beginDeleteAsync(resourceGroupName, containerGroupName).getSyncPoller();
+    }
+
+    /**
+     * Delete the specified container group in the specified subscription and resource group. The operation does not
+     * delete other resources provided by the user, such as volumes.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param containerGroupName The name of the container group.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a container group.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<ContainerGroupInner>, ContainerGroupInner> beginDelete(
+        String resourceGroupName, String containerGroupName, Context context) {
+        return beginDeleteAsync(resourceGroupName, containerGroupName, context).getSyncPoller();
+    }
+
+    /**
+     * Delete the specified container group in the specified subscription and resource group. The operation does not
+     * delete other resources provided by the user, such as volumes.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param containerGroupName The name of the container group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a container group.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ContainerGroupInner> deleteAsync(String resourceGroupName, String containerGroupName) {
-        return deleteWithResponseAsync(resourceGroupName, containerGroupName)
-            .flatMap(
-                (Response<ContainerGroupInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        return beginDeleteAsync(resourceGroupName, containerGroupName)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -1290,15 +1362,9 @@ public final class ContainerGroupsClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ContainerGroupInner> deleteAsync(String resourceGroupName, String containerGroupName, Context context) {
-        return deleteWithResponseAsync(resourceGroupName, containerGroupName, context)
-            .flatMap(
-                (Response<ContainerGroupInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        return beginDeleteAsync(resourceGroupName, containerGroupName, context)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -1721,7 +1787,7 @@ public final class ContainerGroupsClient
     }
 
     /**
-     * Starts all containers in a container group.
+     * Starts all containers in a container group. Compute resources will be allocated and billing will start.
      *
      * @param resourceGroupName The name of the resource group.
      * @param containerGroupName The name of the container group.
@@ -1768,7 +1834,7 @@ public final class ContainerGroupsClient
     }
 
     /**
-     * Starts all containers in a container group.
+     * Starts all containers in a container group. Compute resources will be allocated and billing will start.
      *
      * @param resourceGroupName The name of the resource group.
      * @param containerGroupName The name of the container group.
@@ -1813,7 +1879,7 @@ public final class ContainerGroupsClient
     }
 
     /**
-     * Starts all containers in a container group.
+     * Starts all containers in a container group. Compute resources will be allocated and billing will start.
      *
      * @param resourceGroupName The name of the resource group.
      * @param containerGroupName The name of the container group.
@@ -1829,7 +1895,7 @@ public final class ContainerGroupsClient
     }
 
     /**
-     * Starts all containers in a container group.
+     * Starts all containers in a container group. Compute resources will be allocated and billing will start.
      *
      * @param resourceGroupName The name of the resource group.
      * @param containerGroupName The name of the container group.
@@ -1847,7 +1913,7 @@ public final class ContainerGroupsClient
     }
 
     /**
-     * Starts all containers in a container group.
+     * Starts all containers in a container group. Compute resources will be allocated and billing will start.
      *
      * @param resourceGroupName The name of the resource group.
      * @param containerGroupName The name of the container group.
@@ -1862,7 +1928,7 @@ public final class ContainerGroupsClient
     }
 
     /**
-     * Starts all containers in a container group.
+     * Starts all containers in a container group. Compute resources will be allocated and billing will start.
      *
      * @param resourceGroupName The name of the resource group.
      * @param containerGroupName The name of the container group.
@@ -1879,7 +1945,7 @@ public final class ContainerGroupsClient
     }
 
     /**
-     * Starts all containers in a container group.
+     * Starts all containers in a container group. Compute resources will be allocated and billing will start.
      *
      * @param resourceGroupName The name of the resource group.
      * @param containerGroupName The name of the container group.
@@ -1896,7 +1962,7 @@ public final class ContainerGroupsClient
     }
 
     /**
-     * Starts all containers in a container group.
+     * Starts all containers in a container group. Compute resources will be allocated and billing will start.
      *
      * @param resourceGroupName The name of the resource group.
      * @param containerGroupName The name of the container group.
@@ -1914,7 +1980,7 @@ public final class ContainerGroupsClient
     }
 
     /**
-     * Starts all containers in a container group.
+     * Starts all containers in a container group. Compute resources will be allocated and billing will start.
      *
      * @param resourceGroupName The name of the resource group.
      * @param containerGroupName The name of the container group.
@@ -1928,7 +1994,7 @@ public final class ContainerGroupsClient
     }
 
     /**
-     * Starts all containers in a container group.
+     * Starts all containers in a container group. Compute resources will be allocated and billing will start.
      *
      * @param resourceGroupName The name of the resource group.
      * @param containerGroupName The name of the container group.
