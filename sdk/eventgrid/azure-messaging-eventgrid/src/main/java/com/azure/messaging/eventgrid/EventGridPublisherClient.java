@@ -22,8 +22,10 @@ import com.azure.messaging.eventgrid.models.EventGridEvent;
 @ServiceClient(builder = EventGridPublisherClientBuilder.class)
 public class EventGridPublisherClient {
 
-    EventGridPublisherClient(HttpPipeline pipeline, String endpoint) {
-        // TODO: implement method
+    EventGridPublisherAsyncClient asyncClient;
+
+    EventGridPublisherClient(EventGridPublisherAsyncClient client) {
+        this.asyncClient = client;
     }
 
     /**
