@@ -3,10 +3,10 @@
 
 package com.azure.spring.data.cosmos.repository.config;
 
-import com.azure.spring.data.cosmos.repository.support.ReactiveCosmosRepositoryFactoryBean;
 import com.azure.spring.data.cosmos.Constants;
 import com.azure.spring.data.cosmos.core.mapping.CosmosMappingContext;
 import com.azure.spring.data.cosmos.repository.ReactiveCosmosRepository;
+import com.azure.spring.data.cosmos.repository.support.ReactiveCosmosRepositoryFactoryBean;
 import org.springframework.beans.factory.support.AbstractBeanDefinition;
 import org.springframework.beans.factory.support.BeanDefinitionBuilder;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
@@ -27,12 +27,12 @@ public class ReactiveCosmosRepositoryConfigurationExtension extends RepositoryCo
 
     @Override
     public String getModuleName() {
-        return Constants.COSMOSDB_MODULE_NAME;
+        return Constants.COSMOS_MODULE_NAME;
     }
 
     @Override
     public String getModulePrefix() {
-        return Constants.COSMOSDB_MODULE_PREFIX;
+        return Constants.COSMOS_MODULE_PREFIX;
     }
 
     /**

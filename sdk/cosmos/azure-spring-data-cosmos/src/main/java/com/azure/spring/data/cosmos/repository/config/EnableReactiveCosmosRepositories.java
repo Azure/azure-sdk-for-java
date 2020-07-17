@@ -3,8 +3,8 @@
 
 package com.azure.spring.data.cosmos.repository.config;
 
-import com.azure.spring.data.cosmos.repository.support.ReactiveCosmosRepositoryFactoryBean;
 import com.azure.spring.data.cosmos.Constants;
+import com.azure.spring.data.cosmos.repository.support.ReactiveCosmosRepositoryFactoryBean;
 import org.springframework.context.annotation.ComponentScan.Filter;
 import org.springframework.context.annotation.Import;
 import org.springframework.data.repository.config.DefaultRepositoryBaseClass;
@@ -28,7 +28,7 @@ import java.lang.annotation.Target;
 public @interface EnableReactiveCosmosRepositories {
 
     /**
-     * Toset repo value
+     * To set repo value
      * @return default as {}
      */
     String[] value() default {};

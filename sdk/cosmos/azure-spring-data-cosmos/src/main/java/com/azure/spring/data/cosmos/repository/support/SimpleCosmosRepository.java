@@ -3,8 +3,8 @@
 
 package com.azure.spring.data.cosmos.repository.support;
 
-import com.azure.data.cosmos.CosmosContainerProperties;
-import com.azure.data.cosmos.PartitionKey;
+import com.azure.cosmos.models.CosmosContainerProperties;
+import com.azure.cosmos.models.PartitionKey;
 import com.azure.spring.data.cosmos.core.CosmosOperations;
 import com.azure.spring.data.cosmos.core.query.Criteria;
 import com.azure.spring.data.cosmos.core.query.CriteriaType;
@@ -52,7 +52,7 @@ public class SimpleCosmosRepository<T, ID extends Serializable> implements Cosmo
      * Initialization
      *
      * @param metadata for cosmos entity information
-     * @param dbOperations for cosmosdb operation
+     * @param dbOperations for cosmosDB operation
      */
     public SimpleCosmosRepository(CosmosEntityInformation<T, ID> metadata,
                                   CosmosOperations dbOperations) {
@@ -82,17 +82,16 @@ public class SimpleCosmosRepository<T, ID extends Serializable> implements Cosmo
         // save entity
         if (information.isNew(entity)) {
             return operation.insert(information.getContainerName(),
-                    entity,
-                    createKey(information.getPartitionKeyFieldValue(entity)));
+                entity,
+                createKey(information.getPartitionKeyFieldValue(entity)));
         } else {
-            return operation.upsertAndReturnEntity(information.getContainerName(),
-                    entity, createKey(information.getPartitionKeyFieldValue(entity)));
+            return operation.upsertAndReturnEntity(information.getContainerName(), entity);
         }
     }
 
     private PartitionKey createKey(String partitionKeyValue) {
         if (StringUtils.isEmpty(partitionKeyValue)) {
-            return PartitionKey.None;
+            return PartitionKey.NONE;
         }
 
         return new PartitionKey(partitionKeyValue);
@@ -152,11 +151,12 @@ public class SimpleCosmosRepository<T, ID extends Serializable> implements Cosmo
         Assert.notNull(id, "id must not be null");
 
         if (id instanceof String
-                && !StringUtils.hasText((String) id)) {
+            && !StringUtils.hasText((String) id)) {
             return Optional.empty();
         }
 
-        return Optional.ofNullable(operation.findById(information.getContainerName(), id, information.getJavaType()));
+        return Optional.ofNullable(operation.findById(information.getContainerName(), id,
+            information.getJavaType()));
     }
 
     @Override
@@ -164,7 +164,7 @@ public class SimpleCosmosRepository<T, ID extends Serializable> implements Cosmo
         Assert.notNull(id, "id must not be null");
 
         if (id instanceof String
-                && !StringUtils.hasText((String) id)) {
+            && !StringUtils.hasText((String) id)) {
             return Optional.empty();
         }
 
@@ -213,8 +213,8 @@ public class SimpleCosmosRepository<T, ID extends Serializable> implements Cosmo
         final String partitionKeyValue = information.getPartitionKeyFieldValue(entity);
 
         operation.deleteById(information.getContainerName(),
-                information.getId(entity),
-                partitionKeyValue == null ? null : new PartitionKey(partitionKeyValue));
+            information.getId(entity),
+            partitionKeyValue == null ? null : new PartitionKey(partitionKeyValue));
     }
 
     /**
@@ -259,7 +259,8 @@ public class SimpleCosmosRepository<T, ID extends Serializable> implements Cosmo
     @Override
     public Iterable<T> findAll(@NonNull Sort sort) {
         Assert.notNull(sort, "sort of findAll should not be null");
-        final DocumentQuery query = new DocumentQuery(Criteria.getInstance(CriteriaType.ALL)).with(sort);
+        final DocumentQuery query =
+            new DocumentQuery(Criteria.getInstance(CriteriaType.ALL)).with(sort);
 
         return operation.find(query, information.getJavaType(), information.getContainerName());
     }
@@ -275,7 +276,8 @@ public class SimpleCosmosRepository<T, ID extends Serializable> implements Cosmo
     public Page<T> findAll(Pageable pageable) {
         Assert.notNull(pageable, "pageable should not be null");
 
-        return operation.findAll(pageable, information.getJavaType(), information.getContainerName());
+        return operation.findAll(pageable, information.getJavaType(),
+            information.getContainerName());
     }
 
     @Override

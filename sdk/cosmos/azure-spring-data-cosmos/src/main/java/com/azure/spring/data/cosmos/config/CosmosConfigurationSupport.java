@@ -3,8 +3,8 @@
 
 package com.azure.spring.data.cosmos.config;
 
-import com.azure.spring.data.cosmos.core.mapping.CosmosMappingContext;
 import com.azure.spring.data.cosmos.common.ExpressionResolver;
+import com.azure.spring.data.cosmos.core.mapping.CosmosMappingContext;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.Bean;

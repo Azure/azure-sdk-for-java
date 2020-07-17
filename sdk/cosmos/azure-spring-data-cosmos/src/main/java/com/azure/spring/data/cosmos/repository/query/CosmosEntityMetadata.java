@@ -10,14 +10,6 @@ import org.springframework.data.repository.core.EntityMetadata;
 public interface CosmosEntityMetadata<T> extends EntityMetadata<T> {
 
     /**
-     * Get collection name from the given entity
-     * @return String
-     * @deprecated use {@link #getContainerName()} instead
-     */
-    @Deprecated
-    String getCollectionName();
-
-    /**
      * Get container name from the given entity
      * @return String
      */

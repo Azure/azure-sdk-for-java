@@ -3,8 +3,8 @@
 package com.azure.spring.data.cosmos.repository.query;
 
 import com.azure.spring.data.cosmos.core.CosmosOperations;
-import com.azure.spring.data.cosmos.core.query.DocumentQuery;
 import com.azure.spring.data.cosmos.core.mapping.CosmosPersistentProperty;
+import com.azure.spring.data.cosmos.core.query.DocumentQuery;
 import org.apache.commons.lang3.NotImplementedException;
 import org.springframework.data.mapping.context.MappingContext;
 import org.springframework.data.repository.query.ResultProcessor;

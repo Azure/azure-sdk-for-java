@@ -4,12 +4,11 @@ package com.azure.spring.data.cosmos.repository.integration;
 
 import com.azure.spring.data.cosmos.core.CosmosTemplate;
 import com.azure.spring.data.cosmos.core.query.CosmosPageRequest;
-import com.azure.spring.data.cosmos.repository.support.CosmosEntityInformation;
 import com.azure.spring.data.cosmos.domain.Address;
 import com.azure.spring.data.cosmos.domain.PageablePerson;
 import com.azure.spring.data.cosmos.repository.TestRepositoryConfig;
 import com.azure.spring.data.cosmos.repository.repository.PageablePersonRepository;
-import org.apache.commons.io.FileUtils;
+import com.azure.spring.data.cosmos.repository.support.CosmosEntityInformation;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -21,7 +20,11 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -30,6 +33,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class PageablePersonRepositoryIT {
 
     private static final int TOTAL_CONTENT_SIZE = 50;
+    public static final long ONE_KB = 1024L;
 
     private static final CosmosEntityInformation<PageablePerson, String> entityInformation =
         new CosmosEntityInformation<>(PageablePerson.class);
@@ -59,7 +63,7 @@ public class PageablePersonRepositoryIT {
         for (int i = 0; i < TOTAL_CONTENT_SIZE; i++) {
             final List<String> hobbies = new ArrayList<>();
             hobbies.add(StringUtils.repeat("hobbies-" + UUID.randomUUID().toString(),
-                (int) FileUtils.ONE_KB * 10));
+                (int) ONE_KB * 10));
             final List<Address> address = new ArrayList<>();
             address.add(new Address("postalCode-" + UUID.randomUUID().toString(),
                 "street-" + UUID.randomUUID().toString(),

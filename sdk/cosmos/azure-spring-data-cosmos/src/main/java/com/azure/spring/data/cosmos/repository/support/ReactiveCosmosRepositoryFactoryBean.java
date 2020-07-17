@@ -39,7 +39,7 @@ public class ReactiveCosmosRepositoryFactoryBean<T extends Repository<S, K>, S,
     }
 
     /**
-     * Set reactive Cosmosdb operations
+     * Set reactive CosmosDB operations
      *
      * @param operations contains cosmos operations
      */
