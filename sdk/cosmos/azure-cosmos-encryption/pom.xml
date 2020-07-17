@@ -246,124 +246,10 @@ Licensed under the MIT License.
       </build>
     </profile>
     <profile>
-      <!-- integration tests, requires Cosmos DB endpoint -->
-      <id>fast</id>
-      <properties>
-        <test.groups>simple,cosmosv3</test.groups>
-      </properties>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-failsafe-plugin</artifactId>
-            <version>2.22.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-failsafe-plugin;external_dependency} -->
-            <configuration>
-              <suiteXmlFiles>
-                <suiteXmlFile>src/test/resources/fast-testng.xml</suiteXmlFile>
-              </suiteXmlFiles>
-            </configuration>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-    <profile>
-      <!-- integration tests, requires Cosmos DB endpoint -->
-      <id>long</id>
-      <properties>
-        <test.groups>long</test.groups>
-      </properties>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-failsafe-plugin</artifactId>
-            <version>2.22.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-failsafe-plugin;external_dependency} -->
-            <configuration>
-              <suiteXmlFiles>
-                <suiteXmlFile>src/test/resources/long-testng.xml</suiteXmlFile>
-              </suiteXmlFiles>
-            </configuration>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-    <profile>
-      <!-- integration tests, requires Cosmos DB endpoint -->
-      <id>direct</id>
-      <properties>
-        <test.groups>direct</test.groups>
-      </properties>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-failsafe-plugin</artifactId>
-            <version>2.22.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-failsafe-plugin;external_dependency} -->
-            <configuration>
-              <suiteXmlFiles>
-                <suiteXmlFile>src/test/resources/direct-testng.xml</suiteXmlFile>
-              </suiteXmlFiles>
-            </configuration>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-    <profile>
-      <!-- integration tests, requires Cosmos DB endpoint with multi master support -->
-      <id>multi-master</id>
-      <properties>
-        <test.groups>multi-master</test.groups>
-      </properties>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-failsafe-plugin</artifactId>
-            <version>2.22.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-failsafe-plugin;external_dependency} -->
-            <configuration>
-              <suiteXmlFiles>
-                <suiteXmlFile>src/test/resources/multi-master-testng.xml</suiteXmlFile>
-              </suiteXmlFiles>
-            </configuration>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-    <profile>
-      <!-- integration tests, requires Cosmos DB endpoint -->
-      <id>examples</id>
-      <properties>
-        <!-- reset the test group as examples have no test group -->
-        <test.groups>samples,examples</test.groups>
-      </properties>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-failsafe-plugin</artifactId>
-            <version>2.22.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-failsafe-plugin;external_dependency} -->
-            <configuration>
-              <suiteXmlFiles>
-                <suiteXmlFile>src/test/resources/examples-testng.xml</suiteXmlFile>
-              </suiteXmlFiles>
-            </configuration>
-            <executions>
-              <execution>
-                <goals>
-                  <goal>integration-test</goal>
-                  <goal>verify</goal>
-                </goals>
-              </execution>
-            </executions>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-    <profile>
       <!-- integration tests, requires Cosmos DB Emulator Endpoint -->
-      <id>emulator</id>
+      <id>encryption-integration</id>
       <properties>
-        <test.groups>emulator</test.groups>
+        <test.groups>encryption</test.groups>
       </properties>
       <build>
         <plugins>
@@ -373,49 +259,7 @@ Licensed under the MIT License.
             <version>2.22.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-failsafe-plugin;external_dependency} -->
             <configuration>
               <suiteXmlFiles>
-                <suiteXmlFile>src/test/resources/emulator-testng.xml</suiteXmlFile>
-              </suiteXmlFiles>
-            </configuration>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-    <profile>
-      <!-- integration tests, requires Cosmos DB Emulator Endpoint -->
-      <id>non-emulator</id>
-      <properties>
-        <test.groups>non-emulator</test.groups>
-      </properties>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-failsafe-plugin</artifactId>
-            <version>2.22.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-failsafe-plugin;external_dependency} -->
-            <configuration>
-              <suiteXmlFiles>
-                <suiteXmlFile>src/test/resources/non-emulator-testng.xml</suiteXmlFile>
-              </suiteXmlFiles>
-            </configuration>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-    <profile>
-      <!-- e2e integration tests, requires Cosmos DB endpoint -->
-      <id>e2e</id>
-      <properties>
-        <test.groups>e2e</test.groups>
-      </properties>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-failsafe-plugin</artifactId>
-            <version>2.22.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-failsafe-plugin;external_dependency} -->
-            <configuration>
-              <suiteXmlFiles>
-                <suiteXmlFile>src/test/resources/e2e-testng.xml</suiteXmlFile>
+                <suiteXmlFile>src/test/resources/encryption-testng.xml</suiteXmlFile>
               </suiteXmlFiles>
             </configuration>
           </plugin>
