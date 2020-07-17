@@ -1,32 +1,33 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
-package com.microsoft.azure.management.containerinstance.samples;
+package com.azure.resourcemanager.containerinstance.samples;
 
+import com.azure.core.credential.TokenCredential;
+import com.azure.core.http.policy.HttpLogDetailLevel;
+import com.azure.core.management.AzureEnvironment;
+import com.azure.identity.DefaultAzureCredentialBuilder;
+import com.azure.resourcemanager.Azure;
+import com.azure.resourcemanager.containerinstance.models.ContainerGroup;
+import com.azure.resourcemanager.containerregistry.models.AccessKeyType;
+import com.azure.resourcemanager.containerregistry.models.Registry;
+import com.azure.resourcemanager.containerregistry.models.RegistryCredentials;
+import com.azure.resourcemanager.containerservice.models.ContainerServiceVMSizeTypes;
+import com.azure.resourcemanager.containerservice.models.KubernetesCluster;
+import com.azure.resourcemanager.resources.fluentcore.arm.Region;
+import com.azure.resourcemanager.resources.fluentcore.profile.AzureProfile;
+import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
+import com.azure.resourcemanager.samples.DockerUtils;
+import com.azure.resourcemanager.samples.SSHShell;
+import com.azure.resourcemanager.samples.Utils;
 import com.github.dockerjava.api.DockerClient;
 import com.github.dockerjava.api.command.CreateContainerResponse;
+import com.github.dockerjava.api.command.PullImageResultCallback;
 import com.github.dockerjava.api.exception.NotFoundException;
+import com.github.dockerjava.api.model.AuthConfig;
 import com.github.dockerjava.api.model.Container;
 import com.github.dockerjava.api.model.Image;
-import com.github.dockerjava.core.command.PullImageResultCallback;
 import com.github.dockerjava.core.command.PushImageResultCallback;
-import com.microsoft.azure.management.Azure;
-import com.microsoft.azure.management.containerinstance.ContainerGroup;
-import com.microsoft.azure.management.containerregistry.AccessKeyType;
-import com.microsoft.azure.management.containerregistry.Registry;
-import com.microsoft.azure.management.containerregistry.RegistryCredentials;
-import com.microsoft.azure.management.containerservice.ContainerService;
-import com.microsoft.azure.management.containerservice.ContainerServiceMasterProfileCount;
-import com.microsoft.azure.management.containerservice.ContainerServiceVMSizeTypes;
-import com.microsoft.azure.management.resources.fluentcore.arm.Region;
-import com.microsoft.azure.management.resources.fluentcore.utils.SdkContext;
-import com.microsoft.azure.management.samples.DockerUtils;
-import com.microsoft.azure.management.samples.SSHShell;
-import com.microsoft.azure.management.samples.Utils;
-import com.microsoft.rest.LogLevel;
 import io.fabric8.kubernetes.api.model.LoadBalancerIngress;
 import io.fabric8.kubernetes.api.model.Namespace;
 import io.fabric8.kubernetes.api.model.NamespaceBuilder;
@@ -82,17 +83,17 @@ public class ManageContainerInstanceZeroToOneAndOneToManyUsingContainerServiceOr
      * @return true if sample runs successfully
      */
     public static boolean runSample(Azure azure, String clientId, String secret) {
-        final String rgName = SdkContext.randomResourceName("rgaci", 15);
+        final String rgName = azure.sdkContext().randomResourceName("rgaci", 15);
         final Region region = Region.US_EAST2;
 
-        final String acrName = SdkContext.randomResourceName("acr", 20);
+        final String acrName = azure.sdkContext().randomResourceName("acr", 20);
 
-        final String aciName = SdkContext.randomResourceName("acisample", 20);
+        final String aciName = azure.sdkContext().randomResourceName("acisample", 20);
         final String containerImageName = "microsoft/aci-helloworld";
         final String containerImageTag = "latest";
         final String dockerContainerName = "sample-hello";
 
-        final String acsName = SdkContext.randomResourceName("acssample", 30);
+        final String acsName = azure.sdkContext().randomResourceName("acssample", 30);
         String servicePrincipalClientId = clientId; // replace with a real service principal client id
         String servicePrincipalSecret = secret; // and corresponding secret
         final String rootUserName = "acsuser";
@@ -134,8 +135,9 @@ public class ManageContainerInstanceZeroToOneAndOneToManyUsingContainerServiceOr
 
             dockerClient.pullImageCmd(containerImageName)
                 .withTag(containerImageTag)
+                .withAuthConfig(new AuthConfig())
                 .exec(new PullImageResultCallback())
-                .awaitSuccess();
+                .awaitCompletion();
             System.out.println("List local Docker images:");
             List<Image> images = dockerClient.listImagesCmd().withShowAll(true).exec();
             for (Image image : images) {
@@ -255,26 +257,25 @@ public class ManageContainerInstanceZeroToOneAndOneToManyUsingContainerServiceOr
 
             t1 = new Date();
 
-            ContainerService azureContainerService = azure.containerServices().define(acsName)
+            KubernetesCluster azureKubernetesCluster = azure.kubernetesClusters().define(acsName)
                 .withRegion(region)
                 .withNewResourceGroup(rgName)
-                .withKubernetesOrchestration()
-                .withServicePrincipal(servicePrincipalClientId, servicePrincipalSecret)
-                .withLinux()
+                .withLatestVersion()
                 .withRootUsername(rootUserName)
                 .withSshKey(sshKeys.getSshPublicKey())
-                .withMasterNodeCount(ContainerServiceMasterProfileCount.MIN)
+                .withServicePrincipalClientId(servicePrincipalClientId)
+                .withServicePrincipalSecret(servicePrincipalSecret)
                 .defineAgentPool("agentpool")
-                    .withVirtualMachineCount(1)
                     .withVirtualMachineSize(ContainerServiceVMSizeTypes.STANDARD_D1_V2)
-                    .withDnsPrefix("dns-ap-" + acsName)
+                    .withAgentPoolVirtualMachineCount(1)
+//                    .withDnsPrefix("dns-ap-" + acsName)
                     .attach()
-                .withMasterDnsPrefix("dns-" + acsName)
+                .withDnsPrefix("dns-" + acsName)
                 .create();
 
             t2 = new Date();
-            System.out.println("Created Azure Container Service: (took " + ((t2.getTime() - t1.getTime()) / 1000) + " seconds) " + azureContainerService.id());
-            Utils.print(azureContainerService);
+            System.out.println("Created Azure Container Service: (took " + ((t2.getTime() - t1.getTime()) / 1000) + " seconds) " + azureKubernetesCluster.id());
+            Utils.print(azureKubernetesCluster);
 
             SdkContext.sleep(120000);
 
@@ -282,10 +283,10 @@ public class ManageContainerInstanceZeroToOneAndOneToManyUsingContainerServiceOr
             //=============================================================
             // Download the Kubernetes config file from one of the master virtual machines
 
-            azureContainerService = azure.containerServices().getByResourceGroup(rgName, acsName);
-            System.out.println("Found Kubernetes master at: " + azureContainerService.masterFqdn());
+            azureKubernetesCluster = azure.kubernetesClusters().getByResourceGroup(rgName, acsName);
+            System.out.println("Found Kubernetes master at: " + azureKubernetesCluster.fqdn());
 
-            shell = SSHShell.open(azureContainerService.masterFqdn(), 22, rootUserName, sshKeys.getSshPrivateKey().getBytes());
+            shell = SSHShell.open(azureKubernetesCluster.fqdn(), 22, rootUserName, sshKeys.getSshPrivateKey().getBytes());
 
             String kubeConfigContent = shell.download("config", ".kube", true);
             System.out.println("Found Kubernetes config:\n" + kubeConfigContent);
@@ -503,11 +504,15 @@ public class ManageContainerInstanceZeroToOneAndOneToManyUsingContainerServiceOr
             //=============================================================
             // Authenticate
 
-            final File credFile = new File(System.getenv("AZURE_AUTH_LOCATION"));
+            final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
+            final TokenCredential credential = new DefaultAzureCredentialBuilder()
+                .authorityHost(profile.environment().getActiveDirectoryEndpoint())
+                .build();
 
-            Azure azure = Azure.configure()
-                .withLogLevel(LogLevel.BODY)
-                .authenticate(credFile)
+            Azure azure = Azure
+                .configure()
+                .withLogLevel(HttpLogDetailLevel.BASIC)
+                .authenticate(credential, profile)
                 .withDefaultSubscription();
 
             // Print selected subscription

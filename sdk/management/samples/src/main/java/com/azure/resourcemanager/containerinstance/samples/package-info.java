@@ -5,4 +5,4 @@
 /**
  * This package contains the classes for Azure container instance samples.
  */
-package com.microsoft.azure.management.containerinstance.samples;
+package com.azure.resourcemanager.containerinstance.samples;

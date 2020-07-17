@@ -1,20 +1,19 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
-package com.microsoft.azure.management.containerinstance.samples;
+package com.azure.resourcemanager.containerinstance.samples;
 
-import com.microsoft.azure.management.Azure;
-import com.microsoft.azure.management.containerinstance.ContainerGroup;
-import com.microsoft.azure.management.containerinstance.ContainerGroupRestartPolicy;
-import com.microsoft.azure.management.resources.fluentcore.arm.Region;
-import com.microsoft.azure.management.resources.fluentcore.utils.SdkContext;
-import com.microsoft.azure.management.samples.Utils;
-import com.microsoft.rest.LogLevel;
-
-import java.io.File;
+import com.azure.core.credential.TokenCredential;
+import com.azure.core.http.policy.HttpLogDetailLevel;
+import com.azure.core.management.AzureEnvironment;
+import com.azure.identity.DefaultAzureCredentialBuilder;
+import com.azure.resourcemanager.Azure;
+import com.azure.resourcemanager.containerinstance.models.ContainerGroup;
+import com.azure.resourcemanager.containerinstance.models.ContainerGroupRestartPolicy;
+import com.azure.resourcemanager.resources.fluentcore.arm.Region;
+import com.azure.resourcemanager.resources.fluentcore.profile.AzureProfile;
+import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
+import com.azure.resourcemanager.samples.Utils;
 
 /**
  * Azure Container Instance sample for managing container instances.
@@ -32,8 +31,8 @@ public class ManageContainerInstanceWithMultipleContainerImages {
      * @return true if sample runs successfully
      */
     public static boolean runSample(Azure azure) {
-        final String rgName = SdkContext.randomResourceName("rgACI", 15);
-        final String aciName = SdkContext.randomResourceName("acisample", 20);
+        final String rgName = azure.sdkContext().randomResourceName("rgACI", 15);
+        final String aciName = azure.sdkContext().randomResourceName("acisample", 20);
         final String containerImageName1 = "microsoft/aci-helloworld";
         final String containerImageName2 = "microsoft/aci-tutorial-sidecar";
 
@@ -116,11 +115,15 @@ public class ManageContainerInstanceWithMultipleContainerImages {
             //=============================================================
             // Authenticate
 
-            final File credFile = new File(System.getenv("AZURE_AUTH_LOCATION"));
+            final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
+            final TokenCredential credential = new DefaultAzureCredentialBuilder()
+                .authorityHost(profile.environment().getActiveDirectoryEndpoint())
+                .build();
 
-            Azure azure = Azure.configure()
-                .withLogLevel(LogLevel.BODY)
-                .authenticate(credFile)
+            Azure azure = Azure
+                .configure()
+                .withLogLevel(HttpLogDetailLevel.BASIC)
+                .authenticate(credential, profile)
                 .withDefaultSubscription();
 
             // Print selected subscription

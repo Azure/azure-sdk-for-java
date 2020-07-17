@@ -1,23 +1,22 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
-package com.microsoft.azure.management.containerinstance.samples;
+package com.azure.resourcemanager.containerinstance.samples;
 
-import com.microsoft.azure.management.Azure;
-import com.microsoft.azure.management.containerinstance.ContainerGroup;
-import com.microsoft.azure.management.resources.fluentcore.arm.Region;
-import com.microsoft.azure.management.resources.fluentcore.utils.SdkContext;
-import com.microsoft.azure.management.samples.Utils;
-import com.microsoft.azure.management.storage.StorageAccount;
-import com.microsoft.azure.storage.CloudStorageAccount;
-import com.microsoft.azure.storage.file.CloudFileShare;
-import com.microsoft.azure.storage.file.ListFileItem;
-import com.microsoft.rest.LogLevel;
-
-import java.io.File;
+import com.azure.core.credential.TokenCredential;
+import com.azure.core.http.policy.HttpLogDetailLevel;
+import com.azure.core.management.AzureEnvironment;
+import com.azure.identity.DefaultAzureCredentialBuilder;
+import com.azure.resourcemanager.Azure;
+import com.azure.resourcemanager.containerinstance.models.ContainerGroup;
+import com.azure.resourcemanager.resources.fluentcore.arm.Region;
+import com.azure.resourcemanager.resources.fluentcore.profile.AzureProfile;
+import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
+import com.azure.resourcemanager.samples.Utils;
+import com.azure.resourcemanager.storage.models.StorageAccount;
+import com.azure.storage.file.share.ShareClient;
+import com.azure.storage.file.share.ShareClientBuilder;
+import com.azure.storage.file.share.models.ShareFileItem;
 
 /**
  * Azure Container Instance sample for managing container instances with Azure File Share mount.
@@ -33,9 +32,9 @@ public class ManageContainerInstanceWithAzureFileShareMount {
      * @return true if sample runs successfully
      */
     public static boolean runSample(Azure azure) {
-        final String rgName = SdkContext.randomResourceName("rgACI", 15);
-        final String aciName = SdkContext.randomResourceName("acisample", 20);
-        final String shareName = SdkContext.randomResourceName("fileshare", 20);
+        final String rgName = azure.sdkContext().randomResourceName("rgACI", 15);
+        final String aciName = azure.sdkContext().randomResourceName("acisample", 20);
+        final String shareName = azure.sdkContext().randomResourceName("fileshare", 20);
         final String containerImageName = "seanmckenna/aci-hellofiles";
         final String volumeMountName = "aci-helloshare";
 
@@ -83,15 +82,19 @@ public class ManageContainerInstanceWithAzureFileShareMount {
 
             String storageAccountName = containerGroup.volumes().get(volumeMountName).azureFile().storageAccountName();
             StorageAccount storageAccount = azure.storageAccounts().getByResourceGroup(rgName, storageAccountName);
-            CloudFileShare cloudFileShare = CloudStorageAccount.parse(String.format("DefaultEndpointsProtocol=https;AccountName=%s;AccountKey=%s;EndpointSuffix=core.windows.net",
-                storageAccountName,
-                storageAccount.getKeys().get(0).value()))
-                .createCloudFileClient()
-                .getShareReference(shareName);
-            Iterable<ListFileItem> shareContent = cloudFileShare.getRootDirectoryReference().listFilesAndDirectories();
+            ShareClient shareClient = new ShareClientBuilder()
+                .connectionString(com.azure.resourcemanager.resources.fluentcore.utils.Utils.getStorageConnectionString(
+                    storageAccountName,
+                    storageAccount.getKeys().get(0).value(),
+                    azure.containerGroups().manager().environment()
+                ))
+                .shareName(shareName)
+                .buildClient();
 
-            for (ListFileItem item : shareContent) {
-                System.out.format("Found shared file %s:\n", item.getUri().toString());
+            Iterable<ShareFileItem> shareContent = shareClient.getRootDirectoryClient().listFilesAndDirectories();
+
+            for (ShareFileItem item : shareContent) {
+                System.out.format("Found shared file %s:\n", item.getName());
             }
 
             //=============================================================
@@ -127,11 +130,15 @@ public class ManageContainerInstanceWithAzureFileShareMount {
             //=============================================================
             // Authenticate
 
-            final File credFile = new File(System.getenv("AZURE_AUTH_LOCATION"));
+            final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
+            final TokenCredential credential = new DefaultAzureCredentialBuilder()
+                .authorityHost(profile.environment().getActiveDirectoryEndpoint())
+                .build();
 
-            Azure azure = Azure.configure()
-                .withLogLevel(LogLevel.BODY)
-                .authenticate(credFile)
+            Azure azure = Azure
+                .configure()
+                .withLogLevel(HttpLogDetailLevel.BASIC)
+                .authenticate(credential, profile)
                 .withDefaultSubscription();
 
             // Print selected subscription
