@@ -951,29 +951,6 @@ class BlobAPITest extends APISpec {
     }
 
     @Unroll
-    def "Get properties rehydrate priority"() {
-        setup:
-        if (rehydratePriority != null) {
-            bc.setAccessTier(AccessTier.ARCHIVE)
-
-            bc.setAccessTierWithResponse(new BlobSetAccessTierOptions(AccessTier.HOT).setPriority(rehydratePriority), null, null)
-        }
-
-        when:
-        def resp = bc.getPropertiesWithResponse(null, null, null)
-
-        then:
-        resp.getStatusCode() == 200
-        resp.getValue().getRehydratePriority() == rehydratePriority
-
-        where:
-        rehydratePriority          || _
-        null                       || _
-        RehydratePriority.STANDARD || _
-        RehydratePriority.HIGH     || _
-    }
-
-    @Unroll
     def "Get properties AC"() {
         setup:
         def t = new HashMap<String, String>()
