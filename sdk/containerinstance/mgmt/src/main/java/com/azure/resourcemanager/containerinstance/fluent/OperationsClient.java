@@ -26,8 +26,8 @@ import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.containerinstance.ContainerInstanceManagementClient;
-import com.azure.resourcemanager.containerinstance.fluent.inner.OperationInner;
 import com.azure.resourcemanager.containerinstance.fluent.inner.OperationListResultInner;
+import com.azure.resourcemanager.containerinstance.models.Operation;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in Operations. */
@@ -81,7 +81,7 @@ public final class OperationsClient {
      * @return the operation list response that contains all operations for Azure Container Instance service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<OperationInner>> listSinglePageAsync() {
+    public Mono<PagedResponse<Operation>> listSinglePageAsync() {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -90,7 +90,7 @@ public final class OperationsClient {
         }
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), this.client.getApiVersion(), context))
-            .<PagedResponse<OperationInner>>map(
+            .<PagedResponse<Operation>>map(
                 res ->
                     new PagedResponseBase<>(
                         res.getRequest(),
@@ -112,7 +112,7 @@ public final class OperationsClient {
      * @return the operation list response that contains all operations for Azure Container Instance service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<OperationInner>> listSinglePageAsync(Context context) {
+    public Mono<PagedResponse<Operation>> listSinglePageAsync(Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -141,7 +141,7 @@ public final class OperationsClient {
      * @return the operation list response that contains all operations for Azure Container Instance service.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<OperationInner> listAsync() {
+    public PagedFlux<Operation> listAsync() {
         return new PagedFlux<>(() -> listSinglePageAsync(), nextLink -> listNextSinglePageAsync(nextLink));
     }
 
@@ -155,7 +155,7 @@ public final class OperationsClient {
      * @return the operation list response that contains all operations for Azure Container Instance service.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<OperationInner> listAsync(Context context) {
+    public PagedFlux<Operation> listAsync(Context context) {
         return new PagedFlux<>(() -> listSinglePageAsync(context), nextLink -> listNextSinglePageAsync(nextLink));
     }
 
@@ -167,7 +167,7 @@ public final class OperationsClient {
      * @return the operation list response that contains all operations for Azure Container Instance service.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<OperationInner> list() {
+    public PagedIterable<Operation> list() {
         return new PagedIterable<>(listAsync());
     }
 
@@ -181,7 +181,7 @@ public final class OperationsClient {
      * @return the operation list response that contains all operations for Azure Container Instance service.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<OperationInner> list(Context context) {
+    public PagedIterable<Operation> list(Context context) {
         return new PagedIterable<>(listAsync(context));
     }
 
@@ -195,13 +195,13 @@ public final class OperationsClient {
      * @return the operation list response that contains all operations for Azure Container Instance service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<OperationInner>> listNextSinglePageAsync(String nextLink) {
+    public Mono<PagedResponse<Operation>> listNextSinglePageAsync(String nextLink) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         return FluxUtil
             .withContext(context -> service.listNext(nextLink, context))
-            .<PagedResponse<OperationInner>>map(
+            .<PagedResponse<Operation>>map(
                 res ->
                     new PagedResponseBase<>(
                         res.getRequest(),
@@ -224,7 +224,7 @@ public final class OperationsClient {
      * @return the operation list response that contains all operations for Azure Container Instance service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<OperationInner>> listNextSinglePageAsync(String nextLink, Context context) {
+    public Mono<PagedResponse<Operation>> listNextSinglePageAsync(String nextLink, Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }

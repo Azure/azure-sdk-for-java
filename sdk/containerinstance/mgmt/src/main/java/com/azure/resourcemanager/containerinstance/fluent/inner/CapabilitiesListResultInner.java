@@ -6,6 +6,7 @@ package com.azure.resourcemanager.containerinstance.fluent.inner;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.containerinstance.models.Capabilities;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -19,7 +20,7 @@ public final class CapabilitiesListResultInner {
      * The list of capabilities.
      */
     @JsonProperty(value = "value")
-    private List<CapabilitiesInner> value;
+    private List<Capabilities> value;
 
     /*
      * The URI to fetch the next page of capabilities.
@@ -32,7 +33,7 @@ public final class CapabilitiesListResultInner {
      *
      * @return the value value.
      */
-    public List<CapabilitiesInner> value() {
+    public List<Capabilities> value() {
         return this.value;
     }
 
@@ -42,7 +43,7 @@ public final class CapabilitiesListResultInner {
      * @param value the value value to set.
      * @return the CapabilitiesListResultInner object itself.
      */
-    public CapabilitiesListResultInner withValue(List<CapabilitiesInner> value) {
+    public CapabilitiesListResultInner withValue(List<Capabilities> value) {
         this.value = value;
         return this;
     }

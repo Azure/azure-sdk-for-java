@@ -26,12 +26,12 @@ import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.containerinstance.ContainerInstanceManagementClient;
-import com.azure.resourcemanager.containerinstance.fluent.inner.CachedImagesInner;
 import com.azure.resourcemanager.containerinstance.fluent.inner.CachedImagesListResultInner;
-import com.azure.resourcemanager.containerinstance.fluent.inner.CapabilitiesInner;
 import com.azure.resourcemanager.containerinstance.fluent.inner.CapabilitiesListResultInner;
 import com.azure.resourcemanager.containerinstance.fluent.inner.UsageInner;
 import com.azure.resourcemanager.containerinstance.fluent.inner.UsageListResultInner;
+import com.azure.resourcemanager.containerinstance.models.CachedImages;
+import com.azure.resourcemanager.containerinstance.models.Capabilities;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in Locations. */
@@ -262,7 +262,7 @@ public final class LocationsClient {
      * @return the list of cached images on specific OS type for a subscription in a region.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<CachedImagesInner>> listCachedImagesSinglePageAsync(String location) {
+    public Mono<PagedResponse<CachedImages>> listCachedImagesSinglePageAsync(String location) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -288,7 +288,7 @@ public final class LocationsClient {
                             location,
                             this.client.getApiVersion(),
                             context))
-            .<PagedResponse<CachedImagesInner>>map(
+            .<PagedResponse<CachedImages>>map(
                 res ->
                     new PagedResponseBase<>(
                         res.getRequest(),
@@ -311,7 +311,7 @@ public final class LocationsClient {
      * @return the list of cached images on specific OS type for a subscription in a region.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<CachedImagesInner>> listCachedImagesSinglePageAsync(String location, Context context) {
+    public Mono<PagedResponse<CachedImages>> listCachedImagesSinglePageAsync(String location, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -356,7 +356,7 @@ public final class LocationsClient {
      * @return the list of cached images on specific OS type for a subscription in a region.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<CachedImagesInner> listCachedImagesAsync(String location) {
+    public PagedFlux<CachedImages> listCachedImagesAsync(String location) {
         return new PagedFlux<>(
             () -> listCachedImagesSinglePageAsync(location), nextLink -> listCachedImagesNextSinglePageAsync(nextLink));
     }
@@ -372,7 +372,7 @@ public final class LocationsClient {
      * @return the list of cached images on specific OS type for a subscription in a region.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<CachedImagesInner> listCachedImagesAsync(String location, Context context) {
+    public PagedFlux<CachedImages> listCachedImagesAsync(String location, Context context) {
         return new PagedFlux<>(
             () -> listCachedImagesSinglePageAsync(location, context),
             nextLink -> listCachedImagesNextSinglePageAsync(nextLink));
@@ -388,7 +388,7 @@ public final class LocationsClient {
      * @return the list of cached images on specific OS type for a subscription in a region.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<CachedImagesInner> listCachedImages(String location) {
+    public PagedIterable<CachedImages> listCachedImages(String location) {
         return new PagedIterable<>(listCachedImagesAsync(location));
     }
 
@@ -403,7 +403,7 @@ public final class LocationsClient {
      * @return the list of cached images on specific OS type for a subscription in a region.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<CachedImagesInner> listCachedImages(String location, Context context) {
+    public PagedIterable<CachedImages> listCachedImages(String location, Context context) {
         return new PagedIterable<>(listCachedImagesAsync(location, context));
     }
 
@@ -417,7 +417,7 @@ public final class LocationsClient {
      * @return the list of CPU/memory/GPU capabilities of a region.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<CapabilitiesInner>> listCapabilitiesSinglePageAsync(String location) {
+    public Mono<PagedResponse<Capabilities>> listCapabilitiesSinglePageAsync(String location) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -443,7 +443,7 @@ public final class LocationsClient {
                             location,
                             this.client.getApiVersion(),
                             context))
-            .<PagedResponse<CapabilitiesInner>>map(
+            .<PagedResponse<Capabilities>>map(
                 res ->
                     new PagedResponseBase<>(
                         res.getRequest(),
@@ -466,7 +466,7 @@ public final class LocationsClient {
      * @return the list of CPU/memory/GPU capabilities of a region.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<CapabilitiesInner>> listCapabilitiesSinglePageAsync(String location, Context context) {
+    public Mono<PagedResponse<Capabilities>> listCapabilitiesSinglePageAsync(String location, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -511,7 +511,7 @@ public final class LocationsClient {
      * @return the list of CPU/memory/GPU capabilities of a region.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<CapabilitiesInner> listCapabilitiesAsync(String location) {
+    public PagedFlux<Capabilities> listCapabilitiesAsync(String location) {
         return new PagedFlux<>(
             () -> listCapabilitiesSinglePageAsync(location), nextLink -> listCapabilitiesNextSinglePageAsync(nextLink));
     }
@@ -527,7 +527,7 @@ public final class LocationsClient {
      * @return the list of CPU/memory/GPU capabilities of a region.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<CapabilitiesInner> listCapabilitiesAsync(String location, Context context) {
+    public PagedFlux<Capabilities> listCapabilitiesAsync(String location, Context context) {
         return new PagedFlux<>(
             () -> listCapabilitiesSinglePageAsync(location, context),
             nextLink -> listCapabilitiesNextSinglePageAsync(nextLink));
@@ -543,7 +543,7 @@ public final class LocationsClient {
      * @return the list of CPU/memory/GPU capabilities of a region.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<CapabilitiesInner> listCapabilities(String location) {
+    public PagedIterable<Capabilities> listCapabilities(String location) {
         return new PagedIterable<>(listCapabilitiesAsync(location));
     }
 
@@ -558,7 +558,7 @@ public final class LocationsClient {
      * @return the list of CPU/memory/GPU capabilities of a region.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<CapabilitiesInner> listCapabilities(String location, Context context) {
+    public PagedIterable<Capabilities> listCapabilities(String location, Context context) {
         return new PagedIterable<>(listCapabilitiesAsync(location, context));
     }
 
@@ -572,13 +572,13 @@ public final class LocationsClient {
      * @return the response containing cached images.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<CachedImagesInner>> listCachedImagesNextSinglePageAsync(String nextLink) {
+    public Mono<PagedResponse<CachedImages>> listCachedImagesNextSinglePageAsync(String nextLink) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         return FluxUtil
             .withContext(context -> service.listCachedImagesNext(nextLink, context))
-            .<PagedResponse<CachedImagesInner>>map(
+            .<PagedResponse<CachedImages>>map(
                 res ->
                     new PagedResponseBase<>(
                         res.getRequest(),
@@ -601,8 +601,7 @@ public final class LocationsClient {
      * @return the response containing cached images.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<CachedImagesInner>> listCachedImagesNextSinglePageAsync(
-        String nextLink, Context context) {
+    public Mono<PagedResponse<CachedImages>> listCachedImagesNextSinglePageAsync(String nextLink, Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
@@ -630,13 +629,13 @@ public final class LocationsClient {
      * @return the response containing list of capabilities.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<CapabilitiesInner>> listCapabilitiesNextSinglePageAsync(String nextLink) {
+    public Mono<PagedResponse<Capabilities>> listCapabilitiesNextSinglePageAsync(String nextLink) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         return FluxUtil
             .withContext(context -> service.listCapabilitiesNext(nextLink, context))
-            .<PagedResponse<CapabilitiesInner>>map(
+            .<PagedResponse<Capabilities>>map(
                 res ->
                     new PagedResponseBase<>(
                         res.getRequest(),
@@ -659,8 +658,7 @@ public final class LocationsClient {
      * @return the response containing list of capabilities.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<CapabilitiesInner>> listCapabilitiesNextSinglePageAsync(
-        String nextLink, Context context) {
+    public Mono<PagedResponse<Capabilities>> listCapabilitiesNextSinglePageAsync(String nextLink, Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
